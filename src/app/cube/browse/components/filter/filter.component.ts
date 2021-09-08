@@ -6,6 +6,7 @@ import { RelevancyService } from 'app/core/relevancy.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FilterSectionInfo } from '../filter-section/filter-section.component';
+import { Query } from '../../../../interfaces/query';
 
 @Component({
   selector: 'clark-filter',
@@ -14,6 +15,7 @@ import { FilterSectionInfo } from '../filter-section/filter-section.component';
 })
 export class FilterComponent implements OnInit, OnDestroy {
   @Input() clear: Observable<void>;
+  @Input() selected?: Query;
   @Output() changed: EventEmitter<any> = new EventEmitter();
 
   // The section filters
@@ -47,6 +49,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.getMaterialFilters();
     this.getLevelFilters();
     await this.getFrameworkFilters();
+    this.parseSelected();
 
     // Register filter changes
     this.filterChanged$
@@ -59,6 +62,43 @@ export class FilterComponent implements OnInit, OnDestroy {
 
     // Update UI
     this.cd.detectChanges();
+  }
+
+  /**
+   * Parses a query object which saves the current
+   * query state (used for mobile filters)
+   */
+  private parseSelected() {
+    if (this.selected) {
+      this.parseCategorySelected(this.selected.length, this.lengthFilter.filters);
+      this.parseCategorySelected(this.selected.level, this.levelFilter.filters);
+      this.parseCategorySelected(this.selected.topics, this.topicFilter.filters);
+      this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
+      this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
+      this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
+    }
+  }
+
+  /**
+   * Sets each filter to active if they are already
+   * selected
+   *
+   * @param selectedCategory The query selected category
+   * (i.e. length, level, collection, etc)
+   * @param filters The filters array associated with the
+   * category to check
+   */
+  private parseCategorySelected(
+    selectedCategory: string[] | string,
+    filters: { active: boolean, name: string, value: string, tip?: string }[]
+  ) {
+    if (selectedCategory && selectedCategory.length > 0) {
+      filters.forEach(filter => {
+        if (selectedCategory.includes(filter.value)) {
+          filter.active = true;
+        }
+      });
+    }
   }
 
   /**
