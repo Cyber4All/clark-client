@@ -24,14 +24,13 @@
                 </div>
                 <div *ngIf="guidelines && guidelines.length > 0" class="guideline-sort">
                     <span>{{ total }} Compatible Guidelines</span>
-                    <select>
-                        <option></option>
-                        <option>Select All</option>
-                        <option>Clear Selected</option>
-                    </select>
+                    <span>
+                        <button (activate)="clearSelected()" class="button" *ngIf="selectedGuidelines && selectedGuidelines.length > 0">Clear Selected</button>
+                        <button (activate)="selectAll()" class="button neutral">Select All</button>
+                    </span>
                 </div>
                 <ng-template [ngIf]="!guidelines || guidelines.length === 0" [ngIfElse]="guidelineTableTemplate">
-                    <div class="content center">
+                    <div class="content-wrapper center">
                         <p>No results containing all of your filters were found.</p>
                         <a>Filter by only frameworks instead?</a>
                     </div>
@@ -45,10 +44,27 @@
 </div>
 
 <ng-template #guidelineTableTemplate>
-    <div>
+    <div class="content-wrapper padding">
         <table>
-
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Outcome</th>
+                <th>Framework</th>
+            </tr>
+            <tr class="guidelines" *ngFor="let guideline of guidelines">
+                <td>
+                    <clark-checkbox
+                        attr.aria-label="{{ guideline.guidelineName }}"
+                        [value]="isSelectedGuideline(guideline.guidelineId)"
+                        (checkboxChecked)="selectGuidelineOption(guideline.guidelineId)"
+                        (checkboxUnchecked)="deselectGuidelineOption(guideline.guidelineId)"></clark-checkbox>
+                </td>
+                <td>{{ guideline.guidelineName }}</td>
+                <td>{{ guideline.guidelineDescription }}</td>
+                <td>{{ guideline.frameworkName }}</td>
+            </tr>
         </table>
-        Pagination...
+        <clark-pagination [lastPageNumber]="(total / 10)" [currentPageNumber]="page" (newPageNumberClicked)="changePage($event)"></clark-pagination>
     </div>
 </ng-template>

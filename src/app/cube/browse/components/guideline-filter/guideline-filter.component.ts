@@ -20,7 +20,7 @@ export class GuidelineFilterComponent implements OnInit, OnDestroy {
 
   // Guidelines filter
   guidelines: SearchItemDocument[];
-  selectedGuidelines: SearchItemDocument[];
+  selectedGuidelines: string[] = [];
 
   // Guidelines search
   searchChange$: Subject<string> = new Subject<string>();
@@ -131,4 +131,71 @@ export class GuidelineFilterComponent implements OnInit, OnDestroy {
     this.cd.detectChanges();
   }
 
+  /**
+   * Changes the page for the search
+   *
+   * @param page The new page number
+   */
+  async changePage(page) {
+    this.page = page;
+    await this.searchGuidelines();
+  }
+
+  /**
+   * Selects all the guidelines for a given page
+   */
+  selectAll() {
+    this.guidelines.forEach(guideline => {
+      if (!this.isSelectedGuideline(guideline.guidelineId)) {
+        this.selectedGuidelines.push(guideline.guidelineId);
+      }
+    });
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Clears all the guidelines currently selected
+   */
+  clearSelected() {
+    this.selectedGuidelines = [];
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Selects a guideline and adds its id to the selected guidelines
+   * array
+   *
+   * @param guidelineId The guideline id to add
+   */
+  selectGuidelineOption(guidelineId: string) {
+    if (!this.isSelectedGuideline(guidelineId)) {
+      this.selectedGuidelines.push(guidelineId);
+    }
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Deselects a guideline and removes its id from the selected
+   * guidelines array
+   *
+   * @param guidelineId The guideline id to remove
+   */
+  deselectGuidelineOption(guidelineId: string) {
+    const index = this.selectedGuidelines.findIndex(id => id === guidelineId);
+    if (index >= 0) {
+      this.selectedGuidelines.splice(index, 1);
+    }
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Checks whether a given id is selected already
+   *
+   * @param guidelineId The guideline id to check
+   * @returns A boolean, true if selected, false otherwise
+   */
+  isSelectedGuideline(guidelineId: string) {
+    const index = this.selectedGuidelines.findIndex(id => id === guidelineId);
+    return index >= 0;
+  }
 }

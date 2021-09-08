@@ -48,6 +48,7 @@ import { AboutUsModule } from './about-us/about-us.module';
 import { DonateComponent } from './donate/donate.component';
 import { FilterSectionComponent } from './browse/components/filter-section/filter-section.component';
 import { GuidelineFilterComponent } from './browse/components/guideline-filter/guideline-filter.component';
+import { LibraryModule } from './library/library.module';
 
 
 /**
@@ -100,6 +101,7 @@ import { GuidelineFilterComponent } from './browse/components/guideline-filter/g
     ModalModule,
     CollectionModule,
     AboutUsModule,
+    LibraryModule,
   ],
   providers: [LearningObjectService]
 })

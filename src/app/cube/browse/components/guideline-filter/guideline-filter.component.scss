@@ -11,7 +11,7 @@ h3 {
 }
 
 .wrapper {
-    width: 700px;
+    width: 1000px;
 }
 
 .guideline-flex {
@@ -98,9 +98,14 @@ h3 {
     }
 }
 
-.content {
+.content-wrapper {
     max-height: 400px;
     min-height: 200px;
+    overflow-y: auto;
+
+    &.padding {
+        margin: 20px 0;
+    }
 }
 
 .right {
@@ -109,4 +114,17 @@ h3 {
 
 .center {
     text-align: center;
+}
+
+th {
+    text-align: left;
+    padding: 10px;
+}
+
+.guidelines {
+    td {
+        padding: 10px;
+        margin: 0;
+        border-bottom: 1px solid $light-grey;
+    }
 }
