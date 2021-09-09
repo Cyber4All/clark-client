@@ -21,9 +21,9 @@ export class GuidelineService {
         catchError(this.handleError),
         map((res) => {
           // This should be removed once guidelines begin to be added
-          const sources = res.results.map(result => result.name);
-          const index = sources.indexOf('CAE CDE 2019');
-          return sources.splice(index);
+          let sources = res.results.map(res => res.name);
+          sources = sources.filter(source => source !== 'CAE CDE 2019');
+          return sources;
         })
       );
   }
