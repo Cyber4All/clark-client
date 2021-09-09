@@ -15,7 +15,7 @@ export class GuidelineService {
   constructor(public http: HttpClient) {
     // Load guideline sources only once
     this.sources = this.http
-      .get<{total: number, results: FrameworkDocument[]}>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS({}))
+      .get<{total: number, results: FrameworkDocument[]}>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS({page: '1', limit: '20'}))
       .pipe(
         retry(3),
         catchError(this.handleError),
