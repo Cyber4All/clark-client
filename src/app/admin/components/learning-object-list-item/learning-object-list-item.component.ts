@@ -32,6 +32,13 @@ export class LearningObjectListItemComponent implements OnChanges {
   @Input()
   status: string;
 
+  // fired when the checkbox for this element is fired
+  @Output()
+  select: EventEmitter<boolean> = new EventEmitter();
+  // is this object selected
+  @Input()
+  selected = false;
+
   // fired when the view user option is selected from the context menu
   @Output()
   viewUser: EventEmitter<string> = new EventEmitter();
@@ -42,6 +49,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   statusDescription: string;
 
   showChangeAuthor: boolean;
+  showAddEvaluator: boolean;
   showUnreleaseConfirm: boolean;
 
   showRelevancyDate: boolean;
@@ -93,6 +101,15 @@ export class LearningObjectListItemComponent implements OnChanges {
    */
   toggleChangeAuthorModal(value: boolean) {
     this.showChangeAuthor = value;
+  }
+
+  /**
+   * Toggles the add evaluator modal from showing/hiding
+   *
+   * @param value True if showing, false otherwise
+   */
+  toggleAddEvaluatorModal(value: boolean) {
+    this.showAddEvaluator = value;
   }
 
   /**
@@ -163,5 +180,13 @@ export class LearningObjectListItemComponent implements OnChanges {
    toggleRelevancyDate(toggle: boolean) {
     this.showRelevancyDate = toggle;
    }
+
+  /**
+   * Emits a value for checkbox to parent component
+   * @param val either the empty string (true) or a minus sign (false)
+   */
+  toggleSelect(val) {
+    this.select.emit(val);
+  }
 
 }

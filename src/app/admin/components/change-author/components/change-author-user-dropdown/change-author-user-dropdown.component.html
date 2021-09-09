@@ -3,21 +3,21 @@
     <i class="fas fa-search"></i> 
     <input type="text" aria-label="Find users by their name, username, or email address." class="user-dropdown__search-input" placeholder="Search for authors" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
   </div>
-    <ul *ngIf="showDropdown" class="user-dropdown__list">
-        <ng-container *ngTemplateOutlet="loading && (searchResults && !searchResults.length) ? loadingTemplate : resultsTemplate"></ng-container>
-    </ul>
+  <ul *ngIf="showDropdown" class="user-dropdown__list">
+      <ng-container *ngTemplateOutlet="loading && (searchResults && !searchResults.length) ? loadingTemplate : resultsTemplate"></ng-container>
+  </ul>
 
-    <div *ngIf="selectedAuthor && selectedAuthor.username" class="author-details-container">
-      <div class="left">
-        <span class="user-dropdown__navbar-gravatar image" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(selectedAuthor.email, 200) + ')'}"></span>
-        <span class="details">
-              <p>{{selectedAuthor.username}}</p>
-              <p>{{selectedAuthor.organization}} - {{selectedAuthor.email}}</p>
-        </span>
-      </div>
-      <button (click)="toggleAuthor()" class="right button"><i class="fas fa-times"></i></button>
+  <div *ngIf="selectedAuthor && selectedAuthor.username" class="author-details-container">
+    <div class="left">
+      <span class="user-dropdown__navbar-gravatar image" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(selectedAuthor.email, 200) + ')'}"></span>
+      <span class="details">
+            <p>{{selectedAuthor.username}}</p>
+            <p>{{selectedAuthor.organization}} - {{selectedAuthor.email}}</p>
+      </span>
+    </div>
+    <button (click)="toggleAuthor()" aria-label="toggles author" class="right button"><i class="fas fa-times"></i></button>
   </div>
-  </div>
+</div>
 
   <ng-template #resultsTemplate>
     <ng-container *ngIf="searchResults && searchResults.length; else noResultsTemplate">

@@ -1,0 +1,77 @@
+@import '~_vars.scss';
+
+.wrapper {
+  min-height: 300px;
+
+  .add-evaluator-banner{
+    top: 0;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    padding: 20px;
+    position: absolute;
+    background: linear-gradient(45deg, darken($light-blue, 5), lighten($light-blue, 5));
+    &:after {
+      content: '';
+      background: white;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0.04;
+      mask: $cube-pattern repeat;
+    }
+
+    .banner-title {
+      color: white;
+      font-size: $larger;
+      font-weight: normal;
+      padding: 0px;
+      margin: 0px;
+    }
+    .banner-sub {
+      color: white;
+      opacity: 0.85;
+      font-size: $normal;
+      padding: 0px;
+      margin: 0px;
+    }
+  }
+
+  .content-header{
+    margin-top: 4.5em;
+    font-size: $large;
+    color: $dark-grey;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: .5em;
+    height: 40px;
+  }
+
+  .card-container{ 
+    max-height: 150px;
+    transition: background 0.1s ease;
+    font-size: $small;
+    color: $darker-grey;
+  }
+
+  .user-dropdown {
+    margin-top: 1em;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    padding: 50px;
+
+    .button-inner {
+      width: 300px;
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+
+}

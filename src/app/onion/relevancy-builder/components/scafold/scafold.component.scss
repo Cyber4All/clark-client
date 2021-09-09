@@ -1,0 +1,75 @@
+@import '~_vars.scss';
+
+.header {
+  display: flex;
+  padding-top: 18px;
+  padding-left: 20px;
+
+  .title {
+    text-align: left;
+    font-size: $large;
+    font-weight: 600;
+    margin: 0 30px 10px 10px;
+    align-items: left;
+    justify-content: left;
+  }
+}
+
+.learning-object-topics {
+  width: 100%;
+  margin-top: 30px;
+}
+
+.scroll-wrapper {
+  overflow: auto;
+  transform: translateY(-30px);
+}
+
+.pills {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin: 5px 15px;
+}
+
+.pill {
+  color: $light-blue;
+  border: 1px solid $light-blue;
+  margin: 3px;
+  border-radius: 2px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  font-size: $small;
+  cursor: pointer;
+  padding: 2px 5px;
+
+  &.pill-selected {
+    color: white;
+    background-color: $light-blue;
+  }
+  
+}
+
+.no-children {
+  color: $dark-grey;
+  text-align: center;
+  padding: 30px 30px;
+  font-size: $normal;
+}
+
+.loading-template {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+
+  .svg-inline--fa {
+    margin-bottom: 10px;
+    font-size: 22px;
+  }
+}

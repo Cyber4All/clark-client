@@ -1,0 +1,17 @@
+<div class="relevancy-builder-wrapper" [@builderTransition]="getState(o)">
+  <!-- The ngIf directive on onion-builder-navbar forces the :enter event to fire for router animations and should NOT be removed -->
+  <onion-relevancy-builder-navbar *ngIf="true" [adminMode]="adminMode"></onion-relevancy-builder-navbar>
+  <router-outlet #o="outlet"></router-outlet>
+</div>
+
+<!-- Service Error Popup -->
+<clark-popup *ngIf="showServiceFailureModal">
+  <div #popupInner class="popup-inner" aria-live="assertive">
+    <div class="modal-title">Network error</div>
+    <div class="modal-text">We are currently unable to save your work due to a network related issue. Please check back
+      later and try again.</div>
+    <div class="btn-group center">
+      <button class="button good" (activate)="exitBuilder()">Back to Dashboard</button>
+    </div>
+  </div>
+</clark-popup>

@@ -1,0 +1,30 @@
+@import '~_vars.scss';
+
+.selected-user {
+  height: 40px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  background: white;
+  color: $dark-grey;
+  font-size: $normal;
+
+  .user-gravatar {
+    display: inline-block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    margin: 0px 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+
+    box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.05);
+    color: white;
+    font-size: $normal;
+  }
+}
+

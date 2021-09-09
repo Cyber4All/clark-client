@@ -25,9 +25,12 @@ import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 import { UserCardComponent } from './user-card/user-card.component';
 import { SkipLinkComponent } from './skip-link/skip-link.component';
 import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
-
-
-
+import { AddEvaluatorComponent } from './add-evaluator/add-evaluator.component';
+import { UserDropdownComponent } from './add-evaluator/components/user-dropdown/user-dropdown.component';
+import {
+  HighlightedLearningObjectComponent
+} from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 @NgModule({
   imports: [
     // angular modules
@@ -37,6 +40,7 @@ import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
     RouterModule,
     // third-party modules
     CKEditorModule,
+    VirtualScrollerModule,
     // CLARK Modules
     SharedDirectivesModule,
     SharedPipesModule
@@ -56,6 +60,9 @@ import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
     UserCardComponent,
     SkipLinkComponent,
     CookiePopupComponent,
+    AddEvaluatorComponent,
+    UserDropdownComponent,
+    HighlightedLearningObjectComponent,
   ],
   exports: [
     // components
@@ -72,6 +79,7 @@ import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
     UserCardComponent,
     SkipLinkComponent,
     CookiePopupComponent,
+    AddEvaluatorComponent,
   ]
 })
 export class SharedComponents {}
