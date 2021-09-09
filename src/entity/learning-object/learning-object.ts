@@ -233,6 +233,14 @@ export class LearningObject {
     this._revisionUri = val;
   }
 
+  get revision(): any {
+    return this._revision;
+  }
+
+  set revision(revision: any) {
+    this._revision = revision;
+  }
+
   get resourceUris(): {
     children: string,
     materials: string,
@@ -289,6 +297,7 @@ export class LearningObject {
     this._status = LearningObject.Status.UNRELEASED;
     this._metrics = { saves: 0, downloads: 0 };
     this._nextCheck = new Date();
+    this.revision = undefined;
 
     if (object) {
       this.copyObject(object);
@@ -322,6 +331,11 @@ export class LearningObject {
   private _nextCheck: Date;
 
   private _revisionUri?: string;
+
+  private _revision?: {
+    id: string,
+    status: string,
+  };
 
   private _constructed = false;
 
@@ -654,6 +668,9 @@ export class LearningObject {
     if (object.nextCheck) {
       this._nextCheck = object.nextCheck;
     }
+    if (object.revision) {
+      this._revision = object.revision;
+    }
 
     this.collection = <string>object.collection || this.collection;
     this.status = <LearningObject.Status>object.status || this.status;
@@ -694,6 +711,7 @@ export class LearningObject {
       resourceUris: this.resourceUris,
       parents: this.parents,
       nextCheck: this.nextCheck,
+      revision: this.revision,
     };
     return object;
   }
