@@ -1,0 +1,28 @@
+<div [@outcome]="noAnimation ? 'off' : (active ? 'open' : 'closed')" (@outcome.done)="noAnimation = false" class="outcome-component" [ngClass]="{'active': active}" [ngStyle]="{'overflow': hiddenOverflow? 'hidden':'visible'}">
+  <div class="outcome-header">
+    <div class="outcome-header__left" [ngClass]="{ 'active': active }">
+      <div class="outcome-level" *ngFor="let l of outcomeLevels">
+        <span *ngIf="l === 'remember and understand' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-cloud"></i> Remember & Understand</span>
+        <span *ngIf="l === 'apply and analyze' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-bolt"></i> Apply & Analyze</span>
+        <span *ngIf="l === 'evaluate and synthesize' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-balance-scale-right"> Evaluate & Synthesize</i></span>
+      </div>
+      {{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
+      + outcomeNumber }}
+    </div>
+    <div class="outcome-header__right" *ngIf="!active">
+      <p>Click to view mappings</p>
+    </div>
+  </div>
+  <div *ngIf="outcome.mappings?.length == 0" class="no-outcome-mappings">No Curricular Guidelines Mapped!</div>
+  <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
+    <div class="outcome-header">Maps to: </div>
+    <div class="pills">
+      <div *ngFor="let m of outcome.mappings" class="pill">
+        {{ m.author }} - {{ m.guidelineName }} - {{ m.year }}
+        <span attr.aria-label="Remove mapping to {{ m.author }} - {{ m.name }} - {{ m.date }}" (activate)="removeMapping(m)">
+          <i class="fal fa-times"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

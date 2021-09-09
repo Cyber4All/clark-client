@@ -4,6 +4,9 @@ import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as LOUri} from 'app/core/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { takeUntil, debounceTime } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { AuthService } from 'app/core/auth.service';
 
 /**
  * EditorialActionPadComponent coordinates all editor functionality inside of the
@@ -21,6 +24,10 @@ export class EditorialActionPadComponent implements OnInit {
   @Input() learningObject: LearningObject;
   openRevisionModal: boolean;
   showPopup = false;
+
+  showAddEvaluator: boolean;
+  addEvaluatorButton = false;
+
   @Input() revisedLearningObject: LearningObject;
 
   constructor(
@@ -28,9 +35,20 @@ export class EditorialActionPadComponent implements OnInit {
     private learningObjectService: LearningObjectService,
     private learningObjectServiceUri: LOUri,
     private toaster: ToastrOvenService,
+    private authService: AuthService
     ) { }
 
   async ngOnInit() {
+  }
+
+  get assignEvaluators() {
+    const addEvaluatorUserPrivileges = ['admin', 'editor'];
+    for (let i = 0; i < addEvaluatorUserPrivileges.length; i++) {
+      if (this.authService.user.accessGroups.includes(addEvaluatorUserPrivileges[i])) {
+        this.addEvaluatorButton = true;
+      }
+    }
+    return this.addEvaluatorButton;
   }
 
   // Determines if an editor can create a revision of a learning object
@@ -85,6 +103,14 @@ export class EditorialActionPadComponent implements OnInit {
         this.openRevisionModal = false;
         this.toaster.error('Error', e.error.message);
       });
+    }
 
+  /**
+   * Toggles the add evaluator modal from showing/hiding
+   *
+   * @param value True if showing, false otherwise
+   */
+  toggleAddEvaluatorModal(value: boolean) {
+    this.showAddEvaluator = value;
   }
 }

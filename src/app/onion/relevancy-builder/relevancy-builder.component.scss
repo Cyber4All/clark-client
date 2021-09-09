@@ -1,0 +1,32 @@
+@import '~_vars.scss';
+
+.service-indicator {
+  position: fixed;
+  right: 25px;
+  bottom: 0;
+  opacity: 0;
+  padding: 8px 10px;
+  text-align: left;
+  color: white;
+  min-width: 200px;
+  background: $light-blue-gradient;
+  border-radius: 4px;
+  z-index: 2;
+
+  .svg-inline--fa,
+  .icon {
+    font-size: $small;
+    margin-right: 10px;
+  }
+
+  &.service-indicator--error {
+    background: $error-red;
+  }
+}
+
+.popup-inner {
+
+  .modal-title{
+    color: $light-blue !important;
+  }
+}

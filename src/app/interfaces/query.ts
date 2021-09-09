@@ -26,6 +26,7 @@ export interface Query {
   fileTypes?: string[];
   startNextCheck?: string;
   endNextCheck?: string;
+  topics?: string[];
 }
 
 export interface MappingQuery extends Query {
@@ -43,4 +44,5 @@ export interface UserQuery {
   currPage?: number;
   limit?: number;
   text?: string;
+  accessGroups?: string;
 }

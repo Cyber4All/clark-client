@@ -1,0 +1,4 @@
+<div class="selected-user">
+  <span class="user-gravatar" [style.backgroundImage]="'url(' + getGravatar() + ')'"></span>
+  <div clas="user-info">{{ user.username }} - {{ user.name | titlecase }} from {{ user.organization | titlecase }}</div>
+</div>

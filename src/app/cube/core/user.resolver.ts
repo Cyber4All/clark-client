@@ -25,7 +25,7 @@ export class UserResolver implements Resolve<User> {
     if (this.auth.status && this.auth.user.username === route.params.username) {
       return this.auth.user;
     } else {
-      return this.user.getUser(route.params.username).then(val => {
+      return this.user.getUser(route.params.username, 'username').then(val => {
         if (val) {
           return val;
         } else {

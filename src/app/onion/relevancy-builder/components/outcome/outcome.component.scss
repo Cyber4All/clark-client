@@ -1,0 +1,111 @@
+@import '~_vars.scss';
+
+.outcome-component {
+  padding: 30px 30px 65px 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  transition: all 0.2s ease;
+  overflow: hidden;
+  background: white;
+  border-top: 1px solid $light-grey;
+  box-shadow: none;
+  cursor: pointer;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -6px;
+    background: $light-blue;
+    width: 5px;
+    transition: all 0.2s ease;
+  }
+
+  &.active {
+    background: $wrapper-background;
+    box-shadow: 0 0 16px 2px rgba(0, 0, 0, 0.15);
+    z-index: 2;
+    cursor: default;
+
+    &:after {
+      left: 0;
+      opacity: 1;
+    }
+  }
+
+  .outcome-level {
+    margin: 0 auto 5px auto;
+    font-size: large;
+    color: $light-blue;
+  }
+
+  .outcome-header {
+    width: 100%;
+    font-size: $normal;
+    color: $darker-grey;
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .outcome-header__left {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-grow: 0;
+      overflow: hidden;
+
+      &.active {
+        white-space: normal;
+      }
+    }
+    .outcome-header__right {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      flex-grow: 0;
+      overflow: hidden;
+      position: absolute;
+      right: 0;
+      top: -15px;
+    }
+  }
+
+  .no-outcome-mappings {
+    color: $light-blue;
+  }
+
+  .outcome-mappings {
+    width: 100%;
+
+    .pills {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+
+      .pill {
+        color: $light-blue;
+        border: 1px solid $light-blue;
+        padding: 3px 5px;
+        border-radius: 2px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        flex-shrink: 0;
+        box-sizing: border-box;
+        font-size: $small;
+
+        .svg-inline--fa,
+        .icon {
+          margin-left: 8px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

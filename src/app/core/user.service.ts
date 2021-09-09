@@ -249,10 +249,10 @@ export class UserService {
    * @returns {Promise<User>}
    * @memberof UserService
    */
-  getUser(username: string): Promise<User> {
-    return username && username !== 'undefined'
+  getUser(user: string, q: string): Promise<User> {
+    return user && user !== 'undefined'
       ? this.http
-          .get(USER_ROUTES.FETCH_USER(username), {
+          .get(USER_ROUTES.FETCH_USER(user, q), {
             withCredentials: true
           })
           .pipe(
@@ -262,8 +262,8 @@ export class UserService {
           .toPromise()
           .then(
             (val: any) => {
-              const user = val;
-              return user ? new User(user) : null;
+              const user_res = val;
+              return user_res ? new User(user_res) : null;
             },
             error => {
               return null;

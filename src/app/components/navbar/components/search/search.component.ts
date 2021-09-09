@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   blurMappingsDropdown: Subject<any> = new Subject();
   descriptionText = (this.selected === 1) ?
     'Search for learning objects by organization, user, or keyword/phrase.' :
-    'Search for learning objects by mapped standard outcomes';
+    'Search for learning objects by mapped guidelines';
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 

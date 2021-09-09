@@ -1,0 +1,10 @@
+<div class="outcomes-list-item" [ngClass]="{'selected': store.activeGuidelines.includes(guideline.guidelineId)}" (activate)="toggleMap.emit(!selected);">
+  <div class="top">
+    <span *ngIf="guideline.suggested" class="suggested-icon">
+      <i class="fas fa-lightbulb"></i>
+    </span>
+    {{ guideline.author }} - {{ guideline.guidelineName }} - {{guideline.year}}
+  </div>
+  <div class="bar"></div>
+  {{ guideline.guidelineDescription }}
+</div> 

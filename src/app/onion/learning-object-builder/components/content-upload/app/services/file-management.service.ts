@@ -129,7 +129,7 @@ export class FileManagementService {
       cognitoIdentityId = this.auth.getOpenIdToken().IdentityId;
     } else {
       // Get user data and return cognito id
-      const user = await this.userService.getUser(username);
+      const user = await this.userService.getUser(username, 'username');
       cognitoIdentityId = user.cognitoIdentityId;
     }
     if (!cognitoIdentityId) {

@@ -1,0 +1,28 @@
+<onion-column-wrapper>
+  <!-- Left Column -->
+  <div left>
+    <clark-relevancy-scafold></clark-relevancy-scafold>
+  </div>
+
+  <!-- Center Column -->
+  <div main class="main" *ngIf="store.outcomes">
+    <div class="top">
+      <div class="title">{{ store.outcomes.length }} Learning Outcome<span *ngIf="store.outcomes?.length !== 1">s</span></div>
+    </div>
+    <ng-container *ngIf="store.outcomes.length; else noOutcomesTemplate">
+      <clark-relevancy-outcome *ngFor="let o of store.outcomes"
+        [outcome]="o"
+        [active]="activeOutcome === o.id"
+        (unmap)="toggleStandardOutcome($event)"
+        (activate)="setActiveOutcome(o.id)"
+      >
+      </clark-relevancy-outcome>
+    </ng-container>
+  </div>
+
+  <!-- Right Column -->
+  <div right *ngIf="store.outcomes && activeOutcome">
+    <clark-relevancy-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-relevancy-outcomes>
+  </div>
+</onion-column-wrapper>
+  

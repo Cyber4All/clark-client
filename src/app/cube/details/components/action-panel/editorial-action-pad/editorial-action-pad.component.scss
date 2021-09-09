@@ -32,3 +32,11 @@ p {
     color: $medium-grey;
   }
 }
+
+.modal-container{ 
+  width: 600px;
+
+  &.center {
+    text-align: center;
+  }
+}
