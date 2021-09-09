@@ -20,37 +20,37 @@ hr {
 
 .filter-wrapper {
   padding: 10px 0;
+
+  .filter {
+    text-transform: capitalize;
+    font-size: $small;
+    display: inline;
+    flex-wrap: nowrap;
+  
+    &.filter-checkbox {
+      display: flex;
+      flex-direction: row;
+  
+      clark-checkbox {
+        @include vert-center;
+        margin-right: 10px;
+      }
+    }
+  
+    .checkbox-grid {
+      display: inline-grid;
+      grid-template-columns: auto auto;
+      align-items: start !important;
+  
+      clark-checkbox {
+        align-self: start;
+        margin-top: 2px;
+      }
+    }
+  }
 }
 
 .optional {
   margin-top: 10px;
   text-align: center;
-}
-
-.filter {
-  text-transform: capitalize;
-  font-size: $small;
-  display: inline;
-  flex-wrap: nowrap;
-
-  &.filter-checkbox {
-    display: flex;
-    flex-direction: row;
-
-    clark-checkbox {
-      @include vert-center;
-      margin-right: 10px;
-    }
-  }
-
-  .checkbox-grid {
-    display: inline-grid;
-    grid-template-columns: auto auto;
-    align-items: start !important;
-
-    clark-checkbox {
-      align-self: start;
-      margin-top: 2px;
-    }
-  }
 }

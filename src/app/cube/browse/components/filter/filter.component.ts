@@ -187,7 +187,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       section: 'Collection',
       filters: collections.map(collection => ({
         name: collection.name,
-        value: collection.abvName || collection.name,
+        value: collection.abvName,
         active: false,
       })).sort((a, b) => {
         if (a.name < b.name) {
