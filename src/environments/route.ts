@@ -587,13 +587,9 @@ export const STANDARD_GUIDELINE_ROUTES = {
     limit?: string,
     type?: string
   }) {
-    return `${environment.apiURL}/frameworks?
-      text=${encodeURIComponent(params.text)}&
-      year=${encodeURIComponent(params.year)}&
-      levels=${encodeURIComponent(params.levels)}&
-      page=${encodeURIComponent(params.page)}&
-      limit=${encodeURIComponent(params.limit)}&
-      type=${encodeURIComponent(params.type)}`;
+    const wow = `${environment.apiURL}/frameworks?${querystring.stringify(params)}`;
+    console.log(wow);
+    return wow;
   },
   // Searches guidelines/standards given a text, year, and level query
   SEARCH_GUIDELINES(query: string) {
