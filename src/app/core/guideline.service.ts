@@ -53,9 +53,9 @@ export class GuidelineService {
       });
   }
 
-  async getFrameworks(): Promise<FrameworkDocument[]> {
+  async getFrameworks(query?: any): Promise<FrameworkDocument[]> {
     return this.http
-      .get<{total: number, results: FrameworkDocument[]}>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS({}))
+      .get<{total: number, results: FrameworkDocument[]}>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS(query))
       .pipe(
         retry(3),
         catchError(this.handleError),

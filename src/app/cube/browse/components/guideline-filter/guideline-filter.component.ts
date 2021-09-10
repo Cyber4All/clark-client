@@ -101,7 +101,7 @@ export class GuidelineFilterComponent implements OnInit, OnDestroy {
    * Gets the framework filters
    */
   async getFrameworkFilters() {
-    const frameworks = await this.guidelineService.getFrameworks();
+    const frameworks = await this.guidelineService.getFrameworks({ limit: 100, page: 1 });
     this.frameworkFilter = {
       section: 'Frameworks',
       filters: frameworks.map(framework => ({
