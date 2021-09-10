@@ -22,7 +22,7 @@
       <div class="details">
         <span class="author">
           {{ learningObject.contributors[0]?.name | titlecase }} |
-          {{ learningObject.contributors[0]?.organization.trim() | titlecase
+          {{ organizationFormat(learningObject.contributors[0]?.organization.trim())
           }}{{
             learningObject.contributors?.length -1 
               ? ', and ' + ( learningObject.contributors.length - 1 ) + ' more'

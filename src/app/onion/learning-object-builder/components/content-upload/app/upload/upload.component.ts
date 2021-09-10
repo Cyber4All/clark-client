@@ -147,6 +147,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   openPath: string;
 
+  notes: string;
+
   solutionUpload = false;
 
   showDeletePopup = false;
@@ -187,6 +189,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(object => {
         if (object) {
+          this.notes = object.materials.notes;
           this.bucketUploadPath = `${object.author.username}/${object.id}`;
           this.files$.next(object.materials.files);
           this.folderMeta$.next(object.materials.folderDescriptions);
@@ -198,7 +201,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
       });
-
     this.notes$
       .pipe(
         takeUntil(this.unsubscribe$),

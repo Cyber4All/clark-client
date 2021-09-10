@@ -7,6 +7,7 @@ import { of } from 'rxjs';
 import { AuthorshipService } from '../../core/authorship.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { UserService } from '../../../../app/core/user.service';
+import { titleCase } from 'title-case';
 
 @Component({
   selector: 'clark-change-author',
@@ -76,6 +77,20 @@ export class ChangeAuthorComponent implements OnInit {
       this.consentGiven = true;
     } else {
       this.consentGiven = false;
+    }
+  }
+
+  /**
+   * Function to conditionally set the title case of an organization
+   *
+   * @param organization string of the users affiliated organization
+   * @returns string unformated or title cased
+   */
+  organizationFormat(organization: string) {
+    if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+      return organization;
+    } else {
+      return titleCase(organization);
     }
   }
 

@@ -7,17 +7,17 @@
       <ng-container *ngTemplateOutlet="loading && (searchResults && !searchResults.length) ? loadingTemplate : resultsTemplate"></ng-container>
   </ul>
 
-  <div *ngIf="selectedAuthor && selectedAuthor.username" class="author-details-container">
-    <div class="left">
-      <span class="user-dropdown__navbar-gravatar image" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(selectedAuthor.email, 200) + ')'}"></span>
-      <span class="details">
-            <p>{{selectedAuthor.username}}</p>
-            <p>{{selectedAuthor.organization}} - {{selectedAuthor.email}}</p>
-      </span>
+    <div *ngIf="selectedAuthor && selectedAuthor.username" class="author-details-container">
+      <div class="left">
+        <span class="user-dropdown__navbar-gravatar image" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(selectedAuthor.email, 200) + ')'}"></span>
+        <span class="details">
+              <p>{{selectedAuthor.username}}</p>
+              <p>{{organizationFormat(selectedAuthor.organization)}} - {{selectedAuthor.email}}</p>
+        </span>
+      </div>
+      <button (click)="toggleAuthor()" class="right button"><i class="fas fa-times"></i></button>
     </div>
-    <button (click)="toggleAuthor()" aria-label="toggles author" class="right button"><i class="fas fa-times"></i></button>
   </div>
-</div>
 
   <ng-template #resultsTemplate>
     <ng-container *ngIf="searchResults && searchResults.length; else noResultsTemplate">
@@ -25,7 +25,7 @@
         <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (activate)="toggleAuthor(user)">
          
           <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
-          {{ user.username }} - {{ user.name | titlecase }} from {{ user.organization | titlecase }}
+          {{ user.username }} - {{ user.name | titlecase }} from {{ organizationFormat(user.organization) }}
         </li>
       </virtual-scroller>
     </ng-container>

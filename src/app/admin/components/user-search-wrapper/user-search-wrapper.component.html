@@ -25,7 +25,7 @@
               <span *ngIf="users.includes(u.username)"><i class="fas fa-times"></i></span>
             </span>
             <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
-            {{ u.username }} - {{ u.name | titlecase }} from {{ u.organization | titlecase }}
+            {{ u.username }} - {{ u.name | titlecase }} from {{ organizationFormat(u.organization) }}
           </li>
         </virtual-scroller>
       </div>
