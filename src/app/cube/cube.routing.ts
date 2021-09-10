@@ -104,9 +104,9 @@ const cube_routes: Routes = [
         component: UserProfileComponent,
         pathMatch: 'full',
         canActivate: [ProfileGuard]
-      }
+      },
     ]
-  }
+  },
 ];
 
 export const CubeRoutingModule: ModuleWithProviders = RouterModule.forChild(cube_routes);
