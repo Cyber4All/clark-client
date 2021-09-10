@@ -6,7 +6,7 @@
       <div class="auth-title light" id="registration-light-header">Cybersecurity Digital Library</div>
       <form [formGroup]="regForm" [@slideInRight]="slide" [@fallFromTop]="fall">
         <div *ngIf="this.page === 1">
-          <clark-personal-info [group]="regForm" (hasResults)="setOrganizationStatus($event)"></clark-personal-info>
+          <clark-personal-info [group]="regForm"></clark-personal-info>
         </div>
         <div *ngIf="this.page === 2">
           <clark-profile-info [group]="regForm"></clark-profile-info>

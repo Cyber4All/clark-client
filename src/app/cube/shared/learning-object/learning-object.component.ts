@@ -15,6 +15,7 @@ import { LibraryService } from '../../../core/library.service';
 import { LearningObject } from '@entity';
 import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
 import { CollectionService } from '../../../core/collection.service';
+import { titleCase } from 'title-case';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -129,6 +130,20 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     // tslint:disable-next-line:radix
     return new Date(parseInt(this.learningObject.date));
   }
+
+  /**
+   * Function to conditionally set the title case of an organization
+   *
+   * @param organization string of the users affiliated organization
+   * @returns string unformated or title cased
+   */
+     organizationFormat(organization: string) {
+      if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+        return organization;
+      } else {
+        return titleCase(organization);
+      }
+    }
 
   download(e) {
     // Stop the event propagation so that the routerLink of the parent doesn't trigger

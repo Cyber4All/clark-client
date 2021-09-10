@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from '@entity';
+import { titleCase } from 'title-case';
 
 @Component({
   selector: 'clark-author-card',
@@ -15,4 +16,19 @@ export class AuthorCardComponent implements OnInit {
 
   ngOnInit() {
   }
+
+  /**
+   * Function to conditionally set the title case of an organization
+   *
+   * @param organization string of the users affiliated organization
+   * @returns string unformated or title cased
+   */
+   organizationFormat(organization: string) {
+    if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+      return organization;
+    } else {
+      return titleCase(organization);
+    }
+  }
+
 }

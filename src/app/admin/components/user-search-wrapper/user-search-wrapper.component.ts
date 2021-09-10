@@ -6,6 +6,7 @@ import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Collection } from 'app/core/collection.service';
+import { titleCase } from 'title-case';
 
 @Component({
   selector: 'clark-user-search-wrapper',
@@ -74,6 +75,20 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
         this.toaster.error('Error!', 'There was an error fetching users. Please try again later.');
         console.error(error);
       });
+    }
+  }
+
+  /**
+   * Function to conditionally set the title case of an organization
+   *
+   * @param organization string of the users affiliated organization
+   * @returns string unformated or title cased
+   */
+   organizationFormat(organization: string) {
+    if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+      return organization;
+    } else {
+      return titleCase(organization);
     }
   }
 

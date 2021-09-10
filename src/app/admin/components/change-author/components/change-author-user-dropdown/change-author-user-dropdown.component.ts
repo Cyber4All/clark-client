@@ -13,6 +13,7 @@ import { UserService } from 'app/core/user.service';
 import { AuthService } from 'app/core/auth.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { titleCase } from 'title-case';
 
 @Component({
   selector: 'clark-change-author-user-dropdown',
@@ -128,5 +129,18 @@ export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Function to conditionally set the title case of an organization
+   *
+   * @param organization string of the users affiliated organization
+   * @returns string unformated or title cased
+   */
+  organizationFormat(organization: string) {
+    if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+      return organization;
+    } else {
+      return titleCase(organization);
+    }
+  }
 
 }
