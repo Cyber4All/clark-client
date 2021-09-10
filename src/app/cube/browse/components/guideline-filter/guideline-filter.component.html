@@ -25,7 +25,7 @@
                 <div *ngIf="guidelines && guidelines.length > 0" class="guideline-sort">
                     <span>{{ total }} Compatible Guidelines</span>
                     <span>
-                        <button (activate)="clearSelected()" class="button" *ngIf="selectedGuidelines && selectedGuidelines.length > 0">Clear Selected</button>
+                        <button (activate)="clearSelected()" class="button bad inverted" *ngIf="selectedGuidelines && selectedGuidelines.length > 0">Clear Selected</button>
                         <button (activate)="selectAll()" class="button neutral">Select All</button>
                     </span>
                 </div>
