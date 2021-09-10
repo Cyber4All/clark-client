@@ -21,5 +21,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     LibraryItemComponent,
     PaginationComponent,
   ],
+  exports: [
+    PaginationComponent,
+  ]
 })
 export class LibraryModule { }
