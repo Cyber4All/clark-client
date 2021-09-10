@@ -95,6 +95,11 @@ a:visited {
     color: white;
     background: $error-red;
 
+    &.inverted {
+      color: $error-red;
+      background: transparent;
+    }
+
     &.white {
       background: white;
       color: $error-red;

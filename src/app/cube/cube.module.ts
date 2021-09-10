@@ -46,6 +46,9 @@ import { OutageCardComponent } from './outage-page/outage-card/outage-card.compo
 import { PastIssueComponent } from './outage-page/past-issue/past-issue.component';
 import { AboutUsModule } from './about-us/about-us.module';
 import { DonateComponent } from './donate/donate.component';
+import { FilterSectionComponent } from './browse/components/filter-section/filter-section.component';
+import { GuidelineFilterComponent } from './browse/components/guideline-filter/guideline-filter.component';
+import { LibraryModule } from './library/library.module';
 
 
 /**
@@ -76,6 +79,8 @@ import { DonateComponent } from './donate/donate.component';
     OutageCardComponent,
     PastIssueComponent,
     DonateComponent,
+    FilterSectionComponent,
+    GuidelineFilterComponent,
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -96,6 +101,7 @@ import { DonateComponent } from './donate/donate.component';
     ModalModule,
     CollectionModule,
     AboutUsModule,
+    LibraryModule,
   ],
   providers: [LearningObjectService]
 })

@@ -1,0 +1,71 @@
+<div class="wrapper">
+    <h2>Choose Specific Guidelines or Standards</h2>
+    <hr />
+    <div class="grid">
+        <!-- Frameworks -->
+        <div>
+            <h3>Frameworks</h3>
+            <hr />
+            <div class="filter-wrapper" *ngIf="frameworkFilter">
+                <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of frameworkFilter.filters">
+                    <span class="checkbox-grid" [tip]="f.tip ? f.tip : ''" [tipDisabled]="!f.tip" tipPosition="right">
+                        <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active" (checkboxChecked)="selectFrameworkOption(f.value)" (checkboxUnchecked)="deselectFrameworkOption(f.value)"></clark-checkbox>
+                        <span>{{ f.name }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <!-- Guidelines -->
+        <div class="guideline-flex">
+            <div class="height-wrapper">
+                <div class="input-wrapper">
+                    <label for="search"><i class="fas fa-search"></i></label>
+                    <input id="search" placeholder="Guidelines or Standards" (keyup)="searchChange$.next($event.target.value)" />
+                </div>
+                <div *ngIf="guidelines && guidelines.length > 0" class="guideline-sort">
+                    <span>{{ total }} Compatible Guidelines</span>
+                    <span>
+                        <button (activate)="clearSelected()" class="button bad inverted" *ngIf="selectedGuidelines && selectedGuidelines.length > 0">Clear Selected</button>
+                        <button (activate)="selectAll()" class="button neutral">Select All</button>
+                    </span>
+                </div>
+                <ng-template [ngIf]="!guidelines || guidelines.length === 0" [ngIfElse]="guidelineTableTemplate">
+                    <div class="content-wrapper center">
+                        <p>No results containing all of your filters were found.</p>
+                        <a (activate)="closePopup(true)">Filter by only frameworks instead?</a>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="right">
+                <button (activate)="closePopup(false)" class="button neutral">Cancel</button>
+                <button (activate)="sendChanges()" class="button good">Apply Filters</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #guidelineTableTemplate>
+    <div class="content-wrapper padding">
+        <table>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Outcome</th>
+                <th>Framework</th>
+            </tr>
+            <tr class="guidelines" *ngFor="let guideline of guidelines">
+                <td>
+                    <clark-checkbox
+                        attr.aria-label="{{ guideline.guidelineName }}"
+                        [value]="isSelectedGuideline(guideline.guidelineId)"
+                        (checkboxChecked)="selectGuidelineOption(guideline.guidelineId)"
+                        (checkboxUnchecked)="deselectGuidelineOption(guideline.guidelineId)"></clark-checkbox>
+                </td>
+                <td>{{ guideline.guidelineName }}</td>
+                <td>{{ guideline.guidelineDescription }}</td>
+                <td>{{ guideline.frameworkName }}</td>
+            </tr>
+        </table>
+        <clark-pagination [lastPageNumber]="(total / 10)" [currentPageNumber]="page" (newPageNumberClicked)="changePage($event)"></clark-pagination>
+    </div>
+</ng-template>

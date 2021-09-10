@@ -1,0 +1,19 @@
+<div *ngIf="info">
+    <div class="header" (activate)="toggleCollapsed(!collapsed)">
+        <p>{{ info.section }}</p>
+        <span *ngIf="collapsed"><i class="fas fa-angle-down"></i></span>
+        <span *ngIf="!collapsed"><i class="fas fa-angle-up"></i></span>
+    </div>
+    <div class="filter-wrapper" *ngIf="!collapsed">
+        <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of info.filters">
+            <span class="checkbox-grid" [tip]="f.tip ? f.tip : ''" [tipDisabled]="!f.tip" tipPosition="right">
+                <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active" (checkboxChecked)="selectOption(f.value)" (checkboxUnchecked)="deselectOption(f.value)"></clark-checkbox>
+                <span>{{ f.name }}</span>
+            </span>
+        </div>
+        <div class="optional">
+            <ng-content></ng-content>
+        </div>
+    </div>
+    <hr />
+</div>

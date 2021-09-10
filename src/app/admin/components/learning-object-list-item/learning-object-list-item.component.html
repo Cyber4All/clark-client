@@ -1,5 +1,6 @@
 <div class="dashboard-item">
-  <div class="row-item">
+  <div class="row-item">  
+    <clark-checkbox [value]="selected" (action)="toggleSelect($event)"></clark-checkbox>
     <div>
       <div tabindex="0" class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
         <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
@@ -35,6 +36,7 @@
       <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
+      <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Assign Evaluators</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status === 'released'" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
       <li [routerLink]="['/onion/relevancy-builder', learningObject.id]"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
@@ -50,9 +52,15 @@
   </div>
 </clark-popup>
 
+<clark-popup *ngIf="showAddEvaluator" (closed)="toggleAddEvaluatorModal(false)">
+  <div class="modal-container" #popupInner>
+    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [learningObject]="learningObject"></clark-add-evaluator>
+  </div>
+</clark-popup>
+
 <clark-popup *ngIf="showChangeAuthor" (closed)="toggleChangeAuthorModal(false)">
   <div class="modal-container" #popupInner>
-<clark-change-author (close)="toggleChangeAuthorModal(false)" [highlightedLearningObject]="learningObject" [statusDescription]="statusDescription"></clark-change-author>
+    <clark-change-author (close)="toggleChangeAuthorModal(false)" [highlightedLearningObject]="learningObject" [statusDescription]="statusDescription"></clark-change-author>
   </div>
 </clark-popup> 
 

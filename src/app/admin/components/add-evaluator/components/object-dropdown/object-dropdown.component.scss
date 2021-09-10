@@ -1,0 +1,215 @@
+@import '~_vars.scss';
+
+.content-header{
+  font-size: $large;
+  color: $dark-grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: .5em;
+  height: 40px;
+}
+
+.object-details-container{
+  max-height: 100px;
+  padding: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  overflow: hidden;
+
+  .pill {
+    margin: 5px;
+    color: white;
+    background: linear-gradient(45deg, darken($light-blue, 5), lighten($light-blue, 5));
+    font-size: $small;
+    display: inline-block;
+    padding: 3px 6px;
+    cursor: default;
+    border-radius: 2px;
+
+    .pill-button { 
+      color: white;
+      border: none; 
+      cursor: pointer;
+      background-color: transparent;
+    }
+  }
+}
+
+.details { 
+  margin-left: 10px;
+
+}
+.details p { 
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+  list-style-type:none ;
+  font-size: $small;
+  color: $medium-grey
+}
+
+.object-dropdown {
+  position: relative;
+  min-height: 150px;
+}
+
+.input-container{
+  background-color: $light-grey;
+  position: relative;
+  padding: 8px 10px;
+  border-radius: 5px;
+  i {
+    position: absolute; 
+    padding: 10px;
+  }
+}
+
+.object-dropdown__search-input {
+  appearance: none;
+  font-size: $small;
+  border: none;   
+  color: $medium-grey;
+  background-color: inherit;
+  outline: 0;
+  max-width: 550px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0px 15px;
+
+  &:focus {
+    border-color: $light-blue;
+  }
+}
+
+
+.object-dropdown__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+
+  virtual-scroller {
+    max-height: 130px;
+    min-height: 40px;
+  }
+}
+
+.object-dropdown__list-item {
+  height: 40px;
+  padding-left: 10px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  background: white;
+  color: $dark-grey;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover, &:focus {
+    background: $light-grey;
+
+    .object-dropdown__action {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .status {
+    width: 32px;
+    height: 32px;
+    color: white;
+    font-size: $normal;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $status_unreleased;
+    transition: all 0.2s ease;
+    box-shadow: none;
+    margin: 0 10px;
+  
+    &.waiting {
+      background: $status_waiting;
+    }
+  
+    &.review {
+      background: $status_review;
+    }
+  
+    &.proofing {
+      background: $status_proofing;
+    }
+  
+    &.released {
+      background: $status_released;
+    }
+  
+    &.denied {
+      background: $status_rejected;
+    }
+  
+    &:hover {
+      box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
+    }
+  }
+  .object-info {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 50% 25% 25%;
+  }
+}
+
+
+.object-dropdown__action {
+  border-radius: 3px;
+  color: white;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $light-blue-gradient;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: all 0.2s ease;
+
+  &.object-dropdown__action--reversed {
+    background: $error-red;
+  }
+
+  &.object-dropdown__action--visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.object-dropdown__navbar-gravatar {
+  display: inline-block;
+  margin-left: 8px;
+  margin-right: 8px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.05);
+}
+
+.object-dropdown__message {
+  padding: 10px;
+  text-align: center;
+  color: $dark-grey;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}

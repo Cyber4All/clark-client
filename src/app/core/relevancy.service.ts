@@ -46,6 +46,52 @@ export class RelevancyService {
   }
 
   /**
+   * Assigns multiple users to evaluate multiple learning objects
+   *
+   * @param args.cuids are the learning object cuids that are going to be assigned wtih evaluators
+   * @param args.assignerIds are the evaluators that are going to be assigned to each of the learning objects
+   */
+  async assignEvaluators(args: {
+    cuids: string[],
+    assignerIds: string[]
+  }): Promise<any> {
+    return this.http
+      .post(RELEVANCY_ROUTES.ASSIGN_EVALUATORS(),
+        args,
+        {
+          headers: this.headers,
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  async removeEvaluators(args: {
+    cuids: string[],
+    assignerIds: string[]
+  }): Promise<any> {
+    return this.http
+      .patch(RELEVANCY_ROUTES.REMOVE_EVALUATORS(),
+        args,
+        {
+          headers: this.headers,
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
    * This gets the list of object topics from the backend to display
    *
    * @returns A list of topics

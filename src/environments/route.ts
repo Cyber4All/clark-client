@@ -58,8 +58,8 @@ export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
-  FETCH_USER(username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}`;
+  FETCH_USER(user: string, q: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
   },
   CHECK_USER_EXISTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -98,8 +98,8 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/profile`;
   },
-  SEARCH_USERS(query: {}) {
-    return `${environment.apiURL}/users/search?text=${encodeURIComponent(querystring.stringify(query))}`;
+  SEARCH_USERS(query: any) {
+    return `${environment.apiURL}/users/search?${querystring.stringify(query)}`;
   },
   // Deprecated
   VALIDATE_TOKEN(username) {
@@ -551,6 +551,14 @@ export const RELEVANCY_ROUTES = {
         id
       )}/relevancy-check`;
   },
+  // Assigns multiple users to evaluate multiple learning objects
+  ASSIGN_EVALUATORS() {
+    return `http://localhost:5000/learning-objects/evaluators`;
+  },
+  // Removes multiple user from evaluating multiple learning objects
+  REMOVE_EVALUATORS() {
+    return `http://localhost:5000/learning-objects/evaluators`;
+  },
   // Reterieves topics for tagging learning objects
   GET_TOPICS() {
     return `${environment.apiURL}/topics`;
@@ -577,13 +585,7 @@ export const STANDARD_GUIDELINE_ROUTES = {
     limit?: string,
     type?: string
   }) {
-    return `${environment.apiURL}/frameworks?
-      text=${encodeURIComponent(params.text)}&
-      year=${encodeURIComponent(params.year)}&
-      levels=${encodeURIComponent(params.levels)}&
-      page=${encodeURIComponent(params.page)}&
-      limit=${encodeURIComponent(params.limit)}&
-      type=${encodeURIComponent(params.type)}`;
+    return `${environment.apiURL}/frameworks?${querystring.stringify(params)}`;
   },
   // Searches guidelines/standards given a text, year, and level query
   SEARCH_GUIDELINES(query: string) {

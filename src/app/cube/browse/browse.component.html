@@ -6,10 +6,10 @@
         {{ copy.FILTERS }}
         <div class="filters-clear-all" id="filters-clear-all" (activate)="clearAllFilters()">{{ copy.CLEARFILTERS }}</div>
       </div>
-      <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" [filters]="filters" (add)="addFilter($event.category, $event.filter, $event.clearFirst)" (remove)="removeFilter($event.category, $event.filter)"></clark-filter>
+      <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" [selected]="query" [clear]="filterClearSubject$.asObservable()" (changed)="filter($event)"></clark-filter>
 
       <div class="btn-group to-right">
-          <button (activate)="applyFilters(); toggleFilters();" class="button good">Apply</button>
+        <button (activate)="applyFilters(); toggleFilters();" class="button good">Apply</button>
         <button (activate)="closeFilters();" class="button neutral">Cancel</button>
       </div>
     </div>

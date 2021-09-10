@@ -39,119 +39,120 @@
 }
 
 .user-dropdown {
-    position: relative;
-    min-height: 150px;
+  position: relative;
+  min-height: 150px;
+}
+
+.input-container{
+  background-color: $light-grey;
+  position: relative;
+  padding: 8px 10px;
+  border-radius: 5px;
+  i{
+    position: absolute; 
+    padding: 10px;
   }
-  .input-container{
-    background-color: $light-grey;
-    position: relative;
-    padding: 8px 10px;
-    border-radius: 5px;
-    i{
-      position: absolute; 
-      padding: 10px;
-    }
-  }
+}
   
-  .user-dropdown__search-input {
-    appearance: none;
-    font-size: $small;
-    border: none;   
-    color: $medium-grey;
-    background-color: inherit;
-    outline: 0;
-    max-width: 550px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0px 15px;
-  
-    &:focus {
-      border-color: $light-blue;
-    }
+.user-dropdown__search-input {
+  appearance: none;
+  font-size: $small;
+  border: none;   
+  color: $medium-grey;
+  background-color: inherit;
+  outline: 0;
+  max-width: 550px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0px 15px;
+
+  &:focus {
+    border-color: $light-blue;
   }
+}
 
 
 .user-dropdown__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    position: absolute;
-    width: 100%;
-    background: white;
-    border-radius: 2px;
-    box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.2);
-    z-index: 3;
-    
-    virtual-scroller {
-      max-height: 300px;
-      min-height: 100px;
-    }
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 100%;
+  background: white;
+  border-radius: 2px;
+  box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  
+  virtual-scroller {
+    max-height: 300px;
+    min-height: 100px;
   }
+}
   
-  .user-dropdown__list-item {
-    height: 40px;
-    background: white;
-    color: $dark-grey;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    cursor: pointer;
-    padding-left: 10px;
-    transition: background 0.2s ease;
-  
-    &:hover, &:focus {
-      background: $light-grey;
-  
-      .user-dropdown__action {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-  }
+.user-dropdown__list-item {
+  height: 40px;
+  background: white;
+  color: $dark-grey;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  padding-left: 10px;
+  transition: background 0.2s ease;
 
+  &:hover, &:focus {
+    background: $light-grey;
 
-.user-dropdown__action {
-    border-radius: 3px;
-    color: white;
-    height: 28px;
-    width: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: $light-blue-gradient;
-    transform: scale(0.9);
-    opacity: 0;
-    transition: all 0.2s ease;
-  
-    &.user-dropdown__action--reversed {
-      background: $error-red;
-    }
-  
-    &.user-dropdown__action--visible {
+    .user-dropdown__action {
       opacity: 1;
       transform: scale(1);
     }
   }
-  
-  .user-dropdown__navbar-gravatar {
-    display: inline-block;
-    margin-left: 8px;
-    margin-right: 8px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.05);
+}
+
+
+.user-dropdown__action {
+  border-radius: 3px;
+  color: white;
+  height: 28px;
+  width: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $light-blue-gradient;
+  transform: scale(0.9);
+  opacity: 0;
+  transition: all 0.2s ease;
+
+  &.user-dropdown__action--reversed {
+    background: $error-red;
   }
-  
-  .user-dropdown__message {
-    padding: 10px;
-    text-align: center;
-    color: $dark-grey;
-    width: 100%;
-    box-sizing: border-box;
-    display: block;
+
+  &.user-dropdown__action--visible {
+    opacity: 1;
+    transform: scale(1);
   }
+}
+  
+.user-dropdown__navbar-gravatar {
+  display: inline-block;
+  margin-left: 8px;
+  margin-right: 8px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.05);
+}
+  
+.user-dropdown__message {
+  padding: 10px;
+  text-align: center;
+  color: $dark-grey;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
   
