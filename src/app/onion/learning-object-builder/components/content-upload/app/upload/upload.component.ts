@@ -127,26 +127,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   retrieving = false;
 
-  counter: any = {
-    showParagraphs: false,
-    showWordCount: false,
-    showCharCount: true,
-    countSpacesAsChars: false,
-    countHTML: false,
-    maxWordCount: -1,
-    maxCharCount: 1000,
-  };
-
-  config: any = {
-    uiColor: '',
-    extraPlugins: 'confighelper,wordcount,notification',
-    placeholder: 'Add any notes on copyright, grant acknowledgments, etc.',
-    removePlugins: 'elementspath,wsc,scayt',
-    autoGrow_onStartup: true,
-    entities: false,
-    wordcount: this.counter,
-  };
-
   files$: BehaviorSubject<LearningObject.Material.File[]> = new BehaviorSubject<
     LearningObject.Material.File[]
   >([]);
