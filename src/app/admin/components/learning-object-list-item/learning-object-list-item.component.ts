@@ -188,13 +188,12 @@ export class LearningObjectListItemComponent implements OnChanges {
     */
 
    toggleRevisionDelete(toggle: boolean) {
-     console.log(this.learningObject);
      this.showDeleteRevisionConfirmation = toggle;
    }
 
 
    deleteRevision() {
-    this.unreleaseService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version+1)
+    this.unreleaseService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version + 1)
     .then(() => {
       this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
     }).catch(() => {
