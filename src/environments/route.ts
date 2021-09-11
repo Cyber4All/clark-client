@@ -27,8 +27,8 @@ export const ADMIN_ROUTES = {
   UNRELEASE_OBJECT(username: string, cuid: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/status`;
   },
-  DELETE_REVISION(username: string, cuid: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/versions`;
+  DELETE_REVISION(username: string, cuid: string, version: number) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/versions/${version}`;
   },
 };
 
