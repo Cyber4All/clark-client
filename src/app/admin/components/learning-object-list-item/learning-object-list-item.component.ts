@@ -79,7 +79,6 @@ export class LearningObjectListItemComponent implements OnChanges {
         )
         .then(desc => {
           this.statusDescription = desc;
-          console.log(this.statusDescription);
           this.cd.detectChanges();
         });
     }
