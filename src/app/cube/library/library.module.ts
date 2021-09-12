@@ -12,7 +12,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
   imports: [
     CommonModule,
     SharedModule,
-    RouterModule.forChild([{ path: '', component: LibraryComponent }])
+    RouterModule.forChild([{ path: 'library', component: LibraryComponent }])
   ],
   declarations: [
     // root component
@@ -21,5 +21,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     LibraryItemComponent,
     PaginationComponent,
   ],
+  exports: [
+    PaginationComponent,
+  ]
 })
 export class LibraryModule { }

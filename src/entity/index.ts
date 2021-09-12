@@ -16,5 +16,5 @@ export {
   SubmittableLearningOutcome,
   Guideline,
   Collection,
-  Topic
+  Topic,
 };

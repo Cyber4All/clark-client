@@ -5,6 +5,7 @@ import { AuthService } from '../../../core/auth.service';
 import { LearningObject, User } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { COPY } from './user-information.copy';
+import { titleCase } from 'title-case';
 
 @Component({
   selector: 'clark-user-information',
@@ -43,6 +44,20 @@ export class UserInformationComponent implements OnInit, OnChanges {
     );
     this.loading = false;
   }
+
+  /**
+   * Function to conditionally set the title case of an organization
+   *
+   * @param organization string of the users affiliated organization
+   * @returns string unformated or title cased
+   */
+     organizationFormat(organization: string) {
+      if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+        return organization;
+      } else {
+        return titleCase(organization);
+      }
+    }
 
   /**
    * Sends email verification email

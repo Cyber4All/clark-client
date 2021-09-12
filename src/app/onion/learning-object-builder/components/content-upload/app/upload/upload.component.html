@@ -56,15 +56,13 @@
           <div class="slide-title">Notes</div>
         </div>
         <div class="notes">
-          <textarea
-            aria-label="Learning Object notes"
-            rows="8"
-            type="text"
-            [value]="(learningObject$ | async)?.materials.notes"
-            (keyup)="updateNotes($event.target.value)"
-            name="learningObjectNotes"
-            placeholder="Add any notes on copyright, grant acknowledgments, etc."
-          ></textarea>
+          <clark-text-editor 
+            editorPlaceholder="Add any notes on copyright, grant acknowledgments, etc." 
+            [(savedContent)]="notes" 
+            (textOutput)="updateNotes($event)"
+            (keyup)="updateNotes($event)"
+            name="notes"
+          ></clark-text-editor>
         </div>
       </div>
     </div>

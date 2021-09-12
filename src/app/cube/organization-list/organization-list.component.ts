@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/user.service';
 import { Title } from '@angular/platform-browser';
 import { TitleCasePipe } from '@angular/common';
+import { titleCase } from 'title-case';
 
 // This component sets its own page title
 @Component({
@@ -44,4 +45,19 @@ export class OrganizationListComponent implements OnInit {
       return first < second ? -1 : first > second ? 1 : 0;
     });
   }
+
+  /**
+   * Function to conditionally set the title case of an organization
+   *
+   * @param organization string of the users affiliated organization
+   * @returns string unformated or title cased
+   */
+   organizationFormat(organization: string) {
+    if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+      return organization;
+    } else {
+      return titleCase(organization);
+    }
+  }
+
 }

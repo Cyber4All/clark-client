@@ -52,7 +52,7 @@
       <div class="details">
         <span class="author">
           {{ learningObject.contributors[0]?.name | titlecase }} at
-          {{ learningObject.contributors[0]?.organization | titlecase }}
+          {{ organizationFormat(learningObject.contributors[0]?.organization) }}
           {{
             learningObject.contributors?.length - 1
               ? 'and ' + (learningObject.contributors.length - 1)  + ' more'

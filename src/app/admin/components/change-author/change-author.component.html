@@ -54,7 +54,7 @@
   </div>
   <div class="change-author-content">
     <div class="content-header padding-extra">Are you sure you want to change this learning object's author?</div>
-    <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{highlightedLearningObject.author.organization | titlecase}}) to {{selectedAuthor._name | titlecase}} ({{selectedAuthor._organization | titlecase}})). </div>
+    <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{organizationFormat(highlightedLearningObject.author.organization)}}) to {{selectedAuthor._name | titlecase}} ({{organizationFormat(selectedAuthor._organization )}}). </div>
     <div class="description sm padding-indent">Please Check to ensure that the new author is the correct user that you would like to change authorship of. Any revisions of the learning object will also have their authorship changed. Note that 
       changing the author will add the previous author onto the list of contributors for the object.</div>
   </div>
