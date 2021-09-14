@@ -9,6 +9,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
 import { COPY } from './search.copy';
 import { takeUntil, filter } from 'rxjs/operators';
+import { NavbarService } from 'app/core/navbar.service';
 
 @Component({
   selector: 'clark-search',
@@ -23,6 +24,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   @ViewChild('optionTwoSwitch') optionTwoSwitch: ElementRef;
 
   searchValue = '';
+  textQuery: boolean;
 
   // flags
   selected = 1;
@@ -39,7 +41,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     'Search for learning objects by organization, user, or keyword/phrase.' :
     'Search for learning objects by mapped guidelines';
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private navService: NavbarService) { }
 
   ngOnInit() {
     // force search bar to reflect current search on browse page when navigating by url query parameters
@@ -58,6 +60,19 @@ export class SearchComponent implements OnInit, OnDestroy {
         }
       }
     });
+
+    this.navService.query.subscribe((change: boolean) => {
+      if (change) {
+        this.searchValue = '';
+        this.navService.query.next(false);
+      }
+    });
+  }
+
+  togglePlaceholder() {
+    if (this.searchValue.length === 0) {
+      (<HTMLInputElement>document.getElementById('clark-search-input')).placeholder = 'Search...';
+    }
   }
 
   /**

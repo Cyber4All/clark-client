@@ -11,6 +11,7 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { LearningObjectService } from '../learning-object.service';
+import { NavbarService } from 'app/core/navbar.service';
 
 @Component({
   selector: 'cube-browse',
@@ -63,6 +64,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   unsubscribe: Subject<void> = new Subject();
 
+  clearQuery: Observable<string>;
+
   shouldResetPage = false;
 
   sortMenuDown: boolean;
@@ -81,6 +84,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     public mappingService: SuggestionService,
     private cd: ChangeDetectorRef,
+    private navService: NavbarService
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -169,6 +173,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   clearSearch() {
+    this.navService.query.next(true);
     this.query.text = '';
     this.query.standardOutcomes = [];
     this.query.currPage = 1;

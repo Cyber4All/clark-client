@@ -3,12 +3,22 @@
    */
 
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NavbarService {
   visible: boolean;
+  _query$ = new BehaviorSubject<boolean>(false);
+
+  get query(): BehaviorSubject<boolean> {
+    return this._query$;
+  }
+
+  set query(val: BehaviorSubject<boolean>) {
+    this._query$ = val;
+  }
 
   // hide navbar
   hide() {

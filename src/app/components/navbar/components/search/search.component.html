@@ -4,11 +4,13 @@
       <div class="input">
         <input
           #searchInput
+          name="searchInput"
           id="clark-search-input"
           type="search"
           placeholder="Search..."
+          (ngModelChange)="togglePlaceholder()"
           aria-label="Search"
-          [value]="searchValue"
+          [(ngModel)]="searchValue"
         />
         <button
           aria-label="Search"

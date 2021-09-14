@@ -19,6 +19,7 @@ import { MessageComponent } from './components/navbar/components/message/message
 import { SearchComponent } from './components/navbar/components/search/search.component';
 import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 import { UnauthorizedComponent } from './unauthorized.component';
+import { FormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     BrowserModule,
@@ -27,6 +28,7 @@ import { UnauthorizedComponent } from './unauthorized.component';
     CoreModule.forRoot(),
     BrowserAnimationsModule,
     ScrollingModule,
+    FormsModule
   ],
   declarations: [
     ClarkComponent,
