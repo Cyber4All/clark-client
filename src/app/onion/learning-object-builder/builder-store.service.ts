@@ -16,6 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FileUploadMeta } from './components/content-upload/app/services/typings';
 import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Defines a list of actions the builder can take
@@ -396,7 +397,7 @@ export class BuilderStore {
       text: '',
       mappings: []
     };
-    outcome.id = genId();
+    outcome.id = uuidv4();
 
     // this outcome needs to be created in the API, not modified, so store it in newOutcomes map
     this.newOutcomes.set(outcome.id, true);
@@ -420,17 +421,19 @@ export class BuilderStore {
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
-    this.serviceInteraction$.next(true);
-    this.learningObjectService
-      .deleteOutcome(
-        this.learningObject.id,
-        (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
-          .serviceId || id,
-      )
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME));
+    if (!checkIfUUID(id)) {
+      this.serviceInteraction$.next(true);
+      this.learningObjectService
+        .deleteOutcome(
+          this.learningObject.id,
+          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+            .serviceId || id,
+        )
+        .then(() => {
+          this.serviceInteraction$.next(false);
+        })
+        .catch(e => this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME));
+    }
   }
 
   private mutateOutcome(
@@ -1043,26 +1046,12 @@ export class BuilderStore {
 }
 
 /**
- * Generate a unique id. (straight from stack overflow)
- * Used for learning outcomes that are blank and cannot be saved. Replaced once saveable with an ID from the service
+ * Check if string is valid UUID
  */
-function genId() {
-  const S4 = () => {
-    // tslint:disable-next-line:no-bitwise
-    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
-  };
-  return (
-    S4() +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    '-' +
-    S4() +
-    S4() +
-    S4()
-  );
+function checkIfUUID(str) {
+  // Regular expression to check if string is a valid UUID
+  // ########-####-####-####-############
+  const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
+
+  return regexExp.test(str);
 }
