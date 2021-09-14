@@ -64,8 +64,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   unsubscribe: Subject<void> = new Subject();
 
-  clearQuery: Observable<string>;
-
   shouldResetPage = false;
 
   sortMenuDown: boolean;
