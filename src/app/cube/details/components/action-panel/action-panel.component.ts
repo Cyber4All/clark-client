@@ -6,11 +6,9 @@ import { Component,
         Renderer2,
         ViewChild,
         ChangeDetectionStrategy,
-        OnChanges,
         ChangeDetectorRef} from '@angular/core';
-import { LearningObject, User } from '@entity';
-import { AuthService, DOWNLOAD_STATUS } from 'app/core/auth.service';
-import { environment } from '@env/environment';
+import { LearningObject } from '@entity';
+import { AuthService } from 'app/core/auth.service';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
 import { LibraryService, iframeParentID } from 'app/core/library.service';

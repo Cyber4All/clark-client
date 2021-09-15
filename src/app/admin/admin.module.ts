@@ -30,6 +30,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatBadgeModule } from '@angular/material/badge';
 import { AddEvaluatorComponent } from './components/add-evaluator/add-evaluator.component';
 import { ObjectDropdownComponent } from './components/add-evaluator/components/object-dropdown/object-dropdown.component';
 import { SelectedUserComponent } from './components/add-evaluator/components/selected-user/selected-user.component';
@@ -72,6 +73,7 @@ import { LearningObjectService } from 'app/cube/learning-object.service';
     MatNativeDateModule,
     MatFormFieldModule,
     MatInputModule,
+    MatBadgeModule,
   ],
   providers: [LearningObjectService]
 })

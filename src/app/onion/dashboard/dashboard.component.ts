@@ -308,7 +308,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         await this.getDraftLearningObjects();
       })
       .catch(err => {
-        console.log(err);
         this.notificationService.error('Error!', 'Learning Object could not be deleted!');
       });
     } else if (canDelete.length > 1) {
@@ -322,7 +321,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         await this.getDraftLearningObjects();
       })
       .catch(err => {
-        console.log(err);
         this.notificationService.error('Error!', 'Learning Object could not be deleted!');
       });
     } else {
