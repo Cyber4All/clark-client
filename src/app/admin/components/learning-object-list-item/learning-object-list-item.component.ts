@@ -54,6 +54,7 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   showRelevancyDate: boolean;
 
+  showDeleteRevisionConfirmation: boolean;
   // flags
   meatballOpen = false;
 
@@ -67,7 +68,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private http: HttpClient,
     private toaster: ToastrOvenService,
-  ) {}
+  ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
     if (changes.status) {
@@ -181,6 +182,24 @@ export class LearningObjectListItemComponent implements OnChanges {
     this.showRelevancyDate = toggle;
    }
 
+   /**
+    * Toggles the delete revision selection
+    */
+
+   toggleRevisionDelete(toggle: boolean) {
+     this.showDeleteRevisionConfirmation = toggle;
+   }
+
+
+   deleteRevision() {
+    this.unreleaseService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version + 1)
+    .then(() => {
+      this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
+    }).catch(() => {
+      this.toaster.error('Error', 'There was an issue deleting the revision of this learning object, please try again later');
+    });
+    this.toggleRevisionDelete(false);
+   }
   /**
    * Emits a value for checkbox to parent component
    * @param val either the empty string (true) or a minus sign (false)

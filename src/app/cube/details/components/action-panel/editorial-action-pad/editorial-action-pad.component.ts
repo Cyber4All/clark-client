@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as LOUri} from 'app/core/learning-object.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
@@ -33,6 +34,7 @@ export class EditorialActionPadComponent implements OnInit {
     private router: Router,
     private learningObjectService: LearningObjectService,
     private learningObjectServiceUri: LOUri,
+    private toaster: ToastrOvenService,
     private authService: AuthService
     ) { }
 
@@ -92,11 +94,16 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Create a revision and then redirects to the builder for the revision˝
   async createRevision() {
-    const revisionUri: any = await this.learningObjectService
-      .createRevision(this.learningObject.cuid, this.learningObject.author.username);
-    this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
-    this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
-  }
+    this.learningObjectService
+      .createRevision(this.learningObject.cuid, this.learningObject.author.username).then(async(revisionUri: any) => {
+        this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
+        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
+      }
+      ).catch(e => {
+        this.openRevisionModal = false;
+        this.toaster.error('Error', e.error.message);
+      });
+    }
 
   /**
    * Toggles the add evaluator modal from showing/hiding

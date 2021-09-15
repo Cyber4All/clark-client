@@ -7,7 +7,7 @@
         <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
         <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
         <span *ngIf="learningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
-        <span *ngIf="learningObject.status === 'released'"><i class="fas fa-eye"></i></span>
+        <span *ngIf="learningObject.status === 'released'" matBadge="R" matBadgeOverlap="false" [matBadgeHidden]="!learningObject.revision" matBadgeColor="warn" matBadgeSize="small"><i class="fas fa-eye"></i></span>
         <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
       </div>
     </div>
@@ -33,7 +33,10 @@
 <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="toggleContextMenu()">
   <div #contextMenu>
     <ul (activate)="toggleContextMenu($event)">
-      <li [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
+      <li *ngIf="learningObject.status !== 'released'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
+      <li *ngIf="learningObject.revision && learningObject.revision?.status !== 'unreleased'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit Revision</li>
+      <li *ngIf="learningObject.revision?.status === 'unreleased'" (click)="toggleRevisionDelete(true)"><i class="far fa-trash-alt"></i>Delete Revision</li>
+      <li [routerLink]="['/users', learningObject.author.username]"><i class="far fa-user"></i>View Author Contact</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
       <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Assign Evaluators</li>
@@ -47,8 +50,10 @@
 <clark-popup *ngIf="showUnreleaseConfirm" (closed)="toggleUnreleaseConfirm(false)">
   <div class="modal-container center" #popupInner>
     <p>Are you sure you want to unrelease this learning object? This action will change the status to proofing.</p>
-    <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
-    <button (click)="closeUnreleaseModal(false)" class="button">No</button>
+    <div class="btn-group center">
+      <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
+      <button (click)="closeUnreleaseModal(false)" class="button good">No</button>
+    </div>
   </div>
 </clark-popup>
 
@@ -67,5 +72,15 @@
 <clark-popup *ngIf="showRelevancyDate" (closed)="toggleRelevancyDate(false)">
   <div class="modal-container" #popupInner>
     <clark-relevancy-date [learningObject]="learningObject" (close)="toggleRelevancyDate(false)"></clark-relevancy-date>
+  </div>
+</clark-popup>
+
+<clark-popup *ngIf="showDeleteRevisionConfirmation" (closed)="toggleRevisionDelete(false)">
+  <div class="modal-container center" #popupInner>
+    <p>Are you sure you want to delete the unreleased revision of this learning object?</p>
+    <div class="btn-group center">
+      <button (click)="deleteRevision()" class="button bad">Yes <i class="far fa-trash-alt"></i></button>
+      <button (click)="toggleRevisionDelete(false)" class="button neutral">Cancel</button>
+    </div>
   </div>
 </clark-popup>
