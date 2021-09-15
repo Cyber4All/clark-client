@@ -17,7 +17,7 @@ export class UserInformationComponent implements OnInit, OnChanges {
   // User Information
   @Input() user: User;
   @Input() self = false;
-  objects: LearningObject[] = Array(5).fill(new LearningObject());
+  objects: LearningObject[];
   loading = false;
 
   constructor(
