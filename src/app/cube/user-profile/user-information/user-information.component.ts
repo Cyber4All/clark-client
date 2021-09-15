@@ -12,12 +12,12 @@ import { titleCase } from 'title-case';
   templateUrl: './user-information.component.html',
   styleUrls: ['./user-information.component.scss']
 })
-export class UserInformationComponent implements OnInit, OnChanges {
+export class UserInformationComponent implements OnChanges {
   copy = COPY;
   // User Information
   @Input() user: User;
   @Input() self = false;
-  objects: LearningObject[];
+  objects: LearningObject[] = Array(5).fill(new LearningObject());
   loading = false;
 
   constructor(
@@ -27,10 +27,8 @@ export class UserInformationComponent implements OnInit, OnChanges {
     private notifications: ToastrOvenService
   ) {}
 
-  ngOnInit() {}
-
-  ngOnChanges() {
-    this.getUsersLearningObjects();
+  async ngOnChanges() {
+    await this.getUsersLearningObjects();
   }
 
   navigateToOrganizationPage() {
