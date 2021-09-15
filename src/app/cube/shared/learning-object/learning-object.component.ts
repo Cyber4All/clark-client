@@ -56,12 +56,6 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   }
 
   ngOnInit() {
-    this.auth.isLoggedIn.subscribe(() => {
-      this.auth.userCanDownload(this.learningObject).then(isAuthorized => {
-        this.canDownload = isAuthorized === DOWNLOAD_STATUS.CAN_DOWNLOAD;
-      });
-    });
-
     this.collectionService.getCollections().then(collections => {
       this.collections = new Map(
         collections.map(c => [c.abvName, c.name] as [string, string])
@@ -138,35 +132,12 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
    * @returns string unformated or title cased
    */
      organizationFormat(organization: string) {
-      if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+      if ( organization && (organization.charAt(1) === organization.charAt(1).toUpperCase()) ) {
         return organization;
-      } else {
+      } else if (organization) {
         return titleCase(organization);
       }
     }
-
-  download(e) {
-    // Stop the event propagation so that the routerLink of the parent doesn't trigger
-    e.stopPropagation();
-    this.library
-      .downloadLearningObject(
-        this.learningObject.author.username,
-        this.learningObject.cuid,
-        this.learningObject.version
-      )
-      .pipe(take(1));
-
-    this.toggleDownloadModal(true);
-  }
-
-  toggleDownloadModal(val?: boolean) {
-    if (!val) {
-      this.showDownloadModal = val;
-    } else if (!localStorage.getItem('downloadWarning')) {
-      this.showDownloadModal = val;
-      localStorage.setItem('downloadWarning', 'true');
-    }
-  }
 
   onResize(event) {
     this.collection = this.collections.get(this.learningObject.collection);
