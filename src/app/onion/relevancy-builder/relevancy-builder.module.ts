@@ -18,6 +18,7 @@ import { OutcomePageComponent } from './pages/outcome-page/outcome-page.componen
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { OutcomeListItemComponent } from './components/standard-outcomes/outcome-list-item/outcome-list-item.component';
 import { CubeSharedModule } from 'app/cube/shared/cube-shared.module';
+import { TopicPageComponent } from './pages/topic-page/topic-page.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { CubeSharedModule } from 'app/cube/shared/cube-shared.module';
     StandardOutcomesComponent,
     OutcomePageComponent,
     OutcomeListItemComponent,
+    TopicPageComponent,
   ],
   imports: [
     CommonModule,

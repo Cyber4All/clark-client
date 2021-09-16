@@ -3,7 +3,7 @@
     class="top"
     [ngStyle]="{
       'margin-top': '0px',
-      'margin-bottom': '30px'
+      'margin-bottom': '15px'
     }"
   >
     <div class="top__left">
@@ -22,6 +22,36 @@
       </div>
     </div>
   </div>
+  <div class="builder-navbar-wrapper__bottom">
+    <div class="builder-navbar-wrapper__bottom-left-menu">
+      <!-- update routerLinkActive with class used to show that link is active -->
+      <ul>
+        <li>
+          <ng-container
+            id="firstTab"
+            aria-label="Learning Outcome Mappings Link"
+            [ngTemplateOutlet]="navItemTemplate"
+            [ngTemplateOutletContext]="{
+              disabled: false,
+              link: 'outcomes',
+              text: 'Guidelines'
+            }"
+          ></ng-container>
+        </li>
+        <li>
+          <ng-container
+            aria-label="Learning Object Topics Link"
+            [ngTemplateOutlet]="navItemTemplate"
+            [ngTemplateOutletContext]="{
+              disabled: false,
+              link: 'topics',
+              text: 'Topics'
+            }"
+          ></ng-container>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <clark-popup *ngIf="cancelConfirmationOpen" (closed)="cancelConfirmationOpen = false">
@@ -34,4 +64,18 @@
     </div>
   </div>
 </clark-popup>
+
+<ng-template
+  #navItemTemplate
+  let-link="link"
+  let-disabled="disabled"
+  let-text="text"
+>
+  <a
+    routerLink="{{ link }}"
+    routerLinkActive="active"
+    (activate)="triggerRouteClick(link)"
+    >{{ text }}</a
+  >
+</ng-template>
 

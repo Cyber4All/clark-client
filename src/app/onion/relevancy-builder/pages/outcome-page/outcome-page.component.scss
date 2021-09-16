@@ -11,10 +11,19 @@
   font-weight: 600;
 }
 
+.header {
+  display: flex;
+
+  .g_title {
+    font-size: $large;
+    font-weight: 600;
+    margin: 0px auto;
+  }
+}
+
 .top {
-  padding: 20px;
-  margin: 20px;
   .title {
+    margin: 20px auto 10px 30px;
     float: left;
   }
 }

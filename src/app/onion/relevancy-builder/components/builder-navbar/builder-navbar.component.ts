@@ -15,6 +15,8 @@ export class BuilderNavbarComponent implements OnInit {
 
   historySnapshot: HistorySnapshot;
 
+  routesClicked: Set<string> = new Set();
+
   constructor(
     private history: HistoryService,
     public store: BuilderStore
@@ -23,6 +25,15 @@ export class BuilderNavbarComponent implements OnInit {
   }
 
   ngOnInit(): void { }
+
+  /**
+   * Add the passed route to the set of clicked routes
+   * @param {string} route
+   * @memberof BuilderNavbarComponent
+   */
+     triggerRouteClick(route: string) {
+      this.routesClicked.add(route);
+    }
 
   /**
    * Function to toggle the confirm cancel popup
