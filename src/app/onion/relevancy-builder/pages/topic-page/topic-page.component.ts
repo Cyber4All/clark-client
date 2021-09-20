@@ -12,4 +12,13 @@ export class TopicPageComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Function to send email for topic tool tip
+   */
+  sendEmail() {
+    const mail = document.createElement('a');
+    mail.href = `mailto:info@secured.team?subject=CLARK Learning Object Topic Suggestion`;
+    mail.click();
+  }
+
 }

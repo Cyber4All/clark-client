@@ -38,24 +38,26 @@
         margin-right: 10px;
       }
 
-      p {
-        margin: 0;
-        display: inline;
+      &.new-feature_wrapper {
 
-        &.title {
-          margin-right: 35px;
-        }
-
-        &.new_tag {
+        p {
           margin: 0;
-          color: $orange;
-
-          .svg-inline--fa{
-            margin-right: 2px;
+          display: inline;
+  
+          &.list-item_title {
+            margin-right: 35px;
+          }
+  
+          &.new-item_element {
+            margin: 0;
+            color: $orange;
+  
+            .svg-inline--fa{
+              margin-right: 2px;
+            }
           }
         }
       }
-
       
 
       .notifications {
