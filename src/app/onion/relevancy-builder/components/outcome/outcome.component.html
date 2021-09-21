@@ -4,7 +4,7 @@
       <div class="outcome-level" *ngFor="let l of outcomeLevels">
         <span *ngIf="l === 'remember and understand' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-cloud"></i> Remember & Understand</span>
         <span *ngIf="l === 'apply and analyze' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-bolt"></i> Apply & Analyze</span>
-        <span *ngIf="l === 'evaluate and synthesize' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fal fa-balance-scale-right"> Evaluate & Synthesize</i></span>
+        <span *ngIf="l === 'evaluate and synthesize' && outcome?.bloom.toLowerCase() === l.toLowerCase()"><i class="fas fa-balance-scale-right"></i> Evaluate & Synthesize</span>
       </div>
       {{outcome.verb ? ( outcome.verb | titlecase ) + ' ' + outcome.text : 'Learning Outcome '
       + outcomeNumber }}

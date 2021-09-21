@@ -42,7 +42,10 @@
       <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Assign Evaluators</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status === 'released'" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
-      <li [routerLink]="['/onion/relevancy-builder', learningObject.id]"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
+      <li class="new-feature_wrapper" [routerLink]="['/onion/relevancy-builder', learningObject.id]">
+        <p class="list-item_title"><i class="far fa-puzzle-piece"></i>Map & Tag</p>
+        <p class="new-item_element"><i class="fas fa-asterisk"></i>NEW</p>
+      </li>
     </ul>
   </div>
 </clark-context-menu>

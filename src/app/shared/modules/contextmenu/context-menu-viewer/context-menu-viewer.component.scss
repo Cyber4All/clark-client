@@ -38,6 +38,28 @@
         margin-right: 10px;
       }
 
+      &.new-feature_wrapper {
+
+        p {
+          margin: 0;
+          display: inline;
+  
+          &.list-item_title {
+            margin-right: 35px;
+          }
+  
+          &.new-item_element {
+            margin: 0;
+            color: $orange;
+  
+            .svg-inline--fa{
+              margin-right: 2px;
+            }
+          }
+        }
+      }
+      
+
       .notifications {
         background-color: $error-red;
         border: 1px solid white;
