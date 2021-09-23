@@ -22,22 +22,8 @@
   Edits and Revisions not Permitted
 </button>
 
-<button
-  *ngIf="makeRevision"
-  class="button neutral"
-  aria-label="Map and Tag"
-  (activate)="mapAndTagObject()">
-  Map and Tag
-</button>
-
 <clark-popup *ngIf="openRevisionModal" (closed)="closeRevisionModal()">
   <div #popupInner style="max-width: 600px;">
     <clark-revision-notice-popup (createRevision)="createRevision()" (close)="closeRevisionModal()"></clark-revision-notice-popup>
-  </div>
-</clark-popup>
-
-<clark-popup *ngIf="showAddEvaluator" (closed)="toggleAddEvaluatorModal(false)">
-  <div class="modal-container" #popupInner>
-    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [learningObject]="learningObject"></clark-add-evaluator>
   </div>
 </clark-popup>
