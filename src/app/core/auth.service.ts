@@ -331,7 +331,6 @@ export class AuthService {
           }
         )
         .pipe(
-          retry(3),
           catchError(this.handleError)
         )
         .toPromise();
@@ -390,7 +389,6 @@ export class AuthService {
           }
         )
         .pipe(
-          retry(3),
           catchError(this.handleError)
         )
         .toPromise();
