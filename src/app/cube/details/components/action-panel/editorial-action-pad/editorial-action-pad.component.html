@@ -23,11 +23,11 @@
 </button>
 
 <button
-  *ngIf="assignEvaluators"
+  *ngIf="makeRevision"
   class="button neutral"
-  aria-label="Assign Evaluators"
-  (activate)="toggleAddEvaluatorModal(true)">
-  Assign Evaluators
+  aria-label="Map and Tag"
+  (activate)="mapAndTagObject()">
+  Map and Tag
 </button>
 
 <clark-popup *ngIf="openRevisionModal" (closed)="closeRevisionModal()">

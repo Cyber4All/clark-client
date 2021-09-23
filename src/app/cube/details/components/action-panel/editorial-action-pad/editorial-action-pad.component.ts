@@ -106,11 +106,9 @@ export class EditorialActionPadComponent implements OnInit {
     }
 
   /**
-   * Toggles the add evaluator modal from showing/hiding
-   *
-   * @param value True if showing, false otherwise
+   * Opens the relevancy builder
    */
-  toggleAddEvaluatorModal(value: boolean) {
-    this.showAddEvaluator = value;
+  mapAndTagObject() {
+    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.id}`]);
   }
 }
