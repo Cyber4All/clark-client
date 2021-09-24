@@ -15,6 +15,7 @@ import { LibraryService, iframeParentID } from 'app/core/library.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
 import { CollectionService } from 'app/core/collection.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -73,6 +74,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private toaster: ToastrOvenService,
     private changeDetectorRef: ChangeDetectorRef,
     private collectionService: CollectionService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -88,6 +90,20 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
     this.getCollection();
+  }
+
+  get mapAndTag() {
+    let canMapAndTag = false;
+    if (this.auth.user && this.auth.user.accessGroups) {
+      const privileges = ['admin', 'editor', 'mapper', 'curator', 'reviewer'];
+      for (let i = 0; i < privileges.length; i++) {
+        if (this.auth.user.accessGroups.includes(privileges[i]) ||
+          this.auth.user.accessGroups.some(res => res.includes(privileges[i]))) {
+            canMapAndTag = true;
+        }
+      }
+    }
+    return canMapAndTag;
   }
 
   get isReleased(): boolean {
@@ -310,6 +326,13 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       attribution = 'List of Contributors';
     }
     return attribution;
+  }
+
+  /**
+   * Opens the relevancy builder
+   */
+  mapAndTagObject() {
+    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.id}`]);
   }
 
   private capitalizeName(name) {

@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
   }
 
   error(text: string = 'An error occured', duration: number = 4000) {
-    this.loginFailure = text;
+    this.loginFailure = text + ', you have 5 login attempts per hour';
 
     this.loginFailureTimer = setTimeout(() => {
       this.loginFailure = undefined;

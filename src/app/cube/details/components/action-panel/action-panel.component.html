@@ -94,4 +94,9 @@
       <i class="fal fa-spinner-third fa-spin"></i>
     </span>
   </button>
+  <button
+    *ngIf="mapAndTag"
+    class="button neutral"
+    aria-label="Map and Tag"
+    (activate)="mapAndTagObject()">Map and Tag</button>
 </ng-template>
