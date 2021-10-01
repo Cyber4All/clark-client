@@ -67,10 +67,11 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
       )
       .subscribe((val: string) => {
         // remove bullets and update the text of the outcome
-        val = val.replace(
-          /\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/g,
-          ''
-        );
+        const regex = /^\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/;
+        const i = val.search(regex);
+        if (i === 0) {
+          val = val.replace(regex, '');
+        }
 
         const index = val.indexOf(' ');
         this.text = val;
