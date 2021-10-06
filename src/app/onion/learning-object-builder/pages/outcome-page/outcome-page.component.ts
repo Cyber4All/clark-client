@@ -92,6 +92,13 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Gets the active outcome from the outcomes map
+   */
+  get activeOutcomeObject() {
+    return this._outcomes.get(this.activeOutcome);
+  }
+
   setActiveOutcome(id: string) {
     if (id !== this.activeOutcome) {
       this.store.sendOutcomeCache();
@@ -112,8 +119,9 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
       const outcome = this.store.outcomeEvent.getValue().get(id);
       this.validator.validateLearningOutcome(outcome);
       this.validateNewOutcome();
-      setTimeout(() => {
+      setTimeout(async () => {
         this.activeOutcome = id;
+        await this.store.execute(actions.MUTATE_OUTCOME, { id, params: this.activeOutcomeObject });
       }, 100);
     });
   }
