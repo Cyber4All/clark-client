@@ -1,5 +1,5 @@
 export const LEARNING_OBJECT_ERRORS = {
-  INVALID_NAME: 'Name must be a defined string more than two characters and less than fifty characters.',
+  INVALID_NAME: 'Name must be a defined string more than two characters and less than one hundred characters.',
   INVALID_DESCRIPTION: 'Description must be defined.',
   INVALID_LENGTH(length: any) {
     if (!length) {
