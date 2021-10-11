@@ -9,7 +9,7 @@ export class Message {
 }
 @Injectable()
 export class MessagesService {
-  private _message: Message;
+  private _message: Message = { isUnderMaintenance: false, message: 'CLARK will be taking downtime October 19th between 7 and 8 am EST.' };
 
   get message() {
     return this._message;
