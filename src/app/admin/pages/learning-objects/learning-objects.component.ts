@@ -9,7 +9,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
-import { Query } from 'app/interfaces/query';
+import { OrderBy, Query, SortType } from 'app/interfaces/query';
 import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -43,6 +43,8 @@ export class LearningObjectsComponent
   _query: Query = {
     currPage: 1,
     limit: 20,
+    sortType: -1,
+    orderBy: OrderBy.Date,
     text: ''
   };
 
@@ -247,6 +249,17 @@ export class LearningObjectsComponent
    */
   getStatusFilteredLearningObjects(statuses: string[]) {
     this.query = { status: statuses, currPage: 1 };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
+
+  /**
+   * Sorts list by date
+   * @param direction the direction of the sort (ASC or DESC)
+   */
+  sortByDate(direction: SortType) {
+    this.query = { ...this.query, sortType: direction };
     this.learningObjects = [];
 
     this.getLearningObjects();
