@@ -31,6 +31,18 @@
     color: $dark-grey;
     padding-top: 20px;
     padding-bottom: 10px;
+
+    .sort {
+      font-size: 10px;
+      color: $dark-grey;
+      background-color: transparent;
+      border: none;
+      padding-right: 0px;
+    }
+
+    .sort:hover {
+      color: $light-blue;
+    }
   }
 
   clark-learning-object-list-item {
