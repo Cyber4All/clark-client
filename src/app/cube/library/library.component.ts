@@ -232,8 +232,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.downloading[index] = true;
     this.libraryService.downloadLearningObject(
         object.author.username,
-        object.cuid,
-        object.version
+        object.id
       ).pipe(
       takeUntil(this.destroyed$))
       .subscribe(finished => {

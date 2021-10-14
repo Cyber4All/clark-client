@@ -91,13 +91,11 @@ export class LibraryService {
 
   downloadLearningObject(
     author: string,
-    learningObjectCuid: string,
-    version: number
+    learningObjectId: string
   ): BehaviorSubject<boolean> {
     const url = USER_ROUTES.DOWNLOAD_OBJECT(
       author,
-      learningObjectCuid,
-      version
+      learningObjectId
     );
     const iframe = document.createElement('iframe');
     iframe.src = url;

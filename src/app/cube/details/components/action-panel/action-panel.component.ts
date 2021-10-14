@@ -123,8 +123,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (download) {
       this.download(
         this.learningObject.author.username,
-        this.learningObject.cuid,
-        this.learningObject.version
+        this.learningObject.id
       );
     }
     try {
@@ -160,20 +159,19 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (download) {
       this.download(
         this.learningObject.author.username,
-        this.learningObject.cuid,
-        this.learningObject.version
+        this.learningObject.id
       );
     }
   }
 
 
-  download(author: string, learningObjectCuid: string, version: number) {
+  download(author: string, learningObjectId: string) {
     this.downloading = true;
     const revision = this.revisedVersion || (!this.isReleased && !this.revisedVersion);
 
     // CHECK DOWNLOAD HERE
     const loaded = this.libraryService
-      .downloadLearningObject(author, learningObjectCuid, version).pipe(
+      .downloadLearningObject(author, learningObjectId).pipe(
       takeUntil(this.destroyed$));
 
     this.toggleDownloadModal(true);
