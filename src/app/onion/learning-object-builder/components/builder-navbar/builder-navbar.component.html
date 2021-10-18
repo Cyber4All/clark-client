@@ -17,7 +17,7 @@
       Currently Revising: {{ learningObject?.name }}
     </div>
     <div class="top__left">
-      <a (activate)="historySnapshot.rewind('/home')"><i class="far fa-arrow-left"></i> Back</a>
+      <a (activate)="triggerBundlingProcess()"><i class="far fa-arrow-left"></i> Back</a>
     </div>
     <div class="top__right">
       <div
@@ -139,7 +139,7 @@
   *ngIf="showSubmission"
   [learningObject]="store.learningObject"
   [visible]="true"
-  (close)="showSubmission = false; ($event && historySnapshot.rewind('/dashboard'));"
+  (close)="showSubmission = false; triggerBundlingProcess();"
 ></clark-submit>
 
 <ng-template

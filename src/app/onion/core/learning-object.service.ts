@@ -345,6 +345,28 @@ export class LearningObjectService {
   }
 
   /**
+   * Function to initiate the bundling process for new and updated learning objects
+   *
+   * @param username Authors username of current learning object
+   * @param learningObjectId id current learning object
+   */
+  triggerBundle(username: string, learningObjectId: string) {
+    const route = USER_ROUTES.OBJECT_BUNDLE(
+      username,
+      learningObjectId
+    );
+    return this.http
+      .post(
+        route,
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
    * Sends Learning Object's ID to API for deletion
    *
    * @param {(string)} id

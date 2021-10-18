@@ -9,6 +9,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
+import { LearningObjectService } from '../../../core/learning-object.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -52,7 +53,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     private collectionService: CollectionService,
     private history: HistoryService,
     public validator: LearningObjectValidator,
-    public store: BuilderStore
+    public store: BuilderStore,
+    public learningObjectService: LearningObjectService
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -150,6 +152,16 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   triggerRouteClick(route: string) {
     this.routesClicked.add(route);
+  }
+
+  /**
+   * Function to initiate the bunlding process on a learning object when changes have been made
+   */
+  triggerBundlingProcess() {
+    if (this.store.touched) {
+      this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject.id);
+    }
+    this.historySnapshot.rewind('/onion/dashboard');
   }
 
   /**

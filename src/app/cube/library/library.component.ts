@@ -230,7 +230,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   downloadObject(event: MouseEvent, object: LearningObject, index: number) {
     event.stopPropagation();
     this.downloading[index] = true;
-    this.libraryService.downloadLearningObject(
+    this.libraryService.learningObjectBundle(
         object.author.username,
         object.id
       ).pipe(

@@ -89,11 +89,11 @@ export class LibraryService {
       .toPromise();
   }
 
-  downloadLearningObject(
+  learningObjectBundle(
     author: string,
     learningObjectId: string
   ): BehaviorSubject<boolean> {
-    const url = USER_ROUTES.DOWNLOAD_OBJECT(
+    const url = USER_ROUTES.OBJECT_BUNDLE(
       author,
       learningObjectId
     );

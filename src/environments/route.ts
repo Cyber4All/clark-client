@@ -263,7 +263,7 @@ export const USER_ROUTES = {
   ADD_LEARNING_OBJECT_TO_CART(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
   },
-  DOWNLOAD_OBJECT(username: string, learningObjectId: string) {
+  OBJECT_BUNDLE(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/${encodeURIComponent(learningObjectId)}/bundle`;

@@ -171,7 +171,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
     // CHECK DOWNLOAD HERE
     const loaded = this.libraryService
-      .downloadLearningObject(author, learningObjectId).pipe(
+      .learningObjectBundle(author, learningObjectId).pipe(
       takeUntil(this.destroyed$));
 
     this.toggleDownloadModal(true);
