@@ -17,8 +17,10 @@ export class FeaturedCollectionCardComponent implements OnInit {
     if (
       this.collection.abvName !== 'intro_to_cyber' &&
       this.collection.abvName !== 'secure_coding_community' &&
-      this.collection.abvName !== 'plan c'
+      this.collection.abvName !== 'plan c' &&
+      this.collection.abvName !== '502_project'
     ) {
+      console.log(this.pictureLocation);
       this.pictureLocation =
         '../../../assets/images/collections/' +
         this.collection.abvName +
