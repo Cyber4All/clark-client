@@ -543,6 +543,12 @@ export const FEATURED_ROUTES = {
   SET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
   // retrieves the featured objects
   GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
+  // Get featured objects for a specific collection
+  GET_COLLECTION_FEATURED(collection: string) {
+    return `${environment.apiURL}/featured/learning-objects/${encodeURIComponent(
+      collection
+    )}`;
+  }
 };
 
 export const RELEVANCY_ROUTES = {

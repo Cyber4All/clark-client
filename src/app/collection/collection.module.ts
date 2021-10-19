@@ -8,8 +8,6 @@ import { NiceChallengeModule } from './pages/nice-challenge/nice-challenge.modul
 import { CollectionsRoutingModule } from './collection.routing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
-import { HeaderNcyteComponent } from './pages/collection-ncyte/header-ncyte/header-ncyte.component';
-import { FooterComponent } from './pages/collection-ncyte/footer/footer.component';
 import { ResourceComponent } from './pages/collection-ncyte/resource/resource.component';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { IncludedModule } from './shared/included/included.module';
@@ -21,8 +19,6 @@ import { SharedModule } from '../shared/shared.module';
     GenericPageComponent,
     SecurityInjectionsComponent,
     CollectionNcyteComponent,
-    HeaderNcyteComponent,
-    FooterComponent,
     ResourceComponent,
   ],
   schemas: [
