@@ -14,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HeaderComponent } from './pages/collection-ncyte/components/header/header.component';
 import { AboutComponent } from './pages/collection-ncyte/components/about/about.component';
 import { CubeSharedModule } from '../cube/shared/cube-shared.module';
+import { CuratorsComponent } from './pages/collection-ncyte/components/curators/curators.component';
 @NgModule({
   declarations: [
     CollectionIndexComponent,
@@ -22,6 +23,7 @@ import { CubeSharedModule } from '../cube/shared/cube-shared.module';
     CollectionNcyteComponent,
     HeaderComponent,
     AboutComponent,
+    CuratorsComponent,
   ],
   schemas: [
     NO_ERRORS_SCHEMA,

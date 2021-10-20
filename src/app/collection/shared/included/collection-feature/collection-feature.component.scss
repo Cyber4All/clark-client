@@ -1,15 +1,9 @@
-@import '../../../../collection-globals.scss';
-.wrapper {
+.featured {
     background-color: white !important;
-    
     .inner {
         max-width: 1500px;
         text-align: center;
         padding: 50px;
         margin: auto;
-    }
-
-    .header {
-        color: $ncyte-blue;
     }
 }

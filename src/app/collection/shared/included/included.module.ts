@@ -8,6 +8,8 @@ import {CuratorCardComponent} from './curators/curator-card/curator-card.compone
 import { StatsComponent } from './stats/stats.component';
 import { FeatureComponent } from './feature/feature.component';
 import { RouterModule } from '@angular/router';
+import { CollectionFeatureComponent } from './collection-feature/collection-feature.component';
+import { FeatureCardsComponent } from './collection-feature/components/feature-cards/feature-cards.component';
 
 
 
@@ -18,7 +20,9 @@ import { RouterModule } from '@angular/router';
     CuratorCardComponent,
     CuratorsComponent,
     StatsComponent,
-    FeatureComponent
+    FeatureComponent,
+    CollectionFeatureComponent,
+    FeatureCardsComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +34,8 @@ import { RouterModule } from '@angular/router';
     CuratorCardComponent,
     CuratorsComponent,
     StatsComponent,
-    FeatureComponent
+    FeatureComponent,
+    CollectionFeatureComponent,
   ],
   providers: [LearningObjectService]
 })
