@@ -96,7 +96,7 @@
         .info__desc {
             // I know this looks super browser specific but it is cross browser compatible
             display: -webkit-box;
-            -webkit-line-clamp: 6;
+            -webkit-line-clamp: 5;
             overflow: hidden;
             -webkit-box-orient: vertical;  
             text-align: left;
@@ -104,5 +104,48 @@
             color: $darker-grey;
         }
 
+    }
+    &:hover, &:focus {
+        box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.40);
+    }
+
+    &.loading {
+        width: 250px;
+        .loadingContainer {
+            padding: 55% 35%;
+
+            .loader { 
+                text-align: left;
+            }
+
+            .loader:after {
+                overflow: hidden;
+                display: inline-block;
+                vertical-align: bottom;
+                -webkit-animation: ellipsis steps(4,end) 2000ms infinite;      
+                animation: ellipsis steps(4,end) 2000ms infinite;
+                content: "\2026";
+                width: 0px;
+              }
+              
+              @keyframes ellipsis {
+                to {
+                  width: 1.25em;    
+                }
+              }
+              
+              @-webkit-keyframes ellipsis {
+                to {
+                  width: 1.25em;    
+                }
+              }
+        }
+
+        .card__header {
+            display: none;
+        }
+        .card__info {
+            display: none;
+        }
     }
 }

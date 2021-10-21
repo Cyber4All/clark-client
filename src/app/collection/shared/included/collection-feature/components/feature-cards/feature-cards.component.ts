@@ -17,6 +17,7 @@ export class FeatureCardsComponent implements OnInit {
   parents;
   children;
   hierarchyTag = '';
+  loading = true;
 
   constructor(
     private attributeService: AttributeService,
@@ -24,6 +25,7 @@ export class FeatureCardsComponent implements OnInit {
     ) { }
 
   async ngOnInit() {
+    this.loading = true;
     this.setColorScheme();
     const hierarchy = await this.attributeService.getHierarchy(
       this.learningObject.author.username,
@@ -36,8 +38,12 @@ export class FeatureCardsComponent implements OnInit {
     this.setDescription();
 
     this.learningObject.collection = await (await this.collectionService.getCollection(this.learningObject.collectionName)).name;
+    this.loading = false;
   }
 
+  /**
+   * Sets colors for fonts and background colors
+   */
   setColorScheme() {
     this.convertHexToHSL(this.primaryColor);
   }

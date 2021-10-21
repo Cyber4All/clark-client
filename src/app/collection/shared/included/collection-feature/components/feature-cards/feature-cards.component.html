@@ -1,4 +1,7 @@
-<div class="card__wrapper">
+<div class="card__wrapper" [ngClass]="{'loading': loading}">
+    <div *ngIf="loading" class="loadingContainer">
+        <div [style.color]="primaryColor" class="loader">Loading </div>
+    </div>
     <div class="card__header" [style.backgroundColor]="hslVal">
         <div class="header__length" [style.color]="primaryColor">
             <p>{{ learningObject?.length | titlecase }}</p>

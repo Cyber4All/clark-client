@@ -3,7 +3,7 @@
         <h1 class="header" id="header">Featured Learning Objects</h1>
         <div class="objects">
             <div *ngFor="let object of learningObjects">
-                <a href>
+                <a [routerLink]="['/details', object.author.username, object.cuid]">
                     <clark-collection-feature-cards [learningObject]="object" [primaryColor]="primaryColor"></clark-collection-feature-cards>
                 </a>
             </div>
