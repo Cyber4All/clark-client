@@ -57,7 +57,7 @@
         .info__top {
             display: inline-block;
             width: 100%;
-            height: 30px;
+            height: 20px;
 
             .info__collection {
                 float: left;
@@ -93,12 +93,7 @@
                 }
             }
         }
-        .info__desc {
-            // I know this looks super browser specific but it is cross browser compatible
-            display: -webkit-box;
-            -webkit-line-clamp: 5;
-            overflow: hidden;
-            -webkit-box-orient: vertical;  
+        .info__desc {  
             text-align: left;
             font-size: $small;
             color: $darker-grey;
