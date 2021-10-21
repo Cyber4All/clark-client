@@ -3,7 +3,7 @@
 
 .card__wrapper {
     max-width: 240px;
-    height: 300px;
+    height: 310px;
     box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     margin: 10px;
@@ -15,7 +15,6 @@
         border-radius: 5px 5px 0px 0px;
         background: url('../../../../../../../assets/collections/ncyte/card_background.png');
         background-repeat: no-repeat;
-        background-color: hsl(209, 27%, 45%);
         background-blend-mode: multiply;
         background-size: cover;
         background-position: center;
@@ -31,7 +30,6 @@
                 border-bottom-right-radius: 4px;
                 margin: 0;
                 font-weight: 600;
-                color: $ncyte-blue;
             }
         }
         .header__name {
@@ -41,6 +39,7 @@
                 font-weight: 600;
                 font-size: 18px;
                 padding: 10px;
+                height: 30px;
             }
         }
         .header__date {
@@ -58,11 +57,11 @@
         .info__top {
             display: inline-block;
             width: 100%;
+            height: 30px;
 
             .info__collection {
                 float: left;
                 .collection__pill {
-                    background-color: $ncyte-blue;
                     color: white;
                     padding: 5px;
                     border-radius: 8px;
@@ -84,15 +83,22 @@
                     p {
                         float: right;
                         color: $darker-grey;
-                        font-size: $normal;
+                        font-size: $small;
                         font-weight: 500;
+                        text-align: left;
                         margin: 0;
-                        padding-left: 5px;
+                        max-width: 70px;
+                        padding-left: 3px;
                     }
                 }
             }
         }
         .info__desc {
+            // I know this looks super browser specific but it is cross browser compatible
+            display: -webkit-box;
+            -webkit-line-clamp: 6;
+            overflow: hidden;
+            -webkit-box-orient: vertical;  
             text-align: left;
             font-size: $small;
             color: $darker-grey;

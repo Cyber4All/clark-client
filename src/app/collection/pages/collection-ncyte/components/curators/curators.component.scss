@@ -9,7 +9,8 @@
         margin: auto;
 
         img {
-            width: 600px;
+            max-width: 50%;
+            height: auto;
         }
         .header {
             color: $ncyte-blue;

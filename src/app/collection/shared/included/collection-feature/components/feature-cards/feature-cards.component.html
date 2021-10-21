@@ -1,10 +1,10 @@
 <div class="card__wrapper">
-    <div class="card__header">
-        <div class="header__length">
+    <div class="card__header" [style.backgroundColor]="hslVal">
+        <div class="header__length" [style.color]="primaryColor">
             <p>{{ learningObject?.length | titlecase }}</p>
         </div>
         <div class="header__name">
-            <p>{{ learningObject?.name }}</p>
+            <p>{{ (learningObject?.name.length >= 45)? (learningObject?.name | slice:0:45)+' ...':(learningObject?.name) }}</p>
         </div>
         <div class="header__date">
             <p>{{ learningObject?.date | date:'mediumDate' }}</p>
@@ -13,20 +13,21 @@
     <div class="card__info">
         <div class="info__top">
             <div class="info__collection">
-                <div class="collection__pill">
-                    <!-- <p>{{ learningObject?.collectionName }}</p> -->
-                    <p>NCyTE Center</p>
+                <div class="collection__pill" [style.backgroundColor]="primaryColor">
+                    <p>{{ learningObject?.collection }}</p>
                 </div>
             </div>
             <div class="info__hierarchy">
-                <div class="hierarchy__listing">
+                <div *ngIf="children?.length > 0 || parents?.length > 0" class="hierarchy__listing">
                     <i class="far fa-project-diagram"></i>
-                    <p>10 Children</p>
+                    <p>
+                        {{ hierarchyTag }}
+                    </p>
                 </div>
             </div>
         </div>
         <div class="info__desc">
-            <div [innerHtml]="getDescription()"></div>
+            <div [innerHtml]="learningObject.description"></div>
         </div>
     </div>
 </div>

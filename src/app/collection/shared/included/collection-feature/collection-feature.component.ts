@@ -9,9 +9,16 @@ import { LearningObject } from '@entity';
 export class CollectionFeatureComponent implements OnInit {
 
   @Input() learningObjects: LearningObject[];
+  @Input() primaryColor: string;
   constructor() { }
 
   ngOnInit(): void {
+    this.setColorScheme();
+  }
+
+  setColorScheme() {
+    const header = document.getElementById('header');
+    header.style.color = this.primaryColor;
   }
 
 }

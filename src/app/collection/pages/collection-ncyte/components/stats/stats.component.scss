@@ -23,13 +23,13 @@
 
         .section-stats {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            flex-direction: row;
             margin: auto;
             padding-top: 40px;
             text-align: center;
-            flex-basis: 100vw;
-            max-width: 1000px;
+            flex-basis: 80vw;
 
             .stat {
                 display: flex;
@@ -67,7 +67,7 @@
                 padding-top: 10px;
                 color: $dark-grey;
                 font-size: $largest;
-                font-weight: bold;
+                font-weight: 600;
             }
             p {
                 color: $dark-grey;
