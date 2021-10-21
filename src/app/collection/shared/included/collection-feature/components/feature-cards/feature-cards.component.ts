@@ -9,9 +9,18 @@ import { LearningObject } from '@entity';
 export class FeatureCardsComponent implements OnInit {
 
   @Input() learningObject: LearningObject;
+  parents: [];
+  children: [];
   constructor() { }
 
   ngOnInit(): void {
+    // TO DO RETRIEVE PARENTS/CHILDREN
+    // TO DO GET THE FULL COLLECTION
+    console.log(this.learningObject);
+  }
+
+  getDescription() {
+    return this.learningObject.description.slice(0, 260);
   }
 
 }

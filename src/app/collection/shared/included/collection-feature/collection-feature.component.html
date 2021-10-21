@@ -1,8 +1,10 @@
 <div class="featured">
     <div class="inner">
         <h1 class="header">Featured Learning Objects</h1>
-        <div *ngFor="let object of learningObjects">
-            <clark-collection-feature-cards [learningObject]="object"></clark-collection-feature-cards>
+        <div class="objects">
+            <div *ngFor="let object of learningObjects">
+                <clark-collection-feature-cards [learningObject]="object"></clark-collection-feature-cards>
+            </div>
         </div>
     </div>
 </div>

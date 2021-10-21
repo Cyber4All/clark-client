@@ -1,0 +1,102 @@
+@import '~_vars.scss';
+@import '../../../../../collection-globals.scss';
+
+.card__wrapper {
+    max-width: 240px;
+    height: 300px;
+    box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    margin: 10px;
+
+    .card__header {
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+        border-radius: 5px 5px 0px 0px;
+        background: url('../../../../../../../assets/collections/ncyte/card_background.png');
+        background-repeat: no-repeat;
+        background-color: hsl(209, 27%, 45%);
+        background-blend-mode: multiply;
+        background-size: cover;
+        background-position: center;
+        height: 125px;
+        margin: 0;
+        box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.05);
+
+        .header__length {
+            display: inline-block;
+            p {
+                background-color: white;
+                padding: 6px;
+                border-bottom-right-radius: 4px;
+                margin: 0;
+                font-weight: 600;
+                color: $ncyte-blue;
+            }
+        }
+        .header__name {
+            p {
+                margin: 0;
+                color: white;
+                font-weight: 600;
+                font-size: 18px;
+                padding: 10px;
+            }
+        }
+        .header__date {
+            p {
+                margin: 0;
+                color: white;
+                font-size: $small;
+                padding: 10px;
+            }
+        }
+          
+    }
+    .card__info {
+        padding: 10px 10px;
+        .info__top {
+            display: inline-block;
+            width: 100%;
+
+            .info__collection {
+                float: left;
+                .collection__pill {
+                    background-color: $ncyte-blue;
+                    color: white;
+                    padding: 5px;
+                    border-radius: 8px;
+
+                    p {
+                        margin: 0;
+                        font-size: $smaller;
+                    }
+                }
+            }
+            .info__hierarchy {
+                float: right;
+                .hierarchy__listing {
+                    display: inline-block;
+                    color: $light-blue;
+                    i {
+                        float: left;
+                    }
+                    p {
+                        float: right;
+                        color: $darker-grey;
+                        font-size: $normal;
+                        font-weight: 500;
+                        margin: 0;
+                        padding-left: 5px;
+                    }
+                }
+            }
+        }
+        .info__desc {
+            text-align: left;
+            font-size: $small;
+            color: $darker-grey;
+        }
+
+    }
+}

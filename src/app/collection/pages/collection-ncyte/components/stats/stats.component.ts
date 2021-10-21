@@ -10,7 +10,7 @@ export class StatsComponent implements OnInit {
 
   @Input() collectionName: string;
   name: string;
-  
+
   objDownload: number;
   objReview: number;
   objReleased: number;
@@ -27,9 +27,8 @@ export class StatsComponent implements OnInit {
         this.name = 'NCyTE';
         break;
     }
-    
+
     await this.collectionService.getCollectionMetricsData(this.collectionName).then((res: any ) => {
-      console.log(res);
       this.objDownload = res.metrics.downloads;
       this.objReleased = res.metrics.statusMetrics[0].released;
       const num = res.metrics.statusMetrics[0].waiting + res.metrics.statusMetrics[0].peerReview + res.metrics.statusMetrics[0].proofing;

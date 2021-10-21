@@ -1,9 +1,16 @@
 .featured {
     background-color: white !important;
     .inner {
-        max-width: 1500px;
+        max-width: 1600px;
         text-align: center;
         padding: 50px;
         margin: auto;
+
+        .objects {
+            display: flex;
+            flex-direction: space-between;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
     }
 }
