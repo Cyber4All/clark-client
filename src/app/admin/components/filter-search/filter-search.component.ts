@@ -241,16 +241,16 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
-  toggleTopicFilter(filter: string) {
-    if (filter.toLowerCase() === 'all') {
+  toggleTopicFilter(filter: any) {
+    if (filter.name.toLowerCase() === 'all') {
       this.clearTopicFilters();
       this.toggleTopicMenu(undefined);
       return;
     }
     if (this.filterTopics.has(filter)) {
-      this.filterTopics.delete(filter);
+      this.filterTopics.delete(filter._id);
     } else {
-      this.filterTopics.add(filter);
+      this.filterTopics.add(filter._id);
     }
     this.topicFilter.emit(Array.from(this.filterTopics));
 
