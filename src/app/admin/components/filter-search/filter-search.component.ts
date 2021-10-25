@@ -141,7 +141,6 @@ export class FilterSearchComponent implements OnInit {
   }
 
   get selectedTopic(): Topic {
-    console.log(this._selectedTopic);
     return this._selectedTopic;
   }
 
