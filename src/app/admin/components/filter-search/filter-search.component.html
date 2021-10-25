@@ -30,7 +30,7 @@
               <li
                 *ngFor="let topic of topics"
                 [className]="topic.name"
-                (activate)="toggleTopicFilter(topic.name)"
+                (activate)="toggleTopicFilter(topic)"
               >
                 <div
                   *ngIf="filterTopics.has(topic.name)"
