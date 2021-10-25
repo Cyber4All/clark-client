@@ -50,7 +50,7 @@ export class FeatureCardsComponent implements OnInit {
 
   setDescription() {
     this.learningObject.description =
-      this.learningObject.description.slice(0, 245) + (this.learningObject.description.length > 245 ? ' ...' : '');
+      this.learningObject.description.slice(0, 220) + (this.learningObject.description.length > 220 ? ' ...' : '');
   }
 
   /**
