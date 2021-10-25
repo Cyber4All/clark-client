@@ -1,0 +1,94 @@
+@import '../../../../collection-globals.scss';
+
+.stats {
+    background-color: white !important;
+
+    .inner {
+        max-width: 1500px;
+        text-align: center;
+        padding: 50px;
+        margin: auto;
+
+        .header {
+            color: $ncyte-blue;
+            font-size: $largest;
+            font-weight: 600;
+        }
+        .logo {
+            padding-top: 60px;
+        }
+        .links {
+            padding: 20px;
+            color: $light-blue;
+            font-size: $larger;
+        }
+
+        .section-stats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            margin: auto;
+            padding-top: 40px;
+            text-align: center;
+            flex-basis: 80vw;
+
+            .stat {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 15px;
+                min-height: 250px;
+                
+                .stat__icon {
+                    font-size: 30px;
+                    padding: 10px;
+                    width: 40px;
+                    height: 40px;
+                    margin-bottom: 20px;
+                    justify-content: center;
+                    background-color: $light-blue;
+                    border-radius: 1000px;
+                    color: #fff;
+
+                    &.review {
+                        background-color: $light-grey;
+                        color: $darker-grey;
+                    }
+                    &.download {
+                        background-color: lighten($orange, 35);
+                        color: $orange;
+                    }
+                    &.authors {
+                        background-color: lighten(rebeccapurple, 35);
+                        color: rebeccapurple;
+                    }
+                }
+            }
+            .num {
+                padding-top: 10px;
+                color: $dark-grey;
+                font-size: $largest;
+                font-weight: 600;
+            }
+            p {
+                color: $dark-grey;
+                font-size: 24px;
+                max-width: 80%;
+            }
+        }
+
+        
+        @media (max-width: 1110px){
+            .section-stats{
+                flex-direction: column;
+                justify-content: center;
+            }
+        
+            .section-accent{
+                width: 100%;
+                border-radius: 0px !important;
+            }
+        }
+    }
+}

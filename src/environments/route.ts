@@ -303,10 +303,10 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/${objectId}/materials/files`;
   },
-  GET_CHILDREN(learningObjectID: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+  GET_CHILDREN(username: string, learningObjectID: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
       learningObjectID
-    )}/children/summary`;
+    )}/children`;
   },
   GET_METRICS(username: string, learningObjectID: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -543,6 +543,12 @@ export const FEATURED_ROUTES = {
   SET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
   // retrieves the featured objects
   GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
+  // Get featured objects for a specific collection
+  GET_COLLECTION_FEATURED(collection: string) {
+    return `${environment.apiURL}/featured/learning-objects/${encodeURIComponent(
+      collection
+    )}`;
+  }
 };
 
 export const RELEVANCY_ROUTES = {

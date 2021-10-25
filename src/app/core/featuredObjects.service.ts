@@ -126,6 +126,27 @@ export class FeaturedObjectsService {
       });
   }
 
+
+  /** COLLECTION FEATURED ROUTES */
+
+  /**
+   * Get the featured learning objects for a collection
+   * @param collection
+   * @returns [LearningObject]
+   */
+  getCollectionFeatured(collection: string) {
+    return this.http
+      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED(collection))
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((response: any) => {
+        return response;
+      });
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
