@@ -41,7 +41,7 @@
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
       <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Assign Evaluators</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
-      <li *ngIf="learningObject.status === 'released'" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
+      <li *ngIf="learningObject.status === 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
       <li class="new-feature_wrapper" [routerLink]="['/onion/relevancy-builder', learningObject.id]">
         <p class="list-item_title"><i class="far fa-puzzle-piece"></i>Map & Tag</p>
         <p class="new-item_element"><i class="fas fa-asterisk"></i>NEW</p>
