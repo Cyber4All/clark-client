@@ -1,7 +1,11 @@
+@import '~_vars.scss';
+
 .featured {
     background-color: white !important;
     .header {
         margin-bottom: 40px;
+        font-size: $largest;
+        font-weight: 600;
     }
     .inner {
         max-width: 1600px;
