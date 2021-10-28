@@ -30,15 +30,22 @@ export class OutcomeComponent implements OnInit {
 
   @Input() outcome: LearningOutcome;
 
+  mappingsFrameworks = [];
+
   outcomeText: string;
 
   showMappings = false;
 
   ngOnInit() {
-    // Capitilize the outcome verb
+    // Capitalize the outcome verb
     if (this.outcome.outcome) {
       this.outcomeText = this.outcome.outcome.charAt(0).toUpperCase().concat(this.outcome.outcome.slice(1));
     }
+    // Get the unique framework names for the outcomes mappings
+    this.mappingsFrameworks = this.outcome.mappings.filter(
+      (v,i,mappings) => 
+        mappings.findIndex(guidelines => (guidelines.frameworkName === v.frameworkName))=== i
+      );
   }
 
   toggleMappingsDisplay() {
