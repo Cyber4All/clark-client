@@ -43,8 +43,8 @@ export class OutcomeComponent implements OnInit {
     }
     // Get the unique framework names for the outcomes mappings
     this.mappingsFrameworks = this.outcome.mappings.filter(
-      (v,i,mappings) => 
-        mappings.findIndex(guidelines => (guidelines.frameworkName === v.frameworkName))=== i
+      (v, i, mappings) =>
+        mappings.findIndex(guidelines => (guidelines.frameworkName === v.frameworkName)) === i
       );
   }
 
