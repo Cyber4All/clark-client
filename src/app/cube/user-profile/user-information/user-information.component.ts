@@ -68,7 +68,12 @@ export class UserInformationComponent implements OnChanges {
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification(this.user.email).toPromise();
-        this.notifications.success(`Success!`, `Email sent to ${this.user.email}. Please check your inbox and spam.`);
+        this.notifications.success(
+          `Success!`,
+          `Email sent to ${this.user.email}.
+          Please check your inbox and spam.
+          If you don't receive an email within 15 minutes reach out to info@secured.team.`
+          );
       }
     } catch (e) {
       this.notifications.error(`Could not send email`, `${e}`);
