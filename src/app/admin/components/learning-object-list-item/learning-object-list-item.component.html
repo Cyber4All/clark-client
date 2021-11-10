@@ -46,9 +46,16 @@
         <p class="list-item_title"><i class="far fa-puzzle-piece"></i>Map & Tag</p>
         <p class="new-item_element"><i class="fas fa-asterisk"></i>NEW</p>
       </li>
+      <li *ngIf="learningObject.status !== 'released'" (click)="toggleChangeCollectionModal(true)"><i class="fal fa-exchange"></i>Change Collection</li>
     </ul>
   </div>
 </clark-context-menu>
+
+<clark-popup *ngIf="showChangeCollection" (closed)="toggleChangeCollectionModal(false)">
+  <div class="modal-container" #popupInner>
+    <clark-change-collection [object]="learningObject" (close)="toggleChangeCollectionModal(false)"></clark-change-collection>
+  </div>
+</clark-popup>
 
 <clark-popup *ngIf="showUnreleaseConfirm" (closed)="toggleUnreleaseConfirm(false)">
   <div class="modal-container center" #popupInner>

@@ -35,6 +35,7 @@ import { AddEvaluatorComponent } from './components/add-evaluator/add-evaluator.
 import { ObjectDropdownComponent } from './components/add-evaluator/components/object-dropdown/object-dropdown.component';
 import { SelectedUserComponent } from './components/add-evaluator/components/selected-user/selected-user.component';
 import { LearningObjectService } from 'app/cube/learning-object.service';
+import { ChangeCollectionComponent } from './components/change-collection/change-collection.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { LearningObjectService } from 'app/cube/learning-object.service';
     AddEvaluatorComponent,
     ObjectDropdownComponent,
     SelectedUserComponent,
+    ChangeCollectionComponent,
   ],
   imports: [
     CoreModule.forRoot(),
