@@ -30,6 +30,9 @@ export const ADMIN_ROUTES = {
   DELETE_REVISION(username: string, cuid: string, version: number) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/versions/${version}`;
   },
+  UPDATE_OBJECT_SUBMITTED_COLLECTION(username: string, cuid: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(cuid)}/collection`;
+  },
 };
 
 export const CHANGELOG_ROUTES = {

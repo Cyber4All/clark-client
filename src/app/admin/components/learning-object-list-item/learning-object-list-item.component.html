@@ -41,6 +41,7 @@
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
       <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Assign Evaluators</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
+      <li *ngIf="learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleChangeCollectionModal(true)"><i class="fal fa-exchange"></i>Change Collection</li>
       <li *ngIf="learningObject.status === 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
       <li class="new-feature_wrapper" [routerLink]="['/onion/relevancy-builder', learningObject.id]">
         <p class="list-item_title"><i class="far fa-puzzle-piece"></i>Map & Tag</p>
@@ -49,6 +50,12 @@
     </ul>
   </div>
 </clark-context-menu>
+
+<clark-popup *ngIf="showChangeCollection" (closed)="toggleChangeCollectionModal(false)">
+  <div class="modal-container" #popupInner>
+    <clark-change-collection [object]="learningObject" (close)="toggleChangeCollectionModal(false)"></clark-change-collection>
+  </div>
+</clark-popup>
 
 <clark-popup *ngIf="showUnreleaseConfirm" (closed)="toggleUnreleaseConfirm(false)">
   <div class="modal-container center" #popupInner>

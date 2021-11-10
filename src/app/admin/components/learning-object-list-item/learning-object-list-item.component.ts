@@ -51,10 +51,10 @@ export class LearningObjectListItemComponent implements OnChanges {
   showChangeAuthor: boolean;
   showAddEvaluator: boolean;
   showUnreleaseConfirm: boolean;
-
   showRelevancyDate: boolean;
-
   showDeleteRevisionConfirmation: boolean;
+  showChangeCollection: boolean;
+
   // flags
   meatballOpen = false;
 
@@ -133,6 +133,16 @@ export class LearningObjectListItemComponent implements OnChanges {
     if (value) {
       this.unreleaseLearningObject();
     }
+  }
+
+  /**
+   * Opens or closes the change collection modal based
+   * on the passed value
+   *
+   * @param value true (if open), false otherwise
+   */
+  toggleChangeCollectionModal(value: boolean) {
+    this.showChangeCollection = value;
   }
 
   /**
