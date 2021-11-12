@@ -23,14 +23,15 @@ import { AdminGuard } from './admin.guard';
 import { AccessGroupGuard } from './access-group-guard';
 import { ChangelogService } from './changelog.service';
 import { EditorService } from './editor.service';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   imports: [
     HttpClientModule,
     CookieModule.forRoot(),
     ModalModule.forRoot(),
-  ],
-  exports: []
+    SharedModule
+  ]
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders {

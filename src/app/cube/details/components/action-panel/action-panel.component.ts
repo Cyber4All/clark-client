@@ -11,7 +11,7 @@ import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth.service';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
-import { LibraryService, iframeParentID } from 'app/core/library.service';
+import { LibraryService } from 'app/core/library.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
 import { CollectionService } from 'app/core/collection.service';
@@ -56,7 +56,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   userCanRevise = false;
 
   contributorsList = [];
-  iframeParent = iframeParentID;
   error = false;
   userIsAuthor = false;
 
@@ -90,6 +89,11 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
     this.getCollection();
+    this.libraryService.loaded
+      .subscribe(val => {
+        this.downloading = (val);
+        this.changeDetectorRef.markForCheck();
+      });
   }
 
   get mapAndTag() {
@@ -116,10 +120,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     if (!download) {
       // we don't want the add to library button spinner on the 'download' action
       this.addingToLibrary = true;
-    } else {
-      this.downloading = true;
     }
-
     if (download) {
       this.download(
         this.learningObject.author.username,
@@ -164,23 +165,15 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Function to download the learning object zip file
+   *
+   * @param author the learning objects author username
+   * @param learningObjectId the unique mongo id of a learning object
+   */
 
   download(author: string, learningObjectId: string) {
-    this.downloading = true;
-    const revision = this.revisedVersion || (!this.isReleased && !this.revisedVersion);
-
-    // CHECK DOWNLOAD HERE
-    const loaded = this.libraryService
-      .learningObjectBundle(author, learningObjectId).pipe(
-      takeUntil(this.destroyed$));
-
-    this.toggleDownloadModal(true);
-
-    loaded.subscribe(finished => {
-      if (finished) {
-        this.downloading = false;
-      }
-    });
+    this.libraryService.learningObjectBundle(author, learningObjectId);
   }
 
   copyLink() {

@@ -47,6 +47,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   serviceError: boolean;
   libraryItems: LearningObject[] = [];
   downloading = [];
+  currentIndex = null;
   destroyed$ = new Subject<void>();
   canDownload = false;
   notifications: { text: string, timestamp: string, link: string, attributes: any }[];
@@ -229,19 +230,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   downloadObject(event: MouseEvent, object: LearningObject, index: number) {
     event.stopPropagation();
+    this.currentIndex = index;
     this.downloading[index] = true;
-    this.libraryService.learningObjectBundle(
-        object.author.username,
-        object.id
-      ).pipe(
-      takeUntil(this.destroyed$))
-      .subscribe(finished => {
-        if (finished) {
-          this.downloading[index] = false;
-        }
-      });
-
     this.showDownloadModal = true;
+    this.libraryService.learningObjectBundle(object.author.username, object.id);
+    this.downloading[index] = false;
   }
 
   goToNotification(notification: any) {
