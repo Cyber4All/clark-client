@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { take, map, catchError, zip, tap, mergeMap, finalize } from 'rxjs/operators';
+import { take, map, catchError, mergeMap, finalize } from 'rxjs/operators';
 import { of, Observable, merge, Subject } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';

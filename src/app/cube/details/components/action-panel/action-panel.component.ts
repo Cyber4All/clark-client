@@ -290,7 +290,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();
-        this.toaster.success(`Success!`, `Email sent to ${this.auth.user.email}. Please check your inbox and spam.`);
+        this.toaster.success(
+          `Success!`,
+          `Email sent to ${this.auth.user.email}.
+            Please check your inbox and spam.
+            If you don't receive an email within 15 minutes reach out to info@secured.team.`
+          );
       }
     } catch (e) {
       this.toaster.error(`Could not send email`, `${e}`);

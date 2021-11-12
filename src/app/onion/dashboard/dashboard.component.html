@@ -71,8 +71,7 @@
 <clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
   <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
     <clark-changelog-modal
-      [
-      ] = "changelogLearningObject"
+      [learningObject] = "changelogLearningObject"
       [changelogs] = "changelogs ? changelogs[0] : undefined"
       [loading]="loadingChangelogs"
     ></clark-changelog-modal>

@@ -26,8 +26,15 @@
             <div>Status</div>
             <div>Name</div>
             <div>Author</div>
-            <div>Type</div>
-            <div>Date</div>
+            <div>Length</div>
+            <div>Date
+              <button class="sort" (activate)="sortByDate(1)" aria-label="Sort learning objects in ascending order" [tip]="'Sort Ascending'" tipPosition="top" [tipDisabled]="false">
+                <i style="font-size: 18px" class="fas fa-angle-up"></i>
+              </button>
+              <button class="sort" (activate)="sortByDate(-1)" aria-label="Sort learning objects in descending order" [tip]="'Sort Descending'" tipPosition="top" [tipDisabled]="false">
+                <i style="font-size: 18px" class="fas fa-angle-down"></i>
+              </button>
+            </div>
           </div>
           <virtual-scroller
             #scroll

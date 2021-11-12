@@ -1,0 +1,29 @@
+@import '../../../../collection-globals.scss';
+.curators {
+    background-color: white !important;
+
+    .inner {
+        max-width: 1500px;
+        text-align: center;
+        padding: 50px;
+        margin: auto;
+
+        img {
+            max-width: 50%;
+            height: auto;
+        }
+        .header {
+            color: $ncyte-blue;
+            font-size: $largest;
+            font-weight: 600;
+        }
+        .logo {
+            padding-top: 60px;
+        }
+        .links {
+            padding: 20px;
+            color: $light-blue;
+            font-size: $larger;
+        }
+    }
+}

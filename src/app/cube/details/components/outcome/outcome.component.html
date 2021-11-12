@@ -13,8 +13,8 @@
       </div>
       <div class='text-container__mapped-to'>
         {{ outcome?.mappings.length ? 'Mapped to' : 'No Mappings' }}
-        <span *ngFor='let mapping of outcome?.mappings let i = index'>
-          {{ mapping?.frameworkName }}<span *ngIf='i < outcome?.mappings.length - 1'>,</span>
+        <span *ngFor='let mapping of mappingsFrameworks let i = index'>
+          {{ mapping?.frameworkName }}<span *ngIf='i < mappingsFrameworks.length - 1'>,</span>
         </span>
       </div>
     </div>
