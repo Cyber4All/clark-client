@@ -1,0 +1,14 @@
+<div class="banner">
+    <div class="banner__title">Select a Collection</div>
+    <div class="banner__sub">Select a collection to change the collection of the object.</div>
+</div>
+<div class="content">
+    <clark-collections-grid [currentCollection]="object.collection" (selected)="selectCollection($event)"></clark-collections-grid>
+    <div class="submit-btn btn-group center">
+        <button class="button good"
+            [ngClass]="{'disabled': !selectedCollection || selectedCollection === object.collection }"
+            [disabled]="!selectedCollection || selectedCollection === object.collection"
+            (activate)="confirm()" aria-label="Change object's submitted collection">Confirm</button>
+        <button class="button neutral" aria-label="Go back to the previous page" (activate)="close.emit()">Cancel</button>
+    </div>
+</div>
