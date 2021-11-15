@@ -7,38 +7,27 @@
       <div>Size</div>
       <div *ngIf="canManage" class="placeholder"></div>
     </div>
-    <!-- Render Folders -->
+    <div *ngFor="let item of directoryListing">
+      <!-- Folder -->
+      <clark-folder-list-item
+        *ngIf="item.folders"
+        class="folder"
+        (clicked)="openFolder(item.name)"
+        (menuClicked)="handleMenuClicked($event, item)"
+        [folder]="item"
+        [showOptionButton]="canManage"
+      ></clark-folder-list-item>
 
-    <!-- Render Files -->
-    <cdk-virtual-scroll-viewport itemSize="30" class="file-list-viewport">
-      <ng-container
-        *cdkVirtualFor="
-          let item of directoryListing;
-          trackBy: trackItems;
-          templateCacheSize: 0
-        "
-      >
-        <!-- Folder -->
-        <clark-folder-list-item
-          *ngIf="item.folders"
-          class="folder"
-          (clicked)="openFolder(item.name)"
-          (menuClicked)="handleMenuClicked($event, item)"
-          [folder]="item"
-          [showOptionButton]="canManage"
-        ></clark-folder-list-item>
-
-        <!-- File -->
-        <clark-file-list-item
-          *ngIf="!item.folders"
-          class="file"
-          (clicked)="openFile(item)"
-          (menuClicked)="handleMenuClicked($event, item)"
-          [file]="item"
-          [showOptionButton]="canManage"
-        ></clark-file-list-item>
-      </ng-container>
-    </cdk-virtual-scroll-viewport>
+      <!-- File -->
+      <clark-file-list-item
+        *ngIf="!item.folders"
+        class="file"
+        (clicked)="openFile(item)"
+        (menuClicked)="handleMenuClicked($event, item)"
+        [file]="item"
+        [showOptionButton]="canManage"
+      ></clark-file-list-item>
+    </div>
   </div>
 </div>
 <div class="preview" *ngIf="!preview">
