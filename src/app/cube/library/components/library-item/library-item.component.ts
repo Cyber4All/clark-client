@@ -43,6 +43,9 @@ export class LibraryItemComponent implements OnInit {
     this.titleClicked.emit(e);
   }
 
+  /**
+   * Changes the icon of the download button
+   */
   toggleDownload() {
     if (this.toggle) {
       if (this.currIndex === this.myIndex) {
