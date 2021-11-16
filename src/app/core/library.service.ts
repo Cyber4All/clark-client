@@ -15,7 +15,7 @@ export class LibraryService {
 
   public libraryItems: Array<LearningObject> = [];
 
-  // Observable boolean to toogle download spinner in components
+  // Observable boolean to toggle download spinner in components
   private _loading$ = new BehaviorSubject<boolean>(false);
 
   // Public get for loading observable
