@@ -171,7 +171,7 @@ export class LibraryService {
       return throwError(error.error.message);
     } else if (error.status === 425) {
       // At time of implementation, 425 is recgonized as an experimental status
-      this.toaster.warning('Hang Tight!', 'The download for this learning object isn't ready yet, check back shortly to see if it has finished bundling.');
+      this.toaster.warning('Hang Tight!', `The download for this learning object isn't ready yet, check back shortly to see if it has finished bundling.`);
     } else {
       // API returned error
       return throwError(error);
