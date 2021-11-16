@@ -62,7 +62,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
   private subToDirChange() {
     this.node$.pipe(takeUntil(this.killSub$)).subscribe((node) => {
-      this.directoryListing = node.getFolders().concat(node.getFiles() as any);
+      this.directoryListing = [ ...node.getFolders(), ...node.getFiles()];
     });
   }
 
