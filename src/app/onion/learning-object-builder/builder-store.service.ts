@@ -90,7 +90,7 @@ export class BuilderStore {
 
   /**
    * Public variable used in the file upload process to fire the bundling
-   * process correctly and prevent users from exiting the builder prematuraly
+   * process correctly and prevent users from exiting the builder prematurely
    *
    * 'upload' is a string to toggle between 4 values:
    *
