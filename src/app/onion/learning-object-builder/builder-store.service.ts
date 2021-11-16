@@ -628,7 +628,7 @@ export class BuilderStore {
   /**
    * Function to set toggles during file/folder uploads process
    */
-  toggleUploadComplete(val: string) {
+  toggleUploadComplete(val: any) {
     this.upload = val;
   }
 
