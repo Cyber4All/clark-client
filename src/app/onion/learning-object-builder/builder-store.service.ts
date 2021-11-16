@@ -113,7 +113,7 @@ export class BuilderStore {
    * and the upload value will flip back to 'false' until the upload is complete and then
    * 'true'.
    */
-  public upload = '';
+  public upload: 'true' | 'false' | 'undefined' | 'secondClickBack' = 'true';
 
   // true if builder is creating/editing a revision, false otherwise
   private _isRevision: boolean;
