@@ -128,7 +128,7 @@ export class LibraryService {
       catchError((error) => this.handleError(error))
     )
     .subscribe(() => {
-      this.toaster.success('All Ready!', 'Your bundle will download in a moment...');
+      this.toaster.success('All Ready!', 'Your download will begin in a moment...');
       this.downloadBundle(bundle);
     });
   }
