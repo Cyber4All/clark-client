@@ -26,7 +26,6 @@ export class LibraryItemComponent implements OnInit {
   ngOnInit() {
     this.libraryService.loaded.subscribe(val => {
       this.toggle = val;
-
       this.changeDetectorRef.markForCheck();
     });
   }
