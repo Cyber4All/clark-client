@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "4.26.1",
+  "version": "4.26.2",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -27,7 +27,7 @@
     "@angular/platform-browser-dynamic": "^9.0.6",
     "@angular/router": "^9.0.6",
     "@cyber4all/clark-taxonomy": "^4.0.3",
-    "aws-sdk": "^2.638.0",
+    "aws-sdk": "^2.1034.0",
     "chance": "^1.1.4",
     "chart.js": "^2.9.4",
     "core-js": "^2.6.11",
