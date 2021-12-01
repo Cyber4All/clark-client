@@ -161,6 +161,7 @@ export class CollectionService {
       // Client-side or network returned error
       return throwError(error.error.message);
     } else {
+      console.log('returning');
       // API returned error
       return throwError(error);
     }

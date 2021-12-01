@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CollectionService } from '../../core/collection.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -26,6 +26,7 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private collectionService: CollectionService,
     private titleService: Title,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -44,7 +45,11 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
   }
 
   async fetchCollection(abvName: string) {
-    this.collection = await this.collectionService.getCollectionMetadata(abvName);
+    this.collection = await this.collectionService.getCollectionMetadata(abvName).catch(e => {
+      if(e.status === 404) {
+        this.router.navigate(['not-found']);
+      }
+    });
     this.key.next(this.collection.abvName);
     if (
       this.collection.abvName !== 'intro_to_cyber'
