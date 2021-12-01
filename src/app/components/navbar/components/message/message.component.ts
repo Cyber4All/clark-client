@@ -24,7 +24,7 @@ export class MessageComponent implements OnInit {
   getMessage() {
     this.messages.getStatus().then(message => {
       this.message = message;
-      this.showBanner = false;
+      this.showBanner = true;
     })
     .catch ( _ => {
       /** Suppress the error because it is being handled in Gateway.
