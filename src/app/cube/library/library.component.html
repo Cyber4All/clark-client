@@ -53,6 +53,8 @@
                         (downloadButtonClicked)='downloadObject($event, item, i)'
                         (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemToDelete = item;'
                         (titleClicked)='goToItem(item)'
+                        [currIndex]='currentIndex'
+                        [myIndex]=i
                     ></clark-library-item>
                 </div>
             </div>

@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from 'entity/learning-object/learning-object';
+import { LibraryService } from 'app/core/library.service';
 
 @Component({
   selector: 'clark-library-item',
@@ -10,18 +11,28 @@ export class LibraryItemComponent implements OnInit {
 
   @Input() learningObject: LearningObject;
   @Input() learningObjectAverageRating: number;
+  @Input() load: [];
+  @Input() currIndex: number;
+  @Input() myIndex: number;
 
   @Output() downloadButtonClicked = new EventEmitter<Event>();
   @Output() deleteButtonClicked = new EventEmitter<Event>();
   @Output() titleClicked = new EventEmitter<Event>();
 
-  constructor() { }
+  toggle = false;
+
+  constructor(private libraryService: LibraryService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit() {
+    this.libraryService.loaded.subscribe(val => {
+      this.toggle = val;
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   onDownloadClick(e: Event) {
     this.downloadButtonClicked.emit(e);
+    this.changeDetectorRef.detectChanges();
   }
 
   onDeleteButtonClick(e: Event) {
@@ -30,6 +41,21 @@ export class LibraryItemComponent implements OnInit {
 
   onTitleClick(e: Event) {
     this.titleClicked.emit(e);
+  }
+
+  /**
+   * Changes the icon of the download button
+   */
+  toggleDownload() {
+    if (this.toggle) {
+      if (this.currIndex === this.myIndex) {
+        return '<i class="fal fa-spinner-third fa-spin"></i>';
+      } else {
+        return '<i class="far fa-download"></i>';
+      }
+    } else {
+      return '<i class="far fa-download"></i>';
+    }
   }
 
   getContributorsList() {

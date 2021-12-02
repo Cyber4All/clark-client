@@ -20,7 +20,6 @@ export class FeaturedCollectionCardComponent implements OnInit {
       this.collection.abvName !== 'plan c' &&
       this.collection.abvName !== '502_project'
     ) {
-      console.log(this.pictureLocation);
       this.pictureLocation =
         '../../../assets/images/collections/' +
         this.collection.abvName +

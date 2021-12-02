@@ -70,7 +70,6 @@ export class FileManagementService {
       .catch(e => {
         uploadUpdate$.next({ type: 'error', data: e });
       });
-
     return uploadUpdate$;
   }
 
