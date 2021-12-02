@@ -93,6 +93,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     FileUploadMeta[]
   >();
   @Output()
+  uploadComplete: EventEmitter<string> = new EventEmitter<string>(true);
+  @Output()
   urlAdded: EventEmitter<void> = new EventEmitter<void>();
   @Output()
   urlUpdated: EventEmitter<{
@@ -444,10 +446,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   openFilePicker(folderPicker: boolean) {
+    this.uploadComplete.next('false');
     if (folderPicker) {
       this.folderInput.nativeElement.click();
+      this.uploadComplete.next(undefined);
     } else {
       this.fileInput.nativeElement.click();
+      this.uploadComplete.next(undefined);
     }
   }
 
@@ -460,6 +465,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   filesPicked(fileList: FileList) {
     if (fileList.length > 0) {
+      this.uploadComplete.emit('false');
       let files: FileInput[] = Array.from(fileList);
       if (this.openPath) {
         files = files.map(file => {
@@ -480,6 +486,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private async handleUpload(files: FileInput[]) {
+    this.uploadComplete.emit('false');
     this.enqueueFiles(files);
     try {
       const learningObject = await this.learningObject$
@@ -534,6 +541,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     this.totalUploadSize = 0;
     this.folderInput.nativeElement.value = null;
     this.fileInput.nativeElement.value = null;
+    this.uploadComplete.emit('true');
   }
 
   /**
@@ -621,6 +629,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       }, 500);
     }
     this.filesUploaded.emit(this.newFileMeta);
+    this.uploadComplete.emit('true');
     this.newFileMeta = [];
   }
 

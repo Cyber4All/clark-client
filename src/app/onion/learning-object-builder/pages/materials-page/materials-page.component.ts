@@ -119,6 +119,11 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Toggle function for exiting builder
+  handleUploadComplete(val: string) {
+    this.store.toggleUploadComplete(val);
+  }
+
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();

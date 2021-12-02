@@ -12,7 +12,7 @@ import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { AuthService } from '../../core/auth.service';
 
 import { retry, catchError, takeUntil } from 'rxjs/operators';
-import { throwError, Subject } from 'rxjs';
+import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/typings';
 
 @Injectable()
@@ -20,14 +20,25 @@ export class LearningObjectService {
   learningObjects: LearningObject[] = [];
   private headers: HttpHeaders = new HttpHeaders();
 
+  // Observable boolean to toogle download spinner in components
+  private _loading$ = new BehaviorSubject<boolean>(false);
+
+  // Public get for loading observable
+  get loaded() {
+    return this._loading$.asObservable();
+  }
+
   constructor(
     private http: HttpClient,
-    private auth: AuthService,
     private cookies: CookieService
   ) {
     const token = this.cookies.get('presence');
-    this.headers = new HttpHeaders().append('Content-Type', 'application/json');
-    this.headers = new HttpHeaders().append('Authorization', 'Bearer ' + token);
+    if (token !== null) {
+      this.headers = new HttpHeaders().append(
+        'Authorization',
+        `${'Bearer ' + token}`
+      );
+    }
   }
 
   /**
@@ -339,6 +350,30 @@ export class LearningObjectService {
       )
       .pipe(
         retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Function to initiate the bundling process for new and updated learning objects
+   *
+   * @param username Authors username of current learning object
+   * @param learningObjectId id current learning object
+   */
+  triggerBundle(username: string, learningObjectId: string) {
+    const route = USER_ROUTES.OBJECT_BUNDLE(
+      username,
+      learningObjectId
+    );
+    // POST needs the body arrgument
+    return this.http
+      .post(
+        route,
+        {},
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
         catchError(this.handleError)
       )
       .toPromise();
