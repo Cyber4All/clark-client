@@ -266,10 +266,10 @@ export const USER_ROUTES = {
   ADD_LEARNING_OBJECT_TO_CART(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
   },
-  DOWNLOAD_OBJECT(username: string, learningObjectCuid: string, version: number) {
+  OBJECT_BUNDLE(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/learning-objects/${encodeURIComponent(learningObjectCuid)}/versions/${encodeURIComponent(version.toString())}/bundle`;
+    )}/learning-objects/${encodeURIComponent(learningObjectId)}/bundle`;
   },
   GET_SAME_ORGANIZATION(organization) {
     return `${

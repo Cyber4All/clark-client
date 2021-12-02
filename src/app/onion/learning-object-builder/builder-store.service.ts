@@ -88,6 +88,33 @@ export class BuilderStore {
   // false until a save operation is attempted, true after that
   public touched: boolean;
 
+  /**
+   * Public variable used in the file upload process to fire the bundling
+   * process correctly and prevent users from exiting the builder prematurely
+   *
+   * 'upload' is a string to toggle between 4 values:
+   *
+   * 1. 'true': default value to indicate all files have been uploaded
+   * 2. 'false': value indicating that files are being uploaded
+   * 3. 'undefined': intermediary value toggled -- see NOTE below
+   * 4. 'secondClickBack': used in conjunction with 'undefined' -- see NOTE
+   *
+   * NOTE: This mainly applies to large files being uploaded. Most web browsers
+   * have their own file upload security procedures that check users uploads in
+   * their own way. This results in a dialog making the user confirm their upload.
+   * 'undefined' is toggled when the file input dialog is fired. The case in chrome
+   * is that the dialog will close and the user can navigate freely for serveral
+   * seconds on large file uploads before the confirm dialog fires. The undefined value
+   * toggles to the 'secondClickBack' after a user attempts to leave the builder in
+   * this time frame for the window dialog to appear. 'upload' is then toggled back
+   * to 'true' so we don't perpetually keep a user on the builder. At this stage,
+   * the upload may have most likly failed based on if the user refreshes, leaves, etc...
+   * Otherwise, the file upload process will continue after the user confirms the dialog
+   * and the upload value will flip back to 'false' until the upload is complete and then
+   * 'true'.
+   */
+  public upload: 'true' | 'false' | 'undefined' | 'secondClickBack' = 'true';
+
   // true if builder is creating/editing a revision, false otherwise
   private _isRevision: boolean;
 
@@ -597,6 +624,14 @@ export class BuilderStore {
     });
     this.serviceInteraction$.next(false);
   }
+
+  /**
+   * Function to set toggles during file/folder uploads process
+   */
+  toggleUploadComplete(val: any) {
+    this.upload = val;
+  }
+
   /**
    * Adds Url to Learning Object's materials
    *

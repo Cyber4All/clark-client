@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnDestroy, Input } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
@@ -9,6 +9,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { CollectionService, Collection } from 'app/core/collection.service';
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
+import { LearningObjectService } from '../../../core/learning-object.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -52,7 +53,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     private collectionService: CollectionService,
     private history: HistoryService,
     public validator: LearningObjectValidator,
-    public store: BuilderStore
+    public store: BuilderStore,
+    public learningObjectService: LearningObjectService
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -150,6 +152,36 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   triggerRouteClick(route: string) {
     this.routesClicked.add(route);
+  }
+
+  /**
+   * Function to initiate the bunlding process on a learning object when changes have been made
+   * @var this.store.upload is a toggle string variable to block the 'Back' button if a file upload
+   * is not finished. See the builder store for more details.
+   */
+  triggerBundlingProcess() {
+    // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')
+    if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
+      // If any data has be changed on the LO, then we need to rebundle
+      if (this.store.touched) {
+        this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject.id);
+      }
+      this.historySnapshot.rewind('/onion/dashboard');
+    } else if (this.store.upload === 'secondClickBack') {
+      // User has tried to exit the builder twice during an upload process (upload = 'true')
+      this.toasterService.error(
+        'Uh-oh!',
+        'Looks like your upload is taking a long time. Please remain patient or refresh the page and try again...'
+      );
+      this.store.toggleUploadComplete('true');
+    } else {
+      // Users attempt to exit the builder during an upload process (upload = 'false' || 'undefined')
+      this.toasterService.warning(
+        'Hang On!',
+        'We are still uploading your files, please stay on this page until this process is complete.'
+      );
+      this.store.toggleUploadComplete('secondClickBack');
+    }
   }
 
   /**

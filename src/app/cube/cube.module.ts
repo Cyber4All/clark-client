@@ -9,6 +9,7 @@ import { CubeRoutingModule } from './cube.routing';
 
 // Services
 import { LearningObjectService } from './learning-object.service';
+import { CoreModule } from 'app/core/core.module';
 
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
@@ -18,7 +19,6 @@ import { SharedModule } from '../shared/shared.module';
 
 // Components
 import { CubeComponent } from './cube.component';
-import { CartComponent } from './cart/cart.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
@@ -59,7 +59,6 @@ import { LibraryModule } from './library/library.module';
 @NgModule({
   declarations: [
     CubeComponent,
-    CartComponent,
     BrowseComponent,
     UserProfileComponent,
     UserPreferencesComponent,
@@ -102,6 +101,7 @@ import { LibraryModule } from './library/library.module';
     CollectionModule,
     AboutUsModule,
     LibraryModule,
+    CoreModule
   ],
   providers: [LearningObjectService]
 })
