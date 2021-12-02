@@ -9,7 +9,7 @@ export class Message {
 }
 @Injectable()
 export class MessagesService {
-  private _message: Message = new Message(true, ('12/02/2021 @ 12:30pm: CLARK is experiencing technical difficulties. We are working ' +
+  private _message: Message = new Message(true, ('12/02/2021 @ 12:30pm: CLARK is experiencing some technical difficulties. We are working ' +
     'hard to get our operations back to normal. Please standby while changes are being applied...'));
 
   get message() {
