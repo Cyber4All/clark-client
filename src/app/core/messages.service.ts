@@ -9,7 +9,8 @@ export class Message {
 }
 @Injectable()
 export class MessagesService {
-  private _message: Message = new Message(true, 'On December 2nd, 2021 from 7AM EST - 9AM EST CLARK will be taking scheduled downtime.');
+  private _message: Message = new Message(true, ('12/02/2021 @ 12:30pm: CLARK is experiencing some technical difficulties. We are working ' +
+    'hard to get our operations back to normal. Please standby while changes are being applied...'));
 
   get message() {
     return this._message;
