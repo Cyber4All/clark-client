@@ -144,9 +144,10 @@ export class LibraryService {
     // Create the iframe HTML element
     const iframe = document.createElement('iframe');
     // Hide the iframe
-    iframe.setAttribute('style', 'none');
     iframe.setAttribute('sandbox', 'allow-same-origin allow-downloads');
     iframe.setAttribute('id', iframeParentID);
+    iframe.style.visibility = 'hidden';
+    iframe.style.position = 'fixed';
     // Append iframe to the page
     document.body.appendChild(iframe);
     // Retrieve bundle from service
