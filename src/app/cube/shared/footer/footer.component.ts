@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { COPY } from './footer.copy';
 import { environment } from '@env/environment';
+import { SubscriptionAgreementService } from 'app/core/subscription-agreement.service';
 
 @Component({
   selector: 'cube-footer',
@@ -15,7 +16,7 @@ export class FooterComponent implements OnInit {
   hideFooter = false;
   experimental: boolean;
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private subscriptionService: SubscriptionAgreementService) { }
 
   ngOnInit() {
     this.experimental = environment.experimental;
@@ -25,4 +26,8 @@ export class FooterComponent implements OnInit {
     });
   }
 
+  // Toggle to activate newsletter subscription banner
+  toggleNewsletterBanner() {
+    this.subscriptionService.setShowSubscriptionBanner(true);
+  }
 }
