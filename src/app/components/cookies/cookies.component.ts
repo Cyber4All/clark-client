@@ -1,5 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { GLOBAL } from '@env/strings';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'clark-cookies',

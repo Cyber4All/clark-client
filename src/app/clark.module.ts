@@ -20,6 +20,7 @@ import { SearchComponent } from './components/navbar/components/search/search.co
 import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 import { UnauthorizedComponent } from './unauthorized.component';
 import { FormsModule } from '@angular/forms';
+import { SubscriptionComponent } from './components/subscription/subscription.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -39,7 +40,8 @@ import { FormsModule } from '@angular/forms';
     MessageComponent,
     SearchComponent,
     MaintenancePageComponent,
-    UnauthorizedComponent],
+    UnauthorizedComponent,
+    SubscriptionComponent],
   bootstrap: [ClarkComponent],
   providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
 })
