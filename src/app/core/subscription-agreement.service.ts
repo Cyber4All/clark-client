@@ -16,7 +16,7 @@ export class SubscriptionAgreementService {
   constructor() {}
 
   /**
-   * Function that toggles the value for the subscription banner
+   * Function that retrieves the toggle value for the subscription banner
    *
    * @returns current value of 'showSubscriptionBanner'
    */
