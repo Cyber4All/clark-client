@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
 
+/**
+ * @class 'SubscriptionAgreementService' is a component used to toggle the
+ * CLARK Newsletter Banner. This class is only used within @module CubeModule
+ * This class can be expanded upon; however, this class only pertains to the
+ * general user subscriptions with their email; NOT collection subscriptions.
+ */
+
 @Injectable({
   providedIn: 'root'
 })
