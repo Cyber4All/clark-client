@@ -11,6 +11,7 @@ import { RatingService } from 'app/core/rating.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
+import { NavbarService } from 'app/core/navbar.service';
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
@@ -81,6 +82,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private ratings: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
+    private navbarService: NavbarService,
   ) {}
 
   @HostListener('window:resize', ['$event'])
@@ -113,6 +115,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
+    this.navbarService.show();
     this.getScreenSize();
     this.loadLibrary();
   }
