@@ -15,7 +15,7 @@
     </div>
     <div *ngIf="learningObjects" class="content" id="pageContent" tabindex="0">
       <div class="column-title" id="column-title">
-        <span tabindex="0" id="results">{{ copy.RESULTS }} ({{this.totalLearningObjects}})
+        <span tabindex="0" id="results">{{ copy.RESULTS }} ({{ this.totalLearningObjects ? this.totalLearningObjects : '0' }})
           <a class="clear-search" id="clear-search" (activate)="clearSearch()" *ngIf="query?.text !== '' || query.standardOutcomes.length">{{ copy.CLEARSEARCH }} </a>
           <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span>
         </span>
