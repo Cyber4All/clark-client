@@ -12,6 +12,7 @@ import { Injectable } from '@angular/core';
 })
 export class SubscriptionAgreementService {
   showSubscriptionBanner = true;
+  isMobile = window.screen.width < 600 ? true : false;
 
   constructor() {}
 
@@ -35,6 +36,8 @@ export class SubscriptionAgreementService {
     const banner = localStorage.getItem('showSubscriptionBanner');
     if (banner == null) {
       this.setShowSubscriptionBanner(true);
+    } else if (banner && this.isMobile) {
+      this.setShowSubscriptionBanner(false);
     }
     this.showSubscriptionBanner = !(banner !== null && banner === 'false');
   }
