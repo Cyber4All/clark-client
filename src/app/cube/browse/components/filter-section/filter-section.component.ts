@@ -10,6 +10,7 @@ export class FilterSectionComponent implements OnInit {
   @Output() change = new EventEmitter();
 
   collapsed: boolean;
+  activeStatus: boolean
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -61,6 +62,20 @@ export class FilterSectionComponent implements OnInit {
       this.change.emit('deselect');
       this.cd.detectChanges();
     }
+  }
+
+  /**
+   * Determines whether there is an active status in the filters array
+   * 
+   * @returns a boolean to determine if a filter in info.filters is active 
+   */
+  hasActiveStatus() {
+    this.info.filters.forEach((filter) => {
+      if (filter.active) {
+        this.activeStatus = true;
+      }
+    })
+    return this.activeStatus
   }
 }
 
