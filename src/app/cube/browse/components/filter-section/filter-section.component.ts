@@ -1,23 +1,31 @@
-import { ChangeDetectorRef, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
+import { ChangeDetectorRef, Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
 @Component({
   selector: 'clark-filter-section',
   templateUrl: './filter-section.component.html',
   styleUrls: ['./filter-section.component.scss']
 })
-export class FilterSectionComponent implements OnInit {
+export class FilterSectionComponent implements OnInit, DoCheck {
   @Input() info: FilterSectionInfo;
   @Output() change = new EventEmitter();
 
   collapsed: boolean;
-  activeStatus: boolean
 
   constructor(
     private cd: ChangeDetectorRef,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.collapsed = true;
+  }
+
+  ngDoCheck() {
+    if (this.info !== undefined) {
+      for (let i = 0; i < this.info.filters.length; i++) {
+        if (this.info.filters[i].active === true) {
+          this.collapsed = false;
+        }
+      }
+    }
   }
 
   /**
@@ -62,20 +70,6 @@ export class FilterSectionComponent implements OnInit {
       this.change.emit('deselect');
       this.cd.detectChanges();
     }
-  }
-
-  /**
-   * Determines whether there is an active status in the filters array
-   * 
-   * @returns a boolean to determine if a filter in info.filters is active 
-   */
-  hasActiveStatus() {
-    this.info.filters.forEach((filter) => {
-      if (filter.active) {
-        this.activeStatus = true;
-      }
-    })
-    return this.activeStatus
   }
 }
 
