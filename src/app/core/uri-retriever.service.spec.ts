@@ -28,8 +28,8 @@ describe('UriRetrieverService', () => {
       providers: [ UriRetrieverService ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
-    uriRetrieverService = TestBed.get(UriRetrieverService);
+    httpTestingController = TestBed.inject(HttpTestingController);
+    uriRetrieverService = TestBed.inject(UriRetrieverService);
   });
 
   afterEach(() => {

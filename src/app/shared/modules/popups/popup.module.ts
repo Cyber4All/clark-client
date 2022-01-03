@@ -17,9 +17,6 @@ import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.
   ],
   exports: [
     PopupComponent,
-  ],
-  entryComponents: [
-    PopupViewerComponent
   ]
 })
 export class PopupModule { }

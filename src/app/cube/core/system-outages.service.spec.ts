@@ -6,7 +6,7 @@ describe('SystemOutagesService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SystemOutagesService = TestBed.get(SystemOutagesService);
+    const service: SystemOutagesService = TestBed.inject(SystemOutagesService);
     expect(service).toBeTruthy();
   });
 });

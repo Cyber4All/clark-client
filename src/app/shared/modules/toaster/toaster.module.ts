@@ -6,6 +6,5 @@ import { CommonModule } from '@angular/common';
 @NgModule({
   imports: [ CommonModule ],
   declarations: [ ToastrOvenComponent, CrustComponent ],
-  entryComponents: [ CrustComponent ]
 })
 export class ToasterModule { }

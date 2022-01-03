@@ -13,7 +13,7 @@ describe('FeaturedService', () => {
       providers: [ FeaturedObjectsService ]
     });
 
-    httpTestingController = TestBed.get(HttpTestingController);
+    httpTestingController = TestBed.inject(HttpTestingController);
     featuredObjectsService = TestBed.inject(FeaturedObjectsService);
   });
 

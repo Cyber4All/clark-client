@@ -23,9 +23,9 @@ describe('Service : Auth', () => {
             ],
         });
                 // Returns a service with the MockBackend so we can test with dummy responses
-                service = TestBed.get(AuthService);
+                service = TestBed.inject(AuthService);
                 // Inject the http service and test controller for each test
-                httpTestingController = TestBed.get(HttpTestingController);
+                httpTestingController = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {
