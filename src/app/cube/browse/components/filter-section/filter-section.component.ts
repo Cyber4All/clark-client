@@ -1,11 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
+import { ChangeDetectorRef, Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
 @Component({
   selector: 'clark-filter-section',
   templateUrl: './filter-section.component.html',
   styleUrls: ['./filter-section.component.scss']
 })
-export class FilterSectionComponent implements OnInit {
+export class FilterSectionComponent implements OnInit, DoCheck {
   @Input() info: FilterSectionInfo;
   @Output() change = new EventEmitter();
 
@@ -15,8 +14,18 @@ export class FilterSectionComponent implements OnInit {
     private cd: ChangeDetectorRef,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.collapsed = true;
+  }
+
+  ngDoCheck() {
+    if (this.info !== undefined) {
+      for (let i = 0; i < this.info.filters.length; i++) {
+        if (this.info.filters[i].active === true) {
+          this.collapsed = false;
+        }
+      }
+    }
   }
 
   /**

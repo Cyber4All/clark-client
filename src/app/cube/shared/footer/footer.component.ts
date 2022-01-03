@@ -4,6 +4,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { COPY } from './footer.copy';
 import { environment } from '@env/environment';
+import { SubscriptionAgreementService } from 'app/core/subscription-agreement.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'cube-footer',
@@ -15,7 +17,11 @@ export class FooterComponent implements OnInit {
   hideFooter = false;
   experimental: boolean;
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private subscriptionService: SubscriptionAgreementService,
+    private toaster: ToastrOvenService) { }
 
   ngOnInit() {
     this.experimental = environment.experimental;
@@ -25,4 +31,12 @@ export class FooterComponent implements OnInit {
     });
   }
 
+  // Toggle to activate newsletter subscription banner
+  toggleNewsletterBanner() {
+    if (window.screen.width < 600) {
+      this.toaster.warning(`Action unavailable!`, `Please check out CLARK on a desktop computer to sign up!`);
+    } else {
+      this.subscriptionService.setShowSubscriptionBanner(true);
+    }
+  }
 }

@@ -24,6 +24,14 @@
   ></clark-cookies>
 </ng-template>
 
+<clark-popup *ngIf="displayNewslettereBanner()" (closed)="showSubscriptionBanner(false)">
+  <div class="modal-container" #popupInner>
+    <clark-subscription
+      (showAgreementBanner)="showSubscriptionBanner($event)"
+    ></clark-subscription>  
+  </div>
+</clark-popup>
+
 <ng-template #loadingTemplate>
   Loading...
 </ng-template>

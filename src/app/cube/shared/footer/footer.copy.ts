@@ -10,5 +10,6 @@ export const COPY = {
     ACCESSIBILITY: 'Accessibility',
     PRESS: 'Press and Media',
     OUTAGES: 'System Outages',
-    ABOUT: 'About Us'
+    ABOUT: 'About Us',
+    SUBSCRIBE: 'Sign up for our Newsletter'
 };

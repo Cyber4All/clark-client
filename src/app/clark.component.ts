@@ -12,6 +12,7 @@ import { MessagesService } from './core/messages.service';
 import { environment } from '@env/environment';
 import { ToastrOvenService } from './shared/modules/toaster/notification.service';
 import { CookieAgreementService } from './core/cookie-agreement.service';
+import { SubscriptionAgreementService } from './core/subscription-agreement.service';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -49,7 +50,6 @@ import { CookieAgreementService } from './core/cookie-agreement.service';
 })
 export class ClarkComponent implements OnInit {
   isSupportedBrowser: boolean;
-  cookiesAgreement: boolean;
   isOldVersion = false;
   errorMessage: string;
   hidingOutlines = true;
@@ -79,7 +79,8 @@ export class ClarkComponent implements OnInit {
     private messages: MessagesService,
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
-    private cookieAgreement: CookieAgreementService
+    private cookieAgreement: CookieAgreementService,
+    private subscriptionAgreement: SubscriptionAgreementService
   ) {
     this.isUnderMaintenance = false;
 
@@ -91,10 +92,6 @@ export class ClarkComponent implements OnInit {
           this.libraryService.getLibrary();
         }
       });
-
-    if (localStorage.getItem('cookieAgreement')) {
-      this.cookiesAgreement = true;
-    }
 
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd && event.id > 1)
@@ -158,6 +155,16 @@ export class ClarkComponent implements OnInit {
    */
   displayCookieBanner() {
     return this.cookieAgreement.getShowCookieBannerVal() && !this.cookieAgreement.getCookieAgreementVal();
+  }
+
+  // Function to update banner toggle
+  showSubscriptionBanner(val: boolean) {
+    this.subscriptionAgreement.setShowSubscriptionBanner(val);
+  }
+
+  // Checks subscription service to ensure the user has not already interacted with banner
+  displayNewslettereBanner() {
+    return this.subscriptionAgreement.getShowSubscriptionBannerVal();
   }
 
   /* set the document title to show location in

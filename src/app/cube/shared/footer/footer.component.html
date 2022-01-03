@@ -19,6 +19,7 @@
         <a aria-label= "Clickable About Us link" href="http://clark.center/about" >{{copy.ABOUT}}</a>
         <a aria-label="Clickable Meet the Team link" href="http://secured.team/team" target="_blank">{{ copy.TEAM }}</a>
         <a [routerLink]="['/press']" aria-label="Press and Media link" target="_blank">{{ copy.PRESS }}</a>
+        <a aria-label="Newsletter Subscription modal" (activate)="toggleNewsletterBanner()">{{ copy.SUBSCRIBE }}</a>
         
       </div>
     </section>
