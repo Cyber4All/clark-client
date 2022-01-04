@@ -37,4 +37,4 @@ const admin_routes: Routes = [
     ],
   },
 ];
-export const AdminRoutingModule: ModuleWithProviders = RouterModule.forChild(admin_routes);
+export const AdminRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(admin_routes);

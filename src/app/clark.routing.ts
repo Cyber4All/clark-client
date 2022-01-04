@@ -28,6 +28,6 @@ const clark_routes: Routes = [
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
-export const ClarkRoutingModule: ModuleWithProviders = RouterModule.forRoot(
+export const ClarkRoutingModule: ModuleWithProviders<any> = RouterModule.forRoot(
   clark_routes
 );

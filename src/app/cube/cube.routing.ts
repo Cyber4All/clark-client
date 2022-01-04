@@ -109,4 +109,4 @@ const cube_routes: Routes = [
   },
 ];
 
-export const CubeRoutingModule: ModuleWithProviders = RouterModule.forChild(cube_routes);
+export const CubeRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(cube_routes);

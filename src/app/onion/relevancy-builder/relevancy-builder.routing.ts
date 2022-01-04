@@ -15,4 +15,4 @@ const builder_routes: Routes = [
   }
 ];
 
-export const BuilderRoutingModule: ModuleWithProviders = RouterModule.forChild(builder_routes);
+export const BuilderRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(builder_routes);

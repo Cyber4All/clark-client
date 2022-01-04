@@ -47,6 +47,6 @@ const onion_routes: Routes = [
     ]
   }
 ];
-export const OnionRoutingModule: ModuleWithProviders = RouterModule.forChild(
+export const OnionRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(
   onion_routes
 );
