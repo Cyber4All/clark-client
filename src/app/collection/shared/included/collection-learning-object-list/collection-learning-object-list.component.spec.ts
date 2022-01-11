@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionLearningObjectListComponent } from './collection-learning-object-list.component';
 
@@ -6,7 +6,7 @@ describe('CollectionLearningObjectCardComponent', () => {
   let component: CollectionLearningObjectListComponent;
   let fixture: ComponentFixture<CollectionLearningObjectListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CollectionLearningObjectListComponent ]
     })

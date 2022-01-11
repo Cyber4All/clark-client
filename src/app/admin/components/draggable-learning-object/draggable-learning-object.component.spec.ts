@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DraggableLearningObjectComponent } from './draggable-learning-object.component';
 
@@ -6,7 +6,7 @@ describe('DraggableLearningObjectComponent', () => {
   let component: DraggableLearningObjectComponent;
   let fixture: ComponentFixture<DraggableLearningObjectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ DraggableLearningObjectComponent ]
     })

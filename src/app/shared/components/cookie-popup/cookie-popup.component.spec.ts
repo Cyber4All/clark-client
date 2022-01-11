@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CookiePopupComponent } from './cookie-popup.component';
 
@@ -6,7 +6,7 @@ describe('CookiePopupComponent', () => {
   let component: CookiePopupComponent;
   let fixture: ComponentFixture<CookiePopupComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CookiePopupComponent ]
     })

@@ -1,4 +1,4 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import { TestBed, waitForAsync, inject } from '@angular/core/testing';
 import { UserService } from '../../core/user.service';
 import { ProfileGuard } from './profile.guard';
 import { Router, ActivatedRoute } from '@angular/router';

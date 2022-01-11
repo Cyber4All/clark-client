@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { FooterComponent } from './footer.component';
@@ -11,7 +11,7 @@ describe('FooterComponent', () => {
     navigate: jasmine.createSpy()
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [
         { provide: Router, useValue: mockRouter },

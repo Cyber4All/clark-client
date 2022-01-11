@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OutcomeTypeaheadComponent } from './outcome-typeahead.component';
 
@@ -6,7 +6,7 @@ describe('TypeaheadComponent', () => {
   let component: OutcomeTypeaheadComponent;
   let fixture: ComponentFixture<OutcomeTypeaheadComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ OutcomeTypeaheadComponent ]
     })

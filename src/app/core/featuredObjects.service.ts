@@ -34,7 +34,7 @@ export class FeaturedObjectsService {
   }
 
   async getFeaturedObjects() {
-    return this.http
+    return await this.http
       .get(FEATURED_ROUTES.GET_FEATURED)
       .pipe(
         retry(3),

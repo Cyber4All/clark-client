@@ -1,5 +1,5 @@
 
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FilterSearchComponent } from './filter-search.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -13,7 +13,7 @@ describe('SearchBarComponent', () => {
   let component: FilterSearchComponent;
   let fixture: ComponentFixture<FilterSearchComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       declarations: [ FilterSearchComponent ],

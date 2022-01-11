@@ -6,7 +6,7 @@ describe('WhatClarkComponent', () => {
   let component: WhatClarkComponent;
   let fixture: ComponentFixture<WhatClarkComponent>;
 
-  beforeEach(async () => {
+  beforeEach(waitForAsync () => {
     await TestBed.configureTestingModule({
       declarations: [ WhatClarkComponent ]
     })

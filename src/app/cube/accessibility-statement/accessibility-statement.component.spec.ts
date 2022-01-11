@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AccessibilityStatementComponent } from './accessibility-statement.component';
 
@@ -6,7 +6,7 @@ describe('AccessibilityStatementComponent', () => {
   let component: AccessibilityStatementComponent;
   let fixture: ComponentFixture<AccessibilityStatementComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AccessibilityStatementComponent ]
     })

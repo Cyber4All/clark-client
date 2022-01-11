@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserSearchWrapperComponent } from './user-search-wrapper.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -14,7 +14,7 @@ describe('UserSearchWrapperComponent', () => {
   let component: UserSearchWrapperComponent;
   let fixture: ComponentFixture<UserSearchWrapperComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       imports: [ FormsModule, HttpClientModule, CookieModule.forRoot() ],
