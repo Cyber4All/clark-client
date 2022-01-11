@@ -23,7 +23,10 @@
     "baseUrl": "src",
     "paths": {
       "@env/*": [ "environments/*" ],
-      "@entity": ["entity/index"]
+      "@entity": ["entity/index"],
+      "core-js/es6/reflect": [
+        "../node_modules/core-js/es/reflect"
+      ]
     },
     "types": [ "jest" ]
   },
