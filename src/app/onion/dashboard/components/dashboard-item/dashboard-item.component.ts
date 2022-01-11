@@ -127,16 +127,18 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    */
   actionPermissions(action: string) {
     const permissions = {
-      edit: ['unreleased', 'denied'],
+      edit: ['unreleased', 'accepted_minor', 'accepted_major'],
       editChildren: [
         'unreleased',
-        'denied',
+        'accepted_minor',
+        'accepted_major',
         this.learningObject.length !== 'nanomodule'
       ],
-      manageMaterials: ['unreleased', 'denied', this.verifiedEmail],
-      submit: ['unreleased', 'denied', this.verifiedEmail],
+      manageMaterials: ['unreleased', 'accepted_minor', 'accepted_major', this.verifiedEmail],
+      submit: ['unreleased', this.verifiedEmail],
+      resubmit: ['accepted_minor', 'accepted_major'],
       view: ['released'],
-      delete: ['unreleased', 'denied'],
+      delete: ['unreleased', 'rejected'],
       cancelSubmission: ['waiting', this.verifiedEmail],
       infoPanel: ['released']
     };
