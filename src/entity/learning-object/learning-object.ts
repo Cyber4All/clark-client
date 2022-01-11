@@ -770,6 +770,8 @@ export namespace LearningObject {
     REVIEW = 'review',
     PROOFING = 'proofing',
     RELEASED = 'released',
+    ACCEPTED_MAJOR = 'accepted_major',
+    ACCEPTED_MINOR = 'accepted_minor',
   }
 
   export enum Level {

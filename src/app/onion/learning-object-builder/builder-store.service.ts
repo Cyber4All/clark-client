@@ -201,8 +201,7 @@ export class BuilderStore {
 
     if (
       ![
-        LearningObject.Status.UNRELEASED,
-        LearningObject.Status.REJECTED
+        LearningObject.Status.UNRELEASED
       ].includes(object.status)
     ) {
       this.validator.submissionMode = true;
@@ -253,8 +252,7 @@ export class BuilderStore {
         this.validator.submissionMode =
           this.learningObject.status &&
           ![
-            LearningObject.Status.UNRELEASED,
-            LearningObject.Status.REJECTED
+            LearningObject.Status.UNRELEASED
           ].includes(this.learningObject.status);
         this.outcomes = this.parseOutcomes(this.learningObject.outcomes);
         this.validator.validateLearningObject(

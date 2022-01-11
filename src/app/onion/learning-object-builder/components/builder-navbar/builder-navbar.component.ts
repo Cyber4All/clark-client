@@ -284,7 +284,21 @@ export class BuilderNavbarComponent implements OnDestroy {
           tip:
             'This learning object is visible only to you. Submit it for review to make it publicly available.'
         }
-      ]
+      ],
+      [
+        LearningObject.Status.ACCEPTED_MAJOR,
+        {
+          tip: 'The learning object is in the review process. A reviewer, curator, or editor has asked '
+            + 'for major changes before it can be accepted.'
+        }
+      ],
+      [
+        LearningObject.Status.ACCEPTED_MINOR,
+        {
+          tip: 'The learning object is in the review process. A reviewer, curator, or editor has asked for minor '
+            + 'changes before it can be accepted.'
+        }
+      ],
     ]);
   }
 
