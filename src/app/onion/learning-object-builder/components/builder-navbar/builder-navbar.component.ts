@@ -289,7 +289,7 @@ export class BuilderNavbarComponent implements OnDestroy {
         LearningObject.Status.ACCEPTED_MAJOR,
         {
           tip: 'The learning object is in the review process. A reviewer, curator, or editor has asked '
-            + 'for major changes before it can be accepted.'
+            + 'for major changes before it can be released.'
         }
       ],
       [
