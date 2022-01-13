@@ -296,7 +296,7 @@ export class BuilderNavbarComponent implements OnDestroy {
         LearningObject.Status.ACCEPTED_MINOR,
         {
           tip: 'The learning object is in the review process. A reviewer, curator, or editor has asked for minor '
-            + 'changes before it can be accepted.'
+            + 'changes before it can be released.'
         }
       ],
     ]);
