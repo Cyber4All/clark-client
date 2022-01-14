@@ -7,7 +7,7 @@ describe('FeaturedService', () => {
   let featuredObjectsService: FeaturedObjectsService;
   let httpTestingController: HttpTestingController;
 
-  beforeEach(() => {
+  beforeAll(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientTestingModule ],
       providers: [ FeaturedObjectsService ]
