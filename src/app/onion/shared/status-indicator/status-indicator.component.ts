@@ -16,6 +16,8 @@ import {Component, Input} from '@angular/core';
       <span *ngIf="status === 'proofing'"><i class="fas fa-shield"></i></span>
       <span *ngIf="status === 'released'"><i class="fas fa-eye"></i></span>
       <span *ngIf="status === 'rejected'"><i class="fas fa-ban"></i></span>
+      <span *ngIf="status === 'accepted_major'"><i class="fas fa-check"></i></span>
+      <span *ngIf="status === 'accepted_minor'"><i class="fas fa-check-double"></i></span>
     </div>
   `,
   styleUrls: ['status-indicator.component.scss']
