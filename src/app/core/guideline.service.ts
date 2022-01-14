@@ -42,12 +42,6 @@ export class GuidelineService {
       )
       .toPromise()
       .then((res: {total: number, results: any[]}) => {
-        const searchItems = res.results.filter(searchItem => {
-          if (searchItem.frameworkName !== 'CAE CDE 2019') {
-            return searchItem;
-          }
-        });
-        res.results = searchItems;
         return res;
       });
   }
@@ -59,7 +53,7 @@ export class GuidelineService {
         retry(3),
         catchError(this.handleError),
         map((res) => {
-          return res.results.filter(framework => framework.name !== 'CAE CDE 2019');
+          return res.results;
         })
       ).toPromise();
   }
