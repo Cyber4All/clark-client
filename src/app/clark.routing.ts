@@ -28,6 +28,4 @@ const clark_routes: Routes = [
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
-export const ClarkRoutingModule: ModuleWithProviders<any> = RouterModule.forRoot(
-  clark_routes
-);
+export const ClarkRoutingModule: ModuleWithProviders<any> = RouterModule.forRoot(clark_routes, { relativeLinkResolution: 'legacy' });
