@@ -107,7 +107,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const cuid = params.activeLearningObject;
       const version = parseInt(params.version, 10);
 
-      let p = new Promise(resolve => resolve());
+      let p = new Promise<void>(resolve => resolve());
 
       if (cuid && version >= 0) {
         // we know we can attempt to open the sidepanel, now to see if we've finished loading released Learning Objects
@@ -341,7 +341,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   submitRevisionPromiseHandler(submitted: boolean) {
-    this.sidePanelPromiseResolver = new Promise((resolve, reject) => {
+    this.sidePanelPromiseResolver = new Promise<void> ((resolve, reject) => {
       if (submitted) {
         resolve();
       } else {
