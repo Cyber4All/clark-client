@@ -48,7 +48,7 @@ export class ScaffoldComponent implements OnInit {
   }
 
   @HostListener('keyup', ['$event']) handleEscape(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
+    if (event.code === 'Escape') {
       this.toggleAddChild(false);
     }
   }

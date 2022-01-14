@@ -26,7 +26,7 @@ export class UsersComponent implements AfterViewInit {
   activeCollection: Collection;
 
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
+    if (event.code === 'Escape') {
         this.reviewerModal = false;
     }
 }

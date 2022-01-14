@@ -44,7 +44,7 @@ export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // listen for keyup event and, if it's the escape key, close the popup
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
+    if (event.code === 'Escape') {
       this.close();
     }
   }

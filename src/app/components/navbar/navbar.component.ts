@@ -82,7 +82,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   @HostListener('window:keyup', ['$event'])
   onKeyUp(event: KeyboardEvent) {
     event.preventDefault();
-    if (event.keyCode === 27) {
+    if (event.code === 'Escape') {
       // escape key pressed, close the search bar for Sean
       this.hideSearch();
     }
