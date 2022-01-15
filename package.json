@@ -27,6 +27,7 @@
     "@angular/platform-browser": "^12.2.15",
     "@angular/platform-browser-dynamic": "^12.2.15",
     "@angular/router": "^12.2.15",
+    "@babel/core": "^7.16.7",
     "@cyber4all/clark-taxonomy": "^4.0.3",
     "aws-sdk": "^2.1058.0",
     "core-js": "^3.6.5",
@@ -51,7 +52,7 @@
     "@types/jest": "^23.3.14",
     "@types/node": "^12.12.30",
     "ajv": "^6.12.6",
-    "babel-core": "^6.26.3",
+    "babel-core": "^7.0.0-bridge",
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "canvas": "^2.8.0",
@@ -80,7 +81,7 @@
     "singleQuote": true
   },
   "engines": {
-    "node": "10.14.2",
-    "npm": "6.4.1"
+    "node": "v16.13.2",
+    "npm": "8.3.1"
   }
 }
