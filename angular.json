@@ -30,7 +30,15 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "allowedCommonJsDependencies": [
+              "@cyber4all/clark-taxonomy",
+              "aws-sdk",
+              "chart.js",
+              "md5",
+              "ng-click-outside",
+              "rxjs/internal/observable/of"
+            ]
           },
           "configurations": {
             "experimental": {

@@ -1,4 +1,4 @@
-import { ChangeEvent as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
+import { IPageInfo as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
 import {
   Component,
   OnInit,
@@ -183,7 +183,7 @@ export class LearningObjectsComponent
 
       if (
         event &&
-        (event.end < 0 || event.end !== this.learningObjects.length - 1)
+        (event.endIndex < 0 || event.endIndex !== this.learningObjects.length - 1)
       ) {
         // this is a false event from the virtual scroller, disregard
         return;

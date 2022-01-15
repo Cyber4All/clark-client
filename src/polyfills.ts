@@ -79,4 +79,5 @@ import 'zone.js';  // Included with Angular CLI.
  * AWS SDK requires `global` to exist
  * Work around for Angular https://github.com/aws/aws-sdk-js/issues/2141
  */
+// import 'util'; // Run `npm install --save util`.
 (window as any).global = window;
