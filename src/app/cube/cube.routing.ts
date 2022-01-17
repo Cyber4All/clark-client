@@ -18,6 +18,7 @@ import { PressComponent } from './press/press.component';
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { DonateComponent } from './donate/donate.component';
+import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
 
 const details = {
   path: 'details',
@@ -44,6 +45,10 @@ const cube_routes: Routes = [
       {
         path: 'about',
         component: AboutUsComponent,
+      },
+      {
+        path: 'about-us',
+        component: AboutClarkComponent,
       },
       {
         path: 'browse',
