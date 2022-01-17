@@ -21,6 +21,14 @@
     background: $status_review;
   }
 
+  &.accepted_minor {
+    background: $status_accepted_minor;
+  }
+
+  &.accepted_major {
+    background: $status_accepted_major;
+  }
+
   &.proofing {
     background: $status_proofing;
   }
