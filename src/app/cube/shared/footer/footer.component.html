@@ -3,22 +3,23 @@
     <section class="links">
       <div>
         <h3>Platform</h3>
-        <a [routerLink]="['/system/accessibility-statement']" aria-label="Accessbility Statement link" target="_blank">{{ copy.ACCESSIBILITY }}</a>
-        <a [routerLink]="['/system/status']" aria-label="Clickable System Outages link" target="_blank">{{ copy.OUTAGES }}</a>
-        <a [routerLink]="['/system/termsofservice']" aria-label="Clickable Terms of Service link" target="_blank">{{ copy.TERMS }}</a>
-        <a aria-label="Clickable Usage Statistics link" [routerLink]="['/system/usage']" target="_blank">{{ copy.USAGE }}</a>
+        <a [routerLink]="['/system/accessibility-statement']" aria-label="Accessbility Statement link" target="_blank" rel="noopener noreferrer">{{ copy.ACCESSIBILITY }}</a>
+        <a [routerLink]="['/system/status']" aria-label="Clickable System Outages link" target="_blank" rel="noopener noreferrer">{{ copy.OUTAGES }}</a>
+        <a [routerLink]="['/system/termsofservice']" aria-label="Clickable Terms of Service link" target="_blank" rel="noopener noreferrer">{{ copy.TERMS }}</a>
+        <a aria-label="Clickable Usage Statistics link" [routerLink]="['/system/usage']" target="_blank" rel="noopener noreferrer">{{ copy.USAGE }}</a>
+        <a aria-label="Clickable Roadmap link" href="https://securedteam.notion.site/361b86788dc2493e95c990d77594e6ed?v=7bfe3912023b41f28739e4976d6f9861" target="_blank" rel="noopener noreferrer">{{ copy.ROADMAP }}</a>
       </div>
       <div>
         <h3>Help</h3>
         <a aria-label="Clickable Ask for Help link" href="mailto:info@secured.team?subject=CLARK Help">{{ copy.HELP }}</a>
-        <a aria-label="Clickable Troubleshooting link" href="http://help.clark.center" target="_blank">Troubleshooting</a>
-        <a aria-label="Clickable Tutorial link" href="http://about.clark.center/tutorial" target="_blank">{{ copy.TUTORIAL }}</a>
+        <a aria-label="Clickable Troubleshooting link" href="http://help.clark.center" target="_blank" rel="noopener noreferrer">Troubleshooting</a>
+        <a aria-label="Clickable Tutorial link" href="http://about.clark.center/tutorial" target="_blank" rel="noopener noreferrer">{{ copy.TUTORIAL }}</a>
       </div>
       <div>
         <h3>General Information</h3>
         <a aria-label= "Clickable About Us link" href="http://clark.center/about" >{{copy.ABOUT}}</a>
-        <a aria-label="Clickable Meet the Team link" href="http://secured.team/team" target="_blank">{{ copy.TEAM }}</a>
-        <a [routerLink]="['/press']" aria-label="Press and Media link" target="_blank">{{ copy.PRESS }}</a>
+        <a aria-label="Clickable Meet the Team link" href="http://secured.team/team" target="_blank" rel="noopener noreferrer">{{ copy.TEAM }}</a>
+        <a [routerLink]="['/press']" aria-label="Press and Media link">{{ copy.PRESS }}</a>
         <a aria-label="Newsletter Subscription modal" (activate)="toggleNewsletterBanner()">{{ copy.SUBSCRIBE }}</a>
         
       </div>
