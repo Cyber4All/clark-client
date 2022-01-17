@@ -49,6 +49,7 @@ import { DonateComponent } from './donate/donate.component';
 import { FilterSectionComponent } from './browse/components/filter-section/filter-section.component';
 import { GuidelineFilterComponent } from './browse/components/guideline-filter/guideline-filter.component';
 import { LibraryModule } from './library/library.module';
+import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 
 
 /**
@@ -80,6 +81,7 @@ import { LibraryModule } from './library/library.module';
     DonateComponent,
     FilterSectionComponent,
     GuidelineFilterComponent,
+    ContributePageComponent,
   ],
   schemas: [
     NO_ERRORS_SCHEMA,

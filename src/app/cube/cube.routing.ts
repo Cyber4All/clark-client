@@ -18,6 +18,7 @@ import { PressComponent } from './press/press.component';
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { DonateComponent } from './donate/donate.component';
+import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 
 const details = {
   path: 'details',
@@ -44,6 +45,11 @@ const cube_routes: Routes = [
       {
         path: 'about',
         component: AboutUsComponent,
+      },
+      {
+        path: 'contribute-page',
+        component: ContributePageComponent,
+        data: { title: 'Contributors Page'}
       },
       {
         path: 'browse',
