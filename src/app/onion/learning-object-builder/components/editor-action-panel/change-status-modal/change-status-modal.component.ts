@@ -24,6 +24,7 @@ export class ChangeStatusModalComponent implements OnInit {
   @Output() closed = new EventEmitter();
   selectedStatus: string;
   changelog: string;
+  reason: string;
   statuses = [];
 
   page: 1 | 2 = 1;
@@ -44,6 +45,9 @@ export class ChangeStatusModalComponent implements OnInit {
 
   closeModal() {
     this.closed.next();
+    this.selectedStatus = undefined;
+    this.changelog = undefined;
+    this.reason = undefined;
   }
 
   /**
@@ -133,7 +137,7 @@ export class ChangeStatusModalComponent implements OnInit {
     this.serviceInteraction = true;
     await Promise.all([
       this.builderStore
-      .execute(BUILDER_ACTIONS.MUTATE_OBJECT, { status: this.selectedStatus })
+      .execute(BUILDER_ACTIONS.MUTATE_OBJECT, { status: this.selectedStatus, reason: this.reason })
       .catch(error => {
         console.error(error);
       }),

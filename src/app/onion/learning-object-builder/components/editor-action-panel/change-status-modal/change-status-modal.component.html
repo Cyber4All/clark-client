@@ -1,6 +1,6 @@
 <clark-popup *ngIf="shouldShow" (closed)="closeModal()">
   <div class="popup-inner" #popupInner>
-    <ng-container [ngTemplateOutlet]="page === 1 ? changeStatus : updateChangelog"></ng-container>
+    <ng-container [ngTemplateOutlet]="page === 1 ? changeStatus : selectedStatus === 'accepted_major' || selectedStatus === 'accepted_minor' ? requestChanges : updateChangelog"></ng-container>
   </div>
 </clark-popup>
 
@@ -14,8 +14,8 @@
       </div>
     </div>
     <div class="btn-group to-right">
-      <button *ngIf="selectedStatus && selectedStatus === 'released'" class="button good" (activate)="advance()">Next</button>
-      <button *ngIf="selectedStatus && selectedStatus !== 'released'" class="button good" (activate)="updateStatus()">Confirm</button>
+      <button *ngIf="selectedStatus && (selectedStatus === 'released' || selectedStatus === 'accepted_major' || selectedStatus === 'accepted_minor')" class="button good" (activate)="advance()">Next</button>
+      <button *ngIf="selectedStatus && (selectedStatus !== 'released' && selectedStatus !== 'accepted_major' && selectedStatus !== 'accepted_minor')" class="button good" (activate)="updateStatus()">Confirm</button>
       <button class="button neutral" (activate)="closeModal()">Cancel</button>
     </div>
   </div>
@@ -25,5 +25,16 @@
   <div [@carousel]="direction">
     <p class="title">What changes were made?</p>
     <clark-edit-changelog [(changelog)]="changelog" (back)="regress()" (cancel)="closeModal()" (confirm)="updateStatus()"></clark-edit-changelog>
+  </div>
+</ng-template>
+
+<ng-template #requestChanges>
+  <div [@carousel]="direction">
+    <p class="title">What changes would you like to request?</p>
+    <clark-text-editor editorPlaceholder="What changes would you like the author(s) to make?" [(savedContent)]="reason" name="change-reason"></clark-text-editor>
+    <div class="btn-group to-right">
+      <button class="button good" (activate)="updateStatus()">Confirm</button>
+      <button class="button neutral" (activate)="closeModal()">Cancel</button>
+    </div>
   </div>
 </ng-template>

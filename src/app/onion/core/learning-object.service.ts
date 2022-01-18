@@ -195,12 +195,13 @@ export class LearningObjectService {
     id: string,
     authorUsername: string,
     learningObject: { [key: string]: any },
+    reason?: string,
   ): Promise<{}> {
     const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
     return this.http
       .patch(
         route,
-        { learningObject },
+        { learningObject, reason },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
