@@ -1,5 +1,5 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { ModuleWithProviders } from '@angular/compiler/src/core';
+import { ModuleWithProviders } from '@angular/core';
 
 import { AuthGuard } from './auth-guard.service';
 import { UserVerifiedGuard } from './user-verified.guard';
@@ -34,7 +34,7 @@ import { SharedModule } from 'app/shared/shared.module';
   ]
 })
 export class CoreModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<any> {
     return {
       ngModule: CoreModule,
       providers: [
