@@ -108,7 +108,7 @@ workflows:
               only: /master/
       - build:
           requires:
-            - test
+            - node/test
             - lighthouse
           filters:
             branches:
