@@ -1,23 +1,17 @@
-defaults: &defaults
-  working_directory: ~/clark-client
-  docker:
-    - image: cyber4all/circleci-aws:debian
+version: 2.1
 orbs:
-  node: circleci/node@4.7.0
+  node: circleci/node@5.0.0
   aws-cli: circleci/aws-cli@2.0.3
-  docker: circleci/docker@2.0.0
+  docker: circleci/docker@2.0.1
 commands:
   install-aws: aws-cli/install
   setup-aws-cli: aws-cli/setup
-version: 2.1
 jobs:
   build:
-    <<: *defaults
     steps:
       - checkout
-      - run:
-          name: Install Dependencies
-          command: npm install
+      - node/install:
+          node-version: "14.18.3"
       - run:
           name: Build Application
           command: yarn ng build --prod --no-progress
@@ -25,40 +19,10 @@ jobs:
           root: dist/clark-client
           paths: 
             - ./
-  test:
-    <<: *defaults
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Unit Tests
-          command: npm run test:unit
-  publish-image:
-    <<: *defaults
-    docker:
-      - image: cimg/node:14.18.3
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.2
-      - run:
-          name: Build Image
-          command: |
-            docker build -t clark-client:$CIRCLE_SHA1 .
-      - run:
-          name: Login to docker
-          command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
-      - run:
-          name: Publish Image
-          command: |
-            docker tag clark-client:$CIRCLE_SHA1 "${DOCKER_USER_ORG}/clark-client:${CIRCLE_SHA1}"
-            docker push $DOCKER_USER_ORG/clark-client:$CIRCLE_SHA1
+
   lighthouse:
-    <<: *defaults
     docker:
-      - image: "$DOCKER_USER_ORG/clark-client:${CIRCLE_SHA1}"
+      - image: "cyber4all/clark-client:${CIRCLE_SHA1}"
     steps:  
       - checkout
       - setup_remote_docker:
@@ -66,14 +30,35 @@ jobs:
       - run:
           name: Wait for client
           command: dockerize -wait http://localhost:80 -timeout 3m
+      - node/install:
+          node-version: "14.18.3"
+      - node/test: 
+          run-command: "test:lighthouse"
+
+  test:
+    steps:
+      - checkout
+      - node/install:
+          node-version: "14.18.3"
+      - node/test: 
+          run-command: "test:unit"
+
+  publish-image:
+    docker:
+      - image: cimg/node:14.18.3
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.2
       - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Run Lighthouse tests
-          command: npm run test:lighthouse
+          name: Login to docker
+          command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+      - docker/build:
+          image: "cyber4all/clark-client"
+      - docker/push:
+          image: "cyber4all/clark-client"
+
   deploy:
-    <<: *defaults
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
@@ -84,7 +69,7 @@ jobs:
           version: "1"
       - run:
           name: Deploy to S3 
-          command: aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
+          command: aws s3 sync ./dist s3://${s3_bucket} --region ${s3_region}
       - run: 
           name: Invalidate index.html in CloudFront
           command: aws cloudfront create-invalidation --distribution-id ${cloudfront_id} --paths /index.html
@@ -93,37 +78,17 @@ workflows:
   version: 2.1
   build-and-test:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore: /master/
       - test:
-          filters:
-            branches:
-              ignore: /master/
-      - publish-image:
-          requires:
-            - build
-          context: 
-            - DockerHub
           filters:
             branches:
               ignore: /master/
   build-test-and-deploy:
     jobs:
-      - build:
-          filters:
-            branches:
-              only: /master/
       - test:
-          requires:
-            - build
           filters:
             branches:
               only: /master/
       - publish-image:
-          requires:
-            - test
           context: 
             - DockerHub
           filters:
@@ -137,9 +102,16 @@ workflows:
           filters:
             branches:
               only: /master/
+      - build:
+          requires:
+            - test
+            - lighthouse
+          filters:
+            branches:
+              only: /master/
       - deploy:
           requires:
-            - lighthouse
+            - build
           context: 
             - DockerHub
             - AWS
