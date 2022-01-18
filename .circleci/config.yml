@@ -8,6 +8,8 @@ commands:
   setup-aws-cli: aws-cli/setup
 jobs:
   build:
+    docker:
+      - image: cimg/node:14.18.3
     steps:
       - checkout
       - node/install:
@@ -36,6 +38,8 @@ jobs:
           run-command: "test:lighthouse"
 
   test:
+    docker:
+      - image: cimg/node:14.18.3
     steps:
       - checkout
       - node/install:
