@@ -18,7 +18,7 @@ jobs:
       - node/install-packages
       - run:
           name: Build Application
-          command: yarn ng build --configuration production --no-progress
+          command: yarn ng build --no-progress
       - persist_to_workspace: 
           root: dist/clark-client
           paths: 
