@@ -78,6 +78,10 @@ workflows:
   version: 2.1
   build-and-test:
     jobs:
+      - build:
+        filters:
+            branches:
+              ignore: /master/
       - node/test:
           run-command: "test:unit"
           version: "14.18.3"
@@ -91,7 +95,7 @@ workflows:
           version: "14.18.3"
           filters:
             branches:
-              ignore: /master/
+              only: /master/
       - publish-image:
           context: 
             - DockerHub
