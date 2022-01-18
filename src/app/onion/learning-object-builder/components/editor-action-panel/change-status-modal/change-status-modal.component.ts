@@ -10,6 +10,7 @@ import { LearningObject } from '@entity';
 import { BUILDER_ACTIONS, BuilderStore } from '../../../builder-store.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { carousel } from './clark-change-status-modal.animations';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'clark-change-status-modal',
@@ -33,7 +34,8 @@ export class ChangeStatusModalComponent implements OnInit {
   constructor(
     private builderStore: BuilderStore,
     private changelogService: ChangelogService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -44,6 +46,10 @@ export class ChangeStatusModalComponent implements OnInit {
     this.closed.next();
   }
 
+  /**
+   * Sets the valid status moves depending on which status the learning
+   * object is currently
+   */
   private setValidStatusMoves() {
     switch (this.learningObject.status) {
       case LearningObject.Status.WAITING:
@@ -68,6 +74,16 @@ export class ChangeStatusModalComponent implements OnInit {
   }
 
   /**
+   * Navigates the user to the map and tag builder
+   */
+  private moveToMapAndTag() {
+    // Set a small timeout before navigating so that the change in status applies
+    setTimeout(() => {
+      this.router.navigate(['onion', 'relevancy-builder', this.learningObject.id, 'outcomes']);
+    }, 1000);
+  }
+
+  /**
    * Navigate to the RTF to create a changelog
    */
   advance() {
@@ -85,6 +101,12 @@ export class ChangeStatusModalComponent implements OnInit {
     this.page = 1;
   }
 
+  /**
+   * Gets the text of the status to move to
+   *
+   * @param status The status to get the text of
+   * @returns A string description
+   */
   getStatusText(status: string) {
     switch (status) {
       case LearningObject.Status.RELEASED:
@@ -119,8 +141,14 @@ export class ChangeStatusModalComponent implements OnInit {
     ]).then(() => {
       this.closeModal();
       this.serviceInteraction = false;
+
+      // If the object released, move to map and tag, else update the valid status moves
       this.learningObject.status = this.selectedStatus as LearningObject.Status;
-      this.setValidStatusMoves();
+      if (this.selectedStatus === LearningObject.Status.RELEASED) {
+        this.moveToMapAndTag();
+      } else {
+        this.setValidStatusMoves();
+      }
     }).catch(error => {
       console.log('An error occurred!');
       this.serviceInteraction = false;
