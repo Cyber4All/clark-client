@@ -3,7 +3,7 @@ defaults: &defaults
   docker:
     - image: cyber4all/circleci-aws:debian
 orbs:
-  node: circleci/node@14.18.2
+  node: circleci/node@4.7.0
   aws-cli: circleci/aws-cli@2.0.3
   docker: circleci/docker@2.0.0
 commands:
@@ -22,7 +22,7 @@ jobs:
           name: Build Application
           command: yarn ng build --prod --no-progress
       - persist_to_workspace: 
-          root: dist
+          root: dist/clark-client
           paths: 
             - ./
   test:
