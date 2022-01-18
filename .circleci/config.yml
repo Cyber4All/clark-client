@@ -15,8 +15,7 @@ jobs:
       - image: cimg/node:14.18.3
     steps:
       - checkout
-      - node/install:
-          node-version: "14.18.3"
+      - node/install-packages
       - run:
           name: Build Application
           command: yarn ng build --prod --no-progress
