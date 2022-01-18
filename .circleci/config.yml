@@ -22,7 +22,7 @@ jobs:
           name: Build Application
           command: npm run build --verbose
       - persist_to_workspace: 
-          root: dist/clark-client
+          root: dist
           paths: 
             - ./
 
