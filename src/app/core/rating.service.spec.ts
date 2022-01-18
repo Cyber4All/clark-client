@@ -3,13 +3,14 @@ import { TestBed, inject } from '@angular/core/testing';
 import { RatingService } from './rating.service';
 
 describe('RatingService', () => {
+  let service: RatingService;
+
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [RatingService]
-    });
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(RatingService);
   });
 
-  it('should be created', inject([RatingService], (service: RatingService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 });

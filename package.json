@@ -11,6 +11,7 @@
     "test:lighthouse": "jest -c ./lighthouse/jest.config.lighthouse.js",
     "test:lighthouse:debug": "node --inspect node_modules/.bin/jest --watch -c ./lighthouse/jest.config.lighthouse.js --runInBand",
     "lint": "ng lint",
+    "e2e": "ng e2e",
     "storybook": "start-storybook"
   },
   "dependencies": {

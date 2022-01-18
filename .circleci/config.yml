@@ -37,7 +37,7 @@ jobs:
   publish-image:
     <<: *defaults
     docker:
-      - image: circleci/node:10.13.0
+      - image: cimg/node:14.18.3
     steps:
       - checkout
       - setup_remote_docker:
@@ -57,7 +57,6 @@ jobs:
   lighthouse:
     <<: *defaults
     docker:
-      - image: circleci/node:10.13.0-browsers
       - image: "$DOCKER_USER_ORG/clark-client:${CIRCLE_SHA1}"
     steps:  
       - checkout
