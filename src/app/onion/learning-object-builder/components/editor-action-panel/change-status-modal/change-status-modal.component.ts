@@ -3,7 +3,8 @@ import {
   EventEmitter,
   Input,
   Output,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnInit
 } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BUILDER_ACTIONS, BuilderStore } from '../../../builder-store.service';
@@ -16,13 +17,18 @@ import { carousel } from './clark-change-status-modal.animations';
   styleUrls: ['./change-status-modal.component.scss'],
   animations: [ carousel ]
 })
-export class ChangeStatusModalComponent {
+export class ChangeStatusModalComponent implements OnInit {
   @Input() shouldShow;
   @Input() learningObject: LearningObject;
   @Output() closed = new EventEmitter();
   selectedStatus: string;
   changelog: string;
-  statuses = ['released', 'proofing', 'review', 'waiting'];
+  statuses = [];
+
+  page: 1 | 2 = 1;
+  direction: 'prev' | 'next' = 'next';
+
+  serviceInteraction: boolean;
 
   constructor(
     private builderStore: BuilderStore,
@@ -30,13 +36,35 @@ export class ChangeStatusModalComponent {
     private cd: ChangeDetectorRef
   ) {}
 
-  page: 1 | 2 = 1;
-  direction: 'prev' | 'next' = 'next';
-
-  serviceInteraction: boolean;
+  ngOnInit() {
+    this.setValidStatusMoves();
+  }
 
   closeModal() {
     this.closed.next();
+  }
+
+  private setValidStatusMoves() {
+    switch (this.learningObject.status) {
+      case LearningObject.Status.WAITING:
+        this.statuses = [LearningObject.Status.REVIEW];
+        break;
+      case LearningObject.Status.REVIEW:
+        this.statuses = [
+          LearningObject.Status.ACCEPTED_MINOR,
+          LearningObject.Status.ACCEPTED_MAJOR,
+          LearningObject.Status.PROOFING,
+        ];
+        break;
+      case LearningObject.Status.ACCEPTED_MINOR:
+        this.statuses = [LearningObject.Status.REVIEW];
+        break;
+      case LearningObject.Status.ACCEPTED_MAJOR:
+        this.statuses = [LearningObject.Status.REVIEW];
+        break;
+      case LearningObject.Status.PROOFING:
+        this.statuses = [LearningObject.Status.RELEASED, LearningObject.Status.REJECTED];
+    }
   }
 
   /**
@@ -59,14 +87,20 @@ export class ChangeStatusModalComponent {
 
   getStatusText(status: string) {
     switch (status) {
-      case 'released':
+      case LearningObject.Status.RELEASED:
         return `Release this Learning Object`;
-      case 'proofing':
+      case LearningObject.Status.PROOFING:
         return 'Move to Proofing';
-      case 'review':
+      case LearningObject.Status.REVIEW:
         return 'Move to Review';
-      case 'waiting':
+      case LearningObject.Status.WAITING:
         return 'Move to Waiting';
+      case LearningObject.Status.ACCEPTED_MINOR:
+        return 'Request Minor Changes';
+      case LearningObject.Status.ACCEPTED_MAJOR:
+        return 'Request Major Changes';
+      case LearningObject.Status.REJECTED:
+        return 'Reject this Learning Object';
     }
   }
 
@@ -85,6 +119,8 @@ export class ChangeStatusModalComponent {
     ]).then(() => {
       this.closeModal();
       this.serviceInteraction = false;
+      this.learningObject.status = this.selectedStatus as LearningObject.Status;
+      this.setValidStatusMoves();
     }).catch(error => {
       console.log('An error occurred!');
       this.serviceInteraction = false;
