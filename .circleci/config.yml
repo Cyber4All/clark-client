@@ -63,6 +63,8 @@ jobs:
           image: "cyber4all/clark-client"
 
   deploy:
+    docker:
+      - image: cimg/node:14.18.3
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
