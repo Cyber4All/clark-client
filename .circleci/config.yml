@@ -12,11 +12,11 @@ commands:
 jobs:
   build:
     docker:
-      - image: cimg/node:14.18.3
+      - image: cimg/node:16.13.2
     steps:
       - checkout
       - run:
-          name: Install Packages
+          name: Install Dependencies
           command: npm install
       - run:
           name: Build Application
