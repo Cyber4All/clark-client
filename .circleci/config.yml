@@ -20,7 +20,7 @@ jobs:
           command: npm install
       - run:
           name: Build Application
-          command: npm run build --verbose
+          command: yarn ng build --prod --no-progress
       - persist_to_workspace: 
           root: dist
           paths: 
