@@ -1,11 +1,14 @@
 version: 2.1
+
 orbs:
   node: circleci/node@5.0.0
   aws-cli: circleci/aws-cli@2.0.3
   docker: circleci/docker@2.0.1
+
 commands:
   install-aws: aws-cli/install
   setup-aws-cli: aws-cli/setup
+
 jobs:
   build:
     docker:
@@ -34,18 +37,9 @@ jobs:
           command: dockerize -wait http://localhost:80 -timeout 3m
       - node/install:
           node-version: "14.18.3"
-      - node/test: 
-          run-command: "test:lighthouse"
-
-  test:
-    docker:
-      - image: cimg/node:14.18.3
-    steps:
-      - checkout
-      - node/install:
-          node-version: "14.18.3"
-      - node/test: 
-          run-command: "test:unit"
+      - run:
+          name: Clark lighthouse Tests
+          command: npm run test:lighthouse
 
   publish-image:
     docker:
@@ -84,16 +78,20 @@ workflows:
   version: 2.1
   build-and-test:
     jobs:
-      - test:
+      - node/test:
+          run-command: "test:unit"
+          version: "14.18.3"
           filters:
             branches:
               ignore: /master/
   build-test-and-deploy:
     jobs:
-      - test:
+      - node/test:
+          run-command: "test:unit"
+          version: "14.18.3"
           filters:
             branches:
-              only: /master/
+              ignore: /master/
       - publish-image:
           context: 
             - DockerHub
