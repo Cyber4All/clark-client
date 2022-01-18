@@ -37,14 +37,14 @@ jobs:
           name: Wait for client
           command: dockerize -wait http://localhost:80 -timeout 3m
       - node/install:
-          node-version: "14.18.3"
+          node-version: "16.13.2"
       - run:
           name: Clark lighthouse Tests
           command: npm run test:lighthouse
 
   publish-image:
     docker:
-      - image: cimg/node:14.18.3
+      - image: cimg/node:16.13.2
     steps:
       - checkout
       - setup_remote_docker:
@@ -59,7 +59,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:14.18.3
+      - image: cimg/node:16.13.2
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
@@ -85,7 +85,7 @@ workflows:
               ignore: /master/
       - node/test:
           run-command: "test:unit"
-          version: "14.18.3"
+          version: "16.13.2"
           filters:
             branches:
               ignore: /master/
@@ -93,7 +93,7 @@ workflows:
     jobs:
       - node/test:
           run-command: "test:unit"
-          version: "14.18.3"
+          version: "16.13.2"
           filters:
             branches:
               only: /master/
