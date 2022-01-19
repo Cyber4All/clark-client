@@ -8,8 +8,9 @@ describe('ReviewerPanelComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReviewerPanelComponent ]
-    })
+    declarations: [ReviewerPanelComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

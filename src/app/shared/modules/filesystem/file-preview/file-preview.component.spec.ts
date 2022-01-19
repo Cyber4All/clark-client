@@ -16,11 +16,12 @@ describe('FilePreviewComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      providers: [
+    providers: [
         { provide: AuthService, useValue: AuthServiceStub },
-      ],
-      declarations: [FilePreviewComponent]
-    }).compileComponents();
+    ],
+    declarations: [FilePreviewComponent],
+    teardown: { destroyAfterEach: false }
+}).compileComponents();
   }));
 
   beforeEach(() => {

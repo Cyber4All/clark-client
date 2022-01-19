@@ -8,8 +8,9 @@ describe('ColumnWrapperComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ColumnWrapperComponent ]
-    })
+    declarations: [ColumnWrapperComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -8,8 +8,9 @@ describe('UsageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UsageComponent ]
-    })
+    declarations: [UsageComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

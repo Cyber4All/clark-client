@@ -8,8 +8,9 @@ describe('UrlManagerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UrlManagerComponent ]
-    })
+    declarations: [UrlManagerComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

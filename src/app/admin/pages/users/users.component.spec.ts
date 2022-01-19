@@ -30,18 +30,19 @@ describe('UsersComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ UsersComponent ],
-      imports: [ RouterTestingModule, HttpClientModule, CookieModule.forRoot() ],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [UsersComponent],
+    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
+    providers: [
         AuthService,
         ToastrOvenService,
         CollectionService,
         UserService,
         { provide: Router, userValue: routerStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

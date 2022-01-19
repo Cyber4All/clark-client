@@ -8,8 +8,9 @@ describe('RelevancyBuilderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RelevancyBuilderComponent ]
-    })
+    declarations: [RelevancyBuilderComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

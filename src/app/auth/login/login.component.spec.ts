@@ -29,15 +29,16 @@ describe('LoginComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
-      providers: [
+    imports: [FormsModule],
+    providers: [
         { provide: AuthService, useValue: authServiceStub },
         { provide: ActivatedRoute, useValue: activatedRouteStub, },
-        { provide: Router, useValue: {  } },
+        { provide: Router, useValue: {} },
         { provide: NavbarService, useValue: navbarServiceStub },
-      ],
-      declarations: [LoginComponent]
-    })
+    ],
+    declarations: [LoginComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

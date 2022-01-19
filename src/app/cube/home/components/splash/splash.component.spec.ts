@@ -8,8 +8,9 @@ describe('SplashComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SplashComponent ]
-    })
+    declarations: [SplashComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

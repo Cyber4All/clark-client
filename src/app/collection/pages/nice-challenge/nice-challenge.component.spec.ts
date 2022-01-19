@@ -8,8 +8,9 @@ describe('NiceChallengeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NiceChallengeComponent ]
-    })
+    declarations: [NiceChallengeComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

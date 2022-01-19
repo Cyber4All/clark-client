@@ -13,15 +13,16 @@ describe('LearningObjectComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ LearningObjectComponent, CollectionPipe ],
-      imports: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [LearningObjectComponent, CollectionPipe],
+    imports: [
         HttpClientModule
-      ],
-      providers: [
+    ],
+    providers: [
         CollectionService,
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

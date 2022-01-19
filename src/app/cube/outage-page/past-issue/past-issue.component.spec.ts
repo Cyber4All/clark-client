@@ -8,8 +8,9 @@ describe('PastIssueComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PastIssueComponent ]
-    })
+    declarations: [PastIssueComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

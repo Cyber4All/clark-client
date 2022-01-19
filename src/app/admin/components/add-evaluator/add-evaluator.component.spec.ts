@@ -8,8 +8,9 @@ describe('AddEvaluatorComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddEvaluatorComponent ]
-    })
+    declarations: [AddEvaluatorComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

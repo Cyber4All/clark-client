@@ -11,8 +11,9 @@ describe('OrganizationListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrganizationListComponent ]
-    })
+    declarations: [OrganizationListComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

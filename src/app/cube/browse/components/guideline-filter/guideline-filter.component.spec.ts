@@ -8,8 +8,9 @@ describe('GuidelineFilterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GuidelineFilterComponent ]
-    })
+    declarations: [GuidelineFilterComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -8,8 +8,9 @@ describe('DonateComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DonateComponent ]
-    })
+    declarations: [DonateComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

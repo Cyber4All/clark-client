@@ -8,8 +8,9 @@ describe('NotesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NotesComponent ]
-    })
+    declarations: [NotesComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

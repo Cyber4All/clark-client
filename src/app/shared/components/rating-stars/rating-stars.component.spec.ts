@@ -8,8 +8,9 @@ describe('RatingStarsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RatingStarsComponent ]
-    })
+    declarations: [RatingStarsComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

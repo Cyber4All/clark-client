@@ -9,12 +9,13 @@ describe('ProfileGuard', () => {
   };
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
+    providers: [
         { provide: Router, useValue: mockRouter },
         ActivatedRoute
-      ],
-      imports: [ProfileGuard]
-    });
+    ],
+    imports: [ProfileGuard],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   it('should ...', inject([ProfileGuard], (guard: ProfileGuard) => {

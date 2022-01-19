@@ -18,14 +18,15 @@ describe('ResetPasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule],
-      providers: [
+    imports: [FormsModule],
+    providers: [
         { provide: AuthService, useValue: {} },
         { provide: ActivatedRoute, useValue: activatedRouteStub, },
         { provide: Router, useValue: {} },
-      ],
-      declarations: [ResetPasswordComponent]
-    })
+    ],
+    declarations: [ResetPasswordComponent],
+    teardown: { destroyAfterEach: false }
+})
       .compileComponents();
   }));
 

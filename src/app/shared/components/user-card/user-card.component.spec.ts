@@ -11,8 +11,9 @@ describe('UserCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserCardComponent ]
-    })
+    declarations: [UserCardComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

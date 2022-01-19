@@ -8,8 +8,9 @@ describe('FileUploadStatusComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FileUploadStatusComponent ]
-    })
+    declarations: [FileUploadStatusComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -8,8 +8,9 @@ describe('TabMenuComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TabMenuComponent ]
-    })
+    declarations: [TabMenuComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

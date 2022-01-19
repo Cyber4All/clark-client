@@ -14,15 +14,16 @@ describe('UserPrivilegesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ UserPrivilegesComponent ],
-      imports: [ HttpClientModule ],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [UserPrivilegesComponent],
+    imports: [HttpClientModule],
+    providers: [
         CollectionService,
         PrivilegeService,
         ToastrOvenService
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

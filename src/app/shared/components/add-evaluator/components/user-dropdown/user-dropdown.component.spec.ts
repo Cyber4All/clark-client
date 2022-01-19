@@ -8,8 +8,9 @@ describe('UserDropdownComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserDropdownComponent ]
-    })
+    declarations: [UserDropdownComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

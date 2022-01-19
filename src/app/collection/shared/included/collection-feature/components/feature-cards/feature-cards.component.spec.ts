@@ -8,8 +8,9 @@ describe('FeatureCardsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ FeatureCardsComponent ]
-    })
+    declarations: [FeatureCardsComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

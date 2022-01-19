@@ -8,8 +8,9 @@ describe('PhilosophyComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ PhilosophyComponent ]
-    })
+    declarations: [PhilosophyComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

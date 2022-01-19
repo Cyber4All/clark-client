@@ -8,8 +8,9 @@ describe('IndicatorComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ IndicatorComponent ]
-    })
+    declarations: [IndicatorComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

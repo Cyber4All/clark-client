@@ -9,9 +9,10 @@ describe('ChangelogItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ ChangelogItemComponent ],
-    })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [ChangelogItemComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

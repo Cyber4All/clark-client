@@ -8,8 +8,9 @@ describe('CookiePopupComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CookiePopupComponent ]
-    })
+    declarations: [CookiePopupComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

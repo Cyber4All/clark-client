@@ -15,10 +15,11 @@ describe('NavbarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, HttpClientModule, ActivatedRoute ],
-      providers: [ ModalService, LibraryService, AuthService, CookieService ],
-      declarations: [ NavbarComponent ]
-    })
+    imports: [RouterTestingModule, HttpClientModule, ActivatedRoute],
+    providers: [ModalService, LibraryService, AuthService, CookieService],
+    declarations: [NavbarComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

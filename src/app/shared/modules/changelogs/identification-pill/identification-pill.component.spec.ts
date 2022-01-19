@@ -9,9 +9,10 @@ describe('IdentificationPillComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ IdentificationPillComponent ]
-    })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [IdentificationPillComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

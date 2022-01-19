@@ -6,8 +6,9 @@ import { Position } from './position';
 describe('ModalService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ModalService]
-    });
+    providers: [ModalService],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   it('should be created', inject([ModalService], (service: ModalService) => {

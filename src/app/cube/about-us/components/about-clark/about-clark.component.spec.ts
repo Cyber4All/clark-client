@@ -8,8 +8,9 @@ describe('AboutClarkComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AboutClarkComponent ]
-    })
+    declarations: [AboutClarkComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

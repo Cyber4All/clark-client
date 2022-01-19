@@ -8,8 +8,9 @@ describe('CollectionsGridComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionsGridComponent ]
-    })
+    declarations: [CollectionsGridComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

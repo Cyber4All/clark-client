@@ -8,8 +8,9 @@ describe('CollectionLearningObjectCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionLearningObjectListComponent ]
-    })
+    declarations: [CollectionLearningObjectListComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

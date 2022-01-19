@@ -8,8 +8,9 @@ describe('CuratorsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CuratorsComponent ]
-    })
+    declarations: [CuratorsComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

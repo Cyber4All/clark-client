@@ -17,11 +17,12 @@ describe('Service : Auth', () => {
     beforeEach(() => {
         AuthService.prototype.validateAndRefreshToken = () => Promise.resolve();
         TestBed.configureTestingModule({
-            providers: [AuthService],
-            imports: [
-                HttpClientTestingModule, CookieModule.forRoot()
-            ],
-        });
+    providers: [AuthService],
+    imports: [
+        HttpClientTestingModule, CookieModule.forRoot()
+    ],
+    teardown: { destroyAfterEach: false }
+});
                 // Returns a service with the MockBackend so we can test with dummy responses
                 service = TestBed.inject(AuthService);
                 // Inject the http service and test controller for each test

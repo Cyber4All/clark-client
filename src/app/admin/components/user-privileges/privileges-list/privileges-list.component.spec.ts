@@ -10,10 +10,11 @@ describe('PrivilegesListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ PrivilegesListComponent ],
-      imports: [ NoopAnimationsModule ]
-    })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [PrivilegesListComponent],
+    imports: [NoopAnimationsModule],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

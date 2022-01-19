@@ -8,8 +8,9 @@ describe('OutageCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutageCardComponent ]
-    })
+    declarations: [OutageCardComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

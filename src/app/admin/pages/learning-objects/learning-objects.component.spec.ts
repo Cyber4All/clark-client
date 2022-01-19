@@ -25,16 +25,17 @@ describe('LearningObjectsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ LearningObjectsComponent ],
-      imports: [ RouterTestingModule, HttpClientModule, CookieModule.forRoot() ],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [LearningObjectsComponent],
+    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
+    providers: [
         ToastrOvenService,
         AuthService,
         CollectionService,
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

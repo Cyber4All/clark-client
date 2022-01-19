@@ -8,8 +8,9 @@ describe('TopicPageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopicPageComponent ]
-    })
+    declarations: [TopicPageComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

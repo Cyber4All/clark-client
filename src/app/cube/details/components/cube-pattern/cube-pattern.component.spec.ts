@@ -8,8 +8,9 @@ describe('CubePatternComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CubePatternComponent ]
-    })
+    declarations: [CubePatternComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

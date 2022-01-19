@@ -8,8 +8,9 @@ describe('CollectionNcyteComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionNcyteComponent ]
-    })
+    declarations: [CollectionNcyteComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

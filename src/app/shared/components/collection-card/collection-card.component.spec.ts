@@ -8,8 +8,9 @@ describe('CollectionCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionCardComponent ]
-    })
+    declarations: [CollectionCardComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

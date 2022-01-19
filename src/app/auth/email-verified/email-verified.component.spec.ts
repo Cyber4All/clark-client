@@ -23,12 +23,13 @@ describe('ForgotPasswordComponent', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      declarations: [EmailVerifiedComponent],
-      providers: [
+    declarations: [EmailVerifiedComponent],
+    providers: [
         { provide: AuthService, useValue: authServiceStub },
         { provide: NavbarService, useValue: navbarServiceStub },
-      ]
-    }).compileComponents();
+    ],
+    teardown: { destroyAfterEach: false }
+}).compileComponents();
   });
 
   beforeEach(async () => {

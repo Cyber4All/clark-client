@@ -8,8 +8,9 @@ describe('MaintenancePageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MaintenancePageComponent ]
-    })
+    declarations: [MaintenancePageComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

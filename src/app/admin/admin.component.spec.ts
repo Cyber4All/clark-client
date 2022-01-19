@@ -33,18 +33,19 @@ describe('AdminComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [AdminComponent],
-      imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [AdminComponent],
+    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
+    providers: [
         AuthService,
         ToastrOvenService,
         CollectionService,
         MessagesService,
         { provide: Router, useValue: routerStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-      ]
-    }).compileComponents();
+    ],
+    teardown: { destroyAfterEach: false }
+}).compileComponents();
 
   }));
 

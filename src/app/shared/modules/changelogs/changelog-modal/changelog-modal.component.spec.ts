@@ -10,9 +10,10 @@ describe('ChangelogModalComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ ChangelogModalComponent ]
-    })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [ChangelogModalComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

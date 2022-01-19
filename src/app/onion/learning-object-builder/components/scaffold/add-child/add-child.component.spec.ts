@@ -8,8 +8,9 @@ describe('AddChildComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AddChildComponent ]
-    })
+    declarations: [AddChildComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

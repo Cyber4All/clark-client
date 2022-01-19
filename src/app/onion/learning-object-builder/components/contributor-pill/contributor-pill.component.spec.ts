@@ -8,8 +8,9 @@ describe('ContributorPillComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContributorPillComponent ]
-    })
+    declarations: [ContributorPillComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

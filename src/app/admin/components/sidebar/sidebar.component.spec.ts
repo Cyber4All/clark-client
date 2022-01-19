@@ -13,13 +13,14 @@ describe('SidebarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [RouterTestingModule],
-      declarations: [ SidebarComponent ],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [RouterTestingModule],
+    declarations: [SidebarComponent],
+    providers: [
         { provide: AuthService, useClass: AuthServiceMock },
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -8,8 +8,9 @@ describe('SkipLinkComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SkipLinkComponent ]
-    })
+    declarations: [SkipLinkComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

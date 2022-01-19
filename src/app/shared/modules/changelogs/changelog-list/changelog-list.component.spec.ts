@@ -10,10 +10,11 @@ describe('ChangelogListComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ ChangelogListComponent ],
-      imports: [ NoopAnimationsModule ]
-    })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [ChangelogListComponent],
+    imports: [NoopAnimationsModule],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

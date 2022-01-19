@@ -6,9 +6,10 @@ import { Subscription } from 'rxjs';
 describe('LearningObjectService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [LearningObjectService]
-    });
+    imports: [HttpClientModule],
+    providers: [LearningObjectService],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   it('should be created', inject([LearningObjectService], (service: LearningObjectService) => {

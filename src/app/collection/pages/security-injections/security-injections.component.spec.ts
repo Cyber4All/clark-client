@@ -8,8 +8,9 @@ describe('SecurityInjectionsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SecurityInjectionsComponent ]
-    })
+    declarations: [SecurityInjectionsComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

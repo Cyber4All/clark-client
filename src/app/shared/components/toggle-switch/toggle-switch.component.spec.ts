@@ -8,8 +8,9 @@ describe('ToggleSwitchComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToggleSwitchComponent ]
-    })
+    declarations: [ToggleSwitchComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

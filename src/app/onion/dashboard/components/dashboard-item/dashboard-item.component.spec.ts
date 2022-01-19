@@ -18,19 +18,20 @@ describe('DashboardItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ DashboardItemComponent, TipDirective ],
-      imports: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [DashboardItemComponent, TipDirective],
+    imports: [
         RouterTestingModule,
         ContextMenuModule.forRoot(),
         HttpClientModule,
         CookieModule.forRoot()
-      ],
-      providers: [
+    ],
+    providers: [
         { provide: AuthService, useValue: { user: new User() } },
         CollectionService
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

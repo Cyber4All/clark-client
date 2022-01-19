@@ -8,8 +8,9 @@ describe('GenericPageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GenericPageComponent ]
-    })
+    declarations: [GenericPageComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

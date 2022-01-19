@@ -9,9 +9,10 @@ describe('FeaturedService', () => {
 
   beforeAll(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ],
-      providers: [ FeaturedObjectsService ]
-    });
+    imports: [HttpClientTestingModule],
+    providers: [FeaturedObjectsService],
+    teardown: { destroyAfterEach: false }
+});
 
     httpTestingController = TestBed.inject(HttpTestingController);
     featuredObjectsService = TestBed.inject(FeaturedObjectsService);

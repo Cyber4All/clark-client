@@ -8,8 +8,9 @@ describe('OutagePageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutagePageComponent ]
-    })
+    declarations: [OutagePageComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

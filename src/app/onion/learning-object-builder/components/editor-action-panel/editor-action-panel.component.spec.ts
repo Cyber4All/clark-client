@@ -8,8 +8,9 @@ describe('EditorActionPanelComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EditorActionPanelComponent ]
-    })
+    declarations: [EditorActionPanelComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

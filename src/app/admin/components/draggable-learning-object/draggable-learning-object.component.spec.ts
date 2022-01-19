@@ -8,8 +8,9 @@ describe('DraggableLearningObjectComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DraggableLearningObjectComponent ]
-    })
+    declarations: [DraggableLearningObjectComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

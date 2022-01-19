@@ -8,8 +8,9 @@ describe('DiversityComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DiversityComponent ]
-    })
+    declarations: [DiversityComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -14,12 +14,13 @@ describe('ForgotPasswordComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ForgotPasswordComponent ],
-      providers: [
+    declarations: [ForgotPasswordComponent],
+    providers: [
         { provide: AuthService, useValue: authServiceStub },
-      ],
-      imports: [FormsModule]
-    })
+    ],
+    imports: [FormsModule],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

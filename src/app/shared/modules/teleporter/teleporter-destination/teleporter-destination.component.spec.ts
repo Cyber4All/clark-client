@@ -8,8 +8,9 @@ describe('TeleporterDestinationComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TeleporterDestinationComponent ]
-    })
+    declarations: [TeleporterDestinationComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

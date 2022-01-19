@@ -8,11 +8,12 @@ describe('DashboardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DashboardComponent ],
-      imports: [
+    declarations: [DashboardComponent],
+    imports: [
         NoopAnimationsModule
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -16,11 +16,12 @@ describe('UserSearchWrapperComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      imports: [ FormsModule, HttpClientModule, CookieModule.forRoot() ],
-      declarations: [ UserSearchWrapperComponent ],
-      providers: [ AuthService, UserService, ToastrOvenService ]
-    })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [FormsModule, HttpClientModule, CookieModule.forRoot()],
+    declarations: [UserSearchWrapperComponent],
+    providers: [AuthService, UserService, ToastrOvenService],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

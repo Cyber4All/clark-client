@@ -8,8 +8,9 @@ describe('NotificationCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NotificationCardComponent ]
-    })
+    declarations: [NotificationCardComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

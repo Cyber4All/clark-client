@@ -5,9 +5,10 @@ import { UriRetrieverService } from './uri-retriever.service';
 describe('UriRetrieverService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientTestingModule ],
-      providers: [UriRetrieverService]
-    });
+    imports: [HttpClientTestingModule],
+    providers: [UriRetrieverService],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   it('should be created', inject([UriRetrieverService], (service: UriRetrieverService) => {

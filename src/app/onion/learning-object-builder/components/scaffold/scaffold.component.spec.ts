@@ -8,8 +8,9 @@ describe('ScaffoldComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ScaffoldComponent ]
-    })
+    declarations: [ScaffoldComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

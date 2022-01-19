@@ -8,8 +8,9 @@ describe('UrlRowComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UrlRowComponent ]
-    })
+    declarations: [UrlRowComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

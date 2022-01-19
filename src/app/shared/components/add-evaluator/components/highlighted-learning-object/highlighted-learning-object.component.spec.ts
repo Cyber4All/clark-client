@@ -8,8 +8,9 @@ describe('HighlightedLearningObjectComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HighlightedLearningObjectComponent ]
-    })
+    declarations: [HighlightedLearningObjectComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

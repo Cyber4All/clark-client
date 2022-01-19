@@ -8,8 +8,9 @@ describe('EmailBannerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmailBannerComponent ]
-    })
+    declarations: [EmailBannerComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

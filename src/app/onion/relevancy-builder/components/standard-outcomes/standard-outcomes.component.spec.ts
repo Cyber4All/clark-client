@@ -8,8 +8,9 @@ describe('StandardOutcomesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ StandardOutcomesComponent ]
-    })
+    declarations: [StandardOutcomesComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

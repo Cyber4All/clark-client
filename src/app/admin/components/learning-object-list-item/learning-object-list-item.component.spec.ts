@@ -18,21 +18,22 @@ describe('DashboardItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ LearningObjectListItemComponent ],
-      imports: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [LearningObjectListItemComponent],
+    imports: [
         RouterTestingModule,
         ContextMenuModule.forRoot(),
         HttpClientModule,
         CookieModule.forRoot(),
         SharedDirectivesModule
-      ],
-      providers: [
+    ],
+    providers: [
         { provide: AuthService, useValue: { user: new User() } },
         CollectionService,
         { provide: UnreleaseService, useClass: {} },
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

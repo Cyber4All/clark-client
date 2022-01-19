@@ -8,8 +8,9 @@ describe('StatsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ StatsComponent ]
-    })
+    declarations: [StatsComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

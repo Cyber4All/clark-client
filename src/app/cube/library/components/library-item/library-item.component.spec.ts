@@ -8,8 +8,9 @@ describe('LibraryItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LibraryItemComponent ]
-    })
+    declarations: [LibraryItemComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

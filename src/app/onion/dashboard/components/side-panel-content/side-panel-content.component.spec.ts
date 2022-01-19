@@ -16,14 +16,15 @@ describe('SidePanelContentComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ SidePanelContentComponent ],
-      imports: [ RouterTestingModule, HttpClientModule, CookieModule.forRoot(), NoopAnimationsModule ],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [SidePanelContentComponent],
+    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot(), NoopAnimationsModule],
+    providers: [
         RatingService,
         AuthService
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

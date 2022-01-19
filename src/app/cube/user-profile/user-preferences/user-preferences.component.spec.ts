@@ -8,8 +8,9 @@ describe('UserPreferencesComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserPreferencesComponent ]
-    })
+    declarations: [UserPreferencesComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 
