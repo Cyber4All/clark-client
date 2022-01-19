@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RelevancyService } from 'app/core/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';

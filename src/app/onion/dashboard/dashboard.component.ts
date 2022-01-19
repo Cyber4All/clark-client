@@ -92,11 +92,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     // retrieve draft status learning objects
-    setTimeout(async() => {
+    setTimeout(async () => {
       await this.getDraftLearningObjects();
     }, 1100);
     // retrieve released learning objects
-    setTimeout(async() => {
+    setTimeout(async () => {
       await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
       this.loading = false;
     }, 1100);
@@ -147,6 +147,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   /**
    * Retrieves an array of learningObjects to populate the draft list of learning objects
    * This will only retrieve the drafts and will not retrieve any revisions of a learning object
+   *
    * @param filters
    * @param text
    */
@@ -163,10 +164,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
    /**
-   * Retrieves an array of learningObjects to populate the released list of learning objects
-   * @param filters
-   * @param query
-   */
+    * Retrieves an array of learningObjects to populate the released list of learning objects
+    *
+    * @param filters
+    * @param query
+    */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
     this.releasedLearningObjects = await this.learningObjectService
       .getLearningObjects(this.auth.username, filters, text)
@@ -190,6 +192,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   /**
    * Applys status filters to the draft learning objects list
+   *
    * @param filters
    */
   async applyFilters(filters: any) {
@@ -204,6 +207,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   /**
    * Performs a search on the users released and working Learning Objects
+   *
    * @param text
    */
   performSearch(text: string) {
@@ -214,18 +218,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // SUBMISSION AND CANCEL SUBMISSION LOGIC
 
    /**
-   * Submits learning object to collection
-   * @param event
-   */
+    * Submits learning object to collection
+    *
+    * @param event
+    */
   submitLearningObjectToCollection(event: LearningObject) {
     this.currentlySubmittingObject = event;
     this.submitToCollection = true;
   }
 
    /**
-   * Cancel a submission while in waiting status
-   * @param l {LearningObject} learning object to be unpublished
-   */
+    * Cancel a submission while in waiting status
+    *
+    * @param l {LearningObject} learning object to be unpublished
+    */
   cancelSubmission(l: LearningObject): Promise<void> {
     return this.collectionService.unsubmit({
       learningObjectId: l.id,
@@ -242,11 +248,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // CHANGELOG MODAL LOGIC
 
    /**
-   * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
-   *
-   * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
-   * @memberof DashboardComponent
-   */
+    * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
+    *
+    * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
+    * @memberof DashboardComponent
+    */
   async openViewAllChangelogsModal(learningObjectId: string) {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;

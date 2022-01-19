@@ -66,6 +66,7 @@ export class ContextMenuComponent
 
   /**
    * Takes an x and a y coordinate, checks that they're formatted correctly, and sets Modals x and y parameters to them.
+   *
    * @param x
    * @param y
    */
@@ -80,6 +81,7 @@ export class ContextMenuComponent
 
   /**
    * Takes the passed element parameter and checks to ensure the modal will display on screen, and if not, moves it so that it will.
+   *
    * @param el
    */
   private calculatePosition(el?, pos?) {

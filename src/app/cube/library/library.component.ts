@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
 import { LibraryService } from 'app/core/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
@@ -143,6 +144,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   /**
    * This function retrieves the notifications from Notification service
+   *
    * @param apiPage The page that we need to retrieve from Notifications service
    */
   async getNotifications(apiPage: number) {
@@ -175,6 +177,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * 4. The index of the localNotifications array being requested is larger than the array and there are plenty left in the array to show
    * 5. The index of the localNotifications array being requested is larger than the array and there are no enough left
    *    in the array to display
+   *
    * @param page The current page that the user is on
    */
   async setNotifications(index: number) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -129,6 +130,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   /**
    * Fetches the released learning object to display first. If the object hasRevisions and the user has reviewer access
    * the revised copy is also fetched.
+   *
    * @param author the author of the learning object
    * @param name the name of the learning object
    */
@@ -212,6 +214,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * true true if:
       1) we're looking at the released version and the released object has children, or
       2) we're looking at the revised version and the revised object has children
+   *
    * @readonly
    * @memberof DetailsComponent
    */
@@ -230,6 +233,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   /**
    * toggles between released and revised copies of a learning object
+   *
    * @param revised the boolean for if the revised is being viewed
    */
   async viewReleased(revised: boolean) {
@@ -278,9 +282,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     } catch (e) {
 
       /**
-      * TODO: change status to 404 when issue #149 is closed
-      * if server error is thrown, navigate to not-found page
-      */
+       * TODO: change status to 404 when issue #149 is closed
+       * if server error is thrown, navigate to not-found page
+       */
 
       if (e instanceof HttpErrorResponse) {
         if (e.status === 404) {
@@ -332,8 +336,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-  * Closes any open change log modals
-  */
+   * Closes any open change log modals
+   */
   closeChangelogsModal() {
     this.openChangelogModal = false;
     this.changelogs = undefined;
@@ -378,6 +382,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   /**
    * Determines if a rating is being created or edited and calls appropriate function
+   *
    * @param rating the rating object to be created
    */
   handleRatingSubmission(rating: {
@@ -398,9 +403,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
    /**
-   * Creates a new rating
-   * @param rating the rating to be created
-   */
+    * Creates a new rating
+    *
+    * @param rating the rating to be created
+    */
   createRating(rating: { value: number; comment: string; id?: string }) {
     this.ratingService
       .createRating({
@@ -425,6 +431,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   /**
    * Edits an existing rating. An id must be supplied.
+   *
    * @param rating the rating object to be updated
    */
   updateRating(rating: { value: number; comment: string; id?: string }) {
@@ -458,6 +465,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   /**
    * Delets a user's rating (user's can only delete their own ratings)
+   *
    * @param index the index in the array of ratings that represents the rating to be deleted
    */
   async deleteRating(index) {
@@ -483,6 +491,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   /**
    * Submits a report for a rating. Report.index is a number representing the index in the list of ratings where the target rating is stored
+   *
    * @param report the report to be submitted
    */
   reportRating(report: { concern: string; index: number; comment?: string }) {
@@ -666,6 +675,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   /**
    * Returns a boolean whether or not the object is the owner's
+   *
    * @memberof DetailsComponent
    */
   get isOwnObject() {

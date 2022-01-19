@@ -1,4 +1,4 @@
-export const environment = {
+/* eslint-disable @typescript-eslint/naming-convention */export const environment = {
   production: true,
   experimental: false,
   apiURL: 'https://api-gateway-dev.clark.center',

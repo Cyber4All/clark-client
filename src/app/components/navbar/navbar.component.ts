@@ -176,6 +176,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   /**
    * Click events on the user section of the topbar, displays context menu
+   *
    * @param {boolean} [value] true if open, false otherwise
    */
   userDropdown(value?: boolean): void {
@@ -184,6 +185,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   /**
    * Click events on the contributor section of the topbar, displays context menu
+   *
    * @param {boolean} [value] true if open, false otherwise
    */
   contributorDropdown(value?: boolean): void {

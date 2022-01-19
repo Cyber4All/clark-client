@@ -158,6 +158,7 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   /**
    * Check the logged in user's email verification status
+   *
    * @return {boolean} true if loggedin user has verified their email, false otherwise
    */
   get verifiedEmail(): boolean {
@@ -212,6 +213,7 @@ export class LearningObjectListItemComponent implements OnChanges {
    }
   /**
    * Emits a value for checkbox to parent component
+   *
    * @param val either the empty string (true) or a minus sign (false)
    */
   toggleSelect(val) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { LEVEL } from './IGuideline';
 
 export enum SEARCH_ITEM_PROPERTY {

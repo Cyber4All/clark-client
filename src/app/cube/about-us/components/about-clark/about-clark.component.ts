@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { UsageStats } from '../../../shared/types/usage-stats';
 import { UsageStatsService } from '../../../core/usage-stats/usage-stats.service';

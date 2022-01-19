@@ -131,6 +131,7 @@ export class FeaturedObjectsService {
 
   /**
    * Get the featured learning objects for a collection
+   *
    * @param collection
    * @returns [LearningObject]
    */

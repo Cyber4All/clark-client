@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum FRAMEWORK_PROPERTY {
     ID = 'id',
     NAME = 'name',

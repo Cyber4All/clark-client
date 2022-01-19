@@ -57,6 +57,7 @@ export class OnionComponent {
 
   /**
    * Click events on the user section of the topbar, displays modal
+   *
    * @param event
    */
   userDropdown(event): void {
@@ -89,6 +90,7 @@ export class OnionComponent {
 
   /**
    * Manages click events for the button for switching between contributing and searching (onion and cube)
+   *
    * @param event
    */
   contentSwitchClick(event) {
@@ -106,6 +108,7 @@ export class OnionComponent {
   }
   /**
    * Closes context menus and dropdowns on scroll
+   *
    * @param event
    */
   scroll(event) {

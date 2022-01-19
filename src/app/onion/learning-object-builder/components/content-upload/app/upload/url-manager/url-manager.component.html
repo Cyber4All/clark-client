@@ -6,8 +6,8 @@
     </button>
   </div>
 </div>
-<div [ngClass]="{'empty-section': urls.length == 0}">
-  <div *ngIf="urls.length == 0" class="empty-message">
+<div [ngClass]="{'empty-section': urls.length === 0}">
+  <div *ngIf="urls.length === 0" class="empty-message">
     <i class="fal fa-link"></i>
     <div class="empty-title">No URLs here!</div>
     <button class="button good" (activate)="addURL()">Click here to add a URL</button>

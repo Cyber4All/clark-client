@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const LEARNING_OUTCOME_ERROR_MESSAGES = {
   INVALID_BLOOM(bloom: string) {
     return `${bloom} is not a valid Bloom taxon.`;

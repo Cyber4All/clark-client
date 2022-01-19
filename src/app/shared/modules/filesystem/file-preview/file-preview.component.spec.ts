@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FilePreviewComponent } from './file-preview.component';

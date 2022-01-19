@@ -23,7 +23,9 @@ describe('UsersComponent', () => {
   }
 
   const routerStub = {
-    navigate: (commands: any[]) => { Promise.resolve(true); },
+    navigate: (commands: any[]) => {
+ Promise.resolve(true);
+},
   };
 
   beforeEach(waitForAsync(() => {

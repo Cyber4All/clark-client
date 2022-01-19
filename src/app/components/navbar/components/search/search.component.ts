@@ -77,6 +77,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   /**
    * Takes a reference to the searchbar input to pass as a query to the browse component.
+   *
    * @param searchbar reference to input
    */
   performSearch(searchbar) {

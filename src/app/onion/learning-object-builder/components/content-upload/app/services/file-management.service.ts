@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import * as AWS from 'aws-sdk';
 
 import { Injectable } from '@angular/core';

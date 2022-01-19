@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -59,7 +60,7 @@ export class ResetPasswordComponent implements OnInit {
     }
 
     // length is OK, let's check for proper structure
-    const r: RegExp = /([0-9]{1})|([a-z]){1}|([A-Z]){1}|([!,@#$%^&*|~`\]\[\{\}<>.\\_\-+=\(\)/?]{1})/g;
+    const r = /([0-9]{1})|([a-z]){1}|([A-Z]){1}|([!,@#$%^&*|~`\]\[\{\}<>.\\_\-+=\(\)/?]{1})/g;
     let match = r.exec(password);
 
     /**

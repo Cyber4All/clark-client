@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /**
  * Provide abstract representations for learning objects.
  */
@@ -12,6 +13,7 @@ const MAX_NAME_LENGTH = 170;
 
 /**
  * A class to represent a learning object.
+ *
  * @class
  */
 export class LearningObject {
@@ -293,6 +295,7 @@ export class LearningObject {
 
   /**
    * Creates an instance of LearningObject.
+   *
    * @param {Partial<LearningObject>} [object]
    * @memberof LearningObject
    */
@@ -453,7 +456,6 @@ export class LearningObject {
   removeLevel(level: LearningObject.Level): void {
     const index = this.levels.indexOf(level);
     if (this.levels.length > 1 && index > -1) {
-      // tslint:disable-next-line:no-unused-expression
       this._levels.splice(index, 1)[0];
       this.updateDate();
     } else {
@@ -490,6 +492,7 @@ export class LearningObject {
   }
   /**
    * Adds a passed outcome or new, blank learning outcome to this object.
+   *
    * @returns {number} index of the outcome
    */
   addOutcome(outcome?: LearningOutcome): number {
@@ -502,6 +505,7 @@ export class LearningObject {
   }
   /**
    * Removes the object's i-th learning outcome.
+   *
    * @param {number} index the index to remove from this objects' outcomes
    *
    * @returns {LearningOutcome} the learning outcome which was removed
@@ -530,6 +534,7 @@ export class LearningObject {
   }
   /**
    * Removes the object's i-th child.
+   *
    * @param {number} index the index to remove from this objects' children
    *
    * @returns {LearningObject} the child object which was removed
@@ -561,6 +566,7 @@ export class LearningObject {
   }
   /**
    * Removes the object's i-th contributor.
+   *
    * @param {number} index the index to remove from this object's contributors
    *
    * @returns {User} the user object which was removed

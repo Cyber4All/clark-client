@@ -1,6 +1,6 @@
 /**
-   * Service that allows components to show or hide the navbar
-   */
+ * Service that allows components to show or hide the navbar
+ */
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';

@@ -25,7 +25,9 @@ describe('AdminComponent', () => {
   }
 
   const routerStub = {
-    navigate: (commands: any[]) => { Promise.resolve(true); },
+    navigate: (commands: any[]) => {
+ Promise.resolve(true);
+},
     events: of(new Scroll(new NavigationEnd(0, 'dummyUrl', 'dummyUrl'), [0, 0], 'dummyString')),
   };
 

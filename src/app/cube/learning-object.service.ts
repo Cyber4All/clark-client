@@ -104,12 +104,12 @@ export class LearningObjectService {
       });
   }
     /**
-   * Fetches LearningObject by id
-   *
-   * @param {string} id
-   * @returns {Promise<LearningObject>}
-   * @memberof LearningObjectService
-  */
+     * Fetches LearningObject by id
+     *
+     * @param {string} id
+     * @returns {Promise<LearningObject>}
+     * @memberof LearningObjectService
+     */
   getRevisedLearningObject(
     learningObjectId: String
   ): Promise<LearningObject> {
@@ -148,6 +148,7 @@ export class LearningObjectService {
 
   /**
    * Creates a Revision of an existing learning object
+   *
    * @param learningObjectId
    * @param authorUsername
    */

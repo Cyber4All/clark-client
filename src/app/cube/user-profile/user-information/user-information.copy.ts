@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const COPY = {
     LEARNINGOBJECTS: 'Learning Objects',
     EMAILVERIFY: 'Verify your email',

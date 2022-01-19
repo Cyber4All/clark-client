@@ -139,6 +139,7 @@ export class ClarkComponent implements OnInit {
   /**
    * Function passes cookie agreement service val to create new agreement
    * Then updates banner visibilty flag
+   *
    * @param val is value of clicking agreement event (will be true)
    */
   showCookieBanner(val: boolean) {

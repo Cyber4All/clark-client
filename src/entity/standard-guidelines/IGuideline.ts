@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum LEVEL {
     ELEMENTARY = 'elementary',
     MIDDLE = 'middle',

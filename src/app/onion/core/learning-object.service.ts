@@ -72,6 +72,7 @@ export class LearningObjectService {
 
   /**
    * Creates a Revision of an existing learning object
+   *
    * @param learningObjectId
    * @param authorUsername
    */
@@ -113,6 +114,7 @@ export class LearningObjectService {
 
   /**
    * Fetches a learning objects revision
+   *
    * @param username
    * @param learningObjectID
    * @param revisionID
@@ -313,6 +315,7 @@ export class LearningObjectService {
 
   /**
    * Publish a learning object
+   *
    * @param {LearningObject} learningObject the learning object to be published
    * @param {string} collection the abreviated name of the collection to which to submit this learning object
    */
@@ -336,6 +339,7 @@ export class LearningObjectService {
 
   /**
    * Unsubmit a learning object
+   *
    * @param {learningObject} learningObject the learning object to be unpublished
    */
   unsubmit(learningObject: LearningObject) {
@@ -462,6 +466,7 @@ export class LearningObjectService {
 
   /**
    * Fetches the parents of a learning object
+   *
    * @param id of learning object
    */
   fetchParents(username: string, id: string) {

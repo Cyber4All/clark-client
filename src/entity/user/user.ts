@@ -3,6 +3,7 @@ import { EntityError } from '../errors/entity-error';
 
 /**
  * A class to represent CLARK users.
+ *
  * @class
  */
 export class User {
@@ -125,6 +126,7 @@ export class User {
   cognitoIdentityId: string;
   /**
    * Creates an instance of User.
+   *
    * @param {Partial<User>} [user]
    * @memberof User
    */
@@ -197,7 +199,7 @@ export namespace User {
    * @returns {boolean}
    */
   export function isValidEmail(email: string): boolean {
-    // tslint:disable-next-line:max-line-length
+    // eslint-disable-next-line max-len
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (emailPattern.test(email)) {
       return true;

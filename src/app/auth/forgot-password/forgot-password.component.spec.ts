@@ -23,7 +23,7 @@ describe('ForgotPasswordComponent', () => {
     .compileComponents();
   }));
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     fixture = TestBed.createComponent(ForgotPasswordComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

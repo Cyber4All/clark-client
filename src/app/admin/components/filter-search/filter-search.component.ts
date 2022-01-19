@@ -121,6 +121,7 @@ export class FilterSearchComponent implements OnInit {
 
   /**
    * Set's the selected collection property to the full Collection object represented by the abbreviated name
+   *
    * @param { string } abvName abbreviated name of the collection
    */
   setSelectedCollection(abvName: string) {
@@ -146,33 +147,37 @@ export class FilterSearchComponent implements OnInit {
 
   /**
    * Hide or show the filter dropdown menu
+   *
    * @param {boolean} [value] true if menu is open, false otherwise
    */
-  toggleFilterMenu (value?: boolean) {
+  toggleFilterMenu(value?: boolean) {
     this.filterMenuDown = value;
   }
 
   /**
    * Hide or show the collection filter dropdown menu
+   *
    * @param {boolean} [value] true if menu is open, false otherwise
    */
-  toggleCollectionMenu (value?: boolean) {
+  toggleCollectionMenu(value?: boolean) {
     this.collectionMenuDown = value;
   }
 
   /**
    * Hide or show the topic dropdown menu
+   *
    * @param {boolean} [value] true if menu is open, false otherwise
    */
-  toggleTopicMenu (value?: boolean) {
+  toggleTopicMenu(value?: boolean) {
     this.topicMenuDown = value;
   }
 
   /**
    * Toggles the relevancy modal menu
+   *
    * @param value
    */
-  toggleRelevancyMenu (value?: boolean) {
+  toggleRelevancyMenu(value?: boolean) {
     this.relevancyMenuDown = value;
   }
 
@@ -204,6 +209,7 @@ export class FilterSearchComponent implements OnInit {
 
   /**
    * Add or remove filter from filters list
+   *
    * @param filter {string} the filter to be toggled
    */
   toggleStatusFilter(filter: string) {
@@ -223,6 +229,7 @@ export class FilterSearchComponent implements OnInit {
 
   /**
    * Add or remove filter from filters list
+   *
    * @param filter {string} the filter to be toggled
    */
   toggleCollectionFilter(filter: string) {

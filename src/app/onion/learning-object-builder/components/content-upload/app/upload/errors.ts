@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const UPLOAD_ERRORS = {
   SERVICE_ERROR:
     'We are unable to upload files at this time. Please try again later.',

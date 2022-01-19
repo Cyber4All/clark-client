@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { getPaths } from './file-functions';
 import { LearningObject } from '@entity';
 import { DirectoryNode } from './DirectoryNode';

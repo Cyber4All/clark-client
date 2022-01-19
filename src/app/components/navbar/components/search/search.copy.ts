@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export const COPY = {
     OPT1: 'Keywords',
     OPT2: 'Outcomes',

@@ -36,6 +36,7 @@ export class UnreleaseService {
   /**
    * Deletes a revision of a learning object. This is designed to allow an editor to create a new
    * revision when it is necessary for the editorial process to continue.
+   *
    * @param username username of the author
    * @param cuid cuid of the learning object
    * @returns

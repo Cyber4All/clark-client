@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, Input, OnInit } from '@angular/core';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
@@ -82,6 +83,7 @@ export class FeatureCardsComponent implements OnInit {
 
   /**
    * This function is necessary in order to get the colored overlay for the cards
+   *
    * @param H The hex value that is being converted
    * @returns hsl of the hex with the right saturation and light values for the opaque look
    */
