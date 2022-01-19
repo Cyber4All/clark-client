@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { OrganizationListComponent } from './organization-list/organization-list.component';
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
@@ -110,4 +110,8 @@ const cube_routes: Routes = [
   },
 ];
 
-export const CubeRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(cube_routes);
+@NgModule({
+  imports: [RouterModule.forChild(cube_routes)],
+  exports: [RouterModule]
+})
+export class CubeRoutingModule { }

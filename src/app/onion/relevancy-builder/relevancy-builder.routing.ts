@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ModuleWithProviders } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { OutcomePageComponent } from './pages/outcome-page/outcome-page.component';
@@ -16,4 +16,8 @@ const builder_routes: Routes = [
   }
 ];
 
-export const BuilderRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(builder_routes);
+@NgModule({
+  imports: [RouterModule.forChild(builder_routes)],
+  exports: [RouterModule]
+})
+export class BuilderRoutingModule { }

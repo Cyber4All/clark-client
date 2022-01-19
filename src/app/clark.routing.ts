@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+import { NgModule } from '@angular/core';
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UnsupportedComponent } from './unsupported.component';
@@ -29,4 +30,8 @@ const clark_routes: Routes = [
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
-export const ClarkRoutingModule: ModuleWithProviders<any> = RouterModule.forRoot(clark_routes, { relativeLinkResolution: 'legacy' });
+@NgModule({
+  imports: [RouterModule.forRoot(clark_routes)],
+  exports: [RouterModule]
+})
+export class ClarkRoutingModule { }

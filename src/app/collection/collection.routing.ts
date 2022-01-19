@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { CollectionIndexComponent } from './pages/collection-index/collection-index.component';
 import { NiceChallengeComponent } from './pages/nice-challenge/nice-challenge.component';
@@ -20,4 +20,8 @@ const collection_routes: Routes = [
     }
 ];
 
-export const CollectionsRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(collection_routes);
+@NgModule({
+    imports: [RouterModule.forChild(collection_routes)],
+    exports: [RouterModule]
+})
+export class CollectionsRoutingModule { }

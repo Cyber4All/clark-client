@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Third-Party Modules
-import { CKEditorModule } from 'ng2-ckeditor';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 // CLARK Modules
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
@@ -40,7 +40,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     CKEditorModule,
     VirtualScrollerModule,
     SharedDirectivesModule,
-    SharedPipesModule
+    SharedPipesModule,
   ],
   declarations: [
     CarouselComponent,

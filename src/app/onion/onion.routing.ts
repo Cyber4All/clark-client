@@ -48,6 +48,10 @@ const onion_routes: Routes = [
     ]
   }
 ];
-export const OnionRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(
-  onion_routes
-);
+
+@NgModule({
+  imports: [RouterModule.forChild(onion_routes)],
+  exports: [RouterModule]
+})
+export class OnionRoutingModule { }
+

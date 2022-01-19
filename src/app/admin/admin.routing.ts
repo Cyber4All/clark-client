@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { AdminGuard } from 'app/core/admin.guard';
@@ -38,4 +38,8 @@ const admin_routes: Routes = [
     ],
   },
 ];
-export const AdminRoutingModule: ModuleWithProviders<any> = RouterModule.forChild(admin_routes);
+@NgModule({
+  imports: [RouterModule.forChild(admin_routes)],
+  exports: [RouterModule]
+})
+export class AdminRoutingModule { }

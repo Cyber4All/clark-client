@@ -34,7 +34,7 @@ import { getUserAgentBrowser } from 'getUserAgentBrowser';
 
 export interface FileInput extends File {
   fullPath?: string;
-  webkitRelativePath?: string;
+  webkitRelativePath: string;
 }
 
 export interface EnqueuedFile extends FileInput {
