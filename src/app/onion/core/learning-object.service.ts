@@ -8,8 +8,7 @@ import {
 import { LearningObject, LearningOutcome } from '@entity';
 import { CookieService } from 'ngx-cookie';
 
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { AuthService } from '../../core/auth.service';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, ADMIN_ROUTES } from '@env/route';
 
 import { retry, catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
@@ -493,6 +492,25 @@ export class LearningObjectService {
   }): Promise<string[]> {
     const route = USER_ROUTES.ADD_FILE_META(username, objectId);
     return this.handleFileMetaRequests(files, route);
+  }
+
+  async changeStatus({
+    username,
+    objectId,
+    status,
+    reason
+  }: {
+    username: string,
+    objectId: string,
+    status: LearningObject.Status,
+    reason?: string
+  }): Promise<void> {
+    await this.http.post<void>(
+      ADMIN_ROUTES.CHANGE_STATUS(username, objectId),
+      { status, reason },
+      // @ts-ignore
+      { withCredentials: true, responseType: 'text' },
+    ).toPromise();
   }
 
   /**

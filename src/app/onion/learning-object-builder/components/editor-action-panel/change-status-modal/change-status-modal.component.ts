@@ -11,6 +11,7 @@ import { BUILDER_ACTIONS, BuilderStore } from '../../../builder-store.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { carousel } from './clark-change-status-modal.animations';
 import { Router } from '@angular/router';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-change-status-modal',
@@ -35,6 +36,7 @@ export class ChangeStatusModalComponent implements OnInit {
   constructor(
     private builderStore: BuilderStore,
     private changelogService: ChangelogService,
+    private toaster: ToastrOvenService,
     private cd: ChangeDetectorRef,
     private router: Router,
   ) {}
@@ -48,6 +50,16 @@ export class ChangeStatusModalComponent implements OnInit {
     this.selectedStatus = undefined;
     this.changelog = undefined;
     this.reason = undefined;
+    this.page = 1;
+  }
+
+  hasNextModalPage() {
+    return [
+      LearningObject.Status.RELEASED,
+      LearningObject.Status.ACCEPTED_MAJOR,
+      LearningObject.Status.ACCEPTED_MINOR,
+      LearningObject.Status.REJECTED,
+    ].includes(this.selectedStatus as LearningObject.Status);
   }
 
   /**
@@ -137,15 +149,12 @@ export class ChangeStatusModalComponent implements OnInit {
     this.serviceInteraction = true;
     await Promise.all([
       this.builderStore
-      .execute(BUILDER_ACTIONS.MUTATE_OBJECT, { status: this.selectedStatus, reason: this.reason })
+      .execute(BUILDER_ACTIONS.CHANGE_STATUS, { status: this.selectedStatus, reason: this.reason })
       .catch(error => {
-        console.error(error);
+        this.toaster.error('Error!', 'There was an error trying to update the status of this learning object. Please try again later!');
       }),
       this.changelog ? this.createChangelog() : undefined
     ]).then(() => {
-      this.closeModal();
-      this.serviceInteraction = false;
-
       // If the object released, move to map and tag, else update the valid status moves
       this.learningObject.status = this.selectedStatus as LearningObject.Status;
       if (this.selectedStatus === LearningObject.Status.RELEASED) {
@@ -153,6 +162,10 @@ export class ChangeStatusModalComponent implements OnInit {
       } else {
         this.setValidStatusMoves();
       }
+
+      // Then close the modal
+      this.closeModal();
+      this.serviceInteraction = false;
     }).catch(error => {
       console.log('An error occurred!');
       this.serviceInteraction = false;
