@@ -100,6 +100,13 @@ export class ChangeStatusModalComponent implements OnInit {
   }
 
   /**
+   * Navigates the user to the admin dashboard
+   */
+  private moveToAdminDashboard() {
+    this.router.navigate(['admin', 'learning-objects']);
+  }
+
+  /**
    * Navigate to the RTF to create a changelog
    */
   advance() {
@@ -159,6 +166,8 @@ export class ChangeStatusModalComponent implements OnInit {
       this.learningObject.status = this.selectedStatus as LearningObject.Status;
       if (this.selectedStatus === LearningObject.Status.RELEASED) {
         this.moveToMapAndTag();
+      } else if (this.learningObject.status === LearningObject.Status.REJECTED) {
+        this.moveToAdminDashboard();
       } else {
         this.setValidStatusMoves();
       }
