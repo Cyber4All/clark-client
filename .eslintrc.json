@@ -29,7 +29,9 @@
             "prefix": [
               "clark",
               "cube",
-              "onion"
+              "onion",
+              "admin",
+              "collection"
             ],
             "style": "kebab-case"
           }
