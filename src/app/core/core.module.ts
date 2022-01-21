@@ -1,5 +1,4 @@
 import { NgModule, ErrorHandler } from '@angular/core';
-import { ModuleWithProviders } from '@angular/core';
 
 import { AuthGuard } from './auth-guard.service';
 import { UserVerifiedGuard } from './user-verified.guard';
@@ -31,35 +30,29 @@ import { SharedModule } from 'app/shared/shared.module';
     CookieModule.forRoot(),
     ModalModule.forRoot(),
     SharedModule
+  ],
+  providers: [
+    AccessGroupGuard,
+    AuthGuard,
+    AdminGuard,
+    AuthService,
+    LibraryService,
+    ChangelogService,
+    CollectionService,
+    EditorService,
+    UserService,
+    GuidelineService,
+    MessagesService,
+    UserVerifiedGuard,
+    RatingService,
+    NavbarService,
+    UserAgentService,
+    { provide: ErrorHandler, useClass: RavenErrorHandler },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpConfigInterceptor,
+      multi: true
+    }
   ]
 })
-export class CoreModule {
-  static forRoot(): ModuleWithProviders<any> {
-    return {
-      ngModule: CoreModule,
-      providers: [
-        AccessGroupGuard,
-        AuthGuard,
-        AdminGuard,
-        AuthService,
-        LibraryService,
-        ChangelogService,
-        CollectionService,
-        EditorService,
-        UserService,
-        GuidelineService,
-        MessagesService,
-        UserVerifiedGuard,
-        RatingService,
-        NavbarService,
-        UserAgentService,
-        { provide: ErrorHandler, useClass: RavenErrorHandler },
-        {
-          provide: HTTP_INTERCEPTORS,
-          useClass: HttpConfigInterceptor,
-          multi: true
-        }
-      ]
-    };
-  }
-}
+export class CoreModule { }

@@ -26,7 +26,7 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
     BrowserModule,
     ClarkRoutingModule,
     SharedModule,
-    CoreModule.forRoot(),
+    CoreModule,
     BrowserAnimationsModule,
     ScrollingModule,
     FormsModule
@@ -41,7 +41,8 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
     SearchComponent,
     MaintenancePageComponent,
     UnauthorizedComponent,
-    SubscriptionComponent],
+    SubscriptionComponent
+  ],
   bootstrap: [ClarkComponent],
   providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
 })
