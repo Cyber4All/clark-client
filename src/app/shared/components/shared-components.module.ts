@@ -33,16 +33,20 @@ import {
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 @NgModule({
   imports: [
+    // angular modules
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    // third-part modules
     CKEditorModule,
     VirtualScrollerModule,
+    // CLARK modules
     SharedDirectivesModule,
     SharedPipesModule,
   ],
   declarations: [
+    // components
     CarouselComponent,
     CheckBoxComponent,
     CollectionCardComponent,
@@ -61,6 +65,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     HighlightedLearningObjectComponent,
   ],
   exports: [
+    // components
     CarouselComponent,
     CheckBoxComponent,
     CollectionCardComponent,
