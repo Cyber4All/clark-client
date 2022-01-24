@@ -7,6 +7,8 @@
       <span *ngIf="learningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
       <span *ngIf="learningObject.status === 'released'"><i class="fas fa-eye"></i></span>
       <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
+      <span *ngIf="learningObject.status === 'accepted_minor'"><i class="fas fa-check-double"></i></span>
+      <span *ngIf="learningObject.status === 'accepted_major'"><i class="fas fa-check"></i></span>
     </div>
     <div>
       {{ (learningObject.name.length > 40) ? (learningObject.name | slice:0:40) + '...' : learningObject.name }}
