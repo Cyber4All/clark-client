@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 export const TOOLTIP_TEXT = {
   LEARNING_OBJECT:

@@ -171,7 +171,7 @@ export class LearningOutcome {
     this.verb = outcome.verb || this.verb;
     this.text = outcome.text || this.text;
     if (outcome.mappings) {
-      (<Guideline[]>outcome.mappings).map(o => this.mapTo(o));
+      (outcome.mappings as Guideline[]).map(o => this.mapTo(o));
     }
   }
   /**

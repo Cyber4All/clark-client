@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 /*
 Map for file type to Font Awesome 5 Pro Icon
 */

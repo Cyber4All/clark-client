@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
@@ -263,6 +262,7 @@ export class UserService {
           .toPromise()
           .then(
             (val: any) => {
+              // eslint-disable-next-line @typescript-eslint/naming-convention
               const user_res = val;
               return user_res ? new User(user_res) : null;
             },

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 

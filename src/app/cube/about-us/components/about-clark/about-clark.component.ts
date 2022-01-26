@@ -2,7 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UsageStats } from '../../../shared/types/usage-stats';
 import { UsageStatsService } from '../../../core/usage-stats/usage-stats.service';
-import { TopDownloadsComponent } from 'app/cube/usage-stats/top-downloads/top-downloads.component';
 
 @Component({
   selector: 'clark-about-clark',

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
@@ -18,6 +17,7 @@ export class MaterialsComponent implements OnInit, OnChanges {
 
   carouselPosition = {
     Files: 0,
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     URLs: 1,
     Notes: 2,
   };

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 export const GUIDELINE_ERRORS = {
   INVALID_NAME: 'Name must be a defined non-empty string.',
   INVALID_AUTHOR: 'Author must be a defined non-empty string.',

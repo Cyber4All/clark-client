@@ -71,7 +71,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   togglePlaceholder() {
     if (this.searchValue.length === 0) {
-      (<HTMLInputElement>document.getElementById('clark-search-input')).placeholder = 'Search...';
+      (document.getElementById('clark-search-input') as HTMLInputElement).placeholder = 'Search...';
     }
   }
 

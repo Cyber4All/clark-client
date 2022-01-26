@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 export const COPY = {
     TITLE: 'Edit Profile',
     GRAVATARTITLE: 'CLARK uses Gravatar',

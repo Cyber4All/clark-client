@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../core/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +12,7 @@ export class ResetPasswordComponent implements OnInit {
   failure: string = undefined;
   failureTimer = undefined;
   password = '';
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   password_conf = '';
   otaCode: string;
   done = false;

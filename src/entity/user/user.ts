@@ -159,7 +159,7 @@ export class User {
     this._username = user.username || this.username;
     this.name = user.name || this.name;
     if (user.email) {
-      this.email = <string>user.email;
+      this.email = user.email as string;
     }
     this._emailVerified = user.emailVerified || this.emailVerified;
     this.organization = user.organization || this.organization;

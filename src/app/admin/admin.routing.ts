@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
@@ -14,6 +13,8 @@ import { FeaturedComponent } from './pages/featured/featured.component';
  *
  * @author Nick Winner
  */
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const admin_routes: Routes = [
   {
     path: '', component: AdminComponent, canActivate: [ AdminGuard ], children: [

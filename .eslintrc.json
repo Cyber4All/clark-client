@@ -55,7 +55,6 @@
         ],
         "@angular-eslint/no-output-native": "warn",
         "@typescript-eslint/ban-types": "off",
-        "@typescript-eslint/consistent-type-assertions": "warn",
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/explicit-member-accessibility": [
@@ -67,6 +66,33 @@
         "@typescript-eslint/prefer-for-of": "off",
         "@typescript-eslint/member-delimiter-style": "off",
         "@typescript-eslint/member-ordering": "off",
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": ["camelCase", "UPPER_CASE", "StrictPascalCase"],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": "enum",
+            "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+          },
+          {
+            "selector": "enumMember",
+            "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+          },
+          {
+            "selector": "variable",
+            "format": ["camelCase", "UPPER_CASE", "StrictPascalCase"],
+            "leadingUnderscore": "allow"
+          },
+      
+          {
+            "selector": "typeLike",
+            "format": ["PascalCase"],
+            "leadingUnderscore": "allow"
+          }
+        ],
         "@typescript-eslint/no-unused-expressions": "off",
         "@typescript-eslint/no-namespace": "off",
         "@typescript-eslint/no-shadow": "off",

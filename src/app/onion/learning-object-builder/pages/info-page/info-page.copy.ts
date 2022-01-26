@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 export const COPY = {
     TITLE: 'Basic Information',
     NAME: 'What is this learning object named?',

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -32,6 +31,7 @@ const library = {
   data : {title: 'Your Library'},
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const cube_routes: Routes = [
   {
     path: '',

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { getPaths } from './file-functions';
 import { LearningObject } from '@entity';
 import { DirectoryNode } from './DirectoryNode';
@@ -60,6 +59,7 @@ export class DirectoryTree {
    * @memberof DirectoryTree
    */
   private buildSubTree(paths: string[]) {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const last_touched_node_paths = getPaths(
       this.lastTouchedNode.getPath(),
       false

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -13,6 +12,7 @@ import { OnionComponent } from './onion.component';
  * @author Sean Donnelly
  */
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const onion_routes: Routes = [
   {
     path: '',

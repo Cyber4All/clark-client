@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -10,6 +9,7 @@ import { CanResetPasswordGuard } from './can-reset-password.guard';
 import { AuthComponent } from './auth.component';
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const auth_routes: Routes = [
   {
     path: '',

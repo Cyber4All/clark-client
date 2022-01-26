@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import {
   LearningObject,
@@ -130,7 +129,7 @@ export class BuilderStore {
   > = new BehaviorSubject(undefined);
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
-  public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject(
+  public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
 
@@ -454,7 +453,7 @@ export class BuilderStore {
       this.learningObjectService
         .deleteOutcome(
           this.learningObject.id,
-          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+          (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || id,
         )
         .then(() => {
@@ -491,7 +490,7 @@ export class BuilderStore {
         bloom: outcome.bloom,
         verb: outcome.verb,
         text: outcome.text,
-        serviceId: (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+        serviceId: (outcome as Partial<LearningOutcome> & { serviceId?: string })
           .serviceId
       },
       true
@@ -511,7 +510,7 @@ export class BuilderStore {
     this.saveOutcome(
       {
         id:
-          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+          (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || outcome.id,
         mappings: outcome.mappings.map(x => x.guidelineId)
       },
@@ -538,7 +537,7 @@ export class BuilderStore {
     this.saveOutcome(
       {
         id:
-          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+          (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || outcome.id,
         mappings: mappedOutcomes.map(x => x.guidelineId)
       },

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 export interface FileUploadMeta {
   name: string;
   fileType: string;

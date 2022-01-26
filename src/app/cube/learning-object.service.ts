@@ -49,9 +49,9 @@ export class LearningObjectService {
         queryClone.standardOutcomes.length &&
         typeof queryClone.standardOutcomes[0] !== 'string'
       ) {
-        queryClone.standardOutcomes = (<string[]>(
+        queryClone.standardOutcomes = ((
           queryClone.standardOutcomes
-        )).map(o => o['id']);
+        ) as string[]).map(o => o['id']);
       }
       const queryString = querystring.stringify(queryClone);
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(

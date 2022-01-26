@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 /**
  * Provide abstract representations for learning objects.
  */
@@ -647,30 +646,30 @@ export class LearningObject {
       this._date = object.date;
     }
 
-    this.length = <LearningObject.Length>object.length || this.length;
+    this.length = object.length as LearningObject.Length || this.length;
 
     if (object.levels) {
       this._levels = [];
-      (<LearningObject.Level[]>object.levels).map(level =>
+      (object.levels as LearningObject.Level[]).map(level =>
         this.addLevel(level),
       );
     }
 
     if (object.outcomes) {
-      (<LearningOutcome[]>object.outcomes).map(outcome =>
+      (object.outcomes as LearningOutcome[]).map(outcome =>
         this.addOutcome(outcome),
       );
     }
 
     this.materials =
-      <LearningObject.Material>object.materials || this.materials;
+      object.materials as LearningObject.Material || this.materials;
 
     if (object.children) {
-      (<LearningObject[]>object.children).map(child => this.addChild(child));
+      (object.children as LearningObject[]).map(child => this.addChild(child));
     }
 
     if (object.contributors) {
-      (<User[]>object.contributors).map(contributor =>
+      (object.contributors as User[]).map(contributor =>
         this.addContributor(contributor),
       );
     }
@@ -712,9 +711,9 @@ export class LearningObject {
       this._topics = object.topics;
     }
 
-    this.collection = <string>object.collection || this.collection;
-    this.status = <LearningObject.Status>object.status || this.status;
-    this.metrics = <LearningObject.Metrics>object.metrics || this.metrics;
+    this.collection = object.collection as string || this.collection;
+    this.status = object.status as LearningObject.Status || this.status;
+    this.metrics = object.metrics as LearningObject.Metrics || this.metrics;
   }
 
   /**

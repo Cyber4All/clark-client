@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UnsupportedComponent } from './unsupported.component';
@@ -6,6 +5,7 @@ import { NotFoundComponent } from './not-found.component';
 import { AccessGroupGuard } from './core/access-group-guard';
 import { UnauthorizedComponent } from './unauthorized.component';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const clark_routes: Routes = [
   {
     path: 'auth',
