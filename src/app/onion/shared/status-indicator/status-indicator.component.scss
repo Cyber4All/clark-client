@@ -21,6 +21,14 @@
     background: $status_review;
   }
 
+  &.accepted_minor {
+    background: $status_accepted_minor;
+  }
+
+  &.accepted_major {
+    background: $status_accepted_major;
+  }
+
   &.proofing {
     background: $status_proofing;
   }
@@ -32,6 +40,7 @@
   &.rejected {
     background: $status_rejected;
   }
+  
   &:hover {
     box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
   }

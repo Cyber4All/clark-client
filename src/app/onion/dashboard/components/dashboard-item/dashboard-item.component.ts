@@ -15,7 +15,6 @@ import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
-import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -135,7 +134,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
         this.learningObject.length !== 'nanomodule'
       ],
       manageMaterials: ['unreleased', 'accepted_minor', 'accepted_major', this.verifiedEmail],
-      submit: ['unreleased', this.verifiedEmail],
+      submit: ['unreleased', 'accepted_minor', 'accepted_major', this.verifiedEmail],
       resubmit: ['accepted_minor', 'accepted_major'],
       view: ['released'],
       delete: ['unreleased', 'rejected'],
