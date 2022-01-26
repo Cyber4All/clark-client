@@ -52,7 +52,7 @@
         <button
           id="submit"
           class="button"
-          *ngIf="['unreleased', 'rejected'].includes(learningObject?.status)"
+          *ngIf="['unreleased'].includes(learningObject?.status)"
           [ngClass]="{
             good: !submissionError,
             bad: validator.submissionMode && submissionError,

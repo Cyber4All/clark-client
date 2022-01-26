@@ -223,8 +223,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     * @param event
     */
   submitLearningObjectToCollection(event: LearningObject) {
-    this.currentlySubmittingObject = event;
-    this.submitToCollection = true;
+    // If the object is unreleased, submit it, else resubmit it (because minor/major changes were asked for)
+    if (LearningObject.Status.UNRELEASED === event.status) {
+      this.currentlySubmittingObject = event;
+      this.submitToCollection = true;
+    } else {
+      this.learningObjectService.changeStatus({
+        username: event.author.username,
+        objectId: event.id,
+        status: LearningObject.Status.REVIEW,
+      })
+        .then(() => {
+          this.notificationService.success('Done!', 'Learning Object Resubmitted for Review!');
+          event.status = LearningObject.Status.REVIEW;
+        })
+        .catch(() => this.notificationService.error('Error!',
+          'There was an issue resubmitting the learning object, please try again later!'));
+    }
   }
 
    /**

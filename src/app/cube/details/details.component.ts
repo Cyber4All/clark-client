@@ -153,7 +153,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
               return child.status === LearningObject.Status['RELEASED'] ||
                 child.status === LearningObject.Status['REVIEW'] ||
                 child.status === LearningObject.Status['PROOFING'] ||
-                child.status === LearningObject.Status['WAITING'];
+                child.status === LearningObject.Status['WAITING'] ||
+                child.status === LearningObject.Status['ACCEPTED_MINOR'] ||
+                child.status === LearningObject.Status['ACCEPTED_MAJOR'];
             }
           );
 
@@ -269,7 +271,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
           return child.status === LearningObject.Status['RELEASED'] ||
             child.status === LearningObject.Status['REVIEW'] ||
             child.status === LearningObject.Status['PROOFING'] ||
-            child.status === LearningObject.Status['WAITING'];
+            child.status === LearningObject.Status['WAITING'] ||
+            child.status === LearningObject.Status['ACCEPTED_MAJOR'] ||
+            child.status === LearningObject.Status['ACCEPTED_MINOR'];
         }
       );
 

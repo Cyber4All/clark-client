@@ -329,6 +329,10 @@ export class FilterSearchComponent implements OnInit {
         return 'far fa-eye';
       case 'rejected':
         return 'far fa-ban';
+      case 'accepted_minor':
+        return 'fas fa-check-double';
+      case 'accepted_major':
+        return 'fas fa-check';
     }
   }
 

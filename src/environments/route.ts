@@ -24,8 +24,11 @@ export const ADMIN_ROUTES = {
   CHANGE_AUTHOR(userId: string, id: string): string {
     return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${id}/change-author`;
   },
-  UNRELEASE_OBJECT(username: string, cuid: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/status`;
+  CHANGE_STATUS(username: string, id: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${id}/status`;
+  },
+  UNRELEASE_OBJECT(username: string, id: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${id}/status`;
   },
   DELETE_REVISION(username: string, cuid: string, version: number) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/versions/${version}`;
