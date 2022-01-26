@@ -48,11 +48,13 @@ $course-color: #1e4b25;
 
 // status colors
 $status_unreleased: #bdc1c3;
-$status_waiting: #5ec9da;
-$status_review: #f5a623;
-$status_proofing: #bd5eda;
-$status_released: $success-green;
-$status_rejected: $error-red;
+$status_waiting: #5EC9DA;
+$status_review: #094491;
+$status_accepted_minor: #31492C;
+$status_accepted_major: #53A52F;
+$status_proofing: #CC469F;
+$status_released: #1C70DD;
+$status_rejected: #CA2E1F;
 
 // tag colors
 $tag_revision: #622fed;

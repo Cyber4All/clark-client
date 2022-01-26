@@ -42,7 +42,8 @@ export enum BUILDER_ACTIONS {
   UPDATE_MATERIAL_NOTES,
   UPDATE_FILE_DESCRIPTION,
   UPDATE_FOLDER_DESCRIPTION,
-  DELETE_FILES
+  DELETE_FILES,
+  CHANGE_STATUS,
 }
 
 export enum BUILDER_ERRORS {
@@ -393,6 +394,8 @@ export class BuilderStore {
         });
       case BUILDER_ACTIONS.DELETE_FILES:
         return await this.removeFiles(data.fileIds);
+      case BUILDER_ACTIONS.CHANGE_STATUS:
+        return await this.changeStatus(data.status, data.reason);
       default:
         console.error('Error! Invalid action taken!');
         return;
@@ -414,6 +417,15 @@ export class BuilderStore {
   ///////////////////////////////
   //  BUILDER ACTION HANDLERS  //
   ///////////////////////////////
+
+  private async changeStatus(status: LearningObject.Status, reason?: string) {
+    await this.learningObjectService.changeStatus({
+      username: this.learningObject.author.username,
+      objectId: this.learningObject.id,
+      status,
+      reason,
+    });
+  }
 
   private createOutcome() {
     const outcome: Partial<LearningOutcome> = {
