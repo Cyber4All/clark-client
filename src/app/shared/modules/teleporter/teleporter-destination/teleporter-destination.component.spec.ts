@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TeleporterDestinationComponent } from './teleporter-destination.component';
 
@@ -6,10 +6,11 @@ describe('TeleporterDestinationComponent', () => {
   let component: TeleporterDestinationComponent;
   let fixture: ComponentFixture<TeleporterDestinationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TeleporterDestinationComponent ]
-    })
+    declarations: [TeleporterDestinationComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

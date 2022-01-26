@@ -1,4 +1,4 @@
-import { ChangeEvent as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
+import { IPageInfo as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
 import {
   Component,
   OnInit,
@@ -154,11 +154,12 @@ export class LearningObjectsComponent
 
   /**
    * Sets the specified properties onto the Query object
+   *
    *@param {Partial<Query>} q an object with the properties and their values with which to update the Query object
    * @memberof LearningObjectsComponent
    */
   set query(q: Partial<Query>) {
-    // tslint:disable-next-line:forin
+    // eslint-disable-next-line guard-for-in
     for (const key in q) {
       this.query[key] = q[key];
     }
@@ -183,7 +184,7 @@ export class LearningObjectsComponent
 
       if (
         event &&
-        (event.end < 0 || event.end !== this.learningObjects.length - 1)
+        (event.endIndex < 0 || event.endIndex !== this.learningObjects.length - 1)
       ) {
         // this is a false event from the virtual scroller, disregard
         return;
@@ -256,6 +257,7 @@ export class LearningObjectsComponent
 
   /**
    * Sorts list by date
+   *
    * @param direction the direction of the sort (ASC or DESC)
    */
   sortByDate(direction: SortType) {
@@ -333,18 +335,20 @@ export class LearningObjectsComponent
   }
 
    /**
-   * Decides based on the value whether to select or deselect the learning object
-   * @param l learning object to be selected
-   * @param value boolean, true if object is selected, false otherwise
-   */
+    * Decides based on the value whether to select or deselect the learning object
+    *
+    * @param l learning object to be selected
+    * @param value boolean, true if object is selected, false otherwise
+    */
   toggleSelect(l: LearningObject, value: boolean ) {
     value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
   }
 
     /**
-   * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
-   * @param l Learning Object to be selected
-   */
+     * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
+     *
+     * @param l Learning Object to be selected
+     */
   selectLearningObject(l: LearningObject) {
     this.selected.set(l.id, l);
     this.selectedLearningObjects.push(l);
@@ -360,6 +364,7 @@ export class LearningObjectsComponent
 
   /**
    * Fired on select of a Learning Object, takes the object and removes it from the list of selected Learning Objects
+   *
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {

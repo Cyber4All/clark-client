@@ -154,6 +154,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   /**
    * Download the revised copy of a learning object. This does not add the object to the users cart
+   *
    * @param download boolean determines if download takes place
    */
   downloadRevised(download?: boolean) {
@@ -188,7 +189,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   /**
    * Copy the Creative Commons Attribution to the clipboard
    *
-  */
+   */
   copyAttribution() {
     const range = document.createRange();
     range.selectNode(document.getElementById('objectAttribution'));
@@ -212,7 +213,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         FB.ui({
           method: 'share',
           href: this.url,
-        }, function (response) { });
+        }, function(response) { });
         break;
       case 'twitter':
         const text = 'Check out this learning object on CLARK! ClarkCan';
@@ -228,7 +229,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
             'code': 'anyone'
           }
         };
-        // tslint:disable-next-line:max-line-length
+        // eslint-disable-next-line max-len
         window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + this.buildLocation(true));
         break;
       case 'email':

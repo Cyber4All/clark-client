@@ -120,6 +120,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Set's the verb from the dropdown menu and emits the change to parent component
+   *
    * @param verb {string} verb to set
    */
   setVerb(verb: string) {
@@ -133,6 +134,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Iterate the list of levels and their verbs and check to see if passed verb is valid
+   *
    * @param verb {string} verb to be checked
    * @return {boolean} true if verb is found, false otherwise
    */
@@ -155,6 +157,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
 
   /**
    * Takes currently selected verb and returns formatted version
+   *
    * @return {string} formatted verb
    */
   getVerb() {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 type ChartType =
   | 'bar'
   | 'bubble'

@@ -12,6 +12,7 @@ const MAX_NAME_LENGTH = 170;
 
 /**
  * A class to represent a learning object.
+ *
  * @class
  */
 export class LearningObject {
@@ -293,6 +294,7 @@ export class LearningObject {
 
   /**
    * Creates an instance of LearningObject.
+   *
    * @param {Partial<LearningObject>} [object]
    * @memberof LearningObject
    */
@@ -453,7 +455,6 @@ export class LearningObject {
   removeLevel(level: LearningObject.Level): void {
     const index = this.levels.indexOf(level);
     if (this.levels.length > 1 && index > -1) {
-      // tslint:disable-next-line:no-unused-expression
       this._levels.splice(index, 1)[0];
       this.updateDate();
     } else {
@@ -490,6 +491,7 @@ export class LearningObject {
   }
   /**
    * Adds a passed outcome or new, blank learning outcome to this object.
+   *
    * @returns {number} index of the outcome
    */
   addOutcome(outcome?: LearningOutcome): number {
@@ -502,6 +504,7 @@ export class LearningObject {
   }
   /**
    * Removes the object's i-th learning outcome.
+   *
    * @param {number} index the index to remove from this objects' outcomes
    *
    * @returns {LearningOutcome} the learning outcome which was removed
@@ -530,6 +533,7 @@ export class LearningObject {
   }
   /**
    * Removes the object's i-th child.
+   *
    * @param {number} index the index to remove from this objects' children
    *
    * @returns {LearningObject} the child object which was removed
@@ -561,6 +565,7 @@ export class LearningObject {
   }
   /**
    * Removes the object's i-th contributor.
+   *
    * @param {number} index the index to remove from this object's contributors
    *
    * @returns {User} the user object which was removed
@@ -641,30 +646,30 @@ export class LearningObject {
       this._date = object.date;
     }
 
-    this.length = <LearningObject.Length>object.length || this.length;
+    this.length = object.length as LearningObject.Length || this.length;
 
     if (object.levels) {
       this._levels = [];
-      (<LearningObject.Level[]>object.levels).map(level =>
+      (object.levels as LearningObject.Level[]).map(level =>
         this.addLevel(level),
       );
     }
 
     if (object.outcomes) {
-      (<LearningOutcome[]>object.outcomes).map(outcome =>
+      (object.outcomes as LearningOutcome[]).map(outcome =>
         this.addOutcome(outcome),
       );
     }
 
     this.materials =
-      <LearningObject.Material>object.materials || this.materials;
+      object.materials as LearningObject.Material || this.materials;
 
     if (object.children) {
-      (<LearningObject[]>object.children).map(child => this.addChild(child));
+      (object.children as LearningObject[]).map(child => this.addChild(child));
     }
 
     if (object.contributors) {
-      (<User[]>object.contributors).map(contributor =>
+      (object.contributors as User[]).map(contributor =>
         this.addContributor(contributor),
       );
     }
@@ -706,9 +711,9 @@ export class LearningObject {
       this._topics = object.topics;
     }
 
-    this.collection = <string>object.collection || this.collection;
-    this.status = <LearningObject.Status>object.status || this.status;
-    this.metrics = <LearningObject.Metrics>object.metrics || this.metrics;
+    this.collection = object.collection as string || this.collection;
+    this.status = object.status as LearningObject.Status || this.status;
+    this.metrics = object.metrics as LearningObject.Metrics || this.metrics;
   }
 
   /**

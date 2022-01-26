@@ -1,4 +1,3 @@
-
 import { ModalService } from './modal.service';
 import { Output, Input, EventEmitter, Directive, AfterViewChecked, DoCheck, OnDestroy } from '@angular/core';
 
@@ -50,6 +49,7 @@ export abstract class ModalDirective implements AfterViewChecked, DoCheck, OnDes
 
     /**
      * Uses the @Output to send a string message back to it's parent component
+     *
      * @param msg
      */
     sendEvent(msg) {

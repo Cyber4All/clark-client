@@ -20,9 +20,6 @@ import { TeleporterDestinationComponent } from './teleporter-destination/telepor
   ],
   exports: [
     TeleporterComponent
-  ],
-  entryComponents: [
-    TeleporterDestinationComponent
   ]
 })
 export class TeleporterModule {}

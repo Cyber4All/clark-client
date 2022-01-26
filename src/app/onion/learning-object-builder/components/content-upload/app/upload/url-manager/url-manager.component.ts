@@ -94,6 +94,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
   /**
    * Function that emits an event when the user enters in both the
    * title and url field
+   *
    * @param event
    */
   updateUrl(event: object) {
@@ -112,6 +113,7 @@ export class UrlManagerComponent implements OnInit, OnDestroy {
   /**
    * Emit's an event to parent component containing the index of the url to be removed
    * and fires next() on the trigger save subject
+   *
    * @param index
    */
   removeURL(index: number) {

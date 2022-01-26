@@ -1,7 +1,7 @@
 import { AuthService, AUTH_GROUP } from '../core/auth.service';
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { FeaturedComponent } from 'app/cube/shared/featured/featured.component';
-import { TestBed, fakeAsync, tick, inject, async } from '@angular/core/testing';
+import { TestBed, fakeAsync, tick, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { environment } from '@env/environment';
 
@@ -15,17 +15,18 @@ describe('Service : Auth', () => {
     let service: AuthService;
     let httpTestingController: HttpTestingController;
     beforeEach(() => {
-        AuthService.prototype.validate = () => Promise.resolve();
+        AuthService.prototype.validateAndRefreshToken = () => Promise.resolve();
         TestBed.configureTestingModule({
-            providers: [AuthService],
-            imports: [
-                HttpClientTestingModule, CookieModule.forRoot()
-            ],
-        });
+    providers: [AuthService],
+    imports: [
+        HttpClientTestingModule, CookieModule.forRoot()
+    ],
+    teardown: { destroyAfterEach: false }
+});
                 // Returns a service with the MockBackend so we can test with dummy responses
-                service = TestBed.get(AuthService);
+                service = TestBed.inject(AuthService);
                 // Inject the http service and test controller for each test
-                httpTestingController = TestBed.get(HttpTestingController);
+                httpTestingController = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {

@@ -34,7 +34,7 @@ import { getUserAgentBrowser } from 'getUserAgentBrowser';
 
 export interface FileInput extends File {
   fullPath?: string;
-  webkitRelativePath?: string;
+  webkitRelativePath: string;
 }
 
 export interface EnqueuedFile extends FileInput {
@@ -44,7 +44,7 @@ export interface EnqueuedFile extends FileInput {
 }
 
 @Component({
-  // tslint:disable-next-line:component-selector
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-upload',
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss'],
@@ -251,6 +251,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Change and animate a new slide onto the screen
+   *
    * @param index number corresponding to the new slide to be rendered
    */
   changeSlide(index: number) {
@@ -263,6 +264,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Toggle dropzone popover
+   *
    * @param val boolean, if true show popover, if false hide it
    * @param delay number of milliseconds to delay action
    */
@@ -274,6 +276,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   /**
    * Adds the dropped class to the uploader popup to animate the arrow. Removed after delay
+   *
    * @param val boolean, if true set dropped to true and set timeout to remove it
    * @param delay number of milliseconds to delay before removing
    */

@@ -78,7 +78,7 @@ export class EditorialActionPadComponent implements OnInit {
   // Create a revision and then redirects to the builder for the revision˝
   async createRevision() {
     this.learningObjectService
-      .createRevision(this.learningObject.cuid, this.learningObject.author.username).then(async(revisionUri: any) => {
+      .createRevision(this.learningObject.cuid, this.learningObject.author.username).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
         this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
       }

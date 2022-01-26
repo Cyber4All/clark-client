@@ -92,11 +92,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     // retrieve draft status learning objects
-    setTimeout(async() => {
+    setTimeout(async () => {
       await this.getDraftLearningObjects();
     }, 1100);
     // retrieve released learning objects
-    setTimeout(async() => {
+    setTimeout(async () => {
       await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
       this.loading = false;
     }, 1100);
@@ -107,7 +107,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const cuid = params.activeLearningObject;
       const version = parseInt(params.version, 10);
 
-      let p = new Promise(resolve => resolve());
+      let p = new Promise<void>(resolve => resolve());
 
       if (cuid && version >= 0) {
         // we know we can attempt to open the sidepanel, now to see if we've finished loading released Learning Objects
@@ -147,6 +147,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   /**
    * Retrieves an array of learningObjects to populate the draft list of learning objects
    * This will only retrieve the drafts and will not retrieve any revisions of a learning object
+   *
    * @param filters
    * @param text
    */
@@ -163,10 +164,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
    /**
-   * Retrieves an array of learningObjects to populate the released list of learning objects
-   * @param filters
-   * @param query
-   */
+    * Retrieves an array of learningObjects to populate the released list of learning objects
+    *
+    * @param filters
+    * @param query
+    */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
     this.releasedLearningObjects = await this.learningObjectService
       .getLearningObjects(this.auth.username, filters, text)
@@ -190,6 +192,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   /**
    * Applys status filters to the draft learning objects list
+   *
    * @param filters
    */
   async applyFilters(filters: any) {
@@ -204,6 +207,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   /**
    * Performs a search on the users released and working Learning Objects
+   *
    * @param text
    */
   performSearch(text: string) {
@@ -214,9 +218,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // SUBMISSION AND CANCEL SUBMISSION LOGIC
 
    /**
-   * Submits learning object to collection
-   * @param event
-   */
+    * Submits learning object to collection
+    *
+    * @param event
+    */
   submitLearningObjectToCollection(event: LearningObject) {
     // If the object is unreleased, submit it, else resubmit it (because minor/major changes were asked for)
     if (LearningObject.Status.UNRELEASED === event.status) {
@@ -238,9 +243,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
    /**
-   * Cancel a submission while in waiting status
-   * @param l {LearningObject} learning object to be unpublished
-   */
+    * Cancel a submission while in waiting status
+    *
+    * @param l {LearningObject} learning object to be unpublished
+    */
   cancelSubmission(l: LearningObject): Promise<void> {
     return this.collectionService.unsubmit({
       learningObjectId: l.id,
@@ -257,11 +263,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // CHANGELOG MODAL LOGIC
 
    /**
-   * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
-   *
-   * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
-   * @memberof DashboardComponent
-   */
+    * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
+    *
+    * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
+    * @memberof DashboardComponent
+    */
   async openViewAllChangelogsModal(learningObjectId: string) {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;
@@ -356,7 +362,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   submitRevisionPromiseHandler(submitted: boolean) {
-    this.sidePanelPromiseResolver = new Promise((resolve, reject) => {
+    this.sidePanelPromiseResolver = new Promise<void> ((resolve, reject) => {
       if (submitted) {
         resolve();
       } else {

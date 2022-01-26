@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TopicPageComponent } from './topic-page.component';
 
@@ -6,10 +6,11 @@ describe('TopicPageComponent', () => {
   let component: TopicPageComponent;
   let fixture: ComponentFixture<TopicPageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ TopicPageComponent ]
-    })
+    declarations: [TopicPageComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

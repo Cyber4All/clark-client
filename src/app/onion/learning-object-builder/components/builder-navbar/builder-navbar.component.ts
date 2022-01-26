@@ -133,6 +133,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   /**
    * Returns whether the passed route is "new", aka was the route disabled due to validation but is now enabled and hasn't been navigated to
+   *
    * @param {string} route
    * @returns {boolean}
    * @memberof BuilderNavbarComponent
@@ -147,6 +148,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   /**
    * Add the passed route to the set of clicked routes
+   *
    * @param {string} route
    * @memberof BuilderNavbarComponent
    */
@@ -156,6 +158,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   /**
    * Function to initiate the bunlding process on a learning object when changes have been made
+   *
    * @var this.store.upload is a toggle string variable to block the 'Back' button if a file upload
    * is not finished. See the builder store for more details.
    */

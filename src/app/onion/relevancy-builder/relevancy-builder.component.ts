@@ -104,7 +104,7 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
 
   historySnapshot: HistorySnapshot;
 
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   constructor(
     public store: BuilderStore,
     private route: ActivatedRoute,

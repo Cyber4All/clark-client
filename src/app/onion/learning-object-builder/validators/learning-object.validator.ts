@@ -216,7 +216,7 @@ export class LearningObjectValidator {
         new LearningOutcome(outcome)
       );
 
-      // tslint:disable-next-line: forin
+      // eslint-disable-next-line guard-for-in
       for (const s in submitErrors) {
         this.outcomeValidator.errors.setOutcomeError(
           'submit',

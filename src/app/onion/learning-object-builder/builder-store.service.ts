@@ -130,7 +130,7 @@ export class BuilderStore {
   > = new BehaviorSubject(undefined);
 
   // true when there is a save operation in progress or while there are changes that are cached but not yet saved
-  public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject(
+  public serviceInteraction$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
 
@@ -235,7 +235,7 @@ export class BuilderStore {
 
     // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
     const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
-      // tslint:disable-next-line:triple-equals used to catch inadvertent type mismatch between number and string
+      // eslint-disable-next-line eqeqeq
       if (revisionId == 0) {
         revisionId = await this.learningObjectService.createRevision(username, id);
       }
@@ -463,7 +463,7 @@ export class BuilderStore {
       this.learningObjectService
         .deleteOutcome(
           this.learningObject.id,
-          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+          (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || id,
         )
         .then(() => {
@@ -500,7 +500,7 @@ export class BuilderStore {
         bloom: outcome.bloom,
         verb: outcome.verb,
         text: outcome.text,
-        serviceId: (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+        serviceId: (outcome as Partial<LearningOutcome> & { serviceId?: string })
           .serviceId
       },
       true
@@ -520,7 +520,7 @@ export class BuilderStore {
     this.saveOutcome(
       {
         id:
-          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+          (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || outcome.id,
         mappings: outcome.mappings.map(x => x.guidelineId)
       },
@@ -547,7 +547,7 @@ export class BuilderStore {
     this.saveOutcome(
       {
         id:
-          (<Partial<LearningOutcome> & { serviceId?: string }>outcome)
+          (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || outcome.id,
         mappings: mappedOutcomes.map(x => x.guidelineId)
       },
@@ -655,6 +655,7 @@ export class BuilderStore {
   /**
    * Updates Url at given index
    * Also checks for valid Url and title field input against the supplied regex pattern
+   *
    * @param {number} index
    * @param {Url} url
    * @memberof BuilderStore
@@ -797,6 +798,7 @@ export class BuilderStore {
 
   /**
    * Checks for submittable object, returns true if it's submittable and false otherwise
+   *
    *@param {string} [collection]
    * @memberof BuilderStore
    */
@@ -1051,12 +1053,12 @@ export class BuilderStore {
   }
 
     /**
-   * Handles service interaction for deleting a mapping to a LearningOutcome
-   *
-   * @private
-   * @param {Partial<LearningOutcome>} outcome
-   * @memberof BuilderStore
-   */
+     * Handles service interaction for deleting a mapping to a LearningOutcome
+     *
+     * @private
+     * @param {Partial<LearningOutcome>} outcome
+     * @memberof BuilderStore
+     */
   private deleteGuideline(outcomeId: string, mappingId: string) {
     this.serviceInteraction$.next(true);
     this.learningObjectService

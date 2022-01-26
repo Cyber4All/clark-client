@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FilePreviewComponent } from './file-preview.component';
 import { noPreview, notLoggedIn } from './file-preview.copy';
@@ -13,13 +13,14 @@ describe('FilePreviewComponent', () => {
   };
 
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      providers: [
+    providers: [
         { provide: AuthService, useValue: AuthServiceStub },
-      ],
-      declarations: [FilePreviewComponent]
-    }).compileComponents();
+    ],
+    declarations: [FilePreviewComponent],
+    teardown: { destroyAfterEach: false }
+}).compileComponents();
   }));
 
   beforeEach(() => {

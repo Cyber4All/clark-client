@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------
 # BUILD STAGE
 # ----------------------------------------------------------------
-FROM node:12 as build
+FROM node:16 as build
 # Create a build folder to work in
 COPY . /build
 WORKDIR /build

@@ -47,6 +47,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
   /**
    * Retrieve the list of candidate children and filter out the current children
    * as well as the object that is currently being edited
+   *
    * @param filters
    */
   async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
@@ -64,6 +65,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
   /**
    * Takes the index of the LO within the array and emits it to the parent
    * and also removes it from the array of candidate children for the LO
+   *
    * @param index
    */
   addChildToList(child, index) {

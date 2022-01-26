@@ -7,7 +7,6 @@ import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.
   imports: [SharedDirectivesModule],
   declarations: [ContextMenuComponent, ContextMenuViewerComponent],
   exports: [ContextMenuComponent, ContextMenuViewerComponent],
-  entryComponents: [ContextMenuViewerComponent]
 })
 export class ContextMenuModule {
   static forRoot(): ModuleWithProviders<ContextMenuModule> {

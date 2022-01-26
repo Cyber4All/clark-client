@@ -20,6 +20,7 @@ const validGuideline = new Guideline({
 // Invalid values
 const invalidBloom = 'not a bloom taxon';
 const invalidVerb = 'not a bloom verb';
+// eslint-disable-next-line @typescript-eslint/no-inferrable-types
 const invalidText: undefined = undefined;
 
 describe('Class: LearningOutcome', () => {

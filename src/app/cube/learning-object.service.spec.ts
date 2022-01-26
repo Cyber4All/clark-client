@@ -6,17 +6,17 @@ import { Subscription } from 'rxjs';
 describe('LearningObjectService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [LearningObjectService]
-    });
+    imports: [HttpClientModule],
+    providers: [LearningObjectService],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   it('should be created', inject([LearningObjectService], (service: LearningObjectService) => {
     expect(service).toBeTruthy();
   }));
   it('should return learning objects', inject([LearningObjectService], (service: LearningObjectService) => {
-    let sub: Subscription;
-    sub = service.observeFiltered().subscribe(val => {
+    const sub: Subscription = service.observeFiltered().subscribe(val => {
       console.log(val);
       expect(val).toBeTruthy();
     });

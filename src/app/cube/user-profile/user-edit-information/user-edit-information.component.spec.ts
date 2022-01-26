@@ -12,10 +12,11 @@ describe('UserEditInformationComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, CookieModule.forRoot()],
-      providers: [CookieService, UserService, AuthService, CookieOptionsProvider, ToastrOvenService],
-      declarations: [ UserEditInformationComponent ]
-    })
+    imports: [HttpClientModule, CookieModule.forRoot()],
+    providers: [CookieService, UserService, AuthService, CookieOptionsProvider, ToastrOvenService],
+    declarations: [UserEditInformationComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   });
 

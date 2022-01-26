@@ -38,12 +38,12 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    // third-party modules
+    // third-part modules
     CKEditorModule,
     VirtualScrollerModule,
-    // CLARK Modules
+    // CLARK modules
     SharedDirectivesModule,
-    SharedPipesModule
+    SharedPipesModule,
   ],
   declarations: [
     // components

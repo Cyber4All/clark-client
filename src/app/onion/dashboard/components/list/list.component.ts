@@ -40,6 +40,7 @@ export class ListComponent {
 
   /**
    * Add or remove filter from filters list
+   *
    * @param filter {string} the filter to be toggled
    */
   toggleFilter(filter: string) {
@@ -60,7 +61,7 @@ export class ListComponent {
     this.applyFilters.emit(this.filters);
   }
 
-   /**
+  /**
    * Returns a boolean indicating whether or not all Learning Object checkboxes are selected
    *
    * @readonly
@@ -86,8 +87,9 @@ export class ListComponent {
     }
   }
 
-    /**
+  /**
    * Decides based on the value whether to select or deselect the learning object
+   *
    * @param l learning object to be selected
    * @param value boolean, true if object is selected, false otherwise
    */
@@ -99,8 +101,9 @@ export class ListComponent {
     }
   }
 
-    /**
+  /**
    * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
+   *
    * @param l Learning Object to be selected
    */
   selectLearningObject(l: LearningObject) {
@@ -117,6 +120,7 @@ export class ListComponent {
 
   /**
    * Fired on select of a Learning Object, takes the object and removes it from the list of selected Learning Objects
+   *
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {
@@ -129,10 +133,11 @@ export class ListComponent {
   }
 
     /**
-   * Creates a map of the objects that will be deleted. Takes either a single object or
-   * sets the objects to be deleted to the objects selected in the checkboxes
-   * @param object
-   */
+     * Creates a map of the objects that will be deleted. Takes either a single object or
+     * sets the objects to be deleted to the objects selected in the checkboxes
+     *
+     * @param object
+     */
   confirmDelete(object?: any) {
     this.deleteObjects = [];
     if (object) {
