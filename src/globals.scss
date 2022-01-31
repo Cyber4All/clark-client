@@ -1,8 +1,8 @@
 // font
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700&display=swap');
-@import '~_vars.scss';
+@import 'vars.scss';
 
-@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
 .dummy-input {
   position: fixed;

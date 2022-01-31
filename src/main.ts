@@ -1,4 +1,3 @@
-import 'hammerjs';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
@@ -19,7 +18,7 @@ const userVersion = localStorage.getItem(VERSION_STORE);
   // Set current version of the application
   localStorage.setItem(VERSION_STORE, appVersion);
   // Check the version of the application the user last ran; If mismatch clear cache via hard reload
-  userVersion !== appVersion ? location.reload(true) :
+  userVersion !== appVersion ? location.reload() :
     console.log(`${appDisplayName} running version: ${appVersion} - Up to date.`);
 })();
 

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LengthComponent } from './length.component';
 
@@ -6,10 +6,11 @@ describe('LengthComponent', () => {
   let component: LengthComponent;
   let fixture: ComponentFixture<LengthComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LengthComponent ]
-    })
+    declarations: [LengthComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

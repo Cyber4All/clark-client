@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ChangeStatusModalComponent} from './change-status-modal.component';
 
@@ -6,10 +6,11 @@ describe('ChangeStatusModalComponent', () => {
   let component: ChangeStatusModalComponent;
   let fixture: ComponentFixture<ChangeStatusModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChangeStatusModalComponent ]
-    })
+    declarations: [ChangeStatusModalComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

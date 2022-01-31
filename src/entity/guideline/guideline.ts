@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering*/
 import { GUIDELINE_ERRORS } from './error-messages';
 import { EntityError } from '../errors/entity-error';
 import { LEVEL, VALID_LEVELS } from '../standard-guidelines/IGuideline';
@@ -5,6 +6,7 @@ import { SearchItem } from 'entity/standard-guidelines/search-index';
 
 /**
  * A class to represent a standard guideline. Immutable.
+ *
  * @class
  */
 export class Guideline implements SearchItem {
@@ -20,7 +22,8 @@ export class Guideline implements SearchItem {
 
   /**
    * Creates an instance of Guideline.
-   * @param {Partial<Guideline>} [guideline]
+   *
+   * @param guideline
    * @memberof Guideline
    */
   constructor(guideline?: any) {
@@ -43,7 +46,7 @@ export class Guideline implements SearchItem {
    * Copies properties of guideline to this guideline if defined
    *
    * @private
-   * @param {Partial<Guideline>} guideline
+   * @param guideline
    * @memberof Guideline
    */
   private copyGuideline(guideline: any): void {
@@ -79,7 +82,6 @@ export class Guideline implements SearchItem {
   /**
    * Converts Guideline to plain object without functions and private properties
    *
-   * @returns {Partial<Guideline>}
    * @memberof Guideline
    */
   public toPlainObject(): Partial<Guideline> {

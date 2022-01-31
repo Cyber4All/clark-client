@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UrlManagerComponent } from './url-manager.component';
 
@@ -6,10 +6,11 @@ describe('UrlManagerComponent', () => {
   let component: UrlManagerComponent;
   let fixture: ComponentFixture<UrlManagerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UrlManagerComponent ]
-    })
+    declarations: [UrlManagerComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

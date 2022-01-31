@@ -82,7 +82,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
   @HostListener('window:keyup', ['$event'])
   onKeyUp(event: KeyboardEvent) {
     event.preventDefault();
-    if (event.keyCode === 27) {
+    if (event.code === 'Escape') {
       // escape key pressed, close the search bar for Sean
       this.hideSearch();
     }
@@ -176,6 +176,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   /**
    * Click events on the user section of the topbar, displays context menu
+   *
    * @param {boolean} [value] true if open, false otherwise
    */
   userDropdown(value?: boolean): void {
@@ -184,6 +185,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   /**
    * Click events on the contributor section of the topbar, displays context menu
+   *
    * @param {boolean} [value] true if open, false otherwise
    */
   contributorDropdown(value?: boolean): void {

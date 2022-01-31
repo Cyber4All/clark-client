@@ -1,5 +1,5 @@
 import { OrganizationListComponent } from './organization-list/organization-list.component';
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
@@ -32,6 +32,7 @@ const library = {
   data : {title: 'Your Library'},
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const cube_routes: Routes = [
   {
     path: '',
@@ -114,4 +115,8 @@ const cube_routes: Routes = [
   },
 ];
 
-export const CubeRoutingModule: ModuleWithProviders = RouterModule.forChild(cube_routes);
+@NgModule({
+  imports: [RouterModule.forChild(cube_routes)],
+  exports: [RouterModule]
+})
+export class CubeRoutingModule { }

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CollectionsGridComponent } from './collections-grid.component';
 
@@ -6,10 +6,11 @@ describe('CollectionsGridComponent', () => {
   let component: CollectionsGridComponent;
   let fixture: ComponentFixture<CollectionsGridComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ CollectionsGridComponent ]
-    })
+    declarations: [CollectionsGridComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

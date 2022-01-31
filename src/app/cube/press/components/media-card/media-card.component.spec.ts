@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MediaCardComponent } from './media-card.component';
 
@@ -6,10 +6,11 @@ describe('MediaCardComponent', () => {
   let component: MediaCardComponent;
   let fixture: ComponentFixture<MediaCardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MediaCardComponent ]
-    })
+    declarations: [MediaCardComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

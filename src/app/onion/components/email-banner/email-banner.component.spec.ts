@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { EmailBannerComponent } from './email-banner.component';
 
@@ -6,10 +6,11 @@ describe('EmailBannerComponent', () => {
   let component: EmailBannerComponent;
   let fixture: ComponentFixture<EmailBannerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EmailBannerComponent ]
-    })
+    declarations: [EmailBannerComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

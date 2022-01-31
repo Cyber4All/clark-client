@@ -93,6 +93,7 @@ export class BuilderStore {
 
   /**
    * Local store for a learning objects tagged topics
+   *
    * @param arr array of topic ids
    */
   storeTopics(arr: string[]): void {

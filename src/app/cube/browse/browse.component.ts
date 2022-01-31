@@ -234,6 +234,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   /**
    * Executes a search by reading through the query object and mapping it to query parameters and then re-navigating to the component
+   *
    * @param delay if true, triggers a debounced subject, which will call performSearch again with no delay
    */
   performSearch(delay: boolean = false) {
@@ -303,6 +304,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   /**
    * Takes an object of parameters and attempts to map them to the query objcet
+   *
    * @param {*} params the object returned from subscribing to the routers queryParams observable
    */
   makeQuery(params: any) {

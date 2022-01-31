@@ -84,6 +84,7 @@ export class SubmittableLearningObject extends LearningObject {
 
   /**
    * Creates an instance of SubmittableLearningObject.
+   *
    * @param {LearningObject} object
    * @memberof SubmittableLearningObject
    */
@@ -115,7 +116,6 @@ export class SubmittableLearningObject extends LearningObject {
 export namespace SubmittableLearningObject {
   export function validateName(name: string) {
     try {
-      // tslint:disable-next-line:no-unused-expression
       new LearningObject({ name });
     } catch (e) {
       throw new EntityError(e.message, 'name');

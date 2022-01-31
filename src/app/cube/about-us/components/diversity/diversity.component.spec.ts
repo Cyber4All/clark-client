@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { DiversityComponent } from './diversity.component';
 
@@ -6,10 +6,11 @@ describe('DiversityComponent', () => {
   let component: DiversityComponent;
   let fixture: ComponentFixture<DiversityComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ DiversityComponent ]
-    })
+    declarations: [DiversityComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

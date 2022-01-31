@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HighlightedLearningObjectComponent } from './highlighted-learning-object.component';
 
@@ -6,10 +6,11 @@ describe('HighlightedLearningObjectComponent', () => {
   let component: HighlightedLearningObjectComponent;
   let fixture: ComponentFixture<HighlightedLearningObjectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ HighlightedLearningObjectComponent ]
-    })
+    declarations: [HighlightedLearningObjectComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

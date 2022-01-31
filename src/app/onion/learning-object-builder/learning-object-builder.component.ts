@@ -108,7 +108,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   historySnapshot: HistorySnapshot;
 
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   constructor(
     private store: BuilderStore,
     private route: ActivatedRoute,
@@ -306,6 +306,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   /**
    * Determines whether or not a Learning Object is in the Review Stage.
+   *
    * @param object the Learning Object in question.
    */
   private isInReviewStage(object): boolean {

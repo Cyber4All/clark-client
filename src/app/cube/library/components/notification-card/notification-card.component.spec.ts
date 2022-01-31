@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NotificationCardComponent } from './notification-card.component';
 
@@ -6,10 +6,11 @@ describe('NotificationCardComponent', () => {
   let component: NotificationCardComponent;
   let fixture: ComponentFixture<NotificationCardComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NotificationCardComponent ]
-    })
+    declarations: [NotificationCardComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

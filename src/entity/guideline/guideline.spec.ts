@@ -4,6 +4,7 @@ import { LEVEL } from 'entity/standard-guidelines/IGuideline';
 
 // Invalid values
 const invalidName: null = undefined;
+// eslint-disable-next-line @typescript-eslint/no-inferrable-types
 const invalidDate: null = null;
 
 describe('Class: Guideline', () => {

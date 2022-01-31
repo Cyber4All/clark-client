@@ -77,13 +77,13 @@ export class RatingService {
   }
 
   /**
-  * Delete a response
-  *
-  * @param {string} learningObjectId
-  * @param {string} ratingId
-  * @param {string} responseId
-  * @returns {Promise<any>}
-  */
+   * Delete a response
+   *
+   * @param {string} learningObjectId
+   * @param {string} ratingId
+   * @param {string} responseId
+   * @returns {Promise<any>}
+   */
   deleteResponse(params: {
     username: string;
     CUID: string;
@@ -108,12 +108,12 @@ export class RatingService {
   }
 
   /**
-  * Create a rating for a learning object
-  *
-  * @param {string} learningObjectId
-  * @param {{value: number, comment: string}} rating
-  * @returns {Promise<any>}
-  */
+   * Create a rating for a learning object
+   *
+   * @param {string} learningObjectId
+   * @param {{value: number, comment: string}} rating
+   * @returns {Promise<any>}
+   */
   createRating(params: {
     username: string;
     CUID: string;
@@ -140,13 +140,13 @@ export class RatingService {
   }
 
   /**
-  * Edit a rating
-  *
-  * @param {string} learningObjectId
-  * @param {string} ratingId
-  * @param {{value: number, comment: string}} rating
-  * @returns {Promise<any>}
-  */
+   * Edit a rating
+   *
+   * @param {string} learningObjectId
+   * @param {string} ratingId
+   * @param {{value: number, comment: string}} rating
+   * @returns {Promise<any>}
+   */
   editRating(params: {
     username: string;
     CUID: string;
