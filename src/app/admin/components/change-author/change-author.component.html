@@ -18,8 +18,8 @@
             <span *ngIf="highlightedLearningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
             <span *ngIf="highlightedLearningObject.status === 'released'"><i class="fas fa-eye"></i></span>
             <span *ngIf="highlightedLearningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
-            <span *ngIf="learningObject.status === 'accepted_minor'"><i class="fas fa-check-double"></i></span>
-            <span *ngIf="learningObject.status === 'accepted_major'"><i class="fas fa-check"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'accepted_minor'"><i class="fas fa-check-double"></i></span>
+            <span *ngIf="highlightedLearningObject.status === 'accepted_major'"><i class="fas fa-check"></i></span>
           </div>
           <div>
             {{ (highlightedLearningObject.name.length > 40) ? (highlightedLearningObject.name | slice:0:40) + '...' : highlightedLearningObject.name }}
