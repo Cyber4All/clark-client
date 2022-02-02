@@ -205,7 +205,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
        * if server error is thrown, navigate to not-found page
        */
 
-      console.log(e);
     }
   }
 
@@ -306,7 +305,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.redirectUrl = redirectUrl;
         }
       }
-      console.log(e);
       // this.loading.pop();
     }
   }

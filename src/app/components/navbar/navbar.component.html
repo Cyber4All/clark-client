@@ -1,9 +1,9 @@
 <clark-message></clark-message>
-<clark-skip-link *ngIf="nav.visible" title="Skip directly to site content" skipLocation="pageContent"></clark-skip-link>
-<clark-skip-link *ngIf="!loggedin && nav.visible" title="Skip directly to Login" skipLocation="clark-sign-in"></clark-skip-link>
-<clark-skip-link *ngIf="loggedin && nav.visible" title="Skip directly to your User Profile" skipLocation="clark-user-dropdown"></clark-skip-link>
-<clark-skip-link *ngIf="nav.visible" title="Skip directly to Search for Learning Objects" skipLocation="clark-search-input"></clark-skip-link>
-<div role="navigation" *ngIf="nav.visible">
+<clark-skip-link *ngIf="showNav" title="Skip directly to site content" skipLocation="pageContent"></clark-skip-link>
+<clark-skip-link *ngIf="!loggedin && showNav" title="Skip directly to Login" skipLocation="clark-sign-in"></clark-skip-link>
+<clark-skip-link *ngIf="loggedin && showNav" title="Skip directly to your User Profile" skipLocation="clark-user-dropdown"></clark-skip-link>
+<clark-skip-link *ngIf="showNav" title="Skip directly to Search for Learning Objects" skipLocation="clark-search-input"></clark-skip-link>
+<div role="navigation" *ngIf="showNav">
   <div class="topbar" [ngClass]="{'version': version, 'mobile': isMobile}">
     <div class="inner flex h left-right">
       <div class="logo flex h left-right" [ngClass]="{'noShow': searchDown && !isMobile}" activate routerLink="/home">
@@ -60,10 +60,10 @@
   </div>
 
   <!-- Overlay under mobile slideout -->
-  <div class="slideout-underlay" *ngIf="nav.visible" [ngClass]="{'active': menuOpen || searchDown, 'underNav': !isMobile || searchDown}" (activate)="menuOpen = false; hideSearch();"></div>
+  <div class="slideout-underlay" *ngIf="showNav" [ngClass]="{'active': menuOpen || searchDown, 'underNav': !isMobile || searchDown}" (activate)="menuOpen = false; hideSearch();"></div>
 
   <!-- Mobile menu slideout -->
-  <div class="slideout" *ngIf="nav.visible && isMobile" [ngClass]="{'active': menuOpen}">
+  <div class="slideout" *ngIf="showNav && isMobile" [ngClass]="{'active': menuOpen}">
     <div class="slideout-section user" routerLink="{{ loggedin ? '/users/' + authService.username : '/auth/login' }}">
       <ng-container *ngIf="loggedin; else noUserGreeting">
         <div class="img" [ngStyle]="{'background-image': 'url(' + gravatarImage(200) + ')'}"></div>

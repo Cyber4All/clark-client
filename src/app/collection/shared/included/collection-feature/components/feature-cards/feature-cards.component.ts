@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
 import { AttributeService } from '../../core/attribute.service';
 

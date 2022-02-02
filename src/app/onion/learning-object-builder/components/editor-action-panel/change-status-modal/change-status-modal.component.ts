@@ -176,7 +176,6 @@ export class ChangeStatusModalComponent implements OnInit {
       this.closeModal();
       this.serviceInteraction = false;
     }).catch(error => {
-      console.log('An error occurred!');
       this.serviceInteraction = false;
     });
   }

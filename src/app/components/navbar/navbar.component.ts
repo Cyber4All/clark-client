@@ -1,20 +1,17 @@
 import {
   Component,
   OnInit,
-  AfterContentChecked,
-  HostListener,
-  OnDestroy
+  HostListener
 } from '@angular/core';
 import {
   Router,
   ActivatedRoute,
-  NavigationEnd,
-  NavigationStart
+  NavigationStart,
+  NavigationEnd
 } from '@angular/router';
 
 import { AuthService } from '../../core/auth.service';
 import * as md5 from 'md5';
-import { Subscription ,  Subject } from 'rxjs';
 import { NavbarService } from '../../core/navbar.service';
 
 // imports for animation
@@ -26,6 +23,7 @@ import {
   transition
 } from '@angular/animations';
 import { UserService } from 'app/core/user.service';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -48,18 +46,16 @@ import { UserService } from 'app/core/user.service';
     ])
   ]
 })
-export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
+export class NavbarComponent implements OnInit {
   responsiveThreshold = 750;
   windowWidth: number;
-  version: any;
-  subs: Subscription[] = [];
 
   searchFocusSubject: Subject<any> = new Subject();
   searchBlurSubject: Subject<any> = new Subject();
 
   // flags
-  hideNavbar = false;
   isOnion = false;
+  showNav = true;
   loggedin = this.authService.user ? true : false;
   menuOpen = false; // flag for whether or not the mobile menu is out
   searchDown = false; // flag for whether or not the search is down
@@ -90,14 +86,12 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     public authService: AuthService,
     public nav: NavbarService,
     private userService: UserService,
   ) {
     this.windowWidth = window.innerWidth;
 
-    this.subs.push(
       this.router.events.subscribe(e => {
         if (e instanceof NavigationStart) {
           // if we're in the onion client, make sure the navigation switcher reflects it
@@ -106,47 +100,27 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
           } else {
             this.isOnion = false;
           }
-
           this.menuOpen = this.searchDown = false;
         } else if (e instanceof NavigationEnd) {
-          // scroll to top of page when any router event is fired
-          window.scrollTo(0, 0);
-
-          // hide navbar if it should be hidden
-          const root: ActivatedRoute = this.route.root;
-          this.hideNavbar = root.children[0].snapshot.data.hideTopbar;
-
+          if (e.url.match(/\/*auth[\/*[0-z]*]*/)) {
+            // scroll to top of page when any router event is fired
+            this.showNav = false;
+          } else {
+            this.showNav = true;
+          }
           this.url = e.url;
         }
-      })
-    );
-
-    // pull the version number out of package.json and extract the prefix (alpha, beta, release-candidate, etc)
-    const { version: appVersion } = require('../../../../package.json');
-    const versionRegex = /[0-9]+\-([A-z]+(?=\.[0-9]+))/;
-    const matched = versionRegex.exec(appVersion);
-
-    if (matched && matched.length >= 1) {
-      this.version = matched[1];
-    }
-  }
+        window.scrollTo(0, 0);
+      });
+  };
 
   ngOnInit() {
-    this.subs.push(
-      this.authService.isLoggedIn.subscribe(val => {
-        this.loggedin = val ? true : false;
-        this.getNotifications();
-      })
-    );
-  }
-
-  ngAfterContentChecked(): void {
-    // FIXME there has to be a better way to do this
-    if (window.location.pathname.indexOf('auth') >= 0) {
-      this.hideNavbar = true;
-    } else {
-      this.hideNavbar = false;
-    }
+    this.authService.isLoggedIn.subscribe(val => {
+      this.loggedin = val ? true : false;
+      this.getNotifications();
+    });
+    this.showNav = this.nav.visible;
+    window.scrollTo(0, 0);
   }
 
   async getNotifications() {
@@ -209,14 +183,5 @@ export class NavbarComponent implements OnInit, AfterContentChecked, OnDestroy {
 
   goToContent(value: string) {
     document.getElementById(value).focus();
-  }
-
-  ngOnDestroy() {
-    // close all subscriptions
-    for (let i = 0, l = this.subs.length; i < l; i++) {
-      this.subs[i].unsubscribe();
-    }
-
-    this.subs = [];
   }
 }
