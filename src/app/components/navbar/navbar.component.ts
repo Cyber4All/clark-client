@@ -93,23 +93,18 @@ export class NavbarComponent implements OnInit {
     this.windowWidth = window.innerWidth;
 
       this.router.events.subscribe(e => {
-        if (e instanceof NavigationStart) {
-          // if we're in the onion client, make sure the navigation switcher reflects it
+        if (e instanceof NavigationEnd) {
+          // if we're in onion, auth, or admin, toggle the navbar off
+          this.showNav = e.url.match(/\/*onion[\/*[0-z]*]*/)
+            || e.url.match(/\/*auth[\/*[0-z]*]*/)
+            || e.url.match(/\/*admin[\/*[0-z]*]*/) ? false : true;
+
           if (e.url.match(/\/*onion[\/*[0-z]*]*/)) {
-            this.isOnion = true;
-          } else {
-            this.isOnion = false;
-          }
-          this.menuOpen = this.searchDown = false;
-        } else if (e instanceof NavigationEnd) {
-          if (e.url.match(/\/*auth[\/*[0-z]*]*/)) {
-            // scroll to top of page when any router event is fired
-            this.showNav = false;
-          } else {
-            this.showNav = true;
-          }
-          this.url = e.url;
-        }
+            this.menuOpen = this.searchDown = false;
+          } else if (e.url.match(/\/*auth[\/*[0-z]*]*/)) {
+            this.url = e.url;
+          };
+        };
         window.scrollTo(0, 0);
       });
   };
