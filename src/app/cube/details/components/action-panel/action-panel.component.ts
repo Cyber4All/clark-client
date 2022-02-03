@@ -87,7 +87,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.hasDownloadAccess = (this.hasReviewerAccess || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
 
     this.url = this.buildLocation();
-    // FIXME: This is a fault. 'libraryService.libraryItems' is returned null when it is supposed to initialized in clark.component
+    // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
     await this.libraryService.getLibrary();
     this.saved = this.libraryService.has(this.learningObject);
     const userName = this.auth.username;
