@@ -101,9 +101,8 @@ export class NavbarComponent implements OnInit {
 
           if (e.url.match(/\/*onion[\/*[0-z]*]*/)) {
             this.menuOpen = this.searchDown = false;
-          } else if (e.url.match(/\/*auth[\/*[0-z]*]*/)) {
-            this.url = e.url;
           };
+          this.url = e.url;
         };
         window.scrollTo(0, 0);
       });

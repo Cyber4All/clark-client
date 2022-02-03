@@ -18,7 +18,6 @@ import { PressComponent } from './press/press.component';
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { DonateComponent } from './donate/donate.component';
-import { LibraryComponent } from './library/library.component';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const cube_routes: Routes = [
@@ -92,8 +91,7 @@ const cube_routes: Routes = [
       },
       {
         path: 'library',
-        component: LibraryComponent,
-        data : {title: 'Your Library'},
+        loadChildren: () => import('../cube/library/library.module').then(l => l.LibraryModule),
         canActivate: [AuthGuard]
       },
       // Catch All
