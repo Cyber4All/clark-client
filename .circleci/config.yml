@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.0
-  aws-cli: circleci/aws-cli@2.0.3
+  aws-cli: circleci/aws-cli@2.0.6
   docker: circleci/docker@2.0.1
 
 commands:
@@ -43,7 +43,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:16.13.2
+      - image: cyber4all/circleci-aws:debian
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
@@ -51,7 +51,7 @@ jobs:
           aws-access-key-id: AWS_CF_AccessKey
           aws-region: AWS_REGION_N_VA
           aws-secret-access-key: AWS_CF_SecretKey
-          version: "1"
+          version: "2"
       - run:
           name: Deploy to S3 
           command: aws s3 sync ./dist s3://${s3_bucket} --region ${s3_region}
