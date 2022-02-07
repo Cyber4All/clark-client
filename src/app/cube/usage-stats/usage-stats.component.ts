@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { UsageStats, LearningObjectStats, UserStats } from '../shared/types/usage-stats';
 import { CounterStat } from './counter-block/counter-block.component';

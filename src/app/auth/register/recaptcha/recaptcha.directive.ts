@@ -88,6 +88,7 @@ export class RecaptchaDirective
 
   /**
    * Useful for multiple captcha
+   *
    * @returns {number}
    */
   getId() {
@@ -149,6 +150,7 @@ export class RecaptchaDirective
 
   /**
    * Renders the container as a reCAPTCHA widget and returns the ID of the newly created widget.
+   *
    * @param element
    * @param config
    * @returns {number}
@@ -170,6 +172,7 @@ export class RecaptchaDirective
 
   /**
    * Gets the response for the reCAPTCHA widget.
+   *
    * @returns {string}
    */
   getResponse(): string {

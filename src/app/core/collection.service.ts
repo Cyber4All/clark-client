@@ -53,6 +53,7 @@ export class CollectionService {
 
   /**
    * Retrieve a list of collections
+   *
    * @return {Collection[]} list of collections
    */
   async getCollections(): Promise<Collection[]> {
@@ -76,6 +77,7 @@ export class CollectionService {
 
   /**
    * Adds specified learning object to specified collection
+   *
    * @param {string} learningObjectId id of learning object to be added to collection
    * @param {string} collectionName name of collection in which to insert learning object
    * @return {Promise<any>}

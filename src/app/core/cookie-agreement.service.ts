@@ -34,6 +34,7 @@ export class CookieAgreementService {
 
   /**
    * Stores cookie agreement value in localStorage is used to determine whether user can login
+   *
    * @param val the value to store in acceptCookieAgreement (always false before called)
    */
   setCookieAgreement(val: boolean) {
@@ -43,6 +44,7 @@ export class CookieAgreementService {
 
   /**
    * Stores cookie banner value in localStorage and hides banner
+   *
    * @param val the value to store in showCookieBanner (always true before called)
    */
   setShowCookieBanner(val: boolean) {

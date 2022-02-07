@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
 import { Injectable } from '@angular/core';

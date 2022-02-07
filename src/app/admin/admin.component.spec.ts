@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminComponent } from './admin.component';
 import {  ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -25,24 +25,27 @@ describe('AdminComponent', () => {
   }
 
   const routerStub = {
-    navigate: (commands: any[]) => { Promise.resolve(true); },
+    navigate: (commands: any[]) => {
+ Promise.resolve(true);
+},
     events: of(new Scroll(new NavigationEnd(0, 'dummyUrl', 'dummyUrl'), [0, 0], 'dummyString')),
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [AdminComponent],
-      imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [AdminComponent],
+    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
+    providers: [
         AuthService,
         ToastrOvenService,
         CollectionService,
         MessagesService,
         { provide: Router, useValue: routerStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-      ]
-    }).compileComponents();
+    ],
+    teardown: { destroyAfterEach: false }
+}).compileComponents();
 
   }));
 

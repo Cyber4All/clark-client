@@ -48,7 +48,7 @@ export class AuthService {
   user: AuthUser;
   httpHeaders = new HttpHeaders();
   inUse: object;
-  isLoggedIn = new BehaviorSubject<boolean>(false);
+  isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean> (false);
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
   private openIdToken: OpenIdToken;
 
@@ -516,28 +516,6 @@ export class AuthService {
         retry(3),
         catchError(this.handleError)
       );
-  }
-
-  /**
-   * Determines whether or not the currently logged-in user can download the specified learning object
-   *
-   * @param {LearningObject} learningObject
-   * @returns {Promise<number>}
-   * @memberof AuthService
-   */
-  async userCanDownload(learningObject: LearningObject): Promise<number> {
-    if (environment.production) {
-      // Check that the user is logged in
-
-      if (!this.isLoggedIn.getValue()) {
-        // user isn't logged in
-        return DOWNLOAD_STATUS.NO_AUTH;
-      }
-
-      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
-    } else {
-      return DOWNLOAD_STATUS.CAN_DOWNLOAD;
-    }
   }
 
   /**

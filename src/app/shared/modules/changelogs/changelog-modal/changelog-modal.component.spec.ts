@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ChangelogModalComponent } from './changelog-modal.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -8,11 +8,12 @@ describe('ChangelogModalComponent', () => {
   let component: ChangelogModalComponent;
   let fixture: ComponentFixture<ChangelogModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ ChangelogModalComponent ]
-    })
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [ChangelogModalComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

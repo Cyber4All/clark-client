@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LearningObjectListItemComponent } from './learning-object-list-item.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -16,23 +16,24 @@ describe('DashboardItemComponent', () => {
   let component: LearningObjectListItemComponent;
   let fixture: ComponentFixture<LearningObjectListItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ LearningObjectListItemComponent ],
-      imports: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [LearningObjectListItemComponent],
+    imports: [
         RouterTestingModule,
         ContextMenuModule.forRoot(),
         HttpClientModule,
         CookieModule.forRoot(),
         SharedDirectivesModule
-      ],
-      providers: [
+    ],
+    providers: [
         { provide: AuthService, useValue: { user: new User() } },
         CollectionService,
         { provide: UnreleaseService, useClass: {} },
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -23,6 +23,7 @@ export class AuthGuard implements CanActivate {
 
   /**
    * This method returns a boolean indicating whther or not navigation to a route should be allowed.
+   *
    * @param route
    * @param state
    */

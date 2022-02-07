@@ -28,6 +28,7 @@ export class BuilderNavbarComponent implements OnInit {
 
   /**
    * Add the passed route to the set of clicked routes
+   *
    * @param {string} route
    * @memberof BuilderNavbarComponent
    */

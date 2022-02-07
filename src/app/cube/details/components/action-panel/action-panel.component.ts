@@ -43,6 +43,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   private destroyed$ = new Subject<void>();
   hasDownloadAccess = false;
+  hasReviewerAccess = false;
   downloading = false;
   addingToLibrary = false;
   author: string;
@@ -76,15 +77,18 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private router: Router,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.auth.group
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         this.userCanRevise = this.auth.hasEditorAccess();
+        this.hasReviewerAccess = this.auth.hasReviewerAccess();
       });
-    this.hasDownloadAccess = (this.auth.hasReviewerAccess() || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
+    this.hasDownloadAccess = (this.hasReviewerAccess || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
 
     this.url = this.buildLocation();
+    // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
+    await this.libraryService.getLibrary();
     this.saved = this.libraryService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);
@@ -154,6 +158,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   /**
    * Download the revised copy of a learning object. This does not add the object to the users cart
+   *
    * @param download boolean determines if download takes place
    */
   downloadRevised(download?: boolean) {
@@ -188,7 +193,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   /**
    * Copy the Creative Commons Attribution to the clipboard
    *
-  */
+   */
   copyAttribution() {
     const range = document.createRange();
     range.selectNode(document.getElementById('objectAttribution'));
@@ -212,7 +217,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         FB.ui({
           method: 'share',
           href: this.url,
-        }, function (response) { });
+        }, function(response) { });
         break;
       case 'twitter':
         const text = 'Check out this learning object on CLARK! ClarkCan';
@@ -228,7 +233,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
             'code': 'anyone'
           }
         };
-        // tslint:disable-next-line:max-line-length
+        // eslint-disable-next-line max-len
         window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + this.buildLocation(true));
         break;
       case 'email':

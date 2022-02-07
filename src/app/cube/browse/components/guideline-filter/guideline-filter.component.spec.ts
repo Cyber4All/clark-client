@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GuidelineFilterComponent } from './guideline-filter.component';
 
@@ -6,10 +6,11 @@ describe('GuidelineFilterComponent', () => {
   let component: GuidelineFilterComponent;
   let fixture: ComponentFixture<GuidelineFilterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GuidelineFilterComponent ]
-    })
+    declarations: [GuidelineFilterComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -12,5 +12,5 @@ export const COPY = {
     OUTAGES: 'System Outages',
     ABOUT: 'About Us',
     SUBSCRIBE: 'Sign up for our Newsletter',
-    ROADMAP: 'Roadmap',
+    ROADMAP: 'Roadmap'
 };

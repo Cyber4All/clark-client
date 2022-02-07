@@ -108,6 +108,7 @@ export class LearningObjectService {
 
   /**
    * Fetches the resource of the uri that it was given
+   *
    * @param uri the uri of the learning object resource
    * @param callback
    */
@@ -124,6 +125,7 @@ export class LearningObjectService {
 
   /**
    * Returns the route that needs to be hit in order to load Learning Object based on the params passed in
+   *
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
@@ -143,6 +145,7 @@ export class LearningObjectService {
 
   /**
    * Returns an error message based on the params that are missing and are needed to retrieve Learning Object
+   *
    * @param params either the author and name or the id of the Learning Object
    */
   private userError(params: {author?: string, name?: string, id?: string}) {

@@ -11,6 +11,7 @@ export class ChangelogService {
 
   /**
    * Create a new changelog for the given learning object
+   *
    * @param {string} userId the id of the learning object author
    * @param {string} learningObjectId the id of the learning object
    * @param {string} changelog the text body of the changelog

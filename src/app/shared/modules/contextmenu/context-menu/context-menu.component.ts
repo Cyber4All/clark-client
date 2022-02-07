@@ -173,6 +173,7 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
 
   /**
    * Calculates position for context menu when anchored near an element by the elements position and the offset parameter
+   *
    * @param anchor {HTMLElement} the element that this context menu should be positioned near
    * @param offset {top: number, left: number} object containing distance (in pixels) menu should be from element for top and left
    */

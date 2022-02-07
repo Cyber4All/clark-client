@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OutcomesListItemComponent } from './outcomes-list-item.component';
 
@@ -6,10 +6,11 @@ describe('OutcomesListItemComponent', () => {
   let component: OutcomesListItemComponent;
   let fixture: ComponentFixture<OutcomesListItemComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutcomesListItemComponent ]
-    })
+    declarations: [OutcomesListItemComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

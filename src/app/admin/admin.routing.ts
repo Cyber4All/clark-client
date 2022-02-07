@@ -1,4 +1,4 @@
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { AdminGuard } from 'app/core/admin.guard';
@@ -13,6 +13,8 @@ import { FeaturedComponent } from './pages/featured/featured.component';
  *
  * @author Nick Winner
  */
+
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const admin_routes: Routes = [
   {
     path: '', component: AdminComponent, canActivate: [ AdminGuard ], children: [
@@ -37,4 +39,8 @@ const admin_routes: Routes = [
     ],
   },
 ];
-export const AdminRoutingModule: ModuleWithProviders = RouterModule.forChild(admin_routes);
+@NgModule({
+  imports: [RouterModule.forChild(admin_routes)],
+  exports: [RouterModule]
+})
+export class AdminRoutingModule { }

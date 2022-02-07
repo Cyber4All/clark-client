@@ -113,6 +113,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
 
   /**
    * Hides or shows the learning object context menu
+   *
    * @param {boolean} [value] true if open, false otherwise
    */
   toggleContextMenu(value?: boolean) {
@@ -122,6 +123,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
   /**
    * Given a string representation of a context menu action, returns true if that action should be allowed based on
    * parameters such as learing object length and learning object status
+   *
    * @param action {string} the action in question
    */
   actionPermissions(action: string) {
@@ -152,16 +154,18 @@ export class DashboardItemComponent implements OnInit, OnChanges {
   }
 
    /**
-   * Given a string representation of a context menu action, returns true if that action should be allowed based on
-   * parameters such as learning object length and learning object status
-   * @param action {string} the action in question
-   */
+    * Given a string representation of a context menu action, returns true if that action should be allowed based on
+    * parameters such as learning object length and learning object status
+    *
+    * @param action {string} the action in question
+    */
   adminActionPermissions() {
     return this.auth.hasCuratorAccess();
   }
 
   /**
    * Check the logged in user's email verification status
+   *
    * @return {boolean} true if logged-in user has verified their email, false otherwise
    */
   get verifiedEmail(): boolean {
@@ -170,6 +174,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
 
   /**
    * Emits a value for checkbox to parent component
+   *
    * @param val either the empty string (true) or a minus sign (false)
    */
   toggleSelect(val) {
@@ -178,6 +183,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
 
   /**
    * Takes a learning object and returns a list of it's children's names or an empty list
+   *
    * @return {string[]}
    */
   async objectChildrenNames() {

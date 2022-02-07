@@ -1,0 +1,124 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "dist",
+    "coverage",
+    ".vscode",
+    ".storybook",
+    ".husky",
+    ".github",
+    ".circleci",
+    ".angular",
+    "lighthouse",
+    "node_modules"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json",
+          "e2e/tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:@angular-eslint/template/process-inline-templates"
+      ],
+      "rules": {
+        "@typescript-eslint/adjacent-overload-signatures": "off",
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": [
+              "clark",
+              "cube",
+              "onion",
+              "admin",
+              "collection"
+            ],
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "",
+            "style": "camelCase"
+          }
+        ],
+        "@angular-eslint/no-output-native": "warn",
+        "@typescript-eslint/ban-types": "off",
+        "@typescript-eslint/consistent-type-definitions": "error",
+        "@typescript-eslint/dot-notation": "off",
+        "@typescript-eslint/explicit-member-accessibility": [
+          "off",
+          {
+            "accessibility": "explicit"
+          }
+        ],
+        "@typescript-eslint/prefer-for-of": "off",
+        "@typescript-eslint/member-delimiter-style": "off",
+        "@typescript-eslint/member-ordering": "off",
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": ["camelCase", "UPPER_CASE", "StrictPascalCase"],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": "enum",
+            "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+          },
+          {
+            "selector": "enumMember",
+            "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+          },
+          {
+            "selector": "variable",
+            "format": ["camelCase", "UPPER_CASE", "StrictPascalCase"],
+            "leadingUnderscore": "allow"
+          },
+      
+          {
+            "selector": "typeLike",
+            "format": ["PascalCase"],
+            "leadingUnderscore": "allow"
+          }
+        ],
+        "@typescript-eslint/no-unused-expressions": "off",
+        "@typescript-eslint/no-namespace": "off",
+        "@typescript-eslint/no-shadow": "off",
+        "arrow-body-style": "off",
+        "brace-style": [
+          "error",
+          "1tbs"
+        ],
+        "id-blacklist": "off",
+        "jsdoc/no-types": "off",
+        "no-throw-literal": "off",
+        "no-underscore-dangle": "off",
+        "one-var": "off",
+        "object-shorthand": "off",
+        "prefer-arrow/prefer-arrow-functions": "off",
+        "quote-props": "off"
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    }
+  ]
+}

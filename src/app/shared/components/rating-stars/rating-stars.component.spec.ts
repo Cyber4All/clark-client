@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RatingStarsComponent } from './rating-stars.component';
 
@@ -6,10 +6,11 @@ describe('RatingStarsComponent', () => {
   let component: RatingStarsComponent;
   let fixture: ComponentFixture<RatingStarsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RatingStarsComponent ]
-    })
+    declarations: [RatingStarsComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

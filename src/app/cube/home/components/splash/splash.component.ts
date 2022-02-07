@@ -25,7 +25,7 @@ export class SplashComponent implements OnInit {
   }
 
   submitSearch(event?: KeyboardEvent) {
-    if (!event || event.keyCode === 13) {
+    if (!event || event.code === 'Enter') {
       // no event was passed or event was passed and key pressed is enter key
       this.search.emit(this.searchText);
     }

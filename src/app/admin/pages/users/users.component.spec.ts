@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UsersComponent } from './users.component';
 import { of } from 'rxjs';
@@ -23,23 +23,26 @@ describe('UsersComponent', () => {
   }
 
   const routerStub = {
-    navigate: (commands: any[]) => { Promise.resolve(true); },
+    navigate: (commands: any[]) => {
+ Promise.resolve(true);
+},
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [ UsersComponent ],
-      imports: [ RouterTestingModule, HttpClientModule, CookieModule.forRoot() ],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [UsersComponent],
+    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
+    providers: [
         AuthService,
         ToastrOvenService,
         CollectionService,
         UserService,
         { provide: Router, userValue: routerStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub }
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NiceChallengeComponent } from './nice-challenge.component';
 
@@ -6,10 +6,11 @@ describe('NiceChallengeComponent', () => {
   let component: NiceChallengeComponent;
   let fixture: ComponentFixture<NiceChallengeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ NiceChallengeComponent ]
-    })
+    declarations: [NiceChallengeComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

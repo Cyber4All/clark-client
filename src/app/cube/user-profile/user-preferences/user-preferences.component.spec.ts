@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserPreferencesComponent } from './user-preferences.component';
 
@@ -6,10 +6,11 @@ describe('UserPreferencesComponent', () => {
   let component: UserPreferencesComponent;
   let fixture: ComponentFixture<UserPreferencesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserPreferencesComponent ]
-    })
+    declarations: [UserPreferencesComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

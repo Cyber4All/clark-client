@@ -5,9 +5,10 @@ import { SuggestionService } from './suggestion.service';
 describe('SuggestionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [SuggestionService]
-    });
+    imports: [HttpClientModule],
+    providers: [SuggestionService],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   it('should be created', inject([SuggestionService], (service: SuggestionService) => {
