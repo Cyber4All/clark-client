@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.0
-  aws-cli: circleci/aws-cli@2.0.3
+  aws-cli: circleci/aws-cli@2.0.6
   docker: circleci/docker@2.0.1
 
 commands:
@@ -43,7 +43,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:16.13.2
+      - image: cyber4all/circleci-aws:debian
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
