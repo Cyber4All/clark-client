@@ -51,7 +51,7 @@ jobs:
           aws-access-key-id: AWS_CF_AccessKey
           aws-region: AWS_REGION_N_VA
           aws-secret-access-key: AWS_CF_SecretKey
-          version: "2"
+          version: "1"
       - run:
           name: Deploy to S3 
           command: aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
