@@ -1,4 +1,4 @@
-@import '~_vars.scss';
+@import 'vars.scss';
 
 .dashboard-item {
   border-top: 2px solid $light-grey;
@@ -82,6 +82,14 @@
     background: $status_review;
   }
 
+  &.accepted_minor {
+    background: $status_accepted_minor;
+  }
+
+  &.accepted_major {
+    background: $status_accepted_major;
+  }
+
   &.proofing {
     background: $status_proofing;
   }
@@ -90,7 +98,7 @@
     background: $status_released;
   }
 
-  &.denied {
+  &.rejected {
     background: $status_rejected;
   }
 

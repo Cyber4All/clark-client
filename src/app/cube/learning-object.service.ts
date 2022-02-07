@@ -49,9 +49,9 @@ export class LearningObjectService {
         queryClone.standardOutcomes.length &&
         typeof queryClone.standardOutcomes[0] !== 'string'
       ) {
-        queryClone.standardOutcomes = (<string[]>(
+        queryClone.standardOutcomes = ((
           queryClone.standardOutcomes
-        )).map(o => o['id']);
+        ) as string[]).map(o => o['id']);
       }
       const queryString = querystring.stringify(queryClone);
       route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
@@ -104,12 +104,12 @@ export class LearningObjectService {
       });
   }
     /**
-   * Fetches LearningObject by id
-   *
-   * @param {string} id
-   * @returns {Promise<LearningObject>}
-   * @memberof LearningObjectService
-  */
+     * Fetches LearningObject by id
+     *
+     * @param {string} id
+     * @returns {Promise<LearningObject>}
+     * @memberof LearningObjectService
+     */
   getRevisedLearningObject(
     learningObjectId: String
   ): Promise<LearningObject> {
@@ -148,6 +148,7 @@ export class LearningObjectService {
 
   /**
    * Creates a Revision of an existing learning object
+   *
    * @param learningObjectId
    * @param authorUsername
    */

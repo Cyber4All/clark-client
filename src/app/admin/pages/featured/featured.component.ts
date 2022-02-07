@@ -123,10 +123,10 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
    /**
-   * Clear the filters of both collection and status and reset the Learning Objects query
-   *
-   * @memberof LearningObjectsComponent
-   */
+    * Clear the filters of both collection and status and reset the Learning Objects query
+    *
+    * @memberof LearningObjectsComponent
+    */
   clearCollectionFilters() {
     this.query = { collection: undefined, currPage: 1 };
     this.learningObjects = [];

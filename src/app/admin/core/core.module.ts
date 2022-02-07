@@ -1,5 +1,5 @@
-import { NgModule, ErrorHandler } from '@angular/core';
-import { ModuleWithProviders } from '@angular/compiler/src/core';
+import { NgModule } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 
 import { PrivilegeService } from './privilege.service';
 
@@ -7,7 +7,7 @@ import { PrivilegeService } from './privilege.service';
   exports: []
 })
 export class CoreModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<CoreModule> {
     return {
       ngModule: CoreModule,
       providers: [

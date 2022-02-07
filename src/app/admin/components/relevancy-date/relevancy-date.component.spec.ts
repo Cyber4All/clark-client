@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RelevancyDateComponent } from './relevancy-date.component';
 
@@ -6,10 +6,11 @@ describe('RelevancyDateComponent', () => {
   let component: RelevancyDateComponent;
   let fixture: ComponentFixture<RelevancyDateComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ RelevancyDateComponent ]
-    })
+    declarations: [RelevancyDateComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

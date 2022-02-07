@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { LearningObjectService } from '../learning-object.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';

@@ -38,6 +38,7 @@ export class CollectionsGridComponent implements OnInit {
 
   /**
    * Load a list of collections
+   *
    * @return {Promise<Collection[]} list of collections from service
    */
   async loadCollections(): Promise<Collection[]> {
@@ -46,7 +47,6 @@ export class CollectionsGridComponent implements OnInit {
       this.loading = false;
       return val;
     }).catch(error => {
-      console.log(error);
       this.loading = false;
       return [];
     });

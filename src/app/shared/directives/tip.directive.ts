@@ -147,6 +147,7 @@ export class TipDirective implements OnChanges, OnDestroy {
 
   /**
    * Positions the tooltip element relative to the specified target element and in compliance with the `tipPosition` @Input()
+   *
    * @param {HTMLElement} targetElement the element that the tooltip will be positioned relative to
    */
   positionTooltip(targetElement: HTMLElement) {

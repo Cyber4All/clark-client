@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SplashComponent } from './splash.component';
 
@@ -6,13 +6,14 @@ describe('SplashComponent', () => {
   let component: SplashComponent;
   let fixture: ComponentFixture<SplashComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SplashComponent ],
-      imports: [
+    declarations: [SplashComponent],
+    imports: [
         NoopAnimationsModule
-      ]
-    })
+    ],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

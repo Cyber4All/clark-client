@@ -1,5 +1,5 @@
 import { OrganizationListComponent } from './organization-list/organization-list.component';
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home/home.component';
@@ -19,24 +19,13 @@ import { OutagePageComponent } from './outage-page/outage-page.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { DonateComponent } from './donate/donate.component';
 
-const details = {
-  path: 'details',
-  loadChildren: () => import('app/cube/details/details.module').then(m => m.DetailsModule)
-};
-
-const library = {
-  path: 'library',
-  canActivate: [AuthGuard],
-  loadChildren: () => import('app/cube/library/library.module').then(l => l.LibraryModule),
-  data : {title: 'Your Library'},
-};
-
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const cube_routes: Routes = [
   {
     path: '',
     component: CubeComponent,
     children: [
-      { path: 'home', component: HomeComponent, data: { title: 'Home'} },
+      { path: 'home', component: HomeComponent, data: { title: 'Home', hideTopBar: 'true'} },
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'c/:abvName', component: CollectionDetailsComponent },
       { path: 'c', component: CollectionsComponent },
@@ -96,8 +85,15 @@ const cube_routes: Routes = [
         component: UserPreferencesComponent,
         canActivate: [AuthGuard]
       },
-      details,
-      library,
+      {
+        path: 'details',
+        loadChildren: () => import('../cube/details/details.module').then(m => m.DetailsModule)
+      },
+      {
+        path: 'library',
+        loadChildren: () => import('../cube/library/library.module').then(l => l.LibraryModule),
+        canActivate: [AuthGuard]
+      },
       // Catch All
       {
         path: '**',
@@ -109,4 +105,8 @@ const cube_routes: Routes = [
   },
 ];
 
-export const CubeRoutingModule: ModuleWithProviders = RouterModule.forChild(cube_routes);
+@NgModule({
+  imports: [RouterModule.forChild(cube_routes)],
+  exports: [RouterModule]
+})
+export class CubeRoutingModule { }

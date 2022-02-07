@@ -90,13 +90,16 @@ export class HistoryService {
 
   /**
    * Retrieves a 'snapshot' of the history array with a rewind function
+   *
    * @returns {HistorySnapshot}
    * @memberof HistoryService
    */
   snapshot(): HistorySnapshot {
     const index = this.history.length - 1;
     return {
-       rewind: (defaultUrl: string = '/home') => { this.back(index, defaultUrl); }
+       rewind: (defaultUrl: string = '/home') => {
+ this.back(index, defaultUrl);
+}
     };
   }
 }

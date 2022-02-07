@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { OutagePageComponent } from './outage-page.component';
 
@@ -6,10 +6,11 @@ describe('OutagePageComponent', () => {
   let component: OutagePageComponent;
   let fixture: ComponentFixture<OutagePageComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutagePageComponent ]
-    })
+    declarations: [OutagePageComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

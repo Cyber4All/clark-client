@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SubmitComponent } from './submit.component';
 
@@ -6,10 +6,11 @@ describe('SubmitComponent', () => {
   let component: SubmitComponent;
   let fixture: ComponentFixture<SubmitComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SubmitComponent ]
-    })
+    declarations: [SubmitComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

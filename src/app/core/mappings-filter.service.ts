@@ -9,16 +9,16 @@ export class MappingsFilterService {
    * Array of mapped Learning Outcomes
    */
   mappings: any[] = [];
-  
+
   /**
    * String of current text used to filter outcomes
    */
-  filterText: string = '';
+  filterText = '';
 
   /**
    * String of currently selected author
    */
-  author: string = '';
+  author = '';
 
   /**
    * Boolean, returns whether or not there are any mappings stored

@@ -1,4 +1,4 @@
-@import '~_vars.scss';
+@import 'vars.scss';
 
 .dashboard-list {
   overflow: hidden;
@@ -154,6 +154,40 @@
       }
     }
 
+    &.accepted_minor {
+      color: $status_accepted_minor;
+
+      .indicator {
+        background: $status_accepted_minor;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_accepted_minor;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+
+    &.accepted_major {
+      color: $status_accepted_major;
+
+      .indicator {
+        background: $status_accepted_major;
+      }
+
+      &:hover {
+        color: white;
+        background: $status_accepted_major;
+
+        .indicator {
+          background: white;
+        }
+      }
+    }
+
     &.proofing {
       color: $status_proofing;
 
@@ -188,7 +222,7 @@
       }
     }
 
-    &.denied {
+    &.rejected {
       color: $status_rejected;
 
       .indicator {

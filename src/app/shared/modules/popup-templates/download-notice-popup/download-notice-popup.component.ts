@@ -10,6 +10,7 @@ export class DownloadNoticePopupComponent implements OnInit {
 
   @Output() close: EventEmitter<void> = new EventEmitter();
 
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   constructor(public UAService: UserAgentService) { }
 
   ngOnInit() {
