@@ -44,6 +44,7 @@ jobs:
   deploy:
     docker:
       - image: cyber4all/circleci-aws:debian
+    working_directory: ~/clark-client
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
