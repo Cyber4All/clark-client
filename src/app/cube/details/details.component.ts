@@ -373,8 +373,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         } else if (error.status !== 404) {
           errorMessage = `We encountered an error while attempting to
           retrieve change logs for this Learning Object. Please try again later.`;
+          this.toastService.error('Error!', errorMessage);
         }
-        this.toastService.error('Error!', errorMessage);
       }
       this.loadingChangelogs = false;
       this.openChangelogModal = true;
