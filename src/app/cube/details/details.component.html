@@ -56,7 +56,7 @@
               *ngIf="ratings"
               [ratings]="ratings"
               [averageRating]="averageRatingValue"
-              [learningObjectOwners]="authors"
+              [learningObjectOwners]="learningObjectOwners"
               [loggedIn]="loggedin" 
               (editRating)="showAddRating = true;"
               (deleteRating)="deleteRating($event)"
@@ -74,7 +74,7 @@
             <div *ngIf="reviewer" class="inner">
               <div *ngIf="loggedin && hasRevision" class="revisions">
                 <div tabindex="0" class="text">View Revisions</div>
-                <clark-toggle-switch style="orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
+                <clark-toggle-switch style="color: orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
               </div>
               <div tabindex="0" class="no-revisions" *ngIf="!hasRevision">No revisions have been made since last release.</div>
             </div>

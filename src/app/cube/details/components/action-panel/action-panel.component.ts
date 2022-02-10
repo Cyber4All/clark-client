@@ -43,6 +43,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   private destroyed$ = new Subject<void>();
   hasDownloadAccess = false;
+  hasReviewerAccess = false;
   downloading = false;
   addingToLibrary = false;
   author: string;
@@ -76,15 +77,18 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private router: Router,
   ) { }
 
-  ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.auth.group
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
         this.userCanRevise = this.auth.hasEditorAccess();
+        this.hasReviewerAccess = this.auth.hasReviewerAccess();
       });
-    this.hasDownloadAccess = (this.auth.hasReviewerAccess() || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
+    this.hasDownloadAccess = (this.hasReviewerAccess || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
 
     this.url = this.buildLocation();
+    // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
+    await this.libraryService.getLibrary();
     this.saved = this.libraryService.has(this.learningObject);
     const userName = this.auth.username;
     this.userIsAuthor = (this.learningObject.author.username === userName);

@@ -82,7 +82,6 @@ export class ClarkComponent implements OnInit {
     private view: ViewContainerRef,
     private cookieAgreement: CookieAgreementService,
     private subscriptionAgreement: SubscriptionAgreementService,
-    private navbarService: NavbarService
   ) {
     this.isUnderMaintenance = false;
 

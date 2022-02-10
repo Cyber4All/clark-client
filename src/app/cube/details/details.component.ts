@@ -148,7 +148,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.releasedLearningObject = object;
 
           // FIXME: This filter should be removed when service logic for filtering children is updated
-          this.releasedChildren = this.releasedLearningObject.children.filter(
+          this.releasedChildren = (this.releasedLearningObject.children as any[]).filter(
             child => {
               return child.status === LearningObject.Status['RELEASED'] ||
                 child.status === LearningObject.Status['REVIEW'] ||
@@ -205,7 +205,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
        * if server error is thrown, navigate to not-found page
        */
 
-      console.log(e);
     }
   }
 
@@ -306,7 +305,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.redirectUrl = redirectUrl;
         }
       }
-      console.log(e);
       // this.loading.pop();
     }
   }

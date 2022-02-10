@@ -56,6 +56,5 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
     } else if (!this.loggedin) {
       this.message = notLoggedIn;
     }
-    console.log(this.hasPreviewLink);
   }
 }

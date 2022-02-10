@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.0
-  aws-cli: circleci/aws-cli@2.0.3
+  aws-cli: circleci/aws-cli@2.0.6
   docker: circleci/docker@2.0.1
 
 commands:
@@ -26,22 +26,6 @@ jobs:
           paths: 
             - ./
 
-  lighthouse:
-    docker:
-      - image: "cyber4all/clark-client:${CIRCLE_SHA1}"
-    steps:  
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.2
-      - run:
-          name: Wait for client
-          command: dockerize -wait http://localhost:80 -timeout 3m
-      - node/install:
-          node-version: "16.13.2"
-      - run:
-          name: Clark lighthouse Tests
-          command: npm run test:lighthouse
-
   publish-image:
     docker:
       - image: cimg/node:16.13.2
@@ -59,7 +43,8 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:16.13.2
+      - image: cyber4all/circleci-aws:debian
+    working_directory: ~/clark-client
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
@@ -70,7 +55,7 @@ jobs:
           version: "1"
       - run:
           name: Deploy to S3 
-          command: aws s3 sync ./dist s3://${s3_bucket} --region ${s3_region}
+          command: aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
       - run: 
           name: Invalidate index.html in CloudFront
           command: aws cloudfront create-invalidation --distribution-id ${cloudfront_id} --paths /index.html
@@ -103,18 +88,9 @@ workflows:
           filters:
             branches:
               only: /master/
-      - lighthouse:
-          requires:
-            - publish-image
-          context: 
-            - DockerHub
-          filters:
-            branches:
-              only: /master/
       - build:
           requires:
             - node/test
-            - lighthouse
           filters:
             branches:
               only: /master/
