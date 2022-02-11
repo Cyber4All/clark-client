@@ -1,5 +1,5 @@
 import { Component, NgModule, OnInit } from '@angular/core';
-
+import { sections } from './copy';
 
 @Component({
   selector: 'clark-editorial-process',
@@ -12,5 +12,10 @@ export class EditorialProcessComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  title = 'Editorial Process';
+  copy = sections;
 
+  get tabs(){
+    return Object.values(this.copy);
+  }
 }
