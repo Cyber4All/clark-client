@@ -47,7 +47,6 @@ export class CollectionsGridComponent implements OnInit {
       this.loading = false;
       return val;
     }).catch(error => {
-      console.log(error);
       this.loading = false;
       return [];
     });

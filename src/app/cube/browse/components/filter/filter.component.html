@@ -16,7 +16,7 @@
 
   <!-- Guidelines Filters -->
   <clark-filter-section [info]="frameworkFilter" (change)="registerChange()">
-    <a (click)="openAdvancedSearch()">Advanced</a>
+    <a (click)="openAdvancedSearch()">Advanced <span *ngIf="guidelineFilter.length > 0">({{ guidelineFilter.length }} Selected)</span></a>
   </clark-filter-section>
 </div>
 

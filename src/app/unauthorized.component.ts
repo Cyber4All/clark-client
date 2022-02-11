@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from './core/auth.service';
 
 @Component({
   selector: 'clark-unauthorized',

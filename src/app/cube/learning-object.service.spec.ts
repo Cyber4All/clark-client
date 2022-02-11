@@ -17,7 +17,6 @@ describe('LearningObjectService', () => {
   }));
   it('should return learning objects', inject([LearningObjectService], (service: LearningObjectService) => {
     const sub: Subscription = service.observeFiltered().subscribe(val => {
-      console.log(val);
       expect(val).toBeTruthy();
     });
     sub.unsubscribe();
@@ -38,7 +37,6 @@ describe('LearningObjectService', () => {
   }));
   it('should return a single learning object', inject([LearningObjectService], (service: LearningObjectService) => {
     return service.getLearningObject('nvisal1', 'Test Learning Object').then(val => {
-      console.log(val);
       expect(val).toBeTruthy();
     });
   }));
