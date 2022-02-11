@@ -25,6 +25,9 @@ import { UserPreferencesComponent } from './user-profile/user-preferences/user-p
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { UserInformationComponent } from './user-profile/user-information/user-information.component';
 import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 // Other
 // TODO: is ng-click-outside being used?
@@ -103,7 +106,10 @@ import { ContributePageComponent } from './content-pages/contribute-page/contrib
     CollectionModule,
     AboutUsModule,
     LibraryModule,
-    CoreModule
+    CoreModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatListModule
   ],
   providers: [LearningObjectService]
 })
