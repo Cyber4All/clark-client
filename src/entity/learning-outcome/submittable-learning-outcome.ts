@@ -4,6 +4,7 @@ import { EntityError } from '../errors/entity-error';
 
 /**
  * A class to represent a submittable learning outcome.
+ *
  * @class
  */
 export class SubmittableLearningOutcome extends LearningOutcome {
@@ -29,6 +30,7 @@ export class SubmittableLearningOutcome extends LearningOutcome {
   }
   /**
    * Creates an instance of SubmittableLearningOutcome.
+   *
    * @param {LearningOutcome} outcome
    * @memberof SubmittableLearningOutcome
    */

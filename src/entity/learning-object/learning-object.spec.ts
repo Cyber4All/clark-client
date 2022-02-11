@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-inferrable-types */
 import { LearningObject } from './learning-object';
 import { User } from '../user/user';
 import { LEARNING_OBJECT_ERRORS } from './error-messages';
@@ -44,7 +45,7 @@ const validStatus = LearningObject.Status.RELEASED;
 const invalidName = '         ';
 const invalidNameMin = 'h';
 const invalidNameMax =
-  // tslint:disable-next-line:max-line-length
+  // eslint-disable-next-line max-len
   '01234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950012345678910111213141516171819202122232425262728293031323334353637383940414243444546474849500123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495001234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950';
 const invalidDescription: null = null;
 const invalidLength = 'some length';
@@ -87,7 +88,7 @@ describe('Class: LearningObject', () => {
       const newObject = new LearningObject(someObject);
       expect(newObject.date).toEqual(date);
       done();
-    // tslint:disable-next-line:align
+    // eslint-disable-next-line @typescript-eslint/indent
     }, 100);
   });
   it('should set a valid name', () => {

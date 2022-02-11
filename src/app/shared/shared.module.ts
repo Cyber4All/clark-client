@@ -14,8 +14,7 @@ import { SharedPipesModule } from './pipes/shared-pipes.module';
     SharedModules,
     SharedPipesModule
   ],
-  declarations: [
-  ],
+  declarations: [],
   exports: [
     SharedComponents,
     SharedDirectivesModule,

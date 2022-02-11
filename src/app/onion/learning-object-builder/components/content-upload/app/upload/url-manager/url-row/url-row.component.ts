@@ -48,6 +48,7 @@ export class UrlRowComponent implements OnInit {
   /**
    * Accepts a title object that only emits to the parent component
    * if the title input field is not empty
+   *
    * @param title
    */
   updateTitle() {
@@ -63,6 +64,7 @@ export class UrlRowComponent implements OnInit {
   /**
    * Accepts the url object that only emits to the parent component
    * if the url field isn't empty and is a valid URL
+   *
    * @param url
    */
   updateLink() {

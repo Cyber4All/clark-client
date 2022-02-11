@@ -15,13 +15,13 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { takeUntil } from 'rxjs/operators';
 import { getUserAgentBrowser } from 'getUserAgentBrowser';
 
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type Removal = {
   type: 'file' | 'folder';
   path: string;
 };
 
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type DescriptionUpdate = {
   description: string;
   file: LearningObject.Material.File | DirectoryNode;

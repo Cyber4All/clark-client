@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SplashComponent } from './splash.component';
 
@@ -6,10 +6,11 @@ describe('SplashComponent', () => {
   let component: SplashComponent;
   let fixture: ComponentFixture<SplashComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SplashComponent ]
-    })
+    declarations: [SplashComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

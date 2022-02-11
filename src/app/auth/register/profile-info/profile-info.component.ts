@@ -78,6 +78,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
 
   /**
    * Takes a password string and makes sure it is of the correct structure (IE numbers, symbols, etc)
+   *
    * @param password
    */
   checkPassword(password: string) {
@@ -87,7 +88,7 @@ export class ProfileInfoComponent implements OnInit, OnDestroy {
     }
 
     // length is OK, let's check for proper structure
-    const r: RegExp = /([0-9]{1})|([a-z]){1}|([A-Z]){1}|([!,@#$%^*&|~`\]\[\{\}<>.\\_\-+=\(\)/?]{1})/g;
+    const r = /([0-9]{1})|([a-z]){1}|([A-Z]){1}|([!,@#$%^*&|~`\]\[\{\}<>.\\_\-+=\(\)/?]{1})/g;
     let match = r.exec(password);
 
     /**

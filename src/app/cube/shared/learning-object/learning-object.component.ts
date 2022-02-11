@@ -1,4 +1,3 @@
-import { take } from 'rxjs/operators';
 import {
   Component,
   Input,
@@ -13,7 +12,7 @@ import {
 } from '@angular/core';
 import { LibraryService } from '../../../core/library.service';
 import { LearningObject } from '@entity';
-import { AuthService, DOWNLOAD_STATUS } from '../../../core/auth.service';
+import { AuthService } from '../../../core/auth.service';
 import { CollectionService } from '../../../core/collection.service';
 import { titleCase } from 'title-case';
 
@@ -60,7 +59,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
       this.collections = new Map(
         collections.map(c => [c.abvName, c.name] as [string, string])
       );
-      this.onResize(event);
+      this.onResize();
     });
   }
 
@@ -121,7 +120,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   }
 
   get date() {
-    // tslint:disable-next-line:radix
+    // eslint-disable-next-line radix
     return new Date(parseInt(this.learningObject.date));
   }
 
@@ -139,7 +138,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
       }
     }
 
-  onResize(event) {
+  onResize() {
     this.collection = this.collections.get(this.learningObject.collection);
     this.cd.detectChanges();
     if (window.screen.width <= 750 && this.collection.length > 12) {

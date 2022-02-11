@@ -13,6 +13,7 @@ import { environment } from '@env/environment';
 import { ToastrOvenService } from './shared/modules/toaster/notification.service';
 import { CookieAgreementService } from './core/cookie-agreement.service';
 import { SubscriptionAgreementService } from './core/subscription-agreement.service';
+import { NavbarService } from './core/navbar.service';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -80,7 +81,7 @@ export class ClarkComponent implements OnInit {
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
     private cookieAgreement: CookieAgreementService,
-    private subscriptionAgreement: SubscriptionAgreementService
+    private subscriptionAgreement: SubscriptionAgreementService,
   ) {
     this.isUnderMaintenance = false;
 
@@ -139,6 +140,7 @@ export class ClarkComponent implements OnInit {
   /**
    * Function passes cookie agreement service val to create new agreement
    * Then updates banner visibilty flag
+   *
    * @param val is value of clicking agreement event (will be true)
    */
   showCookieBanner(val: boolean) {

@@ -1,10 +1,11 @@
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
 import { AccessGroupGuard } from './core/access-group-guard';
 import { UnauthorizedComponent } from './unauthorized.component';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const clark_routes: Routes = [
   {
     path: 'auth',
@@ -28,6 +29,8 @@ const clark_routes: Routes = [
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 
-export const ClarkRoutingModule: ModuleWithProviders = RouterModule.forRoot(
-  clark_routes
-);
+@NgModule({
+  imports: [RouterModule.forRoot(clark_routes)],
+  exports: [RouterModule]
+})
+export class ClarkRoutingModule { }

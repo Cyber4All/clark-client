@@ -112,6 +112,7 @@ export class SubmitComponent implements OnInit {
 
   /**
    * Submits a Learning Object to a collection for review and publishes the object
+   *
    * @param {string} collection the name of the collection to submit to
    */
   async submitForReview() {
@@ -160,6 +161,7 @@ export class SubmitComponent implements OnInit {
 
   /**
    * Gets the collection name selected from the output
+   *
    * @param collection The selected collection
    */
   getCollectionSelected(collection: string) {

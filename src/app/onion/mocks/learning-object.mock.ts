@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { LearningObject, User } from '@entity';
 
 export const LOmock1 = new LearningObject({ author: new User(), name: 'LOmock1' });

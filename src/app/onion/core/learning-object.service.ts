@@ -8,8 +8,7 @@ import {
 import { LearningObject, LearningOutcome } from '@entity';
 import { CookieService } from 'ngx-cookie';
 
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { AuthService } from '../../core/auth.service';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, ADMIN_ROUTES } from '@env/route';
 
 import { retry, catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
@@ -72,6 +71,7 @@ export class LearningObjectService {
 
   /**
    * Creates a Revision of an existing learning object
+   *
    * @param learningObjectId
    * @param authorUsername
    */
@@ -113,6 +113,7 @@ export class LearningObjectService {
 
   /**
    * Fetches a learning objects revision
+   *
    * @param username
    * @param learningObjectID
    * @param revisionID
@@ -195,12 +196,13 @@ export class LearningObjectService {
     id: string,
     authorUsername: string,
     learningObject: { [key: string]: any },
+    reason?: string,
   ): Promise<{}> {
     const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
     return this.http
       .patch(
         route,
-        { learningObject },
+        { learningObject, reason },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
@@ -313,6 +315,7 @@ export class LearningObjectService {
 
   /**
    * Publish a learning object
+   *
    * @param {LearningObject} learningObject the learning object to be published
    * @param {string} collection the abreviated name of the collection to which to submit this learning object
    */
@@ -336,6 +339,7 @@ export class LearningObjectService {
 
   /**
    * Unsubmit a learning object
+   *
    * @param {learningObject} learningObject the learning object to be unpublished
    */
   unsubmit(learningObject: LearningObject) {
@@ -462,6 +466,7 @@ export class LearningObjectService {
 
   /**
    * Fetches the parents of a learning object
+   *
    * @param id of learning object
    */
   fetchParents(username: string, id: string) {
@@ -492,6 +497,25 @@ export class LearningObjectService {
   }): Promise<string[]> {
     const route = USER_ROUTES.ADD_FILE_META(username, objectId);
     return this.handleFileMetaRequests(files, route);
+  }
+
+  async changeStatus({
+    username,
+    objectId,
+    status,
+    reason
+  }: {
+    username: string,
+    objectId: string,
+    status: LearningObject.Status,
+    reason?: string
+  }): Promise<void> {
+    await this.http.post<void>(
+      ADMIN_ROUTES.CHANGE_STATUS(username, objectId),
+      { status, reason },
+      // @ts-ignore
+      { withCredentials: true, responseType: 'text' },
+    ).toPromise();
   }
 
   /**

@@ -1,10 +1,11 @@
-import { ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { OutcomePageComponent } from './pages/outcome-page/outcome-page.component';
 import { TopicPageComponent } from './pages/topic-page/topic-page.component';
 import { RelevancyBuilderComponent } from './relevancy-builder.component';
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 const builder_routes: Routes = [
     { path: '', component: RelevancyBuilderComponent,
     children: [
@@ -15,4 +16,8 @@ const builder_routes: Routes = [
   }
 ];
 
-export const BuilderRoutingModule: ModuleWithProviders = RouterModule.forChild(builder_routes);
+@NgModule({
+  imports: [RouterModule.forChild(builder_routes)],
+  exports: [RouterModule]
+})
+export class BuilderRoutingModule { }

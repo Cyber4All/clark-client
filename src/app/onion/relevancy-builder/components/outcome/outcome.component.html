@@ -13,7 +13,7 @@
       <p>Click to view mappings</p>
     </div>
   </div>
-  <div *ngIf="outcome.mappings?.length == 0" class="no-outcome-mappings">No Curricular Guidelines Mapped!</div>
+  <div *ngIf="outcome.mappings?.length === 0" class="no-outcome-mappings">No Curricular Guidelines Mapped!</div>
   <div *ngIf="outcome.mappings?.length" class="outcome-mappings">
     <div class="outcome-header">Maps to: </div>
     <div class="pills">

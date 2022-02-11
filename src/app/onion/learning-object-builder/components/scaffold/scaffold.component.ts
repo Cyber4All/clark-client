@@ -48,7 +48,7 @@ export class ScaffoldComponent implements OnInit {
   }
 
   @HostListener('keyup', ['$event']) handleEscape(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
+    if (event.code === 'Escape') {
       this.toggleAddChild(false);
     }
   }
@@ -106,6 +106,7 @@ export class ScaffoldComponent implements OnInit {
 
   /**
    * Function to allow for drag drop implementation for reordering of children
+   *
    * @param CdkDragDrop<string[]>
    */
   drop(event: CdkDragDrop<string[]>) {
@@ -129,6 +130,7 @@ export class ScaffoldComponent implements OnInit {
 
   /**
    * Triggers the delete confirmation modal for the child selected for deletion
+   *
    * @param index of the LO selected for deletion
    */
   deleteButton(index) {
@@ -161,6 +163,7 @@ export class ScaffoldComponent implements OnInit {
   }
   /**
    * Toggles the confirmation modal based on the boolean val
+   *
    * @param val
    */
   toggleConfirmationModal(val?: boolean) {

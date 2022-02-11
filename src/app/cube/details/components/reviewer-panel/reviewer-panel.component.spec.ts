@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ReviewerPanelComponent } from './reviewer-panel.component';
 
@@ -6,10 +6,11 @@ describe('ReviewerPanelComponent', () => {
   let component: ReviewerPanelComponent;
   let fixture: ComponentFixture<ReviewerPanelComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReviewerPanelComponent ]
-    })
+    declarations: [ReviewerPanelComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

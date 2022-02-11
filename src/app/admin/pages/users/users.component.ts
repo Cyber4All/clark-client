@@ -26,7 +26,7 @@ export class UsersComponent implements AfterViewInit {
   activeCollection: Collection;
 
   @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    if (event.keyCode === 27) {
+    if (event.code === 'Escape') {
         this.reviewerModal = false;
     }
 }
@@ -82,6 +82,7 @@ export class UsersComponent implements AfterViewInit {
 
   /**
    * Adds a user as a reviewer to a collection after being clicked on in the user search
+   *
    * @param user the elements of a clark user such as id and role
    */
   addReviewer(user: User) {
@@ -139,6 +140,7 @@ export class UsersComponent implements AfterViewInit {
 
   /**
    * Dictates to the *ngFor directive how to track changes to the User's list
+   *
    * @param index
    * @param item
    */

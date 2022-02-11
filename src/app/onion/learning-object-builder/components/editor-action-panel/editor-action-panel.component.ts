@@ -23,6 +23,7 @@ export class EditorActionPanelComponent {
 
   /**
    * Hides or shows the learning object context menu
+   *
    * @param {boolean} [value] true if menu os open, false otherwise
    */
   toggleContextMenu(value?: boolean) {

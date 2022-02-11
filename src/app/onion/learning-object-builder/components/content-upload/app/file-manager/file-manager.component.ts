@@ -94,7 +94,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    */
   openNewOptions($event: MouseEvent): void {
     this.closeContextMenu();
-    this.menuAnchor = $event.srcElement as HTMLElement;
+    this.menuAnchor = $event.target as HTMLElement;
     this.showNewOptions = true;
   }
 
@@ -107,7 +107,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   openFileOptions(params: { event: MouseEvent; item: any }): void {
     this.closeContextMenu();
     this.menuItem = params.item;
-    this.menuAnchor = params.event.srcElement as HTMLElement;
+    this.menuAnchor = params.event.target as HTMLElement;
     this.showFileOptions = true;
   }
 

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SkipLinkComponent } from './skip-link.component';
 
@@ -6,10 +6,11 @@ describe('SkipLinkComponent', () => {
   let component: SkipLinkComponent;
   let fixture: ComponentFixture<SkipLinkComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SkipLinkComponent ]
-    })
+    declarations: [SkipLinkComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

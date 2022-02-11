@@ -1,5 +1,5 @@
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ModalService } from '../../shared/advanced/modals';
 import { Router, ActivatedRoute } from '@angular/router';
 import { LibraryService } from '../../core/library.service';
@@ -13,12 +13,13 @@ describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ RouterTestingModule, HttpClientModule, ActivatedRoute ],
-      providers: [ ModalService, LibraryService, AuthService, CookieService ],
-      declarations: [ NavbarComponent ]
-    })
+    imports: [RouterTestingModule, HttpClientModule, ActivatedRoute],
+    providers: [ModalService, LibraryService, AuthService, CookieService],
+    declarations: [NavbarComponent],
+    teardown: { destroyAfterEach: false }
+})
     .compileComponents();
   }));
 

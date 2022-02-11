@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention*/
 export const COPY = {
     HERO: `Effective cybersecurity curriculum at your fingertips`,
     SEARCH_PLACEHOLDER: 'Search Learning Objects by author, title, or keywords',

@@ -36,12 +36,13 @@ export class LibraryService {
     // this.headers.append('Content-Type', 'application/json');
   }
 
-  getLibrary(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+  async getLibrary(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+    this.updateUser();
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
 
-    return this.http
+    return await this.http
       .get(USER_ROUTES.GET_CART(this.user.username, page, limit), {
         withCredentials: true,
         headers: this.headers

@@ -5,6 +5,7 @@ import { EntityError } from '../errors/entity-error';
 
 /**
  * A class to represent a learning outcome.
+ *
  * @class
  */
 export class LearningOutcome {
@@ -106,6 +107,7 @@ export class LearningOutcome {
   }
   /**
    * Maps a Guideline to this learning outcome.
+   *
    * @returns {number} the index of the mapping
    */
   mapTo(mapping: Guideline): number {
@@ -125,6 +127,7 @@ export class LearningOutcome {
 
   /**
    * Removes the outcome's i-th mapping.
+   *
    * @param {number} i the index to remove from the mappings array
    *
    * @returns {Guideline} the outcome which was removed
@@ -135,6 +138,7 @@ export class LearningOutcome {
 
   /**
    * sCreates an instance of LearningOutcome.
+   *
    * @param {Partial<LearningOutcome>} [outcome]
    * @memberof LearningOutcome
    */
@@ -167,7 +171,7 @@ export class LearningOutcome {
     this.verb = outcome.verb || this.verb;
     this.text = outcome.text || this.text;
     if (outcome.mappings) {
-      (<Guideline[]>outcome.mappings).map(o => this.mapTo(o));
+      (outcome.mappings as Guideline[]).map(o => this.mapTo(o));
     }
   }
   /**

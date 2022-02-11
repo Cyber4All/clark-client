@@ -23,11 +23,12 @@ export class RelevancyService {
     this.headers = new HttpHeaders();
   }
    /**
-   * Sets the nextCheck of a learning object
-   * @param username Username of the author
-   * @param learningObjectId learningObjectId
-   * @param date The date that nextCheck needs to updated to
-   */
+    * Sets the nextCheck of a learning object
+    *
+    * @param username Username of the author
+    * @param learningObjectId learningObjectId
+    * @param date The date that nextCheck needs to updated to
+    */
   async setNextCheckDate(username: string, learningObjectId: string, date: Date): Promise<any> {
     return this.http
       .patch(RELEVANCY_ROUTES.NEXT_CHECK(username, learningObjectId),
@@ -123,6 +124,7 @@ export class RelevancyService {
 
   /**
    *  This function updates the learning the object with the selected tagged topics
+   *
    * @param username  username of learning object owner
    * @param id  user id
    * @param topicIds  id of Topic object
@@ -152,6 +154,7 @@ export class RelevancyService {
 
   /**
    *  Function to update the learning object with new outcome mappings
+   *
    * @param username username of learning object owner
    * @param objectId learning objectId
    * @param outcomeId outcomeId on learning object

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/adjacent-overload-signatures */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningOutcome, Guideline } from '@entity';
 import {

@@ -31,8 +31,8 @@ export class RevisionComponent implements OnChanges {
   }
 
     /**
-   * Toggles the context menu on and off
-   */
+     * Toggles the context menu on and off
+     */
   toggleContextMenu() {
     this.meatballOpen = !this.meatballOpen;
   }
@@ -52,6 +52,7 @@ export class RevisionComponent implements OnChanges {
   /**
    * Given a string representation of a context menu action, returns true if that action should be allowed based on
    * parameters such as learing object length and learning object status
+   *
    * @param action {string} the action in question
    */
   actionPermissions(action: string) {

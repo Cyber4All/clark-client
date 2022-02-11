@@ -21,9 +21,6 @@ import { SharedDirectivesModule } from '../../directives/shared-directives.modul
   ],
   exports: [
     PanelDirective
-  ],
-  entryComponents: [
-    SidePanelViewerComponent
   ]
 })
 export class SidePanelModule {}

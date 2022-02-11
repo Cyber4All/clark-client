@@ -6,18 +6,17 @@ import { Subscription } from 'rxjs';
 describe('LearningObjectService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [LearningObjectService]
-    });
+    imports: [HttpClientModule],
+    providers: [LearningObjectService],
+    teardown: { destroyAfterEach: false }
+});
   });
 
   it('should be created', inject([LearningObjectService], (service: LearningObjectService) => {
     expect(service).toBeTruthy();
   }));
   it('should return learning objects', inject([LearningObjectService], (service: LearningObjectService) => {
-    let sub: Subscription;
-    sub = service.observeFiltered().subscribe(val => {
-      console.log(val);
+    const sub: Subscription = service.observeFiltered().subscribe(val => {
       expect(val).toBeTruthy();
     });
     sub.unsubscribe();
@@ -38,7 +37,6 @@ describe('LearningObjectService', () => {
   }));
   it('should return a single learning object', inject([LearningObjectService], (service: LearningObjectService) => {
     return service.getLearningObject('nvisal1', 'Test Learning Object').then(val => {
-      console.log(val);
       expect(val).toBeTruthy();
     });
   }));
