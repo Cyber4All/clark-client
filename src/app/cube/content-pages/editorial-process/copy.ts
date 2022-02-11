@@ -55,7 +55,7 @@ export const sections = {
                         'with for any needed feedback of a submitted object. '
 					}
 				],
-            },    
+            },
             {
 				title: 'The Curriculum Development Lifecycle',
 				questions:[
@@ -94,11 +94,11 @@ export const sections = {
 						question: 'Can I make changes to my Learning Object after it was accepted?',
 						answer: 'Yes, an author can make any changes to their released learning object through revisions. A revision ' +
                         'allows an author to see and edit their current learning object version in the learning object builder. The ' +
-                        'author is free to add, replace, and remove varying content. When an author finishes a revision, the ' + 
+                        'author is free to add, replace, and remove varying content. When an author finishes a revision, the ' +
                         'learning object is resubmitted and goes through the curriculum development lifecycle.'
-					}	
+					}
                 ]
             }
         ]
     }
-};	
+};
