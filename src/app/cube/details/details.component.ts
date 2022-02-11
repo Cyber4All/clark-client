@@ -370,11 +370,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (error.status === 401) {
           // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
           this.auth.logout();
-        } else {
+        } else if (error.status !== 404) {
           errorMessage = `We encountered an error while attempting to
           retrieve change logs for this Learning Object. Please try again later.`;
+          this.toastService.error('Error!', errorMessage);
         }
-        this.toastService.error('Error!', errorMessage);
       }
       this.loadingChangelogs = false;
       this.openChangelogModal = true;
