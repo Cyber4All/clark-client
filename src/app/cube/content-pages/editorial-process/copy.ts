@@ -14,15 +14,31 @@ export const sections = {
 					},
 					{
 						question: 'How is the curriculum evaluated?',
-						answer: 'All curriculum goes through an evaluation process that reviews a curriculum\'s required ' +
-                        'characteristics. These characteristics act as the evaluated criteria for the editorial process: ' +
-                        '\n-Proper contributor attribution. \n-Writing style, grammar, punctuation, and capitalization. ' +
-                        '\n-Accessibility under WCAG 2.1 AA standards. \n-If the curriculum\'s content can be understood ' +
-                        'by its intended audience. \n-Consistent formatting of curriculum content. \n-Relevant learning outcomes are ' +
-                        'present. Some curricula will have conditional evaluations (if provided) over these characteristics: ' +
-                        '\n-Documentation of a provided syllabus. \n-The curriculum is part of a learning object hierarchy with proper ' +
-                        'parent-child relationships. \n-Provided assessment questions do not include solutions (CLARK is a public ' +
-                        'website that all types of audiences can access).'
+						answer: [
+                            `
+                            <p>
+                            All curriculum goes through an evaluation process that reviews a curriculum\'s required characteristics. 
+                            These characteristics act as the evaluated criteria for the editorial process:
+                            </p>
+                            <ul>
+                                <li>Proper contributor attribution.</li>
+                                <li>Writing style, grammar, punctuation, and capitalization.</li>
+                                <li>Accessibility under WCAG 2.1 AA standards.</li>
+                                <li>If the curriculum\'s content can be understood by its intended audience.</li>
+                                <li>Consistent formatting of curriculum content.</li>
+                            </ul>
+                            <p>
+                                Relevant learning outcomes are present. Some curricula will have conditional evaluations (if provided) 
+                                over these characteristics:
+                            </p>
+                            <ul>
+                                <li>Documentation of a provided syllabus.</li>
+                                <li>The curriculum is part of a learning object hierarchy with proper parent-child relationships.</li>
+                                <li>Provided assessment questions do not include solutions (CLARK is a public website that all types of 
+                                    audiences can access).</li>
+                            </ul>
+                            `
+                        ]
 					},
 					{
 						question: 'The Editorial Review Process',
@@ -36,20 +52,31 @@ export const sections = {
                         'the authors less needed work.'
 					},
 					{
-						question: 'Learning Object  Statuses',
-						answer: 'Every curriculum submitted becomes a learning object and will have a designated status in the ' +
-                        'editorial review process. Statuses allow an author to track where a learning object is currently in ' +
-                        'the process or if it was already released. \n-A learning object can have the following statuses: ' +
-                        '\n-Draft Learning Objects: Unsubmitted learning objects. \n-Waiting: Submitted learning objects ' +
-                        'that have yet to be reviewed. \n-Review: Learning objects that are currently being reviewed. ' +
-                        '\n-Accepted Minor Changes: Learning objects that could be accepted after the author applies minor changes. ' +
-                        '\n-Accepted Major Changes: Learning objects that could be accepted after the author applies major changes. ' +
-                        '\n-Proofing: Learning objects that are being prepped for release with small quality of life changes made ' +
-                        'by the editorial team. \n-Released: Learning objects that have been approved and are now publicly ' +
-                        'available on CLARK. \n-Rejected: Learning objects that are deemed not releasable on CLARK.'
+						question: 'Learning Object Statuses',
+						answer:[
+                            `
+                        <p>
+                        Every curriculum submitted becomes a learning object and will have a designated status in the
+                        editorial review process. Statuses allow an author to track where a learning object is currently in
+                        the process or if it was already released. \nA learning object can have the following statuses:</p>
+                        <ul>
+                            <li>Draft Learning Objects: Unsubmitted learning objects.</li>
+                            <li>Waiting: Submitted learning objects that have yet to be reviewed.</li>
+                            <li>Review: Learning objects that are currently being reviewed.</li>
+                            <li>Accepted Minor Changes: Learning objects that could be accepted after the author applies 
+                                minor changes.</li>
+                            <li>Accepted Major Changes: Learning objects that could be accepted after the author applies major
+                                 changes.</li>
+                            <li>Proofing: Learning objects that are being prepped for release with small quality of life changes made 
+                                by the editorial team.</li>
+                            <li>Released: Learning objects that have been approved and are now publicly available on CLARK. </li>
+                            <li>Rejected: Learning objects that are deemed not releasable on CLARK.</li>
+                        </ul>
+                            `
+                        ]
 					},
 					{
-						question: 'How Long is the Editorial Review Process?',
+						question: 'How long is the Editorial Review Process?',
 						answer: 'Depending on the learning object size and quantity, the editorial review process ' +
                         'is estimated to take two to four weeks. Throughout the process, the author is communicated ' +
                         'with for any needed feedback of a submitted object. '
@@ -61,11 +88,15 @@ export const sections = {
 				questions:[
 					{
 						question: 'What is the Curriculum Development Lifecycle?',
-						answer: 'The curriculum development lifecycle is the multi-stage sequence of any submitted learning object. ' +
-                        'Each stage is based on a learning object status and the routes a learning object can take. The curriculum ' +
-                        'development lifecycle aims to provide a physical representation of a learning object on CLARK. The diagram ' +
-                        'below demonstrates how the lifecycle operates.'
-                        //picture
+						answer: [
+                            `
+                                <p>The curriculum development lifecycle is the multi-stage sequence of any submitted learning object.
+                                Each stage is based on a learning object status and the routes a learning object can take. The curriculum
+                                development lifecycle aims to provide a physical representation of a learning object on CLARK. The diagram
+                                below demonstrates how the lifecycle operates.</p>
+                                <img src='../../../../assets/images/editorial-process-lifecycle.png' width='660' height='800'>
+                                `
+                        ]
 					},
 					{
 						question: 'Why was my learning object rejected?',
@@ -75,13 +106,31 @@ export const sections = {
 					},
 					{
 						question: 'What is the difference between acceptance minor and acceptance major?',
-						answer: 'Both statuses require action from the author as there are changes that the editorial team cannot ' +
-                        'make. The main differences in statuses are provided below: \n-Accepted Major \n-A learning object is missing ' +
-                        'files. \n-A learning object video does not have captioning. \n-A learning object lacks proper contributor ' +
-                        'attribution. \n-A learning object file has an incomplete paragraph or section. \n-A learning object contains ' +
-                        'some outdated curriculum. \n-Accepted Minor \n-A learning object contains assessment solutions. \n-A learning ' +
-                        'object has a color contrast issue. \n-A learning object was submitted to the wrong collection. \n-A learning ' +
-                        'object is under the wrong learning object length.'
+						answer:[
+                            `
+                        <p>
+                        Both statuses require action from the author as there are changes that the editorial team cannot
+                        make. The main differences in statuses are provided below: 
+                        </p>
+                        <ul>
+                            <li>Accepted Major</li>
+                            <ul>
+                                <li>A learning object is missing files.</li>
+                                <li>A learning object video does not have captioning.</li>
+                                <li>A learning object lacks proper contributor attribution.</li>
+                                <li>A learning object file has an incomplete paragraph or section.</li>
+                                <li>A learning object contains some outdated curriculum.</li>
+                            </ul>
+                            <li>Accepted Minor</li>
+                            <ul>
+                                <li>A learning object contains assessment solutions.</li>
+                                <li>A learning object has a color contrast issue.</li>
+                                <li>A learning object was submitted to the wrong collection.</li>
+                                <li>A learning object is under the wrong learning object length.</li>
+                            </ul>
+                        </ul>
+                            `
+                        ]
 					},
 					{
 						question: 'What is the difference for an object to be in \'Review\' and \'Proofing\'?',
