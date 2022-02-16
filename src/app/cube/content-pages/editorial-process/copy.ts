@@ -105,7 +105,7 @@ export const sections = {
                         'resubmit later on with an improved or new learning object.'
 					},
 					{
-						question: 'What is the difference between acceptance minor and acceptance major?',
+						question: 'What is the difference between accepted minor and accepted major?',
 						answer:[
                             `
                         <p>
