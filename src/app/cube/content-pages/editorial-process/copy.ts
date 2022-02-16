@@ -6,7 +6,7 @@ export const sections = {
 				title: 'Curriculum Evaluation',
 				questions: [
 					{
-						question: 'Why must my curriculum be evaluated',
+						question: 'Why must my curriculum be evaluated?',
 						answer: 'All types of curricula must be evaluated for quality assurance. An evaluation is needed to ensure that ' +
                         'all curricula released on CLARK contain no issues with any of the characteristics mentioned above. Since all ' +
                         'released curricula fall under Creative Commons, it is necessary to ensure all content is of the best quality ' +
