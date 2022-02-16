@@ -1,7 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CdkAccordionModule } from '@angular/cdk/accordion';
-
 import { ContributePageComponent } from './contribute-page.component';
 
 describe('ContributePageComponent', () => {
@@ -10,10 +7,9 @@ describe('ContributePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
-      declarations: [ ContributePageComponent ],
-      imports: [CdkAccordionModule],
-    }).compileComponents();
+      declarations: [ ContributePageComponent ]
+    })
+    .compileComponents();
   }));
 
   beforeEach(() => {

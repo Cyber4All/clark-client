@@ -8,12 +8,6 @@ import { sections } from './copy';
 })
 
 export class ContributePageComponent implements OnInit {
-  contributors: {
-    name: string;
-    description: string;
-    subsections?: Array<{}>;
-  } [] = [
-  ];
 
   constructor() { }
 

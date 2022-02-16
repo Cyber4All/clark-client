@@ -1,5 +1,4 @@
 @import 'vars.scss';
-​
 h1 {
     text-align: center;
     padding-top: 50px;
@@ -11,18 +10,16 @@ h1 {
     font-weight: 600;
     letter-spacing: 2px;
 }
-
 h3 {
     padding-left: 25px;
     padding-top: 25px;
     color: $light-blue;
 }
-​
 div {
     padding: 25px;
     background: white;
 }
-​
+
 .header {
     &:before {
         content: '';
@@ -76,8 +73,8 @@ div {
 ​
 ::ng-deep .mat-tab-label, .mat-tab-link {
     font-size: 20px;
-    } 
+}
 ​
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
     background-color: $light-blue !important;
-    }
+}
