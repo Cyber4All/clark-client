@@ -56,7 +56,7 @@ export const sections = {
 						answer:[
                             `
                         <p>
-                        Every curriculum submitted becomes a learning object and will have a designated status in the
+                        Every piece of curriculum submitted becomes a learning object and will have a designated status in the
                         editorial review process. Statuses allow an author to track where a learning object is currently in
                         the process or if it was already released. \nA learning object can have the following statuses:</p>
                         <ul>
