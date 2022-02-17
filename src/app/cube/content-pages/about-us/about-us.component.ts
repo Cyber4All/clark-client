@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { sections } from './copy';
 
 @Component({
   selector: 'clark-about-us',
@@ -12,4 +13,10 @@ export class AboutClarkComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  title = 'About Us';
+  copy = sections;
+
+  get tabs() {
+    return Object.values(this.copy);
+  }
 }

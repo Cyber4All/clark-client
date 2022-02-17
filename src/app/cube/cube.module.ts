@@ -50,6 +50,8 @@ import { FilterSectionComponent } from './browse/components/filter-section/filte
 import { GuidelineFilterComponent } from './browse/components/guideline-filter/guideline-filter.component';
 import { LibraryModule } from './library/library.module';
 import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 /**
@@ -93,6 +95,9 @@ import { AboutClarkComponent } from './content-pages/about-us/about-us.component
     CommonModule,
     // 3rd Party imports
     ClickOutsideModule,
+    MatExpansionModule,
+    MatTabsModule,
+
     // Local module imports
     CubeCoreModule,
     CubeSharedModule,
