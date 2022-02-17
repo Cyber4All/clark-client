@@ -107,7 +107,7 @@ export const sections = {
                 questions: [
                     {
                         question: 'How to get started',
-                        answer: '<p> Anybody on CLARK can search for a learning object on CLARK through the search bar or filter ' +
+                        answer: '<p> Anyone can search for a learning object on CLARK through the search bar or filter ' +
                             'function. However, you must register an account to preview and download any learning object material. We ' +
                             'have a great tutorial that can guide you step by step on searching and downloading here, ' +
                             '<a href= "https://youtu.be/ymerRpfbnQQ">https://youtu.be/ymerRpfbnQQ</a>.',
