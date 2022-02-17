@@ -75,8 +75,8 @@ export const sections = {
                     },
                     {
                         question: 'What is the connection between a learning object and a collection?',
-                        answer: 'A learning object and a collection cannot exist without each other. A learning object is a piece of ' +
-                            'curriculum grouped into a collection and a collection determines where a learning object will be placed.'
+                        answer: 'A learning object is a piece of curriculum grouped into a collection and a collection determines  ' +
+                            'where a learning object will be placed. A learning object cannot exist on CLARK without being part of a collection'
                     }
                 ]
             },
