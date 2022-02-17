@@ -15,9 +15,9 @@ export class ContributePageComponent implements OnInit {
   }
 
   title = 'Contribute';
-   copy = sections;
+  copy = sections;
 
-   get tabs() {
-     return Object.values(this.copy);
-    }
+  get tabs() {
+    return Object.values(this.copy);
+   }
 }
