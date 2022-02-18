@@ -94,7 +94,8 @@ export const sections = {
                                 Each stage is based on a learning object status and the routes a learning object can take. The curriculum
                                 development lifecycle aims to provide a physical representation of a learning object on CLARK. The diagram
                                 below demonstrates how the lifecycle operates.</p>
-                                <img src='../../../../assets/images/editorial-process-lifecycle.png' width='100%'>
+                                <img src='../../../../assets/images/editorial-process-lifecycle.png' alt="Diagram of Curriculm 
+                                Development Lifecycle" width='100%'>
                                 `
                         ]
 					},
