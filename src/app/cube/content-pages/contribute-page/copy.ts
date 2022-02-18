@@ -62,7 +62,7 @@ export const sections = {
                         as well as where cybersecurity practices can cause ethical conflicts." 
                         </p>
                         <p>
-                        An author can apply as many learning outcomes and curricular guidelines mapping needed to a learning object.
+                        An author can create as many learning outcomes as they want for a learning object. Authors can optionally map curricular guidelines to each of these outcomes.
                         </p>
                         `
                     },
