@@ -7,11 +7,10 @@ export const sections = {
                 questions: [
                     {
                         question: 'Your Profile',
-                        answer: 'Your profile is a simple webpage that shows your basic public user information on CLARK. The ' +
-                         'information includes your chosen name, associated institution, email, biography, and all of your created ' +
-                         'learning objects. You will also see your unsubmitted learning objects from your profile, but only your ' +
-                         'released learning objects are viewable by the public. You can edit your profile information at any time ' +
-                         'with the <em>Edit Profile</em> button.'
+                        answer: 'Your profile shows your basic public user information on CLARK. This information includes your ' +
+                         'chosen name, associated institution, email, biography, and all of your created learning objects. You will ' +
+                         'also see your unsubmitted learning objects from your profile, but only your released learning objects are ' +
+                         'viewable by the public. You can edit your profile information at any time with the <em>Edit Profile</em> button.'
                     },
                     {
                         question: 'Your Dashboard',
@@ -23,7 +22,7 @@ export const sections = {
                         question: 'The Learning Object Builder',
                         answer: 'When clicking the <em>"NEW +"</em> button, it will direct you to the learning object builder to start ' +
                         'designing a learning object. The learning object builder is where you will enter your curriculum for ' +
-                        'submitting on CLARK. All required information is listed throughout the builder through its three sections: ' +
+                        'submission on CLARK. All required information is listed throughout the builder through its three sections: ' +
                         '<em>Basic Information</em>, <em>Learning Outcomes</em>, and <em>Materials</em>. For more details, please see ' +
                         'the <em>"Creating Learning Objects"</em> tab.'
                     }
@@ -46,23 +45,27 @@ export const sections = {
                     {
                         question: 'Learning Outcomes',
                         answer:
+                        //The example below for 'Learning Outcomes' uses a made up outcome that is tied to a current guideline
+                        //This does not represent a current learning object in any way or form
                         `
                         <p>
                         The learning outcomes tab covers the set of outcomes a user will accomplish after completing the 
-                        learning object. An outcome is a statement made by the author through the built-in Blooming Onion Builder, 
-                        which uses a provided list of action verbs tied to an academic goal. An example of this is, "Explain why ethics 
-                        is important in cybersecurity." 
+                        learning object. An outcome is a statement made by the author through the built-in learning outcome builder, 
+                        which uses a provided list of action verbs tied to an academic goal. For example, an author could write, 
+                        "Explain why ethics is important in cybersecurity."
                         </p>
                         <p>
-                        The <em>Blooming Onion Builder</em> also allows authors to map out their outcomes to 
-                        standardized curricular guidelines. A curricular guideline is a specific instructional statement created by a 
-                        recognized academic-adjacent group that focuses on a particular academic purpose. An example is applying the 
-                        <em>CAE Cyber Defense - Cybersecurity Ethics (KU3) - 2019</em> curricular guideline to our ethics outcome. This 
-                        curricular guideline is listed as, "Describe the role of cybersecurity in supporting and encouraging ethics, 
-                        as well as where cybersecurity practices can cause ethical conflicts." 
+                        The learning outcome builder lets authors map out their outcomes to established curricular guidelines on CLARK. 
+                        A curricular guideline is a guiding document for instructors articulating the approaches and procedures for 
+                        implementing a successful curriculum in a learning environment. Curricular guidelines are defined by their 
+                        name, date, description, and guiding source/organization. An example is applying the 
+                        <em>CAE Cyber Defense - Cybersecurity Ethics (KU3) - 2019</em> curricular guideline to our ethics outcome 
+                        mentioned above. This curricular guideline's description is listed as, "Describe the role of cybersecurity in 
+                        supporting and encouraging ethics, as well as where cybersecurity practices can cause ethical conflicts."
                         </p>
                         <p>
-                        An author can apply as many learning outcomes and curricular guidelines mapping needed to a learning object.
+                        An author can create as many learning outcomes as they want for a learning object. Authors can optionally map 
+                        curricular guidelines to each of these outcomes.
                         </p>
                         `
                     },
@@ -71,10 +74,11 @@ export const sections = {
                         answer:
                         `
                         <p>
-                        The materials tab covers the main curriculum content featured in a learning object. Content can 
+                        The materials tab covers the main curricular content featured in a learning object. Content can 
                         include uploaded files and folders, URL links, and additional notes. Not all learning objects need to contain 
                         files, as some learning objects may link to an external site for curriculum instead. For example, an author 
-                        may use a URL link for further resource citations or larger files that are not uploadable. 
+                        may use a URL link for additional resource citations or for large files that are cannot be uploaded through 
+                        the builder. 
                         </p>
                         <p>
                         If an author wants to include additional instructions, this can be done through the notes section. Notes are 
@@ -88,13 +92,14 @@ export const sections = {
                         `
                         <p>
                         Learning object materials can be formatted in different ways as long as it conveys the lesson plan and its 
-                        material in an accessible format. If you are unsure how to start formatting your learning object material, 
-                        NSA Funded Curriculum on CLARK offers a convenient template for formatting materials.
+                        material in an accessible format. If you are unsure how to start formatting your learning object material, the 
+                        NSA Funded Curriculum Collection on CLARK offers a convenient template for formatting materials.
                         </p>
                         <p>
-                        Go to <a href="https://clark.center/c/nccp">https://clark.center/c/nccp</a> and click the downloadable link under 
-                        <em>NCCP Learning Object Templates</em>. A zip folder will be downloaded to your machine with instructions and 
-                        examples of formatted materials. The <em>NCCP Learning Object Templates</em> download features the following:
+                        Click <a href="https://clark-file-upload-nccp.s3.us-east-2.amazonaws.com/Cybersecurity-Curriculum-Templates.zip">
+                        here</a> to download the <em>NCCP Learning Templates</em>. A zip folder will be downloaded to your machine with 
+                        instructions and examples of formatted materials. The <em>NCCP Learning Object Templates</em> download features 
+                        the following:
                         </p>
                         <ul>
                             <li>A syllabus template with formatting guidelines.</li>
@@ -137,6 +142,9 @@ export const sections = {
                         After an author is done creating a learning object, the author can submit it for review with the 
                         button on the top right of the builder. The author will see a checkbox to verify all relevant requirements 
                         have been made to the best of their ability.
+                        </p>
+                        <p>
+                        Criteria before submitting a learning object;
                         </p>
                         <ul>
                             <li>Been checked for spelling and grammar errors.</li>
