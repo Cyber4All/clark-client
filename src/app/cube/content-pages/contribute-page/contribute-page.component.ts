@@ -11,8 +11,8 @@ export class ContributePageComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
+
   title = 'Contribute';
   copy = sections;
   get tabs() {
