@@ -58,7 +58,7 @@ export const sections = {
                         question: 'How does a learning object work?',
                         answer: 'A learning object is made up of different components. Each learning object will have a description ' +
                             'of the curriculum along with learning outcomes, academic levels, and materials related to the learning ' +
-                            'object. All registered CLARK authors are able to download the learning object files (some learning objects ' +
+                            'object. All registered CLARK users are able to download the learning object files and ancillary materials (some learning objects ' +
                             'might be URL link-based only). All registered authors can also save learning objects to their personalized ' +
                             'CLARK library.'
                     }
