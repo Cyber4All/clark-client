@@ -21,7 +21,7 @@ export const sections = {
                     {
                         question: 'The Learning Object Builder',
                         answer: 'When clicking the <em>"NEW +"</em> button, it will direct you to the learning object builder to start ' +
-                        'designing a learning object. The learning object builder is where you will enter your curriculum for ' +
+                        'building a learning object. The learning object builder is where you will enter your curriculum for ' +
                         'submission on CLARK. All required information is listed throughout the builder through its three sections: ' +
                         '<em>Basic Information</em>, <em>Learning Outcomes</em>, and <em>Materials</em>. For more details, please see ' +
                         'the <em>"Creating Learning Objects"</em> tab.'
