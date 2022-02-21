@@ -15,7 +15,7 @@ export const sections = {
                     {
                         question: 'Your Dashboard',
                         answer: 'Your dashboard is where you will access and create all of your learning objects. The dashboard is the ' +
-                        'primary way to begin designing a learning object. All draft (non-released) and released learning objects can be' +
+                        'primary way to begin building a learning object. All draft (non-released) and released learning objects can be' +
                         ' viewed within the dashboard. In addition, a status designates all learning objects while on the dashboard.'
                     },
                     {
