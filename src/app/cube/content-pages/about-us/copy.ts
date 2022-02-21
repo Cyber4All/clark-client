@@ -70,7 +70,7 @@ export const sections = {
                     {
                         question: 'What is a collection?',
                         answer: 'A collection is a group of learning objects that are categorized by different communities and ' +
-                            'initiatives. Collections are determined based on their own unique processes such as peer review and ' +
+                            'initiatives. The content of a Collection is determined by their own unique processes such as peer review and ' +
                             'community guidelines for learning object materials.'
                     },
                     {
