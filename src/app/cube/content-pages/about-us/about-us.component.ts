@@ -11,7 +11,6 @@ export class AboutClarkComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void { }
-  }
 
   title = 'About Us';
 
