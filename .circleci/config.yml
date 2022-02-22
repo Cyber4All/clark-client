@@ -49,9 +49,9 @@ jobs:
       - attach_workspace : 
           at: ~/clark-client/dist
       - setup-aws-cli:
-          aws-access-key-id: AWS_CF_AccessKey
+          aws-access-key-id: MACHINE_AWS_CF_AccessKey
           aws-region: AWS_REGION_N_VA
-          aws-secret-access-key: AWS_CF_SecretKey
+          aws-secret-access-key: MACHINE_AWS_CF_SecretKey
           version: "1"
       - run:
           name: Deploy to S3 
