@@ -13,7 +13,6 @@ export class EditorialProcessComponent implements OnInit {
   ngOnInit(): void {
   }
   title = 'Editorial Process';
-  copy = sections;
 
   get tabs(){
     return Object.values(sections);
