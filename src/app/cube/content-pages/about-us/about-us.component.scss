@@ -12,13 +12,12 @@ h1 {
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 2px;
-
 }
+
 h3 {
     padding-left: 25px;
     padding-top: 25px;
     color: $light-blue;
-
 }
 
 div {
@@ -59,46 +58,45 @@ div {
     z-index: 2;
     border: none;
     padding: 25px 5px;
-
 }
 
-.mat-expansion-panel{
+.mat-expansion-panel {
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),0px 0px 0px 0px rgba(0, 0, 0, 0.14),0px 0px 3px 0px rgba(0, 0, 0, 0.12);
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
-.mat-expansion-panel-spacing{
+.mat-expansion-panel-spacing {
     margin: 0px;
 }
 
-.mat-elevation-z3{
+.mat-elevation-z3 {
     box-shadow: none;
 }
 
-.mat-tab-panel{
+.mat-tab-panel {
     z-index: 3;
 }
 
-.content{
+.content {
     padding: 0px;
 }
 
 ::ng-deep .mat-tab-label, .mat-tab-link {
     font-size: $large;
-    } 
+}
 
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
     background-color: $light-blue !important;
-    }
+}
     
-::ng-deep .clark-hierarchies{
+::ng-deep .clark-hierarchies {
     display: block;
     margin: auto;
     width: 80%;
 }
 
-::ng-deep .clark-philosophy section.philosophy{
+::ng-deep .clark-philosophy section.philosophy {
     padding: 0;
 
     & > div {
