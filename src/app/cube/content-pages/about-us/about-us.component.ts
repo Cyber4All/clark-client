@@ -14,9 +14,8 @@ export class AboutClarkComponent implements OnInit {
   }
 
   title = 'About Us';
-  copy = sections;
 
   get tabs() {
-    return Object.values(this.copy);
+    return Object.values(sections);
   }
 }
