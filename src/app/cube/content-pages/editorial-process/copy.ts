@@ -102,7 +102,7 @@ export const sections = {
 					{
 						question: 'Why was my learning object rejected?',
 						answer: 'A learning object was rejected as it did not meet the criteria requirements found under the "How ' +
-                        'Curriculum is Evaluated" above. The author is provided specific reasoning for rejection and encouraged to' +
+                        'Curriculum is Evaluated" above. The author is provided specific reasoning for rejection and encouraged to ' +
                         'resubmit later on with an improved or new learning object.'
 					},
 					{
