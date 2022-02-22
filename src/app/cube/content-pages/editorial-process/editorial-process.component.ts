@@ -16,6 +16,6 @@ export class EditorialProcessComponent implements OnInit {
   copy = sections;
 
   get tabs(){
-    return Object.values(this.copy);
+    return Object.values(sections);
   }
 }
