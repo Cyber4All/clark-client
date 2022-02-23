@@ -15,13 +15,15 @@ export const sections = {
                     {
                         question: 'Your Dashboard',
                         answer: 'Your dashboard is where you will access and create all of your learning objects. The dashboard is the ' +
-                        'primary way to begin designing a learning object. All draft (non-released) and released learning objects can be' +
-                        ' viewed within the dashboard. In addition, a status designates all learning objects while on the dashboard.'
+                        'primary way to begin building a learning object. All draft (non-released) and released learning objects can be' +
+                        ' viewed within the dashboard. Statuses are used to designate where the learning object is in our review process,' +
+                        ' draft learning objects include the waiting, review, accepted minor, accepted major, and proofing statuses and ' +
+                        ' released includes all learning objects publicly available.'
                     },
                     {
                         question: 'The Learning Object Builder',
                         answer: 'When clicking the <em>"NEW +"</em> button, it will direct you to the learning object builder to start ' +
-                        'designing a learning object. The learning object builder is where you will enter your curriculum for ' +
+                        'building a learning object. The learning object builder is where you will enter your curriculum for ' +
                         'submission on CLARK. All required information is listed throughout the builder through its three sections: ' +
                         '<em>Basic Information</em>, <em>Learning Outcomes</em>, and <em>Materials</em>. For more details, please see ' +
                         'the <em>"Creating Learning Objects"</em> tab.'
