@@ -10,7 +10,7 @@ export class EditorialProcessComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   title = 'Editorial Process';
 
