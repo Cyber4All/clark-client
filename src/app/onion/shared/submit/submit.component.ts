@@ -148,8 +148,8 @@ export class SubmitComponent implements OnInit {
           this.auth.logout();
         } else {
           this.toasterService.error(
-            'Error!',
-            'We couldn\'t submit your Learning Object at this time. Please try again later.',
+            'Incomplete Learning Object!',
+            'Please review your object and retry submitting from the builder.',
           );
         }
         this.loading.pop();
