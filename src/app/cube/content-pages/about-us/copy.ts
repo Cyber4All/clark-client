@@ -58,9 +58,9 @@ export const sections = {
                         question: 'How does a learning object work?',
                         answer: 'A learning object is made up of different components. Each learning object will have a description ' +
                             'of the curriculum along with learning outcomes, academic levels, and materials related to the learning ' +
-                            'object. All registered CLARK users are able to download the learning object files and ancillary materials (some learning objects ' +
-                            'might be URL link-based only). All registered authors can also save learning objects to their personalized ' +
-                            'CLARK library.'
+                            'object. All registered CLARK users are able to download the learning object files and ancillary materials ' +
+                            '(some learning objects might be URL link-based only). All registered authors can also save learning ' +
+                            'objects to their personalized CLARK library.'
                     }
                 ]
             },
@@ -70,13 +70,14 @@ export const sections = {
                     {
                         question: 'What is a collection?',
                         answer: 'A collection is a group of learning objects that are categorized by different communities and ' +
-                            'initiatives. The content of a Collection is determined by their own unique processes such as peer review and ' +
-                            'community guidelines for learning object materials.'
+                            'initiatives. The content of a Collection is determined by their own unique processes such as peer review ' +
+                            'and community guidelines for learning object materials.'
                     },
                     {
                         question: 'What is the connection between a learning object and a collection?',
                         answer: 'A learning object is a piece of curriculum grouped into a collection and a collection determines  ' +
-                            'where a learning object will be placed. A learning object cannot exist on CLARK without being part of a collection'
+                            'where a learning object will be placed. A learning object cannot exist on CLARK without being part of a ' +
+                            'collection'
                     }
                 ]
             },
@@ -108,9 +109,9 @@ export const sections = {
                     {
                         question: 'How to get started',
                         answer: '<p> Anyone can search for a learning object on CLARK through the search bar or filter ' +
-                            'function. However, you must register for an account and be logged in to preview and download any learning object material. We ' +
-                            'have a great tutorial that can guide you step by step on searching and downloading here, ' +
-                            '<a href= "https://youtu.be/ymerRpfbnQQ">https://youtu.be/ymerRpfbnQQ</a>.',
+                            'function. However, you must register for an account and be logged in to preview and download any learning ' +
+                            'object material. We have a great tutorial that can guide you step by step on searching and downloading ' +
+                            'here, <a href= "https://youtu.be/ymerRpfbnQQ">https://youtu.be/ymerRpfbnQQ</a>.',
                         video: true
                     },
                 ]
