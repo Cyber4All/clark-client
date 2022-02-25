@@ -1034,41 +1034,6 @@ export class BuilderStore {
       .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
   }
 
-
-  /**
-   * Handles service interaction for adding a mapping to a LearningOutcome
-   *
-   * @private
-   * @param {Partial<LearningOutcome>} outcome
-   * @memberof BuilderStore
-   */
-  private addGuideline(outcome: Partial<LearningOutcome>) {
-    this.serviceInteraction$.next(true);
-    this.learningObjectService
-      .addGuideline(this.learningObject.id, outcome, this._learningObject.author.username)
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
-  }
-
-    /**
-     * Handles service interaction for deleting a mapping to a LearningOutcome
-     *
-     * @private
-     * @param {Partial<LearningOutcome>} outcome
-     * @memberof BuilderStore
-     */
-  private deleteGuideline(outcomeId: string, mappingId: string) {
-    this.serviceInteraction$.next(true);
-    this.learningObjectService
-      .deleteGuideline(this.learningObject.id, outcomeId, this._learningObject.author.username, mappingId)
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
-  }
-
   /**
    * This functions handles service level errors by setting service error observable
    * If the status code is a 500, then the service failure error is set
