@@ -53,6 +53,7 @@ import { FilterSectionComponent } from './browse/components/filter-section/filte
 import { GuidelineFilterComponent } from './browse/components/guideline-filter/guideline-filter.component';
 import { LibraryModule } from './library/library.module';
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
+import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 
 
 /**
@@ -85,6 +86,7 @@ import { ContributePageComponent } from './content-pages/contribute-page/contrib
     FilterSectionComponent,
     GuidelineFilterComponent,
     ContributePageComponent,
+    EditorialProcessComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -109,7 +111,8 @@ import { ContributePageComponent } from './content-pages/contribute-page/contrib
     CoreModule,
     MatTabsModule,
     MatExpansionModule,
-    MatListModule
+    MatListModule,
+    MatExpansionModule
   ],
   providers: [LearningObjectService]
 })
