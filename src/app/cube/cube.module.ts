@@ -27,6 +27,7 @@ import { UserInformationComponent } from './user-profile/user-information/user-i
 import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 // Other
 // TODO: is ng-click-outside being used?
@@ -51,6 +52,7 @@ import { DonateComponent } from './donate/donate.component';
 import { FilterSectionComponent } from './browse/components/filter-section/filter-section.component';
 import { GuidelineFilterComponent } from './browse/components/guideline-filter/guideline-filter.component';
 import { LibraryModule } from './library/library.module';
+import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 
 
@@ -83,7 +85,8 @@ import { EditorialProcessComponent } from './content-pages/editorial-process/edi
     DonateComponent,
     FilterSectionComponent,
     GuidelineFilterComponent,
-    EditorialProcessComponent,
+    ContributePageComponent,
+    EditorialProcessComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -107,6 +110,8 @@ import { EditorialProcessComponent } from './content-pages/editorial-process/edi
     LibraryModule,
     CoreModule,
     MatTabsModule,
+    MatExpansionModule,
+    MatListModule,
     MatExpansionModule
   ],
   providers: [LearningObjectService]
