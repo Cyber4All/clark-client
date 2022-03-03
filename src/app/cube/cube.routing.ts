@@ -18,6 +18,7 @@ import { PressComponent } from './press/press.component';
 import { OutagePageComponent } from './outage-page/outage-page.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { DonateComponent } from './donate/donate.component';
+import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 
@@ -40,6 +41,10 @@ const cube_routes: Routes = [
         path: 'contribute-page',
         component: ContributePageComponent,
         data: { title: 'Contributors Page'}
+      },
+      {
+        path: 'about-us',
+        component: AboutClarkComponent,
       },
       {
         path: 'browse',

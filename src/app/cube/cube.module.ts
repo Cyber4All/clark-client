@@ -52,6 +52,7 @@ import { DonateComponent } from './donate/donate.component';
 import { FilterSectionComponent } from './browse/components/filter-section/filter-section.component';
 import { GuidelineFilterComponent } from './browse/components/guideline-filter/guideline-filter.component';
 import { LibraryModule } from './library/library.module';
+import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 
@@ -85,6 +86,7 @@ import { EditorialProcessComponent } from './content-pages/editorial-process/edi
     DonateComponent,
     FilterSectionComponent,
     GuidelineFilterComponent,
+    AboutClarkComponent,
     ContributePageComponent,
     EditorialProcessComponent
   ],
@@ -98,6 +100,9 @@ import { EditorialProcessComponent } from './content-pages/editorial-process/edi
     CommonModule,
     // 3rd Party imports
     ClickOutsideModule,
+    MatExpansionModule,
+    MatTabsModule,
+
     // Local module imports
     CubeCoreModule,
     CubeSharedModule,
