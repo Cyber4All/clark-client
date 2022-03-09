@@ -149,7 +149,7 @@ export class SubmitComponent implements OnInit {
         } else if (e.status === 400){
           this.toasterService.error(
             'Incomplete Learning Object!',
-            'Please review your object and retry submitting from the builder.',
+            'Please review your object for empty learning outcomes and ensure that there is a description, name, and at least 1 contributor.',
           );
         } else {
           this.toasterService.error(
