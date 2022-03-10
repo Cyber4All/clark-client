@@ -55,7 +55,6 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
       this.collection.abvName !== 'intro_to_cyber'
       && this.collection.abvName !== 'secure_coding_community'
       && this.collection.abvName !== 'plan c'
-      && this.collection.abvName !== '502_project'
     ) {
       this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
     }

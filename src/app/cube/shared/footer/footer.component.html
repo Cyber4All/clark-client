@@ -13,7 +13,10 @@
         <h3>Help</h3>
         <a aria-label="Clickable Ask for Help link" href="mailto:info@secured.team?subject=CLARK Help">{{ copy.HELP }}</a>
         <a aria-label="Clickable Troubleshooting link" href="http://help.clark.center" target="_blank" rel="noopener noreferrer">Troubleshooting</a>
+        <a [routerLink]="['/editorial-process']" aria-label="Editorial Process" target="_blank" rel="noopener noreferrer">Editorial Process</a>
         <!-- <a aria-label="Clickable Tutorial link" href="http://about.clark.center/tutorial" target="_blank" rel="noopener noreferrer">{{ copy.TUTORIAL }}</a> -->
+        <a [routerLink]="['/about-us']" aria-label="About Us Page link" target="_blank" rel="noopener noreferrer"> About CLARK </a>
+        <a [routerLink]="['/contribute']" aria-label="Contribute Page" target="_blank" rel="noopener noreferrer"> Resources for Contributors </a>
       </div>
       <div>
         <h3>General Information</h3>
@@ -40,8 +43,13 @@
           </a>
         </div>
         <div class="logo-wrapper">
-          <a href="https://www.csusb.edu/" target="_blank" araia-label="CSUSB home page">
+          <a href="https://www.csusb.edu/" target="_blank" aria-label="CSUSB home page">
             <img src="assets/images/CSUSB.png" class="csusb" alt="CSUSB Logo">
+          </a>
+        </div>
+        <div class="logo-wrapper">
+          <a href="https://www.clark.center/c/502_project" target="_blank" aria-label="The 502 Project">
+            <img src="assets/images/502_project_white.png" class="csusb" alt="The 502 Project">
           </a>
         </div>
       </div>

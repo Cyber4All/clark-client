@@ -4,7 +4,6 @@ import {
   EventEmitter,
   Input,
   Output,
-  ChangeDetectorRef
 } from '@angular/core';
 import { levels } from '@cyber4all/clark-taxonomy';
 import { LearningOutcome } from '@entity';
@@ -65,7 +64,6 @@ export class OutcomeComponent implements OnInit {
   deleted: EventEmitter<void> = new EventEmitter();
 
   constructor(
-    private cd: ChangeDetectorRef,
     public validator: LearningObjectValidator,
     public outcomeValidator: LearningOutcomeValidator
   ) {}
@@ -93,21 +91,15 @@ export class OutcomeComponent implements OnInit {
   }
 
   emitVerb(val) {
-    if (val) {
-      this.selectedVerb.emit(val);
-    }
+    this.selectedVerb.emit(val);
   }
 
   emitLevel(val) {
-    if (val) {
-      this.selectedLevel.emit(val);
-    }
+    this.selectedLevel.emit(val);
   }
 
   emitText(val) {
-    if (val) {
-      this.textChanged.emit(val);
-    }
+    this.textChanged.emit(val);
   }
 
   emitDeletion() {

@@ -24,6 +24,7 @@ import { FeaturedCollectionCardComponent } from './components/featured-collectio
   exports: [
     HomeComponent,
     UsageComponent,
+    PhilosophyComponent,
   ],
   declarations: [
     HomeComponent,
