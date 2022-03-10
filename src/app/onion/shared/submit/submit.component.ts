@@ -146,10 +146,15 @@ export class SubmitComponent implements OnInit {
         if (e.status === 401) {
           // user isn't logged in, redirect to login page
           this.auth.logout();
+        } else if (e.status === 400){
+          this.toasterService.error(
+            'Incomplete Learning Object!',
+            'Please review your object for empty learning outcomes and ensure that there is a description, name, and at least 1 contributor.',
+          );
         } else {
           this.toasterService.error(
             'Error!',
-            'We couldn\'t submit your Learning Object at this time. Please try again later.',
+            `There was an error trying to submit your object at this time. Please try again later...`,
           );
         }
         this.loading.pop();
