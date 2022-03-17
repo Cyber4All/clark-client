@@ -6,7 +6,6 @@ orbs:
   docker: circleci/docker@2.0.1
 
 commands:
-  install-aws: aws-cli/install
   setup-aws-cli: aws-cli/setup
 
 jobs:
@@ -43,20 +42,12 @@ jobs:
 
   deploy:
     docker:
-      - image: cyber4all/circleci-aws:debian
+      - image: cimg/node:16.13.2
     working_directory: ~/clark-client
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
-      - run:
-          name: Install OpenSSH 8.1p1
-          command: |
-            sudo apt-get update
-            mkdir ~/tempdownload; 
-            cd ~/tempdownload; 
-            wget https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.1p1.tar.gz; 
-            tar zxvf openssh-8.1p1.tar.gz; 
-            cd openssh-8.1p1 && ./configure && make && sudo make install
+      - aws-cli/install
       - setup-aws-cli:
           aws-access-key-id: MACHINE_AWS_CF_AccessKey
           aws-region: AWS_REGION_N_VA
