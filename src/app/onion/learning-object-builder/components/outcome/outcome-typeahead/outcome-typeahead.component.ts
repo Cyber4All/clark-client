@@ -85,11 +85,6 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
               this.verb.charAt(0).toUpperCase() + this.verb.substring(1); // capitalize the first letter of the verb
             this.text = val.substring(index).trim();
             this.goodVerb = this.isGoodVerb(this.verb);
-
-            // emit changes to parent
-            if (this.goodVerb) {
-              this.selectedVerb.emit(this.verb);
-            }
           }
         } else if (index === -1 && this.text.length === 0) {
           // we've backspaced to the verb, remove the dropdown and put the text inline
@@ -100,9 +95,11 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
           this.goodVerb = false;
         }
 
-        if (this.goodVerb) {
-          this.enteredText.emit(this.text);
-        }
+        // we want to always emit changes from the outcome fields even if they are null
+        // there's a function that will validate each field and will throw an error if needed
+        this.enteredText.emit(this.text);
+        this.selectedVerb.emit(this.verb);
+        this.selectedCategory.emit(this.bloom);
       });
   }
 
