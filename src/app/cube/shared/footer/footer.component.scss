@@ -55,6 +55,11 @@ footer {
       align-items: center;
       padding-bottom: 10px;
 
+      &.bottom {
+        justify-content: center;
+        align-items: center;
+      }
+
 
       img {
         width: 100px;
@@ -62,15 +67,15 @@ footer {
       }
 
       .ncyte {
-        width: 125px;
+        width: 150px;
       }
 
       .csusb {
-        width: 125px;
+        width: 150px;
       }
      
       .project_502 {
-        width: 125px;
+        width: 150px;
       }
     }
   }
