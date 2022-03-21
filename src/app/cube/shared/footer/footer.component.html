@@ -11,12 +11,12 @@
       </div>
       <div>
         <h3>Help</h3>
+        <a [routerLink]="['/about-us']" aria-label="About Us Page link" rel="noopener noreferrer"> About CLARK </a>
         <a aria-label="Clickable Ask for Help link" href="mailto:info@secured.team?subject=CLARK Help">{{ copy.HELP }}</a>
+        <a [routerLink]="['/editorial-process']" aria-label="Editorial Process" rel="noopener noreferrer">Editorial Process</a>
+        <a [routerLink]="['/contribute-page']" aria-label="Contribute Page" rel="noopener noreferrer"> Resources for Contributors </a>
         <a aria-label="Clickable Troubleshooting link" href="http://help.clark.center" target="_blank" rel="noopener noreferrer">Troubleshooting</a>
-        <a [routerLink]="['/editorial-process']" aria-label="Editorial Process" target="_blank" rel="noopener noreferrer">Editorial Process</a>
         <!-- <a aria-label="Clickable Tutorial link" href="http://about.clark.center/tutorial" target="_blank" rel="noopener noreferrer">{{ copy.TUTORIAL }}</a> -->
-        <a [routerLink]="['/about-us']" aria-label="About Us Page link" target="_blank" rel="noopener noreferrer"> About CLARK </a>
-        <a [routerLink]="['/contribute']" aria-label="Contribute Page" target="_blank" rel="noopener noreferrer"> Resources for Contributors </a>
       </div>
       <div>
         <h3>General Information</h3>
@@ -37,23 +37,27 @@
             <img src="assets/images/towson_logo.png" alt="Towson University Logo">
           </a>      
         </div>
-        <div class="logo-wrapper">
-          <a href="https://www.ncyte.net/" target="_blank">
-            <img class="ncyte" alt="NCyTE Center Logo" src="assets/images/collections/white_ncyte_logo.png" />
-          </a>
-        </div>
-        <div class="logo-wrapper">
-          <a href="https://www.csusb.edu/" target="_blank" aria-label="CSUSB home page">
-            <img src="assets/images/CSUSB.png" class="csusb" alt="CSUSB Logo">
-          </a>
-        </div>
-        <div class="logo-wrapper">
-          <a href="https://www.clark.center/c/502_project" target="_blank" aria-label="The 502 Project">
-            <img src="assets/images/502_project_white.png" class="csusb" alt="The 502 Project">
-          </a>
-        </div>
       </div>
     </section>
+  </div>
+  <div class="grants">
+    <div class="images bottom">
+      <div class="logo-wrapper">
+        <a href="https://www.ncyte.net/" target="_blank">
+          <img class="ncyte" alt="NCyTE Center Logo" src="assets/images/collections/white_ncyte_logo.png" />
+        </a>
+      </div>
+      <div class="logo-wrapper">
+        <a href="https://www.csusb.edu/" target="_blank" aria-label="CSUSB home page">
+          <img src="assets/images/CSUSB.png" class="csusb" alt="CSUSB Logo">
+        </a>
+      </div>
+      <div class="logo-wrapper">
+        <a href="https://www.clark.center/c/502_project" target="_blank" aria-label="The 502 Project">
+          <img src="assets/images/502_project_white.png" class="project_502" alt="The 502 Project">
+        </a>
+      </div>
+    </div>
   </div>
   <div class="share-icons">
     <a href="https://twitter.com/theclarkcyber" class="button icon-only twitter" id="twitter" aria-label="Go to CLARK Twitter page">
