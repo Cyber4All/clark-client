@@ -1,0 +1,79 @@
+@import 'vars.scss';
+h1 {
+    text-align: center;
+    padding-top: 50px;
+    padding-bottom: 25px;
+    color: $light-blue;
+    position: relative;
+    font-size: $largest;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+h3 {
+    padding-left: 25px;
+    padding-top: 25px;
+    color: $light-blue;
+}
+div {
+    padding: 25px;
+    background: white;
+}
+
+.header {
+    &:before {
+        content: '';
+        background: linear-gradient( #ecf2f9, #ecf2f9, white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        height: 250px;
+        z-index: 0;
+      }
+      &:after {
+        content: '';
+        background: linear-gradient(90deg, white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 300px;
+        z-index: 1;
+      }
+}
+​
+.accordion {
+    position: relative;
+    background: transparent;
+    z-index: 2;
+    border: none;
+}
+​
+.mat-expansion-panel{
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),0px 0px 0px 0px rgba(0, 0, 0, 0.14),0px 0px 3px 0px rgba(0, 0, 0, 0.12);
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+​
+.mat-expansion-panel-spacing{
+    margin: 0px;
+}
+​
+.mat-elevation-z3{
+    box-shadow: none;
+}
+​
+.mat-tab-panel{
+    z-index: 3;
+}
+​
+::ng-deep .mat-tab-label, .mat-tab-link {
+    font-size: 20px;
+}
+::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: $light-blue !important;
+}

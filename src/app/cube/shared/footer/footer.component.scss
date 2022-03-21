@@ -47,14 +47,18 @@ footer {
   }
 
   .grants {
-    width: 300px;
-    text-align: center;
 
     .images {
       display: flex;
       flex-direction: row;
-      justify-content: center;
+      justify-content: right;
       align-items: center;
+      padding-bottom: 10px;
+
+      &.bottom {
+        justify-content: center;
+        align-items: center;
+      }
 
 
       img {
@@ -63,12 +67,15 @@ footer {
       }
 
       .ncyte {
-        width: 200px;
+        width: 150px;
       }
 
       .csusb {
-        width: 175px;
-        margin-right: 50px;
+        width: 150px;
+      }
+     
+      .project_502 {
+        width: 150px;
       }
     }
   }
