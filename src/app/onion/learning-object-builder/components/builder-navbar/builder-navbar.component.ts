@@ -157,12 +157,16 @@ export class BuilderNavbarComponent implements OnDestroy {
   }
 
   /**
-   * Function to initiate the bunlding process on a learning object when changes have been made
+   * Function used to handle actions on exit of learning-object builder
+   * 1. Remove any outcomes that have null text
+   * 2. Initiate bunlding process on a learning object when changes have been made
    *
    * @var this.store.upload is a toggle string variable to block the 'Back' button if a file upload
    * is not finished. See the builder store for more details.
    */
-  triggerBundlingProcess() {
+   triggerExitProcess() {
+     // Remove outcomes that have null text
+     this.store.removeEmptyOutcomes();
     // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
       // If any data has be changed on the LO, then we need to rebundle

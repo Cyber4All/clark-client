@@ -1,0 +1,38 @@
+<div>
+  <div class="header">
+    <h1>
+      {{ title }}
+    </h1>
+  </div>
+  <div class="accordion">
+    <mat-tab-group class="tabs" mat-align-tabs="center" mat-stretch-tabs
+      class="example-stretched-tabs mat-elevation-z3">
+
+      <mat-tab *ngFor="let tab of tabs" [label]="tab.title">
+        <mat-accordion *ngFor="let sec of tab.topics">
+          <h3>{{sec.title}}</h3>
+          <mat-expansion-panel *ngFor="let questions of sec.questions">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{questions.question}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="content">
+              <div [innerHTML]="questions.answer"></div>
+              <div *ngIf="questions.video">
+                <iframe src="https://www.youtube.com/embed/ymerRpfbnQQ" title="Clark Searching and Sorting Video"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen>
+                </iframe>
+              </div>
+              <div *ngIf="questions.philosophy">
+                <clark-philosophy class="clark-philosophy"></clark-philosophy>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+
+      </mat-tab>
+    </mat-tab-group>
+  </div>
