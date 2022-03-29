@@ -185,7 +185,7 @@ export class ChangeStatusModalComponent implements OnInit {
    */
   async createChangelog(): Promise<{}> {
     return this.changelogService.createChangelog(
-      this.builderStore.learningObjectEvent.getValue().author.id,
+      this.builderStore.learningObjectEvent.getValue().author.username,
       this.builderStore.learningObjectEvent.getValue().cuid,
       this.changelog,
     );
