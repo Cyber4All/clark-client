@@ -154,7 +154,7 @@ export class ScaffoldComponent implements OnInit {
     // set childrenIDs equal to the children array
     this.childrenIDs = [];
     this.children.forEach(kid => this.childrenIDs.push(kid.id));
-    this.store.setChildren(this.childrenIDs);
+    this.store.setChildren(this.childrenIDs, true);
 
     // if deleted child was last child toggle off editContent because there is no longer content to edit
     if (this.children.length === 0) {
