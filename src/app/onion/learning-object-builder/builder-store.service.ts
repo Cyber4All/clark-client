@@ -831,6 +831,23 @@ export class BuilderStore {
   }
 
   /**
+   * Public function to remove empty outcomes from a learning object
+   */
+  public async removeEmptyOutcomes() {
+    // Get most up-to-date values for current learning object
+    await this.fetch(this.learningObject.id);
+    // Retrieve outcomes of current learning object
+    const value = await this.uriRetriever.getLearningObject({id: this.learningObject.id}, ['outcomes']).toPromise();
+    // Iterate through outcomes
+    value.outcomes.map(outcome => {
+      // If the outcome text is empty, remove outcome
+      if(outcome.text === '' || outcome.text === null) {
+        this.deleteOutcome(outcome.id);
+      }
+    });
+  }
+
+  /**
    * Handles saving a LearningObject
    *
    * @private
@@ -1033,41 +1050,6 @@ export class BuilderStore {
     this.serviceInteraction$.next(true);
     this.learningObjectService
       .saveOutcome(this.learningObject.id, updateValue as any)
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
-  }
-
-
-  /**
-   * Handles service interaction for adding a mapping to a LearningOutcome
-   *
-   * @private
-   * @param {Partial<LearningOutcome>} outcome
-   * @memberof BuilderStore
-   */
-  private addGuideline(outcome: Partial<LearningOutcome>) {
-    this.serviceInteraction$.next(true);
-    this.learningObjectService
-      .addGuideline(this.learningObject.id, outcome, this._learningObject.author.username)
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
-  }
-
-    /**
-     * Handles service interaction for deleting a mapping to a LearningOutcome
-     *
-     * @private
-     * @param {Partial<LearningOutcome>} outcome
-     * @memberof BuilderStore
-     */
-  private deleteGuideline(outcomeId: string, mappingId: string) {
-    this.serviceInteraction$.next(true);
-    this.learningObjectService
-      .deleteGuideline(this.learningObject.id, outcomeId, this._learningObject.author.username, mappingId)
       .then(() => {
         this.serviceInteraction$.next(false);
       })

@@ -25,6 +25,9 @@ import { UserPreferencesComponent } from './user-profile/user-preferences/user-p
 import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { UserInformationComponent } from './user-profile/user-information/user-information.component';
 import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatListModule } from '@angular/material/list';
 
 // Other
 // TODO: is ng-click-outside being used?
@@ -49,6 +52,9 @@ import { DonateComponent } from './donate/donate.component';
 import { FilterSectionComponent } from './browse/components/filter-section/filter-section.component';
 import { GuidelineFilterComponent } from './browse/components/guideline-filter/guideline-filter.component';
 import { LibraryModule } from './library/library.module';
+import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
+import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
+import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 
 
 /**
@@ -80,6 +86,9 @@ import { LibraryModule } from './library/library.module';
     DonateComponent,
     FilterSectionComponent,
     GuidelineFilterComponent,
+    AboutClarkComponent,
+    ContributePageComponent,
+    EditorialProcessComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -91,6 +100,9 @@ import { LibraryModule } from './library/library.module';
     CommonModule,
     // 3rd Party imports
     ClickOutsideModule,
+    MatExpansionModule,
+    MatTabsModule,
+
     // Local module imports
     CubeCoreModule,
     CubeSharedModule,
@@ -101,7 +113,11 @@ import { LibraryModule } from './library/library.module';
     CollectionModule,
     AboutUsModule,
     LibraryModule,
-    CoreModule
+    CoreModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatListModule,
+    MatExpansionModule
   ],
   providers: [LearningObjectService]
 })

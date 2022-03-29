@@ -6,7 +6,6 @@ orbs:
   docker: circleci/docker@2.0.1
 
 commands:
-  install-aws: aws-cli/install
   setup-aws-cli: aws-cli/setup
 
 jobs:
@@ -43,11 +42,12 @@ jobs:
 
   deploy:
     docker:
-      - image: cyber4all/circleci-aws:debian
+      - image: cimg/node:16.13.2
     working_directory: ~/clark-client
     steps:
       - attach_workspace : 
           at: ~/clark-client/dist
+      - aws-cli/install
       - setup-aws-cli:
           aws-access-key-id: MACHINE_AWS_CF_AccessKey
           aws-region: AWS_REGION_N_VA
@@ -67,13 +67,13 @@ workflows:
       - build:
         filters:
             branches:
-              ignore: /master/
+              ignore: /main/
       - node/test:
           run-command: "test:unit"
           version: "16.13.2"
           filters:
             branches:
-              ignore: /master/
+              ignore: /main/
   build-test-and-deploy:
     jobs:
       - node/test:
@@ -81,19 +81,19 @@ workflows:
           version: "16.13.2"
           filters:
             branches:
-              only: /master/
+              only: /releases/
       - publish-image:
           context: 
             - DockerHub
           filters:
             branches:
-              only: /master/
+              only: /releases/
       - build:
           requires:
             - node/test
           filters:
             branches:
-              only: /master/
+              only: /releases/
       - deploy:
           requires:
             - build
@@ -102,4 +102,4 @@ workflows:
             - AWS
           filters:
             branches:
-              only: /master/
+              only: /releases/
