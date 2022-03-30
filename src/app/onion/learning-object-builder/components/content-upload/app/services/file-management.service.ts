@@ -83,7 +83,7 @@ export class FileManagementService {
   private validateFileNames(files: FileInput[], cuid: string) {
     files.forEach(file => {
       if (file.name === `${cuid}.zip`) {
-        throw new Error(`Cannot upload file with name ${cuid}.zip because this is a reserved file type`);
+        throw new Error(`Cannot upload file with name ${cuid}.zip because this is a reserved file name`);
       }
     });
   }
