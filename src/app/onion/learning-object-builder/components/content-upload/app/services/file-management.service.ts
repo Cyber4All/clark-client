@@ -55,6 +55,7 @@ export class FileManagementService {
     learningObjectRevisionId: number;
     files: FileInput[];
   }): Observable<UploadUpdate> {
+    this.validateFileNames(files, learningObjectCuid);
     this.validateUploadParams({
       authorUsername,
       learningObjectId: learningObjectCuid,
@@ -71,6 +72,20 @@ export class FileManagementService {
         uploadUpdate$.next({ type: 'error', data: e });
       });
     return uploadUpdate$;
+  }
+
+  /**
+   * Validates that all the files to be uploaded don't include the bundle zip name
+   *
+   * @param files The files to check
+   * @param cuid The cuid of the file
+   */
+  private validateFileNames(files: FileInput[], cuid: string) {
+    files.forEach(file => {
+      if (file.name === `${cuid}.zip`) {
+        throw new Error(`Cannot upload file with name ${cuid}.zip because this is a reserved file type`);
+      }
+    });
   }
 
   /**
