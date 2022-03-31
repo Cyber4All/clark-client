@@ -158,6 +158,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   dragAndDropSupported = false;
 
+  learningObjectCuid: string;
+
   private bucketUploadPath = '';
 
   private newFileMeta: FileUploadMeta[] = [];
@@ -191,6 +193,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(object => {
         if (object) {
+          this.learningObjectCuid = object.cuid;
           this.notes = object.materials.notes;
           this.bucketUploadPath = `${object.author.username}/${object.id}`;
           this.files$.next(object.materials.files);
@@ -523,10 +526,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   private enqueueFiles(files: FileInput[]) {
     files.forEach(file => {
-      const path = file.fullPath || file.webkitRelativePath || file.name;
-      this.uploadQueueMap[path] = this.uploadQueue.length;
-      this.uploadQueue.push(file);
-      this.totalUploadSize += file.size;
+      if (file.name !== `${this.learningObjectCuid}.zip`) {
+        const path = file.fullPath || file.webkitRelativePath || file.name;
+        this.uploadQueueMap[path] = this.uploadQueue.length;
+        this.uploadQueue.push(file);
+        this.totalUploadSize += file.size;
+      }
     });
   }
 
