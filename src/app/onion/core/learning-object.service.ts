@@ -434,14 +434,16 @@ export class LearningObjectService {
   setChildren(
     learningObjectName: string,
     authorUsername: string,
-    children: string[]
+    children: string[],
+    remove: boolean,
   ): Promise<any> {
     const route = USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
 
-    return this.http
-      .post(
+    if (remove) {
+      return this.http
+      .patch(
         route,
-        { children },
+        { id: children[0] },
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
@@ -449,6 +451,19 @@ export class LearningObjectService {
         catchError(this.handleError)
       )
       .toPromise();
+    } else {
+      return this.http
+        .post(
+          route,
+          { children },
+          { withCredentials: true, responseType: 'text' }
+        )
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise();
+    }
   }
 
   updateReadme(authorUsername: string, id: string): any {
