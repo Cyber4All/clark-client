@@ -305,11 +305,16 @@ export class BuilderStore {
   }
 
   /**
-   * Sets the learning objects children after they have been reorderd
+   * Sets the learning objects children after they have been re-ordered
+   *
+   * @param remove {boolean} True if removing a child from the list, false if adding
    */
-  async setChildren(children: string[]) {
+  async setChildren(children: string[], remove: boolean = false) {
     this.serviceInteraction$.next(true);
-    await this.learningObjectService.setChildren(this.learningObject.id, this.learningObject.author.username, children);
+    if (remove) {
+      children = this.learningObject.children.filter(child => !children.includes(child.id)).map(child => child.id);
+    }
+    await this.learningObjectService.setChildren(this.learningObject.id, this.learningObject.author.username, children, remove);
     this.serviceInteraction$.next(false);
   }
 
