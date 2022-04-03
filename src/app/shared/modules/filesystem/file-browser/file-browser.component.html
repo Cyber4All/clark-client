@@ -9,7 +9,7 @@
   </div>
 
 </div>
-<div (activate)="emitContainerClick($event)" class="flex-wrapper" [ngClass]="{empty: (currentNode$| async)?.isEmpty()}">
+<div (activate)="emitContainerClick($event)" [ngClass]="{'flex-wrapper': canManage, 'empty': (currentNode$| async)?.isEmpty()}">
   <div *ngIf="canManage && (currentNode$| async)?.isEmpty()" class="dropzone-message">
     <i class="fal fa-cloud-upload"></i>
     <div tabindex="0" class="empty-title">No materials here!</div>
