@@ -21,11 +21,10 @@ export class CookieGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const cookie = this.cookieAgreement.getCookieAgreementVal();
-    if(cookie) {
-      return true;
-    } else {
+    if(!cookie) {
       this.toaster.error('Cookies not accepted', 'Please accept our cookies to continue registration');
       return false;
     }
+    return true;
   }
 }
