@@ -50,6 +50,7 @@ export enum BUILDER_ERRORS {
   CREATE_OBJECT,
   DUPLICATE_OBJECT_NAME,
   CREATE_OUTCOME,
+  INCOMPLETE_OUTCOME,
   FETCH_OBJECT,
   FETCH_OBJECT_MATERIALS,
   UPDATE_FILE_DESCRIPTION,
@@ -480,7 +481,7 @@ export class BuilderStore {
 
   private mutateOutcome(
     id: string,
-    params: { verb?: string; bloom?: string; text?: string }
+    params: { verb?: string | undefined; bloom?: string | undefined; text?: string }
   ) {
     const outcome = this.outcomes.get(id);
 
@@ -1024,7 +1025,13 @@ export class BuilderStore {
         this.outcomes.set(newOutcome.id, outcome);
         this.outcomeEvent.next(this.outcomes);
       })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.CREATE_OUTCOME));
+      .catch(e => {
+        if (e.status !== 406) {
+          this.handleServiceError(e, BUILDER_ERRORS.CREATE_OUTCOME)
+        } else {
+          this.handleServiceError(e, BUILDER_ERRORS.INCOMPLETE_OUTCOME)
+        }
+      });
   }
 
   /**
@@ -1053,7 +1060,13 @@ export class BuilderStore {
       .then(() => {
         this.serviceInteraction$.next(false);
       })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME));
+      .catch(e => {
+        if (e.status !== 406) {
+          this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME)
+        } else {
+          this.handleServiceError(e, BUILDER_ERRORS.INCOMPLETE_OUTCOME)
+        }
+      });
   }
 
   /**
