@@ -20,7 +20,7 @@ const collection_routes: Routes = [
         component: CollectionNcyteComponent
     },
     {
-        path: '502',
+        path: '502-Project',
         component: Collection502Component
     }
 ];
