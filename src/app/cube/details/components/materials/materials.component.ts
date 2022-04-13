@@ -53,6 +53,12 @@ export class MaterialsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.emit();
+    // If the learning object doesn't have files or folders scroll to the URLs
+    if(this.materials.files.length === 0 && this.materials.folderDescriptions === undefined) {
+      this.previousSelection = this.currentSelection;
+      this.currentSelection = 'URLs';
+      this.rotateCarousel();
+    }
   }
 
   ngOnChanges(): void {
