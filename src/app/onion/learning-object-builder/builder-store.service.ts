@@ -1026,11 +1026,7 @@ export class BuilderStore {
         this.outcomeEvent.next(this.outcomes);
       })
       .catch(e => {
-        if (e.status !== 406) {
-          this.handleServiceError(e, BUILDER_ERRORS.CREATE_OUTCOME)
-        } else {
-          this.handleServiceError(e, BUILDER_ERRORS.INCOMPLETE_OUTCOME)
-        }
+        this.handleServiceError(e, BUILDER_ERRORS.CREATE_OUTCOME);
       });
   }
 
@@ -1061,11 +1057,7 @@ export class BuilderStore {
         this.serviceInteraction$.next(false);
       })
       .catch(e => {
-        if (e.status !== 406) {
-          this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME)
-        } else {
-          this.handleServiceError(e, BUILDER_ERRORS.INCOMPLETE_OUTCOME)
-        }
+        this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME);
       });
   }
 
@@ -1086,6 +1078,8 @@ export class BuilderStore {
     // If Angular's HTTP API has trouble connecting to an external API the status code will be 0
     if (error.status === 0 || error.status === 500) {
       this.serviceError$.next(BUILDER_ERRORS.SERVICE_FAILURE);
+    } else if (error.status === 406) {
+      this.serviceError$.next(BUILDER_ERRORS.INCOMPLETE_OUTCOME);
     } else {
       this.serviceError$.next(builderError);
     }
