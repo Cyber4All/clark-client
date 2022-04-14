@@ -1,0 +1,36 @@
+.wrapper {
+    padding: 40px;
+    max-width: 250px;
+    align-content: center;
+
+    .inner {
+        position: absolute;
+        min-width: 250px;
+        min-height: 50px;
+
+        &.back {
+            background-color: #F7EC2F;
+            transform: skew(-20deg) translateY(-8px) translateX(-8px);
+        }
+
+        &.middle {
+            background-color: #6AC8C1;
+            transform: skew(-20deg) translateX(8px);
+        }
+        
+        &.top {
+            background-color: #672F90;
+            transform: skew(-20deg) translateX(-2px) translateY(8px);
+        }
+    }
+
+    h1 {
+        position: absolute;
+        margin: 18px 15px;
+        color: white;
+        font-weight: 500;
+        font-size: 26px;
+        width: 200px;
+    }
+      
+}
