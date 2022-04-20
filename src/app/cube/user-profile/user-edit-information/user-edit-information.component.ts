@@ -7,13 +7,11 @@ import {
   EventEmitter,
   Output,
   OnDestroy,
-  ElementRef,
-  ViewChild
 } from '@angular/core';
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Subscription, Observable, Subject, fromEvent } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { COPY } from './user-edit-information.copy';
 
 
@@ -80,7 +78,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
-      bio: this.editInfo.bio.trim()
+      bio: this.editInfo.bio.trim(),
+      username: this.user.username
     };
     try {
       await this.userService.editUserInfo(edits);
@@ -120,4 +119,5 @@ export interface UserEdit {
   email: string;
   organization: string;
   bio: string;
+  username: string;
 }
