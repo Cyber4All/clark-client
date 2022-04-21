@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  clark-client:
+    build: .
+    ports:
+      - '4200:80'
+    platform: 'linux/x86_64'
