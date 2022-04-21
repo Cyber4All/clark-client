@@ -11,7 +11,7 @@ import { EmailVerifiedComponent } from './email-verified/email-verified.componen
 
 const auth_routes: Routes = [
   {
-    path: '',
+    path: 'test',
     component: NewAuthComponent,
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -23,7 +23,7 @@ const auth_routes: Routes = [
       },
       { path: 'forgot-password', component: ForgotPasswordComponent, data: { title: 'Change Password'} },
       {
-        path: 'reset-password',
+        path: 'change-password',
         component: ChangePasswordComponent,
         canActivate: [NewCanResetPasswordGuard],
         data: { title: 'Reset-Password'}
