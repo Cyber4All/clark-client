@@ -9,7 +9,7 @@ import { UnauthorizedComponent } from './unauthorized.component';
 const clark_routes: Routes = [
   {
     path: 'auth',
-    loadChildren: () => import('app/auth/auth.module').then(m => m.AuthModule),
+    loadChildren: () => import('app/new-auth/new-auth.module').then(m => m.NewAuthModule),
     data: { hideNavbar: true }
   },
   {

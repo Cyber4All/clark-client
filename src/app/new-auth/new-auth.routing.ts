@@ -9,9 +9,9 @@ import { NewCanResetPasswordGuard } from './new-can-reset-password.guard';
 import { NewAuthComponent } from './new-auth.component';
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
 
-const auth_routes: Routes = [
+const authRoutes: Routes = [
   {
-    path: 'test',
+    path: '',
     component: NewAuthComponent,
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -36,7 +36,7 @@ const auth_routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(auth_routes)],
+  imports: [RouterModule.forChild(authRoutes)],
   exports: [RouterModule]
 })
-export class AuthRoutingModule {}
+export class NewAuthRoutingModule {}
