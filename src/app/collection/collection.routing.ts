@@ -24,7 +24,7 @@ const collection_routes: Routes = [
         path: '502-project',
         component: Collection502Component
     }
-]
+];
 
 @NgModule({
     imports: [RouterModule.forChild(collection_routes)],

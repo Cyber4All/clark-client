@@ -24,6 +24,7 @@ import { Stats502Component } from './pages/collection-502/components/stats/stats
 import { HeaderInfo502Component } from './pages/collection-502/components/header/header-info/header-info.component';
 import { CuratorCardComponent } from './pages/collection-502/components/curators/components/curator-card/curator-card.component';
 import { TitleComponent } from './pages/collection-502/components/title/title.component';
+import { FeaturedComponent } from './pages/collection-502/components/featured/featured.component';
 @NgModule({
   declarations: [
     CollectionIndexComponent,
@@ -41,7 +42,8 @@ import { TitleComponent } from './pages/collection-502/components/title/title.co
     Stats502Component,
     HeaderInfo502Component,
     CuratorCardComponent,
-    TitleComponent
+    TitleComponent,
+    FeaturedComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
