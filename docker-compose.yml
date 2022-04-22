@@ -1,7 +1,12 @@
 version: '3.8'
 services:
   clark-client:
-    build: .
+    build: ./
     ports:
       - '4200:80'
     platform: 'linux/x86_64'
+    volumes:
+      - type: bind
+        source: ./
+        target: /build
+    restart: on-failure
