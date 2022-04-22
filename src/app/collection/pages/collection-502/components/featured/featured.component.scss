@@ -1,0 +1,34 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding-top: 50px;
+
+    .content {
+        width: 250px;
+
+        .title {
+            display: block;
+            padding-bottom: 100px;
+        }
+
+    }
+
+    .placeholder {
+        color: #672F90;
+        width: 300px;
+        text-align: center;
+    }
+}
+.accent {
+    display: absolute;
+    float: right;
+    padding: 0px;
+
+    .image {
+        // position: absolute;
+        margin: 0;
+    }
+}
