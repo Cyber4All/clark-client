@@ -87,7 +87,6 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       this.close.emit(true);
       this.noteService.success('Success!', 'We\'ve updated your user information!');
     } catch (e) {
-      console.log(e);
       if (e.status === 400) {
         this.noteService.error('Error!', e.error);
       } else {
