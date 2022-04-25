@@ -1,0 +1,19 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<mat-form-field>
+    <input 
+        matInput 
+        type="{{hide ? 'password' : 'text'}}" 
+        placeholder="{{phold}}"
+    >
+    <mat-icon 
+        class="material-icons"
+        matSuffix
+        *ngIf="pw" 
+        (click)="hide = !hide"
+        >{{hide ? 'visibility_off' : 'visibility'}}
+    </mat-icon>
+    <mat-error 
+        *ngIf="error"
+        >{{errMessage}}
+    </mat-error>
+</mat-form-field>

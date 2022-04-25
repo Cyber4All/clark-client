@@ -8,6 +8,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NewAuthRoutingModule } from './new-auth.routing';
+import { InputFieldComponent } from './components/input-field/input-field.component';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -17,12 +19,14 @@ import { NewAuthRoutingModule } from './new-auth.routing';
     LoginComponent,
     ChangePasswordComponent,
     ForgotPasswordComponent,
-    EmailVerifiedComponent
+    EmailVerifiedComponent,
+    InputFieldComponent
   ],
   imports: [
     CommonModule,
     NewAuthRoutingModule,
-    RouterModule
+    RouterModule,
+    MatInputModule
   ]
 })
 export class NewAuthModule { }
