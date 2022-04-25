@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { UserService } from 'app/core/user.service';
 
 @Component({
   selector: 'clark-502-curator-card',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CuratorCardComponent implements OnInit {
 
-  constructor() { }
+  @Input() user: {
+    'name': string,
+    'email': string,
+    'profilePic': string
+  };
 
-  ngOnInit(): void {
+  constructor(
+    private userService: UserService
+  ) { }
+
+  async ngOnInit(): Promise<void> {
+    this.user.profilePic = await this.userService.getGravatarImage(
+      this.user.email,
+      200,
+    );
   }
 
 }
