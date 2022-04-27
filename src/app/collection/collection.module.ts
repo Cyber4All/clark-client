@@ -8,6 +8,7 @@ import { NiceChallengeModule } from './pages/nice-challenge/nice-challenge.modul
 import { CollectionsRoutingModule } from './collection.routing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
+import { Collection502Component } from './pages/collection-502/collection-502.component';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { IncludedModule } from './shared/included/included.module';
 import { SharedModule } from '../shared/shared.module';
@@ -16,6 +17,14 @@ import { AboutComponent } from './pages/collection-ncyte/components/about/about.
 import { CubeSharedModule } from '../cube/shared/cube-shared.module';
 import { CuratorsComponent } from './pages/collection-ncyte/components/curators/curators.component';
 import { StatsComponent } from './pages/collection-ncyte/components/stats/stats.component';
+import { Header502Component } from './pages/collection-502/components/header/header.component';
+import { About502Component } from './pages/collection-502/components/about/about.component';
+import { Curators502Component } from './pages/collection-502/components/curators/curators.component';
+import { Stats502Component } from './pages/collection-502/components/stats/stats.component';
+import { HeaderInfo502Component } from './pages/collection-502/components/header/header-info/header-info.component';
+import { CuratorCardComponent } from './pages/collection-502/components/curators/components/curator-card/curator-card.component';
+import { TitleComponent } from './pages/collection-502/components/title/title.component';
+import { FeaturedComponent } from './pages/collection-502/components/featured/featured.component';
 @NgModule({
   declarations: [
     CollectionIndexComponent,
@@ -26,6 +35,15 @@ import { StatsComponent } from './pages/collection-ncyte/components/stats/stats.
     AboutComponent,
     CuratorsComponent,
     StatsComponent,
+    Collection502Component,
+    Header502Component,
+    About502Component,
+    Curators502Component,
+    Stats502Component,
+    HeaderInfo502Component,
+    CuratorCardComponent,
+    TitleComponent,
+    FeaturedComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,

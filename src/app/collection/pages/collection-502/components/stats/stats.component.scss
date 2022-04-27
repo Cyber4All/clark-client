@@ -1,0 +1,79 @@
+@import '../../../../collection-globals.scss';
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding-top: 50px;
+
+    .content {
+        width: 250px;
+
+        .title {
+            display: block;
+            padding-bottom: 100px;
+        }
+
+    }
+
+    .stats {
+        min-height: 300px;
+    }
+    .section-stats {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+        margin: auto;
+        padding-top: 40px;
+        flex-wrap: wrap;
+        text-align: center;
+        flex-basis: 80vw;
+        max-width: 1500px;
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 15px;
+            
+            .stat__icon {
+                font-size: 30px;
+                padding: 10px;
+                width: 40px;
+                height: 40px;
+                margin-bottom: 20px;
+                justify-content: center;
+                background-color: #672F90;
+                border-radius: 1000px;
+                color: #F7EC2F;
+
+                &.review {
+                    background-color: #F7EC2F;
+                    color: #672F90;
+                }
+                &.download {
+                    background-color: #6AC8C1;
+                    color: $darker-grey;
+                }
+                &.authors {
+                    background-color: #672F90;
+                    color: white;
+                }
+            }
+        }
+        .num {
+            padding-top: 10px;
+            color: $dark-grey;
+            font-size: $largest;
+            font-weight: 600;
+        }
+        p {
+            color: $dark-grey;
+            font-size: 24px;
+            max-width: 80%;
+        }
+    }
+}
