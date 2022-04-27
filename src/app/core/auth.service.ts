@@ -355,14 +355,7 @@ export class AuthService {
    * @memberof AuthService
    */
   async logout(): Promise<void> {
-    this.http
-      .delete(environment.apiURL + '/users/' + this.user.username + '/tokens', {
-        withCredentials: true,
-        responseType: 'text'
-      }).subscribe(() => {
-        this.endSession();
-        window.location.reload();
-      });
+    this.endSession();
   }
 
   /**
