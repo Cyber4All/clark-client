@@ -5,7 +5,6 @@ import { NiceChallengeComponent } from './pages/nice-challenge/nice-challenge.co
 import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
 import { Collection502Component } from './pages/collection-502/collection-502.component';
 
-
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const collection_routes: Routes = [
     {
