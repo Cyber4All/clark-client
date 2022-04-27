@@ -7,13 +7,11 @@ import {
   EventEmitter,
   Output,
   OnDestroy,
-  ElementRef,
-  ViewChild
 } from '@angular/core';
 import { UserService } from '../../../core/user.service';
 import { AuthService } from '../../../core/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Subscription, Observable, Subject, fromEvent } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { COPY } from './user-edit-information.copy';
 
 
@@ -80,7 +78,8 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
-      bio: this.editInfo.bio.trim()
+      bio: this.editInfo.bio.trim(),
+      username: this.user.username
     };
     try {
       await this.userService.editUserInfo(edits);
@@ -88,7 +87,11 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       this.close.emit(true);
       this.noteService.success('Success!', 'We\'ve updated your user information!');
     } catch (e) {
-      this.noteService.error('Error!', 'We couldn\'t update your user information!');
+      if (e.status === 400) {
+        this.noteService.error('Error!', e.error);
+      } else {
+        this.noteService.error('Error!', 'We couldn\'t update your user information!');
+      }
     }
   }
 
@@ -120,4 +123,5 @@ export interface UserEdit {
   email: string;
   organization: string;
   bio: string;
+  username: string;
 }
