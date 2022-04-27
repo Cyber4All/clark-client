@@ -8,7 +8,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { CanResetPasswordGuard } from './can-reset-password.guard';
 import { AuthComponent } from './auth.component';
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
-
+import { CookieGuard } from 'app/core/cookie.guard';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const auth_routes: Routes = [
   {
@@ -17,7 +17,12 @@ const auth_routes: Routes = [
     children: [
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: 'login', component: LoginComponent, data: { title: 'Login' } },
-      { path: 'register', component: RegisterComponent, data: { title: 'Register' } },
+      {
+        path: 'register',
+        component: RegisterComponent,
+        data: { title: 'Register' },
+        canActivate: [CookieGuard],
+      },
       { path: 'forgot-password', component: ForgotPasswordComponent, data: { title: 'Change Password'} },
       {
         path: 'reset-password',
