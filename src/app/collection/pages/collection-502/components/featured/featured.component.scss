@@ -4,7 +4,6 @@
     justify-content: center;
     align-items: center;
     background-color: white;
-    padding-bottom: 50px;
     padding-top: 50px;
 
     .content {
@@ -14,18 +13,21 @@
             display: block;
             padding-bottom: 100px;
         }
+
     }
 
-    .cards {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        height: 100%;
-        justify-content: center;
-        
-        .card {
-            height: 325px;
-            width: 300px;
-        }
+    .placeholder {
+        color: #672F90;
+        width: 300px;
+        text-align: center;
     }
+}
+.accent {
+    display: absolute;
+    float: right;
+    padding: 0px;
+
+    // .image {
+    //     margin: 0;
+    // }
 }
