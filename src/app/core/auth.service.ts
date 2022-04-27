@@ -497,7 +497,6 @@ export class AuthService {
    * @memberof AuthService
    */
    async emailInUse(email: string) {
-     console.log('WE ARE HJERE')
     const val = await this.http
       .get(
         environment.apiURL + '/users/identifiers/active?email=' + email,
