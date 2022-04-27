@@ -13,7 +13,6 @@
     "lint": "npx ng lint clark",
     "e2e": "ng e2e",
     "storybook": "start-storybook"
-    
   },
   "dependencies": {
     "@angular/animations": "^13.1.2",

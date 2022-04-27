@@ -1,8 +1,13 @@
 @import 'vars.scss';
 
+.header-info {
+    background-color: white;
+    z-index: 0;
+    overflow: hidden;
+}
 .header-container{
     display: flex;
-    padding-top: 15px;
+    padding-top: 50px;
     justify-content: center;
     align-items: stretch;
 }
@@ -10,6 +15,7 @@
     width: 400px;
     align-items: center;
     padding: 42px 75px;
+    z-index: 2;
     &::after{
         background-color: #672F90; 
     }
@@ -27,6 +33,7 @@
     flex-direction: column;   
     align-items: center;
     padding: 30px 75px;
+    z-index: 2;
     &::after{
         background-color: #6AC8C1;
     }

@@ -1,11 +1,10 @@
 .wrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     background-color: white;
     padding-top: 50px;
-
     .content {
         width: 250px;
 
@@ -21,13 +20,29 @@
         width: 300px;
         text-align: center;
     }
+    .inner {
+        margin-bottom: 400px;
+    }
 }
-.accent {
-    display: absolute;
-    float: right;
-    padding: 0px;
+.container1 {
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 900px;
+    max-width: 900px;
+}
+.visual1 {
+    max-width: initial;
+    margin-right: -50px;
+}
 
-    // .image {
-    //     margin: 0;
-    // }
+@media screen and (max-width: 1199px){
+    .wrapper {
+        .inner {
+            margin-bottom: 10px;
+        }
+    }
+    .visual1 {
+        display: none;
+    }
 }

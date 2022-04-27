@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'clark-collection-index',
+  selector: 'clark-502-collection-index',
   templateUrl: './collection-502.component.html',
   styleUrls: ['./collection-502.component.scss']
 })
