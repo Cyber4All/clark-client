@@ -12,9 +12,4 @@ export class Collection502Component implements OnInit {
   ngOnInit(): void {
   }
 
-  navigate(event: any) {
-    // Navigation will happen here
-    console.log('ahhsha',event);
-  }
-
 }
