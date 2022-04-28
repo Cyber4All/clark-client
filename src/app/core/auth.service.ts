@@ -6,7 +6,8 @@ import {
 } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
-import { CookieService } from 'ngx-cookie';
+// import { CookieService } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 import { User, LearningObject } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
@@ -97,12 +98,20 @@ export class AuthService {
   private endSession() {
     this.user = undefined;
     this.openIdToken = null;
-    this.cookies.remove('presence');
+
+    const domain = environment.production ? 'clark.center' : 'localhost';
+    this.cookies.delete('presence', '/', domain, false);
+
     this.changeStatus(false);
     this.group.next(AUTH_GROUP.VISITOR);
+
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     document.cookie =
       'presence=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
+
+  private clearAuthHeaders() {
+    this.httpHeaders = this.httpHeaders.delete('Authorization');
   }
 
   /**
@@ -356,6 +365,7 @@ export class AuthService {
    */
   async logout(): Promise<void> {
     this.endSession();
+    this.clearAuthHeaders();
   }
 
   /**
