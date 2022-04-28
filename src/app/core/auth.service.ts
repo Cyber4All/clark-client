@@ -6,7 +6,6 @@ import {
 } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
-// import { CookieService } from 'ngx-cookie';
 import { CookieService } from 'ngx-cookie-service';
 import { User, LearningObject } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
@@ -100,8 +99,7 @@ export class AuthService {
     this.openIdToken = null;
 
     const domain = environment.production ? 'clark.center' : 'localhost';
-    this.cookies.delete('presence', '/', domain, false);
-
+    this.cookies.delete('presence', '/', domain, false, 'Lax');
     this.changeStatus(false);
     this.group.next(AUTH_GROUP.VISITOR);
 
