@@ -1,5 +1,5 @@
 @import 'vars.scss';
-
+@import '../../../../../collection-globals.scss';
 .header-info {
     background-color: white;
     z-index: 0;
@@ -17,7 +17,7 @@
     padding: 42px 75px;
     z-index: 2;
     &::after{
-        background-color: #672F90; 
+        background-color: $darkPurple_502; 
     }
     p {
         color: white;
@@ -35,7 +35,7 @@
     padding: 30px 75px;
     z-index: 2;
     &::after{
-        background-color: #6AC8C1;
+        background-color: $blue_502;
     }
     p{
         font-size: $larger;
@@ -57,7 +57,7 @@
     }
 }
 .survey{
-    background-color: #672F90;
+    background-color: $darkPurple_502;
     padding: 10px 50px;
     height: fit-content;
     h2{
@@ -82,13 +82,13 @@
         box-sizing: border-box;
         width: 100%;
         padding: 25px 30px;
-        background-color: #672F90;    
+        background-color: $darkPurple_502;    
     }
     .join {
         box-sizing: border-box;
         width: 100%;
         padding: 24px 30px 50px 30px;
-        background-color: #6AC8C1;
+        background-color: $blue_502;
     }
     .more{
         visibility: hidden;
