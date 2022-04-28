@@ -1,5 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-
 @Component({
   selector: 'clark-502-header',
   templateUrl: './header.component.html',
@@ -11,9 +10,4 @@ export class Header502Component implements OnInit {
 
   ngOnInit(): void {
   }
-
-  navigate(event: any) {
-    this.about.emit();
-  }
-
 }
