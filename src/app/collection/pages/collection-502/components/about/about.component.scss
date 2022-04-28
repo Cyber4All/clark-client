@@ -1,0 +1,29 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding-bottom: 50px;
+    padding-top: 50px;
+
+    .content {
+        width: 250px;
+
+        .title {
+            display: block;
+            padding-bottom: 100px;
+        }
+    }
+    .message {
+        padding-right: 50px;
+        padding-left: 50px;
+        max-width: 1200px;
+    }
+}
+
+@media screen and (max-width: 1199px){
+    .message {
+        max-width: 100%;
+    }
+}
