@@ -1,3 +1,4 @@
+@import '../../../../collection-globals.scss';
 .wrapper {
     display: flex;
     flex-direction: row;
@@ -16,7 +17,7 @@
     }
 
     .placeholder {
-        color: #672F90;
+        color: $darkPurple_502;
         width: 300px;
         text-align: center;
     }

@@ -1,5 +1,5 @@
 @import 'vars.scss';
-
+@import '../../../../collection-globals.scss';
 .container1 {
     overflow: hidden;
     max-width: 600px;
@@ -71,7 +71,7 @@
     z-index: 2;
 }
 .involved {
-    background-color: #672F90;
+    background-color: $darkPurple_502;
     padding: 10px 30px;
     height: fit-content;
     margin: 0 auto;
