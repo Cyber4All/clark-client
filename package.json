@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "4.29.10",
+  "version": "4.29.13",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -12,8 +12,7 @@
     "test:lighthouse:debug": "node --inspect node_modules/.bin/jest --watch -c ./lighthouse/jest.config.lighthouse.js --runInBand",
     "lint": "npx ng lint clark",
     "e2e": "ng e2e",
-    "storybook": "start-storybook",
-    "prepare": "husky install"
+    "storybook": "start-storybook"
   },
   "dependencies": {
     "@angular/animations": "^13.1.2",

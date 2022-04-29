@@ -36,6 +36,10 @@ export class FeaturedCollectionCardComponent implements OnInit {
     if (this.collection.abvName === 'nccp') {
       this.collection.name = 'NSA Funded Curriculum';
     }
+
+    if (this.collection.abvName === 'ncyte') {
+      this.collection.name = 'National Cybersecurity Training & Education Center';
+    }
   }
 
 }

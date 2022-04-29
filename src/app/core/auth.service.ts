@@ -95,12 +95,14 @@ export class AuthService {
    * @memberof AuthService
    */
   private endSession() {
-    this.user = null;
+    this.user = undefined;
     this.openIdToken = null;
     this.cookies.remove('presence');
     this.changeStatus(false);
     this.group.next(AUTH_GROUP.VISITOR);
     localStorage.removeItem(TOKEN_STORAGE_KEY);
+    document.cookie =
+      'presence=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   }
 
   /**
@@ -353,23 +355,7 @@ export class AuthService {
    * @memberof AuthService
    */
   async logout(): Promise<void> {
-    this.http
-      .delete(environment.apiURL + '/users/' + this.user.username + '/tokens', {
-        withCredentials: true,
-        responseType: 'text'
-      })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise().then(() => {
-        this.endSession();
-
-        // push reload to end of execution context
-        setTimeout(() => {
-          window.location.reload();
-        });
-      });
+    this.endSession();
   }
 
   /**
