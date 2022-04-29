@@ -1,3 +1,4 @@
+@import '_vars.scss';
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -6,6 +7,7 @@
     background-color: white;
     padding-bottom: 50px;
     padding-top: 50px;
+    margin: auto;
 
     .content {
         width: 250px;
@@ -16,14 +18,16 @@
         }
     }
     .message {
-        padding-right: 50px;
-        padding-left: 50px;
-        max-width: 1200px;
+        max-width: 100%;
+        font-size: $large;
     }
 }
 
 @media screen and (max-width: 1199px){
     .message {
-        max-width: 100%;
+        width: 90%;
+        font-size: $normal;
+        overflow-wrap: break-word;
+        text-align: center;
     }
 }
