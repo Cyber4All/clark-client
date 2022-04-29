@@ -1,19 +1,24 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <mat-form-field>
     <input 
-        matInput 
+        matInput
+        name="input"
         type="{{hide ? 'password' : 'text'}}" 
         placeholder="{{phold}}"
+        #input
+        [value]="value"
+        (input)="changed($event.target.value)"
+        (blur)="touched()"
+        [disabled]="isDisabled"
     >
     <mat-icon 
         class="material-icons"
         matSuffix
-        *ngIf="pw" 
+        *ngIf="pwrd" 
         (click)="hide = !hide"
         >{{hide ? 'visibility_off' : 'visibility'}}
     </mat-icon>
-    <mat-error 
-        *ngIf="error"
-        >{{errMessage}}
+    <mat-error *ngIf="error">
+        {{errMessage}}
     </mat-error>
 </mat-form-field>

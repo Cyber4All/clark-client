@@ -10,7 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NewAuthRoutingModule } from './new-auth.routing';
 import { InputFieldComponent } from './components/input-field/input-field.component';
 import { MatInputModule } from '@angular/material/input';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import { MatInputModule } from '@angular/material/input';
     CommonModule,
     NewAuthRoutingModule,
     RouterModule,
-    MatInputModule
+    MatInputModule,
+    FormsModule
   ]
 })
 export class NewAuthModule { }

@@ -1,9 +1,19 @@
 <p>login works!</p>
-<clark-input-field 
-    phold="name"
-></clark-input-field>
-<br>
-<clark-input-field 
-    phold="password"
-    [pw]="true"
-></clark-input-field>
+<form #f="ngForm" (ngSubmit)="submit(f)">
+    <clark-input-field
+        ngModel
+        name="userName"
+        #userName="ngModel"
+        phold="name"
+    ></clark-input-field>
+    <br>
+    <clark-input-field
+        ngModel
+        name="password"
+        #password="ngModel"
+        phold="password"
+        [pwrd]="true"
+    ></clark-input-field>
+    <br>
+    <button>Submit</button>
+</form>
