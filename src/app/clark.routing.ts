@@ -30,7 +30,11 @@ const clark_routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(clark_routes)],
+  imports: [RouterModule.forRoot(clark_routes, {
+    scrollPositionRestoration: 'enabled', // or 'top'
+    anchorScrolling: 'enabled',
+    scrollOffset: [0, 64], // [x, y] - adjust scroll offset
+  })],
   exports: [RouterModule]
 })
 export class ClarkRoutingModule { }

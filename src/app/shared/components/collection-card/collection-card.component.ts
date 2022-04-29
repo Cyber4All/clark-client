@@ -27,7 +27,8 @@ export class CollectionCardComponent implements OnInit {
     }
     if (
       this.collection.abvName === 'ncyte' ||
-      this.collection.abvName === 'nice'
+      this.collection.abvName === 'nice' ||
+      this.collection.abvName === '502_project'
     ) {
       this.link = '/collections/' + this.collection.abvName;
     } else {

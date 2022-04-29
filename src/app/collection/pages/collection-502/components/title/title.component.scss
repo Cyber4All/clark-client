@@ -1,3 +1,4 @@
+@import '../../../../collection-globals.scss';
 .wrapper {
     max-width: 250px;
     text-align: center;
@@ -13,12 +14,12 @@
         }
 
         &.middle {
-            background-color: #6AC8C1;
+            background-color: $blue_502;
             transform: skew(-20deg) translateX(8px);
         }
         
         &.top {
-            background-color: #672F90;
+            background-color: $darkPurple_502;
             transform: skew(-20deg) translateX(-2px) translateY(8px);
         }
     }

@@ -1,5 +1,4 @@
 @import '../../../../collection-globals.scss';
-
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -46,20 +45,20 @@
                 height: 40px;
                 margin-bottom: 20px;
                 justify-content: center;
-                background-color: #672F90;
+                background-color: $darkPurple_502;
                 border-radius: 1000px;
                 color: #F7EC2F;
 
                 &.review {
                     background-color: #F7EC2F;
-                    color: #672F90;
+                    color: $darkPurple_502;
                 }
                 &.download {
-                    background-color: #6AC8C1;
+                    background-color: $blue_502;
                     color: $darker-grey;
                 }
                 &.authors {
-                    background-color: #672F90;
+                    background-color: $darkPurple_502;
                     color: white;
                 }
             }
