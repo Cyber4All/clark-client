@@ -4,15 +4,17 @@
         ngModel
         name="userName"
         #userName="ngModel"
-        phold="name"
+        phold="User Name or Email"
+        fControl="email" 
     ></clark-input-field>
     <br>
     <clark-input-field
         ngModel
         name="password"
         #password="ngModel"
-        phold="password"
-        [pwrd]="true"
+        pwrd="true"
+        phold="Password"
+        fControl="password" 
     ></clark-input-field>
     <br>
     <button>Submit</button>

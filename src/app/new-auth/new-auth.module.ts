@@ -10,7 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NewAuthRoutingModule } from './new-auth.routing';
 import { InputFieldComponent } from './components/input-field/input-field.component';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     NewAuthRoutingModule,
     RouterModule,
     MatInputModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class NewAuthModule { }

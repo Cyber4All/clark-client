@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { AuthValidationService } from 'app/core/auth-validation.service';
 
 @Component({
   selector: 'clark-input-field',
@@ -12,31 +13,31 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
         () => InputFieldComponent
       ),
       multi: true
-    }
+    },
+    AuthValidationService
   ]
 })
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
-  @Input() phold: String = '';
   @Input() pwrd: Boolean = false;
-  @Input() error: Boolean = false;
-  @Input() errMessage: String = '';
+  @Input() phold: String = '';
+  @Input() fControl: String = 'text';
   @Output() dataEvent: EventEmitter<string> = new EventEmitter<string>();
-  hide: Boolean;
 
+  control: FormControl;
+  hide: Boolean = this.pwrd;
+
+  //required for ControlValueAccessor
   public value: string;
-
   public changed: ( value: string ) => void;
-
   public touched: () => void;
 
-  public isDisabled: Boolean;
-
-  constructor() { }
+  constructor(public authValidation: AuthValidationService) { }
 
   ngOnInit(): void {
-    this.hide = this.pwrd;
-    }
+    this.control = this.authValidation.getFormControl(this.fControl);
+  }
 
+  //implementation for ControlValueAccessor
   writeValue(value: string): void {
     this.value = value;
   }
@@ -45,9 +46,6 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   }
   registerOnTouched(fn: any): void {
     this.touched = fn;
-  }
-  setDisabledState?(isDisabled: boolean): void {
-    this.isDisabled = isDisabled;
   }
 
   emitVal(val: string){

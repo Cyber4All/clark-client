@@ -1,12 +1,25 @@
+@use '@angular/material' as mat;
 @import "vars.scss";
 @import '~@angular/material/theming';
-@include mat-core();
+@include mat.core();
 
-$input-primary: mat-palette($mat-blue, 700);
-$input-accent: mat-palette($mat-blue, 100);
-$input-warn: mat-palette($mat-red, 700);
-$input-theme:   mat-light-theme($input-primary, $input-accent ,$input-warn);
+$clark-map: (
+  100: #BADCFF,
+  500: #1190ff,
+  700: #1C70DD,
+  contrast: ()
+);
 
-@include angular-material-theme($input-theme);
-@include mat-form-field-theme($input-theme);
-@include mat-input-theme($input-theme);
+$clark-primary: mat.define-palette($clark-map, 700);
+$clark-accent: mat.define-palette($clark-map, 700);
+$clark-warn: mat.define-palette(mat.$red-palette, 700);
+
+$clark-theme: mat.define-light-theme((
+ color: (
+   primary: $clark-primary,
+   accent: $clark-accent,
+   warn: $clark-warn,
+ )
+));
+
+@include mat.all-component-themes($clark-theme);
