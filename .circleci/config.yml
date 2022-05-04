@@ -1,13 +1,13 @@
 version: 2.1
 
 orbs:
-  cyber4all: cyber4all/orb@1.0.2
+  cyber4all: cyber4all/orb@1.0.3
 
 workflows:
   integration-testing:
     jobs:
       - cyber4all/lint-app:
-          docker-image: cimg/node
+          docker-image: cimg/node:18.0.0
           isNode: true
 
       - cyber4all/deploy-s3:
@@ -17,7 +17,7 @@ workflows:
               ignore: releases
 
       - cyber4all/test-app:
-          docker-image: cimg/node
+          docker-image: cimg/node:18.0.0
           node-test: test:lighthouse
           isNode: true
 
