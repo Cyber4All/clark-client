@@ -10,11 +10,6 @@ export class AuthValidationService {
     Validators.required,
     Validators.email
   ]);
-  confirmEmail: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-    //validator for pattern matching the email field.
-  ]);
   userName: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(2),
@@ -30,14 +25,20 @@ export class AuthValidationService {
   ]);
   constructor() { }
 
+  /**
+   * returns a form control object for a specific type
+   * of input field
+   *
+   * @param type the type of form control required i.e.
+   * userName, password, email, or text(defualt no validation)
+   * @returns Form control object for specific type of input field
+   */
   getFormControl(type: String) {
     switch(type){
       case 'userName':
         return this.userName;
       case 'email':
         return this.email;
-      case 'confirmEmail':
-        return this.confirmEmail;
       case 'password':
         return this.password;
       case 'text':
@@ -45,6 +46,13 @@ export class AuthValidationService {
     }
   }
 
+  /**
+   * takes a form control object, and returns an error message for
+   * the specific error that has occured
+   *
+   * @param control Form control from this specific input field
+   * @returns error message
+   */
   getErrorMessage(control: FormControl) {
     if(control.hasError('required')) {//field not filled out
       return 'This field is required';
@@ -62,6 +70,15 @@ export class AuthValidationService {
     }
   }
 
+  /**
+   * takes a string of the password value and returns
+   * an error message related to the specific character
+   * that is missing from the password
+   *
+   * @param value value of the password input field
+   * @returns error message for type of character missing from
+   * the password
+   */
   private getPwordRegexErrMsg(value: string){
     if (value.includes(' ')){
       return 'Password cannot contain spaces';

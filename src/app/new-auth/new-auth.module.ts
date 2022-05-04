@@ -11,6 +11,7 @@ import { NewAuthRoutingModule } from './new-auth.routing';
 import { InputFieldComponent } from './components/input-field/input-field.component';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ChangePasswordComponent,
     ForgotPasswordComponent,
     EmailVerifiedComponent,
-    InputFieldComponent
+    InputFieldComponent,
+    ErrorBannerComponent
   ],
   imports: [
     CommonModule,
