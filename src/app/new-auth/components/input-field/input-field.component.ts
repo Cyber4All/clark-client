@@ -13,13 +13,13 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
         () => InputFieldComponent
       ),
       multi: true
-    },
-    AuthValidationService
+    }
   ]
 })
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
   @Input() pwrd: Boolean = false;
   @Input() phold: String = '';
+  //can have values:
   @Input() fControl: String = 'text';
   @Output() dataEvent: EventEmitter<string> = new EventEmitter<string>();
 
