@@ -9,7 +9,7 @@ import { NewCanResetPasswordGuard } from './new-can-reset-password.guard';
 import { NewAuthComponent } from './new-auth.component';
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
 
-const authRoutes: Routes = [
+const newAuthRoutes: Routes = [
   {
     path: '',
     component: NewAuthComponent,
