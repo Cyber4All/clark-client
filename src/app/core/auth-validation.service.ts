@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthValidationService {
+
+  public isError = new BehaviorSubject<boolean>(false);
+  public inputErrorMessage = new BehaviorSubject<string>('');
 
   email: FormControl = new FormControl('', [
     Validators.required,
@@ -33,7 +37,7 @@ export class AuthValidationService {
    * userName, password, email, or text(defualt no validation)
    * @returns Form control object for specific type of input field
    */
-  getFormControl(type: String) {
+  public getInputFormControl(type: String) {
     switch(type){
       case 'userName':
         return this.userName;
@@ -47,13 +51,24 @@ export class AuthValidationService {
   }
 
   /**
-   * takes a form control object, and returns an error message for
+   * this sets inputErrorMessage with an observable then
+   * returns an observable with the string
+   *
+   * @param control form control for the input field
+   */
+  public getInputErrorMessage(control: FormControl): Observable<string> {
+    this.inputErrorMessage = new BehaviorSubject<string>(this.setInputErrorMessage(control));
+    return this.inputErrorMessage;
+  }
+
+  /**
+   * takes a form control object, and returns a (string) error message for
    * the specific error that has occured
    *
    * @param control Form control from this specific input field
    * @returns error message
    */
-  getErrorMessage(control: FormControl) {
+  private setInputErrorMessage(control: FormControl) {
     if(control.hasError('required')) {//field not filled out
       return 'This field is required';
     } else if (control.hasError('email')) {//email error
@@ -91,5 +106,27 @@ export class AuthValidationService {
     } else if (!(value.match('^(?=.*[!@#$%^&()+=]).*$'))) {
       return 'Password requires a special character';
     }
+  }
+
+  /**
+   * toggles the error banner
+   *
+   * @param duration length of time to show the banner
+   *
+   */
+   public showError(duration: number = 4000) {
+    this.isError.next(!this.isError.value);
+    setTimeout(() => {
+    this.isError.next(!this.isError.value);
+    }, duration);
+  }
+
+  /**
+   * subscribe to this function to get the error state
+   *
+   * @returns error state
+   */
+  public getErrorState(): Observable<Boolean> {
+    return this.isError;
   }
 }

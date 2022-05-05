@@ -19,12 +19,12 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
   @Input() pwrd: Boolean = false;
   @Input() phold: String = '';
-  //can have values:
-  @Input() fControl: String = 'text';
+  @Input() fControlType: String = 'text';//can have values: userName, email, password, text
   @Output() dataEvent: EventEmitter<string> = new EventEmitter<string>();
 
   control: FormControl;
-  hide: Boolean = this.pwrd;
+  hide: Boolean;
+  errorMsg = '';
 
   //required for ControlValueAccessor
   public value: string;
@@ -33,8 +33,10 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 
   constructor(public authValidation: AuthValidationService) { }
 
-  ngOnInit(): void {
-    this.control = this.authValidation.getFormControl(this.fControl);
+  async ngOnInit(): Promise<void> {
+    this.control = this.authValidation.getInputFormControl(this.fControlType);
+    this.hide = this.pwrd;
+    this.authValidation.getInputErrorMessage(this.control).subscribe(x => this.errorMsg = x);
   }
 
   //implementation for ControlValueAccessor
@@ -49,7 +51,6 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   }
 
   emitVal(val: string){
-    console.log(val);
     this.dataEvent.emit(val);
   }
 }

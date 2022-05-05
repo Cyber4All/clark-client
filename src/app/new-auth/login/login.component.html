@@ -1,12 +1,12 @@
-<p>login works!</p>
 <clark-error-banner></clark-error-banner>
+<p>login works!</p>
 <form #f="ngForm" (ngSubmit)="submit(f)">
     <clark-input-field
         ngModel
         name="userName"
         #userName="ngModel"
         phold="User Name or Email"
-        fControl="userName" 
+        fControlType="userName" 
     ></clark-input-field>
     <br>
     <clark-input-field
@@ -15,7 +15,7 @@
         #password="ngModel"
         pwrd="true"
         phold="Password"
-        fControl="password" 
+        fControlType="password" 
     ></clark-input-field>
     <br>
     <button>Submit</button>
