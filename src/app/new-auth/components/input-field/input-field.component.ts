@@ -24,7 +24,6 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 
   control: FormControl;
   hide: Boolean;
-  errorMsg = '';
 
   //required for ControlValueAccessor
   public value: string;
@@ -36,7 +35,6 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   async ngOnInit(): Promise<void> {
     this.control = this.authValidation.getInputFormControl(this.fControlType);
     this.hide = this.pwrd;
-    this.authValidation.getInputErrorMessage(this.control).subscribe(x => this.errorMsg = x);
   }
 
   //implementation for ControlValueAccessor

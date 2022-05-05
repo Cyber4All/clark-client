@@ -17,7 +17,7 @@
         >{{hide ? 'visibility_off' : 'visibility'}}
     </mat-icon>
     <mat-error>
-        {{errorMsg}}
+        {{authValidation.getInputErrorMessage(control)}}
     </mat-error>
 </mat-form-field>
 

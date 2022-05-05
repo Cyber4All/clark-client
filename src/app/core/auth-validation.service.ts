@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,6 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 export class AuthValidationService {
 
   public isError = new BehaviorSubject<boolean>(false);
-  public inputErrorMessage = new BehaviorSubject<string>('');
 
   email: FormControl = new FormControl('', [
     Validators.required,
@@ -51,37 +50,26 @@ export class AuthValidationService {
   }
 
   /**
-   * this sets inputErrorMessage with an observable then
-   * returns an observable with the string
-   *
-   * @param control form control for the input field
-   */
-  public getInputErrorMessage(control: FormControl): Observable<string> {
-    this.inputErrorMessage = new BehaviorSubject<string>(this.setInputErrorMessage(control));
-    return this.inputErrorMessage;
-  }
-
-  /**
    * takes a form control object, and returns a (string) error message for
    * the specific error that has occured
    *
    * @param control Form control from this specific input field
    * @returns error message
    */
-  private setInputErrorMessage(control: FormControl) {
+  public getInputErrorMessage(control: FormControl) {
     if(control.hasError('required')) {//field not filled out
-      return 'This field is required';
+      return('This field is required');
     } else if (control.hasError('email')) {//email error
-      return 'Invalid Email Address';
+      return('Invalid Email Address');
     } else if (control.hasError('minlength')) {//minimum length error
       if(control === this.password){
-        return 'Minimum Length 8 characters';//min length for password
+        return('Minimum Length 8 characters');//min length for password
       }
-      return 'Minimum Length 2 characters';//min length for username
+      return('Minimum Length 2 characters');//min length for username
     } else if(control.hasError('maxLength')) {//max length for username
-      return 'Maximum Length 30 characters';
+      return('Maximum Length 30 characters');
     } else if(control.hasError('pattern')) {//pattern error for password
-      return this.getPwordRegexErrMsg(String(control.value));
+      return(this.getPwordRegexErrMsg(control.value));
     }
   }
 
