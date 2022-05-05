@@ -8,13 +8,13 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
 export class ErrorBannerComponent implements OnInit{
 
   isError: Boolean = true;
-  errorMessage: String = 'You have 5 login attempts per hour.';
+  @Input() errorMessage: String = 'You have 5 login attempts per hour.';
 
   constructor(public authValidation: AuthValidationService) {
   }
   ngOnInit(): void {
     this.authValidation.getErrorState().subscribe(err => this.isError = err);
-    // this.authValidation.getErrorMessage().subscribe(msg => this.errorMessage = msg);
+    // this.authValidation.getErrorBannerMessage().subscribe(msg => this.errorMessage = msg);
   }
 
 
