@@ -14,7 +14,6 @@ export class ErrorBannerComponent implements OnInit{
   }
   ngOnInit(): void {
     this.authValidation.getErrorState().subscribe(err => this.isError = err);
-    // this.authValidation.getErrorBannerMessage().subscribe(msg => this.errorMessage = msg);
   }
 
 

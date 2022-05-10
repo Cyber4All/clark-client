@@ -1,22 +1,27 @@
-<clark-error-banner></clark-error-banner>
-<p>login works!</p>
-<form #f="ngForm" (ngSubmit)="submit(f)">
-    <clark-input-field
-        ngModel
-        name="userName"
-        #userName="ngModel"
-        phold="User Name or Email"
-        fControlType="userName" 
-    ></clark-input-field>
-    <br>
-    <clark-input-field
-        ngModel
-        name="password"
-        #password="ngModel"
-        pwrd="true"
-        phold="Password"
-        fControlType="password" 
-    ></clark-input-field>
-    <br>
-    <button>Submit</button>
-</form>
+<div class="wrapper">
+    <div class="content-box" [ngClass]="{'failed': loginFailure}">
+        <div class="top">
+            <clark-error-banner class="errBanner"></clark-error-banner>
+            <form #f="ngForm" (ngSubmit)="submit(f)">
+                <clark-input-field
+                    ngModel
+                    name="userName"
+                    #userName="ngModel"
+                    phold="User Name or Email"
+                    fControlType="userName" 
+                ></clark-input-field>
+                <br>
+                <clark-input-field
+                    ngModel
+                    name="password"
+                    #password="ngModel"
+                    pwrd="true"
+                    phold="Password"
+                    fControlType="password" 
+                ></clark-input-field>
+                <br>
+                <button>Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

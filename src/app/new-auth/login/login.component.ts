@@ -9,6 +9,7 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
 })
 export class LoginComponent implements OnInit{
 
+  loginFailure = false;
   constructor(public authValidation: AuthValidationService) { }
 
   ngOnInit(): void {
@@ -20,8 +21,13 @@ export class LoginComponent implements OnInit{
  * @param f form data
  */
   public submit(f: NgForm): void {
-    console.log(f.value);//just for testing
+    //all of this is for testing
+    console.log(f.value);
+    this.loginFailure = true;
     this.authValidation.showError();
+    setTimeout(() => {
+    this.loginFailure = false;
+    }, 3900);
   }
 
 }

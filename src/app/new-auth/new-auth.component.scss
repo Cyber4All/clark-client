@@ -1,0 +1,62 @@
+@import "vars.scss";
+.authentication-component {
+    :host {
+      font-family: 'Source Sans Pro', sans-serif;
+      font-size: $normal;
+    }
+
+    ::ng-deep .wrapper {
+        display: block;
+        z-index: 2;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        overflow-y: auto;
+        
+
+        .content-box {
+            background: white;
+            border-radius: 2px;
+            box-sizing: border-box;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0px 0px 12px 1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+
+            .top {
+                padding-top: 50px;
+              }
+
+            .errBanner {
+                background: $error-red;
+                color: white;
+                text-align: center;
+                position: absolute;
+                transition: all .2s ease;
+                opacity: 0;
+                left: 0;
+                right: 0;
+                top: -5px;
+                padding: 8px;
+                border-radius: 1px;
+            }
+
+            &.failed {
+                animation: validate-failure 0.4s linear;
+                border-top-color: $error-red;
+            
+                .errBanner {
+                  top: 0px;
+                  opacity: 1;
+                }
+            }
+        }
+    }
+}

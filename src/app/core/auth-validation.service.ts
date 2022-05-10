@@ -103,14 +103,14 @@ export class AuthValidationService {
    *
    */
    public showError(duration: number = 4000) {
-    this.isError.next(!this.isError.value);
+    this.isError.next(true);
     setTimeout(() => {
-    this.isError.next(!this.isError.value);
+    this.isError.next(false);
     }, duration);
   }
 
   /**
-   * subscribe to this function to get the error state
+   * subscribe to this function to get the error banner state
    *
    * @returns error state
    */
