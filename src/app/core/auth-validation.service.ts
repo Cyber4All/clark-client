@@ -35,7 +35,7 @@ export class AuthValidationService {
    * userName, password, email, or text(defualt no validation)
    * @returns Form control object for specific type of input field
    */
-  public getInputFormControl(type: String) {
+  public getInputFormControl(type: 'email' | 'userName' | 'password' | 'text') {
     switch(type){
       case 'userName':
         return this.userName;
@@ -86,16 +86,16 @@ export class AuthValidationService {
       return 'Password cannot contain spaces';
     }
     if (!(value.match('^(?=.*[0-9]).*$'))) {
-      return 'Password requires a number';
+      return 'Number required';
     }
     if (!(value.match('^(?=.*[a-z]).*$'))) {
-      return 'Password requires a lowercase letter';
+      return 'Lowercase letter required';
     }
     if (!(value.match('^(?=.*[A-Z]).*$'))) {
       return 'Uppercase letter required';
     }
     if (!(value.match('^(?=.*[!@#$%^&()+=]).*$'))) {
-      return 'Password requires a special character';
+      return 'Special character required';
     }
   }
 
