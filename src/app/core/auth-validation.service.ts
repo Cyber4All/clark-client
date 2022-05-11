@@ -24,8 +24,7 @@ export class AuthValidationService {
     Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()+=])(?=\\S+$).*$'),
     Validators.required
   ]);
-  text: FormControl = new FormControl('', [
-  ]);
+  text: FormControl = new FormControl('');
   constructor() { }
 
   /**
