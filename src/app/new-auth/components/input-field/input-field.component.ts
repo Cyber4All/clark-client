@@ -1,7 +1,18 @@
-import { Component, Input, OnInit, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Component, Input, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
-
+/**
+ * input field for authentication module using
+ * angular material input field and designed
+ * to be used with ngModel
+ *
+ * @param pwrd: Boolean - make true if the field is for a
+ * password. default 'false'
+ * @param phold: String - placeholder text, which becomes label
+ * @param fControlType: 'email' | 'username' | 'password' | 'text' -
+ * describes the type of validation needed for the field. default 'text'
+ * no validation
+ */
 @Component({
   selector: 'clark-input-field',
   templateUrl: './input-field.component.html',
@@ -19,8 +30,7 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
   @Input() pwrd: Boolean = false;
   @Input() phold: String = '';
-  @Input() fControlType: String = 'text';//can have values: userName, email, password, text
-  @Output() dataEvent: EventEmitter<string> = new EventEmitter<string>();
+  @Input() fControlType: 'email' | 'userName' | 'password' | 'text' = 'text';
 
   control: FormControl;
   hide: Boolean;
@@ -46,9 +56,5 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   }
   registerOnTouched(fn: any): void {
     this.touched = fn;
-  }
-
-  emitVal(val: string){
-    this.dataEvent.emit(val);
   }
 }
