@@ -84,13 +84,17 @@ export class AuthValidationService {
   private getPwordRegexErrMsg(value: string){
     if (value.includes(' ')){
       return 'Password cannot contain spaces';
-    } else if (!(value.match('^(?=.*[0-9]).*$'))) {
+    }
+    if (!(value.match('^(?=.*[0-9]).*$'))) {
       return 'Password requires a number';
-    } else if (!(value.match('^(?=.*[a-z]).*$'))) {
+    }
+    if (!(value.match('^(?=.*[a-z]).*$'))) {
       return 'Password requires a lowercase letter';
-    } else if (!(value.match('^(?=.*[A-Z]).*$'))) {
+    }
+    if (!(value.match('^(?=.*[A-Z]).*$'))) {
       return 'Uppercase letter required';
-    } else if (!(value.match('^(?=.*[!@#$%^&()+=]).*$'))) {
+    }
+    if (!(value.match('^(?=.*[!@#$%^&()+=]).*$'))) {
       return 'Password requires a special character';
     }
   }
