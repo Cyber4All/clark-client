@@ -15,19 +15,11 @@ export class LoginComponent implements OnInit{
   ngOnInit(): void {
   }
 /**
- * TO-DO: implement this method, current implementation is
- * for testing only
+ * TO-DO: implement this method
  *
  * @param f form data
  */
   public submit(f: NgForm): void {
-    //all of this is for testing
-    console.log(f.value);
-    this.loginFailure = true;
-    this.authValidation.showError();
-    setTimeout(() => {
-    this.loginFailure = false;
-    }, 3900);
   }
 
 }

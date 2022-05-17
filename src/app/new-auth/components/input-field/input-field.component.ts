@@ -6,7 +6,7 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
  * angular material input field and designed
  * to be used with ngModel
  *
- * @param pwrd: Boolean - make true if the field is for a
+ * @param isPwrd: Boolean - make true if the field is for a
  * password. default 'false'
  * @param phold: String - placeholder text, which becomes label
  * @param fControlType: 'email' | 'username' | 'password' | 'text' -
@@ -28,9 +28,9 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
   ]
 })
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
-  @Input() pwrd: Boolean = false;
+  @Input() isPwrd: Boolean = false;
   @Input() phold: String = '';
-  @Input() fControlType: 'email' | 'userName' | 'password' | 'text' = 'text';
+  @Input() fControlType: 'email' | 'username' | 'password' | 'text' = 'text';
 
   control: FormControl;
   hide: Boolean;
@@ -44,7 +44,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 
   async ngOnInit(): Promise<void> {
     this.control = this.authValidation.getInputFormControl(this.fControlType);
-    this.hide = this.pwrd;
+    this.hide = this.isPwrd;
   }
 
   //implementation for ControlValueAccessor

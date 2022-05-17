@@ -13,7 +13,7 @@ export class AuthValidationService {
     Validators.required,
     Validators.email
   ]);
-  userName: FormControl = new FormControl('', [
+  username: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(2),
     Validators.maxLength(30)
@@ -35,10 +35,10 @@ export class AuthValidationService {
    * userName, password, email, or text(defualt no validation)
    * @returns Form control object for specific type of input field
    */
-  public getInputFormControl(type: 'email' | 'userName' | 'password' | 'text') {
+  public getInputFormControl(type: 'email' | 'username' | 'password' | 'text') {
     switch(type){
-      case 'userName':
-        return this.userName;
+      case 'username':
+        return this.username;
       case 'email':
         return this.email;
       case 'password':
