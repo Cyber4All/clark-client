@@ -14,7 +14,7 @@
         matSuffix
         *ngIf="isPwrd" 
         (click)="hide = !hide"
-        >{{hide ? 'visibility_off' : 'visibility'}}
+        >{{  hide ? 'visibility_off' : 'visibility'  }}
     </mat-icon>
     <mat-error>
         {{ authValidation.getInputErrorMessage(control) }}
