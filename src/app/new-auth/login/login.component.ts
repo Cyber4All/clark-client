@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit{
   loginFailure = false;
   constructor(public authValidation: AuthValidationService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { }
   }
 /**
  * TO-DO: implement this method
