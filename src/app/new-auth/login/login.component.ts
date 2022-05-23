@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit{
  *
  * @param f form data
  */
-  public submit(f: NgForm): void {
+  public submit(form: NgForm): void {
   }
 
 }
