@@ -108,7 +108,7 @@ export class AuthValidationService {
    public showError(duration: number = 4000) {
     this.isError.next(true);
     setTimeout(() => {
-    this.isError.next(false);
+      this.isError.next(false);
     }, duration);
   }
 
