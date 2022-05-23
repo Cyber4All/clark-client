@@ -13,7 +13,6 @@ export class LoginComponent implements OnInit{
   constructor(public authValidation: AuthValidationService) { }
 
   ngOnInit(): void { }
-  }
 /**
  * TO-DO: implement this method
  *
