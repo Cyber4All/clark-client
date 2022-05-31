@@ -17,7 +17,7 @@ workflows:
               ignore: releases
 
       - cyber4all/test-app:
-          docker-image: cimg/node:18.0.0
+          docker-image: cimg/node:lts
           node-test: test:unit
           isNode: true
 
