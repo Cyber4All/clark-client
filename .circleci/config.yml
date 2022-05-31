@@ -7,7 +7,7 @@ workflows:
   integration-testing:
     jobs:
       - cyber4all/lint-app:
-          docker-image: cimg/node:18.0.0
+          docker-image: cimg/node:lts
           isNode: true
 
       - cyber4all/deploy-s3:
