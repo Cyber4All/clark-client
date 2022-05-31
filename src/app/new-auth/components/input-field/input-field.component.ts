@@ -5,13 +5,6 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
  * input field for authentication module using
  * angular material input field and designed
  * to be used with ngModel
- *
- * @param isPwrd: Boolean - make true if the field is for a
- * password. default 'false'
- * @param phold: String - placeholder text, which becomes label
- * @param fControlType: 'email' | 'username' | 'password' | 'text' -
- * describes the type of validation needed for the field. default 'text'
- * no validation
  */
 @Component({
   selector: 'clark-input-field',
@@ -28,8 +21,13 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
   ]
 })
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
+// true if the field is for a password.
   @Input() isPwrd: Boolean = false;
+// placeholder text, which becomes label
   @Input() phold: String = '';
+// fControlType: 'email' | 'username' | 'password' | 'text' -
+// describes the type of validation needed for the field. default 'text'
+// no validation
   @Input() fControlType: 'email' | 'username' | 'password' | 'text' = 'text';
 
   control: FormControl;
