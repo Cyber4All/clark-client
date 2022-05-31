@@ -9,6 +9,7 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
 })
 export class LoginComponent implements OnInit{
 
+  loginFailure = false;
   constructor(public authValidation: AuthValidationService) { }
 
   ngOnInit(): void { }
