@@ -484,6 +484,31 @@ export class AuthService {
   }
 
   /**
+   * Determines whether or not the specified email is currently in use
+   *
+   * @param {string} username
+   * @returns
+   * @memberof AuthService
+   */
+   async emailInUse(email: string) {
+    const val = await this.http
+      .get(
+        environment.apiURL + '/users/identifiers/active?email=' + email,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+    this.inUse = val;
+    return this.inUse;
+  }
+
+  /**
    * Udates a user's information with the specified data
    *
    * @param {{
