@@ -32,10 +32,10 @@ export class AuthValidationService {
    * of input field
    *
    * @param type the type of form control required i.e.
-   * userName, password, email, or text(defualt no validation)
+   * userName, password, email, or text (defualt no validation)
    * @returns Form control object for specific type of input field
    */
-  public getInputFormControl(type: 'email' | 'username' | 'password' | 'text') {
+  public getInputFormControl(type: 'email' | 'username' | 'password' | 'text'): FormControl {
     switch(type){
       case 'username':
         return this.username;
@@ -49,13 +49,13 @@ export class AuthValidationService {
   }
 
   /**
-   * takes a form control object, and returns a (string) error message for
+   * takes a form control object, and returns an error message for
    * the specific error that has occured
    *
    * @param control Form control from this specific input field
    * @returns error message
    */
-  public getInputErrorMessage(control: FormControl) {
+  public getInputErrorMessage(control: FormControl): string {
     if(control.hasError('required')) {//field not filled out
       return('This field is required');
     } else if (control.hasError('email')) {//email error
@@ -81,7 +81,7 @@ export class AuthValidationService {
    * @returns error message for type of character missing from
    * the password
    */
-  private getPwordRegexErrMsg(value: string){
+  private getPwordRegexErrMsg(value: string): string{
     if (value.includes(' ')){
       return 'Password cannot contain spaces';
     }
@@ -105,7 +105,7 @@ export class AuthValidationService {
    * @param duration length of time to show the banner
    *
    */
-   public showError(duration: number = 4000) {
+   public showError(duration: number = 4000): void {
     this.isError.next(true);
     setTimeout(() => {
       this.isError.next(false);
