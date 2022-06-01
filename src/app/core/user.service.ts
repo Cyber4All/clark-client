@@ -5,8 +5,6 @@ import {
 } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
-import { UserEdit } from '../cube/user-profile/user-edit-information/user-edit-information.component';
-// import { User } from '../../entity';
 import { User } from '@entity';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
@@ -21,15 +19,15 @@ export class UserService {
   /**
    * Edit a user's basic information
    *
-   * @param {UserEdit} user the new user object
+   * @param { --- } object tbd
    * @returns {Promise<any>}
    * @memberof UserService
    */
-  editUserInfo(user: UserEdit): Promise<any> {
+  editUserInfo(): Promise<any> {
     return this.http
       .patch(
         USER_ROUTES.EDIT_USER_INFO,
-        { user },
+        {  },
         {
           withCredentials: true,
           responseType: 'text'

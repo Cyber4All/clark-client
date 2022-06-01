@@ -5,7 +5,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
 import { AuthGuard } from '../core/auth-guard.service';
 import { CubeComponent } from './cube.component';
 import { CollectionsComponent } from './collections/collections.component';
@@ -92,11 +91,7 @@ const cube_routes: Routes = [
           user: UserResolver
         }
       },
-      {
-        path: 'users/:username/preferences',
-        component: UserPreferencesComponent,
-        canActivate: [AuthGuard]
-      },
+      // Guard example: `canActivate: [AuthGuard]`
       {
         path: 'editorial-process',
         component: EditorialProcessComponent,
