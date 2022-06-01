@@ -6,10 +6,6 @@ orbs:
 workflows:
   integration-testing:
     jobs:
-      - cyber4all/lint-app:
-          docker-image: cimg/node:lts
-          isNode: true
-
       - cyber4all/deploy-s3:
           deploy: false # explicitly shows in develeopment
           filters:
