@@ -1,1 +1,34 @@
-<p>register works!</p>
+<div class="wrapper">
+    <div class="content-box" [ngClass]="{'failed': loginFailure}">
+        <clark-error-banner class="errBanner"></clark-error-banner>
+        <form #f="ngForm" (ngSubmit)="submit(f)">
+            <img src="/assets/images/logo.png" alt="Clark Logo" />
+            <h1>Register</h1>
+            
+            <ng-container *ngTemplateOutlet="stepTwoTemplate"></ng-container>
+
+            <div class="side-by-side buttons">
+                <button class="white">Cancel</button>
+                <button>Next</button>
+            </div>
+
+            <a routerLink="/auth/login">Have an account? Log In!</a>
+        </form>
+    </div>
+</div>
+
+<ng-template #stepOneTemplate>
+    <div class="side-by-side">
+        <clark-input-field ngModel name="firstName" #firstName="ngModel" phold="First Name" fControlType="email"></clark-input-field>
+        <clark-input-field ngModel name="lastName" #lastName="ngModel" phold="Last Name" fControlType="email"></clark-input-field>
+    </div>
+
+    <clark-input-field ngModel name="email" #email="ngModel" phold="Email" fControlType="email"></clark-input-field>
+    <clark-input-field ngModel name="organization" #organization="ngModel" phold="Organization" fControlType="email"></clark-input-field>
+</ng-template>
+
+<ng-template #stepTwoTemplate>
+    <clark-input-field ngModel name="username" #username="ngModel" phold="Username" fControlType="username"></clark-input-field>
+    <clark-input-field ngModel name="password" #password="ngModel" isPwrd="true" phold="Password" fControlType="password"></clark-input-field>
+    <clark-input-field ngModel name="confirmPassword" #confirmPassword="ngModel" isPwrd="true" phold="Confirm Password" fControlType="password"></clark-input-field>
+</ng-template>

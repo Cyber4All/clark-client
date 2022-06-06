@@ -1,0 +1,37 @@
+@import 'vars.scss';
+
+.wrapper {
+    height: 100vh;
+    padding: 50px, 0;
+    width: inherit;
+    
+    &:before {
+        content: '';
+        background: linear-gradient(90deg, white, $light-blue, white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        z-index: 0;
+        opacity: .15;
+    }
+    
+    &:after {
+        content: '';
+        background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+    }
+
+    .side-by-side {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+}
