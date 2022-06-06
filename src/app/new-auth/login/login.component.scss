@@ -2,22 +2,48 @@
 .wrapper {
     height: 100vh;
     padding: 50px, 0;
-    width: inherit;
-    
+    width: inherit;    
+
     form {
         width: 85%;
         margin-top: 35px;
-    }
-    button{
-        width: 100%;
-        margin-top: 20px;
-        margin-bottom: 50px;
+
+
+        .sso-section {
+            width: 100%;
+            
+            .sso-img {
+                width: 200px;
+            }
+            
+            .hr-or {
+                color: grey;
+                font-size: 20px;
+                .left {
+                    float: left;
+                    width: 44%;
+                }
+                .right {
+                    float: right;
+                    width: 44%;
+                }
+            }
+        }
+
+
+        button{
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+    
+        a{
+            color: grey;
+            text-decoration: underline;
+        }
     }
 
-    a{
-        color: grey;
-        text-decoration: underline;
-    }
+    
 
     &:before {
         content: '';
