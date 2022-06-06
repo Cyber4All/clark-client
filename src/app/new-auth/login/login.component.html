@@ -1,27 +1,27 @@
 <div class="wrapper">
     <div class="content-box" [ngClass]="{'failed': loginFailure}">
-        <div class="top">
-            <clark-error-banner class="errBanner"></clark-error-banner>
-            <form #f="ngForm" (ngSubmit)="submit(f)">
-                <clark-input-field
-                    ngModel
-                    name="username"
-                    #username="ngModel"
-                    phold="User Name or Email"
-                    fControlType="username" 
-                ></clark-input-field>
-                <br>
-                <clark-input-field
-                    ngModel
-                    name="password"
-                    #password="ngModel"
-                    isPwrd="true"
-                    phold="Password"
-                    fControlType="password" 
-                ></clark-input-field>
-                <br>
-                <button>Submit</button>
-            </form>
-        </div>
+        <clark-error-banner class="errBanner" [errorMessage] ="errorMsg"></clark-error-banner>
+        <form #f="ngForm" (ngSubmit)="submit(f)">
+            <img src="/assets/images/logo.png" alt="Clark Logo" />
+            <h1>Login</h1>
+            <clark-input-field
+                ngModel
+                name="username"
+                #username="ngModel"
+                phold="Username or Email"
+                fControlType="username" 
+            ></clark-input-field>                
+            <clark-input-field
+                ngModel
+                name="password"
+                #password="ngModel"
+                isPwrd="true"
+                phold="Password"
+                fControlType="password" 
+            ></clark-input-field>
+            <a routerLink="../forgot-password">Forgot Password?</a>
+            <button>Login</button>
+            <a routerLink="../register">Don't have an account? Register!</a>
+        </form>
     </div>
 </div>
