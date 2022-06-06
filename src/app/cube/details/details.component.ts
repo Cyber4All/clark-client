@@ -11,7 +11,6 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
 import { AuthService } from 'app/core/auth.service';
 import { ChangelogService } from 'app/core/changelog.service';
-import { trigger, transition, query, style, animate, stagger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Rating {
@@ -230,6 +229,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.revisedChildren.length);
   }
 
+  /**
+   * Gets if the relevancy banner should be displayed if the next
+   * check date is within a month before/after the date
+   */
+  get relevancyBannerStatus(): boolean {
+    const startDate = new Date(this.learningObject.nextCheck);
+    startDate.setMonth(startDate.getMonth() - 1);
+    startDate.setHours(0, 0, 0, 0);
+
+    const endDate = new Date(this.learningObject.nextCheck);
+    endDate.setMonth(endDate.getMonth() + 1);
+    endDate.setHours(0, 0, 0, 0);
+
+    return startDate < new Date() && new Date() < endDate;
+  }
 
   /**
    * toggles between released and revised copies of a learning object
