@@ -4,23 +4,34 @@
         <form #f="ngForm" (ngSubmit)="submit(f)">
             <img src="/assets/images/logo.png" alt="Clark Logo" />
             <h1>Login</h1>
+            <div *ngIf="!isNameLogin" class="sso-section" [@outAnimation]>
+                <a href="_blank" class="sso-button"><img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img"></a>
+                <div class="hr-or">
+                <div class="left"><hr/></div> or <div class="right"><hr/></div>
+                </div>
+            </div>
             <clark-input-field
                 ngModel
                 name="username"
                 #username="ngModel"
                 phold="Username or Email"
-                fControlType="username" 
-            ></clark-input-field>                
-            <clark-input-field
-                ngModel
-                name="password"
-                #password="ngModel"
-                isPwrd="true"
-                phold="Password"
-                fControlType="password" 
+                fControlType="username"
             ></clark-input-field>
-            <a routerLink="../forgot-password">Forgot Password?</a>
-            <button>Login</button>
+            <div *ngIf="isNameLogin" 
+            [@inAnimation]
+            class="password-section">               
+                <clark-input-field
+                    ngModel
+                    name="password"
+                    #password="ngModel"
+                    isPwrd="true"
+                    phold="Password"
+                    fControlType="password"
+                ></clark-input-field>
+                <a routerLink="../forgot-password">Forgot Password?</a>
+            </div>
+            <button id="submit" *ngIf="isNameLogin">Login</button>
+            <button *ngIf="!isNameLogin" (click)="showPass()">Next</button>
             <a routerLink="../register">Don't have an account? Register!</a>
         </form>
     </div>
