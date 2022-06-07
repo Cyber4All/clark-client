@@ -127,7 +127,7 @@ export class ClarkComponent implements OnInit {
           this.errorMessage = e.error.split('.');
           this.isOldVersion = true;
         }
-      }, 600000); // 10 minute interval
+      }, 600000); // 10 minute interval for setting the timeout <- Comment from orb deployment
     }
 
     this.setPageTitle();

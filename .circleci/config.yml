@@ -1,105 +1,32 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.0
-  aws-cli: circleci/aws-cli@2.0.6
-  docker: circleci/docker@2.0.1
+  cyber4all: cyber4all/orb@1
 
-commands:
-  setup-aws-cli: aws-cli/setup
-
-jobs:
-  build:
-    docker:
-      - image: cimg/node:16.13.2
-    steps:
-      - checkout
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Build Application
-          command: yarn ng build --configuration production --no-progress
-      - persist_to_workspace: 
-          root: dist
-          paths: 
-            - ./
-
-  publish-image:
-    docker:
-      - image: cimg/node:16.13.2
-    steps:
-      - checkout
-      - setup_remote_docker:
-          version: 20.10.2
-      - run:
-          name: Login to docker
-          command: docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
-      - docker/build:
-          image: "cyber4all/clark-client"
-      - docker/push:
-          image: "cyber4all/clark-client"
-
-  deploy:
-    docker:
-      - image: cimg/node:16.13.2
-    working_directory: ~/clark-client
-    steps:
-      - attach_workspace : 
-          at: ~/clark-client/dist
-      - aws-cli/install
-      - setup-aws-cli:
-          aws-access-key-id: MACHINE_AWS_CF_AccessKey
-          aws-region: AWS_REGION_N_VA
-          aws-secret-access-key: MACHINE_AWS_CF_SecretKey
-          version: "1"
-      - run:
-          name: Deploy to S3 
-          command: aws s3 sync ${source} s3://${s3_bucket} --region ${s3_region}
-      - run: 
-          name: Invalidate index.html in CloudFront
-          command: aws cloudfront create-invalidation --distribution-id ${cloudfront_id} --paths /index.html
-      
 workflows:
-  version: 2.1
-  build-and-test:
+  integration-testing:
     jobs:
-      - build:
-        filters:
-            branches:
-              ignore: /main/
-      - node/test:
-          run-command: "test:unit"
-          version: "16.13.2"
+      - cyber4all/deploy-s3:
+          deploy: false # explicitly shows in develeopment
           filters:
             branches:
-              ignore: /main/
-  build-test-and-deploy:
+              ignore: releases
+
+      - cyber4all/test-app:
+          docker-image: cimg/node:lts
+          node-test: test:unit
+          isNode: true
+
+  production-deployment:
     jobs:
-      - node/test:
-          run-command: "test:unit"
-          version: "16.13.2"
+      - cyber4all/deploy-s3:
+          context:
+            [AWS, Slack]
+          tag: $(cat ./package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
+          deploy: true
+          source: dist
+          isAngular: true
           filters:
             branches:
-              only: /releases/
-      - publish-image:
-          context: 
-            - DockerHub
-          filters:
-            branches:
-              only: /releases/
-      - build:
-          requires:
-            - node/test
-          filters:
-            branches:
-              only: /releases/
-      - deploy:
-          requires:
-            - build
-          context: 
-            - DockerHub
-            - AWS
-          filters:
-            branches:
-              only: /releases/
+              only:
+                - releases
