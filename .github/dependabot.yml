@@ -6,7 +6,7 @@ updates:
       interval: "weekly"
       # Check for npm updates on Monday at 9AM ET
       day: "monday"
-      time: "04:00"
+      time: "14:00"
     assignees:
       - "yeet-bot7800"
     reviewers:
