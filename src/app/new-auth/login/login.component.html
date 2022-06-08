@@ -4,10 +4,10 @@
         <form #f="ngForm" (ngSubmit)="submit(f)">
             <img src="/assets/images/logo.png" alt="Clark Logo" />
             <h1>Login</h1>
-            <div *ngIf="!isNameLogin" class="sso-section" [@outAnimation]>
+            <div *ngIf="!isNameLogin" class="sso-section">
                 <a href="_blank" class="sso-button"><img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img"></a>
                 <div class="hr-or">
-                <div class="left"><hr/></div> or <div class="right"><hr/></div>
+                    <div class="left"><hr/></div> or <div class="right"><hr/></div>
                 </div>
             </div>
             <clark-input-field
@@ -18,7 +18,7 @@
                 fControlType="username"
             ></clark-input-field>
             <div *ngIf="isNameLogin" 
-            [@inAnimation]
+            [@inOutAnimation]
             class="password-section">               
                 <clark-input-field
                     ngModel
@@ -30,8 +30,11 @@
                 ></clark-input-field>
                 <a routerLink="../forgot-password">Forgot Password?</a>
             </div>
-            <button id="submit" *ngIf="isNameLogin">Login</button>
-            <button *ngIf="!isNameLogin" (click)="showPass()">Next</button>
+            <button *ngIf="!isNameLogin" (click)="showPass()" class="buttons">Next</button>
+            <div class="side-by-side buttons" *ngIf="isNameLogin">
+                <button (click)="showPass()" class="white">Back</button>
+                <button id="submit" >Login</button>
+            </div>
             <a routerLink="../register">Don't have an account? Register!</a>
         </form>
     </div>
