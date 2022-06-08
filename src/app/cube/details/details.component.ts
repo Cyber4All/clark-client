@@ -238,11 +238,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     startDate.setMonth(startDate.getMonth() - 1);
     startDate.setHours(0, 0, 0, 0);
 
-    const endDate = new Date(this.learningObject.nextCheck);
-    endDate.setMonth(endDate.getMonth() + 1);
-    endDate.setHours(0, 0, 0, 0);
-
-    return startDate < new Date() && new Date() < endDate;
+    return startDate <= new Date() && new Date() >= this.learningObject.nextCheck;
   }
 
   /**
