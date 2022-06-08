@@ -1,6 +1,10 @@
 <clark-skip-link identity="pageContent" title="Skip Directly to Download" skipLocation="download-button"></clark-skip-link>
 <main id='pageContent' class='details-background'>
   <ng-container *ngIf="!loading; else loadingTemplate">
+    <section class='details__content-relevancy__banner' *ngIf="relevancyBannerStatus">
+      This Learning Object is currently under review for relevancy.
+      To learn more about our process for this review please read our <a href="https://securedteam.notion.site/securedteam/Curriculum-Relevancy-on-CLARK-324ca3b482644068affe46c1ccbd28ff">blog post</a>.
+    </section>
     <div class='details'>
       <section class='details__content-container__cube-pattern-container section'>
         <clark-cube-pattern></clark-cube-pattern>
