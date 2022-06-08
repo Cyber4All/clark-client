@@ -11,7 +11,7 @@ import { AuthService } from 'app/core/auth.service';
   styleUrls: ['./login.component.scss'],
   animations: [
     trigger(
-      'inAnimation',
+      'inOutAnimation',
       [
         transition(
           ':enter',
@@ -20,16 +20,11 @@ import { AuthService } from 'app/core/auth.service';
             animate('.5s ease-out',
                     style({ height: 85, opacity: 1 }))
           ]
-        )
-      ]
-    ),
-        trigger(
-          'outAnimation',
-          [
-            transition(
+        ),
+        transition(
               ':leave',
               [
-                style({ height: 50, opacity: 1 }),
+                style({ height: 85, opacity: 1 }),
                 animate('.5s ease-in',
                         style({ height: 0, opacity: 0 }))
               ]
@@ -57,42 +52,32 @@ export class LoginComponent implements OnInit{
   }
 
 /**
- * TO-DO: implement this method
+ * checks that all data is populated then
+ * logs the user in
  *
  * @param form data from NgForm
  */
-  public async submit(form: NgForm): Promise<void> {
+  public submit(form: NgForm) {
     this.authInfo = form.value;
-    if(!this.isPopulated()) {
-      this.authValidation.showError();
-    }
-
-    this.auth
+    // if(!this.authValidation.isLoginPopulated(this.authInfo)) {
+    //   this.errorMsg = 'Please fill out all required fields'
+    //   this.authValidation.showError();
+    // } else {
+      this.loading = true;
+      this.auth
       .login(this.authInfo)
       .then(() => {
           this.router.navigate(['home']);
       })
       .catch(error => {
         this.loading = false;
-        this.errorMsg = error;
+        this.errorMsg = error.message;
         this.authValidation.showError();
       });
-  }
-
-/**
- * ensures all fields are populated when form is submitted
- *
- * @returns true if all fields are populated
- */
-  isPopulated(): boolean {
-    if(this.authInfo.username && this.authInfo.password && true){
-      return true;
-    }
-    this.errorMsg = 'please fill out all fields';
-    return false;
+    // }
   }
 
   showPass(){
-    this.isNameLogin = true;
+    this.isNameLogin = !this.isNameLogin;
   }
 }

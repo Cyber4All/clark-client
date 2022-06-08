@@ -19,6 +19,7 @@
             .hr-or {
                 color: grey;
                 font-size: 20px;
+                margin: 20px;
                 .left {
                     float: left;
                     width: 44%;
@@ -28,13 +29,17 @@
                     width: 44%;
                 }
             }
-        }
 
+            
+        }
+        .side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
 
         button{
             width: 100%;
-            margin-top: 20px;
-            margin-bottom: 50px;
         }
     
         a{
