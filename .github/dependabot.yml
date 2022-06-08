@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "../"
+    schedule:
+      interval: "weekly"
+      # Check for npm updates on Monday at 9AM ET
+      day: "monday"
+      time: "04:00"
+    assignees:
+      - "yeet-bot7800"
+    reviewers:
+      - "cyber4all/dev-sec-ops"
+    labels:
+      - "npm dependencies"
+    target-branch: "main"
