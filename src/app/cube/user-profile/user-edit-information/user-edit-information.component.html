@@ -17,7 +17,7 @@
     <div class="gravatar-header">{{ copy.GRAVATARTITLE }}</div>
     <div class="gravatar-text">{{ copy.GRAVATARC2A }}<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar account</a></div>
     <div class="input email" [ngClass]="{'active': editInfo.email !== ''}">
-      <input name="email" type="text" placeholder="Email address" aria-label="Email Address" [(ngModel)]="editInfo.email" />
+      <input name="email" type="email" placeholder="Email address" aria-label="Email Address" [(ngModel)]="editInfo.email" />
       <i class="far fa-at"></i>
     </div>
     <p>Add a bio</p>
