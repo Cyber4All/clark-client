@@ -82,6 +82,9 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
       username: this.user.username
     };
     try {
+      if (this.getValidEmail(edits.email) === false) {
+        throw {'error': 'invalid email'};
+      }
       await this.userService.editUserInfo(edits);
       await this.auth.validateAndRefreshToken();
       this.close.emit(true);
@@ -98,6 +101,15 @@ export class UserEditInformationComponent implements OnInit, OnChanges, OnDestro
   handleCounter(e) {
     const inputLength = this.editInfo.bio.length;
     this.counter = 140 - inputLength;
+  }
+
+  getValidEmail(inputEmail: string) {
+    const email =
+      inputEmail.match(
+        // eslint-disable-next-line max-len
+        /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g
+      ) !== null;
+    return email;
   }
 
   private toUpper(str) {
