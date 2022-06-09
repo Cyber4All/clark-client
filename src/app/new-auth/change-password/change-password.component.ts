@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 import { AuthValidationService } from 'app/core/auth-validation.service';
+import { doesNotMatchValidator } from 'app/core/doesNotMatchValidator';
 
 @Component({
   selector: 'clark-change-password',
@@ -11,8 +12,16 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
 export class ChangePasswordComponent implements OnInit {
   isError: Boolean = true;
   emailsMatch: Boolean = true;
-  currentEmail = new FormControl('');
-  confirmEmail = new FormControl('');
+
+  confirmEmailTemp: string = "";
+  currentEmail = new FormControl('',[
+    Validators.required,
+    Validators.email,
+    doesNotMatchValidator(this.confirmEmailTemp)
+  ]);
+  confirmEmail = new FormControl('', [
+    doesNotMatchValidator(this.currentEmail.value)
+  ]);
 
   constructor(private authValidationService: AuthValidationService) {
   }
@@ -25,8 +34,16 @@ export class ChangePasswordComponent implements OnInit {
     console.log(this.currentEmail.value);
   }
 
-  matchEmails(): void {
-    this.currentEmail.value === this.confirmEmail.value ? this.emailsMatch = true : this.emailsMatch = false;
+  // matchEmails(): void {
+  //   (this.authValidationService.getInputErrorMessage(this.currentEmail) !== "Invalid Email Address" &&
+  //   this.currentEmail.value === this.confirmEmail.value) ? this.emailsMatch = true : this.emailsMatch = false;
+  // }
+
+  displayError(control: FormControl): string {
+    if(this.authValidationService.getInputErrorMessage(control))
+      return this.authValidationService.getInputErrorMessage(control);
+    else if(this.confirmEmail.errors?.doesNotMatch)
+      return "Emails do not match!";
   }
 
 }
