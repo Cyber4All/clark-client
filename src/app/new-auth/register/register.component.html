@@ -5,9 +5,7 @@
             <img src="/assets/images/logo.png" alt="Clark Logo" />
             <h1>Register</h1>
             
-            <ng-container *ngTemplateOutlet="stepTwoTemplate"></ng-container>
-
-            <a routerLink="/auth/login">Have an account? Log In!</a>
+            <ng-container *ngTemplateOutlet="stepOneTemplate"></ng-container>
         </form>
     </div>
 </div>
@@ -21,10 +19,11 @@
     <clark-input-field ngModel name="email" #email="ngModel" phold="Email" fControlType="email"></clark-input-field>
     <clark-input-field ngModel name="organization" #organization="ngModel" phold="Organization" fControlType="email"></clark-input-field>
 
-    <div class="side-by-side buttons">
+    <div class="side-by-side">
         <button class="white">Cancel</button>
         <button>Next</button>
     </div>
+    <a routerLink="/auth/login">Have an account? Log In!</a>
 </ng-template>
 
 <ng-template #stepTwoTemplate>
@@ -34,19 +33,20 @@
 
     <div autofocus class="recaptcha" id="recaptcha" ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
 
-    <div class="side-by-side buttons">
+    <div class="side-by-side">
         <button class="white">Back</button>
         <button>Register</button>
     </div>
+    <a routerLink="/auth/login">Have an account? Log In!</a>
 </ng-template>
 
 <ng-template #stepThreeTemplate>
     <p>You’re registered! You should receive an email shortly asking you to verify your email.</p>
     <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
 
-    <div class="side-by-side buttons">
-        <button class="white">Skip SSO</button>
-        <button>Continue</button>
+    <div class="side-by-side">
+        <button class="white bottom">Skip SSO</button>
+        <button class="bottom">Continue</button>
     </div>
 </ng-template>
 
@@ -54,5 +54,5 @@
     <p>Configure single sign on.</p>
     <p>This is optional, you can also configure this later from your profile page.</p>
 
-    <button>Skip</button>
+    <button class="white bottom">Skip</button>
 </ng-template>
