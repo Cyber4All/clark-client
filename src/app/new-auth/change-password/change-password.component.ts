@@ -13,7 +13,7 @@ export class ChangePasswordComponent implements OnInit {
   isError: Boolean = true;
   emailsMatch: Boolean = true;
 
-  confirmEmailTemp: string = "";
+  confirmEmailTemp = '';
   currentEmail = new FormControl('',[
     Validators.required,
     Validators.email,
@@ -40,10 +40,11 @@ export class ChangePasswordComponent implements OnInit {
   // }
 
   displayError(control: FormControl): string {
-    if(this.authValidationService.getInputErrorMessage(control))
+    if(this.authValidationService.getInputErrorMessage(control)){
       return this.authValidationService.getInputErrorMessage(control);
-    else if(this.confirmEmail.errors?.doesNotMatch)
-      return "Emails do not match!";
+    } else if(this.confirmEmail.errors?.doesNotMatch) {
+      return 'Emails do not match!';
+    }
   }
 
 }
