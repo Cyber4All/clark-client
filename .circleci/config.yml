@@ -24,6 +24,8 @@ workflows:
             [AWS, Slack]
           tag: $(cat ./package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
           deploy: true
+          source: dist
+          isAngular: true
           filters:
             branches:
               only:
