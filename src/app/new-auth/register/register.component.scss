@@ -34,4 +34,10 @@
         grid-template-columns: 1fr 1fr;
         gap: 25px;
     }
+
+    .recaptcha {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }      
 }

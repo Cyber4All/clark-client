@@ -7,11 +7,6 @@
             
             <ng-container *ngTemplateOutlet="stepTwoTemplate"></ng-container>
 
-            <div class="side-by-side buttons">
-                <button class="white">Cancel</button>
-                <button>Next</button>
-            </div>
-
             <a routerLink="/auth/login">Have an account? Log In!</a>
         </form>
     </div>
@@ -25,10 +20,39 @@
 
     <clark-input-field ngModel name="email" #email="ngModel" phold="Email" fControlType="email"></clark-input-field>
     <clark-input-field ngModel name="organization" #organization="ngModel" phold="Organization" fControlType="email"></clark-input-field>
+
+    <div class="side-by-side buttons">
+        <button class="white">Cancel</button>
+        <button>Next</button>
+    </div>
 </ng-template>
 
 <ng-template #stepTwoTemplate>
     <clark-input-field ngModel name="username" #username="ngModel" phold="Username" fControlType="username"></clark-input-field>
     <clark-input-field ngModel name="password" #password="ngModel" isPwrd="true" phold="Password" fControlType="password"></clark-input-field>
     <clark-input-field ngModel name="confirmPassword" #confirmPassword="ngModel" isPwrd="true" phold="Confirm Password" fControlType="password"></clark-input-field>
+
+    <div autofocus class="recaptcha" id="recaptcha" ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
+
+    <div class="side-by-side buttons">
+        <button class="white">Back</button>
+        <button>Register</button>
+    </div>
+</ng-template>
+
+<ng-template #stepThreeTemplate>
+    <p>You’re registered! You should receive an email shortly asking you to verify your email.</p>
+    <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
+
+    <div class="side-by-side buttons">
+        <button class="white">Skip SSO</button>
+        <button>Continue</button>
+    </div>
+</ng-template>
+
+<ng-template #stepFourTemplate>
+    <p>Configure single sign on.</p>
+    <p>This is optional, you can also configure this later from your profile page.</p>
+
+    <button>Skip</button>
 </ng-template>

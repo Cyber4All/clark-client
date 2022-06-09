@@ -10,6 +10,8 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
 export class RegisterComponent implements OnInit {
 
   loginFailure = false;
+  siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
+
   constructor(public authValidation: AuthValidationService) { }
 
   ngOnInit(): void { }
