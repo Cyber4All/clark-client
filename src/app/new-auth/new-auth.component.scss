@@ -11,7 +11,7 @@
         display: block;
         z-index: 2;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         overflow-y: auto;
@@ -53,6 +53,11 @@
                     margin-bottom: 0;
                 }
             }
+        }
+
+        clark-registration-progress {
+            z-index: 1;
+            width:100%;
         }
         
         .content-box {

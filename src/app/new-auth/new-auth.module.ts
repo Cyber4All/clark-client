@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
 import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
+import { RegistrationProgressComponent } from './register/registration-progress/registration-progress.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
     InputFieldComponent,
     ErrorBannerComponent,
     RecaptchaDirective,
+    RegistrationProgressComponent,
   ],
   imports: [
     CommonModule,

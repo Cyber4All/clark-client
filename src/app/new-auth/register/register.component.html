@@ -1,4 +1,5 @@
 <div class="wrapper">
+    <clark-registration-progress></clark-registration-progress>
     <div class="content-box" [ngClass]="{'failed': loginFailure}">
         <clark-error-banner class="errBanner"></clark-error-banner>
         <form #f="ngForm" (ngSubmit)="submit(f)">
