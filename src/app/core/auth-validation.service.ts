@@ -9,22 +9,6 @@ export class AuthValidationService {
 
   public isError = new BehaviorSubject<boolean>(false);
 
-  email: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.email
-  ]);
-  username: FormControl = new FormControl('', [
-    Validators.required,
-    Validators.minLength(2),
-    Validators.maxLength(30)
-  ]);
-  password: FormControl = new FormControl('', [
-    Validators.minLength(8),
-    //one number, one lower, one upper, one special, no spaces
-    Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()+=])(?=\\S+$).*$'),
-    Validators.required
-  ]);
-  text: FormControl = new FormControl('');
   constructor() { }
 
   /**
@@ -35,16 +19,30 @@ export class AuthValidationService {
    * userName, password, email, or text (defualt no validation)
    * @returns Form control object for specific type of input field
    */
-  public getInputFormControl(type: 'email' | 'username' | 'password' | 'text'): FormControl {
+  public getInputFormControl(type: 'email' | 'username' | 'password' | 'required' | 'text'): FormControl {
     switch(type){
       case 'username':
-        return this.username;
+        return new FormControl('', [
+          Validators.required,
+          Validators.minLength(2),
+          Validators.maxLength(30)
+        ]);
       case 'email':
-        return this.email;
+        return new FormControl('', [
+          Validators.required,
+          Validators.email
+        ]);
       case 'password':
-        return this.password;
+        return new FormControl('', [
+          Validators.minLength(8),
+          //one number, one lower, one upper, one special, no spaces
+          Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()+=])(?=\\S+$).*$'),
+          Validators.required
+        ]);
+      case 'required':
+        return new FormControl('', Validators.required);
       case 'text':
-        return this.text;
+        return new FormControl('');
     }
   }
 
@@ -61,7 +59,7 @@ export class AuthValidationService {
     } else if (control.hasError('email')) {//email error
       return('Invalid Email Address');
     } else if (control.hasError('minlength')) {//minimum length error
-      if(control === this.password){
+      if(control.hasValidator(Validators.minLength(8))){
         return('Minimum Length 8 characters');//min length for password
       }
       return('Minimum Length 2 characters');//min length for username
