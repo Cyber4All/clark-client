@@ -37,9 +37,9 @@ export class LoginComponent implements OnInit{
 
   loginFailure: Boolean = false;
   isNameLogin = false;
-  authInfo: {username: string, password: string} = {username:'', password:''};
+  authInfo: {username: string, password: string};
   errorMsg: String = 'There was an error';
-  loading = false;
+  attempts = 0;
 
   constructor(
     private authValidation: AuthValidationService,
@@ -59,25 +59,34 @@ export class LoginComponent implements OnInit{
  */
   public submit(form: NgForm) {
     this.authInfo = form.value;
-    // if(!this.authValidation.isLoginPopulated(this.authInfo)) {
-    //   this.errorMsg = 'Please fill out all required fields'
-    //   this.authValidation.showError();
-    // } else {
-      this.loading = true;
+    if(!this.authValidation.isLoginPopulated(this.authInfo)) {
+      this.errorMsg = 'Please fill out all required fields';
+      this.authValidation.showError();
+    } else if (this.attempts === 5){
+      this.attempts === 5 ? this.attempts : this.attempts++;
       this.auth
       .login(this.authInfo)
       .then(() => {
           this.router.navigate(['home']);
       })
       .catch(error => {
-        this.loading = false;
-        this.errorMsg = error.message;
+        this.errorMsg = error.message + this.attemptMsg();
         this.authValidation.showError();
       });
-    // }
+    }
   }
 
-  showPass(){
+  attemptMsg(): string {
+    if(this.attempts === 5){
+      return ', you have exceeded your login attempts. Please try again in an hour.';
+    }
+    return `, you have ${5 - this.attempts} login attempts left this hour`;
+  }
+
+  /**
+   * transitions when next or back is clicked
+   */
+  showPassField(){
     this.isNameLogin = !this.isNameLogin;
   }
 }
