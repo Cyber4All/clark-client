@@ -10,7 +10,7 @@ updates:
     assignees:
       - "yeet-bot7800"
     reviewers:
-      - "cyber4all/dev-sec-ops"
+      - "Cyber4All/dev-sec-ops"
     labels:
       - "npm dependencies"
     target-branch: "main"
