@@ -34,7 +34,11 @@ export class ChangePasswordComponent implements OnInit {
     this.authService.initiateResetPassword(this.currentEmail.value)
     .subscribe(val => {
       this.done = true;
-    }, error => {})
+    }, error => {});
+  }
+
+  setDone(): void {
+    this.done = true;
   }
 
   emailsMatch(): void {
