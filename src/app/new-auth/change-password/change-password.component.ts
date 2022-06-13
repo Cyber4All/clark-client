@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 import { AuthValidationService } from 'app/core/auth-validation.service';
+import { AuthService } from 'app/core/auth.service';
 import { doesNotMatchValidator } from 'app/core/doesNotMatchValidator';
 
 @Component({
@@ -11,6 +12,7 @@ import { doesNotMatchValidator } from 'app/core/doesNotMatchValidator';
 })
 export class ChangePasswordComponent implements OnInit {
   isError: Boolean = true;
+  done = false;
 
   currentEmail = new FormControl('',[
     Validators.required,
@@ -20,11 +22,19 @@ export class ChangePasswordComponent implements OnInit {
     doesNotMatchValidator(this.currentEmail.value)
   ]);
 
-  constructor(private authValidationService: AuthValidationService) {
+  constructor(private authValidationService: AuthValidationService,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
     this.authValidationService.getErrorState().subscribe(err => this.isError = err);
+  }
+
+  submit(): void {
+    this.authService.initiateResetPassword(this.currentEmail.value)
+    .subscribe(val => {
+      this.done = true;
+    }, error => {})
   }
 
   emailsMatch(): void {
