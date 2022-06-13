@@ -4,7 +4,7 @@ updates:
     directory: "../"
     schedule:
       interval: "weekly"
-      # Check for npm updates on Monday at 9AM ET
+      # Check for updates on Monday at 9AM ET
       day: "monday"
       time: "14:00"
     assignees:
