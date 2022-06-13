@@ -15,25 +15,25 @@
                 name="username"
                 #username="ngModel"
                 phold="Username or Email"
-                fControlType="username"
+                fControlType="required"
             ></clark-input-field>
             <div *ngIf="isNameLogin" 
             [@inOutAnimation]
-            class="password-section">               
+            class="password-section">
                 <clark-input-field
                     ngModel
                     name="password"
                     #password="ngModel"
                     isPwrd="true"
                     phold="Password"
-                    fControlType="password"
+                    fControlType="required"
                 ></clark-input-field>
                 <a routerLink="../forgot-password">Forgot Password?</a>
             </div>
-            <button *ngIf="!isNameLogin" (click)="showPass()" class="buttons">Next</button>
+            <button *ngIf="!isNameLogin" (click)="showPassField()" class="buttons">Next</button>
             <div class="side-by-side buttons" *ngIf="isNameLogin">
-                <button (click)="showPass()" class="white">Back</button>
-                <button id="submit" >Login</button>
+                <button type="reset" (click)="showPassField()" class="white">Back</button>
+                <button type="submit" id="submit">Login</button>
             </div>
             <a routerLink="../register">Don't have an account? Register!</a>
         </form>
