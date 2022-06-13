@@ -11,5 +11,9 @@ export class NotesComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    if (!this.notes) {
+      this.notes = 'This Learning Object does not have any notes';
+    }
+  }
 }
