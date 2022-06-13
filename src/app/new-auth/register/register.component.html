@@ -1,59 +1,110 @@
 <div class="wrapper">
-    <clark-registration-progress></clark-registration-progress>
+    <clark-registration-progress [index]="currentIndex" ></clark-registration-progress>
     <div class="content-box" [ngClass]="{'failed': loginFailure}">
         <clark-error-banner class="errBanner"></clark-error-banner>
-        <form #f="ngForm" (ngSubmit)="submit(f)">
-            <img src="/assets/images/logo.png" alt="Clark Logo" />
-            <h1>Register</h1>
-            
-            <ng-container *ngTemplateOutlet="stepOneTemplate"></ng-container>
+        <img src="/assets/images/logo.png" alt="Clark Logo" />
+        <h1>Register</h1>
+        <form #f="ngForm" (ngSubmit)="submit(f)" [@slideInRight]="slide" [@fallFromTop]="fall">            
+            <ng-container [ngSwitch]="currentTemp">
+                <ng-template #infoTemplate [ngSwitchCase]="TEMPLATES.info.temp" >
+                    <div class="side-by-side">
+                        <clark-input-field
+                            [(ngModel)]="regInfo.firstname"
+                            #firstname="ngModel" 
+                            fControlType="text"
+                            name="firstName" 
+                            phold="First Name"
+                        ></clark-input-field>
+                        <clark-input-field 
+                            [(ngModel)]="regInfo.lastname"
+                            name="lastName" 
+                            #lastName="ngModel" 
+                            phold="Last Name" 
+                            fControlType="text"
+                        ></clark-input-field>
+                    </div>
+                
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.email" 
+                        name="email" 
+                        #email="ngModel" 
+                        phold="Email" 
+                        fControlType="email"
+                    ></clark-input-field>
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.organization"  
+                        name="organization" 
+                        #organization="ngModel" 
+                        phold="Organization" 
+                        fControlType="text"
+                    ></clark-input-field>
+                
+                    <div class="side-by-side">
+                        <button type="button" class="white">Cancel</button>
+                        <button type="button" (click)="nextTemp()">Next</button>
+                    </div>
+                    <a routerLink="/auth/login">Have an account? Log In!</a>
+                </ng-template>
+                
+                <ng-template #accountTemplate [ngSwitchCase]="TEMPLATES.account.temp">
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.username"
+                        name="username" 
+                        #username="ngModel" 
+                        phold="Username" 
+                        fControlType="username"
+                    ></clark-input-field>
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.password"
+                        name="password" 
+                        #password="ngModel" 
+                        isPwrd="true" 
+                        phold="Password" 
+                        fControlType="password"
+                    ></clark-input-field>
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.confirmPassword"
+                        name="confirmPassword" 
+                        #confirmPassword="ngModel" 
+                        isPwrd="true" 
+                        phold="Confirm Password" 
+                        fControlType="password"
+                    ></clark-input-field>
+                
+                    <div 
+                        autofocus 
+                        class="recaptcha" 
+                        id="recaptcha" 
+                        ngRecaptcha 
+                        key="{{siteKey}}" 
+                        (captchaSuccess)="captureResponse($event)" 
+                        [formControl]="captcha"
+                    ></div>
+                
+                    <div class="side-by-side">
+                        <button type="button" class="white" (click)="goBack()">Back</button>
+                        <button type="button" (click)="nextTemp()" >Register</button>
+                    </div>
+                    <a routerLink="/auth/login">Have an account? Log In!</a>
+                </ng-template>
+                
+                <ng-template #submissionTemplate [ngSwitchCase]="TEMPLATES.submission.temp">
+                    <p>You’re registered! You should receive an email shortly asking you to verify your email.</p>
+                    <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
+                
+                    <div class="side-by-side">
+                        <button class="white bottom">Skip SSO</button>
+                        <button type="button" (click)="nextTemp()" class="bottom">Continue</button>
+                    </div>
+                </ng-template>
+                
+                <ng-template #ssoTemplate [ngSwitchCase]="TEMPLATES.sso.temp">
+                    <p>Configure single sign on.</p>
+                    <p>This is optional, you can also configure this later from your profile page.</p>
+                    <p>THIS IS WHERE LOGIN WITH GOOGLE WILL APPEAR</p>
+                    <button type="button" (click)="currentTemp=TEMPLATES.info.temp" class="white bottom">Skip</button>
+                </ng-template>
+            </ng-container>
         </form>
     </div>
 </div>
-
-<ng-template #stepOneTemplate>
-    <div class="side-by-side">
-        <clark-input-field ngModel name="firstName" #firstName="ngModel" phold="First Name" fControlType="email"></clark-input-field>
-        <clark-input-field ngModel name="lastName" #lastName="ngModel" phold="Last Name" fControlType="email"></clark-input-field>
-    </div>
-
-    <clark-input-field ngModel name="email" #email="ngModel" phold="Email" fControlType="email"></clark-input-field>
-    <clark-input-field ngModel name="organization" #organization="ngModel" phold="Organization" fControlType="email"></clark-input-field>
-
-    <div class="side-by-side">
-        <button class="white">Cancel</button>
-        <button>Next</button>
-    </div>
-    <a routerLink="/auth/login">Have an account? Log In!</a>
-</ng-template>
-
-<ng-template #stepTwoTemplate>
-    <clark-input-field ngModel name="username" #username="ngModel" phold="Username" fControlType="username"></clark-input-field>
-    <clark-input-field ngModel name="password" #password="ngModel" isPwrd="true" phold="Password" fControlType="password"></clark-input-field>
-    <clark-input-field ngModel name="confirmPassword" #confirmPassword="ngModel" isPwrd="true" phold="Confirm Password" fControlType="password"></clark-input-field>
-
-    <div autofocus class="recaptcha" id="recaptcha" ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha"></div>
-
-    <div class="side-by-side">
-        <button class="white">Back</button>
-        <button>Register</button>
-    </div>
-    <a routerLink="/auth/login">Have an account? Log In!</a>
-</ng-template>
-
-<ng-template #stepThreeTemplate>
-    <p>You’re registered! You should receive an email shortly asking you to verify your email.</p>
-    <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
-
-    <div class="side-by-side">
-        <button class="white bottom">Skip SSO</button>
-        <button class="bottom">Continue</button>
-    </div>
-</ng-template>
-
-<ng-template #stepFourTemplate>
-    <p>Configure single sign on.</p>
-    <p>This is optional, you can also configure this later from your profile page.</p>
-
-    <button class="white bottom">Skip</button>
-</ng-template>
