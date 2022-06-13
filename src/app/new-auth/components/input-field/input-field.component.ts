@@ -28,7 +28,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 // fControlType: 'email' | 'username' | 'password' | 'text' -
 // describes the type of validation needed for the field. default 'text'
 // no validation
-  @Input() fControlType: 'email' | 'username' | 'password' | 'text' = 'text';
+  @Input() fControlType: 'email' | 'username' | 'password' | 'required' |'text' = 'text';
 
   control: FormControl;
   hide: Boolean;
