@@ -11,13 +11,10 @@ import { doesNotMatchValidator } from 'app/core/doesNotMatchValidator';
 })
 export class ChangePasswordComponent implements OnInit {
   isError: Boolean = true;
-  emailsMatch: Boolean = true;
 
-  confirmEmailTemp = '';
   currentEmail = new FormControl('',[
     Validators.required,
-    Validators.email,
-    doesNotMatchValidator(this.confirmEmailTemp)
+    Validators.email
   ]);
   confirmEmail = new FormControl('', [
     doesNotMatchValidator(this.currentEmail.value)
@@ -30,14 +27,11 @@ export class ChangePasswordComponent implements OnInit {
     this.authValidationService.getErrorState().subscribe(err => this.isError = err);
   }
 
-  showEmail(): void {
-    console.log(this.currentEmail.value);
+  emailsMatch(): void {
+    this.confirmEmail = new FormControl(this.confirmEmail.value, [
+      doesNotMatchValidator(this.currentEmail.value)
+    ]);
   }
-
-  // matchEmails(): void {
-  //   (this.authValidationService.getInputErrorMessage(this.currentEmail) !== "Invalid Email Address" &&
-  //   this.currentEmail.value === this.confirmEmail.value) ? this.emailsMatch = true : this.emailsMatch = false;
-  // }
 
   displayError(control: FormControl): string {
     if(this.authValidationService.getInputErrorMessage(control)){
