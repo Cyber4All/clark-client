@@ -8,10 +8,21 @@
     .content-box {
         z-index: 1;
         border-radius: 12px;
+        padding: 50px;
         margin: 5vh;
 
         img {
             width: 50px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-top: 0px;
+            margin-bottom: 40px;
+            text-align: center;
         }
 
         button:hover {
@@ -22,6 +33,18 @@
         button:active {
             cursor: pointer;
             opacity: 100%;
+        }
+
+        .fa-solid {
+            margin-top: 20px
+        }
+
+        .fa-circle-xmark {
+            color: rgba(255, 0, 0, 0.714);
+        }
+
+        .fa-circle-check {
+            color: rgb(0, 199, 0);
         }
     }
 
