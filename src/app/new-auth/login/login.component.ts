@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
@@ -40,7 +40,10 @@ export class LoginComponent implements OnInit{
   authInfo: {username: string, password: string};
   errorMsg: String = 'There was an error';
   attempts = 0;
-
+  @ViewChild('username')
+  username;
+  @ViewChild('password')
+  password;
   constructor(
     private authValidation: AuthValidationService,
     private auth: AuthService,
@@ -52,18 +55,22 @@ export class LoginComponent implements OnInit{
   }
 
 /**
- * checks that all data is populated then
- * logs the user in
+ * checks for 'required' field errors
+ * then logs the user in
  *
  * @param form data from NgForm
  */
   public submit(form: NgForm) {
     this.authInfo = form.value;
-    if(!this.authValidation.isLoginPopulated(this.authInfo)) {
+    //get form control for all fields
+    const pwordFormCtl = this.password.valueAccessor.control;
+    const usernameFormCtl = this.username.valueAccessor.control;
+
+    if(usernameFormCtl.hasError('required') || pwordFormCtl.hasError('required')) {
       this.errorMsg = 'Please fill out all required fields';
       this.authValidation.showError();
-    } else if (this.attempts === 5){
-      this.attempts === 5 ? this.attempts : this.attempts++;
+    } else if (this.attempts < 5){
+      this.attempts++;
       this.auth
       .login(this.authInfo)
       .then(() => {
@@ -73,11 +80,20 @@ export class LoginComponent implements OnInit{
         this.errorMsg = error.message + this.attemptMsg();
         this.authValidation.showError();
       });
+    } else {
+      this.errorMsg = 'Sorry' + this.attemptMsg();
+      this.authValidation.showError();
     }
   }
 
+  /**
+   * gets login attempt message based on number
+   * of attempts
+   *
+   * @returns a login attempt message
+   */
   attemptMsg(): string {
-    if(this.attempts === 5){
+    if(this.attempts >= 5){
       return ', you have exceeded your login attempts. Please try again in an hour.';
     }
     return `, you have ${5 - this.attempts} login attempts left this hour`;
