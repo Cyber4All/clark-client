@@ -13,6 +13,16 @@
         img {
             width: 50px;
         }
+
+        button:hover {
+            cursor: pointer;
+            opacity: 80%;
+        }
+
+        button:active {
+            cursor: pointer;
+            opacity: 100%;
+        }
     }
 
     &:before {

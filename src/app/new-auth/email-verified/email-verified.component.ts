@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-email-verified',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmailVerifiedComponent implements OnInit {
 
-  constructor() { }
+  iconSuccess: Boolean; // what icon to display
+  h1Message: String; // h1 content
+  pMessage: String; // paragraph content
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.authService.validateAndRefreshToken()
+      .then(async () => {
+        // Email successfully verified, display success content to user
+        this.iconSuccess = true;
+        this.h1Message = 'Email Verified!';
+        this.pMessage = 'Enjoy CLARK!';
+      })
+      .catch(e => {
+        // Email unsuccessful, display error (expired link or internal error)
+      });
   }
 
 }
