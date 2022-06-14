@@ -5,7 +5,7 @@
             <img src="/assets/images/logo.png" alt="Clark Logo" />
             <h1>Login</h1>
             <div *ngIf="!isNameLogin" class="sso-section">
-                <a href="_blank" class="sso-button"><img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img"></a>
+                <a (click)="loginSSO()" class="sso-button"><img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img"></a>
                 <div class="hr-or">
                     <div class="left"><hr/></div> or <div class="right"><hr/></div>
                 </div>

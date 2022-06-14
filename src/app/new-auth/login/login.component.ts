@@ -105,4 +105,8 @@ export class LoginComponent implements OnInit{
   showPassField(){
     this.isNameLogin = !this.isNameLogin;
   }
+
+  loginSSO() {
+    this.auth.loginGoogleSSO();
+  }
 }

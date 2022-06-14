@@ -347,6 +347,37 @@ export class AuthService {
   }
 
   /**
+   * redirects for login with google SSO
+   *
+   * @returns {Promise<any>}
+   * @memberof AuthService
+   */
+  async loginGoogleSSO(): Promise<any> {
+    try {
+      const response = await this.http
+        .get<AuthUser & { tokens: Tokens }>(
+          environment.apiURL + '/google',
+          {
+            withCredentials: true
+          }
+        )
+        .pipe(
+          catchError(this.handleError)
+        )
+        .toPromise();
+
+      const tokens: Tokens = response.tokens;
+      delete response.tokens;
+      const authUser: AuthUser = response as AuthUser;
+      this.setSession({ user: authUser, tokens });
+      return this.user;
+    } catch(error) {
+      this.endSession();
+      throw error;
+    }
+  }
+
+  /**
    * Logs the current user out
    *
    * @returns {Promise<void>}
