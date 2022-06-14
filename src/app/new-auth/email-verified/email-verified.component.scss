@@ -1,9 +1,20 @@
 @import "vars.scss";
 
 .wrapper {
-    .text-box {
+    height: 100vh;
+    padding: 50px, 0;
+    width: inherit;
+
+    .content-box {
         z-index: 1;
+        border-radius: 12px;
+        margin: 5vh;
+
+        img {
+            width: 50px;
+        }
     }
+
     &:before {
         content: '';
         background: linear-gradient(90deg, white, $light-blue, white);
