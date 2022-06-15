@@ -103,8 +103,8 @@ export class RegisterComponent implements OnInit {
   nextTemp(): void {
     switch (this.currentTemp) {
       case this.TEMPLATES.info.temp:
-        if (!this.validateInfoPage()) { 
-          return; 
+        if (!this.validateInfoPage()) {
+          return;
         }
         this.currentTemp = this.TEMPLATES.account.temp;
         this.currentIndex = this.TEMPLATES.account.index;
