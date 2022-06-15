@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthValidationService {
-
+  private minLengthValidator = Validators.minLength(8);
   public isError = new BehaviorSubject<boolean>(false);
 
   constructor() { }
@@ -34,7 +34,7 @@ export class AuthValidationService {
         ]);
       case 'password':
         return new FormControl('', [
-          Validators.minLength(8),
+          this.minLengthValidator,
           //one number, one lower, one upper, one special, no spaces
           Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()+=])(?=\\S+$).*$'),
           Validators.required
@@ -59,7 +59,7 @@ export class AuthValidationService {
     } else if (control.hasError('email')) {//email error
       return('Invalid Email Address');
     } else if (control.hasError('minlength')) {//minimum length error
-      if(control.hasValidator(Validators.minLength(8))){
+      if(control.hasValidator(this.minLengthValidator)){
         return('Minimum Length 8 characters');//min length for password
       }
       return('Minimum Length 2 characters');//min length for username

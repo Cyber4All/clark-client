@@ -1,12 +1,12 @@
 <div class="wrapper">
     <clark-registration-progress [index]="currentIndex" ></clark-registration-progress>
     <div class="content-box" [ngClass]="{'failed': loginFailure}">
-        <clark-error-banner class="errBanner"></clark-error-banner>
+        <clark-error-banner class="errBanner" [errorMessage]="errorMsg"></clark-error-banner>
         <img src="/assets/images/logo.png" alt="Clark Logo" />
         <h1>Register</h1>
         <form #f="ngForm" (ngSubmit)="submit(f)" [@slideInRight]="slide" [@fallFromTop]="fall">            
             <ng-container [ngSwitch]="currentTemp">
-                <ng-template #infoTemplate [ngSwitchCase]="TEMPLATES.info.temp" >
+                <ng-template #infoTemplate [ngSwitchCase]="TEMPLATES.info.temp">
                     <div class="side-by-side">
                         <clark-input-field
                             [(ngModel)]="regInfo.firstname"
@@ -18,12 +18,11 @@
                         <clark-input-field 
                             [(ngModel)]="regInfo.lastname"
                             name="lastName" 
-                            #lastName 
+                            #lastname 
                             phold="Last Name" 
                             fControlType="required"
                         ></clark-input-field>
                     </div>
-                
                     <clark-input-field 
                         [(ngModel)]="regInfo.email" 
                         name="email" 
@@ -36,17 +35,17 @@
                         name="organization" 
                         #organization 
                         phold="Organization" 
-                        fControlType="text"
+                        fControlType="required"
                     ></clark-input-field>
                 
-                    <div class="side-by-side">
-                        <button type="button" class="white">Cancel</button>
-                        <button type="button" (click)="nextTemp()">Next</button>
+                    <div class="side-by-side" >
+                        <button type="button" class="white" (click)="nextTemp()">Cancel</button>
+                        <button type="button" (click)="nextTemp()" [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid}" class="button good">Next</button>
                     </div>
                     <a routerLink="/auth/login">Have an account? Log In!</a>
                 </ng-template>
                 
-                <ng-template #accountTemplate [ngSwitchCase]="TEMPLATES.account.temp">
+                <ng-template #accountTemplate [ngSwitchCase]="TEMPLATES.account.temp"  >
                     <clark-input-field 
                         [(ngModel)]="regInfo.username"
                         name="username" 
@@ -83,7 +82,12 @@
                 
                     <div class="side-by-side">
                         <button type="button" class="white" (click)="goBack()">Back</button>
-                        <button type="button" (click)="nextTemp()" >Register</button>
+                        <button 
+                            type="button" 
+                            (click)="nextTemp()" 
+                            class="button good" 
+                            [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid}"
+                        >Register</button>
                     </div>
                     <a routerLink="/auth/login">Have an account? Log In!</a>
                 </ng-template>

@@ -1,7 +1,8 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, NgForm } from '@angular/forms';
+import { AfterViewChecked, AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-register',
@@ -45,7 +46,7 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
     ])
   ]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecked{
   TEMPLATES = {
     info: { temp: 'info', index: 1 },
     account: { temp: 'account', index: 2 },
@@ -60,7 +61,7 @@ export class RegisterComponent implements OnInit {
   loginFailure = false;
   verified = false;
   siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
-  errorMsg = 'There was an error';
+  errorMsg = 'There was an issue on our end with your registration, we are sorry for the inconvience.\n Please try again later!';
 
   slide: boolean;
   fall = false;
@@ -74,19 +75,86 @@ export class RegisterComponent implements OnInit {
     confirmPassword: ''
   };
 
-  @ViewChild('firstname') firstnameControl;
-  @ViewChild('lastname') lastnameControl;
-  @ViewChild('email') emailControl;
-  @ViewChild('organization') organizationControl;
-  @ViewChild('username') usernameControl;
-  @ViewChild('password') passwordControl;
-  @ViewChild('confirmPassword') confirmPasswordControl;
+  buttonGuards = {
+    isInfoPageInvalid: true,
+    isRegisterPageInvalid: true 
+  }
+
+  @ViewChild('firstname') firstnameChild;
+  @ViewChild('lastname') lastnameChild;
+  @ViewChild('email') emailChild;
+  @ViewChild('organization') organizationChild;
+  @ViewChild('username') usernameChild;
+  @ViewChild('password') passwordChild;
+  @ViewChild('confirmPassword') confirmPasswordChild;
+
+  infoFormGroup: FormGroup;
+  accountFormGroup: FormGroup;
 
   constructor(
     public authValidation: AuthValidationService,
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
+
+  ngAfterViewChecked(): void {
+    if(this.currentIndex !== this.TEMPLATES.account.index) {
+      return;
+    }
+    this.accountFormGroup = new FormGroup({
+      username: this.usernameChild.control as FormControl,
+      password: this.passwordChild.control as FormControl,
+      confirmPassword: this.confirmPasswordChild.control as FormControl 
+    });
+    this.toggleRegisterButton();
+  }
+  ngAfterViewInit(): void {
+    this.infoFormGroup = new FormGroup({
+      firstname: this.firstnameChild.control as FormControl,
+      lastname: this.lastnameChild.control as FormControl,
+      email: this.emailChild.control as FormControl,
+      organization: this.organizationChild.control as FormControl,
+    });
+
+    this.toggleInfoNextButton();
+  }
+
+  private toggleInfoNextButton() {
+    this.infoFormGroup.valueChanges.subscribe((value) => {
+      // this.buttonGuards.isInfoPageInvalid = value.firstname === "" || 
+      //                                       value.lastname === "" || 
+      //                                       value.organization === "" || 
+      //                                       value.email === "" ||
+      //                                       !this.infoFieldIsValid();
+      this.buttonGuards.isInfoPageInvalid = false;
+    });
+  }
+
+  private toggleRegisterButton() {
+    this.accountFormGroup.valueChanges.subscribe((value) => {
+      this.buttonGuards.isRegisterPageInvalid = value.username === "" || 
+                                                value.password === "" || 
+                                                value.confirmPassword === "" ||
+                                                !this.accountFieldIsValid();
+    });
+  }
+
+  private accountFieldIsValid() {
+    this.validatePasswords();
+    if (
+      this.accountFormGroup.get("password") === null &&
+      this.accountFormGroup.get("username") === null &&
+      this.accountFormGroup.get("confirmPassword") === null
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  private validatePasswords() {
+
+  }
 
   /**
    * TO-DO: implement this method
@@ -108,6 +176,10 @@ export class RegisterComponent implements OnInit {
         }
         this.currentTemp = this.TEMPLATES.account.temp;
         this.currentIndex = this.TEMPLATES.account.index;
+        // Init FormControl
+        // this.accountFormGroup = new FormGroup({
+        //   username: this.usernameChild.control as FormControl
+        // })
         break;
       case this.TEMPLATES.account.temp:
         this.currentTemp = this.TEMPLATES.submission.temp;
@@ -129,6 +201,8 @@ export class RegisterComponent implements OnInit {
     if(this.currentTemp === this.TEMPLATES.account.temp) {
       this.currentTemp = this.TEMPLATES.info.temp;
       this.currentIndex = this.TEMPLATES.info.index;
+      console.log(this.infoFormGroup)
+      this.toggleInfoNextButton();
     }
   }
 
@@ -137,25 +211,27 @@ export class RegisterComponent implements OnInit {
    *  First name, last name, email and organization
    */
   validateInfoPage() {
-    if(
-      this.firstnameControl.control.hasError('required') ||
-      this.firstnameControl.control.hasError('required')
-    ) {
-      this.errorMsg = 'Please fill out required fields';
-      this.authValidation.showError();
+    if(this.infoFieldIsValid()) {
+      return true;
     }
-    return false;
+    return true;
   }
 
   /**
    *
    */
   validateAccountPage() {
-
+    console.log('Hellp')
   }
 
   captureResponse(event) {
     this.verified = event;
   }
 
+  private infoFieldIsValid(): boolean{
+    return (this.infoFormGroup.get('firstname').errors === null &&
+    this.infoFormGroup.get('lastname').errors === null &&
+    this.infoFormGroup.get('email').errors === null &&
+    this.infoFormGroup.get('organization').errors === null)
+  }
 }
