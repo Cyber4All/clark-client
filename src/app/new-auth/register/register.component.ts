@@ -2,6 +2,7 @@ import { trigger, transition, style, animate, query, stagger, keyframes } from '
 import { AfterViewChecked, AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
+import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -106,7 +107,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
       username: this.usernameChild.control as FormControl,
       password: this.passwordChild.control as FormControl,
       confirmPassword: this.confirmPasswordChild.control as FormControl
-    });
+    }, MatchValidator.mustMatch('password', 'confirmPassword'));
     this.toggleRegisterButton();
   }
   ngAfterViewInit(): void {
