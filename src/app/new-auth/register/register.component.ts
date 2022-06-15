@@ -77,8 +77,8 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
 
   buttonGuards = {
     isInfoPageInvalid: true,
-    isRegisterPageInvalid: true 
-  }
+    isRegisterPageInvalid: true
+  };
 
   @ViewChild('firstname') firstnameChild;
   @ViewChild('lastname') lastnameChild;
@@ -105,7 +105,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
     this.accountFormGroup = new FormGroup({
       username: this.usernameChild.control as FormControl,
       password: this.passwordChild.control as FormControl,
-      confirmPassword: this.confirmPasswordChild.control as FormControl 
+      confirmPassword: this.confirmPasswordChild.control as FormControl
     });
     this.toggleRegisterButton();
   }
@@ -122,9 +122,9 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
 
   private toggleInfoNextButton() {
     this.infoFormGroup.valueChanges.subscribe((value) => {
-      // this.buttonGuards.isInfoPageInvalid = value.firstname === "" || 
-      //                                       value.lastname === "" || 
-      //                                       value.organization === "" || 
+      // this.buttonGuards.isInfoPageInvalid = value.firstname === "" ||
+      //                                       value.lastname === "" ||
+      //                                       value.organization === "" ||
       //                                       value.email === "" ||
       //                                       !this.infoFieldIsValid();
       this.buttonGuards.isInfoPageInvalid = false;
@@ -133,9 +133,9 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
 
   private toggleRegisterButton() {
     this.accountFormGroup.valueChanges.subscribe((value) => {
-      this.buttonGuards.isRegisterPageInvalid = value.username === "" || 
-                                                value.password === "" || 
-                                                value.confirmPassword === "" ||
+      this.buttonGuards.isRegisterPageInvalid = value.username === '' ||
+                                                value.password === '' ||
+                                                value.confirmPassword === '' ||
                                                 !this.accountFieldIsValid();
     });
   }
@@ -143,9 +143,9 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
   private accountFieldIsValid() {
     this.validatePasswords();
     if (
-      this.accountFormGroup.get("password") === null &&
-      this.accountFormGroup.get("username") === null &&
-      this.accountFormGroup.get("confirmPassword") === null
+      this.accountFormGroup.get('password') === null &&
+      this.accountFormGroup.get('username') === null &&
+      this.accountFormGroup.get('confirmPassword') === null
     ) {
       return true;
     }
@@ -201,7 +201,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
     if(this.currentTemp === this.TEMPLATES.account.temp) {
       this.currentTemp = this.TEMPLATES.info.temp;
       this.currentIndex = this.TEMPLATES.info.index;
-      console.log(this.infoFormGroup)
+      console.log(this.infoFormGroup);
       this.toggleInfoNextButton();
     }
   }
@@ -221,7 +221,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
    *
    */
   validateAccountPage() {
-    console.log('Hellp')
+    console.log('Hellp');
   }
 
   captureResponse(event) {
@@ -232,6 +232,6 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
     return (this.infoFormGroup.get('firstname').errors === null &&
     this.infoFormGroup.get('lastname').errors === null &&
     this.infoFormGroup.get('email').errors === null &&
-    this.infoFormGroup.get('organization').errors === null)
+    this.infoFormGroup.get('organization').errors === null);
   }
 }
