@@ -17,7 +17,11 @@
         >{{  hide ? 'visibility_off' : 'visibility'  }}
     </mat-icon>
     <mat-error>
-        {{ authValidation.getInputErrorMessage(control) }}
+        {{
+            confirmType === '' ? 
+            authValidation.getInputErrorMessage(control) :
+            authValidation.getInputErrorMessage(control, confirmType)
+        }}
     </mat-error>
 </mat-form-field>
 
