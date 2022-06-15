@@ -33,7 +33,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   /**
    * Used to format error message for match errors (i.e. password and confirm password)
    */
-  @Input() confirmType: 'email' | 'password' | '' = '';
+  @Input() confirmType: 'Email' | 'Password' | '' = '';
   control: FormControl;
   hide: Boolean;
 

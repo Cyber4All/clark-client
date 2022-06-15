@@ -68,6 +68,7 @@
                         isPwrd="true" 
                         phold="Confirm Password" 
                         fControlType="required"
+                        [confirmType]="'Password'"
                     ></clark-input-field>
                 
                     <div 
@@ -83,8 +84,8 @@
                     <div class="side-by-side">
                         <button type="button" class="white" (click)="goBack()">Back</button>
                         <button 
-                            type="button" 
-                            (click)="nextTemp()" 
+                            type="submit" 
+                            (submit)="nextTemp()" 
                             class="button good" 
                             [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid}"
                         >Register</button>

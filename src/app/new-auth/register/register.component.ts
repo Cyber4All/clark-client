@@ -47,7 +47,7 @@ import { takeUntil } from 'rxjs/operators';
     ])
   ]
 })
-export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecked{
+export class RegisterComponent implements OnInit, AfterViewChecked{
   TEMPLATES = {
     info: { temp: 'info', index: 1 },
     account: { temp: 'account', index: 2 },
@@ -89,8 +89,8 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
   @ViewChild('password') passwordChild;
   @ViewChild('confirmPassword') confirmPasswordChild;
 
-  infoFormGroup: FormGroup;
-  accountFormGroup: FormGroup;
+  infoFormGroup: FormGroup = undefined;
+  accountFormGroup: FormGroup = undefined;
 
   constructor(
     public authValidation: AuthValidationService,
@@ -100,34 +100,37 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
   }
 
   ngAfterViewChecked(): void {
-    if(this.currentIndex !== this.TEMPLATES.account.index) {
-      return;
-    }
-    this.accountFormGroup = new FormGroup({
-      username: this.usernameChild.control as FormControl,
-      password: this.passwordChild.control as FormControl,
-      confirmPassword: this.confirmPasswordChild.control as FormControl
-    }, MatchValidator.mustMatch('password', 'confirmPassword'));
-    this.toggleRegisterButton();
-  }
-  ngAfterViewInit(): void {
-    this.infoFormGroup = new FormGroup({
-      firstname: this.firstnameChild.control as FormControl,
-      lastname: this.lastnameChild.control as FormControl,
-      email: this.emailChild.control as FormControl,
-      organization: this.organizationChild.control as FormControl,
-    });
+    if(this.currentIndex === this.TEMPLATES.account.index) {
+      this.accountFormGroup = new FormGroup({
+        username: this.usernameChild.control as FormControl,
+        password: this.passwordChild.control as FormControl,
+        confirmPassword: this.confirmPasswordChild.control as FormControl
+      }, MatchValidator.mustMatch('password', 'confirmPassword'));
 
-    this.toggleInfoNextButton();
+      this.toggleRegisterButton();
+    }
+    if(this.currentIndex === this.TEMPLATES.info.index) {
+      if (this.infoFormGroup === undefined) {
+        this.infoFormGroup = new FormGroup({
+          firstname: this.firstnameChild.control as FormControl,
+          lastname: this.lastnameChild.control as FormControl,
+          email: this.emailChild.control as FormControl,
+          organization: this.organizationChild.control as FormControl,
+        });
+      }
+      this.toggleInfoNextButton();
+    }
+
   }
+
 
   private toggleInfoNextButton() {
     this.infoFormGroup.valueChanges.subscribe((value) => {
-      // this.buttonGuards.isInfoPageInvalid = value.firstname === "" ||
-      //                                       value.lastname === "" ||
-      //                                       value.organization === "" ||
-      //                                       value.email === "" ||
-      //                                       !this.infoFieldIsValid();
+      this.buttonGuards.isInfoPageInvalid = value.firstname === '' ||
+                                            value.lastname === '' ||
+                                            value.organization === '' ||
+                                            value.email === '' ||
+                                            !this.infoFieldIsValid();
       this.buttonGuards.isInfoPageInvalid = false;
     });
   }
@@ -142,19 +145,9 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
   }
 
   private accountFieldIsValid() {
-    this.validatePasswords();
-    if (
-      this.accountFormGroup.get('password') === null &&
-      this.accountFormGroup.get('username') === null &&
-      this.accountFormGroup.get('confirmPassword') === null
-    ) {
-      return true;
-    }
-    return false;
-  }
-
-  private validatePasswords() {
-
+      return this.accountFormGroup.get('password').errors === null &&
+              this.accountFormGroup.get('username').errors === null &&
+              this.accountFormGroup.get('confirmPassword').errors === null;
   }
 
   /**
@@ -163,7 +156,8 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
    * @param f form data
    */
   public submit(form: NgForm): void {
-    console.log(form.value);
+    console.log(form);
+    console.log(this.regInfo);
   }
 
   /**
@@ -172,15 +166,8 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
   nextTemp(): void {
     switch (this.currentTemp) {
       case this.TEMPLATES.info.temp:
-        if (!this.validateInfoPage()) {
-          return;
-        }
         this.currentTemp = this.TEMPLATES.account.temp;
         this.currentIndex = this.TEMPLATES.account.index;
-        // Init FormControl
-        // this.accountFormGroup = new FormGroup({
-        //   username: this.usernameChild.control as FormControl
-        // })
         break;
       case this.TEMPLATES.account.temp:
         this.currentTemp = this.TEMPLATES.submission.temp;
@@ -202,27 +189,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, AfterViewChecke
     if(this.currentTemp === this.TEMPLATES.account.temp) {
       this.currentTemp = this.TEMPLATES.info.temp;
       this.currentIndex = this.TEMPLATES.info.index;
-      console.log(this.infoFormGroup);
-      this.toggleInfoNextButton();
     }
-  }
-
-  /**
-   *  Fields in info page:
-   *  First name, last name, email and organization
-   */
-  validateInfoPage() {
-    if(this.infoFieldIsValid()) {
-      return true;
-    }
-    return true;
-  }
-
-  /**
-   *
-   */
-  validateAccountPage() {
-    console.log('Hellp');
   }
 
   captureResponse(event) {
