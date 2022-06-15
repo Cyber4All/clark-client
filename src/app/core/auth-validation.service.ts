@@ -51,9 +51,10 @@ export class AuthValidationService {
    * the specific error that has occured
    *
    * @param control Form control from this specific input field
+   * @param match String that specifies what field is being matched
    * @returns error message
    */
-  public getInputErrorMessage(control: FormControl): string {
+  public getInputErrorMessage(control: FormControl, match?: string): string {
     if(control.hasError('required')) {//field not filled out
       return('This field is required');
     } else if (control.hasError('email')) {//email error
@@ -67,6 +68,8 @@ export class AuthValidationService {
       return('Maximum Length 30 characters');
     } else if(control.hasError('pattern')) {//pattern error for password
       return(this.getPwordRegexErrMsg(control.value));
+    } else if(control.hasError('mustMatch')) {
+      return !match ? 'Fields do not match' : `${match}s do not match`;
     }
   }
 
