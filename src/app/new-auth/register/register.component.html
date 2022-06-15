@@ -10,31 +10,31 @@
                     <div class="side-by-side">
                         <clark-input-field
                             [(ngModel)]="regInfo.firstname"
-                            #firstname="ngModel" 
-                            fControlType="text"
+                            #firstname
+                            fControlType="required"
                             name="firstName" 
                             phold="First Name"
                         ></clark-input-field>
                         <clark-input-field 
                             [(ngModel)]="regInfo.lastname"
                             name="lastName" 
-                            #lastName="ngModel" 
+                            #lastName 
                             phold="Last Name" 
-                            fControlType="text"
+                            fControlType="required"
                         ></clark-input-field>
                     </div>
                 
                     <clark-input-field 
                         [(ngModel)]="regInfo.email" 
                         name="email" 
-                        #email="ngModel" 
+                        #email 
                         phold="Email" 
                         fControlType="email"
                     ></clark-input-field>
                     <clark-input-field 
                         [(ngModel)]="regInfo.organization"  
                         name="organization" 
-                        #organization="ngModel" 
+                        #organization 
                         phold="Organization" 
                         fControlType="text"
                     ></clark-input-field>
@@ -50,14 +50,14 @@
                     <clark-input-field 
                         [(ngModel)]="regInfo.username"
                         name="username" 
-                        #username="ngModel" 
+                        #username 
                         phold="Username" 
                         fControlType="username"
                     ></clark-input-field>
                     <clark-input-field 
                         [(ngModel)]="regInfo.password"
                         name="password" 
-                        #password="ngModel" 
+                        #password 
                         isPwrd="true" 
                         phold="Password" 
                         fControlType="password"
@@ -65,10 +65,10 @@
                     <clark-input-field 
                         [(ngModel)]="regInfo.confirmPassword"
                         name="confirmPassword" 
-                        #confirmPassword="ngModel" 
+                        #confirmPassword 
                         isPwrd="true" 
                         phold="Confirm Password" 
-                        fControlType="password"
+                        fControlType="required"
                     ></clark-input-field>
                 
                     <div 

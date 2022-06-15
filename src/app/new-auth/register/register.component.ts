@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, NgForm } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 
@@ -60,6 +60,7 @@ export class RegisterComponent implements OnInit {
   loginFailure = false;
   verified = false;
   siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
+  errorMsg = 'There was an error';
 
   slide: boolean;
   fall = false;
@@ -67,12 +68,19 @@ export class RegisterComponent implements OnInit {
   regInfo = {
     firstname: '',
     lastname: '',
-    username: '',
     email: '',
     organization: '',
     password: '',
     confirmPassword: ''
   };
+
+  @ViewChild('firstname') firstnameControl;
+  @ViewChild('lastname') lastnameControl;
+  @ViewChild('email') emailControl;
+  @ViewChild('organization') organizationControl;
+  @ViewChild('username') usernameControl;
+  @ViewChild('password') passwordControl;
+  @ViewChild('confirmPassword') confirmPasswordControl;
 
   constructor(
     public authValidation: AuthValidationService,
@@ -93,10 +101,11 @@ export class RegisterComponent implements OnInit {
    *
    */
   nextTemp(): void {
-    console.log(this.regInfo);
-    this.slide = !this.slide;
     switch (this.currentTemp) {
       case this.TEMPLATES.info.temp:
+        if (!this.validateInfoPage()) { 
+          return; 
+        }
         this.currentTemp = this.TEMPLATES.account.temp;
         this.currentIndex = this.TEMPLATES.account.index;
         break;
@@ -109,6 +118,7 @@ export class RegisterComponent implements OnInit {
         this.currentIndex = this.TEMPLATES.sso.index;
         break;
     }
+    this.slide = !this.slide;
   }
 
   /**
@@ -122,10 +132,24 @@ export class RegisterComponent implements OnInit {
     }
   }
 
+  /**
+   *  Fields in info page:
+   *  First name, last name, email and organization
+   */
   validateInfoPage() {
-
+    if(
+      this.firstnameControl.control.hasError('required') ||
+      this.firstnameControl.control.hasError('required')
+    ) {
+      this.errorMsg = 'Please fill out required fields';
+      this.authValidation.showError();
+    }
+    return false;
   }
 
+  /**
+   *
+   */
   validateAccountPage() {
 
   }
