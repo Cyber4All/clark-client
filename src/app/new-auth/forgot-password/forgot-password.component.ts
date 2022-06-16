@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RegisteredEmailValidator } from 'app/core/registered-email-validator';
+import { RegisteredEmailValidator } from 'app/shared/validators/RegisteredEmailValidator';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 
 @Component({
