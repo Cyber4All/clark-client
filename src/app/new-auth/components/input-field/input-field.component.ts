@@ -30,6 +30,10 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 // no validation
   @Input() fControlType: 'email' | 'username' | 'password' | 'required' |'text' = 'text';
 
+  /**
+   * Used to format error message for match errors (i.e. password and confirm password)
+   */
+  @Input() confirmType: 'email' | 'password' | '' = '';
   control: FormControl;
   hide: Boolean;
 
