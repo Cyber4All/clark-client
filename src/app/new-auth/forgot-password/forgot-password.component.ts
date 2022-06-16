@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegisteredEmailValidator } from 'app/core/registered-email-validator';
+import { MatchValidator } from 'app/shared/validators/MatchValidator';
 
 @Component({
   selector: 'clark-forgot-password',
@@ -21,7 +22,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
       validators: [Validators.required, Validators.email],
       updateOn:'blur'
     })
-  }, {});
+  }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });
 
   constructor(private registeredEmailValidator: RegisteredEmailValidator) { }
 
