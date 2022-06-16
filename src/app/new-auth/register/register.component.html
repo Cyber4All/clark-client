@@ -1,26 +1,26 @@
 <div class="wrapper">
     <clark-registration-progress [index]="currentIndex" ></clark-registration-progress>
-    <div class="content-box" [ngClass]="{'failed': loginFailure}">
+    <div class="content-box" [ngClass]="{'failed': registrationFailure}">
         <clark-error-banner class="errBanner" [errorMessage]="errorMsg"></clark-error-banner>
         <img src="/assets/images/logo.png" alt="Clark Logo" />
         <h1>Register</h1>
-        <form #f="ngForm" (ngSubmit)="submit(f)" [@slideInRight]="slide" [@fallFromTop]="fall">            
+        <form class="form" #f="ngForm" (ngSubmit)="submit()" [@slideInRight]="slide" [@fallFromTop]="fall">            
             <ng-container [ngSwitch]="currentTemp">
                 <ng-template #infoTemplate [ngSwitchCase]="TEMPLATES.info.temp">
                     <div class="side-by-side">
                         <clark-input-field
                             [(ngModel)]="regInfo.firstname"
                             #firstname
-                            fControlType="required"
                             name="firstName" 
                             phold="First Name"
+                            [control]="infoFormGroup.get('firstname')"
                         ></clark-input-field>
                         <clark-input-field 
                             [(ngModel)]="regInfo.lastname"
                             name="lastName" 
                             #lastname 
                             phold="Last Name" 
-                            fControlType="required"
+                            [control]="infoFormGroup.get('lastname')"
                         ></clark-input-field>
                     </div>
                     <clark-input-field 
@@ -28,14 +28,14 @@
                         name="email" 
                         #email 
                         phold="Email" 
-                        fControlType="email"
+                        [control]="infoFormGroup.get('email')"
                     ></clark-input-field>
                     <clark-input-field 
                         [(ngModel)]="regInfo.organization"  
                         name="organization" 
                         #organization 
                         phold="Organization" 
-                        fControlType="required"
+                        [control]="infoFormGroup.get('organization')"
                     ></clark-input-field>
                 
                     <div class="side-by-side" >
@@ -51,7 +51,7 @@
                         name="username" 
                         #username 
                         phold="Username" 
-                        fControlType="username"
+                        [control]="accountFormGroup.get('username')"
                     ></clark-input-field>
                     <clark-input-field 
                         [(ngModel)]="regInfo.password"
@@ -59,7 +59,7 @@
                         #password 
                         isPwrd="true" 
                         phold="Password" 
-                        fControlType="password"
+                        [control]="accountFormGroup.get('password')"
                     ></clark-input-field>
                     <clark-input-field 
                         [(ngModel)]="regInfo.confirmPassword"
@@ -67,8 +67,8 @@
                         #confirmPassword 
                         isPwrd="true" 
                         phold="Confirm Password" 
-                        fControlType="required"
                         [confirmType]="'Password'"
+                        [control]="accountFormGroup.get('confirmPassword')"
                     ></clark-input-field>
                 
                     <div 
@@ -78,14 +78,15 @@
                         ngRecaptcha 
                         key="{{siteKey}}" 
                         (captchaSuccess)="captureResponse($event)" 
-                        [formControl]="captcha"
+                        [formControl]="accountFormGroup.get('captcha')"
                     ></div>
-                
+                    <mat-error *ngIf="accountFormGroup.get('captcha').hasError('notVerified')">
+                        Please complete the reCaptcha to register
+                    </mat-error>
                     <div class="side-by-side">
                         <button type="button" class="white" (click)="goBack()">Back</button>
                         <button 
-                            type="submit" 
-                            (submit)="nextTemp()" 
+                            type="submit"
                             class="button good" 
                             [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid}"
                         >Register</button>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, forwardRef } from '@angular/core';
+import { Component, Input, OnInit, forwardRef, OnDestroy } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 /**
@@ -34,7 +34,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
    * Used to format error message for match errors (i.e. password and confirm password)
    */
   @Input() confirmType: 'Email' | 'Password' | '' = '';
-  control: FormControl;
+  @Input() control: FormControl | undefined = undefined;
   hide: Boolean;
 
   //required for ControlValueAccessor
@@ -45,7 +45,9 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   constructor(public authValidation: AuthValidationService) { }
 
   async ngOnInit(): Promise<void> {
-    this.control = this.authValidation.getInputFormControl(this.fControlType);
+    this.control = !this.control ?
+                    this.authValidation.getInputFormControl(this.fControlType) :
+                    this.control;
     this.hide = this.isPwrd;
   }
 
@@ -59,4 +61,5 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn: any): void {
     this.touched = fn;
   }
+
 }

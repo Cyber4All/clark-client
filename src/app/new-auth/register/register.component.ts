@@ -1,8 +1,10 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
-import { AfterViewChecked, AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, NgForm } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -47,7 +49,9 @@ import { takeUntil } from 'rxjs/operators';
     ])
   ]
 })
-export class RegisterComponent implements OnInit, AfterViewChecked{
+export class RegisterComponent implements OnInit, OnDestroy{
+  private ngUnsubscribe = new Subject<void>();
+
   TEMPLATES = {
     info: { temp: 'info', index: 1 },
     account: { temp: 'account', index: 2 },
@@ -55,11 +59,10 @@ export class RegisterComponent implements OnInit, AfterViewChecked{
     sso: { temp: 'sso', index: 3 }
   };
 
-  captcha: FormControl = new FormControl();
   currentTemp: String = 'info';
   currentIndex = 1;
 
-  loginFailure = false;
+  registrationFailure: Boolean = false;
   verified = false;
   siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
   errorMsg = 'There was an issue on our end with your registration, we are sorry for the inconvience.\n Please try again later!';
@@ -81,73 +84,78 @@ export class RegisterComponent implements OnInit, AfterViewChecked{
     isRegisterPageInvalid: true
   };
 
-  @ViewChild('firstname') firstnameChild;
-  @ViewChild('lastname') lastnameChild;
-  @ViewChild('email') emailChild;
-  @ViewChild('organization') organizationChild;
-  @ViewChild('username') usernameChild;
-  @ViewChild('password') passwordChild;
-  @ViewChild('confirmPassword') confirmPasswordChild;
+  infoFormGroup: FormGroup = new FormGroup({
+    firstname: this.authValidation.getInputFormControl('required'),
+    lastname: this.authValidation.getInputFormControl('required'),
+    email: this.authValidation.getInputFormControl('email'),
+    organization: this.authValidation.getInputFormControl('required'),
+  });
+  accountFormGroup: FormGroup = new FormGroup({
+    username: this.authValidation.getInputFormControl('username'),
+    password: this.authValidation.getInputFormControl('password'),
+    confirmPassword: this.authValidation.getInputFormControl('required'),
+    captcha: new FormControl()
+  }, MatchValidator.mustMatch('password', 'confirmPassword'));
 
-  infoFormGroup: FormGroup = undefined;
-  accountFormGroup: FormGroup = undefined;
+  redirectUrl = '';
 
   constructor(
     public authValidation: AuthValidationService,
+    private router: Router,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.authValidation.getErrorState().subscribe(err => this.registrationFailure = err);
+    this.toggleInfoNextButton();
+    this.toggleRegisterButton();
   }
 
-  ngAfterViewChecked(): void {
-    if(this.currentIndex === this.TEMPLATES.account.index) {
-      this.accountFormGroup = new FormGroup({
-        username: this.usernameChild.control as FormControl,
-        password: this.passwordChild.control as FormControl,
-        confirmPassword: this.confirmPasswordChild.control as FormControl
-      }, MatchValidator.mustMatch('password', 'confirmPassword'));
-
-      this.toggleRegisterButton();
-    }
-    if(this.currentIndex === this.TEMPLATES.info.index) {
-      if (this.infoFormGroup === undefined) {
-        this.infoFormGroup = new FormGroup({
-          firstname: this.firstnameChild.control as FormControl,
-          lastname: this.lastnameChild.control as FormControl,
-          email: this.emailChild.control as FormControl,
-          organization: this.organizationChild.control as FormControl,
-        });
-      }
-      this.toggleInfoNextButton();
-    }
-
+  private infoFieldIsValid(): boolean{
+    return (this.infoFormGroup.get('firstname').errors === null &&
+    this.infoFormGroup.get('lastname').errors === null &&
+    this.infoFormGroup.get('email').errors === null &&
+    this.infoFormGroup.get('organization').errors === null);
   }
-
 
   private toggleInfoNextButton() {
-    this.infoFormGroup.valueChanges.subscribe((value) => {
-      this.buttonGuards.isInfoPageInvalid = value.firstname === '' ||
-                                            value.lastname === '' ||
-                                            value.organization === '' ||
-                                            value.email === '' ||
-                                            !this.infoFieldIsValid();
-      this.buttonGuards.isInfoPageInvalid = false;
+    this.infoFormGroup.valueChanges
+    .pipe(
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe((value) => {
+      this.buttonGuards.isInfoPageInvalid =
+        value.firstname === '' || value.lastname === '' || value.organization === '' ||
+        value.email === '' || !this.infoFieldIsValid();
     });
   }
 
   private toggleRegisterButton() {
-    this.accountFormGroup.valueChanges.subscribe((value) => {
-      this.buttonGuards.isRegisterPageInvalid = value.username === '' ||
-                                                value.password === '' ||
-                                                value.confirmPassword === '' ||
-                                                !this.accountFieldIsValid();
+    this.accountFormGroup.valueChanges
+    .pipe(
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe((value) => {
+      this.buttonGuards.isRegisterPageInvalid =
+        value.username === '' || value.password === '' || value.confirmPassword === '' ||
+        !this.accountFieldIsValid() || !this.isCaptchaValid();
     });
   }
 
   private accountFieldIsValid() {
-      return this.accountFormGroup.get('password').errors === null &&
-              this.accountFormGroup.get('username').errors === null &&
-              this.accountFormGroup.get('confirmPassword').errors === null;
+    return this.accountFormGroup.get('password').errors === null &&
+      this.accountFormGroup.get('username').errors === null &&
+      this.accountFormGroup.get('confirmPassword').errors === null;
+  }
+
+  private isCaptchaValid() {
+    if (!this.verified) {
+      this.accountFormGroup.get('captcha').setErrors({
+        notVerified: true
+      });
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -155,9 +163,8 @@ export class RegisterComponent implements OnInit, AfterViewChecked{
    *
    * @param f form data
    */
-  public submit(form: NgForm): void {
-    console.log(form);
-    console.log(this.regInfo);
+  public submit(): void {
+    this.nextTemp();
   }
 
   /**
@@ -194,12 +201,13 @@ export class RegisterComponent implements OnInit, AfterViewChecked{
 
   captureResponse(event) {
     this.verified = event;
+    if (this.verified && this.accountFieldIsValid()) {
+      this.buttonGuards.isRegisterPageInvalid = false;
+    }
   }
 
-  private infoFieldIsValid(): boolean{
-    return (this.infoFormGroup.get('firstname').errors === null &&
-    this.infoFormGroup.get('lastname').errors === null &&
-    this.infoFormGroup.get('email').errors === null &&
-    this.infoFormGroup.get('organization').errors === null);
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
