@@ -25,7 +25,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.auth.initiateResetPassword(this.email).subscribe(val => {
       this.done = true;
     }, error => {
-      this.error(error);
+      this.error(JSON.parse(error).message);
     });
   }
 

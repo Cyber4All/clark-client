@@ -1,0 +1,33 @@
+@import '_vars.scss';
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    padding-bottom: 50px;
+    padding-top: 50px;
+    margin: auto;
+
+    .content {
+        width: 250px;
+
+        .title {
+            display: block;
+            padding-bottom: 100px;
+        }
+    }
+    .message {
+        max-width: 1000px;
+        font-size: $large;
+    }
+}
+
+@media screen and (max-width: 1199px){
+    .message {
+        width: 90%;
+        font-size: $normal;
+        overflow-wrap: break-word;
+        text-align: center;
+    }
+}
