@@ -59,6 +59,9 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
+    if (this.verb) {
+      this.goodVerb = this.isGoodVerb(this.verb);
+    }
     // listen for 'input' events on the input and parse verb & category (level)
     this.input$
       .pipe(

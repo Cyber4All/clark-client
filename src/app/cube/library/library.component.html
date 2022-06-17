@@ -42,7 +42,7 @@
         </div>
         
         <div class='library__content-container__saved-items'>
-            <h2 class='library-items__title'>
+            <h2 class='library-items__title' #savedList>
                 Saved Items
             </h2>
             <div *ngIf='libraryItems?.length; else emptyLibraryTemplate' class='library-items__list-items'>

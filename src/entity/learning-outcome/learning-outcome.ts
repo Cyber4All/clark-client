@@ -31,14 +31,7 @@ export class LearningOutcome {
     return this._bloom;
   }
   set bloom(bloom: string) {
-    if (bloom && levels.includes(bloom.toLowerCase())) {
-      this._bloom = bloom.toLowerCase();
-    } else {
-      throw new EntityError(
-        LEARNING_OUTCOME_ERROR_MESSAGES.INVALID_BLOOM(bloom),
-        'bloom',
-      );
-    }
+    this._bloom = bloom.toLowerCase();
   }
 
   private _verb!: string;
@@ -51,20 +44,7 @@ export class LearningOutcome {
     return this._verb;
   }
   set verb(verb: string) {
-    if (
-      verb &&
-      // @ts-ignore
-      (taxonomy.taxons[this.bloom] as { verbs: string[] }).verbs.includes(
-        verb.toLowerCase(),
-      )
-    ) {
-      this._verb = verb.toLowerCase();
-    } else {
-      throw new EntityError(
-        LEARNING_OUTCOME_ERROR_MESSAGES.INVALID_VERB(this.bloom, verb),
-        'verb',
-      );
-    }
+    this._verb = verb.toLowerCase();
   }
 
   private _text!: string;
