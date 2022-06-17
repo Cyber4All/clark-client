@@ -29,6 +29,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 // describes the type of validation needed for the field. default 'text'
 // no validation
   @Input() fControlType: 'email' | 'username' | 'password' | 'required' |'text' = 'text';
+  @Input() errorMsg: String = '';
 
   /**
    * Used to format error message for match errors (i.e. password and confirm password)
