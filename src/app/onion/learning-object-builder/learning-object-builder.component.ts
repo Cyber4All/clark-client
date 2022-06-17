@@ -230,6 +230,12 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
           'Unable to create Learning Outcome',
         );
         break;
+      case BUILDER_ERRORS.INCOMPLETE_OUTCOME:
+        this.noteService.warning(
+          toasterTitle,
+          'Learning Outcome is incomplete',
+        );
+        break;
       case BUILDER_ERRORS.DELETE_OUTCOME:
         this.noteService.error(
           toasterTitle,

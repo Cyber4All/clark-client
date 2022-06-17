@@ -8,6 +8,7 @@
     </div>
     <input [ngClass]="{'withVerb': verb, 'bad': verb && !goodVerb}" placeholder="Outcome text" type="text" (input)="input$.next($event)" [value]="text" />
   </div>
+  <!--Verb Dropdown Menu-->
   <div *ngIf="menu" class="menu" (activate)="$event.stopPropagation()">
     <ul>
       <li *ngFor="let v of verbsInSelectedCategory" (activate)="setVerb(v)" [ngClass]="{'selected': verb === v}">

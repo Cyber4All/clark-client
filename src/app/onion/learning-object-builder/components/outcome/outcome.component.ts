@@ -92,10 +92,18 @@ export class OutcomeComponent implements OnInit {
 
   emitVerb(val) {
     this.selectedVerb.emit(val);
+    if (val === undefined) {
+      // Update verb for typeahead
+      this.outcome.verb = '';
+    }
   }
 
   emitLevel(val) {
     this.selectedLevel.emit(val);
+    if (val === undefined) {
+      // Update bloom for typeahead
+      this.outcome.bloom = '';
+    }
   }
 
   emitText(val) {
