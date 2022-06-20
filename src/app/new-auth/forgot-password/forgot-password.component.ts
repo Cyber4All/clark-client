@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegisteredEmailValidator } from 'app/shared/validators/RegisteredEmailValidator';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import { AuthValidationService } from 'app/core/auth-validation.service';
 
 @Component({
   selector: 'clark-forgot-password',
@@ -13,9 +14,12 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   @ViewChild('email') emailInput;
   @ViewChild('confirmEmail') confirmEmailInput;
 
-  constructor(private registeredEmailValidator: RegisteredEmailValidator) { }
+  showError: Boolean = false;
+
+  constructor(private registeredEmailValidator: RegisteredEmailValidator, private authValidationService: AuthValidationService) { }
 
   ngOnInit(): void {
+    this.authValidationService.getErrorState().subscribe(err => this.showError = err);
   }
 
   ngAfterViewInit(): void {
