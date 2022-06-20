@@ -8,6 +8,7 @@ import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Subject, interval } from 'rxjs';
 import { takeUntil, debounce } from 'rxjs/operators';
 import { environment } from '@env/environment';
+import { CookieAgreementService } from 'app/core/cookie-agreement.service';
 
 const EMAIL_REGEX =
 // eslint-disable-next-line max-len
@@ -113,7 +114,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
   constructor(
     public authValidation: AuthValidationService,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private cookieAgreement: CookieAgreementService
   ) {}
 
   ngOnInit(): void {
@@ -294,6 +296,14 @@ export class RegisterComponent implements OnInit, OnDestroy{
       this.currentTemp = this.TEMPLATES.info.temp;
       this.currentIndex = this.TEMPLATES.info.index;
     }
+  }
+
+  /**
+   * Checks localstorage for cookie agreement
+   * @returns True if the the user has agreed to cookies false otherwise
+   */
+  checkCookieAgreement() {
+    return this.cookieAgreement.getCookieAgreementVal();
   }
 
   /**

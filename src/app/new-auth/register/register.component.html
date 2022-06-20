@@ -90,7 +90,7 @@
                         <button 
                             type="submit"
                             class="button good" 
-                            [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid || loading || !verified}"
+                            [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid || loading || !verified || !checkCookieAgreement()}"
                         >Register</button>
                     </div>
                     <a routerLink="/auth/login">Have an account? Log In!</a>
