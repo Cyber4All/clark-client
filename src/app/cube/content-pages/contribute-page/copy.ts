@@ -39,6 +39,18 @@ export const sections = {
                 title: 'Building a Learning Object',
                 questions: [
                     {
+                        question: 'Templates',
+                        answer:
+                        `
+                        <p>
+                        There are templates available for download <a href="https://clark-file-upload-nccp.s3.us-east-2.amazonaws.com/Cybersecurity-Curriculum-Templates.zip">here</a>.
+                        </p>
+                        <p>
+                        There are templates for PowerPoint's, Labs, Assessments, Solutions, and Syllabuses. They also include a template for an entire module which includes code files and accompanying documents.
+                        </p>
+                        `
+                    },
+                    {
                         question: 'Basic Information',
                         answer: 'The basic information tab covers the required descriptive tags of a learning object. These tags include' +
                         ' the learning object name, known authors/contributors, learning object length, designated academic levels,' +
