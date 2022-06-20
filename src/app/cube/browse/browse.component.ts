@@ -37,6 +37,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     sortType: undefined,
     collection: '',
     fileTypes: [],
+    status: [LearningObject.Status.RELEASED]
   };
 
   tooltipText = {
