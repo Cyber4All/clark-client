@@ -4,7 +4,6 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-login',
@@ -36,7 +35,6 @@ import { environment } from '@env/environment';
 })
 export class LoginComponent implements OnInit{
 
-  gatewayUrl = environment.apiURL;
   loginFailure: Boolean = false;
   isNameLogin = false;
   authInfo: {username: string, password: string};
@@ -63,19 +61,6 @@ export class LoginComponent implements OnInit{
 
   ngOnInit(): void {
     this.authValidation.getErrorState().subscribe(err => this.loginFailure = err);
-
-    this.auth.validateAndRefreshToken()
-      .then(async () => {
-        await this.auth.refreshToken();
-        if (this.redirectUrl) {
-          window.location = this.redirectUrl;
-        } else {
-          this.router.navigate(['home']);
-        }
-      })
-      .catch(e => {
-        throw e;
-      });
   }
 
 /**
