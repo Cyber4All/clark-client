@@ -29,6 +29,7 @@
                         #email 
                         phold="Email" 
                         [control]="infoFormGroup.get('email')"
+                        [errorMsg]="fieldErrorMsg"
                     ></clark-input-field>
                     <clark-input-field 
                         [(ngModel)]="regInfo.organization"  

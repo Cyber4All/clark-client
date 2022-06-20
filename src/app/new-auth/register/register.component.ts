@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
+import { AuthService } from 'app/core/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -66,6 +67,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   verified = false;
   siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
   errorMsg = 'There was an issue on our end with your registration, we are sorry for the inconvience.\n Please try again later!';
+  fieldErrorMsg = '';
 
   slide: boolean;
   fall = false;
@@ -99,17 +101,37 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
   redirectUrl = '';
 
+  emailInUse: boolean = false;
+  usernameInUse: boolean = false;
+  
   constructor(
     public authValidation: AuthValidationService,
-    private router: Router,
-    private route: ActivatedRoute
+    private auth: AuthService
   ) { }
 
   ngOnInit(): void {
     this.authValidation.getErrorState().subscribe(err => this.registrationFailure = err);
     this.toggleInfoNextButton();
     this.toggleRegisterButton();
+    this.validateEmail();
   }
+
+  private validateEmail() {
+    this.infoFormGroup.get('email').valueChanges.subscribe((value) => {
+      this.auth.emailInUse(value)
+      .then((res: any) => {
+        this.emailInUse = res.inUse;
+        if (this.emailInUse) { // Email in use
+          this.infoFormGroup.setErrors({
+            inUse: true
+          });
+          this.fieldErrorMsg = "This email is already in use";
+        } else {
+          // Email not in use
+        }
+      })
+    })
+  } 
 
   private infoFieldIsValid(): boolean{
     return (this.infoFormGroup.get('firstname').errors === null &&
