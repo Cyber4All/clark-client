@@ -101,9 +101,9 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
   redirectUrl = '';
 
-  emailInUse: boolean = false;
-  usernameInUse: boolean = false;
-  
+  emailInUse = false;
+  usernameInUse = false;
+
   constructor(
     public authValidation: AuthValidationService,
     private auth: AuthService
@@ -125,13 +125,13 @@ export class RegisterComponent implements OnInit, OnDestroy{
           this.infoFormGroup.setErrors({
             inUse: true
           });
-          this.fieldErrorMsg = "This email is already in use";
+          this.fieldErrorMsg = 'This email is already in use';
         } else {
           // Email not in use
         }
-      })
-    })
-  } 
+      });
+    });
+  }
 
   private infoFieldIsValid(): boolean{
     return (this.infoFormGroup.get('firstname').errors === null &&
