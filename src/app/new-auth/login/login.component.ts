@@ -36,6 +36,7 @@ import { AuthService } from 'app/core/auth.service';
 })
 export class LoginComponent implements OnInit{
 
+  finalAttempt: number;
   loginFailure: Boolean = false;
   isNameLogin = false;
   authInfo: {username: string, password: string};
@@ -80,8 +81,13 @@ export class LoginComponent implements OnInit{
     if(usernameFormCtl.hasError('required') || pwordFormCtl.hasError('required')) {
       this.bannerMsg = 'Please fill out all required fields';
       this.authValidation.showError();
-    } else if (this.attempts < 5){
+    } else if (this.attempts < 5 || this.hourPassed(Date.parse(new Date().toDateString()))){
       this.attempts++;
+      //if this is the fifth attempt mark it as the finalAttempt
+      if(this.attempts === 5) {
+        this.finalAttempt = Date.parse(new Date().toDateString());
+      }
+
       this.auth
       .login(this.authInfo)
       .then(() => {
@@ -119,5 +125,21 @@ export class LoginComponent implements OnInit{
    */
   showPassField(){
     this.isNameLogin = !this.isNameLogin;
+  }
+
+  /**
+   * returns true if an hour has passed since the last
+   * attempt before timeout
+   *
+   * @param now the time when called
+   * @returns true if an hour has passed
+   */
+  hourPassed(now: number): boolean {
+    //(now - then) > 1hr
+    if(now - this.finalAttempt > 3600000) {
+      this.attempts = 0;
+      return true;
+    }
+    return false;
   }
 }
