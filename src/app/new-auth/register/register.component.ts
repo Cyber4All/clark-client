@@ -5,8 +5,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Observable, Subject, interval } from 'rxjs';
+import { takeUntil, debounceTime, debounce } from 'rxjs/operators';
+
+const EMAIL_REGEX =
+// eslint-disable-next-line max-len
+/(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
 
 @Component({
   selector: 'clark-register',
@@ -78,7 +82,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
     email: '',
     organization: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    username: ''
   };
 
   buttonGuards = {
@@ -103,81 +108,107 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
   emailInUse = false;
   usernameInUse = false;
+  loading = false;
 
   constructor(
     public authValidation: AuthValidationService,
-    private auth: AuthService
-  ) { }
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.authValidation.getErrorState().subscribe(err => this.registrationFailure = err);
     this.toggleInfoNextButton();
     this.toggleRegisterButton();
     this.validateEmail();
+    this.validateUsername();
   }
 
-  private validateEmail() {
-    this.infoFormGroup.get('email').valueChanges.subscribe((value) => {
-      this.auth.emailInUse(value)
+  validateUsername() {
+    this.accountFormGroup.get('username').valueChanges
+    .pipe(
+      debounce(() => {
+        this.loading = true;
+        return interval(600);
+      }),
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe(async (value) => {
+      this.loading = false;
+      await this.auth.usernameInUse(value)
+      .catch((err) => {
+        this.authValidation.showError();
+      })
       .then((res: any) => {
-        this.emailInUse = res.inUse;
-        if (this.emailInUse) { // Email in use
-          this.infoFormGroup.setErrors({
+        this.usernameInUse = res.identifierInUse;
+        if (this.usernameInUse) {
+          this.accountFormGroup.get('username').setErrors({
             inUse: true
           });
-          this.fieldErrorMsg = 'This email is already in use';
+          this.fieldErrorMsg = 'This username is already in use';
         } else {
-          // Email not in use
+          this.fieldErrorMsg = '';
         }
       });
     });
   }
 
-  private infoFieldIsValid(): boolean{
-    return (this.infoFormGroup.get('firstname').errors === null &&
-    this.infoFormGroup.get('lastname').errors === null &&
-    this.infoFormGroup.get('email').errors === null &&
-    this.infoFormGroup.get('organization').errors === null);
+  validateEmail() {
+    this.infoFormGroup.get('email').valueChanges
+    .pipe(
+      debounce(() => {
+        this.loading = true;
+        return interval(600);
+      }),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(async (value) => {
+      console.log('Setting loading to false');
+      this.loading = false;
+      this.isEmailRegexValid(value);
+      await this.auth.emailInUse(value)
+      .then((res: any) => {
+        this.emailInUse = res.identifierInUse;
+        if (this.emailInUse) {
+          this.fieldErrorMsg = 'This email is already in use';
+          this.infoFormGroup.get('email').setErrors({
+            emailInUse: true
+          });
+        }
+      })
+      .catch((err) => {
+        this.authValidation.showError();
+      });
+
+    });
+  }
+
+  private isEmailRegexValid(email: string) {
+    if (email.match(EMAIL_REGEX) === null) {
+      this.fieldErrorMsg = 'Invalid Email Address';
+      this.infoFormGroup.get('email').setErrors({
+        invalidEmail: true
+      });
+    }
   }
 
   private toggleInfoNextButton() {
-    this.infoFormGroup.valueChanges
+    this.infoFormGroup.statusChanges
     .pipe(
       takeUntil(this.ngUnsubscribe)
-    )
-    .subscribe((value) => {
-      this.buttonGuards.isInfoPageInvalid =
-        value.firstname === '' || value.lastname === '' || value.organization === '' ||
-        value.email === '' || !this.infoFieldIsValid();
+    ).subscribe((value) => {
+      this.buttonGuards.isInfoPageInvalid = value === 'INVALID';
     });
+
   }
 
   private toggleRegisterButton() {
-    this.accountFormGroup.valueChanges
+    this.accountFormGroup.statusChanges
     .pipe(
       takeUntil(this.ngUnsubscribe)
     )
     .subscribe((value) => {
-      this.buttonGuards.isRegisterPageInvalid =
-        value.username === '' || value.password === '' || value.confirmPassword === '' ||
-        !this.accountFieldIsValid() || !this.isCaptchaValid();
+      this.buttonGuards.isRegisterPageInvalid = value === 'INVALID';
     });
-  }
-
-  private accountFieldIsValid() {
-    return this.accountFormGroup.get('password').errors === null &&
-      this.accountFormGroup.get('username').errors === null &&
-      this.accountFormGroup.get('confirmPassword').errors === null;
-  }
-
-  private isCaptchaValid() {
-    if (!this.verified) {
-      this.accountFormGroup.get('captcha').setErrors({
-        notVerified: true
-      });
-      return false;
-    }
-    return true;
   }
 
   /**
@@ -186,7 +217,26 @@ export class RegisterComponent implements OnInit, OnDestroy{
    * @param f form data
    */
   public submit(): void {
-    this.nextTemp();
+    const newUser = {
+      username: this.regInfo.username.trim(),
+      name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
+      email: this.regInfo.email.trim(),
+      organization: this.regInfo.organization.trim(),
+      password: this.regInfo.password
+    };
+
+    this.auth.register(newUser)
+    .then(() => {
+      this.nextTemp();
+    },
+    error => {
+      this.errorMsg = error.error || error.message || error;
+      this.authValidation.showError();
+    });
+  }
+
+  skipSSO() {
+    this.router.navigate(['home']);
   }
 
   /**
@@ -223,8 +273,10 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
   captureResponse(event) {
     this.verified = event;
-    if (this.verified && this.accountFieldIsValid()) {
-      this.buttonGuards.isRegisterPageInvalid = false;
+    if (!this.verified) {
+      this.accountFormGroup.get('captcha').setErrors({
+        notVerified: true
+      });
     }
   }
 

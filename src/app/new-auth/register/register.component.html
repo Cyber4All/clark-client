@@ -41,7 +41,7 @@
                 
                     <div class="side-by-side" >
                         <button type="button" class="white" (click)="nextTemp()">Cancel</button>
-                        <button type="button" (click)="nextTemp()" [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid}" class="button good">Next</button>
+                        <button type="button" (click)="nextTemp()" [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid || loading}" class="button good">Next</button>
                     </div>
                     <a routerLink="/auth/login">Have an account? Log In!</a>
                 </ng-template>
@@ -53,6 +53,7 @@
                         #username 
                         phold="Username" 
                         [control]="accountFormGroup.get('username')"
+                        [errorMsg]="fieldErrorMsg"
                     ></clark-input-field>
                     <clark-input-field 
                         [(ngModel)]="regInfo.password"
@@ -89,7 +90,7 @@
                         <button 
                             type="submit"
                             class="button good" 
-                            [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid}"
+                            [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid || loading || !verified}"
                         >Register</button>
                     </div>
                     <a routerLink="/auth/login">Have an account? Log In!</a>
@@ -100,7 +101,7 @@
                     <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
                 
                     <div class="side-by-side">
-                        <button class="white bottom">Skip SSO</button>
+                        <button class="white bottom" (click)="skipSSO()">Skip SSO</button>
                         <button type="button" (click)="nextTemp()" class="bottom">Continue</button>
                     </div>
                 </ng-template>
