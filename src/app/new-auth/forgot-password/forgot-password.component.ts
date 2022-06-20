@@ -11,18 +11,7 @@ import { MatchValidator } from 'app/shared/validators/MatchValidator';
 export class ForgotPasswordComponent implements OnInit, AfterViewInit {
 
   @ViewChild('email') emailInput;
-
-  emails = new FormGroup({
-    'email': new FormControl('', {
-      validators: [Validators.required, Validators.email],
-      asyncValidators: [this.registeredEmailValidator.validate.bind(this.registeredEmailValidator)],
-      updateOn: 'blur'
-    }),
-    'confirmEmail': new FormControl('', {
-      validators: [Validators.required, Validators.email],
-      updateOn:'blur'
-    })
-  }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });
+  @ViewChild('confirmEmail') confirmEmailInput;
 
   constructor(private registeredEmailValidator: RegisteredEmailValidator) { }
 
@@ -30,9 +19,18 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log(this.emailInput);
-    this.emailInput.control.addAsyncValidators(this.registeredEmailValidator.validate.bind(this.registeredEmailValidator));
-    this.emailInput.control.updateValueAndValidity();
+    const emailInputControl = this.emailInput.valueAccessor.control; // The FormControl of the email input
+    const confirmEmailInputControl = this.confirmEmailInput.valueAccessor.control; // The FormControl of the confirm email input
+
+    // Checks if emailInput is a registered email
+    emailInputControl.addAsyncValidators(this.registeredEmailValidator.validate.bind(this.registeredEmailValidator));
+    emailInputControl.updateValueAndValidity();
+
+    // Combines inputs into a FormGroup to check if inputs match using MatchValidator
+    const emails = new FormGroup({
+      'email': emailInputControl,
+      'confirmEmail': confirmEmailInputControl
+    }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });
   }
 
 }
