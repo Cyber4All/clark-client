@@ -15,6 +15,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   @ViewChild('confirmEmail') confirmEmailInput;
 
   showError: Boolean = false;
+  showDone: Boolean = false;
 
   constructor(private registeredEmailValidator: RegisteredEmailValidator, private authValidationService: AuthValidationService) { }
 
@@ -37,4 +38,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
     }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });
   }
 
+  switch(): void {
+    this.showDone = !this.showDone;
+  }
 }
