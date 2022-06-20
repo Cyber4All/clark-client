@@ -31,6 +31,8 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     console.log(this.emailInput);
+    this.emailInput.control.addAsyncValidators(this.registeredEmailValidator.validate.bind(this.registeredEmailValidator));
+    this.emailInput.control.updateValueAndValidity();
   }
 
 }
