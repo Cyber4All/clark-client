@@ -29,6 +29,14 @@
         z-index: 0;
     }
 
+    .sso-section {
+        width: 100%;
+        
+        .sso-img {
+            width: 200px;
+        }
+    }
+
     .side-by-side {
         display: grid;
         grid-template-columns: 1fr 1fr;

@@ -40,7 +40,7 @@
                     ></clark-input-field>
                 
                     <div class="side-by-side" >
-                        <button type="button" class="white" (click)="nextTemp()">Cancel</button>
+                        <button type="button" class="white" (click)="navigateHome()">Cancel</button>
                         <button type="button" (click)="nextTemp()" [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid || loading}" class="button good">Next</button>
                     </div>
                     <a routerLink="/auth/login">Have an account? Log In!</a>
@@ -101,7 +101,7 @@
                     <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
                 
                     <div class="side-by-side">
-                        <button class="white bottom" (click)="skipSSO()">Skip SSO</button>
+                        <button class="white bottom" (click)="navigateHome()">Skip SSO</button>
                         <button type="button" (click)="nextTemp()" class="bottom">Continue</button>
                     </div>
                 </ng-template>
@@ -109,8 +109,12 @@
                 <ng-template #ssoTemplate [ngSwitchCase]="TEMPLATES.sso.temp">
                     <p>Configure single sign on.</p>
                     <p>This is optional, you can also configure this later from your profile page.</p>
-                    <p>THIS IS WHERE LOGIN WITH GOOGLE WILL APPEAR</p>
-                    <button type="button" (click)="currentTemp=TEMPLATES.info.temp" class="white bottom">Skip</button>
+                    <div class="sso-section">
+                        <a [href]="ssoRedirect" class="sso-button">
+                            <img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img">
+                        </a>
+                    </div>
+                    <button type="button" (click)="navigateHome()" class="white bottom">Skip</button>
                 </ng-template>
             </ng-container>
         </form>

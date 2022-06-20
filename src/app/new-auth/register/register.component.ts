@@ -1,12 +1,13 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
-import { Observable, Subject, interval } from 'rxjs';
-import { takeUntil, debounceTime, debounce } from 'rxjs/operators';
+import { Subject, interval } from 'rxjs';
+import { takeUntil, debounce } from 'rxjs/operators';
+import { environment } from '@env/environment';
 
 const EMAIL_REGEX =
 // eslint-disable-next-line max-len
@@ -56,6 +57,7 @@ const EMAIL_REGEX =
 })
 export class RegisterComponent implements OnInit, OnDestroy{
   private ngUnsubscribe = new Subject<void>();
+  ssoRedirect = environment.apiURL + '/google';
 
   TEMPLATES = {
     info: { temp: 'info', index: 1 },
@@ -104,8 +106,6 @@ export class RegisterComponent implements OnInit, OnDestroy{
     captcha: new FormControl()
   }, MatchValidator.mustMatch('password', 'confirmPassword'));
 
-  redirectUrl = '';
-
   emailInUse = false;
   usernameInUse = false;
   loading = false;
@@ -124,10 +124,45 @@ export class RegisterComponent implements OnInit, OnDestroy{
     this.validateUsername();
   }
 
-  validateUsername() {
+  /**
+   * Register a user
+   */
+  public submit(): void {
+    const newUser = {
+      username: this.regInfo.username.trim(),
+      name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
+      email: this.regInfo.email.trim(),
+      organization: this.regInfo.organization.trim(),
+      password: this.regInfo.password
+    };
+
+    this.auth.register(newUser)
+    .then(() => {
+      this.nextTemp();
+    },
+    error => {
+      if (error.message !== 'Internal Server Error') {
+        this.errorMsg = error.message;
+      }
+      this.authValidation.showError();
+    });
+  }
+
+  /**
+   * Takes the user back to the home page
+   */
+  navigateHome() {
+    this.router.navigate(['home']);
+  }
+
+  /**
+   * Validates the username ensuring it is not already taken
+   */
+  private validateUsername() {
     this.accountFormGroup.get('username').valueChanges
     .pipe(
       debounce(() => {
+        // Greys out the Register button while communicating with backend
         this.loading = true;
         return interval(600);
       }),
@@ -153,7 +188,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
     });
   }
 
-  validateEmail() {
+  /**
+   * Validates the email by ensuring it does not already exists in the database
+   * and uses the regex to validate it
+   */
+  private validateEmail() {
     this.infoFormGroup.get('email').valueChanges
     .pipe(
       debounce(() => {
@@ -162,9 +201,9 @@ export class RegisterComponent implements OnInit, OnDestroy{
       }),
       takeUntil(this.ngUnsubscribe)
     ).subscribe(async (value) => {
-      console.log('Setting loading to false');
       this.loading = false;
       this.isEmailRegexValid(value);
+
       await this.auth.emailInUse(value)
       .then((res: any) => {
         this.emailInUse = res.identifierInUse;
@@ -182,6 +221,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
     });
   }
 
+  /**
+   * Checks an email to ensure it is valid
+   *
+   * @param email The email to check
+   */
   private isEmailRegexValid(email: string) {
     if (email.match(EMAIL_REGEX) === null) {
       this.fieldErrorMsg = 'Invalid Email Address';
@@ -191,6 +235,10 @@ export class RegisterComponent implements OnInit, OnDestroy{
     }
   }
 
+  /**
+   * Disables the InfoNext Button when any form controls inside the infoFormGroup
+   * are INVALID
+   */
   private toggleInfoNextButton() {
     this.infoFormGroup.statusChanges
     .pipe(
@@ -201,6 +249,10 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
   }
 
+  /**
+   * Disables the accountNext Button when any form controls inside the accountFormGroup
+   * are INVALID
+   */
   private toggleRegisterButton() {
     this.accountFormGroup.statusChanges
     .pipe(
@@ -211,36 +263,9 @@ export class RegisterComponent implements OnInit, OnDestroy{
     });
   }
 
-  /**
-   * TO-DO: implement this method
-   *
-   * @param f form data
-   */
-  public submit(): void {
-    const newUser = {
-      username: this.regInfo.username.trim(),
-      name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
-      email: this.regInfo.email.trim(),
-      organization: this.regInfo.organization.trim(),
-      password: this.regInfo.password
-    };
-
-    this.auth.register(newUser)
-    .then(() => {
-      this.nextTemp();
-    },
-    error => {
-      this.errorMsg = error.error || error.message || error;
-      this.authValidation.showError();
-    });
-  }
-
-  skipSSO() {
-    this.router.navigate(['home']);
-  }
 
   /**
-   *
+   * Changes the template to the next template
    */
   nextTemp(): void {
     switch (this.currentTemp) {
@@ -261,7 +286,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   }
 
   /**
-   *
+   * Go Back to Info Template from Account Template
    */
   goBack(): void {
     this.fall = !this.fall;
@@ -271,6 +296,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
     }
   }
 
+  /**
+   * Function called after the user has verified their captcha
+   *
+   * @param event Event emitted from captcha
+   */
   captureResponse(event) {
     this.verified = event;
     if (!this.verified) {
