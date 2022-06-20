@@ -16,6 +16,7 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
   @ViewChild('confirmEmail') confirmEmailInput;
 
   showError: Boolean = false;
+  errorMessage: String;
   showDone: Boolean = false;
   submitButton: String = 'disabled';
   emails: FormGroup;
@@ -58,7 +59,10 @@ export class ForgotPasswordComponent implements OnInit, AfterViewInit {
     if(this.submitButton === 'enabled') {
       this.authService.initiateResetPassword(this.emailInput.valueAccessor.control.value).subscribe(val => {
         this.showDone = true;
-      }, error => {});
+      }, error => {
+        this.errorMessage = error.message;
+        this.authValidationService.showError();
+      });
     }
   }
 
