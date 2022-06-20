@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from '@env/environment';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 
@@ -46,6 +47,7 @@ export class LoginComponent implements OnInit{
   @ViewChild('password')
   password;
   redirectUrl;
+  gatewayUrl = environment.apiURL;
   constructor(
     private authValidation: AuthValidationService,
     private route: ActivatedRoute,
