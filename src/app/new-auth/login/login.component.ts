@@ -98,7 +98,11 @@ export class LoginComponent implements OnInit{
       this.auth
       .login(this.authInfo)
       .then(() => {
+        if (this.redirectUrl) {
+          window.location = this.redirectUrl;
+        } else {
           this.router.navigate(['home']);
+        }
       })
       .catch(error => {
         this.bannerMsg = error.message + this.attemptMsg();
