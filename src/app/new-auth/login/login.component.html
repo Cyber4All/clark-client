@@ -1,11 +1,11 @@
 <div class="wrapper">
     <div class="content-box" [ngClass]="{'failed': loginFailure}">
-        <clark-error-banner class="errBanner" [errorMessage] ="errorMsg"></clark-error-banner>
+        <clark-error-banner class="errBanner" [errorMessage] ="bannerMsg"></clark-error-banner>
         <form #f="ngForm" (ngSubmit)="submit(f)">
             <img src="/assets/images/logo.png" alt="Clark Logo" />
             <h1>Login</h1>
             <div *ngIf="!isNameLogin" class="sso-section">
-                <a (click)="loginSSO()" class="sso-button"><img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img"></a>
+                <a href="{{gatewayUrl}}/google" class="sso-button"><img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img"></a>
                 <div class="hr-or">
                     <div class="left"><hr/></div> or <div class="right"><hr/></div>
                 </div>
@@ -16,6 +16,7 @@
                 #username="ngModel"
                 phold="Username or Email"
                 fControlType="required"
+                errorMsg = "{{errorMsg}}"
             ></clark-input-field>
             <div *ngIf="isNameLogin" 
             [@inOutAnimation]
@@ -27,6 +28,7 @@
                     isPwrd="true"
                     phold="Password"
                     fControlType="required"
+                    errorMsg = "{{errorMsg}}"
                 ></clark-input-field>
                 <a routerLink="../forgot-password">Forgot Password?</a>
             </div>

@@ -1,9 +1,10 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'clark-login',
@@ -35,23 +36,46 @@ import { AuthService } from 'app/core/auth.service';
 })
 export class LoginComponent implements OnInit{
 
+  gatewayUrl = environment.apiURL;
   loginFailure: Boolean = false;
   isNameLogin = false;
   authInfo: {username: string, password: string};
-  errorMsg: String = 'There was an error';
+  errorMsg = '';
+  bannerMsg = '';
   attempts = 0;
   @ViewChild('username')
   username;
   @ViewChild('password')
   password;
+  redirectUrl;
   constructor(
     private authValidation: AuthValidationService,
+    private route: ActivatedRoute,
     private auth: AuthService,
     private router: Router
-    ) { }
+    ) {
+      this.route.parent.data.subscribe(() => {
+        if (route.snapshot.queryParams.redirectUrl) {
+          this.redirectUrl = decodeURIComponent(route.snapshot.queryParams.redirectUrl);
+        }
+      });
+     }
 
   ngOnInit(): void {
     this.authValidation.getErrorState().subscribe(err => this.loginFailure = err);
+
+    this.auth.validateAndRefreshToken()
+      .then(async () => {
+        await this.auth.refreshToken();
+        if (this.redirectUrl) {
+          window.location = this.redirectUrl;
+        } else {
+          this.router.navigate(['home']);
+        }
+      })
+      .catch(e => {
+        throw e;
+      });
   }
 
 /**
@@ -67,7 +91,7 @@ export class LoginComponent implements OnInit{
     const usernameFormCtl = this.username.valueAccessor.control;
 
     if(usernameFormCtl.hasError('required') || pwordFormCtl.hasError('required')) {
-      this.errorMsg = 'Please fill out all required fields';
+      this.bannerMsg = 'Please fill out all required fields';
       this.authValidation.showError();
     } else if (this.attempts < 5){
       this.attempts++;
@@ -77,11 +101,11 @@ export class LoginComponent implements OnInit{
           this.router.navigate(['home']);
       })
       .catch(error => {
-        this.errorMsg = error.message + this.attemptMsg();
+        this.bannerMsg = error.message + this.attemptMsg();
         this.authValidation.showError();
       });
     } else {
-      this.errorMsg = 'Sorry' + this.attemptMsg();
+      this.bannerMsg = 'Sorry' + this.attemptMsg();
       this.authValidation.showError();
     }
   }
@@ -104,9 +128,5 @@ export class LoginComponent implements OnInit{
    */
   showPassField(){
     this.isNameLogin = !this.isNameLogin;
-  }
-
-  loginSSO() {
-    this.auth.loginGoogleSSO();
   }
 }
