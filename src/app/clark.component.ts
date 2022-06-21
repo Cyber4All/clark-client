@@ -107,7 +107,7 @@ export class ClarkComponent implements OnInit {
 
     this.toaster.setPosition({ x: 'left', y: 'bottom' });
     this.toaster.init(this.view);
-    this.route.parent.data.subscribe(() => {
+    this.route.queryParams.subscribe(() => {
       if (route.snapshot.queryParams.err) {
         this.toaster.error( 'SSO Error', decodeURIComponent(route.snapshot.queryParams.err));
       }
