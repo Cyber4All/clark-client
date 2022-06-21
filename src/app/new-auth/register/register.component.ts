@@ -1,7 +1,7 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
@@ -75,6 +75,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
   errorMsg = 'There was an issue on our end with your registration, we are sorry for the inconvience.\n Please try again later!';
   fieldErrorMsg = '';
+  redirectUrl;
 
   slide: boolean;
   fall = false;
@@ -115,8 +116,15 @@ export class RegisterComponent implements OnInit, OnDestroy{
     public authValidation: AuthValidationService,
     private auth: AuthService,
     private router: Router,
-    private cookieAgreement: CookieAgreementService
-  ) {}
+    private cookieAgreement: CookieAgreementService,
+    private route: ActivatedRoute,
+  ) {
+    this.route.parent.data.subscribe(() => {
+      if (route.snapshot.queryParams.redirectUrl) {
+        this.redirectUrl = decodeURIComponent(route.snapshot.queryParams.redirectUrl);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.authValidation.getErrorState().subscribe(err => this.registrationFailure = err);
@@ -154,6 +162,10 @@ export class RegisterComponent implements OnInit, OnDestroy{
    * Takes the user back to the home page
    */
   navigateHome() {
+    if (this.redirectUrl) {
+      window.location = this.redirectUrl;
+      return;
+    }
     this.router.navigate(['home']);
   }
 

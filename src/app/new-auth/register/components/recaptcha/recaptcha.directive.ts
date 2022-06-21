@@ -59,7 +59,6 @@ export class RecaptchaDirective
     private ngZone: NgZone,
     private injector: Injector,
     private validator: RecaptchaValidator,
-
   ) {}
 
   ngOnInit() {
@@ -113,7 +112,7 @@ export class RecaptchaDirective
   }
 
   /**
-   * onExpired
+   * Run a function when the captcha expires after being idle
    */
   onExpired() {
     this.ngZone.run(() => {
@@ -125,8 +124,7 @@ export class RecaptchaDirective
   }
 
   /**
-   *
-   * @param response
+   * Run a function when the user has successfully completed the captcha
    */
   onSuccess(token: string) {
     this.ngZone.run(() => {
@@ -139,6 +137,7 @@ export class RecaptchaDirective
   }
 
   /**
+   * Verifies a token that is returned after a success
    *
    * @param token
    */
@@ -180,7 +179,7 @@ export class RecaptchaDirective
   }
 
   /**
-   * Add the script
+   * Creates and Adds the Google Recaptcha script tag to the DOM
    */
   addScript() {
     const script = document.createElement('script');
