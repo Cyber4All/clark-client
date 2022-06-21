@@ -1,10 +1,9 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { RegisteredEmailValidator } from 'app/shared/validators/RegisteredEmailValidator';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
-import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
 import { debounce, takeUntil } from 'rxjs/operators';
 import { Subject, interval } from 'rxjs';
 
@@ -60,25 +59,25 @@ export class ForgotPasswordComponent implements OnInit{
   }
 
   private validateEmail() {
-    this.emails.get('email').valueChanges.pipe(
-      debounce(() => {
-        // this.loading = true;
-        return interval(600);
-      }),
-      takeUntil(this.ngUnsubscribe)).subscribe(
-        async (value) => {
-          await this.authService.emailInUse(value)
-          .then((res: any) => {
-            this.emailInUse = res.identifierInUse;
-            if(!this.emailInUse) {
-              this.emailErrorMsg = 'This email is not registered!';
-              this.emails.get('email').setErrors({ emailInUse: false });
-            }
-          })
-          .catch((err) => {
-            this.authValidationService.showError();
-          });
-    });
+      this.emails.get('email').valueChanges.pipe(
+        debounce(() => {
+          // this.loading = true;
+          return interval(600);
+        }),
+        takeUntil(this.ngUnsubscribe)).subscribe(
+          async (value) => {
+            await this.authService.emailInUse(value)
+            .then((res: any) => {
+              this.emailInUse = res.identifierInUse;
+              if(!this.emailInUse && this.emails.get('email').hasError('invalidEmail')) {
+                this.emailErrorMsg = 'This email is not registered!';
+                this.emails.get('email').setErrors({ emailInUse: false });
+              }
+            })
+            .catch((err) => {
+              this.authValidationService.showError();
+            });
+      });
   }
 
   switch(): void {
