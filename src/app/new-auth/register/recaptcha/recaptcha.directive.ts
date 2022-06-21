@@ -7,10 +7,8 @@ import { Directive } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
-  NgControl,
   Validators,
   NG_VALUE_ACCESSOR,
-  FormsModule
 } from '@angular/forms';
 
 export interface ReCaptchaConfig {

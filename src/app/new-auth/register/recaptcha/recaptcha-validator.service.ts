@@ -1,4 +1,3 @@
-
 import {map} from 'rxjs/operators';
 import { USER_ROUTES } from '@env/route';
 import { HttpClient } from '@angular/common/http';
@@ -19,8 +18,7 @@ export class RecaptchaValidator {
                     return { tokenInvalid: true };
                 }
                 return null;
-            }))
-            ;
+            }));
         };
     }
 }
