@@ -35,7 +35,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
    * Used to format error message for match errors (i.e. password and confirm password)
    */
   @Input() confirmType: 'email' | 'password' | '' = '';
-  control: FormControl;
+  @Input() control: FormControl | undefined = undefined;
   hide: Boolean;
 
   //required for ControlValueAccessor
@@ -46,7 +46,9 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   constructor(public authValidation: AuthValidationService) { }
 
   async ngOnInit(): Promise<void> {
-    this.control = this.authValidation.getInputFormControl(this.fControlType);
+    this.control = !this.control ?
+                    this.authValidation.getInputFormControl(this.fControlType) :
+                    this.control;
     this.hide = this.isPwrd;
   }
 
