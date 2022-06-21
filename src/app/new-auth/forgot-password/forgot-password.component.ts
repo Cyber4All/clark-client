@@ -4,6 +4,9 @@ import { RegisteredEmailValidator } from 'app/shared/validators/RegisteredEmailV
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
+import { i18nMetaToJSDoc } from '@angular/compiler/src/render3/view/i18n/meta';
+import { debounce, takeUntil } from 'rxjs/operators';
+import { Subject, interval } from 'rxjs';
 
 @Component({
   selector: 'clark-forgot-password',
@@ -22,6 +25,9 @@ export class ForgotPasswordComponent implements OnInit{
     'confirmEmail': this.authValidationService.getInputFormControl('email')
   }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });;
 
+  emailInUse = true;
+  emailErrorMsg = '';
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private authValidationService: AuthValidationService,
@@ -30,6 +36,7 @@ export class ForgotPasswordComponent implements OnInit{
 
   ngOnInit(): void {
     this.authValidationService.getErrorState().subscribe(err => this.showError = err);
+    this.validateEmail();
   }
 
   // Disables button if there are any input errors, enables them otherwise
@@ -50,6 +57,28 @@ export class ForgotPasswordComponent implements OnInit{
         this.authValidationService.showError();
       });
     }
+  }
+
+  private validateEmail() {
+    this.emails.get('email').valueChanges.pipe(
+      debounce(() => {
+        // this.loading = true;
+        return interval(600);
+      }),
+      takeUntil(this.ngUnsubscribe)).subscribe(
+        async (value) => {
+          await this.authService.emailInUse(value)
+          .then((res: any) => {
+            this.emailInUse = res.identifierInUse;
+            if(!this.emailInUse) {
+              this.emailErrorMsg = 'This email is not registered!';
+              this.emails.get('email').setErrors({ emailInUse: false });
+            }
+          })
+          .catch((err) => {
+            this.authValidationService.showError();
+          });
+    });
   }
 
   switch(): void {
