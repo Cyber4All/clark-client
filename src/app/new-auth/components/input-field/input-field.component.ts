@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, forwardRef, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 /**

@@ -121,14 +121,4 @@ export class AuthValidationService {
   public getErrorState(): Observable<Boolean> {
     return this.isError;
   }
-
-  /**
-   * returns true if the user name and password fields are populated
-   *
-   * @param data username and password object
-   * @returns true if they are populated
-   */
-  public isLoginPopulated(data: { username: string, password: string }): boolean {
-    return data.username && data.password && true;
-  }
 }
