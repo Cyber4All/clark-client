@@ -300,6 +300,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
 
   /**
    * Checks localstorage for cookie agreement
+   *
    * @returns True if the the user has agreed to cookies false otherwise
    */
   checkCookieAgreement() {
