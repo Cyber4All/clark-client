@@ -106,6 +106,7 @@ export class RecaptchaDirective
 
   /**
    * Function inherited by ControlValueAccessor; writes a new value to the obj
+   *
    * @param obj The obj whose value will change
    */
   writeValue(obj: any): void {}
@@ -113,6 +114,7 @@ export class RecaptchaDirective
   /**
    * Function inherited by ControlValueAccessor
    * Registers a callback function that is called when the controls value changes
+   *
    * @param fn The callback function
    */
   registerOnChange(fn: any): void {
@@ -122,6 +124,7 @@ export class RecaptchaDirective
   /**
    * Function inherited by ControlValueAccessor
    * Registers a callback function that is called by the froms API on init
+   *
    * @param fn The callback function
    */
   registerOnTouched(fn: any): void {
