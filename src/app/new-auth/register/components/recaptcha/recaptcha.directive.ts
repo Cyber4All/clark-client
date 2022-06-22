@@ -66,6 +66,9 @@ export class RecaptchaDirective
     this.addScript();
   }
 
+  /**
+   * Create the callback function that will be called when the reCaptcha is loaded
+   */
   registerReCaptchaCallback() {
     window.reCaptchaLoad = () => {
       const config = {
@@ -101,12 +104,26 @@ export class RecaptchaDirective
     this.control.updateValueAndValidity();
   }
 
+  /**
+   * Function inherited by ControlValueAccessor; writes a new value to the obj
+   * @param obj The obj whose value will change
+   */
   writeValue(obj: any): void {}
 
+  /**
+   * Function inherited by ControlValueAccessor
+   * Registers a callback function that is called when the controls value changes
+   * @param fn The callback function
+   */
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
+  /**
+   * Function inherited by ControlValueAccessor
+   * Registers a callback function that is called by the froms API on init
+   * @param fn The callback function
+   */
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
