@@ -27,6 +27,8 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   // id of the currently selected outcome
   @Input()
   activeOutcome: string;
+  @Input()
+  levels: string;
 
   @Output()
   toggleMapping: EventEmitter<{
@@ -151,6 +153,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
       this.guidelineService
         .getGuidelines({
           text: val,
+          levels: this.levels
         })
         .then((res) => {
           this.suggestions = res.results.map((o) => {
