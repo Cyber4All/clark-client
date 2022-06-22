@@ -6,11 +6,31 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { debounce, takeUntil } from 'rxjs/operators';
 import { Subject, interval } from 'rxjs';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'clark-forgot-password',
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss']
+  styleUrls: ['./forgot-password.component.scss'],
+  animations: [
+    trigger('toggleButton', [
+      state('disabled', style({
+          borderColor: 'grey',
+          backgroundColor: 'grey',
+          color: 'black',
+          opacity: 0.2
+      })),
+      state('enabled', style({
+          borderColor: '$light-blue',
+          backgroundColor: '$light-blue',
+          color: 'white',
+          opacity: 1
+      })),
+      transition('disabled <=> enabled', [
+        animate('0.2s')
+      ])
+    ])
+  ]
 })
 export class ForgotPasswordComponent implements OnInit{
 
