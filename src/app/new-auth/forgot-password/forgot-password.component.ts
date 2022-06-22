@@ -37,12 +37,11 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ]
 })
 export class ForgotPasswordComponent implements OnInit{
-
-
   showError: Boolean = false;
   errorMessage: String;
   showDone: Boolean = false;
   submitButton: String = 'disabled';
+
   emails: FormGroup = new FormGroup({
     'email': this.authValidationService.getInputFormControl('email'),
     'confirmEmail': this.authValidationService.getInputFormControl('email')
@@ -102,9 +101,5 @@ export class ForgotPasswordComponent implements OnInit{
               this.authValidationService.showError();
             });
       });
-  }
-
-  switch(): void {
-    this.showDone = !this.showDone;
   }
 }
