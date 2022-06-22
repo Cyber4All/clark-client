@@ -21,13 +21,17 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
           opacity: 0.2
       })),
       state('enabled', style({
-          borderColor: '$light-blue',
-          backgroundColor: '$light-blue',
           color: 'white',
           opacity: 1
       })),
       transition('disabled <=> enabled', [
         animate('0.2s')
+      ])
+    ]),
+    trigger('switchViews', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('1000ms')
       ])
     ])
   ]
@@ -89,7 +93,7 @@ export class ForgotPasswordComponent implements OnInit{
             await this.authService.emailInUse(value)
             .then((res: any) => {
               this.emailInUse = res.identifierInUse;
-              if(!this.emailInUse && this.emails.get('email').hasError('invalidEmail')) {
+              if(!this.emailInUse) {
                 this.emailErrorMsg = 'This email is not registered!';
                 this.emails.get('email').setErrors({ emailInUse: false });
               }
