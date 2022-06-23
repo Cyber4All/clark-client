@@ -8,12 +8,14 @@
     .content-box {
         z-index: 1;
         border-radius: 12px;
-        padding: 50px;
+        padding: 100px 0px;
         margin: 5vh;
+        width: 400px;
 
         img {
             width: 50px;
         }
+
 
         h1 {
             margin-bottom: 10px;
@@ -47,8 +49,13 @@
             opacity: 100%;
         }
 
-        .fa-5x {
-            margin-top: 20px
+        .fa-5x, svg {
+            margin-top: 20px;
+            text-align: center;
+            display: inline-block;
+            width:100%;
+            margin: 20px 0 0 0;
+            
         }
 
         .fa-times-circle {

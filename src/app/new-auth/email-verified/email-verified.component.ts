@@ -1,10 +1,19 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-email-verified',
   templateUrl: './email-verified.component.html',
-  styleUrls: ['./email-verified.component.scss']
+  styleUrls: ['./email-verified.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('1s', style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class EmailVerifiedComponent implements OnInit {
 

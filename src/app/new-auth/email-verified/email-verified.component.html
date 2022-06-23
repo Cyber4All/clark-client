@@ -2,24 +2,30 @@
     <div class="content-box">
         <img src="/assets/images/logo.png" alt="CLARK Logo"/>
 
-        <i *ngIf="display" class="fas fa-check-circle fa-5x"></i>
-        <i *ngIf="!display" class="fas fa-times-circle fa-5x"></i>
+        <div @fadeIn>
+            <div>
+                <i *ngIf="display" class="fas fa-check-circle fa-5x"></i>
+                <i *ngIf="!display" class="fas fa-times-circle fa-5x"></i>
+            </div>
+            
 
-        <div *ngIf="display">
-            <h1>Email Verified!</h1>
-            <p>Enjoy CLARK!</p>
-        </div>
+            <div *ngIf="display">
+                <h1>Email Verified!</h1>
+                <p>Enjoy CLARK!</p>
+            </div>
 
-        <div *ngIf="!display">
-            <h1>Email Verification Link Expired</h1>
-            <p>Please login to resend verification link to your email.</p>
+            <div *ngIf="!display">
+                <h1>Email Verification Link Expired</h1>
+                <p>Please login to resend verification link to your email.</p>
 
-            <!-- <h1>Unable to Verify Email</h1>
-            <p>We were unable to verify your email at this time. Please check back later.</p> -->
-        </div>
+                <!-- <h1>Unable to Verify Email</h1>
+                <p>We were unable to verify your email at this time. Please check back later.</p> -->
+            </div>
         
 
             <button type="button">Login</button>
+        </div>
+        
 
     </div>
 </div>
