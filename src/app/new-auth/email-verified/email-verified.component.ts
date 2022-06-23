@@ -11,6 +11,7 @@ export class EmailVerifiedComponent implements OnInit {
   iconSuccess: Boolean; // what icon to display
   h1Message: String; // h1 content
   pMessage: String; // paragraph content
+  display: Boolean = true;
 
   constructor(private authService: AuthService) { }
 
