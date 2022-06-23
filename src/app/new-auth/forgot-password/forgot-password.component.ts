@@ -61,7 +61,9 @@ export class ForgotPasswordComponent implements OnInit{
     this.validateEmail();
   }
 
-  // Disables button if there are any input errors, enables them otherwise
+  /**
+   * Disables and grays out the 'Request Password Reset' button if there are any input errors, enables them otherwise
+   */
   toggleButton(): void {
     if(this.emails.controls.email.errors || this.emails.controls.confirmEmail.errors) {
       this.submitButton = 'disabled';
@@ -70,6 +72,10 @@ export class ForgotPasswordComponent implements OnInit{
     }
   }
 
+  /**
+   * Sends an email to create new password to the specified email.
+   * Displays an error banner if an error is thrown.
+   */
   submit(): void {
     if(this.submitButton === 'enabled') {
       this.authService.initiateResetPassword(this.emails.get('email').value).subscribe(val => {
@@ -81,10 +87,13 @@ export class ForgotPasswordComponent implements OnInit{
     }
   }
 
+  /**
+   * Validates the email by ensuring that it exists in the database
+   * Displays an error message beneath the input if the email does not exist
+   */
   private validateEmail() {
       this.emails.get('email').valueChanges.pipe(
         debounce(() => {
-          // this.loading = true;
           return interval(600);
         }),
         takeUntil(this.ngUnsubscribe)).subscribe(
