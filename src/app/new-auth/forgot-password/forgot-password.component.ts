@@ -80,7 +80,7 @@ export class ForgotPasswordComponent implements OnInit{
       this.authService.initiateResetPassword(this.emails.get('email').value).subscribe(val => {
         this.showDone = true;
       }, error => {
-        this.errorMessage = error.message;
+        this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
         this.authValidationService.showError();
       });
     }
@@ -106,6 +106,7 @@ export class ForgotPasswordComponent implements OnInit{
               }
             })
             .catch((err) => {
+              this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
               this.authValidationService.showError();
             });
       });
