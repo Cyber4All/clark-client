@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { RegisteredEmailValidator } from 'app/shared/validators/RegisteredEmailValidator';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
@@ -44,7 +43,7 @@ export class ForgotPasswordComponent implements OnInit{
 
   emails: FormGroup = new FormGroup({
     'email': this.authValidationService.getInputFormControl('email'),
-    'confirmEmail': this.authValidationService.getInputFormControl('email')
+    'confirmEmail': this.authValidationService.getInputFormControl('required')
   }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });;
 
   emailInUse = true;
