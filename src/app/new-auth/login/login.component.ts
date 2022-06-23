@@ -37,16 +37,22 @@ import { AuthService } from 'app/core/auth.service';
 export class LoginComponent implements OnInit{
 
   finalAttempt: number;
-  loginFailure: Boolean = false;
-  isNameLogin = false;
-  authInfo: {username: string, password: string};
   errorMsg = '';
   bannerMsg = '';
   attempts = 0;
+  loginFailure: Boolean = false;
+  isNameLogin = false;
+  
+  authInfo: {
+      username: string, 
+      password: string
+  };
+  
   @ViewChild('username')
   username;
   @ViewChild('password')
   password;
+  
   redirectUrl;
   gatewayUrl = environment.apiURL;
   constructor(
