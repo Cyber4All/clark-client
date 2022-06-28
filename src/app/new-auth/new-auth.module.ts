@@ -6,12 +6,14 @@ import { LoginComponent } from './login/login.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NewAuthRoutingModule } from './new-auth.routing';
 import { InputFieldComponent } from './components/input-field/input-field.component';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
+import { RecaptchaDirective } from './register/components/recaptcha/recaptcha.directive';
+import { RegistrationProgressComponent } from './register/components/registration-progress/registration-progress.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { ErrorBannerComponent } from './components/error-banner/error-banner.com
     ForgotPasswordComponent,
     EmailVerifiedComponent,
     InputFieldComponent,
-    ErrorBannerComponent
+    ErrorBannerComponent,
+    RecaptchaDirective,
+    RegistrationProgressComponent,
   ],
   imports: [
     CommonModule,
