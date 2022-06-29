@@ -1,11 +1,9 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
-import { doesNotMatchValidator } from 'app/core/doesNotMatchValidator';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 
 @Component({
@@ -52,19 +50,4 @@ export class ChangePasswordComponent implements OnInit {
       this.authValidationService.showError();
     });
   }
-
-  // emailsMatch(): void {
-  //   this.confirmEmail = new FormControl(this.confirmEmail.value, [
-  //     doesNotMatchValidator(this.currentEmail.value)
-  //   ]);
-  // }
-
-  // displayError(control: FormControl): string {
-  //   if(this.authValidationService.getInputErrorMessage(control)){
-  //     return this.authValidationService.getInputErrorMessage(control);
-  //   } else if(this.confirmEmail.errors?.doesNotMatch) {
-  //     return 'Emails do not match!';
-  //   }
-  // }
-
 }
