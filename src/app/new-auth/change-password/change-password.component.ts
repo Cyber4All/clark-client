@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -9,7 +10,15 @@ import { MatchValidator } from 'app/shared/validators/MatchValidator';
 @Component({
   selector: 'clark-change-password',
   templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  styleUrls: ['./change-password.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('1000ms')
+      ])
+    ])
+  ]
 })
 export class ChangePasswordComponent implements OnInit {
   isError: Boolean = true;
