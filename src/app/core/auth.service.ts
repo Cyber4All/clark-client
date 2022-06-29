@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
-import { CookieService } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 import { User, LearningObject } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
@@ -95,12 +95,21 @@ export class AuthService {
    * @memberof AuthService
    */
   private endSession() {
-    this.user = null;
+    this.user = undefined;
     this.openIdToken = null;
-    this.cookies.remove('presence');
+
+    const domain = environment.production ? 'clark.center' : 'localhost';
+    this.cookies.delete('presence', '/', domain, false, 'Lax');
     this.changeStatus(false);
     this.group.next(AUTH_GROUP.VISITOR);
+
     localStorage.removeItem(TOKEN_STORAGE_KEY);
+    document.cookie =
+      'presence=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  }
+
+  private clearAuthHeaders() {
+    this.httpHeaders = this.httpHeaders.delete('Authorization');
   }
 
   /**
@@ -353,23 +362,8 @@ export class AuthService {
    * @memberof AuthService
    */
   async logout(): Promise<void> {
-    this.http
-      .delete(environment.apiURL + '/users/' + this.user.username + '/tokens', {
-        withCredentials: true,
-        responseType: 'text'
-      })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise().then(() => {
-        this.endSession();
-
-        // push reload to end of execution context
-        setTimeout(() => {
-          window.location.reload();
-        });
-      });
+    this.endSession();
+    this.clearAuthHeaders();
   }
 
   /**
@@ -475,6 +469,31 @@ export class AuthService {
     const val = await this.http
       .get(
         environment.apiURL + '/users/identifiers/active?username=' + username,
+        {
+          headers: this.httpHeaders,
+          withCredentials: true
+        }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+    this.inUse = val;
+    return this.inUse;
+  }
+
+  /**
+   * Determines whether or not the specified email is currently in use
+   *
+   * @param {string} username
+   * @returns
+   * @memberof AuthService
+   */
+   async emailInUse(email: string) {
+    const val = await this.http
+      .get(
+        environment.apiURL + '/users/identifiers/active?email=' + email,
         {
           headers: this.httpHeaders,
           withCredentials: true
