@@ -15,7 +15,7 @@ export class ChangePasswordComponent implements OnInit {
   isError: Boolean = true;
   done = false;
 
-  view = 1;
+  view = 2;
 
   passwords: FormGroup = new FormGroup({
     'password': this.authValidationService.getInputFormControl('password'),
