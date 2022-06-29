@@ -14,6 +14,8 @@ export class ChangePasswordComponent implements OnInit {
   isError: Boolean = true;
   done = false;
 
+  view = 0;
+
   currentEmail = new FormControl('',[
     Validators.required,
     Validators.email
