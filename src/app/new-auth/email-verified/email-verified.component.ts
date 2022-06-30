@@ -46,7 +46,10 @@ export class EmailVerifiedComponent implements OnInit {
         this.pMessage = 'Enjoy CLARK!';
       })
       .catch(e => {
-        // Token refresh error, display in banner
+        // Unauthenticated login, invalid token
+        this.iconSuccess = false;
+        this.h1Message = 'Invalid Log In';
+        this.pMessage = 'Your token was invalid. Please log in to refresh your token.';
       });
     }
   }
