@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 
 @Component({
@@ -16,16 +17,28 @@ import { AuthService } from 'app/core/auth.service';
   ]
 })
 export class EmailVerifiedComponent implements OnInit {
-
   iconSuccess: Boolean; // what icon to display
   h1Message: String; // h1 content
   pMessage: String; // paragraph content
+  errorCode: String; // error to display, can be expired token or internal server error
   display: Boolean = true;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService,
+              private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.authService.validateAndRefreshToken()
+    this.errorCode = this.activatedRoute.snapshot.paramMap.get('err');
+    if(this.errorCode) {
+      this.iconSuccess = false;
+      if(this.errorCode === '401') {
+        this.h1Message = 'Email Link Expired';
+        this.pMessage = 'Please login to resend your email verification/reset password link to your email.';
+      } else {
+        this.h1Message = 'Unable to Verify Email';
+        this.pMessage = 'We were unable to verify your email at this time. Please check back later.';
+      }
+    } else {
+      this.authService.validateAndRefreshToken()
       .then(async () => {
         // Email successfully verified, display success content to user
         this.iconSuccess = true;
@@ -33,8 +46,9 @@ export class EmailVerifiedComponent implements OnInit {
         this.pMessage = 'Enjoy CLARK!';
       })
       .catch(e => {
-        // Email unsuccessful, display error (expired link or internal error)
+        // Token refresh error, display in banner
       });
+    }
   }
 
 }
