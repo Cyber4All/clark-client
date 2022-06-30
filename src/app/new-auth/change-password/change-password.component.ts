@@ -23,8 +23,7 @@ export class ChangePasswordComponent implements OnInit {
   errorMessage: String;
   showError: Boolean;
   otaCode: string;
-
-  view = 1;
+  done = false;
 
   passwords: FormGroup = new FormGroup({
     'password': this.authValidationService.getInputFormControl('password'),
@@ -44,7 +43,7 @@ export class ChangePasswordComponent implements OnInit {
   submit(): void {
     this.authService.resetPassword(this.passwords.get('password').value, this.otaCode)
     .subscribe(val => {
-      this.view = 2;
+      this.done = true;
     }, error => {
       this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
       this.authValidationService.showError();
