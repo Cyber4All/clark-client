@@ -27,7 +27,7 @@ export class EmailVerifiedComponent implements OnInit {
               private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.errorCode = this.activatedRoute.snapshot.paramMap.get('err');
+    this.errorCode = this.activatedRoute.snapshot.queryParamMap.get('err');
     if(this.errorCode) {
       this.iconSuccess = false;
       if(this.errorCode === '401') {
