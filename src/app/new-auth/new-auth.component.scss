@@ -1,5 +1,7 @@
 @import "vars.scss";
 .authentication-component {
+    background: white;
+
     :host {
       font-family: 'Source Sans Pro', sans-serif;
       font-size: $normal;
@@ -9,42 +11,58 @@
         display: block;
         z-index: 2;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         overflow-y: auto;
-        
+
         h1 {
-          color: $light-blue;
-          font-weight: 600;
-          text-align: center;
-          margin-bottom: 50px;
-          padding-bottom: 0;
+            color: $light-blue;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 50px;
+            padding-bottom: 0;
         }
 
-      form {
-          width: 100%;
-          text-align: center;
-
-          button {
-              border: 2px solid $light-blue;
-              border-radius: 5px;
-              background-color: $light-blue;
-              color: white;
-              padding: 10px;
-              font-size: $normal;
-
-              &.white {
-                  background-color: white;
-                  color: $light-blue;
-              }
-          }
-
-          .buttons {
-              margin: 50px 0 20px;
-          }
+        p {
+            font-size: 20px;
+            color: $dark-grey;
         }
 
+        img {
+            margin-top: 35px;
+            width: 50px;
+        }
+
+        form {
+            width: 100%;
+            text-align: center;
+
+            button {
+                border: 2px solid $light-blue;
+                border-radius: 5px;
+                background-color: $light-blue;
+                color: white;
+                padding: 10px;
+                font-size: $normal;
+                cursor: pointer;
+
+                &.white {
+                    background-color: white;
+                    color: $light-blue;
+                }
+
+                &.bottom {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        clark-registration-progress {
+            z-index: 1;
+            width:100%;
+        }
+        
         .content-box {
             background: white;
             border-radius: 2px;
@@ -59,10 +77,12 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
+            padding: 25px;
+            z-index: 1;
 
             .top {
                 padding-top: 50px;
-              }
+            }
 
             .errBanner {
                 background: $error-red;
@@ -77,7 +97,7 @@
                 padding: 8px;
                 border-radius: 1px;
             }
-
+  
             &.failed {
                 animation: validate-failure 0.4s linear;
                 border-top-color: $error-red;
@@ -87,6 +107,11 @@
                   opacity: 1;
                 }
             }
-        }
-    }
-}
+          }
+
+          .buttons {
+              margin: 50px 0 20px;
+          }
+      }
+      
+  }
