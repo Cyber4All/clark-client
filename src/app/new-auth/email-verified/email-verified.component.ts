@@ -32,7 +32,7 @@ export class EmailVerifiedComponent implements OnInit {
       this.iconSuccess = false;
       if(this.errorCode === '401') {
         this.h1Message = 'Email Link Expired';
-        this.pMessage = 'Please login to resend your email verification/reset password link to your email.';
+        this.pMessage = 'The code sent to your email has expired, please request another email and try again.';
       } else {
         this.h1Message = 'Unable to Verify Email';
         this.pMessage = 'We were unable to verify your email at this time. Please check back later.';
@@ -43,7 +43,7 @@ export class EmailVerifiedComponent implements OnInit {
         // Email successfully verified, display success content to user
         this.iconSuccess = true;
         this.h1Message = 'Email Verified!';
-        this.pMessage = 'Enjoy CLARK!';
+        this.pMessage = 'Welcome to CLARK!';
       })
       .catch(e => {
         // Unauthenticated login, invalid token
