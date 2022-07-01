@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthValidationService {
-
+  private minLengthValidator = Validators.minLength(8);
   public isError = new BehaviorSubject<boolean>(false);
 
   constructor() { }
@@ -34,7 +34,7 @@ export class AuthValidationService {
         ]);
       case 'password':
         return new FormControl('', [
-          Validators.minLength(8),
+          this.minLengthValidator,
           //one number, one lower, one upper, one special, no spaces
           Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()+=])(?=\\S+$).*$'),
           Validators.required
@@ -51,15 +51,16 @@ export class AuthValidationService {
    * the specific error that has occured
    *
    * @param control Form control from this specific input field
+   * @param match String that specifies what field is being matched
    * @returns error message
    */
-  public getInputErrorMessage(control: FormControl): string {
+  public getInputErrorMessage(control: FormControl, match?: string): string {
     if(control.hasError('required')) {//field not filled out
       return('This field is required');
     } else if (control.hasError('email')) {//email error
       return('Invalid Email Address');
     } else if (control.hasError('minlength')) {//minimum length error
-      if(control.hasValidator(Validators.minLength(8))){
+      if(control.hasValidator(this.minLengthValidator)){
         return('Minimum Length 8 characters');//min length for password
       }
       return('Minimum Length 2 characters');//min length for username
@@ -67,6 +68,8 @@ export class AuthValidationService {
       return('Maximum Length 30 characters');
     } else if(control.hasError('pattern')) {//pattern error for password
       return(this.getPwordRegexErrMsg(control.value));
+    } else if(control.hasError('mustMatch')) {
+      return !match ? 'Fields do not match' : `${match}s do not match`;
     }
   }
 

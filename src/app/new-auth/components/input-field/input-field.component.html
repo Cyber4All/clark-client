@@ -1,5 +1,5 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<mat-form-field>
+<mat-form-field class="max-width-field">
     <input
         matInput
         type="{{hide ? 'password' : 'text'}}" 
@@ -16,8 +16,15 @@
         (click)="hide = !hide"
         >{{  hide ? 'visibility_off' : 'visibility'  }}
     </mat-icon>
-    <mat-error>
-        {{ authValidation.getInputErrorMessage(control) }}
+    <mat-error *ngIf="control.errors !== null && confirmType === ''">
+        {{
+            errorMsg.length !== 0 ? errorMsg : authValidation.getInputErrorMessage(control)
+        }}
+    </mat-error>
+    <mat-error *ngIf="confirmType !== ''">
+        {{
+            authValidation.getInputErrorMessage(control, confirmType)
+        }}
     </mat-error>
 </mat-form-field>
 

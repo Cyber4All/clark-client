@@ -84,7 +84,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         this.userCanRevise = this.auth.hasEditorAccess();
         this.hasReviewerAccess = this.auth.hasReviewerAccess();
       });
-    this.hasDownloadAccess = (this.hasReviewerAccess || this.isReleased) && this.auth.user && this.auth.user.emailVerified;
+    this.hasDownloadAccess = (this.hasReviewerAccess || this.isReleased) && this.auth.user !== null;
 
     this.url = this.buildLocation();
     // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component

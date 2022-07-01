@@ -29,8 +29,13 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 // describes the type of validation needed for the field. default 'text'
 // no validation
   @Input() fControlType: 'email' | 'username' | 'password' | 'required' |'text' = 'text';
+  @Input() errorMsg: String = '';
 
-  control: FormControl;
+  /**
+   * Used to format error message for match errors (i.e. password and confirm password)
+   */
+  @Input() confirmType: 'Email' | 'Password' | '' = '';
+  @Input() control: FormControl | undefined = undefined;
   hide: Boolean;
 
   //required for ControlValueAccessor
@@ -41,7 +46,9 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   constructor(public authValidation: AuthValidationService) { }
 
   async ngOnInit(): Promise<void> {
-    this.control = this.authValidation.getInputFormControl(this.fControlType);
+    this.control = !this.control ?
+                    this.authValidation.getInputFormControl(this.fControlType) :
+                    this.control;
     this.hide = this.isPwrd;
   }
 
@@ -55,4 +62,5 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   registerOnTouched(fn: any): void {
     this.touched = fn;
   }
+
 }
