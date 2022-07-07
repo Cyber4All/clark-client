@@ -16,6 +16,8 @@ import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Topic } from '@entity';
 import { RelevancyService } from 'app/core/relevancy.service';
+import { ActivatedRoute } from '@angular/router';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -57,7 +59,8 @@ export class FilterSearchComponent implements OnInit {
     private collectionService: CollectionService,
     private relevancyService: RelevancyService,
     private authService: AuthService,
-    private toaster: ToastrOvenService
+    private toaster: ToastrOvenService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -248,19 +251,18 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
-  toggleTopicFilter(filter: any) {
+  toggleTopicFilter(filter: {name?: string, _id: string}) {
     if (filter.name.toLowerCase() === 'all') {
       this.clearTopicFilters();
       this.toggleTopicMenu(undefined);
       return;
     }
-    if (this.filterTopics.has(filter)) {
+    if (this.filterTopics.has(filter._id)) {
       this.filterTopics.delete(filter._id);
     } else {
       this.filterTopics.add(filter._id);
     }
     this.topicFilter.emit(Array.from(this.filterTopics));
-
   }
 
   /**

@@ -11,7 +11,7 @@ import {
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { OrderBy, Query, SortType } from 'app/interfaces/query';
 import { LearningObject } from '@entity';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -77,6 +77,7 @@ export class LearningObjectsComponent
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private route: ActivatedRoute,
+    private router: Router,
     private toaster: ToastrOvenService,
     private auth: AuthService,
     private collectionService: CollectionService,
@@ -98,11 +99,7 @@ export class LearningObjectsComponent
 
     // query by a username if it's passed in
     this.route.queryParams.subscribe(params => {
-      const username = params['username'];
-
-      if (username !== null) {
-        this.query = { text: username };
-      }
+      this.query = { ...params };
     });
 
     // listen for changes in the route and append the collection to the query
@@ -168,6 +165,15 @@ export class LearningObjectsComponent
     if (Object.keys(q).length > 1 || !Object.keys(q).includes('currPage')) {
       this.allResultsReceived = false;
     }
+
+    this.router.navigate(
+      [],
+      {
+        queryParams: { ...this.query },
+        relativeTo: this.route,
+        replaceUrl: true
+      }
+    )
   }
 
   /**
