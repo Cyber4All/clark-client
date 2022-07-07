@@ -42,17 +42,17 @@ export class LoginComponent implements OnInit{
   attempts = 0;
   loginFailure: Boolean = false;
   isNameLogin = false;
-  
+
   authInfo: {
-      username: string, 
+      username: string,
       password: string
   };
-  
+
   @ViewChild('username')
   username;
   @ViewChild('password')
   password;
-  
+
   redirectUrl;
   gatewayUrl = environment.apiURL;
   constructor(
