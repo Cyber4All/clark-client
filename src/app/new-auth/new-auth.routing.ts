@@ -7,6 +7,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { NewAuthComponent } from './new-auth.component';
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
+import { CanChangePasswordGuard } from './can-change-password.guard';
 
 const newAuthRoutes: Routes = [
   {
@@ -23,7 +24,8 @@ const newAuthRoutes: Routes = [
       {
         path: 'change-password',
         component: ChangePasswordComponent,
-        data: { title: 'Reset-Password'}
+        data: { title: 'Reset-Password'},
+        canActivate: [CanChangePasswordGuard]
       },
       { path: 'email-verified', component: EmailVerifiedComponent, data: { title: 'Email Verfication'} },
       { path: '', redirectTo: 'login', pathMatch: 'full' },
