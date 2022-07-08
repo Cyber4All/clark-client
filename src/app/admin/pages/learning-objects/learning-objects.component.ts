@@ -97,27 +97,10 @@ export class LearningObjectsComponent
       this.getLearningObjects();
     });
 
-    // query by a username if it's passed in
+    // query by anything if it's passed in
     this.route.queryParams.subscribe(params => {
       this.query = { ...params };
     });
-
-    // listen for changes in the route and append the collection to the query
-    this.route.parent.params
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe(async params => {
-        this.activeCollection = await (params.collection
-          ? await this.collectionService.getCollection(params.collection)
-          : undefined);
-
-        if (this.activeCollection) {
-          this.query = { collection: this.activeCollection.abvName };
-        } else {
-          this.query = { collection: undefined };
-        }
-
-        this.getLearningObjects();
-      });
 
     // listen for input events from the search component and perform the search action
     this.userSearchInput$

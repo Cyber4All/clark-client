@@ -17,7 +17,6 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { Topic } from '@entity';
 import { RelevancyService } from 'app/core/relevancy.service';
 import { ActivatedRoute } from '@angular/router';
-import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -63,8 +62,8 @@ export class FilterSearchComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    this.getCollections();
+  async ngOnInit() {
+    await this.getCollections();
     this.findUserRestrictions();
     this.getTopics();
 
@@ -75,13 +74,37 @@ export class FilterSearchComponent implements OnInit {
       s => !['rejected', 'unreleased'].includes(s.toLowerCase())
     );
     this.relevancyStart = new Date();
+
+    //check for params in the query and add them to the filter dropdown bars
+    const qParams= this.route.parent.snapshot.queryParams;
+    if(qParams.topics) {
+      if(Array.isArray(qParams.topics)) {
+        for(const topic of qParams.topics) {
+          this.toggleTopicFilter({ name: '', _id: topic });
+        }
+      } else {
+        this.toggleTopicFilter({ name: '', _id: qParams.topics });
+      }
+    }
+    if(qParams.status){
+      if(Array.isArray(qParams.status)) {
+        for(const status of qParams.status) {
+          this.toggleStatusFilter(status);
+        }
+      } else {
+        this.toggleStatusFilter(qParams.status);
+      }
+    }
+    if(qParams.collection){
+      this.toggleCollectionFilter(qParams.collection);
+    }
   }
 
   /**
    * Fetches the collections from the CollectionService and formats them for use in the context menu.
    */
-  private getCollections(): void {
-    this.collectionService
+   private async getCollections(): Promise<void> {
+    await this.collectionService
       .getCollections()
       .then(collections => {
         this.collections = Array.from(collections);
