@@ -37,6 +37,7 @@
     <ul (activate)="toggleContextMenu($event)">
       <li *ngIf="learningObject.status !== 'released'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
       <li *ngIf="learningObject.revision && learningObject.revision?.status !== 'unreleased'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit Revision</li>
+      <li *ngIf="learningObject.length !== 'nanomodule'" (activate)="openHierarchy(learningObject)"><i class="fa-lg fal fa-chart-network"></i>Generate Hierarchy</li>
       <li *ngIf="learningObject.revision?.status === 'unreleased'" (click)="toggleRevisionDelete(true)"><i class="far fa-trash-alt"></i>Delete Revision</li>
       <li [routerLink]="['/users', learningObject.author.username]"><i class="far fa-user"></i>View Author Contact</li>
       <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
@@ -94,5 +95,11 @@
       <button (click)="deleteRevision()" class="button bad">Yes <i class="far fa-trash-alt"></i></button>
       <button (click)="toggleRevisionDelete(false)" class="button neutral">Cancel</button>
     </div>
+  </div>
+</clark-popup>
+
+<clark-popup *ngIf="showHierarchyBuilder" (closed)="toggleHierarchyBuilder(false)">
+  <div class="modal-container center" #popupInner style="max-height: 600px; height: 600px">
+    <clark-hierarchy-builder [parent]="learningObject"></clark-hierarchy-builder>
   </div>
 </clark-popup>

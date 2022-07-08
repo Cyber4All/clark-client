@@ -1,0 +1,55 @@
+.example-tree-node {
+    display: flex;
+    align-items: center;
+}
+
+.select-button {
+    border: none;
+    background: transparent;
+}
+
+.toggle {
+  border: none;
+  background: transparent;
+}
+
+.node {
+  &.name {
+    padding: 10px;
+  }
+  &.length {
+    padding: 10px;
+  }
+}
+
+.list-item {
+  border-bottom: black 2px solid;
+  padding-left: 20px;
+}
+
+.example-tree-invisible {
+    display: none;
+  }
+  
+  .example-tree ul,
+  .example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+
+  .mat-tree-node {
+    button {
+      z-index: 10000;
+    }
+    
+  }
+  
+  /* silly UX, they want a border in the full width of the tree between tree nodes */
+  .example-tree {
+    position: relative;
+  }
+  
+  .example-tree-node-name {
+    flex: 1 1 auto;
+  }

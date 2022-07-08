@@ -1,0 +1,22 @@
+<div class="list-item">
+    <div *ngIf="node.showForm === true">
+        <mat-form-field class="name-field" appearance="fill">
+            <mat-label>Learning Object Name</mat-label>
+            <input matInput placeholder="Ex. Pizza" [(ngModel)]="node.name">
+        </mat-form-field>
+        <mat-form-field class="length-field" appearance="fill">
+            <mat-label>Learning Object Length</mat-label>
+            <mat-select [(ngModel)]="node.length" name="food">
+                <mat-option *ngFor="let length of lengths" [value]="length.value">
+                  {{length.viewValue}}
+                </mat-option>
+              </mat-select>
+        </mat-form-field>
+    </div>
+    <div *ngIf="node.showForm === false">
+        <span class="node name">{{ node.name }}</span>
+        <span class="node length">{{ node.length }}</span>
+    </div>
+    <button class="add-node" *ngIf="node.length !== 'nanomodule'" (click)="addNode.emit()"><i class="far fa-plus"></i></button>
+</div>
+

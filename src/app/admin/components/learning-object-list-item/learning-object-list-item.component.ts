@@ -54,6 +54,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   showRelevancyDate: boolean;
   showDeleteRevisionConfirmation: boolean;
   showChangeCollection: boolean;
+  showHierarchyBuilder: boolean;
 
   // flags
   meatballOpen = false;
@@ -199,6 +200,16 @@ export class LearningObjectListItemComponent implements OnChanges {
 
    toggleRevisionDelete(toggle: boolean) {
      this.showDeleteRevisionConfirmation = toggle;
+   }
+
+
+   openHierarchy(learningObject: any) {
+     console.log(learningObject);
+     this.showHierarchyBuilder = true;
+   }
+
+   toggleHierarchyBuilder(val: boolean) {
+    this.showHierarchyBuilder = val;
    }
 
 

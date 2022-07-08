@@ -1,0 +1,24 @@
+@import 'vars.scss';
+.node {
+    &.name {
+      padding: 10px;
+    }
+    &.length {
+      padding: 10px;
+    }
+  }
+
+  .list-item {
+    border-bottom: black 2px solid;
+    display: flex;
+  }
+
+  .name-field {
+      padding-right: 5px;
+  }
+
+  .add-node {
+      border: none;
+      background: transparent;
+      font-size: $large;
+  }

@@ -1,0 +1,50 @@
+<h2>{{ parent.name }} Hierarchy Generation</h2>
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+  <!-- This is the tree node template for leaf nodes -->
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+    <li class="mat-tree-node">
+        <clark-hierarchy-object [node]="node" (addNode)="addLearningObject(node)"></clark-hierarchy-object>
+    </li>
+  </mat-tree-node>
+
+  <!-- This is the tree node template for expandable nodes -->
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+    <li>
+  
+      <div class="mat-tree-node">
+        <button class="toggle" matTreeNodeToggle
+                [attr.aria-label]="'toggle ' + node.name">
+          <span *ngIf="!treeControl.isExpanded(node)">Open me</span>
+          <span *ngIf="treeControl.isExpanded(node)">Close Me</span>
+        </button>
+        <clark-hierarchy-object [node]="node" (addNode)="addLearningObject(node)"></clark-hierarchy-object>
+        <!-- <div *ngIf="node.showForm === true" class="list-item">
+            <mat-form-field class="name-input" appearance="fill">
+                <mat-label>Learning Object Name</mat-label>
+                <input matInput placeholder="Ex. Pizza" [(ngModel)]="node.name">
+            </mat-form-field>
+            <br>
+            <mat-form-field class="length-input" appearance="fill">
+                <mat-label>Learning Object Length</mat-label>
+                <mat-select [(ngModel)]="node.length" name="food">
+                    <mat-option *ngFor="let length of lengths" [value]="length.value">
+                      {{length.viewValue}}
+                    </mat-option>
+                  </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="node.showForm === false" class="list-item">
+            <span class="node name">{{ node.name }}</span>
+            <span class="node length">{{ node.length | titlecase }}</span>
+        </div>
+
+        <button *ngIf="node.length !== 'nanomodule'" (click)="addLearningObject(node)">Add Object</button> -->
+      </div>
+  
+      <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+        <ng-container matTreeNodeOutlet></ng-container>
+      </ul>
+    </li>
+  </mat-nested-tree-node>
+</mat-tree>

@@ -36,7 +36,10 @@ import { ObjectDropdownComponent } from './components/add-evaluator/components/o
 import { SelectedUserComponent } from './components/add-evaluator/components/selected-user/selected-user.component';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { ChangeCollectionComponent } from './components/change-collection/change-collection.component';
-
+import { HierarchyBuilderComponent } from './components/hierarchy-builder/hierarchy-builder.component';
+import { MatTreeModule } from '@angular/material/tree';
+import { MatSelectModule } from '@angular/material/select';
+import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarchy-object/hierarchy-object.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -62,6 +65,8 @@ import { ChangeCollectionComponent } from './components/change-collection/change
     ObjectDropdownComponent,
     SelectedUserComponent,
     ChangeCollectionComponent,
+    HierarchyBuilderComponent,
+    HierarchyObjectComponent,
   ],
   imports: [
     CoreModule.forRoot(),
@@ -76,6 +81,8 @@ import { ChangeCollectionComponent } from './components/change-collection/change
     MatFormFieldModule,
     MatInputModule,
     MatBadgeModule,
+    MatTreeModule,
+    MatSelectModule
   ],
   providers: [LearningObjectService]
 })
