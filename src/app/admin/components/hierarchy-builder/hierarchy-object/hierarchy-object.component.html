@@ -2,7 +2,7 @@
     <div *ngIf="node.showForm === true">
         <mat-form-field class="name-field" appearance="fill">
             <mat-label>Learning Object Name</mat-label>
-            <input matInput placeholder="Ex. Pizza" [(ngModel)]="node.name">
+            <input matInput [(ngModel)]="node.name">
         </mat-form-field>
         <mat-form-field class="length-field" appearance="fill">
             <mat-label>Learning Object Length</mat-label>

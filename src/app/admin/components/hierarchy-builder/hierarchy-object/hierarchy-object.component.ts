@@ -9,31 +9,34 @@ import { LearningObjectNode } from '../tree-datasource';
 export class HierarchyObjectComponent implements OnInit {
 
   @Input() node: LearningObjectNode;
-  @Output() addNode: EventEmitter<void> = new EventEmitter()
-  lengths = [
-    {
-      value: "nanomodule",
-      viewValue: "Nanomodule"
-    },
-    {
-      value: "micromodule",
-      viewValue: "Micromodule"
-    },
-    {
-      value: "module",
-      viewValue: "Module"
-    },
-    {
-      value: "unit",
-      viewValue: "Unit"
-    }
-  ];
+  @Output() addNode: EventEmitter<LearningObjectNode> = new EventEmitter();
+  lengths = [];
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.node.name, this.node.length)
-    let length = "unit";
+    this.lengths = [];
     if(this.node.length === "unit") {
+      
+      this.lengths = [
+        {
+          value: "nanomodule",
+          viewValue: "Nanomodule"
+        },
+        {
+          value: "micromodule",
+          viewValue: "Micromodule"
+        },
+        {
+          value: "module",
+          viewValue: "Module"
+        },
+        {
+          value: "unit",
+          viewValue: "Unit"
+        }
+      ]
+    }
+    if(this.node.length === "module") {
       this.lengths = [
         {
           value: "nanomodule",
@@ -49,7 +52,7 @@ export class HierarchyObjectComponent implements OnInit {
         }
       ]
     }
-    if(this.node.length === "module") {
+    if(this.node.length === "micromodule") {
       this.lengths = [
         {
           value: "nanomodule",
@@ -59,11 +62,21 @@ export class HierarchyObjectComponent implements OnInit {
           value: "micromodule",
           viewValue: "Micromodule"
         }
+      ];
+    }
+    if(this.node.length === "nanomodule") {
+      this.lengths = [
+        {
+          value: "nanomodule",
+          viewValue: "Nanomodule"
+        },
       ]
     }
-    if(this.node.length === "micromodule") {
-      this.lengths = [this.lengths[0]];
-    }
+  }
+
+
+  sendChange() {
+    this.addNode.emit(this.node);
   }
 
 }

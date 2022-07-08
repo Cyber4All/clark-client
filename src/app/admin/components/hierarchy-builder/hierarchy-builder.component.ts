@@ -33,7 +33,17 @@ export class HierarchyBuilderComponent implements OnInit {
     !!node.children && node.children.length > 0;
 
   addLearningObject(parentNode: LearningObjectNode) {
-    const obj = { name: "Nanomodule ADDING", length:"nanomodule", showForm: true };
+    let length = 'unit'
+    if(parentNode.length === 'unit') {
+      length = 'module';
+    }
+    if(parentNode.length === 'module') {
+      length = 'micromodule';
+    }
+    if(parentNode.length === 'micromodule') {
+      length = 'nanomodule';
+    }
+    const obj = { name: 'adding', length: length, showForm: true };
     if(parentNode.length !== 'nanomodule') {
       obj["children"] = [];
     }
