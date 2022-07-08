@@ -1,45 +1,40 @@
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-// This module
-import { LoginComponent } from './login/login.component';
-import { AuthRoutingModule } from './auth.routing';
-import { RegisterComponent } from './register/register.component';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
-import { CanResetPasswordGuard } from './can-reset-password.guard';
+import { CommonModule } from '@angular/common';
 import { AuthComponent } from './auth.component';
-import { AuthResolve } from './auth.resolver';
-
-// External Modules
-import { SharedModule } from 'app/shared/shared.module';
-import { RecaptchaDirective } from './register/recaptcha/recaptcha.directive';
-import { PersonalInfoComponent } from './register/personal-info/personal-info.component';
-import { ProfileInfoComponent } from './register/profile-info/profile-info.component';
-import { GravatarInfoComponent } from './register/gravatar-info/gravatar-info.component';
+import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
+import { RouterModule } from '@angular/router';
+import { AuthRoutingModule } from './auth.routing';
+import { InputFieldComponent } from './components/input-field/input-field.component';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
+import { RecaptchaDirective } from './register/components/recaptcha/recaptcha.directive';
+import { RegistrationProgressComponent } from './register/components/registration-progress/registration-progress.component';
 
 @NgModule({
   declarations: [
-    LoginComponent,
-    RegisterComponent,
-    ForgotPasswordComponent,
-    ResetPasswordComponent,
     AuthComponent,
+    RegisterComponent,
+    LoginComponent,
+    ChangePasswordComponent,
+    ForgotPasswordComponent,
+    EmailVerifiedComponent,
+    InputFieldComponent,
+    ErrorBannerComponent,
     RecaptchaDirective,
-    PersonalInfoComponent,
-    ProfileInfoComponent,
-    GravatarInfoComponent,
-    EmailVerifiedComponent
+    RegistrationProgressComponent,
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
+    RouterModule,
+    MatInputModule,
     FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-  ],
-  providers: [CanResetPasswordGuard, AuthResolve]
+    ReactiveFormsModule
+  ]
 })
-export class AuthModule {}
+export class AuthModule { }

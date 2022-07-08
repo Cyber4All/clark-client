@@ -1,93 +1,57 @@
 @import 'vars.scss';
 
 .wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-form {
-  margin: auto;
-  margin-top: 15px;
-  width: 100%;
-  overflow-y: hidden;
-}
-
-.h-group {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 15px;
-
-  .input {
-    width: 48%;
-    margin-bottom: 0px;
-  }
-}
-
-.input {
-  margin-bottom: 15px;
-}
-
-.line-spacer {
-  margin-top: 25px;
-  margin-bottom: 25px;
-  height: 1px;
-  display: none;
-}
-
-::ng-deep .indicator {
-  margin-top: 30px !important;
-}
-
-.reg-button {
-    -webkit-appearance: nine;
-    background: $blue-accent;
-    color: white;
-    border-radius: 50%;
-    width: 41px;
-    height: 41px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $larger;
-    outline: 0;
-    transition: all 0.2s ease;
-    border: 2px solid $blue-accent;
-
-  &:hover, &:focus {
-    color: $blue-accent;
-    background: transparent !important;
-    transform: scale(1.05);
-  }
-
-  &.submit {
-    background: $success-green;
-    border-color: $success-green;
-
-    &:hover, &:focus {
-      color: $success-green;
+    height: 100vh;
+    padding: 50px, 0;
+    width: inherit;
+    
+    &:before {
+        content: '';
+        background: linear-gradient(90deg, white, $light-blue, white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        z-index: 0;
+        opacity: .15;
     }
-  }
-}
+    
+    &:after {
+        content: '';
+        background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+    }
 
-.buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
+    .sso-section {
+        width: 100%;
+        
+        .sso-img {
+            width: 200px;
+        }
+    }
 
-  .right {
-    margin-left: auto;
-  }
-}
+    .side-by-side {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
 
-::ng-deep .email-error {
-  color: $error-red;
-}
+    .recaptcha {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
 
-.recaptcha {
-  display: flex;
-  justify-content: center;
+    button {
+        display: block;
+        width: 100%;
+        margin: 50px 0 20px;
+    }
 }
