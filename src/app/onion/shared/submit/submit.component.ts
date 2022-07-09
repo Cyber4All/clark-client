@@ -156,7 +156,6 @@ export class SubmitComponent implements OnInit {
       proceed = await this.changelogComplete$.pipe(first()).toPromise();
     }
 
-    //
     if(!this.isValidLearningObject()) {
       proceed = false;
       let missingFields = this.buildUnfinishedLOErrorMsg();
