@@ -7,7 +7,6 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { first } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
-import { constructorParametersDownlevelTransform } from '@angular/compiler-cli';
 
 @Component({
   selector: 'clark-submit',
@@ -112,7 +111,7 @@ export class SubmitComponent implements OnInit {
   }
 
   /**
-   * @returns true if the LO has a name, description, a contributor, and at least 1 outcome
+   * @returns {boolean} true if the LO has a name, description, a contributor, and at least 1 outcome
    */
   isValidLearningObject(): boolean {
     return (
@@ -124,9 +123,9 @@ export class SubmitComponent implements OnInit {
   }
 
   /**
-   * @returns a string with missing required fields for an error message
+   * @returns {string} a string with missing required fields for an error message
    */
-  buildUnfinishedLOErrorMsg(): string {
+  private buildUnfinishedLOErrorMsg(): string {
     let str = '';
     const arr = [' name', ' description', ' contributor(s)', ' outcome(s)'];
     if(this.learningObject.name === '') {
@@ -151,17 +150,19 @@ export class SubmitComponent implements OnInit {
    */
   async submitForReview() {
     let proceed = true;
+
     if (this.needsChangelog) {
       this.advance();
       proceed = await this.changelogComplete$.pipe(first()).toPromise();
     }
 
+    //
     if(!this.isValidLearningObject()) {
       proceed = false;
       let missingFields = this.buildUnfinishedLOErrorMsg();
       this.toasterService.error(
         'Incomplete Learning Object!',
-        'Missing Field(s):' + missingFields
+        `Missing Field(s):${missingFields}.`
       );
     }
     
