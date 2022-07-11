@@ -77,24 +77,32 @@ export class FilterSearchComponent implements OnInit {
 
     //check for params in the query and add them to the filter dropdown bars
     const qParams= this.route.parent.snapshot.queryParams;
+    //if there are topics in the query, toggle them in the filter dropdown
     if(qParams.topics) {
+      //more than one topic
       if(Array.isArray(qParams.topics)) {
         for(const topic of qParams.topics) {
           this.toggleTopicFilter({ name: '', _id: topic });
         }
+        // one topic
       } else {
         this.toggleTopicFilter({ name: '', _id: qParams.topics });
       }
     }
+    //if there are statuses in the query add them too the filter dropdowns
     if(qParams.status){
+    //multiple statuses in query
       if(Array.isArray(qParams.status)) {
         for(const status of qParams.status) {
           this.toggleStatusFilter(status);
         }
+        //one status in query
       } else {
         this.toggleStatusFilter(qParams.status);
       }
     }
+    //if there is a collection selected in the query, toggle it
+    //there will only ever be a single collection selected at a time
     if(qParams.collection){
       this.toggleCollectionFilter(qParams.collection);
     }
