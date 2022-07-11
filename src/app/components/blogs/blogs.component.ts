@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BlogsService } from 'app/core/blogs.service';
 
 @Component({
   selector: 'clark-blogs',
@@ -7,9 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BlogsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private blogsService: BlogsService) { }
 
   ngOnInit(): void {
+    this.blogsService.getMostRecentBlog().subscribe({
+      next(x) {
+        console.log(x);
+      },
+      error(e) {
+        console.error(e);
+      },
+      complete() {
+        console.log('done');
+      }
+    });
   }
 
 }
