@@ -1,22 +1,13 @@
-<div class="blogs-component" *ngIf="blogObservable | async as blog; else loading">
+<div class="blogs-component" *ngIf="blogObservable | async as blog;">
     <div class="left">
         <i class="fas fa-info-circle fa-2x"></i>
         <p>
             <strong>{{blog[0].name}}</strong> {{blog[0].description}}
-            <a [href]="blog[0].url">See blog for more details.</a>
+            <a [href]="blog[0].url" target="_blank">See blog for more details.</a>
         </p>
     </div>
 
     <div class="right">
         <button>Dismiss</button>
     </div>
-    
-    
 </div>
-
-<ng-template #loading>
-    <div>
-        Loading blog...
-    </div>
-</ng-template>
-
