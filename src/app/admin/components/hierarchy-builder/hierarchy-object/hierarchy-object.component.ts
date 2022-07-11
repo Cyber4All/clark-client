@@ -10,6 +10,7 @@ export class HierarchyObjectComponent implements OnInit {
 
   @Input() node: LearningObjectNode;
   @Output() addNode: EventEmitter<LearningObjectNode> = new EventEmitter();
+  @Output() removeNode: EventEmitter<LearningObjectNode> = new EventEmitter();
   lengths = [];
   constructor() { }
 

@@ -51,6 +51,7 @@ export class HierarchyBuilderComponent implements OnInit {
   }
 
   remove(node: LearningObjectNode) {
+    console.log(node);
     this.dataSource.remove(node);
   }
 }

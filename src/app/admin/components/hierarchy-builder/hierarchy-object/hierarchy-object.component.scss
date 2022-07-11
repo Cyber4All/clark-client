@@ -1,24 +1,54 @@
 @import 'vars.scss';
-.node {
-    &.name {
-      padding: 10px;
-    }
-    &.length {
-      padding: 10px;
-    }
-  }
 
   .list-item {
-    border-bottom: black 2px solid;
     display: flex;
-  }
 
-  .name-field {
+    .node {
+      &.card {
+        color: $dark-grey;
+        align-content: left;
+        &.name {
+          padding: 10px;
+          font-size: $normal;
+        }
+        &.length {
+          padding: 10px;
+          font-size: $normal;
+        }
+      }
+      &.form {
+        padding-top: 15px;
+      }
+    }
+
+    .name-field {
       padding-right: 5px;
-  }
+      padding-left: 5px;
+    }
 
-  .add-node {
+    .length-field {
+      max-width: 150px;
+    }
+
+    .add-node {
       border: none;
       background: transparent;
+      margin-left: 5px;
       font-size: $large;
-  }
+
+      &.trash {
+        border-radius: 4px;
+        font-size: $normal;
+        color: $error-red;
+      }
+    }
+
+    .button-trash {
+      border: none;
+      background: $error-red;
+      border-radius: 4px;
+      font-size: $normal;
+      color: white;
+      max-height: 20px;
+    }
+}

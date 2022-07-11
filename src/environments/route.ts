@@ -287,6 +287,11 @@ export const USER_ROUTES = {
       username
     )}/${encodeURIComponent(learningObjectName)}/children`;
   },
+  ADD_HIERARCHY_OBJECT(username) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/hierarchy-object`;
+  },
   UPDATE_PDF(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username

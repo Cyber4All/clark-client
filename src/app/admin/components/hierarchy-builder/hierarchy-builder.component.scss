@@ -1,3 +1,4 @@
+@import 'vars.scss';
 .example-tree-node {
     display: flex;
     align-items: center;
@@ -11,20 +12,8 @@
 .toggle {
   border: none;
   background: transparent;
-}
-
-.node {
-  &.name {
-    padding: 10px;
-  }
-  &.length {
-    padding: 10px;
-  }
-}
-
-.list-item {
-  border-bottom: black 2px solid;
-  padding-left: 20px;
+  padding: 5px;
+  min-width: 25px;
 }
 
 .example-tree-invisible {
@@ -49,7 +38,16 @@
   .example-tree {
     position: relative;
   }
-  
-  .example-tree-node-name {
-    flex: 1 1 auto;
+
+
+  .button-group {
+    display: flex;
+    justify-content: right;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+
+    .button {
+      margin-left: 10px;
+    }
   }
