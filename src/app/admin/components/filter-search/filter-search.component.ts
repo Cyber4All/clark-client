@@ -274,7 +274,7 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
-  toggleTopicFilter(filter: {name?: string, _id: string}) {
+  toggleTopicFilter(filter: { name?: string, _id: string }) {
     if (filter.name.toLowerCase() === 'all') {
       this.clearTopicFilters();
       this.toggleTopicMenu(undefined);
