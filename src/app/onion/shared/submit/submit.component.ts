@@ -161,7 +161,7 @@ export class SubmitComponent implements OnInit {
       let missingFields = this.buildUnfinishedLOErrorMsg();
       this.toasterService.error(
         'Incomplete Learning Object!',
-        `Missing Field(s):${missingFields}.`
+        `Please provide the following fields to submit: ${missingFields}.`
       );
     }
     
