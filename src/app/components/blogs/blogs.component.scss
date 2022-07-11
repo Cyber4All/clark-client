@@ -1,0 +1,44 @@
+@import 'vars.scss';
+
+div {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    padding: 5px;
+
+    .left {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .fa-2x {
+            margin: 10px;
+        }
+    
+        p {
+            align-self: flex-end;
+        }
+    }
+    
+    .right {
+        display: flex;
+        button {
+            padding: 0 20px 0 20px;
+            margin: 0px 50px 0 0;
+            background-color: $light-blue;
+            color: white;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 80%;
+        }
+
+        button:active {
+            opacity: 100%;
+        }
+    }
+    
+}

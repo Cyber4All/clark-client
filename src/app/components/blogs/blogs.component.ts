@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogsService } from 'app/core/blogs.service';
+import { Observable } from 'rxjs';
+import { Blog } from './types/blog';
 
 @Component({
   selector: 'clark-blogs',
@@ -7,21 +9,11 @@ import { BlogsService } from 'app/core/blogs.service';
   styleUrls: ['./blogs.component.scss']
 })
 export class BlogsComponent implements OnInit {
-
+  blogObservable: Observable<Blog[]>;
   constructor(private blogsService: BlogsService) { }
 
   ngOnInit(): void {
-    this.blogsService.getMostRecentBlog().subscribe({
-      next(x) {
-        console.log(x);
-      },
-      error(e) {
-        console.error(e);
-      },
-      complete() {
-        console.log('done');
-      }
-    });
+    this.blogObservable = this.blogsService.getMostRecentBlog();
   }
 
 }
