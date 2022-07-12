@@ -36,6 +36,11 @@ export const ADMIN_ROUTES = {
   UPDATE_OBJECT_SUBMITTED_COLLECTION(username: string, cuid: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(cuid)}/collection`;
   },
+  ADD_HIERARCHY_OBJECT(username) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/hierarchy-object`;
+  },
 };
 
 export const CHANGELOG_ROUTES = {
@@ -286,11 +291,6 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       username
     )}/${encodeURIComponent(learningObjectName)}/children`;
-  },
-  ADD_HIERARCHY_OBJECT(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/hierarchy-object`;
   },
   UPDATE_PDF(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(

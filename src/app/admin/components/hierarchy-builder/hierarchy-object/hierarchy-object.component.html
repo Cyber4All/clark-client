@@ -18,6 +18,6 @@
         <span class="node card length">{{ node.length | titlecase }}</span>
     </div>
     <button class="add-node" *ngIf="node.length !== 'nanomodule'" (click)="addNode.emit()"><i class="far fa-plus"></i></button>
-    <button class="add-node trash"><i class="far fa-trash" (click)="removeNode.emit(node)"></i></button>
+    <button class="add-node trash" *ngIf="node.showForm === true" (click)="r.emit(node)"><i class="far fa-trash"></i></button>
 </div>
 

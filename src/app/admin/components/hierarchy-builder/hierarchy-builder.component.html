@@ -17,7 +17,7 @@
                 <span *ngIf="!treeControl.isExpanded(node)"><i class="far fa-chevron-down"></i></span>
                 <span *ngIf="treeControl.isExpanded(node)"><i class="far fa-chevron-up"></i></span>
             </button>
-        <clark-hierarchy-object [node]="node" (addNode)="addLearningObject(node)" (removeNode)="remove(node)"></clark-hierarchy-object>
+        <clark-hierarchy-object [node]="node" (addNode)="addLearningObject(node)" (r)="removeNode(node)"></clark-hierarchy-object>
       </div>
   
       <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
@@ -29,5 +29,5 @@
 
 <div class="button-group right">
     <button class="button neutral">Cancel</button>
-    <button class="button good">Create Objects</button>
+    <button class="button good" (click)="createHierarchy()">Create Objects</button>
 </div>
