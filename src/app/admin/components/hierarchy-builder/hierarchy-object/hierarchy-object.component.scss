@@ -35,7 +35,8 @@
       background: transparent;
       margin-left: 5px;
       font-size: $large;
-      z-index: 1000;
+      cursor: pointer;
+
 
       &.trash {
         border-radius: 4px;

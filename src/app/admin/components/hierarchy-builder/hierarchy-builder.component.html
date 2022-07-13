@@ -4,7 +4,12 @@
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
     <li class="mat-tree-node">
         <button class="toggle" mat-icon-button disabled></button>
-        <clark-hierarchy-object [node]="node" (addNode)="addLearningObject(node)"></clark-hierarchy-object>
+        <clark-hierarchy-object 
+          [node]="node"
+          (addNode)="addLearningObject(node)"
+          (removeLo)="remove($event)"
+          (updateNode)="update($event)">>
+        </clark-hierarchy-object>
     </li>
   </mat-tree-node>
 
@@ -17,7 +22,12 @@
                 <span *ngIf="!treeControl.isExpanded(node)"><i class="far fa-chevron-down"></i></span>
                 <span *ngIf="treeControl.isExpanded(node)"><i class="far fa-chevron-up"></i></span>
             </button>
-        <clark-hierarchy-object [node]="node" (addNode)="addLearningObject(node)" (r)="removeNode(node)"></clark-hierarchy-object>
+        <clark-hierarchy-object 
+          [node]="node"
+          (addNode)="addLearningObject($event)"
+          (removeLo)="remove($event)"
+          (updateNode)="update($event)">
+        </clark-hierarchy-object>
       </div>
   
       <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
@@ -29,5 +39,5 @@
 
 <div class="button-group right">
     <button class="button neutral">Cancel</button>
-    <button class="button good" (click)="createHierarchy()">Create Objects</button>
+    <button class="button good" (click)="createLearningObjects()">Create Objects</button>
 </div>

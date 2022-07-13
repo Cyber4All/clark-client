@@ -92,7 +92,6 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
   }
 
   moveExpansionState(from: LearningObjectNode, to: LearningObjectNode) {
-    console.log(from, to);
     if (this.treeControl.isExpanded(from)) {
       this.treeControl.collapse(from);
       this.treeControl.expand(to);

@@ -24,7 +24,7 @@ export class CollectionService {
     ).toPromise();
   }
 
-  async addHierarchyObject(username: string, object: LearningObject) {
+  async addHierarchyObject(username: string, object: any) {
     await this.http.post(
       ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(username),
       { object }, { withCredentials: true, responseType: 'text'}

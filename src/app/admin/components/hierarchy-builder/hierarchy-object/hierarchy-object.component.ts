@@ -11,7 +11,8 @@ export class HierarchyObjectComponent implements OnInit {
   @Input() node: LearningObjectNode;
   @Output() addNode: EventEmitter<LearningObjectNode> = new EventEmitter();
   @Output() removeLo: EventEmitter<any> = new EventEmitter();
-  @Output() r: EventEmitter<any> = new EventEmitter();
+  @Output() updateNode: EventEmitter<any> = new EventEmitter();
+
   lengths = [];
   constructor() { }
 
@@ -76,16 +77,12 @@ export class HierarchyObjectComponent implements OnInit {
     }
   }
 
-
-  sendChange() {
-    console.log('adding', this.addNode.emit(this.node));
-    this.addNode.emit(this.node);
+  onKey(event: any) {
+    this.updateNode.emit(this.node);
   }
 
   remove() {
-    console.log('all goode')
-    // console.log(this.example.emit(this.node));
-    console.log('alslslkdnflask')
+    this.removeLo.emit(this.node);
   }
 
 }

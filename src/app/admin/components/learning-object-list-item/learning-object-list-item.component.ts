@@ -204,7 +204,6 @@ export class LearningObjectListItemComponent implements OnChanges {
 
 
    openHierarchy(learningObject: any) {
-     console.log(learningObject);
      this.showHierarchyBuilder = true;
    }
 
