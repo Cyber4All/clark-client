@@ -51,11 +51,11 @@ import { BlogsComponentService } from './core/blogs-component.service';
     trigger('blog', [
       transition(':enter', [
         style({ transform: 'translateY(-100%)' }),
-        animate('300ms ease-out', style({ transform: 'translateY(0%)' }))
+        animate('300ms 1500ms ease-out', style({ transform: 'translateY(0%)' }))
       ]),
       transition(':leave', [
-        style({ zIndex: 10 }),
-        animate('100ms ease-out', style({ transform: 'translate3d(0, -100%, 1px)', zIndex: 0 }))
+        style({ zIndex: 3 }),
+        animate('300ms ease-out', style({ transform: 'translate3d(0, -100%, 1px)', zIndex: 3 }))
       ])
     ])
   ]
