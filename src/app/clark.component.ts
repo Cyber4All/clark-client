@@ -147,6 +147,14 @@ export class ClarkComponent implements OnInit {
     location.reload();
   }
 
+  showBlogsBanner(val: boolean) {
+    console.log('showBlogsBanner: ' + val);
+  }
+
+  neverShowBanner(val: boolean) {
+    console.log('neverShowBanner: '+ val);
+  }
+
   /**
    * Function passes cookie agreement service val to create new agreement
    * Then updates banner visibilty flag

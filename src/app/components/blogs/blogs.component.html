@@ -8,9 +8,9 @@
     </div>
 
     <div class="right">
-        <button>Dismiss</button>
+        <button (click)="dismiss()">Dismiss</button>
         <label>
-            <input type="checkbox" /> Don't show me this again
+            <input type="checkbox" (click)="toggleCheckbox()" /> Don't show me this again
         </label>
     </div>
 </div>
