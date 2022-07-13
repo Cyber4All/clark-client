@@ -8,6 +8,7 @@
   <clark-navbar *ngIf = "isSupportedBrowser"></clark-navbar>
   <clark-blogs
     [@blog]
+    *ngIf="displayBlogsBanner()"
     (showBlogsBanner)="showBlogsBanner($event)"
     (neverShowBanner)="neverShowBanner($event)"
   ></clark-blogs>
