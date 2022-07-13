@@ -27,6 +27,10 @@ export class BlogsComponent implements OnInit {
     );
   }
 
+  /**
+   * Emit logic when the dismiss button is clicked
+   * If the checkbox is checked, then return true and emit the blog
+   */
   dismiss() {
     if(this.checkbox) {
       this.showBlogsBanner.emit(false);
@@ -37,6 +41,9 @@ export class BlogsComponent implements OnInit {
     }
   }
 
+  /**
+   * Toggles the checkbox
+   */
   toggleCheckbox() {
     this.checkbox = !this.checkbox;
   }

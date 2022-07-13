@@ -150,14 +150,30 @@ export class ClarkComponent implements OnInit {
     location.reload();
   }
 
+  /**
+   * Catches the output emitted by clark-blogs to dismiss the banner
+   *
+   * @param val The value of showBanner
+   */
   showBlogsBanner(val: boolean) {
     this.blogsComponentService.setShowBanner(val);
   }
 
+  /**
+   * Catches the checkbox output emitted by clark-blogs to never see the banner again
+   *
+   * @param args: val - the value of the checkbox
+   *              recentBlog - the blog that was dismissed
+   */
   neverShowBanner(args: {val: boolean, recentBlog?: Blog}) {
     this.blogsComponentService.setNeverShowBanner(args);
   }
 
+  /**
+   * Determines if the blogs banner is to be shown
+   *
+   * @returns a value determining if the blogs banner is shown
+   */
   displayBlogsBanner() {
     return this.blogsComponentService.getShowBanner() && !this.blogsComponentService.getNeverShowBanner();
   }
