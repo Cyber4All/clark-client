@@ -156,7 +156,7 @@ export class LearningObjectsComponent
         relativeTo: this.route,
         replaceUrl: true
       }
-    )
+    );
   }
 
   /**
