@@ -7,6 +7,12 @@
         font-size: larger;
         cursor: pointer;
     }
+
+    .note-title-blue {
+        background-color: $light-blue;
+        color: white;
+    }
+
     .note-title:hover {
         padding: 8px;
         font-size: larger;

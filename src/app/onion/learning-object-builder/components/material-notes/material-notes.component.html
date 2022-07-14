@@ -1,4 +1,4 @@
 <div class="note-wrapper">
-    <div class="note-title" (click)="openNote()">{{note.title}}</div>
+    <div (click)="openNote()" class="note-title" [ngClass]="{ 'note-title-blue' : open }">{{note.title}}</div>
     <div *ngIf="this.open" @[InOutAnimation] class="note-content">{{note.content}}</div>
 </div>

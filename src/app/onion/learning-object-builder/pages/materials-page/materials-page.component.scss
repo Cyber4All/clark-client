@@ -1,16 +1,24 @@
 @import 'vars.scss';
 
+
 .notes-header {
     display: flex;
     padding-top: 18px;
     padding-left: 20px;
-  
-    .title {
-      text-align: left;
-      font-size: $large;
-      font-weight: 600;
-      margin: 0 30px 10px 10px;
-      align-items: left;
-      justify-content: left;
+
+    .icon {
+        color: $light-blue;
+        font-size: $large;
+        align-items: left;
+        justify-content: left;
     }
-  }
+    
+    .title {
+        text-align: left;
+        font-size: $large;
+        font-weight: 600;
+        margin: 0 30px 15px 10px;
+        align-items: left;
+        justify-content: left;
+    }
+}
