@@ -25,5 +25,11 @@
     <clark-skip-link title="Skip to Submit for Review" skipLocation="submit"></clark-skip-link>
   </div>
   <div right>
+    <div class="notes-header">
+      <div class="title">
+          Notes on Materials
+      </div>
+    </div>
+    <clark-material-notes *ngFor="let n of notes" [note]="n" class="note"></clark-material-notes>
   </div>
 </clark-column-wrapper>

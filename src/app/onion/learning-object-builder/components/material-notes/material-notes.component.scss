@@ -1,0 +1,23 @@
+@import 'vars.scss';
+
+.note-wrapper {
+
+    .note-title {
+        padding: 8px;
+        font-size: larger;
+        cursor: pointer;
+    }
+    .note-title:hover {
+        padding: 8px;
+        font-size: larger;
+        cursor: pointer;
+        background-color: $light-blue;
+        color: white;
+    }
+
+    .note-content {
+        border-bottom: solid 2px $light-blue;
+        font-size: medium;
+        padding: 8px;
+    }
+}

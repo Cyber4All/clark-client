@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clark-material-notes',
@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MaterialNotesComponent implements OnInit {
 
+  open = false;
+  @Input() note: {title: string, content: string };
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  openNote(): void {
+    this.open = !this.open;
   }
 
 }

@@ -1,1 +1,4 @@
-<p>material-notes works!</p>
+<div class="note-wrapper">
+    <div class="note-title" (click)="openNote()">{{note.title}}</div>
+    <div *ngIf="this.open" @[InOutAnimation] class="note-content">{{note.content}}</div>
+</div>
