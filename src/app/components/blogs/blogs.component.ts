@@ -40,17 +40,19 @@ export class BlogsComponent implements OnInit {
 
   /**
    * Emit logic when the dismiss button is clicked
-   * If the checkbox is checked, then return true and emit the blog
    */
   dismiss() {
-    if(this.checkbox) {
       this.showBlogsBanner.emit(false);
       this.neverShowBanner.emit({val: true, recentBlog: this.blog});
-    } else {
+    }
+
+  /**
+   * Emit logic when the dismiss once button is clicked
+   */
+  dismissOnce() {
       this.showBlogsBanner.emit(false);
       this.neverShowBanner.emit({val: false});
     }
-  }
 
   /**
    * Toggles the checkbox

@@ -15,8 +15,8 @@
 
     <div @fadeInOut class="second-view" *ngIf="view===1">
         <div class="side-by-side">
-            <button (click)="view=0">Dismiss Once</button>
-            <button (click)="view=0">Dismiss</button>
+            <button (click)="dismissOnce()">Dismiss Once</button>
+            <button (click)="dismiss()">Dismiss</button>
         </div>
         <p>Click <a (click)="view=0">here</a> to go back.</p>
     </div>
