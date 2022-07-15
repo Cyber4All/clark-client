@@ -13,6 +13,7 @@ export class BlogsComponent implements OnInit {
   blog: Blog; // used to emit the blog
 
   checkbox = false;
+  view = 0;
   @Output() showBlogsBanner: EventEmitter<boolean> = new EventEmitter();
   @Output() neverShowBanner: EventEmitter<{val: boolean, recentBlog?: Blog}> = new EventEmitter();
 
