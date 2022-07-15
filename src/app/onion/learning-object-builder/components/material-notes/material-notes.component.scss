@@ -6,15 +6,18 @@
         padding: 8px;
         font-size: larger;
         cursor: pointer;
+        border-bottom: solid 2px $light-grey;
     }
 
     .note-title-blue {
         background-color: $light-blue;
+        border-bottom: solid 2px $light-blue;
         color: white;
     }
 
     .note-title:hover {
         padding: 8px;
+        border-bottom: solid 2px $light-blue;
         font-size: larger;
         cursor: pointer;
         background-color: $light-blue;

@@ -14,10 +14,12 @@
         </div>
       </div>
     </div>
-    <div *ngIf="showColumn('r')" class="right-column column">
-      <div class="content">
-        <ng-content select="[right]"></ng-content>
+    <div class="scroll-wrapper scroll-wrapper--right" [ngStyle]="{'height': columnHeight + 'px'}">
+      <div *ngIf="showColumn('r')" class="right-column column">
+        <div class="content">
+          <ng-content select="[right]"></ng-content>
+        </div>
       </div>
-    </div>
+    </div>  
   </div>
 </div>
