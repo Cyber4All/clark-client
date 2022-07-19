@@ -26,9 +26,8 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     },
     {
       title: 'Solution Files',
-      content: `Feel free to upload solution files with your learning object. If you do not wish to upload solutions with the 
-      learning object, please add a note indicating where the solutions can be found in the learning object, such as in the 
-      notes section.`
+      content: `CLARK allows for the upload of solution files. If you do not wish to upload solutions with the 
+      learning object, please add a note (in the "notes" section) indicating where the solutions can be found in the learning object.`
     },
     {
       title: 'Malware',
