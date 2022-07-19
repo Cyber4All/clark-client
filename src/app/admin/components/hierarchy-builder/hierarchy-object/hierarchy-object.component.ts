@@ -11,7 +11,6 @@ export class HierarchyObjectComponent implements OnInit {
   @Input() node: LearningObjectNode;
   @Output() addNode: EventEmitter<LearningObjectNode> = new EventEmitter();
   @Output() removeLo: EventEmitter<any> = new EventEmitter();
-  @Output() updateNode: EventEmitter<any> = new EventEmitter();
 
   lengths = [];
   constructor() { }
@@ -77,12 +76,10 @@ export class HierarchyObjectComponent implements OnInit {
     }
   }
 
-  onKey(event: any) {
-    this.updateNode.emit(this.node);
-  }
-
   remove() {
     this.removeLo.emit(this.node);
   }
+
+  // ON blur check if there is already a learning object under that name for that author
 
 }

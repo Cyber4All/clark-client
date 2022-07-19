@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
-import { ADMIN_ROUTES } from '@env/route';
+import { ADMIN_ROUTES, USER_ROUTES } from '@env/route';
 
 @Injectable({
   providedIn: 'root'
@@ -24,10 +24,21 @@ export class CollectionService {
     ).toPromise();
   }
 
-  async addHierarchyObject(username: string, object: any) {
-    await this.http.post(
+  async addHierarchyObject(username: string, object: any): Promise<any> {
+    const ret = await this.http.post(                                            
       ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(username),
       { object }, { withCredentials: true, responseType: 'text'}
+    ).toPromise();
+    console.log(ret);
+    return ret;
+  }
+
+  async addChildren(username: string, object: any, children): Promise<any> {
+    return await this.http.patch(
+      USER_ROUTES.SET_CHILDREN(username, object._id),
+      {
+        children
+      }
     ).toPromise();
   }
 }

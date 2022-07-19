@@ -6,6 +6,7 @@ import { MatTreeNestedDataSource } from "@angular/material/tree";
  * Each node has a name and an optional list of children.
  */
 export interface LearningObjectNode {
+  _id?: string;
   name: string;
   length: string;
   collection?: string;

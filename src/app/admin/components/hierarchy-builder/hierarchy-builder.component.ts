@@ -23,13 +23,17 @@ export class HierarchyBuilderComponent implements OnInit {
   @Input() parent: LearningObject;
   treeControl = new NestedTreeControl<LearningObjectNode>(node => node.children);
   dataSource = new TreeDataSource(this.treeControl, this.TREE_DATA);
+  contributors: string [];
 
   constructor(
     private collectionService: CollectionService
   ) {}
 
   ngOnInit() {
-    this.TREE_DATA[0] = { name: this.parent.name, length: this.parent.length, showForm: false, children: []};
+    this.TREE_DATA[0] = { _id: this.parent.id, name: this.parent.name, length: this.parent.length, showForm: false, children: []};
+    this.contributors = this.parent.contributors.map(contrib => {
+      return contrib.username
+    });
   }
 
   hasChild = (_: number, node: LearningObjectNode) =>
@@ -46,28 +50,55 @@ export class HierarchyBuilderComponent implements OnInit {
     if(parentNode.length === 'micromodule') {
       length = 'nanomodule';
     }
-    const obj = { name: 'adding', length: length, showForm: true };
+    const obj = { name: '', length: length, showForm: true };
     if(parentNode.length !== 'nanomodule') {
       obj["children"] = [];
     }
+    obj["contributors"] = this.contributors;
     this.dataSource.add(obj, parentNode);
   }
 
   remove(node: LearningObjectNode) {
-    console.log('NODE', node);
     this.dataSource.remove(node);
   }
 
-  update(node: LearningObjectNode) {
-    console.log(this.TREE_DATA);
-    console.log('WOWOW')
+  validateSubmitable(node) {
+    if(node.name.length <= 2) {
+      // Pop up an error
+    }
+    if(node.children.length === 0) {
+      return;
+    } else if(node.children.length > 0) {
+      node.children.forEach(child => {
+        this.validateSubmitable(child);
+      })
+    }
   }
 
-  async createLearningObjects() {
-    const object = this.TREE_DATA[0].children[0];
-    object.contributors = this.parent.contributors.map(contrib => {
-      return contrib._username;
-    });
-    await this.collectionService.addHierarchyObject(this.parent.author.username, this.TREE_DATA[0].children[0]);
+  async createLearningObjects(node: any) {
+    console.log(node);
+    if(node.children.length === 0) {
+      return await this.collectionService.addHierarchyObject(this.parent.author.username, node);
+    } else if(node.children.length > 0) {
+      const childrenIds = [];
+      for await(const child of node.children) {
+        if(child.children.length > 0) {
+          const obj = await this.collectionService.addHierarchyObject(this.parent.author.username, child);
+          console.log('In the for', obj)
+          childrenIds.push(obj);
+        }
+        await this.createLearningObjects(child);
+      }
+      if(node.name !== this.parent.name) {
+        node._id = await this.collectionService.addHierarchyObject(this.parent.author.username, node);
+        return await this.setParents(node, childrenIds);
+      }
+      return await this.setParents(node, childrenIds);
+    }
+  }
+
+  async setParents(node, childs) {
+    console.log(childs);
+    await this.collectionService.addChildren(this.parent.author.username, node, childs);
   }
 }
