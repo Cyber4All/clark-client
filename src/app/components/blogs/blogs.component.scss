@@ -18,10 +18,13 @@ div {
         }
         
         .right {
-    
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            
             button {
                 padding: 12px 20px;
-                margin: 0px 50px 0 0;
+                margin: 0px 50px 0 50px;
                 background-color: $light-blue;
                 color: white;
                 border-radius: 4px;
@@ -77,15 +80,23 @@ div {
     }
     
     @media screen and(max-width:800px){
-        div {
+        .first-view {
             flex-direction: column;
         }
-        button {
-            width: 100%;
-        }
         
-        label {
-            margin-top: 10px;
+        .second-view {
+            .side-by-side {
+                button {
+                    width: auto;
+                }
+            }
+            p {
+                text-align: center;
+            }
+        }
+
+        button {
+            width: 75%;
         }
     }
 }
