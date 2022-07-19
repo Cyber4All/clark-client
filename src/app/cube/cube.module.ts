@@ -54,6 +54,7 @@ import { LibraryModule } from './library/library.module';
 import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
+import { NewHomeModule } from './new-home/new-home.module';
 
 
 /**
@@ -115,7 +116,8 @@ import { EditorialProcessComponent } from './content-pages/editorial-process/edi
     MatTabsModule,
     MatExpansionModule,
     MatListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    NewHomeModule
   ],
   providers: [LearningObjectService]
 })
