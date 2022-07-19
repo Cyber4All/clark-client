@@ -8,6 +8,11 @@ import { LearningObjectInfoComponent } from './learning-object-info/learning-obj
 import { TeachNowComponent } from './help/teach-now/teach-now.component';
 import { BuildProgramComponent } from './help/build-program/build-program.component';
 import { ExploreCollectionsComponent } from './help/explore-collections/explore-collections.component';
+import { LearningObjectsComponent } from './learning-object-info/learning-objects/learning-objects.component';
+import { LearningOutcomesComponent } from './learning-object-info/learning-outcomes/learning-outcomes.component';
+import { HierarchiesComponent } from './learning-object-info/hierarchies/hierarchies.component';
+import { CollectionsComponent } from './learning-object-info/collections/collections.component';
+import { StickyMenuComponent } from './learning-object-info/sticky-menu/sticky-menu.component';
 
 
 
@@ -20,7 +25,12 @@ import { ExploreCollectionsComponent } from './help/explore-collections/explore-
     LearningObjectInfoComponent,
     TeachNowComponent,
     BuildProgramComponent,
-    ExploreCollectionsComponent
+    ExploreCollectionsComponent,
+    LearningObjectsComponent,
+    LearningOutcomesComponent,
+    HierarchiesComponent,
+    CollectionsComponent,
+    StickyMenuComponent
   ],
   imports: [
     CommonModule
