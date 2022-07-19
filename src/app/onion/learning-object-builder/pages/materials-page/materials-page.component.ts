@@ -19,10 +19,10 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   notes = [
     {
       title: 'Videos',
-      content: `Video files uploaded to CLARK will be uploaded to our Youtube channel to prevent corruption or other mishaps.
-       Please let us know if you prefer to upload your videos to your own Youtube channel and provide the links if they already exist. 
-       Otherwise, we will proceed with uploading to our Youtube channel. If there are no additional revisions, we will proceed
-       with the release and notify you of how to update the video in the future.`
+      content: `Video files uploaded to CLARK will be transferred to our Youtube channel to prevent file corruption or other problems.
+       If you prefer to upload your videos to your own Youtube channel then provide links to them in the materials section. 
+       If there are no additional revisions, we will proceed with the release and notify you via email if you video content
+       needs to be updated in the future.`
     },
     {
       title: 'Solution Files',
