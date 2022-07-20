@@ -36,6 +36,6 @@
 </mat-tree>
 
 <div class="button-group right">
-    <button class="button neutral">Cancel</button>
+    <button class="button neutral" (click)="close.emit()">Cancel</button>
     <button class="button good" (click)="createLearningObjects(TREE_DATA[0])">Create Objects</button>
 </div>

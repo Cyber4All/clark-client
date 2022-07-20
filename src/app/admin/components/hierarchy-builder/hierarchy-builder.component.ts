@@ -1,6 +1,6 @@
 
 import { NestedTreeControl} from '@angular/cdk/tree';
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/admin/core/collection.service';
 import { LearningObjectNode, TreeDataSource } from './tree-datasource';
@@ -21,6 +21,7 @@ export class HierarchyBuilderComponent implements OnInit {
   ];
 
   @Input() parent: LearningObject;
+  @Output() close: EventEmitter<void> = new EventEmitter();
   treeControl = new NestedTreeControl<LearningObjectNode>(node => node.children);
   dataSource = new TreeDataSource(this.treeControl, this.TREE_DATA);
   contributors: string [];
@@ -82,21 +83,21 @@ export class HierarchyBuilderComponent implements OnInit {
       const childrenIds = [];
       for await(const child of node.children) {
         if(child.children.length > 0) {
+          await this.createLearningObjects(child);
           const obj = await this.collectionService.addHierarchyObject(this.parent.author.username, child);
           childrenIds.push(obj);
         }
-        await this.createLearningObjects(child);
       }
       if(node.name !== this.parent.name) {
         node._id = await this.collectionService.addHierarchyObject(this.parent.author.username, node);
-        return await this.setParents(node, childrenIds);
       }
-      return await this.setParents(node, childrenIds);
+      await this.setParents(node, childrenIds);
+      this.close.emit();
+      return;
     }
   }
 
   async setParents(node, childs) {
-    console.log(childs);
     await this.collectionService.addChildren(this.parent.author.username, node, childs);
   }
 }
