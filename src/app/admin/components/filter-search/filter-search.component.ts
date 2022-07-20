@@ -16,7 +16,6 @@ import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Topic } from '@entity';
 import { RelevancyService } from 'app/core/relevancy.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -58,12 +57,11 @@ export class FilterSearchComponent implements OnInit {
     private collectionService: CollectionService,
     private relevancyService: RelevancyService,
     private authService: AuthService,
-    private toaster: ToastrOvenService,
-    private route: ActivatedRoute
+    private toaster: ToastrOvenService
   ) {}
 
-  async ngOnInit() {
-    await this.getCollections();
+  ngOnInit() {
+    this.getCollections();
     this.findUserRestrictions();
     this.getTopics();
 
@@ -74,45 +72,13 @@ export class FilterSearchComponent implements OnInit {
       s => !['rejected', 'unreleased'].includes(s.toLowerCase())
     );
     this.relevancyStart = new Date();
-
-    //check for params in the query and add them to the filter dropdown bars
-    const qParams= this.route.parent.snapshot.queryParams;
-    //if there are topics in the query, toggle them in the filter dropdown
-    if(qParams.topics) {
-      //more than one topic
-      if(Array.isArray(qParams.topics)) {
-        for(const topic of qParams.topics) {
-          this.toggleTopicFilter({ name: '', _id: topic });
-        }
-        // one topic
-      } else {
-        this.toggleTopicFilter({ name: '', _id: qParams.topics });
-      }
-    }
-    //if there are statuses in the query add them too the filter dropdowns
-    if(qParams.status){
-    //multiple statuses in query
-      if(Array.isArray(qParams.status)) {
-        for(const status of qParams.status) {
-          this.toggleStatusFilter(status);
-        }
-        //one status in query
-      } else {
-        this.toggleStatusFilter(qParams.status);
-      }
-    }
-    //if there is a collection selected in the query, toggle it
-    //there will only ever be a single collection selected at a time
-    if(qParams.collection){
-      this.toggleCollectionFilter(qParams.collection);
-    }
   }
 
   /**
    * Fetches the collections from the CollectionService and formats them for use in the context menu.
    */
-   private async getCollections(): Promise<void> {
-    await this.collectionService
+  private getCollections(): void {
+    this.collectionService
       .getCollections()
       .then(collections => {
         this.collections = Array.from(collections);
@@ -282,18 +248,19 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
-  toggleTopicFilter(filter: { name?: string, _id: string }) {
+  toggleTopicFilter(filter: any) {
     if (filter.name.toLowerCase() === 'all') {
       this.clearTopicFilters();
       this.toggleTopicMenu(undefined);
       return;
     }
-    if (this.filterTopics.has(filter._id)) {
+    if (this.filterTopics.has(filter)) {
       this.filterTopics.delete(filter._id);
     } else {
       this.filterTopics.add(filter._id);
     }
     this.topicFilter.emit(Array.from(this.filterTopics));
+
   }
 
   /**

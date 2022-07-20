@@ -26,11 +26,7 @@
         Mapped Outcomes
       </div>
     </div>
-    <div 
-      *ngIf="outcome?.mappings.length !== 0"
-      class='outcome__grid-container__toggle-container' 
-      [ngClass]="{'outcome__grid-container__toggle-container--active': showMappings}" 
-      >
+    <div class='outcome__grid-container__toggle-container' [ngClass]="{'outcome__grid-container__toggle-container--active': showMappings}">
       <i class="far fa-chevron-down"></i>
     </div>
   </div>
