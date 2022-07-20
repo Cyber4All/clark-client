@@ -44,7 +44,7 @@ export class BlogsComponentService {
    */
   private updateNeverShowBanner() {
     const currentBlogId = localStorage.getItem('bannerBlogId');
-    if(currentBlogId !== this.recentBlog._id) {
+    if(this.recentBlog && (currentBlogId !== this.recentBlog._id)) {
       localStorage.removeItem('neverShowBanner');
       localStorage.removeItem('bannerBlogId');
     }
