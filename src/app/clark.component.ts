@@ -14,6 +14,8 @@ import { ToastrOvenService } from './shared/modules/toaster/notification.service
 import { CookieAgreementService } from './core/cookie-agreement.service';
 import { SubscriptionAgreementService } from './core/subscription-agreement.service';
 import { NavbarService } from './core/navbar.service';
+import { BlogsComponentService } from './core/blogs-component.service';
+import { Blog } from './components/blogs/types/blog';
 @Component({
   selector: 'clark-root',
   templateUrl: './clark.component.html',
@@ -45,6 +47,16 @@ import { NavbarService } from './core/navbar.service';
             opacity: 0
           })
         )
+      ])
+    ]),
+    trigger('blog', [
+      transition(':enter', [
+        style({ transform: 'translateY(-100%)' }),
+        animate('300ms 1500ms ease-out', style({ transform: 'translateY(0%)' }))
+      ]),
+      transition(':leave', [
+        style({ zIndex: 3 }),
+        animate('300ms ease-out', style({ transform: 'translate3d(0, -100%, 1px)', zIndex: 3 }))
       ])
     ])
   ]
@@ -82,6 +94,7 @@ export class ClarkComponent implements OnInit {
     private view: ViewContainerRef,
     private cookieAgreement: CookieAgreementService,
     private subscriptionAgreement: SubscriptionAgreementService,
+    private blogsComponentService: BlogsComponentService
   ) {
     this.isUnderMaintenance = false;
 
@@ -135,6 +148,34 @@ export class ClarkComponent implements OnInit {
 
   reloadPage() {
     location.reload();
+  }
+
+  /**
+   * Catches the output emitted by clark-blogs to dismiss the banner
+   *
+   * @param val The value of showBanner
+   */
+  showBlogsBanner(val: boolean) {
+    this.blogsComponentService.setShowBanner(val);
+  }
+
+  /**
+   * Catches the checkbox output emitted by clark-blogs to never see the banner again
+   *
+   * @param args: val - the value of the checkbox
+   *              recentBlog - the blog that was dismissed
+   */
+  neverShowBanner(args: {val: boolean, recentBlog?: Blog}) {
+    this.blogsComponentService.setNeverShowBanner(args);
+  }
+
+  /**
+   * Determines if the blogs banner is to be shown
+   *
+   * @returns a value determining if the blogs banner is shown
+   */
+  displayBlogsBanner() {
+    return this.blogsComponentService.getShowBanner() && !this.blogsComponentService.getNeverShowBanner();
   }
 
   /**
