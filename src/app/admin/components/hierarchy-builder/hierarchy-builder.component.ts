@@ -76,7 +76,6 @@ export class HierarchyBuilderComponent implements OnInit {
   }
 
   async createLearningObjects(node: any) {
-    console.log(node);
     if(node.children.length === 0) {
       return await this.collectionService.addHierarchyObject(this.parent.author.username, node);
     } else if(node.children.length > 0) {
@@ -84,7 +83,6 @@ export class HierarchyBuilderComponent implements OnInit {
       for await(const child of node.children) {
         if(child.children.length > 0) {
           const obj = await this.collectionService.addHierarchyObject(this.parent.author.username, child);
-          console.log('In the for', obj)
           childrenIds.push(obj);
         }
         await this.createLearningObjects(child);

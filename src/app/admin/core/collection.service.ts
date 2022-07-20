@@ -25,16 +25,14 @@ export class CollectionService {
   }
 
   async addHierarchyObject(username: string, object: any): Promise<any> {
-    const ret = await this.http.post(                                            
+    return await this.http.post(                                            
       ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(username),
       { object }, { withCredentials: true, responseType: 'text'}
     ).toPromise();
-    console.log(ret);
-    return ret;
   }
 
   async addChildren(username: string, object: any, children): Promise<any> {
-    return await this.http.patch(
+    return await this.http.post(
       USER_ROUTES.SET_CHILDREN(username, object._id),
       {
         children
