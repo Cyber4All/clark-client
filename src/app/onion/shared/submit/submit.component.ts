@@ -111,6 +111,39 @@ export class SubmitComponent implements OnInit {
   }
 
   /**
+   * @returns {boolean} true if the LO has a name, description, a contributor, and at least 1 outcome
+   */
+  isValidLearningObject(): boolean {
+    return (
+      this.learningObject.description !== '' &&
+      this.learningObject.name !== '' &&
+      this.learningObject.outcomes.length !== 0 &&
+      this.learningObject.contributors.length !== 0
+    );
+  }
+
+  /**
+   * @returns {string} a string with missing required fields for an error message
+   */
+  private buildUnfinishedLOErrorMsg(): string {
+    let str = '';
+    const arr = [' name', ' description', ' contributor(s)', ' outcome(s)'];
+    if(this.learningObject.name === '') {
+      str += arr[0];
+    }
+    if(this.learningObject.description === '') {
+      str += (str === '') ? arr[1]: ',' + arr[1];
+    }
+    if(this.learningObject.outcomes.length === 0) {
+      str += (str === '') ? arr[2]: ',' + arr[2];
+    }
+    if(this.learningObject.contributors.length === 0) {
+      str += (str === '') ? arr[3]: ',' + arr[3];
+    }
+    return str;
+  }
+
+  /**
    * Submits a Learning Object to a collection for review and publishes the object
    *
    * @param {string} collection the name of the collection to submit to
@@ -123,6 +156,15 @@ export class SubmitComponent implements OnInit {
       proceed = await this.changelogComplete$.pipe(first()).toPromise();
     }
 
+    if(!this.isValidLearningObject()) {
+      proceed = false;
+      let missingFields = this.buildUnfinishedLOErrorMsg();
+      this.toasterService.error(
+        'Incomplete Learning Object!',
+        `Please provide the following fields to submit: ${missingFields}.`
+      );
+    }
+    
     if (proceed) {
       this.loading.push(true);
       this.collectionService
