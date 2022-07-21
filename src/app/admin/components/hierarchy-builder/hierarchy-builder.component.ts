@@ -56,6 +56,7 @@ export class HierarchyBuilderComponent implements OnInit {
       obj["children"] = [];
     }
     obj["contributors"] = this.contributors;
+    obj["collection"] = this.parent.collection;
     this.dataSource.add(obj, parentNode);
   }
 
@@ -78,26 +79,21 @@ export class HierarchyBuilderComponent implements OnInit {
 
   async createLearningObjects(node: any) {
     if(node.children.length === 0) {
-      return await this.collectionService.addHierarchyObject(this.parent.author.username, node);
-    } else if(node.children.length > 0) {
-      const childrenIds = [];
-      for await(const child of node.children) {
-        if(child.children.length > 0) {
-          await this.createLearningObjects(child);
-          const obj = await this.collectionService.addHierarchyObject(this.parent.author.username, child);
-          childrenIds.push(obj);
-        }
-      }
-      if(node.name !== this.parent.name) {
-        node._id = await this.collectionService.addHierarchyObject(this.parent.author.username, node);
-      }
-      await this.setParents(node, childrenIds);
-      this.close.emit();
-      return;
+      return this.collectionService.addHierarchyObject(this.parent.author.username, node);
     }
+    const childrenIds = [];
+    for await (const child of node.children) {
+      childrenIds.push(await this.createLearningObjects(child));
+    }
+    let parentId = this.parent.id;
+    if(node.name !== this.parent.name) {
+      parentId = await this.collectionService.addHierarchyObject(this.parent.author.username, node);
+    }
+    return await this.setParents(parentId, childrenIds)
   }
 
   async setParents(node, childs) {
     await this.collectionService.addChildren(this.parent.author.username, node, childs);
+    return node;
   }
 }

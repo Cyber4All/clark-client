@@ -33,9 +33,13 @@ export class CollectionService {
 
   async addChildren(username: string, object: any, children): Promise<any> {
     return await this.http.post(
-      USER_ROUTES.SET_CHILDREN(username, object._id),
+      USER_ROUTES.SET_CHILDREN(username, object),
       {
         children
+      },
+      {
+        withCredentials: true,
+        responseType: 'text'
       }
     ).toPromise();
   }
