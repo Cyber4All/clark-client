@@ -38,7 +38,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     {
       title: 'Virtual Machines and other large files',
       content: `If you plan to upload large files (1GB or larger, including VMs, log files, applications, etc.), we ask that you 
-      reach out to our team at editors@secured.team for guidance on how to submit your learning object.`
+      reach out to our team at <a href="editors@secured.team">editors@secured.team</a> for guidance on how to submit your learning object.`
     },
     {
       title: 'Third Party Software',
