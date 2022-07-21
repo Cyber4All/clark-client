@@ -158,13 +158,13 @@ export class SubmitComponent implements OnInit {
 
     if(!this.isValidLearningObject()) {
       proceed = false;
-      let missingFields = this.buildUnfinishedLOErrorMsg();
+      const missingFields = this.buildUnfinishedLOErrorMsg();
       this.toasterService.error(
         'Incomplete Learning Object!',
         `Please provide the following fields to submit: ${missingFields}.`
       );
     }
-    
+
     if (proceed) {
       this.loading.push(true);
       this.collectionService
