@@ -1,0 +1,20 @@
+@import "vars.scss";
+
+.secondary-navbar {
+    position: relative;
+    background-color: #f8f8f8;
+    height: 43px;
+    width: 100%;
+    border: solid 1px #DFDFDF;
+
+    .item {
+        cursor: pointer;
+        font-weight: 400;
+        color: $dark-grey;
+        padding: 10px 45px;
+
+        span {
+            margin-left: 5px;
+        }
+    }
+}

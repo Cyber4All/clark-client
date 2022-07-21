@@ -7,9 +7,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SecondaryNavbarComponent implements OnInit {
 
+  topicDropdown = false;
+  collectionsDropdown = false;
+  resourcesDropdown = false;
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  openTopics() {
+    this.topicDropdown = !this.topicDropdown;
+  }
+
+  openCollections() {
+    this.collectionsDropdown = !this.collectionsDropdown;
+  }
+
+  openResources() {
+    this.resourcesDropdown = !this.resourcesDropdown;
   }
 
 }
