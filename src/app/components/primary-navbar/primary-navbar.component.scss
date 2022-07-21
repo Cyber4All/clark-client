@@ -1,5 +1,7 @@
 @import 'vars.scss';
 .primary-navbar {
+    display: flex;
+    flex-direction: row;
     position: relative;
     width: 100%;
     height: 92px;
@@ -34,6 +36,42 @@
             margin-left: 10px;
             color: $dark-grey;
         }
-        
     }
+
+    .mid-bar {
+        display: flex;
+        flex-direction: row;
+        position: inherit;
+        align-self: center;
+
+        .level-picker {
+            border: solid #dfdfdf 1px;
+            height: 32px;
+            width: 151px;
+            background-color: #f8f8f8;
+            padding: 10px 10px 0px 10px;
+            border-radius: 2px 0px 0px 2px;
+        }
+
+        .search-bar {
+            input {
+                border: solid #dfdfdf 1px;
+                height: 40px;
+                width: 440px;
+                border-radius: 0px;
+            }
+        }
+
+        .search-button {
+            button {
+                color: white;
+                border-radius: 0px 2px 2px 0px;
+                border: none;
+                width: 50px;
+                height: 44px;
+                background-color: $light-blue;
+            }
+        }
+    }
+
 }

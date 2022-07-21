@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrimaryNavbarComponent implements OnInit {
 
+  levelsDropdown = false;
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  openAcademicLevels() {
+    this.levelsDropdown = !this.levelsDropdown;
   }
 
 }
