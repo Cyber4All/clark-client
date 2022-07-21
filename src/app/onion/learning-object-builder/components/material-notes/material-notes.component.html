@@ -1,4 +1,12 @@
 <div class="note-wrapper">
-    <div (click)="openNote()" class="note-title" [ngClass]="{ 'note-title-blue' : open }">{{note.title}}</div>
-    <div *ngIf="this.open" class="note-content" innerHtml=[note.content]></div>
+    <div (click)="openNote()" class="note-title" [ngClass]="{ 'note-title-blue' : open }">
+        <span *ngIf="!open" class="arrow">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="open" class="arrow">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+        {{ note.title }}
+    </div>
+    <div *ngIf="open" class="note-content" [innerHTML]="note.content"></div>
 </div>

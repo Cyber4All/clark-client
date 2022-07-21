@@ -10,8 +10,6 @@ export class MaterialNotesComponent {
   open = false;
   @Input() note: {title: string, content: string };
 
-  constructor() { }
-
   openNote(): void {
     this.open = !this.open;
   }

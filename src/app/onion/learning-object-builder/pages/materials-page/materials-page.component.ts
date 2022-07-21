@@ -19,31 +19,32 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   notes = [
     {
       title: 'Videos',
-      content: `Video files uploaded to CLARK will be transferred to our Youtube channel to prevent file corruption or other problems.
+      content: `<p>Video files uploaded to CLARK will be transferred to our Youtube channel to prevent file corruption or other problems.
        If you prefer to upload your videos to your own Youtube channel then provide links to them in the materials section. 
        If there are no additional revisions, we will proceed with the release and notify you via email if you video content
-       needs to be updated in the future.`
+       needs to be updated in the future.</p>`
     },
     {
       title: 'Solution Files',
-      content: `CLARK allows for the upload of solution files. If you do not wish to upload solutions with the 
-      learning object, please add a note (in the "notes" section) indicating where the solutions can be found in the learning object.`
+      content: `<p>CLARK allows for the upload of solution files. If you do not wish to upload solutions with the 
+      learning object, please add a note (in the "notes" section) indicating where the solutions can be found in the learning object.</p>`
     },
     {
       title: 'Malware',
-      content: `If you plan to upload malware samples, we will add a file description during the review process to indicate 
-      that the file is malware, along with a note about the presence of malware material for downloading users. We encourage 
-      you to upload all malware samples in password-protected ZIP files and include the password in the learning object's notes section.`
+      content: `<p>If you plan to upload malware samples, we will add a file description during the review process to indicate 
+      that the file is malware, along with a note about the presence of malware material for downloading users. We encourage you
+      to upload all malware samples in password-protected ZIP files and include the password in the learning object's notes section.</p>`
     },
     {
-      title: 'Virtual Machines and other large files',
-      content: `If you plan to upload large files (1GB or larger, including VMs, log files, applications, etc.), we ask that you 
-      reach out to our team at <a href="editors@secured.team">editors@secured.team</a> for guidance on how to submit your learning object.`
+      title: 'Large Files greater than 1GB',
+      content: `<p>If you plan to upload large files (1GB or larger, including VMs, log files, applications, etc.), we ask that you reach 
+      out to our team at <a href="mailto:editors@secured.team">editors@secured.team</a> 
+      for guidance on how to submit your learning object.</p>`
     },
     {
       title: 'Third Party Software',
-      content: `If your learning object requires the use of third party software please include a link to any FAQ/Troubleshooting
-      resources specific to that software.`
+      content: `<p>If your learning object requires the use of third party software please include a link to any FAQ/Troubleshooting
+      resources specific to that software.</p>`
     }];
 
   constructor(private store: BuilderStore) {}

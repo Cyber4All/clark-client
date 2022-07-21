@@ -3,10 +3,15 @@
 .note-wrapper {
 
     .note-title {
-        padding: 8px;
+        padding: 12px;
         font-size: larger;
         cursor: pointer;
         border-bottom: solid 2px $light-grey;
+        
+        .arrow {
+            text-align: right;
+            padding-right: 1px;
+        }
     }
 
     .note-title-blue {
@@ -16,7 +21,6 @@
     }
 
     .note-title:hover {
-        padding: 8px;
         border-bottom: solid 2px $light-blue;
         font-size: larger;
         cursor: pointer;
