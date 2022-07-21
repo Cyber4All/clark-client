@@ -80,6 +80,8 @@ export class HierarchyObjectComponent implements OnInit {
     this.removeLo.emit(this.node);
   }
 
-  // ON blur check if there is already a learning object under that name for that author
+  checkLearningObjectName(event) {
+    // Check if the LO already exists for the author
+  }
 
 }

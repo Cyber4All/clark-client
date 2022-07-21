@@ -2,7 +2,7 @@
     <div *ngIf="node.showForm === true" class="node form">
         <mat-form-field class="name-field" appearance="outline">
             <mat-label>Learning Object Name</mat-label>
-            <input #name (blur)="onKey($event)" matInput [(ngModel)]="node.name">
+            <input #name (blur)="checkLearningObjectName($event)" matInput [(ngModel)]="node.name">
         </mat-form-field>
         <mat-form-field class="length-field" appearance="outline">
             <mat-label>Learning Object Length</mat-label>
