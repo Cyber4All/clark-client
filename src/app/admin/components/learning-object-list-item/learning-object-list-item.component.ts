@@ -240,11 +240,24 @@ export class LearningObjectListItemComponent implements OnChanges {
 
 
    openHierarchy(learningObject: any) {
+     console.log(this.showHierarchyBuilder)
      this.showHierarchyBuilder = true;
    }
 
    toggleHierarchyBuilder(val: boolean) {
     this.showHierarchyBuilder = val;
+   }
+
+   goToUrl(url) {
+     if(url === 'builder') {
+      window.open(`/onion/learning-object-builder/${this.learningObject.id}`, '_blank');
+     } else if (url === 'contact') {
+      window.open(`/users/${this.learningObject.author.username}`);
+     } else if (url === 'details') {
+      window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}`)
+     } else if (url === 'relevancy') {
+       window.open(`/onion/relevancy-builder/${this.learningObject.id}`)
+     }
    }
 
 
