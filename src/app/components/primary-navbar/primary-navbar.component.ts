@@ -8,6 +8,9 @@ import { Component, OnInit } from '@angular/core';
 export class PrimaryNavbarComponent implements OnInit {
 
   levelsDropdown = false;
+  userDropdown = false;
+  isLoggedIn = true;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -15,6 +18,10 @@ export class PrimaryNavbarComponent implements OnInit {
 
   openAcademicLevels() {
     this.levelsDropdown = !this.levelsDropdown;
+  }
+
+  openUserDropdown() {
+    this.userDropdown = !this.userDropdown;
   }
 
 }

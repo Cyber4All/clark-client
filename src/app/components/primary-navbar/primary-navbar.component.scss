@@ -2,8 +2,8 @@
 .primary-navbar {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     position: relative;
-    width: 100%;
     height: 92px;
     padding: 10px;
     background: white;
@@ -16,7 +16,7 @@
         position: relative;
         left: 0;
         padding: 20px;
-        width: 150px;
+        width: 10vw;
         
         .logo-image {
             background-image: url('../../../assets/images/logo.png');
@@ -41,31 +41,34 @@
     .mid-bar {
         display: flex;
         flex-direction: row;
+        justify-content: center;
         position: inherit;
         align-self: center;
 
         .level-picker {
+            cursor: pointer;
             border: solid #dfdfdf 1px;
             height: 32px;
             width: 151px;
             background-color: #f8f8f8;
             padding: 10px 10px 0px 10px;
-            border-radius: 2px 0px 0px 2px;
+            border-radius: 6px 0px 0px 6px;
         }
 
         .search-bar {
             input {
                 border: solid #dfdfdf 1px;
                 height: 40px;
-                width: 440px;
+                width: 30vw;
                 border-radius: 0px;
             }
         }
 
         .search-button {
             button {
+                cursor: pointer;
                 color: white;
-                border-radius: 0px 2px 2px 0px;
+                border-radius: 0px 6px 6px 0px;
                 border: none;
                 width: 50px;
                 height: 44px;
@@ -74,4 +77,46 @@
         }
     }
 
+    .right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 12px 18px;
+        gap: 10px;
+        max-width: 20vw;
+        
+        button {
+            cursor: pointer;
+            color: $dark-grey;
+            background-color: #f8f8f8;
+            height: 40px;
+            margin: 15px;
+            margin-right: 1vw;
+            border: solid #dfdfdf 1px;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .logged-in{
+            display: flex;
+            flex-direction: row;
+
+            .profile-picture {
+                margin: 5px;
+            }
+
+            .username {
+                margin: 5px;
+                cursor: pointer;
+            }
+
+            .arrow {
+
+                margin: 5px;
+                margin-left: 0px;
+            }
+        }
+
+    }
 }

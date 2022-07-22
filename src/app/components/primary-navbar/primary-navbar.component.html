@@ -1,15 +1,16 @@
 <div class="primary-navbar">
     <div class="logo">
         <span class="logo-image"></span>
-        <span tabindex="0" id="clark-logo" class="logo-link">CLARK</span>
+        <span id="clark-logo" class="logo-link" routerLink="/home">CLARK</span>
     </div>
     <div class="mid-bar">
-        <div class="level-picker" (click)="openAcademicLevels()">All Academic Levels
-            <span *ngIf="!levelsDropdown">
-                <i class="fa fa-chevron-down"></i>
+        <div class="level-picker" (click)="openAcademicLevels()">
+            All Academic Levels
+            <span class="arrow" *ngIf="!levelsDropdown">
+                <i class="fas fa-chevron-down"></i>
             </span>
-            <span *ngIf="levelsDropdown">
-                <i class="fa fa-chevron-up"></i>
+            <span class="arrow" *ngIf="levelsDropdown">
+                <i class="fas fa-chevron-up"></i>
             </span>
         </div>
         <div class="search-bar">
@@ -17,6 +18,23 @@
         </div>
         <div class="search-button">
             <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div class="right">
+        <button>
+            <div>
+                CONTRIBUTE
+            </div>
+        </button>
+        <div class="logged-in">
+            <img src="" class="profile-picture" alt="profile Picture">
+            <div class="username" (click)="openUserDropdown()">Name</div>
+            <span class="arrow" *ngIf="!userDropdown">
+                <i class="fas fa-chevron-down"></i>
+            </span>
+            <span class="arrow" *ngIf="userDropdown">
+                <i class="fas fa-chevron-up"></i>
+            </span>
         </div>
     </div>
 </div>
