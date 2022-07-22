@@ -1,31 +1,27 @@
 <div class="secondary-navbar">
-    <table>
-        <tr>
-            <td class="item about-us">About Us</td>
-            <td class="item collections" (click)="openCollections()">Collections
-                <span *ngIf="!collectionsDropdown">
-                    <i class="fa fa-chevron-down"></i>
-                </span>
-                <span *ngIf="collectionsDropdown">
-                    <i class="fa fa-chevron-up"></i>
-                </span>
-            </td>
-            <td class="item topics" (click)="openTopics()">Topics
-                <span *ngIf="!topicDropdown">
-                    <i class="fa fa-chevron-down"></i>
-                </span>
-                <span *ngIf="topicDropdown">
-                    <i class="fa fa-chevron-up"></i>
-                </span>
-            </td>
-            <td class="item resources" (click)="openResources()">Resources
-                <span *ngIf="!resourcesDropdown">
-                    <i class="fa fa-chevron-down"></i>
-                </span>
-                <span *ngIf="resourcesDropdown">
-                    <i class="fa fa-chevron-up"></i>
-                </span>
-            </td>
-        </tr>
-    </table>
+    <div class="item about-us">About Us</div>
+    <div class="item collections" (click)="openCollections()">Collections
+        <span *ngIf="!collectionsDropdown">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="collectionsDropdown">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+    </div>
+    <div class="item topics" (click)="openTopics()">Topics
+        <span *ngIf="!topicDropdown">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="topicDropdown">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+    </div>
+    <div class="item resources" (click)="openResources()">Resources
+        <span *ngIf="!resourcesDropdown">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="resourcesDropdown">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+    </div>
 </div>

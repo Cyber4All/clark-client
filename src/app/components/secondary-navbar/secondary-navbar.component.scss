@@ -1,6 +1,8 @@
 @import "vars.scss";
 
 .secondary-navbar {
+    display: flex;
+    flex-direction: row;
     position: relative;
     background-color: #f8f8f8;
     height: 43px;
