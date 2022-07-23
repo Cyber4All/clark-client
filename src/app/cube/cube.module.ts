@@ -54,6 +54,7 @@ import { ContributePageComponent } from './content-pages/contribute-page/contrib
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 import { ProfileLearningObjectsComponent } from './user-profile/components/profile-learning-objects/profile-learning-objects.component';
 import { ProfileHeaderComponent } from './user-profile/components/profile-header/profile-header.component';
+import { EditProfileComponent } from './user-profile/components/edit-profile/edit-profile.component';
 
 
 /**
@@ -86,7 +87,8 @@ import { ProfileHeaderComponent } from './user-profile/components/profile-header
     ContributePageComponent,
     EditorialProcessComponent,
     ProfileLearningObjectsComponent,
-    ProfileHeaderComponent
+    ProfileHeaderComponent,
+    EditProfileComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,

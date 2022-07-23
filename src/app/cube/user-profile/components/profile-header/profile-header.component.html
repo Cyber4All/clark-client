@@ -1,1 +1,33 @@
-<p>profile-header works!</p>
+<div class="user-profile-header_container">
+    <div class="user-profile-header_wrapper">
+        <img [src]="gravatarImage" class="img">
+        <div class="user-profile_info">
+            <h1>{{ user.name | titlecase }}</h1>
+            <p>{{ user.organization | titlecase }}</p>
+            <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+            <ng-container [ngTemplateOutlet]="anyUserStats ? userStatsTemplate : undefined"></ng-container>
+        </div>
+        <div class="edit" *ngIf="!editProfile && isUser" (activate)="editProfile = !editProfile">
+            <i class="far fa-pencil"></i>
+            <span id="edit-profile">EDIT PROFILE</span>
+        </div>
+    </div>
+    <div class="user-profile-bio_wrapper">
+        <div class="profile-bio_wrapper">
+            <h2>About them</h2>
+            <ng-container [ngTemplateOutlet]="user.bio !== '' ? bioExists : noBio"></ng-container>
+        </div>
+    </div>
+</div>
+
+<ng-template #userStatsTemplate>
+    <p>xxx Saved Objects xxx Contributed Objects xxx Downloads</p>
+</ng-template>
+
+<ng-template #bioExists>
+    <p>{{ user.bio }}</p>
+</ng-template>
+
+<ng-template #noBio>
+    <p>yeet</p>
+</ng-template>
