@@ -49,4 +49,8 @@ export class FileListItemComponent implements OnInit {
     event.stopPropagation();
     this.menuClicked.emit(event);
   }
+
+  toggler() {
+    console.log('gottem');
+  }
 }

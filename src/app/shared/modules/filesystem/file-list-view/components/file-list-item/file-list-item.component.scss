@@ -12,7 +12,7 @@
 }
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 25px;
+  grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
@@ -75,6 +75,13 @@
     width: 6px;
     flex: 0 0 auto;
   }
+}
+
+clark-toggle-switch {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  left: -17px;
 }
 
 .external-link-icon {

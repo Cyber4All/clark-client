@@ -47,6 +47,8 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   file: LearningObject.Material.File;
   directoryListing = [];
 
+  toggleToolTip = 'If an item is toggled on, then the selected item will be included in the zip file to be downloaded for users.';
+
   constructor(private auth: AuthService) {}
 
   ngOnInit(): void {

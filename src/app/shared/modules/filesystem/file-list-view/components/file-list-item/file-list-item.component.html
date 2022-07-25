@@ -22,6 +22,9 @@
   <div class="text-contained filesize" id="file-size" attr.aria-label="{{ file?.size }}">
     {{ file?.size | fileSize }}
   </div>
+  <div>
+    <clark-toggle-switch [state]="file.packageable" (toggled)="toggler()"></clark-toggle-switch>
+  </div>
   <a
     tabindex="0"
     *ngIf="showOptionButton"
