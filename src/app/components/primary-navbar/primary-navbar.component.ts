@@ -12,8 +12,10 @@ export class PrimaryNavbarComponent implements OnInit {
 
   levelsDropdown = false;
   userDropdown = false;
-  isLoggedIn = false;
+  isLoggedIn: boolean;
   isDesktop = false;
+  isMSearch = false;
+  isMHamburger = false;
   @HostListener('window:resize', ['$event'])
 
   resizeWindow() {
@@ -31,6 +33,14 @@ export class PrimaryNavbarComponent implements OnInit {
     });
   }
 
+  openMSearch() {
+    this.isMSearch = !this.isMSearch;
+  }
+
+  openMHamburger() {
+    console.log('hamburger');
+    this.isMHamburger = !this.isMHamburger;
+  }
 
   openAcademicLevels() {
     this.levelsDropdown = !this.levelsDropdown;
