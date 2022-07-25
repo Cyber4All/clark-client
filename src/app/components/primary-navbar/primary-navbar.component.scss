@@ -1,20 +1,25 @@
 @import 'vars.scss';
 .desktop-navbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    height: 92px;
-    padding: 10px;
+    max-height: 92px;
     background: white;
-    z-index: 4;
     color: $dark-grey;
     box-sizing: border-box;
+
+    .nav-wrapper {
+        margin: 0px;
+        z-index: 4;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        max-width: 2000px;
+    }
 
     .logo {
         cursor: pointer;
         position: relative;
         left: 0;
         padding: 20px;
+        padding-top: 30px;
         width: 10vw;
         
         &-image {
@@ -41,7 +46,6 @@
         display: flex;
         flex-direction: row;
         justify-content: center;
-        position: inherit;
         align-self: center;
 
         .level-picker {
@@ -80,37 +84,43 @@
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
-        align-items: center;
-        padding: 12px 18px;
+        padding: 20px 18px;
         gap: 10px;
         max-width: 20vw;
+        
+        .contribute-button {
+            cursor: pointer;
+            color: $dark-grey;
+            background-color: #f8f8f8;
+            border: solid #dfdfdf 1px;
+            height: 50px;
+            border-radius: 5px;
+            padding: 10px;
+            margin-right: 2vw;
+        }
         
         .logged-in{
             display: flex;
             flex-direction: row;
-
-            button {
-                cursor: pointer;
-                color: $dark-grey;
-                background-color: #f8f8f8;
-                height: 40px;
-                margin: 15px;
-                margin-right: 1vw;
-                border: solid #dfdfdf 1px;
-                border-radius: 5px;
-                padding: 10px;
-            }
+            position: relative;
 
 
             .profile-picture {
-                margin: 15px;
+                width: 50px;
+                height: 50px;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                border-radius: 50%;
+                box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
             }
 
             .username {
-                margin: 20px;
                 cursor: pointer;
                 display: flex;
                 flex-direction: row;
+                padding: 15px 5px;
+                overflow:visible;
                 .arrow {
                     margin-left: 10px;
                 }

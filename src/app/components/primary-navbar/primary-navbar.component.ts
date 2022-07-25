@@ -1,4 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { AuthService } from 'app/core/auth.service';
+import * as md5 from 'md5';
+
 
 @Component({
   selector: 'clark-primary-navbar',
@@ -11,18 +14,23 @@ export class PrimaryNavbarComponent implements OnInit {
   userDropdown = false;
   isLoggedIn = false;
   isDesktop = false;
-
-  constructor() { }
-
-  ngOnInit(): void {
-    this.isDesktop = (window.innerWidth >= 850) ? true : false;
-  }
-
   @HostListener('window:resize', ['$event'])
 
   resizeWindow() {
-    this.isDesktop = (window.innerWidth >= 850) ? true : false;
+    this.isDesktop = (window.innerWidth >= 1024) ? true : false;
   }
+
+  constructor(
+    public auth: AuthService
+  ) { }
+
+  ngOnInit(): void {
+    this.isDesktop = (window.innerWidth >= 1024) ? true : false;
+    this.auth.isLoggedIn.subscribe(val => {
+      this.isLoggedIn = val ? true : false;
+    });
+  }
+
 
   openAcademicLevels() {
     this.levelsDropdown = !this.levelsDropdown;
@@ -30,6 +38,17 @@ export class PrimaryNavbarComponent implements OnInit {
 
   openUserDropdown() {
     this.userDropdown = !this.userDropdown;
+  }
+
+  gravatarImage(size): string {
+    // r=pg checks the rating of the Gravatar image
+    return (
+      'https://www.gravatar.com/avatar/' +
+      md5(this.auth.user.email) +
+      '?s=' +
+      size +
+      '?r=pg&d=identicon'
+    );
   }
 
 }

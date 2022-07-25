@@ -14,13 +14,13 @@ export class SecondaryNavbarComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.isDesktop = (window.innerWidth >= 850) ? true : false;
+    this.isDesktop = (window.innerWidth >= 1024) ? true : false;
   }
 
   @HostListener('window:resize', ['$event'])
 
   resizeWindow() {
-    this.isDesktop = (window.innerWidth >= 850) ? true : false;
+    this.isDesktop = (window.innerWidth >= 1024) ? true : false;
   }
 
   openTopics() {
