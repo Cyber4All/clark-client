@@ -4,6 +4,7 @@
     background: white;
     color: $dark-grey;
     box-sizing: border-box;
+    z-index: 2;
 
     .nav-wrapper {
         margin: 0px;
@@ -179,5 +180,119 @@
         .search {
             padding-right: 20px;
         }
+    }
+
+}
+.slideout {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: -330px;
+    background: white;
+    box-sizing: border-box;
+    max-width: 80%;
+    width: 330px;
+    box-shadow: -2px 0 6px 2px rgba(0, 0, 0, 0.2);
+    z-index: 100000;
+    transition: all 0.5s cubic-bezier(0.55, 0.11, 0.26, 0.91);
+    transform: translateZ(0);
+    visibility: hidden;
+  
+    &.active {
+      visibility: visible;
+      right: 0;
+    }
+  
+    .slideout-section {
+      padding: 20px;
+      box-sizing: border-box;
+      
+        .user {
+            
+            .info {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .profile-picture {
+                    width: 70px;
+                    height: 70px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    border-radius: 50%;
+                    box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
+                }
+                
+                .username {
+                    font-size: $larger;
+                    font-weight: 1000;
+                    padding: 15px;
+                    overflow:visible;
+                    
+                    a {
+                        font-size: $normal;
+                        font-weight: 400;
+                    }
+                }
+            }
+            
+            .contribute {
+                width: 100%;
+            }
+        }
+        
+        
+
+        hr {
+            margin-top: 20px;
+            color: $dark-grey;
+        }
+
+      &.menu-items {
+  
+        ul {
+          padding: 0;
+          margin: 0;
+  
+          li {
+            font-size: $normal;
+            cursor: pointer;
+            list-style-type: none;
+            padding: 5px 0;
+            color: $dark-grey;
+  
+            &:not(:last-child) {
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
+  
+      &.auth {
+        margin-top: 25px;
+      }
+    }
+}
+  
+.slideout-underlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: darken($light-blue, 35);
+    z-index: 5;
+    opacity: 0;
+    transition: all 0.5s ease;
+    visibility: hidden;
+    
+    &.active {
+        opacity: 0.8;
+        visibility: visible;
+    }
+    
+    &.underNav {
+        z-index: 3 !important;
     }
 }

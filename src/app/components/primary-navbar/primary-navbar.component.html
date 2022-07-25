@@ -55,8 +55,31 @@
             <span id="clark-logo" class="mobile-logo-link" routerLink="/home">CLARK</span>
         </div>
         <div class="mobile-right">
+            <span (click)="openMSearch()"></span>
             <i class="search fas fa-search"></i>
-            <i class="hamburger fas fa-bars"></i>
+            <span (click)="openMHamburger()">
+                <i class="hamburger fas fa-bars"></i>
+            </span>
+        </div>
+    </div>
+    <div class="slideout" *ngIf="!isDesktop; isMHamburger" [ngClass]="{'active': isMHamburger}">
+        <div class="slideout-section">
+            <div class="user" *ngIf="isLoggedIn">
+                <div class="info">
+                    <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(70) + ')'}"></div>
+                    <div class="username">Hi, {{ this.auth.firstName }}!
+                        <div>
+                            <a href="/users/{{ auth.username }}">View Your Profile</a>
+                        </div>
+                    </div>
+                </div>
+                    <button class="button good contribute">CONTRIBUTE</button>
+            </div>
+            <hr>
+
+            <ul class="menu-items">
+                <li></li>
+            </ul>
         </div>
     </div>
 </ng-template>
