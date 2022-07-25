@@ -1,9 +1,8 @@
 @import 'vars.scss';
-.primary-navbar {
+.desktop-navbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    position: relative;
     height: 92px;
     padding: 10px;
     background: white;
@@ -18,7 +17,7 @@
         padding: 20px;
         width: 10vw;
         
-        .logo-image {
+        &-image {
             background-image: url('../../../assets/images/logo.png');
             width: 40px;
             background-size: contain;
@@ -28,7 +27,7 @@
             padding: 20px;
         }
         
-        .logo-link {
+        &-link {
             font-size: $larger;
             font-weight: 700;
             padding-right: 15px;
@@ -86,37 +85,89 @@
         gap: 10px;
         max-width: 20vw;
         
-        button {
-            cursor: pointer;
-            color: $dark-grey;
-            background-color: #f8f8f8;
-            height: 40px;
-            margin: 15px;
-            margin-right: 1vw;
-            border: solid #dfdfdf 1px;
-            border-radius: 5px;
-            padding: 10px;
-        }
-
         .logged-in{
             display: flex;
             flex-direction: row;
 
+            button {
+                cursor: pointer;
+                color: $dark-grey;
+                background-color: #f8f8f8;
+                height: 40px;
+                margin: 15px;
+                margin-right: 1vw;
+                border: solid #dfdfdf 1px;
+                border-radius: 5px;
+                padding: 10px;
+            }
+
+
             .profile-picture {
-                margin: 5px;
+                margin: 15px;
             }
 
             .username {
-                margin: 5px;
+                margin: 20px;
                 cursor: pointer;
-            }
-
-            .arrow {
-
-                margin: 5px;
-                margin-left: 0px;
+                display: flex;
+                flex-direction: row;
+                .arrow {
+                    margin-left: 10px;
+                }
             }
         }
+        
+        .logged-out {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
 
+            .login-button {
+                margin-right: 23px;
+            }
+        }
+    }
+}
+
+.mobile {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: $dark-grey;
+    background-color: white;
+
+    &-logo {
+        cursor: pointer;
+        position: relative;
+        left: 0;
+        padding: 20px;
+        width: 10vw;
+        &-image {
+            background-image: url('../../../assets/images/logo.png');
+            width: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            flex-shrink: 0;
+            height: 100%;
+            padding: 20px;
+        }
+        
+        &-link {
+            font-size: $larger;
+            font-weight: 700;
+            padding-right: 15px;
+            position: relative;
+            margin-left: 10px;
+        }
+    }
+
+    &-right {
+        display: flex;
+        flex-direction: row;
+        padding: 20px;
+        font-size: $larger;
+        .search {
+            padding-right: 20px;
+        }
     }
 }

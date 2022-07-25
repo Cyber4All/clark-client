@@ -1,4 +1,4 @@
-<div class="secondary-navbar">
+<div class="secondary-navbar" *ngIf="isDesktop">
     <div class="item about-us">About Us</div>
     <div class="item collections" (click)="openCollections()">Collections
         <span *ngIf="!collectionsDropdown">

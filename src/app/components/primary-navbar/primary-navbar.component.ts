@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clark-primary-navbar',
@@ -9,11 +9,19 @@ export class PrimaryNavbarComponent implements OnInit {
 
   levelsDropdown = false;
   userDropdown = false;
-  isLoggedIn = true;
+  isLoggedIn = false;
+  isDesktop = false;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.isDesktop = (window.innerWidth >= 850) ? true : false;
+  }
+
+  @HostListener('window:resize', ['$event'])
+
+  resizeWindow() {
+    this.isDesktop = (window.innerWidth >= 850) ? true : false;
   }
 
   openAcademicLevels() {
