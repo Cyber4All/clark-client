@@ -1,46 +1,48 @@
 <ng-template #desktop>
     <div class="desktop-navbar">
-        <div class="logo">
-            <span class="logo-image"></span>
-            <span id="clark-logo" class="logo-link" routerLink="/home">CLARK</span>
-        </div>
-        <div class="mid-bar">
-            <div class="level-picker" (click)="openAcademicLevels()">
-                All Academic Levels
-                <span class="arrow" *ngIf="!levelsDropdown">
-                    <i class="fas fa-chevron-down"></i>
-                </span>
-                <span class="arrow" *ngIf="levelsDropdown">
-                    <i class="fas fa-chevron-up"></i>
-                </span>
+        <div class="nav-wrapper">
+            <div class="logo">
+                <span class="logo-image"></span>
+                <span id="clark-logo" class="logo-link" routerLink="/home">CLARK</span>
             </div>
-            <div class="search-bar">
-                <input type="text" placeholder="Search">
+            <div class="mid-bar">
+                <div class="level-picker" (click)="openAcademicLevels()">
+                    All Academic Levels
+                    <span class="arrow" *ngIf="!levelsDropdown">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                    <span class="arrow" *ngIf="levelsDropdown">
+                        <i class="fas fa-chevron-up"></i>
+                    </span>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search">
+                </div>
+                <div class="search-button">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
             </div>
-            <div class="search-button">
-                <button><i class="fas fa-search"></i></button>
-            </div>
-        </div>
-        <div class="right">
-            <div class="logged-in" *ngIf="isLoggedIn">
-                <button>
+            <div class="right">
+                <button class="contribute-button" *ngIf="isLoggedIn">
                     <div>
                         CONTRIBUTE
                     </div>
                 </button>
-                <img src="" class="profile-picture" alt="profile Picture">
-                <div class="username" (click)="openUserDropdown()">Name
-                    <span class="arrow" *ngIf="!userDropdown">
-                        <i class="fas fa-chevron-down"></i>
-                    </span>
-                    <span class="arrow" *ngIf="userDropdown">
-                        <i class="fas fa-chevron-up"></i>
-                    </span>
+                <div class="logged-in" *ngIf="isLoggedIn">
+                    <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
+                    <div class="username" (click)="openUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.firstName }}</span>
+                        <span class="arrow" *ngIf="!userDropdown">
+                            <i class="fas fa-chevron-down"></i>
+                        </span>
+                        <span class="arrow" *ngIf="userDropdown">
+                            <i class="fas fa-chevron-up"></i>
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="logged-out" *ngIf="!isLoggedIn">
-                <a class="login-button" routerLink="/auth/login">Sign In</a>
-                <a class="register-button" routerLink="/auth/register">Register</a>
+                <div class="logged-out" *ngIf="!isLoggedIn">
+                    <a class="login-button" routerLink="/auth/login">Sign In</a>
+                    <a class="register-button" routerLink="/auth/register">Register</a>
+                </div>
             </div>
         </div>
     </div>
