@@ -1,40 +1,62 @@
-<div class="primary-navbar">
-    <div class="logo">
-        <span class="logo-image"></span>
-        <span id="clark-logo" class="logo-link" routerLink="/home">CLARK</span>
-    </div>
-    <div class="mid-bar">
-        <div class="level-picker" (click)="openAcademicLevels()">
-            All Academic Levels
-            <span class="arrow" *ngIf="!levelsDropdown">
-                <i class="fas fa-chevron-down"></i>
-            </span>
-            <span class="arrow" *ngIf="levelsDropdown">
-                <i class="fas fa-chevron-up"></i>
-            </span>
+<ng-template #desktop>
+    <div class="desktop-navbar">
+        <div class="logo">
+            <span class="logo-image"></span>
+            <span id="clark-logo" class="logo-link" routerLink="/home">CLARK</span>
         </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search">
-        </div>
-        <div class="search-button">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-    </div>
-    <div class="right">
-        <button>
-            <div>
-                CONTRIBUTE
+        <div class="mid-bar">
+            <div class="level-picker" (click)="openAcademicLevels()">
+                All Academic Levels
+                <span class="arrow" *ngIf="!levelsDropdown">
+                    <i class="fas fa-chevron-down"></i>
+                </span>
+                <span class="arrow" *ngIf="levelsDropdown">
+                    <i class="fas fa-chevron-up"></i>
+                </span>
             </div>
-        </button>
-        <div class="logged-in">
-            <img src="" class="profile-picture" alt="profile Picture">
-            <div class="username" (click)="openUserDropdown()">Name</div>
-            <span class="arrow" *ngIf="!userDropdown">
-                <i class="fas fa-chevron-down"></i>
-            </span>
-            <span class="arrow" *ngIf="userDropdown">
-                <i class="fas fa-chevron-up"></i>
-            </span>
+            <div class="search-bar">
+                <input type="text" placeholder="Search">
+            </div>
+            <div class="search-button">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+        <div class="right">
+            <div class="logged-in" *ngIf="isLoggedIn">
+                <button>
+                    <div>
+                        CONTRIBUTE
+                    </div>
+                </button>
+                <img src="" class="profile-picture" alt="profile Picture">
+                <div class="username" (click)="openUserDropdown()">Name
+                    <span class="arrow" *ngIf="!userDropdown">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                    <span class="arrow" *ngIf="userDropdown">
+                        <i class="fas fa-chevron-up"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="logged-out" *ngIf="!isLoggedIn">
+                <a class="login-button" routerLink="/auth/login">Sign In</a>
+                <a class="register-button" routerLink="/auth/register">Register</a>
+            </div>
         </div>
     </div>
-</div>
+</ng-template>
+
+<ng-template #mobile>
+    <div class="mobile">
+        <div class="mobile-logo">
+            <span class="mobile-logo-image"></span>
+            <span id="clark-logo" class="mobile-logo-link" routerLink="/home">CLARK</span>
+        </div>
+        <div class="mobile-right">
+            <i class="search fas fa-search"></i>
+            <i class="hamburger fas fa-bars"></i>
+        </div>
+    </div>
+</ng-template>
+
+<ng-container *ngTemplateOutlet="isDesktop ? desktop : mobile"></ng-container>
