@@ -10,7 +10,9 @@
     {{ timestampAge }}
   </div>
   <div class="empty"></div>
-  <div class="empty"></div>
+  <div class="toggleBundle">
+    <clark-toggle-switch [state]="true"></clark-toggle-switch>
+  </div>
   <a
     tabindex="0"
     attr.aria-label="Clickable Option Menu for {{ folder?.getName() }}"

@@ -64,6 +64,14 @@
   color: $dark-grey;
 }
 
+.toggleBundle {
+  clark-toggle-switch {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+}
+
 .meatballs {
   display: flex;
   flex-direction: row;
