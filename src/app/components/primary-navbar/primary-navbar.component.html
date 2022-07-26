@@ -49,7 +49,7 @@
     <div class="mobile">
         <div class="mobile-logo">
             <span class="mobile-logo-image"></span>
-            <span id="clark-logo" class="mobile-logo-link" [routerLink]="home">CLARK</span>
+            <span id="clark-logo" class="mobile-logo-link" [routerLink]="['home']">CLARK</span>
         </div>
         <div class="mobile-right">
             <span (click)="openMSearch()"></span>
@@ -70,14 +70,14 @@
                         </div>
                     </div>
                 </div>
-                    <button class="button good contribute">CONTRIBUTE</button>
-                    <hr>
-                    <div>
-                        <ul class="menu-items">
-                            <li [routerLink]="['library']">Your Library</li>
-                            <li [routerLink]="">Sign Out</li>
-                        </ul>
-                    </div>
+                <button class="button good contribute">CONTRIBUTE</button>
+                <hr>
+                <div>
+                    <ul class="menu-items">
+                        <li [routerLink]="['library']">Your Library</li>
+                        <li [routerLink]="">Sign Out</li>
+                    </ul>
+                </div>
             </div>
             <div class="logged-out" *ngIf="!isLoggedIn">
                 <div class="greeting">Hi there!</div>
@@ -89,23 +89,29 @@
             <hr>
             <ul class="menu-items">
                 <li>About Us</li>
-                <li>Topics
-                    <span class="arrow" *ngIf="!levelsDropdown">
+                <li (click)="openTopics()">Topics
+                    <span class="arrow" *ngIf="!showTopics">
                         <i class="fas fa-chevron-down"></i>
                     </span>
-                    <span class="arrow" *ngIf="levelsDropdown">
+                    <span class="arrow" *ngIf="showTopics">
                         <i class="fas fa-chevron-up"></i>
                     </span>
                 </li>
+                <ul *ngIf="showTopics">
+                    <li *ngFor="let t of topics">{{t}}</li>
+                </ul>
                 <li>Collections</li>
-                <li>External Resources
-                    <span class="arrow" *ngIf="!levelsDropdown">
+                <li (click)="openResources()">External Resources
+                    <span class="arrow" *ngIf="!showResources">
                         <i class="fas fa-chevron-down"></i>
                     </span>
-                    <span class="arrow" *ngIf="levelsDropdown">
+                    <span class="arrow" *ngIf="showResources">
                         <i class="fas fa-chevron-up"></i>
                     </span>
                 </li>
+                <ul *ngIf="showResources">
+                    <li *ngFor="let r of externalResources">{{r.content}}</li>
+                </ul>
             </ul>
         </div>
     </div>

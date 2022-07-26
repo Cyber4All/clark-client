@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import * as md5 from 'md5';
 
@@ -16,6 +16,11 @@ export class PrimaryNavbarComponent implements OnInit {
   isDesktop = false;
   isMSearch = false;
   isMHamburger = false;
+  showTopics = false;
+  topics = ['topic 1', 'topic 2'];
+  showResources = false;
+  // @Input()
+  externalResources = [{content: 'now this is content'}, {content: 'this is also content'}]
   @HostListener('window:resize', ['$event'])
 
   resizeWindow() {
@@ -39,8 +44,15 @@ export class PrimaryNavbarComponent implements OnInit {
   }
 
   openMHamburger() {
-    console.log('hamburger');
     this.isMHamburger = !this.isMHamburger;
+  }
+
+  openResources() {
+    this.showResources = !this.showResources;
+  }
+
+  openTopics() {
+    this.showTopics = !this.showTopics;
   }
 
   openAcademicLevels() {
