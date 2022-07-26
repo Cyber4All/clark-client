@@ -29,7 +29,8 @@ export class PrimaryNavbarComponent implements OnInit {
   ngOnInit(): void {
     this.isDesktop = (window.innerWidth >= 1024) ? true : false;
     this.auth.isLoggedIn.subscribe(val => {
-      this.isLoggedIn = val ? true : false;
+      console.log(val);
+      this.isLoggedIn = val;
     });
   }
 
