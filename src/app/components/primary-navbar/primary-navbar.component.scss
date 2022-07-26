@@ -132,6 +132,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
+            padding: 15px;
 
             .login-button {
                 margin-right: 23px;
@@ -242,7 +243,32 @@
             }
         }
         
-        
+        .logged-out {
+            .greeting {
+                font-size: $larger;
+                font-weight: 1000;
+            }
+            .auth-buttons{
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                padding-top: 10px;
+
+                .sign-in{
+                    color:black;
+                    border: solid #dfdfdf 1px;
+                    background-color: #f8f8f8;
+                    box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.1);
+                    margin-right: 18px;
+                }
+
+                .register {
+                    color: white;
+                    background-color: $light-blue;
+                    box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.1);
+                }
+            }
+        }
 
         hr {
             margin-top: 20px;

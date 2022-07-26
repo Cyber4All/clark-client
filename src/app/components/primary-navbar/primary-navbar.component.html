@@ -75,8 +75,14 @@
                 </div>
                     <button class="button good contribute">CONTRIBUTE</button>
             </div>
+            <div class="logged-out" *ngIf="!isLoggedIn">
+                <div class="greeting">Hi there!</div>
+                <div class="auth-buttons">
+                    <button class="button sign-in" [routerLink]="auth/login">Sign In</button>
+                    <button class="button register" [routerLink]="auth/register">Register</button>
+                </div>
+            </div>
             <hr>
-
             <ul class="menu-items">
                 <li></li>
             </ul>
