@@ -275,25 +275,11 @@
             color: $dark-grey;
         }
 
-      &.menu-items {
-  
-        ul {
-          padding: 0;
-          margin: 0;
-  
-          li {
-            font-size: $normal;
-            cursor: pointer;
-            list-style-type: none;
-            padding: 5px 0;
-            color: $dark-grey;
-  
-            &:not(:last-child) {
-              margin-bottom: 10px;
-            }
-          }
+        .menu-items {
+            padding: 0;
+            margin: 0;
+            
         }
-      }
   
       &.auth {
         margin-top: 25px;
@@ -320,5 +306,17 @@
     
     &.underNav {
         z-index: 3 !important;
+    }
+}
+
+li {
+    font-size: $normal;
+    cursor: pointer;
+    list-style-type: none;
+    padding: 5px 0;
+    color: $dark-grey;
+
+    &:not(:last-child) {
+    margin-bottom: 10px;
     }
 }

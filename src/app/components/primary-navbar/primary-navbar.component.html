@@ -3,7 +3,7 @@
         <div class="nav-wrapper">
             <div class="logo">
                 <span class="logo-image"></span>
-                <span id="clark-logo" class="logo-link" [routerLink]="home">CLARK</span>
+                <span id="clark-logo" class="logo-link" [routerLink]="['home']">CLARK</span>
             </div>
             <div class="mid-bar">
                 <div class="level-picker" (click)="openAcademicLevels()">
@@ -16,10 +16,7 @@
                     </span>
                 </div>
                 <div class="search-bar">
-                    <input type="text" placeholder="Search">
-                </div>
-                <div class="search-button">
-                    <button><i class="fas fa-search"></i></button>
+                    <clark-search></clark-search>
                 </div>
             </div>
             <div class="right">
@@ -40,8 +37,8 @@
                     </div>
                 </div>
                 <div class="logged-out" *ngIf="!isLoggedIn">
-                    <a class="login-button" [routerLink]="auth/login">Sign In</a>
-                    <a class="register-button" [routerLink]="auth/register">Register</a>
+                    <a class="login-button" [routerLink]="['auth', 'login']">Sign In</a>
+                    <a class="register-button" [routerLink]="['auth', 'register']">Register</a>
                 </div>
             </div>
         </div>
@@ -74,17 +71,41 @@
                     </div>
                 </div>
                     <button class="button good contribute">CONTRIBUTE</button>
+                    <hr>
+                    <div>
+                        <ul class="menu-items">
+                            <li [routerLink]="['library']">Your Library</li>
+                            <li [routerLink]="">Sign Out</li>
+                        </ul>
+                    </div>
             </div>
             <div class="logged-out" *ngIf="!isLoggedIn">
                 <div class="greeting">Hi there!</div>
                 <div class="auth-buttons">
-                    <button class="button sign-in" [routerLink]="auth/login">Sign In</button>
-                    <button class="button register" [routerLink]="auth/register">Register</button>
+                    <button class="button sign-in" [routerLink]="['auth', 'login']">Sign In</button>
+                    <button class="button register" [routerLink]="['auth', 'register']">Register</button>
                 </div>
             </div>
             <hr>
             <ul class="menu-items">
-                <li></li>
+                <li>About Us</li>
+                <li>Topics
+                    <span class="arrow" *ngIf="!levelsDropdown">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                    <span class="arrow" *ngIf="levelsDropdown">
+                        <i class="fas fa-chevron-up"></i>
+                    </span>
+                </li>
+                <li>Collections</li>
+                <li>External Resources
+                    <span class="arrow" *ngIf="!levelsDropdown">
+                        <i class="fas fa-chevron-down"></i>
+                    </span>
+                    <span class="arrow" *ngIf="levelsDropdown">
+                        <i class="fas fa-chevron-up"></i>
+                    </span>
+                </li>
             </ul>
         </div>
     </div>
