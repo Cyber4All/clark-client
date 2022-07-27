@@ -1,5 +1,8 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { AbstractControl, FormControl, ValidatorFn, Validators } from '@angular/forms';
+import { HierarchyService } from 'app/admin/core/hierarchy.service';
 import { LearningObjectNode } from '../tree-datasource';
+
 
 @Component({
   selector: 'clark-hierarchy-object',
@@ -9,11 +12,18 @@ import { LearningObjectNode } from '../tree-datasource';
 export class HierarchyObjectComponent implements OnInit {
 
   @Input() node: LearningObjectNode;
+  @Input() username: string;
   @Output() addNode: EventEmitter<LearningObjectNode> = new EventEmitter();
   @Output() removeLo: EventEmitter<any> = new EventEmitter();
 
+  nameExists: boolean;
+
   lengths = [];
-  constructor() { }
+
+  nameFormControl = new FormControl('', [Validators.required]);
+  constructor(
+    private hierarchyService: HierarchyService
+  ) { }
 
   ngOnInit(): void {
     this.lengths = [];
@@ -80,8 +90,8 @@ export class HierarchyObjectComponent implements OnInit {
     this.removeLo.emit(this.node);
   }
 
-  checkLearningObjectName(event) {
-    // Check if the LO already exists for the author
+  async checkLearningObjectName(event){
+    this.nameExists = await this.hierarchyService.checkName(this.username, this.node.name);
   }
 
 }

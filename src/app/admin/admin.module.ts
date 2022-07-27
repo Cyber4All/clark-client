@@ -7,7 +7,7 @@ import { LearningObjectsComponent } from './pages/learning-objects/learning-obje
 import { UsersComponent } from './pages/users/users.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { FilterSearchComponent } from 'app/admin/components/filter-search/filter-search.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { UserSearchWrapperComponent } from './components/user-search-wrapper/user-search-wrapper.component';
@@ -82,7 +82,8 @@ import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarc
     MatInputModule,
     MatBadgeModule,
     MatTreeModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule
   ],
   providers: [LearningObjectService]
 })

@@ -92,21 +92,22 @@ export class LearningObjectsComponent
         this.headersElement.nativeElement.getBoundingClientRect().height;
     });
 
-    this.searchService.needsChange$.subscribe( () => {
-      this.learningObjects = [];
-      this.getLearningObjects();
-    });
+    // this.searchService.needsChange$.subscribe( () => {
+    //   this.learningObjects = [];
+    //   this.getLearningObjects();
+    // });
 
     // query by anything if it's passed in
-    this.route.queryParams.subscribe(params => {
-      this.query = { 
-        currPage: parseInt(params.currPage),
-        limit: parseInt(params.limit),
-        sortType: parseInt(params.sortType),
-        orderBy: OrderBy.Date,
-        text: ''
-      };
-    });
+    // this.route.queryParams.subscribe(params => {
+    //   console.log(params)
+    //   this.query = { 
+    //     currPage: parseInt(params.currPage),
+    //     limit: parseInt(params.limit),
+    //     sortType: parseInt(params.sortType),
+    //     orderBy: OrderBy.Date,
+    //     text: ''
+    //   };
+    // });
 
     // listen for input events from the search component and perform the search action
     this.userSearchInput$
@@ -115,7 +116,7 @@ export class LearningObjectsComponent
         debounceTime(650)
       )
       .subscribe(searchTerm => {
-        this.query = { currPage: 1, text: searchTerm };
+        this.query = { currPage: 1, sortType: this.query.sortType, orderBy: this.query.orderBy, text: searchTerm };
         this.learningObjects = [];
 
         this.getLearningObjects();
@@ -188,7 +189,6 @@ export class LearningObjectsComponent
       if (this.learningObjects.length) {
         // we've already made an initial request to load the first page of results, increment the current page before next request
         this.query = { currPage: this.query.currPage + 1 };
-        console.log(this.query);
       }
 
       this.publicLearningObjectService

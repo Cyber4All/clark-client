@@ -1,4 +1,5 @@
 <h2>{{ parent.name }} Hierarchy Generation</h2>
+<p>INSERT CHECKBOX HERE FOR ACKNOWLEDGEMENT</p>
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
   <!-- This is the tree node template for leaf nodes -->
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
@@ -6,6 +7,7 @@
         <button class="toggle" mat-icon-button disabled></button>
         <clark-hierarchy-object 
           [node]="node"
+          [username]="parent.author.username"
           (addNode)="addLearningObject(node)"
           (removeLo)="remove($event)">
         </clark-hierarchy-object>
@@ -23,6 +25,7 @@
             </button>
         <clark-hierarchy-object 
           [node]="node"
+          [username]="parent.author.username"
           (addNode)="addLearningObject($event)"
           (removeLo)="remove($event)">
         </clark-hierarchy-object>

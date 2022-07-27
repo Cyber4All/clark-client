@@ -2,7 +2,13 @@
     <div *ngIf="node.showForm === true" class="node form">
         <mat-form-field class="name-field" appearance="outline">
             <mat-label>Learning Object Name</mat-label>
-            <input #name (blur)="checkLearningObjectName($event)" matInput [(ngModel)]="node.name">
+            <input #name [formControl]="nameFormControl" (blur)="checkLearningObjectName($event)" matInput [(ngModel)]="node.name">
+            <mat-error *ngIf="nameFormControl.hasError('required')">
+                Please enter a name!
+            </mat-error>
+            <mat-error *ngIf="nameExists">
+                Name already exists for the user!
+            </mat-error>
         </mat-form-field>
         <mat-form-field class="length-field" appearance="outline">
             <mat-label>Learning Object Length</mat-label>
