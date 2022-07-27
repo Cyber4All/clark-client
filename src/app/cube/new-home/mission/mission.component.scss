@@ -43,3 +43,26 @@ p {
     font-weight: 400;
     font-size: 20px;
 }
+
+@media screen and (max-width: 425px) {
+    .wrapper{
+        padding: 10px 30px;
+        .first {
+            padding: 0px 0px 60px;
+        }
+        .second {
+            display: flex;
+            flex-direction: column;
+
+            .second-element {
+                margin: 0px 0px 60px;
+                text-align: center;
+
+                span {
+                    left: 0px;
+                }
+            }
+        }
+    }
+    
+}
