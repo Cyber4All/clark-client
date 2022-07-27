@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service';
 
 @Component({
   selector: 'clark-splash',
@@ -6,10 +7,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./splash.component.scss']
 })
 export class SplashComponent implements OnInit {
+  numReleasedObjects = 900; // default number of released objects before the service provides a new number
 
-  constructor() { }
+  constructor(private usageStatsService: UsageStatsService) { }
 
   ngOnInit(): void {
+    this.usageStatsService.getLearningObjectStats().then(stats => {
+      this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
+    });
   }
-
 }
