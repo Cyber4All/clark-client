@@ -11,7 +11,7 @@
             Facilisis mauris sit amet massa vitae tortor condimentum lacinia quis. 
             Maecenas pharetra convallis posuere morbi leo urna molestie at.
         </p>
-        <button routerLink="/browse">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
+        <button [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
     </div>
     <div class="second">
         <iframe 
