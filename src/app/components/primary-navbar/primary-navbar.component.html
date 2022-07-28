@@ -25,29 +25,35 @@
                         CONTRIBUTE
                     </div>
                 </button>
-                <div class="logged-in" #userDropdownAnchor *ngIf="isLoggedIn">
-                    <div class="profile-picture" #userDropdownAnchor id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
-                    <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.firstName | titlecase }}</span>
-                        <span class="arrow" *ngIf="!userDropdown">
-                            <i class="fas fa-chevron-down"></i>
-                        </span>
-                        <span class="arrow" *ngIf="userDropdown">
-                            <i class="fas fa-chevron-up"></i>
-                        </span>
+                <div #userDropdownAnchor>
+                    <div class="logged-in" *ngIf="isLoggedIn">
+                        <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
+                        <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.firstName | titlecase }}</span>
+                            <span class="arrow" *ngIf="!userDropdown">
+                                <i class="fas fa-chevron-down"></i>
+                            </span>
+                            <span class="arrow" *ngIf="userDropdown">
+                                <i class="fas fa-chevron-up"></i>
+                            </span>
+                        </div>
                     </div>
-                </div>
-
-                <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor">
-                    <div class="context-popup">
-                        <ul>
-                            <li>this is a test</li>
-                        </ul>
+                    
+                    <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor" [offset]="{ top: 0, left: 5 }" (close)="dropdowns.closeAll()">
+                        <div #contextMenu class="context-popup">
+                            <ul>
+                                <li tabindex="0" *ngIf="auth.hasCuratorAccess()" routerLink="/admin" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
+                                <li tabindex="0" routerLink="/onion/dashboard" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-columns"></i>Dashboard</li>
+                                <li tabindex="0" [routerLink]="['users', auth.user?.username]" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-user"></i>Profile</li>
+                                <li tabindex="0" routerLink="/auth/forgot-password" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
+                                <li tabindex="0" (activate)="auth.logout(); dropdowns.toggleUserDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
+                            </ul>
+                        </div>
+                    </clark-context-menu>
+                    
+                    <div class="logged-out" *ngIf="!isLoggedIn">
+                        <a class="login-button" [routerLink]="['auth', 'login']">Sign In</a>
+                        <a class="register-button" [routerLink]="['auth', 'register']">Register</a>
                     </div>
-                </clark-context-menu>
-
-                <div class="logged-out" *ngIf="!isLoggedIn">
-                    <a class="login-button" [routerLink]="['auth', 'login']">Sign In</a>
-                    <a class="register-button" [routerLink]="['auth', 'register']">Register</a>
                 </div>
             </div>
         </div>
