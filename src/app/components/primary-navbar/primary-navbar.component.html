@@ -26,7 +26,7 @@
                     </div>
                 </button>
                 <div class="logged-in" #userDropdownAnchor *ngIf="isLoggedIn">
-                    <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
+                    <div class="profile-picture" #userDropdownAnchor id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
                     <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.firstName | titlecase }}</span>
                         <span class="arrow" *ngIf="!userDropdown">
                             <i class="fas fa-chevron-down"></i>
@@ -37,18 +37,13 @@
                     </div>
                 </div>
 
-                <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor" [offset]="{ top: 10, left: 5 }" (close)="dropdowns.toggleUserDropdown()">
-                    <div #contextMenu id="context-popup">
-                      <ul>
-                        <li tabindex="0" *ngIf="authService.hasCuratorAccess()" routerLink="/admin" (activate)="userDropdown()"><i class="far fa-tools"></i> {{ authService.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                        <li tabindex="0" routerLink="/library" (activate)="userDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="userService.userNotifications?.notifications?.length > 0" class="notifications"> {{ userService.userNotifications?.lastPage }}</span></li>
-                        <li tabindex="0" routerLink="/onion/dashboard" (activate)="userDropdown()"><i class="far fa-columns"></i>Dashboard</li>
-                        <li tabindex="0" [routerLink]="['users', authService.user?.username]" (activate)="userDropdown()"><i class="far fa-user"></i>Profile</li>
-                        <li tabindex="0" routerLink="/auth/forgot-password" (activate)="userDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
-                        <li tabindex="0" (activate)="logout(); userDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
-                      </ul>
+                <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor">
+                    <div class="context-popup">
+                        <ul>
+                            <li>this is a test</li>
+                        </ul>
                     </div>
-                  </clark-context-menu>
+                </clark-context-menu>
 
                 <div class="logged-out" *ngIf="!isLoggedIn">
                     <a class="login-button" [routerLink]="['auth', 'login']">Sign In</a>

@@ -16,6 +16,9 @@ export class NavbarDropdownService {
     public isMHamburger = new BehaviorSubject<boolean>(false);
     public isMSearch = new BehaviorSubject<boolean>(false);
 
+    externalResources = [{content: 'now this is content'}, {content: 'this is also content'}];
+    topics = ['topic 1', 'topic 2'];
+
     //close mobile slideouts
     public closeMobileMenus(): void {
         if(this.isMHamburger.getValue()) {
@@ -79,6 +82,5 @@ export class NavbarDropdownService {
     public toggleResourcesDropdown(): void {
         this.resourcesDropdown.next(!this.resourcesDropdown.getValue());
     }
-
 
 }

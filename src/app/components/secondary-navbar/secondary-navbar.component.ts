@@ -14,6 +14,9 @@ export class SecondaryNavbarComponent implements OnInit {
   resourcesDropdown = false;
   isDesktop = false;
   resizeThreshold = 1024;
+
+  topics: string[];
+  externalResources: {};
   constructor(
     private dropdowns: NavbarDropdownService
   ) { }
@@ -29,6 +32,8 @@ export class SecondaryNavbarComponent implements OnInit {
     this.dropdowns.resourcesDropdown.subscribe(val => {
       this.resourcesDropdown = val;
     });
+    this.topics = this.dropdowns.topics;
+    this.externalResources = this.dropdowns.externalResources;
   }
 
   @HostListener('window:resize', ['$event'])
