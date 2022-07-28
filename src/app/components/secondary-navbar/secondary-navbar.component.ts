@@ -13,12 +13,13 @@ export class SecondaryNavbarComponent implements OnInit {
   collectionsDropdown = false;
   resourcesDropdown = false;
   isDesktop = false;
+  resizeThreshold = 1024;
   constructor(
     private dropdowns: NavbarDropdownService
   ) { }
 
   ngOnInit(): void {
-    this.isDesktop = (window.innerWidth >= 1024) ? true : false;
+    this.isDesktop = (window.innerWidth >= this.resizeThreshold) ? true : false;
     this.dropdowns.topicDropdown.subscribe(val => {
       this.topicDropdown = val;
     });
@@ -33,7 +34,7 @@ export class SecondaryNavbarComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
 
   resizeWindow() {
-    this.isDesktop = (window.innerWidth >= 1024) ? true : false;
+    this.isDesktop = (window.innerWidth >= this.resizeThreshold) ? true : false;
   }
 
 }
