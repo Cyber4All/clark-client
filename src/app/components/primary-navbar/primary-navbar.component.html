@@ -41,10 +41,11 @@
                     <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor" [offset]="{ top: 0, left: 5 }" (close)="dropdowns.closeAll()">
                         <div #contextMenu class="context-popup">
                             <ul>
-                                <li tabindex="0" *ngIf="auth.hasCuratorAccess()" routerLink="/admin" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                                <li tabindex="0" routerLink="/onion/dashboard" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-columns"></i>Dashboard</li>
+                                <li tabindex="0" *ngIf="auth.hasCuratorAccess()" [routerLink]="['admin']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
+                                <li tabindex="0" [routerLink]="['library']" (activate)="dropdowns.toggleUserDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="userService.userNotifications?.notifications?.length > 0" class="notifications"> {{ userService.userNotifications?.lastPage }}</span></li>
+                                <li tabindex="0" [routerLink]="['onion', 'dashboard']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-columns"></i>Dashboard</li>
                                 <li tabindex="0" [routerLink]="['users', auth.user?.username]" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-user"></i>Profile</li>
-                                <li tabindex="0" routerLink="/auth/forgot-password" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
+                                <li tabindex="0" [routerLink]="['auth', 'forgot-password']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
                                 <li tabindex="0" (activate)="auth.logout(); dropdowns.toggleUserDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
                             </ul>
                         </div>
