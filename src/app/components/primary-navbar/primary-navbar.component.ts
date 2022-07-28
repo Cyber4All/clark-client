@@ -1,7 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import * as md5 from 'md5';
-import { HighlightSpanKind } from 'typescript';
 import { NavbarDropdownService } from '../../core/navBarDropdown.service';
 
 
@@ -24,19 +23,20 @@ export class PrimaryNavbarComponent implements OnInit {
   showResources = false;
   // @Input()
   externalResources = [{content: 'now this is content'}, {content: 'this is also content'}];
+  resizeThreshold = 1024;
   @HostListener('window:resize', ['$event'])
 
   resizeWindow() {
-    this.isDesktop = (window.innerWidth >= 1024) ? true : false;
+    this.isDesktop = (window.innerWidth >= this.resizeThreshold) ? true : false;
   }
 
   constructor(
-    public auth: AuthService,
-    public dropdowns: NavbarDropdownService
+    private auth: AuthService,
+    private dropdowns: NavbarDropdownService
   ) { }
 
   ngOnInit(): void {
-    this.isDesktop = (window.innerWidth >= 1024) ? true : false;
+    this.isDesktop = (window.innerWidth >= this.resizeThreshold) ? true : false;
     this.auth.isLoggedIn.subscribe(val => {
       this.isLoggedIn = val;
     });
@@ -70,5 +70,4 @@ export class PrimaryNavbarComponent implements OnInit {
       '?r=pg&d=identicon'
     );
   }
-
 }
