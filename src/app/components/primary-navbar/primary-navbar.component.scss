@@ -3,8 +3,6 @@
     max-height: 92px;
     background: white;
     color: $dark-grey;
-    box-sizing: border-box;
-    z-index: 2;
 
     .nav-wrapper {
         margin: 0px;
@@ -12,130 +10,129 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        max-width: 2000px;
-    }
-
-    .logo {
-        cursor: pointer;
-        position: relative;
-        left: 0;
-        padding: 20px;
-        padding-top: 30px;
-        width: 10vw;
         
-        &-image {
-            background-image: url('../../../assets/images/logo.png');
-            width: 40px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            flex-shrink: 0;
-            height: 100%;
-            padding: 20px;
-        }
-        
-        &-link {
-            font-size: $larger;
-            font-weight: 700;
-            padding-right: 15px;
+        .logo {
+            cursor: pointer;
             position: relative;
-            margin-left: 10px;
-            color: $dark-grey;
-        }
-    }
-
-    .mid-bar {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-self: center;
-
-        .level-picker {
-            cursor: pointer;
-            border: solid #dfdfdf 1px;
-            height: 32px;
-            width: 151px;
-            background-color: #f8f8f8;
-            padding: 10px 10px 0px 10px;
-            border-radius: 6px 0px 0px 6px;
-        }
-
-        .search-bar {
-            input {
-                border: solid #dfdfdf 1px;
-                height: 40px;
-                width: 30vw;
-                border-radius: 0px;
+            left: 0;
+            padding: 20px;
+            padding-top: 30px;
+            width: 10vw;
+            
+            &-image {
+                background-image: url('../../../assets/images/logo.png');
+                width: 40px;
+                background-size: contain;
+                background-repeat: no-repeat;
+                flex-shrink: 0;
+                height: 100%;
+                padding: 20px;
+            }
+            
+            &-link {
+                font-size: $larger;
+                font-weight: 700;
+                padding-right: 15px;
+                position: relative;
+                margin-left: 10px;
+                color: $dark-grey;
             }
         }
-
-        .search-button {
-            button {
-                cursor: pointer;
-                color: white;
-                border-radius: 0px 6px 6px 0px;
-                border: none;
-                width: 50px;
-                height: 44px;
-                background-color: $light-blue;
-            }
-        }
-    }
-
-    .right {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        padding: 20px 18px;
-        gap: 10px;
-        max-width: 20vw;
         
-        .contribute-button {
-            cursor: pointer;
-            color: $dark-grey;
-            background-color: #f8f8f8;
-            border: solid #dfdfdf 1px;
-            height: 50px;
-            border-radius: 5px;
-            padding: 10px;
-            margin-right: 2vw;
-        }
-        
-        .logged-in{
+        .mid-bar {
             display: flex;
             flex-direction: row;
-            position: relative;
-
-
-            .profile-picture {
-                width: 50px;
-                height: 50px;
-                background-size: cover;
-                background-position: center;
-                background-repeat: no-repeat;
-                border-radius: 50%;
-                box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
-            }
-
-            .username {
+            justify-content: center;
+            align-self: center;
+            
+            .level-picker {
                 cursor: pointer;
-                display: flex;
-                flex-direction: row;
-                padding: 15px 5px;
-                overflow:visible;
-                .arrow {
-                    margin-left: 10px;
+                border: solid #dfdfdf 1px;
+                height: 32px;
+                width: 151px;
+                background-color: #f8f8f8;
+                padding: 10px 10px 0px 10px;
+                border-radius: 6px 0px 0px 6px;
+            }
+            
+            .search-bar {
+                input {
+                    border: solid #dfdfdf 1px;
+                    height: 40px;
+                    width: 30vw;
+                    border-radius: 0px;
+                }
+            }
+            
+            .search-button {
+                button {
+                    cursor: pointer;
+                    color: white;
+                    border-radius: 0px 6px 6px 0px;
+                    border: none;
+                    width: 50px;
+                    height: 44px;
+                    background-color: $light-blue;
                 }
             }
         }
         
-        .logged-out {
+        .right {
             display: flex;
             flex-direction: row;
-            justify-content: space-evenly;
-            padding: 15px;
-
-            .login-button {
-                margin-right: 23px;
+            justify-content: flex-end;
+            padding: 20px 18px;
+            gap: 10px;
+            max-width: 20vw;
+            
+            .contribute-button {
+                cursor: pointer;
+                color: $dark-grey;
+                background-color: #f8f8f8;
+                border: solid #dfdfdf 1px;
+                height: 50px;
+                border-radius: 5px;
+                padding: 10px;
+                margin-right: 2vw;
+            }
+            
+            .logged-in{
+                display: flex;
+                flex-direction: row;
+                position: relative;
+                
+                
+                .profile-picture {
+                    width: 50px;
+                    height: 50px;
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    border-radius: 50%;
+                    box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
+                }
+                
+                .username {
+                    cursor: pointer;
+                    display: flex;
+                    flex-direction: row;
+                    padding: 15px 5px;
+                    overflow:visible;
+                    .arrow {
+                        margin-left: 10px;
+                    }
+                }
+            }
+            
+            .logged-out {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+                padding: 15px;
+                
+                .login-button {
+                    margin-right: 23px;
+                }
             }
         }
     }
@@ -318,5 +315,15 @@ li {
 
     &:not(:last-child) {
     margin-bottom: 10px;
+    }
+}
+
+@media (min-width: 2000px) {
+    .desktop-navbar {
+        display: flex;
+        justify-content: space-around;
+        .nav-wrapper{
+            width: 2000px;
+        }
     }
 }
