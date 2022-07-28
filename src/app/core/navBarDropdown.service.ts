@@ -16,6 +16,7 @@ export class NavbarDropdownService {
     public isMHamburger = new BehaviorSubject<boolean>(false);
     public isMSearch = new BehaviorSubject<boolean>(false);
 
+    //close mobile slideouts
     public closeMobileMenus(): void {
         if(this.isMHamburger.getValue()) {
             this.isMHamburger.next(false);
@@ -23,6 +24,32 @@ export class NavbarDropdownService {
         if(this.isMSearch.getValue()) {
             this.isMSearch.next(false);
         }
+    }
+
+    //close all menus and dropdowns
+    public closeAll(): void {
+        if(this.isMHamburger.getValue()) {
+            this.isMHamburger.next(false);
+        }
+        if(this.isMSearch.getValue()) {
+            this.isMSearch.next(false);
+        }
+        if(this.userDropdown.getValue()) {
+            this.userDropdown.next(false);
+        }
+        if(this.levelsDropdown.getValue()) {
+            this.levelsDropdown.next(false);
+        }
+        if(this.topicDropdown.getValue()) {
+            this.topicDropdown.next(false);
+        }
+        if(this.collectionsDropdown.getValue()) {
+            this.collectionsDropdown.next(false);
+        }
+        if(this.resourcesDropdown.getValue()) {
+            this.resourcesDropdown.next(false);
+        }
+
     }
 
     public toggleUserDropdown(): void {
