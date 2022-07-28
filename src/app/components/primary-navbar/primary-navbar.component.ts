@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import * as md5 from 'md5';
+import { UserService } from 'app/core/user.service';
 import { NavbarDropdownService } from '../../core/navBarDropdown.service';
 
 
@@ -32,7 +33,8 @@ export class PrimaryNavbarComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
-    private dropdowns: NavbarDropdownService
+    private dropdowns: NavbarDropdownService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -61,15 +63,8 @@ export class PrimaryNavbarComponent implements OnInit {
     this.externalResources = this.dropdowns.externalResources;
     this.topics = this.dropdowns.topics;
   }
-
   gravatarImage(size): string {
     // r=pg checks the rating of the Gravatar image
-    return (
-      'https://www.gravatar.com/avatar/' +
-      md5(this.auth.user.email) +
-      '?s=' +
-      size +
-      '?r=pg&d=identicon'
-    );
+    return this.userService.getGravatarImage(this.auth.user.email, size);
   }
 }
