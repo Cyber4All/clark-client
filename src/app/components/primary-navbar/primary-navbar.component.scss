@@ -3,6 +3,7 @@
     max-height: 92px;
     background: white;
     color: $dark-grey;
+    z-index: 4;
 
     .nav-wrapper {
         margin: 0px;
@@ -53,15 +54,6 @@
                 background-color: #f8f8f8;
                 padding: 10px 10px 0px 10px;
                 border-radius: 6px 0px 0px 6px;
-            }
-            
-            .search-bar {
-                input {
-                    border: solid #dfdfdf 1px;
-                    height: 40px;
-                    width: 30vw;
-                    border-radius: 0px;
-                }
             }
             
             .search-button {
@@ -140,10 +132,13 @@
 
 .mobile {
     display: flex;
+    position: relative;
     flex-direction: row;
     justify-content: space-between;
     color: $dark-grey;
     background-color: white;
+    overflow-wrap: normal;
+    z-index: 4;
 
     &-logo {
         cursor: pointer;
@@ -179,8 +174,19 @@
             padding-right: 20px;
         }
     }
-
 }
+
+.mobile-search {
+    width: 100%;
+    position: fixed;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    z-index: 4;
+}
+
+
 .slideout {
     position: fixed;
     top: 0;
@@ -191,9 +197,8 @@
     max-width: 80%;
     width: 330px;
     box-shadow: -2px 0 6px 2px rgba(0, 0, 0, 0.2);
-    z-index: 100000;
+    z-index: 5;
     transition: all 0.5s cubic-bezier(0.55, 0.11, 0.26, 0.91);
-    transform: translateZ(0);
     visibility: hidden;
   
     &.active {
@@ -291,7 +296,7 @@
     left: 0;
     right: 0;
     background: darken($light-blue, 35);
-    z-index: 5;
+    z-index: 4;
     opacity: 0;
     transition: all 0.5s ease;
     visibility: hidden;
@@ -300,7 +305,7 @@
         opacity: 0.8;
         visibility: visible;
     }
-    
+
     &.underNav {
         z-index: 3 !important;
     }

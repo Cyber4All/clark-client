@@ -6,7 +6,7 @@
                 <span id="clark-logo" class="logo-link" [routerLink]="['home']">CLARK</span>
             </div>
             <div class="mid-bar">
-                <div class="level-picker" (click)="dropdowns.toggleLevelsDropdown()">
+                <div class="level-picker" #academicLevelsAnchor (click)="dropdowns.toggleLevelsDropdown()">
                     All Academic Levels
                     <span class="arrow" *ngIf="!levelsDropdown">
                         <i class="fas fa-chevron-down"></i>
@@ -15,6 +15,11 @@
                         <i class="fas fa-chevron-up"></i>
                     </span>
                 </div>
+                <clark-context-menu [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
+                    <ul>
+                        <li *ngFor="let l in academicLevels" [routerLink]="[]">{{ l }}</li>
+                    </ul>
+                </clark-context-menu>
                 <div class="search-bar">
                     <clark-search></clark-search>
                 </div>
@@ -38,7 +43,7 @@
                         </div>
                     </div>
                     
-                    <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor" [offset]="{ top: 0, left: 5 }" (close)="dropdowns.closeAll()">
+                    <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor" (close)="dropdowns.closeAll()">
                         <div #contextMenu class="context-popup">
                             <ul>
                                 <li tabindex="0" *ngIf="auth.hasCuratorAccess()" [routerLink]="['admin']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
@@ -77,12 +82,21 @@
             </div>
         </div>
     </div>
+    <center>
+        <div class="mobile-search" *ngIf="isMSearch">
+            <clark-search></clark-search>
+            <br>
+            <div class="close-icon" (click)="dropdowns.closeAll()">
+                <i class="fas fa-chevron-up"></i>
+            </div>
+        </div>
+    </center>
 
     <!-- blue underlay for hamburger slideout -->
-    <div class="slideout-underlay" *ngIf="!isDesktop; isMHamburger" [ngClass]="{'active': isMHamburger || isMSearch, 'underNav': !isMobile || isMSearch}" (click)="dropdowns.closeMobileMenus()"></div>
+    <div class="slideout-underlay" *ngIf="!isDesktop" [ngClass]="{'active': isMHamburger || isMSearch, 'underNav': isMSearch}" (click)="dropdowns.closeMobileMenus()"></div>
 
     <!-- hamburger slideout -->
-    <div class="slideout" *ngIf="!isDesktop; isMHamburger" [ngClass]="{'active': isMHamburger}">
+    <div class="slideout" *ngIf="!isDesktop" [ngClass]="{'active': isMHamburger}">
         <div class="slideout-section">
             <div class="user" *ngIf="isLoggedIn">
                 <div class="info">
@@ -133,7 +147,7 @@
                     </span>
                 </li>
                 <ul *ngIf="showResources">
-                    <li *ngFor="let r of externalResources">{{r.content}}</li>
+                    <li *ngFor="let r of externalResources" (click)="dropdowns.linkOut(r.link)">{{ r.name }}</li>
                 </ul>
             </ul>
         </div>

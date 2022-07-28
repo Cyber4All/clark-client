@@ -1,8 +1,13 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class NavbarDropdownService {
+
+    constructor(
+        private route: ActivatedRoute
+    ) {}
     //mobile or desktop
     public isDesktop = new BehaviorSubject<boolean>(true);
     //user options main navbar
@@ -16,7 +21,7 @@ export class NavbarDropdownService {
     public isMHamburger = new BehaviorSubject<boolean>(false);
     public isMSearch = new BehaviorSubject<boolean>(false);
 
-    externalResources = [{content: 'now this is content'}, {content: 'this is also content'}];
+    externalResources = [{name: 'CAE Resource Directory', link: 'http://www.caeresource.directory'}, {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'}];
     topics = ['topic 1', 'topic 2'];
 
     //close mobile slideouts
@@ -83,4 +88,7 @@ export class NavbarDropdownService {
         this.resourcesDropdown.next(!this.resourcesDropdown.getValue());
     }
 
+    public linkOut(link: string): void {
+        window.open(link);
+    }
 }

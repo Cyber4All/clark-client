@@ -24,6 +24,7 @@ export class PrimaryNavbarComponent implements OnInit {
   topics: string[];
   resizeThreshold = 1024;
   externalResources: {};
+  academicLevels = ['Graduate', 'undergrad', 'etc'];
 
 
   @HostListener('window:resize', ['$event'])
