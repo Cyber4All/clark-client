@@ -15,10 +15,12 @@
                         <i class="fas fa-chevron-up"></i>
                     </span>
                 </div>
-                <clark-context-menu [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
-                    <ul>
-                        <li *ngFor="let l in academicLevels" [routerLink]="[]">{{ l }}</li>
-                    </ul>
+                <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
+                    <div #contextMenu class="context-popup">
+                        <ul>
+                            <li *ngFor="let l of academicLevels" [routerLink]="[]">{{ l }}</li>
+                        </ul>
+                    </div>
                 </clark-context-menu>
                 <div class="search-bar">
                     <clark-search></clark-search>
