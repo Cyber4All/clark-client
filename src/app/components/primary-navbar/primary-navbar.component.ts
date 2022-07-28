@@ -12,20 +12,20 @@ import { NavbarDropdownService } from '../../core/navBarDropdown.service';
 })
 export class PrimaryNavbarComponent implements OnInit {
 
-  levelsDropdown = false;
-  userDropdown = false;
+  levelsDropdown: boolean;
+  userDropdown: boolean;
   isLoggedIn: boolean;
-  isDesktop = false;
-  isMSearch = false;
-  isMHamburger = false;
-  showTopics = false;
-  topics = ['topic 1', 'topic 2'];
-  showResources = false;
-  // @Input()
-  externalResources = [{content: 'now this is content'}, {content: 'this is also content'}];
+  isDesktop: boolean;
+  isMSearch: boolean;
+  isMHamburger: boolean;
+  showTopics: boolean;
+  showResources: boolean;
+  topics: string[];
   resizeThreshold = 1024;
-  @HostListener('window:resize', ['$event'])
+  externalResources: {};
 
+
+  @HostListener('window:resize', ['$event'])
   resizeWindow() {
     this.isDesktop = (window.innerWidth >= this.resizeThreshold) ? true : false;
   }
@@ -58,6 +58,8 @@ export class PrimaryNavbarComponent implements OnInit {
     this.dropdowns.topicDropdown.subscribe(val => {
       this.showTopics = val;
     });
+    this.externalResources = this.dropdowns.externalResources;
+    this.topics = this.dropdowns.topics;
   }
 
   gravatarImage(size): string {
