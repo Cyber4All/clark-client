@@ -41,7 +41,7 @@
     <clark-context-menu *ngIf="resourcesDropdown" [anchor]="resourcesAnchor" (close)="dropdowns.closeAll()">
         <div #contextMenu>
             <ul>
-                <li *ngFor="let r of externalResources">{{ r.content }}</li>
+                <li *ngFor="let r of externalResources" (click)="dropdowns.linkOut(r.link)">{{ r.name }}</li>
             </ul>
         </div>
     </clark-context-menu>

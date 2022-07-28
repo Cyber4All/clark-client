@@ -109,7 +109,7 @@ $buttonWidth: 135px;
       text-align: center;
       padding: 10px;
       box-sizing: border-box;
-      z-index: 2;
+      z-index: 4;
       position: relative;
       transition: all 0.2s ease;
       color: $dark-grey;
@@ -166,5 +166,15 @@ $buttonWidth: 135px;
   100% {
     transform: scale(1);
     left: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  .clark-search{
+    .search-options {
+      .input {
+        width: 90vw;
+      }
+    }
   }
 }
