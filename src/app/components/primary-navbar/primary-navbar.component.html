@@ -6,7 +6,7 @@
                 <span id="clark-logo" class="logo-link" [routerLink]="['home']">CLARK</span>
             </div>
             <div class="mid-bar">
-                <div class="level-picker" (click)="openAcademicLevels()">
+                <div class="level-picker" (click)="dropdowns.toggleLevelsDropdown()">
                     All Academic Levels
                     <span class="arrow" *ngIf="!levelsDropdown">
                         <i class="fas fa-chevron-down"></i>
@@ -27,7 +27,7 @@
                 </button>
                 <div class="logged-in" *ngIf="isLoggedIn">
                     <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
-                    <div class="username" (click)="openUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.firstName }}</span>
+                    <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.firstName }}</span>
                         <span class="arrow" *ngIf="!userDropdown">
                             <i class="fas fa-chevron-down"></i>
                         </span>
@@ -45,6 +45,7 @@
     </div>
 </ng-template>
 
+<!-- mobile view template -->
 <ng-template #mobile>
     <div class="mobile">
         <div class="mobile-logo">
@@ -52,19 +53,25 @@
             <span id="clark-logo" class="mobile-logo-link" [routerLink]="['home']">CLARK</span>
         </div>
         <div class="mobile-right">
-            <span (click)="openMSearch()"></span>
-            <i class="search fas fa-search"></i>
-            <span (click)="openMHamburger()">
+            <div class="icon-wrapper" (click)="dropdowns.toggleMobileSearch()">
+                <i class="search fas fa-search"></i>
+            </div>
+            <div class="icon-wrapper" (click)="dropdowns.toggleMobileHamburger()">
                 <i class="hamburger fas fa-bars"></i>
-            </span>
+            </div>
         </div>
     </div>
+
+    <!-- blue underlay for hamburger slideout -->
+    <div class="slideout-underlay" *ngIf="!isDesktop; isMHamburger" [ngClass]="{'active': isMHamburger || isMSearch, 'underNav': !isMobile || isMSearch}" (click)="dropdowns.closeMobileMenus()"></div>
+
+    <!-- hamburger slideout -->
     <div class="slideout" *ngIf="!isDesktop; isMHamburger" [ngClass]="{'active': isMHamburger}">
         <div class="slideout-section">
             <div class="user" *ngIf="isLoggedIn">
                 <div class="info">
                     <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(70) + ')'}"></div>
-                    <div class="username">Hi, {{ this.auth.firstName }}!
+                    <div class="username">Hi, {{ this.auth.firstName | titlecase }}!
                         <div>
                             <a href="/users/{{ auth.username }}">View Your Profile</a>
                         </div>
@@ -75,7 +82,7 @@
                 <div>
                     <ul class="menu-items">
                         <li [routerLink]="['library']">Your Library</li>
-                        <li [routerLink]="">Sign Out</li>
+                        <li (click)="auth.logout()">Sign Out</li>
                     </ul>
                 </div>
             </div>
@@ -88,8 +95,8 @@
             </div>
             <hr>
             <ul class="menu-items">
-                <li>About Us</li>
-                <li (click)="openTopics()">Topics
+                <li [routerLink]="['about']">About Us</li>
+                <li (click)="dropdowns.toggleTopicDropdown()">Topics
                     <span class="arrow" *ngIf="!showTopics">
                         <i class="fas fa-chevron-down"></i>
                     </span>
@@ -100,8 +107,8 @@
                 <ul *ngIf="showTopics">
                     <li *ngFor="let t of topics">{{t}}</li>
                 </ul>
-                <li>Collections</li>
-                <li (click)="openResources()">External Resources
+                <li [routerLink]="['collections']">Collections</li>
+                <li (click)="dropdowns.toggleResourcesDropdown()">External Resources
                     <span class="arrow" *ngIf="!showResources">
                         <i class="fas fa-chevron-down"></i>
                     </span>
