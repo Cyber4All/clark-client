@@ -22,7 +22,7 @@ export class NavbarDropdownService {
     public isMSearch = new BehaviorSubject<boolean>(false);
 
     externalResources = [
-    {name: 'CAE Resource Directory', link: 'http://www.caeresource.directory'}, 
+    {name: 'CAE Resource Directory', link: 'http://www.caeresource.directory'},
     {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'}
     ];
     topics = ['topic 1', 'topic 2'];
