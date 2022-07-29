@@ -39,7 +39,7 @@ export class PrimaryNavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.isDesktop = (window.innerWidth >= this.resizeThreshold) ? true : false;
+    this.isDesktop = window.innerWidth >= this.resizeThreshold
     this.auth.isLoggedIn.subscribe(val => {
       this.isLoggedIn = val;
     });
