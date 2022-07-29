@@ -127,20 +127,34 @@ export class SubmitComponent implements OnInit {
    */
   private buildUnfinishedLOErrorMsg(): string {
     let str = '';
-    const arr = [' name', ' description', ' contributor(s)', ' outcome(s)'];
+    const potentialErrorFields = {
+      name: ' name',
+      description: ' description', 
+      contributor: ' contributor(s)', 
+      outcome: ' outcome(s)'
+    };
     if(this.learningObject.name === '') {
-      str += arr[0];
+      str += potentialErrorFields['name'];
     }
     if(this.learningObject.description === '') {
-      str += (str === '') ? arr[1]: ',' + arr[1];
+      str += (str === '') ? potentialErrorFields['description']: ',' + potentialErrorFields['description'];
     }
     if(this.learningObject.outcomes.length === 0) {
-      str += (str === '') ? arr[2]: ',' + arr[2];
+      str += (str === '') ? potentialErrorFields["outcome"]: ',' + potentialErrorFields["outcome"];
     }
     if(this.learningObject.contributors.length === 0) {
-      str += (str === '') ? arr[3]: ',' + arr[3];
+      str += (str === '') ? potentialErrorFields["contributor"]: ',' + potentialErrorFields["contributor"];
     }
     return str;
+  }
+
+  /**
+   * Checks to see if the name of the learning object is valid, meaning it does not 
+   * contain any special characters
+   * @returns True if the learning object name does not contain a special character
+   */
+  private isObjectNameValid() {
+    return this.learningObject.name.match(/[\\/:"*?<>|]/) === null;
   }
 
   /**
@@ -162,6 +176,15 @@ export class SubmitComponent implements OnInit {
       this.toasterService.error(
         'Incomplete Learning Object!',
         `Please provide the following fields to submit: ${missingFields}.`
+      );
+    }
+
+    // Check Learning Objects Name
+    if (this.isObjectNameValid()) {
+      proceed = false;
+      this.toasterService.error(
+        'Learning Object Cannot Be Submitted!',
+        'The name of a learning object cannot contain a special character.'
       );
     }
 

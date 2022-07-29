@@ -49,6 +49,7 @@ export enum BUILDER_ACTIONS {
 export enum BUILDER_ERRORS {
   CREATE_OBJECT,
   DUPLICATE_OBJECT_NAME,
+  SPECIAL_CHARACTER_NAME,
   CREATE_OUTCOME,
   INCOMPLETE_OUTCOME,
   FETCH_OBJECT,
@@ -921,6 +922,12 @@ export class BuilderStore {
             'A learning object with this name already exists! The title should be unique within your learning objects.'
           );
           this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
+        } else if (e.status === 400) {
+          this.validator.errors.saveErrors.set(
+            'name',
+            'A learning object\'s name cannot contain a special character'
+          );
+          this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
           this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
         }
@@ -949,6 +956,12 @@ export class BuilderStore {
             'A learning object with this name already exists! The title should be unique within your learning objects.'
           );
           this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
+        } else if (e.status === 400) {
+          this.validator.errors.saveErrors.set(
+            'name',
+            'A learning object\'s name cannot contain a special character'
+          );
+          this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
           this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
         }
