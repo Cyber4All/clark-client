@@ -1,6 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
-import * as md5 from 'md5';
 import { UserService } from 'app/core/user.service';
 import { NavbarDropdownService } from '../../core/navBarDropdown.service';
 
@@ -23,7 +22,7 @@ export class PrimaryNavbarComponent implements OnInit {
   showResources: boolean;
   topics: string[];
   resizeThreshold = 1024;
-  externalResources: {};
+  externalResources: {name: string, link: string}[];
   academicLevels = ['Graduate', 'undergrad', 'etc'];
 
 
@@ -39,7 +38,7 @@ export class PrimaryNavbarComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.isDesktop = window.innerWidth >= this.resizeThreshold
+    this.isDesktop = window.innerWidth >= this.resizeThreshold;
     this.auth.isLoggedIn.subscribe(val => {
       this.isLoggedIn = val;
     });
