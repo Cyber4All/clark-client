@@ -7,11 +7,26 @@ import { COPY } from './home.copy';
 import { CollectionService, Collection } from '../../core/collection.service';
 import { UsageStats } from '../shared/types/usage-stats';
 import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
+import { BlogsComponentService } from 'app/core/blogs-component.service';
+import { Blog } from 'app/components/blogs/types/blog';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'cube-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('blog', [
+      transition(':enter', [
+        style({ transform: 'translateY(-100%)' }),
+        animate('300ms 1200ms ease-out', style({ transform: 'translateY(0%)' }))
+      ]),
+      transition(':leave', [
+        style({ zIndex: 3 }),
+        animate('300ms ease-out', style({ transform: 'translate3d(0, -100%, 1px)', zIndex: 3 }))
+      ])
+    ])
+  ]
 })
 export class HomeComponent implements OnInit {
   copy = COPY;
@@ -56,7 +71,8 @@ export class HomeComponent implements OnInit {
     public learningObjectService: LearningObjectService,
     private router: Router,
     private collectionService: CollectionService,
-    private statsService: UsageStatsService
+    private statsService: UsageStatsService,
+    private blogsComponentService: BlogsComponentService
   ) {}
 
   ngOnInit() {
@@ -105,5 +121,33 @@ export class HomeComponent implements OnInit {
   donateToClark() {
     this.router.navigate(['donate'], {
     });
+  }
+
+  /**
+   * Catches the output emitted by clark-blogs to dismiss the banner
+   *
+   * @param val The value of showBanner
+   */
+      showBlogsBanner(val: boolean) {
+      this.blogsComponentService.setShowBanner(val);
+    }
+
+  /**
+   * Catches the checkbox output emitted by clark-blogs to never see the banner again
+   *
+   * @param args: val - the value of the checkbox
+   *              recentBlog - the blog that was dismissed
+   */
+  neverShowBanner(args: {val: boolean, recentBlog?: Blog}) {
+    this.blogsComponentService.setNeverShowBanner(args);
+  }
+
+  /**
+   * Determines if the blogs banner is to be shown
+   *
+   * @returns a value determining if the blogs banner is shown
+   */
+  displayBlogsBanner() {
+    return this.blogsComponentService.getShowBanner() && !this.blogsComponentService.getNeverShowBanner();
   }
 }
