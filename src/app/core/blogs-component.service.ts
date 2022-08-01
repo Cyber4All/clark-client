@@ -7,7 +7,7 @@ import { BlogsService } from './blogs.service';
 })
 export class BlogsComponentService {
   neverShowBanner = false; // true if the user doesn't want to see the blog again
-  showBanner = true; // true if blog is displayed. NOTE: hardcode this to false to disable blog banners
+  showBanner = false; // true if blog is displayed. NOTE: hardcode this to false to disable blog banners
 
   recentBlog: Blog; // holds the latest blogpost
 
@@ -26,7 +26,7 @@ export class BlogsComponentService {
    */
   getShowBanner(): boolean {
     const recentBlogDateTime = new Date(this.recentBlog.timestamp);
-    if(Date.now() - recentBlogDateTime.valueOf() > 604800000) { // if the most recent blog is older than 1 week
+    if(Date.now() - recentBlogDateTime.valueOf() > 604800000) { // if the most recent blog is older than 1 week, do not display a banner
       return false;
     }
     return this.showBanner;
