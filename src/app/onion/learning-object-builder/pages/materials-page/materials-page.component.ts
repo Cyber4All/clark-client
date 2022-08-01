@@ -4,6 +4,7 @@ import { BuilderStore, BUILDER_ACTIONS } from '../../builder-store.service';
 import { takeUntil, filter } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { FileUploadMeta } from '../../components/content-upload/app/services/typings';
+import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 
 @Component({
   selector: 'clark-materials-page',
@@ -114,6 +115,17 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   async handleNotesUpdate(notes: string) {
     try {
       await this.store.execute(BUILDER_ACTIONS.UPDATE_MATERIAL_NOTES, notes);
+    } catch (e) {
+      this.error$.next(e);
+    }
+  }
+
+  async handlePackageableToggled(event: {
+    state: boolean,
+    item: DirectoryNode | LearningObject.Material.File
+  }) {
+    try {
+      await this.store.execute(BUILDER_ACTIONS.TOGGLE_BUNDLE, event);
     } catch (e) {
       this.error$.next(e);
     }

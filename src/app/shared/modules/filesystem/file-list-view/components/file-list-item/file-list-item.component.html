@@ -23,7 +23,7 @@
     {{ file?.size | fileSize }}
   </div>
   <div>
-    <clark-toggle-switch [state]="file.packageable" (toggled)="toggler()"></clark-toggle-switch>
+    <clark-toggle-switch [state]="file.packageable" (toggled)="handleToggle($event)"></clark-toggle-switch>
   </div>
   <a
     tabindex="0"

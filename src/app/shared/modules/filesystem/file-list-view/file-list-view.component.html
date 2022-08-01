@@ -30,6 +30,7 @@
         class="file"
         (clicked)="openFile(item)"
         (menuClicked)="handleMenuClicked($event, item)"
+        (toggleClicked)="handleToggleClicked($event, item)"
         [file]="item"
         [showOptionButton]="canManage"
       ></clark-file-list-item>

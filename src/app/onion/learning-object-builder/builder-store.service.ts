@@ -17,6 +17,7 @@ import { FileUploadMeta } from './components/content-upload/app/services/typings
 import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
 import { v4 as uuidv4 } from 'uuid';
+import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 
 /**
  * Defines a list of actions the builder can take
@@ -44,6 +45,7 @@ export enum BUILDER_ACTIONS {
   UPDATE_FOLDER_DESCRIPTION,
   DELETE_FILES,
   CHANGE_STATUS,
+  TOGGLE_BUNDLE
 }
 
 export enum BUILDER_ERRORS {
@@ -402,12 +404,20 @@ export class BuilderStore {
         return await this.removeFiles(data.fileIds);
       case BUILDER_ACTIONS.CHANGE_STATUS:
         return await this.changeStatus(data.status, data.reason);
+      case BUILDER_ACTIONS.TOGGLE_BUNDLE:
+        return await this.toggleBundle(data);
       default:
         console.error('Error! Invalid action taken!');
         return;
     }
   }
 
+  async toggleBundle(event: {
+    state: boolean,
+    item: DirectoryNode | LearningObject.Material.File
+  }) {
+    console.log('We made it!', event.state, event.item);
+  }
   /**
    *
    *

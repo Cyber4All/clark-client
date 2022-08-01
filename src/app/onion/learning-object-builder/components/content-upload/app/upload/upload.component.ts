@@ -31,6 +31,7 @@ import {
 import { UPLOAD_ERRORS } from './errors';
 import { AuthService } from 'app/core/auth.service';
 import { getUserAgentBrowser } from 'getUserAgentBrowser';
+import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -119,6 +120,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }> = new EventEmitter<{ index: number; description: string }>();
   @Output()
   notesUpdated: EventEmitter<string> = new EventEmitter<string>();
+  @Output()
+  packageableToggled: EventEmitter<{
+    state: boolean,
+    item: DirectoryNode | LearningObject.Material.File
+  }> = new EventEmitter();
 
   notes$: Subject<string> = new Subject<string>();
 

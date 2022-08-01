@@ -37,6 +37,11 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     event: MouseEvent;
     item: any;
   }> = new EventEmitter();
+  @Output()
+  emitBundle: EventEmitter<{
+    state: boolean;
+    item: DirectoryNode | LearningObject.Material.File;
+  }> = new EventEmitter();
 
   private editableFile: LearningObject.Material.File | DirectoryNode;
 
@@ -124,6 +129,16 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   ) {
     event.stopPropagation();
     this.emitContextOpen.next({ event, item });
+  }
+
+  handleToggleClicked(
+    state: boolean,
+    item: DirectoryNode | LearningObject.Material.File
+  ) {
+    this.emitBundle.emit({
+      state: state,
+      item: item
+    });
   }
 
   returnToFileView() {

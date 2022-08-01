@@ -15,6 +15,7 @@ export class FileListItemComponent implements OnInit {
 
   @Output() clicked: EventEmitter<void> = new EventEmitter();
   @Output() menuClicked: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
 
   icon = '';
   timestampAge = '';
@@ -39,6 +40,10 @@ export class FileListItemComponent implements OnInit {
     }
   }
 
+  handleToggle(event: boolean) {
+    this.toggleClicked.emit(event);
+  }
+
   /**
    * Emits click event of meatball was clicked
    *
@@ -50,7 +55,5 @@ export class FileListItemComponent implements OnInit {
     this.menuClicked.emit(event);
   }
 
-  toggler() {
-    console.log('gottem');
-  }
+
 }
