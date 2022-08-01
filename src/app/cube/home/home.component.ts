@@ -128,9 +128,9 @@ export class HomeComponent implements OnInit {
    *
    * @param val The value of showBanner
    */
-      showBlogsBanner(val: boolean) {
-      this.blogsComponentService.setShowBanner(val);
-    }
+  showBlogsBanner(val: boolean) {
+    this.blogsComponentService.setShowBanner(val);
+  }
 
   /**
    * Catches the checkbox output emitted by clark-blogs to never see the banner again
