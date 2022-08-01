@@ -1,5 +1,5 @@
-import { Component, HostListener, OnInit, Output } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { UserService } from 'app/core/user.service';
 import { NavbarDropdownService } from '../../core/navBarDropdown.service';
