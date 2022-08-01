@@ -140,22 +140,14 @@ export class SubmitComponent implements OnInit {
       str += (str === '') ? potentialErrorFields['description']: ',' + potentialErrorFields['description'];
     }
     if(this.learningObject.outcomes.length === 0) {
-      str += (str === '') ? potentialErrorFields["outcome"]: ',' + potentialErrorFields["outcome"];
+      str += (str === '') ? potentialErrorFields['outcome']: ',' + potentialErrorFields['outcome'];
     }
     if(this.learningObject.contributors.length === 0) {
-      str += (str === '') ? potentialErrorFields["contributor"]: ',' + potentialErrorFields["contributor"];
+      str += (str === '') ? potentialErrorFields['contributor']: ',' + potentialErrorFields['contributor'];
     }
     return str;
   }
 
-  /**
-   * Checks to see if the name of the learning object is valid, meaning it does not 
-   * contain any special characters
-   * @returns True if the learning object name does not contain a special character
-   */
-  private isObjectNameValid() {
-    return this.learningObject.name.match(/[\\/:"*?<>|]/) === null;
-  }
 
   /**
    * Submits a Learning Object to a collection for review and publishes the object
@@ -176,15 +168,6 @@ export class SubmitComponent implements OnInit {
       this.toasterService.error(
         'Incomplete Learning Object!',
         `Please provide the following fields to submit: ${missingFields}.`
-      );
-    }
-
-    // Check Learning Objects Name
-    if (this.isObjectNameValid()) {
-      proceed = false;
-      this.toasterService.error(
-        'Learning Object Cannot Be Submitted!',
-        'The name of a learning object cannot contain a special character.'
       );
     }
 
