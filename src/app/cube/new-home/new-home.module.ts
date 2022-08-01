@@ -8,6 +8,7 @@ import { LearningObjectInfoComponent } from './learning-object-info/learning-obj
 import { TeachNowComponent } from './help/teach-now/teach-now.component';
 import { BuildProgramComponent } from './help/build-program/build-program.component';
 import { ExploreCollectionsComponent } from './help/explore-collections/explore-collections.component';
+import { HelpCardComponent } from './help/components/help-card/help-card.component';
 import { LearningObjectsComponent } from './learning-object-info/learning-objects/learning-objects.component';
 import { LearningOutcomesComponent } from './learning-object-info/learning-outcomes/learning-outcomes.component';
 import { HierarchiesComponent } from './learning-object-info/hierarchies/hierarchies.component';
@@ -33,7 +34,8 @@ import { RouterModule } from '@angular/router';
     LearningOutcomesComponent,
     HierarchiesComponent,
     CollectionsComponent,
-    StickyMenuComponent
+    StickyMenuComponent,
+    HelpCardComponent
   ],
   imports: [
     CommonModule,

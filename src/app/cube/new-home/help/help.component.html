@@ -1,4 +1,16 @@
-<p>help works!</p>
-<clark-teach-now></clark-teach-now>
+<h1>What can we help you with today?</h1>
+
+<ng-container *ngTemplateOutlet="generalHelpTemplate"></ng-container> 
+
+<ng-template #generalHelpTemplate>
+    <div class="grid">
+        <clark-help-card *ngFor="let option of helpOptions" [option]="option"></clark-help-card>
+    </div>
+</ng-template>
+
+<ng-template #selectedHelpTemplate>
+</ng-template>
+
+<!-- <clark-teach-now></clark-teach-now>
 <clark-build-program></clark-build-program>
-<clark-explore-collections></clark-explore-collections>
+<clark-explore-collections></clark-explore-collections> -->
