@@ -1,5 +1,5 @@
 <ng-template #desktop>
-    <div class="desktop-navbar">
+    <div class="desktop-navbar" *ngIf="showNav">
         <div class="nav-wrapper">
             <div class="logo">
                 <span class="logo-image"></span>
@@ -70,7 +70,7 @@
 
 <!-- mobile view template -->
 <ng-template #mobile>
-    <div class="mobile">
+    <div class="mobile" *ngIf="showNav">
         <div class="mobile-logo">
             <span class="mobile-logo-image"></span>
             <span id="clark-logo" class="mobile-logo-link" [routerLink]="['home']">CLARK</span>

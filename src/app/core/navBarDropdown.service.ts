@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable()
 export class NavbarDropdownService {
 
     constructor(
-        private route: ActivatedRoute
+        private router: Router
     ) {}
     //mobile or desktop
     public isDesktop = new BehaviorSubject<boolean>(true);
     //user options main navbar
     public userDropdown = new BehaviorSubject<boolean>(false);
-
     public levelsDropdown = new BehaviorSubject<boolean>(false);
     public topicDropdown = new BehaviorSubject<boolean>(false);
     public collectionsDropdown = new BehaviorSubject<boolean>(false);
@@ -21,11 +20,13 @@ export class NavbarDropdownService {
     public isMHamburger = new BehaviorSubject<boolean>(false);
     public isMSearch = new BehaviorSubject<boolean>(false);
 
-    externalResources = [
+    public showNavbars = new BehaviorSubject<boolean>(true);
+
+    public externalResources = [
     {name: 'CAE Resource Directory', link: 'http://www.caeresource.directory'},
     {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'}
     ];
-    topics = ['topic 1', 'topic 2'];
+    public topics = ['topic 1', 'topic 2'];
 
     //close mobile slideouts
     public closeMobileMenus(): void {
@@ -61,6 +62,26 @@ export class NavbarDropdownService {
             this.resourcesDropdown.next(false);
         }
 
+    }
+
+    public setNavbarStatus(): void {
+        this.router.events.subscribe(e => {
+            if (e instanceof NavigationEnd) {
+              // if we're in onion, auth, or admin, toggle the navbars off
+              if(e.url.match(/\/*onion[\/*[0-z]*]*/)
+                || e.url.match(/\/*auth[\/*[0-z]*]*/)
+                || e.url.match(/\/*admin[\/*[0-z]*]*/)) {
+                  this.toggleNavbars(false);
+                } else {
+                  this.toggleNavbars(true);
+                };
+            };
+            window.scrollTo(0, 0);
+          });
+    }
+
+    public toggleNavbars(val: boolean): void {
+        this.showNavbars.next(val);
     }
 
     public toggleUserDropdown(): void {

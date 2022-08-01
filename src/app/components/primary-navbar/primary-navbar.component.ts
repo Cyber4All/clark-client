@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, Output } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { UserService } from 'app/core/user.service';
 import { NavbarDropdownService } from '../../core/navBarDropdown.service';
@@ -12,6 +13,7 @@ import { NavbarDropdownService } from '../../core/navBarDropdown.service';
 })
 export class PrimaryNavbarComponent implements OnInit {
 
+  showNav: boolean;
   levelsDropdown: boolean;
   userDropdown: boolean;
   isLoggedIn: boolean;
@@ -23,7 +25,7 @@ export class PrimaryNavbarComponent implements OnInit {
   topics: string[];
   resizeThreshold = 1024;
   externalResources: {name: string, link: string}[];
-  academicLevels = ['Graduate', 'undergrad', 'etc'];
+  academicLevels = ['Elementary', 'Middle', 'High', 'Undergraduate', 'Graduate', 'Post Graduate', 'Community College', 'Training'];
 
 
   @HostListener('window:resize', ['$event'])
@@ -34,8 +36,9 @@ export class PrimaryNavbarComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private dropdowns: NavbarDropdownService,
+    private router: Router,
     private userService: UserService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.isDesktop = window.innerWidth >= this.resizeThreshold;
@@ -60,9 +63,15 @@ export class PrimaryNavbarComponent implements OnInit {
     this.dropdowns.topicDropdown.subscribe(val => {
       this.showTopics = val;
     });
+    this.dropdowns.showNavbars.subscribe(val => {
+      this.showNav = val;
+    });
     this.externalResources = this.dropdowns.externalResources;
     this.topics = this.dropdowns.topics;
+
+    this.dropdowns.setNavbarStatus();
   }
+
   gravatarImage(size): string {
     // r=pg checks the rating of the Gravatar image
     return this.userService.getGravatarImage(this.auth.user.email, size);

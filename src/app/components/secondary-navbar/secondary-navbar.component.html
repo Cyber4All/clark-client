@@ -1,4 +1,4 @@
-<div class="secondary-navbar" *ngIf="isDesktop">
+<div class="secondary-navbar" *ngIf="isDesktop && showNav">
     <div class="item about-us">About Us</div>
     <div class="item collections" #collectionsAnchor (click)="dropdowns.toggleCollectionDropdown()">Collections
         <span *ngIf="!collectionsDropdown">
@@ -11,6 +11,7 @@
     <clark-context-menu *ngIf="collectionsDropdown" [anchor]="collectionsAnchor" (close)="dropdowns.closeAll()">
         <div #contextMenu>
             <ul>
+                <!-- TODO add Collection component after implimentation -->
                 <li>test</li>
             </ul>
         </div>
