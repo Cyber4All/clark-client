@@ -40,6 +40,30 @@ export class LearningObjectService {
     }
   }
 
+  toggleBundle(
+    username: string,
+    learningObjectID: string,
+    selected?: string[],
+    deselected?: string[]
+  ) {
+    const route = ADMIN_ROUTES.TOGGLE_BUNDLE(username, learningObjectID);
+
+    return this.http
+      .patch(
+        route,
+        {
+          selected: selected,
+          deselected: deselected
+        },
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
   /**
    * Sends serialized Learning Object to API for creation
    * Returns new Learningbject's ID on success

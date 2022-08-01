@@ -414,9 +414,33 @@ export class BuilderStore {
 
   async toggleBundle(event: {
     state: boolean,
-    item: DirectoryNode | LearningObject.Material.File
+    item: any
   }) {
     console.log('We made it!', event.state, event.item);
+
+    if(event.item instanceof DirectoryNode) {
+      console.log('this is a folder');
+    } else { // event.item is a File
+      if(event.state) {
+        const selected = [event.item.id];
+        console.log('selected', selected);
+        await this.learningObjectService.toggleBundle(
+          this.auth.username,
+          this.learningObject.id,
+          selected,
+          []
+        );
+      } else {
+        const deselected = [event.item.id];
+        console.log('deselected', deselected);
+        await this.learningObjectService.toggleBundle(
+          this.auth.username,
+          this.learningObject.id,
+          [],
+          deselected
+        );
+      }
+    }
   }
   /**
    *
