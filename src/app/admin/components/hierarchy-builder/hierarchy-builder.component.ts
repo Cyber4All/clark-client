@@ -28,8 +28,7 @@ export class HierarchyBuilderComponent implements OnInit {
   acknowledge: boolean;
 
   constructor(
-    private hierarchyService: HierarchyService,
-    private cdRef: ChangeDetectorRef
+    private hierarchyService: HierarchyService
   ) {}
 
   ngOnInit() {
@@ -43,7 +42,6 @@ export class HierarchyBuilderComponent implements OnInit {
     !!node.children && node.children.length > 0;
 
   addLearningObject(parentNode: LearningObjectNode) {
-    this.cdRef.markForCheck();
     let length = 'unit'
     if(parentNode.length === 'unit') {
       length = 'module';

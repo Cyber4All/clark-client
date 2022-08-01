@@ -2,14 +2,14 @@
     <div *ngIf="node.showForm === true" class="node form">
         <mat-form-field class="name-field" appearance="outline">
             <mat-label>Learning Object Name</mat-label>
-            <input #name (blur)="checkLearningObjectName($event)" matInput [(ngModel)]="node.name">
+            <input #name (blur)="checkLearningObjectName($event)" matInput [formControl]="nameFormControl" >
+            <mat-error class="error" *ngIf="nameFormControl.hasError('forbiddenName')">
+                Name already exists for the author!
+            </mat-error>
+            <mat-error *ngIf="nameFormControl.hasError('required')">
+                Name is <strong>required</strong>
+            </mat-error>
         </mat-form-field>
-        <span class="error" *ngIf="nameExists">
-            Name already exists for the author!
-        </span>
-        <span class="error" *ngIf="nameShort">
-            Name must be at least 2 characters long!
-        </span>
         <mat-form-field class="length-field" appearance="outline">
             <mat-label>Learning Object Length</mat-label>
             <mat-select [(ngModel)]="node.length" name="length">

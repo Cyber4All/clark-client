@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { HierarchyService } from 'app/admin/core/hierarchy.service';
+import { Observable } from 'rxjs';
 import { LearningObjectNode } from '../tree-datasource';
 
 
@@ -20,7 +21,7 @@ export class HierarchyObjectComponent implements OnInit {
 
   lengths = [];
 
-  nameFormControl = new FormControl('', [Validators.required]);
+  nameFormControl = new FormControl('node.name', [Validators.required, this.forbiddenNameValidator()]);
   constructor(
     private hierarchyService: HierarchyService
   ) { }
@@ -86,15 +87,19 @@ export class HierarchyObjectComponent implements OnInit {
     }
   }
 
-  async ngDoCheck() {
-    this.nameExists = await this.checkLearningObjectName();
-  }
 
   remove() {
     this.removeLo.emit(this.node);
   }
 
   async checkLearningObjectName(event?: any){
-    return await this.hierarchyService.checkName(this.username, this.node.name);
+    this.nameExists = await this.hierarchyService.checkName(this.username, this.node.name);
+  }
+
+  forbiddenNameValidator() : ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const forbidden = true;
+      return forbidden ? {forbiddenName: { value: control.value}} : null;
+    }
   }
 }
