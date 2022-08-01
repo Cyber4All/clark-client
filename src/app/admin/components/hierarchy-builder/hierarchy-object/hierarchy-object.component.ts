@@ -1,5 +1,5 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { AbstractControl, FormControl, ValidatorFn, Validators } from '@angular/forms';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectionStrategy, SimpleChanges } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { HierarchyService } from 'app/admin/core/hierarchy.service';
 import { LearningObjectNode } from '../tree-datasource';
 
@@ -86,12 +86,15 @@ export class HierarchyObjectComponent implements OnInit {
     }
   }
 
+  async ngDoCheck() {
+    this.nameExists = await this.checkLearningObjectName();
+  }
+
   remove() {
     this.removeLo.emit(this.node);
   }
 
-  async checkLearningObjectName(event){
-    this.nameExists = await this.hierarchyService.checkName(this.username, this.node.name);
+  async checkLearningObjectName(event?: any){
+    return await this.hierarchyService.checkName(this.username, this.node.name);
   }
-
 }

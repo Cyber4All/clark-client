@@ -1,5 +1,9 @@
 <h2>{{ parent.name }} Hierarchy Generation</h2>
-<p>INSERT CHECKBOX HERE FOR ACKNOWLEDGEMENT</p>
+<div class="permission">
+  <h4>Acknowledgement of Permission</h4>
+  <input type="checkbox" id="acknowledge" name="acknowledge" (click)="checkBox()">
+  <label for="acknowledge"> I have contacted the author and have permission to create a hierarchy for them</label><br>
+</div>
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
   <!-- This is the tree node template for leaf nodes -->
   <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
@@ -40,5 +44,5 @@
 
 <div class="button-group right">
     <button class="button neutral" (click)="close.emit()">Cancel</button>
-    <button class="button good" (click)="createLearningObjects(TREE_DATA[0])">Create Objects</button>
+    <button class="button good" (click)="createLearningObjects(TREE_DATA[0])" [disabled]="!acknowledge">Create Objects</button>
 </div>

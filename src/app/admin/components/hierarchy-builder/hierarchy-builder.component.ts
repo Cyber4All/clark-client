@@ -1,6 +1,6 @@
 
 import { NestedTreeControl} from '@angular/cdk/tree';
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from '@entity';
 import { HierarchyService } from 'app/admin/core/hierarchy.service';
 import { LearningObjectNode, TreeDataSource } from './tree-datasource';
@@ -25,9 +25,11 @@ export class HierarchyBuilderComponent implements OnInit {
   treeControl = new NestedTreeControl<LearningObjectNode>(node => node.children);
   dataSource = new TreeDataSource(this.treeControl, this.TREE_DATA);
   contributors: string [];
+  acknowledge: boolean;
 
   constructor(
-    private hierarchyService: HierarchyService
+    private hierarchyService: HierarchyService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -41,6 +43,7 @@ export class HierarchyBuilderComponent implements OnInit {
     !!node.children && node.children.length > 0;
 
   addLearningObject(parentNode: LearningObjectNode) {
+    this.cdRef.markForCheck();
     let length = 'unit'
     if(parentNode.length === 'unit') {
       length = 'module';
@@ -62,6 +65,11 @@ export class HierarchyBuilderComponent implements OnInit {
 
   remove(node: LearningObjectNode) {
     this.dataSource.remove(node);
+    console.log('ahahahah', !this.acknowledge);
+  }
+
+  checkBox() {
+    this.acknowledge = !this.acknowledge;
   }
 
   validateSubmitable(node) {
@@ -79,6 +87,7 @@ export class HierarchyBuilderComponent implements OnInit {
   
 
   async createLearningObjects(node: any) {
+
     if(node.children.length === 0) {
       return this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
     }
@@ -89,6 +98,10 @@ export class HierarchyBuilderComponent implements OnInit {
     let parentId = this.parent.id;
     if(node.name !== this.parent.name) {
       parentId = await this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
+    }
+    console.log('Should close', node.name === this.parent.name)
+    if(node.name === this.parent.name) {
+      this.close.emit();
     }
     return await this.setParents(parentId, childrenIds);
   }

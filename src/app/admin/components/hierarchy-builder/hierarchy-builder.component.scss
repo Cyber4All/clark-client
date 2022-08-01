@@ -33,12 +33,10 @@
     }
     
   }
-  
-  /* silly UX, they want a border in the full width of the tree between tree nodes */
   .example-tree {
+    padding-top: 20px;
     position: relative;
   }
-
 
   .button-group {
     display: flex;

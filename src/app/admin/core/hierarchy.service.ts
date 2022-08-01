@@ -32,7 +32,7 @@ export class HierarchyService {
     ).toPromise();
   }
 
-  async checkName(username: string, objectName: string): Promise<any> {
+  async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http
       .get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(username, {}, objectName), { withCredentials: true })
       .pipe(
