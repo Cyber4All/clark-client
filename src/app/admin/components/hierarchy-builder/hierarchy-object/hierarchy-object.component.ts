@@ -21,7 +21,7 @@ export class HierarchyObjectComponent implements OnInit {
 
   lengths = [];
 
-  nameFormControl = new FormControl('node.name', [Validators.required, this.forbiddenNameValidator()]);
+  nameFormControl = new FormControl('', [Validators.required, this.forbiddenNameValidator()]);
   constructor(
     private hierarchyService: HierarchyService
   ) { }

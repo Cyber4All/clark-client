@@ -26,7 +26,7 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
 
   /** Add node as child of parent */
   public add(node: LearningObjectNode, parent: LearningObjectNode) {
-    // add dummy root so we only have to deal with `FoodNode`s
+    // add dummy root so we only have to deal with LearningObjectNodes
     const newTreeData = { name: "Dummy Root", length: 'nanomodule', children: this.data };
     this._add(node, parent, newTreeData);
     this.data = newTreeData.children;
@@ -38,11 +38,6 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
     this._remove(node, newTreeData);
     this.data = newTreeData.children;
   }
-
-  /*
-   * For immutable update patterns, have a look at:
-   * https://redux.js.org/recipes/structuring-reducers/immutable-update-patterns/
-   */
 
   protected _add(newNode: LearningObjectNode, parent: LearningObjectNode, tree: LearningObjectNode) {
     if (tree === parent) {

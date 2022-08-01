@@ -12,6 +12,7 @@ import { LearningObjectNode, TreeDataSource } from './tree-datasource';
 })
 export class HierarchyBuilderComponent implements OnInit {
 
+  // This is just dummy data that is replaced in the OnInit function with the parent data
   TREE_DATA: LearningObjectNode[] = [
     {
       "name": "paige",
@@ -63,7 +64,6 @@ export class HierarchyBuilderComponent implements OnInit {
 
   remove(node: LearningObjectNode) {
     this.dataSource.remove(node);
-    console.log('ahahahah', !this.acknowledge);
   }
 
   checkBox() {
@@ -97,7 +97,6 @@ export class HierarchyBuilderComponent implements OnInit {
     if(node.name !== this.parent.name) {
       parentId = await this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
     }
-    console.log('Should close', node.name === this.parent.name)
     if(node.name === this.parent.name) {
       this.close.emit();
     }
