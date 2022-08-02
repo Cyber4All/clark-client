@@ -4,7 +4,6 @@ import { UserService } from 'app/core/user.service';
 import { NavbarDropdownService } from 'app/core/navBarDropdown.service';
 import { NavbarService } from '../../core/navbar.service';
 import { Topic } from '../../../entity';
-import { RelevancyService } from '../../core/relevancy.service';
 
 
 @Component({
@@ -38,8 +37,7 @@ export class PrimaryNavbarComponent implements OnInit {
     private auth: AuthService,
     private dropdowns: NavbarDropdownService,
     private userService: UserService,
-    private navService: NavbarService,
-    private relevancyService: RelevancyService
+    private navService: NavbarService
   ) {}
 
   async ngOnInit(): Promise<void> {

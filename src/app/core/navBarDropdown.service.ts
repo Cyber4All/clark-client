@@ -34,18 +34,12 @@ export class NavbarDropdownService {
     public topicSelection = new BehaviorSubject<Topic>({_id: '', name: ''});
 
     async getTopicList(): Promise<void> {
-        if(this.topics.value === []){
-            this.topics.next(await this.relevancyService.getTopics());
-        }
+        this.topics.next(await this.relevancyService.getTopics());
     }
 
     public setTopic(topic: Topic): void {
-        const content = document.getElementById('clark-search-input').textContent;
-        if(content !== ''){
-            this.router.navigate(['/browse'], { queryParams: {text: content, currPage: 1, limit: 10, status: 'released', topics: topic}});
-        } else {
-            this.router.navigate(['/browse'], {queryParams: {currPage: 1, limit: 10, status: 'released', topics: topic}});
-        }
+        this.closeAll();
+        this.router.navigate(['/browse'], {queryParams: {currPage: 1, limit: 10, status: 'released', topics: topic}});
     }
 
     //close mobile slideouts
