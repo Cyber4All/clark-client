@@ -17,6 +17,7 @@ import { StickyMenuComponent } from './learning-object-info/sticky-menu/sticky-m
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { HelpBackBtnComponent } from './help/components/help-back-btn/help-back-btn.component';
 
 
 
@@ -35,7 +36,8 @@ import { RouterModule } from '@angular/router';
     HierarchiesComponent,
     CollectionsComponent,
     StickyMenuComponent,
-    HelpCardComponent
+    HelpCardComponent,
+    HelpBackBtnComponent
   ],
   imports: [
     CommonModule,
