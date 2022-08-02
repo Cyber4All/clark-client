@@ -13,6 +13,7 @@ export class FolderListItemComponent implements OnInit {
 
   @Output() clicked: EventEmitter<void> = new EventEmitter();
   @Output() menuClicked: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
 
   timestampAge = '';
 
@@ -97,5 +98,20 @@ export class FolderListItemComponent implements OnInit {
     });
 
     return status;
+  }
+
+  handleBundleToggle(folder: DirectoryNode, event: boolean) {
+    const files = folder.getFiles();
+    const folders = folder.getFolders();
+
+    files.forEach(file => {
+      file.packageable = event;
+    });
+
+    folders.forEach(subFolder => {
+      this.handleBundleToggle(subFolder, event);
+    });
+
+    this.toggleClicked.emit(event);
   }
 }

@@ -11,7 +11,7 @@
   </div>
   <div class="empty"></div>
   <div class="toggleBundle">
-    <clark-toggle-switch [state]="getFolderBundleStatus(folder)"></clark-toggle-switch>
+    <clark-toggle-switch [state]="getFolderBundleStatus(folder)" (click)="$event.stopPropagation()" (toggled)="handleBundleToggle(folder, $event)"></clark-toggle-switch>
   </div>
   <a
     tabindex="0"
