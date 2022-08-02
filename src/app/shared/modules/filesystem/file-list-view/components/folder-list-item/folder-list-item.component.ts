@@ -100,6 +100,19 @@ export class FolderListItemComponent implements OnInit {
     return status;
   }
 
+  togglePackageableSubFiles(subFolder: DirectoryNode, event: boolean) {
+    const subFiles = subFolder.getFiles();
+    const subFolders = subFolder.getFolders();
+
+    subFiles.forEach(subFile => {
+      subFile.packageable = event;
+    });
+
+    subFolders.forEach(subSubFolder => {
+      this.togglePackageableSubFiles(subSubFolder, event);
+    });
+  }
+
   handleBundleToggle(folder: DirectoryNode, event: boolean) {
     const files = folder.getFiles();
     const folders = folder.getFolders();
@@ -109,7 +122,7 @@ export class FolderListItemComponent implements OnInit {
     });
 
     folders.forEach(subFolder => {
-      this.handleBundleToggle(subFolder, event);
+      this.togglePackageableSubFiles(subFolder, event);
     });
 
     this.toggleClicked.emit(event);

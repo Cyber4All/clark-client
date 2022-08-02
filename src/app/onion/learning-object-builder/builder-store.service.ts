@@ -412,6 +412,23 @@ export class BuilderStore {
     }
   }
 
+  getAllFolderFileIDs(folder: DirectoryNode) {
+    const fileIDs = [];
+
+    // add folder's files to fileIDs list
+    folder.getFiles().forEach(file => {
+      fileIDs.push(file.id);
+    });
+
+    // recursively check subfolders for files and do the same thing
+    folder.getFolders().forEach(subFolder => {
+      fileIDs.concat(this.getAllFolderFileIDs(subFolder));
+    });
+
+    // return fileIDs
+    return fileIDs;
+  }
+
   async toggleBundle(event: {
     state: boolean,
     item: any
@@ -419,25 +436,37 @@ export class BuilderStore {
     console.log('We made it!', event.state, event.item);
 
     if(event.item instanceof DirectoryNode) {
-      console.log('this is a folder');
-    } else { // event.item is a File
+      const fileIDs = this.getAllFolderFileIDs(event.item);
       if(event.state) {
-        const selected = [event.item.id];
-        console.log('selected', selected);
         await this.learningObjectService.toggleBundle(
           this.auth.username,
           this.learningObject.id,
-          selected,
+          fileIDs,
           []
         );
       } else {
-        const deselected = [event.item.id];
-        console.log('deselected', deselected);
         await this.learningObjectService.toggleBundle(
           this.auth.username,
           this.learningObject.id,
           [],
-          deselected
+          fileIDs
+        );
+      }
+    } else { // event.item is a File
+      const fileID = [event.item.id];
+      if(event.state) {
+        await this.learningObjectService.toggleBundle(
+          this.auth.username,
+          this.learningObject.id,
+          fileID,
+          []
+        );
+      } else {
+        await this.learningObjectService.toggleBundle(
+          this.auth.username,
+          this.learningObject.id,
+          [],
+          fileID
         );
       }
     }

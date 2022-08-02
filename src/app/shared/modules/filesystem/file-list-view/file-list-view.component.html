@@ -20,6 +20,7 @@
         class="folder"
         (clicked)="openFolder(item.name)"
         (menuClicked)="handleMenuClicked($event, item)"
+        (toggleClicked)="handleToggleClicked($event, item)"
         [folder]="item"
         [showOptionButton]="canManage"
       ></clark-folder-list-item>
