@@ -446,40 +446,23 @@ export class BuilderStore {
     state: boolean,
     item: any
   }) {
-    if(event.item instanceof DirectoryNode) {
+    console.log('We did it!', event.item);
+    if(event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
-      if(event.state) {
-        await this.learningObjectService.toggleBundle(
-          this.auth.username,
-          this.learningObject.id,
-          fileIDs,
-          []
-        );
-      } else {
-        await this.learningObjectService.toggleBundle(
-          this.auth.username,
-          this.learningObject.id,
-          [],
-          fileIDs
-        );
-      }
+      await this.learningObjectService.toggleBundle(
+        this.auth.username,
+        this.learningObject.id,
+        fileIDs,
+        event.state
+      );
     } else { // event.item is a File
       const fileID = [event.item.id];
-      if(event.state) {
-        await this.learningObjectService.toggleBundle(
-          this.auth.username,
-          this.learningObject.id,
-          fileID,
-          []
-        );
-      } else {
-        await this.learningObjectService.toggleBundle(
-          this.auth.username,
-          this.learningObject.id,
-          [],
-          fileID
-        );
-      }
+      await this.learningObjectService.toggleBundle(
+        this.auth.username,
+        this.learningObject.id,
+        fileID,
+        event.state
+      );
     }
   }
   /**

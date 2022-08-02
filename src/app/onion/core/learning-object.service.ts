@@ -45,15 +45,15 @@ export class LearningObjectService {
    *
    * @param username The currently logged in user
    * @param learningObjectID The current learning object's ID
-   * @param selected Files where the packageable property must be toggled on
-   * @param deselected Files where the packageable property must be toggled off
+   * @param fileIDs An array of file IDs that need to be updated
+   * @param state The new packageable property to update to
    * @returns A promise
    */
   toggleBundle(
     username: string,
     learningObjectID: string,
-    selected?: string[],
-    deselected?: string[]
+    fileIDs: string[],
+    state: boolean
   ) {
     const route = ADMIN_ROUTES.TOGGLE_BUNDLE(username, learningObjectID);
 
@@ -61,8 +61,8 @@ export class LearningObjectService {
       .patch(
         route,
         {
-          selected: selected,
-          deselected: deselected
+          fileIDs: fileIDs,
+          state: state
         },
         { headers: this.headers, withCredentials: true }
       )
