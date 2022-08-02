@@ -1,5 +1,5 @@
 <p>Select a framework to explore:</p>
 
-<button *ngFor="let framework of frameworks">
+<button *ngFor="let framework of frameworks" (activate)="emitFramework.emit(framework)">
     {{ framework }}
 </button>

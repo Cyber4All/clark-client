@@ -9,6 +9,8 @@ export class HelpBackBtnComponent implements OnInit {
 
   @Input() option: {title: string, description: string, icon: string, iconColor: string};
 
+  @Input() currentFramework: string;
+
   constructor() { }
 
   ngOnInit(): void {

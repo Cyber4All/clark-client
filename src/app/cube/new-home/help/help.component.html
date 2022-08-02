@@ -5,8 +5,13 @@
         <clark-help-card *ngFor="let option of helpOptions" [option]="option" (activate)="selectTemplate(option.value)"></clark-help-card>
     </div>
     
-    <clark-help-back-btn *ngIf="selectedTemplate === 0 || selectedTemplate === 1" [option]="helpOptions[selectedTemplate]" (activate)="selectTemplate(-1)"></clark-help-back-btn>
+    <clark-help-back-btn 
+        *ngIf="selectedTemplate === 0 || selectedTemplate === 1" 
+        [option]="helpOptions[selectedTemplate]" 
+        (activate)="selectTemplate(-1)"
+        [currentFramework]="currentFramework"
+        ></clark-help-back-btn>
     <clark-teach-now *ngIf="selectedTemplate === 0"></clark-teach-now>
-    <clark-build-program *ngIf="selectedTemplate === 1"></clark-build-program>
+    <clark-build-program *ngIf="selectedTemplate === 1" (emitFramework)="handleEmittedFramework($event)"></clark-build-program>
     <clark-explore-collections *ngIf="selectedTemplate === 2"></clark-explore-collections>
 </div>

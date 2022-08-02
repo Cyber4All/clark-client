@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'clark-build-program',
@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./build-program.component.scss']
 })
 export class BuildProgramComponent implements OnInit {
+  currentFramework: string;
+
+  // emits to HelpBackBtn to display current framework being queried
+  @Output() emitFramework = new EventEmitter<string>();
 
   frameworks = [
     'CAE Cyber Ops',

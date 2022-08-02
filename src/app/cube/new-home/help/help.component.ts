@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./help.component.scss']
 })
 export class HelpComponent implements OnInit {
-
+  currentFramework: string;
   helpOptions = [
     {
       title: 'Teach Something Now',
@@ -40,6 +40,16 @@ export class HelpComponent implements OnInit {
 
   selectTemplate(template: number) {
     this.selectedTemplate = template;
+  }
+
+  /**
+   * Handles communication between child components build-program and help-back-btn
+   * to display selected framework, if any.
+   *
+   * @param event The framework to be passed
+   */
+  handleEmittedFramework(event: string) {
+    this.currentFramework = event;
   }
 
 }
