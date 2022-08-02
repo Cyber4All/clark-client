@@ -925,7 +925,7 @@ export class BuilderStore {
         } else if (e.status === 400) {
           this.validator.errors.saveErrors.set(
             'name',
-            'A learning object\'s name cannot contain a special character'
+           e.message
           );
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
