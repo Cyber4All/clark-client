@@ -41,6 +41,7 @@ export class FileListItemComponent implements OnInit {
   }
 
   handleToggle(event: boolean) {
+    this.file.packageable = event;
     this.toggleClicked.emit(event);
   }
 
