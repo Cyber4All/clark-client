@@ -429,7 +429,7 @@ export class BuilderStore {
 
     // recursively check subfolders for files and do the same thing
     folder.getFolders().forEach(subFolder => {
-      fileIDs.concat(this.getAllFolderFileIDs(subFolder));
+      fileIDs.push(...this.getAllFolderFileIDs(subFolder));
     });
 
     // return fileIDs
@@ -446,8 +446,6 @@ export class BuilderStore {
     state: boolean,
     item: any
   }) {
-    console.log('We made it!', event.state, event.item);
-
     if(event.item instanceof DirectoryNode) {
       const fileIDs = this.getAllFolderFileIDs(event.item);
       if(event.state) {
