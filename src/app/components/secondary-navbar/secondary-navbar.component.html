@@ -15,21 +15,6 @@
                 <li>test</li>
             </ul>
         </div>
-    </clark-context-menu>   
-    <div class="item topics" #topicsAnchor (click)="dropdowns.toggleTopicDropdown()">Topics
-        <span *ngIf="!topicDropdown">
-            <i class="fa fa-chevron-down"></i>
-        </span>
-        <span *ngIf="topicDropdown">
-            <i class="fa fa-chevron-up"></i>
-        </span>
-    </div>
-    <clark-context-menu *ngIf="topicDropdown" [anchor]="topicsAnchor" (close)="dropdowns.closeAll()">
-        <div #contextMenu>
-            <ul>
-                <li *ngFor="let t of topics" (click)="dropdowns.setTopic(t._id)">{{ t.name | titlecase}}</li>
-            </ul>
-        </div>
     </clark-context-menu>
     <div class="item resources" #resourcesAnchor (click)="dropdowns.toggleResourcesDropdown()">Resources
         <span *ngIf="!resourcesDropdown">
@@ -43,6 +28,21 @@
         <div #contextMenu>
             <ul>
                 <li *ngFor="let r of externalResources" (click)="dropdowns.linkOut(r.link)">{{ r.name }}</li>
+            </ul>
+        </div>
+    </clark-context-menu>
+    <div class="item topics" #topicsAnchor (click)="dropdowns.toggleTopicDropdown()">Topics
+        <span *ngIf="!topicDropdown">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="topicDropdown">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+    </div>
+    <clark-context-menu *ngIf="topicDropdown" [anchor]="topicsAnchor" (close)="dropdowns.closeAll()">
+        <div #contextMenu>
+            <ul>
+                <li *ngFor="let t of topics" (click)="dropdowns.setTopic(t._id)">{{ t.name | titlecase}}</li>
             </ul>
         </div>
     </clark-context-menu>

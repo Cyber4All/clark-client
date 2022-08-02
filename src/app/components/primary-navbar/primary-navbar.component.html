@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="right">
-                <button class="contribute-button" *ngIf="isLoggedIn">
+                <button class="contribute-button" *ngIf="isLoggedIn" [routerLink]="['/onion', '/dashboard']">
                     <div>
                         CONTRIBUTE
                     </div>
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="button good contribute">CONTRIBUTE</button>
+                <button class="button good contribute" [routerLink]="['/onion', '/dashboard']">CONTRIBUTE</button>
                 <hr>
                 <div>
                     <ul class="menu-items">
