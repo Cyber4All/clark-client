@@ -70,4 +70,32 @@ export class FolderListItemComponent implements OnInit {
     event.stopPropagation();
     this.menuClicked.emit(event);
   }
+
+  /**
+   * Recursively iterates through a chosen folder to determine if the folder itself is packageable.
+   * If any one of the files within the folder is not packageable, then the folder is not packageable.
+   * Mainly used for displaying the folder's packageable status, since it does not have a direct property.
+   *
+   * @param folder The current folder item to recursively iterate through
+   * @returns The packageable status of the folder (boolean)
+   */
+  getFolderBundleStatus(folder: DirectoryNode): boolean {
+    const files = folder.getFiles();
+    const folders = folder.getFolders();
+    let status = true;
+
+    files.forEach(file => {
+      if (!file.packageable) {
+        status = false;
+      }
+    });
+
+    folders.forEach(subFolder => {
+      if(!this.getFolderBundleStatus(subFolder)) {
+        status = false;
+      }
+    });
+
+    return status;
+  }
 }
