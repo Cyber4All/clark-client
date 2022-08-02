@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
+import { Topic } from '../../entity';
+import { RelevancyService } from 'app/core/relevancy.service';
+
 
 @Injectable()
 export class NavbarDropdownService {
 
     constructor(
-        private router: Router
+        private router: Router,
+        private relevancyService: RelevancyService
     ) {}
     //mobile or desktop
     public isDesktop = new BehaviorSubject<boolean>(true);
@@ -26,7 +30,23 @@ export class NavbarDropdownService {
     {name: 'CAE Resource Directory', link: 'http://www.caeresource.directory'},
     {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'}
     ];
-    public topics = ['topic 1', 'topic 2'];
+    public topics = new BehaviorSubject<Topic[]>([]);
+    public topicSelection = new BehaviorSubject<Topic>({_id: '', name: ''});
+
+    async getTopicList(): Promise<void> {
+        if(this.topics.value === []){
+            this.topics.next(await this.relevancyService.getTopics());
+        }
+    }
+
+    public setTopic(topic: Topic): void {
+        const content = document.getElementById('clark-search-input').textContent;
+        if(content !== ''){
+            this.router.navigate(['/browse'], { queryParams: {text: content, currPage: 1, limit: 10, status: 'released', topics: topic}});
+        } else {
+            this.router.navigate(['/browse'], {queryParams: {currPage: 1, limit: 10, status: 'released', topics: topic}});
+        }
+    }
 
     //close mobile slideouts
     public closeMobileMenus(): void {

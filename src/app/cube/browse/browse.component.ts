@@ -36,6 +36,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     orderBy: undefined,
     sortType: undefined,
     collection: '',
+    topics: [],
     fileTypes: [],
     status: [LearningObject.Status.RELEASED]
   };

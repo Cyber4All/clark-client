@@ -40,7 +40,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   descriptionText = (this.selected === 1) ?
     'Search for learning objects by organization, user, or keyword/phrase.' :
     'Search for learning objects by mapped guidelines';
-  academicLevel: string;
 
   constructor(
     private router: Router,
@@ -72,10 +71,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.navService.query.next(false);
       }
     });
-
-    this.navService.level.subscribe(val => {
-      this.academicLevel = val;
-    });
   }
 
   togglePlaceholder() {
@@ -92,15 +87,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   performSearch(searchbar) {
     searchbar.value = searchbar.value.trim();
     const text = searchbar.value;
-    let qParams = {};
-    if(this.academicLevel !== 'all academic levels'){
-      qParams = {text, currPage: 1, level: this.academicLevel};
-    } else {
-      qParams = {text, currPage: 1};
-    }
     if (text.length) {
       searchbar.blur();
-      this.router.navigate(['/browse'], { queryParams: qParams});
+      this.router.navigate(['/browse'], { queryParams: {text, currPage: 1}});
     }
   }
 

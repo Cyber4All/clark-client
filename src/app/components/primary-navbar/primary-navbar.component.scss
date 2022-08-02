@@ -205,6 +205,8 @@
     &.active {
       visibility: visible;
       right: 0;
+      overflow-y: scroll;
+
     }
   
     .slideout-section {
