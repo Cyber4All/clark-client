@@ -141,7 +141,7 @@
                     </span>
                 </li>
                 <ul *ngIf="showTopics">
-                    <li *ngFor="let t of topics">{{t}}</li>
+                    <li *ngFor="let t of topics" (click)="dropdowns.setTopic(t._id)">{{t.name}}</li>
                 </ul>
                 <li [routerLink]="['collections']">Collections</li>
                 <li (click)="dropdowns.toggleResourcesDropdown()">External Resources

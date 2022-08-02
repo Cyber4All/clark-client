@@ -3,6 +3,8 @@ import { AuthService } from 'app/core/auth.service';
 import { UserService } from 'app/core/user.service';
 import { NavbarDropdownService } from 'app/core/navBarDropdown.service';
 import { NavbarService } from '../../core/navbar.service';
+import { Topic } from '../../../entity';
+import { RelevancyService } from '../../core/relevancy.service';
 
 
 @Component({
@@ -14,7 +16,6 @@ import { NavbarService } from '../../core/navbar.service';
 export class PrimaryNavbarComponent implements OnInit {
 
   showNav: boolean;
-  levelsDropdown: boolean;
   userDropdown: boolean;
   isLoggedIn: boolean;
   isDesktop: boolean;
@@ -22,21 +23,11 @@ export class PrimaryNavbarComponent implements OnInit {
   isMHamburger: boolean;
   showTopics: boolean;
   showResources: boolean;
-  topics: string[];
+  topics: Topic[];
   resizeThreshold = 1024;
   externalResources: {name: string, link: string}[];
-  academicLevels = [
-    'all academic levels',
-    'elementary',
-    'middle',
-    'high',
-    'undergraduate',
-    'graduate',
-    'post graduate',
-    'community college',
-    'training'
-  ];
   levelChoice: string;
+  // levelsDropdown: boolean;
 
   @HostListener('window:resize', ['$event'])
   resizeWindow() {
@@ -47,10 +38,12 @@ export class PrimaryNavbarComponent implements OnInit {
     private auth: AuthService,
     private dropdowns: NavbarDropdownService,
     private userService: UserService,
-    private navService: NavbarService
+    private navService: NavbarService,
+    private relevancyService: RelevancyService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    this.dropdowns.getTopicList();
     this.isDesktop = window.innerWidth >= this.resizeThreshold;
     this.auth.isLoggedIn.subscribe(val => {
       this.isLoggedIn = val;
@@ -60,9 +53,6 @@ export class PrimaryNavbarComponent implements OnInit {
     });
     this.dropdowns.userDropdown.subscribe(val => {
       this.userDropdown = val;
-    });
-    this.dropdowns.levelsDropdown.subscribe(val => {
-      this.levelsDropdown = val;
     });
     this.dropdowns.resourcesDropdown.subscribe(val => {
       this.showResources = val;
@@ -76,17 +66,17 @@ export class PrimaryNavbarComponent implements OnInit {
     this.dropdowns.showNavbars.subscribe(val => {
       this.showNav = val;
     });
-    this.navService.level.subscribe(val => {
-      this.levelChoice = val;
+    this.dropdowns.topics.subscribe(val => {
+      this.topics = val;
     });
     this.externalResources = this.dropdowns.externalResources;
-    this.topics = this.dropdowns.topics;
-
     this.dropdowns.setNavbarStatus();
+    // this.dropdowns.levelsDropdown.subscribe(val => {
+    //   this.levelsDropdown = val;
+    // });
   }
 
   gravatarImage(size): string {
-    // r=pg checks the rating of the Gravatar image
     return this.userService.getGravatarImage(this.auth.user.email, size);
   }
 }

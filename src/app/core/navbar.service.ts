@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Topic } from '../../entity';
 
 /**
  * Service that allows components to show or hide the navbar
@@ -10,7 +11,6 @@ import { BehaviorSubject } from 'rxjs';
 export class NavbarService {
   visible = true;
   _query$ = new BehaviorSubject<boolean>(false);
-  level = new BehaviorSubject<string>('all academic levels');
 
   get query(): BehaviorSubject<boolean> {
     return this._query$;
@@ -20,9 +20,6 @@ export class NavbarService {
     this._query$ = val;
   }
 
-  setLevel(val) {
-    this.level.next(val);
-  }
 
   // hide navbar
   hide() {
@@ -36,4 +33,11 @@ export class NavbarService {
   toggle() {
     this.visible = !this.visible;
   }
+
+  // levels dropdown choice
+  // level = new BehaviorSubject<string>('all academic levels');
+  //
+  // setLevel(val) {
+  //   this.level.next(val);
+  // }
 }

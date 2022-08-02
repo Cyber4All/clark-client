@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { Topic } from '../../../entity';
 import { NavbarDropdownService } from '../../core/navBarDropdown.service';
 
 @Component({
@@ -16,14 +17,15 @@ export class SecondaryNavbarComponent implements OnInit {
   resizeThreshold = 1024;
 
   showNav: boolean;
-  topics: string[];
+  topics: Topic[];
   externalResources: {};
   constructor(
     private dropdowns: NavbarDropdownService
   ) { }
 
-  ngOnInit(): void {
-    this.isDesktop = (window.innerWidth >= this.resizeThreshold) ? true : false;
+  async ngOnInit(): Promise<void> {
+    this.dropdowns.getTopicList();
+    this.isDesktop = (window.innerWidth >= this.resizeThreshold);
     this.dropdowns.topicDropdown.subscribe(val => {
       this.topicDropdown = val;
     });
@@ -36,7 +38,9 @@ export class SecondaryNavbarComponent implements OnInit {
     this.dropdowns.showNavbars.subscribe(val => {
       this.showNav = val;
     });
-    this.topics = this.dropdowns.topics;
+    this.dropdowns.topics.subscribe(val => {
+      this.topics = val;
+    });
     this.externalResources = this.dropdowns.externalResources;
     this.dropdowns.setNavbarStatus();
   }
