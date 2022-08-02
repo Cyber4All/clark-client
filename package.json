@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "4.29.26",
+  "version": "4.29.27",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -76,7 +76,7 @@
     "jasmine-spec-reporter": "~5.0.0",
     "jest": "^27.4.7",
     "jest-preset-angular": "^11.0.1",
-    "lighthouse": "^9.2.0",
+    "lighthouse": "^9.6.4",
     "protractor": "~7.0.0",
     "sass": "^1.46.0",
     "ts-jest": "^27.1.3",
