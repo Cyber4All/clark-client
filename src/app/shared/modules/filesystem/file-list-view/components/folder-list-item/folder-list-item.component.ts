@@ -100,6 +100,14 @@ export class FolderListItemComponent implements OnInit {
     return status;
   }
 
+  /**
+   * Helper function for handleBundleToggle. Prevents multiple emits occuring at once due to recursion.
+   * Recursively iterates through the root folder's subfolders and changes files
+   * to the new packageable status.
+   *
+   * @param subFolder The current subfolder to recursively iterate through
+   * @param event The bundling status of the root folder
+   */
   togglePackageableSubFiles(subFolder: DirectoryNode, event: boolean) {
     const subFiles = subFolder.getFiles();
     const subFolders = subFolder.getFolders();
@@ -113,6 +121,14 @@ export class FolderListItemComponent implements OnInit {
     });
   }
 
+  /**
+   * Handles changing the packageable status of files:
+   *  1. Changes all subfiles packageable property to immediately display event changes
+   *  2. Emits an event to the backend to save this change to the database
+   *
+   * @param folder The current folder item to recursively iterate through
+   * @param event The bundling status of the folder
+   */
   handleBundleToggle(folder: DirectoryNode, event: boolean) {
     const files = folder.getFiles();
     const folders = folder.getFolders();

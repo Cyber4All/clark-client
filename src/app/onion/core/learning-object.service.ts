@@ -40,6 +40,15 @@ export class LearningObjectService {
     }
   }
 
+  /**
+   * Calls LO service to update the packageable status of toggled files
+   *
+   * @param username The currently logged in user
+   * @param learningObjectID The current learning object's ID
+   * @param selected Files where the packageable property must be toggled on
+   * @param deselected Files where the packageable property must be toggled off
+   * @returns A promise
+   */
   toggleBundle(
     username: string,
     learningObjectID: string,

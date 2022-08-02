@@ -412,7 +412,14 @@ export class BuilderStore {
     }
   }
 
-  getAllFolderFileIDs(folder: DirectoryNode) {
+  /**
+   * Grabs all file IDs of the root folder.
+   * Helper function for toggleBundle
+   *
+   * @param folder the current folder to grab fileIDs
+   * @returns all of the subFile IDs of the root folder
+   */
+  private getAllFolderFileIDs(folder: DirectoryNode) {
     const fileIDs = [];
 
     // add folder's files to fileIDs list
@@ -429,6 +436,12 @@ export class BuilderStore {
     return fileIDs;
   }
 
+  /**
+   * Calls toggleBundle in LO service to save packageable property
+   *
+   * @param event - state: the new packageable property
+   *              - item: the file/folder to save
+   */
   async toggleBundle(event: {
     state: boolean,
     item: any

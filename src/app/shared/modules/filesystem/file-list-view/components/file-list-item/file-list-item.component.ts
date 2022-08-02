@@ -40,6 +40,13 @@ export class FileListItemComponent implements OnInit {
     }
   }
 
+  /**
+   * Updates the file's packageable property:
+   *  1. Updates the file in the client to immediately display changes
+   *  2. Emits toggleClicked to save the update in the database
+   *
+   * @param event the new packageable state
+   */
   handleToggle(event: boolean) {
     this.file.packageable = event;
     this.toggleClicked.emit(event);

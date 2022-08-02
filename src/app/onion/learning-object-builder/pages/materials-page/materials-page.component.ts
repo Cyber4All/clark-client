@@ -120,6 +120,12 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Executes builder service action to save the file/folder's new packageable property
+   *
+   * @param event - state: the new packageable property
+   *              - item: the file/folder to save
+   */
   async handlePackageableToggled(event: {
     state: boolean,
     item: DirectoryNode | LearningObject.Material.File

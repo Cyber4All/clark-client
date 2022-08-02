@@ -131,6 +131,12 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     this.emitContextOpen.next({ event, item });
   }
 
+  /**
+   * Emits bundling event indicating the file/folder with a new packageable property to be saved
+   *
+   * @param state The new packageable state to save to the database
+   * @param item The folder or file to be handled
+   */
   handleToggleClicked(
     state: boolean,
     item: DirectoryNode | LearningObject.Material.File
