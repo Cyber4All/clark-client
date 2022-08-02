@@ -446,7 +446,6 @@ export class BuilderStore {
     state: boolean,
     item: any
   }) {
-    console.log('We did it!', event.item);
     if(event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
       await this.learningObjectService.toggleBundle(
