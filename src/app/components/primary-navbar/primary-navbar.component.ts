@@ -1,8 +1,8 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { UserService } from 'app/core/user.service';
-import { NavbarDropdownService } from '../../core/navBarDropdown.service';
+import { NavbarDropdownService } from 'app/core/navBarDropdown.service';
+import { NavbarService } from '../../core/navbar.service';
 
 
 @Component({
@@ -25,8 +25,18 @@ export class PrimaryNavbarComponent implements OnInit {
   topics: string[];
   resizeThreshold = 1024;
   externalResources: {name: string, link: string}[];
-  academicLevels = ['Elementary', 'Middle', 'High', 'Undergraduate', 'Graduate', 'Post Graduate', 'Community College', 'Training'];
-
+  academicLevels = [
+    'all academic levels',
+    'elementary',
+    'middle',
+    'high',
+    'undergraduate',
+    'graduate',
+    'post graduate',
+    'community college',
+    'training'
+  ];
+  levelChoice: string;
 
   @HostListener('window:resize', ['$event'])
   resizeWindow() {
@@ -36,8 +46,8 @@ export class PrimaryNavbarComponent implements OnInit {
   constructor(
     private auth: AuthService,
     private dropdowns: NavbarDropdownService,
-    private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private navService: NavbarService
   ) {}
 
   ngOnInit(): void {
@@ -65,6 +75,9 @@ export class PrimaryNavbarComponent implements OnInit {
     });
     this.dropdowns.showNavbars.subscribe(val => {
       this.showNav = val;
+    });
+    this.navService.level.subscribe(val => {
+      this.levelChoice = val;
     });
     this.externalResources = this.dropdowns.externalResources;
     this.topics = this.dropdowns.topics;

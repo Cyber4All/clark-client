@@ -1,24 +1,27 @@
 <ng-template #desktop>
     <div class="desktop-navbar" *ngIf="showNav">
         <div class="nav-wrapper">
-            <div class="logo">
+            <div class="logo" [routerLink]="['/home']">
                 <span class="logo-image"></span>
-                <span id="clark-logo" class="logo-link" [routerLink]="['home']">CLARK</span>
+                <span id="clark-logo" class="logo-link">CLARK</span>
             </div>
             <div class="mid-bar">
                 <div class="level-picker" #academicLevelsAnchor (click)="dropdowns.toggleLevelsDropdown()">
-                    All Academic Levels
+                    <center>{{ levelChoice | titlecase }}
                     <span class="arrow" *ngIf="!levelsDropdown">
                         <i class="fas fa-chevron-down"></i>
                     </span>
                     <span class="arrow" *ngIf="levelsDropdown">
                         <i class="fas fa-chevron-up"></i>
-                    </span>
+                    </span></center>
                 </div>
                 <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
                     <div #contextMenu class="context-popup">
                         <ul>
-                            <li *ngFor="let l of academicLevels" [routerLink]="[]">{{ l }}</li>
+                            <li 
+                            *ngFor="let l of academicLevels" 
+                            (click)="navService.setLevel(l)"
+                            >{{ l | titlecase}}</li>
                         </ul>
                     </div>
                 </clark-context-menu>
