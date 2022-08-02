@@ -148,7 +148,6 @@ export class SubmitComponent implements OnInit {
     return str;
   }
 
-  // Testing
   /**
    * Submits a Learning Object to a collection for review and publishes the object
    *
