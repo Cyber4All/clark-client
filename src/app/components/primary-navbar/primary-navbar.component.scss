@@ -46,15 +46,16 @@
             justify-content: center;
             align-self: center;
             
-            .level-picker {
-                cursor: pointer;
-                border: solid #dfdfdf 1px;
-                height: 32px;
-                width: 151px;
-                background-color: #f8f8f8;
-                padding: 10px 10px 0px 10px;
-                border-radius: 6px 0px 0px 6px;
-            }
+            //tabled for refactor
+            // .level-picker {
+            //     cursor: pointer;
+            //     border: solid $secondary-white 1px;
+            //     height: 32px;
+            //     width: 151px;
+            //     background-color: $primary-white;
+            //     padding: 10px 10px 0px 10px;
+            //     border-radius: 6px 0px 0px 6px;
+            // }
             
             .search-button {
                 button {
@@ -80,8 +81,8 @@
             .contribute-button {
                 cursor: pointer;
                 color: $dark-grey;
-                background-color: #f8f8f8;
-                border: solid #dfdfdf 1px;
+                background-color: $primary-white;
+                border: solid $secondary-white 1px;
                 height: 50px;
                 border-radius: 5px;
                 padding: 10px;
@@ -258,8 +259,8 @@
 
                 .sign-in{
                     color:black;
-                    border: solid #dfdfdf 1px;
-                    background-color: #f8f8f8;
+                    border: solid $secondary-white 1px;
+                    background-color: $primary-white;
                     box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.1);
                     margin-right: 18px;
                 }

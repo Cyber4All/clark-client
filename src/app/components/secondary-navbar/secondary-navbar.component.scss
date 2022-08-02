@@ -4,10 +4,10 @@
     display: flex;
     flex-direction: row;
     position: relative;
-    background-color: #f8f8f8;
+    background-color: $primary-white;
     height: 43px;
     width: 100%;
-    border: solid 1px #DFDFDF;
+    border: solid 1px $secondary-white;
 
     .item {
         cursor: pointer;

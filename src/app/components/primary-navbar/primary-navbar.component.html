@@ -6,7 +6,8 @@
                 <span id="clark-logo" class="logo-link">CLARK</span>
             </div>
             <div class="mid-bar">
-                <div class="level-picker" #academicLevelsAnchor (click)="dropdowns.toggleLevelsDropdown()">
+                <!-- refactor for future use
+                    <div class="level-picker" #academicLevelsAnchor (click)="dropdowns.toggleLevelsDropdown()">
                     <center>{{ levelChoice | titlecase }}
                     <span class="arrow" *ngIf="!levelsDropdown">
                         <i class="fas fa-chevron-down"></i>
@@ -14,7 +15,7 @@
                     <span class="arrow" *ngIf="levelsDropdown">
                         <i class="fas fa-chevron-up"></i>
                     </span></center>
-                </div>
+                </div> -->
                 <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
                     <div #contextMenu class="context-popup">
                         <ul>

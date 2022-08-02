@@ -25,9 +25,11 @@ $buttonWidth: 135px;
       margin-right: 0;
       visibility: visible;
       transition: all 0.1s ease;
+      border-radius: 6px 0px 0px 6px;
       cursor: pointer;
       input {
-        border: solid #dfdfdf 1px;
+        border: solid $secondary-white 1px;
+        border-radius: 6px 0px 0px 6px;
         height: 100%;
       }
 
