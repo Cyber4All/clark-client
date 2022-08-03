@@ -18,5 +18,21 @@
         border-radius: 4px;
         text-align: center;
         padding: 10px;
+        white-space: nowrap;
+    }
+}
+
+.objects {
+    display: grid;
+    grid-template-columns: 250px 250px 250px 250px auto;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 50px;
+    max-width: 1400px;
+
+    .all {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
     }
 }

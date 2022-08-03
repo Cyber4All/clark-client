@@ -1,8 +1,11 @@
 <div>
     <div class="topics" id="teach-now-topics">
-        <button *ngFor="let topic of topics" class="topic-btn">{{ topic.name }}</button>
+        <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)">{{ topic.name }}</button>
     </div>
-    <div class="objects">
-        <!--TODO: Learning Object Cards-->
+    <div *ngIf="objects && objects.length > 0" class="objects">
+        <clark-learning-object-component *ngFor="let l of objects" [learningObject]="l" [loading]="loading" learningObjectCard></clark-learning-object-component>
+        <div class="all">
+            <a (activate)="navigate()">See all <i class="fa fa-angle-right"></i></a>
+        </div>
     </div>
 </div>

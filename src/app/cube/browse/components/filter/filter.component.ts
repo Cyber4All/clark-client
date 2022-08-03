@@ -228,15 +228,7 @@ export class FilterComponent implements OnInit, OnDestroy {
         name: topic.name,
         value: topic._id,
         active: false,
-      })).sort((a, b) => {
-        if (a.name < b.name) {
-          return -1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
-      }),
+      })),
     };
   }
 
