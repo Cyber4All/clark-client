@@ -1,5 +1,23 @@
-<p>Select a framework to explore:</p>
+<div *ngIf="!currentFramework else frameworkQuery">
+    <p>Select a framework to explore:</p>
 
-<button *ngFor="let framework of frameworks" (activate)="handleFrameworkClicked(framework)">
-    {{ framework }}
-</button>
+    <button 
+        *ngFor="let framework of frameworks"
+        (activate)="handleFrameworkClicked(framework)"
+        >
+        {{ framework }}
+    </button>
+</div>
+
+<ng-template #frameworkQuery>
+    <label>
+        <input type="text">
+        or click here to browse all CAE Cyber Ops Curriculum
+    </label> <br />
+    <button *ngFor="let guideline of currentFrameworkGuidelines">
+        {{ guideline.guidelineDescription }}
+        <b>{{ guideline.guidelineName}}</b>
+    </button>
+
+</ng-template>
+
