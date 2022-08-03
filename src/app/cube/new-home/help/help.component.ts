@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 
 @Component({
   selector: 'clark-help',
@@ -32,12 +33,16 @@ export class HelpComponent implements OnInit {
 
   selectedTemplate = -1;
 
-  constructor() { }
+  constructor(private buildProgramComponentService: BuildProgramComponentService) { }
 
   ngOnInit(): void {
   }
 
   selectTemplate(template: number) {
     this.selectedTemplate = template;
+  }
+
+  handleFrameworkClicked() {
+    this.buildProgramComponentService.updateCurrentFramework('');
   }
 }
