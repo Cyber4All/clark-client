@@ -82,6 +82,7 @@ export class NavbarDropdownService {
         this.router.events.subscribe(e => {
             if (e instanceof NavigationEnd) {
               // if we're in onion, auth, or admin, toggle the navbars off
+              this.closeMobileMenus();
               if(e.url.match(/\/*onion[\/*[0-z]*]*/)
                 || e.url.match(/\/*auth[\/*[0-z]*]*/)
                 || e.url.match(/\/*admin[\/*[0-z]*]*/)) {
