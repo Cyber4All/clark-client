@@ -199,7 +199,6 @@ export class LearningObjectsComponent
           }
         })
         .catch(error => {
-          console.log(error)
           this.toaster.error(
             'Error!',
             'There was an error fetching Learning Objects. Please try again later.'
