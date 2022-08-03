@@ -25,7 +25,7 @@ export class BlogsComponentService {
    * @returns the showBanner boolean
    */
   getShowBanner(): boolean {
-    const recentBlogDateTime = new Date(this.recentBlog.timestamp);
+    const recentBlogDateTime = new Date(this.recentBlog?.timestamp);
     if(Date.now() - recentBlogDateTime.valueOf() > 604800000) { // if the most recent blog is older than 1 week, do not display a banner
       return false;
     }
