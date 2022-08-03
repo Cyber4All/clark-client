@@ -185,6 +185,11 @@
     flex-direction: column;
     justify-content: space-around;
     z-index: 4;
+
+    .close-icon{
+        margin-bottom: 10px;
+        color: $dark-grey;
+    }
 }
 
 
@@ -210,7 +215,6 @@
     }
   
     .slideout-section {
-      padding: 20px;
       box-sizing: border-box;
       
         .user {
@@ -244,11 +248,14 @@
             }
             
             .contribute {
-                width: 100%;
+                width: 86%;
+                margin: 0 7%;
             }
         }
         
         .logged-out {
+            padding-top: 15px;
+
             .greeting {
                 font-size: $larger;
                 font-weight: 1000;
@@ -277,7 +284,10 @@
 
         hr {
             margin-top: 20px;
-            color: $dark-grey;
+            border: none;
+            background-color: $dark-grey;
+            height: 1px;
+            width: 100%;
         }
 
         .menu-items {
@@ -324,6 +334,10 @@ li {
     &:not(:last-child) {
     margin-bottom: 10px;
     }
+}
+
+.side-padding-20 {
+    padding: 0 20px;
 }
 
 @media (min-width: 2000px) {
