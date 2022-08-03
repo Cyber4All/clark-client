@@ -4,7 +4,7 @@
     <div>{{ user.bio }}</div>
   </div>
   <div class="organization" id="organization-link">
-    <a [routerLink]="['/organization', user.organization]">{{ organizationFormat(user.organization) }}</a>
+    {{ organizationFormat(user.organization) }}
   </div>
   <div class="email">
     <a id="email-link" href="mailto: {{ user.email }}">{{ user.email }}</a>
