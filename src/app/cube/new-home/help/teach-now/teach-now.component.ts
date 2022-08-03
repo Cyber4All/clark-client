@@ -18,6 +18,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
 
   // Object variables
   objects: LearningObject[] = [];
+  loadingObjects = [new LearningObject(), new LearningObject(), new LearningObject(), new LearningObject()];
   loading: boolean = false;
 
   constructor(
@@ -27,6 +28,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.objects = this.loadingObjects;
     this.relevancyService.getTopics().then(topics => {
       this.topics = topics;
 
@@ -58,7 +60,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    * @param topicId The topic id selected
    */
   selectTopic(topicId: string) {
-    this.objects = [];
+    this.objects = this.loadingObjects;
     this.selectedTopic = topicId;
     this.loading = true;
     this.objectService.getLearningObjects({
