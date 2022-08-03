@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { GuidelineService } from 'app/core/guideline.service';
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
+import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 
 @Component({
@@ -9,26 +10,9 @@ import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
   styleUrls: ['./build-program.component.scss']
 })
 export class BuildProgramComponent implements OnInit {
+  frameworks: FrameworkDocument[];
   currentFramework: string;
   currentFrameworkGuidelines: SearchItemDocument[];
-
-  frameworks = [
-    'CAE Cyber Ops',
-    'NICE Workforce Tasks',
-    'CSTA',
-    'CS2013',
-    'CSEC',
-    'CAE CDE 2019',
-    'NICE Workforce Knowledge',
-    'APCSP',
-    'CAE Cyber Defense',
-    'GenCyber-Principles',
-    'GenCyber-Concepts',
-    'NICE Workforce Abilities',
-    'NICE Workforce Skills',
-    'CAE-CDE Foundational Knowledge Units',
-    'Cyber2yr2020',
-  ];
 
   constructor(private buildProgramComponentService: BuildProgramComponentService,
               private guidelineService: GuidelineService) { }
@@ -37,6 +21,10 @@ export class BuildProgramComponent implements OnInit {
     this.buildProgramComponentService.currentFrameworkObservable
     .subscribe(framework => {
       this.currentFramework = framework;
+    });
+    this.guidelineService.getFrameworks({ limit: 100, page: 1 })
+    .then(result => {
+      this.frameworks = result;
     });
   }
 
@@ -49,5 +37,4 @@ export class BuildProgramComponent implements OnInit {
       this.currentFrameworkGuidelines = result.results;
     });
   }
-
 }
