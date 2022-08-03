@@ -32,6 +32,7 @@ import { UPLOAD_ERRORS } from './errors';
 import { AuthService } from 'app/core/auth.service';
 import { getUserAgentBrowser } from 'getUserAgentBrowser';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -223,11 +224,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.error$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((err: Error | string) => {
+      .subscribe((err: Error | string | HttpErrorResponse) => {
         let message: string;
         if (err) {
           if (err instanceof Error) {
             message = err.message;
+          } else if (err instanceof HttpErrorResponse){
+            message = err.error.message;
           } else {
             message = err;
           }
