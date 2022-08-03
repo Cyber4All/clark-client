@@ -13,6 +13,7 @@ export class BuildProgramComponent implements OnInit {
   frameworks: FrameworkDocument[];
   currentFramework: string;
   currentFrameworkGuidelines: SearchItemDocument[];
+  currentFrameworkGuidelinesFiltered: SearchItemDocument[];
 
   guidelineSearch = '';
 
@@ -41,19 +42,23 @@ export class BuildProgramComponent implements OnInit {
       frameworks: this.currentFramework
     })
     .then(result => {
-      this.currentFrameworkGuidelines = result.results;
+      this.currentFrameworkGuidelines = result.results
+        .sort( (a, b) => {
+          if(a.guidelineName < b.guidelineName) {
+            return -1;
+          } else if (a.guidelineName > b.guidelineName) {
+            return 1;
+          }
+          return 0;
+        });
+      this.currentFrameworkGuidelinesFiltered = [...this.currentFrameworkGuidelines];
     });
   }
 
   filterGuidelineSearch() {
-    this.guidelineService.getGuidelines({
-      frameworks: this.currentFramework
-    })
-    .then(result => {
-      this.currentFrameworkGuidelines = result.results
-        .filter(guideline => {
-          return guideline.guidelineName.includes(this.guidelineSearch) || guideline.guidelineDescription.includes(this.guidelineSearch);
-        });
-    });
+    this.currentFrameworkGuidelinesFiltered = this.currentFrameworkGuidelines
+      .filter(guideline => {
+        return guideline.guidelineName.includes(this.guidelineSearch) || guideline.guidelineDescription.includes(this.guidelineSearch);
+      });
   }
 }

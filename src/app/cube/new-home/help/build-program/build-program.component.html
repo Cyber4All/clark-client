@@ -17,7 +17,7 @@
         </label>
         or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
     </div><br />
-    <button *ngFor="let guideline of currentFrameworkGuidelines">
+    <button *ngFor="let guideline of currentFrameworkGuidelinesFiltered">
         {{ guideline.guidelineDescription }}
         <b>{{ guideline.guidelineName }}</b>
     </button>
