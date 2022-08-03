@@ -69,7 +69,7 @@
         </div>
     </div>
     <center>
-        <div class="mobile-search" *ngIf="isMSearch">
+        <div class="mobile-search" *ngIf="isMSearch && !isMHamburger">
             <clark-search></clark-search>
             <br>
             <div class="close-icon" (click)="dropdowns.closeAll()">
@@ -79,7 +79,11 @@
     </center>
 
     <!-- blue underlay for hamburger slideout -->
-    <div class="slideout-underlay" *ngIf="!isDesktop" [ngClass]="{'active': isMHamburger || isMSearch, 'underNav': isMSearch}" (click)="dropdowns.closeMobileMenus()"></div>
+    <div class="slideout-underlay" 
+        *ngIf="!isDesktop" 
+        [ngClass]="{'active': isMHamburger || isMSearch, 'underNav': isMSearch && !isMHamburger}" 
+        (click)="dropdowns.closeMobileMenus()"
+    ></div>
 
     <!-- hamburger slideout -->
     <div class="slideout" *ngIf="!isDesktop" [ngClass]="{'active': isMHamburger}">
@@ -89,7 +93,7 @@
                     <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(70) + ')'}"></div>
                     <div class="username">Hi, {{ this.auth.firstName | titlecase }}!
                         <div>
-                            <a href="/users/{{ auth.username }}">View Your Profile</a>
+                            <a [routerLink]="['/users', auth.username]">View Your Profile</a>
                         </div>
                     </div>
                 </div>

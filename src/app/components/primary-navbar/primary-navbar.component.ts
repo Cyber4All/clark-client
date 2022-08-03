@@ -30,7 +30,7 @@ export class PrimaryNavbarComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   resizeWindow() {
-    this.isDesktop = (window.innerWidth >= this.resizeThreshold) ? true : false;
+    this.isDesktop = (window.innerWidth >= this.resizeThreshold);
   }
 
   constructor(
