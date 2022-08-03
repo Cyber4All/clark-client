@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 
 @Component({
   selector: 'clark-help-back-btn',
@@ -9,11 +10,19 @@ export class HelpBackBtnComponent implements OnInit {
 
   @Input() option: {title: string, description: string, icon: string, iconColor: string};
 
-  @Input() currentFramework: string;
+  currentFramework: string;
 
-  constructor() { }
+  constructor(public buildProgramComponentService: BuildProgramComponentService) { }
 
   ngOnInit(): void {
+    this.buildProgramComponentService.currentFrameworkObservable
+    .subscribe(framework => {
+      this.currentFramework = framework;
+    });
+  }
+
+  handleFrameworkClicked() {
+    this.buildProgramComponentService.updateCurrentFramework('');
   }
 
 }

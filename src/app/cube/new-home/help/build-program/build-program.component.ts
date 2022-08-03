@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 
 @Component({
   selector: 'clark-build-program',
@@ -7,9 +8,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class BuildProgramComponent implements OnInit {
   currentFramework: string;
-
-  // emits to HelpBackBtn to display current framework being queried
-  @Output() emitFramework = new EventEmitter<string>();
 
   frameworks = [
     'CAE Cyber Ops',
@@ -29,9 +27,17 @@ export class BuildProgramComponent implements OnInit {
     'Cyber2yr2020',
   ];
 
-  constructor() { }
+  constructor(private buildProgramComponentService: BuildProgramComponentService) { }
 
   ngOnInit(): void {
+    this.buildProgramComponentService.currentFrameworkObservable
+    .subscribe(framework => {
+      this.currentFramework = framework;
+    });
+  }
+
+  handleFrameworkClicked(event: string) {
+    this.buildProgramComponentService.updateCurrentFramework(event);
   }
 
 }
