@@ -25,7 +25,11 @@
     </div>
   </div>
   <div *ngIf="outcomes.size" right>
-    <clark-standard-outcomes [activeOutcome]="activeOutcome" (toggleMapping)="toggleStandardOutcome($event)"></clark-standard-outcomes>
+    <clark-standard-outcomes 
+      [activeOutcome]="activeOutcome" 
+      (toggleMapping)="toggleStandardOutcome($event)"
+      [levels]="learningObject.levels"
+    ></clark-standard-outcomes>
   </div>
 </clark-column-wrapper>
 

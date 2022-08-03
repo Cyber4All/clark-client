@@ -18,6 +18,7 @@ import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/internal/observable/of';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -68,6 +69,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private http: HttpClient,
     private toaster: ToastrOvenService,
+    private router: Router
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -159,7 +161,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   /**
    * Check the logged in user's email verification status
    *
-   * @return {boolean} true if loggedin user has verified their email, false otherwise
+   * @return {boolean} true if logged in user has verified their email, false otherwise
    */
   get verifiedEmail(): boolean {
     return this.auth.user.emailVerified;
@@ -199,6 +201,18 @@ export class LearningObjectListItemComponent implements OnChanges {
 
    toggleRevisionDelete(toggle: boolean) {
      this.showDeleteRevisionConfirmation = toggle;
+   }
+
+   goToUrl(url) {
+     if(url === 'builder') {
+      window.open(`/onion/learning-object-builder/${this.learningObject.id}`, '_blank');
+     } else if (url === 'contact') {
+      window.open(`/users/${this.learningObject.author.username}`);
+     } else if (url === 'details') {
+      window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}`);
+     } else if (url === 'relevancy') {
+       window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
+     }
    }
 
 

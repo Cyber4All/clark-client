@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { LibraryService } from 'app/core/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -44,6 +44,7 @@ import { NavbarService } from 'app/core/navbar.service';
 })
 export class LibraryComponent implements OnInit, OnDestroy {
 
+  @ViewChild('savedList') topOfList: ElementRef;
   loading: boolean;
   serviceError: boolean;
   libraryItems: LearningObject[] = [];
@@ -313,6 +314,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async changeLibraryItemPage(pageNumber: number) {
+    this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
     const libraryItemInformation = await this.libraryService.getLibrary(pageNumber, 10);
     this.libraryItems = libraryItemInformation.cartItems;
     this.lastPageNumber = libraryItemInformation.lastPage;

@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "../"
+    schedule:
+      interval: "monthly"
+      # Check for updates on Monday at 1PM ET
+      time: "18:00"
+    assignees:
+      - "yeet-bot7800"
+    reviewers:
+      - "Cyber4All/dev-sec-ops"
+    labels:
+      - "npm"
+      - "dependencies"
+    target-branch: "main"

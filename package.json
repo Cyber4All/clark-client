@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "4.29.19",
+  "version": "4.29.27",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -29,7 +29,7 @@
     "@angular/platform-browser-dynamic": "^13.1.2",
     "@angular/router": "^13.1.2",
     "@babel/core": "^7.16.7",
-    "@cyber4all/clark-taxonomy": "^4.0.3",
+    "@cyber4all/clark-taxonomy": "^4.0.5",
     "aws-sdk": "^2.1058.0",
     "core-js": "^3.6.5",
     "md5": "^2.2.1",
@@ -65,7 +65,7 @@
     "babel-core": "^7.0.0-bridge",
     "babel-jest": "^27.4.6",
     "babel-loader": "^8.0.6",
-    "canvas": "^2.8.0",
+    "canvas": "^2.9.1",
     "chart.js": "^2.9.4",
     "chrome-launcher": "^0.13.4",
     "eslint": "^7.26.0",
