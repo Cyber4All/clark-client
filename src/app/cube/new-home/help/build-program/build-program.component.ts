@@ -14,8 +14,10 @@ export class BuildProgramComponent implements OnInit {
   currentFramework: string;
   currentFrameworkGuidelines: SearchItemDocument[];
   currentFrameworkGuidelinesFiltered: SearchItemDocument[];
+  currentFrameworkGuidelinesPaginated: SearchItemDocument[][];
 
   guidelineSearch = '';
+  currentPage = 0;
 
   constructor(private buildProgramComponentService: BuildProgramComponentService,
               private guidelineService: GuidelineService) { }
@@ -26,6 +28,7 @@ export class BuildProgramComponent implements OnInit {
       this.currentFramework = framework;
       this.guidelineSearch = '';
       this.currentFrameworkGuidelines = [];
+      this.currentPage = 0;
     });
     this.guidelineService.getFrameworks({ limit: 100, page: 1 })
     .then(result => {
@@ -43,16 +46,32 @@ export class BuildProgramComponent implements OnInit {
     })
     .then(result => {
       this.currentFrameworkGuidelines = result.results
-        .sort( (a, b) => {
-          if(a.guidelineName < b.guidelineName) {
-            return -1;
-          } else if (a.guidelineName > b.guidelineName) {
-            return 1;
-          }
-          return 0;
-        });
+        .sort((a, b) => this.sortGuidelines(a, b));
       this.currentFrameworkGuidelinesFiltered = [...this.currentFrameworkGuidelines];
+      this.fillPages();
     });
+  }
+
+  sortGuidelines(a: SearchItemDocument, b: SearchItemDocument): 1 | 0 | -1 {
+    if(a.guidelineName < b.guidelineName) {
+      return -1;
+    } else if (a.guidelineName > b.guidelineName) {
+      return 1;
+    }
+    return 0;
+  }
+
+  fillPages() {
+    const pages = new Array(Math.ceil(this.currentFrameworkGuidelinesFiltered.length / 6));
+
+    for(let i = 0; i < pages.length; i++) {
+      pages[i] = this.currentFrameworkGuidelinesFiltered.slice(i*6, (i*6)+6);
+    }
+    this.currentFrameworkGuidelinesPaginated = [...pages];
+  }
+
+  changePage(index: number) {
+    this.currentPage = index;
   }
 
   filterGuidelineSearch() {
@@ -60,5 +79,6 @@ export class BuildProgramComponent implements OnInit {
       .filter(guideline => {
         return guideline.guidelineName.includes(this.guidelineSearch) || guideline.guidelineDescription.includes(this.guidelineSearch);
       });
+    this.fillPages();
   }
 }

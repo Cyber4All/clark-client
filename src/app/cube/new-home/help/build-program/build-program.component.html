@@ -17,10 +17,35 @@
         </label>
         or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
     </div><br />
-    <button *ngFor="let guideline of currentFrameworkGuidelinesFiltered">
-        {{ guideline.guidelineDescription }}
-        <b>{{ guideline.guidelineName }}</b>
+    <div *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i">
+        <div *ngIf="currentPage === i">
+            <button *ngFor="let guideline of page">
+                {{ guideline.guidelineDescription }}
+                <p>
+                    <b>{{ guideline.guidelineName }}</b>
+                </p>
+                
+            </button>
+        </div>
+    </div>
+    <button 
+        [disabled]="currentPage === 0" 
+        (click)="changePage(currentPage-1)"
+        >
+        Back
     </button>
-
+    <button 
+        *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i;" 
+        [disabled]="currentPage === i"
+        (click)="changePage(i)"
+        >
+        {{ i+1 }}
+    </button>
+    <button 
+        [disabled]="currentPage === currentFrameworkGuidelinesPaginated?.length-1" 
+        (click)="changePage(currentPage+1)"
+        >
+        Next
+    </button>
 </ng-template>
 
