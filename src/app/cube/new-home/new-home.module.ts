@@ -18,6 +18,7 @@ import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { HelpBackBtnComponent } from './help/components/help-back-btn/help-back-btn.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -43,7 +44,8 @@ import { HelpBackBtnComponent } from './help/components/help-back-btn/help-back-
     CommonModule,
     CubeSharedModule,
     SharedModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ]
 })
 export class NewHomeModule { }

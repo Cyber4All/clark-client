@@ -14,6 +14,8 @@ export class BuildProgramComponent implements OnInit {
   currentFramework: string;
   currentFrameworkGuidelines: SearchItemDocument[];
 
+  guidelineSearch = '';
+
   constructor(private buildProgramComponentService: BuildProgramComponentService,
               private guidelineService: GuidelineService) { }
 
@@ -21,6 +23,8 @@ export class BuildProgramComponent implements OnInit {
     this.buildProgramComponentService.currentFrameworkObservable
     .subscribe(framework => {
       this.currentFramework = framework;
+      this.guidelineSearch = '';
+      this.currentFrameworkGuidelines = [];
     });
     this.guidelineService.getFrameworks({ limit: 100, page: 1 })
     .then(result => {
@@ -28,6 +32,9 @@ export class BuildProgramComponent implements OnInit {
     });
   }
 
+  removeGuidelineSearch() {
+    this.guidelineSearch = '';
+  }
   handleFrameworkClicked(event: string) {
     this.buildProgramComponentService.updateCurrentFramework(event);
     this.guidelineService.getGuidelines({
@@ -35,6 +42,18 @@ export class BuildProgramComponent implements OnInit {
     })
     .then(result => {
       this.currentFrameworkGuidelines = result.results;
+    });
+  }
+
+  filterGuidelineSearch() {
+    this.guidelineService.getGuidelines({
+      frameworks: this.currentFramework
+    })
+    .then(result => {
+      this.currentFrameworkGuidelines = result.results
+        .filter(guideline => {
+          return guideline.guidelineName.includes(this.guidelineSearch) || guideline.guidelineDescription.includes(this.guidelineSearch);
+        });
     });
   }
 }

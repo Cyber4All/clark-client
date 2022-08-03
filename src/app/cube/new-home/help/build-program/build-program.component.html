@@ -3,20 +3,23 @@
 
     <button 
         *ngFor="let framework of frameworks"
-        (activate)="handleFrameworkClicked(framework)"
+        (activate)="handleFrameworkClicked(framework.name)"
         >
-        {{ framework }}
+        {{ framework.name }}
     </button>
 </div>
 
 <ng-template #frameworkQuery>
-    <label>
-        <input type="text">
-        or click here to browse all CAE Cyber Ops Curriculum
-    </label> <br />
+    <div>
+        <label class="input">
+            <i class="far fa-search"></i>
+            <input type="text" [(ngModel)]="guidelineSearch" (input)="filterGuidelineSearch()"/>
+        </label>
+        or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
+    </div><br />
     <button *ngFor="let guideline of currentFrameworkGuidelines">
         {{ guideline.guidelineDescription }}
-        <b>{{ guideline.guidelineName}}</b>
+        <b>{{ guideline.guidelineName }}</b>
     </button>
 
 </ng-template>
