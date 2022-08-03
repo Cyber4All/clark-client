@@ -65,7 +65,15 @@ export class PrimaryNavbarComponent implements OnInit {
       this.showNav = val;
     });
     this.dropdowns.topics.subscribe(val => {
-      this.topics = val;
+      this.topics = val.sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      });
     });
     this.externalResources = this.dropdowns.externalResources;
     this.dropdowns.setNavbarStatus();
