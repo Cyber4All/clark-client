@@ -22,8 +22,11 @@
   <div class="text-contained filesize" id="file-size" attr.aria-label="{{ file?.size }}">
     {{ file?.size | fileSize }}
   </div>
-  <div>
-    <clark-toggle-switch [state]="file.packageable" (toggled)="handleToggle($event)"></clark-toggle-switch>
+  <div class="bundle" *ngIf="checkAccessGroups() else notAdminOrCurator">
+    <clark-toggle-switch
+      [state]="file.packageable" 
+      (toggled)="handleToggle($event)"
+      ></clark-toggle-switch>
   </div>
   <a
     tabindex="0"
@@ -35,3 +38,9 @@
     <div></div>
   </a>
 </div>
+
+<ng-template #notAdminOrCurator>
+  <div class="text-contained bundle">
+    {{file.packageable ? 'On' : 'Off'}}
+  </div>
+</ng-template>

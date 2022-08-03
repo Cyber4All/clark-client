@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-folder-list-item',
@@ -16,11 +17,13 @@ export class FolderListItemComponent implements OnInit {
   @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
 
   timestampAge = '';
+  accessGroups?: string[];
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.timestampAge = TimeFunctions.getTimestampAge(this.getLatestDate());
+    this.accessGroups = this.authService.accessGroups;
   }
 
   /**
@@ -142,5 +145,15 @@ export class FolderListItemComponent implements OnInit {
     });
 
     this.toggleClicked.emit(event);
+  }
+
+  /**
+   * Checks if the current user is an admin or curator.
+   * If true, allows the user to change the bundling status of a file/folder.
+   *
+   * @returns boolean value if the user is valid
+   */
+    checkAccessGroups(): boolean {
+    return this.accessGroups.includes('admin') || this.accessGroups.includes('curator');
   }
 }

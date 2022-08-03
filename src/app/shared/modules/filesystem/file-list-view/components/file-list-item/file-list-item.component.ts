@@ -20,6 +20,7 @@ export class FileListItemComponent implements OnInit {
   icon = '';
   timestampAge = '';
   previewUrl = '';
+  accessGroups: string[];
 
   constructor(private auth: AuthService) {}
 
@@ -27,6 +28,7 @@ export class FileListItemComponent implements OnInit {
     this.icon = getIcon(this.file.extension);
     this.timestampAge = TimeFunctions.getTimestampAge(+this.file.date);
     this.previewUrl = this.file.previewUrl;
+    this.accessGroups = this.auth.accessGroups;
   }
 
   /**
@@ -63,5 +65,13 @@ export class FileListItemComponent implements OnInit {
     this.menuClicked.emit(event);
   }
 
-
+  /**
+   * Checks if the current user is an admin or curator.
+   * If true, allows the user to change the bundling status of a file/folder.
+   *
+   * @returns boolean value if the user is valid
+   */
+  checkAccessGroups(): boolean {
+    return this.accessGroups.includes('admin') || this.accessGroups.includes('curator');
+  }
 }

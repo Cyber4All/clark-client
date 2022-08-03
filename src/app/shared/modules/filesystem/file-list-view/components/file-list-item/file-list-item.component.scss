@@ -77,11 +77,17 @@
   }
 }
 
-clark-toggle-switch {
+.bundle {
   display: flex;
   justify-content: center;
-  position: relative;
+  
+  clark-toggle-switch {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
 }
+
 
 .external-link-icon {
   color: $light-blue;

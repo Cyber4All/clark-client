@@ -10,8 +10,12 @@
     {{ timestampAge }}
   </div>
   <div class="empty"></div>
-  <div class="toggleBundle">
-    <clark-toggle-switch [state]="getFolderBundleStatus(folder)" (click)="$event.stopPropagation()" (toggled)="handleBundleToggle(folder, $event)"></clark-toggle-switch>
+  <div class="toggleBundle" *ngIf="checkAccessGroups() else notAdminOrCurator">
+    <clark-toggle-switch 
+      [state]="getFolderBundleStatus(folder)" 
+      (click)="$event.stopPropagation()" 
+      (toggled)="handleBundleToggle(folder, $event)"
+      ></clark-toggle-switch>
   </div>
   <a
     tabindex="0"
@@ -23,3 +27,9 @@
     <div></div>
   </a>
 </div>
+
+<ng-template #notAdminOrCurator>
+  <div class="toggleBundle text-contained">
+    {{ getFolderBundleStatus(folder) ? 'On' : 'Off' }}
+  </div>
+</ng-template>
