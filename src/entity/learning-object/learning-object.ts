@@ -61,11 +61,12 @@ export class LearningObject {
   }
 
   set name(name: string) {
-    if (this.isValidName(name)) {
+    const errorType = this.isValidName(name);
+    if (errorType === true) {
       this._name = name.trim();
       this.updateDate();
     } else {
-      throw new EntityError(LEARNING_OBJECT_ERRORS.INVALID_NAME, 'name');
+      throw new EntityError(errorType.toString(), 'name');
     }
   }
   /**
@@ -376,18 +377,18 @@ export class LearningObject {
    * @returns {boolean}
    * @memberof LearningObject
    */
-  private isValidName(name: string): boolean {
-    if (name !== undefined && name !== null) {
-      const trimmedName = name.trim();
-      if (
-        trimmedName.length < MIN_NAME_LENGTH ||
-        trimmedName.length > MAX_NAME_LENGTH
-      ) {
-        return false;
-      }
-      return true;
+  private isValidName(name: string): string | boolean {
+    if (
+      name === undefined || name === null ||
+      name.trim().length < MIN_NAME_LENGTH || 
+      name.trim().length > MAX_NAME_LENGTH
+    ) {
+      return LEARNING_OBJECT_ERRORS.INVALID_NAME;
     }
-    return false;
+    if (name.match(/[\\/:"*?<>|]/) !== null) {
+      return LEARNING_OBJECT_ERRORS.INVALID_CHARACTER_IN_NAME;
+    }
+    return true;
   }
 
   /**
