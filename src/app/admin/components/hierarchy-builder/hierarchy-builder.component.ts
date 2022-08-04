@@ -97,10 +97,11 @@ export class HierarchyBuilderComponent implements OnInit {
     if(node.name !== this.parent.name) {
       parentId = await this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
     }
+    const newNode = await this.setParents(parentId, childrenIds);
     if(node.name === this.parent.name) {
       this.close.emit();
     }
-    return await this.setParents(parentId, childrenIds);
+    return newNode;
   }
 
   async setParents(node, childs) {
