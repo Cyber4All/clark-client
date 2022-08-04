@@ -1,6 +1,11 @@
 <div>
-    <div class="topics" id="teach-now-topics">
+    <div *ngIf="width > 750" class="topics" id="teach-now-topics">
         <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)">{{ topic.name }}</button>
+    </div>
+    <div *ngIf="width <= 750">
+        <select (change)="getObjects()" [(ngModel)]="selectedTopic">
+            <option *ngFor="let topic of topics" [value]="topic._id" [selected]="selectedTopic === topic._id">{{ topic.name }}</option>
+        </select>
     </div>
     <div *ngIf="objects && objects.length > 0 && objects !== loadingObjects" class="objects">
         <clark-learning-object-component *ngFor="let l of objects" [learningObject]="l" [loading]="loading" learningObjectCard></clark-learning-object-component>

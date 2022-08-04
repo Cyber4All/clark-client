@@ -76,12 +76,19 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   selectTopic(topicId: string) {
     this.objects = this.loadingObjects;
     this.selectedTopic = topicId;
+    this.getObjects();
+  }
+
+  /**
+   * Gets the objects associated with a specific topic
+   */
+  getObjects() {
     this.loading = true;
     this.objectService.getLearningObjects({
       limit: 4,
       currPage: 1,
       status: ['released'],
-      topics: [topicId],
+      topics: [this.selectedTopic],
     }).then(res => {
       this.objects = res.learningObjects;
       this.loading = false;
