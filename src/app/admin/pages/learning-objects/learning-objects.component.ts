@@ -80,7 +80,6 @@ export class LearningObjectsComponent
     private router: Router,
     private toaster: ToastrOvenService,
     private auth: AuthService,
-    private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
     private searchService: SearchService
   ) {}
@@ -98,16 +97,13 @@ export class LearningObjectsComponent
     // });
 
     // query by anything if it's passed in
-    // this.route.queryParams.subscribe(params => {
-    //   console.log(params)
-    //   this.query = { 
-    //     currPage: parseInt(params.currPage),
-    //     limit: parseInt(params.limit),
-    //     sortType: parseInt(params.sortType),
-    //     orderBy: OrderBy.Date,
-    //     text: ''
-    //   };
-    // });
+    // reset page to 1 since we can't scroll backwards
+    this.route.queryParams.subscribe(params => {
+      this.query = { 
+        ...params,
+        currPage: 1
+       };
+    });
 
     // listen for input events from the search component and perform the search action
     this.userSearchInput$
@@ -163,7 +159,7 @@ export class LearningObjectsComponent
         relativeTo: this.route,
         replaceUrl: true
       }
-    )
+    );
   }
 
   /**
@@ -205,37 +201,13 @@ export class LearningObjectsComponent
         .catch(error => {
           this.toaster.error(
             'Error!',
-            'There was an error fetching collections. Please try again later.'
+            'There was an error fetching Learning Objects. Please try again later.'
           );
         })
         .finally(() => {
           this.loading = false;
         });
     }
-  }
-
-  /**
-   *Retrieve an author's Learning Objects
-   *
-   * @param {string} author the username of the author
-   * @memberof LearningObjectsComponent
-   */
-  getUserLearningObjects(author: string) {
-    const query = {
-      text: author
-    };
-    this.publicLearningObjectService
-      .getLearningObjects(query)
-      .then(val => {
-        this.learningObjects = val.learningObjects;
-      })
-      .catch(error => {
-        this.toaster.error(
-          'Error!',
-          'There was an error fetching this user\'s Learning Objects. Please try again later.',
-        );
-        console.error(error);
-      });
   }
 
   /**

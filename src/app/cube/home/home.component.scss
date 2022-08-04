@@ -1,6 +1,13 @@
 @import 'vars.scss';
 @import './home';
 
+clark-blogs {
+  position: absolute;
+  background-color: rgb(255, 255, 255, 0.7);
+  width: 100%;
+  z-index: 5;
+}
+
 :host {
   background: white;
   display: block;

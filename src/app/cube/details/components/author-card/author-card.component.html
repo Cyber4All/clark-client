@@ -8,9 +8,9 @@
       <h4 class='grid__profile-icon-container__author-name'>
         {{ author?.name | titlecase }}
       </h4>
-      <a class='grid__profile-icon-container__author-organization' routerLink='/organization/{{ author.organization }}'>
+      <p class='grid__profile-icon-container__author-organization'>
         {{ organizationFormat(author?.organization) }}
-      </a>
+      </p>
     </div>
 
     <div class='grid__icon-container'>

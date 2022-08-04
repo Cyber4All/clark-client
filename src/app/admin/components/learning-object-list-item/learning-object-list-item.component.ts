@@ -232,9 +232,9 @@ export class LearningObjectListItemComponent implements OnChanges {
      } else if (url === 'contact') {
       window.open(`/users/${this.learningObject.author.username}`);
      } else if (url === 'details') {
-      window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}`)
+      window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}`);
      } else if (url === 'relevancy') {
-       window.open(`/onion/relevancy-builder/${this.learningObject.id}`)
+       window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
      }
    }
 
