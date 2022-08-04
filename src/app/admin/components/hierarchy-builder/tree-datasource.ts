@@ -27,14 +27,14 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
   /** Add node as child of parent */
   public add(node: LearningObjectNode, parent: LearningObjectNode) {
     // add dummy root so we only have to deal with LearningObjectNodes
-    const newTreeData = { name: "Dummy Root", length: 'nanomodule', children: this.data };
+    const newTreeData = { name: "Yeetus Maximus", length: 'nanomodule', children: this.data };
     this._add(node, parent, newTreeData);
     this.data = newTreeData.children;
   }
 
   /** Remove node from tree */
   public remove(node: LearningObjectNode) {
-    const newTreeData = { name: "Dummy Root", length: 'nanomodule', children: this.data };
+    const newTreeData = { name: "Yeetus Maximus", length: 'nanomodule', children: this.data };
     this._remove(node, newTreeData);
     this.data = newTreeData.children;
   }
@@ -51,7 +51,7 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
     return this.update(tree, this._add.bind(this, newNode, parent));
   }
 
-  _remove(node: LearningObjectNode, tree: LearningObjectNode): boolean {
+  protected _remove(node: LearningObjectNode, tree: LearningObjectNode): boolean {
     if (!tree.children) {
       return false;
     }
@@ -67,6 +67,9 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
     return this.update(tree, this._remove.bind(this, node));
   }
 
+  /**
+   * Determines how a sub tree needs to updated depending on if a node was added or taken away
+   */
   protected update(tree: LearningObjectNode, predicate: (n: LearningObjectNode) => boolean) {
     let updatedTree: LearningObjectNode, updatedIndex: number;
 
