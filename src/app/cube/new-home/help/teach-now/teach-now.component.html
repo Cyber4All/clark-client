@@ -1,6 +1,8 @@
 <div>
     <div *ngIf="width > 750" class="topics" id="teach-now-topics">
+        <div class="shadow left" aria-hidden="true"></div>
         <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)">{{ topic.name }}</button>
+        <div class="shadow right" aria-hidden="true"></div>
     </div>
     <div *ngIf="width <= 750">
         <select (change)="getObjects()" [(ngModel)]="selectedTopic">
