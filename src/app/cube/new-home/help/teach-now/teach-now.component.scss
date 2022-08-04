@@ -1,5 +1,9 @@
 @import 'vars.scss';
 
+.wrapper {
+    max-width: 1375px;
+}
+
 .topics {
     display: flex;
     flex-direction: row;
@@ -58,9 +62,8 @@ select {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
     margin: 50px 20px;
-    max-width: 1375px;
     flex-wrap: wrap;
 
     .all {

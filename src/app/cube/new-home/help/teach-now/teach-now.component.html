@@ -1,4 +1,4 @@
-<div>
+<div class="wrapper">
     <div #topicScroll *ngIf="width > 750" class="topics">
         <div class="shadow left" aria-hidden="true"></div>
         <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)" [ngClass]="{'selected': selectedTopic === topic._id}">{{ topic.name }}</button>
