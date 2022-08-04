@@ -2,7 +2,7 @@
     <div *ngIf="node.showForm === true" class="node form">
         <mat-form-field class="name-field" appearance="outline">
             <mat-label>Learning Object Name</mat-label>
-            <input #name (blur)="checkLearningObjectName($event)" matInput [formControl]="nameFormControl" [(ngModel)]="node.name">
+            <input #name matInput [formControl]="nameFormControl" [(ngModel)]="node.name">
             <mat-error class="error" *ngIf="nameFormControl.hasError('forbiddenName')">
                 Name already exists for the author!
             </mat-error>

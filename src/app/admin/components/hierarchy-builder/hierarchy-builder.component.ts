@@ -3,6 +3,7 @@ import { NestedTreeControl} from '@angular/cdk/tree';
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from '@entity';
 import { HierarchyService } from 'app/admin/core/hierarchy.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectNode, TreeDataSource } from './tree-datasource';
 
 @Component({
@@ -29,7 +30,8 @@ export class HierarchyBuilderComponent implements OnInit {
   acknowledge: boolean;
 
   constructor(
-    private hierarchyService: HierarchyService
+    private hierarchyService: HierarchyService,
+    private toaster: ToastrOvenService,
   ) {}
 
   ngOnInit() {
@@ -99,6 +101,10 @@ export class HierarchyBuilderComponent implements OnInit {
     }
     const newNode = await this.setParents(parentId, childrenIds);
     if(node.name === this.parent.name) {
+      this.toaster.success(
+        'Success',
+        'Hierarchy Created!'
+      );
       this.close.emit();
     }
     return newNode;

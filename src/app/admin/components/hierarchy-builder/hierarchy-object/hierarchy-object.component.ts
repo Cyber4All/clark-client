@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { HierarchyService } from 'app/admin/core/hierarchy.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Observable } from 'rxjs';
 import { LearningObjectNode } from '../tree-datasource';
 
@@ -23,7 +24,8 @@ export class HierarchyObjectComponent implements OnInit {
 
   nameFormControl = new FormControl('', [Validators.required, this.forbiddenNameValidator()]);
   constructor(
-    private hierarchyService: HierarchyService
+    private hierarchyService: HierarchyService,
+    private toaster: ToastrOvenService,
   ) { }
 
   ngOnInit(): void {
@@ -92,14 +94,20 @@ export class HierarchyObjectComponent implements OnInit {
     this.removeLo.emit(this.node);
   }
 
-  async checkLearningObjectName(event?: any){
-    this.nameExists = await this.hierarchyService.checkName(this.username, this.node.name);
-  }
 
-  forbiddenNameValidator() : ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const forbidden = true;
-      return forbidden ? {forbiddenName: { value: control.value}} : null;
-    }
+  forbiddenNameValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
+      if(this.node) {
+        return this.hierarchyService.checkName(this.username, this.node.name).then( val => {
+          if(val === true) {
+            this.toaster.error(
+              'Error',
+              'Name already exists!'
+            );
+            return val ? { forbiddenName: { value: val}} : null;
+          }
+        });
+      }
+    };
   }
 }
