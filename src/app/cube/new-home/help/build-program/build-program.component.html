@@ -1,4 +1,5 @@
 <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
 <div class="wrapper" *ngIf="!currentFramework else frameworkQuery">
     <p class="info">Select a framework to explore:</p>
@@ -14,14 +15,14 @@
 
 <ng-template #frameworkQuery>
     <div class="wrapper">
-        <div>
+        <div class="search">
             <label class="input">
                 <i class="far fa-search"></i>
-                <input type="text" [(ngModel)]="guidelineSearch" (input)="filterGuidelineSearch()"/>
+                <input type="text" placeholder="Search for Guidelines" [(ngModel)]="guidelineSearch" (input)="filterGuidelineSearch()"/>
             </label>
             or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
         </div><br />
-        <div *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i">
+        <div class="guidelines" *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i">
             <table class="guidelinePage" *ngIf="currentPage === i">
                 <tr class="guidelineRow">
                     <td class="guideline" *ngFor="let guideline of page | slice:0:3">
@@ -45,25 +46,29 @@
                 </tr>
             </table>
         </div>
-        <button 
-            [disabled]="currentPage === 0" 
-            (click)="changePage(currentPage-1)"
-            >
-            Back
-        </button>
-        <button 
-            *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i;" 
-            [disabled]="currentPage === i"
-            (click)="changePage(i)"
-            >
-            {{ i+1 }}
-        </button>
-        <button 
-            [disabled]="currentPage === currentFrameworkGuidelinesPaginated?.length-1" 
-            (click)="changePage(currentPage+1)"
-            >
-            Next
-        </button>
+        <div class="pagination">
+            <button 
+                [disabled]="currentPage === 0" 
+                (click)="changePage(currentPage-1)"
+                >
+                <i class="far fa-angle-left"></i>
+                Back
+            </button>
+            <button 
+                *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i;" 
+                [ngClass]="{highlighted: currentPage === i}"
+                (click)="changePage(i)"
+                >
+                {{ i+1 }}
+            </button>
+            <button 
+                [disabled]="currentPage === currentFrameworkGuidelinesPaginated?.length-1 || currentFrameworkGuidelinesPaginated?.length === 0" 
+                (click)="changePage(currentPage+1)"
+                >
+                Next
+                <i class="far fa-angle-right"></i>
+            </button>
+        </div>
     </div>
 </ng-template>
 

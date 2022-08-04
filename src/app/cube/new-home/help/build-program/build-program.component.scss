@@ -1,3 +1,5 @@
+@import 'vars.scss';
+
 .wrapper {
     margin: 0px 35px;
     font-family: 'Source Sans Pro', sans-serif;
@@ -13,65 +15,121 @@
         padding: 10px 24px;
         border: 1px solid #b3b3b3;
         border-radius: 3px;
+        font-family: 'Inter', sans-serif;
+
+        &:hover {
+            opacity: 60%;
+        }
+    
+        &:active {
+            opacity: 100%;
+        }
     }
 
-    .guidelinePage {
-        border-spacing: 10px;
-        .guidelineRow {
-            border: 0px solid white;
+    .search {
+        .input {
+            cursor: text;
+            background-color: white;
+            padding: 7px;
+            margin-right: 12px;
+            border: 2px solid #dfdfdf;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
 
-            .guideline {
-                cursor: pointer;
-                position: relative;
-                margin: 0 10px 10px 0;
-                border: 1px solid #b3b3b3;
-                border-radius: 4px;
-                min-height: 150px;
+            svg {
+                padding: 0px 5px;
+                color: #bababa;
+            }
+
+            input {
+                border: 0px;
                 width: 30%;
-                vertical-align: top;
-                background-color: #ebebeb;
-
-                // button {
-                //     height: 100%;
-                //     border: 1px solid #b3b3b3;
-                //     text-align: left;
-                //     border-radius: 3px;
-                // }
-
-                .guidelineDescription {
-                    margin: 10px 10px 50px;
-                    margin-bottom: 50px;
-                }
-
-                .guidelineName {
-                    position: absolute;
-                    bottom: 0;
-                    left: 10px;
-                }
             }
 
-            .guideline:hover {
-                opacity: 60%;
-            }
-
-            .guideline:active {
-                opacity: 100%;
+            &:hover{
+                border-color: $light-blue;
             }
         }
     }
 
-    button:hover {
-        opacity: 60%;
+    .guidelines {
+        .guidelinePage {
+            border-spacing: 10px;
+            .guidelineRow {
+                border: 0px solid white;
+    
+                .guideline {
+                    cursor: pointer;
+                    position: relative;
+                    margin: 0 10px 10px 0;
+                    border: 1px solid #b3b3b3;
+                    border-radius: 4px;
+                    min-height: 150px;
+                    width: 30%;
+                    vertical-align: top;
+                    background-color: #ebebeb;
+                    font-family: 'Inter', sans-serif;
+    
+                    .guidelineDescription {
+                        margin: 10px 10px 50px;
+                        margin-bottom: 50px;
+                    }
+    
+                    .guidelineName {
+                        position: absolute;
+                        bottom: 0;
+                        left: 10px;
+                    }
+    
+                    &:hover {
+                        opacity: 60%;
+                    }
+        
+                    &:active {
+                        opacity: 100%;
+                    }
+                }
+            }
+        }
     }
+    
+    .pagination {
+        button {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            border: none;
+            color: $light-blue;
+            background-color: #f0f4f7;
+            padding: 5px 10px;
 
-    button:active {
-        opacity: 100%;
+            svg {
+                padding: 0px 5px;
+            }
+
+            &:not(.highlighted):not(:disabled):hover {
+                opacity: 80%;
+                background-color: #8caff180;
+            }
+
+            &.highlighted {
+                background-color: #8caff143;
+            }
+
+            &:disabled {
+                color: gray;
+                opacity: 60%;
+            }
+        }
+        
     }
 }
 
-.input {
-    background-color: white;
-    input {
-        border: 0px;
+@media screen and (max-width: 425px) {
+    .wrapper {
+        .framework {
+            font-size: 14px;
+        }
     }
 }
+
