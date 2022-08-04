@@ -22,7 +22,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   // Object variables
   objects: LearningObject[] = [];
   loadingObjects = [new LearningObject(), new LearningObject(), new LearningObject(), new LearningObject()];
-  loading: boolean = false;
+  loading = false;
 
   constructor(
     private relevancyService: RelevancyService,
@@ -36,7 +36,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
       this.topics = topics;
 
       if (topics.length > 0) {
-        this.selectTopic(this.topics[0]._id)
+        this.selectTopic(this.topics[0]._id);
       }
     });
   }
