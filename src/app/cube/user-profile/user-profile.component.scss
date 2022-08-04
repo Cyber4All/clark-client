@@ -1,5 +1,8 @@
 @import 'vars.scss';
 
 .container {
-    display: block;
+    width: auto;
+    height: auto;
+    background-color: white;
+    overflow: auto;
 }
