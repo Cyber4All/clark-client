@@ -79,6 +79,7 @@ export class BuildProgramComponent implements OnInit {
       .filter(guideline => {
         return guideline.guidelineName.includes(this.guidelineSearch) || guideline.guidelineDescription.includes(this.guidelineSearch);
       });
+    this.currentPage = 0;
     this.fillPages();
   }
 }
