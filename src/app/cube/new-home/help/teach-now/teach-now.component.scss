@@ -23,16 +23,31 @@
 }
 
 .objects {
-    display: grid;
-    grid-template-columns: 250px 250px 250px 250px auto;
-    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
     gap: 20px;
-    margin: 50px;
-    max-width: 1400px;
+    margin: 50px 20px;
+    max-width: 1375px;
+    flex-wrap: wrap;
 
     .all {
         display: flex;
         flex-direction: row;
+        justify-content: center;
         align-items: center;
+        margin: 20px;
+
+        &.full-width {
+            display: inline;
+            width: 100%;
+            text-align: center;
+        }
     }
+
+    clark-learning-object-component {    
+        &.card {
+          width: 250px;
+        }
+      }
 }

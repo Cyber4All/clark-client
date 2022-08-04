@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject, Topic } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
@@ -14,7 +14,10 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   // Topic variables
   topics: Topic[] = [];
   selectedTopic: string;
+
+  // HTML elements
   topicScroll: HTMLElement;
+  width: number;
 
   // Object variables
   objects: LearningObject[] = [];
@@ -39,6 +42,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.width = window.screen.width;
     this.topicScroll = document.getElementById('teach-now-topics');
     this.topicScroll.addEventListener('wheel', this.horizontalScroll.bind(this));
   }
@@ -51,6 +55,16 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   horizontalScroll(event) {
     this.topicScroll.scrollLeft += event.deltaY;
     event.preventDefault();
+  }
+
+  /**
+   * Listens for the window to be resized to change the css
+   *
+   * @param event The window resize event
+   */
+  @HostListener('window:resize', ['$event'])
+  onResize(event){
+    this.width = event.target.innerWidth;
   }
 
   /**
