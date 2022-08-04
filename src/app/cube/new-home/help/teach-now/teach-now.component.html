@@ -9,9 +9,9 @@
             <option *ngFor="let topic of topics" [value]="topic._id" [selected]="selectedTopic === topic._id">{{ topic.name }}</option>
         </select>
     </div>
-    <div *ngIf="objects && objects.length > 0 && objects !== loadingObjects" class="objects">
+    <div *ngIf="objects && objects.length > 0" class="objects">
         <clark-learning-object-component *ngFor="let l of objects" [learningObject]="l" [loading]="loading" learningObjectCard></clark-learning-object-component>
-        <div class="all" [ngClass]="{'full-width': width < 1150}">
+        <div class="all" [ngClass]="{'full-width': width < 1175}">
             <a (activate)="navigate()">See all <i class="fa fa-angle-right"></i></a>
         </div>
     </div>

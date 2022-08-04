@@ -74,7 +74,6 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    * @param topicId The topic id selected
    */
   selectTopic(topicId: string) {
-    this.objects = this.loadingObjects;
     this.selectedTopic = topicId;
     this.getObjects();
   }
@@ -84,6 +83,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    */
   getObjects() {
     this.loading = true;
+    this.objects = this.loadingObjects;
     this.objectService.getLearningObjects({
       limit: 4,
       currPage: 1,
