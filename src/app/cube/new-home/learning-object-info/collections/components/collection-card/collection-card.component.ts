@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clark-collection-card',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./collection-card.component.scss']
 })
 export class CollectionCardComponent implements OnInit {
+
+  @Input() data: { image: string, title: string, link: string[]};
 
   constructor() { }
 
