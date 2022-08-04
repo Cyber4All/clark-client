@@ -1,3 +1,74 @@
+.wrapper {
+    margin: 0px 35px;
+    font-family: 'Source Sans Pro', sans-serif;
+
+    .info {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    .framework {
+        font-size: 18px;
+        margin: 0 10px 10px 0;
+        padding: 10px 24px;
+        border: 1px solid #b3b3b3;
+        border-radius: 3px;
+    }
+
+    .guidelinePage {
+        border-spacing: 10px;
+        .guidelineRow {
+            border: 0px solid white;
+
+            .guideline {
+                cursor: pointer;
+                position: relative;
+                margin: 0 10px 10px 0;
+                border: 1px solid #b3b3b3;
+                border-radius: 4px;
+                min-height: 150px;
+                width: 30%;
+                vertical-align: top;
+                background-color: #ebebeb;
+
+                // button {
+                //     height: 100%;
+                //     border: 1px solid #b3b3b3;
+                //     text-align: left;
+                //     border-radius: 3px;
+                // }
+
+                .guidelineDescription {
+                    margin: 10px 10px 50px;
+                    margin-bottom: 50px;
+                }
+
+                .guidelineName {
+                    position: absolute;
+                    bottom: 0;
+                    left: 10px;
+                }
+            }
+
+            .guideline:hover {
+                opacity: 60%;
+            }
+
+            .guideline:active {
+                opacity: 100%;
+            }
+        }
+    }
+
+    button:hover {
+        opacity: 60%;
+    }
+
+    button:active {
+        opacity: 100%;
+    }
+}
+
 .input {
     background-color: white;
     input {

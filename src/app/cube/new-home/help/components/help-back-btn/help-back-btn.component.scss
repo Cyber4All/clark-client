@@ -47,4 +47,29 @@
         font-size: $larger;
         color: $dark-grey;
     }
+
+    .framework-query {
+        border: 3px solid #376ED6;
+        color: #376ED6;
+        background-color: #8caff143;
+        padding: 10px;
+        margin-left: 10px;
+        border-radius: 4px;
+
+        b {
+            font-weight: 600;
+        }
+
+        svg {
+            margin-left: 5px;
+        }
+    }
+
+    .framework-query:hover {
+        opacity: 70%;
+    }
+
+    .framework-query:active {
+        opacity: 100%;
+    }
 }

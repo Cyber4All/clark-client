@@ -1,7 +1,10 @@
-<div *ngIf="!currentFramework else frameworkQuery">
-    <p>Select a framework to explore:</p>
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+
+<div class="wrapper" *ngIf="!currentFramework else frameworkQuery">
+    <p class="info">Select a framework to explore:</p>
 
     <button 
+        class="framework" 
         *ngFor="let framework of frameworks"
         (activate)="handleFrameworkClicked(framework.name)"
         >
@@ -10,42 +13,57 @@
 </div>
 
 <ng-template #frameworkQuery>
-    <div>
-        <label class="input">
-            <i class="far fa-search"></i>
-            <input type="text" [(ngModel)]="guidelineSearch" (input)="filterGuidelineSearch()"/>
-        </label>
-        or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
-    </div><br />
-    <div *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i">
-        <div *ngIf="currentPage === i">
-            <button *ngFor="let guideline of page">
-                {{ guideline.guidelineDescription }}
-                <p>
-                    <b>{{ guideline.guidelineName }}</b>
-                </p>
-                
-            </button>
+    <div class="wrapper">
+        <div>
+            <label class="input">
+                <i class="far fa-search"></i>
+                <input type="text" [(ngModel)]="guidelineSearch" (input)="filterGuidelineSearch()"/>
+            </label>
+            or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
+        </div><br />
+        <div *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i">
+            <table class="guidelinePage" *ngIf="currentPage === i">
+                <tr class="guidelineRow">
+                    <td class="guideline" *ngFor="let guideline of page | slice:0:3">
+                        <p class="guidelineDescription">
+                            {{ guideline.guidelineDescription }}
+                        </p>
+                        <p class="guidelineName">
+                            <b>{{ guideline.guidelineName }}</b>
+                        </p>
+                    </td>
+                </tr>
+                <tr class="guidelineRow">
+                    <td class="guideline" *ngFor="let guideline of page | slice:3:6">
+                        <p class="guidelineDescription">
+                            {{ guideline.guidelineDescription }}
+                        </p>
+                        <p class="guidelineName">
+                            <b>{{ guideline.guidelineName }}</b>
+                        </p>
+                    </td>
+                </tr>
+            </table>
         </div>
+        <button 
+            [disabled]="currentPage === 0" 
+            (click)="changePage(currentPage-1)"
+            >
+            Back
+        </button>
+        <button 
+            *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i;" 
+            [disabled]="currentPage === i"
+            (click)="changePage(i)"
+            >
+            {{ i+1 }}
+        </button>
+        <button 
+            [disabled]="currentPage === currentFrameworkGuidelinesPaginated?.length-1" 
+            (click)="changePage(currentPage+1)"
+            >
+            Next
+        </button>
     </div>
-    <button 
-        [disabled]="currentPage === 0" 
-        (click)="changePage(currentPage-1)"
-        >
-        Back
-    </button>
-    <button 
-        *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i;" 
-        [disabled]="currentPage === i"
-        (click)="changePage(i)"
-        >
-        {{ i+1 }}
-    </button>
-    <button 
-        [disabled]="currentPage === currentFrameworkGuidelinesPaginated?.length-1" 
-        (click)="changePage(currentPage+1)"
-        >
-        Next
-    </button>
 </ng-template>
 
