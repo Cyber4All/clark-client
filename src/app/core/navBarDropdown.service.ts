@@ -16,7 +16,10 @@ export class NavbarDropdownService {
     public isDesktop = new BehaviorSubject<boolean>(true);
     //user options main navbar
     public userDropdown = new BehaviorSubject<boolean>(false);
-    public levelsDropdown = new BehaviorSubject<boolean>(false);
+
+    //DO NOT REMOVE
+    // public levelsDropdown = new BehaviorSubject<boolean>(false);
+
     public topicDropdown = new BehaviorSubject<boolean>(false);
     public collectionsDropdown = new BehaviorSubject<boolean>(false);
     public resourcesDropdown = new BehaviorSubject<boolean>(false);
@@ -63,12 +66,12 @@ export class NavbarDropdownService {
         if(this.userDropdown.getValue()) {
             this.userDropdown.next(false);
         }
-        if(this.levelsDropdown.getValue()) {
-            this.levelsDropdown.next(false);
-        }
-        if(this.topicDropdown.getValue()) {
-            this.topicDropdown.next(false);
-        }
+
+        //DO NOT REMOVE
+        // if(this.topicDropdown.getValue()) {
+        //     this.topicDropdown.next(false);
+        // }
+
         if(this.collectionsDropdown.getValue()) {
             this.collectionsDropdown.next(false);
         }
@@ -110,10 +113,10 @@ export class NavbarDropdownService {
     public toggleMobileSearch(): void {
         this.isMSearch.next(!this.isMSearch.getValue());
     }
-
-    public toggleLevelsDropdown(): void {
-        this.levelsDropdown.next(!this.levelsDropdown.getValue());
-    }
+    //DO NOT REMOVE - refactor for future use
+    // public toggleLevelsDropdown(): void {
+    //     this.levelsDropdown.next(!this.levelsDropdown.getValue());
+    // }
 
     public toggleTopicDropdown(): void {
         this.topicDropdown.next(!this.topicDropdown.getValue());
