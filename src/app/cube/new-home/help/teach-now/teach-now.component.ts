@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject, Topic } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
@@ -16,8 +16,8 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   selectedTopic: string;
 
   // HTML elements
-  topicScroll: HTMLElement;
-  width: number;
+  @ViewChild('topicScroll') scroll: ElementRef;
+  width: number = window.screen.width;
 
   // Object variables
   objects: LearningObject[] = [];
@@ -42,9 +42,9 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.width = window.screen.width;
-    this.topicScroll = document.getElementById('teach-now-topics');
-    this.topicScroll.addEventListener('wheel', this.horizontalScroll.bind(this));
+    if (this.scroll) {
+      this.scroll.nativeElement.addEventListener('wheel', this.horizontalScroll.bind(this));
+    }
   }
 
   /**
@@ -53,7 +53,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    * @param event The scroll event
    */
   horizontalScroll(event) {
-    this.topicScroll.scrollLeft += event.deltaY;
+    this.scroll.nativeElement.scrollLeft += event.deltaY;
     event.preventDefault();
   }
 

@@ -1,7 +1,6 @@
 @import 'vars.scss';
 
 .topics {
-    position: relative;
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -38,6 +37,12 @@
         text-align: center;
         padding: 10px;
         white-space: nowrap;
+
+        &.selected {
+            color: $light-blue;
+            border-color: $light-blue;
+            background-color: lighten($light-blue, 40);
+        }
     }
 }
 
