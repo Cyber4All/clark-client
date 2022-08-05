@@ -42,6 +42,9 @@ export class HelpComponent implements OnInit {
     this.selectedTemplate = template;
   }
 
+  /**
+   * Communicates to other components that the current framework has been deleted
+   */
   handleFrameworkClicked() {
     this.buildProgramComponentService.updateCurrentFramework('');
   }

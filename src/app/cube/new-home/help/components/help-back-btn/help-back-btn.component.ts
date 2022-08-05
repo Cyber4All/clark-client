@@ -21,6 +21,9 @@ export class HelpBackBtnComponent implements OnInit {
     });
   }
 
+  /**
+   * Communicates to other components that the current framework has been deleted
+   */
   handleFrameworkClicked() {
     this.buildProgramComponentService.updateCurrentFramework('');
   }

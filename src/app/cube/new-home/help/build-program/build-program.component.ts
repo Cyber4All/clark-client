@@ -15,10 +15,14 @@ export class BuildProgramComponent implements OnInit {
   frameworks: FrameworkDocument[];
   currentFramework: string;
   currentFrameworkGuidelines: SearchItemDocument[];
+
+   // separated from currentFrameworkGuidelines for searching
   currentFrameworkGuidelinesFiltered: SearchItemDocument[];
+
+  // separated from currentFrameworkGuidelinesPaginated for maintaining pagination
   currentFrameworkGuidelinesPaginated: SearchItemDocument[][];
 
-  guidelineSearch = '';
+  guidelineSearch = ''; // search bar input
   currentPage = 0;
 
   constructor(private buildProgramComponentService: BuildProgramComponentService,
@@ -39,9 +43,13 @@ export class BuildProgramComponent implements OnInit {
     });
   }
 
-  removeGuidelineSearch() {
-    this.guidelineSearch = '';
-  }
+  /**
+   * When a framework is clicked:
+   *  - Updates current framework for other components to view
+   *  - Displays the guidelines in paginated format
+   *
+   * @param event The name of the current framework
+   */
   handleFrameworkClicked(event: string) {
     this.buildProgramComponentService.updateCurrentFramework(event);
     this.guidelineService.getGuidelines({
@@ -55,6 +63,14 @@ export class BuildProgramComponent implements OnInit {
     });
   }
 
+  /**
+   * Helper function for handleFrameworkClicked to sort guidelines by name
+   * instead of a random order
+   *
+   * @param a Comparison element 1
+   * @param b Comparison element 2
+   * @returns A number determining the relationship between a and b
+   */
   sortGuidelines(a: SearchItemDocument, b: SearchItemDocument): 1 | 0 | -1 {
     if(a.guidelineName < b.guidelineName) {
       return -1;
@@ -64,6 +80,19 @@ export class BuildProgramComponent implements OnInit {
     return 0;
   }
 
+  filterGuidelineSearch() {
+    this.currentFrameworkGuidelinesFiltered = this.currentFrameworkGuidelines
+      .filter(guideline => {
+        return guideline.guidelineName.includes(this.guidelineSearch) || guideline.guidelineDescription.includes(this.guidelineSearch);
+      });
+    this.currentPage = 0;
+    this.fillPages();
+  }
+
+  /**
+   * Fills the paginated 2D array with arrays of guidelines
+   * Subarray lengths are based on the view width (mobile or desktop)
+   */
   fillPages() {
     // Adjusts number of guidelines per page for mobile vs. desktop views
     const numGuidelinesPerPage = window.innerWidth <= 425 ? 3 : 6;
@@ -77,19 +106,21 @@ export class BuildProgramComponent implements OnInit {
     this.currentFrameworkGuidelinesPaginated = [...pages];
   }
 
+  /**
+   * Displays a new page based on what the user clicked on
+   *
+   * @param index The index of the array to display guidelines
+   */
   changePage(index: number) {
     this.currentPage = index;
   }
 
-  filterGuidelineSearch() {
-    this.currentFrameworkGuidelinesFiltered = this.currentFrameworkGuidelines
-      .filter(guideline => {
-        return guideline.guidelineName.includes(this.guidelineSearch) || guideline.guidelineDescription.includes(this.guidelineSearch);
-      });
-    this.currentPage = 0;
-    this.fillPages();
-  }
-
+  /**
+   * Routes the user to the browse page
+   *
+   * @param queryParams: guidelines - the current guideline
+   *                     standardOutcomes - the outcomes related to the guideline
+   */
   navigate(
     queryParams: {
       guidelines: string,
