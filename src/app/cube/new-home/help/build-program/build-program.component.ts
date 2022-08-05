@@ -80,6 +80,9 @@ export class BuildProgramComponent implements OnInit {
     return 0;
   }
 
+  /**
+   * Displays guidelines that match what is entered into the search bar
+   */
   filterGuidelineSearch() {
     this.currentFrameworkGuidelinesFiltered = this.currentFrameworkGuidelines
       .filter(guideline => {
