@@ -17,7 +17,7 @@
           <i class="far fa-key"></i>
         </div>
         <a class="forgot" routerLink="../forgot-password">Forgot password?</a><span class="space"></span>
-        <a class="forgot" routerLink="`mailto:info@secured.team?subject=CLARK Username Recovery`">Forgot username?</a>
+        <a class="forgot" href="mailto:info@secured.team?subject=CLARK Username Recovery">Forgot username?</a>
         <button [attr.disabled]="checkCookieAgreement()? null: 'disabled'" type="submit" id="auth-button" class="auth-button" (activate)="submit()">
           <div class="mask"></div>
           <div class="text" *ngIf = "!loading">Login</div>
