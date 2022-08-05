@@ -31,6 +31,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.loading = true;
     this.objects = this.loadingObjects;
     this.relevancyService.getTopics().then(topics => {
       this.topics = topics;

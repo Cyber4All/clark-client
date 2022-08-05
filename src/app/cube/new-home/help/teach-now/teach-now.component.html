@@ -2,12 +2,14 @@
     <div #topicScroll *ngIf="width > 750" class="topics">
         <div class="shadow left" aria-hidden="true"></div>
         <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)" [ngClass]="{'selected': selectedTopic === topic._id}">{{ topic.name }}</button>
+        <span *ngIf="topics.length === 0">Loading Topics...</span>
         <div class="shadow right" aria-hidden="true"></div>
     </div>
     <div *ngIf="width <= 750">
-        <select (change)="getObjects()" [(ngModel)]="selectedTopic">
+        <select *ngIf="topics.length > 0" (change)="getObjects()" [(ngModel)]="selectedTopic">
             <option *ngFor="let topic of topics" [value]="topic._id" [selected]="selectedTopic === topic._id">{{ topic.name }}</option>
         </select>
+        <span *ngIf="topics.length === 0">Loading Topics...</span>
     </div>
     <div *ngIf="objects && objects.length > 0" class="objects">
         <clark-learning-object-component *ngFor="let l of objects" [learningObject]="l" [loading]="loading" learningObjectCard></clark-learning-object-component>
