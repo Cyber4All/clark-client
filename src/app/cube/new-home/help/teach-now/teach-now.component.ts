@@ -37,7 +37,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
       this.topics = topics;
 
       if (topics.length > 0) {
-        this.selectTopic(this.topics[0]._id)
+        this.selectTopic(this.topics[0]._id);
       }
     });
   }
