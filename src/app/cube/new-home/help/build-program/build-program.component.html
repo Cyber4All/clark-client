@@ -16,40 +16,30 @@
 <ng-template #frameworkQuery>
     <div class="wrapper">
         <div class="search">
-            <label class="input">
+            <label class="input" #input>
                 <i class="far fa-search"></i>
                 <input type="text" placeholder="Search for Guidelines" [(ngModel)]="guidelineSearch" (input)="filterGuidelineSearch()"/>
             </label>
-            or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
+            <span>
+                or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
+            </span>
         </div><br />
-        <div class="guidelines" *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i">
-            <table class="guidelinePage" *ngIf="currentPage === i">
-                <tr class="guidelineRow">
-                    <td class="guideline" *ngFor="let guideline of page | slice:0:3">
-                        <p class="guidelineDescription">
-                            {{ guideline.guidelineDescription }}
-                        </p>
-                        <p class="guidelineName">
-                            <b>{{ guideline.guidelineName }}</b>
-                        </p>
-                    </td>
-                </tr>
-                <tr class="guidelineRow">
-                    <td class="guideline" *ngFor="let guideline of page | slice:3:6">
-                        <p class="guidelineDescription">
-                            {{ guideline.guidelineDescription }}
-                        </p>
-                        <p class="guidelineName">
-                            <b>{{ guideline.guidelineName }}</b>
-                        </p>
-                    </td>
-                </tr>
-            </table>
+        <div class="guidelines" *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i"> <!-- Lists all pages -->
+            <div class="guidelinePage" *ngIf="currentPage === i"> <!-- Displays only the current page -->
+                <button class="guideline" *ngFor="let guideline of page"> <!-- Displays guidelines for a given page -->
+                    <p class="guidelineDescription">
+                        {{ guideline.guidelineDescription }}
+                    </p>
+                    <p class="guidelineName">
+                        <b>{{ guideline.guidelineName }}</b>
+                    </p>
+                </button>
+            </div>
         </div>
         <div class="pagination">
             <button 
                 [disabled]="currentPage === 0" 
-                (click)="changePage(currentPage-1)"
+                (click)="changePage(currentPage-1);"
                 >
                 <i class="far fa-angle-left"></i>
                 Back
@@ -57,13 +47,13 @@
             <button 
                 *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i;" 
                 [ngClass]="{highlighted: currentPage === i}"
-                (click)="changePage(i)"
+                (click)="changePage(i);"
                 >
                 {{ i+1 }}
             </button>
             <button 
                 [disabled]="currentPage === currentFrameworkGuidelinesPaginated?.length-1 || currentFrameworkGuidelinesPaginated?.length === 0" 
-                (click)="changePage(currentPage+1)"
+                (click)="changePage(currentPage+1);"
                 >
                 Next
                 <i class="far fa-angle-right"></i>

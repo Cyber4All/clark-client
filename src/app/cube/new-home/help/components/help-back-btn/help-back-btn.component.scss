@@ -13,6 +13,7 @@
     }
 
     p {
+        margin-top: 5px;
         color: $dark-grey;
     }
     
@@ -48,28 +49,46 @@
         color: $dark-grey;
     }
 
-    .framework-query {
-        border: 3px solid #376ED6;
-        color: #376ED6;
-        background-color: #8caff143;
-        padding: 10px;
-        margin-left: 10px;
-        border-radius: 4px;
+    
+}
 
-        b {
-            font-weight: 600;
-        }
+.framework-query {
+    position: absolute;
+    left: 425px;
+    top: 200px;
+    border: 3px solid #376ED6;
+    color: #376ED6;
+    background-color: #8caff143;
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 4px;
+    width: fit-content;
 
-        svg {
-            margin-left: 5px;
-        }
+    b {
+        font-weight: 600;
     }
 
-    .framework-query:hover {
+    svg {
+        margin-left: 5px;
+    }
+
+    &:hover {
         opacity: 70%;
     }
 
-    .framework-query:active {
+    &:active {
         opacity: 100%;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .back-btn {
+        position: relative;
+    }
+
+    .framework-query {
+        position: static;
+        left: 0;
+        top: 0;
     }
 }

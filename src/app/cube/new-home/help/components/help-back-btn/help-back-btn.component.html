@@ -9,12 +9,13 @@
         <h2>{{ option.title }}</h2>
         <p>{{ option.description }}</p>
     </div>
-    <div 
+</div>
+<div 
     *ngIf="buildProgramComponentService.currentFrameworkObservable | async" 
     class="framework-query" 
     (activate)="$event.stopPropagation(); handleFrameworkClicked()"
     >
         <b>{{ currentFramework }}</b>
         <i class="fal fa-times"></i>
-    </div>
 </div>
+

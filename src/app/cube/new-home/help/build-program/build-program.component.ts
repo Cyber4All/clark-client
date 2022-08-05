@@ -62,10 +62,14 @@ export class BuildProgramComponent implements OnInit {
   }
 
   fillPages() {
-    const pages = new Array(Math.ceil(this.currentFrameworkGuidelinesFiltered.length / 6));
+    // Adjusts number of guidelines per page for mobile vs. desktop views
+    const numGuidelinesPerPage = window.innerWidth <= 425 ? 3 : 6;
+    // A 2D array of length equal to total number of pages needed
+    const pages = new Array(Math.ceil(this.currentFrameworkGuidelinesFiltered.length / numGuidelinesPerPage));
 
+    // Fills each index of the array with an array of guidelines
     for(let i = 0; i < pages.length; i++) {
-      pages[i] = this.currentFrameworkGuidelinesFiltered.slice(i*6, (i*6)+6);
+      pages[i] = this.currentFrameworkGuidelinesFiltered.slice(i*numGuidelinesPerPage, (i*numGuidelinesPerPage)+numGuidelinesPerPage);
     }
     this.currentFrameworkGuidelinesPaginated = [...pages];
   }
