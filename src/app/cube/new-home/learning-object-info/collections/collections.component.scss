@@ -1,0 +1,14 @@
+@import 'vars.scss';
+
+.item-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    max-width: 2000px;
+
+    .item {
+        width: 25vw;
+        cursor: pointer;
+        margin-right: 8vw;
+    }
+}

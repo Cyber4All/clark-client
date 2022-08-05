@@ -9,19 +9,19 @@ export class CollectionsComponent implements OnInit {
 
   data = [
     {
-      image: '',
+      image: '/assets/images/collections/nccp.png',
       title: 'NSA Funded Curriculum',
-      link: ['/c','/nccp']
+      link: ['/c','nccp']
     },
     {
-      image: '',
+      image: '/assets/images/collections/502_project.png',
       title: 'The 502 Project',
-      link: ['/collections', '/502-project']
+      link: ['/collections', '502-project']
     },
     {
-      image: '',
+      image: '/assets/images/collections/gencyber.png',
       title: 'Gencyber',
-      link: ['/c', '/gencyber']
+      link: ['/c', 'gencyber']
     }
   ];
   constructor() { }
