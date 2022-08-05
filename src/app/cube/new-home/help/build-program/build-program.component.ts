@@ -1,4 +1,6 @@
 import { Component, OnInit} from '@angular/core';
+import { Router } from '@angular/router';
+import { LearningObject } from '@entity';
 import { GuidelineService } from 'app/core/guideline.service';
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
@@ -20,7 +22,8 @@ export class BuildProgramComponent implements OnInit {
   currentPage = 0;
 
   constructor(private buildProgramComponentService: BuildProgramComponentService,
-              private guidelineService: GuidelineService) { }
+              private guidelineService: GuidelineService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.buildProgramComponentService.currentFrameworkObservable
@@ -85,5 +88,23 @@ export class BuildProgramComponent implements OnInit {
       });
     this.currentPage = 0;
     this.fillPages();
+  }
+
+  navigate(
+    queryParams: {
+      guidelines: string,
+      standardOutcomes?: string[]
+    }
+  ) {
+    this.currentPage = 0;
+    this.buildProgramComponentService.updateCurrentFramework('');
+    const params = {
+      currPage: 1,
+      limit: 10,
+      status: [LearningObject.Status.RELEASED],
+      guidelines: queryParams.guidelines,
+      standardOutcomes: queryParams.standardOutcomes ? queryParams.standardOutcomes : []
+    };
+    this.router.navigate(['browse'], { queryParams: params });
   }
 }

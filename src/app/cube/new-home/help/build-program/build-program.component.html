@@ -21,12 +21,16 @@
                 <input type="text" placeholder="Search for Guidelines" [(ngModel)]="guidelineSearch" (input)="filterGuidelineSearch()"/>
             </label>
             <span>
-                or <a href="https://google.com" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
+                or <a (activate)="navigate({ guidelines: currentFramework })" target="_blank">click here</a> to browse all {{ currentFramework }} curricula.
             </span>
         </div><br />
         <div class="guidelines" *ngFor="let page of currentFrameworkGuidelinesPaginated; index as i"> <!-- Lists all pages -->
             <div class="guidelinePage" *ngIf="currentPage === i"> <!-- Displays only the current page -->
-                <button class="guideline" *ngFor="let guideline of page"> <!-- Displays guidelines for a given page -->
+                <!-- Displays guidelines for a given page -->
+                <button 
+                    class="guideline" *ngFor="let guideline of page"
+                    (activate)="navigate({ guidelines: currentFramework, standardOutcomes: [guideline.guidelineId]})"
+                    > 
                     <p class="guidelineDescription">
                         {{ guideline.guidelineDescription }}
                     </p>
