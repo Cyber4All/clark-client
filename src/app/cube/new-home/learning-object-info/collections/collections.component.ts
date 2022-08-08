@@ -15,8 +15,9 @@ export class CollectionsComponent implements OnInit {
     private collectionService: CollectionService
     ) { }
 
-  ngOnInit(): void {
-    this.collectionService
+  async ngOnInit(): Promise<void> {
+    //get collections
+    await this.collectionService
     .getCollections()
     .then((collections: Collection[]) => {
       this.collections = collections;
@@ -25,9 +26,8 @@ export class CollectionsComponent implements OnInit {
       console.error(e.message);
     });
 
-    this.collections = this.collections.filter(col => {
-      this.show.includes(col.abvName);
-    })
+    //filter for collections we want to show
+    this.collections = this.collections.filter(value => this.show.includes(value.abvName));
 
   }
 
