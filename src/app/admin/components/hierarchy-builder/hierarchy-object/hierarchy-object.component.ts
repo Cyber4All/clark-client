@@ -22,7 +22,7 @@ export class HierarchyObjectComponent implements OnInit {
 
   lengths = [];
 
-  nameFormControl = new FormControl('', [Validators.required, this.forbiddenNameValidator()]);
+  nameFormControl = new FormControl('', { validators: [Validators.required, Validators.minLength(2), this.forbiddenNameValidator()],  updateOn: "blur"});
   constructor(
     private hierarchyService: HierarchyService,
     private toaster: ToastrOvenService,
@@ -104,7 +104,9 @@ export class HierarchyObjectComponent implements OnInit {
               'Error',
               'Name already exists!'
             );
-            return val ? { forbiddenName: { value: val}} : null;
+            return { forbiddenName: { value: val }};
+          } else {
+            return;
           }
         });
       }

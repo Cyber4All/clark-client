@@ -41,9 +41,14 @@ export class HierarchyBuilderComponent implements OnInit {
     });
   }
 
+  // Determines if the learning object node has a child
   hasChild = (_: number, node: LearningObjectNode) =>
     !!node.children && node.children.length > 0;
 
+  /**
+   * Adds a blank learning object to the parent node
+   * @param parentNode the node having a baby in this function
+   */
   addLearningObject(parentNode: LearningObjectNode) {
     let length = 'unit'
     if(parentNode.length === 'unit') {
@@ -72,6 +77,11 @@ export class HierarchyBuilderComponent implements OnInit {
     this.acknowledge = !this.acknowledge;
   }
   
+  /**
+   * Creates the learning object hierarchy recursively
+   * @param node the node that will be the top level parent of the hierarchy
+   * @returns 
+   */
 
   async createLearningObjects(node: any) {
 
@@ -97,6 +107,12 @@ export class HierarchyBuilderComponent implements OnInit {
     return newNode;
   }
 
+  /**
+   * Helper function for the createLearningObjects function
+   * @param node the node getting children
+   * @param childs the children being added to the parent node
+   * @returns 
+   */
   async setParents(node, childs) {
     await this.hierarchyService.addChildren(this.parent.author.username, node, childs);
     return node;

@@ -24,7 +24,11 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
     this.data = initialData;
   }
 
-  /** Add node as child of parent */
+  /**
+   * Adds a node to the tree
+   * @param node the node that needs to be added
+   * @param parent the node that the new node will be the child of
+   */
   public add(node: LearningObjectNode, parent: LearningObjectNode) {
     // add dummy root so we only have to deal with LearningObjectNodes
     const newTreeData = { name: "Yeetus Maximus", length: 'nanomodule', children: this.data };
@@ -32,13 +36,23 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
     this.data = newTreeData.children;
   }
 
-  /** Remove node from tree */
+  /**
+   * Removes the node from the tree
+   * @param node the node that is to be removed
+   */
   public remove(node: LearningObjectNode) {
     const newTreeData = { name: "Yeetus Maximus", length: 'nanomodule', children: this.data };
     this._remove(node, newTreeData);
     this.data = newTreeData.children;
   }
 
+  /**
+   * Adds a new node to a sub-tree
+   * @param newNode the new node to be added
+   * @param parent the direct parent of the newNode
+   * @param tree the tree that the parent is apart of 
+   * @returns updated tree with new node
+   */
   protected _add(newNode: LearningObjectNode, parent: LearningObjectNode, tree: LearningObjectNode) {
     if (tree === parent) {
       tree.children = [...tree.children!, newNode];
@@ -51,6 +65,12 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
     return this.update(tree, this._add.bind(this, newNode, parent));
   }
 
+  /**
+   * Removes a child node from a tree
+   * @param node the node to be removed
+   * @param tree the tree that the node is in
+   * @returns 
+   */
   protected _remove(node: LearningObjectNode, tree: LearningObjectNode): boolean {
     if (!tree.children) {
       return false;
@@ -68,7 +88,7 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
   }
 
   /**
-   * Determines how a sub tree needs to updated depending on if a node was added or taken away
+   * Determines how a sub tree needs to be updated depending on if a node was added or taken away
    */
   protected update(tree: LearningObjectNode, predicate: (n: LearningObjectNode) => boolean) {
     let updatedTree: LearningObjectNode, updatedIndex: number;
@@ -89,6 +109,12 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
     }
     return false;
   }
+
+  /**
+   * Determines if the sub tree is expanded or closed
+   * @param from the node that is either open or closed
+   * @param to the node that needs to be either open or closed
+   */
 
   moveExpansionState(from: LearningObjectNode, to: LearningObjectNode) {
     if (this.treeControl.isExpanded(from)) {
