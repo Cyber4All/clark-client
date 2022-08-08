@@ -1,4 +1,5 @@
-import { Component, OnInit} from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { GuidelineService } from 'app/core/guideline.service';
@@ -9,9 +10,56 @@ import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 @Component({
   selector: 'clark-build-program',
   templateUrl: './build-program.component.html',
-  styleUrls: ['./build-program.component.scss']
+  styleUrls: ['./build-program.component.scss'],
+  animations: [
+    trigger('frameworkView', [
+      transition(':enter', [
+        style({
+          transform: 'translateX(-100%)',
+          opacity: 0
+        }),
+        animate('400ms 0ms ease-out', style({
+          transform: 'translateX(0)',
+          opacity: 1
+        }))
+      ]),
+      transition(':leave', [
+        style({
+          position: 'absolute',
+          willChange: 'contents'
+        }),
+        animate('400ms 0ms ease-out', style({
+          willChange: 'contents',
+          transform: 'translateX(-100%)',
+        }))
+      ])
+    ]),
+    trigger('guidelineView', [
+      transition(':enter', [
+        style({
+          transform: 'translateX(100%)',
+          opacity: 0
+        }),
+        animate('400ms 0ms ease-out', style({
+          transform: 'translateX(0)',
+          opacity: 1
+        }))
+      ]),
+      transition(':leave', [
+        style({
+          position: 'absolute',
+          willChange: 'contents'
+        }),
+        animate('400ms 0ms ease-out', style({
+          willChange: 'contents',
+          transform: 'translateX(100%)',
+          opacity: 0
+        }))
+      ])
+    ])
+  ]
 })
-export class BuildProgramComponent implements OnInit {
+export class BuildProgramComponent implements OnInit{
   frameworks: FrameworkDocument[];
   currentFramework: string;
   currentFrameworkGuidelines: SearchItemDocument[];
@@ -98,7 +146,7 @@ export class BuildProgramComponent implements OnInit {
    */
   fillPages() {
     // Adjusts number of guidelines per page for mobile vs. desktop views
-    const numGuidelinesPerPage = window.innerWidth <= 425 ? 3 : 6;
+    const numGuidelinesPerPage = window.outerWidth <= 425 ? 3 : 6;
     // A 2D array of length equal to total number of pages needed
     const pages = new Array(Math.ceil(this.currentFrameworkGuidelinesFiltered.length / numGuidelinesPerPage));
 

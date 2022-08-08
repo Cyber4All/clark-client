@@ -1,7 +1,7 @@
 <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
 
-<div class="wrapper" *ngIf="!currentFramework else frameworkQuery">
+<div @frameworkView class="wrapper" *ngIf="!currentFramework else frameworkQuery">
     <p class="info">Select a framework to explore:</p>
 
     <button 
@@ -14,7 +14,7 @@
 </div>
 
 <ng-template #frameworkQuery>
-    <div class="wrapper">
+    <div @guidelineView class="wrapper">
         <div class="search">
             <label class="input" #input>
                 <i class="far fa-search"></i>
