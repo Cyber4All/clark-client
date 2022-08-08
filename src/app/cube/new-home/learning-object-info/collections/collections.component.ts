@@ -24,6 +24,8 @@ export class CollectionsComponent implements OnInit {
       link: ['/c', 'gencyber']
     }
   ];
+
+  collections = ['gencyber', 'nccp', 'ncyte'];
   constructor() { }
 
   ngOnInit(): void {

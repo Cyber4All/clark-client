@@ -9,7 +9,8 @@
         sunt in culpa qui officia deserunt mollit anim id est laborum.
     </p>
     <div class="item-list">
-        <clark-collection-item *ngFor="let d of data" [data]="d" class="item" [routerLink]="d.link"></clark-collection-item>
+        <!-- <clark-collection-item *ngFor="let d of data" [data]="d" class="item" [routerLink]="d.link"></clark-collection-item> -->
+        <clark-collection-card *ngFor="let c of collections" [collection]="c"></clark-collection-card>
     </div>
     <div class="collections-button">
         <button class="button good" [routerLink]="['/c']" >Browse All Collections</button>
