@@ -8,23 +8,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 20vw;
-    height: 25vh;
-    min-width: 400px;
+    min-width: 250px;
 
     img {
-        height: 10vh;
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    .item-wrapper {
-        width: 60vw;
-        max-width: 400px;
-        min-width: none;
-        img {
-            height: 10vh;
-            margin-top: 20px;
-        }
+        margin-top: 20px;
+        height: 8vh;
     }
 }
