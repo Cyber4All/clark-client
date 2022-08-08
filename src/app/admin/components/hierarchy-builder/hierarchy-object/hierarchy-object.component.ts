@@ -95,6 +95,9 @@ export class HierarchyObjectComponent implements OnInit {
   }
 
 
+  /**
+   * Determines if the name of the learning is forbidden because it is already taken for the author
+   */
   forbiddenNameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       if(this.node) {
