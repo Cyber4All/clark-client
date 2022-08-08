@@ -17,6 +17,7 @@ import { FileUploadMeta } from './components/content-upload/app/services/typings
 import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
 import { v4 as uuidv4 } from 'uuid';
+import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 
 /**
  * Defines a list of actions the builder can take
@@ -44,6 +45,7 @@ export enum BUILDER_ACTIONS {
   UPDATE_FOLDER_DESCRIPTION,
   DELETE_FILES,
   CHANGE_STATUS,
+  TOGGLE_BUNDLE
 }
 
 export enum BUILDER_ERRORS {
@@ -403,12 +405,66 @@ export class BuilderStore {
         return await this.removeFiles(data.fileIds);
       case BUILDER_ACTIONS.CHANGE_STATUS:
         return await this.changeStatus(data.status, data.reason);
+      case BUILDER_ACTIONS.TOGGLE_BUNDLE:
+        return await this.toggleBundle(data);
       default:
         console.error('Error! Invalid action taken!');
         return;
     }
   }
 
+  /**
+   * Grabs all file IDs of the root folder.
+   * Helper function for toggleBundle
+   *
+   * @param folder the current folder to grab fileIDs
+   * @returns all of the subFile IDs of the root folder
+   */
+  private getAllFolderFileIDs(folder: DirectoryNode) {
+    const fileIDs = [];
+
+    // add folder's files to fileIDs list
+    folder.getFiles().forEach(file => {
+      fileIDs.push(file.id);
+    });
+
+    // recursively check subfolders for files and do the same thing
+    folder.getFolders().forEach(subFolder => {
+      fileIDs.push(...this.getAllFolderFileIDs(subFolder));
+    });
+
+    // return fileIDs
+    return fileIDs;
+  }
+
+  /**
+   * Calls toggleBundle in LO service to save packageable property
+   *
+   * @param event - state: the new packageable property
+   *              - item: the file/folder to save
+   */
+  async toggleBundle(event: {
+    state: boolean,
+    item: any
+  }) {
+    if(event.item instanceof DirectoryNode) { // event.item is a Folder
+      const fileIDs = this.getAllFolderFileIDs(event.item);
+      await this.learningObjectService.toggleBundle(
+        this.auth.username,
+        this.learningObject.id,
+        fileIDs,
+        event.state
+      );
+    } else { // event.item is a File
+      const fileID = [event.item.id];
+      await this.learningObjectService.toggleBundle(
+        this.auth.username,
+        this.learningObject.id,
+        fileID,
+        event.state
+      );
+    }
+  }
   /**
    *
    *

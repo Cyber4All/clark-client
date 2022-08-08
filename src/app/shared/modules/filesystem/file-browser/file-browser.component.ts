@@ -50,6 +50,11 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
   descriptionUpdated: EventEmitter<DescriptionUpdate> = new EventEmitter<
     DescriptionUpdate
   >();
+  @Output()
+  packageableToggled: EventEmitter<{
+    state: boolean,
+    item: DirectoryNode | LearningObject.Material.File
+  }> = new EventEmitter();
 
   @Input() filesystem$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(
     new DirectoryTree()
