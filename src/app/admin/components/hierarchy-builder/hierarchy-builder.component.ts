@@ -16,7 +16,7 @@ export class HierarchyBuilderComponent implements OnInit {
   // This is just dummy data that is replaced in the OnInit function with the parent data
   TREE_DATA: LearningObjectNode[] = [
     {
-      "name": "paige",
+      "name": "paige the rage",
       "length": "nanomodule",
       "children": []
     }
