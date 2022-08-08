@@ -20,13 +20,17 @@
 
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  grid-template-columns: 2fr 2fr 1fr 1fr 25px;
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
   background: white;
   padding: 0 0 8px;
   justify-self: center;
+
+  &.bundle {
+    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  }
 
   &.header {
     color: $dark-grey;

@@ -1,4 +1,10 @@
-<div role="link" tabindex="0" attr.aria-labelledby="folder-name folder-description folder-updated" (activate)="handleClick($event)" class="grid-row wrapper">
+<div 
+  role="link" 
+  tabindex="0" 
+  attr.aria-labelledby="folder-name folder-description folder-updated" 
+  (activate)="handleClick($event)" 
+  class="grid-row wrapper"
+  [ngClass]="{'bundle': checkAccessGroups()}">
   <div class="text-contained inline-flex" id="folder-name" attr.aria-label="{{ folder?.getName() }} Folder">
     <i class="fas fa-folder icon"></i>
     {{ folder?.getName() }}
@@ -10,7 +16,7 @@
     {{ timestampAge }}
   </div>
   <div class="empty"></div>
-  <div class="toggleBundle" *ngIf="checkAccessGroups() else notAdminOrCurator">
+  <div class="toggleBundle" *ngIf="checkAccessGroups()">
     <clark-toggle-switch 
       [state]="getFolderBundleStatus(folder)" 
       (click)="$event.stopPropagation()" 
@@ -27,9 +33,3 @@
     <div></div>
   </a>
 </div>
-
-<ng-template #notAdminOrCurator>
-  <div class="toggleBundle text-contained">
-    {{ getFolderBundleStatus(folder) ? 'On' : 'Off' }}
-  </div>
-</ng-template>

@@ -18,9 +18,10 @@
   font-size: 20px;
   margin-right: 5px;
 }
+
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  grid-template-columns: 2fr 2fr 1fr 1fr 25px;
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
@@ -29,6 +30,10 @@
   justify-self: center;
   border-bottom: 1px solid $light-grey;
   margin-bottom: 8px;
+
+  &.bundle {
+    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  }
 }
 
 .text-contained {

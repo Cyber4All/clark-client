@@ -52,13 +52,16 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   file: LearningObject.Material.File;
   directoryListing = [];
 
-  toggleToolTip = 'If an item is toggled on, then the selected item will be included in the zip file to be downloaded for users.';
+  toggleToolTip = `Selected items will be included in the bundle download. 
+    Deselected items will be accessible through a download link in the PDF.`;
+  accessGroups: string[];
 
   constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
     this.subToDirChange();
     this.subToDescription();
+    this.accessGroups = this.auth.accessGroups;
   }
 
   /**
@@ -183,6 +186,16 @@ export class FileListViewComponent implements OnInit, OnDestroy {
       return elm.getPath();
     }
     return elm.id || index;
+  }
+
+  /**
+   * Checks if the current user is an admin or curator.
+   * If true, allows the user to change the bundling status of a file/folder.
+   *
+   * @returns boolean value if the user is valid
+   */
+   checkAccessGroups(): boolean {
+    return this.accessGroups.includes('admin') || this.accessGroups.includes('curator');
   }
 
   ngOnDestroy() {

@@ -12,7 +12,7 @@
 }
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  grid-template-columns: 2fr 2fr 1fr 1fr 25px;
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
@@ -21,6 +21,10 @@
   justify-self: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
   margin-bottom: 8px;
+
+  &.bundle {
+    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  }
 }
 
 .text-contained {
@@ -77,7 +81,7 @@
   }
 }
 
-.bundle {
+.toggleBundle {
   display: flex;
   justify-content: center;
   
