@@ -11,8 +11,6 @@
     <div class="item-list">
         <clark-collection-card *ngFor="let c of collections" [collection]="c" class="item"></clark-collection-card>
     </div>
-    <div class="collections-button">
-        <button class="button good" [routerLink]="['/c']" >Browse All Collections</button>
-    </div>
+    <button [routerLink]="['/c']" >Browse All Collections</button>
         
 </div>

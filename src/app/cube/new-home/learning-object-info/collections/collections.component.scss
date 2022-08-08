@@ -21,14 +21,19 @@
         min-width: 250px;
     }
 
-    .collections-button {
-        
-        .button{
-            margin: 20px 0px 20px 0px;
-            background-color: $light-blue !important;
-        }
-    }
-
+    
+}
+button{
+    border: 0;
+    padding: 11px 20px 11px 25px;
+    border-radius: 4px;
+    background: $light-blue;
+    color: white;
+    text-transform: uppercase;
+    font-size: $small;
+    cursor: pointer;
+    position: relative;
+    font-weight: normal;
 }
 
 
