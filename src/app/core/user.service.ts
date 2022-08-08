@@ -296,6 +296,13 @@ export class UserService {
     return deleteValue;
   }
 
+  getCollectionData(username: string) {
+    return this.http.get(USER_ROUTES.GET_COLLECTIONS(username), {
+      withCredentials: true,
+    })
+    .toPromise();
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error

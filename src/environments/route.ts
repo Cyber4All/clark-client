@@ -347,6 +347,11 @@ export const USER_ROUTES = {
   GET_KEY_PAIR(): string {
     return `${environment.apiURL}/keys`;
   },
+  GET_COLLECTIONS(username: string){
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/collections`;
+  }
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
