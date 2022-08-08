@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Collection, CollectionService } from 'app/core/collection.service';
 
 @Component({
   selector: 'clark-collections',
@@ -7,28 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CollectionsComponent implements OnInit {
 
-  data = [
-    {
-      image: '/assets/images/collections/nccp.png',
-      title: 'NSA Funded Curriculum',
-      link: ['/c','nccp']
-    },
-    {
-      image: '/assets/images/collections/502_project.png',
-      title: 'The 502 Project',
-      link: ['/collections', '502-project']
-    },
-    {
-      image: '/assets/images/collections/gencyber.png',
-      title: 'Gencyber',
-      link: ['/c', 'gencyber']
-    }
-  ];
+  collections = [];
+  show = ['nccp', 'ncyte', 'intro_to_cyber'];
 
-  collections = ['gencyber', 'nccp', 'ncyte'];
-  constructor() { }
+  constructor(
+    private collectionService: CollectionService
+    ) { }
 
   ngOnInit(): void {
+    this.collectionService
+    .getCollections()
+    .then((collections: Collection[]) => {
+      this.collections = collections;
+    })
+    .catch(e => {
+      console.error(e.message);
+    });
+
+    this.collections = this.collections.filter(col => {
+      this.show.includes(col.abvName);
+    })
+
   }
 
 }
