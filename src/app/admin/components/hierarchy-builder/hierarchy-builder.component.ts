@@ -71,19 +71,6 @@ export class HierarchyBuilderComponent implements OnInit {
   checkBox() {
     this.acknowledge = !this.acknowledge;
   }
-
-  validateSubmitable(node) {
-    if(node.name.length <= 2) {
-      // Pop up an error
-    }
-    if(node.children.length === 0) {
-      return;
-    } else if(node.children.length > 0) {
-      node.children.forEach(child => {
-        this.validateSubmitable(child);
-      })
-    }
-  }
   
 
   async createLearningObjects(node: any) {
