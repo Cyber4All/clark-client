@@ -1,4 +1,10 @@
 <main aria-label="CLARK Homepage" id="pageContent" tabindex="-1">
+  <clark-blogs
+    [@blog]
+    *ngIf="displayBlogsBanner()"
+    (showBlogsBanner)="showBlogsBanner($event)"
+    (neverShowBanner)="neverShowBanner($event)"
+  ></clark-blogs>
   <section class="top">
     <clark-homepage-splash [placeholderText]="placeholderText" (search)="search($event)"></clark-homepage-splash>
   </section>

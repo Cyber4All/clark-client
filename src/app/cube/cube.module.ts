@@ -22,7 +22,6 @@ import { CubeComponent } from './cube.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
-import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { UserInformationComponent } from './user-profile/user-information/user-information.component';
 import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -70,7 +69,6 @@ import { EditorialProcessComponent } from './content-pages/editorial-process/edi
     UserPreferencesComponent,
     UserInformationComponent,
     UserEditInformationComponent,
-    OrganizationListComponent,
     CollectionsComponent,
     TermsOfServiceComponent,
     FilterComponent,

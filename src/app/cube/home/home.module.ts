@@ -12,6 +12,7 @@ import { UsageComponent } from './components/usage/usage.component';
 import { CollectionsComponent } from './components/collections/collections.component';
 import { WhatClarkComponent } from './components/what-clark/what-clark.component';
 import { FeaturedCollectionCardComponent } from './components/featured-collection-card/featured-collection-card.component';
+import { BlogsComponent } from 'app/components/blogs/blogs.component';
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import { FeaturedCollectionCardComponent } from './components/featured-collectio
     CollectionsComponent,
     WhatClarkComponent,
     FeaturedCollectionCardComponent,
+    BlogsComponent
   ],
   providers: []
 })

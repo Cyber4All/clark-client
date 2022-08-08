@@ -6,12 +6,6 @@
 
 <ng-template #clarkBodyTemplate>
   <clark-navbar *ngIf = "isSupportedBrowser"></clark-navbar>
-  <clark-blogs
-    [@blog]
-    *ngIf="displayBlogsBanner()"
-    (showBlogsBanner)="showBlogsBanner($event)"
-    (neverShowBanner)="neverShowBanner($event)"
-  ></clark-blogs>
   <router-outlet></router-outlet>
   <clark-popup *ngIf="isOldVersion" (closed)="isOldVersion = false">
     <div #popupInner class="popup-inner">
