@@ -21,6 +21,8 @@ import { MaintenancePageComponent } from './maintenance-page/maintenance-page.co
 import { UnauthorizedComponent } from './unauthorized.component';
 import { FormsModule } from '@angular/forms';
 import { SubscriptionComponent } from './components/subscription/subscription.component';
+import { PrimaryNavbarComponent } from './components/primary-navbar/primary-navbar.component';
+import { SecondaryNavbarComponent } from './components/secondary-navbar/secondary-navbar.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -41,7 +43,9 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
     SearchComponent,
     MaintenancePageComponent,
     UnauthorizedComponent,
-    SubscriptionComponent
+    SubscriptionComponent,
+    PrimaryNavbarComponent,
+    SecondaryNavbarComponent
   ],
   bootstrap: [ClarkComponent],
   providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
