@@ -19,6 +19,13 @@ export class HierarchyService {
     ).toPromise();
   }
 
+  /**
+   * Adds children to a learning object
+   * @param username the username of the author
+   * @param object the object having children
+   * @param children the children to be had
+   * @returns 
+   */
   async addChildren(username: string, object: any, children): Promise<any> {
     return await this.http.post(
       USER_ROUTES.SET_CHILDREN(username, object),
@@ -32,6 +39,12 @@ export class HierarchyService {
     ).toPromise();
   }
 
+  /**
+   * Checks if the name of the learning object is already taken for the author
+   * @param username the username of the author
+   * @param objectName the objectName to check for
+   * @returns 
+   */
   async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http
       .get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(username, {}, objectName), { withCredentials: true })

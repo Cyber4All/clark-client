@@ -190,6 +190,9 @@ export class LearningObjectListItemComponent implements OnChanges {
     });
   }
 
+  /**
+   * Checks if the learning object has any children
+   */
   async checkForChildren() {
     const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(
       this.learningObject.author.username
@@ -236,11 +239,6 @@ export class LearningObjectListItemComponent implements OnChanges {
      } else if (url === 'relevancy') {
        window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
      }
-   }
-
-
-   openHierarchy(learningObject: any) {
-     this.showHierarchyBuilder = true;
    }
 
    toggleHierarchyBuilder(val: boolean) {
