@@ -1,4 +1,8 @@
-<div class="grid-row wrapper" role="link" tabindex="0" attr.aria-labelledby="file-name file-description file-updated file-size">
+<div 
+  class="grid-row wrapper"
+  [ngClass]="{'bundle': checkAccessGroups()}"
+  role="link" tabindex="0" 
+  attr.aria-labelledby="file-name file-description file-updated file-size">
   <div
     (activate)="handleClick($event)"
     class="text-contained inline-flex"
@@ -21,6 +25,12 @@
   </div>
   <div class="text-contained filesize" id="file-size" attr.aria-label="{{ file?.size }}">
     {{ file?.size | fileSize }}
+  </div>
+  <div class="toggleBundle" *ngIf="checkAccessGroups()">
+    <clark-toggle-switch
+      [state]="file.packageable" 
+      (toggled)="handleToggle($event)"
+      ></clark-toggle-switch>
   </div>
   <a
     tabindex="0"

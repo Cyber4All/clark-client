@@ -1,4 +1,3 @@
-import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -31,7 +30,6 @@ const cube_routes: Routes = [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'c/:abvName', component: CollectionDetailsComponent },
       { path: 'c', component: CollectionsComponent },
-      { path: 'organization/:query', component: OrganizationListComponent },
       {
         path: 'about',
         component: AboutUsComponent,

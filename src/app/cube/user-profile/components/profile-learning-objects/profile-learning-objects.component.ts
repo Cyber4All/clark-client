@@ -16,7 +16,7 @@ export class ProfileLearningObjectsComponent implements OnInit {
     private userService: UserService,
     private collectionService: CollectionService
 
-  ) { }  
+  ) { }
   @Input() username;
   @Input() isUser: boolean;
   tabMain = 1;
@@ -35,22 +35,22 @@ export class ProfileLearningObjectsComponent implements OnInit {
   currentPage = 1;
 
 
-  async ngOnInit() { 
+  async ngOnInit() {
     this.learningObjects = await this.learningObjectService.getUsersLearningObjects(this.username);
     this.collectionsAbreviated = await this.userService.getCollectionData(this.username);
     this.learningObjectsReleased = this.learningObjects.filter(learningObject => {
-      return learningObject.status === "released"
+      return learningObject.status === 'released';
       });
     this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
-      return learningObject.status !== "released"
+      return learningObject.status !== 'released';
       });
       console.log(this.learningObjectsReleased);
       console.log(this.learningObjectsUnreleased);
     this.tempCollectionsReleased = this.collectionsAbreviated.filter(learningObject => {
-      return learningObject.status === "released"
+      return learningObject.status === 'released';
     });
     this.tempCollectionsUnreleased = this.collectionsAbreviated.filter(learningObject => {
-      return learningObject.status !== "released"
+      return learningObject.status !== 'released';
     });
     this.collectionsReleased = this.genCollections(this.tempCollectionsReleased);
     this.collectionsUnreleased = this.genCollections(this.tempCollectionsUnreleased);
@@ -60,40 +60,39 @@ export class ProfileLearningObjectsComponent implements OnInit {
 
 
   activateMainTab(tabName: string) {
-    if (tabName === "released") this.tabMain = 1;
-    else if (tabName === "review") this.tabMain = 2;
-    // else if (tabName === "relevency") this.tabMain = 3;
+    if(tabName === 'released') {
+      this.tabMain = 1;
+    } else if(tabName === 'review') {
+      this.tabMain = 2;
+    }
+    // else if (tabName === 'relevency') this.tabMain = 3;
     return this.tabMain;
   }
 
   activateCollectionTab(tabName: string) {
-    if (this.tabMain ===1){
+    if(this.tabMain === 1) {
       this.tabCollection = this.collectionsReleased.indexOf(tabName);
-    }
-    else if (this.tabMain === 2){
+    } else if (this.tabMain === 2){
       this.tabCollection = this.collectionsUnreleased.indexOf(tabName);
     }
-    
     return this.tabCollection;
   }
 
   content(status: number, collection: string) {
     if (status === 1) {
         this.learningObjectsReleased = this.learningObjects.filter(learningObject => {
-          return learningObject.status === "released" && learningObject.collection === collection
-          }) 
+          return learningObject.status === 'released' && learningObject.collection === collection;
+          });
     } else if (status === 2) {
-        if (collection === "Other") {
+        if (collection === 'Other') {
           this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
-            return learningObject.status !== "released" && learningObject.collection === ""
-            })
-          }
-        else {
+            return learningObject.status !== 'released' && learningObject.collection === '';
+          });
+        } else {
           this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
-        return learningObject.status !== "released" && learningObject.collection === collection
-        })
+        return learningObject.status !== 'released' && learningObject.collection === collection;
+        });
         }
-        
       }
     };
 
@@ -102,28 +101,27 @@ export class ProfileLearningObjectsComponent implements OnInit {
     this.mobileDropdown = open;
   }
 
-  genCollections(arr: any){  
+  genCollections(arr: any){
     arr.forEach(element => {
-      if (element.collection === ""){
-      element.collection = "Other"
+      if (element.collection === ''){
+      element.collection = 'Other';
     }
     });
     return [...new Set(arr.map(x => x.collection))];
   }
 
    getFullCollectionName(arr: any){
-    var fullName = [];
-    arr.forEach(element => {
-    if(element !== "Other"){
-      element = this.collectionService.getCollection(element).then(c => {
-        fullName.push(c.name);
-      });
-    }
-    else{
-      fullName.push(element);
-    }
-  });
-  console.log(fullName);
-  return fullName;
-}
+    const fullName = [];
+    fullName.forEach(element => {
+      if(element !== 'Other') {
+        element = this.collectionService.getCollection(element).then(c => {
+          fullName.push(c.name);
+        });
+      } else {
+        fullName.push(element);
+      }
+    });
+    console.log(fullName);
+    return fullName;
+  }
 }

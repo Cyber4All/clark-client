@@ -11,7 +11,7 @@ import {
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { OrderBy, Query, SortType } from 'app/interfaces/query';
 import { LearningObject } from '@entity';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -77,9 +77,9 @@ export class LearningObjectsComponent
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
     private route: ActivatedRoute,
+    private router: Router,
     private toaster: ToastrOvenService,
     private auth: AuthService,
-    private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
     private searchService: SearchService
   ) {}
@@ -96,31 +96,14 @@ export class LearningObjectsComponent
       this.getLearningObjects();
     });
 
-    // query by a username if it's passed in
+    // query by anything if it's passed in
+    // reset page to 1 since we can't scroll backwards
     this.route.queryParams.subscribe(params => {
-      const username = params['username'];
-
-      if (username !== null) {
-        this.query = { text: username };
-      }
+      this.query = {
+        ...params,
+        currPage: 1
+       };
     });
-
-    // listen for changes in the route and append the collection to the query
-    this.route.parent.params
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe(async params => {
-        this.activeCollection = await (params.collection
-          ? await this.collectionService.getCollection(params.collection)
-          : undefined);
-
-        if (this.activeCollection) {
-          this.query = { collection: this.activeCollection.abvName };
-        } else {
-          this.query = { collection: undefined };
-        }
-
-        this.getLearningObjects();
-      });
 
     // listen for input events from the search component and perform the search action
     this.userSearchInput$
@@ -168,6 +151,15 @@ export class LearningObjectsComponent
     if (Object.keys(q).length > 1 || !Object.keys(q).includes('currPage')) {
       this.allResultsReceived = false;
     }
+
+    this.router.navigate(
+      [],
+      {
+        queryParams: { ...this.query },
+        relativeTo: this.route,
+        replaceUrl: true
+      }
+    );
   }
 
   /**
@@ -209,37 +201,13 @@ export class LearningObjectsComponent
         .catch(error => {
           this.toaster.error(
             'Error!',
-            'There was an error fetching collections. Please try again later.'
+            'There was an error fetching Learning Objects. Please try again later.'
           );
         })
         .finally(() => {
           this.loading = false;
         });
     }
-  }
-
-  /**
-   *Retrieve an author's Learning Objects
-   *
-   * @param {string} author the username of the author
-   * @memberof LearningObjectsComponent
-   */
-  getUserLearningObjects(author: string) {
-    const query = {
-      text: author
-    };
-    this.publicLearningObjectService
-      .getLearningObjects(query)
-      .then(val => {
-        this.learningObjects = val.learningObjects;
-      })
-      .catch(error => {
-        this.toaster.error(
-          'Error!',
-          'There was an error fetching this user\'s Learning Objects. Please try again later.',
-        );
-        console.error(error);
-      });
   }
 
   /**

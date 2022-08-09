@@ -21,7 +21,6 @@ import { SharedModule } from '../shared/shared.module';
 import { CubeComponent } from './cube.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { OrganizationListComponent } from './organization-list/organization-list.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
@@ -66,7 +65,6 @@ import { ProfileHeaderComponent } from './user-profile/components/profile-header
     CubeComponent,
     BrowseComponent,
     UserProfileComponent,
-    OrganizationListComponent,
     CollectionsComponent,
     TermsOfServiceComponent,
     FilterComponent,

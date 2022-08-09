@@ -35,20 +35,17 @@
 <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="toggleContextMenu()">
   <div #contextMenu>
     <ul (activate)="toggleContextMenu($event)">
-      <li *ngIf="learningObject.status !== 'released'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit</li>
-      <li *ngIf="learningObject.revision && learningObject.revision?.status !== 'unreleased'" [routerLink]="['/onion/learning-object-builder', learningObject.id]"><i class="far fa-pencil"></i>Edit Revision</li>
+      <li *ngIf="learningObject.status !== 'released'" (click)="goToUrl('builder')" target="_blank"><i class="far fa-pencil"></i>Edit</li>
+      <li *ngIf="learningObject.revision && learningObject.revision?.status !== 'unreleased'" (click)="goToUrl('builder')"><i class="far fa-pencil"></i>Edit Revision</li>
       <li *ngIf="learningObject.revision?.status === 'unreleased'" (click)="toggleRevisionDelete(true)"><i class="far fa-trash-alt"></i>Delete Revision</li>
-      <li [routerLink]="['/users', learningObject.author.username]"><i class="far fa-user"></i>View Author Contact</li>
-      <li [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>View details</li>
+      <li (click)="goToUrl('contact')"><i class="far fa-user"></i>View Author Contact</li>
+      <li (click)="goToUrl('details')"><i class="far fa-cube"></i>View details</li>
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
       <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Assign Evaluators</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleChangeCollectionModal(true)"><i class="fal fa-exchange"></i>Change Collection</li>
       <li *ngIf="learningObject.status === 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
-      <li class="new-feature_wrapper" [routerLink]="['/onion/relevancy-builder', learningObject.id]">
-        <p class="list-item_title"><i class="far fa-puzzle-piece"></i>Map & Tag</p>
-        <p class="new-item_element"><i class="fas fa-asterisk"></i>NEW</p>
-      </li>
+      <li (click)="goToUrl('relevancy')"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
     </ul>
   </div>
 </clark-context-menu>
