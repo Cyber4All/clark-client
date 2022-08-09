@@ -1,14 +1,30 @@
-<div class="sidebar-wrapper">
-    <div class="content">
+<div class="wrapper" *ngIf="!isMobileView">
+    <div 
+        class="content" 
+        [ngClass]="{'choosen': hasBeenClicked.learningObjects, 'greyout': !hasBeenClicked.learningObjects && !isOtherChoiceSelected() }" 
+        (activate)="click('learningObject')"
+    >
         <i class="icon fal fa-cubes"></i> Learning Objects
     </div>
-    <div class="content">
+    <div 
+        class="content" 
+        [ngClass]="{'choosen': hasBeenClicked.learningOutcomes, 'greyout': !hasBeenClicked.learningOutcomes && !isOtherChoiceSelected() }" 
+        (activate)="click('learningOutcome')"
+    >
         <i class="icon fal fa-graduation-cap"></i>Learning Outcomes
     </div>
-    <div class="content">
-        <i class="icon fal fa-sitemap"></i> Hierarchies
+    <div 
+        class="content" 
+        [ngClass]="{'choosen': hasBeenClicked.hierarchies, 'greyout': !hasBeenClicked.hierarchies && !isOtherChoiceSelected() }" 
+        (activate)="click('hierarchies')"
+    >
+        <i class="icon fal fa-folder-tree"></i> Hierarchies
     </div>
-    <div class="content">
+    <div 
+        class="content" 
+        [ngClass]="{'choosen': hasBeenClicked.collections, 'greyout': !hasBeenClicked.collections && !isOtherChoiceSelected() }" 
+        (activate)="click('collections')"
+    >
         <i class="icon fal fa-users"></i> Collections
     </div>
 </div>

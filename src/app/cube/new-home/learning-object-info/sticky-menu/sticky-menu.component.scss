@@ -1,5 +1,6 @@
 @import 'vars.scss';
-.sidebar-wrapper {
+
+.wrapper {
     width: 250px;
     height: fit-content;
     background-color: white;
@@ -8,29 +9,33 @@
     margin-bottom: 20px;
     z-index: 2;
     box-shadow: 0 0 5px lighten(#000, 80%);
-    ::ng-deep .filter-section {
-      padding-left: 0;
-    }
+    border-radius: 5px;
 
     .content {
         padding-bottom: 20px;
-        text-align:left;
-        border-radius: 10px;
+        border-radius: 5px;
+        font-size: large;
+        width: 230px;
+        margin: 5px;
         .icon {
             font-size: 20px;
             margin-right: 10px;
         }
-    }
-    .content:hover {
-        background-color: #E9F0FE;
-        color: #376ED6;
-        font-weight: bold;
-        cursor:pointer;
-    }
-    .content:active {
-        background-color: #E9F0FE;
-        color: #376ED6;
-        font-weight: bold;
+        &:hover {
+            background-color: #E9F0FE;
+            color: #376ED6;
+            cursor:pointer;
+            font-weight: 600;
+        }
     }
 
-  }
+    .choosen {
+        background-color: #E9F0FE;
+        color: #376ED6;
+        font-weight: 600;
+    }
+
+    .greyout {
+        color: #AAAAAA;
+    }
+}

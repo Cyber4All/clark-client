@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Directive, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'clark-learning-object-info',
@@ -6,10 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./learning-object-info.component.scss']
 })
 export class LearningObjectInfoComponent implements OnInit {
-
+  currentComponent: "learning-object" | "learning-outcomes" | "hierarchies" | "collections";
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }
