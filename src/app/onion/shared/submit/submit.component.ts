@@ -111,6 +111,45 @@ export class SubmitComponent implements OnInit {
   }
 
   /**
+   * @returns {boolean} true if the LO has a name, description, a contributor, and at least 1 outcome
+   */
+  isValidLearningObject(): boolean {
+    return (
+      this.learningObject.description !== '' &&
+      this.learningObject.name !== '' &&
+      this.learningObject.outcomes.length !== 0 &&
+      this.learningObject.contributors.length !== 0
+    );
+  }
+
+  /**
+   * @returns {string} a string with missing required fields for an error message
+   */
+  private buildUnfinishedLOErrorMsg(): string {
+    let str = '';
+    const potentialErrorFields = {
+      name: ' name',
+      description: ' description',
+      contributor: ' contributor(s)',
+      outcome: ' outcome(s)'
+    };
+    if(this.learningObject.name === '') {
+      str += potentialErrorFields['name'];
+    }
+    if(this.learningObject.description === '') {
+      str += (str === '') ? potentialErrorFields['description']: ',' + potentialErrorFields['description'];
+    }
+    if(this.learningObject.outcomes.length === 0) {
+      str += (str === '') ? potentialErrorFields['outcome']: ',' + potentialErrorFields['outcome'];
+    }
+    if(this.learningObject.contributors.length === 0) {
+      str += (str === '') ? potentialErrorFields['contributor']: ',' + potentialErrorFields['contributor'];
+    }
+    return str;
+  }
+
+  /**
+>>>>>>> e9c63d9ebb9fc112b429e9e43c5bd3fa38d5f0c4
    * Submits a Learning Object to a collection for review and publishes the object
    *
    * @param {string} collection the name of the collection to submit to

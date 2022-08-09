@@ -98,6 +98,11 @@ export class LearningObjectsComponent
 
     // query by a username if it's passed in
     this.route.queryParams.subscribe(params => {
+      this.query = {
+        ...params,
+        currPage: 1
+       };
+
       const username = params['username'];
 
       if (username !== null) {

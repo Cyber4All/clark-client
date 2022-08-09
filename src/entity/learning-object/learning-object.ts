@@ -377,17 +377,14 @@ export class LearningObject {
    * @memberof LearningObject
    */
   private isValidName(name: string): boolean {
-    if (name !== undefined && name !== null) {
-      const trimmedName = name.trim();
-      if (
-        trimmedName.length < MIN_NAME_LENGTH ||
-        trimmedName.length > MAX_NAME_LENGTH
-      ) {
-        return false;
-      }
-      return true;
+    if (
+      name === undefined || name === null ||
+      name.trim().length < MIN_NAME_LENGTH ||
+      name.trim().length > MAX_NAME_LENGTH
+    ) {
+      return false;
     }
-    return false;
+    return true;
   }
 
   /**
