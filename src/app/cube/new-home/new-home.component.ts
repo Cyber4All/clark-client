@@ -11,12 +11,10 @@ import { BlogsComponentService } from 'app/core/blogs-component.service';
     trigger('blog', [
       transition(':enter', [
         style({
-          transform: 'translateY(-100%)',
-          zIndex: 0
+          transform: 'translateY(-100%)'
         }),
         animate('300ms 1200ms ease-out', style({
-          transform: 'translateY(0%)',
-          zIndex: 0
+          transform: 'translateY(0%)'
         }))
       ]),
       transition(':leave', [
