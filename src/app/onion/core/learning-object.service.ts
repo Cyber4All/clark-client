@@ -41,6 +41,39 @@ export class LearningObjectService {
   }
 
   /**
+   * Calls LO service to update the packageable status of toggled files
+   *
+   * @param username The currently logged in user
+   * @param learningObjectID The current learning object's ID
+   * @param fileIDs An array of file IDs that need to be updated
+   * @param state The new packageable property to update to
+   * @returns A promise
+   */
+  toggleBundle(
+    username: string,
+    learningObjectID: string,
+    fileIDs: string[],
+    state: boolean
+  ) {
+    const route = ADMIN_ROUTES.TOGGLE_BUNDLE(username, learningObjectID);
+
+    return this.http
+      .patch(
+        route,
+        {
+          fileIDs: fileIDs,
+          state: state
+        },
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
    * Sends serialized Learning Object to API for creation
    * Returns new Learningbject's ID on success
    * Returns error on error

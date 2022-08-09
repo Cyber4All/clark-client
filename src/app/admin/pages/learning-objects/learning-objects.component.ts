@@ -99,7 +99,7 @@ export class LearningObjectsComponent
     // query by anything if it's passed in
     // reset page to 1 since we can't scroll backwards
     this.route.queryParams.subscribe(params => {
-      this.query = { 
+      this.query = {
         ...params,
         currPage: 1
        };

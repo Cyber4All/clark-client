@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-folder-list-item',
@@ -13,13 +14,16 @@ export class FolderListItemComponent implements OnInit {
 
   @Output() clicked: EventEmitter<void> = new EventEmitter();
   @Output() menuClicked: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
 
   timestampAge = '';
+  accessGroups?: string[];
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.timestampAge = TimeFunctions.getTimestampAge(this.getLatestDate());
+    this.accessGroups = this.authService.accessGroups;
   }
 
   /**
@@ -69,5 +73,87 @@ export class FolderListItemComponent implements OnInit {
   handleMeatballClick(event: MouseEvent) {
     event.stopPropagation();
     this.menuClicked.emit(event);
+  }
+
+  /**
+   * Recursively iterates through a chosen folder to determine if the folder itself is packageable.
+   * If any one of the files within the folder is not packageable, then the folder is not packageable.
+   * Mainly used for displaying the folder's packageable status, since it does not have a direct property.
+   *
+   * @param folder The current folder item to recursively iterate through
+   * @returns The packageable status of the folder (boolean)
+   */
+  getFolderBundleStatus(folder: DirectoryNode): boolean {
+    const files = folder.getFiles();
+    const folders = folder.getFolders();
+    let status = true;
+
+    files.forEach(file => {
+      if (!file.packageable) {
+        status = false;
+      }
+    });
+
+    folders.forEach(subFolder => {
+      if(!this.getFolderBundleStatus(subFolder)) {
+        status = false;
+      }
+    });
+
+    return status;
+  }
+
+  /**
+   * Helper function for handleBundleToggle. Prevents multiple emits occuring at once due to recursion.
+   * Recursively iterates through the root folder's subfolders and changes files
+   * to the new packageable status.
+   *
+   * @param subFolder The current subfolder to recursively iterate through
+   * @param event The bundling status of the root folder
+   */
+  togglePackageableSubFiles(subFolder: DirectoryNode, event: boolean) {
+    const subFiles = subFolder.getFiles();
+    const subFolders = subFolder.getFolders();
+
+    subFiles.forEach(subFile => {
+      subFile.packageable = event;
+    });
+
+    subFolders.forEach(subSubFolder => {
+      this.togglePackageableSubFiles(subSubFolder, event);
+    });
+  }
+
+  /**
+   * Handles changing the packageable status of files:
+   *  1. Changes all subfiles packageable property to immediately display event changes
+   *  2. Emits an event to the backend to save this change to the database
+   *
+   * @param folder The current folder item to recursively iterate through
+   * @param event The bundling status of the folder
+   */
+  handleBundleToggle(folder: DirectoryNode, event: boolean) {
+    const files = folder.getFiles();
+    const folders = folder.getFolders();
+
+    files.forEach(file => {
+      file.packageable = event;
+    });
+
+    folders.forEach(subFolder => {
+      this.togglePackageableSubFiles(subFolder, event);
+    });
+
+    this.toggleClicked.emit(event);
+  }
+
+  /**
+   * Checks if the current user is an admin or curator.
+   * If true, allows the user to change the bundling status of a file/folder.
+   *
+   * @returns boolean value if the user is valid
+   */
+    checkAccessGroups(): boolean {
+    return this.accessGroups.includes('admin') || this.accessGroups.includes('curator');
   }
 }

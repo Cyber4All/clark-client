@@ -1,1 +1,25 @@
-<p>splash works!</p>
+<div class="wrapper">
+    <div class="first">
+        <h1>
+            Teach Cyber Today... <br />
+            Secure Tomorrow
+        </h1>
+        <p>
+            CLARK is the largest platform that provides <strong>FREE</strong> high quality, cyber focused curriculum. 
+            Educators can easily build and have their curriculum hosted for everyone to come search and download. 
+            Check out our collections today!
+        </p>
+        <button [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
+    </div>
+    <div class="second">
+        <iframe 
+        src="https://www.youtube.com/embed/wXlZZjq0lDo" 
+        title="What is CLARK?" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+        allowfullscreen
+        >
+        </iframe>
+    </div>
+</div>
+
