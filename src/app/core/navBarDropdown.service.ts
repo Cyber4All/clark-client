@@ -21,7 +21,7 @@ export class NavbarDropdownService {
     // public levelsDropdown = new BehaviorSubject<boolean>(false);
 
     public topicDropdown = new BehaviorSubject<boolean>(false);
-    public collectionsDropdown = new BehaviorSubject<boolean>(false);
+    public collectionsDropdown = new BehaviorSubject<boolean>(true);
     public resourcesDropdown = new BehaviorSubject<boolean>(false);
     //mobile slideouts
     public isMHamburger = new BehaviorSubject<boolean>(false);
@@ -66,12 +66,9 @@ export class NavbarDropdownService {
         if(this.userDropdown.getValue()) {
             this.userDropdown.next(false);
         }
-
-        //DO NOT REMOVE
-        // if(this.topicDropdown.getValue()) {
-        //     this.topicDropdown.next(false);
-        // }
-
+        if(this.topicDropdown.getValue()) {
+            this.topicDropdown.next(false);
+        }
         if(this.collectionsDropdown.getValue()) {
             this.collectionsDropdown.next(false);
         }

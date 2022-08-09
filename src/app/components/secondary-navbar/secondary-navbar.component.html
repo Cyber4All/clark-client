@@ -8,14 +8,6 @@
             <i class="fa fa-chevron-up"></i>
         </span>
     </div>
-    <clark-context-menu *ngIf="collectionsDropdown" [anchor]="collectionsAnchor" (close)="dropdowns.closeAll()">
-        <div #contextMenu>
-            <ul>
-                <!-- TODO add Collection component after implimentation -->
-                <li>test</li>
-            </ul>
-        </div>
-    </clark-context-menu>
     <div class="item resources" #resourcesAnchor (click)="dropdowns.toggleResourcesDropdown()">Resources
         <span *ngIf="!resourcesDropdown">
             <i class="fa fa-chevron-down"></i>
@@ -47,3 +39,5 @@
         </div>
     </clark-context-menu>
 </div>
+
+<clark-collections-dropdown *ngIf="collectionsDropdown" [anchor]="collectionsAnchor"></clark-collections-dropdown>
