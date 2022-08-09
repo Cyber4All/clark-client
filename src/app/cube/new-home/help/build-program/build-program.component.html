@@ -29,7 +29,7 @@
                 <!-- Displays guidelines for a given page -->
                 <button 
                     class="guideline" *ngFor="let guideline of page"
-                    (activate)="navigate({ guidelines: currentFramework, standardOutcomes: [guideline.guidelineId]})"
+                    (activate)="navigate({ guidelines: currentFramework, standardOutcomes: [guideline.guidelineId] })"
                     > 
                     <p class="guidelineDescription">
                         {{ guideline.guidelineDescription }}

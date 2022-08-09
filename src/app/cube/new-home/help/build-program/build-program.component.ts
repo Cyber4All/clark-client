@@ -145,8 +145,10 @@ export class BuildProgramComponent implements OnInit{
    * Subarray lengths are based on the view width (mobile or desktop)
    */
   fillPages() {
+    const maxMobileWidth = 425; // the width of a mobile screen
+
     // Adjusts number of guidelines per page for mobile vs. desktop views
-    const numGuidelinesPerPage = window.outerWidth <= 425 ? 3 : 6;
+    const numGuidelinesPerPage = window.outerWidth <= maxMobileWidth ? 3 : 6;
     // A 2D array of length equal to total number of pages needed
     const pages = new Array(Math.ceil(this.currentFrameworkGuidelinesFiltered.length / numGuidelinesPerPage));
 
