@@ -1,0 +1,7 @@
+<div class="triangle"></div>
+<div class="collections-dropdown" #collectionsDropdown>
+    <h1>Collections</h1>
+    <div class="collection-grid">
+        <clark-collection-card class="item" *ngFor="let c of collections" [collection]="c"></clark-collection-card>
+    </div>
+</div>

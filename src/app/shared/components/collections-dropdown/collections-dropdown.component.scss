@@ -1,0 +1,52 @@
+@import "_vars.scss";
+
+.triangle {
+    border: 10px solid white;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-left-color: transparent;
+    width: 0px;
+    height: 0px;
+    z-index: 21;
+    position:absolute;
+    margin-left: 200px;
+}
+
+.collections-dropdown {
+    position:absolute;
+    z-index: 20;
+    top: 155px;
+    padding: 0px 20px;
+    margin-left: 5%;
+    background-color: white;
+    width: 1000px;
+    height: 1050px;
+
+    .collection-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 5%;
+
+        .item{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            ::ng-deep .collection-card {
+                background-color: $primary-white;
+                padding: 40px;
+                height: 200px;
+                width: 200px;
+                border: 1px solid $secondary-white;
+                .card__name {
+                    height: 20px;
+                }
+                .card__image {
+                    height: 50px;
+                }
+            }
+        }
+    }
+}
