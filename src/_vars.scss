@@ -7,6 +7,7 @@ $light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($l
 // TODO remove this variable when it's no longer being used
 $blue-accent: #3b608b;
 $blue-gradient: linear-gradient(45deg, darken($blue-accent, 20), $blue-accent);
+$new-button-blue: #376ed6;
 
 $success-green: #208540;
 $error-red: #ca2e1f;
@@ -19,8 +20,10 @@ $wrapper-background: #f0f4f7;
 $placeholder: #757575; // sampled from Mac OS Google Chrome placeholder value in a text input
 
 //white
-$primary-white: #f8f8f8;
-$secondary-white: #dfdfdf;
+$primary-white: #F8F8F8;
+$secondary-white: #DFDFDF;
+$dark-white: #E5E5E5;
+
 
 // greys
 $light-grey: #e1e5ec;

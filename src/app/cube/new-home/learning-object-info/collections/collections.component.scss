@@ -1,4 +1,7 @@
 @import '_vars.scss';
+.collection-section-wrapper {
+    background-color: white;
+}
 
 .item-list {
     display: flex;
@@ -19,15 +22,22 @@
         justify-content: center;
         align-items: center;
         min-width: 250px;
-    }
 
-    
+        ::ng-deep .collection-card {
+            padding: 40px;
+            background-color: $primary-white;
+
+            .card__name {
+                height: 20px;
+            }
+        }
+    }    
 }
 button{
     border: 0;
     padding: 11px 20px 11px 25px;
     border-radius: 4px;
-    background: $light-blue;
+    background: $new-button-blue;
     color: white;
     text-transform: uppercase;
     font-size: $small;

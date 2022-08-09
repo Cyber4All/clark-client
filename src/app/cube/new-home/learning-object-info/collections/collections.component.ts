@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Collection, CollectionService } from 'app/core/collection.service';
+import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-collections',
@@ -12,7 +13,8 @@ export class CollectionsComponent implements OnInit {
   show = ['nccp', 'ncyte', 'intro_to_cyber'];
 
   constructor(
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private toastr: ToastrOvenService
     ) { }
 
   async ngOnInit(): Promise<void> {
@@ -23,7 +25,7 @@ export class CollectionsComponent implements OnInit {
       this.collections = collections;
     })
     .catch(e => {
-      console.error(e.message);
+      this.toastr.error("There was a problem!", "There was an error fetching collections, please try again later.");
     });
 
     //filter for collections we want to show
