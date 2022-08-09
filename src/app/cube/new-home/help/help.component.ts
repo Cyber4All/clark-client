@@ -98,6 +98,7 @@ export class HelpComponent implements OnInit {
       icon: 'fa fa-users',
       iconColor: 'green',
       value: 2,
+      link: ['/c'],
     },
   ];
 

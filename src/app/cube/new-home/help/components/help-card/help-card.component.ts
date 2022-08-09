@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class HelpCardComponent implements OnInit {
 
-  @Input() option: {title: string, description: string, icon: string, iconColor: string};
+  @Input() option: {title: string, description: string, icon: string, iconColor: string, link?: string[]};
 
   constructor() { }
 

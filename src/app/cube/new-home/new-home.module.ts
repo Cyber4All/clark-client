@@ -45,7 +45,7 @@ import { FormsModule } from '@angular/forms';
     CubeSharedModule,
     SharedModule,
     RouterModule,
-    FormsModule
+    FormsModule,
   ]
 })
 export class NewHomeModule { }
