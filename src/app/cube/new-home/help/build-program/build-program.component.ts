@@ -67,7 +67,7 @@ export class BuildProgramComponent implements OnInit{
    // separated from currentFrameworkGuidelines for searching
   currentFrameworkGuidelinesFiltered: SearchItemDocument[];
 
-  // separated from currentFrameworkGuidelinesPaginated for maintaining pagination
+  // separated from currentFrameworkGuidelinesFiltered for maintaining pagination
   currentFrameworkGuidelinesPaginated: SearchItemDocument[][];
 
   guidelineSearch = ''; // search bar input
