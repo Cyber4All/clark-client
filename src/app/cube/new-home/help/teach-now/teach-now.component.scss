@@ -1,5 +1,9 @@
 @import 'vars.scss';
 
+.wrapper {
+    max-width: 1375px;
+}
+
 .topics {
     display: flex;
     flex-direction: row;
@@ -12,11 +16,73 @@
         display: none;
     }
 
+    .shadow {
+        position: sticky;
+        display: block;
+        min-width: 100px;
+        min-height: 100%;
+        top: 0;
+
+        &.right {
+            right: 0;
+            background-image: linear-gradient(90deg, transparent, white);
+        }
+
+        &.left {
+            left: 0;
+            background-image: linear-gradient(90deg, white, transparent);
+        }
+    }
+
     .topic-btn {
         background-color: lighten($light-grey, 4);
         border: 1px solid $medium-grey;
         border-radius: 4px;
         text-align: center;
         padding: 10px;
+        white-space: nowrap;
+
+        &.selected {
+            color: $light-blue;
+            border-color: $light-blue;
+            background-color: lighten($light-blue, 40);
+        }
     }
+}
+
+select {
+    background-color: lighten($light-grey, 4);
+    border: 1px solid $medium-grey;
+    border-radius: 4px;
+    padding: 10px;
+    width: 100%;
+}
+
+.objects {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+    margin: 50px 20px;
+    flex-wrap: wrap;
+
+    .all {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+
+        &.full-width {
+            display: inline;
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    clark-learning-object-component {    
+        &.card {
+          width: 250px;
+        }
+      }
 }
