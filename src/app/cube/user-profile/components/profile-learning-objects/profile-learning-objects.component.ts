@@ -80,21 +80,21 @@ export class ProfileLearningObjectsComponent implements OnInit {
 
   content(status: number, collection: string) {
     if (status === 1) {
-        this.learningObjectsReleased = this.learningObjects.filter(learningObject => {
-          return learningObject.status === 'released' && learningObject.collection === collection;
-          });
+      this.learningObjectsReleased = this.learningObjects.filter(learningObject => {
+        return learningObject.status === 'released' && learningObject.collection === collection;
+      });
     } else if (status === 2) {
-        if (collection === 'Other') {
-          this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
-            return learningObject.status !== 'released' && learningObject.collection === '';
-          });
-        } else {
-          this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
-        return learningObject.status !== 'released' && learningObject.collection === collection;
+      if (collection === 'Other') {
+        this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
+          return learningObject.status !== 'released' && learningObject.collection === '';
         });
-        }
+      } else {
+        this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
+      return learningObject.status !== 'released' && learningObject.collection === collection;
+      });
       }
-    };
+    }
+  }
 
   toggleDropdown(open: boolean) {
     const x = [1, 2, 3];
