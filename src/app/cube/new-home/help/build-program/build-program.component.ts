@@ -85,7 +85,7 @@ export class BuildProgramComponent implements OnInit{
       this.currentFrameworkGuidelines = [];
       this.currentPage = 0;
     });
-    this.guidelineService.getFrameworks({ limit: 100, page: 1 })
+    this.guidelineService.getFrameworks({ limit: 30, page: 1 })
     .then(result => {
       this.frameworks = result;
     });
