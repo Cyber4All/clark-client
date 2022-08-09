@@ -12,7 +12,8 @@
     "test:lighthouse:debug": "node --inspect node_modules/.bin/jest --watch -c ./lighthouse/jest.config.lighthouse.js --runInBand",
     "lint": "npx ng lint clark",
     "e2e": "ng e2e",
-    "storybook": "start-storybook"
+    "storybook": "start-storybook",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@angular/animations": "^13.1.2",
