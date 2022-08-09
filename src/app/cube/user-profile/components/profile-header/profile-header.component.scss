@@ -6,7 +6,7 @@
     margin: 0 auto;
 
     .user-profile-header_wrapper {
-        background-color: #FFFFFF;
+        background-color: $secondary-white-background;
         margin: 15px auto;
         width: 100%;
         max-width: 625px;
@@ -32,15 +32,16 @@
             background-repeat: no-repeat;
             margin: 20px;
         }
-    
+
         .user-profile_info {
             display: inline-block;
             vertical-align: top;
             line-height: 5px;
             margin: 20px;
             color: $dark-grey;
+
             h1 {
-                line-height: 30px;
+                line-height: 35px;
                 width: min-content;
                 word-wrap: break-word;
                 color: $darker-grey;
@@ -71,7 +72,7 @@
     }
     
     .user-profile-bio_wrapper{
-        background-color: #FFFFFF;
+        background-color: $secondary-white-background;
         margin: 15px auto;
         width: 100%;
         max-width: 400px;
@@ -91,6 +92,12 @@
             }
             p {
                 margin-top: 0;
+            }
+            .noBio {
+                margin: auto;
+                width: 50%;
+                padding: 10px;
+                text-align: center;
             }
         }
     }

@@ -18,16 +18,18 @@ export class ProfileHeaderComponent implements OnInit {
   savedObjects: number;
   contributedObjects: number;
   downloadedObjects: number;
+  firstName: string;
 
   constructor(
     private userService: UserService,
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.getUserBio();
     this.checkUserStats();
     // Get user profile image
-    this.gravatarImage = this.userService.getGravatarImage(this.user.email, this.size);
+    this.gravatarImage = await this.userService.getGravatarImage(this.user.email, this.size);
+    this.firstName = this.user.name.split(' ')[0];
   }
 
   /**
@@ -40,8 +42,8 @@ export class ProfileHeaderComponent implements OnInit {
   /**
    * Function to retrieve a user's bio
    */
-  getUserBio() {
-    this.userService.getUser(this.user.username, 'username').then(val => {
+  async getUserBio() {
+    await this.userService.getUser(this.user.username, 'username').then(val => {
       this.user = val;
     });
   }
