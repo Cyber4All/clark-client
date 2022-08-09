@@ -36,6 +36,9 @@ export const ADMIN_ROUTES = {
   UPDATE_OBJECT_SUBMITTED_COLLECTION(username: string, cuid: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(cuid)}/collection`;
   },
+  TOGGLE_BUNDLE(username: string, id: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(id)}/files/bundle`;
+  }
 };
 
 export const CHANGELOG_ROUTES = {
@@ -347,6 +350,16 @@ export const USER_ROUTES = {
   GET_KEY_PAIR(): string {
     return `${environment.apiURL}/keys`;
   },
+  TOGGLE_FILES_TO_BUNDLE(params: {
+    username: string,
+    learningObjectID: string,
+  }): string {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.username
+    )}/learning-objects/${encodeURIComponent(
+      params.learningObjectID
+    )}/files/bundle`;
+  }
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {

@@ -44,6 +44,11 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   openFilePicker: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output()
   path: EventEmitter<string> = new EventEmitter<string>();
+  @Output()
+  packageableToggled: EventEmitter <{
+    state: boolean,
+    item: DirectoryNode | LearningObject.Material.File
+  }> = new EventEmitter();
 
   @Output()
   downloadClicked: EventEmitter<
