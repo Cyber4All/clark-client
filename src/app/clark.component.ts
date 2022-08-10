@@ -138,8 +138,6 @@ export class ClarkComponent implements OnInit {
     location.reload();
   }
 
-
-
   /**
    * Function passes cookie agreement service val to create new agreement
    * Then updates banner visibilty flag
@@ -194,7 +192,7 @@ export class ClarkComponent implements OnInit {
             data = activeRoute.snapshot.data.title;
           }
           if (data !== undefined) {
-            this.titleService.setTitle(data + ' | CLARK');
+            this.titleService.setTitle('CLARK | ' + data);
           }
         });
       });
