@@ -1,29 +1,29 @@
 <div class="wrapper" *ngIf="!isMobileView">
     <div 
         class="content" 
-        [ngClass]="{'choosen': hasBeenClicked.learningObjects, 'greyout': !hasBeenClicked.learningObjects && !isOtherChoiceSelected() }" 
-        (activate)="click('learningObject')"
+        [ngClass]="{'choosen': isHighlighted.learningObjects, 'greyout': !isHighlighted.learningObjects && !isOtherChoiceSelected() }" 
+        (activate)="changeSelection('learningObject')"
     >
         <i class="icon fal fa-cubes"></i> Learning Objects
     </div>
     <div 
         class="content" 
-        [ngClass]="{'choosen': hasBeenClicked.learningOutcomes, 'greyout': !hasBeenClicked.learningOutcomes && !isOtherChoiceSelected() }" 
-        (activate)="click('learningOutcome')"
+        [ngClass]="{'choosen': isHighlighted.learningOutcomes, 'greyout': !isHighlighted.learningOutcomes && !isOtherChoiceSelected() }" 
+        (activate)="changeSelection('learningOutcomes')"
     >
         <i class="icon fal fa-graduation-cap"></i>Learning Outcomes
     </div>
     <div 
         class="content" 
-        [ngClass]="{'choosen': hasBeenClicked.hierarchies, 'greyout': !hasBeenClicked.hierarchies && !isOtherChoiceSelected() }" 
-        (activate)="click('hierarchies')"
+        [ngClass]="{'choosen': isHighlighted.hierarchies, 'greyout': !isHighlighted.hierarchies && !isOtherChoiceSelected() }" 
+        (activate)="changeSelection('hierarchies')"
     >
         <i class="icon fal fa-folder-tree"></i> Hierarchies
     </div>
     <div 
         class="content" 
-        [ngClass]="{'choosen': hasBeenClicked.collections, 'greyout': !hasBeenClicked.collections && !isOtherChoiceSelected() }" 
-        (activate)="click('collections')"
+        [ngClass]="{'choosen': isHighlighted.collections, 'greyout': !isHighlighted.collections && !isOtherChoiceSelected() }" 
+        (activate)="changeSelection('collections')"
     >
         <i class="icon fal fa-users"></i> Collections
     </div>

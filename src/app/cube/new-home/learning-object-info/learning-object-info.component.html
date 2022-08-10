@@ -1,11 +1,19 @@
 <div class="home-column">
     <div class="sidebar-wrapper">
-        <clark-sticky-menu></clark-sticky-menu>
+        <clark-sticky-menu [currentComponentInView]="currentComponent"></clark-sticky-menu>
     </div>
     <div class="main-content">
-        <clark-learning-objects #test class="test"  id="learning-object"></clark-learning-objects>
-        <clark-learning-outcomes class="test" id="learning-outcomes"></clark-learning-outcomes>
-        <clark-hierarchies class="test" id="hierarchies"></clark-hierarchies>
-        <clark-collections class="test" id="collections"></clark-collections>
+        <div #learningObject id="learningObject" class="test">
+            <clark-learning-objects></clark-learning-objects>
+        </div>
+        <div #learningOutcomes id="learningOutcomes" class="test">
+            <clark-learning-outcomes></clark-learning-outcomes>
+        </div>
+        <div #hierarchies id="hierarchies" class="test">
+            <clark-hierarchies></clark-hierarchies>
+        </div>
+        <div #collections id="collections" class="test">
+            <clark-collections></clark-collections>
+        </div>
     </div>
 </div>
