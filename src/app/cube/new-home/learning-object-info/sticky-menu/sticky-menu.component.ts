@@ -57,7 +57,8 @@ export class StickyMenuComponent implements OnInit {
   }
 
   /**
-   * Sets all fields to false, resetting the menu
+   * Sets all fields. The one field that matches the selection will be set to true and highlighted
+   * All other fields will be set to false.
    */
   setFields(selection: string) {
     this.isHighlighted.learningObjects = LEARNING_OBJECT_INFO_STATES.LEARNING_OBJECT === selection;
