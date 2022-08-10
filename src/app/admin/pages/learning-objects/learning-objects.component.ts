@@ -91,17 +91,12 @@ export class LearningObjectsComponent
         this.headersElement.nativeElement.getBoundingClientRect().height;
     });
 
-    this.searchService.needsChange$.subscribe( () => {
-      this.learningObjects = [];
-      this.getLearningObjects();
-    });
-
     // query by anything if it's passed in
     // reset page to 1 since we can't scroll backwards
     this.route.queryParams.subscribe(params => {
       this.query = { 
         ...params,
-        currPage: 1
+        currPage: parseInt(params.currPage)
        };
     });
 
@@ -112,7 +107,7 @@ export class LearningObjectsComponent
         debounceTime(650)
       )
       .subscribe(searchTerm => {
-        this.query = { currPage: 1, text: searchTerm };
+        this.query = { currPage: 1, sortType: this.query.sortType, orderBy: this.query.orderBy, text: searchTerm };
         this.learningObjects = [];
 
         this.getLearningObjects();

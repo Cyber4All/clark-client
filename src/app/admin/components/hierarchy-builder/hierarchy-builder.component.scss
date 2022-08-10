@@ -1,0 +1,51 @@
+@import 'vars.scss';
+.example-tree-node {
+    display: flex;
+    align-items: center;
+}
+
+.select-button {
+    border: none;
+    background: transparent;
+}
+
+.toggle {
+  border: none;
+  background: transparent;
+  padding: 5px;
+  min-width: 25px;
+}
+
+.example-tree-invisible {
+    display: none;
+  }
+  
+  .example-tree ul,
+  .example-tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+
+  .mat-tree-node {
+    button {
+      z-index: 10000;
+    }
+    
+  }
+  .example-tree {
+    padding-top: 20px;
+    position: relative;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: right;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    padding-bottom: 20px;
+
+    .button {
+      margin-left: 10px;
+    }
+  }
