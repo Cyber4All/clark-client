@@ -176,7 +176,6 @@ export class LearningObjectsComponent
         // this is a false event from the virtual scroller, disregard
         return;
       }
-      console.log(this.learningObjects.length)
 
       if (this.learningObjects.length) {
         // we've already made an initial request to load the first page of results, increment the current page before next request
