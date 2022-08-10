@@ -1,5 +1,6 @@
-import { Component, HostListener, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { LEARNING_OBJECT_INFO_STATES } from '../learning-object-info.component';
 
 @Component({
   selector: 'clark-sticky-menu',
@@ -7,7 +8,7 @@ import { Router, RouterLink } from '@angular/router';
   styleUrls: ['./sticky-menu.component.scss']
 })
 export class StickyMenuComponent implements OnInit {
-  hasBeenClicked = {
+  isHighlighted = {
     learningObjects: false,
     learningOutcomes: false,
     hierarchies: false,
@@ -17,47 +18,59 @@ export class StickyMenuComponent implements OnInit {
   responsiveThreshold = 800; 
   windowWidth: number;
 
-  constructor(private router: Router) { }
+  /* The component that will be highlighted when in view */
+  @Input() currentComponentInView: LEARNING_OBJECT_INFO_STATES;
+
+  constructor(private router: Router) {
+    this.router.onSameUrlNavigation = "reload";
+  }
 
   ngOnInit(): void {
   }
 
+  /**
+   * Listening for scrolling event and updates the menu when the 
+   * currentComponentInView changes
+   */
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    this.setFields(this.currentComponentInView);
+  }
+
+  /**
+   * Sets IsMobileView to true after a threshold has been passed
+   * @param event The Host listener event
+   */
   @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    // console.log(event.target.innerWidth)
+  onResize(event: any) {
     this.isMobileView = this.responsiveThreshold > event.target.innerWidth;
   }
 
-  async click(choice: string) {
-    this.setFieldsToFalse();
-    switch(choice) {
-      case "learningObject":
-        this.hasBeenClicked.learningObjects = true;
-        await this.router.navigateByUrl("/home#learning-object")
-        break;
-      case "learningOutcome":
-        this.hasBeenClicked.learningOutcomes = true;
-        await this.router.navigateByUrl("/home#learning-outcomes")
-        break;
-      case "hierarchies":
-        this.hasBeenClicked.hierarchies = true;
-        await this.router.navigateByUrl("/home#hierarchies")
-        break;
-      case "collections":
-        this.hasBeenClicked.collections = true;
-        await this.router.navigateByUrl("/home#collections")
-        break;
-    }
+  /**
+   * Handles when the user clicks on an option of the menu
+   * Brings the user to the top of that div using navigateByUrl
+   * @param choice The choice to go to
+   */
+  async changeSelection(choice: LEARNING_OBJECT_INFO_STATES) {
+    this.setFields(choice);
+    await this.router.navigateByUrl(`/home#${choice}`, {"skipLocationChange": true})
   }
 
-  setFieldsToFalse() {
-    this.hasBeenClicked.collections = false;
-    this.hasBeenClicked.hierarchies = false;
-    this.hasBeenClicked.learningObjects = false;
-    this.hasBeenClicked.learningOutcomes = false;
+  /**
+   * Sets all fields to false, resetting the menu
+   */
+  setFields(selection: string) {
+    this.isHighlighted.learningObjects = LEARNING_OBJECT_INFO_STATES.LEARNING_OBJECT === selection;
+    this.isHighlighted.learningOutcomes = LEARNING_OBJECT_INFO_STATES.LEARNING_OUTCOMES === selection;
+    this.isHighlighted.hierarchies = LEARNING_OBJECT_INFO_STATES.HIERARCHIES === selection;
+    this.isHighlighted.collections = LEARNING_OBJECT_INFO_STATES.COLLECTIONS === selection;
   }
 
+  /**
+   * Checks to see if any of the values are set to true (highlighted)
+   * @returns True if one of the values is highlighted (set to true)
+   */
   isOtherChoiceSelected() {
-    return Object.values(this.hasBeenClicked).every((isSelected) => !isSelected);
+    return Object.values(this.isHighlighted).every((isSelected) => !isSelected);
   }
 }
