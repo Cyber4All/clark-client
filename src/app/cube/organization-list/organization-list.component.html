@@ -1,0 +1,12 @@
+<div class="splash">
+  <div class="inner">
+    <div class="header">
+      <div class="name">{{ organizationFormat(organization) }}</div>
+    </div>
+  </div>
+</div>
+<section class="list-container">
+  <div *ngIf="members" class="list-content">
+    <clark-user-card *ngFor="let user of members" [user]="user"></clark-user-card>
+  </div>
+</section>

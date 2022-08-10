@@ -44,8 +44,6 @@ export class ProfileLearningObjectsComponent implements OnInit {
     this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
       return learningObject.status !== 'released';
       });
-      console.log(this.learningObjectsReleased);
-      console.log(this.learningObjectsUnreleased);
     this.tempCollectionsReleased = this.collectionsAbreviated.filter(learningObject => {
       return learningObject.status === 'released';
     });
@@ -121,7 +119,6 @@ export class ProfileLearningObjectsComponent implements OnInit {
         fullName.push(element);
       }
     });
-    console.log(fullName);
     return fullName;
   }
 }

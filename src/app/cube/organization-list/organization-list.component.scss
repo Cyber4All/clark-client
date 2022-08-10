@@ -1,0 +1,78 @@
+@import 'vars.scss';
+$sidebar-width: 350px;
+$content-width: calc(#{$max-width} - #{$sidebar-width});
+
+.list-container {
+  max-width: $max-width;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+
+  .list-content {
+    display: grid;
+    grid-template-columns: repeat( auto-fit, minmax(400px, 1fr));
+
+    padding: 0px;
+    margin-bottom: 30px;
+
+    & > clark-user-card, & > *  {
+      justify-self: center;
+      width: 400px;
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+.splash {
+  width: 100%;
+  height: 250px;
+  background: linear-gradient(45deg, desaturate(darken(rebeccapurple, 20), 15), rgba(102, 51, 153, 0.5));
+  padding: 50px 0px;
+  position: relative;
+  margin-bottom: 50px;
+
+  &:after {
+    content: '';
+    background: white;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0.03;
+    mask: $cube-pattern repeat;
+  }
+  .inner {
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    .name {
+      font-size: $largest;
+      color: white;
+      text-shadow: 0px 0px rgba(0, 0, 0, 0.2);
+    }
+    .type {
+      margin-top: 5px;
+      padding: 3px;
+      border-radius: 1px;
+      display: inline-block;
+      position: relative;
+      color: white;
+      text-transform: capitalize;
+      font-size: $small;
+      font-weight: 300;
+      &:before {
+        content: "";
+        border-radius: 50%;
+        width: 10px;
+        height: 10px;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        position: absolute;
+      }
+    }
+  }
+}

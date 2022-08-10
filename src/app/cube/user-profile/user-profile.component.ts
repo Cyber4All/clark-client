@@ -20,7 +20,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     private auth: AuthService,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.subscription = this.route.data.subscribe(val => {
       this.user = val.user;
     });
