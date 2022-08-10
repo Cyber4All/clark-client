@@ -51,8 +51,10 @@ export class ProfileLearningObjectsComponent implements OnInit {
       return learningObject.status !== 'released';
     });
     this.collectionsReleased = this.genCollections(this.tempCollectionsReleased);
+    console.log(this.collectionsReleased);
     this.collectionsUnreleased = this.genCollections(this.tempCollectionsUnreleased);
     this.collectionsFullReleased = this.getFullCollectionName(this.collectionsReleased);
+    console.log(this.collectionsFullReleased);
     this.collectionsFullUnreleased = this.getFullCollectionName(this.collectionsUnreleased);
     };
 
@@ -110,7 +112,7 @@ export class ProfileLearningObjectsComponent implements OnInit {
 
    getFullCollectionName(arr: any){
     const fullName = [];
-    fullName.forEach(element => {
+    arr.forEach(element => {
       if(element !== 'Other') {
         element = this.collectionService.getCollection(element).then(c => {
           fullName.push(c.name);
