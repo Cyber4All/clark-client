@@ -79,6 +79,12 @@ export class HierarchyBuilderComponent implements OnInit {
   
   /**
    * Creates the learning object hierarchy recursively
+   * The function takes in a node which is the parent of the hierarchy
+   * If the node doesn't have children just create the learning object in learning object service and return the _id of the new object
+   * If the node has children iterate through the children and create each child. The _id of the child is then returned 
+   * When all the children and childrens children are created add the children's ids to the parent
+   * If the node is the parent object we don't need to create the object because it already exists so just add the children
+   * Once the parent node has been reached pop a toaster and be gone with the recursion
    * @param node the node that will be the top level parent of the hierarchy
    * @returns 
    */
