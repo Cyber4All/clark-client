@@ -25,7 +25,7 @@ export class ProfileHeaderComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.getUserBio();
+    await this.getUserBio();
     this.checkUserStats();
     // Get user profile image
     this.gravatarImage = await this.userService.getGravatarImage(this.user.email, this.size);
@@ -46,5 +46,9 @@ export class ProfileHeaderComponent implements OnInit {
     await this.userService.getUser(this.user.username, 'username').then(val => {
       this.user = val;
     });
+  }
+
+  toggleEditProfileModal(val: boolean) {
+    this.editProfile = val;
   }
 }

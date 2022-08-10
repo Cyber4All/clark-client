@@ -1,20 +1,25 @@
 @import 'vars.scss';
 
 .user-profile-header_container {
-    display: flex;
-    max-width: 1050px;
+    display: block;
+    max-width: 930px;
     margin: 0 auto;
+    position: relative;
+    z-index: 0;
 
     .user-profile-header_wrapper {
         background-color: $secondary-white-background;
         margin: 15px auto;
         width: 100%;
-        max-width: 625px;
+        max-width: 500px;
         height: 200px;
-        border: 2px solid $light-grey;
-        border-radius: 5px;
-        display: inline-block;
-
+        border-radius: 8px;
+        border: .5px rgba(28, 112, 221, .1) solid;
+        box-shadow: 0 10px 20px -10px rgba(28, 112, 221, .1);
+        display: block;
+        position: relative;
+        z-index: 1;
+        float: left;
     
         .img {
             display: inline-block;
@@ -31,6 +36,8 @@
             background-position: center;
             background-repeat: no-repeat;
             margin: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         .user-profile_info {
@@ -39,6 +46,8 @@
             line-height: 5px;
             margin: 20px;
             color: $dark-grey;
+            position: absolute;
+            z-index: 2;
 
             h1 {
                 line-height: 35px;
@@ -58,7 +67,8 @@
             font-size: $smaller;
             float: right;
             margin: 40px 20px 0 0;
-
+            position: relative;
+            z-index: 2;
             .svg-inline--fa {
                 font-size: $normal;
                 margin-right: 5px;
@@ -69,6 +79,8 @@
                 border-bottom: 1px solid $blue-accent;
             }
         }
+
+
     }
     
     .user-profile-bio_wrapper{
@@ -77,14 +89,16 @@
         width: 100%;
         max-width: 400px;
         height: 200px;
-        border: 2px solid $light-grey;
-        border-radius: 5px;
-        display: inline-block;
+        border-radius: 8px;
+        border: .5px rgba(28, 112, 221, .1) solid;
+        box-shadow: 0 10px 20px -10px rgba(28, 112, 221, .1);
+        display: block;
         color: $dark-grey;
+        float: right;
 
         .profile-bio_wrapper {
             margin: 12px 10px auto 10px;
-            padding-top: 10px;
+            padding: 10px 4px;
             h2 {
                 color: $darker-grey;
                 margin-bottom: 0;
@@ -101,6 +115,11 @@
             }
         }
     }
+}
+
+.modal-container {
+    height: 85vh;
+    width: 50vw;
 }
 // .user-profile-header_wrapper {
 //     background-color: #FFFFFF;

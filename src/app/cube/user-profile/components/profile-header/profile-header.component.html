@@ -7,7 +7,7 @@
             <a href="mailto:{{ user.email }}">{{ user.email }}</a>
             <ng-container [ngTemplateOutlet]="anyUserStats ? userStatsTemplate : undefined"></ng-container>
         </div>
-        <div class="edit" *ngIf="!editProfile && isUser" (activate)="editProfile = !editProfile">
+        <div class="edit" *ngIf="!editProfile && isUser" (activate)="toggleEditProfileModal(true)">
             <i class="far fa-pencil"></i>
             <span id="edit-profile">EDIT PROFILE</span>
         </div>
@@ -19,6 +19,12 @@
         </div>
     </div>
 </div>
+
+<clark-popup *ngIf="editProfile" (closed)="toggleEditProfileModal(false)">
+    <div class="modal-container" #popupInner>
+        <clark-edit-profile [user]="user" [gravatarImage]="gravatarImage"></clark-edit-profile>
+    </div>
+</clark-popup>
 
 <ng-template #userStatsTemplate>
     <p>xxx Saved Objects xxx Contributed Objects xxx Downloads</p>

@@ -23,11 +23,17 @@ export class UserService {
    * @returns {Promise<any>}
    * @memberof UserService
    */
-  editUserInfo(): Promise<any> {
+  editUserInfo(user: {
+    name?: string;
+    email?: string;
+    organization?: string;
+    bio?: string;
+    username: any;
+  }): Promise<any> {
     return this.http
       .patch(
         USER_ROUTES.EDIT_USER_INFO,
-        {  },
+        { user },
         {
           withCredentials: true,
           responseType: 'text'
