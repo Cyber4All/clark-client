@@ -44,6 +44,7 @@ export class ProfileLearningObjectsComponent implements OnInit {
     this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
       return learningObject.status !== 'released';
       });
+    console.log(this.learningObjectsUnreleased);
     this.tempCollectionsReleased = this.collectionsAbreviated.filter(learningObject => {
       return learningObject.status === 'released';
     });
@@ -84,7 +85,7 @@ export class ProfileLearningObjectsComponent implements OnInit {
         return learningObject.status === 'released' && learningObject.collection === collection;
       });
     } else if (status === 2) {
-      if (collection === 'Other') {
+      if (collection === 'Drafts') {
         this.learningObjectsUnreleased = this.learningObjects.filter(learningObject => {
           return learningObject.status !== 'released' && learningObject.collection === '';
         });
@@ -104,16 +105,16 @@ export class ProfileLearningObjectsComponent implements OnInit {
   genCollections(arr: any){
     arr.forEach(element => {
       if (element.collection === ''){
-      element.collection = 'Other';
+      element.collection = 'Drafts';
     }
     });
-    return [...new Set(arr.map(x => x.collection))];
+     return [...new Set(arr.map(x => x.collection))];
   }
 
    getFullCollectionName(arr: any){
     const fullName = [];
     arr.forEach(element => {
-      if(element !== 'Other') {
+      if(element !== 'Drafts') {
         element = this.collectionService.getCollection(element).then(c => {
           fullName.push(c.name);
         });
