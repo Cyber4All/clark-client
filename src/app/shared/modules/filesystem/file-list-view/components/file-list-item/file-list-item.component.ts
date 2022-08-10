@@ -15,10 +15,12 @@ export class FileListItemComponent implements OnInit {
 
   @Output() clicked: EventEmitter<void> = new EventEmitter();
   @Output() menuClicked: EventEmitter<MouseEvent> = new EventEmitter();
+  @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
 
   icon = '';
   timestampAge = '';
   previewUrl = '';
+  accessGroups: string[];
 
   constructor(private auth: AuthService) {}
 
@@ -26,6 +28,7 @@ export class FileListItemComponent implements OnInit {
     this.icon = getIcon(this.file.extension);
     this.timestampAge = TimeFunctions.getTimestampAge(+this.file.date);
     this.previewUrl = this.file.previewUrl;
+    this.accessGroups = this.auth.accessGroups;
   }
 
   /**
@@ -40,6 +43,18 @@ export class FileListItemComponent implements OnInit {
   }
 
   /**
+   * Updates the file's packageable property:
+   *  1. Updates the file in the client to immediately display changes
+   *  2. Emits toggleClicked to save the update in the database
+   *
+   * @param event the new packageable state
+   */
+  handleToggle(event: boolean) {
+    this.file.packageable = event;
+    this.toggleClicked.emit(event);
+  }
+
+  /**
    * Emits click event of meatball was clicked
    *
    * @param {*} event
@@ -48,5 +63,15 @@ export class FileListItemComponent implements OnInit {
   handleMeatballClick(event: MouseEvent) {
     event.stopPropagation();
     this.menuClicked.emit(event);
+  }
+
+  /**
+   * Checks if the current user is an admin or curator.
+   * If true, allows the user to change the bundling status of a file/folder.
+   *
+   * @returns boolean value if the user is valid
+   */
+  checkAccessGroups(): boolean {
+    return this.accessGroups.includes('admin') || this.accessGroups.includes('curator');
   }
 }

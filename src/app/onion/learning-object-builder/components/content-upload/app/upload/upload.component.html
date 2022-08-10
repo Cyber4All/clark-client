@@ -41,6 +41,7 @@
           (path)="openPath = $event"
           (solutionUpload)="handleSolution($event)"
           (downloadClicked)="handleFileDownload($event)"
+          (packageableToggled)="packageableToggled.emit($event)"
         ></onion-file-manager>
       </div>
       <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
