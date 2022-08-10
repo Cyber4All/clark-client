@@ -74,7 +74,7 @@ export class BuilderStore {
       this._outcomes = this._learningObject.outcomes;
       this._topics = this._learningObject.topics || [];
       // set the title of page to the learning object name
-      this.titleService.setTitle(this._learningObject.name + ' | CLARK');
+      this.titleService.setTitle('CLARK | ' + this._learningObject.name);
       return this._learningObject;
     }).catch(e => {
       this.toaster.error('Error!', 'Could not retrieve learning object, please try again later.');
