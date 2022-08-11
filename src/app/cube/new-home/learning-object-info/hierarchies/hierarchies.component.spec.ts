@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HierarchiesComponent } from './hierarchies.component';
 
 describe('HierarchiesComponent', () => {
