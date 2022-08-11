@@ -1,0 +1,32 @@
+<div class="list-item">
+    <div *ngIf="node.showForm === true" class="node form">
+        <mat-form-field class="name-field" appearance="outline">
+            <mat-label>Learning Object Name</mat-label>
+            <input #name matInput [formControl]="nameFormControl" minlength="2" [(ngModel)]="node.name">
+            <mat-error class="error" *ngIf="nameFormControl.errors?.forbiddenName">
+                Name already exists for the author!
+            </mat-error>
+            <mat-error *ngIf="nameFormControl.hasError('required')">
+                Name is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="nameFormControl.errors?.minlength">
+                Name is must be at least 2 characters
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="length-field" appearance="outline">
+            <mat-label>Learning Object Length</mat-label>
+            <mat-select [(ngModel)]="node.length" name="length">
+                <mat-option *ngFor="let length of lengths" [value]="length.value">
+                  {{ length.viewValue }}
+                </mat-option>
+              </mat-select>
+        </mat-form-field>
+    </div>
+    <div *ngIf="node.showForm === false" class="node card">
+        <span class="node card name">{{ node.name }}</span>
+        <span class="node card length">{{ node.length | titlecase }}</span>
+    </div>
+    <button class="add-node" *ngIf="node.length !== 'nanomodule'" (click)="addNode.emit(node)"><i class="far fa-plus"></i></button>
+    <button class="add-node trash" *ngIf="node.showForm === true" (click)="remove()"><i class="far fa-trash"></i></button>
+</div>
+

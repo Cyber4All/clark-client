@@ -18,6 +18,7 @@
   font-size: 20px;
   margin-right: 5px;
 }
+
 .grid-row {
   display: grid;
   grid-template-columns: 2fr 2fr 1fr 1fr 25px;
@@ -29,6 +30,10 @@
   justify-self: center;
   border-bottom: 1px solid $light-grey;
   margin-bottom: 8px;
+
+  &.bundle {
+    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  }
 }
 
 .text-contained {
@@ -62,6 +67,17 @@
 
 .description {
   color: $dark-grey;
+}
+
+.toggleBundle {
+  display: flex;
+  justify-content: center;
+  
+  clark-toggle-switch {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
 }
 
 .meatballs {

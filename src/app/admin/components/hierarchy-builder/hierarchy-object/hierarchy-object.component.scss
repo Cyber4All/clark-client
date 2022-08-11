@@ -1,0 +1,56 @@
+@import 'vars.scss';
+
+  .list-item {
+    display: flex;
+
+    .node {
+      &.card {
+        color: $dark-grey;
+        align-content: left;
+        &.name {
+          padding: 10px;
+          font-size: $normal;
+        }
+        &.length {
+          padding: 10px;
+          font-size: $normal;
+        }
+      }
+      &.form {
+        padding-top: 15px;
+      }
+    }
+
+    .name-field {
+      padding-right: 5px;
+      padding-left: 5px;
+    }
+
+    .length-field {
+      max-width: 150px;
+    }
+
+    .add-node {
+      border: none;
+      background: transparent;
+      margin-left: 5px;
+      font-size: $large;
+      cursor: pointer;
+
+
+      &.trash {
+        border-radius: 4px;
+        font-size: $normal;
+        color: $error-red;
+      }
+    }
+
+    .button-trash {
+      border: none;
+      background: $error-red;
+      border-radius: 4px;
+      font-size: $normal;
+      color: white;
+      max-height: 20px;
+    }
+}
