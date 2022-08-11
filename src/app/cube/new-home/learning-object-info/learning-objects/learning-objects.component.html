@@ -32,15 +32,18 @@
             </ul>
         </div>
         <div class="featured-contributors">
-            <div class="contributor-card" *ngFor="let contributor of featuredObject?.contributors">
-                <img [src]="getGravatarImage(contributor.email)" />
+            <!-- Displays only the first 3 contributors -->
+            <div class="contributor-card" *ngFor="let contributor of featuredObject?.contributors | slice:0:4">
+                <img *ngIf="contributor?.email" [src]="getGravatarImage(contributor.email)" />
                 <p>{{ capitalize(contributor.name) }}</p>
                 <p>{{ capitalize(contributor.organization) }}</p>
             </div>
+            <!-- Any unmentioned contributors will be counted here -->
+            <p *ngIf="featuredObject?.contributors.length > 3">+ {{ featuredObject?.contributors.length - 3 }} more</p>
         </div>
     </div>
 
-    <button [routerLink]="'/browse'">BROWSE 0+ LEARNING OBJECTS</button>
+    <button [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
     
     
     

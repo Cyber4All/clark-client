@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { LearningObject } from '@entity';
+import { LearningObject, User } from '@entity';
 import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/core/learning-object.service';
 import { UserService } from 'app/core/user.service';
+import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service';
 
 
 @Component({
@@ -12,15 +13,20 @@ import { UserService } from 'app/core/user.service';
 })
 export class LearningObjectsComponent implements OnInit {
   featuredObject: LearningObject;
+  numReleasedObjects = 0; // default number of released objects before the service provides a new number
 
   constructor(private featureService: FeaturedObjectsService,
               private learningObjectService: LearningObjectService,
-              private userService: UserService) { }
+              private userService: UserService,
+              private usageStatsService: UsageStatsService) { }
 
   async ngOnInit(): Promise<void> {
+    await this.usageStatsService.getLearningObjectStats().then(stats => {
+      this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
+    });
     await this.featureService.getFeaturedObjects();
     await this.featureService.featuredObjects.subscribe(objects => {
-      this.featuredObject = objects[2];
+      this.featuredObject = objects[1];
     });
     await this.learningObjectService.fetchLearningObjectWithResources({
       author: this.featuredObject.author._name,
@@ -28,7 +34,7 @@ export class LearningObjectsComponent implements OnInit {
         cuid: this.featuredObject.cuid
       },
       id: this.featuredObject.id
-    }, ['outcomes']).subscribe(object => {
+    }, ['outcomes']).subscribe((object: LearningObject) => {
       this.featuredObject = object;
     });
   }
