@@ -22,7 +22,10 @@ export class HierarchyObjectComponent implements OnInit {
 
   lengths = [];
 
-  nameFormControl = new FormControl('', { validators: [Validators.required, Validators.minLength(2), this.forbiddenNameValidator()],  updateOn: "blur"});
+  nameFormControl = new FormControl(
+    '',
+    { validators: [Validators.required, Validators.minLength(2), this.forbiddenNameValidator()],  updateOn: 'blur'}
+  );
   constructor(
     private hierarchyService: HierarchyService,
     private toaster: ToastrOvenService,
@@ -30,62 +33,62 @@ export class HierarchyObjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.lengths = [];
-    if(this.node.length === "unit") {
-      
+    if(this.node.length === 'unit') {
+
       this.lengths = [
         {
-          value: "nanomodule",
-          viewValue: "Nanomodule"
+          value: 'nanomodule',
+          viewValue: 'Nanomodule'
         },
         {
-          value: "micromodule",
-          viewValue: "Micromodule"
+          value: 'micromodule',
+          viewValue: 'Micromodule'
         },
         {
-          value: "module",
-          viewValue: "Module"
+          value: 'module',
+          viewValue: 'Module'
         },
         {
-          value: "unit",
-          viewValue: "Unit"
-        }
-      ]
-    }
-    if(this.node.length === "module") {
-      this.lengths = [
-        {
-          value: "nanomodule",
-          viewValue: "Nanomodule"
-        },
-        {
-          value: "micromodule",
-          viewValue: "Micromodule"
-        },
-        {
-          value: "module",
-          viewValue: "Module"
-        }
-      ]
-    }
-    if(this.node.length === "micromodule") {
-      this.lengths = [
-        {
-          value: "nanomodule",
-          viewValue: "Nanomodule"
-        },
-        {
-          value: "micromodule",
-          viewValue: "Micromodule"
+          value: 'unit',
+          viewValue: 'Unit'
         }
       ];
     }
-    if(this.node.length === "nanomodule") {
+    if(this.node.length === 'module') {
       this.lengths = [
         {
-          value: "nanomodule",
-          viewValue: "Nanomodule"
+          value: 'nanomodule',
+          viewValue: 'Nanomodule'
         },
-      ]
+        {
+          value: 'micromodule',
+          viewValue: 'Micromodule'
+        },
+        {
+          value: 'module',
+          viewValue: 'Module'
+        }
+      ];
+    }
+    if(this.node.length === 'micromodule') {
+      this.lengths = [
+        {
+          value: 'nanomodule',
+          viewValue: 'Nanomodule'
+        },
+        {
+          value: 'micromodule',
+          viewValue: 'Micromodule'
+        }
+      ];
+    }
+    if(this.node.length === 'nanomodule') {
+      this.lengths = [
+        {
+          value: 'nanomodule',
+          viewValue: 'Nanomodule'
+        },
+      ];
     }
   }
 

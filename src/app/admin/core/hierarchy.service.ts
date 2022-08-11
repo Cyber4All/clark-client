@@ -13,7 +13,7 @@ export class HierarchyService {
 
 
   async addHierarchyObject(username: string, object: any): Promise<any> {
-    return await this.http.post(                                            
+    return await this.http.post(
       ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(username),
       { object }, { withCredentials: true, responseType: 'text'}
     ).toPromise();
@@ -21,10 +21,11 @@ export class HierarchyService {
 
   /**
    * Adds children to a learning object
+   *
    * @param username the username of the author
    * @param object the object having children
    * @param children the children to be had
-   * @returns 
+   * @returns
    */
   async addChildren(username: string, object: any, children): Promise<any> {
     return await this.http.post(
@@ -41,9 +42,10 @@ export class HierarchyService {
 
   /**
    * Checks if the name of the learning object is already taken for the author
+   *
    * @param username the username of the author
    * @param objectName the objectName to check for
-   * @returns 
+   * @returns
    */
   async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http

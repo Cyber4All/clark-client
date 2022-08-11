@@ -129,8 +129,8 @@ export class SubmitComponent implements OnInit {
     let str = '';
     const potentialErrorFields = {
       name: ' name',
-      description: ' description', 
-      contributor: ' contributor(s)', 
+      description: ' description',
+      contributor: ' contributor(s)',
       outcome: ' outcome(s)'
     };
     if(this.learningObject.name === '') {
