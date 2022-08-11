@@ -1,3 +1,4 @@
+import { trigger, transition, style, animate, state } from '@angular/animations';
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LEARNING_OBJECT_INFO_STATES } from '../learning-object-info.component';
@@ -5,11 +6,29 @@ import { LEARNING_OBJECT_INFO_STATES } from '../learning-object-info.component';
 @Component({
   selector: 'clark-sticky-menu',
   templateUrl: './sticky-menu.component.html',
-  styleUrls: ['./sticky-menu.component.scss']
+  styleUrls: ['./sticky-menu.component.scss'],
+  animations: [
+    trigger('isHighlighed', [
+      state("highlighted", style({
+        backgroundColor: "#E9F0FE",
+        color: "#376ED6",
+        fontWeight: 600,
+      })),
+      state("notHighlighted", style({
+        color: "#AAAAAA"
+      })),
+      transition("isHighlighted => notHighlighted", [
+        animate('4s')
+      ]),
+      transition("notHightlighted => isHighlighted", [
+        animate('4s')
+      ])
+    ])
+  ]
 })
 export class StickyMenuComponent implements OnInit {
   isHighlighted = {
-    learningObjects: false,
+    learningObjects: true, // LearningObjects starts highlighted
     learningOutcomes: false,
     hierarchies: false,
     collections: false,
@@ -48,12 +67,14 @@ export class StickyMenuComponent implements OnInit {
 
   /**
    * Handles when the user clicks on an option of the menu
-   * Brings the user to the top of that div using navigateByUrl
+   * Brings the user to the top of that div using scrollIntoView, this will
+   * call the @hostListener function which will set the proper fields
+   * 
    * @param choice The choice to go to
    */
   async changeSelection(choice: LEARNING_OBJECT_INFO_STATES) {
-    this.setFields(choice);
-    await this.router.navigateByUrl(`/home#${choice}`, {"skipLocationChange": true})
+    const el = document.getElementById(choice);
+    el.scrollIntoView({"behavior": "smooth"});
   }
 
   /**
