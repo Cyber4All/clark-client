@@ -35,7 +35,7 @@
     }
 
     .topic-btn {
-        background-color: lighten($light-grey, 4);
+        background-color: lighten($light-grey, 7);
         border: 1px solid $medium-grey;
         border-radius: 4px;
         text-align: center;
@@ -61,9 +61,9 @@ select {
 .objects {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     gap: 30px;
-    margin: 50px 20px;
+    margin: 50px 0;
     flex-wrap: wrap;
 
     .all {
@@ -85,4 +85,10 @@ select {
           width: 250px;
         }
       }
+}
+
+@media (max-width: 1130px) {
+    .objects {
+        justify-content: center;
+    }
 }

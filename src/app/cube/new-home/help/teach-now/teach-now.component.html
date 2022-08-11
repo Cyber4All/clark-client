@@ -1,6 +1,7 @@
 <div class="wrapper">
     <div #topicScroll *ngIf="width > 750" class="topics">
         <div class="shadow left" aria-hidden="true"></div>
+        <!-- NOTE: Add left and right buttons for scrolling if it becomes an issue -->
         <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)" [ngClass]="{'selected': selectedTopic === topic._id}">{{ topic.name }}</button>
         <span *ngIf="topics.length === 0">Loading Topics...</span>
         <div class="shadow right" aria-hidden="true"></div>
