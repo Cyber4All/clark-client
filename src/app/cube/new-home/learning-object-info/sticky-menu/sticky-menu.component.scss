@@ -1,4 +1,5 @@
 @import 'vars.scss';
+$box-background: #E9F0FE;
 
 .wrapper {
     width: 250px;
@@ -22,20 +23,20 @@
             margin-right: 10px;
         }
         &:hover {
-            background-color: #E9F0FE;
-            color: #376ED6;
+            background-color: $box-background;
+            color: $text-choosen-blue;
             cursor:pointer;
             font-weight: 600;
         }
     }
 
     .choosen {
-        background-color: #E9F0FE;
-        color: #376ED6;
+        background-color: $box-background;
+        color: $text-choosen-blue;
         font-weight: 600;
     }
 
     .greyout {
-        color: #AAAAAA;
+        color: $text-greyout
     }
 }
