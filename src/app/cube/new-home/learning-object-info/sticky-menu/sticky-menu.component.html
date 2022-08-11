@@ -1,5 +1,5 @@
 <div class="wrapper" *ngIf="!isMobileView">
-    <div 
+    <div
         class="content" 
         [ngClass]="{'choosen': isHighlighted.learningObjects, 'greyout': !isHighlighted.learningObjects && !isOtherChoiceSelected() }" 
         (activate)="changeSelection('learningObject')"
