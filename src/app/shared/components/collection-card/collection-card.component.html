@@ -1,7 +1,13 @@
 
 <button attr.aria-label="Navigate to {{ collection.name }} collection" class="collection-card" routerLink="{{ link }}">
-  <img aria-hidden="true" *ngIf="pictureLocation; else genericLogoTemplate" class="card__image" src="{{ pictureLocation }}" alt="{{ collection.name }} logo">
-  <div aria-hidden="true" class="card__name">{{ collection.name }}</div>
+  <img 
+    aria-hidden="true" 
+    *ngIf="pictureLocation; else genericLogoTemplate" 
+    class="card__image" 
+    src="{{ pictureLocation }}" 
+    alt="{{ collection.name }} logo"
+    [ngClass]="{'long': collection?.abvName === 'ncyte' || collection?.abvName === 'nice' || collection?.abvName === 'deterlab' || collection?.abvName === '502_project'}">
+  <div aria-hidden="true" class="card__name" [ngClass]="{'long': collection?.abvName === 'deterlab'}">{{ collection.name }}</div>
 </button>
 
 <ng-template #genericLogoTemplate>

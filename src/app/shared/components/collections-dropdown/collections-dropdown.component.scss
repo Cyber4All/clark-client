@@ -1,50 +1,75 @@
 @import "_vars.scss";
 
-.triangle {
-    border: 10px solid white;
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-left-color: transparent;
-    width: 0px;
-    height: 0px;
-    z-index: 21;
-    position:absolute;
-    margin-left: 200px;
-}
+.fullscreen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 19;
+    
+    .triangle {
+        border: 10px solid white;
+        border-top-color: transparent;
+        border-right-color: transparent;
+        border-left-color: transparent;
+        width: 0px;
+        height: 0px;
+        z-index: 21;
+        top: 135px;
+        position: absolute;
+        margin-left: 200px;
+    }
 
-.collections-dropdown {
-    position:absolute;
-    z-index: 20;
-    top: 155px;
-    padding: 0px 20px;
-    margin-left: 5%;
-    background-color: white;
-    width: 1000px;
-    height: 1050px;
+    .collections-dropdown {
+        position:absolute;
+        z-index: 20;
+        top: 155px;
+        padding: 0px 20px 40px;
+        margin-left: 5%;
+        background-color: white;
+        width: fit-content;
+        height: fit-content;
+        box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
 
-    .collection-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 5%;
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 1000px;
+            row-gap: 20px;
+            height: fit-content;
 
-        .item{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+            .item{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
 
-            ::ng-deep .collection-card {
-                background-color: $primary-white;
-                padding: 40px;
-                height: 200px;
-                width: 200px;
-                border: 1px solid $secondary-white;
-                .card__name {
-                    height: 20px;
-                }
-                .card__image {
-                    height: 50px;
+                ::ng-deep .collection-card {
+                    background-color: $primary-white;
+                    padding: 40px;
+                    height: 200px;
+                    width: 225px;
+                    border: 1px solid $secondary-white;
+                    
+                    .card__name {
+                        height: 20px;
+                        font-size: $small;
+                        color: black;
+                        &.long {
+                            font-size: x-small;
+                        }
+                    }
+                    .card__image {
+                        height: 86px;
+                        max-width: 190px;
+                        &.long {
+                            height: 55px;
+                            width: 180px;
+                        }
+                    }
                 }
             }
         }

@@ -21,7 +21,7 @@ export class NavbarDropdownService {
     // public levelsDropdown = new BehaviorSubject<boolean>(false);
 
     public topicDropdown = new BehaviorSubject<boolean>(false);
-    public collectionsDropdown = new BehaviorSubject<boolean>(true);
+    public collectionsDropdown = new BehaviorSubject<boolean>(false);
     public resourcesDropdown = new BehaviorSubject<boolean>(false);
     //mobile slideouts
     public isMHamburger = new BehaviorSubject<boolean>(false);
@@ -83,6 +83,7 @@ export class NavbarDropdownService {
             if (e instanceof NavigationEnd) {
               // if we're in onion, auth, or admin, toggle the navbars off
               this.closeMobileMenus();
+              this.closeAll();
               if(e.url.match(/\/*onion[\/*[0-z]*]*/)
                 || e.url.match(/\/*auth[\/*[0-z]*]*/)
                 || e.url.match(/\/*admin[\/*[0-z]*]*/)) {

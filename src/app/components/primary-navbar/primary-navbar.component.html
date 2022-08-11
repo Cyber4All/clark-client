@@ -128,7 +128,7 @@
                     <ul *ngIf="showTopics">
                         <li *ngFor="let t of topics" (click)="dropdowns.setTopic(t._id)">{{t.name}}</li>
                     </ul>
-                    <li [routerLink]="['collections']">Collections</li>
+                    <li [routerLink]="['/c']">Collections</li>
                     <li (click)="dropdowns.toggleResourcesDropdown()">External Resources
                         <span class="arrow" *ngIf="!showResources">
                             <i class="fas fa-chevron-down"></i>
