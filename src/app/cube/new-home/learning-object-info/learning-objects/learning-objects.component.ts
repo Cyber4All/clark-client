@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@entity';
 import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/core/learning-object.service';
+import { UserService } from 'app/core/user.service';
 
 
 @Component({
@@ -13,7 +14,8 @@ export class LearningObjectsComponent implements OnInit {
   featuredObject: LearningObject;
 
   constructor(private featureService: FeaturedObjectsService,
-              private learningObjectService: LearningObjectService) { }
+              private learningObjectService: LearningObjectService,
+              private userService: UserService) { }
 
   async ngOnInit(): Promise<void> {
     await this.featureService.getFeaturedObjects();
@@ -72,6 +74,10 @@ export class LearningObjectsComponent implements OnInit {
     // The bottom regex will catch tags such as </p>
     description = description.replace(/<[0-z\s\'\'=]*[\/]+>/gi, ' ');
     return description.replace(/<[\/]*[0-z\s\'\'=]+>/gi, ' ');
+  }
+
+  getGravatarImage(email: string) {
+    return this.userService.getGravatarImage(email, 100);
   }
 
 }

@@ -31,10 +31,16 @@
                 </li>
             </ul>
         </div>
-        <div class="featured-authors">
-            
+        <div class="featured-contributors">
+            <div class="contributor-card" *ngFor="let contributor of featuredObject?.contributors">
+                <img [src]="getGravatarImage(contributor.email)" />
+                <p>{{ capitalize(contributor.name) }}</p>
+                <p>{{ capitalize(contributor.organization) }}</p>
+            </div>
         </div>
     </div>
+
+    <button [routerLink]="'/browse'">BROWSE 0+ LEARNING OBJECTS</button>
     
     
     
