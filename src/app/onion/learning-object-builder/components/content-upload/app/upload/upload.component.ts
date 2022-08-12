@@ -31,6 +31,8 @@ import {
 import { UPLOAD_ERRORS } from './errors';
 import { AuthService } from 'app/core/auth.service';
 import { getUserAgentBrowser } from 'getUserAgentBrowser';
+import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -119,6 +121,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   }> = new EventEmitter<{ index: number; description: string }>();
   @Output()
   notesUpdated: EventEmitter<string> = new EventEmitter<string>();
+  @Output()
+  packageableToggled: EventEmitter<{
+    state: boolean,
+    item: DirectoryNode | LearningObject.Material.File
+  }> = new EventEmitter();
 
   notes$: Subject<string> = new Subject<string>();
 
@@ -217,11 +224,13 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.error$
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((err: Error | string) => {
+      .subscribe((err: Error | string | HttpErrorResponse) => {
         let message: string;
         if (err) {
           if (err instanceof Error) {
             message = err.message;
+          } else if (err instanceof HttpErrorResponse){
+            message = err.error.message;
           } else {
             message = err;
           }

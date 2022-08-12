@@ -1,6 +1,19 @@
-<p>learning-object-info works!</p>
-<clark-sticky-menu></clark-sticky-menu>
-<clark-learning-objects></clark-learning-objects>
-<clark-learning-outcomes></clark-learning-outcomes>
-<clark-hierarchies></clark-hierarchies>
-<clark-collections></clark-collections>
+<div class="home-column">
+    <div class="sidebar-wrapper">
+        <clark-sticky-menu [currentComponentInView]="currentComponent"></clark-sticky-menu>
+    </div>
+    <div class="main-content">
+        <div #learningObject id="learningObject">
+            <clark-learning-objects></clark-learning-objects>
+        </div>
+        <div #learningOutcomes id="learningOutcomes">
+            <clark-learning-outcomes></clark-learning-outcomes>
+        </div>
+        <div #hierarchies id="hierarchies">
+            <clark-hierarchies></clark-hierarchies>
+        </div>
+        <div #collections id="collections">
+            <clark-collections></clark-collections>
+        </div>
+    </div>
+</div>

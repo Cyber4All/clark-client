@@ -21,6 +21,10 @@
   justify-self: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.07);
   margin-bottom: 8px;
+
+  &.bundle {
+    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  }
 }
 
 .text-contained {
@@ -76,6 +80,18 @@
     flex: 0 0 auto;
   }
 }
+
+.toggleBundle {
+  display: flex;
+  justify-content: center;
+  
+  clark-toggle-switch {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+}
+
 
 .external-link-icon {
   color: $light-blue;
