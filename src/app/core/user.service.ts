@@ -17,36 +17,6 @@ export class UserService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
-   * Edit a user's basic information
-   *
-   * @param { --- } object tbd
-   * @returns {Promise<any>}
-   * @memberof UserService
-   */
-   editUserInfo(user: {
-    name?: string;
-    email?: string;
-    organization?: string;
-    bio?: string;
-    username: any;
-  }): Promise<any> {
-    return this.http
-      .patch(
-        USER_ROUTES.EDIT_USER_INFO,
-        { user },
-        {
-          withCredentials: true,
-          responseType: 'text'
-        }
-      )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
    * Check to see if a user exists for the given username
    *
    * @param {string} username the username of the user to validate
@@ -300,13 +270,6 @@ export class UserService {
     .toPromise();
     this.getNotificationCount(username);
     return deleteValue;
-  }
-
-  getCollectionData(username: string) {
-    return this.http.get(USER_ROUTES.GET_COLLECTIONS(username), {
-      withCredentials: true,
-    })
-    .toPromise();
   }
 
   private handleError(error: HttpErrorResponse) {
