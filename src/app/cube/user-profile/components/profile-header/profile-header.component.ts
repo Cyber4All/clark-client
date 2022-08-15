@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { User } from '@entity';
+import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UserService } from 'app/core/user.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'clark-profile-header',
@@ -8,7 +8,13 @@ import { UserService } from 'app/core/user.service';
   styleUrls: ['./profile-header.component.scss']
 })
 export class ProfileHeaderComponent implements OnInit {
-  @Input() user: User;
+  private _user = new BehaviorSubject<any>({});
+  @Input() set user(user: any) {
+    this._user.next(user);
+  }
+  get user() {
+    return this._user.value;
+  }
   @Input() isUser: boolean;
 
   gravatarImage: string;
@@ -22,14 +28,16 @@ export class ProfileHeaderComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
-    await this.getUserBio();
-    this.checkUserStats();
-    // Get user profile image
-    this.gravatarImage = await this.userService.getGravatarImage(this.user.email, this.size);
-    this.firstName = this.user.name.split(' ')[0];
+    this._user.subscribe(async val => {
+      this.gravatarImage = await this.userService.getGravatarImage(val.email, this.size);
+      this.firstName = val.name.split(' ')[0];
+      this.checkUserStats();
+    });
+
   }
 
   /**
@@ -37,15 +45,6 @@ export class ProfileHeaderComponent implements OnInit {
    */
   checkUserStats() {
     // Check saved
-  }
-
-  /**
-   * Function to retrieve a user's bio
-   */
-  async getUserBio() {
-    await this.userService.getUser(this.user.username, 'username').then(val => {
-      this.user = val;
-    });
   }
 
   toggleEditProfileModal(val: boolean) {
