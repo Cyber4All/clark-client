@@ -36,6 +36,11 @@ export const ADMIN_ROUTES = {
   UPDATE_OBJECT_SUBMITTED_COLLECTION(username: string, cuid: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(cuid)}/collection`;
   },
+  ADD_HIERARCHY_OBJECT(username) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/hierarchy-object`;
+  },
   TOGGLE_BUNDLE(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(id)}/files/bundle`;
   }

@@ -21,7 +21,7 @@ export class CollectionCardComponent implements OnInit {
       this.collection.abvName !== 'plan c'
     ) {
       this.pictureLocation =
-        '../../../assets/images/collections/' +
+        '/assets/images/collections/' +
         this.collection.abvName +
         '.png';
     }
