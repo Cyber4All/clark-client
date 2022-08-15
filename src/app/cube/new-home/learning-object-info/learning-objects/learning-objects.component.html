@@ -34,11 +34,7 @@
         <div class="featured-contributors">
             <!-- Displays only the first 3 contributors -->
             <div class="contributor-card" *ngFor="let contributor of featuredObject?.contributors | slice:0:4">
-                <img *ngIf="contributor?.email" [src]="getGravatarImage(contributor.email)" />
-                <div class="card-text">
-                    <p>{{ capitalize(contributor.name) }}</p>
-                    <p>{{ capitalize(contributor.organization) }}</p>
-                </div>
+                <clark-author-card [author]="contributor" [profileImageURL]="getGravatarImage(contributor.email)"></clark-author-card>
             </div>
             <!-- Any unmentioned contributors will be counted here -->
             <p *ngIf="featuredObject?.contributors.length > 3">+ {{ featuredObject?.contributors.length - 3 }} more</p>
