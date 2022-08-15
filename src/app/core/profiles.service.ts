@@ -67,8 +67,8 @@ export class ProfileService {
    * @param params
    * @returns
    */
-  async fetchLearningObject(params: { author: string, cuid: string}): Promise<any> {
-    return await this.http
+  fetchLearningObject(params: { author: string, cuid: string}): Promise<any> {
+    return this.http
       .get(
         PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuid),
         {
@@ -91,8 +91,8 @@ export class ProfileService {
    * @param username
    * @returns
    */
-  async getCollectionData(username: string): Promise<any> {
-    return await this.http.get(USER_ROUTES.GET_COLLECTIONS(username), {
+  getCollectionData(username: string): Promise<any> {
+    return this.http.get(USER_ROUTES.GET_COLLECTIONS(username), {
       withCredentials: true
     }).toPromise();
   }
