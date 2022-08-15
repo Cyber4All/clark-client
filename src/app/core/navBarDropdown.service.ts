@@ -66,12 +66,9 @@ export class NavbarDropdownService {
         if(this.userDropdown.getValue()) {
             this.userDropdown.next(false);
         }
-
-        //DO NOT REMOVE
-        // if(this.topicDropdown.getValue()) {
-        //     this.topicDropdown.next(false);
-        // }
-
+        if(this.topicDropdown.getValue()) {
+            this.topicDropdown.next(false);
+        }
         if(this.collectionsDropdown.getValue()) {
             this.collectionsDropdown.next(false);
         }

@@ -14,7 +14,7 @@ import { HierarchiesComponent } from './learning-object-info/hierarchies/hierarc
 import { CollectionsComponent } from './learning-object-info/collections/collections.component';
 import { StickyMenuComponent } from './learning-object-info/sticky-menu/sticky-menu.component';
 import { CubeSharedModule } from '../shared/cube-shared.module';
-import { SharedModule } from '../../shared/shared.module';
+import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule } from '@angular/router';
 
 
@@ -33,7 +33,7 @@ import { RouterModule } from '@angular/router';
     LearningOutcomesComponent,
     HierarchiesComponent,
     CollectionsComponent,
-    StickyMenuComponent
+    StickyMenuComponent,
   ],
   imports: [
     CommonModule,
