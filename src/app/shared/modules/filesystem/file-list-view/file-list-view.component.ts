@@ -26,6 +26,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   node$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(
     null
   );
+  @Input() inBuilder = false;
   @Output()
   emitPath: EventEmitter<string> = new EventEmitter<string>();
   @Output()
@@ -195,7 +196,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    * @returns boolean value if the user is valid
    */
    checkAccessGroups(): boolean {
-    return this.accessGroups.includes('admin') || this.accessGroups.includes('curator');
+    return this.inBuilder && (this.accessGroups.includes('admin') || this.accessGroups.includes('curator'));
   }
 
   ngOnDestroy() {
