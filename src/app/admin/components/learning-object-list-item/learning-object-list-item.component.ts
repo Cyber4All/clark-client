@@ -55,11 +55,13 @@ export class LearningObjectListItemComponent implements OnChanges {
   showRelevancyDate: boolean;
   showDeleteRevisionConfirmation: boolean;
   showChangeCollection: boolean;
+  showHierarchyBuilder: boolean;
 
   // flags
   meatballOpen = false;
 
   hasParents = false;
+  hasChildren = false;
 
   private headers = new HttpHeaders();
   constructor(
@@ -85,6 +87,7 @@ export class LearningObjectListItemComponent implements OnChanges {
         });
     }
     await this.checkForParents();
+    await this.checkForChildren();
   }
 
   /**
@@ -188,6 +191,29 @@ export class LearningObjectListItemComponent implements OnChanges {
   }
 
   /**
+   * Checks if the learning object has any children
+   */
+  async checkForChildren() {
+    const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(
+      this.learningObject.author.username
+      )}/learning-objects/${encodeURIComponent(
+      this.learningObject.id
+    )}/children`;
+
+    await this.http.get(
+      childrenUri,
+      { headers: this.headers, withCredentials: true }
+      ).pipe(
+      take(1),
+      catchError(e => of(e))
+    ).subscribe(object => {
+      if (object && object.length) {
+        this.hasChildren = true;
+      }
+    });
+  }
+
+  /**
    * Toggles the modal for Relevancy Date selection
    */
 
@@ -213,6 +239,10 @@ export class LearningObjectListItemComponent implements OnChanges {
      } else if (url === 'relevancy') {
        window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
      }
+   }
+
+   toggleHierarchyBuilder(val: boolean) {
+    this.showHierarchyBuilder = val;
    }
 
 

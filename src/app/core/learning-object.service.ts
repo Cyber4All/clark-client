@@ -123,6 +123,15 @@ export class LearningObjectService {
     );
   }
 
+  toggleFilesToBundle(username: string, learningObjectID: string, selected: string[], deselected: string[]) {
+    return this.http.patch(
+      USER_ROUTES.TOGGLE_FILES_TO_BUNDLE({ username, learningObjectID }),
+      {
+        selected: selected,
+        deselected: deselected,
+      }
+    );
+  }
   /**
    * Returns the route that needs to be hit in order to load Learning Object based on the params passed in
    *

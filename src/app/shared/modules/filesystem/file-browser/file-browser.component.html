@@ -16,8 +16,16 @@
     <button class="button good" id="new-file" (activate)="emitNewOptionClick($event)">Click here to upload</button>
     <span *ngIf="dragAndDropSupported">or drag and drop files and folders here</span>
   </div>
-  <clark-file-list-view *ngIf="!(currentNode$ | async)?.isEmpty()"
-    class="full-width" [node$]="currentNode$" [canManage]="canManage" (emitPath)="openFolder($event)" (emitDesc)="emitDesc($event)" (emitContextOpen)="meatballClick.emit($event)">
+  <clark-file-list-view 
+    *ngIf="!(currentNode$ | async)?.isEmpty()"
+    class="full-width" 
+    [node$]="currentNode$" 
+    [canManage]="canManage" 
+    (emitPath)="openFolder($event)" 
+    (emitDesc)="emitDesc($event)" 
+    (emitContextOpen)="meatballClick.emit($event)"
+    (emitBundle)="packageableToggled.emit($event)"
+    >
   </clark-file-list-view>
 </div>
 <clark-skip-link  *ngIf="canManage && !(currentNode$ | async)?.isEmpty()" title="Go to New Upload" skipLocation="new-file"></clark-skip-link>
