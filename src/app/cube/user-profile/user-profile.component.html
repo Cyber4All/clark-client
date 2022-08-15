@@ -1,4 +1,20 @@
-<div>
-  <clark-profile-header [user]="user" [isUser]="isUser"></clark-profile-header>
-  <clark-profile-learning-objects class="learningObjects" [username]="user.username" [isUser]="isUser"></clark-profile-learning-objects>
-</div>
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <clark-profile-header
+    [user]="user"
+    [isUser]="isUser">
+  </clark-profile-header>
+  <clark-profile-learning-objects
+    class="learningObjects"
+    [username]="user.username"
+    [isUser]="isUser"
+    [collectionsAbreviated]="userCollectionMetaData"
+    [learningObjects]="allUserContributions">
+  </clark-profile-learning-objects>
+</ng-container>
+
+<ng-template #loadingTemplate>
+  <div class="details-loading">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading User's Profile...
+  </div>
+</ng-template>
