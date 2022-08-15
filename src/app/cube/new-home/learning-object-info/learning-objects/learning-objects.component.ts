@@ -86,4 +86,9 @@ export class LearningObjectsComponent implements OnInit {
     return this.userService.getGravatarImage(email, 100);
   }
 
+  getNumAuthorsToDisplay(): number {
+    const maxMobileWidth = 425;
+    return window.outerWidth <= maxMobileWidth ? 1 : 3;
+  }
+
 }

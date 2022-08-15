@@ -2,7 +2,7 @@
 
 .wrapper {
     .learning-object-info {
-        padding-bottom: 40px;
+        padding-bottom: 15px;
         border-bottom: 1px solid $dark-white;
     }
 
@@ -70,6 +70,29 @@
             opacity: 100%;
         }
     }
+}
 
+@media screen and (max-width: 425px) {
+    .wrapper {
+        margin: 0 20px;
 
+        .learning-object-info {
+            padding-bottom: 20px;
+        }
+
+        .featured-object {
+            .featured-text {
+                margin-right: 10px;
+            }
+
+            .featured-contributors {
+                justify-content: space-evenly;
+            }
+        }
+
+        .learning-object-button {
+            width: 100%;
+        }
+    }
+    
 }

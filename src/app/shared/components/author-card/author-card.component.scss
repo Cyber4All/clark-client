@@ -31,3 +31,10 @@
     font-size: 12px;
     font-weight: normal;
 }
+
+@media screen and (max-width: 425px) {
+    .author-card__grid {
+        grid-template-columns: 60px auto 20px;
+    }
+    
+}
