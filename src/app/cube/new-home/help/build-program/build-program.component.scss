@@ -2,7 +2,6 @@
 
 .wrapper {
     margin: 0px 35px;
-    font-family: 'Source Sans Pro', sans-serif;
 
     .info {
         font-size: 20px;
@@ -13,9 +12,8 @@
         font-size: 18px;
         margin: 0 10px 10px 0;
         padding: 10px 24px;
-        border: 2px solid #b3b3b3;
+        border: 2px solid $medium-grey;
         border-radius: 3px;
-        font-family: 'Inter', sans-serif;
 
         &:hover {
             border: 2px solid $light-blue;
@@ -35,13 +33,12 @@
             background-color: white;
             padding: 7px;
             margin-right: 12px;
-            border: 2px solid #dfdfdf;
+            border: 2px solid $secondary-white;
             border-radius: 4px;
-            font-family: 'Inter', sans-serif;
 
             svg {
                 padding: 0px 5px;
-                color: #bababa;
+                color: $medium-grey;
             }
 
             input {
@@ -68,9 +65,8 @@
                 position: relative;
                 text-align: left;
                 vertical-align: top;
-                border: 2px solid #b3b3b3;
+                border: 2px solid $medium-grey;
                 border-radius: 4px;
-                font-family: 'Inter', sans-serif;
                 font-size: 14px;
 
                 .guidelineDescription {
@@ -101,12 +97,11 @@
     .pagination {
         margin-top: 10px;
         button {
-            font-family: 'Inter', sans-serif;
             font-weight: 600;
             font-size: 18px;
             border: none;
             color: $light-blue;
-            background-color: #f0f4f7;
+            background-color: $primary-white;
             padding: 5px 10px;
 
             svg {
