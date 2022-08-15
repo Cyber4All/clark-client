@@ -2,23 +2,22 @@ import {
   Component,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges,
   EventEmitter,
   Output,
   Input
 } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
-import { UserService } from 'app/core/user.service';
+import { ProfileService } from 'app/core/profiles.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Subscription, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'clark-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnInit, OnChanges, OnDestroy {
+export class EditProfileComponent implements OnChanges, OnDestroy {
   isDestroyed$ = new Subject<void>();
   elementRef: any;
   @Input() user;
@@ -34,12 +33,10 @@ export class EditProfileComponent implements OnInit, OnChanges, OnDestroy {
   };
 
   constructor(
-    private userService: UserService,
+    private profileService: ProfileService,
     private noteService: ToastrOvenService,
     private auth: AuthService
   ) { }
-
-  ngOnInit(): void { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.user) {
@@ -71,7 +68,7 @@ export class EditProfileComponent implements OnInit, OnChanges, OnDestroy {
       if (this.getValidEmail(edits.email) === false) {
         throw {'error': 'invalid email'};
       }
-      await this.userService.editUserInfo(edits);
+      await this.profileService.editUserInfo(edits);
       await this.auth.validateAndRefreshToken();
       this.close.emit(true);
       this.noteService.success('Success!', 'We\'ve updated your user information!');
