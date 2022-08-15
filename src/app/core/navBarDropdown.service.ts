@@ -21,7 +21,7 @@ export class NavbarDropdownService {
     // public levelsDropdown = new BehaviorSubject<boolean>(false);
 
     public topicDropdown = new BehaviorSubject<boolean>(false);
-    public collectionsDropdown = new BehaviorSubject<boolean>(false);
+    public collectionsDropdown = new BehaviorSubject<boolean>(true);
     public resourcesDropdown = new BehaviorSubject<boolean>(false);
     //mobile slideouts
     public isMHamburger = new BehaviorSubject<boolean>(false);
