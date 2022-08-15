@@ -78,7 +78,6 @@ export class PrimaryNavbarComponent implements OnInit {
     this.externalResources = this.dropdowns.externalResources;
     this.dropdowns.setNavbarStatus();
 
-
     //DO NOT REMOVE - refactor for future use
     // this.dropdowns.levelsDropdown.subscribe(val => {
     //   this.levelsDropdown = val;

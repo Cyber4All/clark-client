@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Collection, CollectionService } from 'app/core/collection.service';
+import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
+
 
 @Component({
   selector: 'clark-collections',
@@ -7,9 +10,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CollectionsComponent implements OnInit {
 
-  constructor() { }
+  collections = [];
+  show = ['nccp', 'ncyte', 'intro_to_cyber'];
 
-  ngOnInit(): void {
+  constructor(
+    private collectionService: CollectionService,
+    private toastr: ToastrOvenService
+    ) { }
+
+  async ngOnInit(): Promise<void> {
+    //get collections
+    await this.collectionService
+    .getCollections()
+    .then((collections: Collection[]) => {
+      this.collections = collections;
+    })
+    .catch(e => {
+      this.toastr.error("There was a problem!", "There was an error fetching collections, please try again later.");
+    });
+
+    //filter for collections we want to show
+    this.collections = this.collections.filter(value => this.show.includes(value.abvName));
+
   }
 
 }
