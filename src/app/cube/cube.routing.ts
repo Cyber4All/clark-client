@@ -8,8 +8,7 @@ import { AuthGuard } from '../core/auth-guard.service';
 import { CubeComponent } from './cube.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { CollectionDetailsComponent } from './collection-details/collection-details.component';
-import { ProfileGuard } from './core/profile.guard';
-import { UserResolver } from './core/user.resolver';
+import { ProfileResovler } from './core/profile.resolver';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { AccessibilityStatementComponent } from './accessibility-statement/accessibility-statement.component';
 import { PressComponent } from './press/press.component';
@@ -19,6 +18,7 @@ import { DonateComponent } from './donate/donate.component';
 import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
+import { NotFoundComponent } from 'app/not-found.component';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const cube_routes: Routes = [
@@ -86,10 +86,9 @@ const cube_routes: Routes = [
         path: 'users/:username',
         component: UserProfileComponent,
         resolve: {
-          user: UserResolver
+          user: ProfileResovler
         }
       },
-      // Guard example: `canActivate: [AuthGuard]`
       {
         path: 'editorial-process',
         component: EditorialProcessComponent,
@@ -106,9 +105,8 @@ const cube_routes: Routes = [
       // Catch All
       {
         path: '**',
-        component: UserProfileComponent,
+        component: NotFoundComponent,
         pathMatch: 'full',
-        canActivate: [ProfileGuard]
       },
     ]
   },

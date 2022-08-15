@@ -17,36 +17,6 @@ export class UserService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
-   * Check to see if a user exists for the given username
-   *
-   * @param {string} username the username of the user to validate
-   * @returns {Promise<boolean>}
-   * @memberof UserService
-   */
-  validateUser(username: string): Promise<boolean> {
-    return username && username !== 'undefined'
-      ? this.http
-          .get(USER_ROUTES.CHECK_USER_EXISTS(username), {
-            withCredentials: true
-          })
-          .pipe(
-            retry(3),
-            catchError(this.handleError)
-          )
-          .toPromise()
-          .then(
-            (val: any) => {
-              return val ? true : false;
-            },
-            error => {
-              console.error(error);
-              return false;
-            }
-          )
-      : Promise.resolve(false);
-  }
-
-  /**
    * Fetch a list of user's who are reviewers for the given collection
    *
    * @param {string} collection

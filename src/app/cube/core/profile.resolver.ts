@@ -8,13 +8,13 @@ import {
 } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserService } from '../../core/user.service';
+import { ProfileService } from 'app/core/profiles.service';
 
 @Injectable()
-export class UserResolver implements Resolve<User> {
+export class ProfileResovler implements Resolve<User> {
   constructor(
     private auth: AuthService,
-    private user: UserService,
+    private profileService: ProfileService,
     private router: Router
   ) {}
 
@@ -22,16 +22,12 @@ export class UserResolver implements Resolve<User> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<any> | Promise<any> | any {
-    if (this.auth.status && this.auth.user.username === route.params.username) {
-      return this.auth.user;
-    } else {
-      return this.user.getUser(route.params.username, 'username').then(val => {
-        if (val) {
-          return val;
-        } else {
-          this.router.navigate(['home']);
-        }
-      });
-    }
+    return this.profileService.fetchUserProfile(route.params.username).then(val => {
+      if (val) {
+        return val;
+      } else {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 }

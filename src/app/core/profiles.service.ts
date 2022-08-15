@@ -17,6 +17,25 @@ export class ProfileService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
+   * Grabs a users profile
+   *
+   * @param {string} username the username of the user to validate
+   * @returns {Promise<boolean>}
+   * @memberof UserService
+   */
+  fetchUserProfile(username: string): Promise<any> {
+    return this.http
+      .get(USER_ROUTES.FETCH_USER_PROFILE(username), {
+        withCredentials: true
+      })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
    * Edit a user's basic information
    *
    * @param { --- } object tbd
@@ -47,9 +66,9 @@ export class ProfileService {
   }
 
   /**
-   * 
-   * @param params 
-   * @returns 
+   *
+   * @param params
+   * @returns
    */
   async fetchLearningObject(params: { author: string, cuid: string}): Promise<any> {
     return await this.http
@@ -64,13 +83,16 @@ export class ProfileService {
         retry(3),
         catchError(this.handleError)
       )
-      .toPromise();
+      .toPromise()
+      .then( val => {
+        return JSON.parse(val)[0];
+      });
   }
 
   /**
-   * 
-   * @param username 
-   * @returns 
+   *
+   * @param username
+   * @returns
    */
   async getCollectionData(username: string): Promise<any> {
     return await this.http.get(USER_ROUTES.GET_COLLECTIONS(username), {
