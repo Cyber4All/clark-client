@@ -147,7 +147,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     description: string,
     file: LearningObject.Material.File | DirectoryNode
   ) {
-    if (!file || !description) {
+    if (!file) {
       return;
     }
     const edit: FileEdit = {
