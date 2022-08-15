@@ -5,11 +5,8 @@ import {
 } from '@angular/common/http';
 import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
-import { User } from '@entity';
-import * as md5 from 'md5';
-import { Observable, of, throwError } from 'rxjs';
-import { retry, catchError, take } from 'rxjs/operators';
-import { UserQuery } from 'app/interfaces/query';
+import { throwError } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ProfileService {
