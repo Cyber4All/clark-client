@@ -14,20 +14,20 @@
 
     <div class="featured-object">
         <div class="featured-text">
-            <p *ngIf="featuredObject?.levels">
-                {{ displayFeaturedObjectLevels() }}
+            <p *ngIf="featuredObject?.levels" class="levels">
+               <b>{{ displayFeaturedObjectLevels().toUpperCase() }}</b>
             </p>
-            <p>
+            <h3>
                 {{ featuredObject?.name }}
+            </h3>
+            <p *ngIf="featuredObject?.description" [innerHTML]="displayDescription()">
             </p>
-            <div *ngIf="featuredObject?.description" [innerHTML]="displayDescription()">
-            </div>
-            <p>
+            <p class="outcomeText">
                 Students will be able to...
             </p>
             <ul>
                 <li *ngFor="let outcome of featuredObject?.outcomes">
-                    {{ outcome.verb }} {{ outcome.text }}
+                    {{ capitalize(outcome.verb) }} {{ outcome.text }}
                 </li>
             </ul>
         </div>
@@ -35,15 +35,17 @@
             <!-- Displays only the first 3 contributors -->
             <div class="contributor-card" *ngFor="let contributor of featuredObject?.contributors | slice:0:4">
                 <img *ngIf="contributor?.email" [src]="getGravatarImage(contributor.email)" />
-                <p>{{ capitalize(contributor.name) }}</p>
-                <p>{{ capitalize(contributor.organization) }}</p>
+                <div class="card-text">
+                    <p>{{ capitalize(contributor.name) }}</p>
+                    <p>{{ capitalize(contributor.organization) }}</p>
+                </div>
             </div>
             <!-- Any unmentioned contributors will be counted here -->
             <p *ngIf="featuredObject?.contributors.length > 3">+ {{ featuredObject?.contributors.length - 3 }} more</p>
         </div>
     </div>
 
-    <button [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
+    <button class="learning-object-button" [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
     
     
     
