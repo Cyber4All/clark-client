@@ -33,7 +33,7 @@ import { RouterModule } from '@angular/router';
     LearningOutcomesComponent,
     HierarchiesComponent,
     CollectionsComponent,
-    StickyMenuComponent,
+    StickyMenuComponent
   ],
   imports: [
     CommonModule,

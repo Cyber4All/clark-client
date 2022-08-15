@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Collection, CollectionService } from 'app/core/collection.service';
 import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
 
+
 @Component({
   selector: 'clark-collections',
   templateUrl: './collections.component.html',
