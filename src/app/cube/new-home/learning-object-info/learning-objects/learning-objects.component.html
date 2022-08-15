@@ -17,8 +17,14 @@
             <p *ngIf="featuredObject?.levels" class="levels">
                <b>{{ displayFeaturedObjectLevels().toUpperCase() }}</b>
             </p>
-            <h3>
+            <h3 *ngIf="featuredObject?.author">
+                <a [routerLink]="[
+                '/details',
+                featuredObject.author.username,
+                featuredObject.cuid
+                ]">
                 {{ featuredObject?.name }}
+                </a>
             </h3>
             <p *ngIf="featuredObject?.description" [innerHTML]="displayDescription()">
             </p>
@@ -31,7 +37,7 @@
                 </li>
             </ul>
         </div>
-        <div class="featured-contributors">
+        <div class="featured-contributors" *ngIf="featuredObject?.contributors[0].email">
             <!-- Displays only the first 3 contributors -->
             <div class="contributor-card" *ngFor="let contributor of featuredObject?.contributors | slice:0:4">
                 <clark-author-card [author]="contributor" [profileImageURL]="getGravatarImage(contributor.email)"></clark-author-card>
@@ -42,7 +48,4 @@
     </div>
 
     <button class="learning-object-button" [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
-    
-    
-    
 </div>

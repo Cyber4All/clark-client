@@ -21,6 +21,10 @@
             h3 {
                 margin-top: 12px;
                 font-size: 1.5em;
+                
+                a:not(:hover) {
+                    color: black;
+                }
             }
 
             p.outcomeText {
@@ -57,6 +61,14 @@
         border-radius: 8px;
         cursor: pointer;
         box-shadow: 0px 5px 10px rgb(177, 177, 255);
+
+        &:hover {
+            opacity: 80%;
+        }
+
+        &:active {
+            opacity: 100%;
+        }
     }
 
 
