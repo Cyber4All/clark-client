@@ -33,7 +33,7 @@
             </p>
             <ul>
                 <li *ngFor="let outcome of featuredObject?.outcomes">
-                    {{ capitalize(outcome.verb) }} {{ outcome.text }}
+                    {{ outcome.verb | titlecase }} {{ outcome.text }}
                 </li>
             </ul>
         </div>

@@ -12,7 +12,7 @@ import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service
   styleUrls: ['./learning-objects.component.scss']
 })
 export class LearningObjectsComponent implements OnInit {
-  featuredObject: LearningObject;
+  featuredObject: LearningObject; // the learning object to display
   numReleasedObjects = 0; // default number of released objects before the service provides a new number
 
   constructor(private featureService: FeaturedObjectsService,
@@ -39,41 +39,32 @@ export class LearningObjectsComponent implements OnInit {
     });
   }
 
+  /**
+   * Displays the featured object's levels, formatted
+   *
+   * @returns A comma separated string of learning object levels
+   */
   displayFeaturedObjectLevels() {
     if(this.featuredObject?.levels.length === 1) {
       return this.featuredObject.levels[0];
     } else {
       let levels = '';
       this.featuredObject.levels.forEach((level, index, array) => {
-        const levelCapitalized = this.capitalize(level);
         if(index === array.length - 1) {
-          levels += ' and ' + levelCapitalized;
+          levels += ' and ' + level;
         } else {
-          levels += levelCapitalized + ', ';
+          levels += level + ', ';
         }
       });
       return levels;
     }
   }
 
-  capitalize(word: string | LearningObject.Level): string {
-    let words: string[], result = '';
-    if(word.includes(' ')) {
-      words = word.split(' ');
-    }
-
-    if(words) {
-      const newWords = words.map(substring => {
-        return substring.charAt(0).toUpperCase() + substring.slice(1);
-      });
-      result = newWords.join(' ');
-    } else {
-      result += word.charAt(0).toUpperCase() + word.slice(1);
-    }
-
-    return result;
-  }
-
+  /**
+   * Parses the featured object's description from HTML to text
+   *
+   * @returns The description string
+   */
   displayDescription() {
     let description = this.featuredObject.description;
     // The top regex is used for matching tags such as <br />
@@ -82,10 +73,21 @@ export class LearningObjectsComponent implements OnInit {
     return description.replace(/<[\/]*[0-z\s\'\'=]+>/gi, ' ');
   }
 
+  /**
+   * Displays the user's Gravatar image using their email
+   *
+   * @param email The featured object's user's email
+   * @returns The user's gravatar image
+   */
   getGravatarImage(email: string) {
     return this.userService.getGravatarImage(email, 100);
   }
 
+  /**
+   * Given a view (desktop or mobile), returns the number of contributors to display on screen
+   *
+   * @returns The number of contributors to display in the featured contributors section
+   */
   getNumAuthorsToDisplay(): number {
     const maxMobileWidth = 425;
     return window.outerWidth <= maxMobileWidth ? 1 : 3;
