@@ -5,8 +5,6 @@ import {
 } from '@angular/core';
 import {
   Router,
-  ActivatedRoute,
-  NavigationStart,
   NavigationEnd
 } from '@angular/router';
 
