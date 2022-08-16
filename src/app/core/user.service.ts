@@ -17,60 +17,6 @@ export class UserService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
-   * Edit a user's basic information
-   *
-   * @param { --- } object tbd
-   * @returns {Promise<any>}
-   * @memberof UserService
-   */
-  editUserInfo(): Promise<any> {
-    return this.http
-      .patch(
-        USER_ROUTES.EDIT_USER_INFO,
-        {  },
-        {
-          withCredentials: true,
-          responseType: 'text'
-        }
-      )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Check to see if a user exists for the given username
-   *
-   * @param {string} username the username of the user to validate
-   * @returns {Promise<boolean>}
-   * @memberof UserService
-   */
-  validateUser(username: string): Promise<boolean> {
-    return username && username !== 'undefined'
-      ? this.http
-          .get(USER_ROUTES.CHECK_USER_EXISTS(username), {
-            withCredentials: true
-          })
-          .pipe(
-            retry(3),
-            catchError(this.handleError)
-          )
-          .toPromise()
-          .then(
-            (val: any) => {
-              return val ? true : false;
-            },
-            error => {
-              console.error(error);
-              return false;
-            }
-          )
-      : Promise.resolve(false);
-  }
-
-  /**
    * Fetch a list of user's who are reviewers for the given collection
    *
    * @param {string} collection
@@ -294,13 +240,6 @@ export class UserService {
     .toPromise();
     this.getNotificationCount(username);
     return deleteValue;
-  }
-
-  getCollectionData(username: string) {
-    return this.http.get(USER_ROUTES.GET_COLLECTIONS(username), {
-      withCredentials: true,
-    })
-    .toPromise();
   }
 
   private handleError(error: HttpErrorResponse) {
