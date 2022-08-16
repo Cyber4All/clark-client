@@ -39,8 +39,6 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
   learningObjectsUnreleased = [];
   collectionsReleased = [];
   collectionsUnreleased = [];
-  collectionsFullReleased = [];
-  collectionsFullUnreleased;
   tempCollectionsReleased = [];
   tempCollectionsUnreleased = [];
 
@@ -58,8 +56,6 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
       });
       this.collectionsReleased = this.genCollections(this.tempCollectionsReleased);
       this.collectionsUnreleased = this.genCollections(this.tempCollectionsUnreleased);
-      this.collectionsFullReleased = this.getFullCollectionName(this.collectionsReleased);
-      this.collectionsFullUnreleased = this.getFullCollectionName(this.collectionsUnreleased);
     });
     this._learningObjects.subscribe(objects => {
       this.loading = true;
@@ -73,24 +69,30 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
     this.loading = false;
   };
 
+  //sets active status for released vs unreleased
   activateMainTab(tabName: string) {
-    if(tabName === 'released') {
+    if (tabName === 'released') {
       this.tabMain = 1;
-    } else if(tabName === 'review') {
+    } else if (tabName === 'review') {
       this.tabMain = 2;
     }
     return this.tabMain;
   }
 
-  activateCollectionTab(tabName: string) {
-    if(this.tabMain === 1) {
-      this.tabCollection = this.collectionsReleased.indexOf(tabName);
-    } else if (this.tabMain === 2){
-      this.tabCollection = this.collectionsUnreleased.indexOf(tabName);
+  //sets active status for collection tabs based on whether or not you're in the relased or
+  //unreleased tab.
+  activateCollectionTab(tabName: number) {
+    console.log(tabName);
+    if (this.tabMain === 1) {
+      this.tabCollection = tabName;
+    } else if (this.tabMain === 2) {
+      this.tabCollection = tabName;
     }
     return this.tabCollection;
   }
 
+  //retrieves learning objects based on status and collection with specification on how to
+  //handle missing collection names.
   content(status: number, collection: string) {
     if (status === 1) {
       this.learningObjectsReleased = this.learningObjects.filter((learningObject: any) => {
@@ -103,37 +105,41 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
         });
       } else {
         this.learningObjectsUnreleased = this.learningObjects.filter((learningObject: any) => {
-      return learningObject.status !== 'released' && learningObject.collection === collection;
+          return learningObject.status !== 'released' && learningObject.collection === collection;
       });
       }
     }
   }
 
+  //toggles dropdown for mobile
   toggleDropdown(open: boolean) {
     const x = [1, 2, 3];
     this.mobileDropdown = open;
   }
 
-  genCollections(arr: any){
-    arr.forEach(element => {
-      if (element.collection === ''){
-      element.collection = 'Drafts';
-    }
-    });
-     return [...new Set(arr.map(x => x.collection))];
-  }
 
-   getFullCollectionName(arr: any){
-    const fullName = [];
+  //generates array containing the full collection name and it's abreviated name
+  genCollections(arr: any) {
+    let uniqueCollectionNames = [];
+    const collectionNames = [];
+
     arr.forEach(element => {
-      if(element !== 'Drafts') {
-        element = this.collectionService.getCollection(element).then(c => {
-          fullName.push(c.name);
-        });
-      } else {
-        fullName.push(element);
+      if (element.collection === '') {
+        element.collection = 'Drafts';
       }
     });
-    return fullName;
+    uniqueCollectionNames = [...new Set(arr.map(x => x.collection))];
+    for (let i = 0; i < uniqueCollectionNames.length; i++) {
+      if (uniqueCollectionNames[i] !== 'Drafts') {
+        this.collectionService.getCollection(uniqueCollectionNames[i]).then(c => {
+          collectionNames.push({ ...c });
+        });
+      } else if (uniqueCollectionNames[i] === 'Drafts') {
+        collectionNames.push({abvName: 'Drafts', name:'Drafts'});
+      }
+    };
+    console.log(collectionNames);
+    return collectionNames;
   }
 }
+
