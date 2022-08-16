@@ -26,7 +26,7 @@ export class CollectionsComponent implements OnInit {
       this.collections = collections;
     })
     .catch(e => {
-      this.toastr.error("There was a problem!", "There was an error fetching collections, please try again later.");
+      this.toastr.error('There was a problem!', 'There was an error fetching collections, please try again later.');
     });
 
     //filter for collections we want to show

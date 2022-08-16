@@ -61,19 +61,6 @@ export class LearningObjectsComponent implements OnInit {
   }
 
   /**
-   * Parses the featured object's description from HTML to text
-   *
-   * @returns The description string
-   */
-  displayDescription() {
-    let description = this.featuredObject.description;
-    // The top regex is used for matching tags such as <br />
-    // The bottom regex will catch tags such as </p>
-    description = description.replace(/<[0-z\s\'\'=]*[\/]+>/gi, ' ');
-    return description.replace(/<[\/]*[0-z\s\'\'=]+>/gi, ' ');
-  }
-
-  /**
    * Displays the user's Gravatar image using their email
    *
    * @param email The featured object's user's email

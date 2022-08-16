@@ -26,7 +26,7 @@
                 {{ featuredObject?.name }}
                 </a>
             </h3>
-            <p *ngIf="featuredObject?.description" [innerHTML]="displayDescription()">
+            <p *ngIf="featuredObject?.description" [innerHTML]="featuredObject?.description">
             </p>
             <p class="outcomeText">
                 Students will be able to...
