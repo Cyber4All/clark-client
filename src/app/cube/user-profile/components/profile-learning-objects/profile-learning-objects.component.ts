@@ -42,7 +42,7 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
   tempCollectionsReleased = [];
   tempCollectionsUnreleased = [];
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngOnChanges() {
     this.loading = true;
@@ -61,38 +61,40 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
       this.loading = true;
       this.learningObjectsReleased = objects.filter((learningObject: any) => {
         return learningObject.status === 'released';
-        });
+      });
       this.learningObjectsUnreleased = objects.filter((learningObject: any) => {
         return learningObject.status !== 'released';
-        });
+      });
     });
     this.loading = false;
   };
 
-  //sets active status for released vs unreleased
+  /**
+   * sets active status for released vs unreleased
+   *
+   * @param tabName the name of the tab clicked (Released or Review)
+   */
   activateMainTab(tabName: string) {
     if (tabName === 'released') {
       this.tabMain = 1;
     } else if (tabName === 'review') {
       this.tabMain = 2;
     }
-    return this.tabMain;
   }
-
-  //sets active status for collection tabs based on whether or not you're in the relased or
-  //unreleased tab.
-  activateCollectionTab(tabName: number) {
-    console.log(tabName);
-    if (this.tabMain === 1) {
-      this.tabCollection = tabName;
-    } else if (this.tabMain === 2) {
-      this.tabCollection = tabName;
-    }
-    return this.tabCollection;
+  /**
+   * sets active status for collection tabs based on whether or not you're in the relased or unreleased tab.
+   *
+   * @param activatedTab the index of the tab clicked on
+   */
+  activateCollectionTab(activatedTab: number) {
+    this.tabCollection = activatedTab;
   }
-
-  //retrieves learning objects based on status and collection with specification on how to
-  //handle missing collection names.
+  /**
+   * retrieves learning objects based on status and collection with specification on how to handle missing collection names.
+   *
+   * @param status whetehr it's for released or unreleased learning objects
+   * @param collection what collection of learning objects is being pulled
+   */
   content(status: number, collection: string) {
     if (status === 1) {
       this.learningObjectsReleased = this.learningObjects.filter((learningObject: any) => {
@@ -106,19 +108,28 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
       } else {
         this.learningObjectsUnreleased = this.learningObjects.filter((learningObject: any) => {
           return learningObject.status !== 'released' && learningObject.collection === collection;
-      });
+        });
       }
     }
   }
 
-  //toggles dropdown for mobile
+  /**
+   * Toggles the dropdown
+   *
+   * @param open whether or not the dropdown should be open or closed
+   */
   toggleDropdown(open: boolean) {
     const x = [1, 2, 3];
     this.mobileDropdown = open;
   }
 
 
-  //generates array containing the full collection name and it's abreviated name
+  /**
+   * generates array containing the full collection name and it's abreviated name
+   *
+   * @param arr array of collections associated with all learning objects made by the user
+   * @returns a unique array of collection objections that contains both its abreviated name and full name
+   */
   genCollections(arr: any) {
     let uniqueCollectionNames = [];
     const collectionNames = [];
@@ -132,10 +143,10 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
     for (let i = 0; i < uniqueCollectionNames.length; i++) {
       if (uniqueCollectionNames[i] !== 'Drafts') {
         this.collectionService.getCollection(uniqueCollectionNames[i]).then(c => {
-          collectionNames.push({ ...c });
+          collectionNames.push(c);
         });
       } else if (uniqueCollectionNames[i] === 'Drafts') {
-        collectionNames.push({abvName: 'Drafts', name:'Drafts'});
+        collectionNames.push({ abvName: 'Drafts', name: 'Drafts' });
       }
     };
     console.log(collectionNames);

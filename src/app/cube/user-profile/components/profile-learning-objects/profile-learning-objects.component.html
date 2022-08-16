@@ -41,8 +41,7 @@
                     [offset]="{ top: 10, left: 5 }" (close)="toggleDropdown(false)">
                     <div #contextMenu id="context-popup">
                         <ul class="menu">
-                            <li *ngFor="let collection of collectionsReleased; let indexOfCollection=index"
-                                tabindex="0"
+                            <li *ngFor="let collection of collectionsReleased; let indexOfCollection=index" tabindex="0"
                                 (click)="content(tabMain, collection.abvName); activateCollectionTab(indexOfCollection); toggleDropdown(false)">
                                 {{collection.name}}</li>
                         </ul>
