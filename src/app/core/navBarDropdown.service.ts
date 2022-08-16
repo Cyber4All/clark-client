@@ -84,9 +84,12 @@ export class NavbarDropdownService {
               // if we're in onion, auth, or admin, toggle the navbars off
               this.closeMobileMenus();
               this.closeAll();
-              if(e.url.match(/\/*onion[\/*[0-z]*]*/)
-                || e.url.match(/\/*auth[\/*[0-z]*]*/)
-                || e.url.match(/\/*admin[\/*[0-z]*]*/)) {
+              const url = e.url.split('/');
+              if(
+                url[1] === 'auth' ||
+                url[1] === 'onion' ||
+                url[1] === 'admin'
+                ) {
                   this.toggleNavbars(false);
                 } else {
                   this.toggleNavbars(true);

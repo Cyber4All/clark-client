@@ -8,11 +8,11 @@ import { ToastrOvenService } from '../../modules/toaster/notification.service';
   templateUrl: './collections-dropdown.component.html',
   styleUrls: ['./collections-dropdown.component.scss'],
   animations: [
-    trigger("dropDownMenu", [
-      transition(":enter", [
-        style({ height: 0, overflow: "hidden" }),
+    trigger('dropDownMenu', [
+      transition(':enter', [
+        style({ height: 0, overflow: 'hidden' }),
         sequence([
-          animate("200ms", style({ height: "1000px" })),
+          animate('200ms', style({ height: '1000px' })),
         ])
       ])
     ])
@@ -20,7 +20,7 @@ import { ToastrOvenService } from '../../modules/toaster/notification.service';
 })
 export class CollectionsDropdownComponent implements OnInit {
 
-  collections: Collection[]; 
+  collections: Collection[];
 
   @Output() close: EventEmitter<void> = new EventEmitter();
   constructor(
@@ -35,7 +35,7 @@ export class CollectionsDropdownComponent implements OnInit {
       this.collections = collections;
     })
     .catch(e => {
-      this.toastr.error("There was a problem!", "There was an error fetching collections, please try again later.");
+      this.toastr.error('There was a problem!', 'There was an error fetching collections, please try again later.');
     });
   }
 
