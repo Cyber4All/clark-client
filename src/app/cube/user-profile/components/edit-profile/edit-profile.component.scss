@@ -126,7 +126,7 @@ form {
 }
 
 li:nth-child(2n) {
-  background-color: #f7f7f7;
+  background-color: $ternary-white-background;
 }
 
 li:hover #plus {
@@ -141,7 +141,7 @@ li:hover #delete {
 
 #container {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-  background-color: #f7f7f7;
+  background-color: $ternary-white-background;
   width: 100%;
   margin-bottom: 10px;
 }
@@ -150,7 +150,7 @@ li {
   height: 40px;
   line-height: 40px;
   background-color: white;
-  color: #666;
+  color: $medium-dark-grey;
   display: flex;
   flex-direction: row;
   align-items: center;

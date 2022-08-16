@@ -9,7 +9,7 @@ form {
 }
 
 li:nth-child(2n) {
-  background-color: #f7f7f7;
+  background-color: $ternary-white-background;
 }
 
 @media (min-width: 641px) {
@@ -26,7 +26,7 @@ li:nth-child(2n) {
 
 #container {
   box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-  background-color: #f7f7f7;
+  background-color: $ternary-white-background;
   margin-bottom: 10px;
   position: absolute;
   top: 380px;
@@ -38,7 +38,7 @@ li {
   height: 40px;
   line-height: 40px;
   background-color: white;
-  color: #666;
+  color: $medium-dark-grey;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -101,7 +101,7 @@ ul {
 @media (max-width: 640px) {
   #container {
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
-    background-color: #f7f7f7;
+    background-color: $ternary-white-background;
     margin-bottom: 10px;
     position: absolute;
     top: 130px;

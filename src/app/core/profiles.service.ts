@@ -63,6 +63,7 @@ export class ProfileService {
   }
 
   /**
+   * Function to retrieve a learning object's metadata
    *
    * @param params
    * @returns
@@ -87,9 +88,11 @@ export class ProfileService {
   }
 
   /**
+   * Service call to retrieve collection meta data for all objects for a particular user
    *
-   * @param username
-   * @returns
+   * @param username username of the user's profile being accessed
+   * @returns {cuid: string, version: int, status: string, collection: string} object metadata
+   * for each collection an object belongs to for a user
    */
   getCollectionData(username: string): Promise<any> {
     return this.http.get(USER_ROUTES.GET_COLLECTIONS(username), {
