@@ -48,8 +48,8 @@ h1 {
     position: relative;
     z-index: 1;
 
-    & > * {
-        padding: 12px 50px 14px;
+    &>* {
+        padding: 12px 25px 14px;
         border-radius: 4px 4px 0 0;
         color: black;
         cursor: pointer;
@@ -59,6 +59,7 @@ h1 {
         font-size: $normal;
         background: transparent;
         margin: 0;
+        text-align: center;
     }
 
     .active {
@@ -77,6 +78,7 @@ h1 {
         border-bottom: .5px white solid;
         position: relative;
         top: .5px;
+        text-align: center;
     }
 }
 
@@ -99,7 +101,7 @@ h1 {
     }
 }
 
-@media (min-width: 601px) {
+@media (min-width: 600px) {
     .secondTabs {
         padding-left: 20px;
         display: flex;
@@ -111,13 +113,15 @@ h1 {
         border-radius: 8px 8px 0 0;
         border: .5px #DFDFDF solid;
     }
-    .tabItemSecContainer{
+
+    .tabItemSecContainer {
         display: flex;
         flex-direction: row;
         align-items: center;
         position: relative;
     }
-    .tabItemSec{
+
+    .tabItemSec {
         * {
             display: flex;
             padding: 20px 50px 14px;
@@ -130,6 +134,7 @@ h1 {
             font-size: $normal;
             background: transparent;
             margin: 0;
+            text-align: center;
         }
 
         .active {
@@ -144,6 +149,7 @@ h1 {
             background: transparent;
             margin: 0;
             border-bottom: 2px solid #1C70DD;
+            text-align: center;
         }
     }
 
@@ -152,9 +158,22 @@ h1 {
         visibility: hidden;
         display: none;
     }
+
 }
 
 @media (max-width: 600px) {
+
+    .contribution {
+        .header {
+            justify-content: center;
+
+            h1 {
+                text-align: center;
+                margin-left: 0;
+            }
+        }
+
+    }
 
     .dropdownReleased,
     .dropdownUnreleased {
@@ -175,7 +194,7 @@ h1 {
         border-radius: 10px;
         margin: 15px 5px;
         color: black;
-        padding: 12px 150px;
+        padding: 12px 85px;
         font-size: 16px;
         cursor: pointer;
     }
@@ -185,4 +204,49 @@ h1 {
         display: none;
     }
 
+    .public {
+        .mainTabs {
+            display: none;
+        }
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        padding-left: 20px;
+
+        .dashboard {
+            display: flex;
+            padding-top: 0;
+            padding-bottom: 20px;
+        }
+    }
+}
+
+@media (max-width: 414px) {
+    .dropdownButton {
+        width: 250px;
+        padding: 12px 0;
+        justify-content: center;
+    }
+
+    .learningTabs {
+        margin: 0;
+    }
+
+    .contribution {
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+
+        .dashboard {
+            display: flex;
+            padding-top: 0;
+            padding-bottom: 20px;
+        }
+    }
 }
