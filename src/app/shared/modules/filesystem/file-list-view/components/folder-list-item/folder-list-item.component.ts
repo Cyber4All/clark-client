@@ -11,7 +11,7 @@ import { AuthService } from 'app/core/auth.service';
 export class FolderListItemComponent implements OnInit {
   @Input() folder: DirectoryNode;
   @Input() showOptionButton = false;
-
+  @Input() inBuilder = false;
   @Output() clicked: EventEmitter<void> = new EventEmitter();
   @Output() menuClicked: EventEmitter<MouseEvent> = new EventEmitter();
   @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
@@ -154,6 +154,6 @@ export class FolderListItemComponent implements OnInit {
    * @returns boolean value if the user is valid
    */
     checkAccessGroups(): boolean {
-    return this.accessGroups.includes('admin') || this.accessGroups.includes('curator');
+    return this.inBuilder && (this.accessGroups.includes('admin') || this.accessGroups.includes('curator'));
   }
 }
