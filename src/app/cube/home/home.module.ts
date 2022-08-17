@@ -34,8 +34,7 @@ import { BlogsComponent } from 'app/components/blogs/blogs.component';
     UsageComponent,
     CollectionsComponent,
     WhatClarkComponent,
-    FeaturedCollectionCardComponent,
-    BlogsComponent
+    FeaturedCollectionCardComponent
   ],
   providers: []
 })

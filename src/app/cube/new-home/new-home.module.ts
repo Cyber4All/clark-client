@@ -16,6 +16,9 @@ import { StickyMenuComponent } from './learning-object-info/sticky-menu/sticky-m
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule } from '@angular/router';
+import { BlogsComponent } from 'app/components/blogs/blogs.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -33,7 +36,8 @@ import { RouterModule } from '@angular/router';
     LearningOutcomesComponent,
     HierarchiesComponent,
     CollectionsComponent,
-    StickyMenuComponent
+    StickyMenuComponent,
+    BlogsComponent
   ],
   imports: [
     CommonModule,

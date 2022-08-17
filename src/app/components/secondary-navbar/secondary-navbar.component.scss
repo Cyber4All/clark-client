@@ -8,6 +8,7 @@
     height: 43px;
     width: 100%;
     border: solid 1px $secondary-white;
+    z-index: 4;
 
     .item {
         cursor: pointer;

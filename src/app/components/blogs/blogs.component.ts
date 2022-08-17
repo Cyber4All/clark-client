@@ -9,11 +9,57 @@ import { Blog } from './types/blog';
   templateUrl: './blogs.component.html',
   styleUrls: ['./blogs.component.scss'],
   animations: [
-    trigger('fadeInOut', [
+    trigger('blogView', [
       transition(':enter', [
-        style({ opacity: 0 }),
-        animate('500ms', style({ opacity: 1 })
+        style({
+          position: 'relative',
+          left: '-100%'
+        }),
+        animate('500ms ease-out', style({
+          position: 'relative',
+          left: '0%'
+        })
         )
+      ]),
+      transition(':leave', [
+        style({
+          position: 'relative',
+          left: '0%'
+        }),
+        animate('500ms ease-out', style({
+          position: 'relative',
+          left: '-100%'
+        }))
+      ])
+    ]),
+    trigger('dismissView', [
+      transition(':enter', [
+        style({
+          position: 'absolute',
+          top: '0',
+          left: '150%',
+          overflow: 'hidden'
+        }),
+        animate('500ms ease-out', style({
+          position: 'absolute',
+          top: '0',
+          left: '40%',
+          overflow: 'hidden'
+        }))
+      ]),
+      transition(':leave', [
+        style({
+          position: 'absolute',
+          top: '0',
+          left: '40%',
+          overflow: 'hidden'
+        }),
+        animate('500ms ease-out', style({
+          position: 'absolute',
+          top: '0',
+          left: '150%',
+          overflow: 'hidden'
+        }))
       ])
     ])
   ]
