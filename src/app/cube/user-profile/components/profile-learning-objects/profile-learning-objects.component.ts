@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { CollectionService } from 'app/core/collection.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['./profile-learning-objects.component.scss']
 
 })
-export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
+export class ProfileLearningObjectsComponent implements OnInit {
   private _collectionsAbreviated = new BehaviorSubject<[]>([]);
   private _learningObjects = new BehaviorSubject<[]>([]);
   @Input() set learningObjects(objects: []) {
@@ -30,11 +30,10 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
   ) { }
   @Input() username;
   @Input() isUser: boolean;
-
+  loading = true;
   tabMain = 1;
   tabCollection = 0;
   mobileDropdown = false;
-  loading = true;
   learningObjectsReleased = [];
   learningObjectsUnreleased = [];
   collectionsReleased = [];
@@ -42,12 +41,10 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
   tempCollectionsReleased = [];
   tempCollectionsUnreleased = [];
 
-  ngOnInit() {}
-
-  ngOnChanges() {
+  ngOnInit() {
     this.loading = true;
+    this.changeDetector.detectChanges();
     this._collectionsAbreviated.subscribe(collectionMeta => {
-      this.loading = true;
       this.tempCollectionsReleased = collectionMeta.filter((learningObject: any) => {
         return learningObject.status === 'released';
       });
@@ -58,7 +55,6 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
       this.collectionsUnreleased = this.genCollections(this.tempCollectionsUnreleased);
     });
     this._learningObjects.subscribe(objects => {
-      this.loading = true;
       this.learningObjectsReleased = objects.filter((learningObject: any) => {
         return learningObject.status === 'released';
         });
@@ -82,7 +78,6 @@ export class ProfileLearningObjectsComponent implements OnInit, OnChanges {
   //sets active status for collection tabs based on whether or not you're in the relased or
   //unreleased tab.
   activateCollectionTab(tabName: number) {
-    console.log(tabName);
     if (this.tabMain === 1) {
       this.tabCollection = tabName;
     } else if (this.tabMain === 2) {

@@ -36,64 +36,26 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       // Check to see if current user is on their profile
       this.isUser = this.user.username === this.auth.username;
       await this.initProfileData();
-      // await this.getCollectionsData();
-      // await this.getUserLearningObjects();
     });
   }
   async initProfileData() {
     await this.profileService
       .getCollectionData(this.user.username).then( (collectionMeta) => {
         const tempObjects = [];
-        collectionMeta.map(async (objectMeta) => {
+        Promise.all(collectionMeta.map(async (objectMeta) => {
           const params = {
             author: undefined,
             cuid: objectMeta.cuid
           };
-          try {
-            await this.profileService
-              .fetchLearningObject(params)
-              .then((obj: Object) => {
-                tempObjects.push(obj);
-              });
-          } catch(e) {
-            throw e;
-          }
-        });
-        this.userCollectionMetaData = collectionMeta;
+          await this.profileService
+            .fetchLearningObject(params)
+            .then((obj: Object) => {
+              tempObjects.push(obj);
+            });
+        }));
         this.allUserContributions = tempObjects;
+        this.userCollectionMetaData = collectionMeta;
         this._loading.next(false);
-    });
-  }
-
-  async getCollectionsData() {
-    if(!this.loading) {
-      this.loading = true;
-    }
-    await this.profileService
-      .getCollectionData(this.user.username).then( collectionMeta => {
-      this.userCollectionMetaData = collectionMeta;
-    });
-  }
-
-  async getUserLearningObjects() {
-    if(!this.loading) {
-      this.loading = true;
-    }
-    this.userCollectionMetaData.map( async objectMeta => {
-      const params = {
-        author: undefined,
-        cuid: objectMeta.cuid
-      };
-      try {
-        await this.profileService
-          .fetchLearningObject(params)
-          .then((obj: Object) => {
-            this.allUserContributions.push(obj);
-          });
-      } catch(e) {
-        throw e;
-      }
-      this._loading.next(false);
     });
   }
 

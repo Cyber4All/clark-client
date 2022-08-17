@@ -17,8 +17,7 @@ export class ProfileService {
    * Grabs a users profile
    *
    * @param {string} username the username of the user to validate
-   * @returns {Promise<boolean>}
-   * @memberof UserService
+   * @returns {Promise<Object>} returns user name, email, and bio for profile meta data
    */
   fetchUserProfile(username: string): Promise<any> {
     return this.http
@@ -35,9 +34,8 @@ export class ProfileService {
   /**
    * Edit a user's basic information
    *
-   * @param { --- } object tbd
-   * @returns {Promise<any>}
-   * @memberof UserService
+   * @param { user:{ name?: string, }} tbd
+   * @returns http response
    */
    editUserInfo(user: {
     name?: string;
