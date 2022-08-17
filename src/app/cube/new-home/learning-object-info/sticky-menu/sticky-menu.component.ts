@@ -9,18 +9,18 @@ import { LEARNING_OBJECT_INFO_STATES } from '../learning-object-info.component';
   styleUrls: ['./sticky-menu.component.scss'],
   animations: [
     trigger('isHighlighed', [
-      state("highlighted", style({
-        backgroundColor: "#E9F0FE",
-        color: "#376ED6",
+      state('highlighted', style({
+        backgroundColor: '#E9F0FE',
+        color: '#376ED6',
         fontWeight: 600,
       })),
-      state("notHighlighted", style({
-        color: "#AAAAAA"
+      state('notHighlighted', style({
+        color: '#AAAAAA'
       })),
-      transition("isHighlighted => notHighlighted", [
+      transition('isHighlighted => notHighlighted', [
         animate('4s')
       ]),
-      transition("notHightlighted => isHighlighted", [
+      transition('notHightlighted => isHighlighted', [
         animate('4s')
       ])
     ])
@@ -34,21 +34,21 @@ export class StickyMenuComponent implements OnInit {
     collections: false,
   };
   isMobileView = false;
-  responsiveThreshold = 800; 
+  responsiveThreshold = 800;
   windowWidth: number;
 
   /* The component that will be highlighted when in view */
   @Input() currentComponentInView: LEARNING_OBJECT_INFO_STATES;
 
   constructor(private router: Router) {
-    this.router.onSameUrlNavigation = "reload";
+    this.router.onSameUrlNavigation = 'reload';
   }
 
   ngOnInit(): void {
   }
 
   /**
-   * Listening for scrolling event and updates the menu when the 
+   * Listening for scrolling event and updates the menu when the
    * currentComponentInView changes
    */
   @HostListener('window:scroll', ['$event'])
@@ -58,6 +58,7 @@ export class StickyMenuComponent implements OnInit {
 
   /**
    * Sets IsMobileView to true after a threshold has been passed
+   *
    * @param event The Host listener event
    */
   @HostListener('window:resize', ['$event'])
@@ -69,12 +70,12 @@ export class StickyMenuComponent implements OnInit {
    * Handles when the user clicks on an option of the menu
    * Brings the user to the top of that div using scrollIntoView, this will
    * call the @hostListener function which will set the proper fields
-   * 
+   *
    * @param choice The choice to go to
    */
   async changeSelection(choice: LEARNING_OBJECT_INFO_STATES) {
     const el = document.getElementById(choice);
-    el.scrollIntoView({"behavior": "smooth"});
+    el.scrollIntoView({'behavior': 'smooth'});
   }
 
   /**
@@ -90,6 +91,7 @@ export class StickyMenuComponent implements OnInit {
 
   /**
    * Checks to see if any of the values are set to true (highlighted)
+   *
    * @returns True if one of the values is highlighted (set to true)
    */
   isOtherChoiceSelected() {

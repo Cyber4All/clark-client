@@ -1,10 +1,10 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 
 export enum LEARNING_OBJECT_INFO_STATES {
-  LEARNING_OBJECT = "learningObject",
-  LEARNING_OUTCOMES = "learningOutcomes",
-  HIERARCHIES = "hierarchies",
-  COLLECTIONS = "collections"
+  LEARNING_OBJECT = 'learningObject',
+  LEARNING_OUTCOMES = 'learningOutcomes',
+  HIERARCHIES = 'hierarchies',
+  COLLECTIONS = 'collections'
 };
 
 @Component({
@@ -14,7 +14,7 @@ export enum LEARNING_OBJECT_INFO_STATES {
 })
 export class LearningObjectInfoComponent implements OnInit {
   currentComponent: LEARNING_OBJECT_INFO_STATES;
-  
+
   constructor() { }
 
   ngOnInit(): void {
@@ -71,11 +71,11 @@ export class LearningObjectInfoComponent implements OnInit {
    * Checks to see if a div is at the top of the screen.
    * As long as either the top of the div or the bottom of the div are in view
    * Then the div is considered "in view" and will be highlighted
-   * 
+   *
    * @param rect THe DOMRect
    * @returns True if the div is at the top of the screen
    */
-  isAtTopOfScreen(rect: DOMRect) {   
+  isAtTopOfScreen(rect: DOMRect) {
     const topShown = rect.top >= 0;
 
     // Most of the div is gone so switch to next div
