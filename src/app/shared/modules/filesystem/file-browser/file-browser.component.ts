@@ -39,6 +39,7 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
     LearningObject.Material.File[]
   >([]);
   @Input() folderMeta$: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+  @Input() inBuilder = false;
   @Output() path: EventEmitter<string> = new EventEmitter<string>();
   @Output()
   containerClick: EventEmitter<MouseEvent> = new EventEmitter<MouseEvent>();
