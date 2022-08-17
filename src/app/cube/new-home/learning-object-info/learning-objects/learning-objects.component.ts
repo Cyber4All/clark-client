@@ -47,17 +47,17 @@ export class LearningObjectsComponent implements OnInit {
   displayFeaturedObjectLevels() {
     if(this.featuredObject?.levels.length === 1) {
       return this.featuredObject.levels[0];
-    } else {
-      let levels = '';
-      this.featuredObject.levels.forEach((level, index, array) => {
-        if(index === array.length - 1) {
-          levels += ' and ' + level;
-        } else {
-          levels += level + ', ';
-        }
-      });
-      return levels;
     }
+
+    let levels = '';
+    this.featuredObject.levels.forEach((level, index, array) => {
+      if(index === array.length - 1) {
+        levels += ' and ' + level;
+      } else {
+        levels += level + ', ';
+      }
+    });
+    return levels;
   }
 
   /**
