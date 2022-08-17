@@ -1,10 +1,16 @@
 <div *ngIf="preview">
   <div class="wrapper">
-    <div class="grid-row header">
+    <div class="grid-row header" [ngClass]="{'bundle': checkAccessGroups()}">
       <div>Name</div>
       <div>Description</div>
       <div>Date</div>
       <div>Size</div>
+      <div class="toggle" *ngIf="checkAccessGroups()">
+        <p>Bundle</p>
+        <div class="icon" [tip]="toggleToolTip" [tipDisabled]="false">
+          <i class="fas fa-question-circle"></i>
+        </div>
+      </div>
       <div *ngIf="canManage" class="placeholder"></div>
     </div>
     <div *ngFor="let item of directoryListing">
@@ -14,6 +20,7 @@
         class="folder"
         (clicked)="openFolder(item.name)"
         (menuClicked)="handleMenuClicked($event, item)"
+        (toggleClicked)="handleToggleClicked($event, item)"
         [folder]="item"
         [showOptionButton]="canManage"
       ></clark-folder-list-item>
@@ -24,6 +31,7 @@
         class="file"
         (clicked)="openFile(item)"
         (menuClicked)="handleMenuClicked($event, item)"
+        (toggleClicked)="handleToggleClicked($event, item)"
         [file]="item"
         [showOptionButton]="canManage"
       ></clark-file-list-item>

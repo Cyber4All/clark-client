@@ -37,6 +37,11 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     event: MouseEvent;
     item: any;
   }> = new EventEmitter();
+  @Output()
+  emitBundle: EventEmitter<{
+    state: boolean;
+    item: DirectoryNode | LearningObject.Material.File;
+  }> = new EventEmitter();
 
   private editableFile: LearningObject.Material.File | DirectoryNode;
 
@@ -47,11 +52,16 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   file: LearningObject.Material.File;
   directoryListing = [];
 
+  toggleToolTip = `Selected items will be included in the bundle download. 
+    Deselected items will be accessible through a download link in the PDF.`;
+  accessGroups: string[];
+
   constructor(private auth: AuthService) {}
 
   ngOnInit(): void {
     this.subToDirChange();
     this.subToDescription();
+    this.accessGroups = this.auth.accessGroups;
   }
 
   /**
@@ -124,6 +134,22 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     this.emitContextOpen.next({ event, item });
   }
 
+  /**
+   * Emits bundling event indicating the file/folder with a new packageable property to be saved
+   *
+   * @param state The new packageable state to save to the database
+   * @param item The folder or file to be handled
+   */
+  handleToggleClicked(
+    state: boolean,
+    item: DirectoryNode | LearningObject.Material.File
+  ) {
+    this.emitBundle.emit({
+      state: state,
+      item: item
+    });
+  }
+
   returnToFileView() {
     this.preview = true;
   }
@@ -160,6 +186,16 @@ export class FileListViewComponent implements OnInit, OnDestroy {
       return elm.getPath();
     }
     return elm.id || index;
+  }
+
+  /**
+   * Checks if the current user is an admin or curator.
+   * If true, allows the user to change the bundling status of a file/folder.
+   *
+   * @returns boolean value if the user is valid
+   */
+   checkAccessGroups(): boolean {
+    return this.accessGroups.includes('admin') || this.accessGroups.includes('curator');
   }
 
   ngOnDestroy() {

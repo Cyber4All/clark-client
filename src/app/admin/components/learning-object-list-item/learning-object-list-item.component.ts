@@ -18,6 +18,7 @@ import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/internal/observable/of';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -54,11 +55,13 @@ export class LearningObjectListItemComponent implements OnChanges {
   showRelevancyDate: boolean;
   showDeleteRevisionConfirmation: boolean;
   showChangeCollection: boolean;
+  showHierarchyBuilder: boolean;
 
   // flags
   meatballOpen = false;
 
   hasParents = false;
+  hasChildren = false;
 
   private headers = new HttpHeaders();
   constructor(
@@ -68,6 +71,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private http: HttpClient,
     private toaster: ToastrOvenService,
+    private router: Router
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -83,6 +87,7 @@ export class LearningObjectListItemComponent implements OnChanges {
         });
     }
     await this.checkForParents();
+    await this.checkForChildren();
   }
 
   /**
@@ -186,6 +191,29 @@ export class LearningObjectListItemComponent implements OnChanges {
   }
 
   /**
+   * Checks if the learning object has any children
+   */
+  async checkForChildren() {
+    const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(
+      this.learningObject.author.username
+      )}/learning-objects/${encodeURIComponent(
+      this.learningObject.id
+    )}/children`;
+
+    await this.http.get(
+      childrenUri,
+      { headers: this.headers, withCredentials: true }
+      ).pipe(
+      take(1),
+      catchError(e => of(e))
+    ).subscribe(object => {
+      if (object && object.length) {
+        this.hasChildren = true;
+      }
+    });
+  }
+
+  /**
    * Toggles the modal for Relevancy Date selection
    */
 
@@ -199,6 +227,22 @@ export class LearningObjectListItemComponent implements OnChanges {
 
    toggleRevisionDelete(toggle: boolean) {
      this.showDeleteRevisionConfirmation = toggle;
+   }
+
+   goToUrl(url) {
+     if(url === 'builder') {
+      window.open(`/onion/learning-object-builder/${this.learningObject.id}`, '_blank');
+     } else if (url === 'contact') {
+      window.open(`/users/${this.learningObject.author.username}`);
+     } else if (url === 'details') {
+      window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}`);
+     } else if (url === 'relevancy') {
+       window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
+     }
+   }
+
+   toggleHierarchyBuilder(val: boolean) {
+    this.showHierarchyBuilder = val;
    }
 
 

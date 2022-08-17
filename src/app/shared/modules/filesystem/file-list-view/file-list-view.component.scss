@@ -28,11 +28,25 @@
   padding: 0 0 8px;
   justify-self: center;
 
+  &.bundle {
+    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+  }
+
   &.header {
     color: $dark-grey;
     background: transparent;
     padding: 0;
     margin-bottom: 15px;
+  }
+
+  .toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+      margin-left: 5px;
+    }
   }
 }
 
