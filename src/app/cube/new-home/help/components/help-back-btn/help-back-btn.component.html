@@ -1,12 +1,23 @@
-<div class="back-btn">
-    <div class="back-icon">
-        <i class="fa fa-angle-left" aria-hidden="true"></i>
+<div class="wrapper">
+    <div class="back-btn">
+        <div class="back-icon">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </div>
+        <span [ngClass]="option.iconColor">
+            <i [ngClass]="option.icon"></i>
+        </span>
+        <div>
+            <h2>{{ option.title }}</h2>
+            <p>{{ option.description }}</p>
+        </div>
     </div>
-    <span [ngClass]="option.iconColor">
-        <i [ngClass]="option.icon"></i>
-    </span>
-    <div>
-        <h2>{{ option.title }}</h2>
-        <p>{{ option.description }}</p>
+    <div 
+    *ngIf="buildProgramComponentService.currentFrameworkObservable | async" 
+    class="framework-query" 
+    role="button"
+    (activate)="$event.stopPropagation(); handleFrameworkClicked()"
+    >
+        <b>{{ currentFramework }}</b>
+        <i class="fal fa-times"></i>
     </div>
 </div>
