@@ -6,7 +6,6 @@
     margin: 0 auto;
     position: relative;
     z-index: 0;
-
     .user-profile-header_wrapper {
         background-color: $secondary-white-background;
         margin: 15px auto;
@@ -20,7 +19,6 @@
         position: relative;
         z-index: 1;
         float: left;
-    
         .img {
             display: inline-block;
             max-width: 150px;
@@ -39,7 +37,6 @@
             position: relative;
             z-index: 1;
         }
-
         .user-profile_info {
             display: inline-block;
             vertical-align: top;
@@ -56,7 +53,6 @@
                 color: $darker-grey;
             }
         }
-
         .edit {
             display: block;
             color: $light-grey;
@@ -73,14 +69,11 @@
                 font-size: $normal;
                 margin-right: 5px;
             }
-
             &:hover {
                 cursor: pointer;
                 border-bottom: 1px solid $blue-accent;
             }
         }
-
-
     }
     
     .user-profile-bio_wrapper{
@@ -102,7 +95,6 @@
             h2 {
                 color: $darker-grey;
                 margin-bottom: 0;
-
             }
             p {
                 margin-top: 0;

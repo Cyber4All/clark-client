@@ -27,7 +27,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     // Subscribe to data returned from profile.resolver
     this.subscription = this.route.data.subscribe(async val => {
       // Toggle page loading
-      this.loading = true;this.user = val.user;
+      this.loading = true;
+      this.user = val.user;
       // Check if current user is on their profile
       this.isUser = this.user.username === this.auth.username;
       await this.initProfileData();

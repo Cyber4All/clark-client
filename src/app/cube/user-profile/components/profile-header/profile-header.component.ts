@@ -15,6 +15,7 @@ export class ProfileHeaderComponent implements OnInit {
   get user() {
     return this._user.value;
   }
+  // Toggle disply edit profile button for authenticated user
   @Input() isUser: boolean;
 
   gravatarImage: string;
@@ -36,24 +37,21 @@ export class ProfileHeaderComponent implements OnInit {
       this.gravatarImage = await this.userService.getGravatarImage(val.email, this.size);
       // Grab first name for bio section
       this.firstName = val.name.split(' ')[0];
-      await this.checkUserStats();
     });
 
   }
 
   /**
-   * Function to retrieve stats of user interactions
+   * Function to retrieve stats of user interactions on downloads, contributions, and saves
    */
   async checkUserStats() {
-    // Check saved
+    // TODO -- create aggregation for user downloads, user contributions, and saved objects
   }
 
   /**
-   * Method to toggle edit profile view
-   *
-   * @param val boolean for toggle
+   * Method to toggle off edit profile view
    */
-  toggleEditProfileModal(val: boolean) {
-    this.editProfile = val;
+   closeEdit() {
+    this.editProfile = false;
   }
 }
