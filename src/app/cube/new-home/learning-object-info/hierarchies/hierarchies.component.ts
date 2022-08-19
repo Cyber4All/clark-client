@@ -7,7 +7,7 @@ import { ClientRequest } from 'http';
   styleUrls: ['./hierarchies.component.scss']
 })
 export class HierarchiesComponent implements OnInit {
-  @Input() length: 'nanomodule' | 'micromodule' | 'module' | 'unit' | 'course';
+  length: 'nanomodule' | 'micromodule' | 'module' | 'unit' | 'course';
 
   constructor() { }
 
