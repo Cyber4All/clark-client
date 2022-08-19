@@ -17,7 +17,6 @@
                     <div tabindex="0" role="tab"
                         (click)="activateMainTab('review'); content(2, collectionsUnreleased[0].abvName); activateCollectionTab(0)"
                         [ngClass]="{active: tabMain === 2}"> Unreleased </div>
-
                 </div>
                 <div class="secondTabs" *ngIf="tabMain">
                     <div class="tabItemSecContainer" *ngIf="tabMain === 1">
@@ -38,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="dropdownReleased" *ngIf="tabMain === 1 && collectionsReleased.length > 0 && collectionsReleased !== undefined">
+                <div class="dropdownReleased" *ngIf="tabMain === 1 && collectionsReleased.length > 0">
                     <button class="dropdownButton" #userDropdownButtonElement
                         (click)="toggleDropdown(true)">{{collectionsReleased[tabCollection].name}}</button>
                     <clark-context-menu *ngIf="mobileDropdown" [anchor]="userDropdownButtonElement"
@@ -53,7 +52,7 @@
                         </div>
                     </clark-context-menu>
                 </div>
-                <div class="dropdownUnreleased" *ngIf="tabMain === 2 && collectionsUnreleased !== undefined && collectionsUnreleased.length > 0">
+                <div class="dropdownUnreleased" *ngIf="tabMain === 2">
                     <button class="dropdownButton" #userDropdownButtonElement
                         (click)="toggleDropdown(true)">{{collectionsUnreleased[tabCollection].name}}
                     </button>
@@ -71,21 +70,21 @@
                     </clark-context-menu>
                 </div>
                 <div class="content">
-                    <div *ngIf="tabMain === 1 && learningObjectsReleased.length > 0 && learningObjectsReleased !== undefined">
+                    <div *ngIf="tabMain === 1 && learningObjectsReleased.length > 0">
                         <clark-learning-object-component class="object" *ngFor="let l of learningObjectsReleased"
                             [learningObject]="l">
                         </clark-learning-object-component>
                     </div>
-                    <div *ngIf="tabMain === 1 && learningObjectsReleased.length === 0 && learningObjectsReleased !== undefined">
-                        <p>There are no released Learning Objects</p>
+                    <div *ngIf="tabMain === 1 && learningObjectsReleased.length === 0">
+                        <p>You don't have any released Learning Objects yet!</p>
                     </div>
-                    <div *ngIf="tabMain === 2 && learningObjectsUnreleased.length > 0 && learningObjectsUnreleased !== undefined">
+                    <div *ngIf="tabMain === 2 && learningObjectsUnreleased.length > 0">
                         <clark-learning-object-component class="object" *ngFor="let l of learningObjectsUnreleased"
                             [learningObject]="l">
                         </clark-learning-object-component>
                     </div>
-                    <div *ngIf="tabMain === 2 && learningObjectsUnreleased.length === 0 && learningObjectsUnreleased !== undefined">
-                        <p>You have no unreleased Learning Objects</p>
+                    <div *ngIf="tabMain === 2 && learningObjectsUnreleased.length === 0">
+                        <p>Visit your <a routerLink="/onion/dashboard" class="dashboard">Dashboard</a> to create a learning object!</p>
                     </div>
                 </div>
             </div>
@@ -99,7 +98,7 @@
             <div class="header">
                 <h1>Contributions</h1>
             </div>
-            <div class="learningTabs" *ngIf="collectionsReleased.length > 0 && collectionsReleased !== undefined; else loadingObjectTemplate">
+            <div class="learningTabs" *ngIf="collectionsReleased.length > 0 && learningObjectsReleased.length > 0; else noLearningObjects">
                 <div class="mainTabs">
                     <div *ngFor="let collection of collectionsReleased; let indexOfCollection=index" tabindex="0" role="tab"
                         (click)="content(tabMain, collectionsReleased[indexOfCollection].abvName); activateCollectionTab(indexOfCollection)"
@@ -120,7 +119,7 @@
                         </div>
                     </clark-context-menu>
                 </div>
-                <div class="content" ngIf*="!loading; else noLearningObjects">
+                <div class="content" *ngIf="!loading; else noLearningObjects">
                     <clark-learning-object-component class="object" *ngFor="let l of learningObjectsReleased"
                         [learningObject]="l">
                     </clark-learning-object-component>
@@ -132,7 +131,7 @@
 
 <ng-template #noLearningObjects>
     <div>
-        <p>There are no released Learning Objects</p>
+        <p>This user does not have any released Learning Objects yet!</p>
     </div>
 </ng-template>
 
