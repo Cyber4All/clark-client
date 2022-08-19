@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from 'app/core/user.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -28,14 +28,15 @@ export class ProfileHeaderComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
     this._user.subscribe(async val => {
+      // Set profile image
       this.gravatarImage = await this.userService.getGravatarImage(val.email, this.size);
+      // Grab first name for bio section
       this.firstName = val.name.split(' ')[0];
-      this.checkUserStats();
+      await this.checkUserStats();
     });
 
   }
@@ -43,10 +44,15 @@ export class ProfileHeaderComponent implements OnInit {
   /**
    * Function to retrieve stats of user interactions
    */
-  checkUserStats() {
+  async checkUserStats() {
     // Check saved
   }
 
+  /**
+   * Method to toggle edit profile view
+   *
+   * @param val boolean for toggle
+   */
   toggleEditProfileModal(val: boolean) {
     this.editProfile = val;
   }
