@@ -1,12 +1,3 @@
-<clark-dialogmenu [content]="modalService.dialogMenuContent"></clark-dialogmenu>
 <div class="authentication-component">
-  <div class="background">
-    <div class="image"></div>
-    <div class="pulse"></div>
-  </div>
-  <router-outlet></router-outlet>
-  <clark-cookie-popup
-    *ngIf="!checkCookieAgreement() && !cookieBannerVisible()"
-    (acceptsCookie)="acceptsCookieAgreement($event)"
-  ></clark-cookie-popup>
+<router-outlet></router-outlet>
 </div>

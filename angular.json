@@ -23,7 +23,8 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/globals.scss"
+              "src/globals.scss",
+              "src/mat-input.scss"
             ],
             "vendorChunk": true,
             "extractLicenses": false,
