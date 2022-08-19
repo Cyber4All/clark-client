@@ -1,7 +1,6 @@
 import {
   Component,
   OnChanges,
-  OnDestroy,
   SimpleChanges,
   EventEmitter,
   Output,
@@ -10,19 +9,17 @@ import {
 import { AuthService } from 'app/core/auth.service';
 import { ProfileService } from 'app/core/profiles.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'clark-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnChanges, OnDestroy {
-  isDestroyed$ = new Subject<void>();
+export class EditProfileComponent implements OnChanges {
   elementRef: any;
   @Input() user;
   @Input() gravatarImage;
-  @Output() close = new EventEmitter<boolean>();
+  @Output() close: EventEmitter<void> = new EventEmitter();
 
   editInfo = {
     firstname: '',
@@ -70,7 +67,7 @@ export class EditProfileComponent implements OnChanges, OnDestroy {
       }
       await this.profileService.editUserInfo(edits);
       await this.auth.validateAndRefreshToken();
-      this.close.emit(true);
+      this.close.next();
       this.noteService.success('Success!', 'We\'ve updated your user information!');
     } catch (e) {
       if (e.status === 400) {
@@ -90,10 +87,6 @@ export class EditProfileComponent implements OnChanges, OnDestroy {
     return email;
   }
 
-  bindEditorOutput(event: Event) {
-
-  }
-
   private toUpper(str) {
     return str
         .toLowerCase()
@@ -102,10 +95,5 @@ export class EditProfileComponent implements OnChanges, OnDestroy {
             return word[0].toUpperCase() + word.substr(1);
         })
         .join(' ');
-  }
-
-  ngOnDestroy(): void {
-    this.isDestroyed$.next();
-    this.isDestroyed$.unsubscribe();
   }
 }
