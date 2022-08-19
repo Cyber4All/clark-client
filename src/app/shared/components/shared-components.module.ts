@@ -31,6 +31,7 @@ import {
   HighlightedLearningObjectComponent
 } from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { AuthorCardComponent } from 'app/shared/components/author-card/author-card.component';
 import { CollectionsDropdownComponent } from './collections-dropdown/collections-dropdown.component';
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     AddEvaluatorComponent,
     UserDropdownComponent,
     HighlightedLearningObjectComponent,
+    AuthorCardComponent,
     CollectionsDropdownComponent,
   ],
   exports: [
@@ -83,6 +85,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     SkipLinkComponent,
     CookiePopupComponent,
     AddEvaluatorComponent,
+    AuthorCardComponent
   ]
 })
 export class SharedComponents {}
