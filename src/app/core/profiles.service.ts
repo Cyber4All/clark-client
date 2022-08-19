@@ -76,7 +76,6 @@ export class ProfileService {
         }
       )
       .pipe(
-        retry(3),
         catchError(this.handleError)
       )
       .toPromise()
@@ -95,7 +94,11 @@ export class ProfileService {
   getCollectionData(username: string): Promise<any> {
     return this.http.get(USER_ROUTES.GET_COLLECTIONS(username), {
       withCredentials: true
-    }).toPromise();
+    })
+    .pipe(
+      catchError(this.handleError)
+    )
+    .toPromise();
   }
 
   private handleError(error: HttpErrorResponse) {
