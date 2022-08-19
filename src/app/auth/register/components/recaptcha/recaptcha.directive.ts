@@ -7,10 +7,8 @@ import { Directive } from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
-  NgControl,
   Validators,
   NG_VALUE_ACCESSOR,
-  FormsModule
 } from '@angular/forms';
 
 export interface ReCaptchaConfig {
@@ -61,7 +59,6 @@ export class RecaptchaDirective
     private ngZone: NgZone,
     private injector: Injector,
     private validator: RecaptchaValidator,
-
   ) {}
 
   ngOnInit() {
@@ -69,6 +66,9 @@ export class RecaptchaDirective
     this.addScript();
   }
 
+  /**
+   * Create the callback function that will be called when the reCaptcha is loaded
+   */
   registerReCaptchaCallback() {
     window.reCaptchaLoad = () => {
       const config = {
@@ -104,18 +104,35 @@ export class RecaptchaDirective
     this.control.updateValueAndValidity();
   }
 
+  /**
+   * Function inherited by ControlValueAccessor; writes a new value to the obj
+   *
+   * @param obj The obj whose value will change
+   */
   writeValue(obj: any): void {}
 
+  /**
+   * Function inherited by ControlValueAccessor
+   * Registers a callback function that is called when the controls value changes
+   *
+   * @param fn The callback function
+   */
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
 
+  /**
+   * Function inherited by ControlValueAccessor
+   * Registers a callback function that is called by the froms API on init
+   *
+   * @param fn The callback function
+   */
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
   /**
-   * onExpired
+   * Run a function when the captcha expires after being idle
    */
   onExpired() {
     this.ngZone.run(() => {
@@ -127,8 +144,7 @@ export class RecaptchaDirective
   }
 
   /**
-   *
-   * @param response
+   * Run a function when the user has successfully completed the captcha
    */
   onSuccess(token: string) {
     this.ngZone.run(() => {
@@ -141,6 +157,7 @@ export class RecaptchaDirective
   }
 
   /**
+   * Verifies a token that is returned after a success
    *
    * @param token
    */
@@ -182,7 +199,7 @@ export class RecaptchaDirective
   }
 
   /**
-   * Add the script
+   * Creates and Adds the Google Recaptcha script tag to the DOM
    */
   addScript() {
     const script = document.createElement('script');

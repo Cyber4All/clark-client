@@ -77,6 +77,7 @@ export class ClarkComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
+    private route: ActivatedRoute,
     private _: HistoryService,
     private messages: MessagesService,
     private toaster: ToastrOvenService,
@@ -107,6 +108,11 @@ export class ClarkComponent implements OnInit {
 
     this.toaster.setPosition({ x: 'left', y: 'bottom' });
     this.toaster.init(this.view);
+    this.route.queryParams.subscribe(() => {
+      if (route.snapshot.queryParams.err) {
+        this.toaster.error( 'SSO Error', decodeURIComponent(route.snapshot.queryParams.err));
+      }
+    });
   }
 
   ngOnInit(): void {

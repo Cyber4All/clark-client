@@ -1,22 +1,14 @@
 <div class="wrapper">
-  <div class="content-box">
-    <div class="top">
-      <h1 class="auth-title">CLARK</h1>
-      <h2 class="auth-title light">Cybersecurity Digital Library</h2>
-      <div class="done" *ngIf="isLoading">
-        <p aria-live="assertive" class="message--in-progress">Verifying your email...</p>
-        <i class="far fa-spinner-third fa-spin"></i>
-      </div>
-      <div aria-live="assertive" class="done" *ngIf="!isLoading">
-        <i class="far fa-shield-check"></i>
-        Your email address has been verified successfully!
-      </div>
+    <div class="content-box">
+        <img src="/assets/images/logo.png" alt="CLARK Logo" @fadeIn/>
+        <div @fadeIn>
+            <div>
+                <i *ngIf="iconSuccess" class="fas fa-check-circle fa-5x"></i>
+                <i *ngIf="!iconSuccess" class="fas fa-times-circle fa-5x"></i>
+            </div>
+            <h1>{{ h1Message }}</h1>
+            <p>{{ pMessage }}</p>
+            <button type="button" routerLink="../login">Login</button>
+        </div>
     </div>
-    <button aria-label="Continue" class="bottom-link" *ngIf="hasValidToken" routerLink="/home">
-      <span>Continue</span>
-    </button>
-    <button aria-label="Sign in" class="bottom-link" *ngIf="hasValidToken === false" routerLink="../login">
-      Want to get started? <span>Sign in!</span>
-    </button>
-  </div>
 </div>
