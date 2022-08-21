@@ -40,38 +40,21 @@
         .user-profile_info {
             display: inline-block;
             vertical-align: top;
-            line-height: 5px;
-            margin: 20px;
+            line-height: 15px;
             color: $dark-grey;
             position: absolute;
             z-index: 2;
-
+            margin-top: 20px;
+            margin-left: 20px;
             h1 {
                 line-height: 35px;
                 width: min-content;
                 word-wrap: break-word;
                 color: $darker-grey;
+                margin-bottom: 10px;
             }
-        }
-        .edit {
-            display: block;
-            color: $light-grey;
-            background-color: $light-blue;
-            font-size: $normal;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: $smaller;
-            float: right;
-            margin: 40px 20px 0 0;
-            position: relative;
-            z-index: 2;
-            .svg-inline--fa {
-                font-size: $normal;
-                margin-right: 5px;
-            }
-            &:hover {
-                cursor: pointer;
-                border-bottom: 1px solid $blue-accent;
+            p {
+                margin-bottom: 5px;
             }
         }
     }
@@ -85,19 +68,47 @@
         border-radius: 8px;
         border: .5px rgba(28, 112, 221, .1) solid;
         box-shadow: 0 10px 20px -10px rgba(28, 112, 221, .1);
-        display: block;
         color: $dark-grey;
         float: right;
 
         .profile-bio_wrapper {
-            margin: 12px 10px auto 10px;
-            padding: 10px 4px;
-            h2 {
-                color: $darker-grey;
-                margin-bottom: 0;
-            }
+            margin: 10px 10px auto 10px;
+            padding: 5px 4px;
+            display: block;
+            position: relative;
+
             p {
                 margin-top: 0;
+            }
+            .bioheader {
+                margin-bottom: 0;
+                display: inline-block;
+                width: 100%;
+                h2 {
+                    color: $darker-grey;
+                    float: left;
+                }
+                .edit {
+                    color: $light-grey;
+                    background-color: $light-blue;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    font-size: $smaller;
+                    z-index: 2;
+                    height: fit-content;
+                    float: right;
+                    position: relative;
+                    top: 20px;
+                    right: 10px;
+                    .svg-inline--fa {
+                        font-size: $normal;
+                        margin-right: 5px;
+                    }
+                    &:hover {
+                        cursor: pointer;
+                        border-bottom: 1px solid $blue-accent;
+                    }
+                }
             }
             .noBio {
                 margin: auto;
@@ -109,7 +120,53 @@
     }
 }
 
-.modal-container {
-    height: 85vh;
-    width: 50vw;
+.popup_container {
+    .modal-container {
+        height: 90vh;
+        width: 50vw;
+    }
+}
+
+@media(max-width: 1000px) {
+    .popup_container {
+        overflow-y: auto;
+        .modal-container {
+            width: 100vw;
+        }
+    }
+}
+
+@media(max-width: 910px) {
+    .user-profile-header_container {
+        display: flex;
+        flex-direction: column !important;
+        width: 100%;
+        
+        .user-profile-header_wrapper {
+            display: flex;
+            flex-direction: column !important;
+            align-items: center;
+            height: 330px;
+            width: 100%;
+            margin: 0px auto;
+
+            .user-profile_info {
+                display: inline-block;
+                text-align: center;
+                margin: 5px;
+                color: $dark-grey;
+                z-index: 2;
+                position: relative;
+
+                h1 {
+                    line-height: 35px;
+                    width: fit-content;
+                    color: $darker-grey;
+                }
+            }
+        }
+        .user-profile-bio_wrapper {
+            margin: 10px auto;
+        }
+    }
 }
