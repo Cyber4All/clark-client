@@ -27,6 +27,8 @@ import { SkipLinkComponent } from './skip-link/skip-link.component';
 import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
 import { AddEvaluatorComponent } from './add-evaluator/add-evaluator.component';
 import { UserDropdownComponent } from './add-evaluator/components/user-dropdown/user-dropdown.component';
+import { InputFieldComponent } from './input-field/input-field.component';
+import { MatInputModule } from '@angular/material/input';
 import {
   HighlightedLearningObjectComponent
 } from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
@@ -38,6 +40,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    MatInputModule,
     // third-part modules
     CKEditorModule,
     VirtualScrollerModule,
@@ -63,6 +66,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     AddEvaluatorComponent,
     UserDropdownComponent,
     HighlightedLearningObjectComponent,
+    InputFieldComponent,
   ],
   exports: [
     // components
@@ -80,6 +84,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     SkipLinkComponent,
     CookiePopupComponent,
     AddEvaluatorComponent,
+    InputFieldComponent,
   ]
 })
 export class SharedComponents {}
