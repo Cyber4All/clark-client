@@ -1,7 +1,6 @@
 <div>
     <ng-template *ngIf="isUser; then privateTemplate; else publicTemplate"></ng-template>
 </div>
-​
 <ng-template #privateTemplate>
     <div class="private">
         <div class="contribution">
@@ -17,7 +16,6 @@
                     <div tabindex="0" role="tab"
                         (click)="activateMainTab('review'); content(2, collectionsUnreleased[0].abvName); activateCollectionTab(0)"
                         [ngClass]="{active: tabMain === 2}"> Unreleased </div>
-                    ​
                 </div>
                 <div class="secondTabs" *ngIf="tabMain">
                     <div class="tabItemSecContainer" *ngIf="tabMain === 1">
@@ -97,7 +95,7 @@
         </div>
     </div>
 </ng-template>
-​
+
 <ng-template #publicTemplate>
     <div class="public">
         <div class="contribution">
