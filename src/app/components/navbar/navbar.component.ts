@@ -92,7 +92,7 @@ export class NavbarComponent implements OnInit {
 
       this.router.events.subscribe(e => {
         if (e instanceof NavigationEnd) {
-          let url = e.url.split('/');
+          const url = e.url.split('/');
           this.showNav = (
             url[1] === 'auth' ||
             url[1] === 'onion' ||
