@@ -31,7 +31,7 @@ p {
     background-color: $secondary-white-background;
     padding: 20px;
     justify-content: center;
-    max-width: 900px;
+    max-width: 950px;
     border-radius: 8px;
     margin: auto;
     margin-bottom: 30px;
@@ -169,7 +169,7 @@ p {
 
     .contribution {
         .header {
-            justify-content: center;
+            align-items: center;
 
             h1 {
                 text-align: center;
@@ -194,14 +194,25 @@ p {
     .dropdownButton {
         display: flex;
         background-color: white;
-        border: 1px #32363F solid;
-        border-radius: 10px;
+        border: 1px #376ED6 solid;
+        border-radius: 4px;
         margin: 15px 5px;
-        color: black;
+        margin-top: 20px;
+        color: #376ED6;
         padding: 12px 85px;
         font-size: 16px;
         cursor: pointer;
+
+        button:active{
+            background-color: transparent;
+        }
+
+        & > *:last-child {
+            margin-left: 10px;
+        }
     }
+
+
 
     .secondTabs {
         visibility: hidden;
@@ -227,7 +238,7 @@ p {
     }
 }
 
-@media (max-width: 414px) {
+@media (max-width: 450px) {
     .dropdownButton {
         width: 250px;
         padding: 12px 0;

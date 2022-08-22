@@ -1,29 +1,33 @@
 <div class="user-profile-header_container">
     <div class="user-profile-header_wrapper">
-        <img [src]="gravatarImage" class="img">
+        <div class=user-profile_img>
+            <img [src]="gravatarImage" class="img">
+        </div>
         <div class="user-profile_info">
             <h1>{{ user.name | titlecase }}</h1>
             <p>{{ user.organization | titlecase }}</p>
             <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+        </div>
+        <div class="edit" *ngIf="isUser" (activate)="editProfile = true">
+            <i class="far fa-pencil"></i>
+            <span id="edit-profile">EDIT PROFILE</span>
         </div>
     </div>
     <div class="user-profile-bio_wrapper">
         <div class="profile-bio_wrapper">
             <div class="bioheader">
                 <h2>About {{ firstName ? (firstName | titlecase) : 'them' }}</h2>
-                <div class="edit" *ngIf="isUser" (activate)="editProfile = true">
-                    <i class="far fa-pencil"></i>
-                    <span id="edit-profile">EDIT PROFILE</span>
-                </div>
             </div>
             <ng-container [ngTemplateOutlet]="user.bio !== '' ? bioExists : noBio"></ng-container>
         </div>
     </div>
+
 </div>
 
 <clark-popup class="popup_container" *ngIf="editProfile" (closed)="closeEdit()">
     <div class="modal-container" #popupInner>
-        <clark-edit-profile [user]="user" [gravatarImage]="gravatarImage" (userInfo)="updateInfo()" (close)="closeEdit()"></clark-edit-profile>
+        <clark-edit-profile [user]="user" [gravatarImage]="gravatarImage" (userInfo)="updateInfo()"
+            (close)="closeEdit()"></clark-edit-profile>
     </div>
 </clark-popup>
 
