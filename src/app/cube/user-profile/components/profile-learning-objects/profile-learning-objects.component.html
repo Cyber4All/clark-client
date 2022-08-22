@@ -1,7 +1,7 @@
-<div >
+<div>
     <ng-template *ngIf="isUser; then privateTemplate; else publicTemplate"></ng-template>
 </div>
-
+​
 <ng-template #privateTemplate>
     <div class="private">
         <div class="contribution">
@@ -17,10 +17,12 @@
                     <div tabindex="0" role="tab"
                         (click)="activateMainTab('review'); content(2, collectionsUnreleased[0].abvName); activateCollectionTab(0)"
                         [ngClass]="{active: tabMain === 2}"> Unreleased </div>
+                    ​
                 </div>
                 <div class="secondTabs" *ngIf="tabMain">
                     <div class="tabItemSecContainer" *ngIf="tabMain === 1">
-                        <div class="tabItemSec" *ngFor="let collection of collectionsReleased; let indexOfCollection=index">
+                        <div class="tabItemSec"
+                            *ngFor="let collection of collectionsReleased; let indexOfCollection=index">
                             <div tabindex="0" role="tab"
                                 (click)="content(1, collectionsReleased[indexOfCollection].abvName); activateCollectionTab(indexOfCollection)"
                                 [ngClass]="{active: tabCollection === indexOfCollection}">
@@ -39,7 +41,9 @@
                 </div>
                 <div class="dropdownReleased" *ngIf="tabMain === 1 && collectionsReleased.length > 0">
                     <button class="dropdownButton" #userDropdownButtonElement
-                        (click)="toggleDropdown(true)">{{collectionsReleased[tabCollection].name}}</button>
+                        (click)="toggleDropdown(true)">{{collectionsReleased[tabCollection].name}}<span
+                            *ngIf="!mobileDropdown"><i class="fas fa-angle-down"></i></span>
+                            <span *ngIf="mobileDropdown"><i class="fas fa-angle-up"></i></span></button>
                     <clark-context-menu *ngIf="mobileDropdown" [anchor]="userDropdownButtonElement"
                         [offset]="{ top: 10, left: 5 }" (close)="toggleDropdown(false)">
                         <div #contextMenu id="context-popup">
@@ -52,9 +56,11 @@
                         </div>
                     </clark-context-menu>
                 </div>
-                <div class="dropdownUnreleased" *ngIf="tabMain === 2">
+                <div class="dropdownUnreleased" *ngIf="tabMain === 2 && collectionsUnreleased.length > 0">
                     <button class="dropdownButton" #userDropdownButtonElement
-                        (click)="toggleDropdown(true)">{{collectionsUnreleased[tabCollection].name}}
+                        (click)="toggleDropdown(true)">{{collectionsUnreleased[tabCollection].name}}<span
+                        *ngIf="!mobileDropdown"><i class="fas fa-angle-down"></i></span>
+                        <span *ngIf="mobileDropdown"><i class="fas fa-angle-up"></i></span>
                     </button>
                     <clark-context-menu *ngIf="mobileDropdown" [anchor]="userDropdownButtonElement"
                         [offset]="{ top: 10, left: 5 }" (close)="toggleDropdown(false)">
@@ -91,28 +97,32 @@
         </div>
     </div>
 </ng-template>
-
+​
 <ng-template #publicTemplate>
     <div class="public">
         <div class="contribution">
             <div class="header">
                 <h1>Contributions</h1>
             </div>
-            <div class="learningTabs" *ngIf="collectionsReleased.length > 0 && learningObjectsReleased.length > 0; else noLearningObjects">
+            <div class="learningTabs" *ngIf="collectionsReleased.length; else loadingObjectTemplate">
                 <div class="mainTabs">
-                    <div *ngFor="let collection of collectionsReleased; let indexOfCollection=index" tabindex="0" role="tab"
+                    <div *ngFor="let collection of collectionsReleased; let indexOfCollection=index" tabindex="0"
+                        role="tab"
                         (click)="content(tabMain, collectionsReleased[indexOfCollection].abvName); activateCollectionTab(indexOfCollection)"
                         [ngClass]="{active: tabCollection === indexOfCollection}">
                         {{collectionsReleased[indexOfCollection].name}}</div>
                 </div>
                 <div class="dropdownReleased">
                     <button class="dropdownButton" #userDropdownButtonElement
-                        (click)="toggleDropdown(true)">{{collectionsReleased[tabCollection].name}}</button>
+                        (click)="toggleDropdown(true)">{{collectionsReleased[tabCollection].name}}<span
+                        *ngIf="!mobileDropdown"><i class="fas fa-angle-down"></i></span>
+                        <span *ngIf="mobileDropdown"><i class="fas fa-angle-up"></i></span></button>
                     <clark-context-menu *ngIf="mobileDropdown" [anchor]="userDropdownButtonElement"
                         [offset]="{ top: 10, left: 5 }" (close)="toggleDropdown(false)">
                         <div #contextMenu id="context-popup">
                             <ul class="menu">
-                                <li *ngFor="let collection of collectionsReleased; let indexOfCollection=index" tabindex="0"
+                                <li *ngFor="let collection of collectionsReleased; let indexOfCollection=index"
+                                    tabindex="0"
                                     (click)="content(tabMain, collectionsReleased[indexOfCollection].abvname); activateCollectionTab(indexOfCollection); toggleDropdown(false)">
                                     {{collection.name}}</li>
                             </ul>
