@@ -6,6 +6,7 @@
     margin: 0 auto;
     position: relative;
     z-index: 0;
+
     .user-profile-header_wrapper {
         background-color: $secondary-white-background;
         margin: 15px auto;
@@ -19,6 +20,7 @@
         position: relative;
         z-index: 1;
         float: left;
+
         .img {
             display: inline-block;
             max-width: 150px;
@@ -37,6 +39,7 @@
             position: relative;
             z-index: 1;
         }
+
         .user-profile_info {
             display: inline-block;
             vertical-align: top;
@@ -46,6 +49,7 @@
             z-index: 2;
             margin-top: 20px;
             margin-left: 20px;
+
             h1 {
                 line-height: 35px;
                 width: min-content;
@@ -53,6 +57,7 @@
                 color: $darker-grey;
                 margin-bottom: 10px;
             }
+
             p {
                 margin-bottom: 5px;
             }
@@ -80,14 +85,17 @@
             p {
                 margin-top: 0;
             }
+
             .bioheader {
                 margin-bottom: 0;
                 display: inline-block;
                 width: 100%;
+
                 h2 {
                     color: $darker-grey;
                     float: left;
                 }
+
                 .edit {
                     color: $light-grey;
                     background-color: $light-blue;
@@ -100,6 +108,7 @@
                     position: relative;
                     top: 20px;
                     right: 10px;
+
                     .svg-inline--fa {
                         font-size: $normal;
                         margin-right: 5px;
@@ -110,28 +119,33 @@
                     }
                 }
             }
+
             .noBio {
                 margin: auto;
                 width: 50%;
                 padding: 10px;
                 text-align: center;
             }
+
+            .popup_container {
+                .modal-container {
+                    height: 90vh;
+                    width: 50vw;
+                }
+            }
         }
     }
 }
 
-.popup_container {
-    .modal-container {
-        height: 90vh;
-        width: 50vw;
-    }
-}
-
 @media(max-width: 1000px) {
-    .popup_container {
-        overflow-y: auto;
-        .modal-container {
-            width: 100vw;
+    .user-profile-header_container {
+        .user-profile-header_wrapper {
+            .popup_container {
+                .modal-container {
+                    width: 100%;
+                    height: 50%;
+                }
+            }
         }
     }
 }
@@ -141,7 +155,8 @@
         display: flex;
         flex-direction: column !important;
         width: 100%;
-        
+        height: 100%;
+
         .user-profile-header_wrapper {
             display: flex;
             flex-direction: column !important;
@@ -149,6 +164,8 @@
             height: 330px;
             width: 100%;
             margin: 0px auto;
+            overflow-y: scroll;
+            position: relative;
 
             .user-profile_info {
                 display: inline-block;

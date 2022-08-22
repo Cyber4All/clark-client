@@ -1,26 +1,47 @@
-<div id="edit-profile-title" class="title">Edit Profile</div>
 <form>
-    <img [src]="gravatarImage" class="img">
-    <div class="gravatar-header">CLARK uses Gravatar</div>
-    <div class="gravatar-text">Don't have an account?<a target="_blank" href="https://en.gravatar.com/"> Sign up with Gravatar account</a></div>
-    <div class="h-group">
-        <div class="input firstname" [ngClass]="{'active': editInfo.firstname !== ''}">
-          <input name="firstname" type="text" placeholder="First name" aria-label="First Name" [(ngModel)]="editInfo.firstname" />
-          <i class="far fa-id-card"></i>
-        </div>
-        <div class="input lastname" [ngClass]="{'active': editInfo.lastname !== ''}">
-          <input name="lastname" type="text" placeholder="Last name" aria-label="Last Name" [(ngModel)]="editInfo.lastname" />
-          <i class="far fa-id-card"></i>
-        </div>
+  <h1>EDIT YOUR PROFILE</h1>
+  <div #editProfileTemplate>
+    <div class="gravatar">
+      <img [src]="gravatarImage" class="img">
+      <div class="gravatar-text"><a target="_blank" href="https://en.gravatar.com/">Manage your Gravatar account</a></div>
     </div>
-    <div class="input organization" id="organization" [ngClass]="{'active': editInfo.organization !== ''}">
-      <input #organization name="organization" type="text" placeholder="Organization" aria-label="Organization" [(ngModel)]="editInfo.organization" />
-      <i class="far fa-building"></i>
+    <div class="side-by-side">
+        <clark-input-field
+            [(ngModel)]="editInfo.firstname"
+            #firstname
+            name="firstName" 
+            phold="First Name"
+            [control]="editFormGroup.get('firstname')"
+        ></clark-input-field>
+        <clark-input-field 
+            [(ngModel)]="editInfo.lastname"
+            name="lastName" 
+            #lastname 
+            phold="Last Name" 
+            [control]="editFormGroup.get('lastname')"
+        ></clark-input-field>
     </div>
-    <div class="input email" [ngClass]="{'active': editInfo.email !== ''}">
-      <input name="email" type="email" placeholder="Email address" aria-label="Email Address" [(ngModel)]="editInfo.email" />
-      <i class="far fa-at"></i>
+    <clark-input-field 
+        [(ngModel)]="editInfo.email"
+        name="email" 
+        #email
+        phold="Email" 
+        [control]="editFormGroup.get('email')"
+        [errorMsg]="fieldErrorMsg"
+    ></clark-input-field>
+    <div class="sso-section">
+      <a [href]="ssoRedirect" class="sso-button">
+          <img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img">
+      </a>
+      <span><i class="far-solid fa-asterisk"></i>The Google account needs to be the same email used for your CLARK account</span>
     </div>
+    <clark-input-field 
+        [(ngModel)]="editInfo.organization"  
+        name="organization" 
+        #organization 
+        phold="Organization" 
+        [control]="editFormGroup.get('organization')"
+    ></clark-input-field>
     <p>{{ user.bio ? "Edit your bio" : "Add a bio"}}</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
         <textarea  name="bio" type="text" placeholder="Enter Bio" [(ngModel)]="editInfo.bio"
@@ -28,8 +49,9 @@
         </textarea>
       <span id="bio-icon"><i class="fas fa-user-alt"></i></span>
     </div>
-    <div class="btn-group to-right">
-        <button id="save-changes" class="button good" (activate)="save()">Save Changes <i class="far fa-save"></i></button>
-        <button id="discard-changes" class="button bad" (activate)="close.emit()">Discard Changes <i class="far fa-times"></i></button>
+    <div class="btn-group to-right" >
+      <button type="save-changes" class="button good" (activate)="save()">Save Changes <i class="far fa-save"></i></button>
+      <button type="discard-changes" class="button bad" (activate)="close.emit()">Discard Changes <i class="far fa-times"></i></button>
     </div>
+  </div>
 </form>
