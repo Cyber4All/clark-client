@@ -1,32 +1,30 @@
 import {
   Component,
   OnChanges,
-  SimpleChanges,
   EventEmitter,
   Output,
-  Input,
-  OnDestroy
+  Input
 } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { ProfileService } from 'app/core/profiles.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Subject } from 'rxjs';
 import { environment } from '@env/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'clark-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnChanges, OnDestroy {
+export class EditProfileComponent implements OnChanges {
   ssoRedirect = environment.apiURL + '/google';
-  private ngUnsubscribe = new Subject<void>();
   elementRef: any;
   @Input() user;
   @Input() gravatarImage;
   @Output() close: EventEmitter<void> = new EventEmitter();
+  @Output() userInfo: EventEmitter<{}> = new EventEmitter();
   errorMsg = 'There was an issue on our end with your registration, we are sorry for the inconvience.\n Please try again later!';
   fieldErrorMsg = '';
   editFailure: Boolean = false;
@@ -51,19 +49,19 @@ export class EditProfileComponent implements OnChanges, OnDestroy {
     private authValidation: AuthValidationService,
     private profileService: ProfileService,
     private noteService: ToastrOvenService,
+    private auth: AuthService,
+    private router: Router
   ) { }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
-    if (changes.user) {
-      this.editInfo = {
-        firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
-        lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
-        email: this.user.email || '',
-        organization: this.toUpper(this.user.organization) || '',
-        bio: this.user.bio || ''
-      };
-    }
+    this.editInfo = {
+      firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
+      lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
+      email: this.user.email || '',
+      organization: this.toUpper(this.user.organization) || '',
+      bio: this.user.bio || ''
+    };
   }
 
   /**
@@ -80,26 +78,39 @@ export class EditProfileComponent implements OnChanges, OnDestroy {
       organization: this.editInfo.organization.trim(),
       bio: this.editInfo.bio.trim(),
     };
-    try {
-      const profileUpdate = this.profileService.editUserInfo(edits);
-      // await Promise.all(profileUpdate).then(async (promise: any) => {
-      //   console.log(promise)
-      //   if(promise.status === 'fulfilled') {
-      //     await this.auth.validateAndRefreshToken();
-      //     this.close.next();
-      //     this.noteService.success('Success!', 'We\'ve updated your user information!');
-      //   }
-      // });
-    } catch (e) {
-      this.authValidation.showError();
-      if (e.status === 400) {
-        this.noteService.error('Error!', e.error);
-      } else {
-        this.noteService.error('Error!', 'We couldn\'t update your user information!');
+    if(
+      this.editInfo.firstname !== ''
+      && this.editInfo.lastname !== ''
+      && this.editInfo.email !== ''
+      && this.editInfo.organization !== ''
+      && this.getValidEmail(this.editInfo.email)
+    ) {
+      try {
+        await this.profileService.editUserInfo(edits).then(async res => {
+          await this.auth.validateAndRefreshToken();
+          this.userInfo.next(edits);
+          this.close.next();
+          this.noteService.success('Success!', res);
+        });
+      } catch (e) {
+        // FIXME: No errors are being caught/thrown from user service
+        if (e.status === 400) {
+          this.noteService.error('Error!', e.error);
+        } else {
+          this.noteService.error('Error!', 'We couldn\'t update your user information!');
+        }
       }
+    } else {
+      this.noteService.error('Error!', 'Double check the required fields above!');
     }
   }
 
+  /**
+   * Function to capitalize specific characters
+   *
+   * @param str any text string needing capitalization
+   * @returns formatted string
+   */
   private toUpper(str) {
     return str
         .toLowerCase()
@@ -110,7 +121,18 @@ export class EditProfileComponent implements OnChanges, OnDestroy {
         .join(' ');
   }
 
-  ngOnDestroy(): void {
-
+  /**
+   * Private function to validate email regex
+   *
+   * @param inputEmail user email
+   * @returns boolean
+   */
+  private getValidEmail(inputEmail: string) {
+    const email =
+      inputEmail.match(
+        // eslint-disable-next-line max-len
+        /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g
+      ) !== null;
+    return email;
   }
 }

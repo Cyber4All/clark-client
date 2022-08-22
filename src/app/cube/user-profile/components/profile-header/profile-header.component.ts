@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ProfileService } from 'app/core/profiles.service';
 import { UserService } from 'app/core/user.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -29,6 +30,7 @@ export class ProfileHeaderComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private profileService: ProfileService
   ) {}
 
   async ngOnInit() {
@@ -46,6 +48,13 @@ export class ProfileHeaderComponent implements OnInit {
    */
   async checkUserStats() {
     // TODO -- create aggregation for user downloads, user contributions, and saved objects
+  }
+
+  /**
+   * Method to update user info from service after changes have been made
+   */
+  async updateInfo() {
+    this.user = await this.profileService.fetchUserProfile(this.user.username);
   }
 
   /**

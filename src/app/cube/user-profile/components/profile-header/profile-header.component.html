@@ -23,7 +23,7 @@
 
 <clark-popup class="popup_container" *ngIf="editProfile" (closed)="closeEdit()">
     <div class="modal-container" #popupInner>
-        <clark-edit-profile [user]="user" [gravatarImage]="gravatarImage" (close)="closeEdit()"></clark-edit-profile>
+        <clark-edit-profile [user]="user" [gravatarImage]="gravatarImage" (userInfo)="updateInfo()" (close)="closeEdit()"></clark-edit-profile>
     </div>
 </clark-popup>
 
