@@ -20,8 +20,6 @@
         display: flex;
         flex-direction: row;
         flex-grow: 1;
-        width: 100%;
-        max-width: 550px;
         position: relative;
         z-index: 1;
 
@@ -98,7 +96,6 @@
         flex-direction: column;
         position: relative;
         z-index: 1;
-        width: 100%;
         max-width: 400px;
 
         .profile-bio_wrapper {
@@ -131,7 +128,7 @@
     }
 }
 
-@media(max-width: 1000px) {
+@media(max-width: 1060px) {
     .user-profile-header_container {
         .user-profile-header_wrapper {
             .popup_container {
@@ -142,26 +139,35 @@
             }
         }
     }
+
+    .user-profile-header_container{
+        margin-left: 30px;
+        margin-right: 30px;
+    }
 }
 
-@media (max-width: 910px) {
+@media (max-width: 950px) {
     .user-profile-header_container {
         flex-direction: column !important;
-        width: 100%;
         align-items: center;
+        margin-left: 30px;
+        margin-right: 30px;
 
         .user-profile-header_wrapper {
+            max-width: 100%;
             width: 100%;
-            justify-content: space-around;
+            justify-content: center;
             margin-bottom: 20px;
 
             .user-profile_info {
                 flex-grow: 0;
+                text-align: center;
             }
         }
 
         .user-profile-bio_wrapper {
             width: 100%;
+            max-width: 100%;
             justify-content: center;
 
             h2 {
@@ -196,11 +202,7 @@
     .user-profile-header_container {
         margin: 0;
         margin-top: 30px;
-
-        .user-profile-bio_wrapper,
-        .user-profile-header_wrapper {
-            margin-left: 5px;
-            margin-right: 5px;
-        }
+        margin-left: 5px;
+        margin-right: 5px;
     }
 }
