@@ -34,7 +34,7 @@ export class ProfileService {
   /**
    * Edit a user's basic information
    *
-   * @param { user:{ name?: string, }} tbd
+   * @param {user: { name?: string, email?: string, organization?: string, bio?: string, username: any }} body of updates to user profile
    * @returns http response
    */
    editUserInfo(user: {
@@ -61,10 +61,10 @@ export class ProfileService {
   }
 
   /**
-   * Function to retrieve a learning object's metadata
+   * Function to retrieve a learning object
    *
-   * @param params
-   * @returns
+   * @param params author is undefined - cuid is the current object cuid
+   * @returns a learning object with specified cuid
    */
   fetchLearningObject(params: { author: string, cuid: string}): Promise<any> {
     return this.http

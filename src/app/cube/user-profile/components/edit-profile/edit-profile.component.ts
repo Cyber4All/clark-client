@@ -25,7 +25,6 @@ export class EditProfileComponent implements OnChanges {
   @Input() gravatarImage;
   @Output() close: EventEmitter<void> = new EventEmitter();
   @Output() userInfo: EventEmitter<{}> = new EventEmitter();
-  errorMsg = 'There was an issue on our end with your registration, we are sorry for the inconvience.\n Please try again later!';
   fieldErrorMsg = '';
   editFailure: Boolean = false;
   emailInUse = false;

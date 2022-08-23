@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
@@ -9,7 +9,7 @@ import { ProfileService } from 'app/core/profiles.service';
   styleUrls: ['./user-profile.component.scss']
 })
 
-export class UserProfileComponent implements OnInit, OnDestroy {
+export class UserProfileComponent implements OnInit {
   loading: boolean;
   subscription: ISubscription;
   user: any;
@@ -71,9 +71,5 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         // Toggle off loading profile
         this.loading = false;
     });
-  }
-
-  ngOnDestroy() {
-
   }
 }
