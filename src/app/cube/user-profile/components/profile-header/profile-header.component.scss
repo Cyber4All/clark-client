@@ -20,6 +20,7 @@
         display: flex;
         flex-direction: row;
         flex-grow: 1;
+        width: 100%;
         max-width: 550px;
         position: relative;
         z-index: 1;
@@ -97,8 +98,8 @@
         flex-direction: column;
         position: relative;
         z-index: 1;
-        width: 400px;
-        max-width: 450px;
+        width: 100%;
+        max-width: 400px;
 
         .profile-bio_wrapper {
             padding: 5px 25px;
