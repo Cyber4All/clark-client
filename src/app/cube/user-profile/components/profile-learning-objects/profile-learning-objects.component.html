@@ -102,7 +102,7 @@
             <div class="header">
                 <h1>Contributions</h1>
             </div>
-            <div class="learningTabs" *ngIf="collectionsReleased.length; else loadingObjectTemplate">
+            <div class="learningTabs" *ngIf="collectionsReleased.length; else noLearningObjects">
                 <div class="mainTabs">
                     <div *ngFor="let collection of collectionsReleased; let indexOfCollection=index" tabindex="0"
                         role="tab"
@@ -127,7 +127,7 @@
                         </div>
                     </clark-context-menu>
                 </div>
-                <div class="content" *ngIf="!loading; else noLearningObjects">
+                <div class="content" *ngIf="!loading; else loadingObjectTemplate">
                     <clark-learning-object-component class="object" *ngFor="let l of learningObjectsReleased"
                         [learningObject]="l">
                     </clark-learning-object-component>

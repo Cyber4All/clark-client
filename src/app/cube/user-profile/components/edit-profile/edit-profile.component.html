@@ -45,7 +45,7 @@
     <p>{{ user.bio ? "Edit your bio" : "Add a bio"}}</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
         <textarea  name="bio" type="text" placeholder="Enter Bio" [(ngModel)]="editInfo.bio"
-            maxlength="150" rows="4" cols="50">
+            maxlength="330" rows="5" cols="50">
         </textarea>
       <span id="bio-icon"><i class="fas fa-user-alt"></i></span>
     </div>
