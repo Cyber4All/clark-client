@@ -66,12 +66,9 @@ export class NavbarDropdownService {
         if(this.userDropdown.getValue()) {
             this.userDropdown.next(false);
         }
-
-        //DO NOT REMOVE
-        // if(this.topicDropdown.getValue()) {
-        //     this.topicDropdown.next(false);
-        // }
-
+        if(this.topicDropdown.getValue()) {
+            this.topicDropdown.next(false);
+        }
         if(this.collectionsDropdown.getValue()) {
             this.collectionsDropdown.next(false);
         }
@@ -86,9 +83,13 @@ export class NavbarDropdownService {
             if (e instanceof NavigationEnd) {
               // if we're in onion, auth, or admin, toggle the navbars off
               this.closeMobileMenus();
-              if(e.url.match(/\/*onion[\/*[0-z]*]*/)
-                || e.url.match(/\/*auth[\/*[0-z]*]*/)
-                || e.url.match(/\/*admin[\/*[0-z]*]*/)) {
+              this.closeAll();
+              const url = e.url.split('/');
+              if(
+                url[1] === 'auth' ||
+                url[1] === 'onion' ||
+                url[1] === 'admin'
+                ) {
                   this.toggleNavbars(false);
                 } else {
                   this.toggleNavbars(true);
