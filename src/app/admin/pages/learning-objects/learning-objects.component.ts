@@ -215,8 +215,17 @@ export class LearningObjectsComponent
    *
    * @param direction the direction of the sort (ASC or DESC)
    */
-  sortByDate(direction: SortType) {
-    this.query = { ...this.query, sortType: direction };
+  sortByDate() {
+    if(!this.query.sortType) {
+      this.query['sortType'] = SortType.Descending;
+      this.query['orderBy'] = OrderBy.Date;
+    } else if (this.query.sortType.toString() === '-1') {
+      this.query.sortType = SortType.Ascending;
+    } else if (this.query.sortType.toString() === '1') {
+      delete this.query.sortType;
+      delete this.query.orderBy;
+    }
+
     this.learningObjects = [];
 
     this.getLearningObjects();
