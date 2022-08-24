@@ -1,0 +1,27 @@
+@import "vars.scss";
+
+.secondary-navbar {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    background-color: $primary-white;
+    height: 43px;
+    width: 100%;
+    border: solid 1px $secondary-white;
+    z-index: 4;
+
+    .item {
+        cursor: pointer;
+        font-weight: 400;
+        color: $dark-grey;
+        padding: 10px 45px;
+
+        span {
+            margin-left: 5px;
+        }
+    }
+}
+
+a:hover {
+    color: white;
+}

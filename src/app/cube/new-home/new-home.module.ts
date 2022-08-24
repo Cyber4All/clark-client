@@ -19,6 +19,9 @@ import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { HelpBackBtnComponent } from './help/components/help-back-btn/help-back-btn.component';
 import { FormsModule } from '@angular/forms';
+import { BlogsComponent } from 'app/components/blogs/blogs.component';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -38,7 +41,8 @@ import { FormsModule } from '@angular/forms';
     CollectionsComponent,
     StickyMenuComponent,
     HelpCardComponent,
-    HelpBackBtnComponent
+    HelpBackBtnComponent,
+    BlogsComponent
   ],
   imports: [
     CommonModule,

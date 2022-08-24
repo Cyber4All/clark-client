@@ -1,5 +1,14 @@
-<clark-file-browser [currentNode$]="currentNode$" [filesystem$]="directoryTree$" [folderMeta$]="folderMeta$" (meatballClick)="openFileOptions($event)" (newOptionsClick)="openNewOptions($event)" (path)="emitPath($event)" (descriptionUpdated)="saveDescription($event.description, $event.file)"
-  canManage="true"></clark-file-browser>
+<clark-file-browser 
+  [currentNode$]="currentNode$" 
+  [filesystem$]="directoryTree$" 
+  [folderMeta$]="folderMeta$" 
+  (meatballClick)="openFileOptions($event)" 
+  (newOptionsClick)="openNewOptions($event)" 
+  (path)="emitPath($event)" 
+  (descriptionUpdated)="saveDescription($event.description, $event.file)"
+  canManage="true"
+  (packageableToggled)="packageableToggled.emit($event)"
+  ></clark-file-browser>
 
 <clark-context-menu *ngIf="showNewOptions" [anchor]="menuAnchor" (close)="closeContextMenu()">
   <ul #contextMenu>

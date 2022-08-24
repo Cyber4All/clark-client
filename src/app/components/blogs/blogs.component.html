@@ -1,0 +1,24 @@
+<div class="blogs-component" *ngIf="blogObservable | async as blog;">
+    <div @blogView class="first-view" *ngIf="view===0">
+        <div class="left">
+            <i class="fas fa-info-circle fa-2x"></i>
+            <p>
+                <strong>{{blog[0].name}} </strong> {{" " + blog[0].description}}
+                <a [href]="blog[0].url" target="_blank">See blog for more details.</a>
+            </p>
+        </div>
+    
+        <div class="right">
+            <button (click)="view=1">Dismiss</button>
+        </div>
+    </div>
+
+    <div @dismissView class="second-view" *ngIf="view===1">
+        <div class="side-by-side">
+            <button (click)="dismissOnce()">Dismiss Once</button>
+            <button (click)="dismiss()">Dismiss</button>
+        </div>
+        <p>Click <a (click)="view=0">here</a> to go back.</p>
+    </div>
+    
+</div>
