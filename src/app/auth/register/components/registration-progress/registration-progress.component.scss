@@ -1,0 +1,21 @@
+@import "vars.scss";
+
+.progress {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    max-width: 520px;
+    margin: 0 auto;
+
+    p {
+        color: $dark-grey;
+        border-bottom: 2px solid $dark-grey;
+        padding: 5px 0;
+        font-size: $normal;
+
+        &.active {
+            color: $light-blue;
+            border-bottom-color: $light-blue;
+        }
+    }
+}

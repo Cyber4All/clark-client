@@ -1,35 +1,45 @@
 <div class="wrapper">
-  <div class="content-box" [ngClass]="{'failed': loginFailure}">
-    <div class="top">
-      <div aria-live="assertive" class="error" > {{ loginFailure || '' }} </div>
-      <div class="title_wrapper" routerLink="/home">
-        <div class="auth-title">CLARK</div>
-        <div class="auth-title light">Cybersecurity Digital Library</div>
-      </div>
-      <button id="focus" class="focus-button"></button>
-      <form>
-        <div class="input username" [ngClass]="{'active': authInfo.username !== ''}">
-          <input name="username" type="text" placeholder="Username" aria-label="Username" [(ngModel)]="authInfo.username" [autofocus]/>
-          <i class="far fa-user"></i>
-        </div>
-        <div class="input password" [ngClass]="{'active': authInfo.password !== ''}">
-          <input name="password" type="password" placeholder="Password" aria-label="Password" [(ngModel)]="authInfo.password" />
-          <i class="far fa-key"></i>
-        </div>
-        <a class="forgot" href="mailto:info@secured.team?subject=CLARK Username Recovery&body=Please provide the email associated with your CLARK account: ">Forgot username?</a>
+    <div class="content-box" [ngClass]="{'failed': loginFailure}">
+        <clark-error-banner class="errBanner" [errorMessage] ="bannerMsg"></clark-error-banner>
+        <form #f="ngForm" (ngSubmit)="submit(f)">
+            <img src="/assets/images/logo.png" alt="Clark Logo" />
+            <h1>Login</h1>
+            <div *ngIf="!isNameLogin" class="sso-section">
+                <a href="{{gatewayUrl}}/google" class="sso-button"><img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img"></a>
+                <div class="hr-or">
+                    <div class="left"><hr/></div> or <div class="right"><hr/></div>
+                </div>
+            </div>
+            <clark-input-field
+                ngModel
+                name="username"
+                #username="ngModel"
+                phold="Username or Email"
+                fControlType="required"
+                errorMsg = "{{errorMsg}}"
+            ></clark-input-field>
+            <div *ngIf="isNameLogin" 
+            [@inOutAnimation]
+            class="password-section">
+                <clark-input-field
+                    ngModel
+                    name="password"
+                    #password="ngModel"
+                    isPwrd="true"
+                    phold="Password"
+                    fControlType="required"
+                    errorMsg = "{{errorMsg}}"
+                ></clark-input-field>
+                <a routerLink="../forgot-password">Forgot Password?</a>
+                <a class="forgot" href="mailto:info@secured.team?subject=CLARK Username Recovery&body=Please provide the email associated with your CLARK account: ">Forgot username?</a>
         <span class="space"></span>
-        <a class="forgot" routerLink="../forgot-password">Forgot password?</a>
-        <button [attr.disabled]="checkCookieAgreement()? null: 'disabled'" type="submit" id="auth-button" class="auth-button" (activate)="submit()">
-          <div class="mask"></div>
-          <div class="text" *ngIf = "!loading">Login</div>
-          <span *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i>
-          </span>
-        </button>
-      </form>
+            </div>
+            <button *ngIf="!isNameLogin" (click)="showPassField()" class="buttons">Next</button>
+            <div class="side-by-side buttons" *ngIf="isNameLogin">
+                <button type="reset" (click)="showPassField()" class="white">Back</button>
+                <button type="submit" id="submit">Login</button>
+            </div>
+            <a routerLink="../register">Don't have an account? Register!</a>
+        </form>
     </div>
-    <button class="bottom-link" routerLink="../register">
-      Don't have an account yet?
-      <span id="bottom-login-link">Register!</span>
-    </button>
-  </div>
 </div>
