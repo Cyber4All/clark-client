@@ -226,6 +226,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
           this.infoFormGroup.get('email').setErrors({
             emailInUse: true
           });
+        } else {
+          this.fieldErrorMsg = '';
         }
       })
       .catch((err) => {
@@ -246,6 +248,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
       this.infoFormGroup.get('email').setErrors({
         invalidEmail: true
       });
+    } else {
+      this.fieldErrorMsg = '';
     }
   }
 
