@@ -1,4 +1,17 @@
-<p>help works!</p>
-<clark-teach-now></clark-teach-now>
-<clark-build-program></clark-build-program>
-<clark-explore-collections></clark-explore-collections>
+<div class="wrapper">
+    <h1>What can we help you with today?</h1>
+
+    <div @helpCard class="grid" *ngIf="selectedTemplate === -1">
+        <clark-help-card *ngFor="let option of helpOptions" [option]="option" (activate)="selectTemplate(option.value)"></clark-help-card>
+    </div>
+    
+    <clark-help-back-btn 
+        @helpBackButton
+        *ngIf="selectedTemplate === 0 || selectedTemplate === 1" 
+        [option]="helpOptions[selectedTemplate]" 
+        (activate)="selectTemplate(-1); handleFrameworkClicked();"
+        ></clark-help-back-btn>
+    <clark-teach-now @helpComponent *ngIf="selectedTemplate === 0"></clark-teach-now>
+    <clark-build-program @helpComponent *ngIf="selectedTemplate === 1"></clark-build-program>
+
+</div>
