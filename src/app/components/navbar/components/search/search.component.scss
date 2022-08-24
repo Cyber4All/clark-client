@@ -5,18 +5,18 @@ $buttonWidth: 135px;
 .clark-search {
   .search-options {
     max-width: 600px;
-    margin: auto;
     z-index: 2;
     position: relative;
-    height: 50px;
-    padding: 0 10px;
+    height: 45px;
+    padding: 0px;
     box-sizing: border-box;
 
     .input {
-      border-radius: 2px;
+      border-radius: 0px;
       overflow: hidden;
       max-width: 600px;
-      width: 100%;
+      height: 44px;
+      width: 30vw;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -25,22 +25,28 @@ $buttonWidth: 135px;
       margin-right: 0;
       visibility: visible;
       transition: all 0.1s ease;
-      background: $light-grey;
+      border-radius: 6px 0px 0px 6px;
       cursor: pointer;
-      border: 2px solid $light-grey;
+      input {
+        border: solid $secondary-white 1px;
+        border-radius: 6px 0px 0px 6px;
+        height: 100%;
+      }
 
       span {
         padding: 10px;
       }
 
       .icon {
-        color: $blue-accent;
-        padding: 9px 12px;
-        font-size: $normal;
         cursor: pointer;
-        background: transparent;
+        color: white;
+        border-radius: 0px 6px 6px 0px;
         border: none;
+        width: 50px;
+        height: 44px;
+        background-color: $light-blue;
       }
+    }
 
       input {
         width: 100%;
@@ -53,7 +59,6 @@ $buttonWidth: 135px;
         padding: 10px;
         font-size: $small;
       }
-    }
 
     .keyword-search form {
       display: flex;
@@ -106,7 +111,7 @@ $buttonWidth: 135px;
       text-align: center;
       padding: 10px;
       box-sizing: border-box;
-      z-index: 2;
+      z-index: 4;
       position: relative;
       transition: all 0.2s ease;
       color: $dark-grey;
@@ -163,5 +168,15 @@ $buttonWidth: 135px;
   100% {
     transform: scale(1);
     left: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  .clark-search{
+    .search-options {
+      .input {
+        width: 90vw;
+      }
+    }
   }
 }

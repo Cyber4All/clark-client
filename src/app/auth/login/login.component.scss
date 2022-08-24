@@ -47,8 +47,14 @@
             text-decoration: underline;
         }
     }
+    .space {
+        min-width: 10px;
+        padding: 4px;
+    }
+}
 
-    
+.title_wrapper {
+    cursor:pointer;
 
     &:before {
         content: '';

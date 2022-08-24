@@ -1,5 +1,5 @@
 <div class="blogs-component" *ngIf="blogObservable | async as blog;">
-    <div @fadeInOut class="first-view" *ngIf="view===0">
+    <div @blogView class="first-view" *ngIf="view===0">
         <div class="left">
             <i class="fas fa-info-circle fa-2x"></i>
             <p>
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div @fadeInOut class="second-view" *ngIf="view===1">
+    <div @dismissView class="second-view" *ngIf="view===1">
         <div class="side-by-side">
             <button (click)="dismissOnce()">Dismiss Once</button>
             <button (click)="dismiss()">Dismiss</button>

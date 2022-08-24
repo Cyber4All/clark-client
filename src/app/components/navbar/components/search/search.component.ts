@@ -41,7 +41,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     'Search for learning objects by organization, user, or keyword/phrase.' :
     'Search for learning objects by mapped guidelines';
 
-  constructor(private router: Router, private route: ActivatedRoute, private navService: NavbarService) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private navService: NavbarService
+    ) { }
 
   ngOnInit() {
     // force search bar to reflect current search on browse page when navigating by url query parameters
@@ -85,7 +89,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const text = searchbar.value;
     if (text.length) {
       searchbar.blur();
-      this.router.navigate(['/browse'], { queryParams: { text, currPage: 1 }});
+      this.router.navigate(['/browse'], { queryParams: {text, currPage: 1}});
     }
   }
 

@@ -3,10 +3,12 @@ $max-width: 1600px;
 
 $light-blue: #1c70dd;
 $light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 10));
+$text-choosen-blue: #376ED6;
 
 // TODO remove this variable when it's no longer being used
 $blue-accent: #3b608b;
 $blue-gradient: linear-gradient(45deg, darken($blue-accent, 20), $blue-accent);
+$new-button-blue: #376ed6;
 
 $success-green: #208540;
 $error-red: #ca2e1f;
@@ -15,14 +17,20 @@ $gold: #ffd000;
 $orange: #fea200;
 $orange-gradient: linear-gradient(45deg, $orange, $gold);
 
-$wrapper-background: #f0f4f7;
+$wrapper-background: white;
 $placeholder: #757575; // sampled from Mac OS Google Chrome placeholder value in a text input
+
+//off white
+$primary-white: #f8f8f8;
+$secondary-white: #dfdfdf;
+$dark-white: #E5E5E5;
 
 // greys
 $light-grey: #e1e5ec;
 $medium-grey: #8c97a5;
 $dark-grey: #535d69;
 $darker-grey: #32363f;
+$text-greyout: #AAAAAA;
 
 // overlays
 $dark-overlay: rgba(0, 0, 0, 0.8);

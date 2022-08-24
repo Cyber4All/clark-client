@@ -1,0 +1,10 @@
+<clark-blogs
+    @blog
+    *ngIf="displayBlogsBanner()"
+    (showBlogsBanner)="showBlogsBanner($event)"
+    (neverShowBanner)="neverShowBanner($event)"
+  ></clark-blogs>
+<clark-splash></clark-splash>
+<clark-help></clark-help>
+<clark-mission></clark-mission>
+<clark-learning-object-info></clark-learning-object-info>

@@ -1,0 +1,45 @@
+<div class="secondary-navbar" *ngIf="isDesktop && showNav">
+    <div class="item about-us" [routerLink]="['/about']">About Us</div>
+    <div class="item collections" id="collectionsAnchor" #collectionsAnchor (click)="dropdowns.toggleCollectionDropdown()" tabindex="0">Collections
+        <span *ngIf="!collectionsDropdown">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="collectionsDropdown">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+    </div>
+    <div class="item resources" #resourcesAnchor (click)="dropdowns.toggleResourcesDropdown()" tabindex="0">Resources
+        <span *ngIf="!resourcesDropdown">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="resourcesDropdown">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+    </div>
+    <clark-context-menu *ngIf="resourcesDropdown" [anchor]="resourcesAnchor" (close)="dropdowns.closeAll()">
+        <div #contextMenu>
+            <ul>
+                <li *ngFor="let r of externalResources" (click)="dropdowns.linkOut(r.link)">{{ r.name }}</li>
+            </ul>
+        </div>
+    </clark-context-menu>
+    <div class="item topics" #topicsAnchor (click)="dropdowns.toggleTopicDropdown()" tabindex="0">Topics
+        <span *ngIf="!topicDropdown">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="topicDropdown">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+    </div>
+    <clark-context-menu *ngIf="topicDropdown" [anchor]="topicsAnchor" (close)="dropdowns.closeAll()">
+        <div #contextMenu>
+            <ul>
+                <li *ngFor="let t of topics" (click)="dropdowns.setTopic(t._id)">{{ t.name | titlecase}}</li>
+            </ul>
+        </div>
+    </clark-context-menu>
+</div>
+
+<div>
+    <clark-collections-dropdown *ngIf="collectionsDropdown" (close)="dropdowns.closeAll()"></clark-collections-dropdown>
+</div>
