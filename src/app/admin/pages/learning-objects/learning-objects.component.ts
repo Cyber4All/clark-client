@@ -108,7 +108,18 @@ export class LearningObjectsComponent
         debounceTime(650)
       )
       .subscribe(searchTerm => {
-        this.query = { currPage: 1, sortType: this.query.sortType, orderBy: this.query.orderBy, text: searchTerm };
+        this.query = { currPage: 1, text: searchTerm };
+        if (!searchTerm || searchTerm.length <= 0) {
+          this.query = {
+            sortType: SortType.Descending,
+            orderBy: OrderBy.Date
+          };
+        } else {
+          this.query = {
+            sortType: undefined,
+            orderBy: undefined
+          };
+        }
         this.learningObjects = [];
 
         this.getLearningObjects();
@@ -217,13 +228,17 @@ export class LearningObjectsComponent
    */
   sortByDate() {
     if(!this.query.sortType) {
-      this.query['sortType'] = SortType.Descending;
-      this.query['orderBy'] = OrderBy.Date;
+      this.query = {
+        sortType: SortType.Descending,
+        orderBy: OrderBy.Date
+      };
     } else if (this.query.sortType.toString() === '-1') {
       this.query.sortType = SortType.Ascending;
     } else if (this.query.sortType.toString() === '1') {
-      delete this.query.sortType;
-      delete this.query.orderBy;
+      this.query = {
+        sortType: undefined,
+        orderBy: undefined
+      };
     }
 
     this.learningObjects = [];
