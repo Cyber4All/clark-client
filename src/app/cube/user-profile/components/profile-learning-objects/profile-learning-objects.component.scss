@@ -16,9 +16,9 @@ p {
     padding-bottom: 20px;
     border-radius: 0 0 8px 8px;
     margin-bottom: 10px;
-    border-bottom: .5px #DFDFDF solid;
-    border-left: .5px #DFDFDF solid;
-    border-right: .5px #DFDFDF solid;
+    border-bottom: .5px $profile-border solid;
+    border-left: .5px $profile-border solid;
+    border-right: .5px $profile-border solid;
 }
 
 ::ng-deep .learning-object {
@@ -76,9 +76,9 @@ p {
         border: 0;
         font-size: $normal;
         margin: 0;
-        border-top: .5px #DFDFDF solid;
-        border-left: .5px #DFDFDF solid;
-        border-right: .5px #DFDFDF solid;
+        border-top: .5px $profile-border solid;
+        border-left: .5px $profile-border solid;
+        border-right: .5px $profile-border solid;
         border-bottom: .5px white solid;
         position: relative;
         top: .5px;
@@ -113,9 +113,9 @@ p {
         align-items: center;
         position: relative;
         background-color: white;
-        border-bottom: 1px solid #DFDFDF;
+        border-bottom: 1px solid $profile-border;
         border-radius: 8px 8px 0 0;
-        border: .5px #DFDFDF solid;
+        border: .5px $profile-border solid;
     }
 
     .tabItemSecContainer {
@@ -152,7 +152,7 @@ p {
             font-size: $normal;
             background: transparent;
             margin: 0;
-            border-bottom: 2px solid #1C70DD;
+            border-bottom: 2px solid $light-blue;
             text-align: center;
         }
     }
@@ -187,18 +187,18 @@ p {
         position: relative;
         background-color: white;
         border-radius: 8px 8px 0 0;
-        border: .5px #DFDFDF solid;
+        border: .5px $profile-border solid;
         border-bottom: none;
     }
 
     .dropdownButton {
         display: flex;
         background-color: white;
-        border: 1px #376ED6 solid;
+        border: 1px $profile-drop-shadow solid;
         border-radius: 4px;
         margin: 15px 5px;
         margin-top: 20px;
-        color: #376ED6;
+        color: $profile-drop-shadow;
         padding: 12px 85px;
         font-size: 16px;
         cursor: pointer;

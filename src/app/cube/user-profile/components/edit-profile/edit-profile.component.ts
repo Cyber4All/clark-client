@@ -78,29 +78,30 @@ export class EditProfileComponent implements OnChanges {
       bio: this.editInfo.bio.trim(),
     };
     if(
-      this.editInfo.firstname !== ''
-      && this.editInfo.lastname !== ''
-      && this.editInfo.email !== ''
-      && this.editInfo.organization !== ''
-      && this.getValidEmail(this.editInfo.email)
+      this.editInfo.firstname === ''
+      || this.editInfo.lastname === ''
+      || this.editInfo.email === ''
+      || this.editInfo.organization === ''
+      || !this.getValidEmail(this.editInfo.email)
     ) {
-      try {
-        await this.profileService.editUserInfo(edits).then(async res => {
-          await this.auth.validateAndRefreshToken();
-          this.userInfo.next(edits);
-          this.close.next();
-          this.noteService.success('Success!', res);
-        });
-      } catch (e) {
-        // FIXME: No errors are being caught/thrown from user service
-        if (e.status === 400) {
-          this.noteService.error('Error!', e.error);
-        } else {
-          this.noteService.error('Error!', 'We couldn\'t update your user information!');
-        }
-      }
-    } else {
       this.noteService.error('Error!', 'Double check the required fields above!');
+      return;
+    }
+
+    try {
+      await this.profileService.editUserInfo(edits).then(async res => {
+        await this.auth.validateAndRefreshToken();
+        this.userInfo.next(edits);
+        this.close.next();
+        this.noteService.success('Success!', res);
+      });
+    } catch (e) {
+      // FIXME: No errors are being caught/thrown from user service
+      if (e.status === 400) {
+        this.noteService.error('Error!', e.error);
+      } else {
+        this.noteService.error('Error!', 'We couldn\'t update your user information!');
+      }
     }
   }
 

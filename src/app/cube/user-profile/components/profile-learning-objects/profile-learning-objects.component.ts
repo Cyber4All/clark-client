@@ -76,6 +76,9 @@ export class ProfileLearningObjectsComponent implements OnChanges {
           }
         });
       });
+      // Sort collection names alphabetically
+      this.collectionsReleased.sort((a, b) => a.name.localeCompare(b.name));
+      this.collectionsUnreleased.sort((a, b) => a.name.localeCompare(b.name));;
       // Default first released collection tab values
       this.content(this.tabMain, this.collectionsReleased[0].abvName);
       this.loading = false;
