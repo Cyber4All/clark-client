@@ -3,3 +3,9 @@ clark-blogs {
     background-color: rgba(190, 190, 190, 0.7);
     width: 100%;
 }
+
+@media screen and (max-width: 768px) {
+    clark-blogs {
+        margin-bottom: 20px;
+    }
+}
