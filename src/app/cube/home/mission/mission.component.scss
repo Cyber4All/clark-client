@@ -1,0 +1,68 @@
+@import 'vars.scss';
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 60px;
+
+    .first {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0px 60px 60px;
+    }
+
+    .second {
+        display: flex;
+        flex-direction: row;
+
+        .clark-quality {
+            margin-right: 50px;
+
+            h2 {
+                margin: 10px 0 auto;
+            }
+            span {
+                position: relative;
+                left: -10px;
+                .fa-stack-2x {
+                    color: rgba(96, 154, 230, 0.237);
+                }
+    
+                .fa-stack-1x {
+                    color: $light-blue;
+                }
+            }
+            
+        }
+    }
+}
+
+p {
+    font-weight: 400;
+    font-size: 18px;
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper{
+        padding: 10px 30px;
+        .first {
+            padding: 0px 0px 60px;
+        }
+        .second {
+            display: flex;
+            flex-direction: column;
+
+            .clark-quality {
+                margin: 0px 0px 60px;
+                text-align: center;
+
+                span {
+                    left: 0px;
+                }
+            }
+        }
+    }
+    
+}

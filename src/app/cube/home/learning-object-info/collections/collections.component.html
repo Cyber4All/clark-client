@@ -1,0 +1,13 @@
+<div class="collection-section-wrapper">
+
+    <h1>Individually curated and peer-reviewed for quality</h1>
+    <p>Learning Objects are grouped into Collections within CLARK. 
+        Each collection is unique, has its own peer-review process, and is supported by its own community.
+    </p>
+    <div class="item-list">
+        <clark-collection-card *ngFor="let c of collections" [collection]="c" class="item"></clark-collection-card>
+    </div>
+    <button [routerLink]="['/c']" >Browse All Collections</button>
+        
+</div>
+

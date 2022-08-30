@@ -1,0 +1,16 @@
+<a class='author-card' routerLink='/users/{{ author.username }}'>
+  <div class='author-card__grid'>
+    <div class='grid__profile-image-container'>
+      <img [attr.aria-label]="author?.username + ' profile image'" class='grid__profile-image-container__image' src={{profileImageURL}}>
+    </div>
+    
+    <div class='grid__profile-info-container'>
+      <h4 class='grid__profile-icon-container__author-name'>
+        {{ author?.name | titlecase }}
+      </h4>
+      <p class='grid__profile-icon-container__author-organization'>
+        {{ organizationFormat(author?.organization) }}
+      </p>
+    </div>
+  </div>
+</a>

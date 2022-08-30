@@ -1,0 +1,40 @@
+@import 'vars.scss';
+
+.author-card__grid {
+    color: $dark-grey;
+    display: grid;
+    grid-template-columns: 60px 220px 20px;
+}
+
+.grid__profile-image-container__image {
+    border-radius: 50%;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+    height: 50px;
+}
+
+.grid__profile-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.grid__profile-icon-container__author-name {
+    margin: 0;
+    color: $dark-grey;
+    font-size: $normal;
+}
+
+.grid__profile-icon-container__author-organization {
+    margin: 0;
+    color: $light-blue;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+@media screen and (max-width: 425px) {
+    .author-card__grid {
+        grid-template-columns: 60px auto 20px;
+    }
+    
+}

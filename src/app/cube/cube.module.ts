@@ -14,7 +14,6 @@ import { CoreModule } from 'app/core/core.module';
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
 import { CubeSharedModule } from './shared/cube-shared.module';
-import { HomeModule } from './home/home.module';
 import { SharedModule } from '../shared/shared.module';
 
 // Components
@@ -54,6 +53,7 @@ import { EditorialProcessComponent } from './content-pages/editorial-process/edi
 import { ProfileLearningObjectsComponent } from './user-profile/components/profile-learning-objects/profile-learning-objects.component';
 import { ProfileHeaderComponent } from './user-profile/components/profile-header/profile-header.component';
 import { EditProfileComponent } from './user-profile/components/edit-profile/edit-profile.component';
+import { HomeModule } from './home/home.module';
 
 
 /**
@@ -106,7 +106,6 @@ import { EditProfileComponent } from './user-profile/components/edit-profile/edi
     CubeSharedModule,
     CubeRoutingModule,
     SharedModule,
-    HomeModule,
     ModalModule,
     CollectionModule,
     AboutUsModule,
@@ -115,7 +114,8 @@ import { EditProfileComponent } from './user-profile/components/edit-profile/edi
     MatTabsModule,
     MatExpansionModule,
     MatListModule,
-    MatExpansionModule
+    MatExpansionModule,
+    HomeModule
   ],
   providers: [LearningObjectService]
 })

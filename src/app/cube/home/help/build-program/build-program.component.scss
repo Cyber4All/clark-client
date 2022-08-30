@@ -1,0 +1,192 @@
+@import 'vars.scss';
+
+.wrapper {
+    margin: 0px 35px;
+
+    .info {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    .framework {
+        font-size: 18px;
+        margin: 0 10px 10px 0;
+        padding: 10px 24px;
+        border: 2px solid $medium-grey;
+        border-radius: 3px;
+
+        &:hover {
+            border: 2px solid $light-blue;
+            opacity: 80%;
+        }
+
+        &:active {
+            border: 2px solid $light-blue;
+            background-color: #8caff143;
+            opacity: 100%;
+        }
+    }
+
+    .search {
+        .input {
+            cursor: text;
+            background-color: white;
+            padding: 7px;
+            margin-right: 12px;
+            border: 2px solid $secondary-white;
+            border-radius: 4px;
+
+            svg {
+                padding: 0px 5px;
+                color: $medium-grey;
+            }
+
+            input {
+                border: 0px;
+                width: 30%;
+            }
+
+            &:hover{
+                border-color: $light-blue;
+            }
+        }
+    }
+
+    .guidelines {
+        .guidelinePage {
+            display: grid;
+            grid-template-rows: auto auto;
+            grid-template-columns: auto auto auto;
+            gap: 10px;
+
+            .guideline {
+                cursor: pointer;
+                display: flex;
+                position: relative;
+                text-align: left;
+                vertical-align: top;
+                border: 2px solid $medium-grey;
+                border-radius: 4px;
+                font-size: 14px;
+
+                .guidelineDescription {
+                    color: #454545;
+                    margin: 10px 10px 50px;
+                }
+
+                .guidelineName {
+                    position: absolute;
+                    bottom: 0;
+                    left: 15px;
+                }
+
+                &:hover {
+                    border: 2px solid $light-blue;
+                    opacity: 80%;
+                }
+    
+                &:active {
+                    border: 2px solid $light-blue;
+                    background-color: #8caff143;
+                    opacity: 100%;
+                }
+            }
+        }
+    }
+    
+    .pagination {
+        margin-top: 10px;
+        button {
+            font-weight: 600;
+            font-size: 18px;
+            border: none;
+            color: $light-blue;
+            background-color: $primary-white;
+            padding: 5px 10px;
+
+            svg {
+                padding: 0px 5px;
+            }
+
+            &:not(.highlighted):not(:disabled):hover {
+                opacity: 80%;
+                background-color: #8caff180;
+            }
+
+            &.highlighted {
+                background-color: #8caff143;
+            }
+
+            &:disabled {
+                color: gray;
+                opacity: 60%;
+            }
+        }
+        
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        .search {
+            display: flex;
+            flex-direction: column;
+    
+            .input input {
+                width: 85%;
+            }
+    
+            span {
+                margin-top: 5px;
+            }
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+
+            button {
+                padding: 10px 15px;
+            }
+        }
+    } 
+}
+
+@media screen and (max-width: 425px) {
+    .wrapper {
+        margin: 15px 5px;
+
+        .framework {
+            font-size: 14px;
+        }
+
+        .search {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            .input input {
+                width: 85%;
+            }
+
+            span {
+                margin-top: 5px;
+                font-size: 14px;
+            }
+        }
+
+        .guidelines {
+            .guidelinePage {
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: auto auto auto auto auto auto;
+            }
+        }
+
+        .pagination {
+            margin-top: 0px;
+        }
+    }
+}
+

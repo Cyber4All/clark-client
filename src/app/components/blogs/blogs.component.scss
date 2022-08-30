@@ -1,6 +1,10 @@
 @import 'vars.scss';
 
-div {
+.blogs-component {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 79px;
     .first-view {
         display: flex;
         position: relative;
@@ -11,6 +15,10 @@ div {
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
+            
+            p {
+                font-size: 16px;
+            }
     
             .fa-2x {
                 margin: 10px;
@@ -50,6 +58,9 @@ div {
         align-items: center;
 
         .side-by-side {
+            display: flex;
+            flex-direction: row;
+
             button {
                 background-color: $light-blue;
                 color: white;

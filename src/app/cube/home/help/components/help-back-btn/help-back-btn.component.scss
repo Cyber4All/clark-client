@@ -1,0 +1,96 @@
+@import 'vars.scss';
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .back-btn {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        align-self: center;
+    
+        h2 {
+            margin: 0;
+            padding: 0;
+        }
+    
+        p {
+            margin-top: 5px;
+            color: $dark-grey;
+        }
+        
+        span {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin: 0 20px 20px 20px;
+            width: 70px;
+            height: 70px;
+            border-radius: 100px;
+            font-size: $larger;
+        
+            &.orange {
+                color: $orange;
+                background-color: lighten($orange, 35);
+            }
+        
+            &.purple {
+                color: $status_proofing;
+                background-color: lighten($status_proofing, 35);
+            }
+        
+            &.green {
+                color: $status_accepted_major;
+                background-color: lighten($status_accepted_major, 35);
+            }
+        }
+    
+        .back-icon {
+            font-size: $larger;
+            color: $dark-grey;
+        }
+    }
+
+    .framework-query {
+        border: 3px solid #376ED6;
+        color: #376ED6;
+        background-color: #8caff143;
+        padding: 10px;
+        margin-left: 10px;
+        border-radius: 4px;
+        width: fit-content;
+    
+        b {
+            font-weight: 600;
+        }
+    
+        svg {
+            margin-left: 5px;
+        }
+    
+        &:hover {
+            opacity: 70%;
+        }
+    
+        &:active {
+            opacity: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        
+        .back-btn {
+            position: relative;
+        }
+    }
+    
+}
