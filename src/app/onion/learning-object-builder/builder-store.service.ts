@@ -265,7 +265,7 @@ export class BuilderStore {
           this.outcomes
         );
         // set the title of page to the learning object name
-        this.titleService.setTitle('CLARK' + this.learningObject.name);
+        this.titleService.setTitle('CLARK | ' + this.learningObject.name);
         return this.learningObject;
       })
       .catch(e => {
