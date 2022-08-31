@@ -108,7 +108,18 @@ export class LearningObjectsComponent
         debounceTime(650)
       )
       .subscribe(searchTerm => {
-        this.query = { currPage: 1, sortType: this.query.sortType, orderBy: this.query.orderBy, text: searchTerm };
+        this.query = { currPage: 1, text: searchTerm };
+        if (!searchTerm || searchTerm.length <= 0) {
+          this.query = {
+            sortType: SortType.Descending,
+            orderBy: OrderBy.Date
+          };
+        } else {
+          this.query = {
+            sortType: undefined,
+            orderBy: undefined
+          };
+        }
         this.learningObjects = [];
 
         this.getLearningObjects();
@@ -215,8 +226,21 @@ export class LearningObjectsComponent
    *
    * @param direction the direction of the sort (ASC or DESC)
    */
-  sortByDate(direction: SortType) {
-    this.query = { ...this.query, sortType: direction };
+  sortByDate() {
+    if(!this.query.sortType) {
+      this.query = {
+        sortType: SortType.Descending,
+        orderBy: OrderBy.Date
+      };
+    } else if (this.query.sortType.toString() === '-1') {
+      this.query.sortType = SortType.Ascending;
+    } else if (this.query.sortType.toString() === '1') {
+      this.query = {
+        sortType: undefined,
+        orderBy: undefined
+      };
+    }
+
     this.learningObjects = [];
 
     this.getLearningObjects();
