@@ -83,7 +83,6 @@ export class BlogsComponent implements OnInit {
         this.blog = blogArray[0];
       }
     );
-    console.log(window.outerWidth < 1024, window.outerWidth);
   }
 
   /**
