@@ -8,6 +8,7 @@
   (descriptionUpdated)="saveDescription($event.description, $event.file)"
   canManage="true"
   (packageableToggled)="packageableToggled.emit($event)"
+  [inBuilder]="true"
   ></clark-file-browser>
 
 <clark-context-menu *ngIf="showNewOptions" [anchor]="menuAnchor" (close)="closeContextMenu()">
