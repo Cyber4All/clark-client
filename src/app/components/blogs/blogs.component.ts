@@ -24,7 +24,7 @@ import { Blog } from './types/blog';
       transition(':leave', [
         style({
           position: 'relative',
-          left: '0%'
+          left: '0%',
         }),
         animate('500ms ease-out', style({
           position: 'relative',
@@ -43,7 +43,8 @@ import { Blog } from './types/blog';
         animate('500ms ease-out', style({
           position: 'absolute',
           top: '0',
-          left: '40%',
+          left: '50%',
+          transform: 'translateX(-50%)',
           overflow: 'hidden'
         }))
       ]),
@@ -105,5 +106,15 @@ export class BlogsComponent implements OnInit {
    */
   toggleCheckbox() {
     this.checkbox = !this.checkbox;
+  }
+
+  /**
+   * Disables the animations if the view width is smaller than laptop width
+   *
+   * @returns boolean determining if animations should be disabled
+   */
+  disableAnimations() {
+    const laptopWidth = 1024; // threshold to disable animations
+    return window.outerWidth < laptopWidth;
   }
 }
