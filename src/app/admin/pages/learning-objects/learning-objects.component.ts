@@ -32,6 +32,7 @@ export class LearningObjectsComponent
 
   learningObjects: LearningObject[] = [];
   searchBarPlaceholder = 'Learning Objects';
+  lastPage: number;
 
   activeLearningObject;
 
@@ -107,7 +108,18 @@ export class LearningObjectsComponent
         debounceTime(650)
       )
       .subscribe(searchTerm => {
-        this.query = { currPage: 1, sortType: this.query.sortType, orderBy: this.query.orderBy, text: searchTerm };
+        this.query = { currPage: 1, text: searchTerm };
+        if (!searchTerm || searchTerm.length <= 0) {
+          this.query = {
+            sortType: SortType.Descending,
+            orderBy: OrderBy.Date
+          };
+        } else {
+          this.query = {
+            sortType: undefined,
+            orderBy: undefined
+          };
+        }
         this.learningObjects = [];
 
         this.getLearningObjects();
@@ -128,6 +140,12 @@ export class LearningObjectsComponent
    */
   get query(): Query {
     return this._query;
+  }
+
+  changePage(pageNum) {
+    this.listElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    this.query.currPage = pageNum;
+    this.getLearningObjects();
   }
 
   /**
@@ -160,38 +178,23 @@ export class LearningObjectsComponent
   /**
    * Retrieve Learning Objects from the service
    *
-   * @param {VirtualScrollerChangeEvent} [event] the event dictating that the virtual scroller has reached the end of the current list
    * @returns
    * @memberof LearningObjectsComponent
    */
-  getLearningObjects(event?: VirtualScrollerChangeEvent) {
+  getLearningObjects() {
     if (!this.allResultsReceived) {
       // we know there are more objects to pull
       this.loading = true;
 
-      if (
-        event &&
-        (event.endIndex < 0 || event.endIndex !== this.learningObjects.length - 1)
-      ) {
-        // this is a false event from the virtual scroller, disregard
-        return;
-      }
-
-      if (this.learningObjects.length) {
-        // we've already made an initial request to load the first page of results, increment the current page before next request
-        this.query = { currPage: this.query.currPage + 1 };
-      }
-
       this.publicLearningObjectService
         .getLearningObjects(this.query)
         .then(val => {
-          this.learningObjects = this.learningObjects.concat(
-            val.learningObjects
-          );
+          this.learningObjects = val.learningObjects;
 
           if (this.learningObjects.length === val.total) {
             this.allResultsReceived = true;
           }
+          this.lastPage = Math.ceil(val.total / 20);
         })
         .catch(error => {
           this.toaster.error(
@@ -223,8 +226,21 @@ export class LearningObjectsComponent
    *
    * @param direction the direction of the sort (ASC or DESC)
    */
-  sortByDate(direction: SortType) {
-    this.query = { ...this.query, sortType: direction };
+  sortByDate() {
+    if(!this.query.sortType) {
+      this.query = {
+        sortType: SortType.Descending,
+        orderBy: OrderBy.Date
+      };
+    } else if (this.query.sortType.toString() === '-1') {
+      this.query.sortType = SortType.Ascending;
+    } else if (this.query.sortType.toString() === '1') {
+      this.query = {
+        sortType: undefined,
+        orderBy: undefined
+      };
+    }
+
     this.learningObjects = [];
 
     this.getLearningObjects();
