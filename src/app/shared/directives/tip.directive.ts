@@ -52,21 +52,6 @@ export class TipDirective implements OnChanges, OnDestroy {
 
     this.element.classList.add('tooltip');
     this.element.setAttribute('aria-label', this.tip);
-
-    // @ts-ignore typescript thinks that style is a read-only property but it isn't
-    this.element.style = `
-      background: ${this.tipStyle === 'dark' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)'};
-      color: ${this.tipStyle === 'dark' ? 'white' : 'black'};
-      border-radius: 3px;
-      padding: 10px;
-      position: absolute;
-      box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.1);
-      transition: opacity 0.2s ease;
-      opacity: 0;
-      z-index: 9001;
-      max-width: 300px;
-      font-size: 14px;
-    `;
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -100,8 +85,24 @@ export class TipDirective implements OnChanges, OnDestroy {
         this.element.setAttribute('aria-label', this.tip);
         document.body.prepend(this.element);
 
+        // @ts-ignore typescript thinks that style is a read-only property but it isn't
+        this.element.style = `
+          background: ${this.tipStyle === 'dark' ? 'rgba(0, 0, 0, 0.9)' : 'rgba(255, 255, 255, 0.9)'};
+          color: ${this.tipStyle === 'dark' ? 'white' : 'black'};
+          border-radius: 3px;
+          padding: 10px;
+          position: absolute;
+          box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.1);
+          transition: opacity 0.2s ease;
+          opacity: 0;
+          z-index: 9001;
+          max-width: 300px;
+          font-size: 14px;
+        `;
+
         // position the tooltip
         this.positionTooltip(this.host.nativeElement as HTMLElement);
+
 
         // fade the tooltip in
         this.element.style.opacity = '1';

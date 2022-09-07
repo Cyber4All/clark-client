@@ -1,30 +1,69 @@
-<div class="wrapper" *ngIf="!isMobileView">
-    <div
-        class="content" 
-        [ngClass]="{'choosen': isHighlighted.learningObjects, 'greyout': !isHighlighted.learningObjects && !isOtherChoiceSelected() }" 
-        (activate)="changeSelection('learningObject')"
-    >
-        <i class="icon fal fa-cubes"></i> Learning Objects
+<div class="wrapper">
+    <div>
+        <div class="content"
+            [ngClass]="{'choosen': isHighlighted.learningObjects, 'greyout': !isHighlighted.learningObjects && !isOtherChoiceSelected() }"
+            (activate)="changeSelection(LearningObjectInfoState.LEARNING_OBJECT)">
+            <i class="icon fal fa-cubes"></i> Learning Objects
+        </div>
+        <div class="content"
+            [ngClass]="{'choosen': isHighlighted.learningOutcomes, 'greyout': !isHighlighted.learningOutcomes && !isOtherChoiceSelected() }"
+            (activate)="changeSelection(LearningObjectInfoState.LEARNING_OUTCOMES)">
+            <i class="icon fal fa-graduation-cap"></i>Learning Outcomes
+        </div>
+        <div class="content"
+            [ngClass]="{'choosen': isHighlighted.hierarchies, 'greyout': !isHighlighted.hierarchies && !isOtherChoiceSelected() }"
+            (activate)="changeSelection(LearningObjectInfoState.HIERARCHIES)">
+            <i class="icon fal fa-folder-tree"></i> Hierarchies
+        </div>
+        <div class="content"
+            [ngClass]="{'choosen': isHighlighted.collections, 'greyout': !isHighlighted.collections && !isOtherChoiceSelected() }"
+            (activate)="changeSelection(LearningObjectInfoState.COLLECTIONS)">
+            <i class="icon fal fa-users"></i> Collections
+        </div>
+
     </div>
-    <div 
-        class="content" 
-        [ngClass]="{'choosen': isHighlighted.learningOutcomes, 'greyout': !isHighlighted.learningOutcomes && !isOtherChoiceSelected() }" 
-        (activate)="changeSelection('learningOutcomes')"
-    >
-        <i class="icon fal fa-graduation-cap"></i>Learning Outcomes
-    </div>
-    <div 
-        class="content" 
-        [ngClass]="{'choosen': isHighlighted.hierarchies, 'greyout': !isHighlighted.hierarchies && !isOtherChoiceSelected() }" 
-        (activate)="changeSelection('hierarchies')"
-    >
-        <i class="icon fal fa-folder-tree"></i> Hierarchies
-    </div>
-    <div 
-        class="content" 
-        [ngClass]="{'choosen': isHighlighted.collections, 'greyout': !isHighlighted.collections && !isOtherChoiceSelected() }" 
-        (activate)="changeSelection('collections')"
-    >
-        <i class="icon fal fa-users"></i> Collections
+
+
+    <div class="dropdown" (click)="toggleDropdown(true)">
+        <button #userDropdownButtonElement class="dropdownButton" (click)="toggleDropdown(true)">
+            <span *ngIf="currentComponentInView === 'learningObject'"><i class="icon fal fa-cubes"></i> Learning Objects</span>
+            <span *ngIf="currentComponentInView === 'learningOutcomes'"><i class="icon fal fa-graduation-cap"></i>Learning Outcomes</span>
+            <span *ngIf="currentComponentInView === 'hierarchies'"><i class="icon fal fa-folder-tree"></i> Hierarchies</span>
+            <span *ngIf="currentComponentInView === 'collections'"><i class="icon fal fa-users"></i> Collections</span>
+            <span class="arrow" *ngIf="!mobileDropdown">
+                <i class="fas fa-angle-down"></i>
+            </span>
+            <span class="arrow" *ngIf="mobileDropdown">
+                <i class="fas fa-angle-up"></i>
+            </span>
+        </button>
+        <clark-context-menu *ngIf="mobileDropdown" [anchor]="userDropdownButtonElement" (close)="toggleDropdown(false)">
+            <div #contextMenu id="context-popup">
+                <ul class="menu">
+                    <li class="content"
+                        [ngClass]="{'choosen': isHighlighted.learningObjects, 'greyout': !isHighlighted.learningObjects && !isOtherChoiceSelected() }"
+                        (activate)="changeSelection(LearningOBjectInfoState.LEARNING_OBJECT)"
+                        (close)="toggleDropdown()">
+                        <i class="icon fal fa-cubes"></i> Learning Objects
+                    </li>
+                    <li class="content"
+                        [ngClass]="{'choosen': isHighlighted.learningOutcomes, 'greyout': !isHighlighted.learningOutcomes && !isOtherChoiceSelected() }"
+                        (activate)="changeSelection(LearningOBjectInfoState.LEARNING_OUTCOMES)"
+                        (close)="toggleDropdown()">
+                        <i class="icon fal fa-graduation-cap"></i>Learning Outcomes
+                    </li>
+                    <li class="content"
+                        [ngClass]="{'choosen': isHighlighted.hierarchies, 'greyout': !isHighlighted.hierarchies && !isOtherChoiceSelected() }"
+                        (activate)="changeSelection(LearningOBjectInfoState.HIERARCHIES)" (close)="toggleDropdown()">
+                        <i class="icon fal fa-folder-tree"></i> Hierarchies
+                    </li>
+                    <li class="content"
+                        [ngClass]="{'choosen': isHighlighted.collections, 'greyout': !isHighlighted.collections && !isOtherChoiceSelected() }"
+                        (activate)="changeSelection(LearningOBjectInfoState.COLLECTIONS)" (close)="toggleDropdown()">
+                        <i class="icon fal fa-users"></i> Collections
+                    </li>
+                </ul>
+            </div>
+        </clark-context-menu>
     </div>
 </div>

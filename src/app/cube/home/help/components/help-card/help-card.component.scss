@@ -1,47 +1,64 @@
 @import 'vars.scss';
 
 .helpCard {
-    background-color: lighten($light-grey, 7);
-    border: 1px solid $medium-grey;
+    background-color: $primary-white;
+    border: 1px solid $secondary-white;
     border-radius: 6px;
     text-align: center;
-    padding: 20px;
+    padding: 35px 35px;
     height: 100%;
     box-sizing: border-box;
+    transition: all 0.25s ease;
 
-    h2 {
-        padding: 0;
-        margin: 0;
+    &:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
     }
 
-    p {
-        color: $dark-grey;
+    &:active {
+        transition-duration: 0.1s;
     }
 
-    span {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto 20px auto;
-        width: 70px;
-        height: 70px;
-        border-radius: 100px;
-        font-size: $larger;
-
-        &.orange {
-            color: $orange;
-            background-color: lighten($orange, 35);
+    .content {
+        h2 {
+            padding: 0;
+            margin: 0;
         }
 
-        &.purple {
-            color: $status_proofing;
-            background-color: lighten($status_proofing, 35);
+        p {
+            color: $homepage-text;
         }
 
-        &.green {
-            color: $status_accepted_major;
-            background-color: lighten($status_accepted_major, 35);
+        span {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px auto;
+            width: 70px;
+            height: 70px;
+            border-radius: 100px;
+            font-size: $larger;
+
+            &.orange {
+                color: $homepage-orange;
+                background: $homepage-orange-background;
+            }
+
+            &.purple {
+                color: $homepage-purple;
+                background: $homepage-purple-background;
+            }
+
+            &.green {
+                color: $homepage-green;
+                background: $homepage-green-background;
+            }
+        }
+
+        .link {
+            color: $homepage-light-blue;
         }
     }
+
 }

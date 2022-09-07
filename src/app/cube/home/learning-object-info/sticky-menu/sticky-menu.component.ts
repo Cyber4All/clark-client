@@ -34,8 +34,10 @@ export class StickyMenuComponent implements OnInit {
     collections: false,
   };
   isMobileView = false;
-  responsiveThreshold = 800;
+  responsiveThreshold = 825;
   windowWidth: number;
+  mobileDropdown = false;
+  currentMobile = 'Learning Objects';
 
   /* The component that will be highlighted when in view */
   @Input() currentComponentInView: LEARNING_OBJECT_INFO_STATES;
@@ -45,6 +47,7 @@ export class StickyMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
   }
 
   /**
@@ -54,6 +57,7 @@ export class StickyMenuComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     this.setFields(this.currentComponentInView);
+    console.log(this.currentComponentInView);
   }
 
   /**
@@ -75,7 +79,9 @@ export class StickyMenuComponent implements OnInit {
    */
   async changeSelection(choice: LEARNING_OBJECT_INFO_STATES) {
     const el = document.getElementById(choice);
-    el.scrollIntoView({'behavior': 'smooth'});
+    setTimeout(() => {
+      el.scrollIntoView({ 'behavior': 'smooth' });
+    });
   }
 
   /**
@@ -97,4 +103,18 @@ export class StickyMenuComponent implements OnInit {
   isOtherChoiceSelected() {
     return Object.values(this.isHighlighted).every((isSelected) => !isSelected);
   }
+
+  public get LearningObjectInfoState(): typeof LEARNING_OBJECT_INFO_STATES {
+    return LEARNING_OBJECT_INFO_STATES;
+  }
+
+  /**
+   * Toggles mobile dropdown
+   *
+   * @param isOpen
+   */
+  toggleDropdown(isOpen = false) {
+    this.mobileDropdown = isOpen;
+  }
 }
+

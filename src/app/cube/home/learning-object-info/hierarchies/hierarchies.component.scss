@@ -3,27 +3,37 @@
 .hierarchy-container{
   width: 100%;
   max-width: 1500px;
-  margin: 20px 20px 20px 0px;
   font-family: 'Source Sans Pro', sans-serif;
+  margin-bottom: 400px;
 
   .vertical-container{
     margin-top: 50px;
     margin-right: 50px;
     display: flex;
     flex-direction: column;
+    .taxonomy{
+      margin-bottom: 400px;
+    }
 
     .hierarchyhr {
-      border: 1px solid $light-grey;
+      border: 1px solid $secondary-white;
       width: 100%;
-      margin-bottom: 30px;
+      margin-bottom: 50px;
+      margin-top: 50px;
     }
   }
+}
+
+p{
+  color: $homepage-text;
+}
+h1{
+  margin-top: 0;
 }
 
 //Use a flex-box with the wrapper acting as the outer-layer block and the inside is the learningobect-name and hierarchy/length tags
 .wrapper {                //Wrapper Outer Parent
   display: inline-block;
-  width: 100%;
   margin-top: 1%;
 
   &.nanomodule {
@@ -67,6 +77,7 @@
   padding: 2px 6px;
   border-radius: 2px;
   height: fit-content;
+  padding: 5px 10px;
 
 
   &.nanomodule {
@@ -88,4 +99,17 @@
   &.course {
     background: $course-color;
   }
+}
+
+@media (max-width: 950px){
+  .hierarchy-container{
+    .vertical-container{
+    margin-right: 0;
+    .main-text{
+      text-align: center;
+  }
+  }
+  }
+  
+  
 }

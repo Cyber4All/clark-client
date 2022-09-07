@@ -1,5 +1,5 @@
 <a class='author-card' routerLink='/users/{{ author.username }}'>
-  <div class='author-card__grid'>
+  <div class='author-card__grid' [ngClass]="page">
     <div class='grid__profile-image-container'>
       <img [attr.aria-label]="author?.username + ' profile image'" class='grid__profile-image-container__image' src={{profileImageURL}}>
     </div>

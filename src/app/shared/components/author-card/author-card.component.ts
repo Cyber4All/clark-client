@@ -11,6 +11,7 @@ export class AuthorCardComponent implements OnInit {
 
   @Input() author: User;
   @Input() profileImageURL: string;
+  @Input() page: string;
 
   constructor() { }
 

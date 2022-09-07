@@ -14,6 +14,7 @@ import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service
 export class LearningObjectsComponent implements OnInit {
   featuredObject: LearningObject; // the learning object to display
   numReleasedObjects = 0; // default number of released objects before the service provides a new number
+  page='homepage';
 
   constructor(private featureService: FeaturedObjectsService,
               private learningObjectService: LearningObjectService,
@@ -76,7 +77,7 @@ export class LearningObjectsComponent implements OnInit {
    * @returns The number of contributors to display in the featured contributors section
    */
   getNumAuthorsToDisplay(): number {
-    const maxMobileWidth = 425;
+    const maxMobileWidth = 1125;
     return window.outerWidth <= maxMobileWidth ? 1 : 3;
   }
 

@@ -1,0 +1,35 @@
+<div class="hierarchy-container">
+  <div class="vertical-container">
+    <div class="main-text">
+      <h1>Leverages the Bloom's taxonomy for measureable results</h1>
+    <!-- Dummy text until the full text is provided for this section -->
+    <p class="taxonomy">Learning outcomes gives both educators and learners explicit learning goals for a learning object. This allows 
+      educators to build their assessments correctly. Outcomes also provide language which enables students to effectively articulate 
+      what they have learned.</p>
+    <br>
+    <h1>Related curricula grouped hierarchically</h1>
+    <!-- Dummy text until the full text is provided for this section -->
+    <p>A learning object is not just a single lesson or lab and although they can often be used individually, it is often constructed 
+      of multiple labs and lessons. Hierarchies on CLARK are designed to provide a structure for combining individual learning objects 
+      into larger modules, units, or courses. Taking a modular approach to creating curriculum allows for educators to organize their 
+      materials in a way that supports the learning outcomes and allows easy use in the classroom.</p>
+
+    <hr class="hierarchyhr">
+    </div>
+    
+
+    <!-- #ngFor is the loop set up to display the hierarchy tag and object name until all elements in the array in the .ts file have been used -->
+    <div *ngFor="let object of hierarchy">
+      <div [attr.class]="'wrapper ' + object.length"> 
+        <div class="inner">
+          <div [attr.class]="'length ' + object.length">
+            {{ object?.length | titlecase }}
+          </div>
+          <div class="learningobject-name">
+            <p> {{object?.name}} </p>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+</div>
