@@ -14,7 +14,7 @@ export class SecondaryNavbarComponent implements OnInit {
   collectionsDropdown = false;
   resourcesDropdown = false;
   isDesktop = false;
-  resizeThreshold = 1024;
+  resizeThreshold = 825;
 
   showNav: boolean;
   topics: Topic[];

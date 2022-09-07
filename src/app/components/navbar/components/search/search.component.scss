@@ -4,7 +4,6 @@ $buttonWidth: 135px;
 
 .clark-search {
   .search-options {
-    max-width: 600px;
     z-index: 2;
     position: relative;
     height: 45px;
@@ -14,9 +13,7 @@ $buttonWidth: 135px;
     .input {
       border-radius: 0px;
       overflow: hidden;
-      max-width: 600px;
       height: 44px;
-      width: 30vw;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -44,7 +41,7 @@ $buttonWidth: 135px;
         border: none;
         width: 50px;
         height: 44px;
-        background-color: $light-blue;
+        background-color: $homepage-light-blue;
       }
     }
 
@@ -171,12 +168,12 @@ $buttonWidth: 135px;
   }
 }
 
-@media (max-width: 1023px) {
-  .clark-search{
-    .search-options {
-      .input {
-        width: 90vw;
-      }
-    }
-  }
-}
+// @media (max-width: 1023px) {
+//   .clark-search{
+//     .search-options {
+//       .input {
+//         width: 90vw;
+//       }
+//     }
+//   }
+// }

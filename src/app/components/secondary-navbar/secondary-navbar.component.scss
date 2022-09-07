@@ -5,8 +5,7 @@
     flex-direction: row;
     position: relative;
     background-color: $primary-white;
-    height: 43px;
-    width: 100%;
+    padding: 12px 0 12px 40px;
     border: solid 1px $secondary-white;
     z-index: 4;
 
@@ -14,12 +13,21 @@
         cursor: pointer;
         font-weight: 400;
         color: $dark-grey;
-        padding: 10px 45px;
+        padding: 0 45px;
 
         span {
             margin-left: 5px;
         }
     }
+
+    .item:first-child {
+        padding-left: 0;
+    }
+
+}
+
+::ng-deep .context-menu {
+    margin-top: 12px;
 }
 
 a:hover {
