@@ -43,7 +43,7 @@ import { BuildProgramComponentService } from 'app/cube/core/build-program-compon
       transition(':leave', [
         style({
           position: 'absolute',
-          top: '185px'
+          top: '0'
         }),
         animate('400ms 0ms ease-out', style({
           transform: 'translateX(166%)',
@@ -66,7 +66,7 @@ import { BuildProgramComponentService } from 'app/cube/core/build-program-compon
       transition(':leave', [
         style({
           position: 'absolute',
-          top: '275px'
+          top: '90px'
         }),
         animate('400ms 0ms ease-out', style({
           transform: 'translateX(50%)',

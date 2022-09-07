@@ -28,41 +28,29 @@
             <div>Author</div>
             <div>Length</div>
             <div>Date
-              <button class="sort" (activate)="sortByDate(1)" aria-label="Sort learning objects in ascending order" [tip]="'Sort Ascending'" tipPosition="top" [tipDisabled]="false">
-                <i style="font-size: 18px" class="fas fa-angle-up"></i>
-              </button>
-              <button class="sort" (activate)="sortByDate(-1)" aria-label="Sort learning objects in descending order" [tip]="'Sort Descending'" tipPosition="top" [tipDisabled]="false">
-                <i style="font-size: 18px" class="fas fa-angle-down"></i>
+              <button class="sort" (activate)="sortByDate()">
+                <span *ngIf="!_query.sortType else sortArrows">
+                  <i style="font-size: 18px;" class="far fa-sort"></i>
+                </span>
               </button>
             </div>
           </div>
-          <virtual-scroller
-            #scroll
-            [style.height]="'calc(100vh - ' + listViewHeightOffset + 'px)'"
-            [items]="learningObjects"
-            [bufferAmount]="query.limit"
-            [enableUnequalChildrenSizes]="true"
-            (vsEnd)="
-              scroll.viewPortInfo.startIndex && getLearningObjects($event)
-            "
-          >
             <clark-learning-object-list-item
-              *ngFor="let l of scroll.viewPortItems"
+              *ngFor="let l of learningObjects"
               [learningObject]="l"
               [status]="l.status"
               [selected]="this.selected.get(l.id) !== undefined"
               (select)="toggleSelect(l, $event, i)"
               (viewUser)="getUserLearningObjects($event)"
               (changeStatus)="openChangeStatusModal($event)"
+              (newPageNumberClicked)="changePage($event)"
             >
             </clark-learning-object-list-item>
-            <div class="loadingOrFinished">
-              <div class="loadingOrFinished__content" *ngIf="!allResultsReceived; else finishedLoadingTemplate">
-                <i class="far fa-spinner-third fa-spin"></i>
-                Loading learning objects...
-              </div>
-            </div>
-          </virtual-scroller>
+          <clark-admin-pagination
+                [lastPageNumber] = lastPage
+                [currentPageNumber] = query.currPage
+                (newPageNumberClicked) = 'changePage($event)'
+              ></clark-admin-pagination>
         </div>
       </div>
     </div>
@@ -89,4 +77,13 @@
     <i class="far fa-thumbs-up"></i>
     You've reached the end of the list!
   </div>
+</ng-template>
+
+<ng-template #sortArrows>
+  <span *ngIf="_query.sortType.toString() === '1'">
+    <i style="font-size: 18px;" class="far fa-sort-up"></i>
+  </span>
+  <span *ngIf="_query.sortType.toString() === '-1'">
+    <i style="font-size: 18px;" class="far fa-sort-down"></i>
+  </span>
 </ng-template>

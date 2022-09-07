@@ -89,9 +89,14 @@
         }
 
     }
+}
     
-    @media screen and(max-width:800px){
+@media screen and(max-width:800px) {
+    .blogs-component {
+        height: 100%;
+
         .first-view {
+            display: flex;
             flex-direction: column;
         }
         
@@ -101,6 +106,7 @@
                     width: auto;
                 }
             }
+
             p {
                 text-align: center;
             }

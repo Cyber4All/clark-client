@@ -21,6 +21,7 @@
         (clicked)="openFolder(item.name)"
         (menuClicked)="handleMenuClicked($event, item)"
         (toggleClicked)="handleToggleClicked($event, item)"
+        [inBuilder]="inBuilder"
         [folder]="item"
         [showOptionButton]="canManage"
       ></clark-folder-list-item>
@@ -32,6 +33,7 @@
         (clicked)="openFile(item)"
         (menuClicked)="handleMenuClicked($event, item)"
         (toggleClicked)="handleToggleClicked($event, item)"
+        [inBuilder]="inBuilder"
         [file]="item"
         [showOptionButton]="canManage"
       ></clark-file-list-item>
