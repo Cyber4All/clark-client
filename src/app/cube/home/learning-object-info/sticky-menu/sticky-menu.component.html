@@ -42,24 +42,24 @@
                 <ul class="menu">
                     <li class="content"
                         [ngClass]="{'choosen': isHighlighted.learningObjects, 'greyout': !isHighlighted.learningObjects && !isOtherChoiceSelected() }"
-                        (activate)="changeSelection(LearningOBjectInfoState.LEARNING_OBJECT)"
+                        (activate)="changeSelection(LearningObjectInfoState.LEARNING_OBJECT)"
                         (close)="toggleDropdown()">
                         <i class="icon fal fa-cubes"></i> Learning Objects
                     </li>
                     <li class="content"
                         [ngClass]="{'choosen': isHighlighted.learningOutcomes, 'greyout': !isHighlighted.learningOutcomes && !isOtherChoiceSelected() }"
-                        (activate)="changeSelection(LearningOBjectInfoState.LEARNING_OUTCOMES)"
+                        (activate)="changeSelection(LearningObjectInfoState.LEARNING_OUTCOMES)"
                         (close)="toggleDropdown()">
                         <i class="icon fal fa-graduation-cap"></i>Learning Outcomes
                     </li>
                     <li class="content"
                         [ngClass]="{'choosen': isHighlighted.hierarchies, 'greyout': !isHighlighted.hierarchies && !isOtherChoiceSelected() }"
-                        (activate)="changeSelection(LearningOBjectInfoState.HIERARCHIES)" (close)="toggleDropdown()">
+                        (activate)="changeSelection(LearningObjectInfoState.HIERARCHIES)" (close)="toggleDropdown()">
                         <i class="icon fal fa-folder-tree"></i> Hierarchies
                     </li>
                     <li class="content"
                         [ngClass]="{'choosen': isHighlighted.collections, 'greyout': !isHighlighted.collections && !isOtherChoiceSelected() }"
-                        (activate)="changeSelection(LearningOBjectInfoState.COLLECTIONS)" (close)="toggleDropdown()">
+                        (activate)="changeSelection(LearningObjectInfoState.COLLECTIONS)" (close)="toggleDropdown()">
                         <i class="icon fal fa-users"></i> Collections
                     </li>
                 </ul>

@@ -99,7 +99,6 @@ export class TipDirective implements OnChanges, OnDestroy {
           max-width: 300px;
           font-size: 14px;
         `;
-
         // position the tooltip
         this.positionTooltip(this.host.nativeElement as HTMLElement);
 

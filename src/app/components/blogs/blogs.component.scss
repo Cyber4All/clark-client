@@ -78,16 +78,12 @@
 @media (max-width: 1090px) {
     .blogs-component {
         flex-direction: column;
-
-        .first-view {
-            display: flex;
+        .first-view{
             flex-direction: column;
-
-            .left {
+            .left{
                 justify-content: center;
             }
-
-            .side-by-side {
+            .side-by-side{
                 justify-content: center;
             }
         }

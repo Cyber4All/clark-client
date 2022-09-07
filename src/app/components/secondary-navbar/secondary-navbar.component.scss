@@ -26,10 +26,10 @@
 
 }
 
-::ng-deep .context-menu {
-    margin-top: 12px;
-}
-
 a:hover {
     color: white;
+}
+
+::ng-deep .context-menu {
+    margin-top: 12px;
 }
