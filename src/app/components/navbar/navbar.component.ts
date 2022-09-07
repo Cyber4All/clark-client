@@ -5,8 +5,6 @@ import {
 } from '@angular/core';
 import {
   Router,
-  ActivatedRoute,
-  NavigationStart,
   NavigationEnd
 } from '@angular/router';
 
@@ -94,14 +92,16 @@ export class NavbarComponent implements OnInit {
 
       this.router.events.subscribe(e => {
         if (e instanceof NavigationEnd) {
-          // if we're in onion, auth, or admin, toggle the navbar off
-          this.showNav = e.url.match(/\/*onion[\/*[0-z]*]*/)
-            || e.url.match(/\/*auth[\/*[0-z]*]*/)
-            || e.url.match(/\/*admin[\/*[0-z]*]*/) ? false : true;
+          const url = e.url.split('/');
+          this.showNav = (
+            url[1] === 'auth' ||
+            url[1] === 'onion' ||
+            url[1] === 'admin'
+          ) ? false : true;
 
-          if (e.url.match(/\/*onion[\/*[0-z]*]*/)) {
+          if(url[1] === 'onion') {
             this.menuOpen = this.searchDown = false;
-          };
+          }
           this.url = e.url;
         };
         window.scrollTo(0, 0);
