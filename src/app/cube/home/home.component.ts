@@ -29,7 +29,7 @@ import ConfettiGenerator from 'confetti-js';
 })
 export class HomeComponent implements OnInit {
 
-  //remove after clark5th birthday
+  //TO-DO:remove after clark5th birthday
   private resizeThreshold = 1024;
   //remove after clark5th birthday
 
