@@ -14,7 +14,6 @@ import { CoreModule } from 'app/core/core.module';
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
 import { CubeSharedModule } from './shared/cube-shared.module';
-import { HomeModule } from './home/home.module';
 import { SharedModule } from '../shared/shared.module';
 
 // Components
@@ -54,7 +53,7 @@ import { LibraryModule } from './library/library.module';
 import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
-import { NewHomeModule } from './new-home/new-home.module';
+import { HomeModule } from './home/home.module';
 
 
 /**
@@ -107,7 +106,6 @@ import { NewHomeModule } from './new-home/new-home.module';
     CubeSharedModule,
     CubeRoutingModule,
     SharedModule,
-    HomeModule,
     ModalModule,
     CollectionModule,
     AboutUsModule,
@@ -117,7 +115,7 @@ import { NewHomeModule } from './new-home/new-home.module';
     MatExpansionModule,
     MatListModule,
     MatExpansionModule,
-    NewHomeModule
+    HomeModule
   ],
   providers: [LearningObjectService]
 })

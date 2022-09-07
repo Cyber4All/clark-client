@@ -1,0 +1,18 @@
+<div class="hierarchy-container">
+  <div class="vertical-container">
+    <hr class="hierarchyhr">
+    <!-- #ngFor is the loop set up to display the hierarchy tag and object name until all elements in the array in the .ts file have been used -->
+    <div *ngFor="let object of hierarchy">
+      <div [attr.class]="'wrapper ' + object.length"> 
+        <div class="inner">
+          <div [attr.class]="'length ' + object.length">
+            {{ object?.length | titlecase }}
+          </div>
+          <div class="learningobject-name">
+            <p> {{object?.name}} </p>
+          </div>
+        </div>
+      </div>
+    </div>  
+  </div>
+</div>
