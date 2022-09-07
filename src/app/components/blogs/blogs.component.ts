@@ -67,6 +67,8 @@ import { Blog } from './types/blog';
 export class BlogsComponent implements OnInit {
   blogObservable: Observable<Blog[]>; // used for the template
   blog: Blog; // used to emit the blog
+  dismissText = 'You will not see this pop up again until the next blog post.';
+  dismissOnceText = 'You will not see this pop up again until you reload the page.';
 
   checkbox = false;
   view = 0;

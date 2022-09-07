@@ -7,18 +7,11 @@
                 <a [href]="blog[0].url" target="_blank">See blog for more details.</a>
             </p>
         </div>
-    
-        <div class="right">
-            <button (click)="view=1">Dismiss</button>
+        <div class="side-by-side">
+            <button class="dismiss" [tip]="dismissText" (click)="dismiss()">Dismiss</button>
+            <button class="dismissOnce" [tip]="dismissOnceText" (click)="dismissOnce()">Dismiss Once</button>
         </div>
     </div>
 
-    <div @dismissView class="second-view" *ngIf="view===1">
-        <div class="side-by-side">
-            <button (click)="dismissOnce()">Dismiss Once</button>
-            <button (click)="dismiss()">Dismiss</button>
-        </div>
-        <p>Click <a (click)="view=0">here</a> to go back.</p>
-    </div>
-    
+
 </div>
