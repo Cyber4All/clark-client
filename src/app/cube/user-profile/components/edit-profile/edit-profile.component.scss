@@ -75,6 +75,10 @@ form {
     }
 
     span {
+      .sso {
+        color: $medium-grey
+      }
+
       padding: 5px;
       text-align: center;
     }
