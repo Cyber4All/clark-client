@@ -20,9 +20,6 @@ import { SharedModule } from '../shared/shared.module';
 import { CubeComponent } from './cube.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { UserPreferencesComponent } from './user-profile/user-preferences/user-preferences.component';
-import { UserInformationComponent } from './user-profile/user-information/user-information.component';
-import { UserEditInformationComponent } from './user-profile/user-edit-information/user-edit-information.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
@@ -53,6 +50,9 @@ import { LibraryModule } from './library/library.module';
 import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
+import { ProfileLearningObjectsComponent } from './user-profile/components/profile-learning-objects/profile-learning-objects.component';
+import { ProfileHeaderComponent } from './user-profile/components/profile-header/profile-header.component';
+import { EditProfileComponent } from './user-profile/components/edit-profile/edit-profile.component';
 import { HomeModule } from './home/home.module';
 
 
@@ -66,9 +66,6 @@ import { HomeModule } from './home/home.module';
     CubeComponent,
     BrowseComponent,
     UserProfileComponent,
-    UserPreferencesComponent,
-    UserInformationComponent,
-    UserEditInformationComponent,
     CollectionsComponent,
     TermsOfServiceComponent,
     FilterComponent,
@@ -86,7 +83,10 @@ import { HomeModule } from './home/home.module';
     GuidelineFilterComponent,
     AboutClarkComponent,
     ContributePageComponent,
-    EditorialProcessComponent
+    EditorialProcessComponent,
+    ProfileLearningObjectsComponent,
+    ProfileHeaderComponent,
+    EditProfileComponent,
   ],
   schemas: [
     NO_ERRORS_SCHEMA,

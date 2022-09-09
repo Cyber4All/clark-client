@@ -27,6 +27,8 @@ import { SkipLinkComponent } from './skip-link/skip-link.component';
 import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
 import { AddEvaluatorComponent } from './add-evaluator/add-evaluator.component';
 import { UserDropdownComponent } from './add-evaluator/components/user-dropdown/user-dropdown.component';
+import { InputFieldComponent } from './input-field/input-field.component';
+import { MatInputModule } from '@angular/material/input';
 import {
   HighlightedLearningObjectComponent
 } from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
@@ -40,6 +42,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    MatInputModule,
     // third-part modules
     CKEditorModule,
     VirtualScrollerModule,
@@ -65,6 +68,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     AddEvaluatorComponent,
     UserDropdownComponent,
     HighlightedLearningObjectComponent,
+    InputFieldComponent,
     AuthorCardComponent,
     CollectionsDropdownComponent,
   ],
@@ -85,6 +89,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     SkipLinkComponent,
     CookiePopupComponent,
     AddEvaluatorComponent,
+    InputFieldComponent,
     AuthorCardComponent
   ]
 })

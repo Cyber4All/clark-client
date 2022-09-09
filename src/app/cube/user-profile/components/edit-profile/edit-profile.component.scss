@@ -1,0 +1,163 @@
+@import 'vars.scss';
+
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  width: 100%;
+  outline: none;
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: normal;
+  padding: 12px;
+  font-size: $normal;
+  resize: none;
+  color: $blue-accent;
+}
+
+form {
+  margin: auto;
+  max-width: 100%;
+  max-height: 800px;
+
+  h1 {
+    text-align: center;
+  }
+
+  .side-by-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+  }
+
+  .gravatar {
+    margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .img {
+      display: inline-block;
+      max-width: 150px;
+      width: 100%;
+      max-height: 150px;
+      height: 100%;
+      vertical-align: middle;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
+      background: url(/assets/images/user.jpg);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 20px;
+      position: relative;
+      z-index: 1;
+    }
+  
+    .gravatar-text {
+      position: relative;
+      top: 60%;
+      text-align: left;
+      font-size: $smaller;
+    }
+  }
+
+  .sso-section {
+    display: flex;
+    flex-direction: row !important;
+    padding-bottom: 15px;
+    justify-content: center;
+    align-items: center;
+
+    .sso-img {
+        width: 200px;
+    }
+
+    span {
+      .sso {
+        color: $medium-grey
+      }
+
+      padding: 5px;
+      text-align: center;
+    }
+  }
+
+  .input {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    border: 1px solid $medium-grey;
+    border-radius: 1px;
+
+    .svg-inline--fa {
+      width: 15px;
+      height: 15px;
+      flex-grow: 0;
+      flex-shrink: 0;
+      @include vert-center;
+      color: $placeholder;
+      padding-left: 14px;
+      box-sizing: content-box;
+    }
+
+    &.active {
+      .svg-inline--fa {
+        color: $blue-accent;
+      }
+    }
+  }
+
+  .btn-group {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+}
+
+#organization {
+  margin-bottom: 0px;
+  text-transform: capitalize;
+}
+
+#bio-icon {
+  padding-top: 12px;
+}
+
+@media (max-width: 750px) {
+  .btn-group {
+    flex-direction: column !important;
+    padding-bottom: 50px;
+
+    .button {
+      margin-left: 0px !important;
+
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+    }
+  }
+  form {
+    .side-by-side {
+      display: block;
+    }
+    .gravatar {
+      flex-direction: column !important;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 20px;
+
+      .gravatar-text {
+        display: flex;
+        position: relative;
+        left: 0;
+      }
+    }
+  }
+}
+
+@media (max-height: 700px) {
+  form {
+    max-height: 600px;
+  }
+}

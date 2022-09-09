@@ -8,12 +8,12 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
 import { RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth.routing';
-import { InputFieldComponent } from './components/input-field/input-field.component';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
 import { RecaptchaDirective } from './register/components/recaptcha/recaptcha.directive';
 import { RegistrationProgressComponent } from './register/components/registration-progress/registration-progress.component';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,6 @@ import { RegistrationProgressComponent } from './register/components/registratio
     ChangePasswordComponent,
     ForgotPasswordComponent,
     EmailVerifiedComponent,
-    InputFieldComponent,
     ErrorBannerComponent,
     RecaptchaDirective,
     RegistrationProgressComponent,
@@ -34,7 +33,8 @@ import { RegistrationProgressComponent } from './register/components/registratio
     RouterModule,
     MatInputModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class AuthModule { }
