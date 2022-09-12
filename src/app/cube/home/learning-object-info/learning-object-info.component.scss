@@ -5,6 +5,7 @@
     flex-direction: row;
     justify-content: flex-start;
     margin: 0 40px;
+
     .sidebar-wrapper {
         position: sticky;
         height: fit-content;
@@ -21,20 +22,21 @@
 
 }
 
-@media (max-width: 950px){
-    .home-column{
+@media (max-width: 950px) {
+    .home-column {
         flex-direction: column;
         margin: 0;
-        .sidebar-wrapper{
+
+        .sidebar-wrapper {
             margin: 0 0 20px 0;
             top: 0;
         }
-       .main-content-wrapper{
-        .main-content{
-           justify-content: center; 
-           margin: 0 20px;
+
+        .main-content-wrapper {
+            .main-content {
+                justify-content: center;
+                margin: 0 20px;
+            }
         }
-        
-       }
     }
 }
