@@ -25,34 +25,28 @@
         position:absolute;
         z-index: 20;
         top: 155px;
-        padding: 0px 20px 40px;
+        padding: 0 0 40px 20px;
         margin-left: 100px;
+        margin-right: 20px;
         background-color: white;
-        width: fit-content;
-        height: fit-content;
         box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
         border-radius: 10px;
 
         .collection-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            width: 1000px;
-            row-gap: 20px;
-            height: fit-content;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            width: auto;
+            max-width: 1000px;
+            gap: 20px;
+            max-height: 500px;
+            overflow: auto;
 
             .item{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-
                 ::ng-deep .collection-card {
-                    background-color: $primary-white;
                     padding: 40px;
                     height: 200px;
                     width: 225px;
-                    border: 1px solid $secondary-white;
                     
                     .card__name {
                         height: 20px;

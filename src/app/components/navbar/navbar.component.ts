@@ -45,7 +45,7 @@ import { Subject } from 'rxjs';
   ]
 })
 export class NavbarComponent implements OnInit {
-  responsiveThreshold = 750;
+  responsiveThreshold = 825;
   windowWidth: number;
 
   searchFocusSubject: Subject<any> = new Subject();

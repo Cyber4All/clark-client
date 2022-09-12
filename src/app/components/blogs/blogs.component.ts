@@ -21,53 +21,14 @@ import { Blog } from './types/blog';
         })
         )
       ]),
-      transition(':leave', [
-        style({
-          position: 'relative',
-          left: '0%',
-        }),
-        animate('500ms ease-out', style({
-          position: 'relative',
-          left: '-100%'
-        }))
-      ])
-    ]),
-    trigger('dismissView', [
-      transition(':enter', [
-        style({
-          position: 'absolute',
-          top: '0',
-          left: '150%',
-          overflow: 'hidden'
-        }),
-        animate('500ms ease-out', style({
-          position: 'absolute',
-          top: '0',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          overflow: 'hidden'
-        }))
-      ]),
-      transition(':leave', [
-        style({
-          position: 'absolute',
-          top: '0',
-          left: '40%',
-          overflow: 'hidden'
-        }),
-        animate('500ms ease-out', style({
-          position: 'absolute',
-          top: '0',
-          left: '150%',
-          overflow: 'hidden'
-        }))
-      ])
     ])
   ]
 })
 export class BlogsComponent implements OnInit {
   blogObservable: Observable<Blog[]>; // used for the template
   blog: Blog; // used to emit the blog
+  dismissText = 'You will not see this pop up again until the next blog post.';
+  dismissOnceText = 'You will not see this pop up again until you reload the page.';
 
   checkbox = false;
   view = 0;

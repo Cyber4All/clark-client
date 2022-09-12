@@ -23,7 +23,7 @@ export class PrimaryNavbarComponent implements OnInit {
   showTopics: boolean;
   showResources: boolean;
   topics: Topic[];
-  resizeThreshold = 1024;
+  resizeThreshold = 825;
   externalResources: {name: string, link: string}[];
   levelChoice: string;
   // levelsDropdown: boolean;

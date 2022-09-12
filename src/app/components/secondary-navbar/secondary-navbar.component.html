@@ -16,7 +16,7 @@
             <i class="fa fa-chevron-up"></i>
         </span>
     </div>
-    <clark-context-menu *ngIf="resourcesDropdown" [anchor]="resourcesAnchor" (close)="dropdowns.closeAll()">
+    <clark-context-menu class="dropdown" *ngIf="resourcesDropdown" [anchor]="resourcesAnchor" (close)="dropdowns.closeAll()">
         <div #contextMenu>
             <ul>
                 <li *ngFor="let r of externalResources" (click)="dropdowns.linkOut(r.link)">{{ r.name }}</li>

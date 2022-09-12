@@ -4,6 +4,9 @@
     color: $dark-grey;
     display: grid;
     grid-template-columns: 60px 220px 20px;
+    &.homepage{
+        grid-template-columns: 60px 150px 0;
+    }
 }
 
 .grid__profile-image-container__image {
@@ -27,7 +30,7 @@
 
 .grid__profile-icon-container__author-organization {
     margin: 0;
-    color: $light-blue;
+    color: $homepage-light-blue;
     font-size: 12px;
     font-weight: normal;
 }

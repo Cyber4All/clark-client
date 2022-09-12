@@ -4,116 +4,88 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 79px;
+    background: $secondary-white;
+
     .first-view {
         display: flex;
+        flex-direction: row;
         position: relative;
         justify-content: space-between;
-        padding: 5px;
-    
+        padding: 15px;
+
         .left {
             display: flex;
             flex-direction: row;
             justify-content: flex-start;
-            
+
             p {
                 font-size: 16px;
             }
-    
+
             .fa-2x {
                 margin: 10px;
             }
         }
-        
-        .right {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            
-            button {
-                padding: 12px 20px;
-                margin: 0px 50px 0 50px;
-                background-color: $light-blue;
-                color: white;
-                border-radius: 4px;
-                border: none;
-                cursor: pointer;
-                width: 100%;
-                height: 100%;
-            }
-    
-            button:hover {
-                opacity: 80%;
-            }
-    
-            button:active {
-                opacity: 100%;
-            }
-        }
-    }
-
-    .second-view {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
 
         .side-by-side {
             display: flex;
             flex-direction: row;
 
-            button {
-                background-color: $light-blue;
-                color: white;
-                border: none;
+            .dismiss {
+                color: $homepage-gray;
+                border: 1px $secondary-white;
+                background: $primary-white;
+                margin-right: 9px;
+                border-radius: 4px;
                 border-radius: 4px;
                 cursor: pointer;
-                padding: 12px 20px;
-                margin: 10px 25px 0px 25px;
+                padding: 12px 36px;
             }
 
             button:hover {
                 opacity: 80%;
             }
-    
+
+            button:active {
+                opacity: 100%;
+            }
+
+            .dismissOnce {
+                background-color: $homepage-light-blue;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                padding: 12px 18px;
+                margin: 0 9px;
+                box-shadow: 0px 6px 12px -6px $homepage-light-blue;
+                border-radius: 4px;
+            }
+
+            button:hover {
+                opacity: 80%;
+            }
+
             button:active {
                 opacity: 100%;
             }
         }
-
-        p {
-            margin: 5px 0;
-
-            a {
-                cursor: pointer;
-            }
-        }
-
     }
+
+
 }
-    
-@media screen and(max-width:800px) {
+
+@media (max-width: 1090px) {
     .blogs-component {
-        height: 100%;
-
-        .first-view {
-            display: flex;
+        flex-direction: column;
+        .first-view{
             flex-direction: column;
-        }
-        
-        .second-view {
-            .side-by-side {
-                button {
-                    width: auto;
-                }
+            .left{
+                justify-content: center;
             }
-
-            p {
-                text-align: center;
+            .side-by-side{
+                justify-content: center;
             }
-        }
-
-        button {
-            width: 75%;
         }
     }
 }

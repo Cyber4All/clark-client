@@ -1,68 +1,87 @@
 @import '_vars.scss';
+
 .collection-section-wrapper {
     background-color: white;
+    margin-right: 50px;
 }
 
 .item-list {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    flex-wrap: wrap;
     max-width: 1500px;
     width: 100%;
-    margin: 20px 20px 20px 0px;
+    margin: 45px 20px 45px 0px;
 
     .item {
-        cursor: pointer;
-        margin: 25px;
-        background-color: $primary-white;
-        border: solid 1px $secondary-white;
-        border-radius: 4px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-width: 250px;
+        margin: 25px 50px 25px 0;
 
         ::ng-deep .collection-card {
             padding: 40px;
-            background-color: $primary-white;
+            height: 190px;
+            width: 265px;
 
             .card__name {
                 height: 20px;
                 color: black;
             }
+
+            .card__image {
+                height: 86px;
+                max-width: 190px;
+
+                &.long {
+                    height: 55px;
+                    width: 180px;
+                }
+            }
         }
-    }    
+    }
+
+    .item:first-child {
+        margin-left: 0;
+    }
 }
-button{
+
+button {
     border: 0;
-    padding: 11px 20px 11px 25px;
-    border-radius: 6px;
-    background: $new-button-blue;
+    padding: 16px 27px;
+    border-radius: 4px;
+    background: $homepage-light-blue;
     color: white;
     text-transform: uppercase;
-    font-size: $small;
     cursor: pointer;
     position: relative;
     font-weight: normal;
-    box-shadow: 0px 6px 12px -6px $new-button-blue;
+    box-shadow: 0px 6px 12px -6px $homepage-light-blue;
+    margin-bottom: 75px;
+    &:hover {
+        opacity: 80%;
+    }
+
+    &:active {
+        opacity: 100%;
+    }
 }
 
 
 
-@media screen and (max-width: 810px) {
+@media screen and (max-width: 950px) {
 
     .collection-section-wrapper {
         text-align: center;
+        margin-right: 0;
     }
+
     .item-list {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
 
-        .item {
-        margin: 2vw;
+        .item, .item:first-child {
+            margin: 25px 0;
         }
     }
 
@@ -71,5 +90,11 @@ button{
         flex-direction: row;
         justify-content: center;
         align-items: center;
+    }
+}
+
+@media (max-width: 500px){
+    button{
+        width: 100%;
     }
 }

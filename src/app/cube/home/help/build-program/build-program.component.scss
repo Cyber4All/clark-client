@@ -1,7 +1,7 @@
 @import 'vars.scss';
 
 .wrapper {
-    margin: 0px 35px;
+    margin: 0px 60px;
 
     .info {
         font-size: 20px;
@@ -9,25 +9,26 @@
     }
     
     .framework {
-        font-size: 18px;
-        margin: 0 10px 10px 0;
+        margin: 0 15px 15px 0;
         padding: 10px 24px;
-        border: 2px solid $medium-grey;
-        border-radius: 3px;
+        border: 1px solid $secondary-white;
+        border-radius: 4px;
+        background: $primary-white;
 
         &:hover {
-            border: 2px solid $light-blue;
+            border: 1px solid $homepage-light-blue;
             opacity: 80%;
         }
 
         &:active {
-            border: 2px solid $light-blue;
-            background-color: #8caff143;
+            border: 1px solid $homepage-light-blue;
+            background-color: $box-background;
             opacity: 100%;
         }
     }
 
     .search {
+        margin-top: 50px;
         .input {
             cursor: text;
             background-color: white;
@@ -47,7 +48,7 @@
             }
 
             &:hover{
-                border-color: $light-blue;
+                border-color: $homepage-light-blue;
             }
         }
     }
@@ -57,7 +58,8 @@
             display: grid;
             grid-template-rows: auto auto;
             grid-template-columns: auto auto auto;
-            gap: 10px;
+            gap: 25px;
+            margin-top: 50px;
 
             .guideline {
                 cursor: pointer;
@@ -65,44 +67,47 @@
                 position: relative;
                 text-align: left;
                 vertical-align: top;
-                border: 2px solid $medium-grey;
+                border: 1px solid $secondary-white;
                 border-radius: 4px;
                 font-size: 14px;
+                background: $primary-white;
 
                 .guidelineDescription {
-                    color: #454545;
-                    margin: 10px 10px 50px;
+                    color: $homepage-gray;
+                    margin: 15px 15px 70px;
                 }
 
                 .guidelineName {
                     position: absolute;
                     bottom: 0;
                     left: 15px;
+                    color: $homepage-gray;
                 }
 
                 &:hover {
-                    border: 2px solid $light-blue;
+                    border: 1px solid $homepage-light-blue;
                     opacity: 80%;
                 }
     
                 &:active {
-                    border: 2px solid $light-blue;
-                    background-color: #8caff143;
-                    opacity: 100%;
+                    border: 1px solid $homepage-light-blue;
+                    background: $box-background;
+                    border-radius: 4px;
                 }
             }
         }
     }
     
     .pagination {
-        margin-top: 10px;
+        margin-top: 70px;
         button {
-            font-weight: 600;
-            font-size: 18px;
             border: none;
-            color: $light-blue;
-            background-color: $primary-white;
+            color: $homepage-light-blue;
+            font-size: 15px;
+            background: transparent;
             padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
 
             svg {
                 padding: 0px 5px;
@@ -110,16 +115,14 @@
 
             &:not(.highlighted):not(:disabled):hover {
                 opacity: 80%;
-                background-color: #8caff180;
             }
 
             &.highlighted {
-                background-color: #8caff143;
+                background: $box-background;
             }
 
             &:disabled {
-                color: gray;
-                opacity: 60%;
+                color: $homepage-pagination;
             }
         }
         
