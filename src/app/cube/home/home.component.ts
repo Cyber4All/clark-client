@@ -1,7 +1,10 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Blog } from 'app/components/blogs/types/blog';
 import { BlogsComponentService } from 'app/core/blogs-component.service';
+//remove after clark 5th birthday
+import ConfettiGenerator from 'confetti-js';
+//remove after clark 5th birthday
 
 @Component({
   selector: 'clark-home',
@@ -26,10 +29,39 @@ import { BlogsComponentService } from 'app/core/blogs-component.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private blogsComponentService: BlogsComponentService) { }
+  //TO-DO:remove after clark5th birthday
+  private resizeThreshold = 1024;
+  //remove after clark5th birthday
+
+  constructor(
+    private blogsComponentService: BlogsComponentService
+    ) { }
 
   ngOnInit(): void {
+    //remove after clark 5th birthday
+    this.renderConfetti(window.innerWidth >= this.resizeThreshold);
+    //remove after clark 5th birthday
   }
+
+  //remove after clark5th birthday
+  renderConfetti(val: boolean): void {
+    const DesktopConfettiSettings = {
+      target: 'confetti-canvas',
+      // max: '10000',
+      clock: '15',
+      height: '75'
+    };
+
+    const confetti = new ConfettiGenerator(DesktopConfettiSettings);
+    confetti.render();
+  }
+  //remove after clark5th birthday
+
+  @HostListener('window:resize', ['$event'])
+  resizeWindow() {
+    this.renderConfetti(window.innerWidth >= this.resizeThreshold);
+  }
+  //remove after clark5th birthday
 
   /**
    * Catches the output emitted by clark-blogs to dismiss the banner
