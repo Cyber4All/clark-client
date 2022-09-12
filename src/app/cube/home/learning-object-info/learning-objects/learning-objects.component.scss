@@ -13,7 +13,6 @@ p {
     .learning-object-info {
         padding-bottom: 60px;
         border-bottom: 1px solid $secondary-white;
-        ;
 
         h1 {
             margin-top: 0;
@@ -100,7 +99,8 @@ p {
         .featured-object {
             .featured-contributors {
                 justify-content: space-between;
-                .plusMore{
+
+                .plusMore {
                     padding-right: 10px;
                 }
             }
@@ -143,5 +143,4 @@ p {
             width: 100%;
         }
     }
-
 }
