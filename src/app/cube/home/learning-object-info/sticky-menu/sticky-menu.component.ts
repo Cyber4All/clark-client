@@ -57,7 +57,6 @@ export class StickyMenuComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     this.setFields(this.currentComponentInView);
-    console.log(this.currentComponentInView);
   }
 
   /**
