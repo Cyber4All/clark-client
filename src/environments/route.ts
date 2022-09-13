@@ -516,7 +516,6 @@ export const STATS_ROUTES = {
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
   // fetches downloads and saves for ALL objects in system
   LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
-  // fetches the blooms distribution
   USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };
 
