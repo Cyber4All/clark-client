@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "4.29.33",
+  "version": "4.29.34",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -50,7 +50,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^13.1.4",
-    "@angular-eslint/builder": "12.7.0",
+    "@angular-eslint/builder": "14.0.4",
     "@angular-eslint/eslint-plugin": "12.7.0",
     "@angular-eslint/eslint-plugin-template": "12.7.0",
     "@angular-eslint/schematics": "^13.0.1",
