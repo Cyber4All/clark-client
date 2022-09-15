@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
-import { LearningObjectService } from 'app/core/learning-object.service';
 import { UserService } from 'app/core/user.service';
 import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service';
 
@@ -17,7 +16,6 @@ export class LearningObjectsComponent implements OnInit {
   page='homepage';
 
   constructor(private featureService: FeaturedObjectsService,
-              private learningObjectService: LearningObjectService,
               private userService: UserService,
               private usageStatsService: UsageStatsService) { }
 
@@ -28,15 +26,6 @@ export class LearningObjectsComponent implements OnInit {
     await this.featureService.getFeaturedObjects();
     await this.featureService.featuredObjects.subscribe(objects => {
       this.featuredObject = objects[1];
-    });
-    await this.learningObjectService.fetchLearningObjectWithResources({
-      author: this.featuredObject.author._name,
-      cuidInfo: {
-        cuid: this.featuredObject.cuid
-      },
-      id: this.featuredObject.id
-    }, ['outcomes']).subscribe((object: LearningObject) => {
-      this.featuredObject = object;
     });
   }
 
