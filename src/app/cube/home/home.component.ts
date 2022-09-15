@@ -30,7 +30,7 @@ import ConfettiGenerator from 'confetti-js';
 export class HomeComponent implements OnInit {
 
   //TO-DO:remove after clark5th birthday
-  private resizeThreshold = 1024;
+  private resizeThreshold = 405;
   //remove after clark5th birthday
 
   constructor(
@@ -49,10 +49,21 @@ export class HomeComponent implements OnInit {
       target: 'confetti-canvas',
       // max: '10000',
       clock: '15',
-      height: '75'
+      height: '90'
     };
 
-    const confetti = new ConfettiGenerator(DesktopConfettiSettings);
+    const mobileConfettiSettings = {
+      target: 'confetti-canvas',
+      // max: '10000',
+      clock: '15',
+      height: '140'
+    };
+    let confetti;
+    if(val){
+      confetti = new ConfettiGenerator(DesktopConfettiSettings);
+    } else {
+      confetti = new ConfettiGenerator(mobileConfettiSettings);
+    }
     confetti.render();
   }
   //remove after clark5th birthday
