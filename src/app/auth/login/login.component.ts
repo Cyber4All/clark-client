@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit{
   attempts = 0;
   loginFailure: Boolean = false;
   isNameLogin = false;
+  loading = false;
 
   authInfo: {
       username: string,
@@ -82,7 +83,8 @@ export class LoginComponent implements OnInit{
  *
  * @param form data from NgForm
  */
-  public submit(form: NgForm) {
+  public async submit(form: NgForm) {
+    this.loading = true;
     this.authInfo = form.value;
     //get form control for all fields
     const pwordFormCtl = this.password.valueAccessor.control;
@@ -98,7 +100,7 @@ export class LoginComponent implements OnInit{
         this.finalAttempt = Date.parse(new Date().toDateString());
       }
 
-      this.auth
+      await this.auth
       .login(this.authInfo)
       .then(() => {
         if (this.redirectUrl) {
@@ -115,6 +117,7 @@ export class LoginComponent implements OnInit{
       this.bannerMsg = 'Sorry' + this.attemptMsg();
       this.authValidation.showError();
     }
+    this.loading = false;
   }
 
   /**
