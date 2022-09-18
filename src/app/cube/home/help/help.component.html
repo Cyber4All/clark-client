@@ -8,7 +8,7 @@
     <clark-help-back-btn 
         @helpBackButton
         *ngIf="selectedTemplate === 0 || selectedTemplate === 1" 
-        [option]="helpOptions[selectedTemplate]" 
+        [option]="helpOptions[selectedTemplate]"
         (activate)="selectTemplate(-1); handleFrameworkClicked();"
         ></clark-help-back-btn>
     <clark-teach-now @helpComponent *ngIf="selectedTemplate === 0"></clark-teach-now>

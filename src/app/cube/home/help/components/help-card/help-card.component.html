@@ -5,7 +5,13 @@
         </span>
         <h2>{{ option.title }}</h2>
         <p>{{ option.description }}</p>
-        <a [routerLink]="option.link" class="link">Get Started <i class="fa fa-angle-right" aria-hidden="true"></i></a>
+        <a 
+            (click)="this.googleTagService.triggerGoogleTagEvent(option.gtag, 'homepageRedirect', 'helpSection')"
+            [routerLink]="option.link"
+            class="link">
+            Get Started 
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </a>
     </div>
 
 </div>

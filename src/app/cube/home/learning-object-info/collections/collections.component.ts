@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Collection, CollectionService } from 'app/core/collection.service';
 import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
+import { GoogleTagService } from '../../google-tag.service';
 
 
 @Component({
@@ -15,7 +16,8 @@ export class CollectionsComponent implements OnInit {
 
   constructor(
     private collectionService: CollectionService,
-    private toastr: ToastrOvenService
+    private toastr: ToastrOvenService,
+    public googleTagService: GoogleTagService
     ) { }
 
   async ngOnInit(): Promise<void> {

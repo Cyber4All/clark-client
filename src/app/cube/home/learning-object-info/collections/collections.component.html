@@ -8,7 +8,8 @@
     <div class="item-list">
         <clark-collection-card *ngFor="let c of collections" [collection]="c" class="item"></clark-collection-card>
     </div>
-    <button [routerLink]="['/c']" >Browse All Collections</button>
+    <button (click)="this.googleTagService.triggerGoogleTagEvent('browse_collections', 'homepageRedirect', 'browseCollections')"
+    [routerLink]="['/c']" >Browse All Collections</button>
         
 </div>
 

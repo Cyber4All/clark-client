@@ -1,6 +1,7 @@
 import { animate, query, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
+import { GoogleTagService } from '../google-tag.service';
 
 @Component({
   selector: 'clark-help',
@@ -84,6 +85,7 @@ export class HelpComponent implements OnInit {
       icon: 'fa fa-tag',
       iconColor: 'orange',
       value: 0,
+      gtag: 'teach_something_now'
     },
     {
       title: 'Build My Cyber Program',
@@ -91,6 +93,7 @@ export class HelpComponent implements OnInit {
       icon: 'fa fa-file-certificate',
       iconColor: 'purple',
       value: 1,
+      gtag: 'build_my_cyber_program'
     },
     {
       title: 'Explore Collections',
@@ -99,12 +102,16 @@ export class HelpComponent implements OnInit {
       iconColor: 'green',
       value: 2,
       link: ['/c'],
+      gtag: 'explore_collections'
     },
   ];
 
   selectedTemplate = -1;
 
-  constructor(private buildProgramComponentService: BuildProgramComponentService) { }
+  constructor(
+    private buildProgramComponentService: BuildProgramComponentService,
+    public googleTagService: GoogleTagService
+    ) { }
 
   ngOnInit(): void {
   }

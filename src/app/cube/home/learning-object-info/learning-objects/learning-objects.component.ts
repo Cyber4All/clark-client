@@ -4,6 +4,7 @@ import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { LearningObjectService } from 'app/core/learning-object.service';
 import { UserService } from 'app/core/user.service';
 import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service';
+import { GoogleTagService } from '../../google-tag.service';
 
 
 @Component({
@@ -19,7 +20,9 @@ export class LearningObjectsComponent implements OnInit {
   constructor(private featureService: FeaturedObjectsService,
               private learningObjectService: LearningObjectService,
               private userService: UserService,
-              private usageStatsService: UsageStatsService) { }
+              private usageStatsService: UsageStatsService,
+              public googleTagService: GoogleTagService
+              ) { }
 
   async ngOnInit(): Promise<void> {
     await this.usageStatsService.getLearningObjectStats().then(stats => {

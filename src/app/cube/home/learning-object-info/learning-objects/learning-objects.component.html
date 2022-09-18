@@ -45,5 +45,10 @@
         </div>
     </div>
 
-    <button class="learning-object-button" [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
+    <button 
+        (click)="this.googleTagService.triggerGoogleTagEvent('browse_learning_objects', 'homepageRedirect', 'browseLos')"
+        class="learning-object-button"
+        [routerLink]="'/browse'">
+        BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS
+    </button>
 </div>
