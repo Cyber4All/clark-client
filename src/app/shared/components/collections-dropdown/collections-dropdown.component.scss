@@ -7,7 +7,7 @@
     right: 0;
     bottom: 0;
     z-index: 19;
-    
+
     .triangle {
         border: 10px solid white;
         border-top-color: transparent;
@@ -22,7 +22,7 @@
     }
 
     .collections-dropdown {
-        position:absolute;
+        position: absolute;
         z-index: 20;
         top: 155px;
         padding: 0 0 40px 20px;
@@ -42,23 +42,51 @@
             max-height: 500px;
             overflow: auto;
 
-            .item{
+            .loading {
+                height: 250px;
+                width: 500px;
+
+                .collections-loading {
+                    text-align: center;
+                    color: $dark-grey;
+                    padding-top: 75px;
+                    display: inline-flex;
+                    justify-content: center;
+                    flex-direction: column;
+                    align-items: center;
+                    width: 100%;
+                    box-sizing: border-box;
+                    font-size: $large;
+
+                    .svg-inline--fa {
+                        display: block;
+                        color: $light-blue;
+                        font-size: 30px;
+                        margin-bottom: 10px;
+                    }
+                }
+            }
+
+            .item {
                 ::ng-deep .collection-card {
                     padding: 40px;
                     height: 200px;
                     width: 225px;
-                    
+
                     .card__name {
                         height: 20px;
                         font-size: $small;
                         color: black;
+
                         &.long {
                             font-size: x-small;
                         }
                     }
+
                     .card__image {
                         height: 86px;
                         max-width: 190px;
+
                         &.long {
                             height: 55px;
                             width: 180px;
