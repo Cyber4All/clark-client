@@ -64,7 +64,6 @@ export class FeaturedObjectsService {
       // Grabs the complete Learning Object from the LO database
       // For some reason, the method itself returns the full Learning Object,
       //    but when entered into the array it turns into a Promise.
-      // TODO: Refactor the profileService method
       return await this.profileService.fetchLearningObject({
         author: undefined,
         cuid: learningObject.cuid
