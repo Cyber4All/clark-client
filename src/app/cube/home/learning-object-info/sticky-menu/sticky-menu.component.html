@@ -2,21 +2,25 @@
     <div>
         <div class="content"
             [ngClass]="{'choosen': isHighlighted.learningObjects, 'greyout': !isHighlighted.learningObjects && !isOtherChoiceSelected() }"
+            (click)="this.googleTagService.triggerGoogleTagEvent('sticky_learning_objects', 'homepageRedirect', 'stickyMenu')"
             (activate)="changeSelection(LearningObjectInfoState.LEARNING_OBJECT)">
             <i class="icon fal fa-cubes"></i> Learning Objects
         </div>
         <div class="content"
             [ngClass]="{'choosen': isHighlighted.learningOutcomes, 'greyout': !isHighlighted.learningOutcomes && !isOtherChoiceSelected() }"
+            (click)="this.googleTagService.triggerGoogleTagEvent('sticky_learning_outcomes', 'homepageRedirect', 'stickyMenu')"
             (activate)="changeSelection(LearningObjectInfoState.LEARNING_OUTCOMES)">
             <i class="icon fal fa-graduation-cap"></i>Learning Outcomes
         </div>
         <div class="content"
             [ngClass]="{'choosen': isHighlighted.hierarchies, 'greyout': !isHighlighted.hierarchies && !isOtherChoiceSelected() }"
+            (click)="this.googleTagService.triggerGoogleTagEvent('sticky_hierarchies', 'homepageRedirect', 'stickyMenu')"
             (activate)="changeSelection(LearningObjectInfoState.HIERARCHIES)">
             <i class="icon fal fa-folder-tree"></i> Hierarchies
         </div>
         <div class="content"
             [ngClass]="{'choosen': isHighlighted.collections, 'greyout': !isHighlighted.collections && !isOtherChoiceSelected() }"
+            (click)="this.googleTagService.triggerGoogleTagEvent('sticky_collections', 'homepageRedirect', 'stickyMenu')"
             (activate)="changeSelection(LearningObjectInfoState.COLLECTIONS)">
             <i class="icon fal fa-users"></i> Collections
         </div>
@@ -42,23 +46,27 @@
                 <ul class="menu">
                     <li class="content"
                         [ngClass]="{'choosen': isHighlighted.learningObjects, 'greyout': !isHighlighted.learningObjects && !isOtherChoiceSelected() }"
+                        (click)="this.googleTagService.triggerGoogleTagEvent('sticky_learning_objects', 'homepageRedirect', 'stickyMenu')"
                         (activate)="changeSelection(LearningObjectInfoState.LEARNING_OBJECT)"
                         (close)="toggleDropdown()">
                         <i class="icon fal fa-cubes"></i> Learning Objects
                     </li>
                     <li class="content"
                         [ngClass]="{'choosen': isHighlighted.learningOutcomes, 'greyout': !isHighlighted.learningOutcomes && !isOtherChoiceSelected() }"
+                        (click)="this.googleTagService.triggerGoogleTagEvent('sticky_learning_outcomes', 'homepageRedirect', 'stickyMenu')"
                         (activate)="changeSelection(LearningObjectInfoState.LEARNING_OUTCOMES)"
                         (close)="toggleDropdown()">
                         <i class="icon fal fa-graduation-cap"></i>Learning Outcomes
                     </li>
                     <li class="content"
                         [ngClass]="{'choosen': isHighlighted.hierarchies, 'greyout': !isHighlighted.hierarchies && !isOtherChoiceSelected() }"
+                        (click)="this.googleTagService.triggerGoogleTagEvent('sticky_hierarchies', 'homepageRedirect', 'stickyMenu')"
                         (activate)="changeSelection(LearningObjectInfoState.HIERARCHIES)" (close)="toggleDropdown()">
                         <i class="icon fal fa-folder-tree"></i> Hierarchies
                     </li>
                     <li class="content"
                         [ngClass]="{'choosen': isHighlighted.collections, 'greyout': !isHighlighted.collections && !isOtherChoiceSelected() }"
+                        (click)="this.googleTagService.triggerGoogleTagEvent('sticky_collections', 'homepageRedirect', 'stickyMenu')"
                         (activate)="changeSelection(LearningObjectInfoState.COLLECTIONS)" (close)="toggleDropdown()">
                         <i class="icon fal fa-users"></i> Collections
                     </li>

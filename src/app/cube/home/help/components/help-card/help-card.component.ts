@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { GoogleTagService } from 'app/cube/home/google-tag.service';
 
 @Component({
   selector: 'clark-help-card',
@@ -7,9 +8,11 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class HelpCardComponent implements OnInit {
 
-  @Input() option: {title: string, description: string, icon: string, iconColor: string, link?: string[]};
+  @Input() option: {title: string, description: string, icon: string, iconColor: string, link?: string[], gtag: string};
 
-  constructor() { }
+  constructor(
+    public googleTagService: GoogleTagService
+  ) { }
 
   ngOnInit(): void {
   }

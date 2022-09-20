@@ -1,6 +1,7 @@
 import { trigger, transition, style, animate, state } from '@angular/animations';
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { GoogleTagService } from '../../google-tag.service';
 import { LEARNING_OBJECT_INFO_STATES } from '../learning-object-info.component';
 
 @Component({
@@ -42,7 +43,10 @@ export class StickyMenuComponent implements OnInit {
   /* The component that will be highlighted when in view */
   @Input() currentComponentInView: LEARNING_OBJECT_INFO_STATES;
 
-  constructor(private router: Router) {
+  constructor(
+    private router: Router,
+    public googleTagService: GoogleTagService
+    ) {
     this.router.onSameUrlNavigation = 'reload';
   }
 
