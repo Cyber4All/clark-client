@@ -3,7 +3,14 @@
     <div [@dropDownMenu] class="collections-dropdown" id="collectionsDropdown">
         <h1>Collections</h1>
         <div class="collection-grid">
-            <clark-collection-card (activate)="activateClose()" class="item" *ngFor="let c of collections" [collection]="c"></clark-collection-card>
+            <div *ngIf="loading" class="loading">
+                <div class="collections-loading">
+                    <i class="far fa-spinner-third fa-spin"></i>
+                    Loading Collections...
+                </div>
+            </div>
+            <clark-collection-card (activate)="activateClose()" class="item" *ngFor="let c of collections"
+                [collection]="c"></clark-collection-card>
         </div>
     </div>
 </div>
