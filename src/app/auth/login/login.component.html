@@ -37,9 +37,13 @@
             <button *ngIf="!isNameLogin" (click)="showPassField()" class="buttons">Next</button>
             <div class="side-by-side buttons" *ngIf="isNameLogin">
                 <button type="reset" (click)="showPassField()" class="white">Back</button>
-                <button type="submit" id="submit">Login</button>
+                <button type="submit" id="submit" *ngIf="!loading; else loadingSpinner">Login</button>
             </div>
             <a routerLink="../register">Don't have an account? Register!</a>
         </form>
     </div>
 </div>
+
+<ng-template #loadingSpinner>
+    <button type="submit" id="submit"><i class="far fa-spinner-third fa-spin"></i></button>
+</ng-template>
