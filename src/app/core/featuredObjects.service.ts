@@ -64,10 +64,17 @@ export class FeaturedObjectsService {
       // Grabs the complete Learning Object from the LO database
       // For some reason, the method itself returns the full Learning Object,
       //    but when entered into the array it turns into a Promise.
-      return await this.profileService.fetchLearningObject({
+      const object = await this.profileService.fetchLearningObject({
         author: undefined,
         cuid: learningObject.cuid
       });
+      // Retrieve the outcomes for the learning object with the resource uri
+      const outcomePromise: any = await this.http.get(object.resourceUris.outcomes).toPromise();
+      // Resolve outcome promises
+      object.outcomes = await Promise.all(outcomePromise).then(async (outcome: any) => {
+        return outcome;
+      });
+      return object;
     });
     // Resolves the array of Promises into an array of complete Learning Objects
     this.featuredStore.featured = await Promise.all(promisedObjectsArray).then(async (learningObject: LearningObject[]) => {
