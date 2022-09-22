@@ -16,7 +16,7 @@
     "prepare": "husky install"
   },
   "@comment dependencies": [
-    "DO NOT UPDATE ng1-ckeditor",
+    "DO NOT UPDATE ng2-ckeditor",
     "typescript should be gradually stepped up -- stable as of 2022_09_16"
   ],
   "dependencies": {
