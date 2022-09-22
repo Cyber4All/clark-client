@@ -10,7 +10,7 @@ export const COPY = {
     ACCESSIBILITY: 'Accessibility',
     PRESS: 'Press and Media',
     OUTAGES: 'System Outages',
-    ABOUT: 'About Us',
+    ABOUT: 'About CLARK',
     SUBSCRIBE: 'Sign up for our Newsletter',
     ROADMAP: 'Roadmap'
 };

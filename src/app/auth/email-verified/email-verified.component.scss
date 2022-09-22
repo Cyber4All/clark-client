@@ -1,0 +1,92 @@
+@import "vars.scss";
+
+.wrapper {
+    height: 100vh;
+    padding: 50px, 0;
+    width: inherit;
+
+    .content-box {
+        z-index: 1;
+        border-radius: 12px;
+        padding: 100px 40px;
+        margin: 5vh;
+        width: 400px;
+
+        img {
+            width: 50px;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-top: 0px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        button {
+            border: 2px solid $light-blue;
+            border-radius: 5px;
+            background-color: $light-blue;
+            color: white;
+            padding: 10px;
+            font-size: $normal;
+            display: block;
+            width: 100%;
+            margin: 3vh 0 2vh;
+        }
+
+        button:hover {
+            cursor: pointer;
+            opacity: 80%;
+        }
+
+        button:active {
+            cursor: pointer;
+            opacity: 100%;
+        }
+
+        .fa-5x, svg {
+            margin-top: 20px;
+            text-align: center;
+            display: inline-block;
+            width:100%;
+            margin: 20px 0 0 0;
+            
+        }
+
+        .fa-times-circle {
+            color: rgba(255, 0, 0, 0.714);
+        }
+
+        .fa-check-circle {
+            color: rgb(0, 199, 0);
+        }
+    }
+
+    &:before {
+        content: '';
+        background: linear-gradient(90deg, white, $light-blue, white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        z-index: 0;
+        opacity: .15;
+    }
+    
+    &:after {
+        content: '';
+        background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 0;
+    }
+}

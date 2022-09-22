@@ -1,0 +1,15 @@
+<div class="collection-section-wrapper">
+
+    <h1>Individually curated and peer-reviewed for quality</h1>
+    <p>In addition to being modular, Learning Objects are also grouped into Collections within CLARK. Each collection 
+        has its own peer review process, is supported by its own community and fulfills different curricular needs 
+        in cybersecurity.
+    </p>
+    <div class="item-list">
+        <clark-collection-card *ngFor="let c of collections" [collection]="c" class="item"></clark-collection-card>
+    </div>
+    <button (click)="this.googleTagService.triggerGoogleTagEvent('browse_collections', 'homepageRedirect', 'browseCollections')"
+    [routerLink]="['/c']" >Browse All Collections</button>
+        
+</div>
+
