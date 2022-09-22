@@ -78,7 +78,7 @@ export const USER_ROUTES = {
   FETCH_USER(user: string, q: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
   },
-  CHECK_USER_EXISTS(username) {
+  FETCH_USER_PROFILE(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/profile`;
@@ -338,6 +338,11 @@ export const USER_ROUTES = {
     )}/learning-objects/${encodeURIComponent(
       params.learningObjectID
     )}/files/bundle`;
+  },
+  GET_COLLECTIONS(username: string){
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/collections`;
   }
 };
 

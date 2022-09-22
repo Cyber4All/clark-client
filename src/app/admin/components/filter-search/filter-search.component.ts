@@ -137,7 +137,7 @@ export class FilterSearchComponent implements OnInit {
     this.relevancyService
       .getTopics()
       .then(topics => {
-        this.topics = topics.sort(( a, b ) => ( a.name > b.name ) ? 1 : (( b.name > a.name ) ? -1 : 0) );
+        this.topics = topics;
         this.topics = [].concat([{_id: 'all', name: 'All'}], Array.from(topics));
       });
   }

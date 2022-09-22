@@ -1,0 +1,31 @@
+@import "vars.scss";
+
+.secondary-navbar {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    background-color: $primary-white;
+    padding: 12px 0 12px 40px;
+    border: solid 1px $secondary-white;
+    z-index: 4;
+
+    .item {
+        cursor: pointer;
+        font-weight: 400;
+        color: $dark-grey;
+        padding: 0 45px;
+
+        span {
+            margin-left: 5px;
+        }
+    }
+
+    .item:first-child {
+        padding-left: 0;
+    }
+
+}
+
+a:hover {
+    color: white;
+}

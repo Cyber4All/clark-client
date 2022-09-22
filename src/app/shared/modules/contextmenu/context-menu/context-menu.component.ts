@@ -179,7 +179,7 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
    */
   private calculatePosition(
     anchor: HTMLElement,
-    offset: { top: number; left: number } = { top: 10, left: 10 }
+    offset: { top: number; left: number } = { top: 0, left: 0 }
   ): [number, number] {
     const boundingBox = anchor.getBoundingClientRect();
     return [boundingBox.bottom + offset.top, boundingBox.left + offset.left];

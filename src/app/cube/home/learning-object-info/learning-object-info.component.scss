@@ -1,0 +1,42 @@
+@import 'vars.scss';
+
+.home-column {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin: 0 40px;
+
+    .sidebar-wrapper {
+        position: sticky;
+        height: fit-content;
+        top: 20px;
+        margin-left: 20px;
+        margin-right: 50px;
+        z-index: 1;
+    }
+
+    .main-content-wrapper {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+}
+
+@media (max-width: 950px) {
+    .home-column {
+        flex-direction: column;
+        margin: 0;
+
+        .sidebar-wrapper {
+            margin: 0 0 20px 0;
+            top: 0;
+        }
+
+        .main-content-wrapper {
+            .main-content {
+                justify-content: center;
+                margin: 0 20px;
+            }
+        }
+    }
+}

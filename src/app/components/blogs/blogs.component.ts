@@ -9,18 +9,26 @@ import { Blog } from './types/blog';
   templateUrl: './blogs.component.html',
   styleUrls: ['./blogs.component.scss'],
   animations: [
-    trigger('fadeInOut', [
+    trigger('blogView', [
       transition(':enter', [
-        style({ opacity: 0 }),
-        animate('500ms', style({ opacity: 1 })
+        style({
+          position: 'relative',
+          left: '-100%'
+        }),
+        animate('500ms ease-out', style({
+          position: 'relative',
+          left: '0%'
+        })
         )
-      ])
+      ]),
     ])
   ]
 })
 export class BlogsComponent implements OnInit {
   blogObservable: Observable<Blog[]>; // used for the template
   blog: Blog; // used to emit the blog
+  dismissText = 'You will not see this pop up again until the next blog post.';
+  dismissOnceText = 'You will not see this pop up again until you reload the page.';
 
   checkbox = false;
   view = 0;
@@ -59,5 +67,15 @@ export class BlogsComponent implements OnInit {
    */
   toggleCheckbox() {
     this.checkbox = !this.checkbox;
+  }
+
+  /**
+   * Disables the animations if the view width is smaller than laptop width
+   *
+   * @returns boolean determining if animations should be disabled
+   */
+  disableAnimations() {
+    const laptopWidth = 1024; // threshold to disable animations
+    return window.outerWidth < laptopWidth;
   }
 }

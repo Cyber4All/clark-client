@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+@import '~@angular/material/theming';
+@import 'vars.scss';
+@include mat-core();
+
+$clark-map: (
+  100: #BADCFF,
+  500: #1190ff,
+  700: #1C70DD,
+  err: $error-red,
+  contrast: ()
+);
+
+$clark-primary: mat-palette($clark-map, 700);
+$clark-accent: mat-palette($clark-map, 700);
+$clark-warn: mat-palette($clark-map, err);
+
+$clark-theme: mat-light-theme((
+ color: (
+   primary: $clark-primary,
+   accent: $clark-accent,
+   warn: $clark-warn,
+ )
+));
+
+@include angular-material-theme($clark-theme);

@@ -1,45 +1,123 @@
 <div class="wrapper">
-  <div class="content-box" [ngClass]="{'failed': registerFailure }">
-    <div class="top">
-      <div aria-live="assertive" id="error" class="error"> {{ registerFailure || '' }} </div>
-      <div class="auth-title" id="registration-title">CLARK</div>
-      <div class="auth-title light" id="registration-light-header">Cybersecurity Digital Library</div>
-      <form [formGroup]="regForm" [@slideInRight]="slide" [@fallFromTop]="fall">
-        <div *ngIf="this.page === 1">
-          <clark-personal-info [group]="regForm"></clark-personal-info>
-        </div>
-        <div *ngIf="this.page === 2">
-          <clark-profile-info [group]="regForm"></clark-profile-info>
-        </div>
-        <div *ngIf="this.page === 3">
-          <clark-gravatar-info [group]="regForm"></clark-gravatar-info>
-          <div autofocus class="recaptcha" id="recaptcha" ngRecaptcha key="{{siteKey}}" (captchaSuccess)="captureResponse($event)" formControlName="captcha">
-          </div>
-        </div>
-      </form>
-      <div class="buttons">
-        <ng-container *ngIf="page !== 1">
-          <button aria-label="Back" type="type" class="reg-button" id="button-back" [tip]="tipText[page - 1].left" tipPosition="top" (activate)="back()">
-            <i class="far fa-arrow-left"></i>
-          </button>
-        </ng-container>
-        <ng-container *ngIf="page !== elements.length; else submitTemplate">
-          <button aria-label="Continue" type="type" class="reg-button right" id="button-next" [tip]="tipText[page - 1].right" tipPosition="top" (activate)="next()">
-            <i class="far fa-arrow-right"></i>
-          </button>
-        </ng-container>
-        <ng-template #submitTemplate>
-          <button [attr.disabled]="checkCookieAgreement()? null: 'disabled'" aria-label="Submit" type="submit" class="reg-button right submit" id="button-submit" [tip]="tipText[page - 1].right" tipPosition="top" (activate)="submit()">
-            <span aria-live="assertive" aria-label="Submitted" *ngIf="!loading; else loadingIcon"><i class="far fa-check"></i></span>
-            <ng-template #loadingIcon><i class="far fa-spinner-third fa-spin"></i></ng-template>
-          </button>
-        </ng-template>
-      </div>
-      <clark-indicator [active]="page - 1" [elements]="elements" (shouldChange)="navigate($event)"></clark-indicator>
+    <clark-registration-progress [index]="currentIndex" ></clark-registration-progress>
+    <div class="content-box" [ngClass]="{'failed': registrationFailure}">
+        <clark-error-banner class="errBanner" [errorMessage]="errorMsg"></clark-error-banner>
+        <img src="/assets/images/logo.png" alt="Clark Logo" />
+        <h1>Register</h1>
+        <form class="form" #f="ngForm" (ngSubmit)="submit()" [@slideInRight]="slide" [@fallFromTop]="fall">            
+            <ng-container [ngSwitch]="currentTemp">
+                <ng-template #infoTemplate [ngSwitchCase]="TEMPLATES.info.temp">
+                    <div class="side-by-side">
+                        <clark-input-field
+                            [(ngModel)]="regInfo.firstname"
+                            #firstname
+                            name="firstName" 
+                            phold="First Name"
+                            [control]="infoFormGroup.get('firstname')"
+                        ></clark-input-field>
+                        <clark-input-field 
+                            [(ngModel)]="regInfo.lastname"
+                            name="lastName" 
+                            #lastname 
+                            phold="Last Name" 
+                            [control]="infoFormGroup.get('lastname')"
+                        ></clark-input-field>
+                    </div>
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.email" 
+                        name="email" 
+                        #email 
+                        phold="Email" 
+                        [control]="infoFormGroup.get('email')"
+                        [errorMsg]="fieldErrorMsg"
+                    ></clark-input-field>
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.organization"  
+                        name="organization" 
+                        #organization 
+                        phold="Organization" 
+                        [control]="infoFormGroup.get('organization')"
+                    ></clark-input-field>
+                
+                    <div class="side-by-side" >
+                        <button type="button" class="white" (click)="navigateHome()">Cancel</button>
+                        <button type="button" (click)="nextTemp()" [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid || loading}" class="button good">Next</button>
+                    </div>
+                    <a routerLink="/auth/login">Have an account? Log In!</a>
+                </ng-template>
+                
+                <ng-template #accountTemplate [ngSwitchCase]="TEMPLATES.account.temp"  >
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.username"
+                        name="username" 
+                        #username 
+                        phold="Username" 
+                        [control]="accountFormGroup.get('username')"
+                        [errorMsg]="fieldErrorMsg"
+                    ></clark-input-field>
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.password"
+                        name="password" 
+                        #password 
+                        isPwrd="true" 
+                        phold="Password" 
+                        [control]="accountFormGroup.get('password')"
+                    ></clark-input-field>
+                    <clark-input-field 
+                        [(ngModel)]="regInfo.confirmPassword"
+                        name="confirmPassword" 
+                        #confirmPassword 
+                        isPwrd="true" 
+                        phold="Confirm Password" 
+                        [confirmType]="'Password'"
+                        [control]="accountFormGroup.get('confirmPassword')"
+                    ></clark-input-field>
+                
+                    <div 
+                        autofocus 
+                        class="recaptcha" 
+                        id="recaptcha" 
+                        ngRecaptcha 
+                        key="{{siteKey}}" 
+                        (captchaSuccess)="captureResponse($event)" 
+                        [formControl]="accountFormGroup.get('captcha')"
+                    ></div>
+                    <mat-error *ngIf="accountFormGroup.get('captcha').hasError('notVerified')">
+                        Please complete the reCaptcha to register
+                    </mat-error>
+                    <div class="side-by-side">
+                        <button type="button" class="white" (click)="goBack()">Back</button>
+                        <button 
+                            type="submit"
+                            class="button good" 
+                            [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid || loading || !verified || !checkCookieAgreement()}"
+                        >Register</button>
+                    </div>
+                    <a routerLink="/auth/login">Have an account? Log In!</a>
+                </ng-template>
+                
+                <ng-template #submissionTemplate [ngSwitchCase]="TEMPLATES.submission.temp">
+                    <p>You’re registered! You should receive an email shortly asking you to verify your email.</p>
+                    <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
+                
+                    <div class="side-by-side">
+                        <button class="white bottom" (click)="navigateHome()">Skip SSO</button>
+                        <button type="button" (click)="nextTemp()" class="bottom">Continue</button>
+                    </div>
+                </ng-template>
+                
+                <ng-template #ssoTemplate [ngSwitchCase]="TEMPLATES.sso.temp">
+                    <p>Configure single sign on.</p>
+                    <p>This is optional, you can also configure this later from your profile page.</p>
+                    <p>Please make sure you select the google account associated with the email you used to register.</p>
+                    <div class="sso-section">
+                        <a [href]="ssoRedirect" class="sso-button">
+                            <img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img">
+                        </a>
+                    </div>
+                    <button type="button" (click)="navigateHome()" class="white bottom">Skip</button>
+                </ng-template>
+            </ng-container>
+        </form>
     </div>
-    <button class="bottom-link" routerLink="../login">
-      Already have an account? 
-      <span id="bottom-register-link">Sign in!</span>
-    </button>
-  </div>
 </div>

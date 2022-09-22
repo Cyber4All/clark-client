@@ -23,6 +23,7 @@ import { AccessGroupGuard } from './access-group-guard';
 import { ChangelogService } from './changelog.service';
 import { EditorService } from './editor.service';
 import { SharedModule } from 'app/shared/shared.module';
+import { ProfileService } from './profiles.service';
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { SharedModule } from 'app/shared/shared.module';
     RatingService,
     NavbarService,
     UserAgentService,
+    ProfileService,
     { provide: ErrorHandler, useClass: RavenErrorHandler },
     {
       provide: HTTP_INTERCEPTORS,

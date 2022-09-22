@@ -1,0 +1,151 @@
+<div>
+    <ng-template *ngIf="isUser; then privateTemplate; else publicTemplate"></ng-template>
+</div>
+
+<ng-template #privateTemplate>
+    <div class="private">
+        <div class="contribution">
+            <div class="header">
+                <h1>My Contributions</h1>
+                <a routerLink="/onion/dashboard" class="dashboard">Go To Dashboard</a>
+            </div>
+            <div class="learningTabs">
+                <div class="mainTabs">
+                    <div tabindex="0" role="tab"
+                        (click)="activateMainTab('released'); content(1, collectionsReleased[0].abvName); activateCollectionTab(0)"
+                        [ngClass]="{active: tabMain === 1}"> Released Objects </div>
+                    <div tabindex="0" role="tab"
+                        (click)="activateMainTab('review'); content(2, collectionsUnreleased[0].abvName); activateCollectionTab(0)"
+                        [ngClass]="{active: tabMain === 2}"> Unreleased </div>
+                </div>
+                <div class="secondTabs" *ngIf="tabMain">
+                    <div class="tabItemSecContainer" *ngIf="tabMain === 1">
+                        <div class="tabItemSec"
+                            *ngFor="let collection of collectionsReleased; let indexOfCollection=index">
+                            <div tabindex="0" role="tab"
+                                (click)="content(1, collectionsReleased[indexOfCollection].abvName); activateCollectionTab(indexOfCollection)"
+                                [ngClass]="{active: tabCollection === indexOfCollection}">
+                                {{collection.name}}</div>
+                        </div>
+                    </div>
+                    <div class="tabItemSecContainer" *ngIf="tabMain === 2">
+                        <div class="tabItemSec"
+                            *ngFor="let collection of collectionsUnreleased; let indexOfCollection=index">
+                            <div tabindex="0" role="tab"
+                                (click)="content(2, collectionsUnreleased[indexOfCollection].abvName); activateCollectionTab(indexOfCollection)"
+                                [ngClass]="{active: tabCollection === indexOfCollection}">
+                                {{collectionsUnreleased[indexOfCollection].name}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdownReleased" *ngIf="tabMain === 1 && collectionsReleased.length > 0">
+                    <button class="dropdownButton" #userDropdownButtonElement
+                        (click)="toggleDropdown(true)">{{collectionsReleased[tabCollection].name}}<span
+                            *ngIf="!mobileDropdown"><i class="fas fa-angle-down"></i></span>
+                            <span *ngIf="mobileDropdown"><i class="fas fa-angle-up"></i></span></button>
+                    <clark-context-menu *ngIf="mobileDropdown" [anchor]="userDropdownButtonElement"
+                        [offset]="{ top: 10, left: 5 }" (close)="toggleDropdown(false)">
+                        <div #contextMenu id="context-popup">
+                            <ul class="menu">
+                                <li *ngFor="let collection of collectionsReleased; let indexOfCollection=index"
+                                    tabindex="0"
+                                    (click)="content(tabMain, collection.abvName); activateCollectionTab(indexOfCollection); toggleDropdown(false)">
+                                    {{collection.name}}</li>
+                            </ul>
+                        </div>
+                    </clark-context-menu>
+                </div>
+                <div class="dropdownUnreleased" *ngIf="tabMain === 2 && collectionsUnreleased.length > 0">
+                    <button class="dropdownButton" #userDropdownButtonElement
+                        (click)="toggleDropdown(true)">{{collectionsUnreleased[tabCollection].name}}<span
+                        *ngIf="!mobileDropdown"><i class="fas fa-angle-down"></i></span>
+                        <span *ngIf="mobileDropdown"><i class="fas fa-angle-up"></i></span>
+                    </button>
+                    <clark-context-menu *ngIf="mobileDropdown" [anchor]="userDropdownButtonElement"
+                        [offset]="{ top: 10, left: 5 }" (close)="toggleDropdown(false)">
+                        <div #contextMenu id="context-popup">
+                            <ul class="menu">
+                                <li *ngFor="let collection of collectionsUnreleased; let indexOfCollection=index"
+                                    tabindex="0"
+                                    (click)="content(tabMain, collectionsUnreleased[indexOfCollection].abvName); activateCollectionTab(indexOfCollection); toggleDropdown(false)">
+                                    {{collection.name}}
+                                </li>
+                            </ul>
+                        </div>
+                    </clark-context-menu>
+                </div>
+                <div class="content">
+                    <div *ngIf="tabMain === 1 && learningObjectsReleased.length > 0">
+                        <clark-learning-object-component class="object" *ngFor="let l of learningObjectsReleased"
+                            [learningObject]="l">
+                        </clark-learning-object-component>
+                    </div>
+                    <div *ngIf="tabMain === 1 && learningObjectsReleased.length === 0">
+                        <p>You don't have any released Learning Objects yet!</p>
+                    </div>
+                    <div *ngIf="tabMain === 2 && learningObjectsUnreleased.length > 0">
+                        <clark-learning-object-component class="object" *ngFor="let l of learningObjectsUnreleased"
+                            [learningObject]="l">
+                        </clark-learning-object-component>
+                    </div>
+                    <div *ngIf="tabMain === 2 && learningObjectsUnreleased.length === 0">
+                        <p>Visit your <a routerLink="/onion/dashboard" class="dashboard">Dashboard</a> to create a learning object!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #publicTemplate>
+    <div class="public">
+        <div class="contribution">
+            <div class="header">
+                <h1>Contributions</h1>
+            </div>
+            <div class="learningTabs" *ngIf="collectionsReleased.length; else noLearningObjects">
+                <div class="mainTabs">
+                    <div *ngFor="let collection of collectionsReleased; let indexOfCollection=index" tabindex="0"
+                        role="tab"
+                        (click)="content(tabMain, collectionsReleased[indexOfCollection].abvName); activateCollectionTab(indexOfCollection)"
+                        [ngClass]="{active: tabCollection === indexOfCollection}">
+                        {{collectionsReleased[indexOfCollection].name}}</div>
+                </div>
+                <div class="dropdownReleased">
+                    <button class="dropdownButton" #userDropdownButtonElement
+                        (click)="toggleDropdown(true)">{{collectionsReleased[tabCollection].name}}<span
+                        *ngIf="!mobileDropdown"><i class="fas fa-angle-down"></i></span>
+                        <span *ngIf="mobileDropdown"><i class="fas fa-angle-up"></i></span></button>
+                    <clark-context-menu *ngIf="mobileDropdown" [anchor]="userDropdownButtonElement"
+                        [offset]="{ top: 10, left: 5 }" (close)="toggleDropdown(false)">
+                        <div #contextMenu id="context-popup">
+                            <ul class="menu">
+                                <li *ngFor="let collection of collectionsReleased; let indexOfCollection=index"
+                                    tabindex="0"
+                                    (click)="content(tabMain, collectionsReleased[indexOfCollection].abvname); activateCollectionTab(indexOfCollection); toggleDropdown(false)">
+                                    {{collection.name}}</li>
+                            </ul>
+                        </div>
+                    </clark-context-menu>
+                </div>
+                <div class="content" *ngIf="!loading; else loadingObjectTemplate">
+                    <clark-learning-object-component class="object" *ngFor="let l of learningObjectsReleased"
+                        [learningObject]="l">
+                    </clark-learning-object-component>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #noLearningObjects>
+    <div>
+        <p>This user does not have any released Learning Objects yet!</p>
+    </div>
+</ng-template>
+
+<ng-template #loadingObjectTemplate>
+    <clark-learning-object-component class="object"
+        [loading]="loading">
+    </clark-learning-object-component>
+</ng-template>

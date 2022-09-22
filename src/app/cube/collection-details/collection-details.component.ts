@@ -61,6 +61,6 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     if (this.collection.abvName === 'plan c') {
       this.showContribute = true;
     }
-    this.titleService.setTitle(this.collection.name + ' | CLARK');
+    this.titleService.setTitle('CLARK | ' + this.collection.name);
   }
 }

@@ -15,11 +15,12 @@
   position: fixed;
   min-width: 200px;
   background: white;
-  padding: 10px 0;
+  padding: 5px 0;
+  max-height: 60vh;
   border-radius: 3px;
   box-sizing: border-box;
   box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+  overflow: auto;
   transform-origin: top center;
 
   ul {
@@ -29,7 +30,7 @@
     li {
       font-size: $small;
       list-style-type: none;
-      padding: 10px 15px;
+      padding:5px 15px;
       color: $dark-grey;
       cursor: pointer;
 
