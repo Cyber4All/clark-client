@@ -14,8 +14,9 @@ export class UnauthorizedComponent implements OnInit {
   constructor(private route: ActivatedRoute, private auth: AuthService) { }
 
   ngOnInit() {
-    this.statusCode = this.route.snapshot.paramMap.get('code');
-    this.redirectUrl = this.route.snapshot.paramMap.get('redirect');
+    this.route.paramMap.subscribe((params) => {
+      this.statusCode = params.get('code');
+      this.redirectUrl = params.get('redirect');
+    });
   }
-
 }
