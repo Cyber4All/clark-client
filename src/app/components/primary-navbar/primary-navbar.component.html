@@ -43,8 +43,8 @@
                     </clark-context-menu>
                     
                     <div class="logged-out" *ngIf="!isLoggedIn">
-                        <a class="login-button" [routerLink]="['auth', 'login']">Sign In</a>
-                        <a class="register-button" [routerLink]="['auth', 'register']">Register</a>
+                        <a class="login-button" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">Sign In</a>
+                        <a class="register-button" [routerLink]="['auth', 'register']" [queryParams]="{redirectUrl: redirectUrl}">Register</a>
                     </div>
                 </div>
             </div>
