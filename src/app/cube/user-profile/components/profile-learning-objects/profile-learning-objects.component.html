@@ -122,7 +122,7 @@
                             <ul class="menu">
                                 <li *ngFor="let collection of collectionsReleased; let indexOfCollection=index"
                                     tabindex="0"
-                                    (click)="content(tabMain, collectionsReleased[indexOfCollection].abvname); activateCollectionTab(indexOfCollection); toggleDropdown(false)">
+                                    (click)="content(tabMain, collection.abvName); activateCollectionTab(indexOfCollection); toggleDropdown(false)">
                                     {{collection.name}}</li>
                             </ul>
                         </div>
