@@ -35,7 +35,7 @@
                                 <li tabindex="0" *ngIf="auth.hasCuratorAccess()" [routerLink]="['admin']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
                                 <li tabindex="0" [routerLink]="['library']" (activate)="dropdowns.toggleUserDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="userService.userNotifications?.notifications?.length > 0" class="notifications"> {{ userService.userNotifications?.lastPage }}</span></li>
                                 <li tabindex="0" [routerLink]="['onion', 'dashboard']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-columns"></i>Dashboard</li>
-                                <li tabindex="0" [routerLink]="['users', auth.user?.username]" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-user"></i>Profile</li>
+                                <li tabindex="0" [routerLink]="['users', auth.user?.username]" id="clark-user-dropdown" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-user"></i>Profile</li>
                                 <li tabindex="0" [routerLink]="['auth', 'forgot-password']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
                                 <li tabindex="0" (activate)="auth.logout(); dropdowns.toggleUserDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
                             </ul>
@@ -43,7 +43,7 @@
                     </clark-context-menu>
                     
                     <div class="logged-out" *ngIf="!isLoggedIn">
-                        <a class="login-button" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">Sign In</a>
+                        <a class="login-button" id="clark-sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">Sign In</a>
                         <a class="register-button" [routerLink]="['auth', 'register']" [queryParams]="{redirectUrl: redirectUrl}">Register</a>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
         <div class="slideout-section">
             <div class="user" *ngIf="isLoggedIn">
                 <div class="info side-padding-20">
-                    <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(70) + ')'}"></div>
+                    <div class="profile-picture" id="profile clark-user-dropdown" [ngStyle]="{'background-image': 'url(' + gravatarImage(70) + ')'}"></div>
                     <div class="username">Hi, {{ this.auth.firstName | titlecase }}!
                         <div>
                             <a [routerLink]="['/users', auth.username]">View Your Profile</a>
@@ -109,7 +109,7 @@
             <div class="logged-out side-padding-20" *ngIf="!isLoggedIn">
                 <div class="greeting">Hi there!</div>
                 <div class="auth-buttons">
-                    <button class="button sign-in" [routerLink]="['auth', 'login']">Sign In</button>
+                    <button id="clark-sign-in" class="button sign-in" [routerLink]="['auth', 'login']">Sign In</button>
                     <button class="button register" [routerLink]="['auth', 'register']">Register</button>
                 </div>
             </div>
@@ -146,7 +146,13 @@
     </div>
 </ng-template>
 
-<ng-container *ngTemplateOutlet="isDesktop ? desktop : mobile"></ng-container>
+<div>
+    <clark-skip-link *ngIf="showNav" title="Skip directly to site content" skipLocation="pageContent"></clark-skip-link>
+    <clark-skip-link *ngIf="!isLoggedIn && showNav" title="Skip directly to Login" skipLocation="clark-sign-in"></clark-skip-link>
+    <clark-skip-link *ngIf="isLoggedIn && showNav" title="Skip directly to your User Profile" skipLocation="clark-user-dropdown"></clark-skip-link>
+    <clark-skip-link *ngIf="showNav" title="Skip directly to Search for Learning Objects" skipLocation="clark-search-input"></clark-skip-link>
+    <ng-container *ngTemplateOutlet="isDesktop ? desktop : mobile"></ng-container>
+</div>
 
 <!-- DO NOT REMOVE - refactor for future use
                     <div class="level-picker" #academicLevelsAnchor (click)="dropdowns.toggleLevelsDropdown()">
