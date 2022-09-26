@@ -13,10 +13,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { CookiesComponent } from './components/cookies/cookies.component';
-import { MessageComponent } from './components/navbar/components/message/message.component';
-import { SearchComponent } from './components/navbar/components/search/search.component';
+import { MessageComponent } from './components/message/message.component';
+import { SearchComponent } from './components/search/search.component';
 import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 import { UnauthorizedComponent } from './unauthorized.component';
 import { FormsModule } from '@angular/forms';
@@ -37,7 +36,6 @@ import { SecondaryNavbarComponent } from './components/secondary-navbar/secondar
     ClarkComponent,
     UnsupportedComponent,
     NotFoundComponent,
-    NavbarComponent,
     CookiesComponent,
     MessageComponent,
     SearchComponent,
