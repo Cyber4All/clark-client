@@ -56,8 +56,6 @@ export class ChangeStatusModalComponent implements OnInit {
   hasNextModalPage() {
     return [
       LearningObject.Status.RELEASED,
-      LearningObject.Status.ACCEPTED_MAJOR,
-      LearningObject.Status.ACCEPTED_MINOR,
       LearningObject.Status.REJECTED,
     ].includes(this.selectedStatus as LearningObject.Status);
   }
