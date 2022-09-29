@@ -164,9 +164,11 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @var this.store.upload is a toggle string variable to block the 'Back' button if a file upload
    * is not finished. See the builder store for more details.
    */
-   triggerExitProcess() {
-     // Remove outcomes that have null text
-     this.store.removeEmptyOutcomes();
+   async triggerExitProcess() {
+    // Trigger new PDF generation
+    Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));
+    // Remove outcomes that have null text
+    this.store.removeEmptyOutcomes();
     // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
       // If any data has be changed on the LO, then we need to rebundle
