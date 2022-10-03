@@ -103,7 +103,7 @@
 }
 
 .role-selector__role {
-  background: linear-gradient(45deg, #f7f7f7, white);
+  background: linear-gradient(45deg, $ternary-white-background, white);
   padding: 40px;
   border-radius: 8px;
   display: flex;

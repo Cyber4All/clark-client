@@ -1,18 +1,18 @@
-import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { Component, OnInit, HostListener } from '@angular/core';
-import { AuthService } from '../../core/auth.service';
+import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import {
-  trigger,
-  style,
-  transition,
-  animate,
-  keyframes,
-  query,
-  stagger
-} from '@angular/animations';
+import { AuthValidationService } from 'app/core/auth-validation.service';
+import { AuthService } from 'app/core/auth.service';
+import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import { Subject, interval } from 'rxjs';
+import { takeUntil, debounce } from 'rxjs/operators';
 import { environment } from '@env/environment';
 import { CookieAgreementService } from 'app/core/cookie-agreement.service';
+
+const EMAIL_REGEX =
+// eslint-disable-next-line max-len
+/(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
 
 @Component({
   selector: 'clark-register',
@@ -56,301 +56,292 @@ import { CookieAgreementService } from 'app/core/cookie-agreement.service';
     ])
   ]
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy{
+  private ngUnsubscribe = new Subject<void>();
+  ssoRedirect = environment.apiURL + '/google';
+
+  TEMPLATES = {
+    info: { temp: 'info', index: 1 },
+    account: { temp: 'account', index: 2 },
+    submission: { temp: 'submission', index: 3 },
+    sso: { temp: 'sso', index: 3 }
+  };
+
+  currentTemp: String = 'info';
+  currentIndex = 1;
+
+  registrationFailure: Boolean = false;
+  verified = false;
+  siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
+  errorMsg = 'There was an issue on our end with your registration, we are sorry for the inconvience.\n Please try again later!';
+  fieldErrorMsg = '';
+  redirectUrl;
+
+  slide: boolean;
+  fall = false;
+
   regInfo = {
     firstname: '',
     lastname: '',
-    username: '',
     email: '',
     organization: '',
-    password: ''
+    password: '',
+    confirmPassword: '',
+    username: ''
   };
-  regForm = new FormGroup({
-    firstname: new FormControl(null, Validators.required),
-    lastname: new FormControl(null, Validators.required),
-    username: new FormControl(null, Validators.required),
-    email: new FormControl(null, Validators.required),
-    organization: new FormControl(null, Validators.required),
-    password: new FormControl(null, Validators.required),
-    verifypassword: new FormControl(null, Validators.required),
-    captcha: new FormControl()
+
+  buttonGuards = {
+    isInfoPageInvalid: true,
+    isRegisterPageInvalid: true
+  };
+
+  infoFormGroup: FormGroup = new FormGroup({
+    firstname: this.authValidation.getInputFormControl('required'),
+    lastname: this.authValidation.getInputFormControl('required'),
+    email: this.authValidation.getInputFormControl('email'),
+    organization: this.authValidation.getInputFormControl('required'),
   });
+  accountFormGroup: FormGroup = new FormGroup({
+    username: this.authValidation.getInputFormControl('username'),
+    password: this.authValidation.getInputFormControl('password'),
+    confirmPassword: this.authValidation.getInputFormControl('required'),
+    captcha: new FormControl()
+  }, MatchValidator.mustMatch('password', 'confirmPassword'));
 
-  siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
-
-  passwordVerify = '';
-  registerFailure;
-  registerFailureTimer;
-  redirectUrl;
-  page = 1;
-  fall: boolean;
-  slide: boolean;
+  emailInUse = false;
+  usernameInUse = false;
   loading = false;
-  verified = false;
-  isValidPage: boolean;
-  inUseEmail = false;
-  inUseUsername = false;
-
-  tipText = [
-    {
-      left: 'Tell us about yourself',
-      right: 'Create your profile'
-    },
-    {
-      left: 'Tell us about yourself',
-      right: 'Preview your profile'
-    },
-    {
-      left: 'Create your profile',
-      right: 'Register!'
-    }
-  ];
-
-  elements = ['Personal Information', 'User Information', 'Preview'];
-
-  @HostListener('window:keyup', ['$event'])
-  keyup(event) {
-    if (event.target.tagName.toLowerCase() !== 'input') {
-      if (event.keyCode === 39) {
-        this.next();
-      } else if (event.keyCode === 37) {
-        this.back();
-      }
-    }
-  }
 
   constructor(
+    public authValidation: AuthValidationService,
     private auth: AuthService,
-    private route: ActivatedRoute,
     private router: Router,
-    private cookieAgreement: CookieAgreementService
+    private cookieAgreement: CookieAgreementService,
+    private route: ActivatedRoute,
   ) {
     this.route.parent.data.subscribe(() => {
-      if (route.snapshot.queryParams.redirectUrl) {
-        this.redirectUrl = decodeURIComponent(
-          route.snapshot.queryParams.redirectUrl
-        );
+      if (this.route.snapshot.queryParams.redirectUrl) {
+        this.redirectUrl = decodeURIComponent(this.route.snapshot.queryParams.redirectUrl);
+      }
+      if (this.route.snapshot.queryParams.err) {
+        this.authValidation.showError();
       }
     });
   }
 
-  ngOnInit() {
-
+  ngOnInit(): void {
+    this.authValidation.getErrorState().subscribe(err => this.registrationFailure = err);
+    this.toggleInfoNextButton();
+    this.toggleRegisterButton();
+    this.validateEmail();
+    this.validateUsername();
   }
 
-  submit() {
-    this.updateObjValues();
-    this.registerFailure = undefined;
-    clearTimeout(this.registerFailureTimer);
-    this.loading = true;
-
-    if (!this.validate()) {
-      return false;
-    }
-
-    const u = {
-      username: this.regInfo.username,
+  /**
+   * Register a user
+   */
+  public submit(): void {
+    const newUser = {
+      username: this.regInfo.username.trim(),
       name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
       email: this.regInfo.email.trim(),
       organization: this.regInfo.organization.trim(),
       password: this.regInfo.password
     };
 
-    this.auth.register(u).then(
-      () => {
-        if (this.redirectUrl) {
-          this.router.navigate([this.redirectUrl]);
-        } else {
-          this.router.navigate(['home']);
-        }
-      },
-      error => {
-        this.error(error.error || error.message || error);
+    this.auth.register(newUser)
+    .then(() => {
+      this.nextTemp();
+    },
+    error => {
+      if (error.message !== 'Internal Server Error') {
+        this.errorMsg = error.message;
       }
-    );
-  }
-
-  validate(): boolean {
-    const m: boolean[] = Object.values(this.regInfo).map(function(l) {
-      return (l && l !== '' && true) || false;
+      this.authValidation.showError();
     });
-    if (m.includes(false) && this.verified === true) {
-      this.error('Please fill in all fields!');
-      this.loading = false;
-      return false;
-    } else if (this.verified === false) {
-      this.error('Please complete captcha!');
-      this.loading = false;
-      return false;
-    } else if (!this.getvalidEmail()) {
-      this.error('Please enter a valid email!');
-      this.loading = false;
-      return false;
-    } else if (this.inUseEmail) {
-      this.error('This email is already taken');
-      return false;
+  }
+
+  /**
+   * Takes the user back to the home page
+   */
+  navigateHome() {
+    if (this.redirectUrl) {
+      window.location = this.redirectUrl;
+      return;
     }
-    return true;
+    this.router.navigate(['home']);
   }
 
-  error(text: string = 'An error occured', duration: number = 4000) {
-    this.registerFailure = text;
-    this.loading = false;
-    this.registerFailureTimer = setTimeout(() => {
-      this.registerFailure = undefined;
-    }, duration);
+  /**
+   * Validates the username ensuring it is not already taken
+   */
+  private validateUsername() {
+    this.accountFormGroup.get('username').valueChanges
+    .pipe(
+      debounce(() => {
+        // Greys out the Register button while communicating with backend
+        this.loading = true;
+        return interval(600);
+      }),
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe(async (value) => {
+      this.loading = false;
+      await this.auth.usernameInUse(value)
+      .catch((err) => {
+        this.authValidation.showError();
+      })
+      .then((res: any) => {
+        this.usernameInUse = res.identifierInUse;
+        if (this.usernameInUse) {
+          this.accountFormGroup.get('username').setErrors({
+            inUse: true
+          });
+          this.fieldErrorMsg = 'This username is already in use';
+        } else {
+          this.fieldErrorMsg = '';
+        }
+      });
+    });
   }
 
-  captureResponse(event) {
-    this.verified = event;
+  /**
+   * Validates the email by ensuring it does not already exists in the database
+   * and uses the regex to validate it
+   */
+  private validateEmail() {
+    this.infoFormGroup.get('email').valueChanges
+    .pipe(
+      debounce(() => {
+        this.loading = true;
+        return interval(600);
+      }),
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe(async (value) => {
+      this.loading = false;
+      this.isEmailRegexValid(value);
+
+      await this.auth.emailInUse(value)
+      .then((res: any) => {
+        this.emailInUse = res.identifierInUse;
+        if (this.emailInUse) {
+          this.fieldErrorMsg = 'This email is already in use';
+          this.infoFormGroup.get('email').setErrors({
+            emailInUse: true
+          });
+        } else {
+          this.fieldErrorMsg = '';
+        }
+      })
+      .catch((err) => {
+        this.authValidation.showError();
+      });
+
+    });
   }
 
-  // navigation
-  next() {
-    this.pageValidate(); // Validate page before allowing access to the next
-    if (this.page === 1 && this.isValidPage) {
-      this.slidePage();
+  /**
+   * Checks an email to ensure it is valid
+   *
+   * @param email The email to check
+   */
+  private isEmailRegexValid(email: string) {
+    if (email.match(EMAIL_REGEX) === null) {
+      this.fieldErrorMsg = 'Invalid Email Address';
+      this.infoFormGroup.get('email').setErrors({
+        invalidEmail: true
+      });
     } else {
-      this.slidePage();
+      this.fieldErrorMsg = '';
     }
   }
 
-  private slidePage() {
-    if (this.isValidPage) {
-      this.slide = !this.slide;
-    }
-    if (this.page === 1 && this.isValidPage) {
-      this.page = 2;
-    } else if (this.page === 2 && this.isValidPage) {
-      this.page = 3;
-    }
+  /**
+   * Disables the InfoNext Button when any form controls inside the infoFormGroup
+   * are INVALID
+   */
+  private toggleInfoNextButton() {
+    this.infoFormGroup.statusChanges
+    .pipe(
+      takeUntil(this.ngUnsubscribe)
+    ).subscribe((value) => {
+      this.buttonGuards.isInfoPageInvalid = value === 'INVALID';
+    });
+
   }
 
-  // navigation
-  back() {
-    // PLEASE FIX THIS SOON
+  /**
+   * Disables the accountNext Button when any form controls inside the accountFormGroup
+   * are INVALID
+   */
+  private toggleRegisterButton() {
+    this.accountFormGroup.statusChanges
+    .pipe(
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe((value) => {
+      this.buttonGuards.isRegisterPageInvalid = value === 'INVALID';
+    });
+  }
+
+
+  /**
+   * Changes the template to the next template
+   */
+  nextTemp(): void {
+    switch (this.currentTemp) {
+      case this.TEMPLATES.info.temp:
+        this.currentTemp = this.TEMPLATES.account.temp;
+        this.currentIndex = this.TEMPLATES.account.index;
+        break;
+      case this.TEMPLATES.account.temp:
+        this.currentTemp = this.TEMPLATES.submission.temp;
+        this.currentIndex = this.TEMPLATES.submission.index;
+        break;
+      case this.TEMPLATES.submission.temp:
+        this.currentTemp = this.TEMPLATES.sso.temp;
+        this.currentIndex = this.TEMPLATES.sso.index;
+        break;
+    }
+    this.slide = !this.slide;
+  }
+
+  /**
+   * Go Back to Info Template from Account Template
+   */
+  goBack(): void {
     this.fall = !this.fall;
-    if (this.page === 2) {
-      this.page = 1;
-    } else if (this.page === 3) {
-      this.page = 2;
-    }
-  }
-
-  // Checks for specific items on pages 1 and 2
-  pageValidate() {
-    switch (this.page) {
-      case 1:
-        this.isValidPage = this.validatePageOne();
-        break;
-      case 2:
-        this.isValidPage = this.validatePageTwo();
-        break;
+    if(this.currentTemp === this.TEMPLATES.account.temp) {
+      this.currentTemp = this.TEMPLATES.info.temp;
+      this.currentIndex = this.TEMPLATES.info.index;
     }
   }
 
   /**
-   * Validates the form on page one
+   * Checks localstorage for cookie agreement
    *
-   * @return true if form on page one is valid, false otherwise
+   * @returns True if the the user has agreed to cookies false otherwise
    */
-  validatePageOne(): boolean {
-    if (
-      this.regForm.controls['firstname'].value === null ||
-      this.regForm.controls['lastname'].value === null ||
-      this.regForm.controls['email'].value === null ||
-      this.regForm.controls['organization'].value === null
-    ) {
-      this.error('Please fill in all fields!');
-      return false;
-    } else if (!this.getvalidEmail()) {
-      this.error('Please enter a valid email!');
-      return false;
-    } else if (this.inUseEmail) {
-      this.error('This email is already taken');
-      return false;
-    }
-
-    return true;
-  }
-
-  /**
-   * Validates the form on page two
-   *
-   * @return true if form on page two is valid, false otherwise
-   */
-  validatePageTwo(): boolean {
-    if (
-      this.regForm.controls['password'].value !==
-      this.regForm.controls['verifypassword'].value
-    ) {
-      this.error('Passwords do not match!');
-      return false;
-    } else if (
-      this.regForm.controls['username'].value === null ||
-      this.regForm.controls['password'].value === null ||
-      this.regForm.controls['verifypassword'].value === null
-    ) {
-      this.error('Please fill in all fields!');
-      return false;
-    } else if (this.inUseUsername) {
-      this.error('This username is already taken');
-      return false;
-    } else if (
-      this.regForm.controls['username'].value.length < 3 ||
-      this.regForm.controls['username'].value.length > 20
-    ) {
-      this.error(
-        'Usernames must be at least 3 characters long and no longer than 20 characters.'
-      );
-      return false;
-    }
-
-    return true;
-  }
-
-  navigate(index: number) {
-    if (index > this.page - 1) {
-      for (let i = this.page - 1; i < index; i++) {
-        this.next();
-      }
-    } else if (index < this.page - 1) {
-      for (let i = index; i <= this.page - 1; i++) {
-        this.back();
-      }
-    }
-  }
-
-  // Places FormControl values in regInfo object
-  // RegInfo object is used for final form validation
-  updateObjValues() {
-    this.regInfo.firstname = this.regForm.controls['firstname'].value;
-    this.regInfo.lastname = this.regForm.controls['lastname'].value;
-    this.regInfo.email = this.regForm.controls['email'].value;
-    this.regInfo.organization = this.regForm.controls['organization'].value;
-    this.regInfo.username = this.regForm.controls['username'].value;
-    this.regInfo.password = this.regForm.controls['password'].value;
-    this.passwordVerify = this.regForm.controls['verifypassword'].value;
-  }
-
-  getvalidEmail() {
-    const email =
-      this.regForm.controls['email'].value.toLowerCase().match(
-        // eslint-disable-next-line max-len
-        /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g
-      ) !== null;
-    return email;
-  }
-
-  setInUseEmail(inUse: boolean) {
-    this.inUseEmail = inUse;
-  }
-
-  setInUseUsername(inUse: boolean) {
-    this.inUseUsername = inUse;
-  }
-
   checkCookieAgreement() {
     return this.cookieAgreement.getCookieAgreementVal();
+  }
+
+  /**
+   * Function called after the user has verified their captcha
+   *
+   * @param event Event emitted from captcha
+   */
+  captureResponse(event) {
+    this.verified = event;
+    if (!this.verified) {
+      this.accountFormGroup.get('captcha').setErrors({
+        notVerified: true
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }

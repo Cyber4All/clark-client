@@ -7,7 +7,7 @@ import { BlogsService } from './blogs.service';
 })
 export class BlogsComponentService {
   neverShowBanner = false; // true if the user doesn't want to see the blog again
-  showBanner = false; // true if blog is displayed. NOTE: hardcode this to false to disable blog banners
+  showBanner = true; // true if blog is displayed. NOTE: hardcode this to false to disable blog banners
 
   recentBlog: Blog; // holds the latest blogpost
 
@@ -73,7 +73,9 @@ export class BlogsComponentService {
    */
   setNeverShowBanner(args: {val: boolean, recentBlog?: Blog}) {
     localStorage.setItem('neverShowBanner', args.val.toString());
-    localStorage.setItem('bannerBlogId', args.recentBlog._id);
+    if(args.recentBlog) {
+      localStorage.setItem('bannerBlogId', args.recentBlog._id);
+    }
     this.neverShowBanner = args.val;
   }
 }

@@ -78,7 +78,7 @@ export const USER_ROUTES = {
   FETCH_USER(user: string, q: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
   },
-  CHECK_USER_EXISTS(username) {
+  FETCH_USER_PROFILE(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/profile`;
@@ -269,10 +269,8 @@ export const USER_ROUTES = {
       username
     )}/${encodeURIComponent(learningObjectName)}/children`;
   },
-  UPDATE_PDF(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${id}/pdf`;
+  UPDATE_PDF(id: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/pdf`;
   },
   UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -338,6 +336,11 @@ export const USER_ROUTES = {
     )}/learning-objects/${encodeURIComponent(
       params.learningObjectID
     )}/files/bundle`;
+  },
+  GET_COLLECTIONS(username: string){
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/collections`;
   }
 };
 

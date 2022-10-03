@@ -499,17 +499,16 @@ export class LearningObjectService {
     }
   }
 
-  updateReadme(authorUsername: string, id: string): any {
-    const route = USER_ROUTES.UPDATE_PDF(authorUsername, id);
-    return this.http.patch(
-      route,
+  async updateReadme(id: string): Promise<any> {
+    return await this.http.patch(
+      USER_ROUTES.UPDATE_PDF(id),
       {},
       { withCredentials: true, responseType: 'text' }
     )
     .pipe(
       retry(3),
       catchError(this.handleError)
-    );
+    ).toPromise();
   }
 
   /**

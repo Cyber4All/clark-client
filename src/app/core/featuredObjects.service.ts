@@ -6,6 +6,7 @@ import { catchError, retry } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { Query } from 'app/interfaces/query';
 import * as querystring from 'querystring';
+import { ProfileService } from './profiles.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class FeaturedObjectsService {
   private headers = new HttpHeaders();
   featuredObjectIds: string[];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private profileService: ProfileService) { }
 
   get featuredObjects() {
     return this._featuredObjects$.asObservable();
@@ -33,8 +35,12 @@ export class FeaturedObjectsService {
     return this._submitError$.asObservable();
   }
 
+  /**
+   * Gets 5 featured full learning objects and saves it in the _featuredObjects subject
+   */
   async getFeaturedObjects() {
-    return await this.http
+    // Grabs featured Learning Objects from the Featured Database
+    const objects: LearningObject[] = await this.http
       .get(FEATURED_ROUTES.GET_FEATURED)
       .pipe(
         retry(3),
@@ -52,8 +58,30 @@ export class FeaturedObjectsService {
         } else if (featuredObjects.length !== 5) {
           this._submitError$.next(true);
         }
-        this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
+        return featuredObjects;
       });
+    const promisedObjectsArray = objects.map(async (learningObject: LearningObject) => {
+      // Grabs the complete Learning Object from the LO database
+      // For some reason, the method itself returns the full Learning Object,
+      //    but when entered into the array it turns into a Promise.
+      const object = await this.profileService.fetchLearningObject({
+        author: undefined,
+        cuid: learningObject.cuid
+      });
+      // Retrieve the outcomes for the learning object with the resource uri
+      const outcomePromise: any = await this.http.get(object.resourceUris.outcomes).toPromise();
+      // Resolve outcome promises
+      object.outcomes = await Promise.all(outcomePromise).then(async (outcome: any) => {
+        return outcome;
+      });
+      return object;
+    });
+    // Resolves the array of Promises into an array of complete Learning Objects
+    this.featuredStore.featured = await Promise.all(promisedObjectsArray).then(async (learningObject: LearningObject[]) => {
+      return learningObject;
+    });
+    // Save the array into the _featuredObjects subject to be observed
+    this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
   filterOutFeaturedObjects() {

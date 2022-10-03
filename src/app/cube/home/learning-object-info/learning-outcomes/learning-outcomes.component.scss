@@ -1,0 +1,20 @@
+.content{
+    margin-top: 50px;
+    margin-right: 50px;
+    display: flex;
+    flex-direction: column;
+    .taxonomy{
+      margin-bottom: 400px;
+    }
+}
+@media (max-width: 950px){
+    .content{
+        margin-right: 0;
+    }
+    h1{
+        text-align: center;
+    }
+    p{
+        text-align: center;
+    }
+}

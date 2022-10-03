@@ -44,10 +44,12 @@ export const sections = {
                         answer:
                         `
                         <p>
-                        There are templates available for download <a href="https://clark-file-upload-nccp.s3.us-east-2.amazonaws.com/Cybersecurity-Curriculum-Templates.zip">here</a>.
+                        There are templates available for download <a href=`+
+                        `"https://clark-file-upload-nccp.s3.us-east-2.amazonaws.com/Cybersecurity-Curriculum-Templates.zip">here</a>.
                         </p>
                         <p>
-                        There are templates for PowerPoint's, Labs, Assessments, Solutions, and Syllabuses. They also include a template for an entire module which includes code files and accompanying documents.
+                        There are templates for PowerPoint's, Labs, Assessments, Solutions, and Syllabuses. They also include a template` +
+                        ` for an entire module which includes code files and accompanying documents.
                         </p>
                         `
                     },

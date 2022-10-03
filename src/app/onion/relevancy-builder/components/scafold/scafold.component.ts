@@ -28,7 +28,7 @@ export class ScafoldComponent implements OnInit {
   async ngOnInit() {
     this.loading = true;
     this.store.getTopics().then(( topics ) => {
-      this.topics = topics.sort(( a, b ) => ( a.name > b.name ) ? 1 : (( b.name > a.name ) ? -1 : 0) );
+      this.topics = topics;
     });
     this.loading = false;
   }
