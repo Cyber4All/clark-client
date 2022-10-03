@@ -82,6 +82,24 @@ export class AuthService {
     );
   }
 
+  public setSsoSession() {
+    const identityId = this.cookies.get('identityId');
+    const token = this.cookies.get('token');
+    this.cookies.delete('identityId');
+    this.cookies.delete('token');
+    const sessionObject = {
+      user: this.user,
+      tokens: {
+        bearer: this.cookies.get('presence'),
+        openId:{
+          IdentityId: identityId,
+          Token: token
+        }
+      }
+    };
+    this.setSession(sessionObject);
+  }
+
   /**
    * Unset session related data
    * User data from previously logged in user is cleared from memory
