@@ -78,8 +78,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    const userName = this.auth.username;
-    this.userIsAuthor = (this.learningObject.author.username === userName);
+    this.userIsAuthor = (this.learningObject.author.username === this.auth.username);
     this.auth.group
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
