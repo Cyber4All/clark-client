@@ -82,6 +82,11 @@ export class AuthService {
     );
   }
 
+  /**
+   * this method assumes the user has just been successfully
+   * linked back to the homepage through SSO and depends on cookies
+   * set by the SSO routehandler
+   */
   public setSsoSession() {
     const identityId = this.cookies.get('identityId');
     const token = this.cookies.get('token');
