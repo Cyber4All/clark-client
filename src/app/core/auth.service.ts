@@ -106,6 +106,8 @@ export class AuthService {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     document.cookie =
       'presence=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    // We need to update client subscriptions to this.user in order to not use this
+    window.location.reload();
   }
 
   private clearAuthHeaders() {
@@ -362,8 +364,8 @@ export class AuthService {
    * @memberof AuthService
    */
   async logout(): Promise<void> {
-    this.endSession();
     this.clearAuthHeaders();
+    this.endSession();
   }
 
   /**

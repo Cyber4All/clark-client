@@ -269,10 +269,8 @@ export const USER_ROUTES = {
       username
     )}/${encodeURIComponent(learningObjectName)}/children`;
   },
-  UPDATE_PDF(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${id}/pdf`;
+  UPDATE_PDF(id: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/pdf`;
   },
   UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(

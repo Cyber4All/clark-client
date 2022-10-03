@@ -63,11 +63,11 @@ export class LoginComponent implements OnInit{
     private router: Router
     ) {
       this.route.parent.data.subscribe(() => {
-        if (route.snapshot.queryParams.redirectUrl) {
-          this.redirectUrl = decodeURIComponent(route.snapshot.queryParams.redirectUrl);
+        if (this.route.snapshot.queryParams.redirectUrl) {
+          this.redirectUrl = decodeURIComponent(this.route.snapshot.queryParams.redirectUrl);
         }
-        if (route.snapshot.queryParams.err) {
-          this.bannerMsg = decodeURIComponent(route.snapshot.queryParams.err);
+        if (this.route.snapshot.queryParams.err) {
+          this.bannerMsg = decodeURIComponent(this.route.snapshot.queryParams.err);
           this.authValidation.showError();
         }
       });

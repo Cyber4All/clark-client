@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MessagesService, Message} from '../../../../core/messages.service';
+import { MessagesService, Message} from '../../core/messages.service';
 
 @Component({
   selector: 'clark-message',

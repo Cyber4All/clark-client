@@ -17,6 +17,7 @@
                 phold="Username or Email"
                 fControlType="required"
                 errorMsg = "{{errorMsg}}"
+                autocomplete="username"
             ></clark-input-field>
             <div *ngIf="isNameLogin" 
             [@inOutAnimation]
@@ -29,8 +30,9 @@
                     phold="Password"
                     fControlType="required"
                     errorMsg = "{{errorMsg}}"
+                    autocomplete="password"
                 ></clark-input-field>
-                <a routerLink="../forgot-password">Forgot Password?</a>
+                <a [routerLink]="['/auth/forgot-password']">Forgot Password?</a>
                 <a class="forgot" href="mailto:info@secured.team?subject=CLARK Username Recovery&body=Please provide the email associated with your CLARK account: ">Forgot username?</a>
         <span class="space"></span>
             </div>
@@ -39,7 +41,7 @@
                 <button type="reset" (click)="showPassField()" class="white">Back</button>
                 <button type="submit" id="submit" *ngIf="!loading; else loadingSpinner">Login</button>
             </div>
-            <a routerLink="../register">Don't have an account? Register!</a>
+            <a [routerLink]="['/auth/register']" [queryParams]="{redirectUrl: redirectUrl}">Don't have an account? Register!</a>
         </form>
     </div>
 </div>
