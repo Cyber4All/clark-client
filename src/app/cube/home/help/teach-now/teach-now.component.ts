@@ -14,6 +14,8 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   // Topic variables
   topics: Topic[] = [];
   selectedTopic: string;
+  scrollDistance = 0; // used to track the distance scrolled
+  scrollPercent = 0.25; // percent of the distance to scroll when clicking the left or right scroll buttons
 
   // HTML elements
   @ViewChild('topicScroll') scroll: ElementRef;
@@ -54,8 +56,31 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    * @param event The scroll event
    */
   horizontalScroll(event) {
+    this.scrollDistance += event.deltaY;
+    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth * this.scrollPercent * 3) {
+      this.scrollDistance = this.scroll.nativeElement.scrollWidth * this.scrollPercent * 3;
+    }
+    if(this.scrollDistance < 0) {
+      this.scrollDistance = 0;
+    }
     this.scroll.nativeElement.scrollLeft += event.deltaY;
     event.preventDefault();
+  }
+
+  horizontalScrollOnClick(right: boolean) {
+    right ? this.scrollDistance += this.scroll.nativeElement.scrollWidth * this.scrollPercent :
+            this.scrollDistance -= this.scroll.nativeElement.scrollWidth * this.scrollPercent;
+    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth * this.scrollPercent * 3) {
+      this.scrollDistance = this.scroll.nativeElement.scrollWidth * this.scrollPercent * 3;
+    }
+    if(this.scrollDistance < 0) {
+      this.scrollDistance = 0;
+    }
+    this.scroll.nativeElement.scrollTo({
+      top: 0,
+      left: this.scrollDistance,
+      behavior: 'smooth'
+    });
   }
 
   /**

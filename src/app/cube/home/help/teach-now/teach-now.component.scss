@@ -7,11 +7,16 @@
 .topics {
     display: flex;
     flex-direction: row;
+}
+
+.topics-list {
+    display: flex;
+    flex-direction: row;
     gap: 20px;
     overflow-x: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    margin-right: 60px;
+    // margin-right: 60px;
     
     &::-webkit-scrollbar {
         display: none;
