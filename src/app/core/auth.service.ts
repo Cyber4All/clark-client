@@ -83,6 +83,29 @@ export class AuthService {
   }
 
   /**
+   * this method assumes the user has just been successfully
+   * linked back to the homepage through SSO and depends on cookies
+   * set by the SSO routehandler
+   */
+  public setSsoSession() {
+    const identityId = this.cookies.get('identityId');
+    const token = this.cookies.get('token');
+    this.cookies.delete('identityId');
+    this.cookies.delete('token');
+    const sessionObject = {
+      user: this.user,
+      tokens: {
+        bearer: this.cookies.get('presence'),
+        openId:{
+          IdentityId: identityId,
+          Token: token
+        }
+      }
+    };
+    this.setSession(sessionObject);
+  }
+
+  /**
    * Unset session related data
    * User data from previously logged in user is cleared from memory
    * OpenId token is cleared from memory
