@@ -78,10 +78,11 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    this.userIsAuthor = (this.learningObject.author.username === this.auth.username);
     this.auth.group
       .pipe(takeUntil(this.destroyed$))
       .subscribe(() => {
-        this.userCanRevise = this.auth.hasEditorAccess();
+        this.userCanRevise = this.auth.hasEditorAccess() || this.userIsAuthor;
         this.hasReviewerAccess = this.auth.hasReviewerAccess();
       });
     this.hasDownloadAccess = (this.hasReviewerAccess || this.isReleased) && this.auth.user !== null;
@@ -90,8 +91,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
     await this.libraryService.getLibrary();
     this.saved = this.libraryService.has(this.learningObject);
-    const userName = this.auth.username;
-    this.userIsAuthor = (this.learningObject.author.username === userName);
     this.getCollection();
     this.libraryService.loaded
       .subscribe(val => {
@@ -101,21 +100,21 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   get mapAndTag() {
-    let canMapAndTag = false;
-    if (this.auth.user && this.auth.user.accessGroups) {
+    if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor) {
       const privileges = ['admin', 'editor', 'mapper', 'curator', 'reviewer'];
-      for (let i = 0; i < privileges.length; i++) {
-        if (this.auth.user.accessGroups.includes(privileges[i]) ||
-          this.auth.user.accessGroups.some(res => res.includes(privileges[i]))) {
-            canMapAndTag = true;
-        }
+      if(this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
+        return true;
       }
     }
-    return canMapAndTag;
+    return false;
   }
 
   get isReleased(): boolean {
     return this.learningObject.status === LearningObject.Status.RELEASED;
+  }
+
+  get isSubmitted(): boolean {
+    return this.learningObject.status !== LearningObject.Status.UNRELEASED;
   }
 
   async addToLibrary(download?: boolean) {
@@ -132,7 +131,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       );
     }
     try {
-      if (!this.userIsAuthor && this.learningObject.status === LearningObject.Status.RELEASED) {
+      if (!this.userIsAuthor && this.isReleased) {
         this.saved = this.libraryService.has(this.learningObject);
 
         if (!this.saved) {
