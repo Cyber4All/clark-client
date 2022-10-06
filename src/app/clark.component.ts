@@ -14,6 +14,7 @@ import { ToastrOvenService } from './shared/modules/toaster/notification.service
 import { CookieAgreementService } from './core/cookie-agreement.service';
 import { SubscriptionAgreementService } from './core/subscription-agreement.service';
 import { NavbarService } from './core/navbar.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'clark-root',
@@ -84,6 +85,7 @@ export class ClarkComponent implements OnInit {
     private view: ViewContainerRef,
     private cookieAgreement: CookieAgreementService,
     private subscriptionAgreement: SubscriptionAgreementService,
+    private cookies: CookieService,
   ) {
     this.isUnderMaintenance = false;
 
@@ -112,9 +114,7 @@ export class ClarkComponent implements OnInit {
       if (this.route.snapshot.queryParams.err) {
         this.toaster.error( 'SSO Error', decodeURIComponent(this.route.snapshot.queryParams.err));
       }
-      if (this.route.snapshot.queryParams.setSsoSession) {
-        this.authService.setSsoSession();
-      }
+      console.log('here');
     });
   }
 
@@ -141,6 +141,11 @@ export class ClarkComponent implements OnInit {
     }
 
     this.setPageTitle();
+
+    if (this.cookies.check('token') && this.cookies.check('identityId')) {
+      console.log('inside');
+      this.authService.setSsoSession();
+    }
   }
 
   reloadPage() {
