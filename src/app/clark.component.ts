@@ -83,7 +83,7 @@ export class ClarkComponent implements OnInit {
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
     private cookieAgreement: CookieAgreementService,
-    private subscriptionAgreement: SubscriptionAgreementService
+    private subscriptionAgreement: SubscriptionAgreementService,
   ) {
     this.isUnderMaintenance = false;
 
@@ -109,8 +109,11 @@ export class ClarkComponent implements OnInit {
     this.toaster.setPosition({ x: 'left', y: 'bottom' });
     this.toaster.init(this.view);
     this.route.queryParams.subscribe(() => {
-      if (route.snapshot.queryParams.err) {
-        this.toaster.error( 'SSO Error', decodeURIComponent(route.snapshot.queryParams.err));
+      if (this.route.snapshot.queryParams.err) {
+        this.toaster.error( 'SSO Error', decodeURIComponent(this.route.snapshot.queryParams.err));
+      }
+      if (this.route.snapshot.queryParams.setSsoSession) {
+        this.authService.setSsoSession();
       }
     });
   }
