@@ -114,7 +114,6 @@ export class ClarkComponent implements OnInit {
       if (this.route.snapshot.queryParams.err) {
         this.toaster.error( 'SSO Error', decodeURIComponent(this.route.snapshot.queryParams.err));
       }
-      console.log('here');
     });
   }
 
@@ -143,7 +142,6 @@ export class ClarkComponent implements OnInit {
     this.setPageTitle();
 
     if (this.cookies.check('token') && this.cookies.check('identityId')) {
-      console.log('inside');
       this.authService.setSsoSession();
     }
   }
