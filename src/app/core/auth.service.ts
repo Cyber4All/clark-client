@@ -90,8 +90,9 @@ export class AuthService {
   public setSsoSession() {
     const identityId = this.cookies.get('identityId');
     const token = this.cookies.get('token');
-    this.cookies.delete('identityId');
-    this.cookies.delete('token');
+    const domain = environment.production ? 'clark.center' : 'localhost';
+    this.cookies.delete('identityId', '/', domain, false, 'Lax');
+    this.cookies.delete('token', '/', domain, false, 'Lax');
     const sessionObject = {
       user: this.user,
       tokens: {

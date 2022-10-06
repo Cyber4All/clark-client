@@ -43,15 +43,16 @@ export class EditorialActionPadComponent implements OnInit {
   return (this.learningObject.status === 'waiting' || (this.revisedLearningObject && this.revisedLearningObject.status === 'waiting')) ||
          (this.learningObject.status === 'review' || (this.revisedLearningObject && this.revisedLearningObject.status === 'review')) ||
          (this.learningObject.status === 'proofing' || (this.revisedLearningObject && this.revisedLearningObject.status === 'proofing')) ||
-         (this.revisedLearningObject && this.revisedLearningObject.status === 'unreleased');
+         (this.learningObject.status === 'unreleased' ||
+         (this.revisedLearningObject && this.revisedLearningObject.status === 'unreleased'));
   }
 
   // Determines if an editor is not permitted to create a revision or make edits
   get notPermitted() {
     return (this.learningObject.status === 'released' &&
-    (this.revisedLearningObject &&
+      (this.revisedLearningObject &&
       (this.revisedLearningObject.status === 'unreleased' || this.revisedLearningObject.status === 'rejected'))) ||
-    (this.learningObject.status === 'unreleased' || this.learningObject.status === 'rejected');
+     (this.learningObject.status === 'rejected');
   }
 
   // Handles opening the create revision modal
