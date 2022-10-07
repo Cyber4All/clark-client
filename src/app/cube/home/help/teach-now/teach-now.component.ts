@@ -37,7 +37,6 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
     this.objects = this.loadingObjects;
     this.relevancyService.getTopics().then(topics => {
       this.topics = topics;
-
       if (topics.length > 0) {
         this.selectTopic(this.topics[0]._id);
       }
@@ -57,9 +56,13 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    */
   horizontalScroll(event) {
     this.scrollDistance += event.deltaY;
-    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth * this.scrollPercent * 3) {
-      this.scrollDistance = this.scroll.nativeElement.scrollWidth * this.scrollPercent * 3;
+    // The max distance to scroll right
+    // 203 is the pixel length from the shadow left and right divs
+    // The (window.outerWidth / 2) accounts for overscrolling to the right
+    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203) {
+      this.scrollDistance = this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203;
     }
+    // The min distance to scroll left
     if(this.scrollDistance < 0) {
       this.scrollDistance = 0;
     }
@@ -68,11 +71,16 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   }
 
   horizontalScrollOnClick(right: boolean) {
-    right ? this.scrollDistance += this.scroll.nativeElement.scrollWidth * this.scrollPercent :
-            this.scrollDistance -= this.scroll.nativeElement.scrollWidth * this.scrollPercent;
-    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth * this.scrollPercent * 3) {
-      this.scrollDistance = this.scroll.nativeElement.scrollWidth * this.scrollPercent * 3;
+    // right determines the direction to scroll
+    right ? this.scrollDistance += window.outerWidth / 2 :
+            this.scrollDistance -= window.outerWidth / 2;
+    // The max distance to scroll right
+    // 203 comes from the shadow left and right divs
+    // The (window.outerWidth / 2) accounts for overscrolling to the right
+    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203) {
+      this.scrollDistance = this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203;
     }
+    // The min distance to scroll left
     if(this.scrollDistance < 0) {
       this.scrollDistance = 0;
     }
