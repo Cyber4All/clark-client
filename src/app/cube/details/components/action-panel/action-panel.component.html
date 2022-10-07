@@ -1,5 +1,5 @@
 <div class="inner">
-  <div *ngIf="!isReleased && !revisedVersion" class="download-warning" tip="This learning object is pending review and may be downloaded when the review is complete."
+  <div *ngIf="isSubmitted && !isReleased && !revisedVersion" class="download-warning" tip="This learning object is pending review and may be downloaded when the review is complete."
     tipPosition="top">
     <i class="fas fa-exclamation"></i>Review Pending
   </div>
