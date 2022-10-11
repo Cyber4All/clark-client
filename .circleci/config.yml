@@ -16,7 +16,7 @@ jobs:
       - run:
           name: Install CycloneDX Node
           command: |
-            sudo apt install nodejs
+            sudo apt install nodejs npm
 
             sudo npm i -g @cyclonedx/bom@3.10.6
       - run:
