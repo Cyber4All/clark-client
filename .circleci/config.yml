@@ -3,6 +3,30 @@ version: 2.1
 orbs:
   cyber4all: cyber4all/orb@1
 
+jobs:
+  sbom:
+    docker:
+      - image: cimg/node:lts
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Install CycloneDX Node
+          command: sudo npm i -g @cyclonedx/bom@3.10.6
+      - run:
+          name: Install Node Modules
+          command: npm ci
+      - run:
+          name: Generate CycloneDX SBOM
+          command: cyclonedx-node -d -o cyclonedx-sbom.json
+      - run:
+          name: cve-bin-tool SBOM anlaysis
+          command: |
+            ls -al
+
+            docker run --rm --env BOM_FILE=cyclonedx-sbom.json -v $(pwd):/home/alpine/src --name cve-bin-tool cyber4all/cve-bin-tool:latest
+
 workflows:
   integration-testing:
     jobs:
@@ -19,10 +43,10 @@ workflows:
 
   continuous-deployment:
     jobs:
-      - cyber4all/sbom:
+      - sbom:
           context: [Shortcut]
-          language: node
-          version: $(jq -r '.version' package.json)
+          # language: node
+          # version: $(jq -r '.version' package.json)
           filters:
             branches:
                 only:
