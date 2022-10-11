@@ -23,11 +23,11 @@ jobs:
       - run:
           name: cve-bin-tool SBOM anlaysis
           command: |
-            docker run --env BOM_FILE=cyclonedx-sbom.json --name cve-bin-tool cyber4all/cve-bin-tool:latest /bin/sh -c "echo"
+            docker run --env BOM_FILE=cyclonedx-sbom.json --name cve-bin-tool cyber4all/cve-bin-tool:latest /bin/sh -c "tail -f /dev/null"
 
             docker cp cyclonedx-sbom.json cve-bin-tool:/home/alpine/src
 
-            docker exec cve-bin-tool /bin/sh -c "ls src"
+            docker exec cve-bin-tool /bin/sh -c "ls /home/alpine/src"
 
 
 
