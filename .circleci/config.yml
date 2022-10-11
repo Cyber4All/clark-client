@@ -56,10 +56,10 @@ workflows:
 
   continuous-deployment:
     jobs:
-      - sbom:
+      - cyber4all/sbom:
           context: [Shortcut]
-          # language: node
-          # version: $(jq -r '.version' package.json)
+          language: node
+          version: $(jq -r '.version' package.json)
           filters:
             branches:
                 only:
