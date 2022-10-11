@@ -20,7 +20,8 @@ workflows:
   continuous-deployment:
     jobs:
       - cyber4all/sbom:
-          context: [Shortcut]
+          context: 
+            [Shortcut]
           language: node
           version: $(jq -r '.version' package.json)
           filters:
