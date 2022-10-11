@@ -1,7 +1,7 @@
 <div class="wrapper">
 
     <div *ngIf="width > 750" class="topics">
-        <button (activate)="horizontalScrollOnClick(false)">
+        <button class="scroll-button" (activate)="horizontalScrollOnClick(false)">
             <i class="fas fa-chevron-left"></i>
         </button>
         <div #topicScroll class="topics-list">
@@ -11,7 +11,7 @@
             <span *ngIf="topics.length === 0">Loading Topics...</span>
             <div class="shadow right" aria-hidden="true"></div>
         </div>
-        <button (activate)="horizontalScrollOnClick(true)">
+        <button class="scroll-button" (activate)="horizontalScrollOnClick(true)">
             <i class="fas fa-chevron-right"></i>
         </button>
     </div>

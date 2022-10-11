@@ -7,6 +7,20 @@
 .topics {
     display: flex;
     flex-direction: row;
+
+    .scroll-button {
+        background-color: $primary-white;
+        border: 1px solid $secondary-white;
+        border-radius: 4px;
+
+        &:hover {
+            opacity: 60%;
+        }
+
+        &:active {
+            opacity: 100%;
+        }
+    }
 }
 
 .topics-list {
