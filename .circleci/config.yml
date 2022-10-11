@@ -17,8 +17,18 @@ workflows:
           node-test: test:unit
           isNode: true
 
-  production-deployment:
+  continuous-deployment:
     jobs:
+      - cyber4all/sbom:
+          context: [Shortcut]
+          language: node
+          version: $(jq -r '.version' package.json)
+          filters:
+            branches:
+                only:
+                  - releases
+                  - chore/sc-14941/add-sbom-on-releases
+
       - cyber4all/deploy-s3:
           context:
             [AWS, Slack]
