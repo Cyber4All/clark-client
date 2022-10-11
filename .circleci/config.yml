@@ -11,8 +11,8 @@ jobs:
       image: ubuntu-2004:current
     steps:
       - checkout
-      - setup_remote_docker:
-          version: 20.10.14
+      # - setup_remote_docker:
+      #     version: 20.10.14
       - run:
           name: Install CycloneDX Node
           command: |
