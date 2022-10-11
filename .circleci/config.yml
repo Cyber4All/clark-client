@@ -5,15 +5,20 @@ orbs:
 
 jobs:
   sbom:
-    docker:
-      - image: cimg/node:lts
+    # docker:
+    #   - image: cimg/node:lts
+    machine:
+      image: ubuntu-2004:current
     steps:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
       - run:
           name: Install CycloneDX Node
-          command: sudo npm i -g @cyclonedx/bom@3.10.6
+          command: |
+            sudo apt install nodejs
+
+            sudo npm i -g @cyclonedx/bom@3.10.6
       - run:
           name: Install Node Modules
           command: npm ci
@@ -23,11 +28,15 @@ jobs:
       - run:
           name: cve-bin-tool SBOM anlaysis
           command: |
-            docker run --env BOM_FILE=cyclonedx-sbom.json --name cve-bin-tool cyber4all/cve-bin-tool:latest /bin/sh -c "tail -f /dev/null"
+            docker run --env BOM_FILE=cyclonedx-sbom.json -v $(pwd):/home/alpine/src --name cve-bin-tool cyber4all/cve-bin-tool:latest
+      # - run:
+      #     name: cve-bin-tool SBOM anlaysis
+      #     command: |
+      #       docker run --env BOM_FILE=cyclonedx-sbom.json --name cve-bin-tool cyber4all/cve-bin-tool:latest /bin/sh -c "tail -f /dev/null"
 
-            docker cp cyclonedx-sbom.json cve-bin-tool:/home/alpine/src
+      #       docker cp cyclonedx-sbom.json cve-bin-tool:/home/alpine/src
 
-            docker exec cve-bin-tool /bin/sh -c "ls /home/alpine/src"
+      #       docker exec cve-bin-tool /bin/sh -c "ls /home/alpine/src"
 
 
 
