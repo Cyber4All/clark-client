@@ -12,10 +12,9 @@ CIRCLE_BUILD_URL=os.environ['CIRCLE_BUILD_URL']
 SHORTCUT_TOKEN=os.environ['SHORTCUT_TOKEN']
 REPOSITORY=os.environ['CIRCLE_PROJECT_REPONAME']
 LANGUAGE=os.environ['LANGUAGE']
-VERSION=os.environ['VERSION']
-WORKFLOW_STATE_ID=int(os.environ['WORKFLOW_STATE_ID'])
-PROJECT_ID=int(os.environ['PROJECT_ID'])
-GROUP_ID=os.environ['GROUP_ID']
+WORKFLOW_STATE_ID=500005737
+PROJECT_ID=14743
+GROUP_ID="61ae65f8-ec5a-4f81-8b85-76516b014ed5"
 
 # -------------------------------------------------------
 # SHORTCUT APIv3 CONFIGURATION
@@ -27,7 +26,7 @@ DESCRIPTION=f"""
 
 ## Description
 
-Post deployment or quarterly review of Software Bill of Materials (SBOM) for {REPOSITORY}:{VERSION}. This story will track the vulnerability analysis of the SBOM and any dependency upgrades.
+Post deployment or quarterly review of Software Bill of Materials (SBOM) for {REPOSITORY}. This story will track the vulnerability analysis of the SBOM and any dependency upgrades.
 
 ## Requirements
 
@@ -50,7 +49,7 @@ Post deployment or quarterly review of Software Bill of Materials (SBOM) for {RE
 # -------------------------------------------------------
 
 DATA = {
-    "name": f"Review {REPOSITORY}:{VERSION} SBOM",
+    "name": f"Review {REPOSITORY} SBOM",
     "workflow_state_id": WORKFLOW_STATE_ID,
     "project_id": PROJECT_ID,
     "group_id": GROUP_ID,
@@ -60,7 +59,7 @@ DATA = {
     "story_type": "chore",
     "tasks": [ 
         {
-            "description": f"Analyze {REPOSITORY}:{VERSION} SBOM for vulnerabilities"
+            "description": f"Analyze {REPOSITORY} SBOM for vulnerabilities"
         },
         {
             "description": "Upgrade dependencies"
@@ -77,11 +76,6 @@ DATA = {
             "color": "#1c70dd",
             "description": "Language",
             "name": LANGUAGE
-        },
-        {
-            "color": "#A020F0",
-            "description": "Version",
-            "name": VERSION
         }
     ]
 }
