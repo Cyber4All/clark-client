@@ -7,9 +7,12 @@ jobs:
   sbom:
     machine:
       image: ubuntu-2004:current
-
     steps:
       - checkout
+      - run:
+          name: Prepare Artifacts Directory
+          command: |
+            mkdir ./artifacts
       - run:
           name: Install CycloneDX Node
           command: |
@@ -21,7 +24,7 @@ jobs:
           command: npm ci
       - run:
           name: Generate CycloneDX SBOM
-          command: cyclonedx-node -d -o cyclonedx-sbom.json
+          command: cyclonedx-node -d -o ./artifacts/cyclonedx-sbom.json
       - run:
           name: cve-bin-tool SBOM anlaysis
           command: |
@@ -29,13 +32,9 @@ jobs:
       - run:
           name: docker cp
           command: |
-            docker cp cve-bin-tool:/home/alpine/output.cve-bin-tool.$(date "+%Y-%m-%d").html .
-
-            ls
+            docker cp cve-bin-tool:/home/alpine/output.cve-bin-tool.$(date "+%Y-%m-%d").html ./artifacts
       - store_artifacts:
-          path: output.cve-bin-tool.$(date "+%Y-%m-%d").html
-      - store_artifacts:
-          path: cyclonedx-sbom.json
+          path: $CIRCLE_WORKING_DIRECTORY/artifacts
 
 workflows:
   integration-testing:
