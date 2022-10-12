@@ -3,53 +3,6 @@ version: 2.1
 orbs:
   cyber4all: cyber4all/orb@1
 
-# commands:
-#   create-story:
-#     steps:
-#       - run: 
-#           name: Create Story
-#           environment:
-#             LANGUAGE: node
-#           command: |
-#             pip3 install requests
-
-#             python3 ./.circleci/scripts/create-story.py
-
-# jobs:
-#   sbom:
-#     machine:
-#       image: ubuntu-2004:current
-#     steps:
-#       - checkout
-#       - run:
-#           name: Prepare Artifacts Directory
-#           command: |
-#             mkdir ./artifacts
-#       - run:
-#           name: Install CycloneDX Node
-#           command: |
-#             sudo apt install nodejs npm
-
-#             sudo npm i -g @cyclonedx/bom@3.10.6
-#       - run:
-#           name: Install Node Modules
-#           command: npm ci
-#       - run:
-#           name: Generate CycloneDX SBOM
-#           command: cyclonedx-node -d -o ./artifacts/cyclonedx-sbom.json
-#       - run:
-#           name: CVE-BIN-TOOL SBOM anlaysis
-#           command: |
-#             docker run --env BOM_FILE=cyclonedx-sbom.json -v $(pwd)/artifacts:/home/alpine/src --name cve-bin-tool cyber4all/cve-bin-tool:latest || true
-#       - run:
-#           name: Copy Output from Container
-#           command: |
-#             docker cp cve-bin-tool:/home/alpine/output.cve-bin-tool.$(date "+%Y-%m-%d").html ./artifacts
-#       - store_artifacts:
-#           path: ./artifacts
-#       - create-story
-
-
 workflows:
   integration-testing:
     jobs:
@@ -69,7 +22,6 @@ workflows:
       - cyber4all/sbom:
           context: [Shortcut]
           language: node
-          # version: $(jq -r '.version' package.json)
           filters:
             branches:
                 only:
