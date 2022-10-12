@@ -34,6 +34,7 @@ workflows:
 
   continuous-deployment:
     jobs:
+      - test-python
       # - cyber4all/sbom:
       #     context: [Shortcut]
       #     language: node
