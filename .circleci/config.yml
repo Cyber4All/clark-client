@@ -18,6 +18,8 @@ commands:
             PROJECT_ID: 14743
             GROUP_ID: 61ae65f8-ec5a-4f81-8b85-76516b014ed5
           command: |
+            pip3 install requests
+
             python3 ./.circleci/scripts/create-story.py
 
 jobs:
