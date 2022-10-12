@@ -26,8 +26,12 @@ jobs:
           name: cve-bin-tool SBOM anlaysis
           command: |
             docker run --env BOM_FILE=cyclonedx-sbom.json -v $(pwd):/home/alpine/src --name cve-bin-tool cyber4all/cve-bin-tool:latest || true
-
+      - run:
+          name: docker cp
+          command: |
             docker cp cve-bin-tool:/home/alpine/output.cve-bin-tool.$(date "+%Y-%m-%d").html .
+
+            ls
       - store_artifacts:
           path: output.cve-bin-tool.$(date "+%Y-%m-%d").html
       - store_artifacts:
