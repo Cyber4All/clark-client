@@ -3,6 +3,21 @@ version: 2.1
 orbs:
   cyber4all: cyber4all/orb@1
 
+jobs:
+  test-python:
+    machine:
+      image: ubuntu-2004:current
+    steps:
+      - run:
+          environment:
+            LANGUAGE: node
+          command: |
+            #!/usr/bin/env python3 <<HEREDOC
+            import os
+            LANGUAGE=os.environ["LANGUAGE"]
+            print(LANGUAGE)
+            HEREDOC
+
 workflows:
   integration-testing:
     jobs:
@@ -19,14 +34,14 @@ workflows:
 
   continuous-deployment:
     jobs:
-      - cyber4all/sbom:
-          context: [Shortcut]
-          language: node
-          filters:
-            branches:
-                only:
-                  - releases
-                  - chore/sc-14941/add-sbom-on-releases
+      # - cyber4all/sbom:
+      #     context: [Shortcut]
+      #     language: node
+      #     filters:
+      #       branches:
+      #           only:
+      #             - releases
+      #             - chore/sc-14941/add-sbom-on-releases
 
       - cyber4all/deploy-s3:
           context:
