@@ -28,7 +28,7 @@ jobs:
       - run:
           name: cve-bin-tool SBOM anlaysis
           command: |
-            docker run --env BOM_FILE=cyclonedx-sbom.json -v $(pwd):/home/alpine/src --name cve-bin-tool cyber4all/cve-bin-tool:latest || true
+            docker run --env BOM_FILE=cyclonedx-sbom.json -v $(pwd)/artifacts:/home/alpine/src --name cve-bin-tool cyber4all/cve-bin-tool:latest || true
       - run:
           name: docker cp
           command: |
