@@ -9,14 +9,14 @@ jobs:
       image: ubuntu-2004:current
     steps:
       - run:
-          environment:
-            LANGUAGE: node
           command: |
             python3 -c """
             import os
             LANGUAGE=os.environ["LANGUAGE"]
             print(LANGUAGE)
             """
+          environment:
+            LANGUAGE: node
 
 workflows:
   integration-testing:
