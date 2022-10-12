@@ -12,13 +12,11 @@ jobs:
           environment:
             LANGUAGE: node
           command: |
-            SCRIPT=`cat <<-EOF
+            python3 -c """
             import os
             LANGUAGE=os.environ["LANGUAGE"]
             print(LANGUAGE)
-            EOF`
-
-            #!/usr/bin/env python3 -c '$SCRIPT'
+            """
 
 workflows:
   integration-testing:
