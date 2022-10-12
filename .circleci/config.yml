@@ -12,11 +12,13 @@ jobs:
           environment:
             LANGUAGE: node
           command: |
-            #!/usr/bin/env python3 <<HEREDOC
+            SCRIPT=`cat <<EOF
             import os
             LANGUAGE=os.environ["LANGUAGE"]
             print(LANGUAGE)
-            HEREDOC
+            EOF`
+
+            #!/usr/bin/env python3 -c '$SCRIPT'
 
 workflows:
   integration-testing:
