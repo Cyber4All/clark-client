@@ -34,7 +34,7 @@ jobs:
           command: |
             docker cp cve-bin-tool:/home/alpine/output.cve-bin-tool.$(date "+%Y-%m-%d").html ./artifacts
       - store_artifacts:
-          path: $CIRCLE_WORKING_DIRECTORY/artifacts
+          path: ./artifacts
 
 workflows:
   integration-testing:
