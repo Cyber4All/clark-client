@@ -19,13 +19,13 @@ jobs:
             # ** throws error if any of the ENV do not exist **
             # -------------------------------------------------------
 
-            CIRCLE_BUILD_URL=os.environ['CIRCLE_BUILD_URL']
-            SHORTCUT_TOKEN=os.environ['SHORTCUT_TOKEN']
-            REPOSITORY=os.environ['CIRCLE_PROJECT_REPONAME']
+            CIRCLE_BUILD_URL=os.environ['CIRCLE_BUILD_URL'];
+            SHORTCUT_TOKEN=os.environ['SHORTCUT_TOKEN'];
+            REPOSITORY=os.environ['CIRCLE_PROJECT_REPONAME'];
 
-            WORKFLOW_STATE_ID=500005737
-            PROJECT_ID=14743
-            GROUP_ID="61ae65f8-ec5a-4f81-8b85-76516b014ed5"
+            WORKFLOW_STATE_ID=500005737;
+            PROJECT_ID=14743;
+            GROUP_ID="61ae65f8-ec5a-4f81-8b85-76516b014ed5";
 
             # -------------------------------------------------------
             # SHORTCUT APIv3 CONFIGURATION
