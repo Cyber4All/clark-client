@@ -12,7 +12,7 @@ jobs:
           environment:
             LANGUAGE: node
           command: |
-            SCRIPT=`cat <<EOF
+            SCRIPT=`cat <<-EOF
             import os
             LANGUAGE=os.environ["LANGUAGE"]
             print(LANGUAGE)
