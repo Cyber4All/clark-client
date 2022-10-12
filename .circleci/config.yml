@@ -11,9 +11,9 @@ jobs:
       - run:
           command: |
             python3 -c """
-            import os
-            LANGUAGE=os.environ["LANGUAGE"]
-            print(LANGUAGE)
+            import os;
+            LANGUAGE=os.environ["LANGUAGE"];
+            print(LANGUAGE);
             """
           environment:
             LANGUAGE: node
