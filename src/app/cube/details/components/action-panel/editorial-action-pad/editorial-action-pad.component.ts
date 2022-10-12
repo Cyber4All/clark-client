@@ -19,6 +19,7 @@ export class EditorialActionPadComponent implements OnInit {
 
   @Input() hasRevision: boolean;
   @Input() learningObject: LearningObject;
+  @Input() userIsAuthor: boolean;
   openRevisionModal: boolean;
   showPopup = false;
 
@@ -67,12 +68,13 @@ export class EditorialActionPadComponent implements OnInit {
     this.openRevisionModal = false;
   }
 
-  // Redirects the editor to the builder to make edits to a waiting, review, or proofing object
+  // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object
   editLearningObject() {
+    const userOrAdminRoute = (this.userIsAuthor) ? 'onion' : 'admin';
     if (this.revisedLearningObject) {
-      this.router.navigate([`/admin/learning-object-builder/${this.revisedLearningObject.id}`]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.revisedLearningObject.id]);
     } else {
-      this.router.navigate([`admin/learning-object-builder/${this.learningObject.id}`]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.learningObject.id]);
     }
   }
 
