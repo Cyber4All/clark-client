@@ -7,11 +7,30 @@
 .topics {
     display: flex;
     flex-direction: row;
+
+    .scroll-button {
+        background-color: $primary-white;
+        border: 1px solid $secondary-white;
+        border-radius: 4px;
+
+        &:hover {
+            opacity: 60%;
+        }
+
+        &:active {
+            opacity: 100%;
+        }
+    }
+}
+
+.topics-list {
+    display: flex;
+    flex-direction: row;
     gap: 20px;
     overflow-x: scroll;
     -ms-overflow-style: none;
     scrollbar-width: none;
-    margin-right: 60px;
+    margin: 0 30px;
     
     &::-webkit-scrollbar {
         display: none;

@@ -1,11 +1,21 @@
 <div class="wrapper">
-    <div #topicScroll *ngIf="width > 750" class="topics">
-        <div class="shadow left" aria-hidden="true"></div>
-        <!-- NOTE: Add left and right buttons for scrolling if it becomes an issue -->
-        <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)" [ngClass]="{'selected': selectedTopic === topic._id}">{{ topic.name }}</button>
-        <span *ngIf="topics.length === 0">Loading Topics...</span>
-        <div class="shadow right" aria-hidden="true"></div>
+
+    <div *ngIf="width > 750" class="topics">
+        <button class="scroll-button" (activate)="horizontalScrollOnClick(false)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div #topicScroll class="topics-list">
+            <div class="shadow left" aria-hidden="true"></div>
+            <!-- NOTE: Add left and right buttons for scrolling if it becomes an issue -->
+            <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)" [ngClass]="{'selected': selectedTopic === topic._id}">{{ topic.name }}</button>
+            <span *ngIf="topics.length === 0">Loading Topics...</span>
+            <div class="shadow right" aria-hidden="true"></div>
+        </div>
+        <button class="scroll-button" (activate)="horizontalScrollOnClick(true)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
     </div>
+
     <div *ngIf="width <= 750">
         <select *ngIf="topics.length > 0" (change)="getObjects()" [(ngModel)]="selectedTopic">
             <option *ngFor="let topic of topics" [value]="topic._id" [selected]="selectedTopic === topic._id">{{ topic.name }}</option>
