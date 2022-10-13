@@ -3,24 +3,6 @@ version: 2.1
 orbs:
   cyber4all: cyber4all/orb@1
 
-jobs:
-  sbom:
-    parameters:
-      language:
-        type: enum
-        enum: ["node", "python", "go"]
-        description: |
-          Language of the repository generating an SBOM for.
-          Options: (node, python, go)
-    machine:
-      image: ubuntu-2004:current
-    steps:
-      - checkout
-      - run:
-          command: ./create-story.sh
-          environment:
-            LANGUAGE: << parameters.language >>
-
 workflows:
   integration-testing:
     jobs:
@@ -37,7 +19,7 @@ workflows:
 
   continuous-deployment:
     jobs:
-      - sbom:
+      - cyber4all/sbom:
           context: [Shortcut]
           language: node
           filters:
