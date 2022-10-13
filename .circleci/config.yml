@@ -19,7 +19,7 @@ jobs:
       image: ubuntu-2004:current
     steps:
       - run:
-          command: ./.circleci/create-story.sh
+          command: ./create-story.sh
           environment:
             LANGUAGE: << parameters.language >>
             VERSION: << parameters.version >>
