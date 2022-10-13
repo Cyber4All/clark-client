@@ -1,6 +1,6 @@
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, HostListener, ViewContainerRef } from '@angular/core';
-import { AuthService, Tokens } from './core/auth.service';
+import { AuthService } from './core/auth.service';
 import { LibraryService } from './core/library.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
@@ -13,7 +13,6 @@ import { environment } from '@env/environment';
 import { ToastrOvenService } from './shared/modules/toaster/notification.service';
 import { CookieAgreementService } from './core/cookie-agreement.service';
 import { SubscriptionAgreementService } from './core/subscription-agreement.service';
-import { NavbarService } from './core/navbar.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -143,6 +142,11 @@ export class ClarkComponent implements OnInit {
 
     if (this.cookies.check('ssoToken')) {
       this.authService.setSsoSession(this.cookies.get('ssoToken'));
+    }
+    if (localStorage.getItem('ssoRedirect')){
+      const redirect = localStorage.getItem('ssoRedirect');
+      this.router.navigateByUrl(redirect);
+      localStorage.removeItem('ssoRedirect');
     }
   }
 

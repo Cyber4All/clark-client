@@ -71,7 +71,7 @@ export class AuthService {
    * @param {Tokens} tokens [Access tokens for the logged in user]
    * @memberof AuthService
    */
-  public setSession({ user, tokens }: { user: AuthUser; tokens: Tokens }) {
+  private setSession({ user, tokens }: { user: AuthUser; tokens: Tokens }) {
     this.user = user;
     this.openIdToken = tokens.openId;
     this.changeStatus(true);
@@ -93,6 +93,7 @@ export class AuthService {
     const token = JSON.parse(cookieString);
       const user = token.user;
       const tokens: Tokens = {bearer: token.bearer, openId: token.openId};
+      this.cookies.set('presence', tokens.bearer);
       this.setSession({
         user: user,
         tokens: tokens
@@ -125,8 +126,6 @@ export class AuthService {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     document.cookie =
       'presence=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    // We need to update client subscriptions to this.user in order to not use this
-    window.location.reload();
   }
 
   private clearAuthHeaders() {
