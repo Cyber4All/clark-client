@@ -1,4 +1,4 @@
-import { Component,Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CollectionService } from 'app/core/collection.service';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
 import { LearningObjectService } from 'app/core/learning-object.service';
@@ -28,7 +28,7 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
     // private attributeService: AttributeService,
     private collectionService: CollectionService,
     private learningObjectService: LearningObjectService
-    ) { }
+  ) { }
 
   async ngOnInit() {
     this.loading = true;
@@ -65,19 +65,18 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
   //   this.convertHexToHSL(this.primaryColor);
   // }
 
-  setFrameworkName(params){
-    let fullObject;
+  setFrameworkName(params) {
     let objectOutcomes;
     this.learningObjectService.fetchLearningObject(params).subscribe((object) => {
       console.log(object);
-      objectOutcomes = this.learningObjectService.fetchUri((object as LearningObject).resourceUris.outcomes).subscribe((outcome) => {
-        console.log(outcome);
+      this.learningObjectService.fetchUri((object as LearningObject).resourceUris.outcomes).subscribe((outcome) => {
+        objectOutcomes = outcome;
       });
     });
-    // this.frameworkNames = [...new Set(objectOutcomes.map(x => x.frameworkName))];
+    return objectOutcomes;
   }
 
-  getUniqueNames(outcomes){
+  getUniqueNames(outcomes) {
 
   }
 
