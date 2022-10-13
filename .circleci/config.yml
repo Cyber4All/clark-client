@@ -18,6 +18,7 @@ jobs:
     machine:
       image: ubuntu-2004:current
     steps:
+      - checkout
       - run:
           command: ./create-story.sh
           environment:
