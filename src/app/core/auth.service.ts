@@ -7,7 +7,7 @@ import {
 import { environment } from '@env/environment';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { User, LearningObject } from '@entity';
+import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
 
@@ -88,6 +88,7 @@ export class AuthService {
    * set by the SSO routehandler
    *
    * @param cookieString the cookie set by the SSO routehandler
+   * @memberof AuthService
    */
   public setSsoSession(cookieString: string) {
     const token = JSON.parse(cookieString);
@@ -384,6 +385,7 @@ export class AuthService {
   async logout(): Promise<void> {
     this.clearAuthHeaders();
     this.endSession();
+    location.reload();
   }
 
   /**

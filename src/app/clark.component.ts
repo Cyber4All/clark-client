@@ -142,12 +142,13 @@ export class ClarkComponent implements OnInit {
 
     if (this.cookies.check('ssoToken')) {
       this.authService.setSsoSession(this.cookies.get('ssoToken'));
-    }
-    if (localStorage.getItem('ssoRedirect')){
       const redirect = localStorage.getItem('ssoRedirect');
       this.router.navigateByUrl(redirect);
       localStorage.removeItem('ssoRedirect');
+    } else if(localStorage.getItem('ssoRedirect')) {
+      localStorage.removeItem('ssoRedirect');
     }
+
   }
 
   reloadPage() {
