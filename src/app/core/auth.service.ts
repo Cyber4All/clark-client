@@ -71,7 +71,7 @@ export class AuthService {
    * @param {Tokens} tokens [Access tokens for the logged in user]
    * @memberof AuthService
    */
-  private setSession({ user, tokens }: { user: AuthUser; tokens: Tokens }) {
+  public setSession({ user, tokens }: { user: AuthUser; tokens: Tokens }) {
     this.user = user;
     this.openIdToken = tokens.openId;
     this.changeStatus(true);
@@ -86,24 +86,19 @@ export class AuthService {
    * this method assumes the user has just been successfully
    * linked back to the homepage through SSO and depends on cookies
    * set by the SSO routehandler
+   *
+   * @param cookieString the cookie set by the SSO routehandler
    */
-  public setSsoSession() {
-    const identityId = this.cookies.get('identityId');
-    const token = this.cookies.get('token');
-    const domain = environment.production ? 'clark.center' : 'localhost';
-    this.cookies.delete('identityId', '/', domain, false, 'Lax');
-    this.cookies.delete('token', '/', domain, false, 'Lax');
-    const sessionObject = {
-      user: this.user,
-      tokens: {
-        bearer: this.cookies.get('presence'),
-        openId:{
-          IdentityId: identityId,
-          Token: token
-        }
-      }
-    };
-    this.setSession(sessionObject);
+  public setSsoSession(cookieString: string) {
+    const token = JSON.parse(cookieString);
+      const user = token.user;
+      const tokens: Tokens = {bearer: token.bearer, openId: token.openId};
+      this.setSession({
+        user: user,
+        tokens: tokens
+      });
+      const domain = environment.production ? 'clark.center' : 'localhost';
+      this.cookies.delete('ssoToken', '/', domain, false, 'Lax');
   }
 
   /**

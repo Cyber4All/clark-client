@@ -1,6 +1,6 @@
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Component, OnInit, HostListener, ViewContainerRef } from '@angular/core';
-import { AuthService } from './core/auth.service';
+import { AuthService, Tokens } from './core/auth.service';
 import { LibraryService } from './core/library.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
@@ -141,8 +141,8 @@ export class ClarkComponent implements OnInit {
 
     this.setPageTitle();
 
-    if (this.cookies.check('token') && this.cookies.check('identityId')) {
-      this.authService.setSsoSession();
+    if (this.cookies.check('ssoToken')) {
+      this.authService.setSsoSession(this.cookies.get('ssoToken'));
     }
   }
 
