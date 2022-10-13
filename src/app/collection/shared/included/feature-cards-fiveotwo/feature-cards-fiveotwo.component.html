@@ -1,0 +1,36 @@
+<div class="card__wrapper" [ngClass]="{'loading': loading}">
+    <div *ngIf="loading" class="loadingContainer">
+        <div [style.color]="primaryColor" class="loader">Loading </div>
+    </div>
+    <div class="card__header">
+        <div class="header__length">
+            <p>{{ learningObject?.length | titlecase }}</p>
+        </div>
+        <div class="header__name">
+            <p>{{ (learningObject?.name.length >= 45)? (learningObject?.name | slice:0:45)+' ...':(learningObject?.name) }}</p>
+        </div>
+        <div class="header__date">
+            <p>{{ learningObject?.date | date:'mediumDate' }}</p>
+        </div>
+    </div>
+    <div class="card__info">
+        <!-- <div class="info__top">
+            <div class="info__collection">
+                <div class="collection__pill">
+                    <p>{{ learningObject?.collection }}</p>
+                </div>
+            </div>
+            <div class="info__hierarchy">
+                <div *ngIf="children?.length > 0 || parents?.length > 0" class="hierarchy__listing">
+                    <i class="far fa-project-diagram"></i>
+                    <p>
+                        {{ hierarchyTag }}
+                    </p>
+                </div>
+            </div>
+        </div> -->
+        <div class="info__desc">
+            <div [innerHtml]="learningObject.description"></div>
+        </div>
+    </div>
+</div>

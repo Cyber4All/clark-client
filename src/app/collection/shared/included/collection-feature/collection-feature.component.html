@@ -4,7 +4,8 @@
         <div class="objects">
             <div *ngFor="let object of learningObjects">
                 <a [routerLink]="['/details', object.author.username, object.cuid]">
-                    <clark-collection-feature-cards [learningObject]="object" [primaryColor]="primaryColor"></clark-collection-feature-cards>
+                    <!-- change to conditional based on collection after debug -->
+                    <clark-feature-cards-fiveotwo [learningObject]="object" [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
                 </a>
             </div>
         </div>
