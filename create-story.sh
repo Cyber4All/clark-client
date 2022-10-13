@@ -11,4 +11,4 @@ curl -X POST \
   -L "https://api.app.shortcut.com/api/v3/stories" \
   -H "Content-Type: application/json" \
   -H "Shortcut-Token: $SHORTCUT_API_TOKEN" \
-  -d '{"deadline": "2022-12-31T12:30:00Z", "description": "'"$DESCRIPTION"'", "labels": [{"color": "#f8324e", "description": "Repository", "name": "'"$REPOSITORY"'"},{ "color": "#1c70dd", "description": "Language", "name": "'"$LANGUAGE"'"}], "external_links": ["'"$CIRCLE_BUILD_URL"'"], "group_id": "'"$GROUP_ID"'", "move_to": "first", "name": "'"Review $REPOSITORY SBOM"'", "project_id": "'"$PROJECT_ID"'", "story_type": "chore", "workflow_state_id": "'"$WORKFLOW_STATE_ID"'" }'
+  -d '{"deadline": "2022-12-31T12:30:00Z", "description": "'"$DESCRIPTION"'", "labels": [{"color": "#f8324e", "description": "Repository", "name": "'"$REPOSITORY"'"},{ "color": "#1c70dd", "description": "Language", "name": "'"$LANGUAGE"'"}], "external_links": ["'"$CIRCLE_BUILD_URL/artifacts"'"], "group_id": "'"$GROUP_ID"'", "move_to": "first", "name": "'"Review $REPOSITORY SBOM"'", "project_id": "'"$PROJECT_ID"'", "story_type": "chore", "workflow_state_id": "'"$WORKFLOW_STATE_ID"'" }'
