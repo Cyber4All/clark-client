@@ -44,7 +44,7 @@ workflows:
       - sbom:
           context: [Shortcut]
           language: node
-          version: $(jq -r '.version' package.json)
+          version: "$(jq -r '.version' package.json)"
           filters:
             branches:
                 only:
