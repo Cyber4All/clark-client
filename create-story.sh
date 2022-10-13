@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -o nounset
 
 WORKFLOW_STATE_ID=500005737
