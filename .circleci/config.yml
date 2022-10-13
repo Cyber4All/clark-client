@@ -26,7 +26,6 @@ workflows:
             branches:
                 only:
                   - releases
-                  - chore/sc-14941/add-sbom-on-releases
 
       - cyber4all/deploy-s3:
           context:
