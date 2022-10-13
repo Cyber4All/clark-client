@@ -12,9 +12,6 @@ jobs:
         description: |
           Language of the repository generating an SBOM for.
           Options: (node, python, go)
-
-      version:
-        type: string
     machine:
       image: ubuntu-2004:current
     steps:
@@ -23,7 +20,6 @@ jobs:
           command: ./create-story.sh
           environment:
             LANGUAGE: << parameters.language >>
-            VERSION: << parameters.version >>
 
 workflows:
   integration-testing:
@@ -44,7 +40,6 @@ workflows:
       - sbom:
           context: [Shortcut]
           language: node
-          version: "$(jq -r '.version' package.json)"
           filters:
             branches:
                 only:
