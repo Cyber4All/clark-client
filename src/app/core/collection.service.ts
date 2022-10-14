@@ -5,6 +5,10 @@ import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, retry ,  skipWhile } from 'rxjs/operators';
 
+import { Query } from 'app/interfaces/query';
+import { LearningObject } from '@entity';
+import * as querystring from 'querystring';
+
 export interface Collection {
   name: string;
   abvName: string;
@@ -155,6 +159,46 @@ export class CollectionService {
         catchError(this.handleError)
       )
       .toPromise();
+  }
+
+  /**
+   * Fetches Array of Learning Objects
+   *
+   * @returns {Promise<LearningObject[]>}
+   * @memberof LearningObjectService
+   */
+   getLearningObjects(query?: Query): Promise<{learningObjects: LearningObject[], total: number}> {
+    let route = '';
+    if (query) {
+      const queryClone = Object.assign({}, query);
+      if (
+        queryClone.standardOutcomes &&
+        queryClone.standardOutcomes.length &&
+        typeof queryClone.standardOutcomes[0] !== 'string'
+      ) {
+        queryClone.standardOutcomes = ((
+          queryClone.standardOutcomes
+        ) as string[]).map(o => o['id']);
+      }
+      const queryString = querystring.stringify(queryClone);
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
+        queryString
+      );
+    } else {
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+    }
+
+    return this.http
+      .get(route)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((response: any) => {
+        const objects = response.objects;
+        return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total};
+      });
   }
 
 

@@ -10,6 +10,7 @@ export class CollectionFeatureComponent implements OnInit {
 
   @Input() learningObjects: LearningObject[];
   @Input() primaryColor: string;
+  @Input() collection: string;
   constructor() { }
 
   ngOnInit(): void {

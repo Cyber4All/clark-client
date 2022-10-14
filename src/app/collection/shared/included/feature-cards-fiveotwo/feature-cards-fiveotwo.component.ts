@@ -67,12 +67,19 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
 
   setFrameworkName(params) {
     let objectOutcomes;
+    let frameworkNames;
     this.learningObjectService.fetchLearningObject(params).subscribe((object) => {
       console.log(object);
+      //Error Handling needed!!
       this.learningObjectService.fetchUri((object as LearningObject).resourceUris.outcomes).subscribe((outcome) => {
         objectOutcomes = outcome;
+        console.log(outcome);
       });
     });
+    for (let i=0; frameworkNames < 2; i++){
+
+    }
+
     return objectOutcomes;
   }
 

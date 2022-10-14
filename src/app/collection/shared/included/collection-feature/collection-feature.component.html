@@ -5,7 +5,8 @@
             <div *ngFor="let object of learningObjects">
                 <a [routerLink]="['/details', object.author.username, object.cuid]">
                     <!-- change to conditional based on collection after debug -->
-                    <clark-feature-cards-fiveotwo [learningObject]="object" [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
+                    <clark-feature-cards-fiveotwo *ngIf="collection === '502'" [learningObject]="object" [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
+                    <clark-collection-feature-cards *ngIf="collection === 'ncyte'"  [learningObject]="object" [primaryColor]="primaryColor"></clark-collection-feature-cards>
                 </a>
             </div>
         </div>
