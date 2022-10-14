@@ -44,7 +44,7 @@ export class PrimaryNavbarComponent implements OnInit {
       .subscribe(
         (event: NavigationEvent) => {
           if(event instanceof NavigationStart) {
-            if(!event.url.includes('/auth/login')){
+            if(!event.url.includes('/auth/login') || !event.url.includes('/auth/register')){
               this.redirectUrl = event.url;
             }
           }
