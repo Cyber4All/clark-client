@@ -1,23 +1,70 @@
 @import 'vars.scss';
 
-.card__wrapper{
+.card__wrapper {
     max-width: 240px;
-    height: 310px;
-    box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.05);
     border-radius: 5px;
     margin: 10px;
-    .card__header{
+    padding: 15px;
+
+    .card__header {
         width: 100%;
         display: inline-block;
         text-align: left;
         border-radius: 5px 5px 0px 0px;
-        height: 125px;
         margin: 0;
-        box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.05);
+
+        .card__top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            font-size: $normal;
+
+            .header__length{
+                background-color: #672F90;
+                padding: 0 20px 0 5px;
+                color: white;
+            }
+
+            .logo {
+                max-width: 100px;
+                max-height: 50px;
+            }
+        }
+        .header__name{
+            font-size: $large;
+            color: $dark-grey;
+        }
+        .header__date{
+            font-size: $normal;
+            color: #672F90;
+        }
+        .header__mappings{
+            .mappings__title{
+                font-size: $small;
+                color: $dark-grey;
+            }
+            .mappings__name{
+                font-size: $small;
+                color: $dark-grey;
+                text-align: center;
+
+                .name__one{
+                    background-color: #F7EC2F;
+                }
+                .name__two{
+                    background-color: #6AC8C1;
+                }
+            }
+        }
+
     }
-    .card__info{
-        padding: 10px 10px;
-        .info_desc{
+
+    .card__info {
+        padding-top: 10px;
+
+        .info__desc {
             text-align: left;
             font-size: $small;
             color: $dark-grey;
