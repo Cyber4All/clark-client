@@ -44,9 +44,15 @@ export class PrimaryNavbarComponent implements OnInit {
       .subscribe(
         (event: NavigationEvent) => {
           if(event instanceof NavigationStart) {
-            this.redirectUrl = event.url;
+            if(!event.url.includes('/auth/login') || !event.url.includes('/auth/register')){
+              this.redirectUrl = event.url;
+            }
           }
         });
+  }
+
+  handleRedirect(){
+    localStorage.setItem('ssoRedirect', (this.redirectUrl));
   }
 
   async ngOnInit(): Promise<void> {
