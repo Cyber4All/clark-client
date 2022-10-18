@@ -48,11 +48,19 @@
             font-size: $large;
             color: $dark-grey;
             padding-left: 10px;
+            min-height: 55px;
+            p{
+                margin: 10px 0 5px 0;
+            }
         }
         .header__date{
             font-size: $normal;
             color: #672F90;
             padding-left: 10px;
+
+            p{
+                margin: 0 0 5px 0;
+            }
         }
         .header__mappings{
             .mappings__title{
@@ -72,7 +80,7 @@
                 padding: 0 10px;
 
                 .name__one{
-                    padding: 10px 20px;
+                    padding: 5px 20px;
                     min-width: 125px;
                     z-index: 2;
                     align-self: flex-start;
@@ -82,7 +90,7 @@
                     }
                 }
                 .name__two{
-                    padding: 10px 20px;
+                    padding: 5px 20px;
                     z-index: 2;
                     align-self: flex-end;
                     margin: 0;
@@ -96,12 +104,14 @@
     }
 
     .card__info {
-        padding: 10px 0 0 10px;
+        padding: 10px;
 
         .info__desc {
             text-align: left;
             font-size: $small;
             color: $dark-grey;
+            min-height: 110px;
+            margin-bottom: 5px;
         }
     }
 }
