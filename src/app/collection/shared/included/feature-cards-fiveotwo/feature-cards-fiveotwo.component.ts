@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CollectionService } from 'app/core/collection.service';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
-import { LearningObjectService } from 'app/core/learning-object.service';
-import { LearningObject } from '@entity';
+import { LearningObjectService } from 'app/cube/learning-object.service';
+import { Guideline, LearningObject } from '@entity';
+import { Query } from 'app/interfaces/query';
 // import { AttributeService } from '../collection-feature/core/attribute.service';
 
 @Component({
@@ -28,37 +29,21 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
   async ngOnInit() {
     this.loading = true;
     this.setDescription();
-
-    this.learningObject.collection = await (await this.collectionService.getCollection(this.learningObject.collectionName)).name;
-    this.loading = false;
-    const params = {
-      author: undefined,
-      id: this.learningObject.id
-    };
-    this.setFrameworkName(params);
+    console.log(this.learningObject);
+    console.log(this.learningObject);
+    this.setFrameworkName(this.learningObject);
     console.log(this.frameworkNames);
+    this.loading = false;
   }
 
-  setFrameworkName(params) {
-    let objectOutcomes;
-    let frameworkNames;
-    this.learningObjectService.fetchLearningObject(params).subscribe((object) => {
-      console.log(object);
-      //Error Handling needed!!
-      this.learningObjectService.fetchUri((object as LearningObject).resourceUris.outcomes).subscribe((outcome) => {
-        objectOutcomes = outcome;
-        console.log(outcome);
-      });
+  setFrameworkName(object) {
+    const mappings = [];
+    let uniqueNames = [];
+    object.guidelines.forEach(mapping => {
+      mappings.push(mapping);
     });
-    for (let i=0; frameworkNames < 2; i++){
-
-    }
-
-    return objectOutcomes;
-  }
-
-  getUniqueNames(outcomes) {
-
+    uniqueNames = [...new Set(mappings.map(x => x.source))];
+    this.frameworkNames = uniqueNames;
   }
 
   setDescription() {
