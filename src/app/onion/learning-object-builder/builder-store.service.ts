@@ -636,7 +636,9 @@ export class BuilderStore {
       this.learningObject = new LearningObject(learningObject);
     }
 
-    this.saveObject(data, true);
+    if(this.validator.saveable) {
+      this.saveObject(data, true);
+    }
   }
 
   private addContributor(user: User) {
