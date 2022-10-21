@@ -1,4 +1,4 @@
-import { Component,OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '@entity';
 import { NavbarService } from '../../../core/navbar.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
@@ -50,7 +50,7 @@ export class Collection502Component implements OnInit {
     }
   }
 
-OnDestroy(): void {
+  OnDestroy(): void {
     this.navbarService.hide();
   }
 }

@@ -23,7 +23,11 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
     this.setFrameworkName(this.learningObject);
     this.loading = false;
   }
-
+/**
+ * Creates an array of all the unique mappings of an object
+ *
+ * @param object
+ */
   setFrameworkName(object) {
     const mappings = [];
     let uniqueNames = [];
@@ -36,7 +40,9 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
     }
     this.frameworkNames = uniqueNames;
   }
-
+/**
+ * truncates description and adds elipse
+ */
   setDescription() {
     this.learningObject.description =
       this.learningObject.description.slice(0, 220) + (this.learningObject.description.length > 220 ? ' ...' : '');
