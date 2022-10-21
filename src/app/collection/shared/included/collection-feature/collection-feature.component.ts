@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LearningObject } from '@entity';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'clark-collection-feature',
@@ -11,7 +12,9 @@ export class CollectionFeatureComponent implements OnInit {
   @Input() learningObjects: LearningObject[];
   @Input() primaryColor: string;
   @Input() collection: string;
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.setColorScheme();
@@ -21,5 +24,10 @@ export class CollectionFeatureComponent implements OnInit {
     const header = document.getElementById('header');
     header.style.color = this.primaryColor;
   }
+
+  navigateToBrowse() {
+    this.router.navigate(['/browse'], { queryParams: { collection: '502_project', currPage: 1 }});
+  }
+
 
 }

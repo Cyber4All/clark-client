@@ -1,7 +1,5 @@
 import { Component,OnDestroy, OnInit } from '@angular/core';
-import { Collection, LearningObject } from '@entity';
-import { CollectionService } from 'app/core/collection.service';
-import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
+import { LearningObject } from '@entity';
 import { NavbarService } from '../../../core/navbar.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
@@ -14,8 +12,6 @@ import { Query } from 'app/interfaces/query';
 })
 export class Collection502Component implements OnInit {
 
-  abvCollection = '502_project';
-  collection: Collection;
   learningObjects: LearningObject[];
   guidelineNames: [];
   loading = true;
@@ -26,7 +22,6 @@ export class Collection502Component implements OnInit {
 
   constructor(
     private navbarService: NavbarService,
-    private collectionService: CollectionService,
     private learningObjectService: LearningObjectService
   ) { }
 

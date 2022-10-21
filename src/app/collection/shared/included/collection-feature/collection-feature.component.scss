@@ -2,11 +2,13 @@
 
 .featured {
     background-color: white !important;
+
     .header {
         margin-bottom: 40px;
         font-size: $largest;
         font-weight: 600;
     }
+
     .inner {
         max-width: 1600px;
         text-align: center;
@@ -14,14 +16,30 @@
         margin: auto;
         min-height: 400px;
 
-        .objects {
-            display: flex;
-            flex-direction: space-between;
-            flex-wrap: wrap;
-            justify-content: center;
+        .body {
 
-            a {
-                text-decoration: none;
+            .objects {
+                display: flex;
+                flex-direction: space-between;
+                flex-wrap: wrap;
+                justify-content: center;
+
+                a {
+                    text-decoration: none;
+                }
+
+
+            }
+
+            .browse {
+                padding-top: 20px;
+                padding-right: 50px;
+                display: flex;
+                justify-content: right;
+
+                .button {
+                    color: #672F90;
+                }
             }
         }
     }

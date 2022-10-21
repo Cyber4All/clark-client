@@ -1,10 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CollectionService } from 'app/core/collection.service';
-import { UriRetrieverService } from 'app/core/uri-retriever.service';
-import { LearningObjectService } from 'app/cube/learning-object.service';
-import { Guideline, LearningObject } from '@entity';
-import { Query } from 'app/interfaces/query';
-// import { AttributeService } from '../collection-feature/core/attribute.service';
 
 @Component({
   selector: 'clark-feature-cards-fiveotwo',
@@ -19,20 +13,14 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
   loading = true;
   updatedLearningObject;
   frameworkNames;
+  mapped = false;
 
-  constructor(
-    // private attributeService: AttributeService,
-    private collectionService: CollectionService,
-    private learningObjectService: LearningObjectService
-  ) { }
+  constructor() { }
 
   async ngOnInit() {
     this.loading = true;
     this.setDescription();
-    console.log(this.learningObject);
-    console.log(this.learningObject);
     this.setFrameworkName(this.learningObject);
-    console.log(this.frameworkNames);
     this.loading = false;
   }
 
@@ -43,6 +31,9 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
       mappings.push(mapping);
     });
     uniqueNames = [...new Set(mappings.map(x => x.source))];
+    if (uniqueNames.length > 0){
+        this.mapped = true;
+    }
     this.frameworkNames = uniqueNames;
   }
 

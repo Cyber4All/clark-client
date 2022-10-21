@@ -1,7 +1,8 @@
 @import 'vars.scss';
 
 .card__wrapper {
-    max-width: 240px;
+    width: 250px;
+    height: 415px;
     border: solid #672F90 2px;
     border-radius: 5px;
     margin: 10px;
@@ -44,15 +45,17 @@
                 padding: 10px 10px 0 0;
             }
         }
+
         .header__name{
             font-size: $large;
             color: $dark-grey;
-            padding-left: 10px;
+            padding: 0 10px;
             min-height: 55px;
             p{
                 margin: 10px 0 5px 0;
             }
         }
+
         .header__date{
             font-size: $normal;
             color: #672F90;
@@ -62,6 +65,7 @@
                 margin: 0 0 5px 0;
             }
         }
+
         .header__mappings{
             .mappings__title{
                 font-size: $small;
@@ -71,6 +75,7 @@
                     margin: 0;
                 }
             }
+
             .mappings__name{
                 display: flex;
                 flex-direction: column;
@@ -89,6 +94,7 @@
                         background-color: #f7ec2f;
                     }
                 }
+
                 .name__two{
                     padding: 5px 20px;
                     z-index: 2;
@@ -100,7 +106,6 @@
                 }
             }
         }
-
     }
 
     .card__info {
@@ -129,6 +134,7 @@
         z-index: -1;
     }
 }
+
 .one_slanty {
     position: relative;
     &::after{
