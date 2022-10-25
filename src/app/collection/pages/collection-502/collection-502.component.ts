@@ -43,7 +43,6 @@ export class Collection502Component implements OnInit {
         total
       } = await this.learningObjectService.getLearningObjects(query);
       this.learningObjects = learningObjects;
-      console.log(learningObjects);
       this.loading = false;
     } catch (e) {
       console.log(`Error: ${e}`);
