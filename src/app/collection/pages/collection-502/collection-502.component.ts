@@ -48,8 +48,4 @@ export class Collection502Component implements OnInit {
       console.log(`Error: ${e}`);
     }
   }
-
-  OnDestroy(): void {
-    this.navbarService.hide();
-  }
 }
