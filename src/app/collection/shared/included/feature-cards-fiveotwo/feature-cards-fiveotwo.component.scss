@@ -1,9 +1,10 @@
 @import 'vars.scss';
+@import '../../../collection-globals.scss';
 
 .card__wrapper {
     width: 250px;
     height: 415px;
-    border: solid #672F90 2px;
+    border: solid $darkPurple_502 2px;
     border-radius: 5px;
     margin: 10px;
 
@@ -23,7 +24,7 @@
 
             .box{
                 position: absolute;
-                background-color: #672F90;
+                background-color: $darkPurple_502;
                 width: 25px;
                 height: 54px;
                 padding-top: 2px;
@@ -35,7 +36,7 @@
                 color: white;
                 z-index: 2;
                 &::after{
-                    background-color: #672F90;
+                    background-color: $darkPurple_502;
                 }
             }
 
@@ -58,7 +59,7 @@
 
         .header__date{
             font-size: $normal;
-            color: #672F90;
+            color: $darkPurple_502;
             padding-left: 10px;
 
             p{
@@ -91,7 +92,7 @@
                     align-self: flex-start;
                     margin: 10px 0;
                     &::after{
-                        background-color: #f7ec2f;
+                        background-color: $yellow_502;
                     }
                 }
 
@@ -101,7 +102,7 @@
                     align-self: flex-end;
                     margin: 0;
                     &::after{
-                       background-color: #6AC8C1; 
+                       background-color: $blue_502; 
                     }
                 }
             }
