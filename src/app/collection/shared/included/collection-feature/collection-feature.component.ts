@@ -26,7 +26,7 @@ export class CollectionFeatureComponent implements OnInit {
   }
 
   navigateToBrowse() {
-    this.router.navigate(['/browse'], { queryParams: { collection: '502_project', currPage: 1 }});
+    this.router.navigate(['/browse'], { queryParams: { collection: this.collection, currPage: 1 }});
   }
 
 

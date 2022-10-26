@@ -5,15 +5,15 @@
             <div class="objects">
                 <div *ngFor="let object of learningObjects">
                     <a [routerLink]="['/details', object.author.username, object.cuid]">
-                        <clark-feature-cards-fiveotwo *ngIf="collection === '502'" [learningObject]="object"
+                        <clark-feature-cards-fiveotwo *ngIf="collection === '502_project'" [learningObject]="object"
                             [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
                         <clark-collection-feature-cards *ngIf="collection === 'ncyte'" [learningObject]="object"
                             [primaryColor]="primaryColor"></clark-collection-feature-cards>
                     </a>
                 </div>
             </div>
-            <div *ngIf="collection === '502'" class="browse">
-                <button (click)="navigateToBrowse()" aria-label="Browse 502 Project Curriculum" class="button">Browse
+            <div *ngIf="collection === '502_project'" class="browse">
+                <button (click)="navigateToBrowse()" aria-label="Browse Curriculum" class="button">Browse
                     All
                     <i class="fas fa-arrow-right"></i>
                 </button>
