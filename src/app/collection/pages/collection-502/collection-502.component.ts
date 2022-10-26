@@ -28,7 +28,7 @@ export class Collection502Component implements OnInit {
   async ngOnInit() {
 
     this.navbarService.show();
-    this.fetchLearningObjects(this.query);
+    await this.fetchLearningObjects(this.query);
 
   }
 
