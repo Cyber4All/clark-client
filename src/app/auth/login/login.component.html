@@ -33,7 +33,6 @@
                     autocomplete="password"
                 ></clark-input-field>
                 <a [routerLink]="['/auth/forgot-password']">Forgot Password?</a>
-                <a class="forgot" href="mailto:info@secured.team?subject=CLARK Username Recovery&body=Please provide the email associated with your CLARK account: ">Forgot username?</a>
         <span class="space"></span>
             </div>
             <button *ngIf="!isNameLogin" (click)="showPassField()" class="buttons">Next</button>

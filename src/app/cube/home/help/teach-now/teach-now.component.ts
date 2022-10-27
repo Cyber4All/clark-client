@@ -14,6 +14,8 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   // Topic variables
   topics: Topic[] = [];
   selectedTopic: string;
+  scrollDistance = 0; // used to track the distance scrolled
+  scrollPercent = 0.25; // percent of the distance to scroll when clicking the left or right scroll buttons
 
   // HTML elements
   @ViewChild('topicScroll') scroll: ElementRef;
@@ -35,7 +37,6 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
     this.objects = this.loadingObjects;
     this.relevancyService.getTopics().then(topics => {
       this.topics = topics;
-
       if (topics.length > 0) {
         this.selectTopic(this.topics[0]._id);
       }
@@ -54,8 +55,40 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    * @param event The scroll event
    */
   horizontalScroll(event) {
+    this.scrollDistance += event.deltaY;
+    // The max distance to scroll right
+    // 203 is the pixel length from the shadow left and right divs
+    // The (window.outerWidth / 2) accounts for overscrolling to the right
+    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203) {
+      this.scrollDistance = this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203;
+    }
+    // The min distance to scroll left
+    if(this.scrollDistance < 0) {
+      this.scrollDistance = 0;
+    }
     this.scroll.nativeElement.scrollLeft += event.deltaY;
     event.preventDefault();
+  }
+
+  horizontalScrollOnClick(right: boolean) {
+    // right determines the direction to scroll
+    right ? this.scrollDistance += window.outerWidth / 2 :
+            this.scrollDistance -= window.outerWidth / 2;
+    // The max distance to scroll right
+    // 203 comes from the shadow left and right divs
+    // The (window.outerWidth / 2) accounts for overscrolling to the right
+    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203) {
+      this.scrollDistance = this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203;
+    }
+    // The min distance to scroll left
+    if(this.scrollDistance < 0) {
+      this.scrollDistance = 0;
+    }
+    this.scroll.nativeElement.scrollTo({
+      top: 0,
+      left: this.scrollDistance,
+      behavior: 'smooth'
+    });
   }
 
   /**
