@@ -1017,7 +1017,7 @@ export class BuilderStore {
         } else if (e.status === 400) {
           this.validator.errors.saveErrors.set(
             'name',
-           JSON.parse(e.error).message
+           e.error.message
           );
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
