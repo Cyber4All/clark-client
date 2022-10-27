@@ -43,7 +43,7 @@
                     </clark-context-menu>
                     
                     <div class="logged-out" *ngIf="!isLoggedIn">
-                        <a class="login-button" id="clark-sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}" (click)="handleRedirect()">Sign In</a>
+                        <a class="login-button" id="clark-sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">Sign In</a>
                         <a class="register-button" [routerLink]="['auth', 'register']" [queryParams]="{redirectUrl: redirectUrl}">Register</a>
                     </div>
                 </div>
@@ -109,7 +109,7 @@
             <div class="logged-out side-padding-20" *ngIf="!isLoggedIn">
                 <div class="greeting">Hi there!</div>
                 <div class="auth-buttons">
-                    <button id="clark-sign-in" class="button sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}" (click)="handleRedirect()">Sign In</button>
+                    <button id="clark-sign-in" class="button sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">Sign In</button>
                     <button class="button register" [routerLink]="['auth', 'register']" [queryParams]="{redirectUrl: redirectUrl}">Register</button>
                 </div>
             </div>
