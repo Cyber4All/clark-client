@@ -1,4 +1,5 @@
 @import 'vars.scss';
+@import '../../../collection-globals.scss';
 
 .featured {
     background-color: white !important;
@@ -38,7 +39,7 @@
                 justify-content: right;
 
                 .button {
-                    color: #672F90;
+                    color: $darkPurple_502;
                 }
             }
         }
