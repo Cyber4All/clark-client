@@ -1,0 +1,34 @@
+<div class="card__wrapper">
+    <div class="card__header">
+        <div class="card__top">
+            <div class="box"></div>
+            <div class="header__length one_slanty">
+                <p>{{ learningObject?.length | titlecase }}</p>
+            </div>
+            <div class="header__logo">
+                <a href="https://502project.org" target="_blank">
+                    <img src="../assets/images/collections/502_project.png" class="logo" alt="502 Logo">
+                </a>
+            </div>
+        </div>
+        <div class="header__name">
+            <p>{{ (learningObject?.name.length >= 40)? (learningObject?.name | slice:0:40)+' ...':(learningObject?.name) }}</p>
+        </div>
+        <div class="header__date">
+            <p>{{ learningObject?.date | date:'mediumDate' }}</p>
+        </div>
+        <div *ngIf="mapped" class="header__mappings">
+            <div class="mappings__title">
+                <p>Mapped to</p>
+            </div>
+            <div class="mappings__name">
+                <p class="name__one slanty">{{frameworkNames[0]}}</p>
+                <p class="name__two slanty">{{frameworkNames[1]}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="card__info">
+        <div class="info__desc">
+            <div [innerHtml]="learningObject.description"></div>
+        </div>
+</div>

@@ -13,7 +13,6 @@ import { environment } from '@env/environment';
 import { ToastrOvenService } from './shared/modules/toaster/notification.service';
 import { CookieAgreementService } from './core/cookie-agreement.service';
 import { SubscriptionAgreementService } from './core/subscription-agreement.service';
-import { NavbarService } from './core/navbar.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Component({
@@ -141,9 +140,15 @@ export class ClarkComponent implements OnInit {
 
     this.setPageTitle();
 
-    if (this.cookies.check('token') && this.cookies.check('identityId')) {
-      this.authService.setSsoSession();
+    if (this.cookies.check('ssoToken')) {
+      this.authService.setSsoSession(this.cookies.get('ssoToken'));
+      const redirect = localStorage.getItem('ssoRedirect');
+      this.router.navigateByUrl(redirect);
+      localStorage.removeItem('ssoRedirect');
+    } else if(localStorage.getItem('ssoRedirect')) {
+      localStorage.removeItem('ssoRedirect');
     }
+
   }
 
   reloadPage() {
