@@ -1,0 +1,153 @@
+@import 'vars.scss';
+@import '../../../collection-globals.scss';
+
+.card__wrapper {
+    width: 250px;
+    height: 415px;
+    border: solid $darkPurple_502 2px;
+    border-radius: 5px;
+    margin: 10px;
+
+    .card__header {
+        width: 100%;
+        display: inline-block;
+        text-align: left;
+        border-radius: 5px 5px 0px 0px;
+        margin: 0;
+
+        .card__top {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            font-size: $normal;
+
+            .box{
+                position: absolute;
+                background-color: $darkPurple_502;
+                width: 25px;
+                height: 54px;
+                padding-top: 2px;
+            }
+
+            .header__length{
+                position: relative;
+                padding: 2px 15px 2px 10px;
+                color: white;
+                z-index: 2;
+                &::after{
+                    background-color: $darkPurple_502;
+                }
+            }
+
+            .logo {
+                max-width: 90px;
+                max-height: 50px;
+                padding: 10px 10px 0 0;
+            }
+        }
+
+        .header__name{
+            font-size: $large;
+            color: $dark-grey;
+            padding: 0 10px;
+            min-height: 55px;
+            p{
+                margin: 10px 0 5px 0;
+            }
+        }
+
+        .header__date{
+            font-size: $normal;
+            color: $darkPurple_502;
+            padding-left: 10px;
+
+            p{
+                margin: 0 0 5px 0;
+            }
+        }
+
+        .header__mappings{
+            .mappings__title{
+                font-size: $small;
+                color: $dark-grey;
+                padding-left: 10px;
+                p{
+                    margin: 0;
+                }
+            }
+
+            .mappings__name{
+                display: flex;
+                flex-direction: column;
+                font-size: $small;
+                color: $dark-grey;
+                text-align: center;
+                padding: 0 10px;
+
+                .name__one{
+                    padding: 5px 20px;
+                    min-width: 125px;
+                    z-index: 2;
+                    align-self: flex-start;
+                    margin: 10px 0;
+                    &::after{
+                        background-color: $yellow_502;
+                    }
+                }
+
+                .name__two{
+                    padding: 5px 20px;
+                    z-index: 2;
+                    align-self: flex-end;
+                    margin: 0;
+                    &::after{
+                       background-color: $blue_502; 
+                    }
+                }
+            }
+        }
+    }
+
+    .card__info {
+        padding: 10px;
+
+        .info__desc {
+            text-align: left;
+            font-size: $small;
+            color: $dark-grey;
+            min-height: 110px;
+            margin-bottom: 5px;
+        }
+    }
+}
+
+.slanty {
+    position: relative;
+    &::after{
+        content: "";
+        position: absolute;
+        transform: skewX(-15deg);
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+}
+
+.one_slanty {
+    position: relative;
+    &::after{
+        content: "";
+        position: absolute;
+        display: block;
+        transform-origin: bottom left;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transform: skew(-20deg, 0deg);
+    }
+}

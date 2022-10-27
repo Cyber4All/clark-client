@@ -7,7 +7,7 @@ import {
 import { environment } from '@env/environment';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { User, LearningObject } from '@entity';
+import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
 
@@ -86,24 +86,21 @@ export class AuthService {
    * this method assumes the user has just been successfully
    * linked back to the homepage through SSO and depends on cookies
    * set by the SSO routehandler
+   *
+   * @param cookieString the cookie set by the SSO routehandler
+   * @memberof AuthService
    */
-  public setSsoSession() {
-    const identityId = this.cookies.get('identityId');
-    const token = this.cookies.get('token');
-    const domain = environment.production ? 'clark.center' : 'localhost';
-    this.cookies.delete('identityId', '/', domain, false, 'Lax');
-    this.cookies.delete('token', '/', domain, false, 'Lax');
-    const sessionObject = {
-      user: this.user,
-      tokens: {
-        bearer: this.cookies.get('presence'),
-        openId:{
-          IdentityId: identityId,
-          Token: token
-        }
-      }
-    };
-    this.setSession(sessionObject);
+  public setSsoSession(cookieString: string) {
+    const token = JSON.parse(cookieString);
+      const user = token.user;
+      const tokens: Tokens = {bearer: token.bearer, openId: token.openId};
+      this.cookies.set('presence', tokens.bearer);
+      this.setSession({
+        user: user,
+        tokens: tokens
+      });
+      const domain = environment.production ? 'clark.center' : 'localhost';
+      this.cookies.delete('ssoToken', '/', domain, false, 'Lax');
   }
 
   /**
@@ -130,8 +127,6 @@ export class AuthService {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     document.cookie =
       'presence=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    // We need to update client subscriptions to this.user in order to not use this
-    window.location.reload();
   }
 
   private clearAuthHeaders() {
@@ -390,6 +385,7 @@ export class AuthService {
   async logout(): Promise<void> {
     this.clearAuthHeaders();
     this.endSession();
+    location.reload();
   }
 
   /**
