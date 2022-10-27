@@ -40,19 +40,20 @@ export class PrimaryNavbarComponent implements OnInit {
     private userService: UserService,
     private router: Router,
   ) {
-    this.router.events
+    if(!this.auth.user) {
+      this.router.events
       .subscribe(
         (event: NavigationEvent) => {
           if(event instanceof NavigationStart) {
-            if(!event.url.includes('/auth/login') || !event.url.includes('/auth/register')){
+            const url = event.url.split('/');
+            if(url[1] !== 'auth') {
               this.redirectUrl = event.url;
+              localStorage.setItem('ssoRedirect', (this.redirectUrl));
             }
           }
-        });
-  }
-
-  handleRedirect(){
-    localStorage.setItem('ssoRedirect', (this.redirectUrl));
+        }
+      );
+    }
   }
 
   async ngOnInit(): Promise<void> {
