@@ -1,13 +1,22 @@
 <div class="featured">
     <div class="inner">
         <h1 class="header" id="header">Featured Learning Objects</h1>
-        <div class="objects">
-            <div *ngFor="let object of learningObjects">
-                <a [routerLink]="['/details', object.author.username, object.cuid]">
-                    <!-- change to conditional based on collection after debug -->
-                    <clark-feature-cards-fiveotwo *ngIf="collection === '502'" [learningObject]="object" [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
-                    <clark-collection-feature-cards *ngIf="collection === 'ncyte'"  [learningObject]="object" [primaryColor]="primaryColor"></clark-collection-feature-cards>
-                </a>
+        <div class="body">
+            <div class="objects">
+                <div *ngFor="let object of learningObjects">
+                    <a [routerLink]="['/details', object.author.username, object.cuid]">
+                        <clark-feature-cards-fiveotwo *ngIf="collection === '502_project'" [learningObject]="object"
+                            [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
+                        <clark-collection-feature-cards *ngIf="collection === 'ncyte'" [learningObject]="object"
+                            [primaryColor]="primaryColor"></clark-collection-feature-cards>
+                    </a>
+                </div>
+            </div>
+            <div *ngIf="collection === '502_project'" class="browse">
+                <button (click)="navigateToBrowse()" aria-label="Browse Curriculum" class="button">Browse
+                    All
+                    <i class="fas fa-arrow-right"></i>
+                </button>
             </div>
         </div>
     </div>

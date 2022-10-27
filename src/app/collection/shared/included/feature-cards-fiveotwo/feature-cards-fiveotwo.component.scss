@@ -1,8 +1,10 @@
 @import 'vars.scss';
+@import '../../../collection-globals.scss';
 
 .card__wrapper {
-    max-width: 240px;
-    border: solid #672F90 2px;
+    width: 250px;
+    height: 415px;
+    border: solid $darkPurple_502 2px;
     border-radius: 5px;
     margin: 10px;
 
@@ -22,7 +24,7 @@
 
             .box{
                 position: absolute;
-                background-color: #672F90;
+                background-color: $darkPurple_502;
                 width: 25px;
                 height: 54px;
                 padding-top: 2px;
@@ -34,7 +36,7 @@
                 color: white;
                 z-index: 2;
                 &::after{
-                    background-color: #672F90;
+                    background-color: $darkPurple_502;
                 }
             }
 
@@ -44,24 +46,27 @@
                 padding: 10px 10px 0 0;
             }
         }
+
         .header__name{
             font-size: $large;
             color: $dark-grey;
-            padding-left: 10px;
+            padding: 0 10px;
             min-height: 55px;
             p{
                 margin: 10px 0 5px 0;
             }
         }
+
         .header__date{
             font-size: $normal;
-            color: #672F90;
+            color: $darkPurple_502;
             padding-left: 10px;
 
             p{
                 margin: 0 0 5px 0;
             }
         }
+
         .header__mappings{
             .mappings__title{
                 font-size: $small;
@@ -71,6 +76,7 @@
                     margin: 0;
                 }
             }
+
             .mappings__name{
                 display: flex;
                 flex-direction: column;
@@ -86,21 +92,21 @@
                     align-self: flex-start;
                     margin: 10px 0;
                     &::after{
-                        background-color: #f7ec2f;
+                        background-color: $yellow_502;
                     }
                 }
+
                 .name__two{
                     padding: 5px 20px;
                     z-index: 2;
                     align-self: flex-end;
                     margin: 0;
                     &::after{
-                       background-color: #6AC8C1; 
+                       background-color: $blue_502; 
                     }
                 }
             }
         }
-
     }
 
     .card__info {
@@ -129,6 +135,7 @@
         z-index: -1;
     }
 }
+
 .one_slanty {
     position: relative;
     &::after{

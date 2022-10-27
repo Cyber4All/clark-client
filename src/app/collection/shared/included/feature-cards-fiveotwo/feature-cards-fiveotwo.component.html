@@ -12,18 +12,18 @@
             </div>
         </div>
         <div class="header__name">
-            <p>{{ (learningObject?.name.length >= 45)? (learningObject?.name | slice:0:45)+' ...':(learningObject?.name) }}</p>
+            <p>{{ (learningObject?.name.length >= 40)? (learningObject?.name | slice:0:40)+' ...':(learningObject?.name) }}</p>
         </div>
         <div class="header__date">
             <p>{{ learningObject?.date | date:'mediumDate' }}</p>
         </div>
-        <div class="header__mappings">
+        <div *ngIf="mapped" class="header__mappings">
             <div class="mappings__title">
                 <p>Mapped to</p>
             </div>
             <div class="mappings__name">
-                <p class="name__one slanty">CSTA</p>
-                <p class="name__two slanty">NICE Workforce Tasks</p>
+                <p class="name__one slanty">{{frameworkNames[0]}}</p>
+                <p class="name__two slanty">{{frameworkNames[1]}}</p>
             </div>
         </div>
     </div>
@@ -31,5 +31,4 @@
         <div class="info__desc">
             <div [innerHtml]="learningObject.description"></div>
         </div>
-    </div>
 </div>
