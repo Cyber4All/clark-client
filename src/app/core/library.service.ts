@@ -122,8 +122,9 @@ export class LibraryService {
      * 2. Error is caught and piped
      * 3. Call @function downloadBundle() to start local bundle download
      */
+    this.updateUser();
     this.http.head(bundle, {
-      headers: this.headers,
+      headers: new HttpHeaders(document.cookie),
       withCredentials: true
     }).pipe(
       catchError((error) => this.handleError(error))
