@@ -94,12 +94,12 @@ export class AuthService {
     const token = JSON.parse(cookieString);
       const user = token.user;
       const tokens: Tokens = {bearer: token.bearer, openId: token.openId};
-      this.cookies.set('presence', tokens.bearer);
+      const domain = environment.production ? 'clark.center' : 'localhost';
+      this.cookies.set('presence', tokens.bearer, 604800000, '/', domain, true, 'None');
       this.setSession({
         user: user,
         tokens: tokens
       });
-      const domain = environment.production ? 'clark.center' : 'localhost';
       this.cookies.delete('ssoToken', '/', domain, false, 'Lax');
   }
 
