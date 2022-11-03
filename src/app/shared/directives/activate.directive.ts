@@ -14,7 +14,7 @@ export class ActivateDirective {
     this.el.nativeElement.style.cursor = 'pointer';
   }
 
-  @HostListener('click', ['$event'])
+  @HostListener('mousedown', ['$event'])
   @HostListener('keypress', ['$event'])
   handleActivate(event: KeyboardEvent | MouseEvent) {
 
