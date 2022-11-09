@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CollectionService } from 'app/core/collection.service';
-import { Lightsail } from 'aws-sdk';
 
 @Component({
   selector: 'clark-feature-cards-fiveotwo',
