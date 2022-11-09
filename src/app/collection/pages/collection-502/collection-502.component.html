@@ -1,4 +1,14 @@
-<div class="root_502">
+<div class="root_502" [attr.data-theme]="currentTheme">
+    <nav>
+        <div class="theme-switch-wrapper">
+             <label class="theme-switch" for="checkbox">
+          <input type="checkbox" id="checkbox" />
+          <div class="slider round"></div>
+        </label>
+          <em>Enable Dark Mode!</em>
+        </div>
+      
+      </nav>
     <clark-502-header></clark-502-header>
     <clark-collection-feature [collection]="'502_project'"  [learningObjects]="learningObjects"></clark-collection-feature>
     <clark-502-stats></clark-502-stats>

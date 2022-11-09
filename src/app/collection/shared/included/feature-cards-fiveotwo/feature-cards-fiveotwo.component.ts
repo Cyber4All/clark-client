@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CollectionService } from 'app/core/collection.service';
+import { Lightsail } from 'aws-sdk';
 
 @Component({
   selector: 'clark-feature-cards-fiveotwo',
@@ -14,14 +16,24 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
   updatedLearningObject;
   frameworkNames;
   mapped = false;
+  theme = 'light';
 
-  constructor() { }
+  constructor(
+    private collectionService: CollectionService
+  ) { }
 
   async ngOnInit() {
     this.loading = true;
     this.setDescription();
     this.setFrameworkName(this.learningObject);
     this.loading = false;
+    this.collectionService.darkMode502.subscribe(mode => {
+      if(mode){
+        this.theme = 'dark';
+      } else{
+        this.theme = 'light';
+      }
+    });
   }
 /**
  * Creates an array of all the unique mappings of an object
