@@ -54,6 +54,7 @@ import { ProfileLearningObjectsComponent } from './user-profile/components/profi
 import { ProfileHeaderComponent } from './user-profile/components/profile-header/profile-header.component';
 import { EditProfileComponent } from './user-profile/components/edit-profile/edit-profile.component';
 import { HomeModule } from './home/home.module';
+import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/philosophy.component';
 
 
 /**
@@ -87,6 +88,7 @@ import { HomeModule } from './home/home.module';
     ProfileLearningObjectsComponent,
     ProfileHeaderComponent,
     EditProfileComponent,
+    AboutPhilosophyComponent,
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
