@@ -7,4 +7,10 @@
     articulate
     what they have learned.</p>
   <br>
+  <div class="blooms-cards">
+    <div *ngFor="let card of bloomCards">
+      <i [ngClass]="card.icon"></i>
+      <p [innerText]="card.text"></p>
+    </div>
+  </div>
 </div>
