@@ -1,12 +1,37 @@
 @import 'vars.scss';
 @import '../../../collection-globals.scss';
+:root {
+    --background-color: white;
+    --primary-text: black;
+    --secondary-text: #32363f;
+    --border: #672F90;
+}
 
+[data-theme="light"]{
+    --background-color: white;
+    --primary-text: black;
+    --secondary-text: #32363f;
+    --border: #672F90;
+}
+
+[data-theme="dark"] {
+    --background-color: #32363F;
+    --primary-text: #FFFFFF;
+    --secondary-text: #FFFFFF;
+    --border: #F7EC2F;
+}
 .card__wrapper {
     width: 250px;
     height: 415px;
-    border: solid $darkPurple_502 2px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: var(--border);
     border-radius: 5px;
     margin: 10px;
+    background-color: var(--background-color);
+    a:visited {
+        color: var(--secondary-text);
+    }
 
     .card__header {
         width: 100%;
@@ -22,9 +47,23 @@
             align-items: center;
             font-size: $normal;
 
-            .box{
+            .length {
+                padding-left: 10px;
+            }
+
+            .box_light{
                 position: absolute;
-                background-color: $darkPurple_502;
+                background-color: var(--border);
+                width: 25px;
+                height: 54px;
+                padding-top: 2px;
+            }
+
+            .box_dark{
+                position: absolute;
+                top: 0;
+                right: 0;
+                background-color: var(--border);
                 width: 25px;
                 height: 54px;
                 padding-top: 2px;
@@ -36,7 +75,7 @@
                 color: white;
                 z-index: 2;
                 &::after{
-                    background-color: $darkPurple_502;
+                    background-color: var(--border);
                 }
             }
 
@@ -49,9 +88,9 @@
 
         .header__name{
             font-size: $large;
-            color: $dark-grey;
             padding: 0 10px;
             min-height: 55px;
+            color: var(--secondary-text);
             p{
                 margin: 10px 0 5px 0;
             }
@@ -59,10 +98,11 @@
 
         .header__date{
             font-size: $normal;
-            color: $darkPurple_502;
+            color: var(--border);
             padding-left: 10px;
 
             p{
+
                 margin: 0 0 5px 0;
             }
         }
@@ -70,9 +110,10 @@
         .header__mappings{
             .mappings__title{
                 font-size: $small;
-                color: $dark-grey;
+                color: var(--secondary-text);
                 padding-left: 10px;
                 p{
+                    
                     margin: 0;
                 }
             }
@@ -115,7 +156,7 @@
         .info__desc {
             text-align: left;
             font-size: $small;
-            color: $dark-grey;
+            color: var(--secondary-text);
             min-height: 110px;
             margin-bottom: 5px;
         }
@@ -149,5 +190,20 @@
         left: 0;
         z-index: -1;
         transform: skew(-20deg, 0deg);
+    }
+}
+.two_slanty {
+    position: relative;
+    &::after{
+        content: "";
+        position: absolute;
+        display: block;
+        transform-origin: bottom left;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transform: skew(20deg, 0deg);
     }
 }

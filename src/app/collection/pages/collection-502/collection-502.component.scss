@@ -14,6 +14,7 @@
     display: flex;
     align-items: center;
     background-color: var(--background-color);
+    padding: 25px 50px 0 50px;
   
     em {
       margin-left: 10px;
@@ -68,4 +69,12 @@
   
   .slider.round:before {
     border-radius: 50%;
+  }
+
+  @media (max-width: 1270px) {
+    .theme-switch-wrapper{
+      padding-bottom: 25px;
+      display: flex;
+      justify-content: center;
+    }
   }

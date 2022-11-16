@@ -1,18 +1,32 @@
 <div class="card__wrapper" [attr.data-theme]="theme">
     <div class="card__header">
-        <div class="card__top">
-            <div class="box"></div>
-            <div class="header__length one_slanty">
-                <p>{{ learningObject?.length | titlecase }}</p>
-            </div>
-            <div class="header__logo">
-                <a href="https://502project.org" target="_blank">
+        <div *ngIf="theme === 'light'">
+            <div class="card__top">
+                <div class="box_light"></div>
+                <div class="header__length one_slanty">
+                    <p>{{ learningObject?.length | titlecase }}</p>
+                </div>
+                <div class="header__logo" href="https://502project.org" target="_blank">
                     <img src="../assets/images/collections/502_project.png" class="logo" alt="502 Logo">
-                </a>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="theme === 'dark'">
+            <div class="card__top">
+                <p class="length">{{ learningObject?.length | titlecase }}</p>
+                <div class="header__length two_slanty">
+                    <div class="header__logo" href="https://502project.org" target="_blank">
+                        <img src="../assets/images/collections/502_project.png" class="logo" alt="502 Logo">
+                        <div class="box_dark"></div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
         <div class="header__name">
-            <p>{{ (learningObject?.name.length >= 40)? (learningObject?.name | slice:0:40)+' ...':(learningObject?.name) }}</p>
+            <p>{{ (learningObject?.name.length >= 40)? (learningObject?.name | slice:0:40)+' ...':(learningObject?.name)
+                }}</p>
         </div>
         <div class="header__date">
             <p>{{ learningObject?.date | date:'mediumDate' }}</p>
@@ -31,4 +45,4 @@
         <div class="info__desc">
             <div [innerHtml]="learningObject.description"></div>
         </div>
-</div>
+    </div>

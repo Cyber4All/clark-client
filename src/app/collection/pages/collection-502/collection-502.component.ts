@@ -37,16 +37,24 @@ export class Collection502Component implements OnInit {
 
     const switchTheme = (e: Event) => {
       if ((e.target as HTMLInputElement).checked) {
-        this.currentTheme = 'dark';
         this.collectionService.changeStatus502(true);
       } else {
-        this.currentTheme = 'light';
         this.collectionService.changeStatus502(false);
       }
     };
 
     toggleSwitch.addEventListener('change', switchTheme);
 
+    this.collectionService.darkMode502.subscribe(mode => {
+      if(mode){
+        this.currentTheme = 'dark';
+      } else{
+        this.currentTheme = 'light';
+      }
+    });
+if(this.currentTheme === 'dark'){
+      document.getElementById('checkbox').click();
+    };
   }
 
   async fetchLearningObjects(query: Query) {

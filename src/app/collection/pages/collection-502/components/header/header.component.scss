@@ -28,17 +28,38 @@
 }
 .header {
     display: flex;
-    flex-wrap: wrap;
     width: 100%;
     justify-content: space-between;
     align-items: center;
     background-color: var(--background-color);
     z-index: 0;
 }
+
+.box_logo{
+    position: absolute;
+    background-color: $blue_502;
+    width: 200px;
+    height: 220px;
+    padding-top: 2px;
+}
+
+.box_headbox{
+    position: absolute;
+    right: -50px;
+    background-color: $yellow_502;
+    width: 200px;
+    height: 138px;
+
+}
+
 .logo_wrapper {
-    margin: 42px auto;
-    max-width: 100%;
+    margin: 42px 0;
+    padding: 25px 220px 25px 75px;
+    // max-width: 100%;
     z-index: 2;
+    &::after{
+        background-color: $blue_502;
+    }
 }
 .logo {
     order: 1;
@@ -46,21 +67,24 @@
     z-index: 2;
 }
 
+
+
 .headbox-container {
     order: 2;
     flex-basis: 60%;
-    padding: 60px 0;
+    padding: 80px 0;
     align-self: stretch;
-    overflow-x: hidden;
     z-index: 2;
 }
 .headbox {
     display: flex;
-    background-color: #F7EC2F;
-    height: 100%;
-    width: 100%;
     align-items: center;
     justify-content: space-between;
+    right: 50px;
+    z-index: 2;
+    &::after{
+        background-color: #F7EC2F;
+    }
     h1 {
         font-size: $largest;
         padding-left: 5%;
@@ -68,7 +92,7 @@
         text-align: center;
         color: #535D69;
     }
-    z-index: 2;
+    
 }
 .involved {
     background-color: $darkPurple_502;
@@ -84,7 +108,33 @@
     z-index: 2;
 }
 
-@media screen and (max-width: 1199px){
+.slanty {
+    position: relative;
+    &::after{
+        content: "";
+        position: absolute;
+        transform: skewX(-15deg);
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: -1;
+    }
+}
+
+@media (max-width: 1315px) {
+
+    .box_headbox{
+        height: 183px;
+    }
+    
+    .box_logo{
+        height: 221px;
+    }
+    
+}
+
+@media screen and (max-width: 1270px){
     .visual1 {
         display: none;
     }
@@ -96,8 +146,9 @@
         align-items: center;
     }
     .logo_wrapper {
-        max-width: 100%;
-        margin: 20px auto;
+        width: 100%;
+        margin: 0;
+        padding: 25px 0;
         align-items: center;
     }
     .logo {
@@ -115,6 +166,7 @@
         flex-direction: column;
         padding: 25px 0px 50px 0px;
         align-items: center;
+        right: 0;
         h1 {
             font-size: $larger;
             padding: 0;
@@ -122,5 +174,15 @@
             text-align: center;
             color: #535D69;
         }
+    }
+    .box_headbox{
+        display: none;
+    }
+    .box_logo{
+        display: none;
+    }
+
+    .slanty::after{
+        transform: skewX(0deg);
     }
 }
