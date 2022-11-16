@@ -152,20 +152,19 @@ export class LearningObjectService {
    * @param learningObjectId
    * @param authorUsername
    */
-  createRevision(cuid: string, authorUsername: string) {
+  async createRevision(cuid: string, authorUsername: string): Promise<any> {
     const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, cuid);
-    return this.http
-    .post(
-      route, {},
-      { withCredentials: true }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise().then(response => {
-      return response;
-    });
+    const response = await this.http
+      .post(
+        route, {},
+        { withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
+    return response;
   }
 
   private handleError(error: HttpErrorResponse) {
