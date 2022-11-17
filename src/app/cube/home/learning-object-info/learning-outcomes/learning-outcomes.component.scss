@@ -27,10 +27,18 @@
                 flex-direction: column;
                 align-items: center;
                 max-height: 100px;
-                overflow-y: auto;
+                -webkit-transform : rotateY(0deg);
+                -ms-transform     : rotateY(0deg);
+                transform         : rotateY(0deg);
+            }
 
-                .description {
-                    text-align: center;
+            .blooms-description {
+                text-align: center;
+                -webkit-transform : rotateY(-180deg);
+                -ms-transform     : rotateY(-180deg);
+                transform         : rotateY(-180deg);
+
+                p {
                     margin: 0;
                 }
             }
