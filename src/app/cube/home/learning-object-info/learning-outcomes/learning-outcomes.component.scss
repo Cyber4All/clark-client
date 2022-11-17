@@ -16,11 +16,23 @@
 
         .blooms-card {
             padding: 20px 40px;
+            min-width: 175px;
+            max-width: 175px;
+            height: 100px;
             background-color: $primary-white;
             border: 2px solid $primary-white;
             border-radius: 8px;
-            min-width: 175px;
-            max-width: 175px;
+            transform-style: preserve-3d;
+            position: relative;
+
+            .blooms-face {
+                display: block;
+                position: absolute;
+                text-align: center;
+                width: 175px;
+                height: 175px;
+                backface-visibility: hidden;
+            }
 
             .blooms-content {
                 display: flex;
@@ -43,7 +55,7 @@
                 }
             }
 
-            &.clicked {
+            &:hover {
                 border: 2px solid $light-blue;
             }
         }
@@ -52,6 +64,12 @@
 @media (max-width: 950px){
     .content{
         margin-right: 0;
+
+        .blooms-cards {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
     }
     h1{
         text-align: center;
