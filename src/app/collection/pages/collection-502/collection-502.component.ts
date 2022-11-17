@@ -46,11 +46,7 @@ export class Collection502Component implements OnInit {
     toggleSwitch.addEventListener('change', switchTheme);
 
     this.collectionService.darkMode502.subscribe(mode => {
-      if(mode){
-        this.currentTheme = 'dark';
-      } else{
-        this.currentTheme = 'light';
-      }
+      this.currentTheme = mode ? 'dark' : 'light';
     });
 if(this.currentTheme === 'dark'){
       document.getElementById('checkbox').click();
