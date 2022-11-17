@@ -27,11 +27,7 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
     this.setFrameworkName(this.learningObject);
     this.loading = false;
     this.collectionService.darkMode502.subscribe(mode => {
-      if(mode){
-        this.theme = 'dark';
-      } else{
-        this.theme = 'light';
-      }
+      this.theme = mode ? 'dark' : 'light';
     });
   }
 /**
