@@ -40,6 +40,7 @@
                 flex-direction: column;
                 align-items: center;
                 max-height: 100px;
+                cursor: default;
                 -webkit-transform : rotateY(0deg);
                 -ms-transform     : rotateY(0deg);
                 transform         : rotateY(0deg);
@@ -52,6 +53,7 @@
                 transform         : rotateY(-180deg);
 
                 p {
+                    cursor: default;
                     margin: 0;
                 }
             }
