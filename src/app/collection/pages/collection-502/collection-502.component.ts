@@ -48,7 +48,7 @@ export class Collection502Component implements OnInit {
     this.collectionService.darkMode502.subscribe(mode => {
       this.currentTheme = mode ? 'dark' : 'light';
     });
-if(this.currentTheme === 'dark'){
+    if(this.currentTheme === 'dark'){
       document.getElementById('checkbox').click();
     };
   }
