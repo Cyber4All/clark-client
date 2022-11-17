@@ -10,8 +10,7 @@
   <div class="blooms-cards">
     <div 
       *ngFor="let card of bloomCards" 
-      (mouseenter)="toggleFlip(card, true)" (mouseleave)="toggleFlip(card, false)"
-      (click)="card.clicked = !card.clicked"
+      (mouseenter)="toggleFlip(card, 'active')" (mouseleave)="toggleFlip(card, 'inactive')"
       class="blooms-card"
       [@flipState]="card.flipped"
       >

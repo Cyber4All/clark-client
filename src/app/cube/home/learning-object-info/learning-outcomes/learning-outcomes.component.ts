@@ -45,7 +45,7 @@ export class LearningOutcomesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  toggleFlip(card: any, bool: boolean) {
-    card.flipped = bool ? 'active' : 'inactive';
+  toggleFlip(card: any, state: string) {
+    card.flipped = state;
   }
 }
