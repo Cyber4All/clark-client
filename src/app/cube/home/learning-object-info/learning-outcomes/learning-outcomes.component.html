@@ -8,9 +8,26 @@
     what they have learned.</p>
   <br>
   <div class="blooms-cards">
-    <div *ngFor="let card of bloomCards">
-      <i [ngClass]="card.icon"></i>
-      <p [innerText]="card.text"></p>
+    <div 
+      *ngFor="let card of bloomCards" 
+      (mouseenter)="card.flipped = true"
+      (mouseleave)="card.flipped = false"
+      (click)="card.clicked = !card.clicked"
+      class="blooms-card"
+      [ngClass]="{clicked: card.clicked}"
+      >
+      <div *ngIf="!card.flipped" class="blooms-content">
+        <i [ngClass]="card.icon"></i>
+        <p [innerText]="card.text"></p>
+      </div>
+      <div *ngIf="card.flipped" class="blooms-content">
+        <p [innerText]="card.description" class="description"></p>
+      </div>
     </div>
   </div>
 </div>
+
+<ng-template #flipped>
+  <p [innerText]="card.text">
+  </p>
+</ng-template>

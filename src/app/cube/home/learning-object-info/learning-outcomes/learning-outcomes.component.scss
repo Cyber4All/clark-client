@@ -1,12 +1,45 @@
+@import 'vars.scss';
+
 .content {
     margin-top: 50px;
     margin-right: 50px;
     padding-left: 0px;
     display: flex;
     flex-direction: column;
-    // .taxonomy{
-    //   margin-bottom: 400px;
-    // }
+    
+    .blooms-cards {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        gap: 25px;
+        color: $light-blue;
+
+        .blooms-card {
+            padding: 20px 40px;
+            background-color: $primary-white;
+            border: 2px solid $primary-white;
+            border-radius: 8px;
+            min-width: 175px;
+            max-width: 175px;
+
+            .blooms-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                max-height: 100px;
+                overflow-y: auto;
+
+                .description {
+                    text-align: center;
+                    margin: 0;
+                }
+            }
+
+            &.clicked {
+                border: 2px solid $light-blue;
+            }
+        }
+    }
 }
 @media (max-width: 950px){
     .content{

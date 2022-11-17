@@ -8,28 +8,27 @@ import { Component, OnInit } from '@angular/core';
 export class LearningOutcomesComponent implements OnInit {
 
   bloomCards = [{
-    icon: 'fal fa-cloud',
+    icon: 'fal fa-cloud fa-3x',
     text: 'Remember & Understand',
-    description: `1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-    Morbi tincidunt ornare massa eget. Ut tellus elementum sagittis vitae et.`
+    flipped: false,
+    clicked: false,
+    description: `Recalling relevant knowledge from long term memory and making sense of the knowledge that you have gained.`
   }, {
-    icon: 'fal fa-bolt',
+    icon: 'fal fa-bolt fa-3x',
     text: 'Apply & Analyze',
-    description: `2. Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-    Morbi tincidunt ornare massa eget. Ut tellus elementum sagittis vitae et.`
+    flipped: false,
+    clicked: false,
+    description: `Using knowledge that you have gained and understanding how various pieces of knowledge are related.`
   }, {
-    icon: 'fal fa-balance-scale-right',
+    icon: 'fal fa-balance-scale-right fa-3x',
     text: 'Evaluate and Synthesize',
-    description: `3. Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-    Morbi tincidunt ornare massa eget. Ut tellus elementum sagittis vitae et.`
+    flipped: false,
+    clicked: false,
+    description: `Making decisions based on known guidelines and creating something original.`
   }];
 
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }
