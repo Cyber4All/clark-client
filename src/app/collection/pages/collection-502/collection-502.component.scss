@@ -1,80 +1,47 @@
+@import '../../collection-globals.scss';
+
 :root {
-    --background-color: white;
-    --primary-text: black;
-    --secondary-text: $dark-grey;
+  --background-color: white;
+  --primary-text: black;
+  --secondary-text: $dark-grey;
 }
 
 [data-theme="dark"] {
-    --background-color: #32363F;
-    --primary-text: #FFFFFF;
-    --secondary-text: #FFFFFF;
+  --background-color: #32363F;
+  --primary-text: #FFFFFF;
+  --secondary-text: #FFFFFF;
 }
 
 .theme-switch-wrapper {
-    display: flex;
-    align-items: center;
-    background-color: var(--background-color);
-    padding: 25px 50px 0 50px;
-  
-    em {
-      margin-left: 10px;
-      font-size: 1rem;
-      color: var(--primary-text);
-    }
-  }
-  .theme-switch {
-    display: inline-block;
-    height: 34px;
-    position: relative;
-    width: 60px;
-  }
-  
-  .theme-switch input {
-    display:none;
-  }
-  
-  .slider {
-    background-color: #ccc;
-    bottom: 0;
-    cursor: pointer;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: .4s;
-  }
-  
-  .slider:before {
-    background-color: #fff;
-    bottom: 4px;
-    content: "";
-    height: 26px;
-    left: 4px;
-    position: absolute;
-    transition: .4s;
-    width: 26px;
-  }
-  
-  input:checked + .slider {
-    background-color: #66bb6a;
-  }
-  
-  input:checked + .slider:before {
-    transform: translateX(26px);
-  }
-  
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color);
+  padding: 25px 50px 0 50px;
+
+  .toggle{
+    color: var(--primary-text);
+
+    
   }
 
-  @media (max-width: 1270px) {
-    .theme-switch-wrapper{
-      padding-bottom: 25px;
-      display: flex;
-      justify-content: center;
-    }
+  .icon {
+    color: var(--primary-text);
+    margin-left: 10px;
   }
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+      background-color: $blue_502;
+    }
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb{
+  background-color: $blue_502;
+  border: $dark-grey solid;
+}
+
+@media (max-width: 1270px) {
+  .theme-switch-wrapper {
+    padding-bottom: 25px;
+    display: flex;
+    justify-content: center;
+  }
+}
