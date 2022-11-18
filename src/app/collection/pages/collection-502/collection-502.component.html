@@ -1,13 +1,8 @@
 <div class="root_502" [attr.data-theme]="currentTheme">
     <nav>
         <div class="theme-switch-wrapper">
-             <label class="theme-switch" for="checkbox">
-          <input type="checkbox" id="checkbox" />
-          <div class="slider round"></div>
-        </label>
-          <em>Enable Dark Mode!</em>
+          <mat-slide-toggle >{{currentTheme === 'light' ? 'Dark Mode' : 'Light Mode'}}</mat-slide-toggle><mat-icon>{{currentTheme === 'light' ? 'bedtime' : 'sunny'}}</mat-icon>
         </div>
-      
       </nav>
     <clark-502-header></clark-502-header>
     <clark-collection-feature [collection]="'502_project'"  [learningObjects]="learningObjects"></clark-collection-feature>

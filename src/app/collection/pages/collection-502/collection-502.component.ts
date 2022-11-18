@@ -33,7 +33,7 @@ export class Collection502Component implements OnInit {
     this.navbarService.show();
     await this.fetchLearningObjects(this.query);
 
-    const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+    const toggleSwitch = document.querySelector('mat-slide-toggle input[type="checkbox"]');
 
     const switchTheme = (e: Event) => {
       if ((e.target as HTMLInputElement).checked) {
