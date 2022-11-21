@@ -36,6 +36,7 @@
 ::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb{
   background-color: $blue_502;
   border: $dark-grey solid;
+  border-width: 1px;
 }
 
 @media (max-width: 1270px) {
