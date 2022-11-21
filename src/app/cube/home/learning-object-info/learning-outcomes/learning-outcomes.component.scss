@@ -13,7 +13,7 @@
         flex-wrap: wrap;
         justify-content: space-evenly;
         gap: 25px;
-        color: $light-blue;
+        color: $homepage-light-blue;
         padding-bottom: 350px;
 
         .blooms-card {
@@ -59,7 +59,7 @@
             }
 
             &:hover {
-                border: 1px solid $light-blue;
+                border: 1px solid $homepage-light-blue;
             }
         }
     }
