@@ -10,10 +10,11 @@
     .blooms-cards {
         display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
         justify-content: space-evenly;
         gap: 25px;
         color: $light-blue;
-        padding-bottom: 300px;
+        padding-bottom: 350px;
 
         .blooms-card {
             padding: 20px 40px;
@@ -21,7 +22,7 @@
             max-width: 175px;
             height: 100px;
             background-color: $primary-white;
-            border: 2px solid $primary-white;
+            border: 1px solid $primary-white;
             border-radius: 8px;
             transform-style: preserve-3d;
             position: relative;
@@ -58,7 +59,7 @@
             }
 
             &:hover {
-                border: 2px solid $light-blue;
+                border: 1px solid $light-blue;
             }
         }
     }
