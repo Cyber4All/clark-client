@@ -36,11 +36,7 @@ export class Collection502Component implements OnInit {
     const toggleSwitch = document.querySelector('mat-slide-toggle input[type="checkbox"]');
 
     const switchTheme = (e: Event) => {
-      if ((e.target as HTMLInputElement).checked) {
-        this.collectionService.changeStatus502(true);
-      } else {
-        this.collectionService.changeStatus502(false);
-      }
+      this.collectionService.changeStatus502((e.target as HTMLInputElement).checked);
     };
 
     toggleSwitch.addEventListener('change', switchTheme);
