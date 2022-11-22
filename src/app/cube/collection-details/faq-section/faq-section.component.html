@@ -1,8 +1,8 @@
 <mat-accordion>
     <mat-expansion-panel *ngFor="let qa of faq" class="panel">
         <mat-expansion-panel-header>
-          <mat-panel-title class="title">
-            {{ qa.question }}
+          <mat-panel-title>
+            <p class="title-content">{{ qa.question }}</p>
           </mat-panel-title>
         </mat-expansion-panel-header>
         <mat-divider></mat-divider>
