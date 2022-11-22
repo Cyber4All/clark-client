@@ -6,6 +6,10 @@
     padding-left: 0px;
     display: flex;
     flex-direction: column;
+
+    .taxonomy {
+        margin-bottom: 50px;
+    }
     
     .blooms-cards {
         display: flex;
@@ -14,7 +18,7 @@
         justify-content: space-evenly;
         gap: 25px;
         color: $homepage-light-blue;
-        padding-bottom: 350px;
+        padding-bottom: 300px;
 
         .blooms-card {
             padding: 20px 40px;
