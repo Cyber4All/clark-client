@@ -41,8 +41,4 @@ export class LearningOutcomesComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
-  toggleFlip(card: any, state: string) {
-    card.flipped = state;
-  }
 }

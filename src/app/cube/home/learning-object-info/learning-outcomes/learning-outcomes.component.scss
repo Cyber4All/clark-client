@@ -42,7 +42,6 @@
                 align-items: center;
                 justify-content: center;
                 max-height: 100px;
-                cursor: default;
                 -webkit-transform : rotateY(0deg);
                 -ms-transform     : rotateY(0deg);
                 transform         : rotateY(0deg);
@@ -55,13 +54,13 @@
                 transform         : rotateY(-180deg);
 
                 p {
-                    cursor: default;
                     margin: 0;
                 }
             }
 
-            &:hover {
+            &:hover, &:focus {
                 border: 1px solid $homepage-light-blue;
+                cursor: pointer;
             }
         }
     }
