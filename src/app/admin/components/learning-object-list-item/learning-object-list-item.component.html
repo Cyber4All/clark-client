@@ -38,7 +38,7 @@
       <li *ngIf="learningObject.status !== 'released'" (click)="goToUrl('builder')" target="_blank"><i class="far fa-pencil"></i>Edit</li>
       <li *ngIf="learningObject.revision && learningObject.revision?.status !== 'unreleased'" (click)="goToUrl('builder')"><i class="far fa-pencil"></i>Edit Revision</li>
       <li (click)="toggleHierarchyBuilder(true)" *ngIf="learningObject.length !== 'nanomodule' && !hasChildren"><i class="fa-lg fal fa-chart-network"></i>Generate Hierarchy</li>
-      <li *ngIf="!hasParents && hasChildren" (click)="releaseHierarchy()"><i class="fa fa-level-down"></i>Release Hierarchy</li>
+      <li *ngIf="!hasParents && hasChildren && learningObject.status === 'proofing'" (click)="releaseHierarchy()"><i class="fa fa-level-down"></i>Release Hierarchy</li>
       <li *ngIf="learningObject.revision?.status === 'unreleased'" (click)="toggleRevisionDelete(true)"><i class="far fa-trash-alt"></i>Delete Revision</li>
       <li (click)="goToUrl('contact')"><i class="far fa-user"></i>View Author Contact</li>
       <li (click)="goToUrl('details')"><i class="far fa-cube"></i>View details</li>
