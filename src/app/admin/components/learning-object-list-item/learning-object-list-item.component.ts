@@ -248,7 +248,13 @@ export class LearningObjectListItemComponent implements OnChanges {
    }
 
    releaseHierarchy() {
-     this.hierarchyService.releaseHierarchy(this.learningObject.id);
+    this.hierarchyService.releaseHierarchy(this.learningObject.id)
+    .then(() => {
+      location.reload();
+    }).catch(error => {
+      this.toaster.error('Error!', error.message);
+      console.error(error);
+    });
    }
 
    deleteRevision() {
