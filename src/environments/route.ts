@@ -41,6 +41,9 @@ export const ADMIN_ROUTES = {
       username
     )}/hierarchy-object`;
   },
+  CHANGE_HIERARCHY_STATUS(id: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/status`;
+  },
   TOGGLE_BUNDLE(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(id)}/files/bundle`;
   }

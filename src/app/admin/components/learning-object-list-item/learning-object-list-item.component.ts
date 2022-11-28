@@ -19,6 +19,7 @@ import { of } from 'rxjs/internal/observable/of';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Router } from '@angular/router';
+import { HierarchyService } from '../../core/hierarchy.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -71,7 +72,8 @@ export class LearningObjectListItemComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private http: HttpClient,
     private toaster: ToastrOvenService,
-    private router: Router
+    private router: Router,
+    private hierarchyService: HierarchyService
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -245,6 +247,9 @@ export class LearningObjectListItemComponent implements OnChanges {
     this.showHierarchyBuilder = val;
    }
 
+   releaseHierarchy() {
+     this.hierarchyService.releaseHierarchy(this.learningObject.id);
+   }
 
    deleteRevision() {
     this.unreleaseService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version + 1)

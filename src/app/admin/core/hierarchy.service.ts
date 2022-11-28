@@ -20,6 +20,24 @@ export class HierarchyService {
   }
 
   /**
+   * Releases an entire hierarchy from the admin dashboard, should
+   * only be called for root objects, but can be used for subtrees
+   * according to Hierarchy Service docs.
+   *
+   * @param id id of the root learning object of a hierarchy
+   * @returns A promise
+   */
+  async releaseHierarchy(id: string): Promise<any> {
+    return await this.http.patch(
+      ADMIN_ROUTES.CHANGE_HIERARCHY_STATUS(id),
+      {
+        status: LearningObject.Status.RELEASED
+      },
+      { withCredentials: true, responseType: 'text'}
+    ).toPromise();
+  }
+
+  /**
    * Adds children to a learning object
    *
    * @param username the username of the author
