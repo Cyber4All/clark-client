@@ -52,6 +52,12 @@
   </div>
 </clark-context-menu>
 
+<clark-popup *ngIf="showReleasingHierarchyPopup" (closed)="toggleReleasingHierarchy(false)">
+  <div  class="modal-container center" #popupInner>
+    <h1>Releasing Hierarchy...</h1>
+  </div>
+</clark-popup>
+
 <clark-popup *ngIf="showChangeCollection" (closed)="toggleChangeCollectionModal(false)">
   <div class="modal-container" #popupInner>
     <clark-change-collection [object]="learningObject" (close)="toggleChangeCollectionModal(false)"></clark-change-collection>

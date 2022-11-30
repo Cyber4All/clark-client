@@ -57,6 +57,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   showDeleteRevisionConfirmation: boolean;
   showChangeCollection: boolean;
   showHierarchyBuilder: boolean;
+  showReleasingHierarchyPopup: boolean;
 
   // flags
   meatballOpen = false;
@@ -247,13 +248,18 @@ export class LearningObjectListItemComponent implements OnChanges {
     this.showHierarchyBuilder = val;
    }
 
+   toggleReleasingHierarchy(val: boolean) {
+     this.showReleasingHierarchyPopup = val;
+   }
+
    releaseHierarchy() {
+    this.toggleReleasingHierarchy(true);
     this.hierarchyService.releaseHierarchy(this.learningObject.id)
     .then(() => {
+      this.toggleReleasingHierarchy(false);
       location.reload();
     }).catch(error => {
       this.toaster.error('Error!', error.message);
-      console.error(error);
     });
    }
 

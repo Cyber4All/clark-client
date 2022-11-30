@@ -33,7 +33,7 @@ export class HierarchyService {
       {
         status: LearningObject.Status.RELEASED
       },
-      { withCredentials: true, responseType: 'text'}
+      { withCredentials: true, responseType: 'json'}
     ).toPromise();
   }
 
