@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: var(--background-color);
     padding-bottom: 50px;
     padding-top: 50px;
 
@@ -34,8 +34,7 @@
         overflow-y: hidden;
         overflow-x: hidden;
         position: absolute;
-        top: 2710px;
-        left: -50px;
+        background-color: var(--background-color);
         width: 100%;
 
         .visual1 {

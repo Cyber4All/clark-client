@@ -19,6 +19,7 @@ import { AboutClarkComponent } from './content-pages/about-us/about-us.component
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 import { NotFoundComponent } from 'app/not-found.component';
+import { CollectionsGuard } from 'app/core/collections.guard';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const cube_routes: Routes = [
@@ -28,7 +29,7 @@ const cube_routes: Routes = [
     children: [
       { path: 'home', component: HomeComponent, data: { title: 'Home', hideTopBar: 'true'} },
       { path: '', redirectTo: '/home', pathMatch: 'full' },
-      { path: 'c/:abvName', component: CollectionDetailsComponent },
+      { path: 'c/:abvName', component: CollectionDetailsComponent, canActivate: [CollectionsGuard] },
       { path: 'c', component: CollectionsComponent },
       {
         path: 'about',
