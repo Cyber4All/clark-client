@@ -1,4 +1,4 @@
-<div class="featured">
+<div class="featured" [attr.data-theme]="theme">
     <div class="inner">
         <h1 class="header" id="header">Featured Learning Objects</h1>
         <div class="body">
@@ -8,15 +8,15 @@
                         <clark-feature-cards-fiveotwo *ngIf="collection === '502_project'" [learningObject]="object"
                             [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
                         <clark-collection-feature-cards *ngIf="collection === 'ncyte'" [learningObject]="object"
-                            [primaryColor]="primaryColor"></clark-collection-feature-cards>
+                            [primaryColor]="primaryColor" [theme]="theme"></clark-collection-feature-cards>
                     </a>
                 </div>
             </div>
             <div *ngIf="collection === '502_project'" class="browse">
-                <button (click)="navigateToBrowse()" aria-label="Browse Curriculum" class="button">Browse
+                <div (click)="navigateToBrowse()" aria-label="Browse Curriculum" class="button">Browse
                     All
                     <i class="fas fa-arrow-right"></i>
-                </button>
+                </div>
             </div>
         </div>
     </div>

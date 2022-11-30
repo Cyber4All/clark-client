@@ -3,6 +3,7 @@ import { LearningObject } from '@entity';
 import { NavbarService } from '../../../core/navbar.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
+import { CollectionService } from 'app/core/collection.service';
 
 
 @Component({
@@ -19,10 +20,12 @@ export class Collection502Component implements OnInit {
     limit: 5,
     collection: '502_project'
   };
+  currentTheme = 'light';
 
   constructor(
     private navbarService: NavbarService,
-    private learningObjectService: LearningObjectService
+    private learningObjectService: LearningObjectService,
+    private collectionService: CollectionService
   ) { }
 
   async ngOnInit() {
@@ -30,6 +33,20 @@ export class Collection502Component implements OnInit {
     this.navbarService.show();
     await this.fetchLearningObjects(this.query);
 
+    const toggleSwitch = document.querySelector('mat-slide-toggle input[type="checkbox"]');
+
+    const switchTheme = (e: Event) => {
+      this.collectionService.changeStatus502((e.target as HTMLInputElement).checked);
+    };
+
+    toggleSwitch.addEventListener('change', switchTheme);
+
+    this.collectionService.darkMode502.subscribe(mode => {
+      this.currentTheme = mode ? 'dark' : 'light';
+    });
+    if(this.currentTheme === 'dark'){
+      document.getElementById('checkbox').click();
+    };
   }
 
   async fetchLearningObjects(query: Query) {
