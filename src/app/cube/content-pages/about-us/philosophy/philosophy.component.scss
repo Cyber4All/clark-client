@@ -1,0 +1,52 @@
+@import 'vars.scss';
+
+.philosophy {
+  padding: 40px;
+  background: white;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.philosophy__values {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 45px 0 25px;
+  width: 100%;
+  max-width: 1450px;
+  flex-wrap: wrap;
+  color: $darker-grey;
+  
+  .values__wrapper {
+    width: 210px;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    position: relative;
+    margin: 20px 10px;
+
+    .svg-inline--fa {
+      font-size: 50px;
+    }
+  }
+
+  .values__title {
+    margin-top: 10px;
+    font-size: $large;
+    width: fit-content;
+  }
+
+  .values__list {
+    width: fit-content;
+    min-width: 175px;
+    padding: 0;
+    text-align: center;
+    font-size: $normal;
+    color: $dark-grey;
+  }
+
+  .values__list-item {
+    list-style-type: none;
+  }
+}
