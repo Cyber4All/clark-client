@@ -1,13 +1,38 @@
 @import 'vars.scss';
 @import '../../../collection-globals.scss';
 
+:root {
+    
+    --background-color: white;
+    --secondary-text: #32363f;
+    --primary-text: black;
+    --border: #672F90;
+}
+
+[data-theme="light"]{
+
+    --background-color: white;
+    --secondary-text: #32363f;
+    --primary-text: black;
+    --border: #672F90;
+}
+
+[data-theme="dark"] {
+
+    --background-color: #32363F;
+    --secondary-text: #FFFFFF;
+    --primary-text: white; 
+    --border: #F7EC2F;
+}
+
 .featured {
-    background-color: white !important;
+    background-color: var(--background-color);
 
     .header {
         margin-bottom: 40px;
         font-size: $largest;
         font-weight: 600;
+        color: var(--primary-text);
     }
 
     .inner {
@@ -27,9 +52,8 @@
 
                 a {
                     text-decoration: none;
+                    color: var(--secondary-text);
                 }
-
-
             }
 
             .browse {
@@ -37,9 +61,11 @@
                 padding-right: 50px;
                 display: flex;
                 justify-content: right;
+                
 
                 .button {
-                    color: $darkPurple_502;
+                    background: none;
+                    color: var(--border);
                 }
             }
         }

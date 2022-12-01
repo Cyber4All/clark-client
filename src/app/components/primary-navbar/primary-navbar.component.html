@@ -102,6 +102,7 @@
                 <div class="side-padding-20">
                     <ul class="menu-items">
                         <li [routerLink]="['library']">Your Library</li>
+                        <li [routerLink]="['admin']" *ngIf="auth.hasCuratorAccess()">{{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
                         <li (click)="auth.logout()">Sign Out</li>
                     </ul>
                 </div>

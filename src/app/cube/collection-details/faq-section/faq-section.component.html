@@ -1,0 +1,13 @@
+<mat-accordion>
+    <mat-expansion-panel *ngFor="let qa of faq" class="panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <p class="title-content">{{ qa.question }}</p>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-divider></mat-divider>
+        <p>
+          {{ qa.answer }}
+        </p>
+      </mat-expansion-panel>
+</mat-accordion>

@@ -1,10 +1,11 @@
 @import '_vars.scss';
+
 .wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background-color: var(--background-color);
     padding-bottom: 50px;
     padding-top: 50px;
     margin: auto;
@@ -20,6 +21,7 @@
     .message {
         max-width: 1000px;
         font-size: $large;
+        color: var(--primary-text);
     }
 }
 
