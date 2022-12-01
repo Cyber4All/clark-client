@@ -60,7 +60,7 @@
     "@angular-eslint/eslint-plugin": "12.7.0",
     "@angular-eslint/eslint-plugin-template": "12.7.0",
     "@angular-eslint/schematics": "^13.0.1",
-    "@angular-eslint/template-parser": "12.7.0",
+    "@angular-eslint/template-parser": "15.1.0",
     "@angular/language-service": "^13.1.2",
     "@types/ckeditor": "^4.9.10",
     "@types/jest": "^27.4.0",
