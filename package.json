@@ -37,7 +37,7 @@
     "@cyber4all/clark-taxonomy": "^4.0.5",
     "aws-sdk": "^2.1058.0",
     "confetti-js": "^0.0.18",
-    "core-js": "^3.6.5",
+    "core-js": "^3.26.1",
     "md5": "^2.2.1",
     "ng-click-outside": "^9.0.1",
     "ng2-charts": "^2.3.0",
