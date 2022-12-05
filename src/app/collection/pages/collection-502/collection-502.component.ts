@@ -20,7 +20,7 @@ export class Collection502Component implements OnInit {
     limit: 5,
     collection: '502_project'
   };
-  currentTheme = 'light';
+  currentTheme = 'dark';
 
   constructor(
     private navbarService: NavbarService,
@@ -45,7 +45,7 @@ export class Collection502Component implements OnInit {
       this.currentTheme = mode ? 'dark' : 'light';
     });
     if(this.currentTheme === 'dark'){
-      document.getElementById('checkbox').click();
+      document.getElementById('mat-slide-toggle-1-input').click();
     };
   }
 
