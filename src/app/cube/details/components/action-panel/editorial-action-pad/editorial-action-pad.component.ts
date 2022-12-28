@@ -19,6 +19,7 @@ export class EditorialActionPadComponent implements OnInit {
 
   @Input() hasRevision: boolean;
   @Input() learningObject: LearningObject;
+  @Input() userIsAuthor: boolean;
   openRevisionModal: boolean;
   showPopup = false;
 
@@ -43,15 +44,16 @@ export class EditorialActionPadComponent implements OnInit {
   return (this.learningObject.status === 'waiting' || (this.revisedLearningObject && this.revisedLearningObject.status === 'waiting')) ||
          (this.learningObject.status === 'review' || (this.revisedLearningObject && this.revisedLearningObject.status === 'review')) ||
          (this.learningObject.status === 'proofing' || (this.revisedLearningObject && this.revisedLearningObject.status === 'proofing')) ||
-         (this.revisedLearningObject && this.revisedLearningObject.status === 'unreleased');
+         (this.learningObject.status === 'unreleased' ||
+         (this.revisedLearningObject && this.revisedLearningObject.status === 'unreleased'));
   }
 
   // Determines if an editor is not permitted to create a revision or make edits
   get notPermitted() {
     return (this.learningObject.status === 'released' &&
-    (this.revisedLearningObject &&
+      (this.revisedLearningObject &&
       (this.revisedLearningObject.status === 'unreleased' || this.revisedLearningObject.status === 'rejected'))) ||
-    (this.learningObject.status === 'unreleased' || this.learningObject.status === 'rejected');
+     (this.learningObject.status === 'rejected');
   }
 
   // Handles opening the create revision modal
@@ -66,24 +68,25 @@ export class EditorialActionPadComponent implements OnInit {
     this.openRevisionModal = false;
   }
 
-  // Redirects the editor to the builder to make edits to a waiting, review, or proofing object
+  // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object
   editLearningObject() {
+    const userOrAdminRoute = (this.userIsAuthor) ? 'onion' : 'admin';
     if (this.revisedLearningObject) {
-      this.router.navigate([`/admin/learning-object-builder/${this.revisedLearningObject.id}`]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.revisedLearningObject.id]);
     } else {
-      this.router.navigate([`admin/learning-object-builder/${this.learningObject.id}`]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.learningObject.id]);
     }
   }
 
   // Create a revision and then redirects to the builder for the revision˝
   async createRevision() {
-    this.learningObjectService
+    this.closeRevisionModal();
+    this.toaster.success('One Moment Please', 'Your revision is being created.');
+    await this.learningObjectService
       .createRevision(this.learningObject.cuid, this.learningObject.author.username).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
         this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
-      }
-      ).catch(e => {
-        this.openRevisionModal = false;
+      }).catch(e => {
         this.toaster.error('Error', e.error.message);
       });
     }

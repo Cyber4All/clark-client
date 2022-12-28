@@ -165,7 +165,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           // this.hasRevision = !!this.releasedLearningObject.revisionUri;
           this.learningObject = this.releasedLearningObject;
           // Set page title
-          this.titleService.setTitle(this.learningObject.name + '| CLARK');
+          this.titleService.setTitle('CLARK | '+ this.learningObject.name);
           this.version = this.learningObject.version + 1;
           await this.getLearningObjectRatings();
           this.setAcademicLevels();

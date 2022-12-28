@@ -1,0 +1,169 @@
+@import 'vars.scss';
+
+$buttonWidth: 135px;
+
+.clark-search {
+  .search-options {
+    z-index: 2;
+    position: relative;
+    height: 45px;
+    padding: 0px;
+    box-sizing: border-box;
+
+    .input {
+      border-radius: 0px;
+      overflow: hidden;
+      height: 44px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 1;
+      margin-right: 0;
+      visibility: visible;
+      transition: all 0.1s ease;
+      border-radius: 6px 0px 0px 6px;
+      cursor: pointer;
+      input {
+        border: solid $secondary-white 1px;
+        border-radius: 6px 0px 0px 6px;
+        height: 100%;
+      }
+
+      span {
+        padding: 10px;
+      }
+
+      .icon {
+        cursor: pointer;
+        color: white;
+        border-radius: 0px 6px 6px 0px;
+        border: none;
+        width: 50px;
+        height: 44px;
+        background-color: $homepage-light-blue;
+      }
+    }
+
+      input {
+        width: 100%;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        border: 0;
+        background: transparent;
+        flex-grow: 2;
+        outline: 0;
+        padding: 10px;
+        font-size: $small;
+      }
+
+    .keyword-search form {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      width: 100%;
+    }
+  }
+
+  .description {
+    text-align: center;
+    color: $dark-grey;
+    margin-top: 10px;
+  }
+
+  .search-switch {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: calc(#{$buttonWidth} * 2);
+    margin: auto;
+    position: relative;
+    z-index: 1;
+    margin-top: 15px;
+    border: 1px solid $light-grey;
+    border-radius: 2px;
+
+    .highlight {
+      width: $buttonWidth;
+      height: 100%;
+      transform: scale(1);
+      background: $light-blue-gradient;
+      position: absolute;
+      left: 0;
+      box-sizing: border-box;
+      border-radius: 2px;
+      animation: left 0.6s linear forwards;
+      box-shadow: 0 2px 12px 2px rgba(0, 0, 0, 0.1);
+
+      &.right {
+        animation: right 0.6s linear forwards;
+      }
+    }
+
+    .option {
+      width: $buttonWidth;
+      text-transform: uppercase;
+      color: $dark-grey;
+      font-size: $normal;
+      text-align: center;
+      padding: 10px;
+      box-sizing: border-box;
+      z-index: 4;
+      position: relative;
+      transition: all 0.2s ease;
+      color: $dark-grey;
+      background: transparent;
+      border: none;
+
+      &:not(.active) {
+        cursor: pointer;
+      }
+
+      &:hover {
+        color: $light-blue;
+      }
+
+      &.active {
+        color: white;
+      }
+    }
+  }
+}
+
+@keyframes right {
+  0% {
+    transform: scale(1);
+    left: 0;
+  }
+  33% {
+    transform: scale(0.8);
+    left: 0;
+  }
+  66% {
+    transform: scale(0.8);
+    left: $buttonWidth;
+  }
+  100% {
+    transform: scale(1);
+    left: $buttonWidth;
+  }
+}
+
+@keyframes left {
+  0% {
+    transform: scale(1);
+    left: $buttonWidth;
+  }
+  33% {
+    transform: scale(0.8);
+    left: $buttonWidth;
+  }
+  66% {
+    transform: scale(0.8);
+    left: 0;
+  }
+  100% {
+    transform: scale(1);
+    left: 0;
+  }
+}

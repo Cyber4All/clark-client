@@ -133,6 +133,14 @@ export class LearningObject {
   set outcomes(outcomes: LearningOutcome[]) {
     this._outcomes = outcomes;
   }
+
+  get guidelines(): any {
+    return this._guidelines;
+  }
+
+  set guidelines(guidelines: any){
+    this._guidelines = guidelines;
+  }
   /**
    * @property {LearningObject.Material} materials neutrino file/url storage
    *
@@ -309,6 +317,7 @@ export class LearningObject {
     this._length = LearningObject.Length.NANOMODULE;
     this._levels = [LearningObject.Level.Undergraduate];
     this._outcomes = [];
+    this._guidelines = [];
     this._materials = {
       files: [],
       urls: [],
@@ -338,6 +347,7 @@ export class LearningObject {
   private _length!: LearningObject.Length;
   private _levels: LearningObject.Level[];
   private _outcomes?: LearningOutcome[];
+  private _guidelines?: any;
   private _materials?: LearningObject.Material;
   private _metrics?: LearningObject.Metrics;
   private _children?: LearningObject[];
@@ -500,6 +510,16 @@ export class LearningObject {
     return this._outcomes.push(addingOutcome) - 1;
   }
   /**
+   * Adds a passed guideline to this learning object.
+   *
+   * @param guideline
+   * @returns
+   */
+  addGuideline(guideline: any) {
+    return this._guidelines.push(guideline) -1;
+  }
+
+  /**
    * Removes the object's i-th learning outcome.
    *
    * @param {number} index the index to remove from this objects' outcomes
@@ -655,6 +675,12 @@ export class LearningObject {
     if (object.outcomes) {
       (object.outcomes as LearningOutcome[]).map(outcome =>
         this.addOutcome(outcome),
+      );
+    }
+
+    if (object.guidelines) {
+      (object.guidelines as any).map(guideline =>
+        this.addGuideline(guideline)
       );
     }
 

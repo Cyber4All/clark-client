@@ -2,7 +2,7 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { UserService } from 'app/core/user.service';
 import { NavbarDropdownService } from 'app/core/navBarDropdown.service';
-import { NavbarService } from '../../core/navbar.service';
+import { Router, NavigationStart, Event as NavigationEvent } from '@angular/router';
 import { Topic } from '../../../entity';
 
 
@@ -23,9 +23,10 @@ export class PrimaryNavbarComponent implements OnInit {
   showTopics: boolean;
   showResources: boolean;
   topics: Topic[];
-  resizeThreshold = 1024;
+  resizeThreshold = 825;
   externalResources: {name: string, link: string}[];
   levelChoice: string;
+  redirectUrl: string;
   // levelsDropdown: boolean;
 
   @HostListener('window:resize', ['$event'])
@@ -37,8 +38,23 @@ export class PrimaryNavbarComponent implements OnInit {
     private auth: AuthService,
     private dropdowns: NavbarDropdownService,
     private userService: UserService,
-    private navService: NavbarService
-  ) {}
+    private router: Router,
+  ) {
+    if(!this.auth.user) {
+      this.router.events
+      .subscribe(
+        (event: NavigationEvent) => {
+          if(event instanceof NavigationStart) {
+            const url = event.url.split('/');
+            if(url[1] !== 'auth') {
+              this.redirectUrl = event.url;
+              localStorage.setItem('ssoRedirect', (this.redirectUrl));
+            }
+          }
+        }
+      );
+    }
+  }
 
   async ngOnInit(): Promise<void> {
     this.dropdowns.getTopicList();

@@ -1,0 +1,92 @@
+@import 'vars.scss';
+
+.content {
+    margin-top: 50px;
+    margin-right: 50px;
+    padding-left: 0px;
+    display: flex;
+    flex-direction: column;
+    
+    .blooms-cards {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: left;
+        gap: 50px;
+        color: $homepage-light-blue;
+        padding: 50px 0 400px 0;
+
+        .blooms-card {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 190px;
+            width: 265px;
+            background-color: $primary-white;
+            border: 1px solid $secondary-white;
+            border-radius: 8px;
+            transform-style: preserve-3d;
+            position: relative;
+
+            .blooms-face {
+                display: block;
+                position: absolute;
+                text-align: center;
+                width: 175px;
+                backface-visibility: hidden;
+            }
+
+            .blooms-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                max-height: 100px;
+                -webkit-transform : rotateY(0deg);
+                -ms-transform     : rotateY(0deg);
+                transform         : rotateY(0deg);
+            }
+
+            .blooms-description {
+                text-align: center;
+                -webkit-transform : rotateY(-180deg);
+                -ms-transform     : rotateY(-180deg);
+                transform         : rotateY(-180deg);
+
+                p {
+                    margin: 0;
+                }
+            }
+
+            &:hover, &:focus {
+                border: 1px solid $homepage-light-blue;
+                cursor: pointer;
+            }
+        }
+    }
+}
+@media (max-width: 950px){
+    .content{
+        margin-right: 0;
+
+        .blooms-cards {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+    h1{
+        text-align: center;
+    }
+    p{
+        text-align: center;
+    }
+}
+
+@media (max-width: 1160px) {
+    .content .blooms-cards {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}

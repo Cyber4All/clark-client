@@ -7,7 +7,7 @@ import {
 import { environment } from '@env/environment';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { User, LearningObject } from '@entity';
+import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
 
@@ -80,6 +80,27 @@ export class AuthService {
       TOKEN_STORAGE_KEY,
       JSON.stringify({ bearer: tokens.bearer, openId: tokens.openId })
     );
+  }
+
+  /**
+   * this method assumes the user has just been successfully
+   * linked back to the homepage through SSO and depends on cookies
+   * set by the SSO routehandler
+   *
+   * @param cookieString the cookie set by the SSO routehandler
+   * @memberof AuthService
+   */
+  public setSsoSession(cookieString: string) {
+    const token = JSON.parse(cookieString);
+    const user = token.user;
+    const tokens: Tokens = {bearer: token.bearer, openId: token.openId};
+    const domain = environment.production ? 'clark.center' : 'localhost';
+    this.cookies.set('presence', tokens.bearer, 604800000, '/', domain, true, 'None');
+    this.setSession({
+      user: user,
+      tokens: tokens
+    });
+    this.cookies.delete('ssoToken', '/', domain, false, 'Lax');
   }
 
   /**
@@ -362,8 +383,9 @@ export class AuthService {
    * @memberof AuthService
    */
   async logout(): Promise<void> {
-    this.endSession();
     this.clearAuthHeaders();
+    this.endSession();
+    location.reload();
   }
 
   /**

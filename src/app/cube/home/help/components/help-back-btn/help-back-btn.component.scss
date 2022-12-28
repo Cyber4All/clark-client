@@ -1,0 +1,101 @@
+@import 'vars.scss';
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-left: 60px;
+    margin-bottom: 20px;
+
+    .back-btn {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        align-self: center;
+        margin-bottom: 15px;
+    
+        h2 {
+            margin: 0;
+            padding: 0;
+        }
+    
+        p {
+            margin-top: 5px;
+            color: $dark-grey;
+        }
+        
+        span {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin: 0 20px 0 20px;
+            width: 70px;
+            height: 70px;
+            border-radius: 100px;
+            font-size: $larger;
+        
+            &.orange {
+                color: $homepage-orange;
+                background: $homepage-orange-background;
+            }
+        
+            &.purple {
+                color: $homepage-purple;
+                background-color: $homepage-purple-background;
+            }
+        
+            &.green {
+                color: $homepage-green;
+                background: $homepage-green-background;
+            }
+        }
+    
+        .back-icon {
+            font-size: $larger;
+            color: $dark-grey;
+        }
+    }
+
+    .framework-query {
+        display: flex;
+        border: 2px solid $homepage-light-blue;
+        color: $homepage-light-blue;
+        background-color: $box-background;
+        padding: 10px 24px;
+        margin-left: 25px;
+        border-radius: 4px;
+    
+        b {
+            font-weight: 600;
+            margin-right: 5px;
+        }
+    
+        svg {
+            margin-left: 5px;
+        }
+    
+        &:hover {
+            opacity: 70%;
+        }
+    
+        &:active {
+            opacity: 100%;
+        }
+    }
+}
+
+@media screen and (max-width: 533px) {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 0;
+        .back-btn {
+            position: relative;
+        }
+    }
+    
+}

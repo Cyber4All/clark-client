@@ -7,6 +7,9 @@ import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SharedModule } from '../../shared/shared.module';
 import { RouterModule } from '@angular/router';
 import { ActionPanelComponent } from './components/action-panel/action-panel.component';
+import { FaqSectionComponent } from './faq-section/faq-section.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [
@@ -14,9 +17,15 @@ import { ActionPanelComponent } from './components/action-panel/action-panel.com
     FormsModule,
     CubeSharedModule,
     SharedModule,
-    RouterModule
+    RouterModule,
+    MatExpansionModule,
+    MatDividerModule
   ],
   exports: [],
-  declarations: [CollectionDetailsComponent, ActionPanelComponent]
+  declarations: [
+    CollectionDetailsComponent,
+    ActionPanelComponent,
+    FaqSectionComponent
+  ]
 })
 export class CollectionModule {}

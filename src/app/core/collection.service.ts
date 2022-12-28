@@ -3,7 +3,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '@env/route';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { catchError, retry ,  skipWhile } from 'rxjs/operators';
+import { catchError, retry, skipWhile } from 'rxjs/operators';
+
+import { Query } from 'app/interfaces/query';
+import { LearningObject } from '@entity';
+import * as querystring from 'querystring';
 
 export interface Collection {
   name: string;
@@ -15,6 +19,7 @@ export interface Collection {
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
+  darkMode502 = new BehaviorSubject<boolean>(true);
   constructor(private http: HttpClient) {
     this.fetchCollections()
       .catch(e => {
@@ -36,11 +41,11 @@ export class CollectionService {
         for (const c of collections) {
           c.hasLogo = false;
 
-           try {
+          try {
             await this.http.head('/assets/images/collections/' + c.abvName + '.png').pipe(
               catchError(this.handleError)
             ).toPromise().then(() => {
-             c.hasLogo = true;
+              c.hasLogo = true;
             });
           } catch (_) {
             // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
@@ -131,7 +136,7 @@ export class CollectionService {
       }
     });
   }
-  getCollectionMetricsData(name: string ) {
+  getCollectionMetricsData(name: string) {
     return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_METRICS(name))
       .pipe(
         retry(3),
@@ -142,11 +147,11 @@ export class CollectionService {
   }
   getCollectionCuratorsInfo(name: string) {
     return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise();
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
   getCollectionMetadata(name: string) {
     return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTION_META(name))
@@ -157,6 +162,44 @@ export class CollectionService {
       .toPromise();
   }
 
+  /**
+   * Fetches Array of Learning Objects
+   *
+   * @returns {Promise<LearningObject[]>}
+   * @memberof LearningObjectService
+   */
+  getLearningObjects(query?: Query): Promise<{ learningObjects: LearningObject[], total: number }> {
+    let route = '';
+    if (query) {
+      const queryClone = Object.assign({}, query);
+      if (
+        queryClone.standardOutcomes &&
+        queryClone.standardOutcomes.length &&
+        typeof queryClone.standardOutcomes[0] !== 'string'
+      ) {
+        queryClone.standardOutcomes = queryClone.standardOutcomes.map(o => o['id']);
+      }
+      const queryString = querystring.stringify(queryClone);
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
+        queryString
+      );
+    } else {
+      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+    }
+
+    return this.http
+      .get(route)
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((response: any) => {
+        const objects = response.objects;
+        return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total };
+      });
+  }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
@@ -165,6 +208,12 @@ export class CollectionService {
     } else {
       // API returned error
       return throwError(error);
+    }
+  }
+
+  changeStatus502(status: boolean) {
+    if (this.darkMode502.getValue() !== status) {
+      this.darkMode502.next(status);
     }
   }
 }

@@ -10,7 +10,8 @@ import { NotFoundComponent } from 'app/not-found.component';
 const collection_routes: Routes = [
     {
         path: '',
-        component: CollectionIndexComponent,
+        redirectTo: '/c',
+        pathMatch: 'full'
     },
     {
         path: 'nice',

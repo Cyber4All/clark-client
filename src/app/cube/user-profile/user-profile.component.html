@@ -1,17 +1,18 @@
-<div class="banner">
-</div>
-<img [src]="gravatarImage" class="img">
-<div class="container">
-  <div class="container-inner">
-    <div class="edit" *ngIf="!editContent && self" (activate)="editContent = !editContent">
-      <i class="far fa-pencil"></i>
-      <span id="edit-profile">{{ copy.EDIT }}</span>
-    </div>
-    <div *ngIf="!editContent">
-      <clark-user-information [user]="user" [self]="self"></clark-user-information>
-    </div>
-    <div *ngIf="editContent">
-      <cube-app-user-edit-information [user]="user" [self]="self" (close)="closeEdit($event)"></cube-app-user-edit-information>
-    </div>
+<ng-container *ngIf="!loading; else loadingTemplate">
+  <clark-profile-header
+    [user]="user"
+    [isUser]="isUser">
+  </clark-profile-header>
+  <clark-profile-learning-objects
+    class="learningObjects"
+    [isUser]="isUser"
+    [learningObjects]="allUserContributions">
+  </clark-profile-learning-objects>
+</ng-container>
+
+<ng-template #loadingTemplate>
+  <div class="details-loading">
+    <i class="far fa-spinner-third fa-spin"></i>
+    Loading User's Profile...
   </div>
-</div>
+</ng-template>

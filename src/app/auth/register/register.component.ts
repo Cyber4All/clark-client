@@ -120,8 +120,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
     private route: ActivatedRoute,
   ) {
     this.route.parent.data.subscribe(() => {
-      if (route.snapshot.queryParams.redirectUrl) {
-        this.redirectUrl = decodeURIComponent(route.snapshot.queryParams.redirectUrl);
+      if (this.route.snapshot.queryParams.redirectUrl) {
+        this.redirectUrl = decodeURIComponent(this.route.snapshot.queryParams.redirectUrl);
+      }
+      if (this.route.snapshot.queryParams.err) {
+        this.authValidation.showError();
       }
     });
   }
@@ -226,6 +229,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
           this.infoFormGroup.get('email').setErrors({
             emailInUse: true
           });
+        } else {
+          this.fieldErrorMsg = '';
         }
       })
       .catch((err) => {
@@ -246,6 +251,8 @@ export class RegisterComponent implements OnInit, OnDestroy{
       this.infoFormGroup.get('email').setErrors({
         invalidEmail: true
       });
+    } else {
+      this.fieldErrorMsg = '';
     }
   }
 

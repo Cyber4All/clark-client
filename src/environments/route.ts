@@ -41,6 +41,9 @@ export const ADMIN_ROUTES = {
       username
     )}/hierarchy-object`;
   },
+  CHANGE_HIERARCHY_STATUS(id: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/status`;
+  },
   TOGGLE_BUNDLE(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(id)}/files/bundle`;
   }
@@ -78,7 +81,7 @@ export const USER_ROUTES = {
   FETCH_USER(user: string, q: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
   },
-  CHECK_USER_EXISTS(username) {
+  FETCH_USER_PROFILE(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/profile`;
@@ -117,14 +120,6 @@ export const USER_ROUTES = {
   },
   SEARCH_USERS(query: any) {
     return `${environment.apiURL}/users/search?${querystring.stringify(query)}`;
-  },
-  // Deprecated
-  VALIDATE_TOKEN(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
-  },
-  // Deprecated
-  LOGOUT(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/tokens`;
   },
   GET_MY_LEARNING_OBJECTS(username, filters: any, query: string, childId?: string) {
     // Onion
@@ -194,12 +189,6 @@ export const USER_ROUTES = {
       environment.apiURL
       }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
-  // Deprecated
-  ADD_LEARNING_OBJET_TO_COLLECTION(learningObjectId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectId
-    )}/collections`;
-  },
   GET_LEARNING_OBJECT(id) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
   },
@@ -212,18 +201,6 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
-  },
-  // Deprecated
-  POST_FILE_TO_LEARNING_OBJECT(id: string, username: string) {
-    return `${environment.contentManagerURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${id}/files`;
-  },
-  // Deprecated
-  POST_FILE_TO_LEARNING_OBJECT_ADMIN(id: string, username: string) {
-    return `${environment.contentManagerURLAdmin}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${id}/files`;
   },
   DELETE_FILE_FROM_LEARNING_OBJECT({
     authorUsername,
@@ -295,10 +272,8 @@ export const USER_ROUTES = {
       username
     )}/${encodeURIComponent(learningObjectName)}/children`;
   },
-  UPDATE_PDF(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${id}/pdf`;
+  UPDATE_PDF(id: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/pdf`;
   },
   UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -364,6 +339,11 @@ export const USER_ROUTES = {
     )}/learning-objects/${encodeURIComponent(
       params.learningObjectID
     )}/files/bundle`;
+  },
+  GET_COLLECTIONS(username: string){
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/collections`;
   }
 };
 
@@ -384,11 +364,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_COLLECTION_META(name: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
-  },
-  GET_USERS_PUBLIC_LEARNING_OBJECTS(username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects`;
   },
   GET_LEARNING_OBJECT_PARENTS(username: string, id: string) {
     return `${environment.apiURL}/users/${username}/learning-objects/${id}/parents`;
@@ -455,11 +430,6 @@ export const RATING_ROUTES = {
     )}/ratings/${encodeURIComponent(
       params.ratingId
     )}/responses`;
-  },
-  GET_RESPONSE(params: { learningObjectId: string; ratingId: string }) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      params.learningObjectId
-    )}/ratings/${encodeURIComponent(params.ratingId)}/responses`;
   },
   UPDATE_RESPONSE(params: {
     username: string;
@@ -540,11 +510,6 @@ export const RATING_ROUTES = {
     )}/ratings/${encodeURIComponent(
       params.ratingId
     )}/flags`;
-  },
-  GET_USER_RATINGS(username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/ratings`;
   }
 };
 export const MISC_ROUTES = {
@@ -557,8 +522,6 @@ export const STATS_ROUTES = {
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
   // fetches downloads and saves for ALL objects in system
   LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
-  // fetches the blooms distribution
-  OUTCOMES_STATS: `${environment.apiURL}/outcomes/stats`,
   USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };
 

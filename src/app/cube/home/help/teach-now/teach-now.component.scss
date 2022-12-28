@@ -1,0 +1,116 @@
+@import 'vars.scss';
+
+.wrapper {
+    margin: 0 60px;
+}
+
+.topics {
+    display: flex;
+    flex-direction: row;
+
+    .scroll-button {
+        background-color: $primary-white;
+        border: 1px solid $secondary-white;
+        border-radius: 4px;
+
+        &:hover {
+            opacity: 60%;
+        }
+
+        &:active {
+            opacity: 100%;
+        }
+    }
+}
+
+.topics-list {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    overflow-x: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    margin: 0 30px;
+    
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    .shadow {
+        position: sticky;
+        display: block;
+        min-width: 100px;
+        min-height: 100%;
+        top: 0;
+
+        &.right {
+            right: 0;
+            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), white);
+        }
+
+        &.left {
+            left: 0;
+            background-image: linear-gradient(90deg, white, rgba(255, 255, 255, 0));
+        }
+    }
+
+    .topic-btn {
+        background-color: $primary-white;
+        border: 1px solid $secondary-white;
+        border-radius: 4px;
+        text-align: center;
+        padding: 10px;
+        white-space: nowrap;
+
+        &.selected {
+            color: $homepage-light-blue;
+            border-color: $homepage-light-blue;
+            background-color: $box-background;
+        }
+    }
+}
+
+select {
+    appearance: none;
+    background-color: $primary-white;
+    border: 1px solid $secondary-white;
+    border-radius: 3px;
+    padding: 10px;
+    width: 100%;
+}
+
+.objects {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 50px 0;
+    flex-wrap: wrap;
+    max-width: 1375px;
+
+    .all {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin: 20px;
+
+        &.full-width {
+            display: inline;
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+    clark-learning-object-component {    
+        &.card {
+          width: 250px;
+        }
+      }
+}
+
+@media (max-width: 1130px) {
+    .objects {
+        justify-content: center;
+    }
+}

@@ -43,7 +43,7 @@
                         <button type="button" class="white" (click)="navigateHome()">Cancel</button>
                         <button type="button" (click)="nextTemp()" [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid || loading}" class="button good">Next</button>
                     </div>
-                    <a routerLink="/auth/login">Have an account? Log In!</a>
+                    <a [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}">Have an account? Log In!</a>
                 </ng-template>
                 
                 <ng-template #accountTemplate [ngSwitchCase]="TEMPLATES.account.temp"  >
@@ -93,7 +93,7 @@
                             [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid || loading || !verified || !checkCookieAgreement()}"
                         >Register</button>
                     </div>
-                    <a routerLink="/auth/login">Have an account? Log In!</a>
+                    <a [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}">Have an account? Log In!</a>
                 </ng-template>
                 
                 <ng-template #submissionTemplate [ngSwitchCase]="TEMPLATES.submission.temp">

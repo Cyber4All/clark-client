@@ -1,0 +1,80 @@
+@import 'vars.scss';
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 60px;
+
+    .first {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 0px 240px 100px;
+
+        h1{
+            padding-bottom: 35px;
+        }
+    }
+
+    .second {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        margin-left: 50px;
+        padding-bottom: 250px;
+
+        .clark-quality {
+            margin-right: 50px;
+            width: 30%;
+
+            h2 {
+                margin: 10px 0 auto;
+            }
+            span {
+                position: relative;
+                left: -10px;
+                .fa-stack-2x {
+                    color: $box-background;
+                }
+    
+                .fa-stack-1x {
+                    color: $homepage-light-blue;
+                }
+            }
+            
+        }
+    }
+}
+
+p {
+    font-weight: 400;
+    font-size: 18px;
+    color: #454545; 
+}
+
+@media screen and (max-width: 950px) {
+    .wrapper{
+        padding: 10px 30px;
+        .first {
+            padding: 0px 0px 60px;
+        }
+        .second {
+            flex-direction: column;
+            align-items: center;
+            margin-left: 0;
+
+            .clark-quality {
+                margin: 0px 0px 60px;
+                text-align: center;
+                width: 75%;
+                max-width: 360px;
+
+                span {
+                    left: 0px;
+                }
+            }
+        }
+    }
+    
+}

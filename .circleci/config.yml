@@ -13,12 +13,20 @@ workflows:
               ignore: releases
 
       - cyber4all/test-app:
-          docker-image: cimg/node:lts
+          docker-image: cimg/node@sha256:9e7dff70aee20446a146e374367c3fddc58df1e39cca318dbd4993e625892880
           node-test: test:unit
           isNode: true
 
-  production-deployment:
+  continuous-deployment:
     jobs:
+      - cyber4all/sbom:
+          context: [Shortcut]
+          language: node
+          filters:
+            branches:
+                only:
+                  - releases
+
       - cyber4all/deploy-s3:
           context:
             [AWS, Slack]

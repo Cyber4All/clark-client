@@ -265,7 +265,7 @@ export class BuilderStore {
           this.outcomes
         );
         // set the title of page to the learning object name
-        this.titleService.setTitle(this.learningObject.name + ' | CLARK');
+        this.titleService.setTitle('CLARK | ' + this.learningObject.name);
         return this.learningObject;
       })
       .catch(e => {
@@ -329,7 +329,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   makeNew(): LearningObject {
-    this.titleService.setTitle('New Learning Object | CLARK');
+    this.titleService.setTitle('CLARK | New Learning Object');
     this.learningObject = new LearningObject({ author: this.auth.user });
     this.outcomes = new Map();
     return this.learningObject;
@@ -636,7 +636,9 @@ export class BuilderStore {
       this.learningObject = new LearningObject(learningObject);
     }
 
-    this.saveObject(data, true);
+    if(this.validator.saveable) {
+      this.saveObject(data, true);
+    }
   }
 
   private addContributor(user: User) {
@@ -915,7 +917,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private saveObject(data: any, delay?: boolean) {
-    this.titleService.setTitle(this.learningObject.name + ' | CLARK');
+    this.titleService.setTitle('CLARK | ' + this.learningObject.name);
     let value = this.objectCache$.getValue();
     this.touched = true;
 
@@ -981,7 +983,7 @@ export class BuilderStore {
         } else if (e.status === 400) {
           this.validator.errors.saveErrors.set(
             'name',
-           e.message
+           e.error.message
           );
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
@@ -1015,7 +1017,7 @@ export class BuilderStore {
         } else if (e.status === 400) {
           this.validator.errors.saveErrors.set(
             'name',
-           e.message
+           JSON.parse(e.error).message
           );
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
