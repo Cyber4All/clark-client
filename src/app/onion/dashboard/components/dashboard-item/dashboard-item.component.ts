@@ -14,6 +14,7 @@ import { StatusDescriptions } from 'environments/status-descriptions';
 import { AuthService } from 'app/core/auth.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { LearningObjectService as AppLOService } from 'app/core/learning-object.service';
 import { UriRetrieverService } from 'app/core/uri-retriever.service';
 
 
@@ -60,6 +61,9 @@ export class DashboardItemComponent implements OnInit, OnChanges {
   // fired when the submit for review option is selected from the context menu
   @Output()
   submit: EventEmitter<void> = new EventEmitter();
+  // Fired when the submit hierarachy option is selected from the context menu
+  @Output()
+  submitHierarchy: EventEmitter<void> = new EventEmitter();
   // fired when the cancel submission option is selected from the context menu
   @Output()
   cancelSubmission: EventEmitter<void> = new EventEmitter();
@@ -82,21 +86,24 @@ export class DashboardItemComponent implements OnInit, OnChanges {
   // parents
   parents: string[] = [];
   children: string[] = [];
+  hasChildren = false;
 
   constructor(
     private auth: AuthService,
     private statuses: StatusDescriptions,
     private cd: ChangeDetectorRef,
     private learningObjectService: LearningObjectService,
+    private appLOService: AppLOService,
     private uriRetriever: UriRetrieverService
   ) {}
 
   async ngOnInit() {
     this.parents = await this.parentNames();
-    console.log(this.parents);
     this.children = await this.objectChildrenNames();
-    console.log('children: ' + this.children);
-    // console.log('children ');
+    this.hasChildren = await this.appLOService.doesLearningObjectHaveChildren(
+      this.learningObject.author.username,
+      this.learningObject.id
+    );
     this.cd.detectChanges();
   }
 
@@ -140,7 +147,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
       ],
       manageMaterials: ['unreleased', 'accepted_minor', 'accepted_major', this.verifiedEmail],
       submit: ['unreleased', 'accepted_minor', 'accepted_major', this.verifiedEmail],
-      submitHierarchy: ['unreleased', this.parents.length === 0, this.verifiedEmail],
+      submitHierarchy: ['unreleased', this.parents.length === 0, this.hasChildren, this.verifiedEmail],
       resubmit: ['accepted_minor', 'accepted_major'],
       view: ['released'],
       delete: ['unreleased', 'rejected'],

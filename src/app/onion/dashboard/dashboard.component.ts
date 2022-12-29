@@ -11,6 +11,7 @@ import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
+import { HierarchyService } from 'app/core/hierarchy.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -56,7 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // submission
   submitToCollection: boolean;
-
+  submitEntireHierarchy = false;
   // side panel
   focusedLearningObject: LearningObject;
   sidePanelController$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -79,6 +80,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
+    private hierarchyService: HierarchyService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private changelogService: ChangelogService,
@@ -349,6 +351,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       return Promise.reject();
     }
+  }
+
+  async submitHierarchy(object: LearningObject) {
+    if (LearningObject.Status.UNRELEASED === object.status) {
+      this.currentlySubmittingObject = object;
+      this.submitEntireHierarchy = true;
+    }
+    // this.notificationService.alert('Submitting...', 'Your Hierarchy is being released. Please wait.');
+    // this.showReleasingHierarchyPopup = true;
+    // try {
+    //   await this.hierarchyService.submitHierarchy(object.id, object.collection);
+    //   this.notificationService.success('Success!', 'Your hierarcy was successfully submitted!');
+    // } catch {
+    //   this.notificationService.error('Submission Failed', 'Your Hierarchy could not be released at this time. Please try again later.');
+    // } finally {
+    //   this.showReleasingHierarchyPopup = false;
+    // }
   }
 
   createRevision(object: LearningObject) {

@@ -7,6 +7,7 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { first } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
+import { HierarchyService } from 'app/core/hierarchy.service';
 
 @Component({
   selector: 'clark-submit',
@@ -16,7 +17,7 @@ import { AuthService } from 'app/core/auth.service';
 export class SubmitComponent implements OnInit {
   @Input() collection?: string;
   @Input() learningObject: LearningObject;
-
+  @Input() isHierarchySubmission = false;
   @Input() visible: boolean;
 
   @Output() submitted: EventEmitter<void> = new EventEmitter();
@@ -37,6 +38,7 @@ export class SubmitComponent implements OnInit {
     private changelogService: ChangelogService,
     private collectionService: CollectionService,
     private learningObjectService: LearningObjectService,
+    private hierarchyService: HierarchyService,
     private toasterService: ToastrOvenService,
     private auth: AuthService
   ) {}
@@ -172,43 +174,77 @@ export class SubmitComponent implements OnInit {
 
     if (proceed) {
       this.loading.push(true);
-      this.collectionService
-      .submit({
-        learningObjectId: this.learningObject.id,
-        userId: this.learningObject.author.id,
-        collectionName: this.collection
-      })
-      .then(() => {
-        this.learningObject.status = LearningObject.Status.WAITING;
-        this.learningObject.collection = this.collection;
-        this.toasterService.success(
-          'Success!',
-          'Learning Object submitted successfully!',
-        );
-        this.loading.pop();
-        this.closeModal(true);
-        return true;
-      })
-      .catch(e => {
-        if (e.status === 401) {
-          // user isn't logged in, redirect to login page
-          this.auth.logout();
-        } else if (e.status === 400){
-          this.toasterService.error(
-            'Incomplete Learning Object!',
-            'Please review your object for empty learning outcomes and ensure that there is a description, ' +
-            'name, and at least 1 contributor.',
+      if (this.isHierarchySubmission) {
+        this.hierarchyService.submitHierarchy(this.learningObject.id, this.collection)
+          .then(() => {
+            this.closeModal(true);
+            this.loading.pop();
+            // location.reload();
+            this.toasterService.success(
+              'Success!',
+              'Learning Object submitted successfully!',
+            );
+            return true;
+          }).catch((e) => {
+            if (e.status === 401) {
+              // user isn't logged in, redirect to login page
+              this.auth.logout();
+            } else if (e.status === 400){
+              this.toasterService.error(
+                'Incomplete Learning Object!',
+                'Please review your object for empty learning outcomes and ensure that there is a description, ' +
+                'name, and at least 1 contributor.',
+              );
+            } else {
+              this.toasterService.error(
+                'Error!',
+                `There was an error trying to submit your object at this time. Please try again later...`,
+              );
+            }
+            this.loading.pop();
+            this.closeModal();
+            return false;
+          });
+      } else {
+        this.collectionService
+        .submit({
+          learningObjectId: this.learningObject.id,
+          userId: this.learningObject.author.id,
+          collectionName: this.collection
+        })
+        .then(() => {
+          this.learningObject.status = LearningObject.Status.WAITING;
+          this.learningObject.collection = this.collection;
+          this.toasterService.success(
+            'Success!',
+            'Learning Object submitted successfully!',
           );
-        } else {
-          this.toasterService.error(
-            'Error!',
-            `There was an error trying to submit your object at this time. Please try again later...`,
-          );
-        }
-        this.loading.pop();
-        this.closeModal();
-        return false;
-      });
+          this.loading.pop();
+          this.closeModal(true);
+          return true;
+        })
+        .catch(e => {
+          if (e.status === 401) {
+            // user isn't logged in, redirect to login page
+            this.auth.logout();
+          } else if (e.status === 400){
+            this.toasterService.error(
+              'Incomplete Learning Object!',
+              'Please review your object for empty learning outcomes and ensure that there is a description, ' +
+              'name, and at least 1 contributor.',
+            );
+          } else {
+            this.toasterService.error(
+              'Error!',
+              `There was an error trying to submit your object at this time. Please try again later...`,
+            );
+          }
+          this.loading.pop();
+          this.closeModal();
+          return false;
+        });
+
+      }
     }
   }
 

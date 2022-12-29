@@ -2,7 +2,7 @@
 import { NestedTreeControl} from '@angular/cdk/tree';
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from '@entity';
-import { HierarchyService } from 'app/admin/core/hierarchy.service';
+import { HierarchyService } from 'app/core/hierarchy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectNode, TreeDataSource } from './tree-datasource';
 

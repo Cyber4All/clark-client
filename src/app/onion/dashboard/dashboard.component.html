@@ -37,6 +37,7 @@
             (cancelCollectionSubmission)="cancelSubmission($event)"
             (openChangelog)="openViewAllChangelogsModal($event)"
             (submitToCollection)="submitLearningObjectToCollection($event)"
+            (submitHierarchy)="submitHierarchy($event)"
             (delete)="deleteObjects($event)"
           ></clark-dashboard-list>
         </div>
@@ -97,3 +98,10 @@
   <!--Delete Confirmation-->
   <clark-submit *ngIf="submitToCollection" [learningObject]="currentlySubmittingObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event)"></clark-submit>
 
+  <clark-submit 
+    *ngIf="submitEntireHierarchy" 
+    [learningObject]="currentlySubmittingObject"
+    [isHierarchySubmission]="true"
+    [visible]="true" 
+    (close)="submitEntireHierarchy = false; submitRevisionPromiseHandler($event)"
+  ></clark-submit>

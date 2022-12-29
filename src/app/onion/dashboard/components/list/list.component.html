@@ -66,6 +66,7 @@
           (select)="toggleSelect(l, $event, i)"
           (delete)="confirmDelete(l)"
           (submit)="submitToCollection.emit(l);"
+          (submitHierarchy)="submitHierarchy.emit(l)"
           (cancelSubmission)="cancelCollectionSubmission.emit(l)"
           (viewAllChangelogs)="openChangelog.emit(l.id)"
           >
