@@ -80,8 +80,8 @@ export class DashboardItemComponent implements OnInit, OnChanges {
   showStatus = true;
 
   // parents
-  parents: string[];
-  children: string[];
+  parents: string[] = [];
+  children: string[] = [];
 
   constructor(
     private auth: AuthService,
@@ -93,7 +93,10 @@ export class DashboardItemComponent implements OnInit, OnChanges {
 
   async ngOnInit() {
     this.parents = await this.parentNames();
+    console.log(this.parents);
     this.children = await this.objectChildrenNames();
+    console.log('children: ' + this.children);
+    // console.log('children ');
     this.cd.detectChanges();
   }
 
@@ -137,6 +140,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
       ],
       manageMaterials: ['unreleased', 'accepted_minor', 'accepted_major', this.verifiedEmail],
       submit: ['unreleased', 'accepted_minor', 'accepted_major', this.verifiedEmail],
+      submitHierarchy: ['unreleased', this.parents.length === 0, this.verifiedEmail],
       resubmit: ['accepted_minor', 'accepted_major'],
       view: ['released'],
       delete: ['unreleased', 'rejected'],
@@ -188,6 +192,10 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    */
   async objectChildrenNames() {
     const result = [];
+    console.log(this.learningObject);
+    if (!this.learningObject.resourceUris) {
+      return [];
+    }
     return this.uriRetriever.fetchUri(this.learningObject.resourceUris.children).toPromise().then((children: LearningObject[]) => {
       children.forEach(child => {
         result.push(child.name);

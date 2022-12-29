@@ -46,11 +46,11 @@
                 <li *ngIf="actionPermissions('infoPanel')" activate [routerLink]="['./']" [queryParams]="{ activeLearningObject: learningObject.cuid, version: learningObject.version }"><i class="fas fa-info-circle"></i>Info</li>
                 <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.id, 'materials']" activate><i class="far fa-upload"></i>Manage Materials</li>
                 <li *ngIf="actionPermissions('submit')" (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
+                <li *ngIf="actionPermissions('submitHierarchy')">Submit Full Hierarchy</li>
                 <li (activate)="viewAllChangelogs.emit(learningObject.id)"><i class="far fa-comment-alt-lines"></i>View Changelogs</li>
                 <li *ngIf="actionPermissions('view')" [routerLink]="['/details', learningObject.author.username, learningObject.cuid]"><i class="far fa-cube"></i>Learning Object Details</li>
                 <li *ngIf="actionPermissions('delete')" class="bad" (activate)="delete.emit()"><i class="far fa-trash-alt"></i>Delete</li>
                 <li *ngIf="actionPermissions('cancelSubmission')" class="bad" (activate)="cancelSubmission.emit()"><i class="far fa-ban"></i>Cancel Submission</li>
-          
               </ul>
             </div>
           </clark-context-menu>
