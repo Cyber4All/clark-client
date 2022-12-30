@@ -38,11 +38,12 @@ export class HierarchyService {
   }
 
   /**
-   * Releases an entire hierarchy from the admin dashboard, should
+   * Submits an entire hierarchy from the user dashboard, should
    * only be called for root objects, but can be used for subtrees
    * according to Hierarchy Service docs.
    *
    * @param id id of the root learning object of a hierarchy
+   * @param collection the collection the objects will belong to
    * @returns A promise
    */
     async submitHierarchy(id: string, collection: string): Promise<any> {
