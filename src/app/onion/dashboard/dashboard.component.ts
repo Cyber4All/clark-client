@@ -358,16 +358,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.currentlySubmittingObject = object;
       this.submitEntireHierarchy = true;
     }
-    // this.notificationService.alert('Submitting...', 'Your Hierarchy is being released. Please wait.');
-    // this.showReleasingHierarchyPopup = true;
-    // try {
-    //   await this.hierarchyService.submitHierarchy(object.id, object.collection);
-    //   this.notificationService.success('Success!', 'Your hierarcy was successfully submitted!');
-    // } catch {
-    //   this.notificationService.error('Submission Failed', 'Your Hierarchy could not be released at this time. Please try again later.');
-    // } finally {
-    //   this.showReleasingHierarchyPopup = false;
-    // }
   }
 
   createRevision(object: LearningObject) {

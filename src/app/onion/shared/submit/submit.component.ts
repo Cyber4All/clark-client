@@ -179,11 +179,7 @@ export class SubmitComponent implements OnInit {
           .then(() => {
             this.closeModal(true);
             this.loading.pop();
-            // location.reload();
-            this.toasterService.success(
-              'Success!',
-              'Learning Object submitted successfully!',
-            );
+            location.reload(); // Reload the page so that the entire hierarchy's icon change
             return true;
           }).catch((e) => {
             if (e.status === 401) {
