@@ -199,7 +199,6 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    */
   async objectChildrenNames() {
     const result = [];
-    console.log(this.learningObject);
     if (!this.learningObject.resourceUris) {
       return [];
     }
