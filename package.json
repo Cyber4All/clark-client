@@ -73,7 +73,7 @@
     "babel-loader": "^8.0.6",
     "canvas": "^2.9.1",
     "chart.js": "^2.9.4",
-    "chrome-launcher": "^0.13.4",
+    "chrome-launcher": "^0.15.1",
     "eslint": "^7.26.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "^37.6.1",
