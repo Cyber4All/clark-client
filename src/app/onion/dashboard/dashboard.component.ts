@@ -11,6 +11,7 @@ import { CollectionService } from 'app/core/collection.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
+import { HierarchyService } from 'app/core/hierarchy.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -56,7 +57,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // submission
   submitToCollection: boolean;
-
+  submitEntireHierarchy = false;
   // side panel
   focusedLearningObject: LearningObject;
   sidePanelController$: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -79,6 +80,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
+    private hierarchyService: HierarchyService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private changelogService: ChangelogService,
@@ -348,6 +350,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.notificationService.error('Error!', 'Selected Learning Objects could not be deleted!');
 
       return Promise.reject();
+    }
+  }
+
+  async submitHierarchy(object: LearningObject) {
+    if (LearningObject.Status.UNRELEASED === object.status) {
+      this.currentlySubmittingObject = object;
+      this.submitEntireHierarchy = true;
     }
   }
 

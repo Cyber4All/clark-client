@@ -16,6 +16,7 @@ export class ListComponent {
   @Output() cancelCollectionSubmission: EventEmitter<LearningObject> = new EventEmitter();
   @Output() openChangelog: EventEmitter<any> = new EventEmitter();
   @Output() submitToCollection: EventEmitter<LearningObject> = new EventEmitter();
+  @Output() submitHierarchy: EventEmitter<LearningObject> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
 
   // delete variables

@@ -19,7 +19,8 @@ import { of } from 'rxjs/internal/observable/of';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Router } from '@angular/router';
-import { HierarchyService } from '../../core/hierarchy.service';
+import { HierarchyService } from '../../../core/hierarchy.service';
+import { LearningObjectService } from 'app/core/learning-object.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -74,7 +75,8 @@ export class LearningObjectListItemComponent implements OnChanges {
     private http: HttpClient,
     private toaster: ToastrOvenService,
     private router: Router,
-    private hierarchyService: HierarchyService
+    private hierarchyService: HierarchyService,
+    private loService: LearningObjectService
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -197,23 +199,7 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Checks if the learning object has any children
    */
   async checkForChildren() {
-    const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(
-      this.learningObject.author.username
-      )}/learning-objects/${encodeURIComponent(
-      this.learningObject.id
-    )}/children`;
-
-    await this.http.get(
-      childrenUri,
-      { headers: this.headers, withCredentials: true }
-      ).pipe(
-      take(1),
-      catchError(e => of(e))
-    ).subscribe(object => {
-      if (object && object.length) {
-        this.hasChildren = true;
-      }
-    });
+    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.author.username, this.learningObject.id);
   }
 
   /**
