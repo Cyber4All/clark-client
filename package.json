@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "5.0.17",
+  "version": "5.0.18",
   "license": "MIT",
   "scripts": {
     "ng": "ng",

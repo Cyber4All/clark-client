@@ -19,7 +19,7 @@ export interface Collection {
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
-  darkMode502 = new BehaviorSubject<boolean>(false);
+  darkMode502 = new BehaviorSubject<boolean>(true);
   constructor(private http: HttpClient) {
     this.fetchCollections()
       .catch(e => {
