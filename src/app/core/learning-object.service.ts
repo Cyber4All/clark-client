@@ -4,6 +4,7 @@ import { take, map, catchError, mergeMap, finalize } from 'rxjs/operators';
 import { of, Observable, merge, Subject } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { environment } from '@env/environment';
 
 export const CALLBACKS = {
   outcomes: (outcomes: any[]) => {
@@ -132,6 +133,28 @@ export class LearningObjectService {
       }
     );
   }
+
+  /**
+   * Checks to see if a learning object has children
+   *
+   * @param username The Username of the user
+   * @param learningObjectId The object id of the learning object
+   * @returns True if the learning object has children, false otherwise
+   */
+  async doesLearningObjectHaveChildren(username: string, learningObjectId: string): Promise<boolean> {
+    const childrenUri = `${environment.apiURL}/users/${
+      encodeURIComponent(username)
+    }/learning-objects/${encodeURIComponent(
+      learningObjectId
+    )}/children`;
+
+    const hasChildren = await this.http.get(
+      childrenUri,
+      { headers: this.headers, withCredentials: true }
+      ).toPromise();
+    return Array.from(hasChildren as any).length > 0;
+  }
+
   /**
    * Returns the route that needs to be hit in order to load Learning Object based on the params passed in
    *
