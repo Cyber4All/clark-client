@@ -2,9 +2,6 @@
     <h2 class="title">Most Downloaded Learning Objects</h2>
     <div class="downloads-container" *ngIf="!loading; else loadingTemplate">
       <div *ngFor="let lo of learningObjects">
-        <div [ngClass]="'length ' + lo.length">
-          {{ lo.length | titlecase }}
-        </div>
         <a class="name" [routerLink]="['/details', lo.author.username, lo.cuid]">
           {{ lo.name }}
         </a>
