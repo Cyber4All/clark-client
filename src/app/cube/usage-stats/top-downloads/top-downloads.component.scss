@@ -4,7 +4,7 @@ $row-gap: 25px;
 
 .top-downloads {
     color: $dark-grey;
-    font-size: $large;
+    font-size: $normal;
     padding: 15px 20px 15px;
 
     .title {
@@ -17,6 +17,38 @@ $row-gap: 25px;
     .downloads-container {
       padding: 20px;
       width: 80%;
+
+      .length {
+        color: white;
+        font-size: $small;
+        display: inline-block;
+        position: relative;
+        padding: 3px 6px;
+        border-radius: 2px;
+        height: fit-content;
+        margin-right: 5px;
+      
+      
+        &.nanomodule {
+          background: $nanomodule-color;
+        }
+      
+        &.micromodule {
+          background: $micromodule-color;
+        }
+      
+        &.module {
+          background: $module-color;
+        }
+      
+        &.unit {
+          background: $unit-color;
+        }
+      
+        &.course {
+          background: $course-color;
+        }
+      }
       
       .name {
         color: $light-blue;
@@ -30,6 +62,7 @@ $row-gap: 25px;
       }
   
       .count {
+        margin-top: 2px;
         float: right;
       }
 
