@@ -28,6 +28,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
 
   collections = new Map<string, string>();
   collection = '';
+  pictureLocation: string;
+  link: string;
 
   canDownload = false;
   showDownloadModal = false;
@@ -42,7 +44,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     public auth: AuthService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.loading) {
@@ -68,7 +70,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     const descriptionString = this.learningObject.description;
     const final = this.truncateText(
       descriptionString.charAt(0).toUpperCase() +
-        descriptionString.substring(1),
+      descriptionString.substring(1),
       150
     );
 
@@ -130,16 +132,29 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
    * @param organization string of the users affiliated organization
    * @returns string unformated or title cased
    */
-     organizationFormat(organization: string) {
-      if ( organization && (organization.charAt(1) === organization.charAt(1).toUpperCase()) ) {
-        return organization;
-      } else if (organization) {
-        return titleCase(organization);
-      }
+  organizationFormat(organization: string) {
+    if (organization && (organization.charAt(1) === organization.charAt(1).toUpperCase())) {
+      return organization;
+    } else if (organization) {
+      return titleCase(organization);
     }
+  }
 
   onResize() {
     this.collection = this.collections.get(this.learningObject.collection);
+    if (
+      this.learningObject.collection !== 'intro_to_cyber' &&
+      this.learningObject.collection !== 'secure_coding_community' &&
+      this.learningObject.collection !== 'plan c' &&
+      this.learningObject.collection !== 'max_power'
+    ) {
+      this.pictureLocation =
+        '/assets/images/collections/' +
+        this.learningObject.collection +
+        '.png';
+    } else{
+      this.pictureLocation = 'generic';
+    }
     this.cd.detectChanges();
     if (window.screen.width <= 750 && this.collection.length > 12) {
       this.collection = this.collection.substring(0, 12) + '...';

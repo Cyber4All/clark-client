@@ -9,17 +9,21 @@
   <div 
     class="learning-object"
     id="learning-object"
-    [ngClass]="learningObject.length"
   >
-    <div class="image">
-      <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
+    <div class="image" >
+      <img
+      *ngIf="pictureLocation !== 'generic'; else genericLogoTemplate" 
+      class = "logo"
+      src="{{ pictureLocation }}" 
+      alt="{{ collection }} logo">
+      <div class="card-collection">{{ collection }}</div>
     </div>
     <div class="learning-object-content">
       <div class="content__topbar">
         <div>
           <!-- outer div here is a wrapper element to make sure the download button stays position to the right in the event the object has no collection -->
-          <div *ngIf="collection !== undefined" class="card-collection">
-            {{ collection }}
+          <div class="length">
+            {{ learningObject.length.toUpperCase() }}
           </div>
         </div>
         <form *ngIf="downloadService">
@@ -46,8 +50,8 @@
           </button>
         </form>
       </div>
-      <div *ngIf="collection !== undefined" class="collection">
-        {{ collection }}
+      <div class="length_tall">
+        {{ learningObject.length.toUpperCase() }}
       </div>
       <div class="details">
         <span class="author">
@@ -77,3 +81,7 @@
     ></clark-download-notice-popup>
   </div>
 </clark-popup>
+
+<ng-template #genericLogoTemplate>
+  <clark-generic-collection-logo></clark-generic-collection-logo>
+</ng-template>
