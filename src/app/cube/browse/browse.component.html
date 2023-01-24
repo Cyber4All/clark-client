@@ -52,9 +52,11 @@
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
     <ul>
-      <li (activate)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left" aria-label="Previous page of results"></i></li>
-      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage === p}" (activate)="goToPage(p)" attr.aria-label="Page {{ p }} of results">{{ p }}</li>
-      <li (activate)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"><i class="far fa-chevron-right" aria-label="Next page of results"></i></li>
+      <li (activate)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left" aria-label="Previous page of results"></i> Back </li>
+      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage === p}" (activate)="goToPage(p)" attr.aria-label="Page {{ p }} of results">
+        {{ p }}
+      </li>
+      <li (activate)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"> Next <i class="far fa-chevron-right" aria-label="Next page of results"></i></li>
     </ul>
   </div>
 </div>

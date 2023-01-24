@@ -189,39 +189,34 @@ $learning-object-width: 820px;
     align-items: center;
 
     li {
-      padding: 10px;
-      color: $blue-accent;
-      border-top: 1px solid $light-grey;
-      border-bottom: 1px solid $light-grey;
-      border-left: 1px solid $light-grey;
+      color: $homepage-light-blue;
+      border: none;
+      font-size: 15px;
+      background: transparent;
+      padding: 5px 10px;
+      margin: 0 5px;
       list-style-type: none;
-      min-width: 45px;
       text-align: center;
-      transition: opacity 0.2s ease;
-      opacity: 1;
+      border-radius: 4px;
+      cursor: pointer;
+
+      svg {
+        padding: 0px 10px;
+    }
 
       &.gone {
-        opacity: 0.4 !important;
+        color: $homepage-pagination;
         cursor: default !important;
       }
 
-      &:not(.active):hover {
-        opacity: 0.6;
+      &:not(.active):not(:disabled):hover {
+        opacity: 80%;
         cursor: pointer;
-      }
+    }
 
       &.active {
-        background: $blue-accent;
-        color: white;
-      }
-
-      &:first-child {
-        border-radius: 3px 0 0 3px;
-      }
-
-      &:last-child {
-        border-radius: 0 3px 3px 0;
-        border-right: 1px solid $light-grey;
+        background: $box-background;
+        color: $homepage-light-blue;
       }
     }
   }
