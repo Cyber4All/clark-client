@@ -57,6 +57,8 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
       && this.collection.abvName !== 'plan c'
     ) {
       this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
+    } else {
+      this.pictureLocation = null;
     }
     if (this.collection.abvName === 'plan c') {
       this.showContribute = true;
