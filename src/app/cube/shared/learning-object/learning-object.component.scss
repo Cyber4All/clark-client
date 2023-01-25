@@ -40,10 +40,16 @@ a {
             width: 100%;
           }
         }
-        .length_tall {
+        .length {
           display: none;
         }
-        .length{
+        .time {
+          display: none;
+        }
+        .length_tall{
+          display: inline;
+        }
+        .time_tall{
           display: inline;
         }
         .download-btn{
@@ -95,7 +101,10 @@ a {
         font-size: $smaller !important;
       }
     }
-    .length {
+    .length_tall {
+      display: none;
+    }
+    .time_tall {
       display: none;
     }
     .download-btn-card {
@@ -272,10 +281,11 @@ a {
       }
     }
 
-    .length {
+    .length_tall {
       background: $homepage-light-blue;
       padding: 2px 5px;
       margin-bottom: 8px;
+      margin-right: 15px;
       border-radius: 3px;
       display: inline-block;
       position: relative;
@@ -283,7 +293,24 @@ a {
       font-size: $smaller;
       font-weight: 400;
       display: none;
-      
+    }
+
+    .time_tall {
+      background: $primary-white;
+      padding: 2px 5px;
+      margin-bottom: 8px;
+      border-radius: 3px;
+      border: 1px solid $secondary-white;
+      display: inline-block;
+      position: relative;
+      color: $darker-grey;
+      font-size: $smaller;
+      font-weight: 400;
+      display: none;
+
+      svg {
+        padding-right: 5px;
+      }
     }
 
     .download-btn-card {
@@ -302,15 +329,31 @@ a {
       }
     }
 
-    .length_tall {
+    .length {
       background: $homepage-light-blue;
       padding: 2px 5px;
+      margin-right: 15px;
       border-radius: 3px;
       display: inline-block;
       position: relative;
       color: white;
       font-size: $smaller;
       font-weight: 400;
+    }
+    .time {
+      background: $primary-white;
+      padding: 2px 5px;
+      border-radius: 3px;
+      border: 1px solid $secondary-white;
+      display: inline-block;
+      position: relative;
+      color: $darker-grey;
+      font-size: $smaller;
+      font-weight: 400;
+
+      svg {
+        padding-right: 5px;
+      }
     }
 
     .details {
