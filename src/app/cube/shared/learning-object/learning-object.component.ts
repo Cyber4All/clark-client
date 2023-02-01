@@ -133,11 +133,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
    * @returns string unformated or title cased
    */
   organizationFormat(organization: string) {
-    if (organization && (organization.charAt(1) === organization.charAt(1).toUpperCase())) {
-      return organization;
-    } else if (organization) {
-      return titleCase(organization);
-    }
+    return titleCase(organization);
   }
 
   onResize() {
