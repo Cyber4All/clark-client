@@ -8,8 +8,8 @@
       {{ parents[0].name }}
     </span>
   </span>
-  <span *ngIf='parents?.length > 1' class='hierarchy-link__plus-more-link-container'>
-    + {{ children?.length - 1 }} more
+  <span *ngIf='parents?.length > 0' class='hierarchy-link__plus-more-link-container'>
+    + {{ parents?.length - 1 }} more
   </span>
   <span *ngIf='parents?.length' class='hierarchy-link__parent-child-separator'>;</span>
   <span *ngIf='children?.length' class='hierarchy-link__parent-link-container'>
