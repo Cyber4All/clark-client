@@ -33,8 +33,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     guidelines: [],
     level: [],
     standardOutcomes: [],
-    orderBy: undefined,
-    sortType: undefined,
+    orderBy: OrderBy.Date,
+    sortType: -1,
     collection: '',
     topics: [],
     fileTypes: [],
@@ -311,6 +311,13 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    */
   makeQuery(params: any) {
     const paramKeys = Object.keys(params);
+
+    // no sort applied for text search
+    if (paramKeys.includes('text')) {
+      this.query.orderBy = undefined;
+      this.query.sortType = undefined;
+    }
+
     // iterate params object
     for (let i = 0, l = paramKeys.length; i < l; i++) {
       const key = paramKeys[i];
