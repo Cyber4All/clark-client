@@ -17,8 +17,8 @@
       ><i class="far fa-external-link"></i
     ></span>
   </div>
-  <div class="text-contained description" id="file-description">
-    <span>{{ file?.description }}</span>
+  <div tabindex="0" class="text-contained description" id="file-description" attr.aria-label="{{ file?.description }}">
+    <span title="{{ file?.description }}">{{ file?.description }}</span>
   </div>
   <div class="text-contained timestamp" id="file-updated" attr.aria-label="Last updated {{ timestampAge }}">
     {{ timestampAge }}
