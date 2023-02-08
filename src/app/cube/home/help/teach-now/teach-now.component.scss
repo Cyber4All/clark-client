@@ -86,7 +86,6 @@ select {
     gap: 30px;
     margin: 50px 0;
     flex-wrap: wrap;
-    max-width: 1375px;
 
     .all {
         display: flex;
@@ -104,7 +103,7 @@ select {
 
     clark-learning-object-component {    
         &.card {
-          width: 250px;
+          width: 285px;
         }
       }
 }

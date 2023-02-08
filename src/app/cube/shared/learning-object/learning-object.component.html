@@ -1,34 +1,46 @@
-<a
-  [routerLink]="[
+<a [routerLink]="[
     '/details',
     learningObject.author.username,
     learningObject.cuid
   ]"
-  attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{ learningObject.author.name }}, last updated on {{ learningObject.date | date:'longDate' }}"
->
-  <div 
-    class="learning-object"
-    id="learning-object"
-    [ngClass]="learningObject.length"
-  >
+  attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{ learningObject.author.name }}, last updated on {{ learningObject.date | date:'longDate' }}">
+  <div class="learning-object" id="learning-object">
     <div class="image">
-      <div class="initials">{{ learningObject.length.toUpperCase() }}</div>
+      <img *ngIf="pictureLocation !== 'generic'; else genericLogoTemplate" class="logo" src="{{ pictureLocation }}"
+        alt="{{ collection }} logo">
+      <div class="card-collection">{{ collection }}</div>
     </div>
     <div class="learning-object-content">
       <div class="content__topbar">
-        <div>
+        <div class="pills_tall">
           <!-- outer div here is a wrapper element to make sure the download button stays position to the right in the event the object has no collection -->
-          <div *ngIf="collection !== undefined" class="card-collection">
-            {{ collection }}
+          <div class="length_tall">
+            {{ learningObject.length.toUpperCase() }}
+          </div>
+          <div *ngIf="learningObject.length === 'nanomodule'" class="time_tall">
+            <i class="far fa-clock"></i>
+            UP TO ONE HOUR
+          </div>
+          <div *ngIf="learningObject.length === 'micromodule'" class="time_tall">
+            <i class="far fa-clock"></i>
+            1 - 4 HOURS
+          </div>
+          <div *ngIf="learningObject.length === 'module'" class="time_tall">
+            <i class="far fa-clock"></i>
+            4 - 10 HOURS
+          </div>
+          <div *ngIf="learningObject.length === 'unit'" class="time_tall">
+            <i class="far fa-clock"></i>
+            OVER 10 HOURS
+          </div>
+          <div *ngIf="learningObject.length === 'course'" class="time_tall">
+            <i class="far fa-clock"></i>
+            15 WEEKS
           </div>
         </div>
         <form *ngIf="downloadService">
-          <button
-            *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
-            class="download-btn-card"
-            (activate)="download($event)"
-            attr.aria-label="Download button for {{ learningObject.name }}"
-          >
+          <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn-card"
+            (activate)="download($event)" attr.aria-label="Download button for {{ learningObject.name }}">
             <i class="fas fa-download"></i>
           </button>
         </form>
@@ -36,44 +48,61 @@
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
         <form *ngIf="downloadService">
-          <button
-            *ngIf="!loading && (auth.isLoggedIn | async) && canDownload"
-            class="download-btn"
-            (activate)="download($event)"
-            attr.aria-label="Download button for {{ learningObject.name }}"
-          >
+          <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn"
+            (activate)="download($event)" attr.aria-label="Download button for {{ learningObject.name }}">
             <i class="fas fa-download"></i>
           </button>
         </form>
       </div>
-      <div *ngIf="collection !== undefined" class="collection">
-        {{ collection }}
+      <div class="pills">
+        <div class="length">
+          {{ learningObject.length.toUpperCase() }}
+        </div>
+        <div *ngIf="learningObject.length === 'nanomodule'" class="time">
+          <i class="far fa-clock"></i>
+          UP TO ONE HOUR
+        </div>
+        <div *ngIf="learningObject.length === 'micromodule'" class="time">
+          <i class="far fa-clock"></i>
+          1 - 4 HOURS
+        </div>
+        <div *ngIf="learningObject.length === 'module'" class="time">
+          <i class="far fa-clock"></i>
+          4 - 10 HOURS
+        </div>
+        <div *ngIf="learningObject.length === 'unit'" class="time">
+          <i class="far fa-clock"></i>
+          OVER 10 HOURS
+        </div>
+        <div *ngIf="learningObject.length === 'course'" class="time">
+          <i class="far fa-clock"></i>
+          15 WEEKS
+        </div>
       </div>
-      <div class="details">
-        <span class="author">
-          {{ learningObject.contributors[0]?.name | titlecase }} at
-          {{ organizationFormat(learningObject.contributors[0]?.organization) }}
-          {{
-            learningObject.contributors?.length - 1
-              ? 'and ' + (learningObject.contributors.length - 1)  + ' more'
-              : ''
-          }}
-        </span>
-        <div class="date">Updated {{ date | date: 'mediumDate' }}</div>
-      </div>
-      <div
-        class="goals"
-        *ngIf="this.learningObject.description"
-        [innerHtml]="goals()"
-      ></div>
+    
+    <div class="details">
+      <span class="author">
+        {{ learningObject.contributors[0]?.name | titlecase }} at
+        {{ organizationFormat(learningObject.contributors[0]?.organization) }}
+        {{
+        learningObject.contributors?.length - 1
+        ? 'and ' + (learningObject.contributors.length - 1) + ' more'
+        : ''
+        }}
+      </span>
+      <div class="date">Updated {{ date | date: 'mediumDate' }}</div>
+    </div>
+    <div class="goals" *ngIf="this.learningObject.description" [innerHtml]="goals()"></div>
     </div>
   </div>
 </a>
 
 <clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
   <div style="max-width: 600px;" #popupInner>
-    <clark-download-notice-popup
-      (close)="toggleDownloadModal(false)"
-    ></clark-download-notice-popup>
+    <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
   </div>
 </clark-popup>
+
+<ng-template #genericLogoTemplate>
+  <clark-generic-collection-logo></clark-generic-collection-logo>
+</ng-template>
