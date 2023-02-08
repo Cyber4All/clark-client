@@ -1,6 +1,7 @@
 import {
   Component,
   OnChanges,
+  OnInit,
   EventEmitter,
   Output,
   Input
@@ -18,7 +19,7 @@ import { Router } from '@angular/router';
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnChanges {
+export class EditProfileComponent implements OnChanges, OnInit {
   ssoRedirect = environment.apiURL + '/google';
   elementRef: any;
   @Input() user;
@@ -52,15 +53,28 @@ export class EditProfileComponent implements OnChanges {
     private router: Router
   ) { }
 
+  ngOnInit(): void {
+    console.log('D',this.auth.user.organization);
+    if(this.user){
+      this.editInfo.email = this.auth.user.email;
+      this.editInfo.firstname = this.auth.user.firstName;
+      this.editInfo.lastname = this.auth.user.lastName;
+      this.editInfo.organization = this.auth.user.organization;
+  }
+}
+
   ngOnChanges(): void {
+    console.log('C', this.auth.user.email);
+    console.log('A', this.auth.user.firstName);
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
     this.editInfo = {
       firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
       lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
-      email: this.user.email || '',
+      email: this.auth.user.email || '',
       organization: this.toUpper(this.user.organization) || '',
       bio: this.user.bio || ''
     };
+    console.log('B', this.auth.user.lastName);
   }
 
   /**
