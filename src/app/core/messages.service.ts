@@ -9,7 +9,8 @@ export class Message {
 }
 @Injectable()
 export class MessagesService {
-  private _message: Message;
+  private _message: Message = new Message(true, 'The CLARK team will conduct regular maintenance of the CLARK system on Monday February'+
+  ' 20, 2023 from 6:00AM-8:00AM EST. CLARK will be available but some users might see downgraded performance');
 
   get message() {
     return this._message;
