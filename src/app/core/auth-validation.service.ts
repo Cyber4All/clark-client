@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
@@ -45,7 +45,6 @@ export class AuthValidationService {
         return new FormControl('');
     }
   }
-
   /**
    * takes a form control object, and returns an error message for
    * the specific error that has occured

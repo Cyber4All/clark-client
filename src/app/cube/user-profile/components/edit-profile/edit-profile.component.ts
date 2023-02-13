@@ -6,7 +6,8 @@ import {
   Output,
   Input
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import {AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn, Validators, FormGroup} from '@angular/forms';
+import { Observable } from 'rxjs';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { ProfileService } from 'app/core/profiles.service';
@@ -39,10 +40,6 @@ export class EditProfileComponent implements OnChanges, OnInit {
   };
 
   editFormGroup: FormGroup = new FormGroup({
-    firstname: this.authValidation.getInputFormControl('required'),
-    lastname: this.authValidation.getInputFormControl('required'),
-    email: this.authValidation.getInputFormControl('email'),
-    organization: this.authValidation.getInputFormControl('required'),
   });
 
   constructor(
@@ -54,23 +51,23 @@ export class EditProfileComponent implements OnChanges, OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('D',this.auth.user.organization);
-    if(this.user){
-      this.editInfo.email = this.auth.user.email;
-      this.editInfo.firstname = this.auth.user.firstName;
-      this.editInfo.lastname = this.auth.user.lastName;
-      this.editInfo.organization = this.auth.user.organization;
+    this.editFormGroup = new FormGroup ({
+      firstname: new FormControl(this.user.name, Validators.required),
+      lastname: new FormControl(this.user.lastname, Validators.required),
+      email: new FormControl(this.user.email, Validators.required),
+      organization: new FormControl(this.user.organization, Validators.required),
+    });
   }
-}
+
 
   ngOnChanges(): void {
-    console.log('C', this.auth.user.email);
+    console.log('C', this.user.email);
     console.log('A', this.auth.user.firstName);
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
     this.editInfo = {
       firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
       lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
-      email: this.auth.user.email || '',
+      email: this.user.email || '',
       organization: this.toUpper(this.user.organization) || '',
       bio: this.user.bio || ''
     };
