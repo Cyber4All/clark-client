@@ -6,8 +6,7 @@ import {
   Output,
   Input
 } from '@angular/core';
-import {AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn, Validators, FormGroup} from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { ProfileService } from 'app/core/profiles.service';
@@ -53,7 +52,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.editFormGroup = new FormGroup ({
       firstname: new FormControl(this.user.name, Validators.required),
-      lastname: new FormControl(this.user.lastname, Validators.required),
+      lastname: new FormControl(this.user.name, Validators.required),
       email: new FormControl(this.user.email, Validators.required),
       organization: new FormControl(this.user.organization, Validators.required),
     });
@@ -61,8 +60,6 @@ export class EditProfileComponent implements OnChanges, OnInit {
 
 
   ngOnChanges(): void {
-    console.log('C', this.user.email);
-    console.log('A', this.auth.user.firstName);
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
     this.editInfo = {
       firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
@@ -71,7 +68,6 @@ export class EditProfileComponent implements OnChanges, OnInit {
       organization: this.toUpper(this.user.organization) || '',
       bio: this.user.bio || ''
     };
-    console.log('B', this.auth.user.lastName);
   }
 
   /**
