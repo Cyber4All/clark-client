@@ -24,7 +24,6 @@ export class UserProfileComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    console.log('yo');
     // Subscribe to data returned from profile.resolver
     this.subscription = this.route.data.subscribe(async val => {
       // Toggle page loading
