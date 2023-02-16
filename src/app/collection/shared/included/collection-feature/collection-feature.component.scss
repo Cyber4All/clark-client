@@ -71,3 +71,44 @@
         }
     }
 }
+
+.featured_NCYTE {
+    background-color: white;
+
+    .header {
+        margin-bottom: 40px;
+        font-size: $largest;
+        font-weight: 600;
+        color: black;
+    }
+
+    .inner {
+        max-width: 1600px;
+        text-align: center;
+        padding: 50px;
+        margin: auto;
+        min-height: 400px;
+
+        .body {
+
+            .objects {
+                display: flex;
+                flex-direction: space-between;
+                flex-wrap: wrap;
+                justify-content: center;
+
+                a {
+                    text-decoration: none;
+                    color: #32363f;
+                }
+            }
+
+            .browse {
+                padding-top: 20px;
+                padding-right: 50px;
+                display: flex;
+                justify-content: right;
+            }
+        }
+    }
+}
