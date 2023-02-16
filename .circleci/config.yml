@@ -19,14 +19,6 @@ workflows:
 
   continuous-deployment:
     jobs:
-      - cyber4all/sbom:
-          context: [Shortcut]
-          language: node
-          filters:
-            branches:
-                only:
-                  - releases
-
       - cyber4all/deploy-s3:
           context:
             [AWS, Slack]
