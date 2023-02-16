@@ -15,7 +15,7 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
   updatedLearningObject;
   frameworkNames;
   mapped = false;
-  theme = 'light';
+  theme = 'dark';
 
   constructor(
     private collectionService: CollectionService
