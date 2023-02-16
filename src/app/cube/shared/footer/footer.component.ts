@@ -3,9 +3,9 @@ import {filter} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { COPY } from './footer.copy';
-import { environment } from '@env/environment';
-import { SubscriptionAgreementService } from 'app/core/subscription-agreement.service';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { environment } from '../../../../environments/environment';
+import { SubscriptionAgreementService } from '../../../core/subscription-agreement.service';
+import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'cube-footer',
