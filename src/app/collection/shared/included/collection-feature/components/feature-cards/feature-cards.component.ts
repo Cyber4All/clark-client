@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from '../../../../../../core/collection.service';
 import { AttributeService } from '../../core/attribute.service';
 
 @Component({
@@ -9,8 +9,8 @@ import { AttributeService } from '../../core/attribute.service';
 })
 export class FeatureCardsComponent implements OnInit {
 
-  @Input() learningObject: any;
-  @Input () primaryColor: string;
+  @Input()learningObject: any;
+  @Input()primaryColor: string;
 
   hslVal;
   parents;
