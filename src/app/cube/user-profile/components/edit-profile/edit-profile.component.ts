@@ -1,11 +1,12 @@
 import {
   Component,
   OnChanges,
+  OnInit,
   EventEmitter,
   Output,
   Input
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { ProfileService } from 'app/core/profiles.service';
@@ -18,7 +19,7 @@ import { Router } from '@angular/router';
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnChanges {
+export class EditProfileComponent implements OnChanges, OnInit {
   ssoRedirect = environment.apiURL + '/google';
   elementRef: any;
   @Input() user;
@@ -38,10 +39,6 @@ export class EditProfileComponent implements OnChanges {
   };
 
   editFormGroup: FormGroup = new FormGroup({
-    firstname: this.authValidation.getInputFormControl('required'),
-    lastname: this.authValidation.getInputFormControl('required'),
-    email: this.authValidation.getInputFormControl('email'),
-    organization: this.authValidation.getInputFormControl('required'),
   });
 
   constructor(
@@ -51,6 +48,16 @@ export class EditProfileComponent implements OnChanges {
     private auth: AuthService,
     private router: Router
   ) { }
+
+  ngOnInit(): void {
+    this.editFormGroup = new FormGroup ({
+      firstname: new FormControl(this.user.name, Validators.required),
+      lastname: new FormControl(this.user.name, Validators.required),
+      email: new FormControl(this.user.email, Validators.required),
+      organization: new FormControl(this.user.organization, Validators.required),
+    });
+  }
+
 
   ngOnChanges(): void {
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
