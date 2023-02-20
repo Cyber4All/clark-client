@@ -142,7 +142,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
       this.learningObject.collection !== 'intro_to_cyber' &&
       this.learningObject.collection !== 'secure_coding_community' &&
       this.learningObject.collection !== 'plan c' &&
-      this.learningObject.collection !== 'max_power'
+      this.learningObject.collection !== 'max_power' &&
+      this.learningObject.collection !== 'Drafts'
     ) {
       this.pictureLocation =
         '/assets/images/collections/' +
