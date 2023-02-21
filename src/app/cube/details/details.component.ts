@@ -183,6 +183,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
           if (this.learningObject.revisionUri) {
             this.hasRevision = true;
             await this.loadRevisedLearningObject();
+          } else {
+            this.revisedLearningObject = null;
           }
         } else {
           if (object instanceof HttpErrorResponse) {
