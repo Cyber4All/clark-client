@@ -1,42 +1,51 @@
-import { RouterModule } from '@angular/router';
-import { SharedModule } from '../../shared/shared.module';
-import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
-
-import { HomeComponent } from './home.component';
 import { CommonModule } from '@angular/common';
+import { HomeComponent } from './home.component';
+import { SplashComponent } from './splash/splash.component';
+import { MissionComponent } from './mission/mission.component';
+import { HelpComponent } from './help/help.component';
+import { LearningObjectInfoComponent } from './learning-object-info/learning-object-info.component';
+import { TeachNowComponent } from './help/teach-now/teach-now.component';
+import { BuildProgramComponent } from './help/build-program/build-program.component';
+import { ExploreCollectionsComponent } from './help/explore-collections/explore-collections.component';
+import { HelpCardComponent } from './help/components/help-card/help-card.component';
+import { LearningObjectsComponent } from './learning-object-info/learning-objects/learning-objects.component';
+import { LearningOutcomesComponent } from './learning-object-info/learning-outcomes/learning-outcomes.component';
+import { HierarchiesComponent } from './learning-object-info/hierarchies/hierarchies.component';
+import { CollectionsComponent } from './learning-object-info/collections/collections.component';
+import { StickyMenuComponent } from './learning-object-info/sticky-menu/sticky-menu.component';
 import { CubeSharedModule } from '../shared/cube-shared.module';
-import { PhilosophyComponent } from './components/philosophy/philosophy.component';
-import { SplashComponent } from './components/splash/splash.component';
-import { UsageComponent } from './components/usage/usage.component';
-import { CollectionsComponent } from './components/collections/collections.component';
-import { WhatClarkComponent } from './components/what-clark/what-clark.component';
-import { FeaturedCollectionCardComponent } from './components/featured-collection-card/featured-collection-card.component';
+import { SharedModule } from 'app/shared/shared.module';
+import { RouterModule } from '@angular/router';
+import { HelpBackBtnComponent } from './help/components/help-back-btn/help-back-btn.component';
+import { FormsModule } from '@angular/forms';
 import { BlogsComponent } from 'app/components/blogs/blogs.component';
 
 @NgModule({
-  imports: [
-    FormsModule,
-    CommonModule,
-    SharedModule,
-    CubeSharedModule,
-    RouterModule
-  ],
-  exports: [
-    HomeComponent,
-    UsageComponent,
-    PhilosophyComponent,
-  ],
   declarations: [
     HomeComponent,
-    PhilosophyComponent,
     SplashComponent,
-    UsageComponent,
+    MissionComponent,
+    HelpComponent,
+    LearningObjectInfoComponent,
+    TeachNowComponent,
+    BuildProgramComponent,
+    ExploreCollectionsComponent,
+    LearningObjectsComponent,
+    LearningOutcomesComponent,
+    HierarchiesComponent,
     CollectionsComponent,
-    WhatClarkComponent,
-    FeaturedCollectionCardComponent,
+    StickyMenuComponent,
+    HelpCardComponent,
+    HelpBackBtnComponent,
     BlogsComponent
   ],
-  providers: []
+  imports: [
+    CommonModule,
+    CubeSharedModule,
+    SharedModule,
+    RouterModule,
+    FormsModule,
+  ]
 })
-export class HomeModule {}
+export class HomeModule { }

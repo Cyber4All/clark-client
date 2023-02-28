@@ -1,42 +1,57 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../core/auth.service';
-import { NavbarService } from 'app/core/navbar.service';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-email-verified',
-  styles: [
-    `.message--in-progress {
-      margin-bottom: 20px;
-    }
-    .wrapper {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-  }
-    `
-  ],
-  templateUrl: './email-verified.component.html'
+  templateUrl: './email-verified.component.html',
+  styleUrls: ['./email-verified.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('1s', style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class EmailVerifiedComponent implements OnInit {
-  isLoading = true;
-  hasValidToken;
+  iconSuccess: Boolean; // what icon to display
+  h1Message: String; // h1 content
+  pMessage: String; // paragraph content
+  errorCode: String; // error to display, can be expired token or internal server error
+  display: Boolean = true;
 
-  constructor(private auth: AuthService) {}
+  constructor(private authService: AuthService,
+              private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit() {
-    this.auth.validateAndRefreshToken()
+  ngOnInit(): void {
+    this.errorCode = this.activatedRoute.snapshot.queryParamMap.get('err');
+    if(this.errorCode) {
+      this.iconSuccess = false;
+      if(this.errorCode === '401') {
+        this.h1Message = 'Email Link Expired';
+        this.pMessage = 'The code sent to your email has expired, please request another email and try again.';
+      } else {
+        this.h1Message = 'Unable to Verify Email';
+        this.pMessage = 'We were unable to verify your email at this time. Please check back later.';
+      }
+    } else {
+      this.authService.validateAndRefreshToken()
       .then(async () => {
-        // Token is good, refresh it and go home
-        await this.auth.refreshToken();
-        this.hasValidToken = true;
-        this.isLoading = false;
+        // Email successfully verified, display success content to user
+        this.iconSuccess = true;
+        this.h1Message = 'Email Verified!';
+        this.pMessage = 'Welcome to CLARK!';
       })
       .catch(e => {
-        this.isLoading = false;
-        this.hasValidToken = false;
-        // Token is bad, they must sign in
+        // Unauthenticated login, invalid token
+        this.iconSuccess = false;
+        this.h1Message = 'Invalid Log In';
+        this.pMessage = 'Your token was invalid. Please log in to refresh your token.';
       });
+    }
   }
+
 }

@@ -1,0 +1,31 @@
+<div class="wrapper">
+
+    <div *ngIf="width > 750" class="topics">
+        <button class="scroll-button" (activate)="horizontalScrollOnClick(false)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <div #topicScroll class="topics-list">
+            <div class="shadow left" aria-hidden="true"></div>
+            <!-- NOTE: Add left and right buttons for scrolling if it becomes an issue -->
+            <button *ngFor="let topic of topics" class="topic-btn" (activate)="selectTopic(topic._id)" [ngClass]="{'selected': selectedTopic === topic._id}">{{ topic.name }}</button>
+            <span *ngIf="topics.length === 0">Loading Topics...</span>
+            <div class="shadow right" aria-hidden="true"></div>
+        </div>
+        <button class="scroll-button" (activate)="horizontalScrollOnClick(true)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <div *ngIf="width <= 750">
+        <select *ngIf="topics.length > 0" (change)="getObjects()" [(ngModel)]="selectedTopic">
+            <option *ngFor="let topic of topics" [value]="topic._id" [selected]="selectedTopic === topic._id">{{ topic.name }}</option>
+        </select>
+        <span *ngIf="topics.length === 0">Loading Topics...</span>
+    </div>
+    <div *ngIf="objects && objects.length > 0" class="objects">
+        <clark-learning-object-component *ngFor="let l of objects" [learningObject]="l" [loading]="loading" learningObjectCard></clark-learning-object-component>
+        <div class="all" [ngClass]="{'full-width': width < 1175}">
+            <a (activate)="navigate()">See all <i class="fa fa-angle-right"></i></a>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,5 @@
 <div class="inner">
-  <div *ngIf="!isReleased && !revisedVersion" class="download-warning" tip="This learning object is pending review and may be downloaded when the review is complete."
+  <div *ngIf="isSubmitted && !isReleased && !revisedVersion" class="download-warning" tip="This learning object is pending review and may be downloaded when the review is complete."
     tipPosition="top">
     <i class="fas fa-exclamation"></i>Review Pending
   </div>
@@ -10,7 +10,7 @@
           <ng-container *ngTemplateOutlet="libraryButtonsTemplate"></ng-container>
         </div>
       </ng-container>
-      <clark-editorial-action-pad *ngIf="userCanRevise" [hasRevision]="hasRevision" [learningObject]="learningObject" [revisedLearningObject]="revisedLearningObject"></clark-editorial-action-pad>
+      <clark-editorial-action-pad *ngIf="userCanRevise" [userIsAuthor]="userIsAuthor" [hasRevision]="hasRevision" [learningObject]="learningObject" [revisedLearningObject]="revisedLearningObject"></clark-editorial-action-pad>
     </div>
     <ng-container *ngIf="!auth.user">
       <div tabindex="0" class="action-message" id="login-msg">Please

@@ -1,12 +1,43 @@
-<div class="featured">
-    <div class="inner">
-        <h1 class="header" id="header">Featured Learning Objects</h1>
-        <div class="objects">
-            <div *ngFor="let object of learningObjects">
-                <a [routerLink]="['/details', object.author.username, object.cuid]">
-                    <clark-collection-feature-cards [learningObject]="object" [primaryColor]="primaryColor"></clark-collection-feature-cards>
-                </a>
+<ng-container [ngTemplateOutlet]="collection === '502_project' ? heWhoShallNotBeNamedTemplate : lightModeTemplate"></ng-container>
+
+<ng-template #heWhoShallNotBeNamedTemplate>
+    <div class="featured" [attr.data-theme]="theme">
+        <div class="inner">
+            <h1 class="header" id="header">Featured Learning Objects</h1>
+            <div class="body">
+                <div class="objects">
+                    <div *ngFor="let object of learningObjects">
+                        <a [routerLink]="['/details', object.author.username, object.cuid]">
+                            <clark-feature-cards-fiveotwo [learningObject]="object"
+                                [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
+                        </a>
+                    </div>
+                </div>
+                <div class="browse">
+                    <div (click)="navigateToBrowse()" aria-label="Browse Curriculum" class="button">Browse
+                        All
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</ng-template>
+
+<ng-template #lightModeTemplate>
+    <div class="featured_NCYTE">
+        <div class="inner">
+            <h1 class="header" id="header">Featured Learning Objects</h1>
+            <div class="body">
+                <div class="objects">
+                    <div *ngFor="let object of learningObjects">
+                        <a [routerLink]="['/details', object.author.username, object.cuid]">
+                            <clark-collection-feature-cards *ngIf="collection === 'ncyte'" [learningObject]="object"
+                                [primaryColor]="primaryColor"></clark-collection-feature-cards>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>

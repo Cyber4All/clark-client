@@ -10,6 +10,7 @@ import { FeatureComponent } from './feature/feature.component';
 import { RouterModule } from '@angular/router';
 import { CollectionFeatureComponent } from './collection-feature/collection-feature.component';
 import { FeatureCardsComponent } from './collection-feature/components/feature-cards/feature-cards.component';
+import { FeatureCardsFiveotwoComponent } from './feature-cards-fiveotwo/feature-cards-fiveotwo.component';
 
 
 
@@ -22,7 +23,8 @@ import { FeatureCardsComponent } from './collection-feature/components/feature-c
     StatsComponent,
     FeatureComponent,
     CollectionFeatureComponent,
-    FeatureCardsComponent
+    FeatureCardsComponent,
+    FeatureCardsFiveotwoComponent
   ],
   imports: [
     CommonModule,

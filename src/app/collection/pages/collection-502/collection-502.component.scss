@@ -1,0 +1,48 @@
+@import '../../collection-globals.scss';
+
+:root {
+  --background-color: white;
+  --primary-text: black;
+  --secondary-text: $dark-grey;
+}
+
+[data-theme="dark"] {
+  --background-color: #32363F;
+  --primary-text: #FFFFFF;
+  --secondary-text: #FFFFFF;
+}
+
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: var(--background-color);
+  padding: 25px 50px 0 50px;
+
+  .toggle{
+    color: var(--primary-text);
+
+    
+  }
+
+  .icon {
+    color: var(--primary-text);
+    margin-left: 10px;
+  }
+}
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+      background-color: $blue_502;
+    }
+
+::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb{
+  background-color: $blue_502;
+  border: $dark-grey solid;
+  border-width: 1px;
+}
+
+@media (max-width: 1270px) {
+  .theme-switch-wrapper {
+    padding-bottom: 25px;
+    display: flex;
+    justify-content: center;
+  }
+}

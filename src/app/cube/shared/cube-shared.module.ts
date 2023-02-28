@@ -6,8 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { FooterComponent } from './footer/footer.component';
 
 // Guards/Resolvers
-import { ProfileGuard } from '../core/profile.guard';
-import { UserResolver } from '../core/user.resolver';
+import { ProfileResovler } from '../core/profile.resolver';
 
 // Directives
 import { RouterModule } from '@angular/router';
@@ -37,6 +36,6 @@ import { LearningObjectListingComponent } from './learning-object/learning-objec
     FeaturedComponent,
     LearningObjectListingComponent,
   ],
-  providers: [ProfileGuard, UserResolver]
+  providers: [ProfileResovler]
 })
 export class CubeSharedModule {}

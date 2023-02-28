@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { HierarchyService } from 'app/admin/core/hierarchy.service';
+import { HierarchyService } from 'app/core/hierarchy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Observable } from 'rxjs';
 import { LearningObjectNode } from '../tree-datasource';

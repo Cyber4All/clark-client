@@ -1,0 +1,26 @@
+<div class="content">
+  <h1>Leverages the Bloom's taxonomy for measureable results</h1>
+  <!-- Dummy text until the full text is provided for this section -->
+  <p class="taxonomy">Learning outcomes gives both educators and learners explicit learning goals for a learning object.
+    This allows
+    educators to build their assessments correctly. Outcomes also provide language which enables students to effectively
+    articulate
+    what they have learned. Click the cards below to learn more!</p>
+  <br>
+  <div class="blooms-cards">
+    <div 
+      *ngFor="let card of bloomCards" 
+      (click)="card.flipped === 'active' ? card.flipped = 'inactive' : card.flipped = 'active'"
+      class="blooms-card"
+      [@flipState]="card.flipped"
+      >
+      <div class="blooms-face blooms-content">
+        <i [ngClass]="card.icon"></i>
+        <p [innerText]="card.text"></p>
+      </div>
+      <div class="blooms-face blooms-description">
+        <p [innerText]="card.description" class="description"></p>
+      </div>
+    </div>
+  </div>
+</div>

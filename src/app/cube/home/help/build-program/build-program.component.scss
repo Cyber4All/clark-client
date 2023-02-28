@@ -1,0 +1,195 @@
+@import 'vars.scss';
+
+.wrapper {
+    margin: 0px 60px;
+
+    .info {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    .framework {
+        margin: 0 15px 15px 0;
+        padding: 10px 24px;
+        border: 1px solid $secondary-white;
+        border-radius: 4px;
+        background: $primary-white;
+
+        &:hover {
+            border: 1px solid $homepage-light-blue;
+            opacity: 80%;
+        }
+
+        &:active {
+            border: 1px solid $homepage-light-blue;
+            background-color: $box-background;
+            opacity: 100%;
+        }
+    }
+
+    .search {
+        margin-top: 50px;
+        .input {
+            cursor: text;
+            background-color: white;
+            padding: 7px;
+            margin-right: 12px;
+            border: 2px solid $secondary-white;
+            border-radius: 4px;
+
+            svg {
+                padding: 0px 5px;
+                color: $medium-grey;
+            }
+
+            input {
+                border: 0px;
+                width: 30%;
+            }
+
+            &:hover{
+                border-color: $homepage-light-blue;
+            }
+        }
+    }
+
+    .guidelines {
+        .guidelinePage {
+            display: grid;
+            grid-template-rows: auto auto;
+            grid-template-columns: auto auto auto;
+            gap: 25px;
+            margin-top: 50px;
+
+            .guideline {
+                cursor: pointer;
+                display: flex;
+                position: relative;
+                text-align: left;
+                vertical-align: top;
+                border: 1px solid $secondary-white;
+                border-radius: 4px;
+                font-size: 14px;
+                background: $primary-white;
+
+                .guidelineDescription {
+                    color: $homepage-gray;
+                    margin: 15px 15px 70px;
+                }
+
+                .guidelineName {
+                    position: absolute;
+                    bottom: 0;
+                    left: 15px;
+                    color: $homepage-gray;
+                }
+
+                &:hover {
+                    border: 1px solid $homepage-light-blue;
+                    opacity: 80%;
+                }
+    
+                &:active {
+                    border: 1px solid $homepage-light-blue;
+                    background: $box-background;
+                    border-radius: 4px;
+                }
+            }
+        }
+    }
+    
+    .pagination {
+        margin-top: 70px;
+        button {
+            border: none;
+            color: $homepage-light-blue;
+            font-size: 15px;
+            background: transparent;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+
+            svg {
+                padding: 0px 5px;
+            }
+
+            &:not(.highlighted):not(:disabled):hover {
+                opacity: 80%;
+            }
+
+            &.highlighted {
+                background: $box-background;
+            }
+
+            &:disabled {
+                color: $homepage-pagination;
+            }
+        }
+        
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        .search {
+            display: flex;
+            flex-direction: column;
+    
+            .input input {
+                width: 85%;
+            }
+    
+            span {
+                margin-top: 5px;
+            }
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+
+            button {
+                padding: 10px 15px;
+            }
+        }
+    } 
+}
+
+@media screen and (max-width: 425px) {
+    .wrapper {
+        margin: 15px 5px;
+
+        .framework {
+            font-size: 14px;
+        }
+
+        .search {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+            .input input {
+                width: 85%;
+            }
+
+            span {
+                margin-top: 5px;
+                font-size: 14px;
+            }
+        }
+
+        .guidelines {
+            .guidelinePage {
+                display: grid;
+                grid-template-columns: auto;
+                grid-template-rows: auto auto auto auto auto auto;
+            }
+        }
+
+        .pagination {
+            margin-top: 0px;
+        }
+    }
+}
+

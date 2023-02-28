@@ -21,9 +21,6 @@ export class SplashComponent implements OnInit, AfterViewInit {
   @Input() learningObject: LearningObject;
   @Input() averageRating: number;
   @Input() reviewsCount:  number;
-
-  @Input() parents: LearningObject[];
-  @Input() children: LearningObject[];
   @Input() link: string;
 
   showPanel = false;

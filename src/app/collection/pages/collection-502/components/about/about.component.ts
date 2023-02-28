@@ -8,9 +8,8 @@ import { content } from './about_copy';
 })
 export class About502Component implements OnInit {
   content = content;
+
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void { }
 }

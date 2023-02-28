@@ -1,7 +1,7 @@
 @import 'vars.scss';
 @import '../../../../../collection-globals.scss';
 .header-info {
-    background-color: white;
+    background-color: var(--background-color);
     z-index: 0;
     overflow: hidden;
 }
@@ -70,9 +70,10 @@
 .more{
     text-align: center;
     font-size: $large;
+    color: var(--primary-text);
 }
 
-@media screen and (max-width: 1199px){
+@media screen and (max-width: 1270px){
     .header-container{
         flex-direction: column;
         width: 100%;

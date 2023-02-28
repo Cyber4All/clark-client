@@ -1,13 +1,13 @@
 
-import {takeUntil, debounceTime} from 'rxjs/operators';
+import { takeUntil, debounceTime } from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
 
 import {
   SuggestionService
- } from '../../onion/core/suggestion.service';
- import { COPY } from './browse.copy';
+} from '../../onion/core/suggestion.service';
+import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { LearningObjectService } from '../learning-object.service';
@@ -33,9 +33,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     guidelines: [],
     level: [],
     standardOutcomes: [],
-    orderBy: undefined,
-    sortType: undefined,
+    orderBy: OrderBy.Date,
+    sortType: -1,
     collection: '',
+    topics: [],
     fileTypes: [],
     status: [LearningObject.Status.RELEASED]
   };
@@ -182,9 +183,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   get sortString() {
     return this.query.orderBy
       ? this.query.orderBy.replace(/_/g, '') +
-          ' (' +
-          (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-          ')'
+      ' (' +
+      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
+      ')'
       : '';
   }
 
@@ -308,15 +309,27 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    *
    * @param {*} params the object returned from subscribing to the routers queryParams observable
    */
-  makeQuery(params: any) {
+  makeQuery(params: Record<string, string>) {
     const paramKeys = Object.keys(params);
+
+    // no sort applied for text search
+    if (paramKeys.includes('text')) {
+      this.query.orderBy = undefined;
+      this.query.sortType = undefined;
+    }
+
     // iterate params object
     for (let i = 0, l = paramKeys.length; i < l; i++) {
       const key = paramKeys[i];
       if (Object.keys(this.query).includes(key)) {
         const val = params[key];
         // this parameter is a query param, add it to the query object
-        this.query[key] = val;
+        if (key === 'currPage') {
+          this.query.currPage = parseInt(val, 10);
+        } else {
+          this.query[key] = val;
+        }
+
       }
     }
   }
