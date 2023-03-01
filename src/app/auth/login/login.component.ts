@@ -105,7 +105,7 @@ export class LoginComponent implements OnInit{
       await this.auth
       .login(this.authInfo)
       .then(() => {
-        this.googleTagService.triggerGoogleTagEvent('login', 'user_data', this.auth.user.name + this.auth.user.accessGroups);
+        // this.googleTagService.triggerGoogleTagEvent('login', 'user_data', this.auth.user.name + this.auth.user.accessGroups);
         if (this.redirectUrl) {
           window.location = this.redirectUrl;
         } else {
