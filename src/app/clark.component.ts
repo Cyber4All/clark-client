@@ -57,7 +57,6 @@ export class ClarkComponent implements OnInit {
   hidingOutlines = true;
   learningObject: LearningObject;
 
-  showBannerMessage = false;
   downtime: Downtime = new Downtime(false, '');
 
   @HostListener('window:click', ['$event'])
@@ -119,13 +118,11 @@ export class ClarkComponent implements OnInit {
     if (environment.production) {
       this.messages.getDowntime().then(down => {
         this.downtime = down;
-        this.showBannerMessage = !!down.message;
       });
       // Determine if the application is currently under maintenance
       setInterval(async () => {
         this.messages.getDowntime().then(down => {
           this.downtime = down;
-          this.showBannerMessage = !!down.message;
         });
       }, 300000); // 5 min interval
       // check to see if the current version is behind the latest verison
