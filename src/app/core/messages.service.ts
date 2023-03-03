@@ -22,26 +22,8 @@ export class MessagesService {
   }
 
   constructor(private http: HttpClient) { }
-
-  getStatus(): Promise<Downtime> {
-    if (this._downtime) {
-      return Promise.resolve(this._downtime);
-    } else {
-      return this.http.get(MISC_ROUTES.CHECK_STATUS, { withCredentials: true })
-        .pipe(
-          retry(3),
-          catchError(this.handleError)
-        )
-        .toPromise()
-        .then((val: Downtime) => {
-          this._downtime = new Downtime(val.isDown, val.message);
-          return this._downtime;
-        });
-    }
-  }
-
-    getMaintenance(): Promise<Downtime> {
-        return this.http.get(MISC_ROUTES.CHECK_MAINTENANCE, { withCredentials: true })
+    getDowntime(): Promise<Downtime> {
+        return this.http.get(MISC_ROUTES.CHECK_DOWNTIME, { withCredentials: true })
         .pipe(
             retry(3),
             catchError(this.handleError)
