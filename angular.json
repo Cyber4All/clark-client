@@ -186,7 +186,6 @@
       }
     }
   },
-  "defaultProject": "clark",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "clark",

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, forwardRef } from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 /**
  * input field for authentication module using
@@ -35,7 +35,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
    * Used to format error message for match errors (i.e. password and confirm password)
    */
   @Input() confirmType: 'Email' | 'Password' | '' = '';
-  @Input() control: FormControl | undefined = undefined;
+  @Input() control: UntypedFormControl | undefined = undefined;
   hide: Boolean;
 
   //required for ControlValueAccessor

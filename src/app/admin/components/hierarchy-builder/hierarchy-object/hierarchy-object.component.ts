@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, UntypedFormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { HierarchyService } from 'app/core/hierarchy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Observable } from 'rxjs';
@@ -22,7 +22,7 @@ export class HierarchyObjectComponent implements OnInit {
 
   lengths = [];
 
-  nameFormControl = new FormControl(
+  nameFormControl = new UntypedFormControl(
     '',
     { validators: [Validators.required, Validators.minLength(2), this.forbiddenNameValidator()],  updateOn: 'blur'}
   );

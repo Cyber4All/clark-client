@@ -6,7 +6,7 @@ import { Input } from '@angular/core';
 import { Directive } from '@angular/core';
 import {
   ControlValueAccessor,
-  FormControl,
+  UntypedFormControl,
   Validators,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
@@ -48,7 +48,7 @@ export class RecaptchaDirective
 
   @Output() captchaExpired = new EventEmitter();
 
-  private control: FormControl;
+  private control: UntypedFormControl;
   private widgetId: number;
 
   private onChange: (value: string) => void;
@@ -82,7 +82,7 @@ export class RecaptchaDirective
   }
 
   ngAfterViewInit() {
-    this.control = this.injector.get(FormControl);
+    this.control = this.injector.get(UntypedFormControl);
     this.setValidators();
   }
 

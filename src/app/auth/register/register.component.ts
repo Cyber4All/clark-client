@@ -1,6 +1,6 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
@@ -95,17 +95,17 @@ export class RegisterComponent implements OnInit, OnDestroy{
     isRegisterPageInvalid: true
   };
 
-  infoFormGroup: FormGroup = new FormGroup({
+  infoFormGroup: UntypedFormGroup = new UntypedFormGroup({
     firstname: this.authValidation.getInputFormControl('required'),
     lastname: this.authValidation.getInputFormControl('required'),
     email: this.authValidation.getInputFormControl('email'),
     organization: this.authValidation.getInputFormControl('required'),
   });
-  accountFormGroup: FormGroup = new FormGroup({
+  accountFormGroup: UntypedFormGroup = new UntypedFormGroup({
     username: this.authValidation.getInputFormControl('username'),
     password: this.authValidation.getInputFormControl('password'),
     confirmPassword: this.authValidation.getInputFormControl('required'),
-    captcha: new FormControl()
+    captcha: new UntypedFormControl()
   }, MatchValidator.mustMatch('password', 'confirmPassword'));
 
   emailInUse = false;

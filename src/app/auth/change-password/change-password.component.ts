@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
@@ -25,7 +25,7 @@ export class ChangePasswordComponent implements OnInit {
   otaCode: string;
   done = false;
 
-  passwords: FormGroup = new FormGroup({
+  passwords: UntypedFormGroup = new UntypedFormGroup({
     'password': this.authValidationService.getInputFormControl('password'),
     'confirmPassword': this.authValidationService.getInputFormControl('password')
   }, { validators: MatchValidator.mustMatch('password', 'confirmPassword')});
