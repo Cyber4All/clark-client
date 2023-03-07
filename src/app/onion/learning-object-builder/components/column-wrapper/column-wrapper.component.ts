@@ -28,7 +28,7 @@ export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy 
 
   async ngOnInit() {
     try {
-      this.messageBar = !!(await this.messagesService.getStatus());
+      this.messageBar = !!(await this.messagesService.getDowntime()).message;
     } catch (error) {
       // FIXME this suppresses the error resulting in the lambda function for messages being disabled
     }
