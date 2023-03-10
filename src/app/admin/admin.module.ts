@@ -28,8 +28,8 @@ import { PaginationComponent } from './components/pagination/pagination.componen
 import { RelevancyDateComponent } from './components/relevancy-date/relevancy-date.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatBadgeModule } from '@angular/material/badge';
 import { AddEvaluatorComponent } from './components/add-evaluator/add-evaluator.component';
 import { ObjectDropdownComponent } from './components/add-evaluator/components/object-dropdown/object-dropdown.component';
@@ -38,7 +38,7 @@ import { LearningObjectService } from 'app/cube/learning-object.service';
 import { ChangeCollectionComponent } from './components/change-collection/change-collection.component';
 import { HierarchyBuilderComponent } from './components/hierarchy-builder/hierarchy-builder.component';
 import { MatTreeModule } from '@angular/material/tree';
-import { MatSelectModule } from '@angular/material/select';
+import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
 import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarchy-object/hierarchy-object.component';
 @NgModule({
   declarations: [

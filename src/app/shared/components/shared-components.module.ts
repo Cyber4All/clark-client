@@ -28,7 +28,7 @@ import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
 import { AddEvaluatorComponent } from './add-evaluator/add-evaluator.component';
 import { UserDropdownComponent } from './add-evaluator/components/user-dropdown/user-dropdown.component';
 import { InputFieldComponent } from './input-field/input-field.component';
-import { MatInputModule } from '@angular/material/input';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import {
   HighlightedLearningObjectComponent
 } from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';

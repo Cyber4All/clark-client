@@ -25,7 +25,7 @@ import { HeaderInfo502Component } from './pages/collection-502/components/header
 import { CuratorCardComponent } from './pages/collection-502/components/curators/components/curator-card/curator-card.component';
 import { TitleComponent } from './pages/collection-502/components/title/title.component';
 import { FeaturedComponent } from './pages/collection-502/components/featured/featured.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggleModule as MatSlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [
