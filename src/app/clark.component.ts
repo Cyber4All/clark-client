@@ -8,7 +8,7 @@ import { Title } from '@angular/platform-browser';
 import { HistoryService } from './core/history.service';
 import { filter } from 'rxjs/operators';
 import { LearningObject } from '../entity/learning-object/learning-object';
-import { MessagesService } from './core/messages.service';
+import { Downtime, MessagesService } from './core/messages.service';
 import { environment } from '@env/environment';
 import { ToastrOvenService } from './shared/modules/toaster/notification.service';
 import { CookieAgreementService } from './core/cookie-agreement.service';
@@ -57,7 +57,7 @@ export class ClarkComponent implements OnInit {
   hidingOutlines = true;
   learningObject: LearningObject;
 
-  isUnderMaintenance: boolean;
+  downtime: Downtime = new Downtime(false, '');
 
   @HostListener('window:click', ['$event'])
   @HostListener('window:keyup', ['$event'])
@@ -86,8 +86,6 @@ export class ClarkComponent implements OnInit {
     private subscriptionAgreement: SubscriptionAgreementService,
     private cookies: CookieService,
   ) {
-    this.isUnderMaintenance = false;
-
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
       this.authService.isLoggedIn.subscribe(val => {
@@ -118,13 +116,13 @@ export class ClarkComponent implements OnInit {
 
   ngOnInit(): void {
     if (environment.production) {
-      this.messages.getMaintenance().then(message => {
-        this.isUnderMaintenance = message;
+      this.messages.getDowntime().then(down => {
+        this.downtime = down;
       });
       // Determine if the application is currently under maintenance
       setInterval(async () => {
-        this.messages.getMaintenance().then(message => {
-          this.isUnderMaintenance = message;
+        this.messages.getDowntime().then(down => {
+          this.downtime = down;
         });
       }, 300000); // 5 min interval
       // check to see if the current version is behind the latest verison
