@@ -8,7 +8,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { EmailVerifiedComponent } from './email-verified/email-verified.component';
 import { RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth.routing';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
 import { RecaptchaDirective } from './register/components/recaptcha/recaptcha.directive';

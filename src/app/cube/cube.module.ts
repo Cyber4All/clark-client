@@ -20,9 +20,9 @@ import { SharedModule } from '../shared/shared.module';
 import { CubeComponent } from './cube.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { MatListModule } from '@angular/material/list';
 
 // Other
 // TODO: is ng-click-outside being used?

@@ -72,6 +72,7 @@ div {
     box-shadow: none;
 }
 
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
 .mat-tab-panel {
     z-index: 3;
 }
@@ -80,11 +81,12 @@ div {
     padding: 0px;
 }
 
-::ng-deep .mat-tab-label, .mat-tab-link {
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version. */
+::ng-deep .mat-tab-label, .mat-mdc-tab-link {
     font-size: $large;
 }
 
-::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+::ng-deep .mat-mdc-tab-group.mat-primary .mat-ink-bar {
     background-color: $light-blue !important;
 }
     
