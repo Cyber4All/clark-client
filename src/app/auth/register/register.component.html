@@ -119,5 +119,8 @@
                 </ng-template>
             </ng-container>
         </form>
+        <mat-error *ngIf="!checkCookieAgreement()">
+            <button type="button" class="cookie" (click)="cookieAgreement.setShowCookieBanner(true)">You must accept the cookie agreement to register</button>
+        </mat-error>
     </div>
 </div>
