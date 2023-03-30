@@ -14,6 +14,7 @@ import { ToastrOvenService } from './shared/modules/toaster/notification.service
 import { CookieAgreementService } from './core/cookie-agreement.service';
 import { SubscriptionAgreementService } from './core/subscription-agreement.service';
 import { CookieService } from 'ngx-cookie-service';
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
 
 @Component({
   selector: 'clark-root',
@@ -85,7 +86,19 @@ export class ClarkComponent implements OnInit {
     private cookieAgreement: CookieAgreementService,
     private subscriptionAgreement: SubscriptionAgreementService,
     private cookies: CookieService,
+    private gtgManagerNode: GoogleTagManagerService
   ) {
+
+    this.router.events.forEach(item => {
+      if (item instanceof NavigationEnd) {
+        const gtmTag = {
+          event: 'page',
+          pageName: item.url
+        };
+        this.gtgManagerNode.pushTag(gtmTag);
+      }
+    });
+
     this.isUnderMaintenance = false;
 
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
