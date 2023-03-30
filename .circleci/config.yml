@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  cyber4all: cyber4all/orb@1
+  cyber4all: cyber4all/orb@2.0.10
 
 workflows:
   integration-testing:
