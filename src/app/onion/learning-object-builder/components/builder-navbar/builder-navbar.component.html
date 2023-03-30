@@ -138,6 +138,7 @@
 <clark-submit
   *ngIf="showSubmission"
   [learningObject]="store.learningObject"
+  [learningOutcomes]="store.outcomes"
   [visible]="true"
   (close)="showSubmission = false; triggerBundlingProcess();"
 ></clark-submit>
