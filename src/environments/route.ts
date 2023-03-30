@@ -513,8 +513,7 @@ export const RATING_ROUTES = {
   }
 };
 export const MISC_ROUTES = {
-  CHECK_STATUS: `${environment.apiURL}/status`,
-  CHECK_MAINTENANCE: `${environment.apiURL}/maintenance`
+  CHECK_DOWNTIME: `${environment.apiURL}/downtime?service=clark`,
 };
 
 export const STATS_ROUTES = {

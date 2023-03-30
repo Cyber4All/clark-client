@@ -1,10 +1,10 @@
 @import 'vars.scss';
 
 .wrapper {
-    height: 100vh;
     padding: 50px, 0;
     width: inherit;
-    
+    overflow-y: auto;
+
     &:before {
         content: '';
         background: linear-gradient(90deg, white, $light-blue, white);
@@ -53,5 +53,10 @@
         display: block;
         width: 100%;
         margin: 50px 0 20px;
+    }
+
+    .cookie {
+        all: unset;
+        cursor: pointer;
     }
 }

@@ -4,50 +4,32 @@ import { MISC_ROUTES } from '@env/route';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
-export class Message {
-  constructor(public isUnderMaintenance: boolean, public message: string) { }
+export class Downtime {
+  constructor(public isDown: boolean, public message: string) { }
 }
 @Injectable()
 export class MessagesService {
   /**
    * Format for banner message
    *
-   * new Message(true, 'The CLARK team will conduct regular maintenance of the CLARK system on Wednesday February'+
+   * new downtime(true, 'The CLARK team will conduct regular maintenance of the CLARK system on Wednesday February'+
   ' 22, 2023 from 6:00AM-8:00AM EST. CLARK will be available but some users might see downgraded performance');
    */
-  private _message: Message;
+  private _downtime: Downtime;
 
   get message() {
-    return this._message;
+    return this._downtime;
   }
 
   constructor(private http: HttpClient) { }
-
-  getStatus(): Promise<Message> {
-    if (this._message) {
-      return Promise.resolve(this._message);
-    } else {
-      return this.http.get(MISC_ROUTES.CHECK_STATUS, { withCredentials: true })
-        .pipe(
-          retry(3),
-          catchError(this.handleError)
-        )
-        .toPromise()
-        .then((val: Message) => {
-          this._message = new Message(val.isUnderMaintenance, val.message);
-          return this._message;
-        });
-    }
-  }
-
-    getMaintenance() {
-        return this.http.get(MISC_ROUTES.CHECK_MAINTENANCE, { withCredentials: true })
+    getDowntime(): Promise<Downtime> {
+        return this.http.get(MISC_ROUTES.CHECK_DOWNTIME, { withCredentials: true })
         .pipe(
             retry(3),
             catchError(this.handleError)
         )
         .toPromise()
-        .then((val: boolean) => {
+        .then((val: Downtime) => {
             return val;
         });
     }
