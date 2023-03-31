@@ -168,6 +168,7 @@ export class FileManagementService {
       throw credentialsError;
     }
     const Logins = {
+      /* eslint-disable @typescript-eslint/naming-convention */
       'cognito-identity.amazonaws.com': openIdToken.Token
     };
     const IdentityPoolId = this.auth.isAdminOrEditor()

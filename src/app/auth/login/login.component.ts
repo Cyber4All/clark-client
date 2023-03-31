@@ -106,14 +106,14 @@ export class LoginComponent implements OnInit{
       .login(this.authInfo)
       .then(() => {
         // this.googleTagService.triggerGoogleTagEvent('login', 'user_data', this.auth.user.name + this.auth.user.accessGroups);
-          
-          const gtmTag = {
-            event: 'login',
-            data: 'user_data',
-          };
-          this.gtgManagerNode.pushTag(gtmTag);
-          alert('this is a login event');
-        
+
+       const gtmTag = {
+          event: 'login',
+          data: 'user_data',
+        };
+        this.gtgManagerNode.pushTag(gtmTag);
+        alert('this is a login event');
+
         if (this.redirectUrl) {
           window.location = this.redirectUrl;
         } else {

@@ -46,6 +46,7 @@ import { SecondaryNavbarComponent } from './components/secondary-navbar/secondar
     SecondaryNavbarComponent
   ],
   bootstrap: [ClarkComponent],
-  providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }, {provide: 'googleTagManagerId', useValue: 'G-SPF9CKLGYL'}] 
+  providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer },
+  {provide: 'googleTagManagerId', useValue: 'G-SPF9CKLGYL'}]
 })
 export class ClarkModule { }

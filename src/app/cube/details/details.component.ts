@@ -51,6 +51,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       academicLevels: {
         undergraduate: false,
         graduate: false,
+        /* eslint-disable @typescript-eslint/naming-convention */
         'post graduate': false,
       },
     },
