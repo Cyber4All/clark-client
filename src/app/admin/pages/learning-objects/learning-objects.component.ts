@@ -97,7 +97,7 @@ export class LearningObjectsComponent
     this.route.queryParams.subscribe(params => {
       this.query = {
         ...params,
-        currPage: parseInt(params.currPage, 10)
+        currPage: (params.currPage && !isNaN(params.currPage)) ? parseInt(params.currPage, 10) : 1,
        };
     });
 
