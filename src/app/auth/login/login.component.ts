@@ -109,10 +109,9 @@ export class LoginComponent implements OnInit{
 
        const gtmTag = {
           event: 'login',
-          data: 'user_data',
+          data: 'user_data ' + this.auth.user.name + this.auth.user.accessGroups,
         };
         this.gtgManagerNode.pushTag(gtmTag);
-        alert('this is a login event');
 
         if (this.redirectUrl) {
           window.location = this.redirectUrl;
