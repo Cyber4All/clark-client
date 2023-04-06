@@ -166,7 +166,7 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
    async triggerExitProcess(leaveBuilder = true) {
     if (this.adminMode && !leaveBuilder) {
-      this.toasterService.alert('Bundling has started...', 'This Learning Object is now being bundled.');
+      this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
     }
     // Trigger new PDF generation
     Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));
