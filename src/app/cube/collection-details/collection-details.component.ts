@@ -51,16 +51,20 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
       }
     });
     this.key.next(this.collection.abvName);
-    if (
-      this.collection.abvName !== 'intro_to_cyber'
-      && this.collection.abvName !== 'secure_coding_community'
-      && this.collection.abvName !== 'plan c'
-    ) {
-      this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
-    }
+
+    this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
+
     if (this.collection.abvName === 'plan c') {
       this.showContribute = true;
     }
     this.titleService.setTitle('CLARK | ' + this.collection.name);
+  }
+
+  /**
+   * If a picture is not found, the picture location is reset to null
+   * This will load the default image
+   */
+  resetPictureLocation() {
+    this.pictureLocation = null;
   }
 }

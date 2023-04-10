@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '@env/route';
+import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '../../environments/route';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, retry, skipWhile } from 'rxjs/operators';
 
-import { Query } from 'app/interfaces/query';
-import { LearningObject } from '@entity';
+import { Query } from '../interfaces/query';
+import { LearningObject } from '../../entity/learning-object/learning-object';
 import * as querystring from 'querystring';
 
 export interface Collection {
@@ -127,8 +127,8 @@ export class CollectionService {
       .toPromise();
   }
 
-  getCollection(abvName: string): Promise<Collection> {
-    return this.getCollections().then(val => {
+  async getCollection(abvName: string): Promise<Collection> {
+    return await this.getCollections().then(val => {
       for (const x of val) {
         if (x.abvName === abvName) {
           return x;
@@ -136,6 +136,7 @@ export class CollectionService {
       }
     });
   }
+
   getCollectionMetricsData(name: string) {
     return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_METRICS(name))
       .pipe(

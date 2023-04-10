@@ -55,6 +55,10 @@
   color: $dark-grey;
 }
 
+.description:focus {
+  white-space: initial;
+}
+
 .inline-flex {
   display: flex;
   align-items: center;

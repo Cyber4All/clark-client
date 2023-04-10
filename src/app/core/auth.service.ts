@@ -531,7 +531,7 @@ export class AuthService {
   }
 
   /**
-   * Udates a user's information with the specified data
+   * Updates a user's information with the specified data
    *
    * @param {{
    *     firstname: string;

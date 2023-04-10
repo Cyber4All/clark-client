@@ -9,8 +9,8 @@
     <i class="fas fa-folder icon"></i>
     {{ folder?.getName() }}
   </div>
-  <div class="text-contained description" id="folder-description" attr.aria-label="{{ folder?. description }}">
-    <span>{{ folder?.description }}</span>
+  <div tabindex="0" class="text-contained description" id="folder-description" attr.aria-label="{{ folder?. description }}">
+    <span title="{{ folder?.description }}">{{ folder?.description }}</span>
   </div>
   <div class="text-contained timestamp" id="folder-updated" attr.aria-label="Last updated {{ timestampAge }}">
     {{ timestampAge }}

@@ -13,5 +13,6 @@ export const COPY = {
     ABOUT: 'About CLARK',
     SUBSCRIBE: 'Sign up for our Newsletter',
     ROADMAP: 'Roadmap',
-    PRIVACY: 'Privacy Policy'
+    PRIVACY: 'Privacy Policy',
+    BLOG: 'Blogs'
 };

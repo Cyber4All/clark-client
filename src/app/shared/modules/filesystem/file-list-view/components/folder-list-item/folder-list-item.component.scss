@@ -69,6 +69,10 @@
   color: $dark-grey;
 }
 
+.description:focus {
+  white-space: initial;
+}
+
 .toggleBundle {
   display: flex;
   justify-content: center;
