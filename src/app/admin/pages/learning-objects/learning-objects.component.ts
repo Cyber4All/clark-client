@@ -144,7 +144,9 @@ export class LearningObjectsComponent
 
   changePage(pageNum) {
     this.listElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
-    this.query.currPage = pageNum;
+    this.query = {
+      currPage: pageNum
+    };
     this.getLearningObjects();
   }
 
