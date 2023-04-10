@@ -97,7 +97,7 @@ export class LearningObjectsComponent
     this.route.queryParams.subscribe(params => {
       this.query = {
         ...params,
-        currPage: parseInt(params.currPage, 10)
+        currPage: (params.currPage && !isNaN(params.currPage)) ? parseInt(params.currPage, 10) : 1,
        };
     });
 
@@ -144,7 +144,9 @@ export class LearningObjectsComponent
 
   changePage(pageNum) {
     this.listElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
-    this.query.currPage = pageNum;
+    this.query = {
+      currPage: pageNum
+    };
     this.getLearningObjects();
   }
 
