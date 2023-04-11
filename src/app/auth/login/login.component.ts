@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@env/environment';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
-import { GoogleTagService } from 'app/cube/home/google-tag.service';
+import { GoogleTagManagerService } from 'angular-google-tag-manager';
 
 @Component({
   selector: 'clark-login',
@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit{
     private route: ActivatedRoute,
     private auth: AuthService,
     private router: Router,
-    private googleTagService: GoogleTagService
+    private gtgManagerNode: GoogleTagManagerService
     ) {
       this.route.parent.data.subscribe(() => {
         if (this.route.snapshot.queryParams.redirectUrl) {
@@ -106,6 +106,13 @@ export class LoginComponent implements OnInit{
       .login(this.authInfo)
       .then(() => {
         // this.googleTagService.triggerGoogleTagEvent('login', 'user_data', this.auth.user.name + this.auth.user.accessGroups);
+
+       const gtmTag = {
+          event: 'login',
+          data: 'user_data ' + this.auth.user.name + this.auth.user.accessGroups,
+        };
+        this.gtgManagerNode.pushTag(gtmTag);
+
         if (this.redirectUrl) {
           window.location = this.redirectUrl;
         } else {
