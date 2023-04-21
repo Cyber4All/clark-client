@@ -102,8 +102,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       take(1)
     )
     .toPromise()
-    .then(() => {
-      this.retrieveAuthorizedCollections();
+    .then(async () => {
+      await this.retrieveAuthorizedCollections();
     });
   }
 
