@@ -127,12 +127,12 @@ export class LearningObjectsComponent
         await this.getLearningObjects();
       });
 
-      this.isAdminOrEditor = this.auth.hasEditorAccess();
-      this.isCurator = this.auth.hasCuratorAccess();
+    this.isAdminOrEditor = this.auth.hasEditorAccess();
+    this.isCurator = this.auth.hasCuratorAccess();
 
-      if (this.isAdminOrEditor || this.activeCollection || this.isCurator) {
-        await this.getLearningObjects();
-      }
+    if (this.isAdminOrEditor || this.activeCollection || this.isCurator) {
+      await this.getLearningObjects();
+    }
   }
 
   /**
