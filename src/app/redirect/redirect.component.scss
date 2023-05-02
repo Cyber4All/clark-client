@@ -1,0 +1,28 @@
+@import "../../vars";
+@import "../../globals.scss";
+.redirect-top {
+  padding: 100px;
+  justify-content: center;
+
+  .redirect-logo {
+    height: 180px;
+    display: block;
+    margin: auto;
+  }
+  .huge {
+    font-size: $largest;
+    max-width: 200px;
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+  .message {
+    padding-top: 20px;
+    max-width: 400px;
+    font-size: $normal;
+    display: block;
+    margin: auto;
+    text-align: center;
+  }
+}
+
