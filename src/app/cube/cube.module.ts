@@ -39,9 +39,6 @@ import { SplashComponent } from './press/components/splash/splash.component';
 import { AboutComponent } from './press/components/about/about.component';
 import { MediaCardComponent } from './press/components/media-card/media-card.component';
 import { MediaItemComponent } from './press/components/media-item/media-item.component';
-import { OutagePageComponent } from './outage-page/outage-page.component';
-import { OutageCardComponent } from './outage-page/outage-card/outage-card.component';
-import { PastIssueComponent } from './outage-page/past-issue/past-issue.component';
 import { AboutUsModule } from './about-us/about-us.module';
 import { DonateComponent } from './donate/donate.component';
 import { FilterSectionComponent } from './browse/components/filter-section/filter-section.component';
@@ -76,9 +73,6 @@ import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/ph
     AboutComponent,
     MediaCardComponent,
     MediaItemComponent,
-    OutagePageComponent,
-    OutageCardComponent,
-    PastIssueComponent,
     DonateComponent,
     FilterSectionComponent,
     GuidelineFilterComponent,
