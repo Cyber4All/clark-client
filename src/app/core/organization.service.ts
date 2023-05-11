@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { retry } from 'rxjs';
+import { retry } from 'rxjs/internal/operators/retry';
 import { Organization } from '../../entity/organization';
 import { ORGANIZATION_ROUTES } from '@env/route';
 import { AuthService } from './auth.service';
-
 @Injectable({
   providedIn: 'root'
 })
@@ -32,3 +31,4 @@ export class OrganizationService {
     });
   }
 }
+
