@@ -377,7 +377,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
     this.closeDropdown();
   }
 
-    /**
+  /**
    * Registers typing events from the organization input
    *
    * @param event The typing event
