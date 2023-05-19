@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { LearningObject } from '@entity';
+import { LearningObject, LearningOutcome } from '@entity';
 import { ChangelogService } from 'app/core/changelog.service';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection.service';
@@ -17,6 +17,7 @@ import { HierarchyService } from 'app/core/hierarchy.service';
 export class SubmitComponent implements OnInit {
   @Input() collection?: string;
   @Input() learningObject: LearningObject;
+  @Input() learningOutcomes: Map<string, Partial<LearningOutcome>>;
   @Input() isHierarchySubmission = false;
   @Input() visible: boolean;
 
@@ -119,7 +120,7 @@ export class SubmitComponent implements OnInit {
     return (
       this.learningObject.description !== '' &&
       this.learningObject.name !== '' &&
-      this.learningObject.outcomes.length !== 0 &&
+      this.learningOutcomes.size !== 0 &&
       this.learningObject.contributors.length !== 0
     );
   }
