@@ -1,1 +1,156 @@
-<p>security-injections works!</p>
+
+  <clark-security-injections>
+    <div class="background">
+      <section class="hero">
+          <div class="inner">
+            <div class="logos" [ngClass]="{'long': collection?.abvName === 'security-injections'}">
+              <img *ngIf="pictureLocation" src="{{ pictureLocation }}" alt="collection logo" (error)="resetPictureLocation()">
+              <div *ngIf="!pictureLocation" class="title__icon">
+                <i class="far fa-cubes"></i>
+              </div>
+            </div>
+            <h1 class="header">{{ collection?.name }}</h1>
+            <clark-collection-action-panel [showContribute]=showContribute [collectionAbv]=collection?.abvName [collectionName]=collection?.name></clark-collection-action-panel>
+          </div>
+      </section>
+      <section class="collection-container">
+        <div *ngIf="collection?.description" class="description">
+          <div class="heading">Description</div>
+          <p [innerHtml]="collection?.description"></p>
+        </div>
+        <div *ngIf="collection?.modules" class="modules">
+          <div class="heading">Secure Coding Modules</div>
+          <p [innerHtml]="collection?.modules"></p>
+        </div>
+        <div *ngIf="collection?.matrix" class = "matrix">
+          <table class ="matrix">
+            <tbody>
+              <tr>
+                <td>&nbsp;</td>
+                <td class="version-title" title="An introductory course to target CS majors with little or no background in programming">CS0</td>
+                <td class="version-title" title="The first course to formally teach programming fundamentals">CS1</td>
+                <td class="version-title" title="The second course to formally teach programming fundamentals">CS2</td>
+              </tr>
+              <tr>
+                <td class="module-title">Integer Error</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Integer_Error-CS0_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Integer_Error-CS0_Java.html" target="_blank">Java</a>
+                  <a class="button" href="https://security-injections.clark.center/Integer_Error-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                </td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Integer_Error-CS1_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Integer_Error-CS1_Java.html" target="_blank">Java</a>
+                </td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Integer_Error-CS2_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Integer_Error-CS2_Java.html" target="_blank">Java</a>
+                </td>
+              </tr>
+              <tr>
+                <td class="module-title">Input Validation</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS0_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS0_Java.html" target="_blank">Java</a>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS0_Python.html" target="_blank">Python</a>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                </td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS1_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS1_Java.html" target="_blank">Java</a>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS1_Python.html" target="_blank">Python</a>
+                </td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS2_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Input_Validation-CS2_Java.html" target="_blank">Java</a>
+                </td>
+              </tr>
+              <tr>
+                <td class="module-title">Buffer Overflow</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS0_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS0_Java.html" target="_blank">Java</a>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS0_Python.html" target="_blank">Python</a>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                </td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS1_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS1_Java.html" target="_blank">Java</a>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS1_Python.html" target="_blank">Python</a>
+                </td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS2_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Buffer_Overflow-CS2_Java.html" target="_blank">Java</a>
+                </td>
+              </tr>
+              <tr>
+                <td class="module-title">Software Development Life Cycle</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_Java.html" target="_blank">Java</a>
+                  <a class="button" href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_Python.html" target="_blank">Python</a>
+                </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td class="module-title">Best Practives for Secure Variables</td>
+                <td>&nbsp;</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Best_Practices_for_Secure_Variables-CS1_Java.html" target="_blank">Java</a>
+                </td>
+                <td>&nbsp;</td>
+              </tr>
+              <tr>
+                <td class="module-title">Encapsulation</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Encapsulation-CS2_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Encapsulation-CS2_Java.html" target="_blank">Java</a>
+                </td>
+              </tr>
+              <tr>
+                <td class="module-title">Data Hiding</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Data_Hiding-CS0_C++.html" target="_blank">C++</a>
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Data_Hiding-CS2_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Data_Hiding-CS2_Java.html" target="_blank">Java</a>
+                  <a class="button" href="https://security-injections.clark.center/Data_Hiding-CS2_Python.html" target="_blank">Python</a>
+                </td>
+              </tr>
+              <tr>
+                <td class="module-title">Exception Handling</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                  <a class="button" href="https://security-injections.clark.center/Exception_Handling-CS2_C++.html" target="_blank">C++</a>
+                  <a class="button" href="https://security-injections.clark.center/Exception_Handling-CS2_Java.html" target="_blank">Java</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="featured--header">
+          <div class="recently-released">Featured</div>
+          <a *ngIf="collection?.abvName !== 'plan c'" id="view-all" class="view-all" [routerLink]="['/browse']"
+            [queryParams]="{ collection: collection?.abvName }">{{ COPY.VIEWALL }}
+            <i class="far fa-angle-right"></i>
+          </a>
+          <a *ngIf="collection?.abvName === 'plan c'" id="view-all" class="view-all" [routerLink]="['/browse']"
+            [queryParams]="{ fileTypes: 'video' }">{{ COPY.VIEWALL }}
+            <i class="far fa-angle-right"></i>
+          </a>
+        </div>
+        <cube-featured [collection]="key"></cube-featured>
+        <div class="faq-section" *ngIf="collection?.faq">
+          <div class="header">Frequently Asked Questions</div>
+          <clark-faq-section [faq]="collection?.faq"></clark-faq-section>      
+        </div>
+      </section>
+    </div>
+  </clark-security-injections>
