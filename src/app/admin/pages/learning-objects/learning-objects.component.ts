@@ -64,6 +64,8 @@ export class LearningObjectsComponent
 
   isAdminOrEditor: boolean;
 
+  isCurator: boolean;
+
   activeCollection: Collection;
 
   topAdjustment: number;
@@ -85,7 +87,7 @@ export class LearningObjectsComponent
     private searchService: SearchService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     setTimeout(() => {
       this.listViewHeightOffset =
         this.listElement.nativeElement.getBoundingClientRect().top +
@@ -97,7 +99,7 @@ export class LearningObjectsComponent
     this.route.queryParams.subscribe(params => {
       this.query = {
         ...params,
-        currPage: parseInt(params.currPage, 10)
+        currPage: (params.currPage && !isNaN(params.currPage)) ? parseInt(params.currPage, 10) : 1,
        };
     });
 
@@ -107,7 +109,7 @@ export class LearningObjectsComponent
         takeUntil(this.componentDestroyed$),
         debounceTime(650)
       )
-      .subscribe(searchTerm => {
+      .subscribe(async searchTerm => {
         this.query = { currPage: 1, text: searchTerm };
         if (!searchTerm || searchTerm.length <= 0) {
           this.query = {
@@ -122,13 +124,14 @@ export class LearningObjectsComponent
         }
         this.learningObjects = [];
 
-        this.getLearningObjects();
+        await this.getLearningObjects();
       });
 
     this.isAdminOrEditor = this.auth.hasEditorAccess();
+    this.isCurator = this.auth.hasCuratorAccess();
 
-    if (this.isAdminOrEditor || this.activeCollection) {
-      this.getLearningObjects();
+    if (this.isAdminOrEditor || this.activeCollection || this.isCurator) {
+      await this.getLearningObjects();
     }
   }
 
@@ -144,7 +147,9 @@ export class LearningObjectsComponent
 
   changePage(pageNum) {
     this.listElement.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
-    this.query.currPage = pageNum;
+    this.query = {
+      currPage: pageNum
+    };
     this.getLearningObjects();
   }
 
@@ -181,12 +186,12 @@ export class LearningObjectsComponent
    * @returns
    * @memberof LearningObjectsComponent
    */
-  getLearningObjects() {
+  async getLearningObjects() {
     if (!this.allResultsReceived) {
       // we know there are more objects to pull
       this.loading = true;
 
-      this.publicLearningObjectService
+      await this.publicLearningObjectService
         .getLearningObjects(this.query)
         .then(val => {
           this.learningObjects = val.learningObjects;
