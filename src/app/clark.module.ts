@@ -22,6 +22,8 @@ import { FormsModule } from '@angular/forms';
 import { SubscriptionComponent } from './components/subscription/subscription.component';
 import { PrimaryNavbarComponent } from './components/primary-navbar/primary-navbar.component';
 import { SecondaryNavbarComponent } from './components/secondary-navbar/secondary-navbar.component';
+import { RedirectComponent } from './redirect/redirect.component';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -43,7 +45,8 @@ import { SecondaryNavbarComponent } from './components/secondary-navbar/secondar
     UnauthorizedComponent,
     SubscriptionComponent,
     PrimaryNavbarComponent,
-    SecondaryNavbarComponent
+    SecondaryNavbarComponent,
+    RedirectComponent
   ],
   bootstrap: [ClarkComponent],
   providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]

@@ -4,6 +4,8 @@ import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
 import { AccessGroupGuard } from './core/access-group-guard';
 import { UnauthorizedComponent } from './unauthorized.component';
+import { BlogRedirectGuard } from './core/blog-redirect.guard';
+import { RedirectComponent } from './redirect/redirect.component';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const clark_routes: Routes = [
@@ -21,6 +23,7 @@ const clark_routes: Routes = [
   },
   { path: 'onion', loadChildren: () => import('app/onion/onion.module').then(m => m.OnionModule) },
   { path: 'admin', loadChildren: () => import('app/admin/admin.module').then(m => m.AdminModule) },
+  { path: 'blogs', component: RedirectComponent, canActivate: [BlogRedirectGuard], data: { externalUrl: 'https://blogs.clark.center/' }},
   { path: 'collections', loadChildren: () => import('app/collection/collection.module').then(m => m.CollectionModule)},
   { path: 'unsupported', component: UnsupportedComponent, data: { title: 'Unsupported'}},
   { path: 'not-found', component: NotFoundComponent, data: { title: 'Not Found'}},
