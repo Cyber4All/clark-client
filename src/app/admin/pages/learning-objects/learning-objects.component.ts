@@ -1,4 +1,3 @@
-import { IPageInfo as VirtualScrollerChangeEvent } from 'ngx-virtual-scroller';
 import {
   Component,
   OnInit,
@@ -10,15 +9,14 @@ import {
 } from '@angular/core';
 import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
 import { OrderBy, Query, SortType } from 'app/interfaces/query';
-import { LearningObject } from '@entity';
+import { LearningObject, User } from '@entity';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
 import { Collection, CollectionService } from 'app/core/collection.service';
-import { SearchService } from 'app/admin/core/search.service';
-
+import { UserService } from 'app/core/user.service';
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
@@ -46,7 +44,8 @@ export class LearningObjectsComponent
     limit: 20,
     sortType: -1,
     orderBy: OrderBy.Date,
-    text: ''
+    text: '',
+    collection: '',
   };
 
   displayStatusModal = false;
@@ -84,7 +83,7 @@ export class LearningObjectsComponent
     private toaster: ToastrOvenService,
     private auth: AuthService,
     private cd: ChangeDetectorRef,
-    private searchService: SearchService
+    private collectionService: CollectionService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -93,7 +92,25 @@ export class LearningObjectsComponent
         this.listElement.nativeElement.getBoundingClientRect().top +
         this.headersElement.nativeElement.getBoundingClientRect().height;
     });
+    this.isAdminOrEditor = this.auth.hasEditorAccess();
+    this.isCurator = this.auth.hasCuratorAccess();
 
+    if (this.isCurator && !this.isAdminOrEditor) {
+      // Get first curator access group only
+      const groups = this.auth.accessGroups[0];
+      // Split to get collection name
+      const collection = groups.split('@');
+      // Retrieve curators for collection
+      const curators: any = await this.collectionService.getCollectionCuratorsInfo(collection[1]);
+      // If the user is a curator, set the collection
+      curators.map(curator => {
+        if (curator.username === this.auth.user.username) {
+          this.query = {
+            collection: collection[1]
+          };
+        }
+      });
+    }
     // query by anything if it's passed in
     // reset page to 1 since we can't scroll backwards
     this.route.queryParams.subscribe(params => {
@@ -127,10 +144,7 @@ export class LearningObjectsComponent
         await this.getLearningObjects();
       });
 
-    this.isAdminOrEditor = this.auth.hasEditorAccess();
-    this.isCurator = this.auth.hasCuratorAccess();
-
-    if (this.isAdminOrEditor || this.activeCollection || this.isCurator) {
+    if (this.isAdminOrEditor || this.isCurator) {
       await this.getLearningObjects();
     }
   }
@@ -294,7 +308,12 @@ export class LearningObjectsComponent
    * @memberof LearningObjectsComponent
    */
   clearStatusAndCollectionFilters() {
-    this.query = { collection: undefined, topics: undefined, status: undefined, currPage: 1 };
+    this.query = {
+      collection: ((this.isCurator && !this.isAdminOrEditor) ? this.query.collection : undefined),
+      topics: undefined,
+      status: undefined,
+      currPage: 1
+    };
     this.learningObjects = [];
 
     this.getLearningObjects();
