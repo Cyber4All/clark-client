@@ -14,7 +14,6 @@ import { ModalModule } from '../shared/modules/modals/modal.module';
 import { UserService } from './user.service';
 import { UserAgentService } from './user-agent.service';
 import { MessagesService } from './messages.service';
-import { RavenErrorHandler } from './error-handler';
 import { CollectionService } from './collection.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
@@ -49,7 +48,6 @@ import { ProfileService } from './profiles.service';
     NavbarService,
     UserAgentService,
     ProfileService,
-    { provide: ErrorHandler, useClass: RavenErrorHandler },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpConfigInterceptor,
