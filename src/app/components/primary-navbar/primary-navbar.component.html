@@ -1,10 +1,12 @@
 <ng-template #desktop>
     <div class="desktop-navbar" *ngIf="showNav">
         <div class="nav-wrapper">
-            <div class="logo" [routerLink]="['/home']">
-                <span class="logo-image"></span>
-                <span id="clark-logo" class="logo-link">CLARK</span>
-            </div>
+            <a [routerLink]="['/home']" target="_blank" style="text-decoration: none;"> 
+                <div class="logo">
+                    <span class="logo-image"></span>
+                    <span id="clark-logo" class="logo-link">CLARK</span>
+                </div>
+            </a>   
             <div class="mid-bar">
                 <div class="search-bar">
                     <clark-search></clark-search>
