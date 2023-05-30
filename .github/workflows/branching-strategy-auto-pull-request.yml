@@ -22,20 +22,6 @@ jobs:
       HEAD: ${{ github.event.pull_request.head.ref }}
       TEAM_SLUG: developers
     steps:
-      - name: set-env-vars
-        run: |
-          if [[ ${{ env.HEAD }} == "hotfix" ]]; then
-            echo "PR_HEAD=hotfix" >> $GITHUB_ENV
-            echo "PR_BASE=main" >> $GITHUB_ENV
-            echo "PR_TITLE=Pull Request to Merge \`hotfix\` into \`main\`" >> $GITHUB_ENV
-            echo "PR_BODY=This PR was triggered by the action of merging $HEAD into releases ** Review this PR before merging into main" >> $GITHUB_ENV
-          else 
-            echo "PR_HEAD=releases" >> $GITHUB_ENV
-            echo "PR_BASE=hotfix" >> $GITHUB_ENV
-            echo "PR_TITLE=Pull Request to Merge \`releases\` into \`hotfix\`" >> $GITHUB_ENV
-            echo "PR_BODY=This PR was triggered by the action of merging $HEAD into releases ** Review this PR before merging into hotfix" >> $GITHUB_ENV
-          fi
-
       - name: create-pr
         run: |
           CREATE_RES=$(curl \
