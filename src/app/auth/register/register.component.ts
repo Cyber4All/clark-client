@@ -366,6 +366,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
     }
   }
 
+  /**
+   * Selects an organization from the list
+   *
+   * @param org The organization selected
+   */
   selectOrg(org?: Organization) {
     if(org) {
       this.regInfo.organization = org.name;
