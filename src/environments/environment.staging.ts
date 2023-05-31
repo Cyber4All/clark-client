@@ -11,7 +11,8 @@ export const environment = {
   s3BucketRegion: 'us-east-1',
   cognitoRegion: 'us-east-1',
   cognitoIdentityPoolId: 'us-east-1:08c3533f-4e0b-4014-9bfe-12a347cb6272',
-  cognitoAdminIdentityPoolId: 'us-east-1:eed740a1-fea5-474d-8f57-0036b1871693'
+  cognitoAdminIdentityPoolId: 'us-east-1:eed740a1-fea5-474d-8f57-0036b1871693',
+  cardOrganizationUrl: 'https://api-gateway.caeresource.directory/organizations?type=&verified=verified&mine=&sort='
 };
 
 export enum LearningObjectStatus {
