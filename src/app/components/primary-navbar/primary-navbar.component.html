@@ -1,7 +1,7 @@
 <ng-template #desktop>
     <div class="desktop-navbar" *ngIf="showNav">
         <div class="nav-wrapper">
-            <a [routerLink]="['/home']" target="_blank" style="text-decoration: none;">    
+            <a [routerLink]="['/home']">    
                 <div class="logo">
                     <span class="logo-image"></span>
                     <span id="clark-logo" class="logo-link">CLARK</span>
@@ -60,7 +60,7 @@
         <div class="mobile-logo">
             <span class="mobile-logo-image"></span>
             <span id="clark-logo" class="mobile-logo-link" [routerLink]="['home']">CLARK</span>
-        </div>
+        </div> 
         <div class="mobile-right">
             <div class="icon-wrapper" (click)="dropdowns.toggleMobileSearch()">
                 <i class="search fas fa-search"></i>

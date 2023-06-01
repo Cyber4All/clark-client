@@ -13,33 +13,37 @@
         flex-direction: row;
         justify-content: space-between;
         
-        .logo {
-            cursor: pointer;
-            position: relative;
-            left: 0;
-            padding: 20px;
-            padding-top: 30px;
-            
-            &-image {
-                background-image: url('../../../assets/images/logo.png');
-                width: 40px;
-                background-size: contain;
-                background-repeat: no-repeat;
-                flex-shrink: 0;
-                height: 100%;
-                padding: 20px;
-            }
-            
-            &-link {
-                font-size: $larger;
-                font-weight: 700;
-                padding-right: 15px;
+        a{
+            text-decoration: none;
+        
+            .logo {
+                cursor: pointer;
                 position: relative;
-                margin-left: 10px;
-                color: $homepage-gray;
+                left: 0;
+                padding: 20px;
+                padding-top: 30px;
+                
+                &-image {
+                    background-image: url('../../../assets/images/logo.png');
+                    width: 40px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    flex-shrink: 0;
+                    height: 100%;
+                    padding: 20px;
+                }
+                
+                &-link {
+                    font-size: $larger;
+                    font-weight: 700;
+                    padding-right: 15px;
+                    position: relative;
+                    margin-left: 10px;
+                    color: $homepage-gray;
+                }
             }
         }
-        
+
         .mid-bar {
             display: flex;
             flex-direction: row;
