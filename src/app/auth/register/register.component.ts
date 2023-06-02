@@ -291,6 +291,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
     .pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe((value) => {
+      console.log(value);
       this.buttonGuards.isInfoPageInvalid = value === 'INVALID';
     });
 
@@ -374,6 +375,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   selectOrg(org?: Organization) {
     if(org) {
       this.regInfo.organization = org.name;
+      this.selectedOrg = org._id;
       this.infoFormGroup.get('organization')!.setValue(org.name);
     } else {
       this.selectedOrg = '602ae2a038e2aaa1059f3c39';
