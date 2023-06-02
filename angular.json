@@ -153,37 +153,6 @@
           }
         }
       }
-    },
-    "storybook": {
-      "root": "",
-      "sourceRoot": "src",
-      "projectType": "application",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "tsConfig": "src/tsconfig.app.json",
-            "polyfills": "src/polyfills.ts",
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/env.js"
-            ],
-            "styles": [
-              "src/globals.scss"
-            ],
-            "scripts": [],
-            "outputPath": "dist",
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
-          },
-          "defaultConfiguration": ""
-        }
-      }
     }
   },
   "defaultProject": "clark",

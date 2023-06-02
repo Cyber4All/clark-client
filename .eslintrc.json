@@ -4,7 +4,6 @@
     "dist",
     "coverage",
     ".vscode",
-    ".storybook",
     ".husky",
     ".github",
     ".circleci",
