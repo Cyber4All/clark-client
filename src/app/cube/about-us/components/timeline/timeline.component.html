@@ -22,20 +22,16 @@
             <div class="about-container">
               <p>{{e.description}}</p>
             </div>
+          </div>
 
-          </div> 
+          <div class="image-box">
+            <img  *ngIf="e.image" class="timeline-img" src="{{ e.image }}" alt="Img left left-side">
+            <div *ngIf="e.icon" class="icon-box">
+              <i class="{{ e.icon }}"></i>
+            </div>
+          </div>
         </div>
-          
-
       </div>
     </div>
-
-    <div class="right-container" >
-      <div class="img-container" >
-          <img  *ngIf="e.image" class = "timeline-img" src="{{ e.image }}" alt="Img left left-side">
-      
-      </div>
-    </div>
-
   </div>
 </div>
