@@ -45,8 +45,10 @@
                     margin-bottom: auto;
                     box-shadow: 0px 4px 10px $light-grey;
                     border-radius: 5px;
+                    display: flex;
 
                     .text-box{
+                        flex: 1;
                         margin: 30px;
                         width: 70%;
 
@@ -54,24 +56,23 @@
                             margin-bottom: 10px;
                         }
                     }
+
+                    .image-box {
+                        margin: 30px;
+                        width: 30%;
+                        font-size: 50px;
+
+                        .icon-box {
+                            padding: 30px;
+                            justify-content: center;
+                        }
+                        .timeline-img {
+                            width: 100px;
+                        }
+                    }
                 }
 
             }
-        }
-
-        .right-container{
-            width: 50%;
-            display: flex;
-            justify-content: center;
-            
-            
-            .img-container{
-                .timeline-img{
-                    height: 150px;
-                    width: auto;
-                }
-            }
-        
         }
    }
 }

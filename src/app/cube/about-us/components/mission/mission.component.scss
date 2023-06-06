@@ -7,7 +7,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background: $light-blue;
+    background: $wrapper-background;
 
     &:before {
         content: '';
@@ -23,7 +23,7 @@
     
     &:after {
         content: '';
-        background: linear-gradient(white, #f6f9fc, #f6f9fc);
+        background: linear-gradient($light-blue, $light-blue, white);
         position: absolute;
         top: 0;
         bottom: 0;
@@ -40,7 +40,7 @@
         justify-content: center;
         .text-container{
             font-size: $largest;
-            color: $wrapper-background;
+            color: $light-blue;
             z-index: 99;
         }
     }
