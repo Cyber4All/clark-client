@@ -20,6 +20,10 @@
                 width: 200px;
                 height: 255.84px;
             }
+            .ls-img {
+                width: 225px;
+                height: 255px;
+            }
         }
         .middle-section{
             display: block;
@@ -30,19 +34,6 @@
 
             .title{
                 margin-bottom: 20px;
-            }
-        }
-
-        .bottom-section{
-            display: flex;
-            justify-content: space-around;
-            .bsl-img{
-                width: 200px;
-                height: 255.84px;
-            }
-            .bsr-img{
-                width: 200px;
-                height: 255.84px;
             }
         }
     }
