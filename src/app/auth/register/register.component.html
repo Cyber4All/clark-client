@@ -32,7 +32,7 @@
                         [errorMsg]="fieldErrorMsg"
                     ></clark-input-field>
                     <clark-input-field 
-                        [(ngModel)]="infoFormGroup.organization"  
+                        [(ngModel)]="regInfo.organization"  
                         name="organization" 
                         #organization 
                         phold="Organization" 
@@ -154,7 +154,7 @@
             >
                 {{ org.name }}
             </li>
-            <div class="other-box" (click)="selectOrg()">
+            <div class="other-box" (click)="selectOrg(org)">
                 <li class="other-option">
                 Other
                 </li>
