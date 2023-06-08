@@ -79,7 +79,7 @@
 </clark-popup>
 
 <ng-template #libraryButtonsTemplate>
-  <button [tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons}"
+  <button [tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons, 'hide': hasReviewerAccess}"
     class="button good" id="download-button" (activate)="addToLibrary(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
     <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
       <span *ngIf="downloading">
@@ -88,6 +88,31 @@
     </span>
     <span tabindex="0" *ngIf="!hasDownloadAccess">Log in to Download</span>
   </button>
+  <div #downloadOptions>
+    <button *ngIf="isSubmitted" class="button good" (click)="dropdowns.toggleUserDropdown()" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons, 'hide': !hasReviewerAccess}">
+      <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download' : 'Downloading'}}
+        <span class="arrow" *ngIf="!userDropdown">
+          <i class="fas fa-chevron-down"></i>
+        </span>
+        <span class="arrow" *ngIf="userDropdown">
+            <i class="fas fa-chevron-up"></i>
+        </span>
+        <span *ngIf="downloading">
+          <i class="fal fa-spinner-third fa-spin"></i>
+        </span>
+      </span>
+    </button>
+  </div>
+
+  <clark-context-menu *ngIf="userDropdown" [anchor]="downloadOptions" (close)="dropdowns.closeAll()">
+    <div #contextMenu class="download-popup">
+      <ul>
+        <li tabindex="0" class="button-option" id="download-button" (activate)="addToLibrary(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">DOWNLOAD NOW</li>
+        <li tabindex="0" class="button-option" attr.aria-label="Start Bundling" (activate)="toggleBundle()">BUNDLE</li>
+      </ul>
+
+    </div>
+  </clark-context-menu>
   <button *ngIf="learningObject?.status === 'released' && !userIsAuthor" [ngClass]="{'disabled': !auth.user || disableLibraryButtons, 'saved': saved}" class="button neutral" id="save-to-library" (activate)="addToLibrary()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
     {{ saved ? 'Saved to your library!' : 'Save to Library' }}
     <span *ngIf="addingToLibrary">
