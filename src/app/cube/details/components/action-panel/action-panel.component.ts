@@ -16,6 +16,8 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { takeUntil } from 'rxjs/operators';
 import { CollectionService } from 'app/core/collection.service';
 import { Router } from '@angular/router';
+import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
+import { NavbarDropdownService } from '../../../../../app/core/navBarDropdown.service';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -55,6 +57,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   loggedin = false;
   showDownloadModal = false;
   userCanRevise = false;
+  userDropdown: boolean;
 
   contributorsList = [];
   error = false;
@@ -75,6 +78,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private collectionService: CollectionService,
     private router: Router,
+    private learningObjectService: LearningObjectService,
+    private dropdowns: NavbarDropdownService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -96,6 +101,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       .subscribe(val => {
         this.downloading = (val);
         this.changeDetectorRef.markForCheck();
+      });
+      this.dropdowns.userDropdown.subscribe(val => {
+        this.userDropdown = val;
       });
   }
 
@@ -152,6 +160,14 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.libraryService.getLibrary();
     this.addingToLibrary = false;
     this.changeDetectorRef.detectChanges();
+  }
+
+  /**
+   * Triggers a bundling process for the learning object
+   */
+  async toggleBundle() {
+    this.toaster.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
+    await this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject.id);
   }
 
 

@@ -23,6 +23,7 @@ import { ChangelogService } from './changelog.service';
 import { EditorService } from './editor.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { ProfileService } from './profiles.service';
+import { NavbarDropdownService } from './navBarDropdown.service';
 
 @NgModule({
   imports: [
@@ -48,6 +49,7 @@ import { ProfileService } from './profiles.service';
     NavbarService,
     UserAgentService,
     ProfileService,
+    NavbarDropdownService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpConfigInterceptor,

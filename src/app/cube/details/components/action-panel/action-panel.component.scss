@@ -43,11 +43,14 @@
       margin-bottom: 15px;
     }
   }
-
+  
   .button {
     overflow: hidden;
     text-align: center;
     position: relative;
+    font-weight: 400 !important;
+    width: 100%;
+    margin-bottom: 10px;
 
     &.saved {
       cursor: default !important;
@@ -70,6 +73,10 @@
       cursor: pointer;
     }
   }
+}
+
+.download-popup {
+  width: 241px;
 }
 
 .details-metrics {
@@ -226,4 +233,8 @@
   color: white;
   padding: 3px;
   border-radius: 2px;
+}
+
+.hide {
+  display: none;
 }
