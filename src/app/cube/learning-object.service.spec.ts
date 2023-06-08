@@ -29,12 +29,13 @@ describe('LearningObjectService', () => {
       service.clearSearch();
       expect(service.filteredResults).toEqual([]);
   }));
-  it('should return a list of objects', inject([LearningObjectService], (service: LearningObjectService) => {
+  //removes reliance on setTimeout which is unreliable in angular 14
+  it('should return a list of objects', async () => {
     jest.setTimeout(10000);
-    return service.getLearningObjects().then(val => {
-      expect(val).toBeTruthy();
-    });
-  }));
+    const service = TestBed.inject(LearningObjectService);
+    const objects = await service.getLearningObjects();
+    expect(objects).toBeTruthy();
+  });
   it('should return a single learning object', inject([LearningObjectService], (service: LearningObjectService) => {
     return service.getLearningObject('nvisal1', 'Test Learning Object').then(val => {
       expect(val).toBeTruthy();

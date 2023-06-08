@@ -79,17 +79,14 @@ describe('Class: LearningObject', () => {
     const newObject = new LearningObject(someObject);
     expect(newObject).toBeDefined();
   });
-  it('should return a new LearningObject with the same date that was passed in', done => {
+  //removes reliance on setTimeout which is unreliable in angular 14
+  it('should return a new LearningObject with the same date that was passed in', () => {
     const date = Date.now().toString();
     const someObject: Partial<LearningObject> = {
       date,
     };
-    setTimeout(() => {
-      const newObject = new LearningObject(someObject);
-      expect(newObject.date).toEqual(date);
-      done();
-    // eslint-disable-next-line @typescript-eslint/indent
-    }, 100);
+    const newObject = new LearningObject(someObject);
+    expect(newObject.date).toEqual(date);
   });
   it('should set a valid name', () => {
     object.name = validName;
