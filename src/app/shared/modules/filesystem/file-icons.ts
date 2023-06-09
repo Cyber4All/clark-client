@@ -30,14 +30,23 @@ const enum FONT_AWESOME_ICONS {
 }
 
 const extensions = {
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.doc.docx.dotx': 'word',
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.ppt.pptx': 'powerpoint',
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.xls.xlsx': 'excel',
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.pdf': 'pdf',
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.jpg.jpeg.gif.png.svg.bmp': 'image',
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.mp4.avi.flv.wmv.mov': 'video',
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.mp3.wav.pcm.aiff.acc.ogg.wma.flac.alac': 'audio',
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.zip.rar.tar.gzip.bzip2.lzip.7z.apk.jar.deb.rpm.msi': 'archive',
+  /* eslint-disable @typescript-eslint/naming-convention */
   '.js.ts.java.jsp.class.cmd.py.pl.pm.c.h.hpp.hdl.html.css.scss.xml.sh': 'code'
 };
 

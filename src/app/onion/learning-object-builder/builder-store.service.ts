@@ -731,6 +731,7 @@ export class BuilderStore {
       this.learningObject.materials.urls[index] = url;
       this.learningObjectEvent.next(this.learningObject);
       this.saveObject({
+        /* eslint-disable @typescript-eslint/naming-convention */
         'materials.urls': this.learningObject.materials.urls
       });
     }
@@ -748,6 +749,7 @@ export class BuilderStore {
     }
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
+      /* eslint-disable @typescript-eslint/naming-convention */
       'materials.urls': this.learningObject.materials.urls
     });
   }
@@ -762,6 +764,7 @@ export class BuilderStore {
   private updateNotes(notes: string): void {
     this.learningObject.materials.notes = notes;
     this.learningObjectEvent.next(this.learningObject);
+    /* eslint-disable @typescript-eslint/naming-convention */
     this.saveObject({ 'materials.notes': notes });
   }
 
@@ -817,6 +820,7 @@ export class BuilderStore {
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
       'materials.folderDescriptions': this.learningObject.materials
+      /* eslint-disable @typescript-eslint/naming-convention */
         .folderDescriptions
     });
   }

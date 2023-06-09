@@ -24,6 +24,7 @@ import { NavbarService } from 'app/core/navbar.service';
             transform: 'translateX(100%)',
             opacity: 0,
             zIndex: 1,
+            /* eslint-disable @typescript-eslint/naming-convention */
             'pointer-events': 'none',
           }),
           animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1}))
@@ -34,6 +35,7 @@ import { NavbarService } from 'app/core/navbar.service';
           style({
             transform: 'translateX(-100%)',
             opacity: 1,
+            /* eslint-disable @typescript-eslint/naming-convention */
             'pointer-events': 'none',
           }),
           animate('0.4s ease-out', style('*'))
