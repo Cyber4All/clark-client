@@ -1,4 +1,4 @@
-import { FormGroup, ValidatorFn } from '@angular/forms';
+import { UntypedFormGroup, ValidatorFn } from '@angular/forms';
 
 export class MatchValidator {
     constructor() {}
@@ -12,9 +12,9 @@ export class MatchValidator {
      * @returns
      */
     static mustMatch(controlName: string, matchingControlName: string): ValidatorFn{
-        return (formGroup: FormGroup) => {
-            const control = formGroup.controls[controlName];
-            const matchingControl = formGroup.controls[matchingControlName];
+        return (UntypedFormGroup: UntypedFormGroup) => {
+            const control = UntypedFormGroup.controls[controlName];
+            const matchingControl = UntypedFormGroup.controls[matchingControlName];
 
             if (matchingControl.errors && !matchingControl.errors.mustMatch) {
                 return;

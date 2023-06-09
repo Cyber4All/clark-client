@@ -13,14 +13,14 @@
                             #firstname
                             name="firstName" 
                             phold="First Name"
-                            [control]="infoFormGroup.get('firstname')"
+                            [control]="infoUntypedFormGroup.get('firstname')"
                         ></clark-input-field>
                         <clark-input-field 
                             [(ngModel)]="regInfo.lastname"
                             name="lastName" 
                             #lastname 
                             phold="Last Name" 
-                            [control]="infoFormGroup.get('lastname')"
+                            [control]="infoUntypedFormGroup.get('lastname')"
                         ></clark-input-field>
                     </div>
                     <clark-input-field 
@@ -28,7 +28,7 @@
                         name="email" 
                         #email 
                         phold="Email" 
-                        [control]="infoFormGroup.get('email')"
+                        [control]="infoUntypedFormGroup.get('email')"
                         [errorMsg]="fieldErrorMsg"
                     ></clark-input-field>
                     <clark-input-field 
@@ -36,7 +36,7 @@
                         name="organization" 
                         #organization 
                         phold="Organization" 
-                        [control]="infoFormGroup.get('organization')"
+                        [control]="infoUntypedFormGroup.get('organization')"
                         (keyup)="keyup($event)"
                     ></clark-input-field>
                     <ul
@@ -62,7 +62,7 @@
                         name="username" 
                         #username 
                         phold="Username" 
-                        [control]="accountFormGroup.get('username')"
+                        [control]="accountUntypedFormGroup.get('username')"
                         [errorMsg]="fieldErrorMsg"
                     ></clark-input-field>
                     <clark-input-field 
@@ -71,7 +71,7 @@
                         #password 
                         isPwrd="true" 
                         phold="Password" 
-                        [control]="accountFormGroup.get('password')"
+                        [control]="accountUntypedFormGroup.get('password')"
                     ></clark-input-field>
                     <clark-input-field 
                         [(ngModel)]="regInfo.confirmPassword"
@@ -80,7 +80,7 @@
                         isPwrd="true" 
                         phold="Confirm Password" 
                         [confirmType]="'Password'"
-                        [control]="accountFormGroup.get('confirmPassword')"
+                        [control]="accountUntypedFormGroup.get('confirmPassword')"
                     ></clark-input-field>
                 
                     <div 
@@ -90,9 +90,9 @@
                         ngRecaptcha 
                         key="{{siteKey}}" 
                         (captchaSuccess)="captureResponse($event)" 
-                        [formControl]="accountFormGroup.get('captcha')"
+                        [UntypedFormControl]="accountUntypedFormGroup.get('captcha')"
                     ></div>
-                    <mat-error *ngIf="accountFormGroup.get('captcha').hasError('notVerified')">
+                    <mat-error *ngIf="accountUntypedFormGroup.get('captcha').hasError('notVerified')">
                         Please complete the reCaptcha to register
                     </mat-error>
                     <div class="side-by-side">

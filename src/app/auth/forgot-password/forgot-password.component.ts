@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
@@ -41,9 +41,9 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy{
   showDone: Boolean = false;
   submitButton: String = 'disabled';
 
-  emails: FormGroup = new FormGroup({
-    'email': this.authValidationService.getInputFormControl('email'),
-    'confirmEmail': this.authValidationService.getInputFormControl('required')
+  emails: UntypedFormGroup = new UntypedFormGroup({
+    'email': this.authValidationService.getInputUntypedFormControl('email'),
+    'confirmEmail': this.authValidationService.getInputUntypedFormControl('required')
   }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });;
 
   emailInUse = true;

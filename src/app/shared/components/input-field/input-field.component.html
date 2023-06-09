@@ -7,7 +7,7 @@
         [value]="value"
         (input)="changed($event.target.value)"
         (blur)="touched()"
-        [formControl]="control"
+        [UntypedFormControl]="control"
     >
     <mat-icon 
         class="material-icons"

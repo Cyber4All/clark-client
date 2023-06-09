@@ -1,6 +1,6 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
@@ -97,17 +97,17 @@ export class RegisterComponent implements OnInit, OnDestroy{
     isRegisterPageInvalid: true
   };
 
-  infoFormGroup: FormGroup = new FormGroup({
-    firstname: this.authValidation.getInputFormControl('required'),
-    lastname: this.authValidation.getInputFormControl('required'),
-    email: this.authValidation.getInputFormControl('email'),
-    organization: this.authValidation.getInputFormControl('required'),
+  infoUntypedFormGroup: UntypedFormGroup = new UntypedFormGroup({
+    firstname: this.authValidation.getInputUntypedFormControl('required'),
+    lastname: this.authValidation.getInputUntypedFormControl('required'),
+    email: this.authValidation.getInputUntypedFormControl('email'),
+    organization: this.authValidation.getInputUntypedFormControl('required'),
   });
-  accountFormGroup: FormGroup = new FormGroup({
-    username: this.authValidation.getInputFormControl('username'),
-    password: this.authValidation.getInputFormControl('password'),
-    confirmPassword: this.authValidation.getInputFormControl('required'),
-    captcha: new FormControl()
+  accountUntypedFormGroup: UntypedFormGroup = new UntypedFormGroup({
+    username: this.authValidation.getInputUntypedFormControl('username'),
+    password: this.authValidation.getInputUntypedFormControl('password'),
+    confirmPassword: this.authValidation.getInputUntypedFormControl('required'),
+    captcha: new UntypedFormControl()
   }, MatchValidator.mustMatch('password', 'confirmPassword'));
 
   emailInUse = false;
@@ -202,7 +202,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
    * Validates the username ensuring it is not already taken
    */
   private validateUsername() {
-    this.accountFormGroup.get('username').valueChanges
+    this.accountUntypedFormGroup.get('username').valueChanges
     .pipe(
       debounce(() => {
         // Greys out the Register button while communicating with backend
@@ -220,7 +220,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
       .then((res: any) => {
         this.usernameInUse = res.identifierInUse;
         if (this.usernameInUse) {
-          this.accountFormGroup.get('username').setErrors({
+          this.accountUntypedFormGroup.get('username').setErrors({
             inUse: true
           });
           this.fieldErrorMsg = 'This username is already in use';
@@ -236,7 +236,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
    * and uses the regex to validate it
    */
   private validateEmail() {
-    this.infoFormGroup.get('email').valueChanges
+    this.infoUntypedFormGroup.get('email').valueChanges
     .pipe(
       debounce(() => {
         this.loading = true;
@@ -252,7 +252,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
         this.emailInUse = res.identifierInUse;
         if (this.emailInUse) {
           this.fieldErrorMsg = 'This email is already in use';
-          this.infoFormGroup.get('email').setErrors({
+          this.infoUntypedFormGroup.get('email').setErrors({
             emailInUse: true
           });
         } else {
@@ -274,7 +274,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   private isEmailRegexValid(email: string) {
     if (email.match(EMAIL_REGEX) === null) {
       this.fieldErrorMsg = 'Invalid Email Address';
-      this.infoFormGroup.get('email').setErrors({
+      this.infoUntypedFormGroup.get('email').setErrors({
         invalidEmail: true
       });
     } else {
@@ -283,11 +283,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
   }
 
   /**
-   * Disables the InfoNext Button when any form controls inside the infoFormGroup
+   * Disables the InfoNext Button when any form controls inside the infoUntypedFormGroup
    * are INVALID
    */
   private toggleInfoNextButton() {
-    this.infoFormGroup.statusChanges
+    this.infoUntypedFormGroup.statusChanges
     .pipe(
       takeUntil(this.ngUnsubscribe)
     ).subscribe((value) => {
@@ -297,11 +297,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
   }
 
   /**
-   * Disables the accountNext Button when any form controls inside the accountFormGroup
+   * Disables the accountNext Button when any form controls inside the accountUntypedFormGroup
    * are INVALID
    */
   private toggleRegisterButton() {
-    this.accountFormGroup.statusChanges
+    this.accountUntypedFormGroup.statusChanges
     .pipe(
       takeUntil(this.ngUnsubscribe)
     )
@@ -360,7 +360,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   captureResponse(event) {
     this.verified = event;
     if (!this.verified) {
-      this.accountFormGroup.get('captcha').setErrors({
+      this.accountUntypedFormGroup.get('captcha').setErrors({
         notVerified: true
       });
     }
@@ -375,11 +375,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
     if(org) {
       this.regInfo.organization = org.name;
       this.selectedOrg = org._id;
-      this.infoFormGroup.get('organization')!.setValue(org.name);
+      this.infoUntypedFormGroup.get('organization')!.setValue(org.name);
     } else {
       this.regInfo.organization = 'Other';
       this.selectedOrg = '602ae2a038e2aaa1059f3c39';
-      this.infoFormGroup.get('organization')!.setValue('Other');
+      this.infoUntypedFormGroup.get('organization')!.setValue('Other');
     }
     this.closeDropdown();
   }

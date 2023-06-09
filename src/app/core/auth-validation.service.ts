@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
@@ -19,30 +19,30 @@ export class AuthValidationService {
    * userName, password, email, or text (defualt no validation)
    * @returns Form control object for specific type of input field
    */
-  public getInputFormControl(type: 'email' | 'username' | 'password' | 'required' | 'text'): FormControl {
+  public getInputUntypedFormControl(type: 'email' | 'username' | 'password' | 'required' | 'text'): UntypedFormControl {
     switch(type){
       case 'username':
-        return new FormControl('', [
+        return new UntypedFormControl('', [
           Validators.required,
           Validators.minLength(2),
           Validators.maxLength(30)
         ]);
       case 'email':
-        return new FormControl('', [
+        return new UntypedFormControl('', [
           Validators.required,
           Validators.email
         ]);
       case 'password':
-        return new FormControl('', [
+        return new UntypedFormControl('', [
           this.minLengthValidator,
           //one number, one lower, one upper, one special, no spaces
           Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&()+=])(?=\\S+$).*$'),
           Validators.required
         ]);
       case 'required':
-        return new FormControl('', Validators.required);
+        return new UntypedFormControl('', Validators.required);
       case 'text':
-        return new FormControl('');
+        return new UntypedFormControl('');
     }
   }
   /**
@@ -53,7 +53,7 @@ export class AuthValidationService {
    * @param match String that specifies what field is being matched
    * @returns error message
    */
-  public getInputErrorMessage(control: FormControl, match?: string): string {
+  public getInputErrorMessage(control: UntypedFormControl, match?: string): string {
     if(control.hasError('required')) {//field not filled out
       return('This field is required');
     } else if (control.hasError('email')) {//email error
