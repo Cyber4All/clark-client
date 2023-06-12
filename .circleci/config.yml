@@ -20,4 +20,4 @@ workflows:
           context: [AWS, Slack]
           requires: [cyber4all/release]
           name: deploy-production
-          branch: "curriculum-listings"
+          bucket: "curriculum-listings"
