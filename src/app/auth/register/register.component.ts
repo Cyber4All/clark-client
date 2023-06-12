@@ -1,6 +1,6 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
@@ -98,16 +98,16 @@ export class RegisterComponent implements OnInit, OnDestroy{
   };
 
   infoUntypedFormGroup: UntypedFormGroup = new UntypedFormGroup({
-    firstname: this.authValidation.getInputUntypedFormControl('required'),
-    lastname: this.authValidation.getInputUntypedFormControl('required'),
-    email: this.authValidation.getInputUntypedFormControl('email'),
-    organization: this.authValidation.getInputUntypedFormControl('required'),
+    firstname: this.authValidation.getInputFormControl('required'),
+    lastname: this.authValidation.getInputFormControl('required'),
+    email: this.authValidation.getInputFormControl('email'),
+    organization: this.authValidation.getInputFormControl('required'),
   });
   accountUntypedFormGroup: UntypedFormGroup = new UntypedFormGroup({
-    username: this.authValidation.getInputUntypedFormControl('username'),
-    password: this.authValidation.getInputUntypedFormControl('password'),
-    confirmPassword: this.authValidation.getInputUntypedFormControl('required'),
-    captcha: new UntypedFormControl()
+    username: this.authValidation.getInputFormControl('username'),
+    password: this.authValidation.getInputFormControl('password'),
+    confirmPassword: this.authValidation.getInputFormControl('required'),
+    captcha: new FormControl()
   }, MatchValidator.mustMatch('password', 'confirmPassword'));
 
   emailInUse = false;

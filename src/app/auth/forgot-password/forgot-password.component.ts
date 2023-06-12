@@ -42,8 +42,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy{
   submitButton: String = 'disabled';
 
   emails: UntypedFormGroup = new UntypedFormGroup({
-    'email': this.authValidationService.getInputUntypedFormControl('email'),
-    'confirmEmail': this.authValidationService.getInputUntypedFormControl('required')
+    'email': this.authValidationService.getInputFormControl('email'),
+    'confirmEmail': this.authValidationService.getInputFormControl('required')
   }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });;
 
   emailInUse = true;

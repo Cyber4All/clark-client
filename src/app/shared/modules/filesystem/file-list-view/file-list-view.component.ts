@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { DirectoryNode } from '../DirectoryNode';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth.service';
@@ -48,7 +48,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   private killSub$: Subject<boolean> = new Subject();
 
-  descriptionControl = new UntypedFormControl();
+  descriptionControl = new FormControl();
   preview = true;
   file: LearningObject.Material.File;
   directoryListing = [];

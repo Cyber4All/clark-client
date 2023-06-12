@@ -26,8 +26,8 @@ export class ChangePasswordComponent implements OnInit {
   done = false;
 
   passwords: UntypedFormGroup = new UntypedFormGroup({
-    'password': this.authValidationService.getInputUntypedFormControl('password'),
-    'confirmPassword': this.authValidationService.getInputUntypedFormControl('password')
+    'password': this.authValidationService.getInputFormControl('password'),
+    'confirmPassword': this.authValidationService.getInputFormControl('password')
   }, { validators: MatchValidator.mustMatch('password', 'confirmPassword')});
 
   constructor(private authValidationService: AuthValidationService,

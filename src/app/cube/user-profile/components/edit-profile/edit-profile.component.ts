@@ -6,7 +6,7 @@ import {
   Output,
   Input
 } from '@angular/core';
-import { UntypedFormControl, Validators, UntypedFormGroup} from '@angular/forms';
+import { FormControl, Validators, UntypedFormGroup} from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { ProfileService } from 'app/core/profiles.service';
@@ -51,10 +51,10 @@ export class EditProfileComponent implements OnChanges, OnInit {
 
   ngOnInit(): void {
     this.editUntypedFormGroup = new UntypedFormGroup ({
-      firstname: new UntypedFormControl(this.user.name, Validators.required),
-      lastname: new UntypedFormControl(this.user.name, Validators.required),
-      email: new UntypedFormControl(this.user.email, Validators.required),
-      organization: new UntypedFormControl(this.user.organization, Validators.required),
+      firstname: new FormControl(this.user.name, Validators.required),
+      lastname: new FormControl(this.user.name, Validators.required),
+      email: new FormControl(this.user.email, Validators.required),
+      organization: new FormControl(this.user.organization, Validators.required),
     });
   }
 

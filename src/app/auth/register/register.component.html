@@ -90,7 +90,7 @@
                         ngRecaptcha 
                         key="{{siteKey}}" 
                         (captchaSuccess)="captureResponse($event)" 
-                        [UntypedFormControl]="accountUntypedFormGroup.get('captcha')"
+                        [FormControl]="accountUntypedFormGroup.get('captcha')"
                     ></div>
                     <mat-error *ngIf="accountUntypedFormGroup.get('captcha').hasError('notVerified')">
                         Please complete the reCaptcha to register
