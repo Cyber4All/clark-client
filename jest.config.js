@@ -7,6 +7,6 @@ module.exports = {
     '@entity(.*)': '<rootDir>/src/entity/$1'
   },
   transform: {
-    "^.+\\.(ts|js|html)$": "ts-preset-angular"
+    "^.+\\.(ts|js|html)$": "ts-jest"
   },
 }
