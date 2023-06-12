@@ -7,19 +7,17 @@ workflows:
   integration-testing:
     jobs:
       - cyber4all/lint
-      - cyber4all/build:
-          language: node
 
-  # continuous-deployment:
-  #   jobs:
-  #     - cyber4all/deploy-s3:
-  #         context:
-  #           [AWS, Slack]
-  #         tag: $(cat ./package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
-  #         deploy: true
-  #         source: dist
-  #         isAngular: true
-  #         filters:
-  #           branches:
-  #             only:
-  #               - releases
+  continuous-deployment:
+    when:
+      equal: [ releases, << pipeline.git.branch >> ]
+    jobs:
+      - cyber4all/release:
+          context: [Github]
+          tag: "$(jq -r '.version' package.json)"
+        
+      - cyber4all/s3:
+          context: [AWS, Slack]
+          requires: [cyber4all/release]
+          name: deploy-production
+          branch: "curriculum-listings"
