@@ -55,7 +55,7 @@
     "@angular-eslint/builder": "^13.5.0",
     "@angular-eslint/eslint-plugin": "12.7.0",
     "@angular-eslint/eslint-plugin-template": "12.7.0",
-    "@angular-eslint/schematics": "^14.2.11",
+    "@angular-eslint/schematics": "^15.2.1",
     "@angular-eslint/template-parser": "12.7.0",
     "@angular/language-service": "^13.1.2",
     "@types/ckeditor": "^4.9.10",
@@ -83,7 +83,7 @@
     "sass": "^1.46.0",
     "ts-jest": "^29.1.0",
     "tslib": "^1.10.0",
-    "typescript": "4.6.2"
+    "typescript": "4.9.5"
   },
   "prettier": {
     "singleQuote": true
