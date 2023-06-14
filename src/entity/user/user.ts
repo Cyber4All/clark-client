@@ -1,11 +1,13 @@
 import { USER_ERRORS } from './error-messages';
 import { EntityError } from '../errors/entity-error';
+import { Injectable } from '@angular/core';
 
 /**
  * A class to represent CLARK users.
  *
  * @class
  */
+@Injectable()
 export class User {
   private _id: string;
   get id(): string {

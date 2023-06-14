@@ -6,6 +6,7 @@ import { User } from '../user/user';
 import { LearningOutcome } from '../learning-outcome/learning-outcome';
 import { LEARNING_OBJECT_ERRORS } from './error-messages';
 import { EntityError } from '../errors/entity-error';
+import { Injectable } from '@angular/core';
 
 const MIN_NAME_LENGTH = 3;
 const MAX_NAME_LENGTH = 170;
@@ -15,6 +16,7 @@ const MAX_NAME_LENGTH = 170;
  *
  * @class
  */
+@Injectable() // decorator needed for base classes with children in angular v15  
 export class LearningObject {
   get id(): string {
     return this._id;

@@ -68,7 +68,8 @@ div{
     box-shadow: none;
 }
 
-.mat-tab-panel{
+// selector name for tab panel in angular material
+.mat-tab-nav-panel{
     z-index: 3;
 }
 
@@ -76,6 +77,6 @@ div{
     font-size: 20px;
 } 
 
-::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+::ng-deep .mat-mdc-tab-group.mat-primary .mat-ink-bar {
     background-color: $light-blue !important;
 }

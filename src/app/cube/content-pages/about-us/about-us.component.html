@@ -20,10 +20,13 @@
             <div class="content">
               <div [innerHTML]="questions.answer"></div>
               <div *ngIf="questions.video">
-                <iframe src="https://www.youtube.com/embed/ymerRpfbnQQ" title="Clark Searching and Sorting Video"
+                <!-- select iframe attribute bindings must be applied before src attributes for angular v15 -->
+                <iframe title="Clark Searching and Sorting Video"
                   frameborder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen>
+                  allowfullscreen
+                  src="https://www.youtube.com/embed/ymerRpfbnQQ"
+                  >
                 </iframe>
               </div>
               <div *ngIf="questions.philosophy">

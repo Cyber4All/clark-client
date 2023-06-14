@@ -1,5 +1,5 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit , ViewEncapsulation } from '@angular/core';
 import { FormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
@@ -29,7 +29,7 @@ const EMAIL_REGEX =
       transition('* => *', [
         style({ transform: 'translateX(0)', opacity: 1 }),
         animate('400ms', style({ transform: 'translateX(-100%)', opacity: 0 }))
-      ])
+      ]),
     ]),
 
     trigger('fallFromTop', [
@@ -56,7 +56,8 @@ const EMAIL_REGEX =
         )
       ])
     ])
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None   // avoids need to scope @keyframes in angular v15
 })
 export class RegisterComponent implements OnInit, OnDestroy{
   private ngUnsubscribe = new Subject<void>();
