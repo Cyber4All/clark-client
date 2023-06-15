@@ -1,7 +1,10 @@
 <div class="root_502" [attr.data-theme]="currentTheme">
     <nav>
         <div class="theme-switch-wrapper">
-          <mat-slide-toggle class="toggle">
+          <mat-slide-toggle 
+            class="toggle"
+            [color]="color"
+            [checked]="checked">
             {{currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}}
           </mat-slide-toggle>
           <mat-icon class="icon">{{currentTheme === 'light' ? 'bedtime' : 'sunny'}}</mat-icon>

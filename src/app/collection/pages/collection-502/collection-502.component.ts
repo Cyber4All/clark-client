@@ -16,6 +16,8 @@ export class Collection502Component implements OnInit {
   learningObjects: LearningObject[];
   guidelineNames: [];
   loading = true;
+  color = "blue";
+  checked = true;
   query = {
     limit: 5,
     collection: '502_project'
@@ -32,19 +34,21 @@ export class Collection502Component implements OnInit {
     this.navbarService.show();
     await this.fetchLearningObjects(this.query);
 
-    const toggleSwitch = document.querySelector('mat-slide-toggle input[type="checkbox"]');
+    const toggleSwitch = document.querySelector('mat-slide-toggle button[type="button"]');
 
-    const switchTheme = (e: Event) => {
+    const switchTheme = (e: any) => {
+      console.log(e);
       this.collectionService.changeStatus502((e.target as HTMLInputElement).checked);
     };
 
     toggleSwitch!.addEventListener('change', switchTheme);
 
     this.collectionService.darkMode502.subscribe(mode => {
+      console.log(mode, toggleSwitch);
       this.currentTheme = mode ? 'dark' : 'light';
     });
     if(this.currentTheme === 'dark'){
-      document!.getElementById('mat-slide-toggle-1-input')!.click();
+      document!.getElementById('mat-mdc-slide-toggle-1-input')!.click();
     };
   }
 
