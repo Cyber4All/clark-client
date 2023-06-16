@@ -1,13 +1,15 @@
 <div class="root_502" [attr.data-theme]="currentTheme">
     <nav>
         <div class="theme-switch-wrapper">
-          <mat-slide-toggle 
-            class="toggle"
-            [color]="color"
-            [checked]="checked">
-            {{currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}}
-          </mat-slide-toggle>
-          <mat-icon class="icon">{{currentTheme === 'light' ? 'bedtime' : 'sunny'}}</mat-icon>
+          <div class="toggle">
+            <mat-slide-toggle
+              [checked]="isChecked"
+              (change)="toggle($event)"
+            >
+              {{currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}}
+            </mat-slide-toggle>
+            <mat-icon class="icon">{{currentTheme === 'light' ? 'bedtime' : 'sunny'}}</mat-icon>
+          </div>
         </div>
       </nav>
     <clark-502-header></clark-502-header>

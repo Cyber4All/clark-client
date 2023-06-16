@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { LearningObject } from '../../../../entity/learning-object/learning-object';
 import { NavbarService } from '../../../core/navbar.service';
 import { LearningObjectService } from '../../../cube/learning-object.service';
@@ -16,7 +16,7 @@ export class Collection502Component implements OnInit {
   learningObjects: LearningObject[];
   guidelineNames: [];
   loading = true;
-  color = "blue";
+  isChecked = true;
   checked = true;
   query = {
     limit: 5,
@@ -34,22 +34,9 @@ export class Collection502Component implements OnInit {
     this.navbarService.show();
     await this.fetchLearningObjects(this.query);
 
-    const toggleSwitch = document.querySelector('mat-slide-toggle button[type="button"]');
-
-    const switchTheme = (e: any) => {
-      console.log(e);
-      this.collectionService.changeStatus502((e.target as HTMLInputElement).checked);
-    };
-
-    toggleSwitch!.addEventListener('change', switchTheme);
-
     this.collectionService.darkMode502.subscribe(mode => {
-      console.log(mode, toggleSwitch);
       this.currentTheme = mode ? 'dark' : 'light';
     });
-    if(this.currentTheme === 'dark'){
-      document!.getElementById('mat-mdc-slide-toggle-1-input')!.click();
-    };
   }
 
   async fetchLearningObjects(query: Query) {
@@ -67,5 +54,19 @@ export class Collection502Component implements OnInit {
     } catch (e) {
       console.log(`Error: ${e}`);
     }
+  }
+
+  /**
+   * Method to toggle the dark mode for the 502 collection
+   *
+   * @param change Object emitted by the mat-slide-toggle component
+   */
+  toggle(change: {source: any, checked: boolean}) {
+    if (change.checked) {
+      this.currentTheme = 'dark';
+    } else {
+      this.currentTheme = 'light';
+    }
+    this.collectionService.changeStatus502(change.checked);
   }
 }
