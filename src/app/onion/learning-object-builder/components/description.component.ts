@@ -23,7 +23,6 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
                 padding: 10px 10px 0;
                 resize: vertical;
               }
-        
               textarea.full-width {
                 max-width: 800px;
                 width: 100%;
