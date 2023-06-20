@@ -29,6 +29,7 @@ import { EditorialActionPadModule } from './components/action-panel/editorial-ac
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
 import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
 import { RouteBackwardsCompatGuard } from '../core/route-backwards-compat.guard';
+import { OnionCoreModule } from '../../onion/core/core.module';
 @NgModule({
   imports: [
     CommonModule,
@@ -46,6 +47,7 @@ import { RouteBackwardsCompatGuard } from '../core/route-backwards-compat.guard'
     SharedModule,
     CubeSharedModule,
     EditorialActionPadModule,
+    OnionCoreModule
   ],
   exports: [],
   declarations: [
