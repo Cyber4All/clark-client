@@ -4,7 +4,7 @@ import { NavbarService } from '../../../core/navbar.service';
 import { LearningObjectService } from '../../../cube/learning-object.service';
 import { Query } from '../../../interfaces/query';
 import { CollectionService } from '../../../core/collection.service';
-
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'clark-502-collection-index',
@@ -27,12 +27,14 @@ export class Collection502Component implements OnInit {
   constructor(
     private navbarService: NavbarService,
     private learningObjectService: LearningObjectService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private titleService: Title
   ) { }
 
   async ngOnInit() {
     this.navbarService.show();
     await this.fetchLearningObjects(this.query);
+    this.titleService.setTitle('CLARK | The 502 Project');
 
     this.collectionService.darkMode502.subscribe(mode => {
       this.currentTheme = mode ? 'dark' : 'light';
