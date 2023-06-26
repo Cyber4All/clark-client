@@ -13,8 +13,7 @@
     "prepare": "husky install"
   },
   "@comment dependencies": [
-    "DO NOT UPDATE ng2-ckeditor",
-    "typescript should be gradually stepped up -- stable as of 2022_09_16"
+    "typescript should be gradually stepped up -- stable as of June 2023"
   ],
   "dependencies": {
     "@angular/animations": "^15.2.9",

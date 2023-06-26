@@ -45,35 +45,34 @@ div {
         z-index: 1;
       }
 }
-​
+
 .accordion {
     position: relative;
     background: transparent;
     z-index: 2;
     border: none;
 }
-​
+
 .mat-expansion-panel{
     box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),0px 0px 0px 0px rgba(0, 0, 0, 0.14),0px 0px 3px 0px rgba(0, 0, 0, 0.12);
     padding-top: 5px;
     padding-bottom: 5px;
 }
-​
+
 .mat-expansion-panel-spacing{
     margin: 0px;
 }
-​
+
 .mat-elevation-z3{
     box-shadow: none;
 }
-// selector name for tab panel in angular material
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-​
+
 .mat-mdc-tab-nav-panel{
     z-index: 3;
 }
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-​
+.mat-mdc-tab-group.mat-primary .mat-mdc-tab-label, .mat-mdc-tab-group.mat-primary .mat-mdc-tab-link {
+    color: $light-blue;
+}
 .mat-mdc-tab-label, .mat-mdc-tab-link {
     font-size: 20px;
 }
