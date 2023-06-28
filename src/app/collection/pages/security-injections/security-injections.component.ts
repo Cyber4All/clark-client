@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
@@ -10,7 +10,7 @@ import { NavbarService } from '../../../core/navbar.service';
   templateUrl: './security-injections.component.html',
   styleUrls: ['./security-injections.component.scss'],
 })
-export class SecurityInjectionsComponent implements OnInit {
+export class SecurityInjectionsComponent implements OnInit, OnDestroy {
 
   abvCollection = 'secinj';
   collection;
