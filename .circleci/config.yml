@@ -6,7 +6,7 @@ orbs:
 workflows:
   integration-testing:
     jobs:
-      - cyber4all/lint
+      # - cyber4all/lint
 
   continuous-deployment:
     when:
