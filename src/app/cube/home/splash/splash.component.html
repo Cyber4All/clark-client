@@ -12,7 +12,6 @@
         <button id="pageContent" (click)="this.googleTagService.triggerGoogleTagEvent('browse_learning_objects', 'homepageRedirect', 'splashBrowse')" [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
     </div>
     <div class="second">
-        <!-- select iframe attribute bindings must be applied before src attributes for angular v15 -->
         <iframe
         title="What is CLARK?" 
         frameborder="0" 
