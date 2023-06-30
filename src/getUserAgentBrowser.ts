@@ -1,4 +1,3 @@
-/* eslint-disable */
 /**
  * This is a modified version of browser detection by user-agent from https://developer.mozilla.org/en-US/docs/Web/API/Window/navigator
  * The order matters here, and this may report false positives for unlisted browsers.
