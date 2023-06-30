@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '../../../../entity/learning-object/learning-object';
 import { NavbarService } from '../../../core/navbar.service';
 import { LearningObjectService } from '../../../cube/learning-object.service';

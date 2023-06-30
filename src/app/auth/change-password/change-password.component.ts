@@ -25,6 +25,7 @@ export class ChangePasswordComponent implements OnInit {
   otaCode: string;
   done = false;
 
+  //Form model classes needed to be untyped for gradual migration to angular 14
   passwords: UntypedFormGroup = new UntypedFormGroup({
     'password': this.authValidationService.getInputFormControl('password'),
     'confirmPassword': this.authValidationService.getInputFormControl('password')

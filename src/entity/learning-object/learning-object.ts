@@ -16,7 +16,7 @@ const MAX_NAME_LENGTH = 170;
  *
  * @class
  */
-@Injectable() // decorator needed for base classes with children in angular v15s
+@Injectable()
 export class LearningObject {
   get id(): string {
     return this._id;
