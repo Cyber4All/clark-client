@@ -1,10 +1,6 @@
-import { Component, OnDestroy, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { CollectionService } from 'app/core/collection.service';
-import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
-import { NavbarService } from '../../../core/navbar.service';
-import { Collection, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
 import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { NavbarService } from '../../../core/navbar.service';

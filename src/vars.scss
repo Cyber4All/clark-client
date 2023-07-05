@@ -1,0 +1,106 @@
+// variables
+$max-width: 1600px;
+
+$light-blue: #1c70dd;
+
+$light-blue-gradient: linear-gradient(45deg, darken($light-blue, 10), lighten($light-blue, 10));
+
+$homepage-light-blue: #376ED6;
+$box-background: #E9F0FE;
+$homepage-text: #454545;
+$homepage-pagination: #878787;
+$homepage-orange: #FF8A00;
+$homepage-orange-background: rgba(255, 138, 0, 0.1);
+$homepage-purple: #BD00FF;
+$homepage-purple-background: rgba(189, 0, 255, 0.1);
+$homepage-green: #14C35A;
+$homepage-green-background: rgba(20, 195, 90, 0.1);
+
+// TODO remove this variable when it's no longer being used
+$blue-accent: #3b608b;
+$blue-gradient: linear-gradient(45deg, darken($blue-accent, 20), $blue-accent);
+
+$success-green: #208540;
+$error-red: #ca2e1f;
+$gold: #ffd000;
+
+$orange: #fea200;
+$orange-gradient: linear-gradient(45deg, $orange, $gold);
+
+$wrapper-background: white;
+$placeholder: #757575; // sampled from Mac OS Google Chrome placeholder value in a text input
+
+// whites
+$secondary-white-background: #F7F9FE;
+$ternary-white-background: #f7f7f7;
+$profile-border: #DFDFDF;
+$profile-drop-shadow: #376ED6;
+$primary-white: #f8f8f8;
+$secondary-white: #dfdfdf;
+$dark-white: #E5E5E5;
+
+// greys
+$light-grey: #e1e5ec;
+$medium-grey: #8c97a5;
+$dark-grey: #535d69;
+$darker-grey: #32363f;
+$medium-dark-grey: #666666;
+$text-greyout: #AAAAAA;
+$homepage-gray: #454545;
+$slideout-underlay:#08203F;
+
+// overlays
+$dark-overlay: rgba(0, 0, 0, 0.8);
+
+$popup-z: 9;
+$notification-z: 10;
+$cube-pattern: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NiIgaGVpZ2h0PSIxMDAiPgoKPHBhdGggZD0iTTI4IDY2TDAgNTBMMCAxNkwyOCAwTDU2IDE2TDU2IDUwTDI4IDY2TDI4IDEwMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIyIj48L3BhdGg+CjxwYXRoIGQ9Ik0yOCAwTDI4IDM0TDAgNTBMMCA4NEwyOCAxMDBMNTYgODRMNTYgNTBMMjggMzQiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiI+PC9wYXRoPgo8L3N2Zz4=');
+
+// font sizes
+$largest: 27pt;     // 36px
+$larger: 19.5pt;    // 26px
+$large: 15pt;       // 20px
+$normal: 12pt;      // 16px
+$small: 10.5pt;     // 14px
+$smaller: 9pt;      // 12px
+
+// length colors
+$nanomodule-color: #3b788b;
+$micromodule-color: #3b8b80;
+$module-color: #3b8b6c;
+$unit-color: #236b2d;
+$course-color: #1e4b25;
+
+// status colors
+$status_unreleased: #bdc1c3;
+$status_waiting: #5EC9DA;
+$status_review: #094491;
+$status_accepted_minor: #31492C;
+$status_accepted_major: #53A52F;
+$status_proofing: #CC469F;
+$status_released: #1C70DD;
+$status_rejected: #CA2E1F;
+
+// tag colors
+$tag_revision: #622fed;
+
+@mixin vert-center {
+  display: inline-flex;
+  flex-direction: column;
+  align-self: center;
+}
+
+
+$palette-accent: (
+  "hover": hsl(219, 91%, 95%),
+  "lightest": hsl(219, 43%, 74%),
+  "lighter": hsl(219, 43%, 54%),
+  "default": hsl(219, 66%, 53%),
+  "darker": hsl(219, 43%, 34%),
+  "darkest": hsl(219, 43%, 24%),
+  "overlay": hsla(219, 77%, 14%, 0.8)
+);
+
+@function color-accent($style: "default") {
+  @return map-get($palette-accent, $style);
+}
