@@ -27,11 +27,16 @@ import { TitleComponent } from './pages/collection-502/components/title/title.co
 import { FeaturedComponent } from './pages/collection-502/components/featured/featured.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
+import { FeaturedObjectsComponent } from './pages/security-injections/components/featured-objects/featured-objects.component';
+import { MatCardModule } from '@angular/material/card';
+
 @NgModule({
   declarations: [
     CollectionIndexComponent,
     GenericPageComponent,
     SecurityInjectionsComponent,
+    SecurityInjectionsHeaderComponent,
     CollectionNcyteComponent,
     HeaderComponent,
     AboutComponent,
@@ -45,7 +50,8 @@ import { MatIconModule } from '@angular/material/icon';
     HeaderInfo502Component,
     CuratorCardComponent,
     TitleComponent,
-    FeaturedComponent
+    FeaturedComponent,
+    FeaturedObjectsComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -60,7 +66,8 @@ import { MatIconModule } from '@angular/material/icon';
     SharedModule,
     CubeSharedModule,
     MatSlideToggleModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule,
   ],
   providers: [LearningObjectService]
 })
