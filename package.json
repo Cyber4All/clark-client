@@ -9,8 +9,7 @@
     "build": "ng build",
     "lint": "npx ng lint clark",
     "e2e": "ng e2e",
-    "storybook": "start-storybook",
-    "prepare": "husky install"
+    "storybook": "start-storybook"
   },
   "@comment dependencies": [
     "typescript should be gradually stepped up -- stable as of June 2023"
@@ -80,7 +79,7 @@
     "protractor": "~7.0.0",
     "sass": "^1.63.6",
     "ts-jest": "^29.1.0",
-    "tslib": "^2.5.0",
+    "tslib": "^1.10.0",
     "typescript": "4.9.5"
   },
   "prettier": {
