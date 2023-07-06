@@ -39,6 +39,15 @@
                     Collection Author<span *ngIf="authorCollection !== 1">s</span>
                 </p>
             </div>
+            <div class="stat">
+                <div class="stat__icon saves">
+                    <i class="far fa-university"></i>
+                </div>
+                <div class="num">{{ objSaved }}</div>
+                <p>
+                    Save<span *ngIf="objSaved !== 1">s</span>
+                </p>
+            </div>
         </div>
     </div>
 </div>
