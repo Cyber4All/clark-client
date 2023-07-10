@@ -36,6 +36,7 @@
     padding: 7px 10px;
     margin: 0px;
     vertical-align: baseline;
+    white-space: nowrap;
 }
 
 .table-cell.bottom {
@@ -47,6 +48,7 @@ mat-card {
     padding: 4px 12px;
     margin: 2px;
     text-align: center;
+    flex: 1 1 auto;
 }
 
 a {
@@ -86,6 +88,7 @@ a {
     margin-top: 30px;
     margin-bottom: 30px;
     border-spacing: 0;
+    width: 100%;
 }
 
 .module-name {
@@ -113,4 +116,16 @@ a {
 .color.other-cards {
     margin: 0px 3px;
     padding: 4px 15px;
+}
+
+@media (max-width: 1175px) {
+    .table-cell {
+      white-space: normal;
+    }
+    
+    mat-card {
+      display: block;
+      margin-bottom: 10px;
+    }
+    
 }
