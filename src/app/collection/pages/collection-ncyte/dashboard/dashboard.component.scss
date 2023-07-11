@@ -1,0 +1,13 @@
+@import "vars.scss";
+
+.container {
+  padding: 20px 50px;
+  background-color: white;
+}
+
+.header {
+  margin-bottom: 25px;
+  font-size: $largest;
+  color: $darker-grey;
+  font-weight: 500;
+}
