@@ -1,5 +1,13 @@
 @import '_vars.scss';
 
+#mobile {
+    background-color: white;
+}
+
+.background-wrapper {
+    overflow: hidden;
+}
+
 .collection-container {
     margin: 50px;
     padding-left: 15px;
@@ -186,4 +194,9 @@ a {
         text-align: right;
         margin-left: 3px;
     }
+}
+
+@media (max-width: 590px) {
+
+
 }
