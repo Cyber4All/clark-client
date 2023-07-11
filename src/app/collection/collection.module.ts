@@ -27,6 +27,7 @@ import { TitleComponent } from './pages/collection-502/components/title/title.co
 import { FeaturedComponent } from './pages/collection-502/components/featured/featured.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dashboard.component';
 @NgModule({
   declarations: [
     CollectionIndexComponent,
@@ -45,7 +46,8 @@ import { MatIconModule } from '@angular/material/icon';
     HeaderInfo502Component,
     CuratorCardComponent,
     TitleComponent,
-    FeaturedComponent
+    FeaturedComponent,
+    NcyteDashboardComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
