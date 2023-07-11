@@ -1,4 +1,5 @@
 @import "vars.scss";
+@import '../../../collection-globals.scss';
 
 .container {
   padding: 20px 50px;
@@ -10,4 +11,11 @@
   font-size: $largest;
   color: $darker-grey;
   font-weight: 500;
+}
+
+.downloads-header {
+  color: $ncyte-blue;
+  font-size: $largest;
+  font-weight: 600;
+  text-align: center;
 }

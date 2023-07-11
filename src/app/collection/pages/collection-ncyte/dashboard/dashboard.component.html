@@ -2,4 +2,12 @@
   <h1 class="header">NCyTE Statistics Dashboard</h1>
 
   <clark-ncyte-stats [collectionName]="'ncyte'"></clark-ncyte-stats>
+
+  <h2 class="downloads-header">Individual Learning Objects</h2>
+  <label>When: </label>
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="when" (change)="onChange($event)">
+    <mat-radio-button value="All-time" checked="true">All-time</mat-radio-button>
+    <mat-radio-button value="Date Range">Date Range</mat-radio-button>
+  </mat-radio-group> <br >
+  <button (click)="onDownload()">Download</button>
 </div>

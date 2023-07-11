@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import {MatRadioModule} from '@angular/material/radio';
 import { CollectionIndexComponent } from './pages/collection-index/collection-index.component';
 import { GenericPageComponent } from './pages/generic-page/generic-page.component';
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
@@ -62,7 +63,8 @@ import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dash
     SharedModule,
     CubeSharedModule,
     MatSlideToggleModule,
-    MatIconModule
+    MatIconModule,
+    MatRadioModule
   ],
   providers: [LearningObjectService]
 })
