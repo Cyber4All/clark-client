@@ -29,6 +29,10 @@ import { FeaturedComponent } from './pages/collection-502/components/featured/fe
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dashboard.component';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
 @NgModule({
   declarations: [
     CollectionIndexComponent,
@@ -64,7 +68,11 @@ import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dash
     CubeSharedModule,
     MatSlideToggleModule,
     MatIconModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [LearningObjectService]
 })

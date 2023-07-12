@@ -4,10 +4,23 @@
   <clark-ncyte-stats [collectionName]="'ncyte'"></clark-ncyte-stats>
 
   <h2 class="downloads-header">Individual Learning Objects</h2>
+  <span tip="Define how you would like to limit the data of the individual Learning Objects.">
+    <i class="fas fa-question-circle fa-1x"></i>
+  </span>
   <label>When: </label>
-  <mat-radio-group aria-label="Select an option" [(ngModel)]="when" (change)="onChange($event)">
+  <mat-radio-group aria-label="Select an option" [(ngModel)]="when" (change)="onRadioChange($event)">
     <mat-radio-button value="All-time" checked="true">All-time</mat-radio-button>
     <mat-radio-button value="Date Range">Date Range</mat-radio-button>
   </mat-radio-group> <br >
+  <mat-form-field *ngIf="when === 'Date Range'">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="Start date">
+      <input matEndDate placeholder="End date">
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field> <br>
   <button (click)="onDownload()">Download</button>
 </div>

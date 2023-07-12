@@ -18,7 +18,7 @@ export class NcyteDashboardComponent implements OnInit {
     console.log(this.when);
   }
 
-  onChange(event: MatRadioChange) {
+  onRadioChange(event: MatRadioChange) {
     this.when = event.value;
   }
 }
