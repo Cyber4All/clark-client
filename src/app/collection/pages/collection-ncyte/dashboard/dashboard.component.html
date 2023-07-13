@@ -22,6 +22,11 @@
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker disabled="false"></mat-date-range-picker>
   </mat-form-field> <br>
-  <input type="text" [(ngModel)]="email" placeholder="Enter an email..."><br>
+  <clark-input-field
+    phold="Enter an email..."
+    fControlType="email"
+    errorMsg="Email is required"
+    [control]="email"
+  ></clark-input-field>
   <button (click)="onDownload()">Download</button>
 </div>
