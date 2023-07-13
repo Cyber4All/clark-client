@@ -71,6 +71,9 @@ export const COLLECTIONS_ROUTES = {
   },
   GET_COLLECTION_CURATORS(name: string ) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
+  },
+  GET_COLLECTION_REPORT(collections: string[]) {
+    return `${environment.clarkReportsUrl}?output=csv&collection=${collections.join(',')}`;
   }
 };
 
