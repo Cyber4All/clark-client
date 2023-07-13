@@ -226,7 +226,6 @@ export class CollectionService {
       start: string,
       end: string
     }) {
-    console.log(collections.length);
     if(collections.length > 0) {
       const route = COLLECTIONS_ROUTES.GET_COLLECTION_REPORT(collections, date);
       this.http

@@ -31,7 +31,7 @@ export class NcyteDashboardComponent implements OnInit {
   }
 
   onDownload(): void {
-    if(this.email.errors) {
+    if(this.email.errors || this.name.errors) {
       this.toaster.error('Error!', 'Please fill out the required fields.');
       return;
     }
