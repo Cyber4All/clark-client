@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatRadioChange } from '@angular/material/radio';
 
 @Component({
@@ -8,6 +9,10 @@ import { MatRadioChange } from '@angular/material/radio';
 })
 export class NcyteDashboardComponent implements OnInit {
   when = 'All-time';
+  range = new FormGroup({
+    start: new FormControl(null),
+    end: new FormControl(null),
+  });
 
   constructor() { }
 
@@ -16,6 +21,7 @@ export class NcyteDashboardComponent implements OnInit {
 
   onDownload(): void {
     console.log(this.when);
+    console.log(this.range.value);
   }
 
   onRadioChange(event: MatRadioChange) {
