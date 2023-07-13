@@ -2,6 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatRadioChange } from '@angular/material/radio';
 import { AuthValidationService } from 'app/core/auth-validation.service';
+import { CollectionService } from 'app/core/collection.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
@@ -16,11 +17,13 @@ export class NcyteDashboardComponent implements OnInit {
     end: new FormControl(null),
   });
   email = this.authValidationService.getInputFormControl('email');
+  name = this.authValidationService.getInputFormControl('text');
 
   constructor(
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
-    private authValidationService: AuthValidationService
+    private authValidationService: AuthValidationService,
+    private collectionService: CollectionService
   ) { }
 
   ngOnInit(): void {
@@ -39,13 +42,11 @@ export class NcyteDashboardComponent implements OnInit {
     }
 
     if(this.when === 'All-time') {
-      console.log('Email: ', this.email.value);
+      this.collectionService.generateCollectionReport(['ncyte'], this.email.value, this.name.value);
     } else {
-      console.log('Email: ', this.email.value);
-      // eslint-disable-next-line max-len
-      console.log(`Start Date: ${this.range.value.start.getFullYear()}-${this.range.value.start.getMonth() + 1}-${this.range.value.start.getDate()}`);
-      // eslint-disable-next-line max-len
-      console.log(`End Date: ${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`);
+      const start = `${this.range.value.start.getFullYear()}-${this.range.value.start.getMonth() + 1}-${this.range.value.start.getDate()}`;
+      const end = `${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`;
+      this.collectionService.generateCollectionReport(['ncyte'], this.email.value, this.name.value, { start: start, end: end });
     }
   }
 }

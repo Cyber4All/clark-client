@@ -72,8 +72,14 @@ export const COLLECTIONS_ROUTES = {
   GET_COLLECTION_CURATORS(name: string ) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   },
-  GET_COLLECTION_REPORT(collections: string[]) {
-    return `${environment.clarkReportsUrl}?output=csv&collection=${collections.join(',')}`;
+  GET_COLLECTION_REPORT(collections: string[], date?: { start: string, end: string }) {
+    let route = `${environment.clarkReportsUrl}?output=csv&collection=${collections.join(',')}`;
+
+    if(date) {
+      route += `&start=${date.start}&end=${date.end}`;
+    }
+
+    return route;
   }
 };
 
