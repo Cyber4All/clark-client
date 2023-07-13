@@ -48,5 +48,7 @@ export class NcyteDashboardComponent implements OnInit {
       const end = `${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`;
       this.collectionService.generateCollectionReport(['ncyte'], this.email.value, this.name.value, { start: start, end: end });
     }
+
+    this.toaster.alert('We\'re working on it!', 'Please check your email for a report of all individual Learning Objects.');
   }
 }
