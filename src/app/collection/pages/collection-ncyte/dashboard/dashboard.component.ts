@@ -13,6 +13,7 @@ export class NcyteDashboardComponent implements OnInit {
     start: new FormControl(null),
     end: new FormControl(null),
   });
+  email = '';
 
   constructor() { }
 
@@ -22,9 +23,18 @@ export class NcyteDashboardComponent implements OnInit {
   onDownload(): void {
     console.log(this.when);
     console.log(this.range.value);
-  }
 
-  onRadioChange(event: MatRadioChange) {
-    this.when = event.value;
+    // const date = new Date()
+
+    // const start = date.
+
+    // const start: Date = this.range.value.start;
+    // console.log(start);
+
+    // console.log(start.getMonth());
+    // console.log(start.getFullYear());
+    // console.log(start.getDate());
+
+    console.log(this.email);
   }
 }
