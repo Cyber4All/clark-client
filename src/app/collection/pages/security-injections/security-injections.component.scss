@@ -1,18 +1,7 @@
 @import '_vars.scss';
 
-#mobile {
-    background-color: white;
-}
-
-.background-wrapper {
+.hide-overflow {
     overflow: hidden;
-}
-
-.collection-container {
-    margin: 50px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 100px;
 }
 
 .heading {
@@ -20,115 +9,10 @@
     font-size: 19.5pt;
 }
 
-.description-container {
-    padding: 20px;
-    margin-bottom: 40px;
+#centered {
+    white-space: nowrap;
+    text-align: center;
     color: #535d69;
-}
-
-.matrix-container {
-    padding: 20px;
-    margin-bottom: 40px;
-}
-
-.matrix-table table {
-    margin-top: 30px;
-    margin-bottom: 30px;
-    border-spacing: 0;
-    width: 70%;
-    margin-right: 30%;
-}
-
-.table-heading {
-    font-size: 18px;
-    font-weight: 400;
-    padding: 12px 20px;
-    color: #454545;
-    border-radius: 7px 7px 0 0; 
-    border: 1px solid #D9D9D9;  
-    background-color: #F8F8F8;
-    text-align: center;
-    vertical-align: baseline;
-}
-
-.module-name {
-    text-align: right;
-    color: #454545;
-    font-size: 18px;
-    padding: 10px 15px;
-    vertical-align: text-top;
-    margin-top: 2px;
-    white-space: nowrap;
-}
-
-.table-cell {
-    border-right: 1px solid #D9D9D9;
-    border-left: 1px solid #D9D9D9;
-    padding: 7px 10px;
-    margin: 0px;
-    vertical-align: baseline;
-    white-space: nowrap;
-}
-
-.table-cell.bottom {
-    border-bottom: 1px solid #D9D9D9;
-}
-
-.single-cell {
-    padding: 10px 10px;
-    vertical-align: middle;
-}
-
-#single-cell-left {
-    border-bottom: 1px solid #D9D9D9;
-    border-top: 1px solid #D9D9D9;
-    border-left: 1px solid #D9D9D9;
-}
-
-#single-cell-middle {
-    border-bottom: 1px solid #D9D9D9;
-    border-top: 1px solid #D9D9D9;
-}
-
-#single-cell-right {
-    border-bottom: 1px solid #D9D9D9;
-    border-top: 1px solid #D9D9D9;
-    border-right: 1px solid #D9D9D9;
-}
-            
-mat-card {
-    display: inline-block;
-    padding: 4px 12px;
-    margin: 2px;
-    text-align: center;
-    flex: 1 1 auto;
-}
-
-a {
-    text-decoration: none;
-    color: #FFFFFF;
-    font-weight: 400;
-}
-
-.cards-container {
-    padding: 20px;
-    margin-bottom: 40px;
-}
-
-.cards table {
-    min-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 20px;
-    margin-bottom: 40px;
-    text-align: center;
-    block-size: fit-content;
-    border-spacing: 0px;
-}
-
-.other-cards {
-    margin: 3px 3px;
-    padding: 4px 15px;
 }
 
 #blue-1 {
@@ -147,56 +31,242 @@ a {
     background: #56359D;
 }
 
-#centered {
-    white-space: nowrap;
-    text-align: center;
-    color: #535d69;
+a {
+    text-decoration: none;
+    color: #FFFFFF;
+    font-weight: 400;
 }
 
-@media (max-width: 1175px) {
-    .table-cell {
-      white-space: normal;
+.desktop {
+
+    .collection-container {
+        margin-left: 50px;
+        margin-right: 50px;
+        padding-left: 15px;
+        padding-right: 15px;
+        padding-bottom: 100px;
     }
-    
-    .matrix-table {
-        margin: 0;
-    
-        mat-card {
-        display: block;
+
+    .description-container {
+        padding: 20px;
         margin-bottom: 10px;
-        white-space: nowrap;
-        max-width: 115px;
+        color: #535d69;
+    }
+
+    .matrix-container {
+        padding: 20px;
         margin-left: auto;
         margin-right: auto;
-        }
     }
 
-    .other-cards {
+    .matrix-table table {
         margin-left: auto;
         margin-right: auto;
-        max-width: fit-content;
-        margin: 3px 2px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        border-spacing: 0;
     }
 
-    .single-cell mat-card {
-        margin-bottom: 0px;
-        white-space: normal;
-    }
+    .table-heading {
+        font-size: 18px;
+        font-weight: 400;
+        padding: 12px 20px;
+        color: #454545;
+        text-align: center;
+        vertical-align: baseline;
+        background-color: #F8F8F8;
 
-    #single-cell-left {
-        max-width: 60px;
+        border-radius: 7px 7px 0 0; 
+        border: 1px solid #D9D9D9;
     }
 
     .module-name {
-        max-width: 14px;
-        min-width: 120px;
-        white-space: normal;
         text-align: right;
-        margin-left: 3px;
+        color: #454545;
+        font-size: 18px;
+        padding: 10px 15px;
+        margin-top: 2px;
+        white-space: nowrap;
+    }
+
+    .table-cell {
+        border-right: 1px solid #D9D9D9;
+        border-left: 1px solid #D9D9D9;
+        padding: 7px 10px;
+        margin: 0px;
+        vertical-align: baseline;
+        white-space: nowrap;
+    }
+
+    .table-cell.bottom {
+        border-bottom: 1px solid #D9D9D9;
+    }
+
+    .single-cell {
+        padding: 10px 10px;
+        vertical-align: middle;
+    }
+
+    #single-cell-left {
+        border-bottom: 1px solid #D9D9D9;
+        border-top: 1px solid #D9D9D9;
+        border-left: 1px solid #D9D9D9;
+    }
+
+    #single-cell-middle {
+        border-bottom: 1px solid #D9D9D9;
+        border-top: 1px solid #D9D9D9;
+    }
+
+    #single-cell-right {
+        border-bottom: 1px solid #D9D9D9;
+        border-top: 1px solid #D9D9D9;
+        border-right: 1px solid #D9D9D9;
+    }
+
+    mat-card {
+        display: inline-block;
+        padding: 4px 12px;
+        margin: 2px;
+        text-align: center;
+        flex: 1 1 auto;
+    }
+
+    .cards-container {
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+
+    .cards table {
+        min-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px;
+        text-align: center;
+        block-size: fit-content;
+        border-spacing: 0px;
+    }
+
+    .other-cards {
+        margin: 3px 3px;
+        padding: 4px 15px;
+    }
+
+    @media (max-width: 1175px) {
+        .table-cell {
+            white-space: normal;
+            padding-left: 10px;
+            padding: 7px 20px;
+        }
+        
+        .matrix-table {
+            margin: 0px;
+        
+            mat-card {
+            display: block;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            max-width: 115px;
+            margin-left: auto;
+            margin-right: auto;
+            }
+
+            a {
+                font-size: 15px;
+            }
+        }
+
+        .other-cards {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: fit-content;
+            margin: 3px 2px;
+        }
+
+        .single-cell mat-card {
+            margin-bottom: 0px;
+            white-space: normal;
+        }
+
+        #single-cell-left {
+            max-width: 60px;
+        }
+
+        .module-name {
+            border-radius: 7px 0px 0px 7px; 
+            border: 1px solid #D9D9D9;  
+            background-color: #F8F8F8;
+            text-align: center;
+            white-space: normal;
+            max-width: 100px;
+        }
     }
 }
 
-@media (max-width: 590px) {
+.mobile {
 
+    .collection-container {
+        margin: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 20px;
+    }
 
+    .description-container {
+        padding: 5px;
+        margin-bottom: 10px;
+        color: #535d69;
+    }
+
+    .secure-coding-container {
+        padding: 20px;
+        margin-bottom: 10px;
+    }
+
+    .panels {
+        margin: 20px;
+        width: fit-content;
+    }
+
+    mat-expansion-panel {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 10px;
+        margin-bottom: 10px;  
+        width: 100%;
+
+        p {
+            font-size: 16px;
+            font-weight: 600;
+            color: #454545;
+        }
+    }
+
+    mat-expansion-panel-header {
+        font-size: 16px;
+        font-weight: 400;
+        background-color: #F8F8F8;
+    }
+
+    mat-panel-title {
+        font-size: 16px;
+        color: #454545;
+        margin: 0px;
+    }
+
+    mat-card {
+        display: block;
+        padding: 4px 12px;
+        margin: 2px;
+        text-align: center;
+        white-space: nowrap;
+        margin-left: auto;
+        margin-right: auto;
+        width: 100px;
+    }
+
+    .long {
+        width: 180px;
+        margin-top: 15px;
+    }
 }

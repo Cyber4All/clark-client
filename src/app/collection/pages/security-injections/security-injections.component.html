@@ -1,357 +1,622 @@
-<div class="background-wrapper">
-    <clark-secinj-header [collectionAbv]="abvCollection"></clark-secinj-header>
-    <div class="collection-container">
-        <div class="description-container">
-            <div class="heading">Description</div>
-            <p [innerHTML]="collection.description"></p>
-        </div>
-        <div class="matrix-container">
-            <div class="heading" id="centered">Secure Coding Modules</div>
-            <div class="matrix-table">
-                <table>
-                    <tbody>
-                        <tr>
-                            <th>&nbsp;</th>
-                            <th class="table-heading" title="An introductory course to target CS majors with little or no background in programming">CS0</th>
-                            <th class="table-heading" title="The first course to formally teach programming fundamentals">CS1</th>
-                            <th class="table-heading" title="The second course to formally teach programming fundamentals">CS2</th>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Integer Error</td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Integer_Error-CS0_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Integer_Error-CS0_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="purple">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Integer_Error-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
-                                    </mat-card-content>
-                                </mat-card>      
-                            </td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Integer_Error-CS1_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Integer_Error-CS1_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Integer_Error-CS2_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Integer_Error-CS2_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Input Validation</td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS0_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS0_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-3">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS0_Python.html" target="_blank">Python</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="purple">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS1_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS1_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-3">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS1_Python.html" target="_blank">Python</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS2_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Input_Validation-CS2_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Buffer Overflow</td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-3">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Python.html" target="_blank">Python</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="purple">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-3">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_Python.html" target="_blank">Python</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS2_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Buffer_Overflow-CS2_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Software Development Life Cycle</td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-3">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_Python.html" target="_blank">Python</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td class="table-cell">&nbsp;</td>
-                            <td class="table-cell">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Best Practices for Secure Variables</td>
-                            <td class="table-cell">&nbsp;</td>
-                            <td class="table-cell">
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Best_Practices_for_Secure_Variables-CS1_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td class="table-cell">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Encapsulation</td>
-                            <td class="table-cell">&nbsp;</td>
-                            <td class="table-cell">&nbsp;</td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Encapsulation-CS2_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Encapsulation-CS2_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Data Hiding</td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Data_Hiding-CS0_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td class="table-cell">&nbsp;</td>
-                            <td class="table-cell">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Data_Hiding-CS2_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Data_Hiding-CS2_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-3">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Data_Hiding-CS2_Python.html" target="_blank">Python</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Exception Handling</td>
-                            <td class="table-cell bottom">&nbsp;</td>
-                            <td class="table-cell bottom">&nbsp;</td>
-                            <td class="table-cell bottom">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Exception_Handling-CS2_C++.html" target="_blank">C++</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card id="blue-2">
-                                    <mat-card-content>
-                                        <a href="https://security-injections.clark.center/Exception_Handling-CS2_Java.html" target="_blank">Java</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td class="module-name">Databases</td>
-                            <td class="single-cell" id="single-cell-left">
-                                <mat-card id="blue-1">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/f3e89a48-1e0f-4635-97ff-ca5625dcdb81">SQL Injections Introduction</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                            <td id="single-cell-middle">&nbsp;</td>
-                            <td id="single-cell-right">&nbsp;</td>
-                        </tr>
-                    </tbody>
-                </table>
+<div class="desktop" *ngIf="isDesktop">
+    <div class="hide-overflow">
+        <clark-secinj-header [collectionAbv]="abvCollection"></clark-secinj-header>
+        <div class="collection-container">
+            <div class="description-container">
+                <div class="heading">Description</div>
+                <p [innerHTML]="collection.description"></p>
             </div>
-        </div>
-        <div class="cards-container">
-            <div class="cards">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="table-heading">Interdisciplinary Modules</td>
-                        </tr>
-                        <tr>
-                            <td class="table-cell bottom">
-                                <mat-card class="other-cards" id="purple">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/25cb2d8e-1ae0-458e-9dca-79f90dfb1d09">Business Use Security</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card class="other-cards" id="purple">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/adaf8748-9305-4e95-b1a8-f94968f09a20">Personal Use Security</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card class="other-cards" id="purple">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/d1dbfc0a-6298-45b2-91db-da259251dfa3">Mitigating Risk Value Modeling</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card class="other-cards" id="purple">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/ecbd7adf-7121-4e29-b3c9-4320329cb01a">Business Risk Assessment</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td class="table-heading">Computer Literacy Modules</td>
-                        </tr>
-                        <tr>
-                            <td class="table-cell bottom">
-                                <mat-card class="other-cards" id="purple">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/d4d6cc04-5d10-4f67-96f8-f283c05c7d3e">Passwords</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card class="other-cards" id="purple">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/a2e081e2-4b87-436b-a226-dc15ca34c1b5">Phishing</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card class="other-cards" id="purple">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/370a3bfe-415a-4634-9c47-30ee34c19fb6">Social Networking Security</a>
-                                    </mat-card-content>
-                                </mat-card>
-                                <mat-card class="other-cards" id="purple">
-                                    <mat-card-content>
-                                        <a href="https://clark.center/details/amz210/b3377059-e09b-4eae-88cb-c653b9787265">Cryptography</a>
-                                    </mat-card-content>
-                                </mat-card>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="matrix-container">
+                <div class="heading" id="centered">Secure Coding Modules</div>
+                <div class="matrix-table">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th class="table-heading" title="An introductory course to target CS majors with little or no background in programming">CS0</th>
+                                <th class="table-heading" title="The first course to formally teach programming fundamentals">CS1</th>
+                                <th class="table-heading" title="The second course to formally teach programming fundamentals">CS2</th>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Integer Error</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Integer_Error-CS0_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Integer_Error-CS0_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="purple">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Integer_Error-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                                        </mat-card-content>
+                                    </mat-card>      
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Integer_Error-CS1_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Integer_Error-CS1_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Integer_Error-CS2_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Integer_Error-CS2_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Input Validation</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS0_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS0_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS0_Python.html" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="purple">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS1_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS1_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS1_Python.html" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS2_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Input_Validation-CS2_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Buffer Overflow</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Python.html" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="purple">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_Python.html" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS2_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Buffer_Overflow-CS2_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Software Development Life Cycle</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_Python.html" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Best Practices for Secure Variables</td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Best_Practices_for_Secure_Variables-CS1_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Encapsulation</td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Encapsulation-CS2_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Encapsulation-CS2_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Data Hiding</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Data_Hiding-CS0_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Data_Hiding-CS2_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Data_Hiding-CS2_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Data_Hiding-CS2_Python.html" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Exception Handling</td>
+                                <td class="table-cell bottom">&nbsp;</td>
+                                <td class="table-cell bottom">&nbsp;</td>
+                                <td class="table-cell bottom">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Exception_Handling-CS2_C++.html" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://security-injections.clark.center/Exception_Handling-CS2_Java.html" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Databases</td>
+                                <td class="single-cell" id="single-cell-left">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/f3e89a48-1e0f-4635-97ff-ca5625dcdb81">SQL Injections Introduction</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td id="single-cell-middle">&nbsp;</td>
+                                <td id="single-cell-right">&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-    </div> 
+            <div class="cards-container">
+                <div class="cards">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="table-heading">Interdisciplinary Modules</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell bottom">
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/25cb2d8e-1ae0-458e-9dca-79f90dfb1d09">Business Use Security</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/adaf8748-9305-4e95-b1a8-f94968f09a20">Personal Use Security</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/d1dbfc0a-6298-45b2-91db-da259251dfa3">Mitigating Risk Value Modeling</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/ecbd7adf-7121-4e29-b3c9-4320329cb01a">Business Risk Assessment</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="table-heading">Computer Literacy Modules</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell bottom">
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/d4d6cc04-5d10-4f67-96f8-f283c05c7d3e">Passwords</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/a2e081e2-4b87-436b-a226-dc15ca34c1b5">Phishing</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/370a3bfe-415a-4634-9c47-30ee34c19fb6">Social Networking Security</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/b3377059-e09b-4eae-88cb-c653b9787265">Cryptography</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div> 
+    </div>
 </div>
 
-<ng-template id="mobile">
-
-</ng-template>
+<div class="mobile" *ngIf="!isDesktop">
+    <div class="hide-overflow">
+        <clark-secinj-header [collectionAbv]="abvCollection"></clark-secinj-header>
+        <div class="collection-container">
+            <div class="description-container">
+                <div class="heading">Description</div>
+                <p [innerHTML]="collection.description"></p>
+            </div>
+            <div class="secure-coding-container">
+                <div class="heading" id="centered">Secure Coding Modules</div>
+                <div class="panels">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Integer Error</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>CS0</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Integer_Error-CS0_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Integer_Error-CS0_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="purple">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Integer_Error-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                            </mat-card-content>
+                        </mat-card> 
+                        <p>CS1</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Integer_Error-CS1_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Integer_Error-CS1_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <p>CS2</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Integer_Error-CS2_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Integer_Error-CS2_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Input Validation</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>CS0</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS0_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS0_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-3">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS0_Python.html" target="_blank">Python</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="purple">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <p>CS1</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS1_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS1_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-3">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS1_Python.html" target="_blank">Python</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <p>CS2</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS2_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Input_Validation-CS2_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Buffer Overflow</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>CS0</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-3">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Python.html" target="_blank">Python</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="purple">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS0_Pseudocode.html" target="_blank">Pseudocode</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <p>CS1</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-3">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS1_Python.html" target="_blank">Python</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <p>CS2</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS2_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Buffer_Overflow-CS2_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Software Development Life Cycle</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>CS0</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-3">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Software_Development_Lifecycle-CS0_Python.html" target="_blank">Python</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Best Practices for Secure Variables</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>CS1</p>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Best_Practices_for_Secure_Variables-CS1_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Encapsulation</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>CS2</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Encapsulation-CS2_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Encapsulation-CS2_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Data Hiding</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>CS0</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Data_Hiding-CS0_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <p>CS2</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Data_Hiding-CS2_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Data_Hiding-CS2_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-3">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Data_Hiding-CS2_Python.html" target="_blank">Python</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Exception Handling</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <p>CS2</p>
+                        <mat-card id="blue-1">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Exception_Handling-CS2_C++.html" target="_blank">C++</a>
+                            </mat-card-content>
+                        </mat-card>
+                        <mat-card id="blue-2">
+                            <mat-card-content>
+                                <a href="https://security-injections.clark.center/Exception_Handling-CS2_Java.html" target="_blank">Java</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>Databases</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-card class="long" id="blue-1">
+                            <mat-card-content>
+                                <a href="https://clark.center/details/amz210/f3e89a48-1e0f-4635-97ff-ca5625dcdb81">SQL Injections Introduction</a>
+                            </mat-card-content>
+                        </mat-card>
+                    </mat-expansion-panel>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

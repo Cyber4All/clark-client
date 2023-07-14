@@ -30,6 +30,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
 import { FeaturedObjectsComponent } from './pages/security-injections/components/featured-objects/featured-objects.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { MatCardModule } from '@angular/material/card';
     MatSlideToggleModule,
     MatIconModule,
     MatCardModule,
+    MatExpansionModule
   ],
   providers: [LearningObjectService]
 })

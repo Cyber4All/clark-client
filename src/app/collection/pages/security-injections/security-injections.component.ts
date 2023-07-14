@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
@@ -15,15 +15,24 @@ export class SecurityInjectionsComponent implements OnInit, OnDestroy {
   abvCollection = 'secinj';
   collection;
   learningObjects: LearningObject[];
+  isDesktop: boolean;
 
   constructor(
     private navbarService: NavbarService,
     private collectionService: CollectionService,
     private featureService: FeaturedObjectsService,
     private router: Router,
-    ) { }
+    ) {
+      this.isDesktop = window.innerWidth >= 768;
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event: Event) {
+    this.isDesktop = window.innerWidth >= 768;
+    }
 
   async ngOnInit() {
+
     this.navbarService.show();
 
     this.collection = await this.collectionService.getCollection(this.abvCollection);
@@ -33,9 +42,6 @@ export class SecurityInjectionsComponent implements OnInit, OnDestroy {
         this.router.navigate(['not-found']);
       }
     });
-
-    this.learningObjects = await this.featureService.getCollectionFeatured(this.abvCollection);
-
   }
 
   ngOnDestroy(): void {
