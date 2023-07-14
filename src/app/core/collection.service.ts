@@ -238,7 +238,8 @@ export class CollectionService {
         )
         .pipe(
           catchError(this.handleError)
-        );
+        )
+        .toPromise();
     }
   }
 }
