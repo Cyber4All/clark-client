@@ -2,8 +2,12 @@
 @import '../../../collection-globals.scss';
 
 .container {
+  min-height: 100vh;
   padding: 20px 50px;
   background-color: white;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
