@@ -49,6 +49,6 @@ export class NcyteDashboardComponent implements OnInit {
       this.collectionService.generateCollectionReport(['ncyte'], this.email.value, this.name.value, { start: start, end: end });
     }
 
-    this.toaster.alert('We\'re working on it!', 'Please check your email for a report of all individual Learning Objects.');
+    this.toaster.alert('We\'re working on it!', 'Please check your email in a few minutes for your report.');
   }
 }
