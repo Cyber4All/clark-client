@@ -7,12 +7,12 @@
 .heading {
     font-weight: 700;
     font-size: 19.5pt;
+    white-space: nowrap;
+    color: #535d69;
 }
 
 #centered {
-    white-space: nowrap;
     text-align: center;
-    color: #535d69;
 }
 
 #blue-1 {
@@ -49,19 +49,17 @@ a {
 
     .description-container {
         padding: 20px;
-        margin-bottom: 10px;
         color: #535d69;
     }
 
     .matrix-container {
-        padding: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
         margin-left: auto;
         margin-right: auto;
     }
 
     .matrix-table table {
-        margin-left: auto;
-        margin-right: auto;
         margin-top: 30px;
         margin-bottom: 30px;
         border-spacing: 0;
@@ -89,6 +87,15 @@ a {
         white-space: nowrap;
     }
 
+    .tab {
+        text-align: right;
+        color: #454545;
+        font-size: 18px;
+        padding: 10px 15px;
+        margin-top: 2px;
+        white-space: nowrap;
+    }
+
     .table-cell {
         border-right: 1px solid #D9D9D9;
         border-left: 1px solid #D9D9D9;
@@ -108,20 +115,7 @@ a {
     }
 
     #single-cell-left {
-        border-bottom: 1px solid #D9D9D9;
-        border-top: 1px solid #D9D9D9;
         border-left: 1px solid #D9D9D9;
-    }
-
-    #single-cell-middle {
-        border-bottom: 1px solid #D9D9D9;
-        border-top: 1px solid #D9D9D9;
-    }
-
-    #single-cell-right {
-        border-bottom: 1px solid #D9D9D9;
-        border-top: 1px solid #D9D9D9;
-        border-right: 1px solid #D9D9D9;
     }
 
     mat-card {
@@ -175,6 +169,11 @@ a {
                 font-size: 15px;
             }
         }
+        
+        table {
+            margin-left: auto;
+            margin-right: auto;
+        }
 
         .other-cards {
             margin-left: auto;
@@ -190,6 +189,7 @@ a {
 
         #single-cell-left {
             max-width: 60px;
+            border-left: 2px solid #D9D9D9;
         }
 
         .module-name {
@@ -200,40 +200,49 @@ a {
             white-space: normal;
             max-width: 100px;
         }
+
+        .tab {
+            text-align: center;
+            white-space: normal;
+            max-width: 100px;
+            color: #454545;
+            white-space: nowrap;
+            font-size: 18px;
+            padding: 10px 15px;
+            margin-top: 2px;
+        }
     }
 }
 
 .mobile {
 
     .collection-container {
-        margin: 10px;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 30px;
+        padding-right: 30px;
         padding-bottom: 20px;
     }
 
     .description-container {
-        padding: 5px;
+        padding: 10px;
         margin-bottom: 10px;
         color: #535d69;
     }
 
-    .secure-coding-container {
-        padding: 20px;
+    .content-container {
         margin-bottom: 10px;
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
     }
 
     .panels {
-        margin: 20px;
-        width: fit-content;
+        margin-top: 15px;
     }
 
-    mat-expansion-panel {
-        margin-left: auto;
-        margin-right: auto;
+    .mat-expansion-panel {
+        box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),0px 0px 0px 0px rgba(0, 0, 0, 0.14),0px 0px 3px 0px rgba(0, 0, 0, 0.12);
         margin-top: 10px;
         margin-bottom: 10px;  
-        width: 100%;
 
         p {
             font-size: 16px;
@@ -242,16 +251,14 @@ a {
         }
     }
 
-    mat-expansion-panel-header {
-        font-size: 16px;
-        font-weight: 400;
+    .mat-expansion-panel-header {
         background-color: #F8F8F8;
     }
 
     mat-panel-title {
+        justify-content: center;
         font-size: 16px;
         color: #454545;
-        margin: 0px;
     }
 
     mat-card {
@@ -263,6 +270,38 @@ a {
         margin-left: auto;
         margin-right: auto;
         width: 100px;
+    }
+
+    .table-heading {
+        margin-top: 15px;
+        font-size: 16px;
+        padding: 12px 20px;
+        color: #454545;
+        text-align: center;
+        vertical-align: baseline;
+        background-color: #F8F8F8;
+
+        border-radius: 7px 7px 0 0; 
+        border: 1px solid #D9D9D9;
+    }
+
+    .table-cell {
+        border-right: 1px solid #D9D9D9;
+        border-left: 1px solid #D9D9D9;
+        padding: 15px 30px;
+        margin-bottom: 15px;
+        vertical-align: baseline;
+        white-space: normal;
+    }
+
+    .table-cell.bottom {
+        border-bottom: 1px solid #D9D9D9;
+        border-radius: 0px 0px 7px 7px;
+    }
+
+    .other-cards {
+        justify-self: center;
+        width: inherit;
     }
 
     .long {
