@@ -350,10 +350,12 @@
                     </table>
                 </div>
             </div>
-        </div> 
+        </div>
+        <cube-footer></cube-footer>
     </div>
 </div>
 
+<!-- Mobile view template -->
 <div class="mobile" *ngIf="!isDesktop">
     <div class="hide-overflow">
         <clark-secinj-header [collectionAbv]="abvCollection"></clark-secinj-header>
@@ -668,5 +670,6 @@
                 </div>
             </div>
         </div>
+        <cube-footer></cube-footer>
     </div>
 </div>
