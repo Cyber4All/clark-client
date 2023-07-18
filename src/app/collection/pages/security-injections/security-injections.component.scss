@@ -217,9 +217,7 @@ a {
 .mobile {
 
     .collection-container {
-        padding-left: 30px;
-        padding-right: 30px;
-        padding-bottom: 20px;
+        padding: 40px;
     }
 
     .description-container {
@@ -240,25 +238,37 @@ a {
     }
 
     .mat-expansion-panel {
-        box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),0px 0px 0px 0px rgba(0, 0, 0, 0.14),0px 0px 3px 0px rgba(0, 0, 0, 0.12);
-        margin-top: 10px;
-        margin-bottom: 10px;  
+        box-shadow: none;
+        border: 1px solid #D9D9D9;
+        margin-top: 5px;
+        margin-bottom: 5px;
+
+        mat-expansion-panel-header {
+            background-color: #F8F8F8;
+        }
+
+        .nowrap {
+            padding-left: 20px;
+        }
+
+        mat-panel-title {
+            justify-content: center;
+            font-size: 16px;
+            color: #454545;
+            white-space: nowrap;
+            margin-right: 0px;
+        }
+        
+        mat-expansion-panel-body {
+            padding: 20px;
+        }
 
         p {
             font-size: 16px;
             font-weight: 600;
             color: #454545;
+            text-align: center;
         }
-    }
-
-    .mat-expansion-panel-header {
-        background-color: #F8F8F8;
-    }
-
-    mat-panel-title {
-        justify-content: center;
-        font-size: 16px;
-        color: #454545;
     }
 
     mat-card {
@@ -273,7 +283,7 @@ a {
     }
 
     .table-heading {
-        margin-top: 15px;
+        margin-top: 30px;
         font-size: 16px;
         padding: 12px 20px;
         color: #454545;
