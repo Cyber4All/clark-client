@@ -11,8 +11,37 @@
     color: #535d69;
 }
 
-#centered {
+.table-heading {
+    padding: 12px 20px;
+    background-color: #F8F8F8;
+    border-radius: 7px 7px 0 0; 
+    border: 1px solid #D9D9D9;
+    vertical-align: baseline;
+
+    font-size: 18px;
+    font-weight: 400;
+    color: #454545;
+}
+
+.table-cell {
+    border-right: 1px solid #D9D9D9;
+    border-left: 1px solid #D9D9D9;
+    padding: 7px 15px;
+    vertical-align: baseline;
+    white-space: nowrap;
+}
+
+.table-cell.bottom {
+    border-bottom: 1px solid #D9D9D9;
+}
+
+#centered-text {
     text-align: center;
+}
+
+#centered {
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #blue-1 {
@@ -35,6 +64,7 @@ a {
     text-decoration: none;
     color: #FFFFFF;
     font-weight: 400;
+    font-size: 15px;
 }
 
 .desktop {
@@ -42,21 +72,20 @@ a {
     .collection-container {
         margin-left: 50px;
         margin-right: 50px;
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-bottom: 100px;
     }
 
     .description-container {
-        padding: 20px;
+        padding: 30px;
         color: #535d69;
     }
 
     .matrix-container {
-        padding-left: 20px;
-        padding-right: 20px;
-        margin-left: auto;
-        margin-right: auto;
+        padding: 0px 20px;
+    }
+
+    .other-table-container {
+        margin-bottom: 40px;
+        padding: 20px 60px;
     }
 
     .matrix-table table {
@@ -65,151 +94,78 @@ a {
         border-spacing: 0;
     }
 
-    .table-heading {
-        font-size: 18px;
-        font-weight: 400;
-        padding: 12px 20px;
-        color: #454545;
-        text-align: center;
-        vertical-align: baseline;
-        background-color: #F8F8F8;
-
-        border-radius: 7px 7px 0 0; 
-        border: 1px solid #D9D9D9;
+    .other-table table {
+        min-width: 100%;
+        padding: 20px;
+        block-size: fit-content;
+        border-spacing: 0px;
     }
 
     .module-name {
-        text-align: right;
+        padding: 10px 15px;
         color: #454545;
         font-size: 18px;
-        padding: 10px 15px;
-        margin-top: 2px;
-        white-space: nowrap;
-    }
-
-    .tab {
         text-align: right;
-        color: #454545;
-        font-size: 18px;
-        padding: 10px 15px;
-        margin-top: 2px;
         white-space: nowrap;
-    }
-
-    .table-cell {
-        border-right: 1px solid #D9D9D9;
-        border-left: 1px solid #D9D9D9;
-        padding: 7px 10px;
-        margin: 0px;
-        vertical-align: baseline;
-        white-space: nowrap;
-    }
-
-    .table-cell.bottom {
-        border-bottom: 1px solid #D9D9D9;
     }
 
     .single-cell {
-        padding: 10px 10px;
+        padding: 10px 15px;
         vertical-align: middle;
-    }
-
-    #single-cell-left {
         border-left: 1px solid #D9D9D9;
     }
 
     mat-card {
         display: inline-block;
-        padding: 4px 12px;
         margin: 2px;
+        padding: 4px 12px;
         text-align: center;
-        flex: 1 1 auto;
-    }
-
-    .cards-container {
-        padding: 20px;
-        margin-bottom: 40px;
-    }
-
-    .cards table {
-        min-width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        padding: 20px;
-        text-align: center;
-        block-size: fit-content;
-        border-spacing: 0px;
     }
 
     .other-cards {
-        margin: 3px 3px;
+        margin: 10px 2px;
         padding: 4px 15px;
     }
 
     @media (max-width: 1175px) {
         .table-cell {
             white-space: normal;
-            padding-left: 10px;
-            padding: 7px 20px;
         }
         
-        .matrix-table {
-            margin: 0px;
-        
-            mat-card {
+        .matrix-table mat-card {
             display: block;
-            margin-bottom: 5px;
+            margin: 5px 0px;
             white-space: nowrap;
-            max-width: 115px;
-            margin-left: auto;
-            margin-right: auto;
-            }
-
-            a {
-                font-size: 15px;
-            }
+            width: 90px;
         }
-        
-        table {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
+    
         .other-cards {
-            margin-left: auto;
-            margin-right: auto;
+            justify-self: center;
             max-width: fit-content;
             margin: 3px 2px;
         }
 
-        .single-cell mat-card {
-            margin-bottom: 0px;
-            white-space: normal;
-        }
-
-        #single-cell-left {
-            max-width: 60px;
+        .single-cell {
             border-left: 2px solid #D9D9D9;
+
+            mat-card {
+                white-space: normal;
+                max-width: 90px;
+            }
         }
 
         .module-name {
             border-radius: 7px 0px 0px 7px; 
             border: 1px solid #D9D9D9;  
             background-color: #F8F8F8;
-            text-align: center;
             white-space: normal;
+            text-align: center;
             max-width: 100px;
         }
 
-        .tab {
-            text-align: center;
-            white-space: normal;
-            max-width: 100px;
-            color: #454545;
-            white-space: nowrap;
-            font-size: 18px;
-            padding: 10px 15px;
-            margin-top: 2px;
+        .module-name.single {
+            border: none;
+            background-color: #FFFFFF;
         }
     }
 }
@@ -217,37 +173,36 @@ a {
 .mobile {
 
     .collection-container {
-        padding: 40px;
+        margin: 40px 30px;
     }
 
     .description-container {
-        padding: 10px;
-        margin-bottom: 10px;
+        padding: 0px 20px;
         color: #535d69;
     }
 
     .content-container {
-        margin-bottom: 10px;
-        margin-top: 15px;
+        margin: 15px 0px;
         display: flex;
         flex-direction: column;
     }
 
     .panels {
-        margin-top: 15px;
+        margin: 15px 5px;
+        padding: 0px 5px;
     }
 
     .mat-expansion-panel {
         box-shadow: none;
         border: 1px solid #D9D9D9;
-        margin-top: 5px;
-        margin-bottom: 5px;
+        border-radius: 5px;
+        margin: 5px 0px;
 
         mat-expansion-panel-header {
             background-color: #F8F8F8;
         }
 
-        .nowrap {
+        .no-wrap {
             padding-left: 20px;
         }
 
@@ -267,14 +222,13 @@ a {
             font-size: 16px;
             font-weight: 600;
             color: #454545;
-            text-align: center;
         }
     }
 
     mat-card {
         display: block;
         padding: 4px 12px;
-        margin: 2px;
+        margin: 5px 0px;
         text-align: center;
         white-space: nowrap;
         margin-left: auto;
@@ -285,27 +239,14 @@ a {
     .table-heading {
         margin-top: 30px;
         font-size: 16px;
-        padding: 12px 20px;
-        color: #454545;
-        text-align: center;
-        vertical-align: baseline;
-        background-color: #F8F8F8;
-
-        border-radius: 7px 7px 0 0; 
-        border: 1px solid #D9D9D9;
     }
 
     .table-cell {
-        border-right: 1px solid #D9D9D9;
-        border-left: 1px solid #D9D9D9;
-        padding: 15px 30px;
-        margin-bottom: 15px;
-        vertical-align: baseline;
+        padding: 20px 40px 40px 40px;
         white-space: normal;
     }
 
     .table-cell.bottom {
-        border-bottom: 1px solid #D9D9D9;
         border-radius: 0px 0px 7px 7px;
     }
 
@@ -317,5 +258,9 @@ a {
     .long {
         width: 180px;
         margin-top: 15px;
+    }
+
+    #extra-margin {
+        margin-bottom: 60px;
     }
 }
