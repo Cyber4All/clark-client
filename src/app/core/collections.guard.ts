@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CollectionsGuard implements CanActivate {
-  private paidCollections = ['ncyte', '502-project', 'nice'];
+  private paidCollections = ['ncyte', '502-project', 'nice', 'secinj'];
 
   constructor(private router: Router) {}
 

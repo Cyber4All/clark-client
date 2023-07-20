@@ -32,7 +32,7 @@ const collection_routes: Routes = [
         redirectTo: '502-project'
     },
     {
-        path: 'security-injections',
+        path: 'secinj',
         component: SecurityInjectionsComponent
     },
     {

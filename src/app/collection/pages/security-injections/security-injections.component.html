@@ -9,7 +9,7 @@
             <div class="matrix-container">
                 <div class="heading" id="centered-text">Secure Coding Modules</div>
                 <div class="matrix-table">
-                    <table id="centered">
+                    <table>
                         <tbody>
                             <tr>
                                 <th>&nbsp;</th>
@@ -359,7 +359,7 @@
 <div class="mobile" *ngIf="!isDesktop">
     <div class="hide-overflow">
         <clark-secinj-header [collectionAbv]="abvCollection"></clark-secinj-header>
-        <div class="collection-container">
+        <div class="collection-container" id="centered">
             <div class="description-container" id="extra-margin">
                 <div class="heading">Description</div>
                 <p [innerHTML]="collection.description"></p>
