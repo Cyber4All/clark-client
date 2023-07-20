@@ -45,10 +45,6 @@
     margin-right: auto;
 }
 
-#extra-margin {
-    margin-bottom: 60px;
-}
-
 #blue-1 {
     background: #06348B;
 }
@@ -88,8 +84,9 @@ a {
     }
 
     .other-table-container {
-        margin-bottom: 40px;
+        margin-bottom: 90px;
         padding: 20px 60px;
+        max-width: 1200px;
     }
 
     .matrix-table table {
@@ -144,7 +141,8 @@ a {
 
     @media (max-width: 1175px) {
         .description-container {
-            max-width: 850px;
+            max-width: 700px;
+            padding: 30px 40px;
         }
         
         .table-cell {
@@ -201,6 +199,10 @@ a {
             margin-right: auto;
         }
     }    
+
+    #extra-margin {
+        margin-bottom: 40px;
+    }
 }
 
 .mobile {
@@ -293,5 +295,9 @@ a {
     .long {
         width: 180px;
         margin-top: 15px;
+    }
+
+    #extra-margin {
+        margin-bottom: 60px;
     }
 }
