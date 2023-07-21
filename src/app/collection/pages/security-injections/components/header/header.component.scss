@@ -1,0 +1,74 @@
+@import '../../../../collection-globals.scss';
+
+.hero {
+    position: relative;
+    overflow: hidden;
+    padding: 50px;
+  
+    &:after {
+        content: '';
+        background: repeating-linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) );
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+    }
+  
+    &:before {
+        content: '';
+        background: linear-gradient(to bottom, white, #1c70dd, white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        z-index: 0;
+        opacity: .15;
+    }
+  
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 20px;
+        z-index: 2;
+
+        .logo {
+            width: 125px;
+            height: auto;
+        }
+
+        .title {
+            color: #1c70dd;
+            font-size: 27pt;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            text-align: center;
+            max-width: 350px;
+            padding: 10px;
+
+            .button {
+                display: inline-block;
+                width: 300px;
+                margin-bottom: 20px;
+                border-width: 2px;
+                &.neutral {
+                    background: white;
+                }
+            }
+
+            .button:hover, :focus {
+                color: #1c70dd;
+            }
+        }
+    }
+  }
