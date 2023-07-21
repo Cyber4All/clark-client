@@ -28,7 +28,6 @@ import { FeaturedComponent } from './pages/collection-502/components/featured/fe
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
-import { FeaturedObjectsComponent } from './pages/security-injections/components/featured-objects/featured-objects.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 
@@ -51,8 +50,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     HeaderInfo502Component,
     CuratorCardComponent,
     TitleComponent,
-    FeaturedComponent,
-    FeaturedObjectsComponent
+    FeaturedComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
