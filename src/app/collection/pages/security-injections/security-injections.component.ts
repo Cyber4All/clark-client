@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection.service';
-import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
 import { NavbarService } from '../../../core/navbar.service';
 
 @Component({
@@ -20,7 +19,6 @@ export class SecurityInjectionsComponent implements OnInit, OnDestroy {
   constructor(
     private navbarService: NavbarService,
     private collectionService: CollectionService,
-    private featureService: FeaturedObjectsService,
     private router: Router,
     ) {
       this.isDesktop = window.innerWidth >= 768;
