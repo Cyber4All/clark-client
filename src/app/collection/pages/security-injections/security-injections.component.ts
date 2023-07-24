@@ -35,11 +35,6 @@ export class SecurityInjectionsComponent implements OnInit, OnDestroy {
 
     this.collection = await this.collectionService.getCollection(this.abvCollection);
 
-    this.collection = await this.collectionService.getCollectionMetadata(this.abvCollection).catch(e => {
-      if (e.status === 404) {
-        this.router.navigate(['not-found']);
-      }
-    });
   }
 
   ngOnDestroy(): void {
