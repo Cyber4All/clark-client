@@ -13,6 +13,7 @@ import { ProfileService } from 'app/core/profiles.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { environment } from '@env/environment';
 import { Router } from '@angular/router';
+import { UserService } from 'app/core/user.service'
 
 @Component({
   selector: 'clark-edit-profile',
@@ -46,6 +47,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
     private profileService: ProfileService,
     private noteService: ToastrOvenService,
     private auth: AuthService,
+    private userService: UserService,
     private router: Router
   ) { }
 
@@ -62,8 +64,8 @@ export class EditProfileComponent implements OnChanges, OnInit {
   ngOnChanges(): void {
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
     this.editInfo = {
-      firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
-      lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
+      firstname: this.toUpper(this.auth.firstName),
+      lastname: this.toUpper(this.auth.lastName),
       email: this.user.email || '',
       organization: this.toUpper(this.user.organization) || '',
       bio: this.user.bio || ''
@@ -79,7 +81,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
   async save() {
     const edits = {
       username: this.user.username,
-      name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
+      name: this.userService.combineName(this.editInfo.firstname, this.editInfo.lastname),
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
       bio: this.editInfo.bio.trim(),

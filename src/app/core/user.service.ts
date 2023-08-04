@@ -242,6 +242,28 @@ export class UserService {
     return deleteValue;
   }
 
+  combineName(firstname: string, lastname: string){
+    let firstnameArray = firstname.split(' ');
+    let lastnameArray = lastname.split(' ');
+
+    if(firstnameArray.length > 1){
+      let newfirstName = '';
+      for(let i = 0; i < firstnameArray.length - 1; i++){
+      newfirstName += firstnameArray[i] + '#';
+      }
+      newfirstName += firstnameArray[firstnameArray.length - 1];
+      firstname = newfirstName;
+  } if(lastnameArray.length > 1){
+    let newlastName = '';
+    for(let i = 0; i < lastnameArray.length - 1; i++){
+    newlastName += lastnameArray[i] + '#';
+    }
+    newlastName += lastnameArray[lastnameArray.length - 1];
+    lastname = newlastName;
+    }
+    return firstname + ' ' +lastname;
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
