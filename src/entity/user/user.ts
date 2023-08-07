@@ -47,7 +47,8 @@ export class User {
    * @memberof User
    */
   get firstName(): string {
-    return this.name.split(' ')[0];
+    const firstname = this.name ? this.name.split(' ')[0] : undefined;
+    return this.name ? firstname.split('#').join(' ') : undefined;
   }
 
   /**
@@ -58,8 +59,8 @@ export class User {
    * @memberof User
    */
   get lastName(): string {
-    const nameChunks = this.name.split(' ');
-    return nameChunks.slice(1, nameChunks.length).join(' ');
+    const lastname = this.name ? this.name.split(' ')[1] : undefined;
+    return this.name ? lastname.split('#').join(' ') : undefined;
   }
 
   _email: string;

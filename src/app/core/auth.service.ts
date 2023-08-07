@@ -209,7 +209,20 @@ export class AuthService {
    * @memberof AuthService
    */
   get firstName(): string {
-    return this.user ? this.user.name.split(' ')[0] : undefined;
+    const firstname = this.user ? this.user.name.split(' ')[0] : undefined;
+    return this.user ? firstname.split('#').join(' ') : undefined;
+  }
+
+  /**
+   * Return the currently logged-in user's last name
+   *
+   * @readonly
+   * @type {string}
+   * @memberof AuthService
+   */
+  get lastName(): string {
+    const lastname = this.user ? this.user.name.split(' ')[1] : undefined;
+    return this.user ? lastname.split('#').join(' ') : undefined;
   }
 
   /**
