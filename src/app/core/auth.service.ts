@@ -214,7 +214,7 @@ export class AuthService {
   }
 
   /**
-   * Return the currently logged-in user's first name
+   * Return the currently logged-in user's last name
    *
    * @readonly
    * @type {string}

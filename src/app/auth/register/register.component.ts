@@ -11,7 +11,7 @@ import { Subject, interval } from 'rxjs';
 import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
 import { environment } from '@env/environment';
 import { CookieAgreementService } from 'app/core/cookie-agreement.service';
-import { UserService } from 'app/core/user.service'
+import { UserService } from 'app/core/user.service';
 
 const EMAIL_REGEX =
 // eslint-disable-next-line max-len

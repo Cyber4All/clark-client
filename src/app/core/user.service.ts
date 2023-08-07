@@ -243,8 +243,8 @@ export class UserService {
   }
 
   combineName(firstname: string, lastname: string){
-    let firstnameArray = firstname.split(' ');
-    let lastnameArray = lastname.split(' ');
+    const firstnameArray = firstname.trim().split(' ');
+    const lastnameArray = lastname.trim().split(' ');
 
     if(firstnameArray.length > 1){
       let newfirstName = '';
@@ -253,7 +253,8 @@ export class UserService {
       }
       newfirstName += firstnameArray[firstnameArray.length - 1];
       firstname = newfirstName;
-  } if(lastnameArray.length > 1){
+  } 
+    if(lastnameArray.length > 1){
     let newlastName = '';
     for(let i = 0; i < lastnameArray.length - 1; i++){
     newlastName += lastnameArray[i] + '#';

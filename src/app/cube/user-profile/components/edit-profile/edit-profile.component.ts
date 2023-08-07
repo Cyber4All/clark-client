@@ -13,7 +13,7 @@ import { ProfileService } from 'app/core/profiles.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { environment } from '@env/environment';
 import { Router } from '@angular/router';
-import { UserService } from 'app/core/user.service'
+import { UserService } from 'app/core/user.service';
 
 @Component({
   selector: 'clark-edit-profile',
