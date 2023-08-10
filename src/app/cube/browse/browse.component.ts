@@ -70,7 +70,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   sortMenuDown: boolean;
   showClearSort: boolean;
-  sortText: string;
+  sortText = 'Date (DESC)';
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -105,6 +105,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.route.queryParams.pipe(takeUntil(this.unsubscribe)).subscribe(async params => {
       // makes query based and sends request to fetch learning objects
       this.makeQuery(params);
+      // with a text search and no sortType is provided, no sort is applied, otherwise apply the default sort
+      this.sortText = params.text && !params.sortType ? '' : this.sortText;
       this.fetchLearningObjects(this.query);
     });
   }
@@ -300,6 +302,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     event.stopPropagation();
     this.query.orderBy = undefined;
     this.query.sortType = undefined;
+    this.sortText = '';
     this.performSearch();
   }
 

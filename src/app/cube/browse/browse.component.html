@@ -29,16 +29,16 @@
             <clark-context-menu *ngIf="sortMenuDown" [anchor]="sortMenuButtonElement" [offset]="{ top: 10, left: 5, right: 0 }" (close)="toggleSortMenu(false)">
               <div #contextMenu class="sort-menu">
                 <ul>
-                  <li class="list-item" (activate)="toggleSort('dd')">
+                  <li [ngClass]="{selected: sortText === 'Date (DESC)'}"  class="list-item" (activate)="toggleSort('dd')">
                     Date (Newest first)
                   </li>
-                  <li class="list-item" (activate)="toggleSort('da')">
+                  <li [ngClass]="{selected: sortText === 'Date (ASC)'}" class="list-item" (activate)="toggleSort('da')">
                     Date (Oldest first)
                   </li>
-                  <li class="list-item" (activate)="toggleSort('nd')">
+                  <li [ngClass]="{selected: sortText === 'Name (DESC)'}" class="list-item" (activate)="toggleSort('nd')">
                     Name (desc)
                   </li>
-                  <li class="list-item" (activate)="toggleSort('na')">
+                  <li [ngClass]="{selected: sortText === 'Name (ASC)'}" class="list-item" (activate)="toggleSort('na')">
                     Name (asc)
                   </li>
                 </ul>

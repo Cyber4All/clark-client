@@ -253,7 +253,7 @@ export class UserService {
       }
       newfirstName += firstnameArray[firstnameArray.length - 1];
       firstname = newfirstName;
-  } 
+    }
     if(lastnameArray.length > 1){
     let newlastName = '';
     for(let i = 0; i < lastnameArray.length - 1; i++){
