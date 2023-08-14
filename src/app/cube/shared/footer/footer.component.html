@@ -5,8 +5,7 @@
         <h3>Platform</h3>
         <a [routerLink]="['/system/accessibility-statement']" aria-label="Accessbility Statement link" target="_blank" rel="noopener noreferrer">{{ copy.ACCESSIBILITY }}</a>
         <a aria-label="Clickable Privacy Notice link" href="https://secured.team/privacy-policy/" target="_blank">{{ copy.PRIVACY }}</a>
-        <a aria-label="Clickable Roadmap link" href="https://securedteam.notion.site/361b86788dc2493e95c990d77594e6ed?v=7bfe3912023b41f28739e4976d6f9861" target="_blank" rel="noopener noreferrer">{{ copy.ROADMAP }}</a>
-        <a [routerLink]="['/system/status']" aria-label="Clickable System Outages link" target="_blank" rel="noopener noreferrer">{{ copy.OUTAGES }}</a>
+        <!-- <a aria-label="Clickable Roadmap link" href="https://securedteam.notion.site/361b86788dc2493e95c990d77594e6ed?v=7bfe3912023b41f28739e4976d6f9861" target="_blank" rel="noopener noreferrer">{{ copy.ROADMAP }}</a> -->
         <a [routerLink]="['/system/termsofservice']" aria-label="Clickable Terms of Service link" target="_blank" rel="noopener noreferrer">{{ copy.TERMS }}</a>
         <a aria-label="Clickable Usage Statistics link" [routerLink]="['/system/usage']" target="_blank" rel="noopener noreferrer">{{ copy.USAGE }}</a>
       </div>
@@ -22,10 +21,11 @@
       <div>
         <h3>General Information</h3>
         <a aria-label= "Clickable About Us link" href="http://clark.center/about" >{{copy.ABOUT}}</a>
+        <a aria-label="Clickable Blog link" href="https://blogs.clark.center/" target="_blank">{{copy.BLOG}}</a>
         <a aria-label="Clickable Meet the Team link" href="http://secured.team/team" target="_blank" rel="noopener noreferrer">{{ copy.TEAM }}</a>
         <a [routerLink]="['/press']" aria-label="Press and Media link">{{ copy.PRESS }}</a>
         <a aria-label="Newsletter Subscription modal" (activate)="toggleNewsletterBanner()">{{ copy.SUBSCRIBE }}</a>
-        
+
       </div>
     </section>
     <section class="grants">
@@ -36,7 +36,7 @@
         <div class="logo-wrapper">
           <a href="https://www.towson.edu/" target="_blank">
             <img src="assets/images/towson_logo.png" alt="Towson University Logo">
-          </a>      
+          </a>
         </div>
       </div>
     </section>
@@ -57,7 +57,12 @@
         <a href="https://502project.org" target="_blank" aria-label="The 502 Project">
           <img src="assets/images/502_project_white.png" class="project_502" alt="The 502 Project">
         </a>
-      </div>
+      </div>  
+      <div class="logo-wrapper">
+        <a href="https://www.gula.tech/" target="_blank" aria-label="GULA Tech">
+          <img src="assets/images/gula_logo.png" class="gula" alt="GULA Tech">
+        </a>
+      </div> 
     </div>
   </div>
   <div class="share-icons">

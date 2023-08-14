@@ -6,8 +6,8 @@
     class="card__image" 
     src="{{ pictureLocation }}" 
     alt="{{ collection.name }} logo"
-    [ngClass]="{'long': collection?.abvName === 'ncyte' || collection?.abvName === 'nice' || collection?.abvName === 'deterlab' || collection?.abvName === '502_project'}">
-  <div aria-hidden="true" class="card__name" [ngClass]="{'long': collection?.abvName === 'deterlab'}">{{ collection.name }}</div>
+    [ngClass]="{'long': collection?.abvName === 'ncyte' || collection?.abvName === 'nice' || collection?.abvName === 'deterlab' || collection?.abvName === '502_project' || collection?.abvName === 'cyberskills2work'}">
+  <div aria-hidden="true" class="card__name" [ngClass]="{'long': collection?.abvName === 'deterlab' || collection?.abvName === 'cyberskills2work'}">{{ collection.name }}</div>
 </button>
 
 <ng-template #genericLogoTemplate>

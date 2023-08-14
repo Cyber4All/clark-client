@@ -14,7 +14,6 @@ import { ModalModule } from '../shared/modules/modals/modal.module';
 import { UserService } from './user.service';
 import { UserAgentService } from './user-agent.service';
 import { MessagesService } from './messages.service';
-import { RavenErrorHandler } from './error-handler';
 import { CollectionService } from './collection.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
@@ -24,6 +23,7 @@ import { ChangelogService } from './changelog.service';
 import { EditorService } from './editor.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { ProfileService } from './profiles.service';
+import { NavbarDropdownService } from './navBarDropdown.service';
 
 @NgModule({
   imports: [
@@ -49,7 +49,7 @@ import { ProfileService } from './profiles.service';
     NavbarService,
     UserAgentService,
     ProfileService,
-    { provide: ErrorHandler, useClass: RavenErrorHandler },
+    NavbarDropdownService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpConfigInterceptor,

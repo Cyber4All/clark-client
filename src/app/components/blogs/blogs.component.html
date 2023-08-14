@@ -1,7 +1,7 @@
 <div class="blogs-component" *ngIf="blogObservable | async as blog;">
     <div @blogView class="first-view" *ngIf="view===0">
         <div class="left">
-            <i class="fas fa-info-circle fa-2x"></i>
+            <i class="fal fa-newspaper fa-2x"></i>
             <p>
                 <strong>{{blog[0].name}} </strong> {{" " + blog[0].description}}
                 <a [href]="blog[0].url" target="_blank">See blog for more details.</a>

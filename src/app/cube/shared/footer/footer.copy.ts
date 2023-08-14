@@ -9,9 +9,9 @@ export const COPY = {
     TERMS: 'Terms of Service',
     ACCESSIBILITY: 'Accessibility',
     PRESS: 'Press and Media',
-    OUTAGES: 'System Outages',
     ABOUT: 'About CLARK',
     SUBSCRIBE: 'Sign up for our Newsletter',
     ROADMAP: 'Roadmap',
-    PRIVACY: 'Privacy Policy'
+    PRIVACY: 'Privacy Policy',
+    BLOG: 'Blogs'
 };

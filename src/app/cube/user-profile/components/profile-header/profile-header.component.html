@@ -2,7 +2,7 @@
     <div class="user-profile-header_wrapper">
         <img [src]="gravatarImage" class="img">
         <div class="user-profile_info">
-            <h1>{{ user.name | titlecase }}</h1>
+            <h1>{{ firstName + " " + lastName | titlecase }}</h1>
             <p>{{ user.organization | titlecase }}</p>
             <a href="mailto:{{ user.email }}">{{ user.email }}</a>
         </div>

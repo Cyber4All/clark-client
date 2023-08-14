@@ -5,10 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import { Organization } from 'entity/organization';
+import { OrganizationService } from 'app/core/organization.service';
 import { Subject, interval } from 'rxjs';
-import { takeUntil, debounce } from 'rxjs/operators';
+import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
 import { environment } from '@env/environment';
 import { CookieAgreementService } from 'app/core/cookie-agreement.service';
+import { UserService } from 'app/core/user.service';
 
 const EMAIL_REGEX =
 // eslint-disable-next-line max-len
@@ -112,10 +115,21 @@ export class RegisterComponent implements OnInit, OnDestroy{
   usernameInUse = false;
   loading = false;
 
+  organizationInput$: Subject<string> = new Subject<string>();
+  showDropdown = false;
+  closeDropdown = () => {
+    this.showDropdown = false;
+  };
+  searchResults: Array<Organization> = [];
+  selectedOrg = '';
+  scrollerHeight = '100px';
+
   constructor(
     public authValidation: AuthValidationService,
     private auth: AuthService,
+    private userService: UserService,
     private router: Router,
+    private orgService: OrganizationService,
     private cookieAgreement: CookieAgreementService,
     private route: ActivatedRoute,
   ) {
@@ -135,6 +149,20 @@ export class RegisterComponent implements OnInit, OnDestroy{
     this.toggleRegisterButton();
     this.validateEmail();
     this.validateUsername();
+    this.organizationInput$.pipe(debounceTime(650))
+    .subscribe( async (value: string) => {
+      this.searchResults = (await this.orgService.searchOrgs(value.trim()));
+      this.loading = false;
+    });
+    this.organizationInput$
+      .subscribe((value: string) => {
+        if (value && value !== '') {
+          this.showDropdown = true;
+          this.loading = true;
+        } else {
+          this.showDropdown = false;
+        }
+      });
   }
 
   /**
@@ -143,7 +171,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   public submit(): void {
     const newUser = {
       username: this.regInfo.username.trim(),
-      name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
+      name: this.userService.combineName(this.regInfo.firstname, this.regInfo.lastname),
       email: this.regInfo.email.trim(),
       organization: this.regInfo.organization.trim(),
       password: this.regInfo.password
@@ -339,6 +367,33 @@ export class RegisterComponent implements OnInit, OnDestroy{
       });
     }
   }
+
+  /**
+   * Selects an organization from the list
+   *
+   * @param org The organization selected
+   */
+  selectOrg(org?: Organization) {
+    if(org) {
+      this.regInfo.organization = org.name;
+      this.selectedOrg = org._id;
+      this.infoFormGroup.get('organization')!.setValue(org.name);
+    } else {
+      this.regInfo.organization = 'Other';
+      this.selectedOrg = '602ae2a038e2aaa1059f3c39';
+      this.infoFormGroup.get('organization')!.setValue('Other');
+    }
+    this.closeDropdown();
+  }
+
+  /**
+   * Registers typing events from the organization input
+   *
+   * @param event The typing event
+   */
+    keyup(event: any) {
+      this.organizationInput$.next(event.target.value);
+    }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();

@@ -1,24 +1,26 @@
 import {
   Component,
   OnChanges,
+  OnInit,
   EventEmitter,
   Output,
   Input
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, Validators, FormGroup} from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
 import { AuthService } from 'app/core/auth.service';
 import { ProfileService } from 'app/core/profiles.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { environment } from '@env/environment';
 import { Router } from '@angular/router';
+import { UserService } from 'app/core/user.service';
 
 @Component({
   selector: 'clark-edit-profile',
   templateUrl: './edit-profile.component.html',
   styleUrls: ['./edit-profile.component.scss']
 })
-export class EditProfileComponent implements OnChanges {
+export class EditProfileComponent implements OnChanges, OnInit {
   ssoRedirect = environment.apiURL + '/google';
   elementRef: any;
   @Input() user;
@@ -38,10 +40,6 @@ export class EditProfileComponent implements OnChanges {
   };
 
   editFormGroup: FormGroup = new FormGroup({
-    firstname: this.authValidation.getInputFormControl('required'),
-    lastname: this.authValidation.getInputFormControl('required'),
-    email: this.authValidation.getInputFormControl('email'),
-    organization: this.authValidation.getInputFormControl('required'),
   });
 
   constructor(
@@ -49,14 +47,25 @@ export class EditProfileComponent implements OnChanges {
     private profileService: ProfileService,
     private noteService: ToastrOvenService,
     private auth: AuthService,
+    private userService: UserService,
     private router: Router
   ) { }
+
+  ngOnInit(): void {
+    this.editFormGroup = new FormGroup ({
+      firstname: new FormControl(this.user.name, Validators.required),
+      lastname: new FormControl(this.user.name, Validators.required),
+      email: new FormControl(this.user.email, Validators.required),
+      organization: new FormControl(this.user.organization, Validators.required),
+    });
+  }
+
 
   ngOnChanges(): void {
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
     this.editInfo = {
-      firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
-      lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
+      firstname: this.toUpper(this.auth.firstName),
+      lastname: this.toUpper(this.auth.lastName),
       email: this.user.email || '',
       organization: this.toUpper(this.user.organization) || '',
       bio: this.user.bio || ''
@@ -72,7 +81,7 @@ export class EditProfileComponent implements OnChanges {
   async save() {
     const edits = {
       username: this.user.username,
-      name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
+      name: this.userService.combineName(this.editInfo.firstname, this.editInfo.lastname),
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
       bio: this.editInfo.bio.trim(),

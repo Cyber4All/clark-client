@@ -70,7 +70,7 @@ export class GuidelineService {
     return {
       text: filter.text || filter.filterText,
       year: filter.year !== '' ? filter.year : undefined,
-      levels: filter.levels !== [] ? filter.levels : undefined,
+      levels: filter?.levels?.length > 0 ? filter.levels : undefined,
       page: filter.page !== '' ? filter.page : undefined,
       limit: filter.limit !== '' ? filter.limit : undefined,
       type: filter.type !== '' ? filter.type : undefined,

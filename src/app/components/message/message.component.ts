@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MessagesService, Message} from '../../core/messages.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { Downtime } from 'app/core/messages.service';
 
 @Component({
   selector: 'clark-message',
@@ -8,27 +8,12 @@ import { MessagesService, Message} from '../../core/messages.service';
 })
 export class MessageComponent implements OnInit {
 
-  showBanner = false;
-  downtime = false;
-  message: Message;
+  @Input() showBanner = false;
+  @Input() downtime: Downtime;
 
-  constructor(private messages: MessagesService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.getMessage();
-    setInterval(async () => {
-      this.getMessage();
-    }, 300000); // 5 min interval
   }
 
-  getMessage() {
-    this.messages.getStatus().then(message => {
-      this.message = message;
-      this.showBanner = false;
-    })
-    .catch ( _ => {
-      /** Suppress the error because it is being handled in Gateway.
-      If an error does occur there is not reason to show anything because a user doesn't know the request is being made. */
-    });
-  }
 }

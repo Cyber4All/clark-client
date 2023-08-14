@@ -164,7 +164,10 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @var this.store.upload is a toggle string variable to block the 'Back' button if a file upload
    * is not finished. See the builder store for more details.
    */
-   async triggerExitProcess() {
+   async triggerExitProcess(leaveBuilder = true) {
+    if (this.adminMode && !leaveBuilder) {
+      this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
+    }
     // Trigger new PDF generation
     Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));
     // Remove outcomes that have null text
@@ -175,7 +178,9 @@ export class BuilderNavbarComponent implements OnDestroy {
       if (this.store.touched) {
         this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject.id);
       }
-      this.historySnapshot.rewind('/onion/dashboard');
+      if (leaveBuilder) {
+        this.historySnapshot.rewind('/onion/dashboard');
+      }
     } else if (this.store.upload === 'secondClickBack') {
       // User has tried to exit the builder twice during an upload process (upload = 'true')
       this.toasterService.error(

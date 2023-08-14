@@ -38,11 +38,11 @@ export class AdminComponent implements OnInit, OnDestroy {
     private messagesService: MessagesService
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     // hide CLARK navbar
     this.navbarService.hide();
 
-    if (this.messagesService.getStatus()) {
+    if (!!(await this.messagesService.getDowntime()).message) {
       // the message banner is down, adjust UI to account for it
       setTimeout(() => {
         this.topAdjustment = document.querySelector('clark-message .wrapper').getBoundingClientRect().height;
@@ -102,8 +102,8 @@ export class AdminComponent implements OnInit, OnDestroy {
       take(1)
     )
     .toPromise()
-    .then(() => {
-      this.retrieveAuthorizedCollections();
+    .then(async () => {
+      await this.retrieveAuthorizedCollections();
     });
   }
 

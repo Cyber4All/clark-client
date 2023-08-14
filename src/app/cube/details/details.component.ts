@@ -162,7 +162,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           owners.push(this.releasedLearningObject.author.username);
 
           this.learningObjectOwners = owners;
-          // this.hasRevision = !!this.releasedLearningObject.revisionUri;
+          this.hasRevision = !!this.releasedLearningObject.revisionUri;
           this.learningObject = this.releasedLearningObject;
           // Set page title
           this.titleService.setTitle('CLARK | '+ this.learningObject.name);
@@ -183,6 +183,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
           if (this.learningObject.revisionUri) {
             this.hasRevision = true;
             await this.loadRevisedLearningObject();
+          } else {
+            this.revisedLearningObject = null;
           }
         } else {
           if (object instanceof HttpErrorResponse) {

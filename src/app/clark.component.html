@@ -1,10 +1,14 @@
-<ng-container [ngTemplateOutlet]="isUnderMaintenance !== undefined ? finishedLoadingTemplate : loadingTemplate"></ng-container>
+<ng-container [ngTemplateOutlet]="downtime.isDown !== undefined ? finishedLoadingTemplate : loadingTemplate"></ng-container>
 
 <ng-template #finishedLoadingTemplate>
-  <ng-container [ngTemplateOutlet]="isUnderMaintenance ? maintenanceTemplate : clarkBodyTemplate"></ng-container>
+  <ng-container [ngTemplateOutlet]="downtime.isDown ? maintenanceTemplate : clarkBodyTemplate"></ng-container>
 </ng-template>
 
 <ng-template #clarkBodyTemplate>
+  <clark-message
+    [downtime]="downtime"
+    [showBanner]="!!downtime.message"
+  ></clark-message>
   <clark-primary-navbar></clark-primary-navbar>
   <clark-secondary-navbar></clark-secondary-navbar>
   <router-outlet></router-outlet>

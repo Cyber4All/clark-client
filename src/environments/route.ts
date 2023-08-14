@@ -347,6 +347,12 @@ export const USER_ROUTES = {
   }
 };
 
+export const ORGANIZATION_ROUTES = {
+  SEARCH_ORGANIZATIONS(queryString: string) {
+      return `${environment.cardOrganizationUrl}&text=${queryString}`;
+  }
+};
+
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   GET_PUBLIC_LEARNING_OBJECTS: `${environment.apiURL}/learning-objects`,
   GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
@@ -513,8 +519,7 @@ export const RATING_ROUTES = {
   }
 };
 export const MISC_ROUTES = {
-  CHECK_STATUS: `${environment.apiURL}/status`,
-  CHECK_MAINTENANCE: `${environment.apiURL}/maintenance`
+  CHECK_DOWNTIME: `${environment.apiURL}/downtime?service=clark`,
 };
 
 export const STATS_ROUTES = {

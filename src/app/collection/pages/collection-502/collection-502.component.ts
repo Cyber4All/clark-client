@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { LearningObject } from '@entity';
+import { LearningObject } from '../../../../entity/learning-object/learning-object';
 import { NavbarService } from '../../../core/navbar.service';
-import { LearningObjectService } from 'app/cube/learning-object.service';
-import { Query } from 'app/interfaces/query';
-import { CollectionService } from 'app/core/collection.service';
-
+import { LearningObjectService } from '../../../cube/learning-object.service';
+import { Query } from '../../../interfaces/query';
+import { CollectionService } from '../../../core/collection.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'clark-502-collection-index',
@@ -25,13 +25,14 @@ export class Collection502Component implements OnInit {
   constructor(
     private navbarService: NavbarService,
     private learningObjectService: LearningObjectService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private titleService: Title
   ) { }
 
   async ngOnInit() {
-
     this.navbarService.show();
     await this.fetchLearningObjects(this.query);
+    this.titleService.setTitle('CLARK | The 502 Project');
 
     const toggleSwitch = document.querySelector('mat-slide-toggle input[type="checkbox"]');
 
@@ -39,13 +40,13 @@ export class Collection502Component implements OnInit {
       this.collectionService.changeStatus502((e.target as HTMLInputElement).checked);
     };
 
-    toggleSwitch.addEventListener('change', switchTheme);
+    toggleSwitch!.addEventListener('change', switchTheme);
 
     this.collectionService.darkMode502.subscribe(mode => {
       this.currentTheme = mode ? 'dark' : 'light';
     });
     if(this.currentTheme === 'dark'){
-      document.getElementById('mat-slide-toggle-1-input').click();
+      document!.getElementById('mat-slide-toggle-1-input')!.click();
     };
   }
 

@@ -5,7 +5,7 @@
              <h2 class="featured-learning-title">
                  FEATURED LEARNING OBJECTS
              </h2>
-             <p>
+             <p *ngIf="collectionName !== 'nice' else niceDescription">
                  Packaged cybersecurity learning objects
                   designed to help your students learn skills 
                   that employers are seeking
@@ -16,3 +16,11 @@
 
     </clark-collection-learning-object-list>
 </div>
+
+<ng-template #niceDescription>
+    <p>
+        Our latest and greatest hands-on cybersecurity challenges 
+        are designed to bring your students the workforce experience 
+        before the workforce
+    </p>
+</ng-template>
