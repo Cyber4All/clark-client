@@ -33,7 +33,7 @@ export class SecurityInjectionsComponent implements OnInit, OnDestroy {
 
     this.navbarService.show();
 
-    this.collection = await this.collectionService.getCollection(this.abvCollection);
+    this.collection = await this.collectionService.getCollectionMetadata(this.abvCollection);
 
   }
 
