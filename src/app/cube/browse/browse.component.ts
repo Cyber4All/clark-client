@@ -70,7 +70,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   sortMenuDown: boolean;
   showClearSort: boolean;
-  sortText = 'Date (DESC)';
+  sortText = 'Newest';
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -278,13 +278,13 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     if (val !== null) {
       this.showClearSort = true;
       if (val === 'da') {
-        this.sortText = 'Date (ASC)';
+        this.sortText = 'Oldest';
       } else if (val === 'dd') {
-        this.sortText = 'Date (DESC)';
+        this.sortText = 'Newest';
       } else if (val === 'na') {
-        this.sortText = 'Name (ASC)';
+        this.sortText = 'Name (Asc)';
       } else if (val === 'nd') {
-        this.sortText = 'Name (DESC)';
+        this.sortText = 'Name (Desc)';
       }
       const sort = val.charAt(0);
       const dir = val.charAt(1);
