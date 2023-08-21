@@ -249,18 +249,19 @@ export class UserService {
     if(firstnameArray.length > 1){
       let newfirstName = '';
       for(let i = 0; i < firstnameArray.length - 1; i++){
-      newfirstName += firstnameArray[i] + '#';
+        newfirstName += firstnameArray[i] + '#';
       }
       newfirstName += firstnameArray[firstnameArray.length - 1];
       firstname = newfirstName;
     }
+
     if(lastnameArray.length > 1){
-    let newlastName = '';
-    for(let i = 0; i < lastnameArray.length - 1; i++){
-    newlastName += lastnameArray[i] + '#';
-    }
-    newlastName += lastnameArray[lastnameArray.length - 1];
-    lastname = newlastName;
+      let newlastName = '';
+      for(let i = 0; i < lastnameArray.length - 1; i++){
+        newlastName += lastnameArray[i] + '#';
+      }
+      newlastName += lastnameArray[lastnameArray.length - 1];
+      lastname = newlastName;
     }
     return firstname + ' ' +lastname;
   }
