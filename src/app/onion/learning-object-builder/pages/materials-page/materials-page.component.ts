@@ -46,9 +46,16 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
       title: 'Third Party Software',
       content: `<p>If your learning object requires the use of third party software please include a link to any FAQ/Troubleshooting
       resources specific to that software.</p>`
+    },
+    {
+      title: 'Semester Identifying Information',
+      content: `<p>For ease of sharing with the community, our team recommends removing any semester identifying information (i.e., 
+        due dates) before submitting materials. By submitting your object, you are giving consent to have the CLARK team remove any 
+        semester identifying information found during reviews. If you do not want the team to remove this information, please reach out 
+        to us at info@secured.team.</p>`
     }];
 
-  constructor(private store: BuilderStore) {}
+  constructor(private store: BuilderStore) { }
 
   ngOnInit() {
     this.learningObject$ = this.store.learningObjectEvent.pipe(
@@ -63,12 +70,12 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
 
     // listen for outcome events and update component stores
     this.store.learningObjectEvent
-    .pipe(
-      filter(learningObject => learningObject !== undefined),
-      takeUntil(this.destroyed$)
-    ).subscribe((payload: LearningObject) => {
-      this.learningObject = payload;
-    });
+      .pipe(
+        filter(learningObject => learningObject !== undefined),
+        takeUntil(this.destroyed$)
+      ).subscribe((payload: LearningObject) => {
+        this.learningObject = payload;
+      });
   }
 
   async handleFileDeletion(fileIds: string[]) {

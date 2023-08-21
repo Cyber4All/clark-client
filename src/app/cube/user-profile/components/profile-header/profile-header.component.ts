@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ProfileService } from 'app/core/profiles.service';
 import { UserService } from 'app/core/user.service';
 import { BehaviorSubject } from 'rxjs';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-profile-header',
@@ -38,10 +39,12 @@ export class ProfileHeaderComponent implements OnInit {
   contributedObjects: number;
   downloadedObjects: number;
   firstName: string;
+  lastName: string;
 
   constructor(
     private userService: UserService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private auth: AuthService
   ) {}
 
   async ngOnInit() {
@@ -49,7 +52,8 @@ export class ProfileHeaderComponent implements OnInit {
       // Set profile image
       this.gravatarImage = await this.userService.getGravatarImage(val.email, this.size);
       // Grab first name for bio section
-      this.firstName = val.name.split(' ')[0];
+      this.firstName = this.auth.firstName;
+      this.lastName = this.auth.lastName;
     });
 
   }

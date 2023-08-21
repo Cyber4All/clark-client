@@ -11,6 +11,7 @@ import { Subject, interval } from 'rxjs';
 import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
 import { environment } from '@env/environment';
 import { CookieAgreementService } from 'app/core/cookie-agreement.service';
+import { UserService } from 'app/core/user.service';
 
 const EMAIL_REGEX =
 // eslint-disable-next-line max-len
@@ -126,6 +127,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   constructor(
     public authValidation: AuthValidationService,
     private auth: AuthService,
+    private userService: UserService,
     private router: Router,
     private orgService: OrganizationService,
     private cookieAgreement: CookieAgreementService,
@@ -169,7 +171,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
   public submit(): void {
     const newUser = {
       username: this.regInfo.username.trim(),
-      name: `${this.regInfo.firstname.trim()} ${this.regInfo.lastname.trim()}`,
+      name: this.userService.combineName(this.regInfo.firstname, this.regInfo.lastname),
       email: this.regInfo.email.trim(),
       organization: this.regInfo.organization.trim(),
       password: this.regInfo.password
