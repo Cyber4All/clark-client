@@ -38,22 +38,29 @@ export class ProfileHeaderComponent implements OnInit {
   savedObjects: number;
   contributedObjects: number;
   downloadedObjects: number;
-  firstName: string;
-  lastName: string;
+  firstName = '';
+  lastName = '';
 
   constructor(
     private userService: UserService,
     private profileService: ProfileService,
-    private auth: AuthService
   ) {}
 
   async ngOnInit() {
     this._user.subscribe(async val => {
       // Set profile image
       this.gravatarImage = await this.userService.getGravatarImage(val.email, this.size);
-      // Grab first name for bio section
-      this.firstName = this.auth.firstName;
-      this.lastName = this.auth.lastName;
+      // Split name into first and last name
+      const split = val.name.split(' ');
+      if (split.length > 2) {
+        this.firstName = split[0] + ' ' + split[1];
+        for (let  i = 2; i < split.length; i++) {
+          this.lastName += split[i] + ' ';
+        }
+      } else {
+        this.firstName = split[0];
+        this.lastName = split[1];
+      }
     });
 
   }
