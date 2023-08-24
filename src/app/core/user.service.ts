@@ -242,28 +242,32 @@ export class UserService {
     return deleteValue;
   }
 
-  combineName(firstname: string, lastname: string){
-    const firstnameArray = firstname.trim().split(' ');
-    const lastnameArray = lastname.trim().split(' ');
+  combineName(firstname: string, lastname: string, combined?: boolean){
+    if(!combined){
+      const firstnameArray = firstname.trim().split(' ');
+      const lastnameArray = lastname.trim().split(' ');
 
-    if(firstnameArray.length > 1){
-      let newfirstName = '';
-      for(let i = 0; i < firstnameArray.length - 1; i++){
-        newfirstName += firstnameArray[i] + '#';
+      if(firstnameArray.length > 1){
+        let newfirstName = '';
+        for(let i = 0; i < firstnameArray.length - 1; i++){
+          newfirstName += firstnameArray[i] + '#';
+        }
+        newfirstName += firstnameArray[firstnameArray.length - 1];
+        firstname = newfirstName;
       }
-      newfirstName += firstnameArray[firstnameArray.length - 1];
-      firstname = newfirstName;
-    }
 
-    if(lastnameArray.length > 1){
-      let newlastName = '';
-      for(let i = 0; i < lastnameArray.length - 1; i++){
-        newlastName += lastnameArray[i] + '#';
+      if(lastnameArray.length > 1){
+        let newlastName = '';
+        for(let i = 0; i < lastnameArray.length - 1; i++){
+          newlastName += lastnameArray[i] + '#';
+        }
+        newlastName += lastnameArray[lastnameArray.length - 1];
+        lastname = newlastName;
       }
-      newlastName += lastnameArray[lastnameArray.length - 1];
-      lastname = newlastName;
+      return firstname + ' ' +lastname;
+    } else {
+      return firstname + ' ' + lastname;
     }
-    return firstname + ' ' +lastname;
   }
 
   private handleError(error: HttpErrorResponse) {

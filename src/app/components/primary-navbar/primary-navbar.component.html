@@ -21,7 +21,7 @@
                 <div #userDropdownAnchor>
                     <div class="logged-in" *ngIf="isLoggedIn">
                         <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
-                        <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.firstName | titlecase }}</span>
+                        <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.headerName | titlecase }}</span>
                             <span class="arrow" *ngIf="!userDropdown">
                                 <i class="fas fa-chevron-down"></i>
                             </span>
@@ -93,7 +93,7 @@
             <div class="user" *ngIf="isLoggedIn">
                 <div class="info side-padding-20">
                     <div class="profile-picture" id="profile clark-user-dropdown" [ngStyle]="{'background-image': 'url(' + gravatarImage(70) + ')'}"></div>
-                    <div class="username">Hi, {{ this.auth.firstName | titlecase }}!
+                    <div class="username">Hi, {{ this.auth.headerName | titlecase }}!
                         <div>
                             <a [routerLink]="['/users', auth.username]">View Your Profile</a>
                         </div>

@@ -14,7 +14,7 @@
     <div class="user-profile-bio_wrapper">
         <div class="profile-bio_wrapper">
             <div class="bioheader">
-                <h2>About {{ firstName ? (firstName | titlecase) : 'them' }}</h2>
+                <h2>About {{ firstName ? (firstName + ' ' + lastName | titlecase) : 'them' }}</h2>
             </div>
             <ng-container [ngTemplateOutlet]="user.bio !== '' ? bioExists : noBio"></ng-container>
         </div>
@@ -35,7 +35,12 @@
 <ng-template #noBio>
     <div class="noBio">
         <p>¯\_(ツ)_/¯</p>
-        <p>{{ firstName ? (firstName | titlecase) : 'This user' }} hasn't updated their bio yet!</p>
+        <p>{{
+            firstName ? (firstName.split(' ').length > 1 ?
+            (firstName.split(' ')[0] + ' ' + lastName| titlecase) :
+            firstName | titlecase) :
+            'This user'
+        }} hasn't updated their bio yet!</p>
     </div>
 </ng-template>
 
