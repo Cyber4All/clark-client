@@ -34,11 +34,16 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 @NgModule({
   declarations: [
     CollectionIndexComponent,
     GenericPageComponent,
     SecurityInjectionsComponent,
+    SecurityInjectionsHeaderComponent,
     CollectionNcyteComponent,
     HeaderComponent,
     AboutComponent,
@@ -76,6 +81,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
+    MatExpansionModule
   ],
   providers: [LearningObjectService]
 })

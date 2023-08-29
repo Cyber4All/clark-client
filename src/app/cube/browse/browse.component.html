@@ -22,23 +22,23 @@
         <div class="results-options" id="results-options">
           <button *ngIf="isMobile" #filterMenuButtonElement aria-label="Filter search results" class="button sort" (activate)="toggleFilters()">{{ copy.FILTERS }} <i class="far fa-sliders-h"></i></button>
           <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria" tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
-          <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">{{ showClearSort ? sortText : 'Sort' }}<i class="far fa-angle-down"></i></button>
+          <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">Sort By: {{ sortText }}<i class="far fa-angle-down"></i></button>
         </div>
         <!-- Filter Context Menu -->
         <ng-container>
             <clark-context-menu *ngIf="sortMenuDown" [anchor]="sortMenuButtonElement" [offset]="{ top: 10, left: 5, right: 0 }" (close)="toggleSortMenu(false)">
               <div #contextMenu class="sort-menu">
                 <ul>
-                  <li class="list-item" (activate)="toggleSort('dd')">
+                  <li [ngClass]="{selected: sortText === 'Newest'}"  class="list-item" (activate)="toggleSort('dd')">
                     Date (Newest first)
                   </li>
-                  <li class="list-item" (activate)="toggleSort('da')">
+                  <li [ngClass]="{selected: sortText === 'Oldest'}" class="list-item" (activate)="toggleSort('da')">
                     Date (Oldest first)
                   </li>
-                  <li class="list-item" (activate)="toggleSort('nd')">
+                  <li [ngClass]="{selected: sortText === 'Name (Desc)'}" class="list-item" (activate)="toggleSort('nd')">
                     Name (desc)
                   </li>
-                  <li class="list-item" (activate)="toggleSort('na')">
+                  <li [ngClass]="{selected: sortText === 'Name (Asc)'}" class="list-item" (activate)="toggleSort('na')">
                     Name (asc)
                   </li>
                 </ul>

@@ -208,8 +208,20 @@ export class AuthService {
    * @type {string}
    * @memberof AuthService
    */
-  get firstName(): string {
-    return this.user ? this.user.name.split(' ')[0] : undefined;
+  get headerName(): string {
+    // Split name into first and last name
+    const split = this.user.name.split(' ');
+    let firstName = '', lastName = '';
+    if (split.length > 2) {
+      firstName = split[0] + ' ' + split[1];
+      for (let  i = 2; i < split.length; i++) {
+        lastName += split[i] + ' ';
+      }
+    } else {
+      firstName = split[0];
+      lastName = split[1];
+    }
+    return firstName.split(' ')[0] + ' ' + lastName;
   }
 
   /**

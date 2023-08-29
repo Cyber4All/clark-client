@@ -1,1 +1,675 @@
-<p>security-injections works!</p>
+<div class="desktop" *ngIf="isDesktop">
+    <div class="hide-overflow">
+        <clark-secinj-header [collectionAbv]="abvCollection"></clark-secinj-header>
+        <div class="collection-container">
+            <div class="description-container" id="extra-margin">
+                <div class="heading">Description</div>
+                <p [innerHTML]="collection.description"></p>
+            </div>
+            <div class="matrix-container">
+                <div class="heading" id="centered-text">Secure Coding Modules</div>
+                <div class="matrix-table">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>&nbsp;</th>
+                                <th class="table-heading" id="centered-text" title="An introductory course to target CS majors with little or no background in programming">CS0</th>
+                                <th class="table-heading" id="centered-text" title="The first course to formally teach programming fundamentals">CS1</th>
+                                <th class="table-heading" id="centered-text" title="The second course to formally teach programming fundamentals">CS2</th>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Integer Error</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/42f22d66-8e39-4480-ab85-2b2cd73e2aa8" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/0e0c3f27-672d-4679-9b7a-931435edc616" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/eef7719d-963b-48f2-9d0b-8bd6082a209d" target="_blank">Pseudocode</a>
+                                        </mat-card-content>
+                                    </mat-card>      
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/5d811dfb-f474-476f-9d6e-7b6c9f375ff7" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/39289312-5684-4ba6-a64f-d95625369885" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/6f2b8e29-eb0f-48c5-b2b8-c2333675ba44" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/47bddf85-5608-4adb-8e31-1b8bf7a0d0e9" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Input Validation</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/587ecdd2-091a-482a-bac9-b538e3577c78" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/8ae411a8-7560-42da-a71d-822ad934f6ae" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/38b00f5e-1019-4203-a234-1159aa7898e2" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/7a72c9bc-0327-4c13-ab9f-015af450906a" target="_blank">Pseudocode</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/85972b3c-5e31-47ba-84cf-4d73d382dc1f" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/50eee84b-58df-4f60-b9f7-efba3b2737c3" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/0b137568-9514-4dda-84d1-6a4d50f1487e" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/a4c4ce6d-61cd-4441-b12c-bf06212b974d" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/b15d4fda-456f-4902-91cf-a740b717d0bb" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Buffer Overflow</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/b1746fe9-9aee-4603-8e3a-bd7e25202b80" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/5050f650-2ae6-4f43-ac93-2554b25237a3" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/55376275-8b5a-4285-a582-2c64846f6b1f" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/f0ed06a3-22a6-4fbc-aba8-7f5dbe117017" target="_blank">Pseudocode</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/0afc07a0-2e3d-4da2-b8e9-9ef4fd22444d" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/39eaef88-813e-4896-ba77-cd12f7b1df48" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/77fd94e8-1c9a-4b54-8959-c6ed1cf2dcdf" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/6f242fe4-5483-4238-a373-4650bccb450d" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/be89e84a-0fc2-4ffe-88d8-d8fc12b496ca" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Software Development Life Cycle</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/d16f927f-244b-472e-8559-12e2cea6c78e" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/d0ba2fb0-ed28-4d0c-b722-4768d0547e6a" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/555820d7-3002-411c-bddb-3b043778bec9" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Best Practices for Secure Variables</td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/95a32782-15f9-4df0-bc07-5bd4c58eac39" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Encapsulation</td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/d7c37386-5136-4ebb-a7e7-047a50620d8a" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/b2667520-12d1-42cb-a8c4-0259baafafce" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Data Hiding</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/88fa9d54-134f-4fee-9b48-0f2a3090244c" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td class="table-cell">&nbsp;</td>
+                                <td class="table-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/324fb2dc-c717-4c0f-acf7-bbb033111e58" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/572d80fd-07ed-4ced-a496-72b9f9c8dcad" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-3">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/4e3a6673-0662-45e1-93ab-6d5a889b855c" target="_blank">Python</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="module-name">Exception Handling</td>
+                                <td class="table-cell bottom">&nbsp;</td>
+                                <td class="table-cell bottom">&nbsp;</td>
+                                <td class="table-cell bottom">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/6c52e13a-d694-4aeb-be89-3ff4e78504ef" target="_blank">C++</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card id="blue-2">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/skaza/dfbf0bd5-f70e-45c5-92c9-93a0a7bce13e" target="_blank">Java</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td class="module-name single">Databases</td>
+                                <td class="single-cell">
+                                    <mat-card id="blue-1">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/f3e89a48-1e0f-4635-97ff-ca5625dcdb81">SQL Injections Introduction</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                                <td>&nbsp;</td>
+                                <td>&nbsp;</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="other-table-container" id="centered">
+                <div class="other-table" id="centered-text">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="table-heading" id="centered-text">Interdisciplinary Modules</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell bottom">
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/25cb2d8e-1ae0-458e-9dca-79f90dfb1d09">Business Use Security</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/adaf8748-9305-4e95-b1a8-f94968f09a20">Personal Use Security</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/d1dbfc0a-6298-45b2-91db-da259251dfa3">Mitigating Risk Value Modeling</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/ecbd7adf-7121-4e29-b3c9-4320329cb01a">Business Risk Assessment</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td class="table-heading" id="centered-text">Computer Literacy Modules</td>
+                            </tr>
+                            <tr>
+                                <td class="table-cell bottom">
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/d4d6cc04-5d10-4f67-96f8-f283c05c7d3e">Passwords</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/a2e081e2-4b87-436b-a226-dc15ca34c1b5">Phishing</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/370a3bfe-415a-4634-9c47-30ee34c19fb6">Social Networking Security</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                    <mat-card class="other-cards" id="purple">
+                                        <mat-card-content>
+                                            <a href="https://clark.center/details/amz210/b3377059-e09b-4eae-88cb-c653b9787265">Cryptography</a>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <cube-footer></cube-footer>
+    </div>
+</div>
+
+<!-- Mobile view template -->
+<div class="mobile" *ngIf="!isDesktop">
+    <div class="hide-overflow">
+        <clark-secinj-header [collectionAbv]="abvCollection"></clark-secinj-header>
+        <div class="collection-container" id="centered">
+            <div class="description-container" id="extra-margin">
+                <div class="heading">Description</div>
+                <p [innerHTML]="collection.description"></p>
+            </div>
+            <div class="content-container">
+                <div class="heading" id="centered-text">Secure Coding Modules</div>
+                <div class="panels">
+                    <mat-accordion>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Integer Error</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p id="centered-text">CS0</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/42f22d66-8e39-4480-ab85-2b2cd73e2aa8" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/0e0c3f27-672d-4679-9b7a-931435edc616" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="purple">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/eef7719d-963b-48f2-9d0b-8bd6082a209d" target="_blank">Pseudocode</a>
+                                </mat-card-content>
+                            </mat-card>      
+                            <p id="centered-text">CS1</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/5d811dfb-f474-476f-9d6e-7b6c9f375ff7" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/39289312-5684-4ba6-a64f-d95625369885" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <p id="centered-text">CS2</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/6f2b8e29-eb0f-48c5-b2b8-c2333675ba44" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/47bddf85-5608-4adb-8e31-1b8bf7a0d0e9" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Input Validation</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p id="centered-text">CS0</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/587ecdd2-091a-482a-bac9-b538e3577c78" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/8ae411a8-7560-42da-a71d-822ad934f6ae" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-3">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/38b00f5e-1019-4203-a234-1159aa7898e2" target="_blank">Python</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="purple">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/7a72c9bc-0327-4c13-ab9f-015af450906a" target="_blank">Pseudocode</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <p id="centered-text">CS1</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/85972b3c-5e31-47ba-84cf-4d73d382dc1f" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/50eee84b-58df-4f60-b9f7-efba3b2737c3" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-3">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/0b137568-9514-4dda-84d1-6a4d50f1487e" target="_blank">Python</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <p id="centered-text">CS2</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/a4c4ce6d-61cd-4441-b12c-bf06212b974d" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/b15d4fda-456f-4902-91cf-a740b717d0bb" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Buffer Overflow</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p id="centered-text">CS0</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/b1746fe9-9aee-4603-8e3a-bd7e25202b80" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/5050f650-2ae6-4f43-ac93-2554b25237a3" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-3">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/55376275-8b5a-4285-a582-2c64846f6b1f" target="_blank">Python</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="purple">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/f0ed06a3-22a6-4fbc-aba8-7f5dbe117017" target="_blank">Pseudocode</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <p id="centered-text">CS1</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/0afc07a0-2e3d-4da2-b8e9-9ef4fd22444d" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/39eaef88-813e-4896-ba77-cd12f7b1df48" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-3">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/77fd94e8-1c9a-4b54-8959-c6ed1cf2dcdf" target="_blank">Python</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <p id="centered-text">CS2</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/6f242fe4-5483-4238-a373-4650bccb450d" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/be89e84a-0fc2-4ffe-88d8-d8fc12b496ca" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Software Development Life Cycle</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p id="centered-text">CS0</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/d16f927f-244b-472e-8559-12e2cea6c78e" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/d0ba2fb0-ed28-4d0c-b722-4768d0547e6a" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-3">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/555820d7-3002-411c-bddb-3b043778bec9" target="_blank">Python</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header class="no-wrap">
+                                <mat-panel-title>Best Practices for Secure Variables</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p id="centered-text">CS1</p>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/95a32782-15f9-4df0-bc07-5bd4c58eac39" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Encapsulation</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p id="centered-text">CS2</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/d7c37386-5136-4ebb-a7e7-047a50620d8a" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/b2667520-12d1-42cb-a8c4-0259baafafce" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Data Hiding</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p id="centered-text">CS0</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/88fa9d54-134f-4fee-9b48-0f2a3090244c" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <p id="centered-text">CS2</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/324fb2dc-c717-4c0f-acf7-bbb033111e58" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/572d80fd-07ed-4ced-a496-72b9f9c8dcad" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-3">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/4e3a6673-0662-45e1-93ab-6d5a889b855c" target="_blank">Python</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Exception Handling</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <p id="centered-text">CS2</p>
+                            <mat-card id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/6c52e13a-d694-4aeb-be89-3ff4e78504ef" target="_blank">C++</a>
+                                </mat-card-content>
+                            </mat-card>
+                            <mat-card id="blue-2">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/skaza/dfbf0bd5-f70e-45c5-92c9-93a0a7bce13e" target="_blank">Java</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                        <mat-expansion-panel hideToggle>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>Databases</mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <mat-card class="long" id="blue-1">
+                                <mat-card-content>
+                                    <a href="https://clark.center/details/amz210/f3e89a48-1e0f-4635-97ff-ca5625dcdb81">SQL Injections Introduction</a>
+                                </mat-card-content>
+                            </mat-card>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="table-heading" id="centered-text">Interdisciplinary Modules</div>
+                <div class="table-cell bottom">
+                    <mat-card class="other-cards" id="purple">
+                        <mat-card-content>
+                            <a href="https://clark.center/details/amz210/25cb2d8e-1ae0-458e-9dca-79f90dfb1d09">Business Use Security</a>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="other-cards" id="purple">
+                        <mat-card-content>
+                            <a href="https://clark.center/details/amz210/adaf8748-9305-4e95-b1a8-f94968f09a20">Personal Use Security</a>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="other-cards" id="purple">
+                        <mat-card-content>
+                            <a href="https://clark.center/details/amz210/d1dbfc0a-6298-45b2-91db-da259251dfa3">Mitigating Risk Value Modeling</a>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="other-cards" id="purple">
+                        <mat-card-content>
+                            <a href="https://clark.center/details/amz210/ecbd7adf-7121-4e29-b3c9-4320329cb01a">Business Risk Assessment</a>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+                <div class="table-heading" id="centered-text">Computer Literacy Modules</div>
+                <div class="table-cell bottom" id="extra-margin">
+                    <mat-card class="other-cards" id="purple">
+                        <mat-card-content>
+                            <a href="https://clark.center/details/amz210/d4d6cc04-5d10-4f67-96f8-f283c05c7d3e">Passwords</a>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="other-cards" id="purple">
+                        <mat-card-content>
+                            <a href="https://clark.center/details/amz210/a2e081e2-4b87-436b-a226-dc15ca34c1b5">Phishing</a>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="other-cards" id="purple">
+                        <mat-card-content>
+                            <a href="https://clark.center/details/amz210/370a3bfe-415a-4634-9c47-30ee34c19fb6">Social Networking Security</a>
+                        </mat-card-content>
+                    </mat-card>
+                    <mat-card class="other-cards" id="purple">
+                        <mat-card-content>
+                            <a href="https://clark.center/details/amz210/b3377059-e09b-4eae-88cb-c653b9787265">Cryptography</a>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+        <cube-footer></cube-footer>
+    </div>
+</div>

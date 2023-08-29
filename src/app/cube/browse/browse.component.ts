@@ -70,7 +70,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   sortMenuDown: boolean;
   showClearSort: boolean;
-  sortText: string;
+  sortText = 'Newest';
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -105,6 +105,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.route.queryParams.pipe(takeUntil(this.unsubscribe)).subscribe(async params => {
       // makes query based and sends request to fetch learning objects
       this.makeQuery(params);
+      // with a text search and no sortType is provided, no sort is applied, otherwise apply the default sort
+      this.sortText = params.text && !params.sortType ? '' : this.sortText;
       this.fetchLearningObjects(this.query);
     });
   }
@@ -276,13 +278,13 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     if (val !== null) {
       this.showClearSort = true;
       if (val === 'da') {
-        this.sortText = 'Date (ASC)';
+        this.sortText = 'Oldest';
       } else if (val === 'dd') {
-        this.sortText = 'Date (DESC)';
+        this.sortText = 'Newest';
       } else if (val === 'na') {
-        this.sortText = 'Name (ASC)';
+        this.sortText = 'Name (Asc)';
       } else if (val === 'nd') {
-        this.sortText = 'Name (DESC)';
+        this.sortText = 'Name (Desc)';
       }
       const sort = val.charAt(0);
       const dir = val.charAt(1);
@@ -300,6 +302,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     event.stopPropagation();
     this.query.orderBy = undefined;
     this.query.sortType = undefined;
+    this.sortText = '';
     this.performSearch();
   }
 

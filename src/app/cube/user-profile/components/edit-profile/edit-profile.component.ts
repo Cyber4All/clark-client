@@ -13,6 +13,7 @@ import { ProfileService } from 'app/core/profiles.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { environment } from '@env/environment';
 import { Router } from '@angular/router';
+import { UserService } from 'app/core/user.service';
 
 @Component({
   selector: 'clark-edit-profile',
@@ -46,6 +47,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
     private profileService: ProfileService,
     private noteService: ToastrOvenService,
     private auth: AuthService,
+    private userService: UserService,
     private router: Router
   ) { }
 
@@ -61,9 +63,20 @@ export class EditProfileComponent implements OnChanges, OnInit {
 
   ngOnChanges(): void {
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
+    const name = this.user.name.split(' ');
+    let firstName = '', lastName = '';
+    if (name.length > 2) {
+      firstName = name[0] + ' ' + name[1];
+      for (let  i = 2; i < name.length; i++) {
+        lastName += name[i] + ' ';
+      }
+    } else {
+      firstName = name[0];
+      lastName = name[1];
+    }
     this.editInfo = {
-      firstname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.split(' ')[0]) : '',
-      lastname: this.toUpper(this.user.name) ? this.toUpper(this.user.name.substring(this.user.name.indexOf(' ') + 1)) : '',
+      firstname: this.toUpper(firstName),
+      lastname: this.toUpper(lastName),
       email: this.user.email || '',
       organization: this.toUpper(this.user.organization) || '',
       bio: this.user.bio || ''
@@ -79,7 +92,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
   async save() {
     const edits = {
       username: this.user.username,
-      name: `${this.editInfo.firstname.trim()} ${this.editInfo.lastname.trim()}`,
+      name: this.userService.combineName(this.editInfo.firstname, this.editInfo.lastname, true),
       email: this.editInfo.email.trim(),
       organization: this.editInfo.organization.trim(),
       bio: this.editInfo.bio.trim(),
@@ -119,6 +132,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
    * @returns formatted string
    */
   private toUpper(str) {
+    str = str.trim();
     return str
         .toLowerCase()
         .split(' ')
