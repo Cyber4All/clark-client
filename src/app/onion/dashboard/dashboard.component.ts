@@ -230,17 +230,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.currentlySubmittingObject = event;
       this.submitToCollection = true;
     } else {
-      this.learningObjectService.changeStatus({
-        username: event.author.username,
-        objectId: event.id,
-        status: LearningObject.Status.REVIEW,
+      this.collectionService.submit({
+        learningObjectId: event.id,
+        userId: event.author.id,
+        collectionName: event.collection,
       })
-        .then(() => {
-          this.notificationService.success('Done!', 'Learning Object Resubmitted for Review!');
-          event.status = LearningObject.Status.REVIEW;
-        })
-        .catch(() => this.notificationService.error('Error!',
-          'There was an issue resubmitting the learning object, please try again later!'));
+      .then(() => {
+        this.notificationService.success('Done!', 'Learning Object Resubmitted for Review!');
+        event.status = LearningObject.Status.WAITING;
+      })
+      .catch(e => {
+        this.notificationService.error(
+          'Error!',
+          `There was an issue resubmitting the learning object, please try again later...`,
+        );
+      });
     }
   }
 
