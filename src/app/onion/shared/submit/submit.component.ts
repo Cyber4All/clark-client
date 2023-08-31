@@ -120,7 +120,7 @@ export class SubmitComponent implements OnInit {
     return (
       this.learningObject.description !== '' &&
       this.learningObject.name !== '' &&
-      this.learningOutcomes.size !== 0 &&
+      this.learningObject.outcomes.length !== 0 &&
       this.learningObject.contributors.length !== 0
     );
   }
