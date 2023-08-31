@@ -41,7 +41,17 @@
         #organization 
         phold="Organization" 
         [control]="editFormGroup.get('organization')"
+		(keyup)="keyup($event)"
     ></clark-input-field>
+    <ul
+        *ngIf="showDropdown"
+        (onBlur)="closeDropdown()"
+        class="org-dropdown_list"
+        >
+        <ng-container
+        *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"
+        ></ng-container>
+    </ul>
     <p>{{ user.bio ? "Edit your bio" : "Add a bio"}}</p>
     <div class="input organization" [ngClass]="{'active': editInfo.organization !== ''}">
         <textarea  name="bio" type="text" placeholder="Enter Bio" [(ngModel)]="editInfo.bio"
@@ -55,3 +65,39 @@
     </div>
   </div>
 </form>
+
+<!-- organization dropdown template -->
+<ng-template #resultsTemplate>
+	<ng-container
+			*ngIf="searchResults && searchResults.length; else noResultsTemplate"
+	>
+		<virtual-scroller
+		#scroll
+		[style.height]="scrollerHeight"
+		[bufferAmount]="5"
+		[enableUnequalChildrenSizes]="true"
+		[items]="searchResults"
+		>
+			<li
+				class="org-dropdown_list-item"
+				*ngFor="let org of scroll.viewPortItems"
+				(click)="selectOrg(org)"
+			>
+				{{ org.name }}
+			</li>
+			<div class="other-box" (click)="selectOrg()">
+				<li class="other-option">
+				Other
+				</li>
+			</div>
+		</virtual-scroller>
+	</ng-container>
+</ng-template>
+
+<ng-template #loadingTemplate>
+	<span class="org-dropdown__message">
+		<i class="far fa-spinner-third fa-spin">
+			Loading
+		</i>
+	</span>
+</ng-template>

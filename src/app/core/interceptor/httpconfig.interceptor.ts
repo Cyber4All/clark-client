@@ -8,6 +8,7 @@ import {
 
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie';
+import { environment } from '@env/environment';
 
 @Injectable()
 export class HttpConfigInterceptor implements HttpInterceptor {
@@ -20,7 +21,9 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let headers = request.headers.set('Content-Type', 'application/json');
+    if (!request.url.includes(environment.cardOrganizationUrl)) {
     headers = headers.append('Authorization', `Bearer ${this.token}`);
+    }
 
     request = request.clone({
       headers,
