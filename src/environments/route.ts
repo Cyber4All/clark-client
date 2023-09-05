@@ -73,7 +73,7 @@ export const COLLECTIONS_ROUTES = {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   },
   GET_COLLECTION_REPORT(collections: string[], date?: { start: string, end: string }) {
-    let route = `${environment.clarkReportsUrl}?output=csv&collection=${collections.join(',')}`;
+    let route = `${environment.apiURL}/reports?output=csv&collection=${collections.join(',')}`;
 
     if(date) {
       route += `&start=${date.start}&end=${date.end}`;
