@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import {MatRadioModule} from '@angular/material/radio';
 import { CollectionIndexComponent } from './pages/collection-index/collection-index.component';
 import { GenericPageComponent } from './pages/generic-page/generic-page.component';
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
@@ -27,6 +28,12 @@ import { TitleComponent } from './pages/collection-502/components/title/title.co
 import { FeaturedComponent } from './pages/collection-502/components/featured/featured.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dashboard.component';
+import {MatNativeDateModule} from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -50,7 +57,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     HeaderInfo502Component,
     CuratorCardComponent,
     TitleComponent,
-    FeaturedComponent
+    FeaturedComponent,
+    NcyteDashboardComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -66,6 +74,13 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CubeSharedModule,
     MatSlideToggleModule,
     MatIconModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatCardModule,
     MatExpansionModule
   ],

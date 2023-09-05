@@ -1,0 +1,44 @@
+<div class="container">
+  <h1 class="header">NCyTE Statistics Dashboard</h1>
+
+  <clark-ncyte-stats [collectionName]="'ncyte'"></clark-ncyte-stats>
+
+  <h2 class="downloads-header">Individual Learning Objects</h2>
+  <div class="downloads-body">
+    <div class="date">
+      <span class="tip" tip="Define how you would like to limit the data of the individual Learning Objects.">
+        <i class="fas fa-question-circle fa-1x"></i>
+      </span>
+      <label>When: </label>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="when">
+        <mat-radio-button value="All-time" checked="true">All-time</mat-radio-button>
+        <mat-radio-button value="Date Range">Date Range</mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <mat-form-field *ngIf="when === 'Date Range'">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [formGroup]="range" [rangePicker]="picker" disabled>
+        <input matStartDate formControlName="start" placeholder="Start date">
+        <input matEndDate formControlName="end" placeholder="End date">
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker disabled="false"></mat-date-range-picker>
+    </mat-form-field>
+    <div class="input-group">
+      <clark-input-field
+        phold="Enter an email..."
+        fControlType="email"
+        errorMsg="Email is required"
+        [control]="email"
+      ></clark-input-field>
+      <clark-input-field
+        phold="Enter a name..."
+        errorMsg="Name is required"
+        [control]="name"
+      ></clark-input-field>
+    </div>
+    <button (click)="onDownload()">Download a CSV of All Individual Learning Objects</button>
+  </div>
+</div>
+<cube-footer></cube-footer>
