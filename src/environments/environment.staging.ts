@@ -7,7 +7,6 @@ export const environment = {
   contentManagerURL: 'localhost',
   contentManagerURLAdmin: 'localhost',
   adminAppUrl: 'https://admin.clark.center',
-  clarkReportsUrl: '',
   s3Bucket: 'clark-prod-file-uploads-backup',
   s3BucketRegion: 'us-east-1',
   cognitoRegion: 'us-east-1',
