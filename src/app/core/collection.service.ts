@@ -217,4 +217,29 @@ export class CollectionService {
       this.darkMode502.next(status);
     }
   }
+
+  async generateCollectionReport(
+    collections: string[],
+    email: string,
+    name: string,
+    date?: {
+      start: string,
+      end: string
+    }) {
+    if(collections.length > 0) {
+      const route = COLLECTIONS_ROUTES.GET_COLLECTION_REPORT(collections, date);
+      this.http
+        .post(
+          route,
+          {
+            email,
+            name
+          }
+        )
+        .pipe(
+          catchError(this.handleError)
+        )
+        .toPromise();
+    }
+  }
 }

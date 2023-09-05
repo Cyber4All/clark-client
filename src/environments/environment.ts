@@ -12,6 +12,7 @@ export const environment = {
   contentManagerURLAdmin: 'http://localhost:5100',
   adminAppUrl: 'http://localhost:4100',
   utilityWebsocket: 'ws://localhost:9000',
+  clarkReportsUrl: 'http://localhost:9001',
   s3Bucket: 'clark-dev-file-uploads',
   s3BucketRegion: 'us-east-1',
   cognitoRegion: 'us-east-1',
