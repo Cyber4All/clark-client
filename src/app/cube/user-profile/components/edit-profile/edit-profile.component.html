@@ -73,14 +73,13 @@
 	>
 		<virtual-scroller
 		#scroll
-		[style.height]="scrollerHeight"
 		[bufferAmount]="5"
 		[enableUnequalChildrenSizes]="true"
 		[items]="searchResults"
 		>
 			<li
 				class="org-dropdown_list-item"
-				*ngFor="let org of scroll.viewPortItems"
+				*ngFor="let org of searchResults"
 				(click)="selectOrg(org)"
 			>
 				{{ org.name }}
@@ -95,9 +94,8 @@
 </ng-template>
 
 <ng-template #loadingTemplate>
-	<span class="org-dropdown__message">
-		<i class="far fa-spinner-third fa-spin">
-			Loading
-		</i>
-	</span>
+    <span class="org-dropdown__message">
+        <i class="fa fa-spinner fa-spin"></i>
+        Loading
+    </span>
 </ng-template>

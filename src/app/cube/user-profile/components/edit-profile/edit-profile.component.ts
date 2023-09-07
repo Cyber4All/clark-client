@@ -72,18 +72,18 @@ export class EditProfileComponent implements OnChanges, OnInit {
       organization: new FormControl(this.user.organization, Validators.required),
     });
     this.organizationInput$
-        .pipe(debounceTime(650))
-        .subscribe(async (value: string) => {
-    this.searchResults = await this.orgService.searchOrgs(value.trim());
+      .pipe(debounceTime(650))
+      .subscribe(async (value: string) => {
+        this.searchResults = await this.orgService.searchOrgs(value.trim());
         this.loading = false;
-        });
+      });
     this.organizationInput$.subscribe((value: string) => {
-        if (value && value !== '') {
-        this.showDropdown = true;
-        this.loading = true;
-        } else {
-        this.showDropdown = false;
-        }
+      if (value && value !== '') {
+      this.showDropdown = true;
+      this.loading = true;
+      } else {
+      this.showDropdown = false;
+      }
     });
   }
 
