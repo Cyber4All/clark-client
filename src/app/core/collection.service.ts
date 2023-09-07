@@ -85,12 +85,16 @@ export class CollectionService {
    *
    * @param {string} learningObjectId id of learning object to be added to collection
    * @param {string} collectionName name of collection in which to insert learning object
+   * @param {string} [submissionReason] reason for submitting a learning object to a collection
+   * @param {string[]} [selectedAuthorizations] authorizations that the author gave for changes
    * @return {Promise<any>}
    */
   submit(params: {
     userId: string,
     learningObjectId: string,
-    collectionName: string
+    collectionName: string,
+    submissionReason?: string,
+    selectedAuthorizations?: string[],
   }): Promise<any> {
     return this.http
       .post(
@@ -98,7 +102,11 @@ export class CollectionService {
           userId: params.userId,
           learningObjectId: params.learningObjectId,
         }),
-        { collection: params.collectionName },
+        {
+          collection: params.collectionName,
+          submissionReason: params.submissionReason,
+          selectedAuthorizations: params.selectedAuthorizations
+        },
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
