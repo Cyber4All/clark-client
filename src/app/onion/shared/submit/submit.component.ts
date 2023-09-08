@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { LearningObject, LearningOutcome } from '@entity';
+import { Collection, LearningObject, LearningOutcome } from '@entity';
 import { ChangelogService } from 'app/core/changelog.service';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection.service';
@@ -35,6 +35,7 @@ export class SubmitComponent implements OnInit {
   submissionReason: string;
   selectedAuthorizations: string[] = [];
   changeAuthorizationList = CHANGE_AUTHORIZATION_LIST;
+  collections: Collection[];
 
   @Output() close: EventEmitter<boolean> = new EventEmitter();
 
@@ -62,6 +63,7 @@ export class SubmitComponent implements OnInit {
     this.selectedAuthorizations = this.changeAuthorizationList.map(
       (authorization) => authorization.permission
     );
+    this.setCollections();
   }
 
   /**
@@ -319,5 +321,12 @@ export class SubmitComponent implements OnInit {
    */
   isSelectedAuthorization(val: string): boolean {
     return this.selectedAuthorizations.includes(val);
+  }
+
+  /**
+   * Sets the list of collections
+   */
+  async setCollections() {
+    this.collections = (await this.collectionService.getCollections()).filter(collection => collection.abvName !== 'nccp');
   }
 }

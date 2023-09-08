@@ -93,7 +93,7 @@
       </ng-template>
       <ng-template>
         <div class="carousel__item">
-          <clark-collections-grid [currentCollection]="collection || learningObject.collection" (selected)="getCollectionSelected($event)"
+          <clark-collections-grid [currentCollection]="collection || learningObject.collection" (selected)="getCollectionSelected($event)" [collections]="collections"
             (cancel)="closeModal()"></clark-collections-grid>
           <div class="license-selection">
             <span tabindex="0" class="statement">I agree to submit this Learning Object and all of its materials under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode" target="_blank">Creative Commons 4.0 license</a></span>
