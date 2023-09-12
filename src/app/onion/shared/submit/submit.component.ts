@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { LearningObject, LearningOutcome } from '@entity';
+import { Collection, LearningObject, LearningOutcome } from '@entity';
 import { ChangelogService } from 'app/core/changelog.service';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection.service';
@@ -8,7 +8,7 @@ import { first } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth.service';
 import { HierarchyService } from 'app/core/hierarchy.service';
-
+import { CHANGE_AUTHORIZATION_LIST } from '../../../../environments/strings';
 @Component({
   selector: 'clark-submit',
   templateUrl: './submit.component.html',
@@ -32,6 +32,10 @@ export class SubmitComponent implements OnInit {
   needsChangelog: boolean;
 
   loading: boolean[] = [];
+  submissionReason: string;
+  selectedAuthorizations: string[] = [];
+  changeAuthorizationList = CHANGE_AUTHORIZATION_LIST;
+  collections: Collection[];
 
   @Output() close: EventEmitter<boolean> = new EventEmitter();
 
@@ -54,8 +58,12 @@ export class SubmitComponent implements OnInit {
       } else {
         this.getCollectionSelected(this.collection);
       }
-
     }
+
+    this.selectedAuthorizations = this.changeAuthorizationList.map(
+      (authorization) => authorization.permission
+    );
+    this.setCollections();
   }
 
   /**
@@ -153,8 +161,6 @@ export class SubmitComponent implements OnInit {
 
   /**
    * Submits a Learning Object to a collection for review and publishes the object
-   *
-   * @param {string} collection the name of the collection to submit to
    */
   async submitForReview() {
     let proceed = true;
@@ -207,7 +213,9 @@ export class SubmitComponent implements OnInit {
         .submit({
           learningObjectId: this.learningObject.id,
           userId: this.learningObject.author.id,
-          collectionName: this.collection
+          collectionName: this.collection,
+          submissionReason: this.submissionReason,
+          selectedAuthorizations: this.selectedAuthorizations,
         })
         .then(() => {
           this.learningObject.status = LearningObject.Status.WAITING;
@@ -266,9 +274,59 @@ export class SubmitComponent implements OnInit {
    * @memberof SubmitComponent
    */
   closeModal(submitted?: boolean) {
+    this.submissionReason = undefined;
     if (this.visible) {
       this.close.emit(submitted || false);
       this.visible = false;
     }
+  }
+
+  /**
+   * Sets submission reason
+   *
+   * @param event the event that triggered the method
+   */
+  setSubmissionReason(event: any) {
+    // strip \n from submission reason
+    event = event.replace(/\n/g, '');
+    this.submissionReason = event;
+  }
+
+  /**
+   * Adds the selected authorization to the list of selected options
+   *
+   * @param val the value of the selected option
+   */
+  selectChangesOption(val: string) {
+    this.selectedAuthorizations.push(val);
+  }
+
+  /**
+   * Removes the selected authorization from the list of selected options
+   *
+   * @param val the value of the selected option
+   */
+  deselectChangesOption(val: string) {
+    this.selectedAuthorizations.splice(
+      this.selectedAuthorizations.indexOf(val),
+      1
+    );
+  }
+
+  /**
+   * Checks if the selected option is in the list of selected options
+   *
+   * @param val the value of the selected option
+   * @returns true if the selected option is in the list of selected options
+   */
+  isSelectedAuthorization(val: string): boolean {
+    return this.selectedAuthorizations.includes(val);
+  }
+
+  /**
+   * Sets the list of collections
+   */
+  async setCollections() {
+    this.collections = (await this.collectionService.getCollections()).filter(collection => collection.abvName !== 'nccp');
   }
 }
