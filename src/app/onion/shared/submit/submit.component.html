@@ -7,6 +7,14 @@
             <div class="banner__sub">Please read and review the following.</div>
           </ng-template>
           <ng-template>
+            <div class="banner__title">Submission Reason</div>
+            <div class="banner__sub">Please provide us explanation of why you are submitting to CLARK.</div>
+          </ng-template>
+          <ng-template>
+            <div class="banner__title">Authorization Checklist</div>
+            <div class="banner__sub">Please select an authorization permission to make changes.</div>
+          </ng-template>
+          <ng-template>
             <div class="banner__title">Select a Collection</div>
             <div class="banner__sub">Please submit to Cyber Heroes collection if not associated with other collections.</div>
           </ng-template>
@@ -42,7 +50,50 @@
       </ng-template>
       <ng-template>
         <div class="carousel__item">
-          <clark-collections-grid [currentCollection]="collection || learningObject.collection" (selected)="getCollectionSelected($event)"
+          <clark-text-editor name="description" (textOutput)="setSubmissionReason($event)"
+            [(savedContent)]="submissionReason"></clark-text-editor>
+          <div class="button-bar">
+            <div class="btn-group to-left">
+              <button (activate)="regress()" class="button neutral">Back</button>
+            </div>
+            <div class="btn-group to-right">
+              <button class="button good" (activate)="advance()" aria-label="Continue the submission">Continue</button>
+              <button class="button neutral" (activate)="closeModal()" aria-label="Cancel the submission">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template>
+        <div class="carousel__item">
+          <p>By submitting your learning object, you will allow our team to make the following improvements to ensure better
+            usability and future maintenance:</p>
+          <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let c of changeAuthorizationList">
+            <span class="checkbox-grid">
+              <clark-checkbox aria-label="{{c.permission}}" [value]="isSelectedAuthorization(c.permission)"
+                (checkboxChecked)="selectChangesOption(c.permission)"
+                (checkboxUnchecked)="deselectChangesOption(c.permission)">
+              </clark-checkbox>
+              <span><strong>{{c.permission}}</strong></span>
+              <br>
+              <span>{{c.description}}</span>
+              <span>&nbsp;</span>
+            </span>
+          </div>
+      
+          <div class="button-bar">
+            <div class="btn-group to-left">
+              <button (activate)="regress()" class="button neutral">Back</button>
+            </div>
+            <div class="btn-group to-right">
+              <button class="button good" (activate)="advance()" aria-label="Continue the submission">Continue</button>
+              <button class="button neutral" (activate)="closeModal()" aria-label="Cancel the submission">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template>
+        <div class="carousel__item">
+          <clark-collections-grid [currentCollection]="collection || learningObject.collection" (selected)="getCollectionSelected($event)" [collections]="collections"
             (cancel)="closeModal()"></clark-collections-grid>
           <div class="license-selection">
             <span tabindex="0" class="statement">I agree to submit this Learning Object and all of its materials under the <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode" target="_blank">Creative Commons 4.0 license</a></span>
