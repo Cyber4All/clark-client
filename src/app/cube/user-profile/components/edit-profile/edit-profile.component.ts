@@ -14,6 +14,10 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { environment } from '@env/environment';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user.service';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { Organization } from '../../../../../entity/organization';
+import { OrganizationService } from '../../../../core/organization.service';
 
 @Component({
   selector: 'clark-edit-profile',
@@ -42,12 +46,21 @@ export class EditProfileComponent implements OnChanges, OnInit {
   editFormGroup: FormGroup = new FormGroup({
   });
 
+  organizationInput$: Subject<string> = new Subject<string>();
+  showDropdown = false;
+  closeDropdown = () => {
+    this.showDropdown = false;
+  };
+  searchResults: Array<Organization> = [];
+  selectedOrg = '';
+
   constructor(
     private authValidation: AuthValidationService,
     private profileService: ProfileService,
     private noteService: ToastrOvenService,
     private auth: AuthService,
     private userService: UserService,
+    private orgService: OrganizationService,
     private router: Router
   ) { }
 
@@ -57,6 +70,20 @@ export class EditProfileComponent implements OnChanges, OnInit {
       lastname: new FormControl(this.user.name, Validators.required),
       email: new FormControl(this.user.email, Validators.required),
       organization: new FormControl(this.user.organization, Validators.required),
+    });
+    this.organizationInput$
+      .pipe(debounceTime(650))
+      .subscribe(async (value: string) => {
+        this.searchResults = await this.orgService.searchOrgs(value.trim());
+        this.loading = false;
+      });
+    this.organizationInput$.subscribe((value: string) => {
+      if (value && value !== '') {
+      this.showDropdown = true;
+      this.loading = true;
+      } else {
+      this.showDropdown = false;
+      }
     });
   }
 
@@ -156,4 +183,31 @@ export class EditProfileComponent implements OnChanges, OnInit {
       ) !== null;
     return email;
   }
+
+  /**
+   * Selects an organization from the list
+   *
+   * @param org The organization selected
+   */
+  selectOrg(org?: Organization) {
+    if(org) {
+      this.editInfo.organization = org.name;
+      this.selectedOrg = org._id;
+      this.editFormGroup.get('organization')!.setValue(org.name);
+    } else {
+      this.editInfo.organization = 'Other';
+      this.selectedOrg = '602ae2a038e2aaa1059f3c39';
+      this.editFormGroup.get('organization')!.setValue('Other');
+    }
+    this.closeDropdown();
+  }
+
+  /**
+   * Registers typing events from the organization input
+   *
+   * @param event The typing event
+   */
+    keyup(event: any) {
+      this.organizationInput$.next(event.target.value);
+    }
 }
