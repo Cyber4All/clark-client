@@ -7,25 +7,28 @@ export const sections = {
 				questions: [
 					{
 						question: 'Why must my curriculum be evaluated?',
-						answer: 'All types of curricula must be evaluated for quality assurance. An evaluation is needed to ensure that ' +
-                        'all curricula released on CLARK contain no issues with any of the characteristics mentioned above. Since all ' +
-                        'released curricula fall under Creative Commons, it is necessary to ensure all content is of the best quality ' +
-                        'possible.'
+						answer: 'Since all released curricula fall under Creative Commons, all types of curricula must be evaluated' + 
+                        ' to ensure educational quality, adaptability, and accountability in the learning process. Any curriculum to be' + 
+                        ' released on CLARK must comply with all of the characteristics mentioned in our evaluatuion procress. '
 					},
 					{
 						question: 'How is the curriculum evaluated?',
 						answer: [
                             `
                             <p>
-                            All curriculum goes through an evaluation process that reviews a curriculum\'s required characteristics. 
-                            These characteristics act as the evaluated criteria for the editorial process:
+                            All curriculum goes through an evaluation process that inspects a curriculum\'s quality. 
+                            These required characteristics act as the evaluated criteria for a Quality Curriculum:
                             </p>
                             <ul>
-                                <li>Proper contributor attribution.</li>
-                                <li>Writing style, grammar, punctuation, and capitalization.</li>
-                                <li>Accessibility under WCAG 2.1 AA standards.</li>
-                                <li>If the curriculum\'s content can be understood by its intended audience.</li>
-                                <li>Consistent formatting of curriculum content.</li>
+                                <li>Easy to use, teach, find, and modify.</li>
+                                <li>Includes supplementary activities and assessments.</li>
+                                <li>Up to date.</li>
+                                <li>Reflects current events in the cyber landscape and the world.</li>
+                                <li>Has a professional structure appropriate for a diverse set of classrooms.</li>
+                                <li>Easy to share in an open cyber community.</li>
+                                <li>Contains accurate information.</li>
+                                <li>Reflects current industry standards for technical tools and business processes and procedures.</li>
+                                <li>Contains achievable learning outcomes that are attainable through the use of the provided material(s).</li>
                             </ul>
                             <p>
                                 Relevant learning outcomes are present. Some curricula will have conditional evaluations (if provided) 
@@ -37,6 +40,8 @@ export const sections = {
                                 <li>Provided assessment questions do not include solutions (CLARK is a public website that all types of 
                                     audiences can access).</li>
                             </ul>
+                            <img src='../../../../assets/images/CDLC.png' alt="Diagram of Curriculm 
+                                Development Lifecycle" width='100%'>
                             `
                         ]
 					},
@@ -77,10 +82,13 @@ export const sections = {
 					},
 					{
 						question: 'How long is the Editorial Review Process?',
-						answer: 'Depending on the learning object size and quantity, the editorial review process ' +
-                        'is estimated to take two to four weeks. Throughout the process, the author is communicated ' +
-                        'with for any needed feedback of a submitted object. '
-					}
+						answer: 
+                        `
+                        <p> Depending on the learning object size and quantity, the editorial review process is estimated to take two to four weeks. 
+                        Throughout the process, the author is communicated with for any needed feedback of a submitted object. </p>
+                        <img src='../../../../assets/images/review-process.png' alt="Diagram of Editorial Review Process" width='100%'>
+                        `
+                    }
 				],
             },
             {
@@ -94,8 +102,7 @@ export const sections = {
                                 Each stage is based on a learning object status and the routes a learning object can take. The curriculum
                                 development lifecycle aims to provide a physical representation of a learning object on CLARK. The diagram
                                 below demonstrates how the lifecycle operates.</p>
-                                <img src='../../../../assets/images/editorial-process-lifecycle.png' alt="Diagram of Curriculm 
-                                Development Lifecycle" width='100%'>
+                                <img src='../../../../assets/images/editorial-process-lifecycle.png' alt="Diagram of Editorial Process Lifecycle" width='100%'>
                                 `
                         ]
 					},
@@ -117,17 +124,19 @@ export const sections = {
                             <li>Accepted Major</li>
                             <ul>
                                 <li>A learning object is missing files.</li>
-                                <li>A learning object video does not have captioning.</li>
+                                <li>A learning object video is not available on YouTube with closed captions.</li>
                                 <li>A learning object lacks proper contributor attribution.</li>
                                 <li>A learning object file has an incomplete paragraph or section.</li>
-                                <li>A learning object contains some outdated curriculum.</li>
+                                <li>A learning object contains outdated curriculum that impedes the learning outcomes.</li>
+                                <li>A learning object that is not usable based on unavailable content.</li>
                             </ul>
                             <li>Accepted Minor</li>
                             <ul>
-                                <li>A learning object contains assessment solutions.</li>
                                 <li>A learning object has a color contrast issue.</li>
-                                <li>A learning object was submitted to the wrong collection.</li>
+                                <li>A learning object was submitted to the wrong collection</li>
                                 <li>A learning object is under the wrong learning object length.</li>
+                                <li>A learning object is very large (such as a hierarchy) and should be 
+                                broken up but does not have issues that would classify it as needing Accepted Major changes</li>
                             </ul>
                         </ul>
                             `
