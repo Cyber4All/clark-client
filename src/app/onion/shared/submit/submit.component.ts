@@ -9,6 +9,8 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { AuthService } from 'app/core/auth.service';
 import { HierarchyService } from 'app/core/hierarchy.service';
 import { CHANGE_AUTHORIZATION_LIST } from '../../../../environments/strings';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'clark-submit',
   templateUrl: './submit.component.html',
@@ -45,7 +47,8 @@ export class SubmitComponent implements OnInit {
     private learningObjectService: LearningObjectService,
     private hierarchyService: HierarchyService,
     private toasterService: ToastrOvenService,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -128,7 +131,8 @@ export class SubmitComponent implements OnInit {
     return (
       this.learningObject.description !== '' &&
       this.learningObject.name !== '' &&
-      this.learningObject.outcomes.length !== 0 &&
+      (this.learningObject.outcomes.length !== 0 ||
+        this.learningOutcomes.size !== 0) &&
       this.learningObject.contributors.length !== 0
     );
   }
@@ -226,6 +230,7 @@ export class SubmitComponent implements OnInit {
           );
           this.loading.pop();
           this.closeModal(true);
+          this.router.navigate(['onion/dashboard']);
           return true;
         })
         .catch(e => {
