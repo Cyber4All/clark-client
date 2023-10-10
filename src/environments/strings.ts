@@ -15,9 +15,10 @@ export const CHANGE_AUTHORIZATION_LIST = [
       'Our team will review and make necessary corrections to enhance the overall quality of the content.',
   },
   {
-    permission: 'Remove Specific Dates',
+    permission: 'Remove Course Specific Information',
     description:
-      'We will eliminate any specific dates related to assignments or schedules, promoting timeless and adaptable material.',
+      'We will eliminate any specific dates related to assignments or schedules as well as school specific information, to ' +
+      'promote timeliness and adaptability.',
   },
   {
     permission: 'Remove Identifying Information',
