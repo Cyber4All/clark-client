@@ -1,6 +1,8 @@
 <div class="secondary-navbar" *ngIf="isDesktop && showNav">
     <div class="item about-us" [routerLink]="['/about']">About CLARK</div>
-    <div class="item collections" id="collectionsAnchor" #collectionsAnchor (click)="dropdowns.toggleCollectionDropdown()" tabindex="0">Collections
+    <div class="item browse" [routerLink]="['/browse']">Browse</div>
+    <div class="item collections" id="collectionsAnchor" #collectionsAnchor
+        (click)="dropdowns.toggleCollectionDropdown()" tabindex="0">Collections
         <span *ngIf="!collectionsDropdown">
             <i class="fa fa-chevron-down"></i>
         </span>
@@ -16,7 +18,8 @@
             <i class="fa fa-chevron-up"></i>
         </span>
     </div>
-    <clark-context-menu class="dropdown" *ngIf="resourcesDropdown" [anchor]="resourcesAnchor" (close)="dropdowns.closeAll()">
+    <clark-context-menu class="dropdown" *ngIf="resourcesDropdown" [anchor]="resourcesAnchor"
+        (close)="dropdowns.closeAll()">
         <div #contextMenu>
             <ul>
                 <li *ngFor="let r of externalResources" (click)="dropdowns.linkOut(r.link)">{{ r.name }}</li>
