@@ -9,14 +9,15 @@ import { AuthService } from 'app/core/auth.service';
 export class HeaderComponent implements OnInit {
 
   @Input() collectionAbv: string;
-  isUserAuthorized: boolean = false;
+  isUserAuthorized = false;
   constructor(
     private router: Router,
     private auth: AuthService,
   ) { }
 
   ngOnInit(): void {
-    this.isUserAuthorized = this.auth.accessGroups.includes('curator@ncyte') || this.auth.accessGroups.includes('admin') || this.auth.accessGroups.includes('editor@ncyte');
+    this.isUserAuthorized = this.auth.accessGroups.includes('curator@ncyte')
+      || this.auth.accessGroups.includes('admin') || this.auth.accessGroups.includes('editor@ncyte');
   }
 
   navigateToBrowse() {
