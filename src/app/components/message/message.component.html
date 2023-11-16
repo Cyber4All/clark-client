@@ -1,5 +1,5 @@
 <div class="wrapper warning" *ngIf="showBanner">
   <div class="inner-wrapper">
-    <div aria-live="assertive">{{ downtime.message }} </div>
+    <div aria-live="assertive" [innerHtml]="downtime.message | safeHtml"></div>
   </div>
 </div>
