@@ -69,13 +69,13 @@ export const COLLECTIONS_ROUTES = {
   GET_COLLECTION_METRICS(name: string) {
     return `${environment.apiURL}/${encodeURIComponent(name)}/metrics`;
   },
-  GET_COLLECTION_CURATORS(name: string ) {
+  GET_COLLECTION_CURATORS(name: string) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   },
   GET_COLLECTION_REPORT(collections: string[], date?: { start: string, end: string }) {
     let route = `${environment.apiURL}/reports?output=csv&collection=${collections.join(',')}`;
 
-    if(date) {
+    if (date) {
       route += `&start=${date.start}&end=${date.end}`;
     }
 
@@ -163,9 +163,8 @@ export const USER_ROUTES = {
     )}/versions`;
   },
   UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
-    return `${
-      environment.apiURL
-      }/users/${username}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL
+      }/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
         learningObjectName
       )}`;
   },
@@ -173,17 +172,15 @@ export const USER_ROUTES = {
     userId: string,
     learningObjectId: string
   }) {
-    return `${
-      environment.apiURL
-      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
+    return `${environment.apiURL
+      }/users/${encodeURIComponent(params.userId)}/learning-objects/${params.learningObjectId}/submissions`;
   },
   UNSUBMIT_LEARNING_OBJECT(params: {
     userId: string,
     learningObjectId: string
   }) {
-    return `${
-      environment.apiURL
-      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions`;
+    return `${environment.apiURL
+      }/users/${encodeURIComponent(params.userId)}/learning-objects/${params.learningObjectId}/submissions`;
   },
   CHECK_FIRST_SUBMISSION(params: {
     userId: string,
@@ -194,9 +191,8 @@ export const USER_ROUTES = {
     },
   }) {
     const q = 'collection=' + params.query.collection + '&hasSubmission=' + params.query.hasSubmission;
-    return `${
-      environment.apiURL
-      }/users/${params.userId}/learning-objects/${params.learningObjectId}/submissions?${q}`;
+    return `${environment.apiURL
+      }/users/${encodeURIComponent(params.userId)}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
   GET_LEARNING_OBJECT(id) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
@@ -244,12 +240,12 @@ export const USER_ROUTES = {
   POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
       learningObjectId
-      )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
+    )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
   },
   DELETE_MAPPING(username: string, learningObjectId: string, outcomeId: string, mappingsId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
       learningObjectId
-      )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
+    )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
   },
   GET_CART(username, page?, limit?) {
     // CUBE
@@ -269,8 +265,7 @@ export const USER_ROUTES = {
     )}/learning-objects/${encodeURIComponent(learningObjectId)}/bundle`;
   },
   GET_SAME_ORGANIZATION(organization) {
-    return `${
-      environment.apiURL
+    return `${environment.apiURL
       }/users/search?organization=${encodeURIComponent(organization)}`;
   },
   VALIDATE_CAPTCHA() {
@@ -349,7 +344,7 @@ export const USER_ROUTES = {
       params.learningObjectID
     )}/files/bundle`;
   },
-  GET_COLLECTIONS(username: string){
+  GET_COLLECTIONS(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
     )}/collections`;
@@ -358,7 +353,7 @@ export const USER_ROUTES = {
 
 export const ORGANIZATION_ROUTES = {
   SEARCH_ORGANIZATIONS(queryString: string) {
-      return `${environment.cardOrganizationUrl}&text=${queryString}`;
+    return `${environment.cardOrganizationUrl}&text=${queryString}`;
   }
 };
 
@@ -391,8 +386,7 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.username
-    )}/learning-objects/${params.loId}/files/${params.fileId}/download${
-      params.open ? '?open=true' : ''
+    )}/learning-objects/${params.loId}/files/${params.fileId}/download${params.open ? '?open=true' : ''
       }`;
   }
 };
@@ -557,9 +551,9 @@ export const RELEVANCY_ROUTES = {
   NEXT_CHECK(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-      )}/learning-objects/${encodeURIComponent(
-        id
-      )}/relevancy-check`;
+    )}/learning-objects/${encodeURIComponent(
+      id
+    )}/relevancy-check`;
   },
   // Assigns multiple users to evaluate multiple learning objects
   ASSIGN_EVALUATORS() {
