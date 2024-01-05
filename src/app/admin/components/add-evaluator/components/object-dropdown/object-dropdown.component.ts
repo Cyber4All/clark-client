@@ -106,6 +106,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
     this.showDropdown = false;
   }
 
+
   addSelectedObject(object?: LearningObject) {
     if (object && !this.assignedObjects.includes(object)) {
       // Adds object to assignment array

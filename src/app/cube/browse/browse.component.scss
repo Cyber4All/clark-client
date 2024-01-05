@@ -8,7 +8,7 @@ $learning-object-width: 820px;
   padding: 0 20px;
 
   .filters-clear-all,
-  .clear-search {
+  .clear-search, .search-CARD {
     color: $blue-accent;
     text-decoration: underline;
     cursor: pointer;
@@ -109,7 +109,7 @@ $learning-object-width: 820px;
       padding: 20px;
       box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.03);
 
-      .clear-search {
+      .clear-search, .search-CARD {
         margin-left: 20px;
       }
 
