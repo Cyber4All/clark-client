@@ -537,7 +537,7 @@ export const FEATURED_ROUTES = {
   GET_COLLECTION_FEATURED(collection: string) {
     return `${
       environment.apiURL
-    }/featured/learning-objects/${encodeURIComponent(collection)}`;
+    }/featured/learning-objects?collection=${encodeURIComponent(collection)}`;
   },
 };
 
