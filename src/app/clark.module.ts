@@ -23,6 +23,7 @@ import { SubscriptionComponent } from './components/subscription/subscription.co
 import { PrimaryNavbarComponent } from './components/primary-navbar/primary-navbar.component';
 import { SecondaryNavbarComponent } from './components/secondary-navbar/secondary-navbar.component';
 import { RedirectComponent } from './redirect/redirect.component';
+import { SafeHtmlPipe } from './components/safe-html.pipe';
 
 @NgModule({
   imports: [
@@ -46,7 +47,8 @@ import { RedirectComponent } from './redirect/redirect.component';
     SubscriptionComponent,
     PrimaryNavbarComponent,
     SecondaryNavbarComponent,
-    RedirectComponent
+    RedirectComponent,
+    SafeHtmlPipe
   ],
   bootstrap: [ClarkComponent],
   providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
