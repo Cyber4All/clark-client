@@ -253,14 +253,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async getRatings(learningObject: LearningObject) {
-    const { author, cuid, version } = learningObject;
-    const params = {
-      username: author.username,
-      CUID: cuid,
+    const { cuid, version } = learningObject;
+    return await this.ratings.getLearningObjectRatings({
+      cuid: cuid,
       version,
-    };
-    const ratings = await this.ratings.getLearningObjectRatings(params);
-    return ratings;
+    });
   }
 
   toggleDownloadModal(val?: boolean) {
