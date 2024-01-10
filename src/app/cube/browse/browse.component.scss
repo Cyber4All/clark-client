@@ -109,7 +109,7 @@ $learning-object-width: 820px;
       padding: 20px;
       box-shadow: 0 0 6px 1px rgba(0, 0, 0, 0.03);
 
-      .clear-search, .search-CARD {
+      .clear-search {
         margin-left: 20px;
       }
 
@@ -122,7 +122,7 @@ $learning-object-width: 820px;
         display: flex;
         flex-direction: row;
 
-        & > *:not(:last-child) {
+        & > *:not(:nth-last-child(2)) {
           margin-right: 20px;
         }
       }
