@@ -86,7 +86,7 @@ export const sections = {
                 questions: [
                     {
                         question: 'What is a hierarchy?',
-                        answer: 'A <em>hierarchy</em> is a set of learning objects that are related to each other in a child to parent ' +
+                        answer: 'A hierarchy is a set of learning objects that are related to each other in a child to parent ' +
                             'relationship. When an author downloads from a parent learning object, the download will include all of the ' +
                             'parent’s learning object children’s material. The hierarchy process is based on a learning object’s length ' +
                             'and the interconnection of an author’s set of learning objects. The hierarchy goes as follows:<br><br>' +

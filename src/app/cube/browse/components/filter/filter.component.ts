@@ -25,7 +25,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   materialFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
   frameworkFilter: FilterSectionInfo;
-  guidelineFilter: string [] = [];
+  guidelineFilter: string[] = [];
 
   // Used to communicate filter changes
   filterChanged$ = new Subject(); // Used to debounce the time to avoid spammed filter changes
@@ -39,7 +39,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     private relevancyService: RelevancyService,
     private guidelineService: GuidelineService,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   async ngOnInit(): Promise<void> {
     // Get the filter information
@@ -253,8 +253,12 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.levelFilter = {
       section: 'Level',
       filters: Object.values(LearningObject.Level).map(level => ({
-        name: level,
-        value: level.toLowerCase(),
+        name: level.replace(
+          /\w\S*/g, ((txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          })
+        ),
+        value: level,
         active: false,
       })),
     };
