@@ -1,23 +1,36 @@
 <section class='materials'>
-  <div class='materials__tab-menu-container'>
+  <!-- <div class='materials__tab-menu-container'>
     <clark-tab-menu [currentSelection]='currentSelection' (select)=setSelection($event)></clark-tab-menu>
+  </div> -->
+  <!-- <clark-carousel [action$]="action$"> -->
+
+  <div>
+    <div *ngIf="materials.files.length < 1 && materials.notes.length < 1 && materials.urls.length < 1"
+      class="materials__review-materials__empty-banner">
+      <i class="fas fa-exclamation" style="font-size: 1.2rem;"></i>
+      <p>This Learning Object has no material attached.</p>
+    </div>
+
+    <div class='materials__file-browser-container' *ngIf="materials.urls.length > 0">
+      <clark-file-browser *ngIf='materials?.files.length || materials.folderDescriptions?.length' [files$]="files$"
+        [folderMeta$]="folderMeta$"></clark-file-browser>
+      <p tab-index='0' class='materials__file-browser-container__empty-message'
+        *ngIf='!materials?.files.length && !materials.folderDescriptions?.length'>This Learning Object does not have any
+        files or folders</p>
+    </div>
+
+    <div class='materials__file-browser-container' *ngIf="materials.urls.length > 0">
+      <clark-urls [urls]='materials.urls'></clark-urls>
+    </div>
+
+    <div class='materials__file-browser-container' *ngIf="materials.notes.length > 0">
+      <clark-notes [notes]='materials.notes'></clark-notes>
+    </div>
   </div>
-  <clark-carousel [action$]="action$">
-      <div class='materials__file-browser-container'>
-        <clark-file-browser *ngIf='materials?.files.length || materials.folderDescriptions?.length' [files$]="files$" [folderMeta$]="folderMeta$"></clark-file-browser>
-        <p tab-index='0' class='materials__file-browser-container__empty-message' *ngIf='!materials?.files.length && !materials.folderDescriptions?.length'>This Learning Object does not have any files or folders</p>
-      </div>
 
-      <div class='materials__file-browser-container'>
-        <clark-urls [urls]='materials.urls'></clark-urls>
-      </div>
-
-      <div class='materials__file-browser-container'>
-        <clark-notes [notes]='materials.notes'></clark-notes>
-      </div>
-
-  </clark-carousel>
+  <!-- </clark-carousel> -->
 </section>
 <div class='materials__help-link'>
-  <p>If you are having issues accessing materials please email us at <a href="mailto:info@secured.team?subject=CLARK Materials Help">info@secured.team</a></p>
+  <p>If you are having issues accessing materials please email us at <a
+      href="mailto:info@secured.team?subject=CLARK Materials Help">info@secured.team</a></p>
 </div>

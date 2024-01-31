@@ -1,8 +1,12 @@
 @import 'vars.scss';
 
 .urls {
-    padding: 20px;
+    max-height: 12rem;
 
+    h1 {
+      font-size: 19.5pt;
+      margin: 15px 0 15px 0;
+    }
 }
 
 .urls__grid {
