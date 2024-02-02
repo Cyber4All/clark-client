@@ -1,5 +1,5 @@
 <section class='urls'>
-  <div class="top-wrapper">
+  <div class="top-wrapper" *ngIf="urls.length > 0">
     <h1>Links</h1>
   </div>
   <div *ngFor='let url of urls' class='urls__grid'>
