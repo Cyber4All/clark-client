@@ -16,11 +16,10 @@
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
-  background: white;
-  padding: 0 0 8px;
   justify-self: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
-  margin-bottom: 8px;
+  background: transparent!important;
+  border-bottom: 1px solid $light-grey;
+  margin-bottom: 1.5rem;
 
   &.bundle {
     grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
@@ -88,7 +87,7 @@
 .toggleBundle {
   display: flex;
   justify-content: center;
-  
+
   clark-toggle-switch {
     display: flex;
     justify-content: center;
@@ -123,7 +122,7 @@ input {
     &.filesize {
       padding-left: 25px;
     }
-  
+
     &.description {
       padding-left: 25px;
 
