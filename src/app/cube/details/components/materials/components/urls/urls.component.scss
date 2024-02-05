@@ -1,7 +1,7 @@
 @import 'vars.scss';
 
 .urls {
-    max-height: 12rem;
+    min-height: 300px;
 
     h1 {
       font-size: 19.5pt;
@@ -9,16 +9,19 @@
     }
 }
 
-.urls__grid {
-    border-bottom: 1px solid $light-grey;
-    display: grid;
-    grid-template-columns: 200px auto;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
+.urls__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0 .5rem;
 }
 
-.urls__grid__link-title {
-    color: $dark-grey;
+.urls__link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  border-bottom: 1px solid $light-grey;
+  padding-top: .7rem;
+  padding-bottom: .7rem;
 }
 
 p {
