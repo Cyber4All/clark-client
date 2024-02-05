@@ -46,6 +46,18 @@ export const ADMIN_ROUTES = {
   },
   TOGGLE_BUNDLE(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(id)}/files/bundle`;
+  },
+  GET_USER_ACCESS_GROUPS(id: string) {
+    return `${environment.apiURL}/access-groups/users/${encodeURIComponent(id)}`;
+  },
+  ADD_ACCESS_GROUP_TO_USER(username: string) {
+    return `${environment.apiURL}/access-groups/users/${encodeURIComponent(username)}`;
+  },
+  REMOVE_ACCESS_GROUP_FROM_USER(username: string) {
+    return `${environment.apiURL}/access-groups/users/${encodeURIComponent(username)}`;
+  },
+  GET_USERS_WITH_ACCESS_TO_COLLECTION(collectionName: string) {
+    return `${environment.apiURL}/access-groups/collections/${encodeURIComponent(collectionName)}/users`;
   }
 };
 
@@ -66,9 +78,7 @@ export const CHANGELOG_ROUTES = {
 
 export const COLLECTIONS_ROUTES = {
   GET_COLLECTIONS: `${environment.apiURL}/collections`,
-  GET_COLLECTION_METRICS(name: string) {
-    return `${environment.apiURL}/${encodeURIComponent(name)}/metrics`;
-  },
+  GET_COLLECTION_METRICS: `${environment.apiURL}/metrics`,
   GET_COLLECTION_CURATORS(name: string) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   },
@@ -87,8 +97,10 @@ export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
-  FETCH_USER(user: string, q: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
+  FETCH_USERS: `${environment.apiURL}/users`,
+  USER_METRICS: `${environment.apiURL}/users/metrics`,
+  FETCH_USER(user: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(user)}`;
   },
   FETCH_USER_PROFILE(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -247,17 +259,17 @@ export const USER_ROUTES = {
       learningObjectId
     )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
   },
-  GET_CART(username, page?, limit?) {
+  GET_CART(username) {
     // CUBE
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects?page=${page}&limit=${limit}`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library`;
   },
   CLEAR_LEARNING_OBJECT_FROM_CART(username, cuid) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
-    )}/library/learning-objects/${encodeURIComponent(cuid)}`;
+    )}/library/${encodeURIComponent(cuid)}`;
   },
   ADD_LEARNING_OBJECT_TO_CART(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library`;
   },
   OBJECT_BUNDLE(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -393,14 +405,11 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 
 export const RATING_ROUTES = {
   DELETE_RATING(params: {
-    username: string;
     CUID: string;
     version: number;
     ratingId: string;
   }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
@@ -409,14 +418,11 @@ export const RATING_ROUTES = {
     )}`;
   },
   EDIT_RATING(params: {
-    username: string;
     CUID: string;
     version: number;
     ratingId: string;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
@@ -425,101 +431,82 @@ export const RATING_ROUTES = {
     )}`;
   },
   CREATE_RESPONSE(params: {
-    username: string;
-    CUID: string;
-    version: number;
     ratingId: string;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/ratings/${encodeURIComponent(
       params.ratingId
     )}/responses`;
   },
-  UPDATE_RESPONSE(params: {
-    username: string;
-    CUID: string;
-    version: number;
-    ratingId: string;
+  GET_RESPONSE(params: {
     responseId: string;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}/responses/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/ratings/responses/${encodeURIComponent(
+      params.responseId
+    )}`;
+  },
+  UPDATE_RESPONSE(params: {
+    responseId: string;
+  }): string {
+    return `${environment.apiURL}/learning-objects/ratings/responses/${encodeURIComponent(
       params.responseId
     )}`;
   },
   DELETE_RESPONSE(params: {
-    username: string;
-    CUID: string;
-    version: number;
-    ratingId: string;
     responseId: string;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}/responses/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/ratings/responses/${encodeURIComponent(
       params.responseId
     )}`;
   },
   CREATE_RATING(params: {
-    username: string;
     CUID: string;
     version: number;
   }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
     )}/ratings`;
   },
+  GET_RATINGS(query: {
+    ratingId: string;
+  }): string {
+    return `${environment.apiURL}/ratings/ratingId?${querystring.stringify(query)}`;
+  },
   GET_LEARNING_OBJECT_RATINGS(params: {
-    username: string;
     CUID: string;
     version: number;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
     )}/ratings`;
   },
   FLAG_LEARNING_OBJECT_RATING(params: {
-    username: string;
-    CUID: string;
-    version: number;
     ratingId: string;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(
+    return `${environment.apiURL}/ratings/${encodeURIComponent(
       params.ratingId
     )}/flags`;
-  }
+  },
+  DELETE_FLAG(params: {
+    ratingID: string;
+    flagId: string;
+  }): string {
+    return `${environment.apiURL}/ratings/${encodeURIComponent(
+      params.ratingID,
+    )}/flags/${encodeURIComponent(
+      params.flagId
+    )}`;
+  },
+  GET_FLAG(params: {
+    ratingID: string;
+  }): string {
+    return `${environment.apiURL}/ratings/${encodeURIComponent(
+      params.ratingID,
+    )}/flags`;
+  },
 };
 export const MISC_ROUTES = {
   CHECK_DOWNTIME: `${environment.apiURL}/downtime?service=clark`,
@@ -540,6 +527,12 @@ export const FEATURED_ROUTES = {
   GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
   // Get featured objects for a specific collection
   GET_COLLECTION_FEATURED(collection: string) {
+    return `${environment.apiURL}/featured/learning-objects/${encodeURIComponent(
+      collection
+    )}`;
+  },
+  // sets the featured objects for a colection
+  SET_COLLECTION_FEATURED(collection: string) {
     return `${environment.apiURL}/featured/learning-objects/${encodeURIComponent(
       collection
     )}`;
@@ -595,4 +588,13 @@ export const STANDARD_GUIDELINE_ROUTES = {
   SEARCH_GUIDELINES(query: string) {
     return `${environment.apiURL}/guidelines?${query}`;
   }
+};
+
+export const UTILITY_ROUTES = {
+  // Fetches all blogs
+  GET_BLOGS: `${environment.apiURL}/blogs`,
+  // Posts a blog
+  POST_BLOG: `${environment.apiURL}/blogs`,
+  // Checks if client version is up to date with the latest version
+  CLIENT_VERSION: `${environment.apiURL}/client-version`
 };
