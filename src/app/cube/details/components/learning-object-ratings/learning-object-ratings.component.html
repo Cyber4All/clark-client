@@ -53,9 +53,11 @@
         </div>
         <div class="options">
           <ng-container *ngIf="isResponseAuthor(i); else notOwnerOptions">
-            <button tabindex="0" (activate)="openEditResponse(i)"><i class="far fa-pencil-alt"></i>Edit
-              response</button>
-            <button (activate)="submitDeleteResponse(i)"><i class="far fa-trash-alt"></i>Delete response</button>
+            <span tabindex="0" aria-label="Clickable Edit Response link" (activate)="openEditResponse(i)"><i
+                class="far fa-pencil-alt"></i>Edit
+              response</span>
+            <span tabindex="0" aria-label="Clickable Delete Response link" (activate)="submitDeleteResponse(i)"><i
+                class="far fa-trash-alt"></i>Delete response</span>
           </ng-container>
           <div *ngIf="rating.user.username === auth.username" class="email">
             <a class="mailto" href="mailto: {{ rating.response[0].user.email }}"> Email: {{
