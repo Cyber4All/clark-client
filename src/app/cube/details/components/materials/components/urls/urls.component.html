@@ -1,6 +1,6 @@
 <section class='urls'>
   <div class="top-wrapper" *ngIf="urls.length > 0">
-    <h1>Links ({{urls.length}})</h1>
+    <p>Links ({{urls.length}})</p>
   </div>
   <div class="urls__list">
     <a *ngFor='let url of urls' [attr.aria-label]="url.title" href='{{ url.url }}' class='urls__link-item'>

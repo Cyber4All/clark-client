@@ -4,6 +4,14 @@
   text-align: center;
 }
 
+.item {
+  border-bottom: 1px solid $light-grey;
+
+  &:last-of-type {
+    border: transparent;
+  }
+}
+
 .file-list-viewport {
   min-height: 300px;
 }
@@ -36,7 +44,6 @@
     color: $dark-grey;
     background: transparent;
     padding-bottom: 12px;
-    margin-bottom: 8px;
   }
 
   .toggle {
