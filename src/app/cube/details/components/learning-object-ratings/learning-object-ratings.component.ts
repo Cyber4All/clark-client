@@ -10,7 +10,7 @@ import { UserService } from 'app/core/user.service';
 })
 export class LearningObjectRatingsComponent implements OnInit {
 
-  @Input() ratings: {user: User, value: number, comment: string, date: string, response: object}[];
+  @Input() ratings: { user: User, value: number, comment: string, date: string, response: object }[];
   @Input() learningObjectOwners: string[];
   @Input() averageRating: number;
   @Input() loggedIn: boolean;
@@ -18,19 +18,21 @@ export class LearningObjectRatingsComponent implements OnInit {
   @Output() deleteRating = new EventEmitter();
   @Output() editResponse = new EventEmitter();
   @Output() deleteResponse = new EventEmitter();
-  @Output() respondRating: EventEmitter<{comment: string}> = new EventEmitter();
-  @Output() reportRating: EventEmitter<{concern: string, index: number, comment?: string}> = new EventEmitter();
+  @Output() respondRating: EventEmitter<{ comment: string }> = new EventEmitter();
+  @Output() reportRating: EventEmitter<{ concern: string, index: number, comment?: string }> = new EventEmitter();
 
   showReport = false;
   reportIndex: number;
   showResponse = [];
   showEditResponse = [];
   deleteConfirmation: boolean;
+  deleteResponseConfirmation: boolean;
   deleteRatingIndex: number;
+  deleteResponseIndex: number;
 
   constructor(public userService: UserService, private auth: AuthService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   calculateAverageRating(): number {
     if (this.ratings.length > 0) {
@@ -57,7 +59,7 @@ export class LearningObjectRatingsComponent implements OnInit {
   }
 
   submitEditRating(index: number) {
-    const editRating =  {
+    const editRating = {
       number: this.ratings[index].value,
       comment: this.ratings[index].comment,
       index: index
@@ -71,20 +73,21 @@ export class LearningObjectRatingsComponent implements OnInit {
   }
 
   submitDeleteResponse(index: number) {
-    this.deleteResponse.emit(index);
+    this.deleteResponseIndex = index;
+    this.deleteResponseConfirmation = true;
   }
 
-  triggerReportRating(report: {concern: string, comment?: string}) {
-    this.reportRating.emit({...report, index: this.reportIndex});
+  triggerReportRating(report: { concern: string, comment?: string }) {
+    this.reportRating.emit({ ...report, index: this.reportIndex });
     this.showReport = false;
   }
 
-  submitResponse(response: {index: number, comment: string}) {
+  submitResponse(response: { index: number, comment: string }) {
     this.cancelResponse(response.index);
     this.respondRating.emit(response);
   }
 
-  submitEditResponse(response: {comment: string, index: number}) {
+  submitEditResponse(response: { comment: string, index: number }) {
     this.cancelEditResponse(response.index);
     this.editResponse.emit(response);
   }
