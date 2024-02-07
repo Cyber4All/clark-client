@@ -1,9 +1,14 @@
 <section class='materials'>
+
+  <!-- NOTE(andreas): Don't remove this. -->
   <!-- <div class='materials__tab-menu-container'>
     <clark-tab-menu [currentSelection]='currentSelection' (select)=setSelection($event)></clark-tab-menu>
   </div> -->
 
+  <!-- NOTE(andreas): Don't remove this. -->
   <!-- <clark-carousel [action$]="action$"> -->
+  <!-- </clark-carousel> -->
+
   <div>
     <div *ngIf="materials.files.length === 0 && materials.notes.length === 0 && materials.urls.length === 0"
       class="materials__review-materials__empty-banner">
@@ -28,8 +33,8 @@
       <clark-notes [notes]='materials.notes'></clark-notes>
     </div>
   </div>
-  <!-- </clark-carousel> -->
 </section>
+
 <div class='materials__help-link'>
   <p>If you are having issues accessing materials please email us at <a
       href="mailto:info@secured.team?subject=CLARK Materials Help">info@secured.team</a></p>
