@@ -145,8 +145,8 @@ export class CollectionService {
     });
   }
 
-  getCollectionMetricsData(name: string) {
-    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_METRICS(name))
+  getCollectionMetricsData() {
+    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_METRICS)
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -234,7 +234,7 @@ export class CollectionService {
       start: string,
       end: string
     }) {
-    if(collections.length > 0) {
+    if (collections.length > 0) {
       const route = COLLECTIONS_ROUTES.GET_COLLECTION_REPORT(collections, date);
       this.http
         .post(

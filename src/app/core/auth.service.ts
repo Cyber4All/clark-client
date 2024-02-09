@@ -10,6 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
+import { USER_ROUTES } from '@env/route';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -48,7 +49,7 @@ export class AuthService {
   user: AuthUser;
   httpHeaders = new HttpHeaders();
   inUse: object;
-  isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean> (false);
+  isLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
   private openIdToken: OpenIdToken;
 
@@ -93,7 +94,7 @@ export class AuthService {
   public setSsoSession(cookieString: string) {
     const token = JSON.parse(cookieString);
     const user = token.user;
-    const tokens: Tokens = {bearer: token.bearer, openId: token.openId};
+    const tokens: Tokens = { bearer: token.bearer, openId: token.openId };
     const domain = environment.production ? 'clark.center' : 'localhost';
     this.cookies.set('presence', tokens.bearer, 604800000, '/', domain, true, 'None');
     this.setSession({
@@ -214,7 +215,7 @@ export class AuthService {
     let firstName = '', lastName = '';
     if (split.length > 2) {
       firstName = split[0] + ' ' + split[1];
-      for (let  i = 2; i < split.length; i++) {
+      for (let i = 2; i < split.length; i++) {
         lastName += split[i] + ' ';
       }
     } else {
@@ -364,9 +365,10 @@ export class AuthService {
   async login(user: { username: string; password: string }): Promise<any> {
     try {
       const data = await this.encryptionService.encryptRSA(user);
+      console.log("MADe it");
       const response = await this.http
         .post<AuthUser & { tokens: Tokens }>(
-          environment.apiURL + '/users/tokens',
+          environment.apiURL + USER_ROUTES.LOGIN,
           data,
           {
             withCredentials: true
@@ -524,7 +526,7 @@ export class AuthService {
    * @returns
    * @memberof AuthService
    */
-   async emailInUse(email: string) {
+  async emailInUse(email: string) {
     const val = await this.http
       .get(
         environment.apiURL + '/users/identifiers/active?email=' + email,
@@ -626,7 +628,8 @@ export class AuthService {
     }
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse | any) {
+    console.log("yo", error)
     if (
       error.error instanceof ErrorEvent ||
       (error.error && error.error.message)

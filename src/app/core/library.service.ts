@@ -43,7 +43,7 @@ export class LibraryService {
     }
 
     return await this.http
-      .get(USER_ROUTES.GET_CART(this.user.username, page, limit), {
+      .get(USER_ROUTES.GET_CART(this.user.username), {
         withCredentials: true,
         headers: this.headers
       })
@@ -128,10 +128,10 @@ export class LibraryService {
     }).pipe(
       catchError((error) => this.handleError(error))
     )
-    .subscribe(() => {
-      this.toaster.success('All Ready!', 'Your download will begin in a moment...');
-      this.downloadBundle(bundle);
-    });
+      .subscribe(() => {
+        this.toaster.success('All Ready!', 'Your download will begin in a moment...');
+        this.downloadBundle(bundle);
+      });
   }
 
   /**

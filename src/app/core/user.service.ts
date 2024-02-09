@@ -14,7 +14,7 @@ import { UserQuery } from 'app/interfaces/query';
 @Injectable()
 export class UserService {
   userNotifications: any;
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**
    * Fetch a list of user's who are reviewers for the given collection
@@ -193,27 +193,28 @@ export class UserService {
    * @returns {Promise<User>}
    * @memberof UserService
    */
+  //TO-DO: Remove the q parameter
   getUser(user: string, q: string): Promise<User> {
     return user && user !== 'undefined'
       ? this.http
-          .get(USER_ROUTES.FETCH_USER(user, q), {
-            withCredentials: true
-          })
-          .pipe(
-            retry(3),
-            catchError(this.handleError)
-          )
-          .toPromise()
-          .then(
-            (val: any) => {
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              const user_res = val;
-              return user_res ? new User(user_res) : null;
-            },
-            error => {
-              return null;
-            }
-          )
+        .get(USER_ROUTES.FETCH_USER(user), {
+          withCredentials: true
+        })
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise()
+        .then(
+          (val: any) => {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const user_res = val;
+            return user_res ? new User(user_res) : null;
+          },
+          error => {
+            return null;
+          }
+        )
       : Promise.resolve(null);
   }
 
@@ -221,50 +222,50 @@ export class UserService {
     return this.http.get(USER_ROUTES.GET_NOTIFICATIONS({ username, page, limit }), {
       withCredentials: true,
     })
-    .toPromise();
+      .toPromise();
   }
 
   getNotificationCount(username: string) {
     this.http.get(USER_ROUTES.GET_NOTIFICATIONS({ username, page: 1, limit: 1 }), {
       withCredentials: true,
     })
-    .toPromise().then((val: any) => {
-      this.userNotifications = val;
-    });
+      .toPromise().then((val: any) => {
+        this.userNotifications = val;
+      });
   }
 
   deleteNotification(username: string, notificationID: string) {
     const deleteValue = this.http.delete(USER_ROUTES.DELETE_NOTIFICATION({ username, id: notificationID }), {
       withCredentials: true,
     })
-    .toPromise();
+      .toPromise();
     this.getNotificationCount(username);
     return deleteValue;
   }
 
-  combineName(firstname: string, lastname: string, combined?: boolean){
-    if(!combined){
+  combineName(firstname: string, lastname: string, combined?: boolean) {
+    if (!combined) {
       const firstnameArray = firstname.trim().split(' ');
       const lastnameArray = lastname.trim().split(' ');
 
-      if(firstnameArray.length > 1){
+      if (firstnameArray.length > 1) {
         let newfirstName = '';
-        for(let i = 0; i < firstnameArray.length - 1; i++){
+        for (let i = 0; i < firstnameArray.length - 1; i++) {
           newfirstName += firstnameArray[i] + '#';
         }
         newfirstName += firstnameArray[firstnameArray.length - 1];
         firstname = newfirstName;
       }
 
-      if(lastnameArray.length > 1){
+      if (lastnameArray.length > 1) {
         let newlastName = '';
-        for(let i = 0; i < lastnameArray.length - 1; i++){
+        for (let i = 0; i < lastnameArray.length - 1; i++) {
           newlastName += lastnameArray[i] + '#';
         }
         newlastName += lastnameArray[lastnameArray.length - 1];
         lastname = newlastName;
       }
-      return firstname + ' ' +lastname;
+      return firstname + ' ' + lastname;
     } else {
       return firstname + ' ' + lastname;
     }

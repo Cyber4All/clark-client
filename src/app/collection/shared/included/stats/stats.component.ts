@@ -11,7 +11,7 @@ export class StatsComponent implements OnInit {
   @Input() collectionName: string;
   name: string;
 
-  constructor(private collectionService: CollectionService) {}
+  constructor(private collectionService: CollectionService) { }
 
   objDownload: number;
   objReview: number;
@@ -19,7 +19,7 @@ export class StatsComponent implements OnInit {
   authorCollection: number;
 
   ngOnInit(): void {
-    this.collectionService.getCollectionMetricsData(this.collectionName).then((res: any ) => {
+    this.collectionService.getCollectionMetricsData().then((res: any) => {
       this.objDownload = res.metrics.downloads;
       this.objReleased = res.metrics.statusMetrics[0].released;
       const num = res.metrics.statusMetrics[0].waiting + res.metrics.statusMetrics[0].peerReview + res.metrics.statusMetrics[0].proofing;

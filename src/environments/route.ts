@@ -94,7 +94,7 @@ export const COLLECTIONS_ROUTES = {
 };
 
 export const USER_ROUTES = {
-  LOGIN: `${environment.apiURL}/users/tokens`,
+  LOGIN: `${environment.apiURL}/users/login`,
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
   FETCH_USERS: `${environment.apiURL}/users`,

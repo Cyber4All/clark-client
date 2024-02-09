@@ -107,7 +107,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private changelogService: ChangelogService,
     private router: Router,
-    ) { }
+  ) { }
 
   ngOnInit() {
     this.authors = [];
@@ -141,8 +141,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
       await this.learningObjectService.fetchLearningObjectWithResources(
-        { author, cuidInfo: { cuid }}, resources
-        ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+        { author, cuidInfo: { cuid } }, resources
+      ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object instanceof LearningObject) {
           this.releasedLearningObject = object;
 
@@ -165,7 +165,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.hasRevision = !!this.releasedLearningObject.revisionUri;
           this.learningObject = this.releasedLearningObject;
           // Set page title
-          this.titleService.setTitle('CLARK | '+ this.learningObject.name);
+          this.titleService.setTitle('CLARK | ' + this.learningObject.name);
           this.version = this.learningObject.version + 1;
           await this.getLearningObjectRatings();
           this.setAcademicLevels();
@@ -193,7 +193,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
             }
             if (object.status === 401 || object.status === 403) {
               this.redirectUrl = window.location.href;
-              this.router.navigate(['unauthorized', object.status, this.redirectUrl ]);
+              this.router.navigate(['unauthorized', object.status, this.redirectUrl]);
             }
           }
         }
@@ -226,9 +226,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.releasedChildren.length)
       ||
       (
-      this.revisedVersion &&
-      this.revisedChildren &&
-      this.revisedChildren.length);
+        this.revisedVersion &&
+        this.revisedChildren &&
+        this.revisedChildren.length);
   }
 
   /**
@@ -266,7 +266,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     // this.loading.push(1);
     try {
       this.resetRatings();
-      this.revisedLearningObject = await this.learningObjectService.fetchUri(this.learningObject.revisionUri, ([ o ]) => {
+      this.revisedLearningObject = await this.learningObjectService.fetchUri(this.learningObject.revisionUri, ([o]) => {
         return new LearningObject(o);
       }).toPromise();
 
@@ -415,15 +415,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-   /**
-    * Creates a new rating
-    *
-    * @param rating the rating to be created
-    */
+  /**
+   * Creates a new rating
+   *
+   * @param rating the rating to be created
+   */
   createRating(rating: { value: number; comment: string; id?: string }) {
     this.ratingService
       .createRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         rating,
@@ -439,7 +438,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.toastService.error('Error!', 'An error occurred and your rating could not be submitted');
         }
       );
-      this.canAddNewRating = false;
+    this.canAddNewRating = false;
   }
 
   /**
@@ -448,7 +447,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param rating the rating object to be updated
    */
   updateRating(rating: { value: number; comment: string; id?: string }) {
-    const {id, ...updates} = rating;
+    const { id, ...updates } = rating;
     if (!rating.id) {
       this.toastService.error('Error!', 'An error occured and your rating could not be updated');
       console.error('Error: rating id not set');
@@ -456,7 +455,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
     this.ratingService
       .editRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         ratingId: rating.id,
@@ -485,7 +483,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     // 'index' here is the index in the ratings array to delete
     this.ratingService
       .deleteRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         ratingId: this.ratings[index].id,
@@ -515,9 +512,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       this.ratingService
         .flagLearningObjectRating({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
           ratingId,
           report
         })
@@ -550,9 +544,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       const result = await this.ratingService
         .createResponse({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
           ratingId,
           response,
         });
@@ -584,10 +575,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       const result = await this.ratingService
         .editResponse({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
-          ratingId,
           responseId,
           updates: response,
         });
@@ -631,11 +618,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       if (ratingId) {
         const result = await this.ratingService
           .deleteResponse({
-            username: this.learningObject.author.username,
-            CUID: this.learningObject.cuid,
-            version: this.learningObject.version,
-            ratingId,
-            responseId,
+            responseId
           });
 
         if (result) {
