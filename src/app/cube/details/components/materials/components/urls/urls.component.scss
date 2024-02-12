@@ -15,6 +15,11 @@
   flex-direction: column;
   gap: 0 .5rem;
   padding-bottom: 2em;
+
+  & .link-icon {
+    font-size: $large;
+    color: $dark-grey;
+  }
 }
 
 .urls__link-item {

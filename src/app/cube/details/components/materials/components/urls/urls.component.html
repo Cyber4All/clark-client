@@ -4,7 +4,7 @@
   </div>
   <div class="urls__list">
     <a *ngFor='let url of urls' [attr.aria-label]="url.title" href='{{ url.url }}' class='urls__link-item'>
-      <i class="fas fa-link" style="color: black; font-size: 15pt;"></i> {{url.title}}
+      <i class="fas fa-link link-icon"></i> {{url.title}}
     </a>
   </div>
   <p *ngIf='!urls.length' tab-index='0'>
