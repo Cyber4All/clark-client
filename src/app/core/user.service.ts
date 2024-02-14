@@ -197,7 +197,7 @@ export class UserService {
   getUser(user: string, q: string): Promise<User> {
     return user && user !== 'undefined'
       ? this.http
-        .get(USER_ROUTES.FETCH_USER(user), {
+        .get(USER_ROUTES.FETCH_USER(user, q), {
           withCredentials: true
         })
         .pipe(

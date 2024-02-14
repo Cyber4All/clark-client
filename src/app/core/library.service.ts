@@ -43,7 +43,7 @@ export class LibraryService {
     }
 
     return await this.http
-      .get(USER_ROUTES.GET_CART(this.user.username), {
+      .get(USER_ROUTES.GET_CART(this.user.username, page, limit), {
         withCredentials: true,
         headers: this.headers
       })
