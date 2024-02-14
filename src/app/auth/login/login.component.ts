@@ -113,7 +113,6 @@ export class LoginComponent implements OnInit {
           }
         })
         .catch(error => {
-          console.log(error)
           this.bannerMsg = error.message + this.attemptMsg();
           this.authValidation.showError();
         });

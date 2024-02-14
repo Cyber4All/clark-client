@@ -365,10 +365,9 @@ export class AuthService {
   async login(user: { username: string; password: string }): Promise<any> {
     try {
       const data = await this.encryptionService.encryptRSA(user);
-      console.log("MADe it");
       const response = await this.http
         .post<AuthUser & { tokens: Tokens }>(
-          environment.apiURL + USER_ROUTES.LOGIN,
+          USER_ROUTES.LOGIN,
           data,
           {
             withCredentials: true
@@ -629,7 +628,6 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse | any) {
-    console.log("yo", error)
     if (
       error.error instanceof ErrorEvent ||
       (error.error && error.error.message)

@@ -193,7 +193,7 @@ export class UserService {
    * @returns {Promise<User>}
    * @memberof UserService
    */
-  //TO-DO: Remove the q parameter
+  //TO-DO: Remove the q parameter because it won't be used with the new route implementation
   getUser(user: string, q: string): Promise<User> {
     return user && user !== 'undefined'
       ? this.http
