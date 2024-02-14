@@ -423,6 +423,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   createRating(rating: { value: number; comment: string; id?: string }) {
     this.ratingService
       .createRating({
+        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         rating,
@@ -455,6 +456,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
     this.ratingService
       .editRating({
+        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         ratingId: rating.id,
@@ -483,6 +485,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     // 'index' here is the index in the ratings array to delete
     this.ratingService
       .deleteRating({
+        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         ratingId: this.ratings[index].id,
@@ -512,6 +515,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       this.ratingService
         .flagLearningObjectRating({
+          username: this.learningObject.author.username,
+          CUID: this.learningObject.cuid,
+          version: this.learningObject.version,
           ratingId,
           report
         })
@@ -544,6 +550,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       const result = await this.ratingService
         .createResponse({
+          username: this.learningObject.author.username,
+          CUID: this.learningObject.cuid,
+          version: this.learningObject.version,
           ratingId,
           response,
         });
@@ -569,12 +578,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     index: number,
   }) {
     // locate target rating and then delete the index param from the response
-    const ratingId = this.learningObject.ratings[response.index].id;
+    const ratingId = this.learningObject.ratings.ratings[response.index].id;
     const responseId = this.ratings[response.index].response[0]._id;
-
     if (ratingId) {
       const result = await this.ratingService
         .editResponse({
+          username: this.learningObject.author.username,
+          CUID: this.learningObject.cuid,
+          version: this.learningObject.version,
+          ratingId,
           responseId,
           updates: response,
         });
@@ -598,39 +610,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
     // locate target rating and then delete the index param from the response
     const ratingId = this.ratings[index].id;
     const responseId = this.ratings[index].response[0]._id;
-
-    const shouldDelete = await this.modalService
-      .makeDialogMenu(
-        'ratingDelete',
-        'Are you sure you want to delete this response?',
-        'You cannot undo this action!',
-        false,
-        'title-bad',
-        'center',
-        [
-          new ModalListElement('Yup, do it!', 'delete', 'bad'),
-          new ModalListElement('No wait!', 'cancel', 'neutral')
-        ]
-      )
-      .toPromise();
-
-    if (shouldDelete === 'delete') {
-      if (ratingId) {
-        const result = await this.ratingService
-          .deleteResponse({
-            responseId
-          });
-
-        if (result) {
-          this.getLearningObjectRatings();
-          this.toastService.success('Success!', 'Response deleted successfully!');
-        } else {
-          this.toastService.error('Error!', 'An error occured and your response could not be deleted');
-        }
-      } else {
+    this.ratingService
+      .deleteResponse({
+        username: this.learningObject.author.username,
+        CUID: this.learningObject.cuid,
+        version: this.learningObject.version,
+        ratingId,
+        responseId,
+      })
+      .then(val => {
+        this.getLearningObjectRatings();
+        this.toastService.success('Success!', 'Response deleted successfully!');
+      })
+      .catch(() => {
         this.toastService.error('Error!', 'An error occured and your response could not be deleted');
-      }
-    }
+      });
   }
 
   /**
