@@ -2,20 +2,20 @@ import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpHeaders,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
-import { EncryptionService } from './encryption.service';
+import { EncryptionService } from '../encryption.service';
 import { USER_ROUTES } from '@env/route';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
   NO_AUTH = 1,
-  NOT_RELEASED = 2
+  NOT_RELEASED = 2,
 }
 
 export enum AUTH_GROUP {
@@ -24,7 +24,7 @@ export enum AUTH_GROUP {
   REVIEWER,
   CURATOR,
   EDITOR,
-  ADMIN
+  ADMIN,
 }
 
 export interface Tokens {
@@ -53,7 +53,11 @@ export class AuthService {
   group = new BehaviorSubject<AUTH_GROUP>(AUTH_GROUP.VISITOR);
   private openIdToken: OpenIdToken;
 
-  constructor(private http: HttpClient, private cookies: CookieService, private encryptionService: EncryptionService) {
+  constructor(
+    private http: HttpClient,
+    private cookies: CookieService,
+    private encryptionService: EncryptionService
+  ) {
     if (this.cookies.get('presence')) {
       this.validateAndRefreshToken();
     }
@@ -96,10 +100,18 @@ export class AuthService {
     const user = token.user;
     const tokens: Tokens = { bearer: token.bearer, openId: token.openId };
     const domain = environment.production ? 'clark.center' : 'localhost';
-    this.cookies.set('presence', tokens.bearer, 604800000, '/', domain, true, 'None');
+    this.cookies.set(
+      'presence',
+      tokens.bearer,
+      604800000,
+      '/',
+      domain,
+      true,
+      'None'
+    );
     this.setSession({
       user: user,
-      tokens: tokens
+      tokens: tokens,
     });
     this.cookies.delete('ssoToken', '/', domain, false, 'Lax');
   }
@@ -212,7 +224,8 @@ export class AuthService {
   get headerName(): string {
     // Split name into first and last name
     const split = this.user.name.split(' ');
-    let firstName = '', lastName = '';
+    let firstName = '',
+      lastName = '';
     if (split.length > 2) {
       firstName = split[0] + ' ' + split[1];
       for (let i = 2; i < split.length; i++) {
@@ -281,12 +294,9 @@ export class AuthService {
     try {
       const response = await this.http
         .get<AuthUser>(environment.apiURL + '/users/tokens', {
-          withCredentials: true
+          withCredentials: true,
         })
-        .pipe(
-          retry(3),
-          catchError(this.handleError)
-        )
+        .pipe(retry(3), catchError(this.handleError))
         .toPromise();
       this.user = response;
       this.assignUserToGroup();
@@ -294,35 +304,6 @@ export class AuthService {
     } catch (error) {
       this.endSession();
       throw error;
-    }
-  }
-
-  /**
-   * Checks the client's version against the service
-   *
-   * @returns {Promise<void>}
-   * @memberof AuthService
-   */
-  async checkClientVersion(): Promise<void | Partial<{ message: string }>> {
-    // Application version information
-    const { version: appVersion } = require('../../../package.json');
-    try {
-      await this.http
-        .get(environment.apiURL + '/clientversion/' + appVersion, {
-          withCredentials: true,
-          responseType: 'text'
-        })
-        .pipe(
-          retry(3)
-        )
-        .toPromise();
-      return Promise.resolve();
-    } catch (error) {
-      if (error.status === 426) {
-        return Promise.reject(error);
-      } else {
-        catchError(this.handleError);
-      }
     }
   }
 
@@ -338,13 +319,10 @@ export class AuthService {
         .get<AuthUser & { tokens: Tokens }>(
           environment.apiURL + '/users/tokens/refresh',
           {
-            withCredentials: true
+            withCredentials: true,
           }
         )
-        .pipe(
-          retry(3),
-          catchError(this.handleError)
-        )
+        .pipe(retry(3), catchError(this.handleError))
         .toPromise();
       const tokens: Tokens = response.tokens;
       delete response.tokens;
@@ -366,16 +344,10 @@ export class AuthService {
     try {
       const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http
-        .post<AuthUser & { tokens: Tokens }>(
-          USER_ROUTES.LOGIN,
-          data,
-          {
-            withCredentials: true
-          }
-        )
-        .pipe(
-          catchError(this.handleError)
-        )
+        .post<AuthUser & { tokens: Tokens }>(USER_ROUTES.LOGIN, data, {
+          withCredentials: true,
+        })
+        .pipe(catchError(this.handleError))
         .toPromise();
 
       const tokens: Tokens = response.tokens;
@@ -414,12 +386,10 @@ export class AuthService {
           environment.apiURL + '/users',
           data,
           {
-            withCredentials: true
+            withCredentials: true,
           }
         )
-        .pipe(
-          catchError(this.handleError)
-        )
+        .pipe(catchError(this.handleError))
         .toPromise();
       const tokens: Tokens = response.tokens;
       delete response.tokens;
@@ -446,10 +416,7 @@ export class AuthService {
         { email },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   /**
@@ -467,10 +434,7 @@ export class AuthService {
         { payload },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   /**
@@ -487,10 +451,7 @@ export class AuthService {
         { email: email || this.user.email },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   /**
@@ -506,13 +467,10 @@ export class AuthService {
         environment.apiURL + '/users/identifiers/active?username=' + username,
         {
           headers: this.httpHeaders,
-          withCredentials: true
+          withCredentials: true,
         }
       )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise();
     this.inUse = val;
     return this.inUse;
@@ -527,17 +485,11 @@ export class AuthService {
    */
   async emailInUse(email: string) {
     const val = await this.http
-      .get(
-        environment.apiURL + '/users/identifiers/active?email=' + email,
-        {
-          headers: this.httpHeaders,
-          withCredentials: true
-        }
-      )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
+      .get(environment.apiURL + '/users/identifiers/active?email=' + email, {
+        headers: this.httpHeaders,
+        withCredentials: true,
+      })
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise();
     this.inUse = val;
     return this.inUse;
@@ -564,12 +516,9 @@ export class AuthService {
     return this.http
       .patch(environment.apiURL + '/users/name', user.firstname, {
         withCredentials: true,
-        responseType: 'text'
+        responseType: 'text',
       })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      );
+      .pipe(retry(3), catchError(this.handleError));
   }
 
   /**
@@ -608,7 +557,7 @@ export class AuthService {
     // Since the service will only pull down objects the authenticated user is authorized to see, we don't need
     // to check the collection in the case of reviewers and curators. We can strip the collections from the roles
     // in the access groups for ease of comparison.
-    const groups = this.user.accessGroups.map(x => x.split('@')[0]);
+    const groups = this.user.accessGroups.map((x) => x.split('@')[0]);
 
     if (groups.includes('admin')) {
       this.group.next(AUTH_GROUP.ADMIN);

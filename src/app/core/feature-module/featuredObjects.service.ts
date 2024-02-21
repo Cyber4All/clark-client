@@ -6,7 +6,7 @@ import { catchError, retry } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { Query } from 'app/interfaces/query';
 import * as querystring from 'querystring';
-import { ProfileService } from './profiles.service';
+import { ProfileService } from '../user-module/profiles.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +17,13 @@ export class FeaturedObjectsService {
   private _mutationError$ = new BehaviorSubject<boolean>(false);
   // Errors that occur if the featuredObjects array does not contain exactly 5 objects
   private _submitError$ = new BehaviorSubject<boolean>(false);
-  private featuredStore: { featured } = { featured: []};
+  private featuredStore: { featured } = { featured: [] };
 
   private headers = new HttpHeaders();
   featuredObjectIds: string[];
 
   constructor(private http: HttpClient,
-              private profileService: ProfileService) { }
+    private profileService: ProfileService) { }
 
   get featuredObjects() {
     return this._featuredObjects$.asObservable();
@@ -117,10 +117,10 @@ export class FeaturedObjectsService {
     if (this.featuredStore.featured.length !== 5) {
       this._submitError$.next(true);
     } else {
-        return this.http.patch(FEATURED_ROUTES.SET_FEATURED,
-          this.featuredStore.featured,
-          { headers: this.headers, withCredentials: true }
-        ).toPromise();
+      return this.http.patch(FEATURED_ROUTES.SET_FEATURED,
+        this.featuredStore.featured,
+        { headers: this.headers, withCredentials: true }
+      ).toPromise();
     }
   }
 
@@ -130,7 +130,7 @@ export class FeaturedObjectsService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getNotFeaturedLearningObjects(query?: Query): Promise<{learningObjects: LearningObject[], total: number}> {
+  getNotFeaturedLearningObjects(query?: Query): Promise<{ learningObjects: LearningObject[], total: number }> {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);

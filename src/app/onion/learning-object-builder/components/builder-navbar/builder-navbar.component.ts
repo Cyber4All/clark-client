@@ -1,12 +1,12 @@
 import { Component, OnDestroy, Input } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { CollectionService, Collection } from 'app/core/collection.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
 import { LearningObjectService } from '../../../core/learning-object.service';

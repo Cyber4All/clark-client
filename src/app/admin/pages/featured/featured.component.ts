@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
-import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featuredObjects.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -116,17 +116,17 @@ export class FeaturedComponent implements OnInit, OnDestroy {
    */
   getCollectionFilteredLearningObjects(collection: string) {
     this.activeCollection = collection;
-    this.query = { collection, currPage: 1, status: [LearningObject.Status.RELEASED]};
+    this.query = { collection, currPage: 1, status: [LearningObject.Status.RELEASED] };
     this.learningObjects = [];
 
     this.getLearningObjects();
   }
 
-   /**
-    * Clear the filters of both collection and status and reset the Learning Objects query
-    *
-    * @memberof LearningObjectsComponent
-    */
+  /**
+   * Clear the filters of both collection and status and reset the Learning Objects query
+   *
+   * @memberof LearningObjectsComponent
+   */
   clearCollectionFilters() {
     this.query = { collection: undefined, currPage: 1 };
     this.learningObjects = [];

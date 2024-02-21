@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { AuthService } from 'app/core/auth.service';
-import { UserService } from 'app/core/user.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { NavbarDropdownService } from 'app/core/navBarDropdown.service';
 import { Router, NavigationStart, Event as NavigationEvent } from '@angular/router';
 import { Topic } from '../../../entity';

@@ -3,7 +3,7 @@ import { LearningObject } from '../../../../entity/learning-object/learning-obje
 import { NavbarService } from '../../../core/navbar.service';
 import { LearningObjectService } from '../../../cube/learning-object.service';
 import { Query } from '../../../interfaces/query';
-import { CollectionService } from '../../../core/collection.service';
+import { CollectionService } from '../../../core/collection-module/collections.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -45,7 +45,7 @@ export class Collection502Component implements OnInit {
     this.collectionService.darkMode502.subscribe(mode => {
       this.currentTheme = mode ? 'dark' : 'light';
     });
-    if(this.currentTheme === 'dark'){
+    if (this.currentTheme === 'dark') {
       document!.getElementById('mat-slide-toggle-1-input')!.click();
     };
   }

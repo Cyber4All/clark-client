@@ -1,9 +1,10 @@
-import { AuthService, AUTH_GROUP } from '../core/auth.service';
+import { AuthService, AUTH_GROUP } from './auth.service';
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { FeaturedComponent } from 'app/cube/shared/featured/featured.component';
 import { TestBed, fakeAsync, tick, inject } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '@env/environment';
+
 
 class FakeCookies {
     get(s: string) {
@@ -17,16 +18,16 @@ describe('Service : Auth', () => {
     beforeEach(() => {
         AuthService.prototype.validateAndRefreshToken = () => Promise.resolve();
         TestBed.configureTestingModule({
-    providers: [AuthService],
-    imports: [
-        HttpClientTestingModule, CookieModule.forRoot()
-    ],
-    teardown: { destroyAfterEach: false }
-});
-                // Returns a service with the MockBackend so we can test with dummy responses
-                service = TestBed.inject(AuthService);
-                // Inject the http service and test controller for each test
-                httpTestingController = TestBed.inject(HttpTestingController);
+            providers: [AuthService],
+            imports: [
+                HttpClientTestingModule, CookieModule.forRoot()
+            ],
+            teardown: { destroyAfterEach: false }
+        });
+        // Returns a service with the MockBackend so we can test with dummy responses
+        service = TestBed.inject(AuthService);
+        // Inject the http service and test controller for each test
+        httpTestingController = TestBed.inject(HttpTestingController);
     });
 
     afterEach(() => {
@@ -48,7 +49,7 @@ describe('Service : Auth', () => {
                         'admin'
                     ]
                 };
-                service.login({username: 'randomname', password: 'randompsswd'});
+                service.login({ username: 'randomname', password: 'randompsswd' });
 
                 const req = httpTestingController.expectOne(
                     environment.apiURL + '/users/tokens'
@@ -63,7 +64,7 @@ describe('Service : Auth', () => {
                 const group = service.hasEditorAccess();
                 expect(group).toBe(true);
 
-        }));
+            }));
 
         it('should return true since the access group is editor',
             fakeAsync(() => {
@@ -79,7 +80,7 @@ describe('Service : Auth', () => {
                         'editor'
                     ]
                 };
-                service.login({username: 'randomname', password: 'randompsswd'});
+                service.login({ username: 'randomname', password: 'randompsswd' });
 
                 const req = httpTestingController.expectOne(
                     environment.apiURL + '/users/tokens'
@@ -94,7 +95,7 @@ describe('Service : Auth', () => {
                 const group = service.hasEditorAccess();
                 expect(group).toBe(true);
 
-        }));
+            }));
 
         it('should return false since the access group is reviewer',
             fakeAsync(() => {
@@ -110,7 +111,7 @@ describe('Service : Auth', () => {
                         'reviewer'
                     ]
                 };
-                service.login({username: 'randomname', password: 'randompsswd'});
+                service.login({ username: 'randomname', password: 'randompsswd' });
 
                 const req = httpTestingController.expectOne(
                     environment.apiURL + '/users/tokens'
@@ -125,7 +126,7 @@ describe('Service : Auth', () => {
                 const group = service.hasEditorAccess();
                 expect(group).toBe(false);
 
-        }));
+            }));
 
         it('should return false since the access group is user',
             fakeAsync(() => {
@@ -141,7 +142,7 @@ describe('Service : Auth', () => {
                         'user'
                     ]
                 };
-                service.login({username: 'randomname', password: 'randompsswd'});
+                service.login({ username: 'randomname', password: 'randompsswd' });
 
                 const req = httpTestingController.expectOne(
                     environment.apiURL + '/users/tokens'
@@ -156,7 +157,7 @@ describe('Service : Auth', () => {
                 const group = service.hasEditorAccess();
                 expect(group).toBe(false);
 
-        }));
+            }));
 
         it('should return false since the access group is not valid',
             fakeAsync(() => {
@@ -172,7 +173,7 @@ describe('Service : Auth', () => {
                         'something'
                     ]
                 };
-                service.login({username: 'randomname', password: 'randompsswd'});
+                service.login({ username: 'randomname', password: 'randompsswd' });
 
                 const req = httpTestingController.expectOne(
                     environment.apiURL + '/users/tokens'
@@ -187,9 +188,9 @@ describe('Service : Auth', () => {
                 const group = service.hasEditorAccess();
                 expect(group).toBe(false);
 
-        }));
-
-        });
-
+            }));
 
     });
+
+
+});

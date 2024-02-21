@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RATING_ROUTES } from '@env/route';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth-module/auth.service';
 import { throwError } from 'rxjs';
 import { retry, catchError, map, filter } from 'rxjs/operators';
 

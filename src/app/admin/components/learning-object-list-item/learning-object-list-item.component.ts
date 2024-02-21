@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';

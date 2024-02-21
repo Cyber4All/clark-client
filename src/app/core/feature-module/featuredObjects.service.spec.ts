@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { FeaturedObjectsService } from './featuredObjects.service';
 import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
-import { ProfileService } from './profiles.service';
-import { AuthService } from './auth.service';
+import { ProfileService } from '../user-module/profiles.service';
+import { AuthService } from '../auth-module/auth.service';
 
 
 describe('FeaturedService', () => {
@@ -13,10 +13,10 @@ describe('FeaturedService', () => {
 
   beforeAll(() => {
     TestBed.configureTestingModule({
-    imports: [HttpClientTestingModule],
-    providers: [FeaturedObjectsService, ProfileService, AuthService],
-    teardown: { destroyAfterEach: false }
-});
+      imports: [HttpClientTestingModule],
+      providers: [FeaturedObjectsService, ProfileService, AuthService],
+      teardown: { destroyAfterEach: false }
+    });
 
     httpTestingController = TestBed.inject(HttpTestingController);
     featuredObjectsService = TestBed.inject(FeaturedObjectsService);

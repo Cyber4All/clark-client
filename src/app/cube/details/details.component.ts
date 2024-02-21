@@ -5,11 +5,11 @@ import { LearningObjectService } from 'app/core/learning-object.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { UserService } from 'app/core/user.service';
-import { RatingService } from 'app/core/rating.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { RatingService } from 'app/core/rating-module/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 

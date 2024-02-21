@@ -1,11 +1,11 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminComponent } from './admin.component';
-import {  ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { ActivatedRoute, Router, NavigationEnd, Scroll } from '@angular/router';
 import { of } from 'rxjs';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';

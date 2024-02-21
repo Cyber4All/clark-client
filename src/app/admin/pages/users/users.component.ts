@@ -1,10 +1,10 @@
 import { Component, HostListener, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from '@entity';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { CollectionService, Collection } from 'app/core/collection.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { usersComponentAnimations } from './users.component.animations';
 
 @Component({

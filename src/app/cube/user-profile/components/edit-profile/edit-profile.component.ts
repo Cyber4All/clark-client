@@ -6,14 +6,13 @@ import {
   Output,
   Input
 } from '@angular/core';
-import { FormControl, Validators, FormGroup} from '@angular/forms';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-validation.service';
-import { AuthService } from 'app/core/auth.service';
-import { ProfileService } from 'app/core/profiles.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { environment } from '@env/environment';
 import { Router } from '@angular/router';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Organization } from '../../../../../entity/organization';
@@ -56,7 +55,6 @@ export class EditProfileComponent implements OnChanges, OnInit {
 
   constructor(
     private authValidation: AuthValidationService,
-    private profileService: ProfileService,
     private noteService: ToastrOvenService,
     private auth: AuthService,
     private userService: UserService,
@@ -86,7 +84,6 @@ export class EditProfileComponent implements OnChanges, OnInit {
       }
     });
   }
-
 
   ngOnChanges(): void {
     this.authValidation.getErrorState().subscribe(err => this.editFailure = err);
@@ -136,7 +133,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
     }
 
     try {
-      await this.profileService.editUserInfo(edits).then(async res => {
+      await this.userService.editUserInfo(edits).then(async res => {
         await this.auth.validateAndRefreshToken();
         this.userInfo.next(edits);
         this.close.next();

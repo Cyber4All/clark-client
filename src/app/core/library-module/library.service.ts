@@ -2,7 +2,7 @@ import { USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth-module/auth.service';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';

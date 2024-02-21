@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '@env/environment';
 import { AuthValidationService } from 'app/core/auth-validation.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { GoogleTagService } from 'app/cube/home/google-tag.service';
 
 @Component({

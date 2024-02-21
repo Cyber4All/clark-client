@@ -1,13 +1,14 @@
 import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { LibraryService } from 'app/core/library.service';
+import { LibraryService } from 'app/core/library-module/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { Router } from '@angular/router';
-import { UserService } from 'app/core/user.service';
-import { RatingService } from 'app/core/rating.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { RatingService } from 'app/core/rating-module/rating.service';
+import { NotificationsService } from 'app/core/notifications-module/notifications.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
@@ -84,6 +85,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
     private navbarService: NavbarService,
+    private notificationService: NotificationsService
   ) {}
 
   @HostListener('window:resize', ['$event'])
@@ -149,12 +151,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
    */
   async getNotifications(apiPage: number) {
     let result = { 'notifications': [], 'lastPage': 1 };
-    const notificationCount = await this.user.getNotifications(this.authService.username, 1, 1);
+    const notificationCount = await this.notificationService.getNotifications(this.authService.username);
     this.notificationCount = notificationCount.lastPage;
     if (this.notificationCount <= 20) {
-      result = await this.user.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
+      result = await this.notificationService.getNotifications(this.authService.user.username);
     } else {
-      result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
+      result = await this.notificationService.getNotifications(this.authService.user.username);
     }
     this.localNotifications = [...this.localNotifications, ...result.notifications];
     this.lastNotificationsPageNumber = result.lastPage;
@@ -217,7 +219,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async deleteNotification(notification: any) {
-    await this.user.deleteNotification(this.authService.user.username, notification.id);
+    await this.notificationService.deleteNotification(this.authService.user.username, notification.id);
     this.localNotifications = [];
     await this.getNotifications(this.currentPageNumber);
     this.setNotifications(this.firstIndex);

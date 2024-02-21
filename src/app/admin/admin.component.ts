@@ -3,8 +3,8 @@ import { NavbarService } from 'app/core/navbar.service';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operators';
-import { AuthService } from 'app/core/auth.service';
-import { CollectionService, Collection } from 'app/core/collection.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { MessagesService } from 'app/core/messages.service';
 

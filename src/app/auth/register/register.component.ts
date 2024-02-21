@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-validation.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Organization } from 'entity/organization';
 import { OrganizationService } from 'app/core/organization.service';
@@ -11,7 +11,7 @@ import { Subject, interval } from 'rxjs';
 import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
 import { environment } from '@env/environment';
 import { CookieAgreementService } from 'app/core/cookie-agreement.service';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 
 const EMAIL_REGEX =
 // eslint-disable-next-line max-len
@@ -59,7 +59,7 @@ const EMAIL_REGEX =
     ])
   ]
 })
-export class RegisterComponent implements OnInit, OnDestroy{
+export class RegisterComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   ssoRedirect = environment.apiURL + '/google';
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
-import { AuthService } from 'app/core/auth.service';
-import { ProfileService } from 'app/core/profiles.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { ProfileService } from 'app/core/user-module/profiles.service';
 @Component({
   selector: 'clark-user-profile',
   templateUrl: './user-profile.component.html',

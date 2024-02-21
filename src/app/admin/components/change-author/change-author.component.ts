@@ -6,7 +6,7 @@ import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthorshipService } from '../../core/authorship.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { UserService } from '../../../../app/core/user.service';
+import { UserService } from '../../../core/user-module/user.service';
 import { titleCase } from 'title-case';
 
 @Component({

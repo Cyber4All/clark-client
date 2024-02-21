@@ -1,7 +1,12 @@
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, HostListener, ViewContainerRef } from '@angular/core';
-import { AuthService } from './core/auth.service';
-import { LibraryService } from './core/library.service';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ViewContainerRef,
+} from '@angular/core';
+import { AuthService } from './core/auth-module/auth.service';
+import { LibraryService } from './core/library-module/library.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 
@@ -14,6 +19,7 @@ import { ToastrOvenService } from './shared/modules/toaster/notification.service
 import { CookieAgreementService } from './core/cookie-agreement.service';
 import { SubscriptionAgreementService } from './core/subscription-agreement.service';
 import { CookieService } from 'ngx-cookie-service';
+import { UtilityService } from './core/utility-module/utility.service';
 
 @Component({
   selector: 'clark-root',
@@ -85,6 +91,7 @@ export class ClarkComponent implements OnInit {
     private cookieAgreement: CookieAgreementService,
     private subscriptionAgreement: SubscriptionAgreementService,
     private cookies: CookieService,
+    private utilityService: UtilityService
   ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
@@ -128,7 +135,7 @@ export class ClarkComponent implements OnInit {
       // check to see if the current version is behind the latest verison
       setInterval(async () => {
         try {
-          await this.authService.checkClientVersion();
+          await this.utilityService.checkClientVersion();
         } catch (e) {
           this.errorMessage = e.error.split('.');
           this.isOldVersion = true;

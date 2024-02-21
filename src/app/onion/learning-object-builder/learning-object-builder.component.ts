@@ -18,7 +18,7 @@ import {
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from '../core/learning-object.service';
 import { HistorySnapshot, HistoryService } from 'app/core/history.service';

@@ -8,13 +8,13 @@ import { Component,
         ChangeDetectionStrategy,
         ChangeDetectorRef} from '@angular/core';
 import { LearningObject } from '@entity';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
-import { LibraryService } from 'app/core/library.service';
+import { LibraryService } from 'app/core/library-module/library.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { Router } from '@angular/router';
 import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
 import { NavbarDropdownService } from '../../../../../app/core/navBarDropdown.service';

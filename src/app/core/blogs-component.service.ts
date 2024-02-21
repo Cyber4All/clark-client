@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Blog } from 'app/components/blogs/types/blog';
-import { BlogsService } from './blogs.service';
+import { UtilityService } from './utility-module/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +11,8 @@ export class BlogsComponentService {
 
   recentBlog: Blog; // holds the latest blogpost
 
-  constructor(private blogsService: BlogsService) {
-    this.blogsService.getMostRecentBlog().subscribe(
+  constructor(private utilityService: UtilityService) {
+    this.utilityService.getAllBlogs().subscribe(
       blogArray => {
         this.recentBlog = blogArray[0];
       }

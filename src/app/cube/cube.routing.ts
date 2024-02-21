@@ -18,7 +18,7 @@ import { AboutClarkComponent } from './content-pages/about-us/about-us.component
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 import { NotFoundComponent } from 'app/not-found.component';
-import { CollectionsGuard } from 'app/core/collections.guard';
+import { CollectionsGuard } from 'app/core/collection-module/collections.guard';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const cube_routes: Routes = [

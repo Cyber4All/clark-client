@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import {
-  HttpClient,
-  HttpErrorResponse
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { USER_ROUTES } from '@env/route';
-import { AuthService } from './auth.service';
+import { USER_ROUTE } from './user.routes';
+import { AuthService } from '../auth-module/auth.service';
 import { User } from '@entity';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
@@ -13,8 +11,7 @@ import { UserQuery } from 'app/interfaces/query';
 
 @Injectable()
 export class UserService {
-  userNotifications: any;
-  constructor(private http: HttpClient, private auth: AuthService) { }
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
    * Fetch a list of user's who are reviewers for the given collection
@@ -27,16 +24,13 @@ export class UserService {
   fetchReviewers(collection: string): Promise<User[]> {
     return this.http
       .get(USER_ROUTES.FETCH_MEMBERS(collection, { role: 'reviewer' }), {
-        withCredentials: true
+        withCredentials: true,
       })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(member => new User(member));
+        return arr.map((member) => new User(member));
       });
   }
 
@@ -60,13 +54,10 @@ export class UserService {
         { role },
         {
           withCredentials: true,
-          responseType: 'text'
+          responseType: 'text',
         }
       )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise();
   }
 
@@ -79,16 +70,17 @@ export class UserService {
    * @returns {Promise<User>}
    * @memberof UserService
    */
-  editMember(collection: string, memberId: string, role: string): Promise<User> {
+  editMember(
+    collection: string,
+    memberId: string,
+    role: string
+  ): Promise<User> {
     return this.http
       .patch(USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId), role, {
         withCredentials: true,
-        responseType: 'text'
+        responseType: 'text',
       })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise()
       .then((res: any) => {
         return new User(res);
@@ -110,13 +102,10 @@ export class UserService {
         USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
         {
           withCredentials: true,
-          responseType: 'text'
+          responseType: 'text',
         }
       )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise();
   }
 
@@ -124,22 +113,19 @@ export class UserService {
    * Performs a text search and returns a list of matching users
    *
    * @param {string} query the text string to query by
-   * @returns {Promise<User[]} array of users matching the text query
+   * @returns {Promise<User[]>} array of users matching the text query
    * @memberof UserService
    */
   searchUsers(query: UserQuery): Promise<User[]> {
     return this.http
       .get(USER_ROUTES.SEARCH_USERS(query), {
-        withCredentials: true
+        withCredentials: true,
       })
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(user => new User(user));
+        return arr.map((user) => new User(user));
       });
   }
 
@@ -154,14 +140,11 @@ export class UserService {
     const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
       .get(route)
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map(member => new User(member));
+        return arr.map((member) => new User(member));
       });
   }
 
@@ -189,58 +172,83 @@ export class UserService {
   /**
    * Retrieve a User object for a given username
    *
-   * @param {string} username
-   * @returns {Promise<User>}
+   * @returns {Promise<User[]>}
    * @memberof UserService
    */
+  getsUsers(): Promise<User[]> {
+    return this.http
+      .get(USER_ROUTE.FETCH_USERS, {
+        withCredentials: true,
+      })
+      .pipe(retry(3), catchError(this.handleError))
+      .toPromise()
+      .then((val: any) => {
+        const arr = val;
+        return arr.map((user) => new User(user));
+      });
+  }
+
   //TO-DO: Remove the q parameter because it won't be used with the new route implementation
   getUser(user: string, q: string): Promise<User> {
     return user && user !== 'undefined'
       ? this.http
-        .get(USER_ROUTES.FETCH_USER(user, q), {
-          withCredentials: true
-        })
-        .pipe(
-          retry(3),
-          catchError(this.handleError)
-        )
-        .toPromise()
-        .then(
-          (val: any) => {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            const user_res = val;
-            return user_res ? new User(user_res) : null;
-          },
-          error => {
-            return null;
-          }
-        )
+          .get(USER_ROUTES.FETCH_USER(user, q), {
+            withCredentials: true,
+          })
+          .pipe(retry(3), catchError(this.handleError))
+          .toPromise()
+          .then(
+            (val: any) => {
+              // eslint-disable-next-line @typescript-eslint/naming-convention
+              const user_res = val;
+              return user_res ? new User(user_res) : null;
+            },
+            (error) => {
+              return null;
+            }
+          )
       : Promise.resolve(null);
   }
 
-  getNotifications(username: string, page: number, limit: number): Promise<any> {
-    return this.http.get(USER_ROUTES.GET_NOTIFICATIONS({ username, page, limit }), {
-      withCredentials: true,
-    })
+  /**
+   * Edit a user's basic information
+   *
+   * @param {user: { name?: string, email?: string, organization?: string, bio?: string, username: any }} body of updates to user profile
+   * @returns http response
+   */
+  editUserInfo(user: {
+    name?: string;
+    email?: string;
+    organization?: string;
+    bio?: string;
+    username: any;
+  }): Promise<any> {
+    return this.http
+      .patch(
+        USER_ROUTE.EDIT_USER_INFO,
+        { user },
+        {
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise();
   }
 
-  getNotificationCount(username: string) {
-    this.http.get(USER_ROUTES.GET_NOTIFICATIONS({ username, page: 1, limit: 1 }), {
-      withCredentials: true,
-    })
-      .toPromise().then((val: any) => {
-        this.userNotifications = val;
-      });
-  }
-
-  deleteNotification(username: string, notificationID: string) {
-    const deleteValue = this.http.delete(USER_ROUTES.DELETE_NOTIFICATION({ username, id: notificationID }), {
-      withCredentials: true,
-    })
+  /**
+   * Grabs a users profile
+   *
+   * @param {string} username the username of the user to validate
+   * @returns {Promise<Object>} returns user name, email, and bio for profile meta data
+   */
+  fetchUserProfile(username: string): Promise<any> {
+    return this.http
+      .get(USER_ROUTE.FETCH_USER_PROFILE(username), {
+        withCredentials: true,
+      })
+      .pipe(retry(3), catchError(this.handleError))
       .toPromise();
-    this.getNotificationCount(username);
-    return deleteValue;
   }
 
   combineName(firstname: string, lastname: string, combined?: boolean) {

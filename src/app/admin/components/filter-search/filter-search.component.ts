@@ -9,8 +9,8 @@ import {
 } from '@angular/core';
 
 
-import { CollectionService, Collection } from 'app/core/collection.service';
-import { AuthService } from 'app/core/auth.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -41,7 +41,7 @@ export class FilterSearchComponent implements OnInit {
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
   @Output() topicFilter = new EventEmitter<string[]>();
-  @Output() relevancyCheck = new EventEmitter<{start: string, end: string}>();
+  @Output() relevancyCheck = new EventEmitter<{ start: string, end: string }>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
-import { Collection } from 'app/core/collection.service';
+import { Collection } from 'app/core/collection-module/collections.service';
 import { HistoryService, HistorySnapshot } from 'app/core/history.service';
 
 @Component({
