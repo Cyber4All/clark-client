@@ -8,7 +8,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user-module/user.service';
 import { RatingService } from 'app/core/rating-module/rating.service';
-import { NotificationsService } from 'app/core/notifications-module/notifications.service';
+import { NotificationsService } from 'app/core/notification-module/notification.service';
 import { ChangelogService } from 'app/core/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
@@ -27,7 +27,7 @@ import { NavbarService } from 'app/core/navbar.service';
             zIndex: 1,
             'pointer-events': 'none',
           }),
-          animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1}))
+          animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
         ]),
       ])),
       transition(':decrement', group([
@@ -86,7 +86,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private learningObjectService: LearningObjectService,
     private navbarService: NavbarService,
     private notificationService: NotificationsService
-  ) {}
+  ) { }
 
   @HostListener('window:resize', ['$event'])
   async getScreenSize() {
@@ -209,7 +209,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       this.firstIndex = this.firstIndex + this.notificationCardCount;
       this.lastIndex = this.lastIndex + this.notificationCardCount;
     } else if ((this.lastIndex + this.notificationCardCount) >= this.localNotifications.length
-                && this.lastIndex !== this.localNotifications.length) {
+      && this.lastIndex !== this.localNotifications.length) {
       if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
         await this.getNotifications(this.currentNotificationsPageNumber + 1);
       }
@@ -316,7 +316,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async changeLibraryItemPage(pageNumber: number) {
-    this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
+    this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     const libraryItemInformation = await this.libraryService.getLibrary(pageNumber, 10);
     this.libraryItems = libraryItemInformation.cartItems;
     this.lastPageNumber = libraryItemInformation.lastPage;

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObjectService } from 'app/core/learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';

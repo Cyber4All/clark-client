@@ -5,7 +5,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot
 } from '@angular/router';
-import { AuthService } from './auth-module/auth.service';
+import { AuthService } from './auth.service';
 import { CookieService } from 'ngx-cookie';
 
 /**
@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
     private router: Router,
     private auth: AuthService,
     private cookies: CookieService
-  ) {}
+  ) { }
 
   /**
    * This method returns a boolean indicating whther or not navigation to a route should be allowed.

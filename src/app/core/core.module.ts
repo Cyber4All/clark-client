@@ -1,12 +1,12 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 
-import { AuthGuard } from './auth-guard.service';
-import { UserVerifiedGuard } from './user-verified.guard';
+import { AuthGuard } from './auth-module/auth-guard.service';
+import { UserVerifiedGuard } from './user-module/user-verified.guard';
 import { AuthService } from './auth-module/auth.service';
 import { NavbarService } from './navbar.service';
 
 import { LibraryService } from './library-module/library.service';
-import { GuidelineService } from './guideline.service';
+import { GuidelineService } from './standard-guidelines-module/guideline.service';
 import { CookieModule } from 'ngx-cookie';
 
 import { RatingService } from './rating-module/rating.service';
@@ -18,7 +18,7 @@ import { CollectionService } from './collection-module/collections.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from './interceptor/httpconfig.interceptor';
 import { AdminGuard } from './admin.guard';
-import { AccessGroupGuard } from './access-group-guard';
+import { AccessGroupGuard } from './access-group-module/access-group-guard';
 import { ChangelogService } from './changelog.service';
 import { EditorService } from './editor.service';
 import { SharedModule } from 'app/shared/shared.module';

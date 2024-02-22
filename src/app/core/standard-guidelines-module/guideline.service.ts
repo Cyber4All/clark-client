@@ -4,8 +4,8 @@ import * as querystring from 'querystring';
 import { throwError, Observable } from 'rxjs';
 import { retry, catchError, map } from 'rxjs/operators';
 import { STANDARD_GUIDELINE_ROUTES } from '@env/route';
-import { FrameworkDocument } from '../../entity/standard-guidelines/Framework';
-import { SearchItemDocument } from '../../entity/standard-guidelines/search-index';
+import { FrameworkDocument } from '../../../entity/standard-guidelines/Framework';
+import { SearchItemDocument } from '../../../entity/standard-guidelines/search-index';
 
 @Injectable()
 export class GuidelineService {
@@ -15,7 +15,7 @@ export class GuidelineService {
   constructor(public http: HttpClient) {
     // Load guideline sources only once
     this.sources = this.http
-      .get<{total: number, results: FrameworkDocument[]}>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS({page: '1', limit: '20'}))
+      .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS({ page: '1', limit: '20' }))
       .pipe(
         retry(3),
         catchError(this.handleError),
@@ -35,20 +35,20 @@ export class GuidelineService {
       query = querystring.stringify(this.formatFilter(filter));
     }
     return this.http
-      .get<{total: number, results: SearchItemDocument[]}>(STANDARD_GUIDELINE_ROUTES.SEARCH_GUIDELINES(query))
+      .get<{ total: number, results: SearchItemDocument[] }>(STANDARD_GUIDELINE_ROUTES.SEARCH_GUIDELINES(query))
       .pipe(
         retry(3),
         catchError(this.handleError)
       )
       .toPromise()
-      .then((res: {total: number, results: any[]}) => {
+      .then((res: { total: number, results: any[] }) => {
         return res;
       });
   }
 
   async getFrameworks(query?: any): Promise<FrameworkDocument[]> {
     return this.http
-      .get<{total: number, results: FrameworkDocument[]}>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS(query))
+      .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINE_ROUTES.SEARCH_FRAMEWORKS(query))
       .pipe(
         retry(3),
         catchError(this.handleError),

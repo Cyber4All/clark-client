@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { NOTIFICATIONS_ROUTES } from './notifications.router';
+import { NOTIFICATIONS_ROUTES } from './notification.router';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class NotificationsService {
   userNotifications: any;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getNotifications(username: string): Promise<any> {
     return this.http

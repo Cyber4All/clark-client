@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { GuidelineService } from 'app/core/guideline.service';
+import { GuidelineService } from 'app/core/standard-guidelines-module/guideline.service';
 import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 import { Subject } from 'rxjs';
@@ -60,7 +60,7 @@ export class GuidelineFilterComponent implements OnInit, OnDestroy {
    *
    * @param value The value that was selected
    */
-   selectFrameworkOption(value: string) {
+  selectFrameworkOption(value: string) {
     const index = this.frameworkFilter.filters.findIndex(filter => filter.value === value);
     this.frameworkFilter.filters.forEach(filter => filter.active = false);
     if (index >= 0) {

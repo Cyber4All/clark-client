@@ -19,8 +19,8 @@ import { of } from 'rxjs/internal/observable/of';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Router } from '@angular/router';
-import { HierarchyService } from '../../../core/hierarchy.service';
-import { LearningObjectService } from 'app/core/learning-object.service';
+import { HierarchyService } from '../../../core/hierarchy-module/hierarchy.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -161,9 +161,9 @@ export class LearningObjectListItemComponent implements OnChanges {
   unreleaseLearningObject() {
     this.unreleaseService.unreleaseLearningObject(this.learningObject.author.username, this.learningObject.id)
       .then(() => {
-      this.toaster.success('Success', 'Learning object was successfully unreleased');
-      this.learningObject.status = LearningObject.Status.PROOFING;
-    }).catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
+        this.toaster.success('Success', 'Learning object was successfully unreleased');
+        this.learningObject.status = LearningObject.Status.PROOFING;
+      }).catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
   }
 
   /**
@@ -178,14 +178,14 @@ export class LearningObjectListItemComponent implements OnChanges {
   async checkForParents() {
     const parentUri = `${environment.apiURL}/users/${encodeURIComponent(
       this.learningObject.author.username
-      )}/learning-objects/${encodeURIComponent(
+    )}/learning-objects/${encodeURIComponent(
       this.learningObject.id
     )}/parents`;
 
     await this.http.get(
       parentUri,
       { headers: this.headers, withCredentials: true }
-      ).pipe(
+    ).pipe(
       take(1),
       catchError(e => of(e))
     ).subscribe(object => {
@@ -206,58 +206,58 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Toggles the modal for Relevancy Date selection
    */
 
-   toggleRelevancyDate(toggle: boolean) {
+  toggleRelevancyDate(toggle: boolean) {
     this.showRelevancyDate = toggle;
-   }
+  }
 
-   /**
-    * Toggles the delete revision selection
-    */
+  /**
+   * Toggles the delete revision selection
+   */
 
-   toggleRevisionDelete(toggle: boolean) {
-     this.showDeleteRevisionConfirmation = toggle;
-   }
+  toggleRevisionDelete(toggle: boolean) {
+    this.showDeleteRevisionConfirmation = toggle;
+  }
 
-   goToUrl(url) {
-     if(url === 'builder') {
+  goToUrl(url) {
+    if (url === 'builder') {
       window.open(`/onion/learning-object-builder/${this.learningObject.id}`, '_blank');
-     } else if (url === 'contact') {
+    } else if (url === 'contact') {
       window.open(`/users/${this.learningObject.author.username}`);
-     } else if (url === 'details') {
+    } else if (url === 'details') {
       window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}`);
-     } else if (url === 'relevancy') {
-       window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
-     }
-   }
+    } else if (url === 'relevancy') {
+      window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
+    }
+  }
 
-   toggleHierarchyBuilder(val: boolean) {
+  toggleHierarchyBuilder(val: boolean) {
     this.showHierarchyBuilder = val;
-   }
+  }
 
-   toggleReleasingHierarchy(val: boolean) {
-     this.showReleasingHierarchyPopup = val;
-   }
+  toggleReleasingHierarchy(val: boolean) {
+    this.showReleasingHierarchyPopup = val;
+  }
 
-   releaseHierarchy() {
+  releaseHierarchy() {
     this.toggleReleasingHierarchy(true);
     this.hierarchyService.releaseHierarchy(this.learningObject.id)
-    .then(() => {
-      this.toggleReleasingHierarchy(false);
-      location.reload();
-    }).catch(error => {
-      this.toaster.error('Error!', error.message);
-    });
-   }
+      .then(() => {
+        this.toggleReleasingHierarchy(false);
+        location.reload();
+      }).catch(error => {
+        this.toaster.error('Error!', error.message);
+      });
+  }
 
-   deleteRevision() {
+  deleteRevision() {
     this.unreleaseService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version + 1)
-    .then(() => {
-      this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
-    }).catch(() => {
-      this.toaster.error('Error', 'There was an issue deleting the revision of this learning object, please try again later');
-    });
+      .then(() => {
+        this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
+      }).catch(() => {
+        this.toaster.error('Error', 'There was an issue deleting the revision of this learning object, please try again later');
+      });
     this.toggleRevisionDelete(false);
-   }
+  }
   /**
    * Emits a value for checkbox to parent component
    *

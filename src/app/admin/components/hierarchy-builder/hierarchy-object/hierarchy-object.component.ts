@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { HierarchyService } from 'app/core/hierarchy.service';
+import { HierarchyService } from 'app/core/hierarchy-module/hierarchy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Observable } from 'rxjs';
 import { LearningObjectNode } from '../tree-datasource';
@@ -24,7 +24,7 @@ export class HierarchyObjectComponent implements OnInit {
 
   nameFormControl = new FormControl(
     '',
-    { validators: [Validators.required, Validators.minLength(2), this.forbiddenNameValidator()],  updateOn: 'blur'}
+    { validators: [Validators.required, Validators.minLength(2), this.forbiddenNameValidator()], updateOn: 'blur' }
   );
   constructor(
     private hierarchyService: HierarchyService,
@@ -33,7 +33,7 @@ export class HierarchyObjectComponent implements OnInit {
 
   ngOnInit(): void {
     this.lengths = [];
-    if(this.node.length === 'unit') {
+    if (this.node.length === 'unit') {
 
       this.lengths = [
         {
@@ -54,7 +54,7 @@ export class HierarchyObjectComponent implements OnInit {
         }
       ];
     }
-    if(this.node.length === 'module') {
+    if (this.node.length === 'module') {
       this.lengths = [
         {
           value: 'nanomodule',
@@ -70,7 +70,7 @@ export class HierarchyObjectComponent implements OnInit {
         }
       ];
     }
-    if(this.node.length === 'micromodule') {
+    if (this.node.length === 'micromodule') {
       this.lengths = [
         {
           value: 'nanomodule',
@@ -82,7 +82,7 @@ export class HierarchyObjectComponent implements OnInit {
         }
       ];
     }
-    if(this.node.length === 'nanomodule') {
+    if (this.node.length === 'nanomodule') {
       this.lengths = [
         {
           value: 'nanomodule',
@@ -103,14 +103,14 @@ export class HierarchyObjectComponent implements OnInit {
    */
   forbiddenNameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
-      if(this.node) {
-        return this.hierarchyService.checkName(this.username, this.node.name).then( val => {
-          if(val === true) {
+      if (this.node) {
+        return this.hierarchyService.checkName(this.username, this.node.name).then(val => {
+          if (val === true) {
             this.toaster.error(
               'Error',
               'Name already exists!'
             );
-            return { forbiddenName: { value: val }};
+            return { forbiddenName: { value: val } };
           } else {
             return;
           }
