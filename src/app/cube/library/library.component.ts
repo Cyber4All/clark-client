@@ -80,7 +80,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private toaster: ToastrOvenService,
     private authService: AuthService,
     private router: Router,
-    private user: UserService,
     private ratings: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,

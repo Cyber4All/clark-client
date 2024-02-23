@@ -288,29 +288,6 @@ export const USER_ROUTES = {
       learningObjectID
     )}/metrics`;
   },
-  GET_NOTIFICATIONS(params: {
-    username: string,
-    page: number,
-    limit: number,
-  }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/notifications?page=${encodeURIComponent(
-      params.page.toString(),
-    )}&limit=${encodeURIComponent(
-      params.limit.toString(),
-    )}`;
-  },
-  DELETE_NOTIFICATION(params: {
-    username: string,
-    id: string,
-  }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/notifications/${encodeURIComponent(
-      params.id,
-    )}`;
-  },
   TOGGLE_FILES_TO_BUNDLE(params: {
     username: string,
     learningObjectID: string,
