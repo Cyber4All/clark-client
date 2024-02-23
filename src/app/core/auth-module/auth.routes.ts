@@ -56,21 +56,21 @@ export const AUTH_ROUTES = {
    * @method GET
    */
   OTA_VERIFY_EMAIL() {
-    return `${environment.apiURL}/users/ota-code`;
+    return `${environment.apiURL}/users/ota-code?action=verifyEmail`;
   },
   /**
    * Request to send ota code to a user's email
    * @method POST
    */
   OTA_SEND_EMAIL() {
-    return `${environment.apiURL}/users/ota-code`;
+    return `${environment.apiURL}/users/ota-code?action=resetPassword`;
   },
   /**
    * Request to reset a user's password
    * @method PATCH
    */
-  OTA_RESET_PASSWORD() {
-    return `${environment.apiURL}/users/ota-code`;
+  OTA_RESET_PASSWORD(code: string) {
+    return `${environment.apiURL}/users/ota-code?otaCode=${encodeURIComponent(code)}`;
   },
   /**
    * Request to sign up using Google SSO

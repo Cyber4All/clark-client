@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
-import { FEATURED_ROUTES } from './featured.router';
+import { FEATURED_ROUTES_OLD, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { FEATURED_ROUTES } from './featured.routes';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { Query } from 'app/interfaces/query';
@@ -42,7 +42,7 @@ export class FeaturedObjectsService {
   async getFeaturedObjects() {
     // Grabs featured Learning Objects from the Featured Database
     const objects: LearningObject[] = await this.http
-      .get(FEATURED_ROUTES.GET_FEATURED)
+      .get(FEATURED_ROUTES.GET_FEATURED_OBJECTS())
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -118,7 +118,7 @@ export class FeaturedObjectsService {
     if (this.featuredStore.featured.length !== 5) {
       this._submitError$.next(true);
     } else {
-      return this.http.patch(FEATURED_ROUTES.SET_FEATURED,
+      return this.http.patch(FEATURED_ROUTES.UPDATE_FEATURED_OBJECTS(),
         this.featuredStore.featured,
         { headers: this.headers, withCredentials: true }
       ).toPromise();
@@ -166,7 +166,7 @@ export class FeaturedObjectsService {
    */
   getCollectionFeatured(collection: string) {
     return this.http
-      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED(collection))
+      .get(FEATURED_ROUTES_OLD.GET_COLLECTION_FEATURED(collection))
       .pipe(
         retry(3),
         catchError(this.handleError)

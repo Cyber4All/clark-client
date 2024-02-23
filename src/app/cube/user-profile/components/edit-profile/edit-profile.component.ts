@@ -10,13 +10,13 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { environment } from '@env/environment';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Organization } from '../../../../../entity/organization';
 import { OrganizationService } from '../../../../core/utility-module/organization.service';
+import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 
 @Component({
   selector: 'clark-edit-profile',
@@ -24,7 +24,7 @@ import { OrganizationService } from '../../../../core/utility-module/organizatio
   styleUrls: ['./edit-profile.component.scss']
 })
 export class EditProfileComponent implements OnChanges, OnInit {
-  ssoRedirect = environment.apiURL + '/google';
+  ssoRedirect = AUTH_ROUTES.GOOGLE_SIGNUP();
   elementRef: any;
   @Input() user;
   @Input() gravatarImage;

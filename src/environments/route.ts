@@ -65,10 +65,6 @@ export const CHANGELOG_ROUTES = {
 };
 
 export const COLLECTIONS_ROUTES = {
-  GET_COLLECTIONS: `${environment.apiURL}/collections`,
-  GET_COLLECTION_METRICS(name: string) {
-    return `${environment.apiURL}/${encodeURIComponent(name)}/metrics`;
-  },
   GET_COLLECTION_CURATORS(name: string) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   },
@@ -85,7 +81,6 @@ export const COLLECTIONS_ROUTES = {
 
 export const USER_ROUTES = {
   LOGIN: `${environment.apiURL}/users/tokens`,
-  REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
   FETCH_USER(user: string, q: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
@@ -331,9 +326,6 @@ export const USER_ROUTES = {
       params.id,
     )}`;
   },
-  GET_KEY_PAIR(): string {
-    return `${environment.apiURL}/keys`;
-  },
   TOGGLE_FILES_TO_BUNDLE(params: {
     username: string,
     learningObjectID: string,
@@ -527,11 +519,7 @@ export const STATS_ROUTES = {
   USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };
 
-export const FEATURED_ROUTES = {
-  // sets the featured objects
-  SET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
-  // retrieves the featured objects
-  GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
+export const FEATURED_ROUTES_OLD = {
   // Get featured objects for a specific collection
   GET_COLLECTION_FEATURED(collection: string) {
     return `${environment.apiURL}/featured/learning-objects/${encodeURIComponent(

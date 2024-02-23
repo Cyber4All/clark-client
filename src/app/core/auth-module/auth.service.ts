@@ -10,7 +10,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
-import { USER_ROUTES } from '@env/route';
 import { AUTH_ROUTES } from './auth.routes';
 
 export enum DOWNLOAD_STATUS {
@@ -345,12 +344,13 @@ export class AuthService {
     try {
       const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http
-        .post<AuthUser & { tokens: Tokens }>(AUTH_ROUTES.LOGIN, data, {
+        .post<AuthUser & { tokens: Tokens }>(AUTH_ROUTES.LOGIN(),
+          data,
+        {
           withCredentials: true,
         })
         .pipe(catchError(this.handleError))
         .toPromise();
-
       const tokens: Tokens = response.tokens;
       delete response.tokens;
       const authUser: AuthUser = response as AuthUser;
@@ -384,7 +384,7 @@ export class AuthService {
       const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http
         .post<AuthUser & { tokens: Tokens }>(
-          environment.apiURL + '/users',
+          AUTH_ROUTES.REGISTER(),
           data,
           {
             withCredentials: true,
@@ -413,7 +413,7 @@ export class AuthService {
   initiateResetPassword(email: string): Observable<any> {
     return this.http
       .post(
-        environment.apiURL + '/users/ota-codes?action=resetPassword',
+        AUTH_ROUTES.OTA_SEND_EMAIL(),
         { email },
         { withCredentials: true, responseType: 'text' }
       )
@@ -431,7 +431,7 @@ export class AuthService {
   resetPassword(payload: string, code: string): Observable<any> {
     return this.http
       .patch(
-        environment.apiURL + '/users/ota-codes?otaCode=' + code,
+        AUTH_ROUTES.OTA_RESET_PASSWORD(code),
         { payload },
         { withCredentials: true, responseType: 'text' }
       )
@@ -448,7 +448,7 @@ export class AuthService {
   sendEmailVerification(email?: string): Observable<any> {
     return this.http
       .post(
-        environment.apiURL + '/users/ota-codes?action=verifyEmail',
+        AUTH_ROUTES.OTA_VERIFY_EMAIL(),
         { email: email || this.user.email },
         { withCredentials: true, responseType: 'text' }
       )

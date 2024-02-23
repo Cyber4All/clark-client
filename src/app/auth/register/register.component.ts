@@ -9,9 +9,9 @@ import { Organization } from 'entity/organization';
 import { OrganizationService } from 'app/core/utility-module/organization.service';
 import { Subject, interval } from 'rxjs';
 import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
-import { environment } from '@env/environment';
 import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 
 const EMAIL_REGEX =
   // eslint-disable-next-line max-len
@@ -61,7 +61,7 @@ const EMAIL_REGEX =
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
-  ssoRedirect = environment.apiURL + '/google';
+  ssoRedirect = AUTH_ROUTES.GOOGLE_SIGNUP();
 
   TEMPLATES = {
     info: { temp: 'info', index: 1 },

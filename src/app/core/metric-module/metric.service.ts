@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { METRIC_ROUTES } from './metric.router';
+import { METRIC_ROUTES } from './metric.routes';
 import { catchError, retry } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
@@ -9,8 +9,8 @@ export class MetricService {
 
   constructor(private http: HttpClient) { }
 
-  getCollectionMetricsData() {
-    return this.http.get(METRIC_ROUTES.GET_COLLECTION_METRICS)
+  getCollectionMetricsData(abvCollectionName: string) {
+    return this.http.get(METRIC_ROUTES.GET_COLLECTION_METRICS(abvCollectionName))
       .pipe(
         retry(3),
         catchError(this.handleError)

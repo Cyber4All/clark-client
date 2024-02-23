@@ -8,6 +8,7 @@ import { catchError, retry, skipWhile } from 'rxjs/operators';
 import { Query } from '../../interfaces/query';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import * as querystring from 'querystring';
+import { COLLECTION_ROUTES } from './collections.routes';
 
 export interface Collection {
   name: string;
@@ -31,7 +32,7 @@ export class CollectionService {
    * Fetches the list of collections from the API
    */
   async fetchCollections() {
-    this.collections = await this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTIONS, { withCredentials: true })
+    this.collections = await this.http.get(COLLECTION_ROUTES.GET_ALL_COLLECTIONS(), { withCredentials: true })
       .pipe(
         retry(3),
         catchError(this.handleError)
@@ -145,15 +146,6 @@ export class CollectionService {
     });
   }
 
-  getCollectionMetricsData(name: string) {
-    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_METRICS(name))
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
-
-  }
   getCollectionCuratorsInfo(name: string) {
     return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
       .pipe(

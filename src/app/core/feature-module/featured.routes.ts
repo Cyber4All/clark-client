@@ -7,7 +7,7 @@ export const FEATURED_ROUTES = {
    * @returns list of featured learning objects
    */
   GET_FEATURED_OBJECTS() {
-    `${environment.apiURL}/featured/learning-objects`;
+    return `${environment.apiURL}/featured/learning-objects`;
   },
   /**
    * Request to update the list of featured learning objects
