@@ -12,7 +12,7 @@ import { NotificationsService } from 'app/core/notification-module/notification.
 import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',

@@ -11,7 +11,7 @@ import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { LearningObjectService } from '../learning-object.service';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
 
 @Component({
   selector: 'cube-browse',

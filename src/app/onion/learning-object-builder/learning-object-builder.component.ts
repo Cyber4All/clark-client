@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavbarService } from '../../core/navbar.service';
+import { NavbarService } from '../../core/client-module/navbar.service';
 import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -21,7 +21,7 @@ import { LearningOutcomeValidator } from './validators/learning-outcome.validato
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from '../core/learning-object.service';
-import { HistorySnapshot, HistoryService } from 'app/core/history.service';
+import { HistorySnapshot, HistoryService } from 'app/core/client-module/history.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [

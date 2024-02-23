@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
-import { HistoryService, HistorySnapshot } from 'app/core/history.service';
+import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { LearningObjectService } from '../../../core/learning-object.service';
 
 @Component({
@@ -164,7 +164,7 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @var this.store.upload is a toggle string variable to block the 'Back' button if a file upload
    * is not finished. See the builder store for more details.
    */
-   async triggerExitProcess(leaveBuilder = true) {
+  async triggerExitProcess(leaveBuilder = true) {
     if (this.adminMode && !leaveBuilder) {
       this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
     }

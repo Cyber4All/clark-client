@@ -1,12 +1,14 @@
-import { Component,
-        ElementRef,
-        HostListener,
-        Input, OnDestroy,
-        OnInit,
-        Renderer2,
-        ViewChild,
-        ChangeDetectionStrategy,
-        ChangeDetectorRef} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input, OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
+} from '@angular/core';
 import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
@@ -17,7 +19,7 @@ import { takeUntil } from 'rxjs/operators';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { Router } from '@angular/router';
 import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
-import { NavbarDropdownService } from '../../../../../app/core/navBarDropdown.service';
+import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -102,15 +104,15 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         this.downloading = (val);
         this.changeDetectorRef.markForCheck();
       });
-      this.dropdowns.userDropdown.subscribe(val => {
-        this.userDropdown = val;
-      });
+    this.dropdowns.userDropdown.subscribe(val => {
+      this.userDropdown = val;
+    });
   }
 
   get mapAndTag() {
     if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor) {
       const privileges = ['admin', 'editor', 'mapper', 'curator', 'reviewer'];
-      if(this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
+      if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
         return true;
       }
     }
@@ -232,7 +234,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         FB.ui({
           method: 'share',
           href: this.url,
-        }, function(response) { });
+        }, (response) => { });
         break;
       case 'twitter':
         const text = 'Check out this learning object on CLARK! ClarkCan';
@@ -316,7 +318,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
           `Email sent to ${this.auth.user.email}.
             Please check your inbox and spam.
             If you don't receive an email within 15 minutes reach out to info@secured.team.`
-          );
+        );
       }
     } catch (e) {
       this.toaster.error(`Could not send email`, `${e}`);

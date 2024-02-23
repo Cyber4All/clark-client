@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { HistoryService, HistorySnapshot } from 'app/core/history.service';
+import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { NavigationEnd, ActivatedRoute, Router } from '@angular/router';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { AuthService } from 'app/core/auth-module/auth.service';

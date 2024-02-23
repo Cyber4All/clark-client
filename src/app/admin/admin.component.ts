@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operators';

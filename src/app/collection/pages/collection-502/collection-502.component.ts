@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '../../../../entity/learning-object/learning-object';
-import { NavbarService } from '../../../core/navbar.service';
+import { NavbarService } from '../../../core/client-module/navbar.service';
 import { LearningObjectService } from '../../../cube/learning-object.service';
 import { Query } from '../../../interfaces/query';
 import { CollectionService } from '../../../core/collection-module/collections.service';

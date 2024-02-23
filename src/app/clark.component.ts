@@ -10,7 +10,7 @@ import { LibraryService } from './core/library-module/library.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 
-import { HistoryService } from './core/history.service';
+import { HistoryService } from './core/client-module/history.service';
 import { filter } from 'rxjs/operators';
 import { LearningObject } from '../entity/learning-object/learning-object';
 import { Downtime, MessagesService } from './core/utility-module/messages.service';
