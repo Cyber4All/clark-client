@@ -8,7 +8,7 @@ import { retry, catchError } from 'rxjs/operators';
 @Injectable()
 export class ProfileService {
   userNotifications: any;
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**
    * Function to retrieve a learning object

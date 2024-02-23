@@ -11,6 +11,7 @@ import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
 import { USER_ROUTES } from '@env/route';
+import { AUTH_ROUTES } from './auth.routes';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -344,7 +345,7 @@ export class AuthService {
     try {
       const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http
-        .post<AuthUser & { tokens: Tokens }>(USER_ROUTES.LOGIN, data, {
+        .post<AuthUser & { tokens: Tokens }>(AUTH_ROUTES.LOGIN, data, {
           withCredentials: true,
         })
         .pipe(catchError(this.handleError))

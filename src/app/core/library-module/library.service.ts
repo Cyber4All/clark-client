@@ -6,6 +6,7 @@ import { AuthService } from '../auth-module/auth.service';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { LIBRARY_ROUTES } from './library.router';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable()
@@ -43,7 +44,7 @@ export class LibraryService {
     }
 
     return await this.http
-      .get(USER_ROUTES.GET_CART(this.user.username, page, limit), {
+      .get(LIBRARY_ROUTES.GET_CART(this.user.username), {
         withCredentials: true,
         headers: this.headers
       })
@@ -67,7 +68,7 @@ export class LibraryService {
     }
     return await this.http
       .post(
-        USER_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
+        LIBRARY_ROUTES.ADD_LEARNING_OBJECT_TO_CART(
           this.user.username
         ),
         {
@@ -86,7 +87,7 @@ export class LibraryService {
     }
     this.http
       .delete(
-        USER_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
+        LIBRARY_ROUTES.CLEAR_LEARNING_OBJECT_FROM_CART(
           this.user.username,
           cuid
         ),
