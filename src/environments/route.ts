@@ -386,25 +386,3 @@ export const RELEVANCY_ROUTES = {
     return `${environment.apiURL}/users/${username}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
   },
 };
-
-export const STANDARD_GUIDELINE_ROUTES = {
-  /**
-   * SEARCH ROUTES
-   */
-
-  // Searches frameworks given a text query
-  SEARCH_FRAMEWORKS(params: {
-    text?: string,
-    year?: string,
-    levels?: string,
-    page?: string,
-    limit?: string,
-    type?: string
-  }) {
-    return `${environment.apiURL}/frameworks?${querystring.stringify(params)}`;
-  },
-  // Searches guidelines/standards given a text, year, and level query
-  SEARCH_GUIDELINES(query: string) {
-    return `${environment.apiURL}/guidelines?${query}`;
-  }
-};
