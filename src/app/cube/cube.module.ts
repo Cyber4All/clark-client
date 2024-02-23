@@ -9,7 +9,7 @@ import { CubeRoutingModule } from './cube.routing';
 
 // Services
 import { LearningObjectService } from './learning-object.service';
-import { CoreModule } from 'app/core/core.module';
+//import { CoreModule } from 'app/core/core.module';
 
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
@@ -106,7 +106,6 @@ import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/ph
     CollectionModule,
     AboutUsModule,
     LibraryModule,
-    CoreModule,
     MatTabsModule,
     MatExpansionModule,
     MatListModule,
@@ -115,4 +114,4 @@ import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/ph
   ],
   providers: [LearningObjectService]
 })
-export class CubeModule {}
+export class CubeModule { }

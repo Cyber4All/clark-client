@@ -4,7 +4,7 @@ import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
 import { AccessGroupGuard } from './core/access-group-module/access-group-guard';
 import { UnauthorizedComponent } from './unauthorized.component';
-import { BlogRedirectGuard } from './core/blog-redirect.guard';
+import { BlogRedirectGuard } from './core/utility-module/blog-redirect.guard';
 import { RedirectComponent } from './redirect/redirect.component';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

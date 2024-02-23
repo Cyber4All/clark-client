@@ -10,7 +10,7 @@ import { RatingService } from 'app/core/rating-module/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { ChangelogService } from 'app/core/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Rating {

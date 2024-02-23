@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Collection, LearningObject, LearningOutcome } from '@entity';
-import { ChangelogService } from 'app/core/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';

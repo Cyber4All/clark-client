@@ -8,7 +8,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { CollectionService } from 'app/core/collection-module/collections.service';
-import { ChangelogService } from 'app/core/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
 import { HierarchyService } from 'app/core/hierarchy-module/hierarchy.service';

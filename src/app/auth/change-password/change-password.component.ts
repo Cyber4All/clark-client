@@ -2,7 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { AuthValidationService } from 'app/core/auth-validation.service';
+import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 
@@ -28,11 +28,11 @@ export class ChangePasswordComponent implements OnInit {
   passwords: FormGroup = new FormGroup({
     'password': this.authValidationService.getInputFormControl('password'),
     'confirmPassword': this.authValidationService.getInputFormControl('password')
-  }, { validators: MatchValidator.mustMatch('password', 'confirmPassword')});
+  }, { validators: MatchValidator.mustMatch('password', 'confirmPassword') });
 
   constructor(private authValidationService: AuthValidationService,
-              private authService: AuthService,
-              private activatedRoute: ActivatedRoute) {
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -42,11 +42,11 @@ export class ChangePasswordComponent implements OnInit {
 
   submit(): void {
     this.authService.resetPassword(this.passwords.get('password').value, this.otaCode)
-    .subscribe(val => {
-      this.done = true;
-    }, error => {
-      this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
-      this.authValidationService.showError();
-    });
+      .subscribe(val => {
+        this.done = true;
+      }, error => {
+        this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
+        this.authValidationService.showError();
+      });
   }
 }
