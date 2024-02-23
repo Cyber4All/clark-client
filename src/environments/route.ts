@@ -239,18 +239,6 @@ export const USER_ROUTES = {
       learningObjectId
     )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
   },
-  GET_CART(username, page?, limit?) {
-    // CUBE
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects?page=${page}&limit=${limit}`;
-  },
-  CLEAR_LEARNING_OBJECT_FROM_CART(username, cuid) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/library/learning-objects/${encodeURIComponent(cuid)}`;
-  },
-  ADD_LEARNING_OBJECT_TO_CART(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
-  },
   OBJECT_BUNDLE(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
