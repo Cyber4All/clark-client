@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
 import { Collection } from 'app/core/collection-module/collections.service';
-import { HistoryService, HistorySnapshot } from 'app/core/history.service';
+import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 
 @Component({
   selector: 'onion-relevancy-builder-navbar',
@@ -32,9 +32,9 @@ export class BuilderNavbarComponent implements OnInit {
    * @param {string} route
    * @memberof BuilderNavbarComponent
    */
-     triggerRouteClick(route: string) {
-      this.routesClicked.add(route);
-    }
+  triggerRouteClick(route: string) {
+    this.routesClicked.add(route);
+  }
 
   /**
    * Function to toggle the confirm cancel popup

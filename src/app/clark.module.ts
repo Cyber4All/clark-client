@@ -3,12 +3,12 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleCasePipe } from '@angular/common';
 
 import { UrlSerializer } from '@angular/router';
-import { CustomUrlSerializer } from './core/custom-url-serliazer';
+import { CustomUrlSerializer } from './core/learning-object-module/custom-url-serliazer';
 
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';
 import { SharedModule } from './shared/shared.module';
-import { CoreModule } from './core/core.module';
+//import { CoreModule } from './core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
@@ -30,7 +30,6 @@ import { SafeHtmlPipe } from './components/safe-html.pipe';
     BrowserModule,
     ClarkRoutingModule,
     SharedModule,
-    CoreModule,
     BrowserAnimationsModule,
     ScrollingModule,
     FormsModule

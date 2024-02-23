@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Blog } from 'app/components/blogs/types/blog';
-import { UtilityService } from './utility-module/utility.service';
+import { UtilityService } from './utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ export class BlogsComponentService {
         this.recentBlog = blogArray[0];
       }
     );
-   }
+  }
 
   /**
    * Returns whether or not the banner is currently displayed
@@ -26,7 +26,7 @@ export class BlogsComponentService {
    */
   getShowBanner(): boolean {
     const recentBlogDateTime = new Date(this.recentBlog?.timestamp);
-    if(Date.now() - recentBlogDateTime.valueOf() > 604800000) { // if the most recent blog is older than 1 week, do not display a banner
+    if (Date.now() - recentBlogDateTime.valueOf() > 604800000) { // if the most recent blog is older than 1 week, do not display a banner
       return false;
     }
     return this.showBanner;
@@ -48,7 +48,7 @@ export class BlogsComponentService {
    */
   private updateNeverShowBanner() {
     const currentBlogId = localStorage.getItem('bannerBlogId');
-    if(this.recentBlog && (currentBlogId !== this.recentBlog._id)) {
+    if (this.recentBlog && (currentBlogId !== this.recentBlog._id)) {
       localStorage.removeItem('neverShowBanner');
       localStorage.removeItem('bannerBlogId');
     }
@@ -71,9 +71,9 @@ export class BlogsComponentService {
    * @param args: val - if the user wants to see the banner again
    *              recentBlog - if the user doesn't want to see the banner again, the blog that was dismissed
    */
-  setNeverShowBanner(args: {val: boolean, recentBlog?: Blog}) {
+  setNeverShowBanner(args: { val: boolean, recentBlog?: Blog }) {
     localStorage.setItem('neverShowBanner', args.val.toString());
-    if(args.recentBlog) {
+    if (args.recentBlog) {
       localStorage.setItem('bannerBlogId', args.recentBlog._id);
     }
     this.neverShowBanner = args.val;

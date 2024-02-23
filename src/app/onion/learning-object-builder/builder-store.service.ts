@@ -15,7 +15,7 @@ import { CollectionService } from 'app/core/collection-module/collections.servic
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileUploadMeta } from './components/content-upload/app/services/typings';
 import { Title } from '@angular/platform-browser';
-import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 import { v4 as uuidv4 } from 'uuid';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 
@@ -246,7 +246,7 @@ export class BuilderStore {
 
       return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
     } : async () => {
-      const value = this.uriRetriever.getLearningObject({id}, ['children', 'parents', 'materials', 'outcomes']);
+      const value = this.uriRetriever.getLearningObject({ id }, ['children', 'parents', 'materials', 'outcomes']);
       return value.toPromise();
     };
 
@@ -299,7 +299,7 @@ export class BuilderStore {
   async getChildren(): Promise<LearningObject[]> {
     if (this.learningObject.resourceUris !== undefined) {
       const children = this.uriRetriever.getLearningObjectChildren(
-        {uri: this.learningObject.resourceUris.children }
+        { uri: this.learningObject.resourceUris.children }
       );
       return children.toPromise();
     } else {
@@ -447,7 +447,7 @@ export class BuilderStore {
     state: boolean,
     item: any
   }) {
-    if(event.item instanceof DirectoryNode) { // event.item is a Folder
+    if (event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
       await this.learningObjectService.toggleBundle(
         this.auth.username,
@@ -636,7 +636,7 @@ export class BuilderStore {
       this.learningObject = new LearningObject(learningObject);
     }
 
-    if(this.validator.saveable) {
+    if (this.validator.saveable) {
       this.saveObject(data, true);
     }
   }
@@ -687,16 +687,16 @@ export class BuilderStore {
     this.serviceInteraction$.next(true);
     await this.learningObjectService
       .addFileMeta({
-      files,
-      username: this.learningObject.author.username,
-      objectId: this.learningObject.id
+        files,
+        username: this.learningObject.author.username,
+        objectId: this.learningObject.id
       })
       .then(() => {
-         this.fetchMaterials();
+        this.fetchMaterials();
       })
       .catch(e => {
         this.handleServiceError(e, BUILDER_ERRORS.ADD_FILE_META);
-    });
+      });
     this.serviceInteraction$.next(false);
   }
 
@@ -897,11 +897,11 @@ export class BuilderStore {
     // Get most up-to-date values for current learning object
     await this.fetch(this.learningObject.id);
     // Retrieve outcomes of current learning object
-    const value = await this.uriRetriever.getLearningObject({id: this.learningObject.id}, ['outcomes']).toPromise();
+    const value = await this.uriRetriever.getLearningObject({ id: this.learningObject.id }, ['outcomes']).toPromise();
     // Iterate through outcomes
     value.outcomes.map(outcome => {
       // If the outcome text is empty, remove outcome
-      if(outcome.text === '' || outcome.text === null) {
+      if (outcome.text === '' || outcome.text === null) {
         this.deleteOutcome(outcome.id);
       }
     });
@@ -983,7 +983,7 @@ export class BuilderStore {
         } else if (e.status === 400) {
           this.validator.errors.saveErrors.set(
             'name',
-           e.error.message
+            e.error.message
           );
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
@@ -1017,7 +1017,7 @@ export class BuilderStore {
         } else if (e.status === 400) {
           this.validator.errors.saveErrors.set(
             'name',
-           JSON.parse(e.error).message
+            JSON.parse(e.error).message
           );
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {

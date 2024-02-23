@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Collection, LearningObject, LearningOutcome } from '@entity';
-import { ChangelogService } from 'app/core/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { first } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { HierarchyService } from 'app/core/hierarchy.service';
+import { HierarchyService } from 'app/core/hierarchy-module/hierarchy.service';
 import { CHANGE_AUTHORIZATION_LIST } from '../../../../environments/strings';
 import { Router } from '@angular/router';
 
@@ -49,7 +49,7 @@ export class SubmitComponent implements OnInit {
     private toasterService: ToastrOvenService,
     private auth: AuthService,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     if (this.learningObject.collection && !this.collection) {
@@ -148,17 +148,17 @@ export class SubmitComponent implements OnInit {
       contributor: ' contributor(s)',
       outcome: ' outcome(s)'
     };
-    if(this.learningObject.name === '') {
+    if (this.learningObject.name === '') {
       str += potentialErrorFields['name'];
     }
-    if(this.learningObject.description === '') {
-      str += (str === '') ? potentialErrorFields['description']: ',' + potentialErrorFields['description'];
+    if (this.learningObject.description === '') {
+      str += (str === '') ? potentialErrorFields['description'] : ',' + potentialErrorFields['description'];
     }
-    if(this.learningObject.outcomes.length === 0) {
-      str += (str === '') ? potentialErrorFields['outcome']: ',' + potentialErrorFields['outcome'];
+    if (this.learningObject.outcomes.length === 0) {
+      str += (str === '') ? potentialErrorFields['outcome'] : ',' + potentialErrorFields['outcome'];
     }
-    if(this.learningObject.contributors.length === 0) {
-      str += (str === '') ? potentialErrorFields['contributor']: ',' + potentialErrorFields['contributor'];
+    if (this.learningObject.contributors.length === 0) {
+      str += (str === '') ? potentialErrorFields['contributor'] : ',' + potentialErrorFields['contributor'];
     }
     return str;
   }
@@ -174,7 +174,7 @@ export class SubmitComponent implements OnInit {
       proceed = await this.changelogComplete$.pipe(first()).toPromise();
     }
 
-    if(!this.isValidLearningObject()) {
+    if (!this.isValidLearningObject()) {
       proceed = false;
       const missingFields = this.buildUnfinishedLOErrorMsg();
       this.toasterService.error(
@@ -196,7 +196,7 @@ export class SubmitComponent implements OnInit {
             if (e.status === 401) {
               // user isn't logged in, redirect to login page
               this.auth.logout();
-            } else if (e.status === 400){
+            } else if (e.status === 400) {
               this.toasterService.error(
                 'Incomplete Learning Object!',
                 'Please review your object for empty learning outcomes and ensure that there is a description, ' +
@@ -214,45 +214,45 @@ export class SubmitComponent implements OnInit {
           });
       } else {
         this.collectionService
-        .submit({
-          learningObjectId: this.learningObject.id,
-          userId: this.learningObject.author.id,
-          collectionName: this.collection,
-          submissionReason: this.submissionReason,
-          selectedAuthorizations: this.selectedAuthorizations,
-        })
-        .then(() => {
-          this.learningObject.status = LearningObject.Status.WAITING;
-          this.learningObject.collection = this.collection;
-          this.toasterService.success(
-            'Success!',
-            'Learning Object submitted successfully!',
-          );
-          this.loading.pop();
-          this.closeModal(true);
-          this.router.navigate(['onion/dashboard']);
-          return true;
-        })
-        .catch(e => {
-          if (e.status === 401) {
-            // user isn't logged in, redirect to login page
-            this.auth.logout();
-          } else if (e.status === 400){
-            this.toasterService.error(
-              'Incomplete Learning Object!',
-              'Please review your object for empty learning outcomes and ensure that there is a description, ' +
-              'name, and at least 1 contributor.',
+          .submit({
+            learningObjectId: this.learningObject.id,
+            userId: this.learningObject.author.id,
+            collectionName: this.collection,
+            submissionReason: this.submissionReason,
+            selectedAuthorizations: this.selectedAuthorizations,
+          })
+          .then(() => {
+            this.learningObject.status = LearningObject.Status.WAITING;
+            this.learningObject.collection = this.collection;
+            this.toasterService.success(
+              'Success!',
+              'Learning Object submitted successfully!',
             );
-          } else {
-            this.toasterService.error(
-              'Error!',
-              `There was an error trying to submit your object at this time. Please try again later...`,
-            );
-          }
-          this.loading.pop();
-          this.closeModal();
-          return false;
-        });
+            this.loading.pop();
+            this.closeModal(true);
+            this.router.navigate(['onion/dashboard']);
+            return true;
+          })
+          .catch(e => {
+            if (e.status === 401) {
+              // user isn't logged in, redirect to login page
+              this.auth.logout();
+            } else if (e.status === 400) {
+              this.toasterService.error(
+                'Incomplete Learning Object!',
+                'Please review your object for empty learning outcomes and ensure that there is a description, ' +
+                'name, and at least 1 contributor.',
+              );
+            } else {
+              this.toasterService.error(
+                'Error!',
+                `There was an error trying to submit your object at this time. Please try again later...`,
+              );
+            }
+            this.loading.pop();
+            this.closeModal();
+            return false;
+          });
 
       }
     }
@@ -265,12 +265,12 @@ export class SubmitComponent implements OnInit {
    */
   getCollectionSelected(collection: string) {
     this.learningObjectService.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true)
-    .then(val => {
-      this.collection = collection;
-      if (!val.isFirstSubmission) {
-        this.needsChangelog = true;
-      }
-    });
+      .then(val => {
+        this.collection = collection;
+        if (!val.isFirstSubmission) {
+          this.needsChangelog = true;
+        }
+      });
   }
 
   /**

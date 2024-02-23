@@ -7,7 +7,7 @@ import {
   Input
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { AuthValidationService } from 'app/core/auth-validation.service';
+import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { environment } from '@env/environment';
@@ -16,7 +16,7 @@ import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Organization } from '../../../../../entity/organization';
-import { OrganizationService } from '../../../../core/organization.service';
+import { OrganizationService } from '../../../../core/utility-module/organization.service';
 
 @Component({
   selector: 'clark-edit-profile',
@@ -63,7 +63,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.editFormGroup = new FormGroup ({
+    this.editFormGroup = new FormGroup({
       firstname: new FormControl(this.user.name, Validators.required),
       lastname: new FormControl(this.user.name, Validators.required),
       email: new FormControl(this.user.email, Validators.required),
@@ -77,10 +77,10 @@ export class EditProfileComponent implements OnChanges, OnInit {
       });
     this.organizationInput$.subscribe((value: string) => {
       if (value && value !== '') {
-      this.showDropdown = true;
-      this.loading = true;
+        this.showDropdown = true;
+        this.loading = true;
       } else {
-      this.showDropdown = false;
+        this.showDropdown = false;
       }
     });
   }
@@ -91,7 +91,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
     let firstName = '', lastName = '';
     if (name.length > 2) {
       firstName = name[0] + ' ' + name[1];
-      for (let  i = 2; i < name.length; i++) {
+      for (let i = 2; i < name.length; i++) {
         lastName += name[i] + ' ';
       }
     } else {
@@ -121,7 +121,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
       organization: this.editInfo.organization.trim(),
       bio: this.editInfo.bio.trim(),
     };
-    if(
+    if (
       this.editInfo.firstname === ''
       || this.editInfo.lastname === ''
       || this.editInfo.email === ''
@@ -158,12 +158,12 @@ export class EditProfileComponent implements OnChanges, OnInit {
   private toUpper(str) {
     str = str.trim();
     return str
-        .toLowerCase()
-        .split(' ')
-        .map(function(word) {
-            return word[0].toUpperCase() + word.substr(1);
-        })
-        .join(' ');
+      .toLowerCase()
+      .split(' ')
+      .map((word) => {
+        return word[0].toUpperCase() + word.substr(1);
+      })
+      .join(' ');
   }
 
   /**
@@ -187,7 +187,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
    * @param org The organization selected
    */
   selectOrg(org?: Organization) {
-    if(org) {
+    if (org) {
       this.editInfo.organization = org.name;
       this.selectedOrg = org._id;
       this.editFormGroup.get('organization')!.setValue(org.name);
@@ -204,7 +204,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
    *
    * @param event The typing event
    */
-    keyup(event: any) {
-      this.organizationInput$.next(event.target.value);
-    }
+  keyup(event: any) {
+    this.organizationInput$.next(event.target.value);
+  }
 }

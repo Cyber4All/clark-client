@@ -7,7 +7,7 @@ import { catchError, retry } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { Query } from 'app/interfaces/query';
 import * as querystring from 'querystring';
-import { ProfileService } from '../profiles.service';
+import { ProfileService } from '../user-module/profiles.service';
 
 @Injectable({
   providedIn: 'root'

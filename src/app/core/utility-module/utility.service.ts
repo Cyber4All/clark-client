@@ -8,7 +8,7 @@ import { catchError, retry } from 'rxjs/operators';
 
 @Injectable()
 export class UtilityService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**
    * Gets all blogs from the database
@@ -16,7 +16,7 @@ export class UtilityService {
    * @returns An observable containing an array of blogs
    */
   getAllBlogs(): Observable<Blog[]> {
-    return this.http.get<Blog[]>(UTILITY_ROUTES.GET_BLOGS);
+    return this.http.get<Blog[]>(UTILITY_ROUTES.GET_BLOGS());
   }
 
   /**
@@ -25,7 +25,7 @@ export class UtilityService {
    * @param {Blog} blog
    */
   postBlog(blog: Blog): Promise<Blog> {
-    return this.http.post<Blog>(UTILITY_ROUTES.POST_BLOG, blog).toPromise();
+    return this.http.post<Blog>(UTILITY_ROUTES.POST_BLOGS(), blog).toPromise();
   }
 
   /**
@@ -36,10 +36,10 @@ export class UtilityService {
    */
   async checkClientVersion(): Promise<void | Partial<{ message: string }>> {
     // Application version information
-    const { version: appVersion } = require('../../../package.json');
+    const clientVersion = require('../../../package.json');
     try {
       await this.http
-        .get(UTILITY_ROUTES.CLIENT_VERSION + appVersion, {
+        .get(UTILITY_ROUTES.GET_CLIENT_VERSION(clientVersion), {
           withCredentials: true,
           responseType: 'text',
         })

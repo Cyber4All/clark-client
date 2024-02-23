@@ -14,13 +14,13 @@ import { GoogleTagService } from '../../google-tag.service';
 export class LearningObjectsComponent implements OnInit {
   featuredObject: LearningObject; // the learning object to display
   numReleasedObjects = 0; // default number of released objects before the service provides a new number
-  page='homepage';
+  page = 'homepage';
 
   constructor(private featureService: FeaturedObjectsService,
-              private userService: UserService,
-              private usageStatsService: UsageStatsService,
-              public googleTagService: GoogleTagService
-              ) { }
+    private userService: UserService,
+    private usageStatsService: UsageStatsService,
+    public googleTagService: GoogleTagService
+  ) { }
 
   async ngOnInit(): Promise<void> {
     await this.usageStatsService.getLearningObjectStats().then(stats => {
@@ -38,13 +38,13 @@ export class LearningObjectsComponent implements OnInit {
    * @returns A comma separated string of learning object levels
    */
   displayFeaturedObjectLevels() {
-    if(this.featuredObject?.levels.length === 1) {
+    if (this.featuredObject?.levels.length === 1) {
       return this.featuredObject.levels[0];
     }
 
     let levels = '';
     this.featuredObject.levels.forEach((level, index, array) => {
-      if(index === array.length - 1) {
+      if (index === array.length - 1) {
         levels += ' and ' + level;
       } else {
         levels += level + ', ';

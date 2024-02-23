@@ -5,11 +5,11 @@ import {
   Router,
   RouterStateSnapshot
 } from '@angular/router';
-import { AuthService } from './auth-module/auth.service';
+import { AuthService } from '../auth-module/auth.service';
 
 @Injectable()
 export class AccessGroupGuard implements CanActivate {
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const acceptedGroups = route.data['accessGroups'] as string[];

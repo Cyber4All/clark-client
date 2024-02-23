@@ -351,12 +351,6 @@ export const USER_ROUTES = {
   }
 };
 
-export const ORGANIZATION_ROUTES = {
-  SEARCH_ORGANIZATIONS(queryString: string) {
-    return `${environment.cardOrganizationUrl}&text=${queryString}`;
-  }
-};
-
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   GET_PUBLIC_LEARNING_OBJECTS: `${environment.apiURL}/learning-objects`,
   GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {

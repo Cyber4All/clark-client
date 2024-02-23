@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { ProfileService } from 'app/core/profiles.service';
+import { ProfileService } from 'app/core/user-module/profiles.service';
 @Component({
   selector: 'clark-user-profile',
   templateUrl: './user-profile.component.html',
@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private auth: AuthService,
     private profileService: ProfileService,
-  ) {}
+  ) { }
 
   async ngOnInit() {
     // Subscribe to data returned from profile.resolver
@@ -47,7 +47,7 @@ export class UserProfileComponent implements OnInit {
      * @fetchLearningObject is nested in order to load page elements concurrently while still performing acynchronous operations.
      */
     await this.profileService
-      .getCollectionData(this.user.username).then( async (collectionMeta) => {
+      .getCollectionData(this.user.username).then(async (collectionMeta) => {
         const tempObjects = [];
         // Await each learning object for a users profile
         const promises = collectionMeta.map(async (objectMeta) => {
@@ -59,9 +59,9 @@ export class UserProfileComponent implements OnInit {
           return await this.profileService.fetchLearningObject(params);
         });
         // Resolve all calls to retrieve a learning object
-        await Promise.allSettled(promises).then( promise => {
-          promise.map( p => {
-            if(p.status === 'fulfilled') {
+        await Promise.allSettled(promises).then(promise => {
+          promise.map(p => {
+            if (p.status === 'fulfilled') {
               tempObjects.push(p.value);
             }
           });
@@ -70,6 +70,6 @@ export class UserProfileComponent implements OnInit {
         this.allUserContributions = tempObjects;
         // Toggle off loading profile
         this.loading = false;
-    });
+      });
   }
 }

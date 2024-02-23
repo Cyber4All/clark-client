@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { CookieAgreementService } from 'app/core/cookie-agreement.service';
-import { ToastrOvenService } from '../shared/modules/toaster/notification.service';
+import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
+import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class CookieGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const cookie = this.cookieAgreement.getCookieAgreementVal();
-    if(!cookie) {
+    if (!cookie) {
       this.toaster.error('Cookies not accepted', 'Please accept our cookies to continue registration');
       return false;
     }

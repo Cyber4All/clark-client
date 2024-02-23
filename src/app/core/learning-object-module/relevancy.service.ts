@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { RELEVANCY_ROUTES } from '@env/route';
-import { AuthService } from './auth-module/auth.service';
+import { AuthService } from '../auth-module/auth.service';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Topic } from '@entity';
@@ -13,22 +13,22 @@ export class RelevancyService {
 
   constructor(private http: HttpClient, private auth: AuthService) {
     this.setHeaders();
-   }
+  }
 
-   /**
-    * Sets the headers for the requests
-    */
+  /**
+   * Sets the headers for the requests
+   */
   setHeaders() {
     // reset headers with new users auth token
     this.headers = new HttpHeaders();
   }
-   /**
-    * Sets the nextCheck of a learning object
-    *
-    * @param username Username of the author
-    * @param learningObjectId learningObjectId
-    * @param date The date that nextCheck needs to updated to
-    */
+  /**
+   * Sets the nextCheck of a learning object
+   *
+   * @param username Username of the author
+   * @param learningObjectId learningObjectId
+   * @param date The date that nextCheck needs to updated to
+   */
   async setNextCheckDate(username: string, learningObjectId: string, date: Date): Promise<any> {
     return this.http
       .patch(RELEVANCY_ROUTES.NEXT_CHECK(username, learningObjectId),
@@ -113,7 +113,7 @@ export class RelevancyService {
         .toPromise()
         .then(
           (res: any) => {
-            const sorted = res.sort(( a, b ) => ( a.name > b.name ) ? 1 : (( b.name > a.name ) ? -1 : 0) );
+            const sorted = res.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
             resolve(sorted);
           },
           (err) => {

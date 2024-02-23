@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Topic } from '../../entity';
+import { Topic } from '../../../entity';
 
 /**
  * Service that allows components to show or hide the navbar
