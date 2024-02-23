@@ -23,8 +23,8 @@ export const UTILITY_ROUTES = {
    * @method GET
    * @returns the client version
    */
-  GET_CLIENT_VERSION() {
-    return `${environment.apiURL}/clientversion`;
+  GET_CLIENT_VERSION(clientVersion: string) {
+    return `${environment.apiURL}/clientversion&clientVersion=${encodeURIComponent(clientVersion)}`;
   },
   /**
    * Request to see if service is down or if there is a banner message
@@ -34,4 +34,12 @@ export const UTILITY_ROUTES = {
   GET_DOWNTIME() {
     return `${environment.apiURL}/downtime`;
   },
+  /**
+   * Request to search organizations on CARD
+   * @method GET
+   * @returns list of organizations
+   */
+  SEARCH_ORGANIZATIONS(queryString: string) {
+    return `${environment.cardOrganizationUrl}&text=${queryString}`;
+  }
 };
