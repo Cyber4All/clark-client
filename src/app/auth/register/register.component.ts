@@ -6,11 +6,11 @@ import { AuthValidationService } from 'app/core/auth-module/auth-validation.serv
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Organization } from 'entity/organization';
-import { OrganizationService } from 'app/core/organization.service';
+import { OrganizationService } from 'app/core/utility-module/organization.service';
 import { Subject, interval } from 'rxjs';
 import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
 import { environment } from '@env/environment';
-import { CookieAgreementService } from 'app/core/cookie-agreement.service';
+import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
 import { UserService } from 'app/core/user-module/user.service';
 
 const EMAIL_REGEX =

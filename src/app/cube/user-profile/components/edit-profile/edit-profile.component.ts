@@ -16,7 +16,7 @@ import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Organization } from '../../../../../entity/organization';
-import { OrganizationService } from '../../../../core/organization.service';
+import { OrganizationService } from '../../../../core/utility-module/organization.service';
 
 @Component({
   selector: 'clark-edit-profile',

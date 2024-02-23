@@ -3,7 +3,7 @@ import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleCasePipe } from '@angular/common';
 
 import { UrlSerializer } from '@angular/router';
-import { CustomUrlSerializer } from './core/custom-url-serliazer';
+import { CustomUrlSerializer } from './core/learning-object-module/custom-url-serliazer';
 
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';

@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { retry } from 'rxjs/internal/operators/retry';
-import { Organization } from '../../entity/organization';
+import { Organization } from '../../../entity/organization';
 import { ORGANIZATION_ROUTES } from '@env/route';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrganizationService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   async searchOrgs(query: string): Promise<Array<Organization>> {
     return new Promise((resolve, reject) => {

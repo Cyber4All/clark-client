@@ -9,7 +9,7 @@ import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
-import { EncryptionService } from '../encryption.service';
+import { EncryptionService } from './encryption.service';
 import { USER_ROUTES } from '@env/route';
 
 export enum DOWNLOAD_STATUS {

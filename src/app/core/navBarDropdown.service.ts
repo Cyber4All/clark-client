@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Topic } from '../../entity';
-import { RelevancyService } from 'app/core/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy.service';
 
 
 @Injectable()
@@ -11,7 +11,7 @@ export class NavbarDropdownService {
     constructor(
         private router: Router,
         private relevancyService: RelevancyService
-    ) {}
+    ) { }
     //mobile or desktop
     public isDesktop = new BehaviorSubject<boolean>(true);
     //user options main navbar
@@ -30,11 +30,11 @@ export class NavbarDropdownService {
     public showNavbars = new BehaviorSubject<boolean>(true);
 
     public externalResources = [
-    {name: 'CAE Resource Directory', link: 'http://www.caeresource.directory'},
-    {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'}
+        { name: 'CAE Resource Directory', link: 'http://www.caeresource.directory' },
+        { name: 'CAE Community Site', link: 'https://www.caecommunity.org/' }
     ];
     public topics = new BehaviorSubject<Topic[]>([]);
-    public topicSelection = new BehaviorSubject<Topic>({_id: '', name: ''});
+    public topicSelection = new BehaviorSubject<Topic>({ _id: '', name: '' });
 
     async getTopicList(): Promise<void> {
         this.topics.next(await this.relevancyService.getTopics());
@@ -42,37 +42,37 @@ export class NavbarDropdownService {
 
     public setTopic(topic: Topic): void {
         this.closeAll();
-        this.router.navigate(['/browse'], {queryParams: {currPage: 1, limit: 10, status: 'released', topics: topic}});
+        this.router.navigate(['/browse'], { queryParams: { currPage: 1, limit: 10, status: 'released', topics: topic } });
     }
 
     //close mobile slideouts
     public closeMobileMenus(): void {
-        if(this.isMHamburger.getValue()) {
+        if (this.isMHamburger.getValue()) {
             this.isMHamburger.next(false);
         }
-        if(this.isMSearch.getValue()) {
+        if (this.isMSearch.getValue()) {
             this.isMSearch.next(false);
         }
     }
 
     //close all menus and dropdowns
     public closeAll(): void {
-        if(this.isMHamburger.getValue()) {
+        if (this.isMHamburger.getValue()) {
             this.isMHamburger.next(false);
         }
-        if(this.isMSearch.getValue()) {
+        if (this.isMSearch.getValue()) {
             this.isMSearch.next(false);
         }
-        if(this.userDropdown.getValue()) {
+        if (this.userDropdown.getValue()) {
             this.userDropdown.next(false);
         }
-        if(this.topicDropdown.getValue()) {
+        if (this.topicDropdown.getValue()) {
             this.topicDropdown.next(false);
         }
-        if(this.collectionsDropdown.getValue()) {
+        if (this.collectionsDropdown.getValue()) {
             this.collectionsDropdown.next(false);
         }
-        if(this.resourcesDropdown.getValue()) {
+        if (this.resourcesDropdown.getValue()) {
             this.resourcesDropdown.next(false);
         }
 
@@ -81,22 +81,22 @@ export class NavbarDropdownService {
     public setNavbarStatus(): void {
         this.router.events.subscribe(e => {
             if (e instanceof NavigationEnd) {
-              // if we're in onion, auth, or admin, toggle the navbars off
-              this.closeMobileMenus();
-              this.closeAll();
-              const url = e.url.split('/');
-              if(
-                url[1] === 'auth' ||
-                url[1] === 'onion' ||
-                url[1] === 'admin'
+                // if we're in onion, auth, or admin, toggle the navbars off
+                this.closeMobileMenus();
+                this.closeAll();
+                const url = e.url.split('/');
+                if (
+                    url[1] === 'auth' ||
+                    url[1] === 'onion' ||
+                    url[1] === 'admin'
                 ) {
-                  this.toggleNavbars(false);
+                    this.toggleNavbars(false);
                 } else {
-                  this.toggleNavbars(true);
+                    this.toggleNavbars(true);
                 };
             };
             window.scrollTo(0, 0);
-          });
+        });
     }
 
     public toggleNavbars(val: boolean): void {
