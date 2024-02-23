@@ -499,8 +499,6 @@ export const MISC_ROUTES = {
 export const STATS_ROUTES = {
   // fetches stats for all objects in the system
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
-  // fetches downloads and saves for ALL objects in system
-  LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
   USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };
 
