@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { RATING_ROUTES } from '@env/route';
+import { RATING_ROUTES } from './rating.routes';
 import { AuthService } from '../auth-module/auth.service';
 import { throwError } from 'rxjs';
 import { retry, catchError, map, filter } from 'rxjs/operators';
@@ -13,25 +13,16 @@ export class RatingService {
   /**
    * Respond to a rating
    *
-   * @param {string} learningObjectId
    * @param {string} ratingId
    * @param {{comment:string}} response
    * @returns {Promise<any>}
    */
   createResponse(params: {
-    username: string;
-    CUID: string;
-    version: number;
     ratingId: string;
     response: { comment: string }
   }): Promise<any> {
     const res = this.http.post(
-      RATING_ROUTES.CREATE_RESPONSE({
-        username: params.username,
-        CUID: params.CUID,
-        version: params.version,
-        ratingId: params.ratingId,
-      }),
+      RATING_ROUTES.CREATE_RESPONSE(params.ratingId),
       params.response,
       { withCredentials: true },
     ).toPromise()
@@ -45,28 +36,16 @@ export class RatingService {
   /**
    * Edit a response
    *
-   * @param {string} learningObjectId
-   * @param {string} ratingId
    * @param {string} responseId
    * @param {{comment: string}} updates
    * @returns {Promise<any>}
    */
   editResponse(params: {
-    username: string;
-    CUID: string;
-    version: number;
-    ratingId: string;
     responseId: string;
     updates: { comment: string };
   }): Promise<any> {
     const res = this.http.patch(
-      RATING_ROUTES.UPDATE_RESPONSE({
-        username: params.username,
-        CUID: params.CUID,
-        version: params.version,
-        ratingId: params.ratingId,
-        responseId: params.responseId,
-      }),
+      RATING_ROUTES.UPDATE_RESPONSE(params.responseId),
       params.updates,
       { withCredentials: true },
     ).toPromise()
@@ -79,26 +58,14 @@ export class RatingService {
   /**
    * Delete a response
    *
-   * @param {string} learningObjectId
-   * @param {string} ratingId
    * @param {string} responseId
    * @returns {Promise<any>}
    */
   deleteResponse(params: {
-    username: string;
-    CUID: string;
-    version: number;
-    ratingId: string;
     responseId: string;
   }): Promise<any> {
     const res = this.http.delete(
-      RATING_ROUTES.DELETE_RESPONSE({
-        username: params.username,
-        CUID: params.CUID,
-        version: params.version,
-        ratingId: params.ratingId,
-        responseId: params.responseId,
-      }),
+      RATING_ROUTES.DELETE_RESPONSE(params.responseId),
       { withCredentials: true },
     ).toPromise()
       .catch(result => {
@@ -110,23 +77,19 @@ export class RatingService {
   /**
    * Create a rating for a learning object
    *
-   * @param {string} learningObjectId
    * @param {{value: number, comment: string}} rating
    * @returns {Promise<any>}
    */
   createRating(params: {
-    username: string;
     CUID: string;
     version: number;
     rating: { value: number, comment: string };
   }) {
     return this.http
       .post(
-        RATING_ROUTES.CREATE_RATING({
-          username: params.username,
-          CUID: params.CUID,
-          version: params.version,
-        }),
+        RATING_ROUTES.CREATE_RATING(
+          params.CUID,
+          params.version,),
         params.rating,
         {
           withCredentials: true, responseType: 'text'
@@ -148,7 +111,6 @@ export class RatingService {
    * @returns {Promise<any>}
    */
   editRating(params: {
-    username: string;
     CUID: string;
     version: number;
     ratingId: string;
@@ -156,12 +118,11 @@ export class RatingService {
   }) {
     return this.http
       .patch(
-        RATING_ROUTES.EDIT_RATING({
-          username: params.username,
-          CUID: params.CUID,
-          version: params.version,
-          ratingId: params.ratingId,
-        }),
+        RATING_ROUTES.EDIT_RATING(
+          params.CUID,
+          params.version,
+          params.ratingId,
+        ),
         params.rating,
         {
           withCredentials: true, responseType: 'text'
@@ -184,19 +145,17 @@ export class RatingService {
    * @returns {Promise<any>}
    */
   deleteRating(params: {
-    username: string;
     CUID: string;
     version: number;
     ratingId: string;
   }) {
     return this.http
       .delete(
-        RATING_ROUTES.DELETE_RATING({
-          username: params.username,
-          CUID: params.CUID,
-          version: params.version,
-          ratingId: params.ratingId,
-        }),
+        RATING_ROUTES.DELETE_RATING(
+          params.CUID,
+          params.version,
+          params.ratingId,
+        ),
         {
           withCredentials: true, responseType: 'text'
         }
@@ -217,17 +176,15 @@ export class RatingService {
    * @returns {Promise<any>}
    */
   getLearningObjectRatings(params: {
-    username: string;
     CUID: string;
     version: number;
   }): Promise<any> {
     return this.http
       .get(
-        RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS({
-          username: params.username,
-          CUID: params.CUID,
-          version: params.version,
-        }),
+        RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS(
+          params.CUID,
+          params.version,
+        ),
         {
           withCredentials: true
         }
@@ -251,26 +208,18 @@ export class RatingService {
   /**
    * Flag a rating
    *
-   * @param {string} CUID
-   * @param {string} version
    * @param {string} ratingId
    * @param {{concern: string, comment: string}} report
    * @returns {Promise<any>}
    */
   flagLearningObjectRating(params: {
-    username: string;
-    CUID: string;
-    version: number;
     ratingId: string;
     report: { concern: string, comment?: string }
   }): Promise<any> {
     return this.http.post(
-      RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING({
-        username: params.username,
-        CUID: params.CUID,
-        version: params.version,
-        ratingId: params.ratingId,
-      }),
+      RATING_ROUTES.FLAG_LEARNING_OBJECT_RATING(
+        params.ratingId,
+      ),
       params.report,
       { withCredentials: true },
     )

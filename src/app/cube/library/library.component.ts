@@ -254,9 +254,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async getRatings(learningObject: LearningObject) {
-    const { author, cuid, version } = learningObject;
+    const { cuid, version } = learningObject;
     const params = {
-      username: author.username,
       CUID: cuid,
       version,
     };
