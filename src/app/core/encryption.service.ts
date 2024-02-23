@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { USER_ROUTES } from '@env/route';
 import { retry } from 'rxjs/operators';
+import { AUTH_ROUTES } from './auth-module/auth.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +45,7 @@ export class EncryptionService {
     // Get key from backend
     const publicKey = (
       await this.http
-        .get<{ publicKey: string }>(USER_ROUTES.GET_KEY_PAIR())
+        .get<{ publicKey: string }>(AUTH_ROUTES.GET_KEY_PAIR())
         .pipe(retry(3))
         .toPromise()
     ).publicKey;

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { FEATURED_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { FEATURED_ROUTES } from './featured.router';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { Query } from 'app/interfaces/query';
 import * as querystring from 'querystring';
-import { ProfileService } from '../user-module/profiles.service';
+import { ProfileService } from '../profiles.service';
 
 @Injectable({
   providedIn: 'root'

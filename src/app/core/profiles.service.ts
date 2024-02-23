@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
-import { AuthService } from '../auth-module/auth.service';
+import { AuthService } from './auth-module/auth.service';
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 

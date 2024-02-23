@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
-import { FeaturedObjectsService } from 'app/core/feature-module/featuredObjects.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';

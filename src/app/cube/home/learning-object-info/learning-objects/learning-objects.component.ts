@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { FeaturedObjectsService } from 'app/core/feature-module/featuredObjects.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service';
 import { GoogleTagService } from '../../google-tag.service';

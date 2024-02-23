@@ -22,7 +22,7 @@ import { AccessGroupGuard } from './access-group-guard';
 import { ChangelogService } from './changelog.service';
 import { EditorService } from './editor.service';
 import { SharedModule } from 'app/shared/shared.module';
-import { ProfileService } from './user-module/profiles.service';
+import { ProfileService } from './profiles.service';
 import { NavbarDropdownService } from './navBarDropdown.service';
 
 @NgModule({

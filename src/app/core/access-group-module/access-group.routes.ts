@@ -1,5 +1,4 @@
 import { environment } from '@env/environment';
-import * as querystring from 'querystring';
 
 export const ACCESS_GROUP_ROUTES = {
   // GET, AUTH REQUIRED

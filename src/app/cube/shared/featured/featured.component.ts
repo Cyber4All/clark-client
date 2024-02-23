@@ -4,7 +4,7 @@ import { LearningObjectService } from '../../learning-object.service';
 import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FeaturedObjectsService } from 'app/core/feature-module/featuredObjects.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 
 @Component({
   selector: 'cube-featured',

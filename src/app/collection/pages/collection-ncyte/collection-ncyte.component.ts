@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Collection, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection-module/collections.service';
-import { FeaturedObjectsService } from 'app/core/feature-module/featuredObjects.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { NavbarService } from '../../../core/navbar.service';
 import { Title } from '@angular/platform-browser';
 

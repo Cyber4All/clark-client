@@ -14,6 +14,8 @@ export const AUTH_ROUTES = {
   REFRESH_TOKEN: `${environment.apiURL}/users/tokens/refresh`,
 
   // Registration/Login Routes
+  // GET
+  IDENTIFIER_VALIDATOR: `${environment.apiURL}/users/validate`,
   // POST
   LOGIN: `${environment.apiURL}/users/login`,
   // POST
