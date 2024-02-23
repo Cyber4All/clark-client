@@ -2,7 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { ADMIN_ROUTES, USER_ROUTES } from '@env/route';
-import { catchError, retry } from 'rxjs/operators';
+import { retry } from 'rxjs/operators';
+import { HIERARCHY_ROUTES } from './hierarchy.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class HierarchyService {
    */
   async releaseHierarchy(id: string): Promise<any> {
     return await this.http.patch(
-      ADMIN_ROUTES.CHANGE_HIERARCHY_STATUS(id),
+      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
       {
         status: LearningObject.Status.RELEASED
       },
@@ -48,7 +49,7 @@ export class HierarchyService {
    */
     async submitHierarchy(id: string, collection: string): Promise<any> {
       return await this.http.patch(
-        ADMIN_ROUTES.CHANGE_HIERARCHY_STATUS(id),
+        HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
         {
           status: LearningObject.Status.WAITING,
           collection: collection
