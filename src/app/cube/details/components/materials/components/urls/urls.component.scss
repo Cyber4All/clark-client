@@ -1,20 +1,39 @@
 @import 'vars.scss';
 
-.urls {
-    padding: 20px;
-
+.top-wrapper {
+  & p {
+    cursor: default;
+    font-family: sans-serif;
+    font-size: $larger;
+    color: black;
+    margin: 25px 0 15px 0;
+  }
 }
 
-.urls__grid {
-    border-bottom: 1px solid $light-grey;
-    display: grid;
-    grid-template-columns: 200px auto;
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-}
+.urls__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0 .5rem;
+  padding-bottom: 2em;
 
-.urls__grid__link-title {
+  & .link-icon {
+    font-size: $large;
     color: $dark-grey;
+  }
+}
+
+.urls__link-item {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  border-bottom: 1px solid $light-grey;
+  padding-top: .7rem;
+  padding-bottom: .7rem;
+
+  &:last-of-type {
+    margin-bottom: 1rem;
+    border-bottom: 0px solid transparent;
+  }
 }
 
 p {
