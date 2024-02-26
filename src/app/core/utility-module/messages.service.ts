@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { MISC_ROUTES } from '@env/route';
 import { throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
+import { UTILITY_ROUTES } from './utility.routes';
 
 export class Downtime {
   constructor(public isDown: boolean, public message: string) { }
@@ -23,7 +23,7 @@ export class MessagesService {
 
   constructor(private http: HttpClient) { }
     getDowntime(): Promise<Downtime> {
-        return this.http.get(MISC_ROUTES.CHECK_DOWNTIME, { withCredentials: true })
+        return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
         .pipe(
             retry(3),
             catchError(this.handleError)

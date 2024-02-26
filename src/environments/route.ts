@@ -324,10 +324,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   }
 };
 
-export const MISC_ROUTES = {
-  CHECK_DOWNTIME: `${environment.apiURL}/downtime?service=clark`,
-};
-
 export const STATS_ROUTES = {
   // fetches stats for all objects in the system
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
