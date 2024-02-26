@@ -6,6 +6,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { usersComponentAnimations } from './users.component.animations';
+import { AccessGroupService } from 'app/core/access-group-module/access-group.service';
 
 @Component({
   selector: 'clark-users',
@@ -37,7 +38,8 @@ export class UsersComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private toaster: ToastrOvenService,
     public authService: AuthService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private access: AccessGroupService
   ) {
   }
 
@@ -76,7 +78,7 @@ export class UsersComponent implements AfterViewInit {
    */
   async fetchReviewers() {
     this.loading = true;
-    this.users = await this.user.fetchReviewers(this.activeCollection.abvName);
+    this.users = await this.access.fetchReviewers(this.activeCollection.abvName);
     this.loading = false;
   }
 

@@ -77,21 +77,6 @@ export const COLLECTIONS_ROUTES = {
 };
 
 export const USER_ROUTES = {
-  LOGIN: `${environment.apiURL}/users/tokens`,
-  EDIT_USER_INFO: `${environment.apiURL}/users`,
-  FETCH_USER(user: string, q: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
-  },
-  FETCH_USER_PROFILE(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/profile`;
-  },
-  FETCH_MEMBERS(collection: string, query: any) {
-    return `${environment.apiURL}/collections/${encodeURIComponent(
-      collection
-    )}/members?${querystring.stringify(query)}`;
-  },
   ASSIGN_COLLECTION_MEMBER(collection: string, memberId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
       collection

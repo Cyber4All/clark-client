@@ -14,27 +14,6 @@ export class UserService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
-   * Fetch a list of user's who are reviewers for the given collection
-   *
-   * @param {string} collection
-   * @param {*} role
-   * @returns {Promise<User[]>}
-   * @memberof UserService
-   */
-  fetchReviewers(collection: string): Promise<User[]> {
-    return this.http
-      .get(USER_ROUTES.FETCH_MEMBERS(collection, { role: 'reviewer' }), {
-        withCredentials: true,
-      })
-      .pipe(retry(3), catchError(this.handleError))
-      .toPromise()
-      .then((val: any) => {
-        const arr = val;
-        return arr.map((member) => new User(member));
-      });
-  }
-
-  /**
    * Assigns a user to a specified collection with a specified role
    *
    * @param {string} memberId the id of the user
@@ -169,30 +148,11 @@ export class UserService {
     );
   }
 
-  /**
-   * Retrieve a User object for a given username
-   *
-   * @returns {Promise<User[]>}
-   * @memberof UserService
-   */
-  getsUsers(): Promise<User[]> {
-    return this.http
-      .get(USER_ROUTE.FETCH_USERS, {
-        withCredentials: true,
-      })
-      .pipe(retry(3), catchError(this.handleError))
-      .toPromise()
-      .then((val: any) => {
-        const arr = val;
-        return arr.map((user) => new User(user));
-      });
-  }
-
   //TO-DO: Remove the q parameter because it won't be used with the new route implementation
   getUser(user: string, q: string): Promise<User> {
     return user && user !== 'undefined'
       ? this.http
-          .get(USER_ROUTES.FETCH_USER(user, q), {
+          .get(USER_ROUTE.GET_USER(user), {
             withCredentials: true,
           })
           .pipe(retry(3), catchError(this.handleError))
@@ -225,7 +185,7 @@ export class UserService {
   }): Promise<any> {
     return this.http
       .patch(
-        USER_ROUTE.EDIT_USER_INFO,
+        USER_ROUTE.UPDATE_USER(),
         { user },
         {
           withCredentials: true,
@@ -244,7 +204,7 @@ export class UserService {
    */
   fetchUserProfile(username: string): Promise<any> {
     return this.http
-      .get(USER_ROUTE.FETCH_USER_PROFILE(username), {
+      .get(USER_ROUTE.GET_USER_PROFILE(username), {
         withCredentials: true,
       })
       .pipe(retry(3), catchError(this.handleError))
