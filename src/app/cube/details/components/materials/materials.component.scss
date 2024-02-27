@@ -1,19 +1,17 @@
 @import 'vars.scss';
 
-.materials {
-    height: 500px;
-}
-
 .materials__tab-menu-container {
     margin-top: 55px;
 }
 
 .materials__file-browser-container {
     margin-top: 20px;
+    padding-bottom: 20px;
     border-radius: 5px;
     box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
-    padding: 0 20px 0 20px;
+    padding: 0 45px 0 45px;
     max-height: 450px;
+    min-height: 300px;
     overflow: scroll;
 }
 
@@ -21,10 +19,28 @@
     padding: 20px;
     margin: 0;
     color: $dark-grey;
+
+    & .icon {
+      font-family: 1.2rem;
+    }
 }
 
 .materials__help-link {
     padding-top: 10px;
     color: $dark-grey;
     font-size: $small;
+}
+
+.materials__review-materials__empty-banner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0 .8rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  color: white;
+  font-size: large;
+  background: $orange-gradient;
+  font-size: 1rem;
 }
