@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { retry } from 'rxjs/operators';
-import { AUTH_ROUTES } from './auth-module/auth.routes';
+import { AUTH_ROUTES } from './auth.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class EncryptionService {
    * @param data The data to encrypt
    * @returns The encrypted data and the public key { publicKey: string, data: string }
    */
-   async encryptRSA(data: object) {
+  async encryptRSA(data: object) {
     // Get the key and encrypt the data
     const key = await this.importPublicKey();
     const encrypted = await crypto.subtle.encrypt(

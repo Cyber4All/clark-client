@@ -36,7 +36,7 @@ export class UtilityService {
    */
   async checkClientVersion(): Promise<void | Partial<{ message: string }>> {
     // Application version information
-    const clientVersion = require('../../../package.json');
+    const clientVersion = require('../../../../package.json');
     try {
       await this.http
         .get(UTILITY_ROUTES.GET_CLIENT_VERSION(clientVersion), {
