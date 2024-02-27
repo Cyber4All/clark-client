@@ -5,7 +5,9 @@ import { AuthService } from '../auth-module/auth.service';
 import { throwError } from 'rxjs';
 import { retry, catchError, map, filter } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RatingService {
 
   constructor(private http: HttpClient, private auth: AuthService) { }

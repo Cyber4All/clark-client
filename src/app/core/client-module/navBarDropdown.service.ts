@@ -5,7 +5,9 @@ import { Topic } from '../../../entity';
 import { RelevancyService } from 'app/core/learning-object-module/relevancy.service';
 
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class NavbarDropdownService {
 
     constructor(

@@ -4,9 +4,11 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { ADMIN_ROUTES } from '@env/route';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PrivilegeService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Fetches roles for specified user

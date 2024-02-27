@@ -7,7 +7,9 @@ import { UTILITY_ROUTES } from './utility.routes';
 export class Downtime {
   constructor(public isDown: boolean, public message: string) { }
 }
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class MessagesService {
   /**
    * Format for banner message
@@ -22,26 +24,26 @@ export class MessagesService {
   }
 
   constructor(private http: HttpClient) { }
-    getDowntime(): Promise<Downtime> {
-        return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
-        .pipe(
-            retry(3),
-            catchError(this.handleError)
-        )
-        .toPromise()
-        .then((val: Downtime) => {
-            return val;
-        });
-    }
+  getDowntime(): Promise<Downtime> {
+    return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((val: Downtime) => {
+        return val;
+      });
+  }
 
-    private handleError(error: HttpErrorResponse) {
-        if (error.error instanceof ErrorEvent) {
-          // Client-side or network returned error
-          return throwError(error.error.message);
-        } else {
-          // API returned error
-          return throwError(error);
-        }
-      }
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
+    }
+  }
 }
 

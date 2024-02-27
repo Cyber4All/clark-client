@@ -4,10 +4,12 @@ import { CHANGELOG_ROUTES } from '@env/route';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ChangelogService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Create a new changelog for the given learning object

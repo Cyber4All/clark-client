@@ -18,7 +18,9 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
  * @export
  * @class BuilderStore
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomes: LearningOutcome[];

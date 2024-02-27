@@ -13,7 +13,9 @@ import { CookieService } from 'ngx-cookie';
  *
  * @author Sean Donnelly
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,

@@ -14,7 +14,9 @@ import { retry, catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/typings';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LearningObjectService {
   learningObjects: LearningObject[] = [];
   private headers: HttpHeaders = new HttpHeaders();
@@ -111,17 +113,17 @@ export class LearningObjectService {
   createRevision(cuid: string, authorUsername: string) {
     const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, cuid);
     return this.http
-    .post(
-      route, {},
-      { withCredentials: true }
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise().then(response => {
-      return response;
-    });
+      .post(
+        route, {},
+        { withCredentials: true }
+      )
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise().then(response => {
+        return response;
+      });
   }
   /**
    * Fetches Learning Object by ID (full)
@@ -154,15 +156,15 @@ export class LearningObjectService {
   getLearningObjectRevision(username: string, learningObjectID: string, revisionID: number) {
     const route = USER_ROUTES.GET_LEARNING_OBJECT_REVISION(username, learningObjectID, revisionID);
     return this.http
-    .get(route, { headers: this.headers, withCredentials: true })
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise()
-    .then((res: any) => {
-      return new LearningObject(res);
-    });
+      .get(route, { headers: this.headers, withCredentials: true })
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        return new LearningObject(res);
+      });
   }
 
   /**
@@ -255,7 +257,7 @@ export class LearningObjectService {
    */
   saveOutcome(
     learningObjectId: string,
-    outcome: { id: string; [key: string]: any }
+    outcome: { id: string;[key: string]: any }
   ): Promise<any> {
     const outcomeId = outcome.id;
     delete outcome.id;
@@ -474,16 +476,16 @@ export class LearningObjectService {
 
     if (remove) {
       return this.http
-      .patch(
-        route,
-        { id: children[0] },
-        { withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-        retry(3),
-        catchError(this.handleError)
-      )
-      .toPromise();
+        .patch(
+          route,
+          { id: children[0] },
+          { withCredentials: true, responseType: 'text' }
+        )
+        .pipe(
+          retry(3),
+          catchError(this.handleError)
+        )
+        .toPromise();
     } else {
       return this.http
         .post(
@@ -505,10 +507,10 @@ export class LearningObjectService {
       {},
       { withCredentials: true, responseType: 'text' }
     )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    ).toPromise();
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      ).toPromise();
   }
 
   /**
@@ -661,11 +663,11 @@ export class LearningObjectService {
   getMaterials(username: string, objectId: string): Promise<any> {
     const route = USER_ROUTES.GET_MATERIALS(username, objectId, 'unreleased');
     return this.http.get(route, { withCredentials: true })
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise();
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
   /**
    * Makes request to update file description
@@ -734,14 +736,15 @@ export class LearningObjectService {
    */
   getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
     return this.http
-      .get<{isFirstSubmission: boolean}>(
+      .get<{ isFirstSubmission: boolean }>(
         USER_ROUTES.CHECK_FIRST_SUBMISSION({
           userId,
           learningObjectId,
           query: {
             collection,
             hasSubmission
-          }}),
+          }
+        }),
         { withCredentials: true }
       )
       .pipe(

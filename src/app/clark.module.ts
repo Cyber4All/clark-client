@@ -8,7 +8,7 @@ import { CustomUrlSerializer } from './core/learning-object-module/custom-url-se
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';
 import { SharedModule } from './shared/shared.module';
-//import { CoreModule } from './core/core.module';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
@@ -32,7 +32,8 @@ import { SafeHtmlPipe } from './components/safe-html.pipe';
     SharedModule,
     BrowserAnimationsModule,
     ScrollingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   declarations: [
     ClarkComponent,
@@ -50,6 +51,10 @@ import { SafeHtmlPipe } from './components/safe-html.pipe';
     SafeHtmlPipe
   ],
   bootstrap: [ClarkComponent],
-  providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
+  providers: [
+    TitleCasePipe,
+    Title,
+    { provide: UrlSerializer, useClass: CustomUrlSerializer }
+  ]
 })
 export class ClarkModule { }

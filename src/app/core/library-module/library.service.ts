@@ -9,7 +9,9 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { LIBRARY_ROUTES } from './library.routes';
 
 export const iframeParentID = 'learning-object-download';
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LibraryService {
   private user;
   private headers = new HttpHeaders();

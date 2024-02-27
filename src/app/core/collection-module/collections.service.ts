@@ -16,7 +16,9 @@ export interface Collection {
   hasLogo: boolean;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
@@ -34,7 +36,6 @@ export class CollectionService {
   async fetchCollections() {
     this.collections = await this.http.get(COLLECTION_ROUTES.GET_ALL_COLLECTIONS(), { withCredentials: true })
       .pipe(
-        retry(3),
         catchError(this.handleError)
       )
       .toPromise()
@@ -43,12 +44,13 @@ export class CollectionService {
           c.hasLogo = false;
 
           try {
-            await this.http.head('/assets/images/collections/' + c.abvName + '.png').pipe(
-              catchError(this.handleError)
-            ).toPromise().then(() => {
-              c.hasLogo = true;
-            });
-          } catch (_) {
+            await this.http.head('../../assets/images/collections/' + c.abvName + '.png')
+              .toPromise()
+              .then(() => {
+                c.hasLogo = true;
+              });
+          } catch (error) {
+            console.log(error);
             // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
           }
         }

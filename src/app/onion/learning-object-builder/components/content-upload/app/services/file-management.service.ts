@@ -24,7 +24,9 @@ import { UserService } from 'app/core/user-module/user.service';
 
 const DEFAULT_CONCURRENT_UPLOADS = 10;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FileManagementService {
   private S3: AWS.S3;
 
@@ -32,7 +34,7 @@ export class FileManagementService {
     private http: HttpClient,
     private auth: AuthService,
     private userService: UserService
-  ) {}
+  ) { }
 
   /**
    * Uploads files to S3 using S3 SDK

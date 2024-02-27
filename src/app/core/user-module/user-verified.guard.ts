@@ -8,7 +8,9 @@ import { CookieService } from 'ngx-cookie';
  *
  * @author Sean Donnelly
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserVerifiedGuard implements CanActivate {
 
   constructor(private router: Router, private auth: AuthService, private cookies: CookieService) { }

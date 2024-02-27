@@ -9,7 +9,6 @@ import { CubeRoutingModule } from './cube.routing';
 
 // Services
 import { LearningObjectService } from './learning-object.service';
-//import { CoreModule } from 'app/core/core.module';
 
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';

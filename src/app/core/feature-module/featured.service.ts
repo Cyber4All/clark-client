@@ -44,7 +44,6 @@ export class FeaturedObjectsService {
     const objects: LearningObject[] = await this.http
       .get(FEATURED_ROUTES.GET_FEATURED_OBJECTS())
       .pipe(
-        retry(3),
         catchError(this.handleError)
       ).toPromise()
       .then((featured: any) => {

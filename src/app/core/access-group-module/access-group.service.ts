@@ -6,9 +6,11 @@ import { User } from '@entity';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AccessGroupService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**
    * Fetch a list of user's who are reviewers for the given collection

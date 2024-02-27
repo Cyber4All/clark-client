@@ -6,7 +6,9 @@ import { Observable, throwError } from 'rxjs';
 import { Blog } from 'app/components/blogs/types/blog';
 import { catchError, retry } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UtilityService {
   constructor(private http: HttpClient, private auth: AuthService) { }
 

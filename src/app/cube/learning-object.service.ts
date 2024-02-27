@@ -9,7 +9,9 @@ import { Query } from '../interfaces/query';
 import * as querystring from 'querystring';
 
 // TODO: move to core module
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LearningObjectService {
   filteredResults;
   dataObserver;
@@ -17,7 +19,7 @@ export class LearningObjectService {
 
   constructor(
     private http: HttpClient,
-    ) {}
+  ) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
@@ -40,7 +42,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(query?: Query): Promise<{learningObjects: LearningObject[], total: number}> {
+  getLearningObjects(query?: Query): Promise<{ learningObjects: LearningObject[], total: number }> {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
@@ -70,7 +72,7 @@ export class LearningObjectService {
       .toPromise()
       .then((response: any) => {
         const objects = response.objects;
-        return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total};
+        return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total };
       });
   }
 
@@ -103,18 +105,18 @@ export class LearningObjectService {
         return learningObject;
       });
   }
-    /**
-     * Fetches LearningObject by id
-     *
-     * @param {string} id
-     * @returns {Promise<LearningObject>}
-     * @memberof LearningObjectService
-     */
+  /**
+   * Fetches LearningObject by id
+   *
+   * @param {string} id
+   * @returns {Promise<LearningObject>}
+   * @memberof LearningObjectService
+   */
   getRevisedLearningObject(
     learningObjectId: String
   ): Promise<LearningObject> {
     const route = USER_ROUTES.GET_LEARNING_OBJECT(
-     learningObjectId
+      learningObjectId
     );
     return this.http
       .get(route)

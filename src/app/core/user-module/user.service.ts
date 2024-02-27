@@ -9,9 +9,11 @@ import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { UserQuery } from 'app/interfaces/query';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**
    * Assigns a user to a specified collection with a specified role
@@ -152,21 +154,21 @@ export class UserService {
   getUser(user: string, q: string): Promise<User> {
     return user && user !== 'undefined'
       ? this.http
-          .get(USER_ROUTE.GET_USER(user), {
-            withCredentials: true,
-          })
-          .pipe(retry(3), catchError(this.handleError))
-          .toPromise()
-          .then(
-            (val: any) => {
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              const user_res = val;
-              return user_res ? new User(user_res) : null;
-            },
-            (error) => {
-              return null;
-            }
-          )
+        .get(USER_ROUTE.GET_USER(user), {
+          withCredentials: true,
+        })
+        .pipe(retry(3), catchError(this.handleError))
+        .toPromise()
+        .then(
+          (val: any) => {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const user_res = val;
+            return user_res ? new User(user_res) : null;
+          },
+          (error) => {
+            return null;
+          }
+        )
       : Promise.resolve(null);
   }
 

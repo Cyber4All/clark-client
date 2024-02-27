@@ -5,7 +5,9 @@ import { AuthService } from '../auth-module/auth.service';
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ProfileService {
   userNotifications: any;
   constructor(private http: HttpClient, private auth: AuthService) { }

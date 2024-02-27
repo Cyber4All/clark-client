@@ -44,7 +44,9 @@ export interface OpenIdToken {
 // Location of logged in user's access tokens in local storage
 const TOKEN_STORAGE_KEY = 'clark.center:access-tokens';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   user: AuthUser;
   httpHeaders = new HttpHeaders();

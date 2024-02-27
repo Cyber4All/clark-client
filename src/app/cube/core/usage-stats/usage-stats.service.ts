@@ -15,9 +15,11 @@ interface BloomsDistribution {
   };
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UsageStatsService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   async getLearningObjectStats(): Promise<LearningObjectStats> {
     const [objects, library] = await Promise.all([
@@ -29,7 +31,7 @@ export class UsageStatsService {
         )
         .toPromise(),
       this.http
-        .get<{metrics: any}>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS())
+        .get<{ metrics: any }>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS())
         .pipe(
           retry(3),
           catchError(this.handleError)
@@ -45,15 +47,15 @@ export class UsageStatsService {
     };
 
     delete objects.blooms_distribution;
-    return { ...objects, ...library.metrics } as  LearningObjectStats;
+    return { ...objects, ...library.metrics } as LearningObjectStats;
   }
   getUserStats(): Promise<UserStats> {
     return this.http.get<UserStats>(STATS_ROUTES.USERS_STATS)
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise();
+      .pipe(
+        retry(3),
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
 
   private handleError(error: HttpErrorResponse) {

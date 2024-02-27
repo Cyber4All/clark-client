@@ -8,7 +8,9 @@ import { CookieService } from 'ngx-cookie';
  *
  * @author Nick Winner
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AdminGuard implements CanActivate {
 
   constructor(private router: Router, private auth: AuthService, private cookies: CookieService) { }

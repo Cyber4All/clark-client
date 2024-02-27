@@ -6,7 +6,7 @@ import { AuthService } from '../auth-module/auth.service';
 import { NavbarService } from './navbar.service';
 
 import { LibraryService } from '../library-module/library.service';
-import { GuidelineService } from '../standard-guidelines-module/guideline.service';
+import { GuidelineService } from '../standard-guidelines-module/standard-guidelines.service';
 import { CookieModule } from 'ngx-cookie';
 
 import { RatingService } from '../rating-module/rating.service';
