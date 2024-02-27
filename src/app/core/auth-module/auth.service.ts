@@ -346,9 +346,9 @@ export class AuthService {
       const response = await this.http
         .post<AuthUser & { tokens: Tokens }>(AUTH_ROUTES.LOGIN(),
           data,
-        {
-          withCredentials: true,
-        })
+          {
+            withCredentials: true,
+          })
         .pipe(catchError(this.handleError))
         .toPromise();
       const tokens: Tokens = response.tokens;
