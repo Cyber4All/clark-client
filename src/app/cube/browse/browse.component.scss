@@ -8,7 +8,7 @@ $learning-object-width: 820px;
   padding: 0 20px;
 
   .filters-clear-all,
-  .clear-search {
+  .clear-search, .search-CARD {
     color: $blue-accent;
     text-decoration: underline;
     cursor: pointer;
@@ -122,7 +122,7 @@ $learning-object-width: 820px;
         display: flex;
         flex-direction: row;
 
-        & > *:not(:last-child) {
+        & > *:not(:last-child), .search-CARD {
           margin-right: 20px;
         }
       }
