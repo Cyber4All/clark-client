@@ -4,9 +4,12 @@ import * as querystring from 'querystring';
 export type MaterialsFilter = 'released' | 'unreleased';
 
 export const ADMIN_ROUTES = {
-  MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName: string, userId: string): string {
+  MUTATE_COLLECTION_MEMBERSHIP(
+    abvCollectionName: string,
+    userId: string,
+  ): string {
     return `${environment.apiURL}/collections/${encodeURIComponent(
-      abvCollectionName
+      abvCollectionName,
     )}/members/${encodeURIComponent(userId)}`;
   },
   GET_USER_ROLES(id: string): string {
@@ -16,52 +19,74 @@ export const ADMIN_ROUTES = {
     return `${environment.apiURL}/guidelines/members`;
   },
   ADD_MAPPER(userId: string): string {
-    return `${environment.apiURL}/guidelines/members/${encodeURIComponent(userId)}`;
+    return `${environment.apiURL}/guidelines/members/${encodeURIComponent(
+      userId,
+    )}`;
   },
   REMOVE_MAPPER(userId: string): string {
-    return `${environment.apiURL}/guidelines/members/${encodeURIComponent(userId)}`;
+    return `${environment.apiURL}/guidelines/members/${encodeURIComponent(
+      userId,
+    )}`;
   },
   CHANGE_AUTHOR(userId: string, id: string): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${id}/change-author`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      userId,
+    )}/learning-objects/${id}/change-author`;
   },
   CHANGE_STATUS(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${id}/status`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${id}/status`;
   },
   UNRELEASE_OBJECT(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${id}/status`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${id}/status`;
   },
   DELETE_REVISION(username: string, cuid: string, version: number) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${cuid}/versions/${version}`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${cuid}/versions/${version}`;
   },
   UPDATE_OBJECT_SUBMITTED_COLLECTION(username: string, cuid: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(cuid)}/collection`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${encodeURIComponent(cuid)}/collection`;
   },
   ADD_HIERARCHY_OBJECT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/hierarchy-object`;
   },
   CHANGE_HIERARCHY_STATUS(id: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/status`;
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      id,
+    )}/status`;
   },
   TOGGLE_BUNDLE(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(id)}/files/bundle`;
-  }
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${encodeURIComponent(id)}/files/bundle`;
+  },
 };
 
 export const CHANGELOG_ROUTES = {
   CREATE_CHANGELOG(userId: string, learningObjectCuid: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(userId)}/learning-objects/${encodeURIComponent(learningObjectCuid)}/changelog`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      userId,
+    )}/learning-objects/${encodeURIComponent(learningObjectCuid)}/changelog`;
   },
   FETCH_ALL_CHANGELOGS(params: {
-    userId: string, learningObjectCuid: string, minusRevision?: boolean,
+    userId: string;
+    learningObjectCuid: string;
+    minusRevision?: boolean;
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.userId,
     )}/learning-objects/${encodeURIComponent(
       params.learningObjectCuid,
     )}/changelogs?minusRevision=${params.minusRevision}`;
-  }
+  },
 };
 
 export const COLLECTIONS_ROUTES = {
@@ -72,15 +97,20 @@ export const COLLECTIONS_ROUTES = {
   GET_COLLECTION_CURATORS(name: string) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   },
-  GET_COLLECTION_REPORT(collections: string[], date?: { start: string, end: string }) {
-    let route = `${environment.apiURL}/reports?output=csv&collection=${collections.join(',')}`;
+  GET_COLLECTION_REPORT(
+    collections: string[],
+    date?: { start: string; end: string },
+  ) {
+    let route = `${
+      environment.apiURL
+    }/reports?output=csv&collection=${collections.join(',')}`;
 
     if (date) {
       route += `&start=${date.start}&end=${date.end}`;
     }
 
     return route;
-  }
+  },
 };
 
 export const USER_ROUTES = {
@@ -88,53 +118,56 @@ export const USER_ROUTES = {
   REGISTER: `${environment.apiURL}/users`,
   EDIT_USER_INFO: `${environment.apiURL}/users`,
   FETCH_USER(user: string, q: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(user)}?q=${encodeURIComponent(q)}`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      user,
+    )}?q=${encodeURIComponent(q)}`;
   },
   FETCH_USER_PROFILE(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/profile`;
   },
   FETCH_MEMBERS(collection: string, query: any) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
-      collection
+      collection,
     )}/members?${querystring.stringify(query)}`;
   },
   ASSIGN_COLLECTION_MEMBER(collection: string, memberId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
-      collection
-    )}/members/${encodeURIComponent(
-      memberId
-    )}`;
+      collection,
+    )}/members/${encodeURIComponent(memberId)}`;
   },
   UPDATE_COLLECTION_MEMBER(collection: string, memberId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
-      collection
-    )}/members/${encodeURIComponent(
-      memberId
-    )}`;
+      collection,
+    )}/members/${encodeURIComponent(memberId)}`;
   },
 
   REMOVE_COLLECTION_MEMBER(collection: string, memberId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
-      collection
-    )}/members/${encodeURIComponent(
-      memberId
-    )}`;
+      collection,
+    )}/members/${encodeURIComponent(memberId)}`;
   },
   LOAD_USER_PROFILE(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/learning-objects/profile`;
   },
   SEARCH_USERS(query: any) {
     return `${environment.apiURL}/users/search?${querystring.stringify(query)}`;
   },
-  GET_MY_LEARNING_OBJECTS(username, filters: any, query: string, childId?: string) {
+  GET_MY_LEARNING_OBJECTS(
+    username,
+    filters: any,
+    query: string,
+    childId?: string,
+  ) {
     // Onion
     let uri = `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects?children=true&text=${encodeURIComponent(query)}&${querystring.stringify(filters)}`;
+      username,
+    )}/learning-objects?children=true&text=${encodeURIComponent(
+      query,
+    )}&${querystring.stringify(filters)}`;
     if (childId) {
       uri = uri + `&currentId=${encodeURIComponent(childId)}`;
     }
@@ -142,219 +175,234 @@ export const USER_ROUTES = {
   },
   GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion Dashboard
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects?text=${encodeURIComponent(
+      query,
     )}&${querystring.stringify(filters)}&draftsOnly=true`;
   },
   GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username)}/learning-objects/${encodeURIComponent(
-        learningObjectId)}/revisions/${encodeURIComponent(revisionId)}`;
+      username,
+    )}/learning-objects/${encodeURIComponent(
+      learningObjectId,
+    )}/revisions/${encodeURIComponent(revisionId)}`;
   },
   ADD_TO_MY_LEARNING_OBJECTS(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/learning-objects`;
   },
   CREATE_REVISION_OF_LEARNING_OBJECT(username, cuid) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${encodeURIComponent(
-      cuid
-    )}/versions`;
+      username,
+    )}/learning-objects/${encodeURIComponent(cuid)}/versions`;
   },
   UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
-    return `${environment.apiURL
-      }/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
-        learningObjectName
-      )}`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
   },
-  SUBMIT_LEARNING_OBJECT(params: {
-    userId: string,
-    learningObjectId: string
-  }) {
-    return `${environment.apiURL
-      }/users/${encodeURIComponent(params.userId)}/learning-objects/${params.learningObjectId}/submissions`;
+  SUBMIT_LEARNING_OBJECT(params: { userId: string; learningObjectId: string }) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.userId,
+    )}/learning-objects/${params.learningObjectId}/submissions`;
   },
   UNSUBMIT_LEARNING_OBJECT(params: {
-    userId: string,
-    learningObjectId: string
+    userId: string;
+    learningObjectId: string;
   }) {
-    return `${environment.apiURL
-      }/users/${encodeURIComponent(params.userId)}/learning-objects/${params.learningObjectId}/submissions`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.userId,
+    )}/learning-objects/${params.learningObjectId}/submissions`;
   },
   CHECK_FIRST_SUBMISSION(params: {
-    userId: string,
-    learningObjectId: string,
+    userId: string;
+    learningObjectId: string;
     query: {
-      collection: string,
-      hasSubmission: boolean
-    },
+      collection: string;
+      hasSubmission: boolean;
+    };
   }) {
-    const q = 'collection=' + params.query.collection + '&hasSubmission=' + params.query.hasSubmission;
-    return `${environment.apiURL
-      }/users/${encodeURIComponent(params.userId)}/learning-objects/${params.learningObjectId}/submissions?${q}`;
+    const q =
+      'collection=' +
+      params.query.collection +
+      '&hasSubmission=' +
+      params.query.hasSubmission;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      params.userId,
+    )}/learning-objects/${params.learningObjectId}/submissions?${q}`;
   },
   GET_LEARNING_OBJECT(id) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
   },
   DELETE_LEARNING_OBJECT(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/learning-objects/${encodeURIComponent(id)}`;
   },
   DELETE_MULTIPLE_LEARNING_OBJECTS(username, learningObjectNames) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
   },
   DELETE_FILE_FROM_LEARNING_OBJECT({
     authorUsername,
     learningObjectId,
-    fileId
+    fileId,
   }: {
     authorUsername: string;
     learningObjectId: string;
     fileId: string;
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      authorUsername
+      authorUsername,
     )}/learning-objects/${encodeURIComponent(
-      learningObjectId
+      learningObjectId,
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
   MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectId
+      learningObjectId,
     )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
   CREATE_AN_OUTCOME(learningObjectId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectId
+      learningObjectId,
     )}/learning-outcomes`;
   },
   DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectId
+      learningObjectId,
     )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
   POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
-      learningObjectId
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${encodeURIComponent(
+      learningObjectId,
     )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
   },
-  DELETE_MAPPING(username: string, learningObjectId: string, outcomeId: string, mappingsId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
-      learningObjectId
-    )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(mappingsId)}`;
+  DELETE_MAPPING(
+    username: string,
+    learningObjectId: string,
+    outcomeId: string,
+    mappingsId: string,
+  ) {
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${encodeURIComponent(
+      learningObjectId,
+    )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(
+      mappingsId,
+    )}`;
   },
   GET_CART(username, page?, limit?) {
     // CUBE
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects?page=${page}&limit=${limit}`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/library/learning-objects?page=${page}&limit=${limit}`;
   },
   CLEAR_LEARNING_OBJECT_FROM_CART(username, cuid) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/library/learning-objects/${encodeURIComponent(cuid)}`;
   },
   ADD_LEARNING_OBJECT_TO_CART(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/learning-objects`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/library/learning-objects`;
   },
   OBJECT_BUNDLE(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/learning-objects/${encodeURIComponent(learningObjectId)}/bundle`;
   },
   GET_SAME_ORGANIZATION(organization) {
-    return `${environment.apiURL
-      }/users/search?organization=${encodeURIComponent(organization)}`;
+    return `${
+      environment.apiURL
+    }/users/search?organization=${encodeURIComponent(organization)}`;
   },
   VALIDATE_CAPTCHA() {
     return `${environment.apiURL}/users/validate-captcha`;
   },
   SET_CHILDREN(username, learningObjectName) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      username
+      username,
     )}/${encodeURIComponent(learningObjectName)}/children`;
   },
   UPDATE_PDF(id: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/pdf`;
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      id,
+    )}/pdf`;
   },
   UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/learning-objects/${objectId}/materials/files/${encodeURIComponent(
-      fileId
+      fileId,
     )}`;
   },
   GET_MATERIALS(username: string, objectId: string, filter?: MaterialsFilter) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/learning-objects/${objectId}/materials?status=${filter}`;
   },
   ADD_FILE_META(username: string, objectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/learning-objects/${objectId}/materials/files`;
   },
   GET_CHILDREN(username: string, learningObjectID: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
-      learningObjectID
-    )}/children`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username,
+    )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
   },
   GET_METRICS(username: string, learningObjectID: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${encodeURIComponent(
-      learningObjectID
-    )}/metrics`;
+      username,
+    )}/learning-objects/${encodeURIComponent(learningObjectID)}/metrics`;
   },
   GET_NOTIFICATIONS(params: {
-    username: string,
-    page: number,
-    limit: number,
+    username: string;
+    page: number;
+    limit: number;
   }): string {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.username,
     )}/notifications?page=${encodeURIComponent(
       params.page.toString(),
-    )}&limit=${encodeURIComponent(
-      params.limit.toString(),
-    )}`;
+    )}&limit=${encodeURIComponent(params.limit.toString())}`;
   },
-  DELETE_NOTIFICATION(params: {
-    username: string,
-    id: string,
-  }): string {
+  DELETE_NOTIFICATION(params: { username: string; id: string }): string {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.username,
-    )}/notifications/${encodeURIComponent(
-      params.id,
-    )}`;
+    )}/notifications/${encodeURIComponent(params.id)}`;
   },
   GET_KEY_PAIR(): string {
     return `${environment.apiURL}/keys`;
   },
   TOGGLE_FILES_TO_BUNDLE(params: {
-    username: string,
-    learningObjectID: string,
+    username: string;
+    learningObjectID: string;
   }): string {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username
+      params.username,
     )}/learning-objects/${encodeURIComponent(
-      params.learningObjectID
+      params.learningObjectID,
     )}/files/bundle`;
   },
   GET_COLLECTIONS(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
+      username,
     )}/collections`;
-  }
+  },
 };
 
 export const ORGANIZATION_ROUTES = {
   SEARCH_ORGANIZATIONS(queryString: string) {
     return `${environment.cardOrganizationUrl}&text=${queryString}`;
-  }
+  },
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
@@ -363,7 +411,9 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     return `${environment.apiURL}/learning-objects?${query}`;
   },
   GET_PUBLIC_LEARNING_OBJECT(author: string, cuid: string, version?: number) {
-    let uri = `${environment.apiURL}/users/${encodeURIComponent(author)}/learning-objects/${encodeURIComponent(cuid)}`;
+    let uri = `${environment.apiURL}/users/${encodeURIComponent(
+      author,
+    )}/learning-objects/${encodeURIComponent(cuid)}`;
 
     if (version !== undefined) {
       uri += '?version=' + version.toString();
@@ -385,141 +435,86 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     open?: boolean;
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username
-    )}/learning-objects/${params.loId}/files/${params.fileId}/download${params.open ? '?open=true' : ''
-      }`;
-  }
+      params.username,
+    )}/learning-objects/${params.loId}/files/${params.fileId}/download${
+      params.open ? '?open=true' : ''
+    }`;
+  },
 };
 
 export const RATING_ROUTES = {
-  DELETE_RATING(params: {
-    username: string;
+  /**
+   * Rating Routes
+   */
+
+  GET_LEARNING_OBJECT_RATINGS(params: {
     CUID: string;
     version: number;
-    ratingId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
+  }): string {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}`;
+    )}/version/${encodeURIComponent(params.version.toString())}/ratings`;
   },
+
+  CREATE_RATING(params: { CUID: string; version: number }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.CUID,
+    )}/version/${encodeURIComponent(params.version.toString())}/ratings`;
+  },
+
   EDIT_RATING(params: {
-    username: string;
     CUID: string;
     version: number;
     ratingId: string;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}`;
+    )}/ratings/${encodeURIComponent(params.ratingId)}`;
   },
-  CREATE_RESPONSE(params: {
-    username: string;
-    CUID: string;
-    version: number;
-    ratingId: string;
-  }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID
+
+  DELETE_RATING(params: { CUID: string; version: number; ratingId: string }) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+      params.CUID,
     )}/version/${encodeURIComponent(
       params.version.toString(),
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
+    )}/ratings/${encodeURIComponent(params.ratingId)}`;
+  },
+
+  /**
+   * Rating Response Routes
+   */
+
+  CREATE_RESPONSE(params: { ratingId: string }): string {
+    return `${environment.apiURL}/learning-objects/ratings/${encodeURIComponent(
+      params.ratingId,
     )}/responses`;
   },
+
   UPDATE_RESPONSE(params: {
-    username: string;
-    CUID: string;
-    version: number;
-    ratingId: string;
     responseId: string;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}/responses/${encodeURIComponent(
-      params.responseId
-    )}`;
+    return `${environment.apiURL}/learning-objects/ratings
+    /responses/${encodeURIComponent(params.responseId)}`;
   },
+
   DELETE_RESPONSE(params: {
-    username: string;
-    CUID: string;
-    version: number;
-    ratingId: string;
     responseId: string;
   }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}/responses/${encodeURIComponent(
-      params.responseId
-    )}`;
+    return `${environment.apiURL}/learning-objects/ratings
+    /responses/${encodeURIComponent(params.responseId)}`;
   },
-  CREATE_RATING(params: {
-    username: string;
-    CUID: string;
-    version: number;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings`;
+
+  /**
+   * Rating Flag Routes
+   */
+
+  FLAG_LEARNING_OBJECT_RATING(params: { ratingId: string }): string {
+    return `${environment.apiURL}/ratings/${encodeURIComponent(
+      params.ratingId,
+    )}/flag`;
   },
-  GET_LEARNING_OBJECT_RATINGS(params: {
-    username: string;
-    CUID: string;
-    version: number;
-  }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings`;
-  },
-  FLAG_LEARNING_OBJECT_RATING(params: {
-    username: string;
-    CUID: string;
-    version: number;
-    ratingId: string;
-  }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(
-      params.ratingId
-    )}/flags`;
-  }
 };
 export const MISC_ROUTES = {
   CHECK_DOWNTIME: `${environment.apiURL}/downtime?service=clark`,
@@ -530,7 +525,7 @@ export const STATS_ROUTES = {
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
   // fetches downloads and saves for ALL objects in system
   LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
-  USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
+  USERS_STATS: `${environment.apiURL}/users/stats`, // nothing new
 };
 
 export const FEATURED_ROUTES = {
@@ -540,20 +535,18 @@ export const FEATURED_ROUTES = {
   GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
   // Get featured objects for a specific collection
   GET_COLLECTION_FEATURED(collection: string) {
-    return `${environment.apiURL}/featured/learning-objects/${encodeURIComponent(
-      collection
-    )}`;
-  }
+    return `${
+      environment.apiURL
+    }/featured/learning-objects?collection=${encodeURIComponent(collection)}`;
+  },
 };
 
 export const RELEVANCY_ROUTES = {
   // Sets the nextCheck date for a relevancy
   NEXT_CHECK(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
-      username
-    )}/learning-objects/${encodeURIComponent(
-      id
-    )}/relevancy-check`;
+      username,
+    )}/learning-objects/${encodeURIComponent(id)}/relevancy-check`;
   },
   // Assigns multiple users to evaluate multiple learning objects
   ASSIGN_EVALUATORS() {
@@ -570,7 +563,11 @@ export const RELEVANCY_ROUTES = {
   PATCH_OBJECT_TOPICS(username: string, id: string) {
     return `${environment.apiURL}/users/${username}/learning-objects/${id}/topics`;
   },
-  PATCH_OBJECT_OUTCOME_MAPPINGS(username: string, objectId: string, outcomeId: string) {
+  PATCH_OBJECT_OUTCOME_MAPPINGS(
+    username: string,
+    objectId: string,
+    outcomeId: string,
+  ) {
     return `${environment.apiURL}/users/${username}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
   },
 };
@@ -582,17 +579,17 @@ export const STANDARD_GUIDELINE_ROUTES = {
 
   // Searches frameworks given a text query
   SEARCH_FRAMEWORKS(params: {
-    text?: string,
-    year?: string,
-    levels?: string,
-    page?: string,
-    limit?: string,
-    type?: string
+    text?: string;
+    year?: string;
+    levels?: string;
+    page?: string;
+    limit?: string;
+    type?: string;
   }) {
     return `${environment.apiURL}/frameworks?${querystring.stringify(params)}`;
   },
   // Searches guidelines/standards given a text, year, and level query
   SEARCH_GUIDELINES(query: string) {
     return `${environment.apiURL}/guidelines?${query}`;
-  }
+  },
 };

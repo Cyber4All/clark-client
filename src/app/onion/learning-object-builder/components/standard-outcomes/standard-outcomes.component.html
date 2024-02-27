@@ -11,6 +11,9 @@
   <div class="results">
     <ng-container [ngTemplateOutlet]="listTemplate" [ngTemplateOutletContext]="{ items: searchStringValue !== '' ? searchResults : suggestions }"></ng-container>
   </div>
+<div class="standard-guidelines-link">
+    <a href="https://standard-guidelines.clark.center/guidelines" target="_blank">Want to view all guidelines? Click
+        here!</a>
 </div>
 <clark-skip-link title="Go back to Learning Outcome" skipLocation="outcome"></clark-skip-link>
 <clark-skip-link title="Go to Add New Learning Outcome" skipLocation="form"></clark-skip-link>

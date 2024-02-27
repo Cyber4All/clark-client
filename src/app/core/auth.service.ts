@@ -308,7 +308,7 @@ export class AuthService {
     const { version: appVersion } = require('../../../package.json');
     try {
       await this.http
-        .get(environment.apiURL + '/clientversion/' + appVersion, {
+        .get(`${environment.apiURL}/clientversion?clientVersion=${encodeURIComponent(appVersion)}`, {
           withCredentials: true,
           responseType: 'text'
         })
