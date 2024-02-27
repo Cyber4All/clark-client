@@ -40,7 +40,7 @@ export class RelevancyService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -66,7 +66,7 @@ export class RelevancyService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -86,7 +86,7 @@ export class RelevancyService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -107,7 +107,7 @@ export class RelevancyService {
           }
         )
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise()
@@ -142,7 +142,7 @@ export class RelevancyService {
           }
         )
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise()
@@ -173,7 +173,7 @@ export class RelevancyService {
           }
         )
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise()

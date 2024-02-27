@@ -26,14 +26,14 @@ export class UsageStatsService {
       this.http
         .get<Partial<LearningObjectStats> & BloomsDistribution>(STATS_ROUTES.LEARNING_OBJECT_STATS)
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise(),
       this.http
         .get<{ metrics: any }>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS())
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise()
@@ -52,7 +52,7 @@ export class UsageStatsService {
   getUserStats(): Promise<UserStats> {
     return this.http.get<UserStats>(STATS_ROUTES.USERS_STATS)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

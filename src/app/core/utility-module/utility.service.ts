@@ -45,7 +45,6 @@ export class UtilityService {
           withCredentials: true,
           responseType: 'text',
         })
-        .pipe(retry(3))
         .toPromise();
       return Promise.resolve();
     } catch (error) {

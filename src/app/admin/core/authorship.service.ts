@@ -12,21 +12,21 @@ export class AuthorshipService {
 
   private headers = new HttpHeaders();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   async changeAuthorship(oldAuthor: User, id: string, newAuthor: string) {
     return this.http
-    .post(ADMIN_ROUTES.CHANGE_AUTHOR(oldAuthor.id, id),
-    {
-      'author': newAuthor,
-    },
-    { withCredentials: true, responseType: 'text'}
-    )
-    .pipe(
-      retry(3),
-      catchError(this.handleError)
-    )
-    .toPromise();
+      .post(ADMIN_ROUTES.CHANGE_AUTHOR(oldAuthor.id, id),
+        {
+          'author': newAuthor,
+        },
+        { withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
 
   /**

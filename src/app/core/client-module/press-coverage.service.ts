@@ -24,7 +24,7 @@ export class PressCoverageService {
     } else {
       return this.http.get('assets/images/press/mentions.json', { responseType: 'json' })
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise()

@@ -98,7 +98,7 @@ export class RatingService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -131,7 +131,7 @@ export class RatingService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -163,7 +163,7 @@ export class RatingService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -192,7 +192,7 @@ export class RatingService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError),
         filter(response => response != null),
         map((response: any) => {
@@ -226,7 +226,7 @@ export class RatingService {
       { withCredentials: true },
     )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

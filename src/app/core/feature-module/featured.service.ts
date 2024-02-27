@@ -145,7 +145,7 @@ export class FeaturedObjectsService {
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -167,7 +167,7 @@ export class FeaturedObjectsService {
     return this.http
       .get(FEATURED_ROUTES_OLD.GET_COLLECTION_FEATURED(collection))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()

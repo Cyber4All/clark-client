@@ -48,7 +48,7 @@ export class SuggestionService {
         headers: this.headers
       })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()

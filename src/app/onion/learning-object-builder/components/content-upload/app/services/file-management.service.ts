@@ -523,7 +523,7 @@ export class FileManagementService {
     return this.http
       .delete(route, { withCredentials: true, responseType: 'text' })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

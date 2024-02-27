@@ -27,7 +27,7 @@ export class MessagesService {
   getDowntime(): Promise<Downtime> {
     return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()

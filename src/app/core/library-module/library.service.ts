@@ -51,7 +51,7 @@ export class LibraryService {
         headers: this.headers
       })
       .pipe(
-        retry(3),
+
         catchError((error) => this.handleError(error))
       )
       .toPromise()
@@ -96,7 +96,7 @@ export class LibraryService {
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError((error) => this.handleError(error))
       )
       .toPromise();

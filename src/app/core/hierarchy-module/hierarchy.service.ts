@@ -16,7 +16,7 @@ export class HierarchyService {
   async addHierarchyObject(username: string, object: any): Promise<any> {
     return await this.http.post(
       ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(username),
-      { object }, { withCredentials: true, responseType: 'text'}
+      { object }, { withCredentials: true, responseType: 'text' }
     ).toPromise();
   }
 
@@ -34,7 +34,7 @@ export class HierarchyService {
       {
         status: LearningObject.Status.RELEASED
       },
-      { withCredentials: true, responseType: 'json'}
+      { withCredentials: true, responseType: 'json' }
     ).toPromise();
   }
 
@@ -47,16 +47,16 @@ export class HierarchyService {
    * @param collection the collection the objects will belong to
    * @returns A promise
    */
-    async submitHierarchy(id: string, collection: string): Promise<any> {
-      return await this.http.patch(
-        HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
-        {
-          status: LearningObject.Status.WAITING,
-          collection: collection
-        },
-        { withCredentials: true, responseType: 'json'}
-      ).toPromise();
-    }
+  async submitHierarchy(id: string, collection: string): Promise<any> {
+    return await this.http.patch(
+      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
+      {
+        status: LearningObject.Status.WAITING,
+        collection: collection
+      },
+      { withCredentials: true, responseType: 'json' }
+    ).toPromise();
+  }
   /**
    * Adds children to a learning object
    *
@@ -88,9 +88,6 @@ export class HierarchyService {
   async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http
       .get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(username, {}, objectName), { withCredentials: true })
-      .pipe(
-        retry(3)
-      )
       .toPromise()
       .then((response: any) => {
         const possibleMatches = response.map(object => {

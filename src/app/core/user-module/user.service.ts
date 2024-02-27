@@ -38,7 +38,7 @@ export class UserService {
           responseType: 'text',
         }
       )
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -61,7 +61,7 @@ export class UserService {
         withCredentials: true,
         responseType: 'text',
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise()
       .then((res: any) => {
         return new User(res);
@@ -86,7 +86,7 @@ export class UserService {
           responseType: 'text',
         }
       )
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -102,7 +102,7 @@ export class UserService {
       .get(USER_ROUTES.SEARCH_USERS(query), {
         withCredentials: true,
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
         const arr = val;
@@ -121,7 +121,7 @@ export class UserService {
     const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
       .get(route)
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
         const arr = val;
@@ -157,7 +157,7 @@ export class UserService {
         .get(USER_ROUTE.GET_USER(user), {
           withCredentials: true,
         })
-        .pipe(retry(3), catchError(this.handleError))
+        .pipe(catchError(this.handleError))
         .toPromise()
         .then(
           (val: any) => {
@@ -194,7 +194,7 @@ export class UserService {
           responseType: 'text',
         }
       )
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -209,7 +209,7 @@ export class UserService {
       .get(USER_ROUTE.GET_USER_PROFILE(username), {
         withCredentials: true,
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 

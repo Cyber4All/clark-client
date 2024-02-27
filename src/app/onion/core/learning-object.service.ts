@@ -69,7 +69,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -94,7 +94,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -118,7 +118,7 @@ export class LearningObjectService {
         { withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise().then(response => {
@@ -137,7 +137,7 @@ export class LearningObjectService {
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -158,7 +158,7 @@ export class LearningObjectService {
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -183,7 +183,7 @@ export class LearningObjectService {
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -207,7 +207,7 @@ export class LearningObjectService {
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -241,7 +241,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -269,7 +269,7 @@ export class LearningObjectService {
         { withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -285,7 +285,7 @@ export class LearningObjectService {
     return this.http
       .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -314,7 +314,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -342,7 +342,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -366,7 +366,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -388,7 +388,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -437,7 +437,7 @@ export class LearningObjectService {
         responseType: 'text'
       })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -460,7 +460,7 @@ export class LearningObjectService {
         responseType: 'text'
       })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -482,7 +482,7 @@ export class LearningObjectService {
           { withCredentials: true, responseType: 'text' }
         )
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise();
@@ -494,7 +494,7 @@ export class LearningObjectService {
           { withCredentials: true, responseType: 'text' }
         )
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise();
@@ -508,7 +508,7 @@ export class LearningObjectService {
       { withCredentials: true, responseType: 'text' }
     )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       ).toPromise();
   }
@@ -623,7 +623,7 @@ export class LearningObjectService {
     const response$ = this.http
       .post(route, { fileMeta: batch }, { withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -664,7 +664,7 @@ export class LearningObjectService {
     const route = USER_ROUTES.GET_MATERIALS(username, objectId, 'unreleased');
     return this.http.get(route, { withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -697,7 +697,7 @@ export class LearningObjectService {
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -719,7 +719,7 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -748,7 +748,7 @@ export class LearningObjectService {
         { withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

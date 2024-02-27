@@ -298,7 +298,7 @@ export class AuthService {
         .get<AuthUser>(environment.apiURL + '/users/tokens', {
           withCredentials: true,
         })
-        .pipe(retry(3), catchError(this.handleError))
+        .pipe(catchError(this.handleError))
         .toPromise();
       this.user = response;
       this.assignUserToGroup();
@@ -324,7 +324,7 @@ export class AuthService {
             withCredentials: true,
           }
         )
-        .pipe(retry(3), catchError(this.handleError))
+        .pipe(catchError(this.handleError))
         .toPromise();
       const tokens: Tokens = response.tokens;
       delete response.tokens;
@@ -419,7 +419,7 @@ export class AuthService {
         { email },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(retry(3), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -437,7 +437,7 @@ export class AuthService {
         { payload },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(retry(3), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -454,7 +454,7 @@ export class AuthService {
         { email: email || this.user.email },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(retry(3), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -473,7 +473,7 @@ export class AuthService {
           withCredentials: true,
         }
       )
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
     this.inUse = val;
     return this.inUse;
@@ -492,7 +492,7 @@ export class AuthService {
         headers: this.httpHeaders,
         withCredentials: true,
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
     this.inUse = val;
     return this.inUse;
@@ -521,7 +521,7 @@ export class AuthService {
         withCredentials: true,
         responseType: 'text',
       })
-      .pipe(retry(3), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   /**

@@ -25,9 +25,9 @@ export class UnreleaseService {
       .post(
         ADMIN_ROUTES.UNRELEASE_OBJECT(username, cuid),
         { status: LearningObject.Status.PROOFING },
-        { withCredentials: true, responseType: 'text'}
+        { withCredentials: true, responseType: 'text' }
       ).pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -45,9 +45,9 @@ export class UnreleaseService {
     return this.http
       .delete(
         ADMIN_ROUTES.DELETE_REVISION(username, cuid, version),
-        { withCredentials: true, responseType: 'text'}
+        { withCredentials: true, responseType: 'text' }
       ).pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

@@ -14,7 +14,7 @@ export class MetricService {
   getCollectionMetricsData(abvCollectionName: string) {
     return this.http.get(METRIC_ROUTES.GET_COLLECTION_METRICS(abvCollectionName))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

@@ -113,7 +113,7 @@ export class CollectionService {
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -132,7 +132,7 @@ export class CollectionService {
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -151,7 +151,7 @@ export class CollectionService {
   getCollectionCuratorsInfo(name: string) {
     return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -159,7 +159,7 @@ export class CollectionService {
   getCollectionMetadata(name: string) {
     return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTION_META(name))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -193,7 +193,7 @@ export class CollectionService {
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()

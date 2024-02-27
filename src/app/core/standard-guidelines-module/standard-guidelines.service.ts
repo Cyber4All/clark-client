@@ -25,7 +25,7 @@ export class GuidelineService {
     return this.http
       .get<{ total: number, results: SearchItemDocument[] }>(STANDARD_GUIDELINES_ROUTES.SEARCH_GUIDELINES())
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -39,7 +39,7 @@ export class GuidelineService {
     return this.http
       .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINES_ROUTES.SEARCH_FRAMEWORKS())
       .pipe(
-        retry(3),
+
         catchError(this.handleError),
         map((res) => {
           return res.results;

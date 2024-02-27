@@ -24,7 +24,7 @@ export class ChangelogService {
     return this.http
       .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(userId, learningObjectCuid), { changelogText: changelog }, { responseType: 'text' })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -50,7 +50,7 @@ export class ChangelogService {
         minusRevision: params.minusRevision,
       }))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

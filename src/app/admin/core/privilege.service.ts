@@ -21,7 +21,7 @@ export class PrivilegeService {
     return this.http
       .get<{ roles: string[] }>(ADMIN_ROUTES.GET_USER_ROLES(id))
       .pipe(
-        retry(3),
+
         map(data => data.roles),
         catchError(this.handleError)
       )
@@ -45,7 +45,7 @@ export class PrivilegeService {
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -68,7 +68,7 @@ export class PrivilegeService {
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -89,7 +89,7 @@ export class PrivilegeService {
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

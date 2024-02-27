@@ -25,7 +25,7 @@ export class AccessGroupService {
       .get(ACCESS_GROUP_ROUTES.FETCH_MEMBERS(collection), {
         withCredentials: true,
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
         const arr = val;

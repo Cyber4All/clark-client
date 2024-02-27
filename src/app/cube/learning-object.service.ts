@@ -66,7 +66,7 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -96,7 +96,7 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -121,7 +121,7 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -138,7 +138,7 @@ export class LearningObjectService {
     return this.http
       .get(route, { withCredentials: true })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -162,7 +162,7 @@ export class LearningObjectService {
         { withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
