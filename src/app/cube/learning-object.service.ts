@@ -7,6 +7,7 @@ import { LearningObject } from '@entity';
 import { Query } from '../interfaces/query';
 
 import * as querystring from 'querystring';
+import { USER_ROUTE } from '../core/user-module/user.routes';
 
 // TODO: move to core module
 @Injectable({
@@ -131,14 +132,9 @@ export class LearningObjectService {
       });
   }
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
-    const route = USER_ROUTES.LOAD_USER_PROFILE(
-      username
-    );
-
     return this.http
-      .get(route, { withCredentials: true })
+      .get(USER_ROUTE.GET_USER_PROFILE(username), { withCredentials: true })
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise()

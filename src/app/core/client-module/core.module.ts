@@ -7,7 +7,7 @@ import { NavbarService } from './navbar.service';
 
 import { LibraryService } from '../library-module/library.service';
 import { GuidelineService } from '../standard-guidelines-module/standard-guidelines.service';
-import { CookieModule } from 'ngx-cookie';
+import { CookieModule } from 'ngx-cookie-service';
 
 import { RatingService } from '../rating-module/rating.service';
 import { ModalModule } from '../../shared/modules/modals/modal.module';

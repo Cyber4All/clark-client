@@ -3,12 +3,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '../../../environments/route';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { catchError, retry, skipWhile } from 'rxjs/operators';
+import { catchError, skipWhile } from 'rxjs/operators';
 
 import { Query } from '../../interfaces/query';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import * as querystring from 'querystring';
 import { COLLECTION_ROUTES } from './collections.routes';
+import { REPORT_ROUTES } from '../report-module/report.routes';
 
 export interface Collection {
   name: string;
@@ -229,7 +230,7 @@ export class CollectionService {
       end: string
     }) {
     if (collections.length > 0) {
-      const route = COLLECTIONS_ROUTES.GET_COLLECTION_REPORT(collections, date);
+      const route = REPORT_ROUTES.GENERATE_REPORT(collections, date);
       this.http
         .post(
           route,

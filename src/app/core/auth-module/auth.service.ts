@@ -5,10 +5,10 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from '@entity';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
 import { AUTH_ROUTES } from './auth.routes';
 
@@ -295,7 +295,7 @@ export class AuthService {
   async validateAndRefreshToken(): Promise<void> {
     try {
       const response = await this.http
-        .get<AuthUser>(environment.apiURL + '/users/tokens', {
+        .get<AuthUser>(AUTH_ROUTES.DECODE_TOKEN(), {
           withCredentials: true,
         })
         .pipe(catchError(this.handleError))
@@ -319,7 +319,7 @@ export class AuthService {
     try {
       const response = await this.http
         .get<AuthUser & { tokens: Tokens }>(
-          environment.apiURL + '/users/tokens/refresh',
+          AUTH_ROUTES.REFRESH_TOKEN(),
           {
             withCredentials: true,
           }
@@ -467,7 +467,7 @@ export class AuthService {
   async usernameInUse(username: string) {
     const val = await this.http
       .get(
-        environment.apiURL + '/users/identifiers/active?username=' + username,
+        AUTH_ROUTES.VALIDATE_IDENTIFIER() + '?username=' + username,
         {
           headers: this.httpHeaders,
           withCredentials: true,
@@ -488,7 +488,7 @@ export class AuthService {
    */
   async emailInUse(email: string) {
     const val = await this.http
-      .get(environment.apiURL + '/users/identifiers/active?email=' + email, {
+      .get(AUTH_ROUTES.VALIDATE_IDENTIFIER() + '?email=' + email, {
         headers: this.httpHeaders,
         withCredentials: true,
       })
@@ -496,32 +496,6 @@ export class AuthService {
       .toPromise();
     this.inUse = val;
     return this.inUse;
-  }
-
-  /**
-   * Updates a user's information with the specified data
-   *
-   * @param {{
-   *     firstname: string;
-   *     lastname: string;
-   *     email: string;
-   *     organization: string;
-   *   }} user
-   * @returns {Observable<any>}
-   * @memberof AuthService
-   */
-  updateInfo(user: {
-    firstname: string;
-    lastname: string;
-    email: string;
-    organization: string;
-  }): Observable<any> {
-    return this.http
-      .patch(environment.apiURL + '/users/name', user.firstname, {
-        withCredentials: true,
-        responseType: 'text',
-      })
-      .pipe(catchError(this.handleError));
   }
 
   /**

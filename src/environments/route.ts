@@ -88,19 +88,6 @@ export const COLLECTIONS_ROUTES = {
   GET_COLLECTION_CURATORS(name: string) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   },
-  GET_COLLECTION_REPORT(
-    collections: string[],
-    date?: { start: string; end: string },
-  ) {
-    let route = `${environment.apiURL
-      }/reports?output=csv&collection=${collections.join(',')}`;
-
-    if (date) {
-      route += `&start=${date.start}&end=${date.end}`;
-    }
-
-    return route;
-  },
 };
 
 export const USER_ROUTES = {
@@ -120,6 +107,7 @@ export const USER_ROUTES = {
       collection,
     )}/members/${encodeURIComponent(memberId)}`;
   },
+  // Route still available in gateway to LOS
   LOAD_USER_PROFILE(username: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
@@ -278,6 +266,7 @@ export const USER_ROUTES = {
     return `${environment.apiURL
       }/users/search?organization=${encodeURIComponent(organization)}`;
   },
+  /** ROUTE NOT IN GATEWAY */
   VALIDATE_CAPTCHA() {
     return `${environment.apiURL}/users/validate-captcha`;
   },
@@ -313,11 +302,6 @@ export const USER_ROUTES = {
       username,
     )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
   },
-  GET_METRICS(username: string, learningObjectID: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(learningObjectID)}/metrics`;
-  },
   TOGGLE_FILES_TO_BUNDLE(params: {
     username: string;
     learningObjectID: string;
@@ -327,12 +311,7 @@ export const USER_ROUTES = {
     )}/learning-objects/${encodeURIComponent(
       params.learningObjectID,
     )}/files/bundle`;
-  },
-  GET_COLLECTIONS(username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/collections`;
-  },
+  }
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
@@ -351,7 +330,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 
     return uri;
   },
-  GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_COLLECTION_META(name: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
   },
@@ -369,12 +347,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     )}/learning-objects/${params.loId}/files/${params.fileId}/download${params.open ? '?open=true' : ''
       }`;
   },
-};
-
-export const STATS_ROUTES = {
-  // fetches stats for all objects in the system
-  LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
-  USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };
 
 export const FEATURED_ROUTES_OLD = {

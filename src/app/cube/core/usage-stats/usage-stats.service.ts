@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { STATS_ROUTES } from '@env/route';
 import { LearningObjectStats, UserStats } from 'app/cube/shared/types/usage-stats';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { METRIC_ROUTES } from 'app/core/metric-module/metric.routes';
 
@@ -24,7 +23,7 @@ export class UsageStatsService {
   async getLearningObjectStats(): Promise<LearningObjectStats> {
     const [objects, library] = await Promise.all([
       this.http
-        .get<Partial<LearningObjectStats> & BloomsDistribution>(STATS_ROUTES.LEARNING_OBJECT_STATS)
+        .get<Partial<LearningObjectStats> & BloomsDistribution>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS())
         .pipe(
 
           catchError(this.handleError)
@@ -50,7 +49,7 @@ export class UsageStatsService {
     return { ...objects, ...library.metrics } as LearningObjectStats;
   }
   getUserStats(): Promise<UserStats> {
-    return this.http.get<UserStats>(STATS_ROUTES.USERS_STATS)
+    return this.http.get<UserStats>(METRIC_ROUTES.GET_USER_METRICS())
       .pipe(
 
         catchError(this.handleError)

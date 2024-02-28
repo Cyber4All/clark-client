@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 
 import { LearningObject, LearningOutcome } from '@entity';
-import { CookieService } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, ADMIN_ROUTES } from '@env/route';
 

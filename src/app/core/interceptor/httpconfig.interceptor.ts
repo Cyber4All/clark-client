@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 import { environment } from '@env/environment';
 
 @Injectable({
