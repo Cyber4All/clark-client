@@ -9,7 +9,7 @@ import { CubeRoutingModule } from './cube.routing';
 
 // Services
 import { LearningObjectService } from './learning-object.service';
-//import { CoreModule } from 'app/core/core.module';
+import { CoreModule } from 'app/admin/core/core.module';
 
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
@@ -98,6 +98,7 @@ import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/ph
     MatTabsModule,
 
     // Local module imports
+    CoreModule,
     CubeCoreModule,
     CubeSharedModule,
     CubeRoutingModule,

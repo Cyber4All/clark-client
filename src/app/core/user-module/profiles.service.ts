@@ -4,6 +4,7 @@ import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { AuthService } from '../auth-module/auth.service';
 import { throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
+import { COLLECTION_ROUTES } from '../collection-module/collections.routes';
 
 @Injectable()
 export class ProfileService {
@@ -42,9 +43,10 @@ export class ProfileService {
    * @returns {cuid: string, version: int, status: string, collection: string} object metadata
    * for each collection an object belongs to for a user
    */
+  // FIXME: Clark-service throws 404 for unrelased LOs b/c they don't have a collection; however mike says is fine, we need dis
   getCollectionData(username: string): Promise<any> {
     return this.http
-      .get(USER_ROUTES.GET_COLLECTIONS(username), {
+      .get(COLLECTION_ROUTES.GET_USER_SUBMITTED_COLLECTIONS(username), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))

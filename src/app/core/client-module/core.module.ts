@@ -24,6 +24,7 @@ import { EditorService } from '../learning-object-module/editor.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { ProfileService } from '../user-module/profiles.service';
 import { NavbarDropdownService } from './navBarDropdown.service';
+import { UtilityService } from '../utility-module/utility.service';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { NavbarDropdownService } from './navBarDropdown.service';
     UserAgentService,
     ProfileService,
     NavbarDropdownService,
+    UtilityService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpConfigInterceptor,

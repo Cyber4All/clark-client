@@ -109,25 +109,6 @@ export class UserService {
   }
 
   /**
-   * Retrieve a list of user's that belong to a given organization
-   *
-   * @param {string} organization
-   * @returns {Promise<User[]>}
-   * @memberof UserService
-   */
-  getOrganizationMembers(organization: string): Promise<User[]> {
-    const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
-    return this.http
-      .get(route)
-      .pipe(retry(3), catchError(this.handleError))
-      .toPromise()
-      .then((val: any) => {
-        const arr = val;
-        return arr.map((member) => new User(member));
-      });
-  }
-
-  /**
    * Retrieve the gravatar image for a given email at a given size
    *
    * @param {*} email

@@ -464,8 +464,7 @@ export class AuthService {
    */
   async usernameInUse(username: string) {
     const val = await this.http
-      .get(
-        environment.apiURL + '/users/identifiers/active?username=' + username,
+      .get(AUTH_ROUTES.VALIDATE_USERNAME() + username,
         {
           headers: this.httpHeaders,
           withCredentials: true,
@@ -486,7 +485,7 @@ export class AuthService {
    */
   async emailInUse(email: string) {
     const val = await this.http
-      .get(environment.apiURL + '/users/identifiers/active?email=' + email, {
+      .get(AUTH_ROUTES.VALIDATE_EMAIL() + email, {
         headers: this.httpHeaders,
         withCredentials: true,
       })

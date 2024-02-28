@@ -9,6 +9,7 @@ import { Query } from '../../interfaces/query';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import * as querystring from 'querystring';
 import { COLLECTION_ROUTES } from './collections.routes';
+import { REPORT_ROUTES } from '../report-module/report.routes';
 
 export interface Collection {
   name: string;
@@ -200,7 +201,6 @@ export class CollectionService {
         return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total };
       });
   }
-
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

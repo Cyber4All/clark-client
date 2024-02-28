@@ -15,7 +15,7 @@ export class GuidelineService {
   constructor(public http: HttpClient) {
     // Load guideline sources only once
     this.sources = this.http
-      .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINES_ROUTES.SEARCH_FRAMEWORKS())
+      .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINES_ROUTES.SEARCH_FRAMEWORKS({page: '1', limit: '20'}))
       .pipe(
         retry(3),
         catchError(this.handleError),
@@ -48,7 +48,7 @@ export class GuidelineService {
 
   async getFrameworks(query?: any): Promise<FrameworkDocument[]> {
     return this.http
-      .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINES_ROUTES.GET_FRAMEWORK(query))
+      .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINES_ROUTES.SEARCH_FRAMEWORKS(query))
       .pipe(
         retry(3),
         catchError(this.handleError),

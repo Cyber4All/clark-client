@@ -33,8 +33,8 @@ export const STANDARD_GUIDELINES_ROUTES = {
      * @method GET
      * @returns list of frameworks
      */
-    SEARCH_FRAMEWORKS() {
-        return `${environment.apiURL}/frameworks`;
+    SEARCH_FRAMEWORKS(query: any) {
+        return `${environment.apiURL}/frameworks/?${query}`;
     },
     /**
      * Request to retrieve a list of guidelines
