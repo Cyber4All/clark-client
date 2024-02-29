@@ -29,7 +29,7 @@ import {
   UploadErrorUpdate
 } from '../services/typings';
 import { UPLOAD_ERRORS } from './errors';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { getUserAgentBrowser } from 'getUserAgentBrowser';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { HttpErrorResponse } from '@angular/common/http';

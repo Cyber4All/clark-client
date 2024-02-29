@@ -4,7 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { BrowseComponent } from './browse/browse.component';
 import { UserProfileComponent } from './user-profile/user-profile.component';
-import { AuthGuard } from '../core/auth-guard.service';
+import { AuthGuard } from '../core/auth-module/auth-guard.service';
 import { CubeComponent } from './cube.component';
 import { CollectionsComponent } from './collections/collections.component';
 import { CollectionDetailsComponent } from './collection-details/collection-details.component';
@@ -18,7 +18,7 @@ import { AboutClarkComponent } from './content-pages/about-us/about-us.component
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
 import { NotFoundComponent } from 'app/not-found.component';
-import { CollectionsGuard } from 'app/core/collections.guard';
+import { CollectionsGuard } from 'app/core/collection-module/collections.guard';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const cube_routes: Routes = [
@@ -26,7 +26,7 @@ const cube_routes: Routes = [
     path: '',
     component: CubeComponent,
     children: [
-      { path: 'home', component: HomeComponent, data: { title: 'Home', hideTopBar: 'true'} },
+      { path: 'home', component: HomeComponent, data: { title: 'Home', hideTopBar: 'true' } },
       { path: '', redirectTo: '/home', pathMatch: 'full' },
       { path: 'c/:abvName', component: CollectionDetailsComponent, canActivate: [CollectionsGuard] },
       { path: 'c', component: CollectionsComponent },
@@ -37,7 +37,7 @@ const cube_routes: Routes = [
       {
         path: 'contribute-page',
         component: ContributePageComponent,
-        data: { title: 'Contributors Page'}
+        data: { title: 'Contributors Page' }
       },
       {
         path: 'about-us',
@@ -46,37 +46,37 @@ const cube_routes: Routes = [
       {
         path: 'browse',
         component: BrowseComponent,
-        data: { title: 'Browse Learning Objects'}
+        data: { title: 'Browse Learning Objects' }
       },
       {
         path: 'press',
         component: PressComponent,
-        data: { title: 'Press and Media'}
+        data: { title: 'Press and Media' }
       },
       {
         path: 'donate',
         component: DonateComponent,
-        data: { title: 'Donate to CLARK'}
+        data: { title: 'Donate to CLARK' }
       },
       {
         path: 'system/usage',
         loadChildren: () => import('app/cube/usage-stats/usage-stats.module').then(m => m.UsageStatsModule),
-        data: { title: 'System Usage'}
+        data: { title: 'System Usage' }
       },
       {
         path: 'collections/:collectionName',
         loadChildren: () => import('app/collection/collection.module').then(m => m.CollectionModule),
-        data: { title: 'Collections'}
+        data: { title: 'Collections' }
       },
       {
         path: 'system/termsofservice',
         component: TermsOfServiceComponent,
-        data: { title: 'Terms of Service'}
+        data: { title: 'Terms of Service' }
       },
       {
         path: 'system/accessibility-statement',
         component: AccessibilityStatementComponent,
-        data: { title: 'Accessibility'}
+        data: { title: 'Accessibility' }
       },
       {
         path: 'users/:username',

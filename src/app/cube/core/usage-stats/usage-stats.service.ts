@@ -5,6 +5,7 @@ import { STATS_ROUTES } from '@env/route';
 import { LearningObjectStats, UserStats } from 'app/cube/shared/types/usage-stats';
 import { retry, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { METRIC_ROUTES } from 'app/core/metric-module/metric.routes';
 
 interface BloomsDistribution {
   blooms_distribution: {
@@ -28,7 +29,7 @@ export class UsageStatsService {
         )
         .toPromise(),
       this.http
-        .get<{metrics: any}>(STATS_ROUTES.LIBRARY_METRICS)
+        .get<{metrics: any}>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS())
         .pipe(
           retry(3),
           catchError(this.handleError)

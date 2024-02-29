@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angu
 import { Subject } from 'rxjs';
 import { User } from '@entity';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { UserService } from 'app/core/user.service';
-import { AuthService } from 'app/core/auth.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Collection } from 'app/core/collection.service';
+import { Collection } from 'app/core/collection-module/collections.service';
 import { titleCase } from 'title-case';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { UserAgentService } from 'app/core/user-agent.service';
+import { UserAgentService } from 'app/core/client-module/user-agent.service';
 
 @Component({
   selector: 'clark-download-notice-popup',

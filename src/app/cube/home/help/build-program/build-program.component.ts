@@ -2,7 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { GuidelineService } from 'app/core/guideline.service';
+import { GuidelineService } from 'app/core/standard-guidelines-module/guideline.service';
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
@@ -59,12 +59,12 @@ import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
     ])
   ]
 })
-export class BuildProgramComponent implements OnInit{
+export class BuildProgramComponent implements OnInit {
   frameworks: FrameworkDocument[];
   currentFramework: string;
   currentFrameworkGuidelines: SearchItemDocument[];
 
-   // separated from currentFrameworkGuidelines for searching
+  // separated from currentFrameworkGuidelines for searching
   currentFrameworkGuidelinesFiltered: SearchItemDocument[];
 
   // separated from currentFrameworkGuidelinesFiltered for maintaining pagination
@@ -74,21 +74,21 @@ export class BuildProgramComponent implements OnInit{
   currentPage = 0;
 
   constructor(private buildProgramComponentService: BuildProgramComponentService,
-              private guidelineService: GuidelineService,
-              private router: Router) { }
+    private guidelineService: GuidelineService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.buildProgramComponentService.currentFrameworkObservable
-    .subscribe(framework => {
-      this.currentFramework = framework;
-      this.guidelineSearch = '';
-      this.currentFrameworkGuidelines = [];
-      this.currentPage = 0;
-    });
+      .subscribe(framework => {
+        this.currentFramework = framework;
+        this.guidelineSearch = '';
+        this.currentFrameworkGuidelines = [];
+        this.currentPage = 0;
+      });
     this.guidelineService.getFrameworks({ limit: 30, page: 1 })
-    .then(result => {
-      this.frameworks = result;
-    });
+      .then(result => {
+        this.frameworks = result;
+      });
   }
 
   /**
@@ -103,12 +103,12 @@ export class BuildProgramComponent implements OnInit{
     this.guidelineService.getGuidelines({
       frameworks: this.currentFramework
     })
-    .then(result => {
-      this.currentFrameworkGuidelines = result.results
-        .sort((a, b) => this.sortGuidelines(a, b));
-      this.currentFrameworkGuidelinesFiltered = [...this.currentFrameworkGuidelines];
-      this.fillPages();
-    });
+      .then(result => {
+        this.currentFrameworkGuidelines = result.results
+          .sort((a, b) => this.sortGuidelines(a, b));
+        this.currentFrameworkGuidelinesFiltered = [...this.currentFrameworkGuidelines];
+        this.fillPages();
+      });
   }
 
   /**
@@ -120,7 +120,7 @@ export class BuildProgramComponent implements OnInit{
    * @returns A number determining the relationship between a and b
    */
   sortGuidelines(a: SearchItemDocument, b: SearchItemDocument): 1 | 0 | -1 {
-    if(a.guidelineName < b.guidelineName) {
+    if (a.guidelineName < b.guidelineName) {
       return -1;
     } else if (a.guidelineName > b.guidelineName) {
       return 1;
@@ -153,8 +153,8 @@ export class BuildProgramComponent implements OnInit{
     const pages = new Array(Math.ceil(this.currentFrameworkGuidelinesFiltered.length / numGuidelinesPerPage));
 
     // Fills each index of the array with an array of guidelines
-    for(let i = 0; i < pages.length; i++) {
-      pages[i] = this.currentFrameworkGuidelinesFiltered.slice(i*numGuidelinesPerPage, (i*numGuidelinesPerPage)+numGuidelinesPerPage);
+    for (let i = 0; i < pages.length; i++) {
+      pages[i] = this.currentFrameworkGuidelinesFiltered.slice(i * numGuidelinesPerPage, (i * numGuidelinesPerPage) + numGuidelinesPerPage);
     }
     this.currentFrameworkGuidelinesPaginated = [...pages];
   }

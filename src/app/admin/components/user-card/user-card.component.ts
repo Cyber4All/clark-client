@@ -1,7 +1,7 @@
 import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { User } from '@entity';
 import { PrivilegeService } from 'app/admin/core/privilege.service';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { userCardAnimations } from './user-card.component.animations';
 
 @Component({

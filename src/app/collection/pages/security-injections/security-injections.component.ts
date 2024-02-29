@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { CollectionService } from 'app/core/collection.service';
-import { NavbarService } from '../../../core/navbar.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
+import { NavbarService } from '../../../core/client-module/navbar.service';
 
 @Component({
   selector: 'clark-security-injections',
@@ -20,14 +20,14 @@ export class SecurityInjectionsComponent implements OnInit, OnDestroy {
     private navbarService: NavbarService,
     private collectionService: CollectionService,
     private router: Router,
-    ) {
-      this.isDesktop = window.innerWidth >= 768;
-    }
-
-    @HostListener('window:resize', ['$event'])
-    onResize(event: Event) {
+  ) {
     this.isDesktop = window.innerWidth >= 768;
-    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.isDesktop = window.innerWidth >= 768;
+  }
 
   async ngOnInit() {
 

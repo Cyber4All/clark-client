@@ -7,7 +7,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
     "lint": "npx ng lint clark",
     "lint:fix": "npx ng lint clark --fix",
     "prettier": "prettier --check .",

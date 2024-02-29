@@ -58,11 +58,6 @@ export const ADMIN_ROUTES = {
       username,
     )}/hierarchy-object`;
   },
-  CHANGE_HIERARCHY_STATUS(id: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      id,
-    )}/status`;
-  },
   TOGGLE_BUNDLE(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
@@ -90,10 +85,6 @@ export const CHANGELOG_ROUTES = {
 };
 
 export const COLLECTIONS_ROUTES = {
-  GET_COLLECTIONS: `${environment.apiURL}/collections`,
-  GET_COLLECTION_METRICS(name: string) {
-    return `${environment.apiURL}/${encodeURIComponent(name)}/metrics`;
-  },
   GET_COLLECTION_CURATORS(name: string) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
   },
@@ -101,9 +92,8 @@ export const COLLECTIONS_ROUTES = {
     collections: string[],
     date?: { start: string; end: string },
   ) {
-    let route = `${
-      environment.apiURL
-    }/reports?output=csv&collection=${collections.join(',')}`;
+    let route = `${environment.apiURL
+      }/reports?output=csv&collection=${collections.join(',')}`;
 
     if (date) {
       route += `&start=${date.start}&end=${date.end}`;
@@ -114,24 +104,6 @@ export const COLLECTIONS_ROUTES = {
 };
 
 export const USER_ROUTES = {
-  LOGIN: `${environment.apiURL}/users/tokens`,
-  REGISTER: `${environment.apiURL}/users`,
-  EDIT_USER_INFO: `${environment.apiURL}/users`,
-  FETCH_USER(user: string, q: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      user,
-    )}?q=${encodeURIComponent(q)}`;
-  },
-  FETCH_USER_PROFILE(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/profile`;
-  },
-  FETCH_MEMBERS(collection: string, query: any) {
-    return `${environment.apiURL}/collections/${encodeURIComponent(
-      collection,
-    )}/members?${querystring.stringify(query)}`;
-  },
   ASSIGN_COLLECTION_MEMBER(collection: string, memberId: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(
       collection,
@@ -297,31 +269,14 @@ export const USER_ROUTES = {
       mappingsId,
     )}`;
   },
-  GET_CART(username, page?, limit?) {
-    // CUBE
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/library/learning-objects?page=${page}&limit=${limit}`;
-  },
-  CLEAR_LEARNING_OBJECT_FROM_CART(username, cuid) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/library/learning-objects/${encodeURIComponent(cuid)}`;
-  },
-  ADD_LEARNING_OBJECT_TO_CART(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/library/learning-objects`;
-  },
   OBJECT_BUNDLE(username: string, learningObjectId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
     )}/learning-objects/${encodeURIComponent(learningObjectId)}/bundle`;
   },
   GET_SAME_ORGANIZATION(organization) {
-    return `${
-      environment.apiURL
-    }/users/search?organization=${encodeURIComponent(organization)}`;
+    return `${environment.apiURL
+      }/users/search?organization=${encodeURIComponent(organization)}`;
   },
   VALIDATE_CAPTCHA() {
     return `${environment.apiURL}/users/validate-captcha`;
@@ -363,25 +318,6 @@ export const USER_ROUTES = {
       username,
     )}/learning-objects/${encodeURIComponent(learningObjectID)}/metrics`;
   },
-  GET_NOTIFICATIONS(params: {
-    username: string;
-    page: number;
-    limit: number;
-  }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/notifications?page=${encodeURIComponent(
-      params.page.toString(),
-    )}&limit=${encodeURIComponent(params.limit.toString())}`;
-  },
-  DELETE_NOTIFICATION(params: { username: string; id: string }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/notifications/${encodeURIComponent(params.id)}`;
-  },
-  GET_KEY_PAIR(): string {
-    return `${environment.apiURL}/keys`;
-  },
   TOGGLE_FILES_TO_BUNDLE(params: {
     username: string;
     learningObjectID: string;
@@ -396,12 +332,6 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
     )}/collections`;
-  },
-};
-
-export const ORGANIZATION_ROUTES = {
-  SEARCH_ORGANIZATIONS(queryString: string) {
-    return `${environment.cardOrganizationUrl}&text=${queryString}`;
   },
 };
 
@@ -436,108 +366,22 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   }) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       params.username,
-    )}/learning-objects/${params.loId}/files/${params.fileId}/download${
-      params.open ? '?open=true' : ''
-    }`;
+    )}/learning-objects/${params.loId}/files/${params.fileId}/download${params.open ? '?open=true' : ''
+      }`;
   },
-};
-
-export const RATING_ROUTES = {
-  /**
-   * Rating Routes
-   */
-
-  GET_LEARNING_OBJECT_RATINGS(params: {
-    CUID: string;
-    version: number;
-  }): string {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(params.version.toString())}/ratings`;
-  },
-
-  CREATE_RATING(params: { CUID: string; version: number }) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(params.version.toString())}/ratings`;
-  },
-
-  EDIT_RATING(params: {
-    CUID: string;
-    version: number;
-    ratingId: string;
-  }): string {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(params.ratingId)}`;
-  },
-
-  DELETE_RATING(params: { CUID: string; version: number; ratingId: string }) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      params.CUID,
-    )}/version/${encodeURIComponent(
-      params.version.toString(),
-    )}/ratings/${encodeURIComponent(params.ratingId)}`;
-  },
-
-  /**
-   * Rating Response Routes
-   */
-
-  CREATE_RESPONSE(params: { ratingId: string }): string {
-    return `${environment.apiURL}/learning-objects/ratings/${encodeURIComponent(
-      params.ratingId,
-    )}/responses`;
-  },
-
-  UPDATE_RESPONSE(params: {
-    responseId: string;
-  }): string {
-    return `${environment.apiURL}/learning-objects/ratings
-    /responses/${encodeURIComponent(params.responseId)}`;
-  },
-
-  DELETE_RESPONSE(params: {
-    responseId: string;
-  }): string {
-    return `${environment.apiURL}/learning-objects/ratings
-    /responses/${encodeURIComponent(params.responseId)}`;
-  },
-
-  /**
-   * Rating Flag Routes
-   */
-
-  FLAG_LEARNING_OBJECT_RATING(params: { ratingId: string }): string {
-    return `${environment.apiURL}/ratings/${encodeURIComponent(
-      params.ratingId,
-    )}/flag`;
-  },
-};
-export const MISC_ROUTES = {
-  CHECK_DOWNTIME: `${environment.apiURL}/downtime?service=clark`,
 };
 
 export const STATS_ROUTES = {
   // fetches stats for all objects in the system
   LEARNING_OBJECT_STATS: `${environment.apiURL}/learning-objects/stats`,
-  // fetches downloads and saves for ALL objects in system
-  LIBRARY_METRICS: `${environment.apiURL}/learning-objects/metrics`,
-  USERS_STATS: `${environment.apiURL}/users/stats`, // nothing new
+  USERS_STATS: `${environment.apiURL}/users/stats` // nothing new
 };
 
-export const FEATURED_ROUTES = {
-  // sets the featured objects
-  SET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
-  // retrieves the featured objects
-  GET_FEATURED: `${environment.apiURL}/featured/learning-objects`,
+export const FEATURED_ROUTES_OLD = {
   // Get featured objects for a specific collection
   GET_COLLECTION_FEATURED(collection: string) {
-    return `${
-      environment.apiURL
-    }/featured/learning-objects?collection=${encodeURIComponent(collection)}`;
+    return `${environment.apiURL
+      }/featured/learning-objects?collection=${encodeURIComponent(collection)}`;
   },
 };
 
@@ -569,27 +413,5 @@ export const RELEVANCY_ROUTES = {
     outcomeId: string,
   ) {
     return `${environment.apiURL}/users/${username}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
-  },
-};
-
-export const STANDARD_GUIDELINE_ROUTES = {
-  /**
-   * SEARCH ROUTES
-   */
-
-  // Searches frameworks given a text query
-  SEARCH_FRAMEWORKS(params: {
-    text?: string;
-    year?: string;
-    levels?: string;
-    page?: string;
-    limit?: string;
-    type?: string;
-  }) {
-    return `${environment.apiURL}/frameworks?${querystring.stringify(params)}`;
-  },
-  // Searches guidelines/standards given a text, year, and level query
-  SEARCH_GUIDELINES(query: string) {
-    return `${environment.apiURL}/guidelines?${query}`;
   },
 };

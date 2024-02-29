@@ -69,7 +69,6 @@ import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarc
     HierarchyObjectComponent,
   ],
   imports: [
-    CoreModule.forRoot(),
     CommonModule,
     AdminRoutingModule,
     FormsModule,
@@ -83,7 +82,8 @@ import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarc
     MatBadgeModule,
     MatTreeModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CoreModule.forRoot(),
   ],
   providers: [LearningObjectService]
 })

@@ -386,7 +386,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
 
     return uri;
   },
-  GET_COLLECTIONS: `${environment.apiURL}/collections`,
   GET_COLLECTION_META(name: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
   },

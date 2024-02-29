@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { RelevancyService } from 'app/core/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { User } from 'entity/user/user';
@@ -18,11 +18,11 @@ export class AddEvaluatorComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter();
 
   constructor(
-      private relevancyService: RelevancyService,
-      private toaster: ToastrOvenService,
-    ) { }
+    private relevancyService: RelevancyService,
+    private toaster: ToastrOvenService,
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   setSelectedLearningObjects(learningObjects: {
     add: LearningObject[],
@@ -47,51 +47,51 @@ export class AddEvaluatorComponent implements OnInit {
 
   async removeEvaluators() {
     if (this.checkEvaluatorsBody(this.removedLearningObjects)) {
-      const cuids = this.removedLearningObjects.map( obj => obj.cuid );
+      const cuids = this.removedLearningObjects.map(obj => obj.cuid);
       const assignerId = this.user.id;
 
       await this.relevancyService.removeEvaluators({
         cuids: cuids,
         assignerIds: [assignerId]
       })
-      .then( () => {
-        this.toaster.success(
-          'Success',
-          'The evaluators were removed.'
-        );
-        this.close.emit();
-      })
-      .catch( e => {
-        this.toaster.error(
-          'Error removing evaluators',
-          JSON.parse(e.error).message
-        );
-      });
+        .then(() => {
+          this.toaster.success(
+            'Success',
+            'The evaluators were removed.'
+          );
+          this.close.emit();
+        })
+        .catch(e => {
+          this.toaster.error(
+            'Error removing evaluators',
+            JSON.parse(e.error).message
+          );
+        });
     }
   }
 
   async assignEvaluators() {
     if (this.user && this.checkEvaluatorsBody(this.assignedLearningObjects)) {
-      const cuids = this.assignedLearningObjects.map( obj => obj.cuid );
+      const cuids = this.assignedLearningObjects.map(obj => obj.cuid);
       const assignerId = this.user.id;
 
       await this.relevancyService.assignEvaluators({
         cuids: cuids,
         assignerIds: [assignerId]
       })
-      .then( () => {
-        this.toaster.success(
-          'Success',
-          'The selected evaluators were assigned.'
-        );
-        this.close.emit();
-      })
-      .catch( e => {
-        this.toaster.error(
-          'Error assigning evaluators, please try again later',
-          JSON.parse(e.error).message
-        );
-      });
+        .then(() => {
+          this.toaster.success(
+            'Success',
+            'The selected evaluators were assigned.'
+          );
+          this.close.emit();
+        })
+        .catch(e => {
+          this.toaster.error(
+            'Error assigning evaluators, please try again later',
+            JSON.parse(e.error).message
+          );
+        });
     }
   }
 

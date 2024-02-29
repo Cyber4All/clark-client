@@ -9,7 +9,7 @@ import { throwError, Subject, Observable } from 'rxjs';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';
 import { FileInput } from '../upload/upload.component';
-import { AuthService, OpenIdToken } from 'app/core/auth.service';
+import { AuthService, OpenIdToken } from 'app/core/auth-module/auth.service';
 import {
   UploadUpdate,
   QueueStatus,
@@ -20,7 +20,7 @@ import {
   UploadErrorReason,
   UploadErrorUpdate
 } from './typings';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 
 const DEFAULT_CONCURRENT_UPLOADS = 10;
 

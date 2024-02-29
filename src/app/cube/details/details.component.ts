@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObjectService } from 'app/core/learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { UserService } from 'app/core/user.service';
-import { RatingService } from 'app/core/rating.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { RatingService } from 'app/core/rating-module/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
-import { AuthService } from 'app/core/auth.service';
-import { ChangelogService } from 'app/core/changelog.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Rating {
@@ -595,7 +595,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
    */
   async deleteResponse(index: number) {
     // locate target rating and then delete the index param from the response
-    const ratingId = this.ratings[index].id;
     const responseId = this.ratings[index].response[0]._id;
     this.ratingService
       .deleteResponse({
