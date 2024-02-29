@@ -19,7 +19,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpConfigInterceptor } from '../interceptor/httpconfig.interceptor';
 import { AdminGuard } from './admin.guard';
 import { AccessGroupGuard } from '../access-group-module/access-group-guard';
-import { ChangelogService } from '../learning-object-module/changelog.service';
+import { ChangelogService } from '../learning-object-module/changelog/changelog.service';
 import { EditorService } from '../learning-object-module/editor.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { ProfileService } from '../user-module/profiles.service';

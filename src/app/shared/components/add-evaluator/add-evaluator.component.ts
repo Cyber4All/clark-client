@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@entity';
 import { SearchService } from 'app/admin/core/search.service';
-import { RelevancyService } from 'app/core/learning-object-module/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 

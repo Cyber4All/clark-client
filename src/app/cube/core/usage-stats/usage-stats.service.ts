@@ -5,6 +5,7 @@ import { LearningObjectStats, UserStats } from 'app/cube/shared/types/usage-stat
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { METRIC_ROUTES } from 'app/core/metric-module/metric.routes';
+import { STATS_ROUTES } from '../../../../environments/route-copy';
 
 interface BloomsDistribution {
   blooms_distribution: {
@@ -23,7 +24,7 @@ export class UsageStatsService {
   async getLearningObjectStats(): Promise<LearningObjectStats> {
     const [objects, library] = await Promise.all([
       this.http
-        .get<Partial<LearningObjectStats> & BloomsDistribution>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS())
+        .get<Partial<LearningObjectStats> & BloomsDistribution>(STATS_ROUTES.LEARNING_OBJECT_STATS)
         .pipe(
 
           catchError(this.handleError)

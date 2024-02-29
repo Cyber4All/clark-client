@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObjectService } from 'app/core/learning-object-module/learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
@@ -10,7 +10,7 @@ import { RatingService } from 'app/core/rating-module/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Rating {

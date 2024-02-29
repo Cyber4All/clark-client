@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { RELEVANCY_ROUTES } from '@env/route';
-import { AuthService } from '../auth-module/auth.service';
+import { AuthService } from '../../auth-module/auth.service';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Topic } from '@entity';

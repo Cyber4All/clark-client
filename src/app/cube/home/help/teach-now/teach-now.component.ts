@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild }
 import { Router } from '@angular/router';
 import { LearningObject, Topic } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
-import { RelevancyService } from '../../../../core/learning-object-module/relevancy.service';
+import { RelevancyService } from '../../../../core/learning-object-module/relevancy/relevancy.service';
 
 @Component({
   selector: 'clark-teach-now',

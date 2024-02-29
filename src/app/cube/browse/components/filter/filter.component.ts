@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, OnDestroy, 
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
-import { RelevancyService } from 'app/core/learning-object-module/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FilterSectionInfo } from '../filter-section/filter-section.component';

@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { Collection, LearningObject, LearningOutcome } from '@entity';
-import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { first } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { HierarchyService } from 'app/core/hierarchy-module/hierarchy.service';
+import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hierarchy.service';
 import { CHANGE_AUTHORIZATION_LIST } from '../../../../environments/strings';
 import { Router } from '@angular/router';
 

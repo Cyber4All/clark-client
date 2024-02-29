@@ -37,7 +37,7 @@ export class GuidelineService {
   // CLARK-SERVICE-FIX: SUPPORT SEARCH QUERY
   async getFrameworks(query?: any): Promise<FrameworkDocument[]> {
     return this.http
-      .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINES_ROUTES.SEARCH_FRAMEWORKS())
+      .get<{ total: number, results: FrameworkDocument[] }>(STANDARD_GUIDELINES_ROUTES.SEARCH_FRAMEWORKS(query))
       .pipe(
 
         catchError(this.handleError),

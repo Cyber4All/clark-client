@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'app/core/user-module/user.service';
 import { RatingService } from 'app/core/rating-module/rating.service';
 import { NotificationsService } from 'app/core/notification-module/notification.service';
-import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';

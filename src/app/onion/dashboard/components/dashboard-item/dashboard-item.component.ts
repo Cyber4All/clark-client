@@ -14,7 +14,7 @@ import { StatusDescriptions } from 'environments/status-descriptions';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { LearningObjectService as AppLOService } from 'app/core/learning-object-module/learning-object.service';
+import { LearningObjectService as AppLOService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 
 
