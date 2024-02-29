@@ -1,4 +1,4 @@
-import { environment } from '@env/environment';
+import { environment } from '../../../../environments/environment';
 
 export const HIERARCHY_ROUTES = {
     /**
