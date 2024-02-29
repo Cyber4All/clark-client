@@ -22,7 +22,7 @@ export class AccessGroupService {
    */
   fetchReviewers(collection: string): Promise<User[]> {
     return this.http
-      .get(ACCESS_GROUP_ROUTES.FETCH_MEMBERS(collection), {
+      .get(ACCESS_GROUP_ROUTES.FETCH_REVIEWERS(collection), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))
@@ -33,6 +33,28 @@ export class AccessGroupService {
       });
   }
 
+  /**
+   * Remove a user's privilege from a collection
+   *
+   * @param {string} collection the collection to remove
+   * @param {string} memberId the user who's privilege shall be revoked
+   * @returns {Promise<void>}
+   * @memberof UserService
+   */
+    async removeMember(collectionName: string, memberId: string): Promise<void> {
+      const collection = collectionName;
+      await this.http
+        .request(
+          ACCESS_GROUP_ROUTES.REMOVE_ACCESS_GROUP_FROM_USER(memberId),
+            collection,
+          {
+            withCredentials: true,
+            responseType: 'text',
+          }
+        )
+        .pipe(retry(3), catchError(this.handleError))
+        .toPromise();
+    }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

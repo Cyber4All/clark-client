@@ -44,12 +44,20 @@ export const AUTH_ROUTES = {
     return `${environment.apiURL}/users`;
   },
   /**
-   * Checks if a username or email is taken
+   * Checks if an email is taken
    * @method GET
-   * @returns True if the username or email is taken, false otherwise
+   * @returns True if email is taken, false otherwise
    */
-  VALIDATE_IDENTIFIER() {
-    return `${environment.apiURL}/users/validate`;
+  VALIDATE_EMAIL(email: string) {
+    return `${environment.apiURL}/users/validate?email=${encodeURIComponent(email)}`;
+  },
+  /**
+   * Checks if a username is taken
+   * @method GET
+   * @returns True if the username, false otherwise
+   */
+  VALIDATE_USERNAME(username: string) {
+    return `${environment.apiURL}/users/validate?username=${encodeURIComponent(username)}`;
   },
   /**
    * Request to verify a user's email

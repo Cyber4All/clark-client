@@ -81,7 +81,7 @@ import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarc
     MatBadgeModule,
     MatTreeModule,
     MatSelectModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [LearningObjectService]
 })

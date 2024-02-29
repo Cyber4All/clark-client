@@ -204,7 +204,6 @@ export class CollectionService {
       });
   }
 
-
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
