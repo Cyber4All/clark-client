@@ -15,6 +15,9 @@ import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/typings';
 import { SUBMISSION_ROUTES } from '../../core/learning-object-module/submissions/submissions.routes';
 import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bundling.routes';
+import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
+import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
+import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -55,11 +58,11 @@ export class LearningObjectService {
    */
   toggleBundle(
     username: string,
-    learningObjectID: string,
+    learningObjectId: string,
     fileIDs: string[],
     state: boolean
   ) {
-    const route = ADMIN_ROUTES.TOGGLE_BUNDLE(username, learningObjectID);
+    const route = BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ username, learningObjectId });
 
     return this.http
       .patch(
@@ -113,7 +116,7 @@ export class LearningObjectService {
    * @param authorUsername
    */
   createRevision(cuid: string, authorUsername: string) {
-    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, cuid);
+    const route = REVISION_ROUTES.CREATE_REVISION(authorUsername, cuid);
     return this.http
       .post(
         route, {},
@@ -266,7 +269,7 @@ export class LearningObjectService {
 
     return this.http
       .patch(
-        USER_ROUTES.MODIFY_MY_OUTCOME(learningObjectId, outcomeId),
+        OUTCOME_ROUTES.UPDATE_OUTCOME(learningObjectId, outcomeId),
         { outcome },
         { withCredentials: true }
       )
@@ -285,7 +288,7 @@ export class LearningObjectService {
    */
   deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
     return this.http
-      .delete(USER_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
+      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
       .pipe(
 
         catchError(this.handleError)
@@ -505,7 +508,7 @@ export class LearningObjectService {
 
   async updateReadme(id: string): Promise<any> {
     return await this.http.patch(
-      USER_ROUTES.UPDATE_PDF(id),
+      FILE_ROUTES.UPDATE_PDF(id),
       {},
       { withCredentials: true, responseType: 'text' }
     )
@@ -546,7 +549,7 @@ export class LearningObjectService {
     objectId: string;
     files: FileUploadMeta[];
   }): Promise<string[]> {
-    const route = USER_ROUTES.ADD_FILE_META(username, objectId);
+    const route = FILE_ROUTES.UPLOAD_FILE_META(username, objectId);
     return this.handleFileMetaRequests(files, route);
   }
 
@@ -663,7 +666,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   getMaterials(username: string, objectId: string): Promise<any> {
-    const route = USER_ROUTES.GET_MATERIALS(username, objectId, 'unreleased');
+    const route = FILE_ROUTES.GET_MATERIALS(username, objectId, 'unreleased');
     return this.http.get(route, { withCredentials: true })
       .pipe(
 
@@ -687,7 +690,7 @@ export class LearningObjectService {
     fileId: string,
     description: string
   ): Promise<any> {
-    const route = USER_ROUTES.UPDATE_FILE_DESCRIPTION(
+    const route = FILE_ROUTES.UPDATE_FILE(
       authorUsername,
       objectId,
       fileId
@@ -716,7 +719,7 @@ export class LearningObjectService {
   addLearningOutcome(sourceId: string, outcome: LearningOutcome): Promise<any> {
     return this.http
       .post(
-        USER_ROUTES.CREATE_AN_OUTCOME(sourceId),
+        OUTCOME_ROUTES.CREATE_OUTCOME(sourceId),
         outcome,
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )

@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { ADMIN_ROUTES } from '@env/route';
 import { throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class UnreleaseService {
   deleteRevision(username: string, cuid: string, version: number) {
     return this.http
       .delete(
-        ADMIN_ROUTES.DELETE_REVISION(username, cuid, version),
+        REVISION_ROUTES.DELETE_REVISION(username, cuid, version),
         { withCredentials: true, responseType: 'text' }
       ).pipe(
 

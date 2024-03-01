@@ -159,7 +159,7 @@ export class CollectionService {
       .toPromise();
   }
   getCollectionMetadata(name: string) {
-    return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTION_META(name))
+    return this.http.get(COLLECTION_ROUTES.GET_COLLECTION_META(name))
       .pipe(
 
         catchError(this.handleError)

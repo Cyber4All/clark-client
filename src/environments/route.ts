@@ -1,8 +1,6 @@
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
-export type MaterialsFilter = 'released' | 'unreleased';
-
 export const ADMIN_ROUTES = {
   MUTATE_COLLECTION_MEMBERSHIP(
     abvCollectionName: string,
@@ -28,11 +26,6 @@ export const ADMIN_ROUTES = {
       userId,
     )}`;
   },
-  CHANGE_AUTHOR(userId: string, id: string): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      userId,
-    )}/learning-objects/${id}/change-author`;
-  },
   CHANGE_STATUS(username: string, id: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
@@ -43,25 +36,10 @@ export const ADMIN_ROUTES = {
       username,
     )}/learning-objects/${id}/status`;
   },
-  DELETE_REVISION(username: string, cuid: string, version: number) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${cuid}/versions/${version}`;
-  },
-  UPDATE_OBJECT_SUBMITTED_COLLECTION(username: string, cuid: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(cuid)}/collection`;
-  },
   ADD_HIERARCHY_OBJECT(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
     )}/hierarchy-object`;
-  },
-  TOGGLE_BUNDLE(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(id)}/files/bundle`;
   },
 };
 
@@ -134,11 +112,6 @@ export const USER_ROUTES = {
       username,
     )}/learning-objects`;
   },
-  CREATE_REVISION_OF_LEARNING_OBJECT(username, cuid) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(cuid)}/versions`;
-  },
   UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
@@ -174,21 +147,6 @@ export const USER_ROUTES = {
       username,
     )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
   },
-  MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectId,
-    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
-  },
-  CREATE_AN_OUTCOME(learningObjectId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectId,
-    )}/learning-outcomes`;
-  },
-  DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectId,
-    )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
-  },
   POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
@@ -210,6 +168,7 @@ export const USER_ROUTES = {
       mappingsId,
     )}`;
   },
+  // FIXME: This route is not in the gateway
   GET_SAME_ORGANIZATION(organization) {
     return `${environment.apiURL
       }/users/search?organization=${encodeURIComponent(organization)}`;
@@ -222,28 +181,6 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       username,
     )}/${encodeURIComponent(learningObjectName)}/children`;
-  },
-  UPDATE_PDF(id: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      id,
-    )}/pdf`;
-  },
-  UPDATE_FILE_DESCRIPTION(username: string, objectId: string, fileId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${objectId}/materials/files/${encodeURIComponent(
-      fileId,
-    )}`;
-  },
-  GET_MATERIALS(username: string, objectId: string, filter?: MaterialsFilter) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${objectId}/materials?status=${filter}`;
-  },
-  ADD_FILE_META(username: string, objectId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${objectId}/materials/files`;
   },
   GET_CHILDREN(username: string, learningObjectID: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
@@ -267,9 +204,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
     }
 
     return uri;
-  },
-  GET_COLLECTION_META(name: string) {
-    return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
   },
   GET_LEARNING_OBJECT_PARENTS(username: string, id: string) {
     return `${environment.apiURL}/users/${username}/learning-objects/${id}/parents`;

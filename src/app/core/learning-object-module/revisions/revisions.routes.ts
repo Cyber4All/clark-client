@@ -21,7 +21,7 @@ export const REVISION_ROUTES = {
      * @param cuid - The cuid of the learning object to delete the revision from
      * @param version - The version of the learning object to delete
      */
-    DELETE_REVISION(username: string, cuid: string, version: string) {
+    DELETE_REVISION(username: string, cuid: string, version: number) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username
         )}/learning-objects/${encodeURIComponent(cuid)}/versions/${encodeURIComponent(

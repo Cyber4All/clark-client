@@ -8,6 +8,7 @@ import { Query } from '../interfaces/query';
 
 import * as querystring from 'querystring';
 import { USER_ROUTE } from '../core/user-module/user.routes';
+import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
 
 // TODO: move to core module
 @Injectable({
@@ -151,7 +152,7 @@ export class LearningObjectService {
    * @param authorUsername
    */
   async createRevision(cuid: string, authorUsername: string): Promise<any> {
-    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, cuid);
+    const route = REVISION_ROUTES.CREATE_REVISION(authorUsername, cuid);
     const response = await this.http
       .post(
         route, {},

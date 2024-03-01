@@ -4,6 +4,7 @@ import { retry, catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { User } from '@entity';
+import { CHANGE_AUTHORSHIP_ROUTES } from '../../core/learning-object-module/change-authorship/change-authorship.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthorshipService {
 
   async changeAuthorship(oldAuthor: User, id: string, newAuthor: string) {
     return this.http
-      .post(ADMIN_ROUTES.CHANGE_AUTHOR(oldAuthor.id, id),
+      .post(CHANGE_AUTHORSHIP_ROUTES.CHANGE_AUTHORSHIP(oldAuthor.id, id),
         {
           'author': newAuthor,
         },
