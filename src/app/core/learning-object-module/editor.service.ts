@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { USER_ROUTES } from '@env/route';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
 @Injectable({

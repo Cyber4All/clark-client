@@ -10,6 +10,7 @@ import { LearningObject } from '../../../entity/learning-object/learning-object'
 import * as querystring from 'querystring';
 import { COLLECTION_ROUTES } from './collections.routes';
 import { REPORT_ROUTES } from '../report-module/report.routes';
+import { SUBMISSION_ROUTES } from '../learning-object-module/submissions/submissions.routes';
 
 export interface Collection {
   name: string;
@@ -102,7 +103,7 @@ export class CollectionService {
   }): Promise<any> {
     return this.http
       .post(
-        USER_ROUTES.SUBMIT_LEARNING_OBJECT({
+        SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
           userId: params.userId,
           learningObjectId: params.learningObjectId,
         }),
@@ -126,7 +127,7 @@ export class CollectionService {
   }): Promise<any> {
     return this.http
       .delete(
-        USER_ROUTES.UNSUBMIT_LEARNING_OBJECT({
+        SUBMISSION_ROUTES.DELETE_SUBMISSION({
           userId: params.userId,
           learningObjectId: params.learningObjectId,
         }),

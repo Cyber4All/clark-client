@@ -2,7 +2,7 @@ import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { LearningObject } from '@entity';
 import { Query } from '../interfaces/query';
 

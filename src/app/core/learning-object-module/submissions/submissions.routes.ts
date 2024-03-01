@@ -17,10 +17,10 @@ export const SUBMISSION_ROUTES = {
      * @param learningObjectId - The id of the learning object to submit
      * @auth required
      */
-    SUBMIT_LEARNING_OBJECT(userId: string, learningObjectId: string) {
+    SUBMIT_LEARNING_OBJECT(params: { userId: string, learningObjectId: string }) {
         return `${environment.apiURL}/users/${encodeURIComponent(
-            userId
-        )}/learning-objects/${encodeURIComponent(learningObjectId)}/submissions`;
+            params.userId
+        )}/learning-objects/${encodeURIComponent(params.learningObjectId)}/submissions`;
     },
     /**
      * Request to cancel a submission
@@ -28,9 +28,9 @@ export const SUBMISSION_ROUTES = {
      * @param learningObjectId - The id of the learning object to cancel the submission for
      * @auth required
      */
-    DELETE_SUBMISSION(userId: string, learningObjectId: string) {
+    DELETE_SUBMISSION(params: { userId: string, learningObjectId: string }) {
         return `${environment.apiURL}/users/${encodeURIComponent(
-            userId
-        )}/learning-objects/${encodeURIComponent(learningObjectId)}/submissions`;
+            params.userId
+        )}/learning-objects/${encodeURIComponent(params.learningObjectId)}/submissions`;
     },
 };

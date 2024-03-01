@@ -22,11 +22,13 @@ export const CHANGELOG_ROUTES = {
      * @param userId - The id of the Learning Object author
      * @param learningObjectId - The id of the Learning Object
      */
-    FETCH_CHANGELOGS(userId: string, learningObjectCuid: string) {
+    FETCH_CHANGELOGS(params: { userId: string, learningObjectCuid: string, minusRevision?: boolean }) {
         return `${environment.apiURL}/users/${encodeURIComponent(
-            userId
+            params.userId
         )}/learning-objects/${encodeURIComponent(
-            learningObjectCuid
-        )}/changelogs`;
+            params.learningObjectCuid
+        )}/changelogs?minusRevision=${encodeURIComponent(
+            params.minusRevision
+        )}`;
     }
 };

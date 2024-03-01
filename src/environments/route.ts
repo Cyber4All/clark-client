@@ -65,25 +65,6 @@ export const ADMIN_ROUTES = {
   },
 };
 
-export const CHANGELOG_ROUTES = {
-  CREATE_CHANGELOG(userId: string, learningObjectCuid: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      userId,
-    )}/learning-objects/${encodeURIComponent(learningObjectCuid)}/changelog`;
-  },
-  FETCH_ALL_CHANGELOGS(params: {
-    userId: string;
-    learningObjectCuid: string;
-    minusRevision?: boolean;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.userId,
-    )}/learning-objects/${encodeURIComponent(
-      params.learningObjectCuid,
-    )}/changelogs?minusRevision=${params.minusRevision}`;
-  },
-};
-
 export const COLLECTIONS_ROUTES = {
   GET_COLLECTION_CURATORS(name: string) {
     return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
@@ -163,19 +144,6 @@ export const USER_ROUTES = {
       username,
     )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
   },
-  SUBMIT_LEARNING_OBJECT(params: { userId: string; learningObjectId: string }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.userId,
-    )}/learning-objects/${params.learningObjectId}/submissions`;
-  },
-  UNSUBMIT_LEARNING_OBJECT(params: {
-    userId: string;
-    learningObjectId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.userId,
-    )}/learning-objects/${params.learningObjectId}/submissions`;
-  },
   CHECK_FIRST_SUBMISSION(params: {
     userId: string;
     learningObjectId: string;
@@ -205,21 +173,6 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username,
     )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
-  },
-  DELETE_FILE_FROM_LEARNING_OBJECT({
-    authorUsername,
-    learningObjectId,
-    fileId,
-  }: {
-    authorUsername: string;
-    learningObjectId: string;
-    fileId: string;
-  }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      authorUsername,
-    )}/learning-objects/${encodeURIComponent(
-      learningObjectId,
-    )}/materials/files/${encodeURIComponent(fileId)}`;
   },
   MODIFY_MY_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
@@ -256,11 +209,6 @@ export const USER_ROUTES = {
     )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(
       mappingsId,
     )}`;
-  },
-  OBJECT_BUNDLE(username: string, learningObjectId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(learningObjectId)}/bundle`;
   },
   GET_SAME_ORGANIZATION(organization) {
     return `${environment.apiURL
@@ -302,16 +250,6 @@ export const USER_ROUTES = {
       username,
     )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
   },
-  TOGGLE_FILES_TO_BUNDLE(params: {
-    username: string;
-    learningObjectID: string;
-  }): string {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
-      params.learningObjectID,
-    )}/files/bundle`;
-  }
 };
 
 export const PUBLIC_LEARNING_OBJECT_ROUTES = {
@@ -354,36 +292,5 @@ export const FEATURED_ROUTES_OLD = {
   GET_COLLECTION_FEATURED(collection: string) {
     return `${environment.apiURL
       }/featured/learning-objects?collection=${encodeURIComponent(collection)}`;
-  },
-};
-
-export const RELEVANCY_ROUTES = {
-  // Sets the nextCheck date for a relevancy
-  NEXT_CHECK(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(id)}/relevancy-check`;
-  },
-  // Assigns multiple users to evaluate multiple learning objects
-  ASSIGN_EVALUATORS() {
-    return `http://localhost:5000/learning-objects/evaluators`;
-  },
-  // Removes multiple user from evaluating multiple learning objects
-  REMOVE_EVALUATORS() {
-    return `http://localhost:5000/learning-objects/evaluators`;
-  },
-  // Reterieves topics for tagging learning objects
-  GET_TOPICS() {
-    return `${environment.apiURL}/topics`;
-  },
-  PATCH_OBJECT_TOPICS(username: string, id: string) {
-    return `${environment.apiURL}/users/${username}/learning-objects/${id}/topics`;
-  },
-  PATCH_OBJECT_OUTCOME_MAPPINGS(
-    username: string,
-    objectId: string,
-    outcomeId: string,
-  ) {
-    return `${environment.apiURL}/users/${username}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
   },
 };

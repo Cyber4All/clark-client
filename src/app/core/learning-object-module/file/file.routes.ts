@@ -24,12 +24,12 @@ export const FILE_ROUTES = {
      * @param learningObjectId - The id of the learning object to delete the file from
      * @param fileId - The id of the file to delete
      */
-    DELETE_FILE(username: string, learningObjectId: string, fileId: string) {
+    DELETE_FILE(params: { username: string, learningObjectId: string, fileId: string }) {
         return `${environment.apiURL}/users/${encodeURIComponent(
-            username
+            params.username
         )}/learning-objects/${encodeURIComponent(
-            learningObjectId
-        )}/materials/files/${encodeURIComponent(fileId)}`;
+            params.learningObjectId
+        )}/materials/files/${encodeURIComponent(params.fileId)}`;
     },
     /**
      * Request to update the README of a learning object

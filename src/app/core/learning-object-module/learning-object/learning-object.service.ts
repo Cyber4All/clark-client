@@ -5,6 +5,7 @@ import { of, Observable, merge, Subject } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
 import { environment } from '@env/environment';
+import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
 
 export const CALLBACKS = {
   outcomes: (outcomes: any[]) => {
@@ -125,9 +126,9 @@ export class LearningObjectService {
     );
   }
 
-  toggleFilesToBundle(username: string, learningObjectID: string, selected: string[], deselected: string[]) {
+  toggleFilesToBundle(username: string, learningObjectId: string, selected: string[], deselected: string[]) {
     return this.http.patch(
-      USER_ROUTES.TOGGLE_FILES_TO_BUNDLE({ username, learningObjectID }),
+      BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ username, learningObjectId }),
       {
         selected: selected,
         deselected: deselected,

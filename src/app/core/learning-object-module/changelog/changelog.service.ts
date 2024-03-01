@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { CHANGELOG_ROUTES } from '@env/route';
-import { retry, catchError } from 'rxjs/operators';
+import { CHANGELOG_ROUTES } from './changelog.routes';
+import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable({
@@ -44,7 +44,7 @@ export class ChangelogService {
     minusRevision?: boolean,
   }): Promise<any> {
     return this.http
-      .get(CHANGELOG_ROUTES.FETCH_ALL_CHANGELOGS({
+      .get(CHANGELOG_ROUTES.FETCH_CHANGELOGS({
         userId: params.userId,
         learningObjectCuid: params.learningObjectCuid,
         minusRevision: params.minusRevision,

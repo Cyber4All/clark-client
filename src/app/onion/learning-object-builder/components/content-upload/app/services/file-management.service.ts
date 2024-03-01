@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
 
 import { Injectable } from '@angular/core';
-import { USER_ROUTES } from '@env/route';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError, takeUntil } from 'rxjs/operators';
@@ -21,6 +20,7 @@ import {
   UploadErrorUpdate
 } from './typings';
 import { UserService } from 'app/core/user-module/user.service';
+import { FILE_ROUTES } from '../../../../../../core/learning-object-module/file/file.routes';
 
 const DEFAULT_CONCURRENT_UPLOADS = 10;
 
@@ -514,8 +514,8 @@ export class FileManagementService {
    * @memberof FileManagementService
    */
   delete(learningObject: LearningObject, fileId: string): Promise<{}> {
-    const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT({
-      authorUsername: learningObject.author.username,
+    const route = FILE_ROUTES.DELETE_FILE({
+      username: learningObject.author.username,
       learningObjectId: learningObject.id,
       fileId
     });

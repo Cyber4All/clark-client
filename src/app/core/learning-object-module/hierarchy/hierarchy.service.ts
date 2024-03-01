@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { ADMIN_ROUTES, USER_ROUTES } from '@env/route';
-import { retry } from 'rxjs/operators';
 import { HIERARCHY_ROUTES } from './hierarchy.routes';
 
 @Injectable({

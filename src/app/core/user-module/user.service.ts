@@ -6,7 +6,7 @@ import { AuthService } from '../auth-module/auth.service';
 import { User } from '@entity';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { UserQuery } from 'app/interfaces/query';
 
 @Injectable({

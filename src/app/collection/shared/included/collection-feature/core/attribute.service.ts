@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LearningObject } from '@entity';
 import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
 
 @Injectable({
@@ -10,7 +9,7 @@ export class AttributeService {
 
   constructor(private http: HttpClient) { }
 
-  async getHierarchy(username: string, objectId: string): Promise<{parents: any, children: any}> {
+  async getHierarchy(username: string, objectId: string): Promise<{ parents: any, children: any }> {
     const parents = await this.http.get(
       PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(
         username,

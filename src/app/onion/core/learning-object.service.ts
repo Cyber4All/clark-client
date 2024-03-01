@@ -10,9 +10,11 @@ import { CookieService } from 'ngx-cookie-service';
 
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, ADMIN_ROUTES } from '@env/route';
 
-import { retry, catchError, takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/typings';
+import { SUBMISSION_ROUTES } from '../../core/learning-object-module/submissions/submissions.routes';
+import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bundling.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -355,7 +357,7 @@ export class LearningObjectService {
    * @param {string} collection the abreviated name of the collection to which to submit this learning object
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
-    const route = USER_ROUTES.SUBMIT_LEARNING_OBJECT({
+    const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
       learningObjectId: learningObject.id,
       userId: learningObject.author.id,
     });
@@ -378,7 +380,7 @@ export class LearningObjectService {
    * @param {learningObject} learningObject the learning object to be unpublished
    */
   unsubmit(learningObject: LearningObject) {
-    const route = USER_ROUTES.UNSUBMIT_LEARNING_OBJECT({
+    const route = SUBMISSION_ROUTES.DELETE_SUBMISSION({
       learningObjectId: learningObject.id,
       userId: learningObject.author.id
     });
@@ -401,7 +403,7 @@ export class LearningObjectService {
    * @param learningObjectId id current learning object
    */
   triggerBundle(username: string, learningObjectId: string) {
-    const route = USER_ROUTES.OBJECT_BUNDLE(
+    const route = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
       username,
       learningObjectId
     );
