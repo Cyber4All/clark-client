@@ -6,13 +6,13 @@ export const CHANGELOG_ROUTES = {
      * @method POST
      * @auth required
      * @param userId - The id of the learning object author
-     * @param learningObjectId - The id of the learning object
+     * @param learningObjectCuid - The cuid of the learning object
      */
-    CREATE_CHANGELOG(userId: string, learningObjectId: string) {
+    CREATE_CHANGELOG(userId: string, learningObjectCuid: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             userId
         )}/learning-objects/${encodeURIComponent(
-            learningObjectId
+            learningObjectCuid
         )}/changelog`;
     },
     /**
