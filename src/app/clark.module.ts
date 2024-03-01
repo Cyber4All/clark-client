@@ -4,6 +4,7 @@ import { TitleCasePipe } from '@angular/common';
 
 import { UrlSerializer } from '@angular/router';
 import { CustomUrlSerializer } from './core/learning-object-module/custom-url-serliazer';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';
@@ -24,6 +25,7 @@ import { PrimaryNavbarComponent } from './components/primary-navbar/primary-navb
 import { SecondaryNavbarComponent } from './components/secondary-navbar/secondary-navbar.component';
 import { RedirectComponent } from './redirect/redirect.component';
 import { SafeHtmlPipe } from './components/safe-html.pipe';
+import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor';
 
 @NgModule({
   imports: [
@@ -54,7 +56,8 @@ import { SafeHtmlPipe } from './components/safe-html.pipe';
   providers: [
     TitleCasePipe,
     Title,
-    { provide: UrlSerializer, useClass: CustomUrlSerializer }
+    { provide: UrlSerializer, useClass: CustomUrlSerializer },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
   ]
 })
 export class ClarkModule { }
