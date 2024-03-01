@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '../../../environments/route';
+import {
+  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
+  LEGACY_COLLECTIONS_ROUTES
+} from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, skipWhile } from 'rxjs/operators';
 
@@ -151,7 +153,7 @@ export class CollectionService {
   }
 
   getCollectionCuratorsInfo(name: string) {
-    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
+    return this.http.get(LEGACY_COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
       .pipe(
 
         catchError(this.handleError)
@@ -185,11 +187,11 @@ export class CollectionService {
         queryClone.standardOutcomes = queryClone.standardOutcomes.map(o => o['id']);
       }
       const queryString = querystring.stringify(queryClone);
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
         queryString
       );
     } else {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
 
     return this.http

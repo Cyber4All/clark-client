@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 import { AuthService } from '../auth-module/auth.service';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -22,7 +22,7 @@ export class ProfileService {
   fetchLearningObject(params: { author: string; cuid: string }): Promise<any> {
     return this.http
       .get(
-        PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
+        LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
           params.author,
           params.cuid
         ),

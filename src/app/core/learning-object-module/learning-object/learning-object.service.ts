@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { take, map, catchError, mergeMap, finalize } from 'rxjs/operators';
 import { of, Observable, merge, Subject } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { LEGACY_USER_ROUTES, LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object/learning-object.routes';
 import { environment } from '@env/environment';
 import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
 
@@ -166,9 +166,9 @@ export class LearningObjectService {
     let route;
     // Sets route to be hit based on if the id or if author and Learning Object name have been provided
     if (params.id) {
-      route = USER_ROUTES.GET_LEARNING_OBJECT(params.id);
+      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
     } else if (params.author && params.cuidInfo) {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);
       throw err;

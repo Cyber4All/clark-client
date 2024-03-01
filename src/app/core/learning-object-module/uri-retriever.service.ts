@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, Subject, of } from 'rxjs';
 import { LearningObject } from '@entity';
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { LEGACY_USER_ROUTES, LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 import { LearningOutcome } from '@entity';
 import { catchError, retry, map, tap, filter, take, takeUntil, finalize } from 'rxjs/operators';
 
@@ -208,9 +208,9 @@ export class UriRetrieverService {
     let route;
     // Sets route to be hit based on if the id or if author and Learning Object name have been provided
     if (params.id) {
-      route = USER_ROUTES.GET_LEARNING_OBJECT(params.id);
+      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
     } else if (params.author && params.cuidInfo) {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);
       throw err;

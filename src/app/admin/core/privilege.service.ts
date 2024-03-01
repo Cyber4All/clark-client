@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { retry, catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { ADMIN_ROUTES } from '@env/route';
+import { LEGACY_ADMIN_ROUTES } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class PrivilegeService {
    */
   getCollectionRoles(id: string): Promise<string[]> {
     return this.http
-      .get<{ roles: string[] }>(ADMIN_ROUTES.GET_USER_ROLES(id))
+      .get<{ roles: string[] }>(LEGACY_ADMIN_ROUTES.GET_USER_ROLES(id))
       .pipe(
 
         map(data => data.roles),
@@ -40,7 +40,7 @@ export class PrivilegeService {
   addCollectionMembership(abvCollectionName: string, userId: string, role: string): Promise<{}> {
     return this.http
       .put(
-        ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
+        LEGACY_ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
         { role },
         { withCredentials: true, responseType: 'text' }
       )
@@ -63,7 +63,7 @@ export class PrivilegeService {
   modifyCollectionMembership(abvCollectionName: string, userId: string, role: string) {
     return this.http
       .patch(
-        ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
+        LEGACY_ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
         { role },
         { withCredentials: true, responseType: 'text' }
       )
@@ -85,7 +85,7 @@ export class PrivilegeService {
   removeCollectionMembership(abvCollectionName: string, userId: string) {
     return this.http
       .delete(
-        ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
+        LEGACY_ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
@@ -98,7 +98,7 @@ export class PrivilegeService {
   addMapperMembership(userId: string) {
     return this.http
       .put(
-        ADMIN_ROUTES.ADD_MAPPER(userId),
+        LEGACY_ADMIN_ROUTES.ADD_MAPPER(userId),
         { withCredentials: true }
       )
       .toPromise();
@@ -107,7 +107,7 @@ export class PrivilegeService {
   getMappers() {
     return this.http
       .get(
-        ADMIN_ROUTES.GET_MAPPERS(),
+        LEGACY_ADMIN_ROUTES.GET_MAPPERS(),
         { withCredentials: true }
       )
       .toPromise();
@@ -116,7 +116,7 @@ export class PrivilegeService {
   removeMapperMembership(userId: string) {
     return this.http
       .delete(
-        ADMIN_ROUTES.REMOVE_MAPPER(userId),
+        LEGACY_ADMIN_ROUTES.REMOVE_MAPPER(userId),
         { withCredentials: true }
       )
       .toPromise();

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { USER_ROUTES } from '@env/route';
+import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 import { USER_ROUTE } from './user.routes';
 import { AuthService } from '../auth-module/auth.service';
 import { User } from '@entity';
@@ -31,7 +31,7 @@ export class UserService {
   ): Promise<void> {
     await this.http
       .put(
-        USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
+        LEGACY_USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
         { role },
         {
           withCredentials: true,
@@ -57,7 +57,7 @@ export class UserService {
     role: string
   ): Promise<User> {
     return this.http
-      .patch(USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId), role, {
+      .patch(LEGACY_USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId), role, {
         withCredentials: true,
         responseType: 'text',
       })
@@ -80,7 +80,7 @@ export class UserService {
     await this.http
       .request(
         'delete',
-        USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
+        LEGACY_USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
         {
           withCredentials: true,
           responseType: 'text',
@@ -99,7 +99,7 @@ export class UserService {
    */
   searchUsers(query: UserQuery): Promise<User[]> {
     return this.http
-      .get(USER_ROUTES.SEARCH_USERS(query), {
+      .get(LEGACY_USER_ROUTES.SEARCH_USERS(query), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))
@@ -118,7 +118,7 @@ export class UserService {
    * @memberof UserService
    */
   getOrganizationMembers(organization: string): Promise<User[]> {
-    const route = USER_ROUTES.GET_SAME_ORGANIZATION(organization);
+    const route = LEGACY_USER_ROUTES.GET_SAME_ORGANIZATION(organization);
     return this.http
       .get(route)
       .pipe(catchError(this.handleError))

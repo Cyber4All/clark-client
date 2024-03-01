@@ -1,4 +1,7 @@
-import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
+import {
+  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
+  LEGACY_USER_ROUTES
+} from '../core/learning-object-module/learning-object/learning-object.routes';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
@@ -58,11 +61,11 @@ export class LearningObjectService {
         ) as string[]).map(o => o['id']);
       }
       const queryString = querystring.stringify(queryClone);
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
         queryString
       );
     } else {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
 
     return this.http
@@ -90,7 +93,7 @@ export class LearningObjectService {
     cuid: string,
     version?: number
   ): Promise<LearningObject> {
-    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
+    const route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       author,
       cuid,
       version
@@ -117,7 +120,7 @@ export class LearningObjectService {
   getRevisedLearningObject(
     learningObjectId: String
   ): Promise<LearningObject> {
-    const route = USER_ROUTES.GET_LEARNING_OBJECT(
+    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(
       learningObjectId
     );
     return this.http

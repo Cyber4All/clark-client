@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ADMIN_ROUTES } from '@env/route';
 import { COLLECTION_ROUTES } from '../../core/collection-module/collections.routes';
 
 @Injectable({

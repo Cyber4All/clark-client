@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { USER_ROUTES } from '@env/route';
+import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -21,7 +21,7 @@ export class EditorService {
     authorUsername: string,
     status: string,
   ): Observable<string> {
-    const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
+    const route = LEGACY_USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
     return this.http
       .patch(
         route,

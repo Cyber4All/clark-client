@@ -4,12 +4,8 @@ import {
   HttpHeaders,
   HttpErrorResponse
 } from '@angular/common/http';
-
 import { LearningObject, LearningOutcome } from '@entity';
 import { CookieService } from 'ngx-cookie-service';
-
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, ADMIN_ROUTES } from '@env/route';
-
 import { catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/typings';
@@ -18,6 +14,11 @@ import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bund
 import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
 import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
+import {
+  LEGACY_USER_ROUTES,
+  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
+  LEGACY_ADMIN_ROUTES
+} from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -90,7 +91,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   create(learningObject, authorUsername: string): Promise<LearningObject> {
-    const route = USER_ROUTES.ADD_TO_MY_LEARNING_OBJECTS(authorUsername);
+    const route = LEGACY_USER_ROUTES.ADD_TO_MY_LEARNING_OBJECTS(authorUsername);
 
     return this.http
       .post(
@@ -138,7 +139,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   getLearningObject(learningObjectId: string): Promise<LearningObject> {
-    const route = USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
+    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -159,7 +160,7 @@ export class LearningObjectService {
    * @param revisionID
    */
   getLearningObjectRevision(username: string, learningObjectID: string, revisionID: number) {
-    const route = USER_ROUTES.GET_LEARNING_OBJECT_REVISION(username, learningObjectID, revisionID);
+    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT_REVISION(username, learningObjectID, revisionID);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -184,7 +185,7 @@ export class LearningObjectService {
     query?: string,
     childId?: string
   ): Promise<LearningObject[]> {
-    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters, query, childId);
+    const route = LEGACY_USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters, query, childId);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -208,7 +209,7 @@ export class LearningObjectService {
     filters?: any,
     query?: string
   ): Promise<LearningObject[]> {
-    const route = USER_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername, filters, query);
+    const route = LEGACY_USER_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername, filters, query);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -238,7 +239,7 @@ export class LearningObjectService {
     learningObject: { [key: string]: any },
     reason?: string,
   ): Promise<{}> {
-    const route = USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
+    const route = LEGACY_USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
     return this.http
       .patch(
         route,
@@ -314,7 +315,7 @@ export class LearningObjectService {
 
     return this.http
       .post(
-        USER_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
+        LEGACY_USER_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
         { guidelineID: outcome.mappings[outcome.mappings.length - 1] },
         { headers: this.headers, withCredentials: true }
       )
@@ -343,7 +344,7 @@ export class LearningObjectService {
 
     return this.http
       .delete(
-        USER_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
+        LEGACY_USER_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
@@ -431,7 +432,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   delete(authorUsername: string, learningObjectId: string): Promise<{}> {
-    const route = USER_ROUTES.DELETE_LEARNING_OBJECT(
+    const route = LEGACY_USER_ROUTES.DELETE_LEARNING_OBJECT(
       authorUsername,
       learningObjectId
     );
@@ -456,7 +457,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   deleteMultiple(names: string[], authorUsername: string): Promise<any> {
-    const route = USER_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(authorUsername, names);
+    const route = LEGACY_USER_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(authorUsername, names);
 
     return this.http
       .delete(route, {
@@ -477,7 +478,7 @@ export class LearningObjectService {
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const route = USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
+    const route = LEGACY_USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
 
     if (remove) {
       return this.http
@@ -524,7 +525,7 @@ export class LearningObjectService {
    * @param id of learning object
    */
   fetchParents(username: string, id: string) {
-    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(username, id);
+    const route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(username, id);
     return this.http.get<LearningObject[]>(route, { withCredentials: true }).toPromise().then(parents => {
       return parents;
     });
@@ -565,7 +566,7 @@ export class LearningObjectService {
     reason?: string
   }): Promise<void> {
     await this.http.post<void>(
-      ADMIN_ROUTES.CHANGE_STATUS(username, objectId),
+      LEGACY_ADMIN_ROUTES.CHANGE_STATUS(username, objectId),
       { status, reason },
       // @ts-ignore
       { withCredentials: true, responseType: 'text' },
@@ -742,7 +743,7 @@ export class LearningObjectService {
   getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
     return this.http
       .get<{ isFirstSubmission: boolean }>(
-        USER_ROUTES.CHECK_FIRST_SUBMISSION({
+        LEGACY_USER_ROUTES.CHECK_FIRST_SUBMISSION({
           userId,
           learningObjectId,
           query: {

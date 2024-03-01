@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
-import { ADMIN_ROUTES } from '@env/route';
+import { LEGACY_ADMIN_ROUTES } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
@@ -24,7 +24,7 @@ export class UnreleaseService {
   unreleaseLearningObject(username: string, cuid: string) {
     return this.http
       .post(
-        ADMIN_ROUTES.UNRELEASE_OBJECT(username, cuid),
+        LEGACY_ADMIN_ROUTES.UNRELEASE_OBJECT(username, cuid),
         { status: LearningObject.Status.PROOFING },
         { withCredentials: true, responseType: 'text' }
       ).pipe(
