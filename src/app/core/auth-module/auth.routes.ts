@@ -48,17 +48,17 @@ export const AUTH_ROUTES = {
    * @method GET
    * @returns True if email is taken, false otherwise
    */
-  VALIDATE_EMAIL() {
-    return `${environment.apiURL}/users/validate?email=`;
+  VALIDATE_EMAIL(email: string) {
+    return `${environment.apiURL}/users/validate?email=${encodeURIComponent(email)}`;
   },
   /**
    * Checks if a username is taken
    * @method GET
    * @returns True if the username, false otherwise
    */
-    VALIDATE_USERNAME() {
-      return `${environment.apiURL}/users/validate?username=`;
-    },
+  VALIDATE_USERNAME(username: string) {
+    return `${environment.apiURL}/users/validate?username=${encodeURIComponent(username)}`;
+  },
   /**
    * Request to verify a user's email
    * @method GET

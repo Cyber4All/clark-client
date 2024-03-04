@@ -15,7 +15,7 @@ import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Topic } from '@entity';
-import { RelevancyService } from 'app/core/learning-object-module/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

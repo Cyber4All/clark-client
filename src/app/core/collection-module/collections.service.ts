@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '../../../environments/route';
+import {
+  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
+  LEGACY_COLLECTIONS_ROUTES
+} from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { catchError, retry, skipWhile } from 'rxjs/operators';
+import { catchError, skipWhile } from 'rxjs/operators';
 
 import { Query } from '../../interfaces/query';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import * as querystring from 'querystring';
 import { COLLECTION_ROUTES } from './collections.routes';
 import { REPORT_ROUTES } from '../report-module/report.routes';
+import { SUBMISSION_ROUTES } from '../learning-object-module/submissions/submissions.routes';
 
 export interface Collection {
   name: string;
@@ -17,7 +20,9 @@ export interface Collection {
   hasLogo: boolean;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
@@ -35,7 +40,6 @@ export class CollectionService {
   async fetchCollections() {
     this.collections = await this.http.get(COLLECTION_ROUTES.GET_ALL_COLLECTIONS(), { withCredentials: true })
       .pipe(
-        retry(3),
         catchError(this.handleError)
       )
       .toPromise()
@@ -44,12 +48,13 @@ export class CollectionService {
           c.hasLogo = false;
 
           try {
-            await this.http.head('/assets/images/collections/' + c.abvName + '.png').pipe(
-              catchError(this.handleError)
-            ).toPromise().then(() => {
-              c.hasLogo = true;
-            });
-          } catch (_) {
+            await this.http.head('../../assets/images/collections/' + c.abvName + '.png')
+              .toPromise()
+              .then(() => {
+                c.hasLogo = true;
+              });
+          } catch (error) {
+            console.log(error);
             // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
           }
         }
@@ -100,7 +105,7 @@ export class CollectionService {
   }): Promise<any> {
     return this.http
       .post(
-        USER_ROUTES.SUBMIT_LEARNING_OBJECT({
+        SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
           userId: params.userId,
           learningObjectId: params.learningObjectId,
         }),
@@ -112,7 +117,7 @@ export class CollectionService {
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -124,14 +129,14 @@ export class CollectionService {
   }): Promise<any> {
     return this.http
       .delete(
-        USER_ROUTES.UNSUBMIT_LEARNING_OBJECT({
+        SUBMISSION_ROUTES.DELETE_SUBMISSION({
           userId: params.userId,
           learningObjectId: params.learningObjectId,
         }),
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -148,17 +153,17 @@ export class CollectionService {
   }
 
   getCollectionCuratorsInfo(name: string) {
-    return this.http.get(COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
+    return this.http.get(LEGACY_COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
   }
   getCollectionMetadata(name: string) {
-    return this.http.get(PUBLIC_LEARNING_OBJECT_ROUTES.GET_COLLECTION_META(name))
+    return this.http.get(COLLECTION_ROUTES.GET_COLLECTION_META(name))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -182,17 +187,17 @@ export class CollectionService {
         queryClone.standardOutcomes = queryClone.standardOutcomes.map(o => o['id']);
       }
       const queryString = querystring.stringify(queryClone);
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
         queryString
       );
     } else {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
 
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -227,7 +232,7 @@ export class CollectionService {
       end: string
     }) {
     if (collections.length > 0) {
-      const route = COLLECTIONS_ROUTES.GET_COLLECTION_REPORT(collections, date);
+      const route = REPORT_ROUTES.GENERATE_REPORT(collections, date);
       this.http
         .post(
           route,

@@ -7,7 +7,9 @@ import {
 } from '@angular/router';
 import { AuthService } from '../auth-module/auth.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AccessGroupGuard implements CanActivate {
   constructor(private router: Router, private authService: AuthService) { }
 

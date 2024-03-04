@@ -4,10 +4,12 @@ import { TitleCasePipe } from '@angular/common';
 
 import { UrlSerializer } from '@angular/router';
 import { CustomUrlSerializer } from './core/learning-object-module/custom-url-serliazer';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';
 import { SharedModule } from './shared/shared.module';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
@@ -23,7 +25,7 @@ import { PrimaryNavbarComponent } from './components/primary-navbar/primary-navb
 import { SecondaryNavbarComponent } from './components/secondary-navbar/secondary-navbar.component';
 import { RedirectComponent } from './redirect/redirect.component';
 import { SafeHtmlPipe } from './components/safe-html.pipe';
-import { CoreModule } from './core/client-module/core.module';
+import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor';
 
 @NgModule({
   imports: [
@@ -33,7 +35,7 @@ import { CoreModule } from './core/client-module/core.module';
     BrowserAnimationsModule,
     ScrollingModule,
     FormsModule,
-    CoreModule
+    HttpClientModule
   ],
   declarations: [
     ClarkComponent,
@@ -51,6 +53,11 @@ import { CoreModule } from './core/client-module/core.module';
     SafeHtmlPipe
   ],
   bootstrap: [ClarkComponent],
-  providers: [TitleCasePipe, Title, { provide: UrlSerializer, useClass: CustomUrlSerializer }]
+  providers: [
+    TitleCasePipe,
+    Title,
+    { provide: UrlSerializer, useClass: CustomUrlSerializer },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
+  ]
 })
 export class ClarkModule { }

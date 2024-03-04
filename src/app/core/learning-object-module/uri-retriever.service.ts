@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, Subject, of } from 'rxjs';
 import { LearningObject } from '@entity';
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { LEGACY_USER_ROUTES, LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 import { LearningOutcome } from '@entity';
 import { catchError, retry, map, tap, filter, take, takeUntil, finalize } from 'rxjs/operators';
 
@@ -109,19 +109,19 @@ export class UriRetrieverService {
    *
    * @param uri this is the uri that should be hit to get the objects children
    */
-  getLearningObjectChildren(params: {uri: string, unreleased?: boolean}): Observable<LearningObject[]> {
+  getLearningObjectChildren(params: { uri: string, unreleased?: boolean }): Observable<LearningObject[]> {
     if (params.unreleased) {
       return this.http.get<LearningObject[]>(params.uri, { withCredentials: true })
-      .pipe(
-        retry(3),
-        take(1),
-      );
+        .pipe(
+
+          take(1),
+        );
     } else {
       return this.http.get<LearningObject[]>(params.uri, { withCredentials: true })
-      .pipe(
-        retry(3),
-        take(1)
-      );
+        .pipe(
+
+          take(1)
+        );
     }
   }
 
@@ -132,19 +132,19 @@ export class UriRetrieverService {
    */
   getLearningObjectRatings(uri: string): Observable<any> {
     return this.http
-    .get(uri, { withCredentials: true })
-    .pipe(
-      retry(3),
-      filter(response => response != null),
-      map((response: any) => {
-        const ratings = response.ratings.map((r: any) => {
-          const x = ({ ...r, id: r.id ? r.id : r._id });
-          delete x._id;
-          return x;
-        });
-        return { ...response, ratings };
-      })
-    );
+      .get(uri, { withCredentials: true })
+      .pipe(
+
+        filter(response => response != null),
+        map((response: any) => {
+          const ratings = response.ratings.map((r: any) => {
+            const x = ({ ...r, id: r.id ? r.id : r._id });
+            delete x._id;
+            return x;
+          });
+          return { ...response, ratings };
+        })
+      );
   }
 
   /**
@@ -204,13 +204,13 @@ export class UriRetrieverService {
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
-  private setRoute(params: {author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string}) {
+  private setRoute(params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string }) {
     let route;
-     // Sets route to be hit based on if the id or if author and Learning Object name have been provided
-     if (params.id) {
-      route = USER_ROUTES.GET_LEARNING_OBJECT(params.id);
+    // Sets route to be hit based on if the id or if author and Learning Object name have been provided
+    if (params.id) {
+      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
     } else if (params.author && params.cuidInfo) {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);
       throw err;
@@ -223,7 +223,7 @@ export class UriRetrieverService {
    *
    * @param params either the author and name or the id of the Learning Object
    */
-  private userError(params: {author?: string, name?: string, id?: string}) {
+  private userError(params: { author?: string, name?: string, id?: string }) {
     if (params.author && !params.name) {
       return new Error('Cannot find Learning Object ' + params.name + 'for ' + params.author);
     } else if (params.name && !params.author) {

@@ -2,7 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { GuidelineService } from 'app/core/standard-guidelines-module/guideline.service';
+import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';

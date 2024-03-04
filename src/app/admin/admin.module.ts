@@ -14,7 +14,6 @@ import { UserSearchWrapperComponent } from './components/user-search-wrapper/use
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
 import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
-import { CoreModule } from './core/core.module';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { ChangeAuthorComponent } from './components/change-author/change-author.component';
@@ -83,7 +82,6 @@ import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarc
     MatTreeModule,
     MatSelectModule,
     ReactiveFormsModule,
-    CoreModule.forRoot(),
   ],
   providers: [LearningObjectService]
 })

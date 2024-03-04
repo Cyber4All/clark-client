@@ -1,9 +1,10 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
-import { ADMIN_ROUTES } from '@env/route';
+import { LEGACY_ADMIN_ROUTES } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
+import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,11 @@ export class UnreleaseService {
   unreleaseLearningObject(username: string, cuid: string) {
     return this.http
       .post(
-        ADMIN_ROUTES.UNRELEASE_OBJECT(username, cuid),
+        LEGACY_ADMIN_ROUTES.UNRELEASE_OBJECT(username, cuid),
         { status: LearningObject.Status.PROOFING },
-        { withCredentials: true, responseType: 'text'}
+        { withCredentials: true, responseType: 'text' }
       ).pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -44,10 +45,10 @@ export class UnreleaseService {
   deleteRevision(username: string, cuid: string, version: number) {
     return this.http
       .delete(
-        ADMIN_ROUTES.DELETE_REVISION(username, cuid, version),
-        { withCredentials: true, responseType: 'text'}
+        REVISION_ROUTES.DELETE_REVISION(username, cuid, version),
+        { withCredentials: true, responseType: 'text' }
       ).pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

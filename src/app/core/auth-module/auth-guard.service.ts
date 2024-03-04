@@ -6,14 +6,16 @@ import {
   RouterStateSnapshot
 } from '@angular/router';
 import { AuthService } from './auth.service';
-import { CookieService } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 
 /**
  * Defines an AuthGuard which contains the logic for determining of a user can activate a route protected by the guard.
  *
  * @author Sean Donnelly
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthGuard implements CanActivate {
   constructor(
     private router: Router,

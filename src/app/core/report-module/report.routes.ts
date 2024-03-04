@@ -6,7 +6,16 @@ export const REPORT_ROUTES = {
      * @method POST
      * @auth required
      */
-    GENERATE_REPORT() {
-        return `${environment.apiURL}/reports`;
+    GENERATE_REPORT(
+        collections: string[],
+        date?: { start: string; end: string },
+    ) {
+        let route = `${environment.apiURL}/reports?output=csv&collection=${collections.join(',')}`;
+
+        if (date) {
+            route += `&start=${date.start}&end=${date.end}`;
+        }
+
+        return route;
     }
 };

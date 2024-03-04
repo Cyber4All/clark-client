@@ -3,8 +3,9 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { take, map, catchError, mergeMap, finalize } from 'rxjs/operators';
 import { of, Observable, merge, Subject } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
-import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { LEGACY_USER_ROUTES, LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object/learning-object.routes';
 import { environment } from '@env/environment';
+import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
 
 export const CALLBACKS = {
   outcomes: (outcomes: any[]) => {
@@ -34,7 +35,8 @@ export class LearningObjectService {
   fetchLearningObject(
     params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
   ): Observable<LearningObject | HttpErrorResponse> {
-    return this.http.get(this.buildRoute(params)).pipe(
+    const route = this.buildRoute(params);
+    return this.http.get(route).pipe(
       take(1),
       catchError(e => of(e)),
       map(response => {
@@ -93,7 +95,7 @@ export class LearningObjectService {
     }
   }
 
-  fetchLearningObjectResources(object: LearningObject, resources: string[] ): Observable<{ name: string, data: any }> {
+  fetchLearningObjectResources(object: LearningObject, resources: string[]): Observable<{ name: string, data: any }> {
     const resourceUris: { [key: string]: string } = {};
     Object.keys(object.resourceUris).filter(x => resources.includes(x)).map(key => {
       resourceUris[key] = object.resourceUris[key];
@@ -117,16 +119,16 @@ export class LearningObjectService {
     return this.http.get(
       uri,
       { headers: this.headers, withCredentials: true }
-      ).pipe(
+    ).pipe(
       take(1),
       map(res => callback ? callback(res) : res),
       catchError(e => of(e))
     );
   }
 
-  toggleFilesToBundle(username: string, learningObjectID: string, selected: string[], deselected: string[]) {
+  toggleFilesToBundle(username: string, learningObjectId: string, selected: string[], deselected: string[]) {
     return this.http.patch(
-      USER_ROUTES.TOGGLE_FILES_TO_BUNDLE({ username, learningObjectID }),
+      BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ username, learningObjectId }),
       {
         selected: selected,
         deselected: deselected,
@@ -142,16 +144,15 @@ export class LearningObjectService {
    * @returns True if the learning object has children, false otherwise
    */
   async doesLearningObjectHaveChildren(username: string, learningObjectId: string): Promise<boolean> {
-    const childrenUri = `${environment.apiURL}/users/${
-      encodeURIComponent(username)
-    }/learning-objects/${encodeURIComponent(
-      learningObjectId
-    )}/children`;
+    const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(username)
+      }/learning-objects/${encodeURIComponent(
+        learningObjectId
+      )}/children`;
 
     const hasChildren = await this.http.get(
       childrenUri,
       { headers: this.headers, withCredentials: true }
-      ).toPromise();
+    ).toPromise();
     return Array.from(hasChildren as any).length > 0;
   }
 
@@ -161,13 +162,13 @@ export class LearningObjectService {
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
-  private buildRoute(params: {author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string}) {
+  private buildRoute(params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string }) {
     let route;
-     // Sets route to be hit based on if the id or if author and Learning Object name have been provided
-     if (params.id) {
-      route = USER_ROUTES.GET_LEARNING_OBJECT(params.id);
+    // Sets route to be hit based on if the id or if author and Learning Object name have been provided
+    if (params.id) {
+      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
     } else if (params.author && params.cuidInfo) {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);
       throw err;
@@ -180,7 +181,7 @@ export class LearningObjectService {
    *
    * @param params either the author and name or the id of the Learning Object
    */
-  private userError(params: {author?: string, name?: string, id?: string}) {
+  private userError(params: { author?: string, name?: string, id?: string }) {
     if (params.author && !params.name) {
       return new Error('Cannot find Learning Object ' + params.name + 'for ' + params.author);
     } else if (params.name && !params.author) {

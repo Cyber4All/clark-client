@@ -22,4 +22,11 @@ export const METRIC_ROUTES = {
   GET_USER_METRICS() {
     return `${environment.apiURL}/users/metrics`;
   },
+  /**
+   * Request to get all learning object stats
+   * @method GET
+   */
+  GET_LEARNING_OBJECT_STATS() {
+    return `${environment.apiURL}/learning-objects/stats`;
+  },
 };

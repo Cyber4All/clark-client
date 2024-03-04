@@ -18,7 +18,7 @@ import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
 import { FileManagementService } from '../services/file-management.service';
-import { PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import { LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../../../../../../core/learning-object-module/learning-object/learning-object.routes';
 import {
   FileUploadMeta,
   UploadErrorReason,
@@ -229,7 +229,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (err) {
           if (err instanceof Error) {
             message = err.message;
-          } else if (err instanceof HttpErrorResponse){
+          } else if (err instanceof HttpErrorResponse) {
             message = err.error.message;
           } else {
             message = err;
@@ -696,7 +696,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
     const loId = learningObject.id;
     const authorUsername = learningObject.author.username;
-    const url = PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
+    const url = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.DOWNLOAD_FILE({
       loId,
       username: authorUsername,
       fileId: file.id

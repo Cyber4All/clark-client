@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { RELEVANCY_ROUTES } from '@env/route';
-import { AuthService } from '../auth-module/auth.service';
-import { catchError, retry } from 'rxjs/operators';
+import { RELEVANCY_ROUTES } from './relevancy.routes';
+import { AuthService } from '../../auth-module/auth.service';
+import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Topic } from '@entity';
+import { TOPICS_ROUTES } from '../topics/topics.routes';
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +32,7 @@ export class RelevancyService {
    */
   async setNextCheckDate(username: string, learningObjectId: string, date: Date): Promise<any> {
     return this.http
-      .patch(RELEVANCY_ROUTES.NEXT_CHECK(username, learningObjectId),
+      .patch(RELEVANCY_ROUTES.UPDATE_RELEVANCY_CHECK_DATE(username, learningObjectId),
         { date },
         {
           headers: this.headers,
@@ -40,7 +41,7 @@ export class RelevancyService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -57,7 +58,7 @@ export class RelevancyService {
     assignerIds: string[]
   }): Promise<any> {
     return this.http
-      .post(RELEVANCY_ROUTES.ASSIGN_EVALUATORS(),
+      .post(RELEVANCY_ROUTES.ADD_EVALUATOR(),
         args,
         {
           headers: this.headers,
@@ -66,7 +67,7 @@ export class RelevancyService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -77,7 +78,7 @@ export class RelevancyService {
     assignerIds: string[]
   }): Promise<any> {
     return this.http
-      .patch(RELEVANCY_ROUTES.REMOVE_EVALUATORS(),
+      .patch(RELEVANCY_ROUTES.UPDATE_EVALUATORS(),
         args,
         {
           headers: this.headers,
@@ -86,7 +87,7 @@ export class RelevancyService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -100,14 +101,14 @@ export class RelevancyService {
   async getTopics(): Promise<Topic[]> {
     return await new Promise((resolve, reject) => {
       this.http
-        .get<Topic[]>(RELEVANCY_ROUTES.GET_TOPICS(),
+        .get<Topic[]>(TOPICS_ROUTES.GET_ALL_TOPICS(),
           {
             headers: this.headers,
             withCredentials: true,
           }
         )
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise()
@@ -133,7 +134,7 @@ export class RelevancyService {
   async updateObjectTopics(username: string, id: string, topicIds: string[]): Promise<void> {
     return await new Promise((resolve, reject) => {
       this.http
-        .patch(RELEVANCY_ROUTES.PATCH_OBJECT_TOPICS(username, id),
+        .patch(TOPICS_ROUTES.UPDATE_TOPIC(username, id),
           { topicIds },
           {
             headers: this.headers,
@@ -142,7 +143,7 @@ export class RelevancyService {
           }
         )
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise()
@@ -164,7 +165,7 @@ export class RelevancyService {
   async updateLearningOutcomeMappings(username: string, objectId: string, outcomeId: string, guidelineIds: string[]): Promise<void> {
     return await new Promise((resolve, reject) => {
       this.http
-        .patch(RELEVANCY_ROUTES.PATCH_OBJECT_OUTCOME_MAPPINGS(username, objectId, outcomeId),
+        .patch(RELEVANCY_ROUTES.UPDATE_MAPPING(username, objectId, outcomeId),
           { guidelines: guidelineIds },
           {
             headers: this.headers,
@@ -173,7 +174,7 @@ export class RelevancyService {
           }
         )
         .pipe(
-          retry(3),
+
           catchError(this.handleError)
         )
         .toPromise()

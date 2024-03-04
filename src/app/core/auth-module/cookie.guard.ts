@@ -4,13 +4,13 @@ import { Observable } from 'rxjs';
 import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 
-@Injectable({
-  providedIn: 'root'
-})
 /**
  * Checks if the cookie agreement has been accepted.
  * Used to block access to the registration page if cookies have not been accepted
  */
+@Injectable({
+  providedIn: 'root'
+})
 export class CookieGuard implements CanActivate {
   constructor(
     private cookieAgreement: CookieAgreementService,

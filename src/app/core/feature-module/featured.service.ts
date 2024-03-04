@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { FEATURED_ROUTES_OLD, PUBLIC_LEARNING_OBJECT_ROUTES } from '@env/route';
+import {
+  LEGACY_FEATURED_ROUTES,
+  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES
+} from '../learning-object-module/learning-object/learning-object.routes';
 import { FEATURED_ROUTES } from './featured.routes';
 import { catchError, retry } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
@@ -44,7 +47,6 @@ export class FeaturedObjectsService {
     const objects: LearningObject[] = await this.http
       .get(FEATURED_ROUTES.GET_FEATURED_OBJECTS())
       .pipe(
-        retry(3),
         catchError(this.handleError)
       ).toPromise()
       .then((featured: any) => {
@@ -136,17 +138,17 @@ export class FeaturedObjectsService {
     if (query) {
       const queryClone = Object.assign({}, query);
       const queryString = querystring.stringify(queryClone);
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
         queryString
       );
     } else {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
 
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -166,9 +168,8 @@ export class FeaturedObjectsService {
    */
   getCollectionFeatured(collection: string) {
     return this.http
-      .get(FEATURED_ROUTES_OLD.GET_COLLECTION_FEATURED(collection))
+      .get(LEGACY_FEATURED_ROUTES.GET_COLLECTION_FEATURED(collection))
       .pipe(
-        retry(3),
         catchError(this.handleError)
       )
       .toPromise()

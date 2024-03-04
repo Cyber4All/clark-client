@@ -19,8 +19,8 @@ import { of } from 'rxjs/internal/observable/of';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Router } from '@angular/router';
-import { HierarchyService } from '../../../core/hierarchy-module/hierarchy.service';
-import { LearningObjectService } from 'app/core/learning-object-module/learning-object.service';
+import { HierarchyService } from '../../../core/learning-object-module/hierarchy/hierarchy.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',

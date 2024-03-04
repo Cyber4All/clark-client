@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Topic } from '../../../entity';
-import { RelevancyService } from 'app/core/learning-object-module/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class NavbarDropdownService {
 
     constructor(

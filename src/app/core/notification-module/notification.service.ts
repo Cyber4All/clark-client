@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { NOTIFICATIONS_ROUTES } from './notification.routes';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NotificationsService {
   userNotifications: any;
   constructor(private http: HttpClient) { }

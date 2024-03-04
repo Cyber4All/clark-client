@@ -6,7 +6,9 @@ import { Observable, throwError } from 'rxjs';
 import { Blog } from 'app/components/blogs/types/blog';
 import { catchError, retry } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UtilityService {
   constructor(private http: HttpClient, private auth: AuthService) { }
 
@@ -19,16 +21,16 @@ export class UtilityService {
     return this.http.get<Blog[]>(UTILITY_ROUTES.GET_BLOGS());
   }
 
-//   /**
-//    * Gets all blogs from the database
-//    *
-//    * @returns An observable containing an array of blogs
-//    */
-//   async getRecentBlogs(): Observable<Blog[]> {
-// //CLARK-SERVICE needs to accept a body with a get route, which currently it does not
-//     const data = { recent: true };
-//      await this.http.get(UTILITY_ROUTES.GET_BLOGS(), data);
-//   }
+  // /**
+  //  * Gets all blogs from the database
+  //  *
+  //  * @returns An observable containing an array of blogs
+  //  */
+  // async getRecentBlogs(): Observable<Blog[]> {
+  //   //CLARK-SERVICE needs to accept a body with a get route, which currently it does not
+  //   const data = { recent: true };
+  //   await this.http.get(UTILITY_ROUTES.GET_BLOGS(), data);
+  // }
 
   /**
    * Checks the client's version against the service
@@ -45,7 +47,6 @@ export class UtilityService {
           withCredentials: true,
           responseType: 'text',
         })
-        .pipe(retry(3))
         .toPromise();
       return Promise.resolve();
     } catch (error) {

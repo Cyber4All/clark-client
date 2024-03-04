@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BUILDER_ACTIONS, BuilderStore } from '../../../builder-store.service';
-import { ChangelogService } from 'app/core/learning-object-module/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { carousel } from './clark-change-status-modal.animations';
 import { Router } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';

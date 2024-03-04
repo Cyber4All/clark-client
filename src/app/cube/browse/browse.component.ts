@@ -3,10 +3,6 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
-
-import {
-  SuggestionService
-} from '../../onion/core/suggestion.service';
 import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
@@ -17,7 +13,6 @@ import { NavbarService } from 'app/core/client-module/navbar.service';
   selector: 'cube-browse',
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss'],
-  providers: [SuggestionService]
 })
 export class BrowseComponent implements AfterViewInit, OnDestroy {
   copy = COPY;
@@ -82,7 +77,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     public learningObjectService: LearningObjectService,
     private route: ActivatedRoute,
     private router: Router,
-    public mappingService: SuggestionService,
     private cd: ChangeDetectorRef,
     private navService: NavbarService
   ) {

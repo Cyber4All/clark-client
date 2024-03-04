@@ -46,7 +46,6 @@ export class EncryptionService {
     const publicKey = (
       await this.http
         .get<{ publicKey: string }>(AUTH_ROUTES.GET_KEY_PAIR())
-        .pipe(retry(3))
         .toPromise()
     ).publicKey;
 

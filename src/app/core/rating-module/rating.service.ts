@@ -5,7 +5,9 @@ import { AuthService } from '../auth-module/auth.service';
 import { throwError } from 'rxjs';
 import { retry, catchError, map, filter } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RatingService {
 
   constructor(private http: HttpClient, private auth: AuthService) { }
@@ -96,7 +98,7 @@ export class RatingService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -129,7 +131,7 @@ export class RatingService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -161,7 +163,7 @@ export class RatingService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -190,7 +192,7 @@ export class RatingService {
         }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError),
         filter(response => response != null),
         map((response: any) => {
@@ -224,7 +226,7 @@ export class RatingService {
       { withCredentials: true },
     )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

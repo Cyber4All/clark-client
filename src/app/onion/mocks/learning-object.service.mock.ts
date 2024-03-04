@@ -1,12 +1,14 @@
 
-import {of as observableOf,  Observable } from 'rxjs';
+import { of as observableOf, Observable } from 'rxjs';
 import { LOmocks } from './learning-object.mock';
 import { Injectable } from '@angular/core';
 
 import { LearningObject } from '@entity';
 
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LearningObjectServiceMock {
   learningObjects: LearningObject[] = [];
   constructor() {

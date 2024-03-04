@@ -4,7 +4,9 @@ import { catchError, retry } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class MetricService {
 
   constructor(private http: HttpClient) { }
@@ -12,7 +14,7 @@ export class MetricService {
   getCollectionMetricsData(abvCollectionName: string) {
     return this.http.get(METRIC_ROUTES.GET_COLLECTION_METRICS(abvCollectionName))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

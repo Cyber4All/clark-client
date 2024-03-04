@@ -5,10 +5,10 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { environment } from '@env/environment';
-import { Observable, BehaviorSubject, throwError, of } from 'rxjs';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from '@entity';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
 import { AUTH_ROUTES } from './auth.routes';
 
@@ -44,7 +44,9 @@ export interface OpenIdToken {
 // Location of logged in user's access tokens in local storage
 const TOKEN_STORAGE_KEY = 'clark.center:access-tokens';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   user: AuthUser;
   httpHeaders = new HttpHeaders();
@@ -293,10 +295,10 @@ export class AuthService {
   async validateAndRefreshToken(): Promise<void> {
     try {
       const response = await this.http
-        .get<AuthUser>(environment.apiURL + '/users/tokens', {
+        .get<AuthUser>(AUTH_ROUTES.DECODE_TOKEN(), {
           withCredentials: true,
         })
-        .pipe(retry(3), catchError(this.handleError))
+        .pipe(catchError(this.handleError))
         .toPromise();
       this.user = response;
       this.assignUserToGroup();
@@ -317,12 +319,12 @@ export class AuthService {
     try {
       const response = await this.http
         .get<AuthUser & { tokens: Tokens }>(
-          environment.apiURL + '/users/tokens/refresh',
+          AUTH_ROUTES.REFRESH_TOKEN(),
           {
             withCredentials: true,
           }
         )
-        .pipe(retry(3), catchError(this.handleError))
+        .pipe(catchError(this.handleError))
         .toPromise();
       const tokens: Tokens = response.tokens;
       delete response.tokens;
@@ -417,7 +419,7 @@ export class AuthService {
         { email },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(retry(3), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -435,7 +437,7 @@ export class AuthService {
         { payload },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(retry(3), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -452,7 +454,7 @@ export class AuthService {
         { email: email || this.user.email },
         { withCredentials: true, responseType: 'text' }
       )
-      .pipe(retry(3), catchError(this.handleError));
+      .pipe(catchError(this.handleError));
   }
 
   /**
@@ -464,13 +466,13 @@ export class AuthService {
    */
   async usernameInUse(username: string) {
     const val = await this.http
-      .get(AUTH_ROUTES.VALIDATE_USERNAME() + username,
+      .get(AUTH_ROUTES.VALIDATE_USERNAME(username),
         {
           headers: this.httpHeaders,
           withCredentials: true,
         }
       )
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
     this.inUse = val;
     return this.inUse;
@@ -485,40 +487,14 @@ export class AuthService {
    */
   async emailInUse(email: string) {
     const val = await this.http
-      .get(AUTH_ROUTES.VALIDATE_EMAIL() + email, {
+      .get(AUTH_ROUTES.VALIDATE_EMAIL(email), {
         headers: this.httpHeaders,
         withCredentials: true,
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
     this.inUse = val;
     return this.inUse;
-  }
-
-  /**
-   * Updates a user's information with the specified data
-   *
-   * @param {{
-   *     firstname: string;
-   *     lastname: string;
-   *     email: string;
-   *     organization: string;
-   *   }} user
-   * @returns {Observable<any>}
-   * @memberof AuthService
-   */
-  updateInfo(user: {
-    firstname: string;
-    lastname: string;
-    email: string;
-    organization: string;
-  }): Observable<any> {
-    return this.http
-      .patch(environment.apiURL + '/users/name', user.firstname, {
-        withCredentials: true,
-        responseType: 'text',
-      })
-      .pipe(retry(3), catchError(this.handleError));
   }
 
   /**

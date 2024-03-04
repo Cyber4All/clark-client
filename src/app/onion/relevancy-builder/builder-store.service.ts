@@ -8,7 +8,7 @@ import {
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
-import { RelevancyService } from 'app/core/learning-object-module/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 /**
@@ -18,7 +18,9 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
  * @export
  * @class BuilderStore
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomes: LearningOutcome[];

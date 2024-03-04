@@ -73,7 +73,9 @@ export enum BUILDER_ERRORS {
  * @export
  * @class BuilderStore
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomesMap: Map<string, Partial<LearningOutcome>> = new Map();

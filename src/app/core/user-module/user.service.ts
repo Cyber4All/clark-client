@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { USER_ROUTES } from '@env/route';
+import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 import { USER_ROUTE } from './user.routes';
 import { AuthService } from '../auth-module/auth.service';
 import { User } from '@entity';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { UserQuery } from 'app/interfaces/query';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UserService {
-  constructor(private http: HttpClient, private auth: AuthService) {}
+  constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**
    * Assigns a user to a specified collection with a specified role
@@ -29,14 +31,14 @@ export class UserService {
   ): Promise<void> {
     await this.http
       .put(
-        USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
+        LEGACY_USER_ROUTES.ASSIGN_COLLECTION_MEMBER(collection, memberId),
         { role },
         {
           withCredentials: true,
           responseType: 'text',
         }
       )
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -55,11 +57,11 @@ export class UserService {
     role: string
   ): Promise<User> {
     return this.http
-      .patch(USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId), role, {
+      .patch(LEGACY_USER_ROUTES.UPDATE_COLLECTION_MEMBER(collection, memberId), role, {
         withCredentials: true,
         responseType: 'text',
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise()
       .then((res: any) => {
         return new User(res);
@@ -78,13 +80,13 @@ export class UserService {
     await this.http
       .request(
         'delete',
-        USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
+        LEGACY_USER_ROUTES.REMOVE_COLLECTION_MEMBER(collection, memberId),
         {
           withCredentials: true,
           responseType: 'text',
         }
       )
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -97,14 +99,33 @@ export class UserService {
    */
   searchUsers(query: UserQuery): Promise<User[]> {
     return this.http
-      .get(USER_ROUTES.SEARCH_USERS(query), {
+      .get(LEGACY_USER_ROUTES.SEARCH_USERS(query), {
         withCredentials: true,
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
         const arr = val;
         return arr.map((user) => new User(user));
+      });
+  }
+
+  /**
+   * Retrieve a list of user's that belong to a given organization
+   *
+   * @param {string} organization
+   * @returns {Promise<User[]>}
+   * @memberof UserService
+   */
+  getOrganizationMembers(organization: string): Promise<User[]> {
+    const route = LEGACY_USER_ROUTES.GET_SAME_ORGANIZATION(organization);
+    return this.http
+      .get(route)
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((val: any) => {
+        const arr = val;
+        return arr.map((member) => new User(member));
       });
   }
 
@@ -133,21 +154,21 @@ export class UserService {
   getUser(user: string, q: string): Promise<User> {
     return user && user !== 'undefined'
       ? this.http
-          .get(USER_ROUTE.GET_USER(user), {
-            withCredentials: true,
-          })
-          .pipe(retry(3), catchError(this.handleError))
-          .toPromise()
-          .then(
-            (val: any) => {
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              const user_res = val;
-              return user_res ? new User(user_res) : null;
-            },
-            (error) => {
-              return null;
-            }
-          )
+        .get(USER_ROUTE.GET_USER(user), {
+          withCredentials: true,
+        })
+        .pipe(catchError(this.handleError))
+        .toPromise()
+        .then(
+          (val: any) => {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            const user_res = val;
+            return user_res ? new User(user_res) : null;
+          },
+          (error) => {
+            return null;
+          }
+        )
       : Promise.resolve(null);
   }
 
@@ -173,7 +194,7 @@ export class UserService {
           responseType: 'text',
         }
       )
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -188,7 +209,7 @@ export class UserService {
       .get(USER_ROUTE.GET_USER_PROFILE(username), {
         withCredentials: true,
       })
-      .pipe(retry(3), catchError(this.handleError))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { GuidelineService } from 'app/core/standard-guidelines-module/guideline.service';
+import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
 import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 import { Subject } from 'rxjs';

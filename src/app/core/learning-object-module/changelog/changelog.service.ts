@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { CHANGELOG_ROUTES } from '@env/route';
-import { retry, catchError } from 'rxjs/operators';
+import { CHANGELOG_ROUTES } from './changelog.routes';
+import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ChangelogService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /**
    * Create a new changelog for the given learning object
@@ -22,7 +24,7 @@ export class ChangelogService {
     return this.http
       .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(userId, learningObjectCuid), { changelogText: changelog }, { responseType: 'text' })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();
@@ -42,13 +44,13 @@ export class ChangelogService {
     minusRevision?: boolean,
   }): Promise<any> {
     return this.http
-      .get(CHANGELOG_ROUTES.FETCH_ALL_CHANGELOGS({
+      .get(CHANGELOG_ROUTES.FETCH_CHANGELOGS({
         userId: params.userId,
         learningObjectCuid: params.learningObjectCuid,
         minusRevision: params.minusRevision,
       }))
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

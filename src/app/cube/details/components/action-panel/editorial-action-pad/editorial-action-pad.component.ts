@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
-import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object.service';
+import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 /**

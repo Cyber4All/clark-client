@@ -3,12 +3,14 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { UserService } from 'app/core/user-module/user.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ProfileResovler implements Resolve<User> {
   constructor(
     private userService: UserService,
     private router: Router
-  ) {}
+  ) { }
 
   async resolve(
     route: ActivatedRouteSnapshot,
@@ -17,9 +19,9 @@ export class ProfileResovler implements Resolve<User> {
     return await this.userService.fetchUserProfile(route.params.username).then(val => {
       return val;
     })
-    .catch(() => {
-      // Routes to 404 not-found
-      this.router.navigate(['users']);
-    });
+      .catch(() => {
+        // Routes to 404 not-found
+        this.router.navigate(['users']);
+      });
   }
 }
