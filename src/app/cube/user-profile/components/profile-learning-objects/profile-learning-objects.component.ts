@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({

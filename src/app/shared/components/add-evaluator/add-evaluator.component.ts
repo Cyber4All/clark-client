@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '@entity';
 import { SearchService } from 'app/admin/core/search.service';
-import { RelevancyService } from 'app/core/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 
@@ -20,11 +20,11 @@ export class AddEvaluatorComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter();
 
   constructor(
-      private relevancyService: RelevancyService,
-      private toaster: ToastrOvenService,
-      private router: Router,
-      private searchService: SearchService
-    ) { }
+    private relevancyService: RelevancyService,
+    private toaster: ToastrOvenService,
+    private router: Router,
+    private searchService: SearchService
+  ) { }
 
   ngOnInit(): void { }
 
@@ -53,36 +53,36 @@ export class AddEvaluatorComponent implements OnInit {
   async removeEvaluators() {
     if (this.checkEvaluatorsBody(this.removedEvaluators)) {
       const cuid = this.learningObject.cuid;
-      const assignerIds = this.removedEvaluators.map( obj => obj.id );
+      const assignerIds = this.removedEvaluators.map(obj => obj.id);
 
       await this.relevancyService.removeEvaluators({
         cuids: [cuid],
         assignerIds: assignerIds
       })
-      .then( () => {
-        this.toaster.success(
-          'Success',
-          'The evaluators were removed.'
-        );
-        this.close.emit();
-      })
-      .catch( e => {
-        this.toaster.error(
-          'Error removing evaluators',
-          JSON.parse(e.error).message
-        );
-      });
+        .then(() => {
+          this.toaster.success(
+            'Success',
+            'The evaluators were removed.'
+          );
+          this.close.emit();
+        })
+        .catch(e => {
+          this.toaster.error(
+            'Error removing evaluators',
+            JSON.parse(e.error).message
+          );
+        });
     }
   }
 
   async assignEvaluators() {
     if (this.checkEvaluatorsBody(this.assignedEvaluators)) {
       const cuid = this.learningObject.cuid;
-      const assignerIds = this.assignedEvaluators.map( obj => obj.id );
+      const assignerIds = this.assignedEvaluators.map(obj => obj.id);
 
       // Filter out any evaluators already existing on this.learningObject
       if (this.learningObject.assigned) {
-        this.learningObject.assigned.forEach( id => {
+        this.learningObject.assigned.forEach(id => {
           const index = assignerIds.indexOf(id);
           if (index !== -1) {
             assignerIds.splice(index, 1);
@@ -94,19 +94,19 @@ export class AddEvaluatorComponent implements OnInit {
         cuids: [cuid],
         assignerIds: assignerIds
       })
-      .then( () => {
-        this.toaster.success(
-          'Success',
-          'The selected evaluators were assigned.'
-        );
-        this.close.emit();
-      })
-      .catch( e => {
-        this.toaster.error(
-          'Error assigning evaluators',
-          JSON.parse(e.error).message
-        );
-      });
+        .then(() => {
+          this.toaster.success(
+            'Success',
+            'The selected evaluators were assigned.'
+          );
+          this.close.emit();
+        })
+        .catch(e => {
+          this.toaster.error(
+            'Error assigning evaluators',
+            JSON.parse(e.error).message
+          );
+        });
     }
   }
 

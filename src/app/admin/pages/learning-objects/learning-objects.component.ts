@@ -14,9 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { AuthService } from 'app/core/auth.service';
-import { Collection, CollectionService } from 'app/core/collection.service';
-import { UserService } from 'app/core/user.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
+import { UserService } from 'app/core/user-module/user.service';
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',

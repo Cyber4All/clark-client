@@ -1,6 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { BlogsService } from 'app/core/blogs.service';
+import { UtilityService } from 'app/core/utility-module/utility.service';
 import { Observable } from 'rxjs';
 import { Blog } from './types/blog';
 
@@ -35,11 +35,11 @@ export class BlogsComponent implements OnInit {
   @Output() showBlogsBanner: EventEmitter<boolean> = new EventEmitter();
   @Output() neverShowBanner: EventEmitter<{val: boolean, recentBlog?: Blog}> = new EventEmitter();
 
-  constructor(private blogsService: BlogsService) { }
+  constructor(private utilityService: UtilityService) {}
 
   ngOnInit(): void {
-    this.blogObservable = this.blogsService.getMostRecentBlog();
-    this.blogsService.getMostRecentBlog().subscribe(
+    this.blogObservable = this.utilityService.getAllBlogs();
+    this.utilityService.getAllBlogs().subscribe(
       (blogArray: Blog[]) => {
         this.blog = blogArray[0];
       }

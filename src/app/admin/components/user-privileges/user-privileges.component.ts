@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AuthUser } from 'app/core/auth.service';
-import { CollectionService } from 'app/core/collection.service';
+import { AuthUser } from 'app/core/auth-module/auth.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { Subject } from 'rxjs';
 import { PrivilegeService } from 'app/admin/core/privilege.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';

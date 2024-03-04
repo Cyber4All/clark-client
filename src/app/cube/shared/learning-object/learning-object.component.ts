@@ -10,10 +10,10 @@ import {
   ChangeDetectionStrategy,
   OnDestroy
 } from '@angular/core';
-import { LibraryService } from '../../../core/library.service';
+import { LibraryService } from '../../../core/library-module/library.service';
 import { LearningObject } from '@entity';
-import { AuthService } from '../../../core/auth.service';
-import { CollectionService } from '../../../core/collection.service';
+import { AuthService } from '../../../core/auth-module/auth.service';
+import { CollectionService } from '../../../core/collection-module/collections.service';
 import { titleCase } from 'title-case';
 
 @Component({

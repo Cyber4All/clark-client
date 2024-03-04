@@ -12,7 +12,7 @@ import { DirectoryNode } from '../DirectoryNode';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { LearningObject } from '@entity';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Component({
   selector: 'clark-file-list-view',

@@ -8,7 +8,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { LearningOutcome, Guideline } from '@entity';
-import { GuidelineService } from 'app/core/guideline.service';
+import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
 import { BuilderStore } from '../../builder-store.service';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, filter, map } from 'rxjs/operators';

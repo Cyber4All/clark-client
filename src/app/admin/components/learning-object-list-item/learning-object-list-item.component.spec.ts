@@ -6,9 +6,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ContextMenuModule } from 'app/shared/modules/contextmenu/contextmenu.module';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { User, LearningObject } from '@entity';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { SharedDirectivesModule } from 'app/shared/directives/shared-directives.module';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
 

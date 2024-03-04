@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BUILDER_ACTIONS, BuilderStore } from '../../../builder-store.service';
-import { ChangelogService } from 'app/core/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { carousel } from './clark-change-status-modal.animations';
 import { Router } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -17,7 +17,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
   selector: 'clark-change-status-modal',
   templateUrl: './change-status-modal.component.html',
   styleUrls: ['./change-status-modal.component.scss'],
-  animations: [ carousel ]
+  animations: [carousel]
 })
 export class ChangeStatusModalComponent implements OnInit {
   @Input() shouldShow;
@@ -39,7 +39,7 @@ export class ChangeStatusModalComponent implements OnInit {
     private toaster: ToastrOvenService,
     private cd: ChangeDetectorRef,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.setValidStatusMoves();
@@ -154,10 +154,10 @@ export class ChangeStatusModalComponent implements OnInit {
     this.serviceInteraction = true;
     await Promise.all([
       this.builderStore
-      .execute(BUILDER_ACTIONS.CHANGE_STATUS, { status: this.selectedStatus, reason: this.reason })
-      .catch(error => {
-        this.toaster.error('Error!', 'There was an error trying to update the status of this learning object. Please try again later!');
-      }),
+        .execute(BUILDER_ACTIONS.CHANGE_STATUS, { status: this.selectedStatus, reason: this.reason })
+        .catch(error => {
+          this.toaster.error('Error!', 'There was an error trying to update the status of this learning object. Please try again later!');
+        }),
       this.changelog ? this.createChangelog() : undefined
     ]).then(() => {
       // If the object released, move to map and tag, else update the valid status moves

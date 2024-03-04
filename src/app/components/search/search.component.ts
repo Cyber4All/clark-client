@@ -9,7 +9,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
 import { COPY } from './search.copy';
 import { takeUntil, filter } from 'rxjs/operators';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
 
 @Component({
   selector: 'clark-search',
@@ -45,7 +45,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private navService: NavbarService
-    ) { }
+  ) { }
 
   ngOnInit() {
     // force search bar to reflect current search on browse page when navigating by url query parameters
@@ -89,7 +89,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     const text = searchbar.value;
     if (text.length) {
       searchbar.blur();
-      this.router.navigate(['/browse'], { queryParams: {text, currPage: 1}});
+      this.router.navigate(['/browse'], { queryParams: { text, currPage: 1 } });
     }
   }
 

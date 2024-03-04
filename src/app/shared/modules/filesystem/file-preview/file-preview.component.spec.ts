@@ -2,7 +2,7 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FilePreviewComponent } from './file-preview.component';
 import { noPreview, notLoggedIn } from './file-preview.copy';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { BehaviorSubject } from 'rxjs';
 
 describe('FilePreviewComponent', () => {

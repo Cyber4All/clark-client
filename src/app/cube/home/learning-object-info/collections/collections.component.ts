@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Collection, CollectionService } from 'app/core/collection.service';
+import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
 import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
 import { GoogleTagService } from '../../google-tag.service';
 
