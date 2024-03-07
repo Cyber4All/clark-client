@@ -6,7 +6,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { usersComponentAnimations } from './users.component.animations';
-import { AccessGroupService } from 'app/core/access-group-module/access-group.service';
+import { AccessGroupService, AccessGroups } from 'app/core/access-group-module/access-group.service';
 
 @Component({
   selector: 'clark-users',
@@ -33,6 +33,7 @@ export class UsersComponent implements AfterViewInit {
 }
 
   constructor(
+    private accessGroups: AccessGroupService,
     private user: UserService,
     private router: Router,
     private route: ActivatedRoute,
@@ -87,13 +88,19 @@ export class UsersComponent implements AfterViewInit {
    *
    * @param user the elements of a clark user such as id and role
    */
-  addReviewer(user: User) {
-    this.user.assignMember(user.id, this.activeCollection.abvName, 'reviewer').then(() => {
-      this.users.splice(0, 0, user);
-    }).catch(error => {
-      this.toaster.error('Error!', 'Could not add reviewer. Please try again later');
-      console.error(error);
-    });
+  addAccessGroupToUser(user: User) {
+    this.accessGroups
+      .addAccessGroupToUser(
+        user.username,
+        AccessGroups.REVIEWER,
+        this.activeCollection.abvName
+      )
+      .then(() => {
+        this.users.splice(0, 0, user);
+      }).catch(error => {
+        this.toaster.error('Error!', 'Could not add reviewer. Please try again later');
+        console.log(error);
+      });
   }
 
   /**
@@ -109,14 +116,21 @@ export class UsersComponent implements AfterViewInit {
   /**
    * Removes the reviewer access from a user in a collection
    */
-  removeReviewer(userId?: string) {
+  removeAccessGroupFromUser(username?: string) {
     this.displayRemoveReviewerModal = false;
-    this.user.removeMember(this.activeCollection.abvName, userId || this.removeReviewerId ).then(() => {
-      this.users = this.users.filter(x => x.id !== userId);
-    }).catch(error => {
-      this.toaster.error('Error!', 'Could not remove reviewer. Please try again later');
-      console.error(error);
-    });
+    this.accessGroups
+      .removeAccessGroupFromUser(
+        username,
+        AccessGroups.REVIEWER,
+        this.activeCollection.abvName
+      )
+      .then(() => {
+        this.users = this.users.filter(x => x.username !== username);
+      })
+      .catch(error => {
+        this.toaster.error('Error!', 'Could not remove reviewer. Please try again later');
+        console.log(error);
+      });
   }
 
   /**

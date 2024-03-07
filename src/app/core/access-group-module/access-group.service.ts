@@ -3,8 +3,20 @@ import { ACCESS_GROUP_ROUTES } from './access-group.routes';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth-module/auth.service';
 import { User } from '@entity';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+
+export const AccessGroups = {
+  ADMIN: "admin",
+  EDITOR: "editor",
+  MAPPER: "mapper",
+  REVIEWER: "reviewer",
+  CURATOR: "curator",
+  REVIEWER_COLLECTION: (collectionName: string): string =>
+      `reviewer@${collectionName}`,
+  CURATOR_COLLECTION: (collectionName: string): string =>
+      `curator@${collectionName}`,
+};
 
 @Injectable({
   providedIn: 'root'
@@ -34,27 +46,56 @@ export class AccessGroupService {
   }
 
   /**
-   * Remove a user's privilege from a collection
+   * Adds a an access group to a user
    *
-   * @param {string} collection the collection to remove
-   * @param {string} memberId the user who's privilege shall be revoked
+   * @param {string} username the username of the user
+   * @param {string} accessGroup the string representation of the access group
+   * @param {string} collection the abbreviated name of the collection
    * @returns {Promise<void>}
-   * @memberof UserService
    */
-    async removeMember(collectionName: string, memberId: string): Promise<void> {
-      const collection = collectionName;
-      await this.http
-        .request(
-          ACCESS_GROUP_ROUTES.REMOVE_ACCESS_GROUP_FROM_USER(memberId),
-            collection,
-          {
-            withCredentials: true,
-            responseType: 'text',
-          }
-        )
-        .pipe(retry(3), catchError(this.handleError))
-        .toPromise();
-    }
+  async addAccessGroupToUser(
+    username: string,
+    accessGroup: string,
+    collection?: string,
+  ): Promise<void> {
+    await this.http
+      .post(
+        ACCESS_GROUP_ROUTES.ADD_ACCESS_GROUP_TO_USER(username),
+        { accessGroup, collection },
+        {
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(catchError(this.handleError))
+      .toPromise();
+  }
+
+  /**
+   * Removes a user from an access group
+   *
+   * @param {string} username the username of the user
+   * @param {string} accessGroup the string representation of the access group
+   * @param {string} collection the abbreviated name of the collection
+   * @returns {Promise<void>}
+   */
+  async removeAccessGroupFromUser(
+    username: string,
+    accessGroup: string,
+    collection?: string
+  ): Promise<void> {
+    await this.http
+      .patch(
+        ACCESS_GROUP_ROUTES.REMOVE_ACCESS_GROUP_FROM_USER(username),
+        { accessGroup, collection },
+        {
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(catchError(this.handleError))
+      .toPromise();
+  }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
