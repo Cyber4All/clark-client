@@ -21,16 +21,14 @@ export class UtilityService {
     return this.http.get<Blog[]>(UTILITY_ROUTES.GET_BLOGS());
   }
 
-  // /**
-  //  * Gets all blogs from the database
-  //  *
-  //  * @returns An observable containing an array of blogs
-  //  */
-  // async getRecentBlogs(): Observable<Blog[]> {
-  //   //CLARK-SERVICE needs to accept a body with a get route, which currently it does not
-  //   const data = { recent: true };
-  //   await this.http.get(UTILITY_ROUTES.GET_BLOGS(), data);
-  // }
+  /**
+   * Gets all blogs from the database
+   *
+   * @returns An observable containing an array of blogs
+   */
+  async getRecentBlogs(): Observable<Blog[]> {
+    await this.http.get(UTILITY_ROUTES.GET_RECENT_BLOGS());
+  }
 
   /**
    * Checks the client's version against the service

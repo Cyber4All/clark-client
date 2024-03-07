@@ -10,6 +10,14 @@ export const UTILITY_ROUTES = {
     return `${environment.apiURL}/blogs`;
   },
   /**
+   * Request to retrieve the list of recent blogs
+   * @method GET
+   * @returns list of recent blogs
+   */
+  GET_RECENT_BLOGS() {
+    return `${environment.apiURL}/blogs?recent=true`;
+  },
+  /**
    * Request to post a blog
    * @method POST
    * @auth required
