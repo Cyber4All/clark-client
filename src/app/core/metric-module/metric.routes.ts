@@ -6,7 +6,7 @@ export const METRIC_ROUTES = {
    * @returns CollectionMetrics object containing metrics for the given collection
    */
   GET_COLLECTION_METRICS(abvCollectionName: string) {
-    return `${environment.apiURL}/metrics&collection=${abvCollectionName}`;
+    return `${environment.apiURL}/metrics?collection=${abvCollectionName}`;
   },
   /**
    * Gets learning object metrics
