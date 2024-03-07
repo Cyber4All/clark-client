@@ -7,11 +7,11 @@ import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 export const AccessGroups = {
-  ADMIN: "admin",
-  EDITOR: "editor",
-  MAPPER: "mapper",
-  REVIEWER: "reviewer",
-  CURATOR: "curator",
+  ADMIN: 'admin',
+  EDITOR: 'editor',
+  MAPPER: 'mapper',
+  REVIEWER: 'reviewer',
+  CURATOR: 'curator',
   REVIEWER_COLLECTION: (collectionName: string): string =>
       `reviewer@${collectionName}`,
   CURATOR_COLLECTION: (collectionName: string): string =>

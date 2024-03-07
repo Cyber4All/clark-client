@@ -52,29 +52,6 @@ export class PrivilegeService {
   }
 
   /**
-   * Modifies an existing membership to a collection for a user
-   *
-   * @param {string} abvCollectionName the abbreviated name of the collection for which to modify the membership
-   * @param {string} userId the id of the user to modify membership for
-   * @param {string} role the role the user will hold in the collection
-   * @returns
-   * @memberof PrivilegeService
-   */
-  modifyCollectionMembership(abvCollectionName: string, userId: string, role: string) {
-    return this.http
-      .patch(
-        LEGACY_ADMIN_ROUTES.MUTATE_COLLECTION_MEMBERSHIP(abvCollectionName, userId),
-        { role },
-        { withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
    * Removes a users membership from a specific collection
    *
    * @param {string} abvCollectionName the abbreviated name of the collection for which to remove the membership
@@ -95,28 +72,10 @@ export class PrivilegeService {
       .toPromise();
   }
 
-  addMapperMembership(userId: string) {
-    return this.http
-      .put(
-        LEGACY_ADMIN_ROUTES.ADD_MAPPER(userId),
-        { withCredentials: true }
-      )
-      .toPromise();
-  }
-
   getMappers() {
     return this.http
       .get(
         LEGACY_ADMIN_ROUTES.GET_MAPPERS(),
-        { withCredentials: true }
-      )
-      .toPromise();
-  }
-
-  removeMapperMembership(userId: string) {
-    return this.http
-      .delete(
-        LEGACY_ADMIN_ROUTES.REMOVE_MAPPER(userId),
         { withCredentials: true }
       )
       .toPromise();

@@ -16,16 +16,6 @@ export const LEGACY_ADMIN_ROUTES = {
     GET_MAPPERS(): string {
         return `${environment.apiURL}/guidelines/members`;
     },
-    ADD_MAPPER(userId: string): string {
-        return `${environment.apiURL}/guidelines/members/${encodeURIComponent(
-            userId,
-        )}`;
-    },
-    REMOVE_MAPPER(userId: string): string {
-        return `${environment.apiURL}/guidelines/members/${encodeURIComponent(
-            userId,
-        )}`;
-    },
     CHANGE_STATUS(username: string, id: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
@@ -50,22 +40,6 @@ export const LEGACY_COLLECTIONS_ROUTES = {
 };
 
 export const LEGACY_USER_ROUTES = {
-    ASSIGN_COLLECTION_MEMBER(collection: string, memberId: string) {
-        return `${environment.apiURL}/collections/${encodeURIComponent(
-            collection,
-        )}/members/${encodeURIComponent(memberId)}`;
-    },
-    UPDATE_COLLECTION_MEMBER(collection: string, memberId: string) {
-        return `${environment.apiURL}/collections/${encodeURIComponent(
-            collection,
-        )}/members/${encodeURIComponent(memberId)}`;
-    },
-
-    REMOVE_COLLECTION_MEMBER(collection: string, memberId: string) {
-        return `${environment.apiURL}/collections/${encodeURIComponent(
-            collection,
-        )}/members/${encodeURIComponent(memberId)}`;
-    },
     // Route still available in gateway to LOS
     LOAD_USER_PROFILE(username: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(

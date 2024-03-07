@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { PrivilegeService } from 'app/admin/core/privilege.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { userPrivilegesAnimations } from './user-privileges.component.animations';
+import { AccessGroupService, AccessGroups } from 'app/core/access-group-module/access-group.service';
 
 @Component({
   selector: 'clark-user-privileges',
@@ -24,6 +25,7 @@ export class UserPrivilegesComponent implements OnInit {
   carouselAction$: Subject<number> = new Subject();
 
   constructor(
+    private accessGroupService: AccessGroupService,
     private collectionService: CollectionService,
     private privilegeService: PrivilegeService,
     private toaster: ToastrOvenService
@@ -115,46 +117,45 @@ export class UserPrivilegesComponent implements OnInit {
       }
     }
 
-    let responsePromise: Promise<{}>;
-
-    // we either make a request to update the user's privilege in a collection if it already exists,
-    // or grant that user privilege in the collection if it doesn't
-    if (collectionIndex >= 0) {
-      // user is already a member of this collection, should attempt to modify membership
-      responsePromise = this.privilegeService.modifyCollectionMembership(this.selectedCollection, this.user.id, this.selectedRole);
-    } else {
+    if (collectionIndex === -1) {
       // user isn't a member of this collection, let's add them
-      responsePromise = this.privilegeService.addCollectionMembership(this.selectedCollection, this.user.id, this.selectedRole);
+      this.accessGroupService
+        .addAccessGroupToUser(
+          this.user.username,
+          this.selectedRole,
+          this.selectedCollection
+        )
+        .then(() => {
+          this.advance(2);
+
+          // wait for the carousel animation to complete before updating the list of privileges
+          // in the UI so that the user can visualize the addition of the privilege
+          setTimeout(() => {
+            if (collectionIndex >= 0) {
+              // remove the privilege from the list if it exists
+              this.privileges.splice(collectionIndex, 1);
+            }
+
+            this.privileges.push([this.selectedRole, this.selectedCollection]);
+            this.getCollections();
+
+            this.selectedCollection = undefined;
+            this.selectedRole = undefined;
+          }, 400);
+        })
+        .catch(error => {
+          this.toaster.error('Error!', 'There was an error adding a privilege. Please try again later.');
+          console.error(error);
+        });
     }
-
-    responsePromise.then(() => {
-      this.advance(2);
-
-      // wait for the carousel animation to complete before updating the list of privileges
-      // in the UI so that the user can visualize the addition of the privilege
-      setTimeout(() => {
-        if (collectionIndex >= 0) {
-          // remove the privilege from the list if it exists
-          this.privileges.splice(collectionIndex, 1);
-        }
-
-        this.privileges.push([this.selectedRole, this.selectedCollection]);
-        this.getCollections();
-
-        this.selectedCollection = undefined;
-        this.selectedRole = undefined;
-      }, 400);
-    })
-    .catch(error => {
-      this.toaster.error('Error!', 'There was an error adding a privilege. Please try again later.');
-      console.error(error);
-    });
   }
 
   addMapper() {
-    const responsePromise = this.privilegeService.addMapperMembership(this.user.id);
-
-    responsePromise
+    this.accessGroupService
+      .addAccessGroupToUser(
+        this.user.username,
+        AccessGroups.MAPPER
+      )
       .catch(error => {
         if (error.status === 201) {
           this.advance();
@@ -167,7 +168,6 @@ export class UserPrivilegesComponent implements OnInit {
             this.selectedCollection = undefined;
             this.selectedRole = undefined;
           }, 400);
-
         }
       });
   }
