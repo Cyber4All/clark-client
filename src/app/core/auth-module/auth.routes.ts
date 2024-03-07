@@ -71,7 +71,7 @@ export const AUTH_ROUTES = {
    * @method POST
    */
   OTA_SEND_EMAIL() {
-    return `${environment.apiURL}/users/ota-code?action=resetPassword`;
+    return `${environment.apiURL}/users/ota-code?action=RESET_PASSWORD`;
   },
   /**
    * Request to reset a user's password
