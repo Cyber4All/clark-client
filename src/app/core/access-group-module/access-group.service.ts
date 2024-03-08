@@ -26,7 +26,7 @@ export class AccessGroupService {
 
   /**
    * Fetches the access groups for the given user
-   * 
+   *
    * @param userId the id of the user
    * @returns {Promise<string[]>} the access groups for the given user
    */

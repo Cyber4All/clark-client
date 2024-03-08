@@ -35,7 +35,7 @@ export const ACCESS_GROUP_ROUTES = {
       username
     )}`;
   },
-  
+
   /**
    * Request to get the users with a role in the given collection
    * @param collectionAbvName the abbreviated name of the collection
