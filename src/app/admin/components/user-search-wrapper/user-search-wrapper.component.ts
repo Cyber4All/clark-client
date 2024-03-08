@@ -73,7 +73,6 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
         this.loading = false;
       }).catch(error => {
         this.toaster.error('Error!', 'There was an error fetching users. Please try again later.');
-        console.error(error);
       });
     }
   }

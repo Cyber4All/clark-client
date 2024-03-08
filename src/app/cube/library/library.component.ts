@@ -136,7 +136,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
       });
       this.loading = false;
     } catch (e) {
-      console.error(e);
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
       this.serviceError = true;
       this.loading = false;

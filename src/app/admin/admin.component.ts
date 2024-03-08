@@ -85,7 +85,6 @@ export class AdminComponent implements OnInit, OnDestroy {
         }
       }).catch(error => {
         this.toaster.error('Error!', 'There was an error retrieving collections. Please try again later.');
-        console.error(error);
       });
     }
   }
