@@ -21,7 +21,7 @@
           <clark-user-search-wrapper
             [users]="users"
             [collection]="activeCollection"
-            (selectedUser)="addReviewer($event)"
+            (selectedUser)="addAccessGroupToUser($event)"
           ></clark-user-search-wrapper>
         </div>
       </div>
@@ -38,7 +38,7 @@
             [canEditPrivilege]="authService.hasEditorAccess()"
             (navigateToUserObjects)="navigateToUserObjects(user.username)"
             (editPrivileges)="editPrivileges(user)"
-            (removeMember)="removeReviewer(user.id)"
+            (removeMember)="removeAccessGroupFromUser(user.username)"
             [@fade]
           ></clark-admin-user-card>
         </ng-container>

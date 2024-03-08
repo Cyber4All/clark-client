@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CollectionService } from '../../../../../../core/collection.service';
+import { CollectionService } from '../../../../../../core/collection-module/collections.service';
 import { AttributeService } from '../../core/attribute.service';
 
 @Component({

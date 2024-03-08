@@ -4,13 +4,13 @@ import { UsersComponent } from './users.component';
 import { of } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 
 describe('UsersComponent', () => {
   let component: UsersComponent;

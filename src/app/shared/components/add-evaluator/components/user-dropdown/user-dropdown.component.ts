@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 

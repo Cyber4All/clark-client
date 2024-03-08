@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from '@entity';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { Users } from 'aws-sdk/clients/workmail';
 import { titleCase } from 'title-case';
 

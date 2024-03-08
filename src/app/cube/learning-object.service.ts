@@ -1,15 +1,22 @@
-import { PUBLIC_LEARNING_OBJECT_ROUTES, USER_ROUTES } from '@env/route';
+import {
+  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
+  LEGACY_USER_ROUTES
+} from '../core/learning-object-module/learning-object/learning-object.routes';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { LearningObject } from '@entity';
 import { Query } from '../interfaces/query';
 
 import * as querystring from 'querystring';
+import { USER_ROUTE } from '../core/user-module/user.routes';
+import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
 
 // TODO: move to core module
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LearningObjectService {
   filteredResults;
   dataObserver;
@@ -17,7 +24,7 @@ export class LearningObjectService {
 
   constructor(
     private http: HttpClient,
-    ) {}
+  ) { }
 
   observeFiltered(): Observable<LearningObject[]> {
     return this.data;
@@ -40,7 +47,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(query?: Query): Promise<{learningObjects: LearningObject[], total: number}> {
+  getLearningObjects(query?: Query): Promise<{ learningObjects: LearningObject[], total: number }> {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
@@ -54,23 +61,23 @@ export class LearningObjectService {
         ) as string[]).map(o => o['id']);
       }
       const queryString = querystring.stringify(queryClone);
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
         queryString
       );
     } else {
-      route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
 
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
       .then((response: any) => {
         const objects = response.objects;
-        return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total};
+        return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total };
       });
   }
 
@@ -86,7 +93,7 @@ export class LearningObjectService {
     cuid: string,
     version?: number
   ): Promise<LearningObject> {
-    const route = PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
+    const route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       author,
       cuid,
       version
@@ -94,7 +101,7 @@ export class LearningObjectService {
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -103,23 +110,23 @@ export class LearningObjectService {
         return learningObject;
       });
   }
-    /**
-     * Fetches LearningObject by id
-     *
-     * @param {string} id
-     * @returns {Promise<LearningObject>}
-     * @memberof LearningObjectService
-     */
+  /**
+   * Fetches LearningObject by id
+   *
+   * @param {string} id
+   * @returns {Promise<LearningObject>}
+   * @memberof LearningObjectService
+   */
   getRevisedLearningObject(
     learningObjectId: String
   ): Promise<LearningObject> {
-    const route = USER_ROUTES.GET_LEARNING_OBJECT(
-     learningObjectId
+    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(
+      learningObjectId
     );
     return this.http
       .get(route)
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()
@@ -129,14 +136,9 @@ export class LearningObjectService {
       });
   }
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
-    const route = USER_ROUTES.LOAD_USER_PROFILE(
-      username
-    );
-
     return this.http
-      .get(route, { withCredentials: true })
+      .get(USER_ROUTE.GET_USER_PROFILE(username), { withCredentials: true })
       .pipe(
-        retry(3),
         catchError(this.handleError)
       )
       .toPromise()
@@ -153,14 +155,14 @@ export class LearningObjectService {
    * @param authorUsername
    */
   async createRevision(cuid: string, authorUsername: string): Promise<any> {
-    const route = USER_ROUTES.CREATE_REVISION_OF_LEARNING_OBJECT(authorUsername, cuid);
+    const route = REVISION_ROUTES.CREATE_REVISION(authorUsername, cuid);
     const response = await this.http
       .post(
         route, {},
         { withCredentials: true }
       )
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

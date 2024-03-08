@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { LearningObject } from '../../../../../entity/learning-object/learning-object';
 import { Router } from '@angular/router';
-import { CollectionService } from '../../../../core/collection.service';
+import { CollectionService } from '../../../../core/collection-module/collections.service';
 
 @Component({
   selector: 'clark-collection-feature',

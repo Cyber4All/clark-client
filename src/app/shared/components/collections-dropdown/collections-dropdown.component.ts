@@ -1,6 +1,6 @@
 import { animate, sequence, style, transition, trigger } from '@angular/animations';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { CollectionService, Collection } from '../../../core/collection.service';
+import { CollectionService, Collection } from '../../../core/collection-module/collections.service';
 import { ToastrOvenService } from '../../modules/toaster/notification.service';
 
 @Component({

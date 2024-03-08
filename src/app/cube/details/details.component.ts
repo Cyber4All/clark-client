@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObjectService } from 'app/core/learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { UserService } from 'app/core/user.service';
-import { RatingService } from 'app/core/rating.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { RatingService } from 'app/core/rating-module/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
-import { AuthService } from 'app/core/auth.service';
-import { ChangelogService } from 'app/core/changelog.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 export interface Rating {
@@ -423,7 +423,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   createRating(rating: { value: number; comment: string; id?: string }) {
     this.ratingService
       .createRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         rating,
@@ -451,12 +450,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
     const { id, ...updates } = rating;
     if (!rating.id) {
       this.toastService.error('Error!', 'An error occured and your rating could not be updated');
-      console.error('Error: rating id not set');
       return;
     }
     this.ratingService
       .editRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         ratingId: rating.id,
@@ -471,7 +468,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         error => {
           this.showAddRating = false;
           this.toastService.error('Error!', 'An error occurred and your rating could not be updated');
-          console.error(error);
         }
       );
   }
@@ -485,7 +481,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     // 'index' here is the index in the ratings array to delete
     this.ratingService
       .deleteRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         ratingId: this.ratings[index].id,
@@ -515,9 +510,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       this.ratingService
         .flagLearningObjectRating({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
           ratingId,
           report
         })
@@ -550,9 +542,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       const result = await this.ratingService
         .createResponse({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
           ratingId,
           response,
         });
@@ -583,10 +572,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       const result = await this.ratingService
         .editResponse({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
-          ratingId,
           responseId,
           updates: response,
         });
@@ -608,14 +593,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
    */
   async deleteResponse(index: number) {
     // locate target rating and then delete the index param from the response
-    const ratingId = this.ratings[index].id;
     const responseId = this.ratings[index].response[0]._id;
     this.ratingService
       .deleteResponse({
-        username: this.learningObject.author.username,
-        CUID: this.learningObject.cuid,
-        version: this.learningObject.version,
-        ratingId,
         responseId,
       })
       .then(val => {

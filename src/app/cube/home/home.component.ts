@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Blog } from 'app/components/blogs/types/blog';
-import { BlogsComponentService } from 'app/core/blogs-component.service';
+import { BlogsComponentService } from 'app/core/utility-module/blogs-component.service';
 
 @Component({
   selector: 'clark-home',
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private blogsComponentService: BlogsComponentService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
 
@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
    *
    * @param val The value of showBanner
    */
-   showBlogsBanner(val: boolean) {
+  showBlogsBanner(val: boolean) {
     this.blogsComponentService.setShowBanner(val);
   }
 
@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
    * @param args: val - the value of the checkbox
    *              recentBlog - the blog that was dismissed
    */
-  neverShowBanner(args: {val: boolean, recentBlog?: Blog}) {
+  neverShowBanner(args: { val: boolean, recentBlog?: Blog }) {
     this.blogsComponentService.setNeverShowBanner(args);
   }
 
