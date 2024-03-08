@@ -1,8 +1,8 @@
 import { Component, Input, EventEmitter, Output, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { User } from '@entity';
-import { PrivilegeService } from 'app/admin/core/privilege.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { userCardAnimations } from './user-card.component.animations';
+import { AccessGroupService } from 'app/core/access-group-module/access-group.service';
 
 @Component({
   selector: 'clark-admin-user-card',
@@ -27,9 +27,9 @@ export class AdminUserCardComponent {
   showMiddle: boolean;
 
   constructor(
+    private accessGroupsService: AccessGroupService,
     private userService: UserService,
     private cd: ChangeDetectorRef,
-    private privilegeService: PrivilegeService
     ) {}
 
   /**
@@ -89,7 +89,7 @@ export class AdminUserCardComponent {
   }
 
   async canAddEvaluator() {
-    const roles = await this.privilegeService.getCollectionRoles(this.user.id);
+    const roles = await this.accessGroupsService.getUserAccessGroups(this.user.username);
     this.showAddEvaluatorButton = roles.length > 0;
   }
 }

@@ -64,14 +64,14 @@ export const AUTH_ROUTES = {
    * @method GET
    */
   OTA_VERIFY_EMAIL() {
-    return `${environment.apiURL}/users/ota-code?action=verifyEmail`;
+    return `${environment.apiURL}/users/ota-code?action=VERIFY_EMAIL`;
   },
   /**
    * Request to send ota code to a user's email
    * @method POST
    */
   OTA_SEND_EMAIL() {
-    return `${environment.apiURL}/users/ota-code?action=resetPassword`;
+    return `${environment.apiURL}/users/ota-code?action=RESET_PASSWORD`;
   },
   /**
    * Request to reset a user's password
