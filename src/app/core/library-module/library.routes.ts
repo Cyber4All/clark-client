@@ -8,9 +8,10 @@ export const LIBRARY_ROUTES = {
    * @param username username of the user's library
    * @returns list of saved learning objects
    */
-  GET_USERS_LIBRARY(username) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library`;
+  GET_USERS_LIBRARY(username: string, query: URLSearchParams) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library?${query.toString()}`;
   },
+
   /**
    * Request to add a learning object to a user's library
    * @method POST
@@ -20,6 +21,7 @@ export const LIBRARY_ROUTES = {
   ADD_LEARNING_OBJECT_TO_LIBRARY(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/library`;
   },
+  
   /**
    * Request to remove a learning object from a user's library
    * @method DELETE

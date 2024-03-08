@@ -39,19 +39,23 @@ export class LibraryService {
     // this.headers.append('Content-Type', 'application/json');
   }
 
-  async getLibrary(page?: number, limit?: number, reloadUser = false): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+  async getLibrary(page?: number, limit?: number): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     this.updateUser();
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
 
+    const query = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+
     return await this.http
-      .get(LIBRARY_ROUTES.GET_USERS_LIBRARY(this.user.username), {
+      .get(LIBRARY_ROUTES.GET_USERS_LIBRARY(this.user.username, query), {
         withCredentials: true,
         headers: this.headers
       })
       .pipe(
-
         catchError((error) => this.handleError(error))
       )
       .toPromise()
@@ -62,8 +66,7 @@ export class LibraryService {
   }
 
   async addToLibrary(
-    author: string,
-    learningObject: LearningObject
+    cuid: string, version: number
   ): Promise<any> {
     if (!this.user) {
       return Promise.reject('User is undefined');
@@ -74,16 +77,15 @@ export class LibraryService {
           this.user.username
         ),
         {
-          authorUsername: author,
-          cuid: learningObject.cuid,
-          version: learningObject.version
+          cuid,
+          version
         },
         { headers: this.headers, withCredentials: true }
       )
       .toPromise();
   }
 
-  removeFromLibrary(cuid: string): Promise<void> {
+  removeFromLibrary(learningObjectId: string): Promise<void> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
@@ -91,7 +93,7 @@ export class LibraryService {
       .delete(
         LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
           this.user.username,
-          cuid
+          learningObjectId
         ),
         { headers: this.headers, withCredentials: true }
       )
