@@ -21,7 +21,7 @@ export const LIBRARY_ROUTES = {
   ADD_LEARNING_OBJECT_TO_LIBRARY(username) {
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/library`;
   },
-  
+
   /**
    * Request to remove a learning object from a user's library
    * @method DELETE
