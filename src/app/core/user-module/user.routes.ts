@@ -13,6 +13,14 @@ export const USER_ROUTE = {
    * Request to retrieve a user
    * @method GET
    * @param user the username of the user
+   */
+  SEARCH_USERS(query: any) {
+    return `${environment.apiURL}/users?${new URLSearchParams(query).toString()}`;
+  },
+  /**
+   * Request to retrieve a user
+   * @method GET
+   * @param user the username of the user
    * @returns the user
    */
   GET_USER(user: string) {

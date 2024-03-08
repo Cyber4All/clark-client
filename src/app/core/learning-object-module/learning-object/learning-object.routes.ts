@@ -32,9 +32,6 @@ export const LEGACY_USER_ROUTES = {
             username,
         )}/learning-objects/profile`;
     },
-    SEARCH_USERS(query: any) {
-        return `${environment.apiURL}/users/search?${querystring.stringify(query)}`;
-    },
     GET_MY_LEARNING_OBJECTS(
         username,
         filters: any,
@@ -178,13 +175,5 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
             params.username,
         )}/learning-objects/${params.loId}/files/${params.fileId}/download${params.open ? '?open=true' : ''
             }`;
-    },
-};
-
-export const LEGACY_FEATURED_ROUTES = {
-    // Get featured objects for a specific collection
-    GET_COLLECTION_FEATURED(collection: string) {
-        return `${environment.apiURL
-            }/featured/learning-objects?collection=${encodeURIComponent(collection)}`;
     },
 };

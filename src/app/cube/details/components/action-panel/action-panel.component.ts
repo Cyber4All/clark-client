@@ -309,7 +309,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   public async sendEmailVerification() {
     try {
-      await this.auth.validateAndRefreshToken();
+      await this.auth.validateToken();
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();

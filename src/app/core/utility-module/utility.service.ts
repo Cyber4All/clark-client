@@ -26,8 +26,8 @@ export class UtilityService {
    *
    * @returns An observable containing an array of blogs
    */
-  async getRecentBlogs(): Observable<Blog[]> {
-    await this.http.get(UTILITY_ROUTES.GET_RECENT_BLOGS());
+  getRecentBlogs(): Observable<Blog[]> {
+    return this.http.get<Blog[]>(UTILITY_ROUTES.GET_RECENT_BLOGS());
   }
 
   /**

@@ -24,7 +24,7 @@ export class UserService {
    */
   searchUsers(query: UserQuery): Promise<User[]> {
     return this.http
-      .get(LEGACY_USER_ROUTES.SEARCH_USERS(query), {
+      .get(USER_ROUTE.SEARCH_USERS(query), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))
