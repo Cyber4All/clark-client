@@ -70,7 +70,6 @@ export class UsersComponent implements AfterViewInit {
       }).catch(error => {
         this.toaster.error('Error!', 'There was an error fetching users. Please try again later.');
         this.loading = false;
-        console.error(error);
       });
   }
 

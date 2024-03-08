@@ -450,7 +450,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     const { id, ...updates } = rating;
     if (!rating.id) {
       this.toastService.error('Error!', 'An error occured and your rating could not be updated');
-      console.error('Error: rating id not set');
       return;
     }
     this.ratingService
@@ -469,7 +468,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         error => {
           this.showAddRating = false;
           this.toastService.error('Error!', 'An error occurred and your rating could not be updated');
-          console.error(error);
         }
       );
   }

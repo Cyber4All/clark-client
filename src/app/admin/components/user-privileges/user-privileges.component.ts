@@ -47,7 +47,6 @@ export class UserPrivilegesComponent implements OnInit {
       })
       .catch(error => {
         this.toaster.error('Error!', 'There was an error fetching this user\'s privileges. Please try again later.');
-        console.error(error);
       });
   }
 
@@ -145,7 +144,6 @@ export class UserPrivilegesComponent implements OnInit {
         })
         .catch(error => {
           this.toaster.error('Error!', 'There was an error adding a privilege. Please try again later.');
-          console.error(error);
         });
     }
   }
@@ -191,7 +189,6 @@ export class UserPrivilegesComponent implements OnInit {
     })
     .catch(error => {
         this.toaster.error('Error!', 'There was an error removing a privilege. Please try again later.');
-        console.error(error);
       });
   }
 
