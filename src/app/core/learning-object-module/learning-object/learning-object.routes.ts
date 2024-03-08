@@ -64,7 +64,7 @@ export const LEGACY_COLLECTIONS_ROUTES = {
     GET_COLLECTION_CURATORS(name: string) {
         return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
     },
-}
+};
 
 export const LEGACY_USER_ROUTES = {
     // Route still available in gateway to LOS

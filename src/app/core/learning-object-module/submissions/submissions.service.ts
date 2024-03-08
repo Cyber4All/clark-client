@@ -12,14 +12,14 @@ export class SubmissionsService {
   constructor(private http: HttpClient) { }
 
    /**
-   * Adds specified learning object to specified collection
-   *
-   * @param {string} learningObjectId id of learning object to be added to collection
-   * @param {string} collectionName name of collection in which to insert learning object
-   * @param {string} [submissionReason] reason for submitting a learning object to a collection
-   * @param {string[]} [selectedAuthorizations] authorizations that the author gave for changes
-   * @return {Promise<any>}
-   */
+    * Adds specified learning object to specified collection
+    *
+    * @param {string} learningObjectId id of learning object to be added to collection
+    * @param {string} collectionName name of collection in which to insert learning object
+    * @param {string} [submissionReason] reason for submitting a learning object to a collection
+    * @param {string[]} [selectedAuthorizations] authorizations that the author gave for changes
+    * @return {Promise<any>}
+    */
    submit(params: {
     userId: string,
     learningObjectId: string,
