@@ -4,11 +4,6 @@ orbs:
   cyber4all: cyber4all/orb@2.1.1
 
 workflows:
-  integration-testing:
-    jobs:
-      - cyber4all/build:
-          language: node
-  
   deploy-clark-service-refactor:
     when:
         equal: [clark-service-refactor, <<pipeline.git.branch>>]

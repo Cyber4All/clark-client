@@ -2,20 +2,6 @@ import { environment } from '../../../../environments/environment';
 import * as querystring from 'querystring';
 
 export const LEGACY_ADMIN_ROUTES = {
-    MUTATE_COLLECTION_MEMBERSHIP(
-        abvCollectionName: string,
-        userId: string,
-    ): string {
-        return `${environment.apiURL}/collections/${encodeURIComponent(
-            abvCollectionName,
-        )}/members/${encodeURIComponent(userId)}`;
-    },
-    GET_USER_ROLES(id: string): string {
-        return `${environment.apiURL}/users/${encodeURIComponent(id)}/roles`;
-    },
-    GET_MAPPERS(): string {
-        return `${environment.apiURL}/guidelines/members`;
-    },
     CHANGE_STATUS(username: string, id: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,

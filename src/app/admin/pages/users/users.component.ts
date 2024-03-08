@@ -79,7 +79,7 @@ export class UsersComponent implements AfterViewInit {
    */
   async fetchReviewers() {
     this.loading = true;
-    this.users = await this.access.fetchReviewers(this.activeCollection.abvName);
+    this.users = await this.access.getUsersWithAccessToCollection(this.activeCollection.abvName, AccessGroups.REVIEWER);
     this.loading = false;
   }
 

@@ -35,26 +35,17 @@ export const ACCESS_GROUP_ROUTES = {
       username
     )}`;
   },
+  
   /**
-   * Request to get the users with reviewer role in the given collection
+   * Request to get the users with a role in the given collection
    * @param collectionAbvName the abbreviated name of the collection
+   * @param accessGroup the string representation of the access group
    * @method GET
    * @auth required
    * @returns Promise<User[]> the users with access to the given collection
    */
-  FETCH_REVIEWERS(collectionAbvName: string) {
+  GET_USERS_WITH_ACCESS_TO_COLLECTION(collectionAbvName: string, accessGroup: string) {
     return `${environment.apiURL
-      }/access-groups/collections/${encodeURIComponent(collectionAbvName)}/users?role=reviewer`;
-  },
-  /**
-   * Request to get the users with curator role in the given collection
-   * @param collectionAbvName the abbreviated name of the collection
-   * @method GET
-   * @auth required
-   * @returns Promise<User[]> the users with access to the given collection
-   */
-  FETCH_CURATORS(collectionAbvName: string) {
-    return `${environment.apiURL
-      }/access-groups/collections/${encodeURIComponent(collectionAbvName)}/users?role=curator`;
+      }/access-groups/collections/${encodeURIComponent(collectionAbvName)}/users?role=${accessGroup}`;
   },
 };
