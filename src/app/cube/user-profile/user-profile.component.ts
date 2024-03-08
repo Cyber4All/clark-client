@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ProfileService } from 'app/core/user-module/profiles.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 @Component({
   selector: 'clark-user-profile',
   templateUrl: './user-profile.component.html',
@@ -21,6 +22,7 @@ export class UserProfileComponent implements OnInit {
     private route: ActivatedRoute,
     private auth: AuthService,
     private profileService: ProfileService,
+    private collectionService: CollectionService
   ) { }
 
   async ngOnInit() {
@@ -46,8 +48,8 @@ export class UserProfileComponent implements OnInit {
      * @method fetchLearningObject returns an individual learning object based on cuid
      * @fetchLearningObject is nested in order to load page elements concurrently while still performing acynchronous operations.
      */
-    await this.profileService
-      .getCollectionData(this.user.username).then(async (collectionMeta) => {
+    await this.collectionService
+      .getUserSubmittedCollections(this.user.username).then(async (collectionMeta) => {
         const tempObjects = [];
         // Await each learning object for a users profile
         const promises = collectionMeta.map(async (objectMeta) => {

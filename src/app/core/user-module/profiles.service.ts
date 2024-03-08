@@ -38,23 +38,6 @@ export class ProfileService {
       });
   }
 
-  /**
-   * Service call to retrieve collection meta data for all objects for a particular user
-   *
-   * @param username username of the user's profile being accessed
-   * @returns {cuid: string, version: int, status: string, collection: string} object metadata
-   * for each collection an object belongs to for a user
-   */
-  // FIXME: Clark-service throws 404 for unrelased LOs b/c they don't have a collection; however mike says is fine, we need dis
-  getCollectionData(username: string): Promise<any> {
-    return this.http
-      .get(COLLECTION_ROUTES.GET_USER_SUBMITTED_COLLECTIONS(username), {
-        withCredentials: true,
-      })
-      .pipe(catchError(this.handleError))
-      .toPromise();
-  }
-
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error

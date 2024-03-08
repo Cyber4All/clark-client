@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { COLLECTION_ROUTES } from '../../core/collection-module/collections.routes';
+import { LEGACY_COLLECTIONS_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class CollectionService {
    */
   async updateSubmittedCollection(username: string, cuid: string, collection: string) {
     await this.http.patch(
-      COLLECTION_ROUTES.UPDATE_LEARNING_OBJECT_COLLECTION(username, cuid),
+      LEGACY_COLLECTIONS_ROUTES.UPDATE_LEARNING_OBJECT_COLLECTION(username, cuid),
       { collection }, { withCredentials: true, responseType: 'text' }
     ).toPromise();
   }

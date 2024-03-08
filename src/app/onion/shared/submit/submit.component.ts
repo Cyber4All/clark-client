@@ -10,6 +10,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hierarchy.service';
 import { CHANGE_AUTHORIZATION_LIST } from '../../../../environments/strings';
 import { Router } from '@angular/router';
+import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 
 @Component({
   selector: 'clark-submit',
@@ -45,6 +46,7 @@ export class SubmitComponent implements OnInit {
     private changelogService: ChangelogService,
     private collectionService: CollectionService,
     private learningObjectService: LearningObjectService,
+    private submissionService: SubmissionsService,
     private hierarchyService: HierarchyService,
     private toasterService: ToastrOvenService,
     private auth: AuthService,
@@ -213,7 +215,7 @@ export class SubmitComponent implements OnInit {
             return false;
           });
       } else {
-        this.collectionService
+        this.submissionService
           .submit({
             learningObjectId: this.learningObject.id,
             userId: this.learningObject.author.id,
