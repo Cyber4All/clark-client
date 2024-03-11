@@ -1,6 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsageStatsService } from './usage-stats/usage-stats.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 /**
  * Contains all singleton services for the cube module.
@@ -10,7 +10,7 @@ import { UsageStatsService } from './usage-stats/usage-stats.service';
 @NgModule({
   imports: [CommonModule],
   exports: [],
-  providers: [UsageStatsService]
+  providers: [MetricService]
 })
 export class CubeCoreModule {
   // Ensure that the module is only imported by one NgModule

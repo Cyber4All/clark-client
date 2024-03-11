@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
-import { UsageStats, LearningObjectStats, UserStats } from '../shared/types/usage-stats';
+import { UsageStats, LearningObjectStats, UserMetrics } from '../shared/types/usage-stats';
 import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
-import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from '../learning-object.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -59,7 +59,7 @@ export class UsageStatsComponent implements OnInit {
   counterStats: CounterStat[] = [];
 
   objectStats: LearningObjectStats;
-  userStats: UserStats;
+  userStats: UserMetrics;
 
   outcomeDistributionChartAria: string;
   organizationBreakdownChartAria: string;
@@ -69,12 +69,12 @@ export class UsageStatsComponent implements OnInit {
 
   loading: boolean;
 
-  constructor(private statsService: UsageStatsService, private learningObjectService: LearningObjectService) {}
+  constructor(private metricService: MetricService, private learningObjectService: LearningObjectService) {}
 
   ngOnInit() {
     this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
-    this.statsService.getLearningObjectStats().then(stats => {
+    this.metricService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
       this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
@@ -96,7 +96,7 @@ export class UsageStatsComponent implements OnInit {
       this.buildTopDownloads();
     });
 
-    this.statsService.getUserStats().then(stats => {
+    this.metricService.getUserMetrics().then(stats => {
       this.usageStats.users.accounts = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
       this.buildCounterStats();
