@@ -18,6 +18,7 @@ import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 import { v4 as uuidv4 } from 'uuid';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
+import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -149,6 +150,7 @@ export class BuilderStore {
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
+    private submissionService: SubmissionsService
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -877,7 +879,7 @@ export class BuilderStore {
   }
 
   public cancelSubmission(): void {
-    this.collectionService
+    this.submissionService
       .unsubmit({
         learningObjectId: this.learningObject.id,
         userId: this.learningObject.author.id,

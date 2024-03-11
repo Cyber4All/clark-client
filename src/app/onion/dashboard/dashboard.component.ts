@@ -11,7 +11,7 @@ import { CollectionService } from 'app/core/collection-module/collections.servic
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
-import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hierarchy.service';
+import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -80,12 +80,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
-    private hierarchyService: HierarchyService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
+    private submissionService: SubmissionsService
   ) {
     this.navbar.hide();
   }
@@ -230,7 +230,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.currentlySubmittingObject = event;
       this.submitToCollection = true;
     } else {
-      this.collectionService.submit({
+      this.submissionService.submit({
         learningObjectId: event.id,
         userId: event.author.id,
         collectionName: event.collection,
@@ -254,7 +254,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {LearningObject} learning object to be unpublished
    */
   cancelSubmission(l: LearningObject): Promise<void> {
-    return this.collectionService.unsubmit({
+    return this.submissionService.unsubmit({
       learningObjectId: l.id,
       userId: l.author.id,
     }).then(async () => {

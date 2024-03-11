@@ -12,7 +12,6 @@ import { LearningObject } from '../../../entity/learning-object/learning-object'
 import * as querystring from 'querystring';
 import { COLLECTION_ROUTES } from './collections.routes';
 import { REPORT_ROUTES } from '../report-module/report.routes';
-import { SUBMISSION_ROUTES } from '../learning-object-module/submissions/submissions.routes';
 
 export interface Collection {
   name: string;
@@ -28,17 +27,35 @@ export class CollectionService {
   private loading$ = new BehaviorSubject<boolean>(true);
   darkMode502 = new BehaviorSubject<boolean>(true);
   constructor(private http: HttpClient) {
-    this.fetchCollections()
-      .catch(e => {
-        throw e;
-      });
+    this.getAllCollections();
+  }
+
+  /**
+   * Service call to retrieve collection meta data for all objects for a particular user
+   *
+   * @param username username of the user's profile being accessed
+   * @returns {cuid: string, version: int, status: string, collection: string} object metadata
+   * for each collection an object belongs to for a user
+   */
+  // FIXME: Clark-service throws 404 for unrelased LOs b/c they don't have a collection; however mike says is fine, we need dis
+  getUserSubmittedCollections(username: string): Promise<any> {
+    return this.http
+      .get(COLLECTION_ROUTES.GET_USER_SUBMITTED_COLLECTIONS(username), {
+        withCredentials: true,
+      })
+      .pipe(catchError(this.handleError))
+      .toPromise();
   }
 
   /**
    * Fetches the list of collections from the API
    */
-  async fetchCollections() {
-    this.collections = await this.http.get(COLLECTION_ROUTES.GET_ALL_COLLECTIONS(), { withCredentials: true })
+  async getAllCollections() {
+    this.collections = await this.http
+      .get(
+        COLLECTION_ROUTES.GET_ALL_COLLECTIONS(),
+        { withCredentials: true }
+      )
       .pipe(
         catchError(this.handleError)
       )
@@ -87,61 +104,6 @@ export class CollectionService {
     }
   }
 
-  /**
-   * Adds specified learning object to specified collection
-   *
-   * @param {string} learningObjectId id of learning object to be added to collection
-   * @param {string} collectionName name of collection in which to insert learning object
-   * @param {string} [submissionReason] reason for submitting a learning object to a collection
-   * @param {string[]} [selectedAuthorizations] authorizations that the author gave for changes
-   * @return {Promise<any>}
-   */
-  submit(params: {
-    userId: string,
-    learningObjectId: string,
-    collectionName: string,
-    submissionReason?: string,
-    selectedAuthorizations?: string[],
-  }): Promise<any> {
-    return this.http
-      .post(
-        SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-          userId: params.userId,
-          learningObjectId: params.learningObjectId,
-        }),
-        {
-          collection: params.collectionName,
-          submissionReason: params.submissionReason,
-          selectedAuthorizations: params.selectedAuthorizations
-        },
-        { withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  unsubmit(params: {
-    learningObjectId: string,
-    userId: string,
-  }): Promise<any> {
-    return this.http
-      .delete(
-        SUBMISSION_ROUTES.DELETE_SUBMISSION({
-          userId: params.userId,
-          learningObjectId: params.learningObjectId,
-        }),
-        { withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
   async getCollection(abvName: string): Promise<Collection> {
     return await this.getCollections().then(val => {
       for (const x of val) {
@@ -155,66 +117,17 @@ export class CollectionService {
   getCollectionCuratorsInfo(name: string) {
     return this.http.get(LEGACY_COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();
   }
+
   getCollectionMetadata(name: string) {
-    return this.http.get(COLLECTION_ROUTES.GET_COLLECTION_META(name))
+    return this.http.get(LEGACY_COLLECTIONS_ROUTES.GET_COLLECTION_META(name))
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();
-  }
-
-  /**
-   * Fetches Array of Learning Objects
-   *
-   * @returns {Promise<LearningObject[]>}
-   * @memberof LearningObjectService
-   */
-  getLearningObjects(query?: Query): Promise<{ learningObjects: LearningObject[], total: number }> {
-    let route = '';
-    if (query) {
-      const queryClone = Object.assign({}, query);
-      if (
-        queryClone.standardOutcomes &&
-        queryClone.standardOutcomes.length &&
-        typeof queryClone.standardOutcomes[0] !== 'string'
-      ) {
-        queryClone.standardOutcomes = queryClone.standardOutcomes.map(o => o['id']);
-      }
-      const queryString = querystring.stringify(queryClone);
-      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(
-        queryString
-      );
-    } else {
-      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
-    }
-
-    return this.http
-      .get(route)
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((response: any) => {
-        const objects = response.objects;
-        return { learningObjects: objects.map(object => new LearningObject(object)), total: response.total };
-      });
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // Client-side or network returned error
-      return throwError(error.error.message);
-    } else {
-      // API returned error
-      return throwError(error);
-    }
   }
 
   changeStatus502(status: boolean) {
@@ -245,6 +158,16 @@ export class CollectionService {
           catchError(this.handleError)
         )
         .toPromise();
+    }
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
     }
   }
 }

@@ -146,7 +146,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
         if (!this.saved) {
           try {
-            await this.libraryService.addToLibrary(this.learningObject.author.username, this.learningObject);
+            await this.libraryService.addToLibrary(this.learningObject.cuid, this.learningObject.version);
           } catch (e) {
             if (e.status === 201) {
               this.toaster.success('Successfully Added!', 'Learning Object added to your library');
@@ -275,7 +275,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   removeFromLibrary() {
-    this.libraryService.removeFromLibrary(this.learningObject.cuid);
+    this.libraryService.removeFromLibrary(this.learningObject.id);
   }
 
   private buildLocation(encoded?: boolean) {
