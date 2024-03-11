@@ -1,17 +1,18 @@
 import { environment } from '../../../../environments/environment';
 import * as querystring from 'querystring';
 
+export const LEARNING_OBJECT_ROUTES = {
+    /**
+     * Path to update the status of a learning object
+     * @param learningObjectId the id of the learning object
+     * @returns void
+     */
+    UPDATE_LEARNING_OBJECT_STATUS(learningObjectId) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/status`;
+    },
+};
+
 export const LEGACY_ADMIN_ROUTES = {
-    CHANGE_STATUS(username: string, id: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${id}/status`;
-    },
-    UNRELEASE_OBJECT(username: string, id: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${id}/status`;
-    },
     ADD_HIERARCHY_OBJECT(username) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,

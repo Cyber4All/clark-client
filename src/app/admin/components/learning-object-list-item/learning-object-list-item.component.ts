@@ -21,6 +21,9 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { Router } from '@angular/router';
 import { HierarchyService } from '../../../core/learning-object-module/hierarchy/hierarchy.service';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { 
+  LearningObjectService as RefactoredLearningObjectService
+} from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -76,7 +79,8 @@ export class LearningObjectListItemComponent implements OnChanges {
     private toaster: ToastrOvenService,
     private router: Router,
     private hierarchyService: HierarchyService,
-    private loService: LearningObjectService
+    private loService: LearningObjectService,
+    private refactoredLearningObjectService: RefactoredLearningObjectService
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -159,11 +163,16 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Reaches to a service to unrelease the object.
    */
   unreleaseLearningObject() {
-    this.unreleaseService.unreleaseLearningObject(this.learningObject.author.username, this.learningObject.id)
+    this.refactoredLearningObjectService
+      .updateLearningObjectStatus(
+        this.learningObject.id,
+        LearningObject.Status.PROOFING
+      )
       .then(() => {
         this.toaster.success('Success', 'Learning object was successfully unreleased');
         this.learningObject.status = LearningObject.Status.PROOFING;
-      }).catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
+      })
+      .catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
   }
 
   /**
