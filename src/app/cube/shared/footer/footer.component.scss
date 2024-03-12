@@ -86,26 +86,19 @@ footer {
 
   .share-icons {
     text-align: center;
-    padding: 0;
+    padding: 0px;
     margin: 0;
   
     & > a {
-      background: $blue-accent;
+      background: none;
       color: white !important;
       transform: scale(1);
       cursor: pointer;
       margin-left: 10px;
+      font-size: 40px;
   
       &:active:hover {
         transform: scale(0.95);
-      }
-  
-      &.twitter {
-        background: #1da1f2;
-      }
-  
-      &.linkedin {
-        background: #0077b5;
       }
     }
   }
