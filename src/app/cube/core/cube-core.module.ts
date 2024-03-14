@@ -10,7 +10,6 @@ import { MetricService } from 'app/core/metric-module/metric.service';
 @NgModule({
   imports: [CommonModule],
   exports: [],
-  providers: [MetricService]
 })
 export class CubeCoreModule {
   // Ensure that the module is only imported by one NgModule
