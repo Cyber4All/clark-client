@@ -83,7 +83,7 @@ export class EditorialActionPadComponent implements OnInit {
     this.closeRevisionModal();
     this.toaster.success('One Moment Please', 'Your revision is being created.');
     await this.learningObjectService
-      .createRevision(this.learningObject.cuid, this.learningObject.author.username).then(async (revisionUri: any) => {
+      .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
         this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
       }).catch(e => {

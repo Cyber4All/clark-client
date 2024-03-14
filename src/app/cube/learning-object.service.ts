@@ -154,8 +154,8 @@ export class LearningObjectService {
    * @param learningObjectId
    * @param authorUsername
    */
-  async createRevision(cuid: string, authorUsername: string): Promise<any> {
-    const route = REVISION_ROUTES.CREATE_REVISION(authorUsername, cuid);
+  async createRevision(cuid: string): Promise<any> {
+    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
     const response = await this.http
       .post(
         route, {},
