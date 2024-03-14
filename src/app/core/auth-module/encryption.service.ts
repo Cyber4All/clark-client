@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { retry } from 'rxjs/operators';
 import { AUTH_ROUTES } from './auth.routes';
 
 @Injectable({

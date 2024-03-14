@@ -134,7 +134,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
 
     try {
       await this.userService.editUserInfo(edits).then(async res => {
-        await this.auth.validateAndRefreshToken();
+        await this.auth.validateToken();
         this.userInfo.next(edits);
         this.close.next();
         this.noteService.success('Success!', res);

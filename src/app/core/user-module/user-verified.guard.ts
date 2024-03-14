@@ -19,7 +19,7 @@ export class UserVerifiedGuard implements CanActivate {
     const c = this.cookies.get('presence');
 
     if (c) {
-      return this.auth.validateAndRefreshToken().then(val => {
+      return this.auth.validateToken().then(val => {
         if (this.auth.user.emailVerified) {
           return true;
         }

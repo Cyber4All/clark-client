@@ -38,7 +38,7 @@ export class EmailVerifiedComponent implements OnInit {
         this.pMessage = 'We were unable to verify your email at this time. Please check back later.';
       }
     } else {
-      this.authService.validateAndRefreshToken()
+      this.authService.validateToken()
       .then(async () => {
         // Email successfully verified, display success content to user
         this.iconSuccess = true;
