@@ -1,6 +1,5 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MetricService } from 'app/core/metric-module/metric.service';
 
 /**
  * Contains all singleton services for the cube module.
