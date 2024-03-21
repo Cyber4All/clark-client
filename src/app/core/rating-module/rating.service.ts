@@ -3,7 +3,29 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { RATING_ROUTES } from './rating.routes';
 import { AuthService } from '../auth-module/auth.service';
 import { throwError } from 'rxjs';
-import { retry, catchError, map, filter } from 'rxjs/operators';
+import { catchError, map, filter } from 'rxjs/operators';
+
+export interface LearningObjectRatings {
+  _id?: any;
+  avgValue: number;
+  ratings: Rating[];
+}
+
+export interface Rating {
+  _id?: any;
+  value: number;
+  comment: string;
+  user: {
+      name: string;
+      username: string;
+      email: string;
+  };
+  source: {
+      cuid: string;
+      version: number;
+  };
+  date: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -98,7 +120,6 @@ export class RatingService {
         }
       )
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();
@@ -131,7 +152,6 @@ export class RatingService {
         }
       )
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();
@@ -177,31 +197,32 @@ export class RatingService {
    * @param {string} version
    * @returns {Promise<any>}
    */
-  getLearningObjectRatings(params: {
-    CUID: string;
-    version: number;
-  }): Promise<any> {
+  getLearningObjectRatings(
+    cuid: string,
+    version: number,
+  ): Promise<LearningObjectRatings> {
     return this.http
       .get(
         RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS(
-          params.CUID,
-          params.version,
+          cuid,
+          version,
         ),
         {
           withCredentials: true
         }
       )
       .pipe(
-
         catchError(this.handleError),
-        filter(response => response != null),
-        map((response: any) => {
-          const ratings = response.ratings.map((r: any) => {
-            const x = ({ ...r, id: r.id ? r.id : r._id });
-            delete x._id;
-            return x;
+        filter(rating => rating != null),
+        map((learningObjectRatings: LearningObjectRatings) => {
+          const ratings = learningObjectRatings.ratings.map((rating: Rating) => {
+            // Map the _id to id
+            const mappedRating = ({ ...rating, id: rating._id});
+            delete mappedRating._id;
+
+            return mappedRating;
           });
-          return { ...response, ratings };
+          return { avgValue: learningObjectRatings.avgValue, ratings };
         })
       )
       .toPromise();

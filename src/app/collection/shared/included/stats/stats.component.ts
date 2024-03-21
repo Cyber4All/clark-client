@@ -19,7 +19,7 @@ export class StatsComponent implements OnInit {
   authorCollection: number;
 
   ngOnInit(): void {
-    this.metricService.getCollectionMetricsData(this.collectionName).then((res: any) => {
+    this.metricService.getCollectionMetrics(this.collectionName).then((res: any) => {
       this.objDownload = res.metrics.downloads;
       this.objReleased = res.metrics.statusMetrics[0].released;
       const num = res.metrics.statusMetrics[0].waiting + res.metrics.statusMetrics[0].peerReview + res.metrics.statusMetrics[0].proofing;

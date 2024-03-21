@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Router } from '@angular/router';
 import { UserService } from 'app/core/user-module/user.service';
-import { RatingService } from 'app/core/rating-module/rating.service';
+import { LearningObjectRatings, RatingService } from 'app/core/rating-module/rating.service';
 import { NotificationsService } from 'app/core/notification-module/notification.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
@@ -252,12 +252,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.router.navigate(['/details/', object.author.username, object.cuid]);
   }
 
-  async getRatings(learningObject: LearningObject) {
+  async getRatings(learningObject: LearningObject): Promise<LearningObjectRatings> {
     const { cuid, version } = learningObject;
-    return await this.ratings.getLearningObjectRatings({
-      CUID: cuid,
+    return await this.ratings.getLearningObjectRatings(
+      cuid,
       version,
-    });
+    );
   }
 
   toggleDownloadModal(val?: boolean) {
