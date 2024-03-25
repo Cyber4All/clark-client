@@ -554,25 +554,6 @@ export class LearningObjectService {
     return this.handleFileMetaRequests(files, route);
   }
 
-  async changeStatus({
-    username,
-    objectId,
-    status,
-    reason
-  }: {
-    username: string,
-    objectId: string,
-    status: LearningObject.Status,
-    reason?: string
-  }): Promise<void> {
-    await this.http.post<void>(
-      LEGACY_ADMIN_ROUTES.CHANGE_STATUS(username, objectId),
-      { status, reason },
-      // @ts-ignore
-      { withCredentials: true, responseType: 'text' },
-    ).toPromise();
-  }
-
   /**
    * Handles file meta data requests
    *

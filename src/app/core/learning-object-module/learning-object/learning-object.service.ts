@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { take, map, catchError, mergeMap, finalize } from 'rxjs/operators';
-import { of, Observable, merge, Subject } from 'rxjs';
+import { of, Observable, merge, Subject, throwError } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
-import { LEGACY_USER_ROUTES, LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object/learning-object.routes';
+import { 
+  LEGACY_USER_ROUTES,
+  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
+  LEARNING_OBJECT_ROUTES
+} from '../learning-object/learning-object.routes';
 import { environment } from '@env/environment';
 import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
 
@@ -31,6 +35,19 @@ export class LearningObjectService {
   private headers = new HttpHeaders();
 
   constructor(private http: HttpClient) { }
+
+  async updateLearningObjectStatus(learningObjectId: string, status: LearningObject.Status, reason?: string): Promise<any> {
+    return this.http.post(
+      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(learningObjectId),
+      { status, reason },
+      { withCredentials: true }
+    )
+    .pipe(
+      catchError(this.handleError)
+    )
+    .toPromise();
+  }
+
 
   fetchLearningObject(
     params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
@@ -188,6 +205,16 @@ export class LearningObjectService {
       return new Error('Cannot find Learning Object' + params.name + 'for ' + params.author);
     } else if (!params.author && !params.name && !params.id) {
       return new Error('Cannot find Learning Object. No identifiers found.');
+    }
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
     }
   }
 }
