@@ -1,10 +1,10 @@
 <section class='urls'>
-  <div *ngFor='let url of urls' class='urls__grid'>
-    <div class='urls__grid__link-title'>
-      <p>{{ url.title }}</p>
-    </div>
-    <a [attr.aria-label]="url.title" href='{{ url.url }}' class='urls__grid__link-url'>
-      Visit link
+  <div class="top-wrapper" *ngIf="urls.length > 0">
+    <p>Links ({{urls.length}})</p>
+  </div>
+  <div class="urls__list">
+    <a *ngFor='let url of urls' [attr.aria-label]="url.title" href='{{ url.url }}' class='urls__link-item'>
+      <i class="fas fa-link link-icon"></i> {{url.title}}
     </a>
   </div>
   <p *ngIf='!urls.length' tab-index='0'>

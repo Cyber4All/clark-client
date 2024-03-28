@@ -1,17 +1,17 @@
 <clark-skip-link identity="pageContent" title="Skip Directly to Download" skipLocation="download-button"></clark-skip-link>
 <main id='pageContent' class='details-background'>
   <ng-container *ngIf="!loading; else loadingTemplate">
-    <section class='details__content-relevancy__banner' *ngIf="relevancyBannerStatus">
+    <!-- <section class='details__content-relevancy__banner' *ngIf="relevancyBannerStatus">
       This Learning Object is currently under review for relevancy.
       To learn more about our process for this review please read our <a href="https://blogs.clark.center/the-relevant-solution-how-the-clark-library-handles-curriculum-relevancy-2faadbd35aa7" target="_blank">blog post</a>.
-    </section>
+    </section> -->
     <div class='details'>
       <section class='details__content-container__cube-pattern-container section'>
         <clark-cube-pattern></clark-cube-pattern>
       </section>
       <section class='details__content-container'>
         <section class='details__content-container__top-left-side'>
-          <clark-details-splash 
+          <clark-details-splash
             [learningObject]='learningObject'
             [averageRating]='averageRatingValue'
             [reviewsCount]='ratings?.length'
@@ -44,36 +44,36 @@
           <section class='details__content-container__ratings-container section'>
             <div class='details__content-container__ratings-container__header-container'>
               <h2 class='section-title'>Reviews</h2>
-                <button 
-                  tabindex="0" 
+                <button
+                  tabindex="0"
                   *ngIf="!isMobile && loggedin && !isOwnObject"
                   tip="You must verify your email in order to review Learning Objects."
                   [tipDisabled]="auth.user.emailVerified"
                   class="button good content-container__ratings-container__button-container"
                   (activate)="showAddRating = auth.user.emailVerified"
                   attr.aria-label="Clickable button {{ userRating.date ? 'Edit your' : 'Write a'}} review">{{ !canAddNewRating ? 'Edit' :
-                  'Write a'}} review 
+                  'Write a'}} review
                   <i class="far fa-pencil"></i>
                 </button>
             </div>
-            <clark-learning-object-ratings 
+            <clark-learning-object-ratings
               *ngIf="ratings"
               [ratings]="ratings"
               [averageRating]="averageRatingValue"
               [learningObjectOwners]="learningObjectOwners"
-              [loggedIn]="loggedin" 
+              [loggedIn]="loggedin"
               (editRating)="showAddRating = true;"
               (deleteRating)="deleteRating($event)"
               (editResponse)="editResponse($event);"
               (deleteResponse)="deleteResponse($event)"
               (reportRating)="reportRating($event)"
               (respondRating)="submitResponse($event)">
-            </clark-learning-object-ratings>   
+            </clark-learning-object-ratings>
           </section>
         </section>
-             
+
         <section class='details__content-container__right-side'>
-          
+
           <section class='details__content-container__action-pad-container'>
             <div *ngIf="reviewer" class="inner">
               <div *ngIf="loggedin && hasRevision" class="revisions">
@@ -126,7 +126,7 @@
       [changelogs] = "changelogs ? changelogs[0] : undefined"
       [loading]="loadingChangelogs"
     ></clark-changelog-modal>
-  </div> 
+  </div>
 </clark-popup>
 
 <ng-template #loadingTemplate>

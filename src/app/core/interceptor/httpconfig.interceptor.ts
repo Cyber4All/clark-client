@@ -21,7 +21,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let headers = request.headers.set('Content-Type', 'application/json');
-    if (!request.url.includes(environment.cardOrganizationUrl)) {
+    if (!request.url.includes(environment.cardOrganizationUrl) && !request.url.includes(environment.cardUrl+ '/resources')) {
     headers = headers.append('Authorization', `Bearer ${this.token}`);
     }
 

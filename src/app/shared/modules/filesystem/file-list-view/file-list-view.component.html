@@ -13,7 +13,7 @@
       </div>
       <div *ngIf="canManage" class="placeholder"></div>
     </div>
-    <div *ngFor="let item of directoryListing">
+    <div *ngFor="let item of directoryListing" class="item">
       <!-- Folder -->
       <clark-folder-list-item
         *ngIf="item.folders"

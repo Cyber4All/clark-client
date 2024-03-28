@@ -27,7 +27,6 @@ export class MaterialsComponent implements OnInit, OnChanges {
   files$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
   folderMeta$: BehaviorSubject<any> = new BehaviorSubject<any>([]);
 
-
   setSelection(newSelection: 'Files' | 'URLs' | 'Notes') {
     this.previousSelection = this.currentSelection;
     this.currentSelection = newSelection;
