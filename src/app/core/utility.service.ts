@@ -37,4 +37,20 @@ export class UtilityService {
         );
     });
   }
+
+  async getOrganizations(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(`${environment.cardUrl}/organizations`, {})
+        .toPromise()
+        .then(
+          (res: any) => {
+            resolve(res);
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+    });
+  }
 }

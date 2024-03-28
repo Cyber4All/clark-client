@@ -6,6 +6,7 @@ import { PieChart } from './types';
 import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from '../learning-object.service';
+import { UtilityService } from 'app/core/utility.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -69,9 +70,13 @@ export class UsageStatsComponent implements OnInit {
 
   loading: boolean;
 
-  constructor(private statsService: UsageStatsService, private learningObjectService: LearningObjectService) {}
+  constructor(
+    private statsService: UsageStatsService,
+    private learningObjectService: LearningObjectService,
+    private utilityService: UtilityService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
     this.statsService.getLearningObjectStats().then(stats => {
@@ -98,7 +103,11 @@ export class UsageStatsComponent implements OnInit {
 
     this.statsService.getUserStats().then(stats => {
       this.usageStats.users.accounts = stats.accounts;
-      this.usageStats.users.organizations = stats.organizations;
+      this.buildCounterStats();
+    });
+
+    await this.utilityService.getOrganizations().then(organizations => {
+      this.usageStats.users.organizations = organizations.length;
       this.buildCounterStats();
     });
   }
@@ -159,11 +168,11 @@ export class UsageStatsComponent implements OnInit {
       type: 'doughnut',
       labels: ['Universities', 'Community Colleges', 'K-12 (Schools)', 'Companies', 'Government'],
       data: [
-        248,
-        24,
-        30,
-        79,
-        22
+        498,
+        100,
+        159,
+        17,
+        117
       ],
       legend: true,
       options: {
