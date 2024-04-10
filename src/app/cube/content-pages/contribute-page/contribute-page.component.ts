@@ -14,6 +14,7 @@ export class ContributePageComponent implements OnInit {
   ngOnInit(): void { }
 
   title = 'Contribute';
+
   get tabs() {
     return Object.values(sections);
   }
