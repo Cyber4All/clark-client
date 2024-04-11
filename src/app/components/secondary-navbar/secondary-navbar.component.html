@@ -1,5 +1,6 @@
 <div class="secondary-navbar" *ngIf="isDesktop && showNav">
     <div class="item browse" [routerLink]="['/browse']">Browse</div>
+    <div class="item browse" (click)="dropdowns.linkOut('https://caeresource.directory')">Browse Resources</div>
     <div class="item about-us" [routerLink]="['/about']">About CLARK</div>
     <div class="item collections" id="collectionsAnchor" #collectionsAnchor
         (click)="dropdowns.toggleCollectionDropdown()" tabindex="0">Collections
