@@ -30,8 +30,8 @@ export class NavbarDropdownService {
     public showNavbars = new BehaviorSubject<boolean>(true);
 
     public externalResources = [
-    {name: 'CAE Resource Directory', link: 'http://www.caeresource.directory'},
-    {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'}
+    {name: 'Standard Guidelines', link: 'https://standard-guidelines.clark.center'},
+    {name: 'Task Tool', link: 'https://tasktool.clark.center'}
     ];
     public topics = new BehaviorSubject<Topic[]>([]);
     public topicSelection = new BehaviorSubject<Topic>({_id: '', name: ''});
