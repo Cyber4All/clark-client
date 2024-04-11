@@ -13,6 +13,7 @@ export class SecondaryNavbarComponent implements OnInit {
   topicDropdown = false;
   collectionsDropdown = false;
   resourcesDropdown = false;
+  browseDropdown =  false;
   isDesktop = false;
   resizeThreshold = 825;
 
@@ -34,6 +35,9 @@ export class SecondaryNavbarComponent implements OnInit {
     });
     this.dropdowns.resourcesDropdown.subscribe(val => {
       this.resourcesDropdown = val;
+    });
+    this.dropdowns.browseDropdown.subscribe(val => {
+      this.browseDropdown = val;
     });
     this.dropdowns.showNavbars.subscribe(val => {
       this.showNav = val;

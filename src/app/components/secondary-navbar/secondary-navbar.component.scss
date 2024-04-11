@@ -26,6 +26,11 @@
 
 }
 
-a:hover {
+a {
+    text-decoration: none;
+    color: $dark-grey;
+    
+    &:hover {
     color: white;
+    }
 }

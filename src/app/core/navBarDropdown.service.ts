@@ -23,6 +23,7 @@ export class NavbarDropdownService {
     public topicDropdown = new BehaviorSubject<boolean>(false);
     public collectionsDropdown = new BehaviorSubject<boolean>(false);
     public resourcesDropdown = new BehaviorSubject<boolean>(false);
+    public browseDropdown = new BehaviorSubject<boolean>(false);
     //mobile slideouts
     public isMHamburger = new BehaviorSubject<boolean>(false);
     public isMSearch = new BehaviorSubject<boolean>(false);
@@ -74,6 +75,9 @@ export class NavbarDropdownService {
         }
         if(this.resourcesDropdown.getValue()) {
             this.resourcesDropdown.next(false);
+        }
+        if(this.browseDropdown.getValue()) {
+            this.browseDropdown.next(false);
         }
 
     }
@@ -129,6 +133,10 @@ export class NavbarDropdownService {
 
     public toggleResourcesDropdown(): void {
         this.resourcesDropdown.next(!this.resourcesDropdown.getValue());
+    }
+
+    public toggleBrowseDropdown(): void {
+        this.browseDropdown.next(!this.browseDropdown.getValue());
     }
 
     public linkOut(link: string): void {
