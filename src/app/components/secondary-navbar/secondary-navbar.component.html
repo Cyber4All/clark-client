@@ -12,7 +12,7 @@
         <div #contextMenu>
             <ul>
                 <li [routerLink]="'/browse'">Browse Curriculum</li>
-                <li><a id="uglyLink" href="https://caeresource.directory/browse" target="_blank">Browse Resources</a></li>
+                <li (click)="utilityService.openCard()">Browse Resources</li>
             </ul>
         </div>
     </clark-context-menu>
