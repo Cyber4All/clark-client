@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Topic } from '../../../entity';
 import { NavbarDropdownService } from '../../core/navBarDropdown.service';
+import { UtilityService } from 'app/core/utility.service';
 
 @Component({
   selector: 'clark-secondary-navbar',
@@ -13,6 +14,7 @@ export class SecondaryNavbarComponent implements OnInit {
   topicDropdown = false;
   collectionsDropdown = false;
   resourcesDropdown = false;
+  browseDropdown =  false;
   isDesktop = false;
   resizeThreshold = 825;
 
@@ -20,7 +22,8 @@ export class SecondaryNavbarComponent implements OnInit {
   topics: Topic[];
   externalResources: {};
   constructor(
-    private dropdowns: NavbarDropdownService
+    private dropdowns: NavbarDropdownService,
+    public utilityService: UtilityService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -34,6 +37,9 @@ export class SecondaryNavbarComponent implements OnInit {
     });
     this.dropdowns.resourcesDropdown.subscribe(val => {
       this.resourcesDropdown = val;
+    });
+    this.dropdowns.browseDropdown.subscribe(val => {
+      this.browseDropdown = val;
     });
     this.dropdowns.showNavbars.subscribe(val => {
       this.showNav = val;

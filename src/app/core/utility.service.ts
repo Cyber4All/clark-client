@@ -53,4 +53,11 @@ export class UtilityService {
         );
     });
   }
+
+  openCard() {
+    // Ask the user if they are sure they want to leave
+    if (confirm('You are now leaving CLARK. You will be redirected to the CAE Resource Directory.')) {
+      window.open('https://caeresource.directory', '_blank');
+    }
+  }
 }

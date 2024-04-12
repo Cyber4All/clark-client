@@ -14,7 +14,7 @@ export class SplashComponent implements OnInit {
   constructor(
     private usageStatsService: UsageStatsService,
     public googleTagService: GoogleTagService,
-    private utilityService: UtilityService
+    public utilityService: UtilityService
     ) { }
 
   async ngOnInit(): Promise<void> {
@@ -24,12 +24,5 @@ export class SplashComponent implements OnInit {
     await this.utilityService.getAllResources().then((res: any) => {
       this.resourceCount = Math.floor(res.total / 10) * 10;
     });
-  }
-
-  /**
-   * Alert message for users leaving the site
-   */
-  leavingSite() {
-    window.alert('You are now leaving CLARK. You will be redirected to the CAE Resource Directory.');
   }
 }
