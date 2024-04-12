@@ -196,10 +196,8 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
     GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
         return `${environment.apiURL}/learning-objects?${query}`;
     },
-    GET_PUBLIC_LEARNING_OBJECT(author: string, cuid: string, version?: number) {
-        let uri = `${environment.apiURL}/users/${encodeURIComponent(
-            author,
-        )}/learning-objects/${encodeURIComponent(cuid)}`;
+    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version?: number) {
+        let uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}`;
 
         if (version !== undefined) {
             uri += '?version=' + version.toString();

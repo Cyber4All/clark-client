@@ -273,7 +273,6 @@ export class LibraryComponent implements OnInit, OnDestroy {
    */
   async openViewAllChangelogsModal(notification: any) {
     this.changelogLearningObject = await this.learningObjectService.getLearningObject(
-      notification.attributes.learningObjectAuthorUsername,
       notification.attributes.cuid,
       notification.attributes.version
     );
