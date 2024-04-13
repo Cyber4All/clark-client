@@ -22,12 +22,12 @@ export class HttpConfigInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let headers = request.headers.set('Content-Type', 'application/json');
     if (!request.url.includes(environment.cardOrganizationUrl) && !request.url.includes(environment.cardUrl+ '/resources')) {
-    headers = headers.append('Authorization', `Bearer ${this.token}`);
+      headers = headers.append('Authorization', `Bearer ${this.token}`);
+      headers = headers.append('withCredentials', 'true');
     }
 
     request = request.clone({
-      headers,
-      withCredentials: true
+      headers
     });
 
     return next.handle(request);
