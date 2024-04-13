@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:prod": "ng serve --configuration=production",
     "build": "ng build",
     "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
     "lint": "npx ng lint clark",
