@@ -120,21 +120,13 @@ export const LEGACY_USER_ROUTES = {
         )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
     },
     CHECK_FIRST_SUBMISSION(params: {
-        userId: string;
         learningObjectId: string;
         query: {
             collection: string;
-            hasSubmission: boolean;
         };
     }) {
-        const q =
-            'collection=' +
-            params.query.collection +
-            '&hasSubmission=' +
-            params.query.hasSubmission;
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            params.userId,
-        )}/learning-objects/${params.learningObjectId}/submissions?${q}`;
+        const q = 'collection=' + params.query.collection;
+        return `/learning-objects/${params.learningObjectId}/submissions?${q}`;
     },
     GET_LEARNING_OBJECT(id) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
