@@ -198,6 +198,7 @@ export const USER_ROUTES = {
       }/users/${encodeURIComponent(params.userId)}/learning-objects/${params.learningObjectId}/submissions`;
   },
   CHECK_FIRST_SUBMISSION(params: {
+    userId: string,
     learningObjectId: string,
     query: {
       collection: string,
