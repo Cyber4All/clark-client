@@ -725,7 +725,6 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();
