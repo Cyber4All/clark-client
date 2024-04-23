@@ -1085,7 +1085,7 @@ export class BuilderStore {
    */
   private createLearningOutcome(newOutcome: LearningOutcome) {
     this.serviceInteraction$.next(true);
-    
+
     // TODO: If the learning object id does not exist yet (i.e Basic Info not
     // filled out yet) then don't try and create the learning outcome yet.
     // This is a bug if the user refreshes once on the learning outcome tab

@@ -30,7 +30,7 @@ export class OutcomeService {
       .post(
         OUTCOME_ROUTES.CREATE_OUTCOME(sourceId),
         outcome,
-        { 
+        {
           headers: this.headers,
           withCredentials: true,
           responseType: 'text'
@@ -50,6 +50,6 @@ export class OutcomeService {
     } else {
       // API returned error
       return throwError(error);
-    } 
+    }
   }
 }
