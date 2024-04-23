@@ -511,7 +511,11 @@ export class LearningObjectService {
     return await this.http.patch(
       FILE_ROUTES.UPDATE_PDF(id),
       {},
-      { withCredentials: true, responseType: 'text' }
+      {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'text'
+      }
     )
       .pipe(
 
@@ -704,27 +708,6 @@ export class LearningObjectService {
       )
       .pipe(
 
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Create an outcome for a source learning object
-   *
-   * @param {LearningObject} source the learningObject
-   * @param {LearningOutcome} outcome
-   * @param username The username of the learning object author
-   * @memberof LearningObjectService
-   */
-  addLearningOutcome(sourceId: string, outcome: LearningOutcome): Promise<any> {
-    return this.http
-      .post(
-        OUTCOME_ROUTES.CREATE_OUTCOME(sourceId),
-        outcome,
-        { headers: this.headers, withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
         catchError(this.handleError)
       )
       .toPromise();
