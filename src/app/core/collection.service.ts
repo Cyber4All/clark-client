@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { USER_ROUTES, PUBLIC_LEARNING_OBJECT_ROUTES, COLLECTIONS_ROUTES } from '../../environments/route';
 import { BehaviorSubject, throwError } from 'rxjs';
@@ -19,6 +19,7 @@ export interface Collection {
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
+  private headers: HttpHeaders = new HttpHeaders();
   darkMode502 = new BehaviorSubject<boolean>(true);
   constructor(private http: HttpClient) {
     this.fetchCollections()
@@ -242,7 +243,8 @@ export class CollectionService {
           {
             email,
             name
-          }
+          },
+          { headers: this.headers, withCredentials: true }
         )
         .pipe(
           catchError(this.handleError)
