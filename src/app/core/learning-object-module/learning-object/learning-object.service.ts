@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { take, map, catchError, mergeMap, finalize } from 'rxjs/operators';
 import { of, Observable, merge, Subject, throwError } from 'rxjs';
 import { LearningObject, LearningOutcome } from '@entity';
-import { 
+import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES
