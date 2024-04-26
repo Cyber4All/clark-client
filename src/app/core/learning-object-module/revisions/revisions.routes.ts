@@ -5,13 +5,10 @@ export const REVISION_ROUTES = {
      * Request to create a new revision of a learning object
      * @method POST
      * @auth required
-     * @param username - The username of the author of the learning object
      * @param cuid - The cuid of the learning object to create a new revision for
      */
-    CREATE_REVISION(username: string, cuid: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(cuid)}/versions`;
+    CREATE_REVISION(cuid: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}/versions`;
     },
     /**
      * Request to delete a revision of a learning object

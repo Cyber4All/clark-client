@@ -116,8 +116,8 @@ export class LearningObjectService {
    * @param learningObjectId
    * @param authorUsername
    */
-  createRevision(cuid: string, authorUsername: string) {
-    const route = REVISION_ROUTES.CREATE_REVISION(authorUsername, cuid);
+  createRevision(cuid: string) {
+    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
     return this.http
       .post(
         route, {},
@@ -552,25 +552,6 @@ export class LearningObjectService {
   }): Promise<string[]> {
     const route = FILE_ROUTES.UPLOAD_FILE_META(username, objectId);
     return this.handleFileMetaRequests(files, route);
-  }
-
-  async changeStatus({
-    username,
-    objectId,
-    status,
-    reason
-  }: {
-    username: string,
-    objectId: string,
-    status: LearningObject.Status,
-    reason?: string
-  }): Promise<void> {
-    await this.http.post<void>(
-      LEGACY_ADMIN_ROUTES.CHANGE_STATUS(username, objectId),
-      { status, reason },
-      // @ts-ignore
-      { withCredentials: true, responseType: 'text' },
-    ).toPromise();
   }
 
   /**

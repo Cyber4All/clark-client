@@ -14,27 +14,6 @@ export class UnreleaseService {
   constructor(private http: HttpClient) { }
 
   /**
-   * Unreleases a learning object, moving it back to a
-   * in review status (waiting, review, or proofing)
-   *
-   * @param username The username of the author
-   * @param cuid The cuid of the learning object
-   * @returns A promise of the request
-   */
-  unreleaseLearningObject(username: string, cuid: string) {
-    return this.http
-      .post(
-        LEGACY_ADMIN_ROUTES.UNRELEASE_OBJECT(username, cuid),
-        { status: LearningObject.Status.PROOFING },
-        { withCredentials: true, responseType: 'text' }
-      ).pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
    * Deletes a revision of a learning object. This is designed to allow an editor to create a new
    * revision when it is necessary for the editorial process to continue.
    *
