@@ -15,10 +15,8 @@ export const TOPICS_ROUTES = {
      * @param username - The username of the learning object author
      * @param learningObjectId - The id of the learning object
      */
-    UPDATE_TOPIC(username: string, learningObjectId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(
+    UPDATE_TOPIC(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
             learningObjectId
         )}/topics`;
     },

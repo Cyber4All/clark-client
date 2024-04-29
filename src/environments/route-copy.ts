@@ -565,8 +565,8 @@ export const RELEVANCY_ROUTES = {
   PATCH_OBJECT_TOPICS(username: string, id: string) {
     return `${environment.apiURL}/users/${username}/learning-objects/${id}/topics`;
   },
-  PATCH_OBJECT_OUTCOME_MAPPINGS(username: string, objectId: string, outcomeId: string) {
-    return `${environment.apiURL}/users/${username}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
+  PATCH_OBJECT_OUTCOME_MAPPINGS(objectId: string, outcomeId: string) {
+    return `${environment.apiURL}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
   },
 };
 

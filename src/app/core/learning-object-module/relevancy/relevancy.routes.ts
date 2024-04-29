@@ -21,10 +21,8 @@ export const RELEVANCY_ROUTES = {
      * @auth required
      * @method PATCH
      */
-    UPDATE_MAPPING(username: string, id: string, outcomeId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(id)}/learning-outcomes/${encodeURIComponent(
+    UPDATE_MAPPING(id: string, outcomeId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/learning-outcomes/${encodeURIComponent(
             outcomeId
         )}/guidelines`;
     },
