@@ -131,10 +131,10 @@ export class RelevancyService {
    * @param id  user id
    * @param topicIds  id of Topic object
    */
-  async updateObjectTopics(username: string, id: string, topicIds: string[]): Promise<void> {
+  async updateObjectTopics(id: string, topicIds: string[]): Promise<void> {
     return await new Promise((resolve, reject) => {
       this.http
-        .patch(TOPICS_ROUTES.UPDATE_TOPIC(username, id),
+        .patch(TOPICS_ROUTES.UPDATE_TOPIC(id),
           { topicIds },
           {
             headers: this.headers,
