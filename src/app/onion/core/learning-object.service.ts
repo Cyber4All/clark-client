@@ -721,15 +721,13 @@ export class LearningObjectService {
    * @param hasSubmission If the object has a submission [SET TO TRUE]
    * @memberof LearningObjectService
    */
-  getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
+  getFirstSubmission(learningObjectId: string, collection: string) {
     return this.http
       .get<{ isFirstSubmission: boolean }>(
         LEGACY_USER_ROUTES.CHECK_FIRST_SUBMISSION({
-          userId,
           learningObjectId,
           query: {
             collection,
-            hasSubmission
           }
         }),
         { withCredentials: true }
