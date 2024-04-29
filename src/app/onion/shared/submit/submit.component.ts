@@ -266,7 +266,7 @@ export class SubmitComponent implements OnInit {
    * @param collection The selected collection
    */
   getCollectionSelected(collection: string) {
-    this.learningObjectService.getFirstSubmission(this.learningObject.author.id, this.learningObject.id, collection, true)
+    this.learningObjectService.getFirstSubmission(this.learningObject.id, collection)
       .then(val => {
         this.collection = collection;
         if (!val.isFirstSubmission) {
