@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { UserService } from 'app/core/user-module/user.service';
-import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service';
 import { GoogleTagService } from '../../google-tag.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 
 @Component({
@@ -18,12 +18,12 @@ export class LearningObjectsComponent implements OnInit {
 
   constructor(private featureService: FeaturedObjectsService,
     private userService: UserService,
-    private usageStatsService: UsageStatsService,
+    private metricService: MetricService,
     public googleTagService: GoogleTagService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.usageStatsService.getLearningObjectStats().then(stats => {
+    await this.metricService.getLearningObjectStats().then(stats => {
       this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
     });
     await this.featureService.getFeaturedObjects();

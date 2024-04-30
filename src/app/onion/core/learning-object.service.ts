@@ -116,8 +116,8 @@ export class LearningObjectService {
    * @param learningObjectId
    * @param authorUsername
    */
-  createRevision(cuid: string, authorUsername: string) {
-    const route = REVISION_ROUTES.CREATE_REVISION(authorUsername, cuid);
+  createRevision(cuid: string) {
+    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
     return this.http
       .post(
         route, {},
@@ -558,25 +558,6 @@ export class LearningObjectService {
     return this.handleFileMetaRequests(files, route);
   }
 
-  async changeStatus({
-    username,
-    objectId,
-    status,
-    reason
-  }: {
-    username: string,
-    objectId: string,
-    status: LearningObject.Status,
-    reason?: string
-  }): Promise<void> {
-    await this.http.post<void>(
-      LEGACY_ADMIN_ROUTES.CHANGE_STATUS(username, objectId),
-      { status, reason },
-      // @ts-ignore
-      { withCredentials: true, responseType: 'text' },
-    ).toPromise();
-  }
-
   /**
    * Handles file meta data requests
    *
@@ -722,15 +703,13 @@ export class LearningObjectService {
    * @param hasSubmission If the object has a submission [SET TO TRUE]
    * @memberof LearningObjectService
    */
-  getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
+  getFirstSubmission(learningObjectId: string, collection: string) {
     return this.http
       .get<{ isFirstSubmission: boolean }>(
         LEGACY_USER_ROUTES.CHECK_FIRST_SUBMISSION({
-          userId,
           learningObjectId,
           query: {
             collection,
-            hasSubmission
           }
         }),
         { withCredentials: true }

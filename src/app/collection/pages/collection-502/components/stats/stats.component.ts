@@ -18,7 +18,7 @@ export class Stats502Component implements OnInit {
   constructor(private metricService: MetricService) { }
 
   async ngOnInit() {
-    await this.metricService.getCollectionMetricsData(this.collectionName).then((res: any) => {
+    await this.metricService.getCollectionMetrics(this.collectionName).then((res: any) => {
       this.objDownload = res.metrics.downloads;
       this.objReleased = res.metrics.statusMetrics[0].released;
       const num = res.metrics.statusMetrics[0].waiting + res.metrics.statusMetrics[0].peerReview + res.metrics.statusMetrics[0].proofing;

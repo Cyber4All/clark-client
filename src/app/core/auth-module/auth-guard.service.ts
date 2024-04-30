@@ -36,7 +36,7 @@ export class AuthGuard implements CanActivate {
     const c = this.cookies.get('presence');
 
     if (c) {
-      return this.auth.validateAndRefreshToken().then(
+      return this.auth.validateToken().then(
         val => {
           this.auth.isLoggedIn.subscribe(status => {
             // "status" is true if user is logged in , false if they are not logged in

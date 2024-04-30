@@ -365,7 +365,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createRevision(object: LearningObject) {
-    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid, object.author.username).then(() => {
+    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid).then(() => {
       this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED });
     });
   }

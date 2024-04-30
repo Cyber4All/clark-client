@@ -10,6 +10,9 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { 
+  LearningObjectService as RefactoredLearningObjectService
+} from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -147,6 +150,8 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
+    private refactoredLearningObjectService: RefactoredLearningObjectService,
+    private collectionService: CollectionService,
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
@@ -246,7 +251,7 @@ export class BuilderStore {
     const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
       // eslint-disable-next-line eqeqeq
       if (revisionId == 0) {
-        revisionId = await this.learningObjectService.createRevision(username, id);
+        revisionId = await this.learningObjectService.createRevision(id);
       }
 
       return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
@@ -487,12 +492,11 @@ export class BuilderStore {
   ///////////////////////////////
 
   private async changeStatus(status: LearningObject.Status, reason?: string) {
-    await this.learningObjectService.changeStatus({
-      username: this.learningObject.author.username,
-      objectId: this.learningObject.id,
+    await this.refactoredLearningObjectService.updateLearningObjectStatus(
+      this.learningObject.id,
       status,
       reason,
-    });
+    );
   }
 
   private createOutcome() {
