@@ -144,6 +144,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
       this.learningObject.collection !== 'plan c' &&
       this.learningObject.collection !== 'max_power' &&
       this.learningObject.collection !== 'Drafts' &&
+      this.learningObject.collection !== 'nccp' &&
       this.learningObject.collection !== ''
     ) {
       this.pictureLocation =
