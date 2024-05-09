@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service';
 import { GoogleTagService } from '../google-tag.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 @Component({
   selector: 'clark-splash',
@@ -11,12 +11,12 @@ export class SplashComponent implements OnInit {
   numReleasedObjects = 0; // default number of released objects before the service provides a new number
 
   constructor(
-    private usageStatsService: UsageStatsService,
+    private metricService: MetricService,
     public googleTagService: GoogleTagService
     ) { }
 
   ngOnInit(): void {
-    this.usageStatsService.getLearningObjectStats().then(stats => {
+    this.metricService.getLearningObjectStats().then(stats => {
       this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
     });
   }

@@ -511,7 +511,11 @@ export class LearningObjectService {
     return await this.http.patch(
       FILE_ROUTES.UPDATE_PDF(id),
       {},
-      { withCredentials: true, responseType: 'text' }
+      {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'text'
+      }
     )
       .pipe(
 
@@ -691,28 +695,6 @@ export class LearningObjectService {
   }
 
   /**
-   * Create an outcome for a source learning object
-   *
-   * @param {LearningObject} source the learningObject
-   * @param {LearningOutcome} outcome
-   * @param username The username of the learning object author
-   * @memberof LearningObjectService
-   */
-  addLearningOutcome(sourceId: string, outcome: LearningOutcome): Promise<any> {
-    return this.http
-      .post(
-        OUTCOME_ROUTES.CREATE_OUTCOME(sourceId),
-        outcome,
-        { headers: this.headers, withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
    * Checks if the user is submitting a learning object for the first time
    *
    * @param userId The learning object's author ID
@@ -721,15 +703,13 @@ export class LearningObjectService {
    * @param hasSubmission If the object has a submission [SET TO TRUE]
    * @memberof LearningObjectService
    */
-  getFirstSubmission(userId: string, learningObjectId: string, collection: string, hasSubmission: boolean) {
+  getFirstSubmission(learningObjectId: string, collection: string) {
     return this.http
       .get<{ isFirstSubmission: boolean }>(
         LEGACY_USER_ROUTES.CHECK_FIRST_SUBMISSION({
-          userId,
           learningObjectId,
           query: {
             collection,
-            hasSubmission
           }
         }),
         { withCredentials: true }

@@ -22,6 +22,7 @@ import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriev
 import { v4 as uuidv4 } from 'uuid';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
+import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -154,7 +155,8 @@ export class BuilderStore {
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
-    private submissionService: SubmissionsService
+    private submissionService: SubmissionsService,
+    private outcomeService: OutcomeService
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -1087,7 +1089,18 @@ export class BuilderStore {
    */
   private createLearningOutcome(newOutcome: LearningOutcome) {
     this.serviceInteraction$.next(true);
-    this.learningObjectService
+
+    // TODO: If the learning object id does not exist yet (i.e Basic Info not
+    // filled out yet) then don't try and create the learning outcome yet.
+    // This is a bug if the user refreshes once on the learning outcome tab
+
+    // If the outcome does not have a verb or outcome text then don't try
+    // and create the learning outcome yet.
+    if (!newOutcome.verb || !newOutcome.text) {
+      return;
+    }
+
+    this.outcomeService
       .addLearningOutcome(this.learningObject.id, newOutcome)
       .then((serviceId: string) => {
         this.serviceInteraction$.next(false);
@@ -1104,7 +1117,8 @@ export class BuilderStore {
         this.outcomeEvent.next(this.outcomes);
       })
       .catch(e => {
-        this.handleServiceError(e, BUILDER_ERRORS.CREATE_OUTCOME);
+        this.serviceInteraction$.next(null);
+        this.serviceError$.next(BUILDER_ERRORS.INCOMPLETE_OUTCOME);
       });
   }
 

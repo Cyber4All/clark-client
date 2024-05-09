@@ -61,7 +61,7 @@ export class AuthService {
     private encryptionService: EncryptionService
   ) {
     if (this.cookies.get('presence')) {
-      this.validateAndRefreshToken();
+      this.validateToken();
     }
   }
 
@@ -292,7 +292,7 @@ export class AuthService {
    * @returns {Promise<void>}
    * @memberof AuthService
    */
-  async validateAndRefreshToken(): Promise<void> {
+  async validateToken(): Promise<void> {
     try {
       const response = await this.http
         .get<AuthUser>(AUTH_ROUTES.DECODE_TOKEN(), {

@@ -22,15 +22,6 @@ export const LEGACY_ADMIN_ROUTES = {
 
 export const LEGACY_COLLECTIONS_ROUTES = {
     /**
-     * Request to retrieve the metrics of a collection
-     * @param abvName the abbreviated name of the collection
-     * @method GET
-     * @returns the metrics of the collection
-     */
-    GET_COLLECTION_METRICS(abvName: string) {
-        return `${environment.apiURL}/collections/${encodeURIComponent(abvName)}/metrics`;
-    },
-    /**
      * Request to get collection meta data
      * @method GET
      * @param name - The name of the collection
@@ -73,9 +64,6 @@ export const LEGACY_USER_ROUTES = {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
         )}/learning-objects/profile`;
-    },
-    SEARCH_USERS(query: any) {
-        return `${environment.apiURL}/users/search?${querystring.stringify(query)}`;
     },
     GET_MY_LEARNING_OBJECTS(
         username,
@@ -120,21 +108,13 @@ export const LEGACY_USER_ROUTES = {
         )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
     },
     CHECK_FIRST_SUBMISSION(params: {
-        userId: string;
         learningObjectId: string;
         query: {
             collection: string;
-            hasSubmission: boolean;
         };
     }) {
-        const q =
-            'collection=' +
-            params.query.collection +
-            '&hasSubmission=' +
-            params.query.hasSubmission;
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            params.userId,
-        )}/learning-objects/${params.learningObjectId}/submissions?${q}`;
+        const q = 'collection=' + params.query.collection;
+        return `/learning-objects/${params.learningObjectId}/submissions?${q}`;
     },
     GET_LEARNING_OBJECT(id) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
@@ -192,6 +172,13 @@ export const LEGACY_USER_ROUTES = {
 };
 
 export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
+    /**
+     * Request to get all learning object stats
+     * @method GET
+     */
+    GET_LEARNING_OBJECT_STATS() {
+        return `${environment.apiURL}/learning-objects/stats`;
+    },
     GET_PUBLIC_LEARNING_OBJECTS: `${environment.apiURL}/learning-objects`,
     GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
         return `${environment.apiURL}/learning-objects?${query}`;
@@ -220,13 +207,5 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
             params.username,
         )}/learning-objects/${params.loId}/files/${params.fileId}/download${params.open ? '?open=true' : ''
             }`;
-    },
-};
-
-export const LEGACY_FEATURED_ROUTES = {
-    // Get featured objects for a specific collection
-    GET_COLLECTION_FEATURED(collection: string) {
-        return `${environment.apiURL
-            }/featured/learning-objects?collection=${encodeURIComponent(collection)}`;
     },
 };

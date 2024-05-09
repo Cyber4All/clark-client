@@ -5,12 +5,8 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import {
-  LEGACY_FEATURED_ROUTES,
-  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-} from '../learning-object-module/learning-object/learning-object.routes';
 import { FEATURED_ROUTES } from './featured.routes';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
 import { Query } from 'app/interfaces/query';
 import * as querystring from 'querystring';
@@ -184,7 +180,7 @@ export class FeaturedObjectsService {
    */
   getCollectionFeatured(collection: string) {
     return this.http
-      .get(LEGACY_FEATURED_ROUTES.GET_COLLECTION_FEATURED(collection))
+      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collection))
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((response: any) => {
