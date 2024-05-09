@@ -21,7 +21,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { Router } from '@angular/router';
 import { HierarchyService } from '../../../core/learning-object-module/hierarchy/hierarchy.service';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
-import { 
+import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
 

@@ -7,11 +7,10 @@ import { catchError } from 'rxjs/operators';
 import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UnreleaseService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Deletes a revision of a learning object. This is designed to allow an editor to create a new
@@ -23,13 +22,11 @@ export class UnreleaseService {
    */
   deleteRevision(username: string, cuid: string, version: number) {
     return this.http
-      .delete(
-        REVISION_ROUTES.DELETE_REVISION(username, cuid, version),
-        { withCredentials: true, responseType: 'text' }
-      ).pipe(
-
-        catchError(this.handleError)
-      )
+      .delete(REVISION_ROUTES.DELETE_REVISION(cuid, version), {
+        withCredentials: true,
+        responseType: 'text',
+      })
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
