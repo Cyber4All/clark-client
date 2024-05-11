@@ -460,7 +460,6 @@ export class BuilderStore {
     if (event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
       await this.learningObjectService.toggleBundle(
-        this.auth.username,
         this.learningObject.id,
         fileIDs,
         event.state
@@ -468,7 +467,6 @@ export class BuilderStore {
     } else { // event.item is a File
       const fileID = [event.item.id];
       await this.learningObjectService.toggleBundle(
-        this.auth.username,
         this.learningObject.id,
         fileID,
         event.state
