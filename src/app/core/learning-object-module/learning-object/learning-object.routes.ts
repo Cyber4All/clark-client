@@ -10,6 +10,9 @@ export const LEARNING_OBJECT_ROUTES = {
     UPDATE_LEARNING_OBJECT_STATUS(learningObjectId) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/status`;
     },
+    CREATE_LEARNING_OBJECT() {
+        return `${environment.apiURL}/learning-objects`;
+    }
 };
 
 export const LEGACY_ADMIN_ROUTES = {
@@ -96,11 +99,6 @@ export const LEGACY_USER_ROUTES = {
         )}/learning-objects/${encodeURIComponent(
             learningObjectId,
         )}/revisions/${encodeURIComponent(revisionId)}`;
-    },
-    ADD_TO_MY_LEARNING_OBJECTS(username) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects`;
     },
     UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
         return `${environment.apiURL}/users/${encodeURIComponent(

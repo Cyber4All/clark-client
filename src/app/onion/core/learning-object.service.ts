@@ -17,7 +17,7 @@ import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes'
 import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-  LEGACY_ADMIN_ROUTES
+  LEARNING_OBJECT_ROUTES
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
@@ -90,8 +90,8 @@ export class LearningObjectService {
    * @returns {Promise<string>}
    * @memberof LearningObjectService
    */
-  create(learningObject, authorUsername: string): Promise<LearningObject> {
-    const route = LEGACY_USER_ROUTES.ADD_TO_MY_LEARNING_OBJECTS(authorUsername);
+  create(learningObject): Promise<LearningObject> {
+    const route = LEARNING_OBJECT_ROUTES.CREATE_LEARNING_OBJECT();
 
     return this.http
       .post(
