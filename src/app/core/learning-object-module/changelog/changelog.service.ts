@@ -22,7 +22,7 @@ export class ChangelogService {
    */
   createChangelog(userId: string, learningObjectCuid: string, changelog: string): Promise<{}> {
     return this.http
-      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(userId, learningObjectCuid), { changelogText: changelog }, { responseType: 'text' })
+      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(learningObjectCuid), { changelogText: changelog }, { responseType: 'text' })
       .pipe(
 
         catchError(this.handleError)
