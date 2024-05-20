@@ -45,7 +45,6 @@ export class ChangelogService {
   }): Promise<any> {
     return this.http
       .get(CHANGELOG_ROUTES.FETCH_CHANGELOGS({
-        userId: params.userId,
         learningObjectCuid: params.learningObjectCuid,
         minusRevision: params.minusRevision,
       }))
