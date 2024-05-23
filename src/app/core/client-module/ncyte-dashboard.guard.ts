@@ -13,7 +13,7 @@ export class NcyteDashboardGuard implements CanActivate {
     const c = this.cookies.get('presence');
 
     if (c) {
-      return this.auth.validateAndRefreshToken().then(val => {
+      return this.auth.validateToken().then(val => {
         return (
           this.auth.accessGroups.includes('curator@ncyte') ||
           this.auth.accessGroups.includes('admin') ||

@@ -2,14 +2,6 @@ import { environment } from '@env/environment';
 
 export const RATING_ROUTES = {
   /**
-   * Request to either get a rating by its ID or all ratings if no ID is provided in the body
-   * @method GET
-   * @returns ratings array
-   */
-  GET_RATINGS() {
-    return `${environment.apiURL}/ratings`;
-  },
-  /**
    * Request to get all ratings for a learning object
    * @param cuid cuid of learning object
    * @param version version of learning object
@@ -17,8 +9,9 @@ export const RATING_ROUTES = {
    * @returns ratings array
    */
   GET_LEARNING_OBJECT_RATINGS(cuid: string, version: number) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}/version/${encodeURIComponent(version.toString())}/ratings`;
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}/version/${encodeURIComponent(version)}/ratings`;
   },
+
   /**
    * Request to create a rating for a learning object
    * @param CUID cuid of learning object
@@ -27,8 +20,9 @@ export const RATING_ROUTES = {
    * @auth required
    */
   CREATE_RATING(cuid: string, version: number) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}/version/${encodeURIComponent(version.toString())}/ratings`;
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}/version/${encodeURIComponent(version)}/ratings`;
   },
+
   /**
    * Request to edit a rating for a learning object
    * @param cuid cuid of learning object
@@ -41,11 +35,12 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       cuid
     )}/version/${encodeURIComponent(
-      version.toString()
+      version
     )}/ratings/${encodeURIComponent(
       ratingId
     )}`;
   },
+
   /**
    * Request to delete a rating for a learning object
    * @param cuid cuid of learning object
@@ -58,7 +53,7 @@ export const RATING_ROUTES = {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       cuid
     )}/version/${encodeURIComponent(
-      version.toString()
+      version
     )}/ratings/${encodeURIComponent(
       ratingId
     )}`;

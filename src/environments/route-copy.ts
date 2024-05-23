@@ -242,11 +242,6 @@ export const USER_ROUTES = {
       learningObjectId
     )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
   },
-  CREATE_AN_OUTCOME(learningObjectId: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      learningObjectId
-    )}/learning-outcomes`;
-  },
   DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
     return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId

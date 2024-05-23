@@ -29,7 +29,7 @@ export class StatsComponent implements OnInit {
         break;
     }
 
-    await this.metricService.getCollectionMetricsData(this.collectionName).then((res: any) => {
+    await this.metricService.getCollectionMetrics(this.collectionName).then((res: any) => {
       this.objDownload = res.metrics.downloads;
       this.objSaved = res.metrics.saves;
       this.objReleased = res.metrics.statusMetrics[0].released;

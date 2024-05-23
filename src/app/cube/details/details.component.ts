@@ -8,23 +8,11 @@ import { Title } from '@angular/platform-browser';
 import { UserService } from 'app/core/user-module/user.service';
 import { RatingService } from 'app/core/rating-module/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
+import { ModalService } from 'app/shared/modules/modals/modal.module';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-export interface Rating {
-  id?: string;
-  user: User;
-  value: number;
-  comment: string;
-  date: number;
-  source?: {
-    cuid: string,
-    version: number,
-  };
-  response?: object;
-}
 @Component({
   selector: 'clark-details',
   templateUrl: './details.component.html',
@@ -67,7 +55,26 @@ export class DetailsComponent implements OnInit, OnDestroy {
   averageRatingValue = 0;
   showAddRating = false;
   showAddResponse = false;
-  ratings: Rating[] = [];
+
+  // Removed rating type to avoid conflict with the
+  // rating type from the backend
+  ratings: {
+    id?: string;
+    user: {
+      name: string;
+      username: string;
+      email: string;
+    };
+    value: number;
+    comment: string;
+    date: number;
+    source?: {
+      cuid: string,
+      version: number,
+    };
+    response?: object;
+  }[] = [];
+
   userRating: {
     user?: User;
     number?: number;
@@ -613,23 +620,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * If the service does not return any ratings, the UI resets to default rating values.
    */
   private async getLearningObjectRatings() {
-    this.learningObjectService.fetchLearningObjectResources(this.learningObject, ['ratings']).toPromise().then(({ name, data }) => {
+      const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
 
-      if (!data) {
+      if (!ratings) {
         this.resetRatings();
         return;
       }
 
-      this.ratings = data.ratings;
-      this.averageRatingValue = data.avgValue;
+      this.ratings = ratings.ratings;
+      this.averageRatingValue = ratings.avgValue;
 
       const u = this.auth.username;
       if (this.ratings && this.ratings.length) {
         for (let i = 0, l = this.ratings.length; i < l; i++) {
-          if (u === data.ratings[i].user.username) {
+          if (u === ratings[i].user.username) {
             // this is the user's rating
             // we deep copy this to prevent direct modification from component subtree
-            this.userRating = Object.assign({}, data.ratings[i]);
+            this.userRating = Object.assign({}, ratings[i]);
             // See if the user can add new rating or will have the option to edit their current rating
             if (this.userRating) {
               this.canAddNewRating = false;
@@ -640,8 +647,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
       // if we found the rating, we've returned from the function at this point
       this.userRating = {};
-    });
-  }
+  };
+
 
   /**
    * Returns a boolean whether or not the object is the owner's
