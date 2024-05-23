@@ -65,6 +65,7 @@ export class FeaturedObjectsService {
         }
         return featuredObjects;
       });
+
     const promisedObjectsArray = objects.map(
       async (learningObject: LearningObject) => {
         // Grabs the complete Learning Object from the LO database
@@ -87,6 +88,7 @@ export class FeaturedObjectsService {
         return object;
       },
     );
+
     // Resolves the array of Promises into an array of complete Learning Objects
     this.featuredStore.featured = await Promise.all(promisedObjectsArray).then(
       async (learningObject: LearningObject[]) => {
