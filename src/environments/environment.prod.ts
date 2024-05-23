@@ -14,7 +14,8 @@ export const environment = {
   cognitoRegion: 'us-east-1',
   cognitoIdentityPoolId: 'us-east-1:1ad4e60a-9773-4a67-92b5-6cc2c7b3328f',
   cognitoAdminIdentityPoolId: 'us-east-1:6691336e-11a1-48db-9774-5f5a2c8dc270',
-  cardOrganizationUrl: 'https://api-gateway.caeresource.directory/organizations?type=&verified=verified&mine=&sort='
+  cardOrganizationUrl: 'https://api-gateway.caeresource.directory/organizations?type=&verified=verified&mine=&sort=',
+  cardUrl: 'https://api-gateway.caeresource.directory',
 };
 
 export enum LearningObjectStatus {

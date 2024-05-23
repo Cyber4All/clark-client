@@ -35,6 +35,11 @@
             box-shadow: 0px 6px 12px -6px $homepage-light-blue;
         }
 
+        .card {
+            margin: 20px 0 0 15px;
+            background-color: $card-primary;
+        }
+
         button:hover {
             opacity: 80%;
         }

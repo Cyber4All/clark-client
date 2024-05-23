@@ -1,10 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { environment } from '@env/environment';
 import { Injectable } from '@angular/core';
 import { UTILITY_ROUTES } from './utility.routes';
 import { AuthService } from '../auth-module/auth.service';
 import { Observable, throwError } from 'rxjs';
 import { Blog } from 'app/components/blogs/types/blog';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,58 @@ export class UtilityService {
       } else {
         catchError(this.handleError);
       }
+    }
+  }
+
+  /**
+   * Gets all CARD resources
+   * @returns list of card resources
+   */
+  async getAllResources(args?: {
+    q?: string;
+    page?: number;
+    limit?: number;
+    sort?: 1 | -1;
+    sortType?: string;
+    category?: string[];
+    organizations?: string[];
+    status?: string[];
+  }): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(`${environment.cardUrl}/resources`, {})
+        .toPromise()
+        .then(
+          (res: any) => {
+            resolve(res);
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+    });
+  }
+
+  async getOrganizations(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(`${environment.cardUrl}/organizations`, {})
+        .toPromise()
+        .then(
+          (res: any) => {
+            resolve(res);
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+    });
+  }
+
+  public openCard() {
+    // Ask the user if they are sure they want to leave
+    if (confirm('You are now leaving CLARK. You will be redirected to the CAE Resource Directory.')) {
+      window.open('https://caeresource.directory', '_blank');
     }
   }
 

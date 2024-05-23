@@ -10,6 +10,7 @@
             align with curriculum guidelines and standards, or refine your current course, CLARK has free resources ready for you to use!
         </p>
         <button id="pageContent" (click)="this.googleTagService.triggerGoogleTagEvent('browse_learning_objects', 'homepageRedirect', 'splashBrowse')" [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
+        <button id="pageContent" class="card" [tip]="'You will be redirected to the CAE Resource Directory'" (click)="utilityService.openCard()">BROWSE {{ resourceCount | number }}+ RESOURCES</button>
     </div>
     <div class="second">
         <iframe 
@@ -22,4 +23,3 @@
         </iframe>
     </div>
 </div>
-

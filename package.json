@@ -1,11 +1,12 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "5.5.1",
+  "version": "5.6.9",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:prod": "ng serve --configuration=production",
     "build": "ng build",
     "build:prod": "ng build --configuration=production",
     "lint": "npx ng lint clark",

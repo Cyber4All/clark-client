@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { UsageStats, LearningObjectStats, UserMetrics } from '../shared/types/usage-stats';
 import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
-import { LearningObject } from '@entity';
+import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { LearningObjectService } from '../learning-object.service';
-import { MetricService } from 'app/core/metric-module/metric.service';
+import { MetricService } from '../../core/metric-module/metric.service'
+import { UtilityService } from '../../core/utility-module/utility.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -54,7 +55,6 @@ export class UsageStatsComponent implements OnInit {
   outcomeLearnMoreLink = 'https://cft.vanderbilt.edu/guides-sub-pages/blooms-taxonomy';
 
   lengthDistributionChart: PieChart;
-  lengthLearnMoreLink = 'http://about.clark.center/tutorial/#Uploading';
 
   counterStats: CounterStat[] = [];
 
@@ -69,9 +69,13 @@ export class UsageStatsComponent implements OnInit {
 
   loading: boolean;
 
-  constructor(private metricService: MetricService, private learningObjectService: LearningObjectService) {}
+  constructor(
+    private metricService: MetricService,
+    private learningObjectService: LearningObjectService,
+    private utilityService: UtilityService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
     this.metricService.getLearningObjectStats().then(stats => {
@@ -98,7 +102,11 @@ export class UsageStatsComponent implements OnInit {
 
     this.metricService.getUserMetrics().then(stats => {
       this.usageStats.users.accounts = stats.accounts;
-      this.usageStats.users.organizations = stats.organizations;
+      this.buildCounterStats();
+    });
+
+    await this.utilityService.getOrganizations().then(organizations => {
+      this.usageStats.users.organizations = organizations.length;
       this.buildCounterStats();
     });
   }
@@ -159,11 +167,11 @@ export class UsageStatsComponent implements OnInit {
       type: 'doughnut',
       labels: ['Universities', 'Community Colleges', 'K-12 (Schools)', 'Companies', 'Government'],
       data: [
-        248,
-        24,
-        30,
-        79,
-        22
+        498,
+        100,
+        159,
+        17,
+        117
       ],
       legend: true,
       options: {
