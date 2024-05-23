@@ -54,7 +54,6 @@ export class UserProfileComponent implements OnInit {
         // Await each learning object for a users profile
         const promises = collectionMeta.map(async (objectMeta) => {
           const params = {
-            author: undefined,
             cuid: objectMeta.cuid
           };
           // Return a promise for the current learning object

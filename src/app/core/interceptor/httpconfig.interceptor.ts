@@ -22,7 +22,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    console.log('intercepted request ... ');
     let headers = request.headers.set('Content-Type', 'application/json');
     if (
       !request.url.includes(environment.cardOrganizationUrl) &&
