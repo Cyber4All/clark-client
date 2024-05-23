@@ -89,16 +89,14 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   getLearningObject(
-    author: string,
     cuid: string,
     version?: number,
   ): Promise<LearningObject> {
-    const route =
-      LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
-        author,
-        cuid,
-        version,
-      );
+    const route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
+      cuid,
+      version
+    );
+
     return this.http
       .get(route)
       .pipe(catchError(this.handleError))
