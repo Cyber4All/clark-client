@@ -19,7 +19,8 @@ export class CollectionCardComponent implements OnInit {
       this.collection.abvName !== 'intro_to_cyber' &&
       this.collection.abvName !== 'secure_coding_community' &&
       this.collection.abvName !== 'plan c' &&
-      this.collection.abvName !== 'max_power'
+      this.collection.abvName !== 'max_power' &&
+      this.collection.abvName !== 'nccp'
     ) {
       this.pictureLocation =
         '/assets/images/collections/' +
