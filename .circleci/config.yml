@@ -10,7 +10,7 @@ workflows:
     jobs:
       - cyber4all/s3:
           context: [AWS, Slack]
-          bucket: "clark-staging-file-uploads"
+          bucket: "clark-client-staging"
           role-arn: S3_STAGING_OIDC_ROLE
 
   continuous-deployment:
