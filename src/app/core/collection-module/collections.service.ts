@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {
-  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEGACY_COLLECTIONS_ROUTES
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, skipWhile } from 'rxjs/operators';
-
-import { Query } from '../../interfaces/query';
-import { LearningObject } from '../../../entity/learning-object/learning-object';
-import * as querystring from 'querystring';
 import { COLLECTION_ROUTES } from './collections.routes';
 import { REPORT_ROUTES } from '../report-module/report.routes';
 
@@ -25,6 +20,7 @@ export interface Collection {
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
+  private headers: HttpHeaders = new HttpHeaders();
   darkMode502 = new BehaviorSubject<boolean>(true);
   constructor(private http: HttpClient) {
     this.getAllCollections();
@@ -152,7 +148,8 @@ export class CollectionService {
           {
             email,
             name
-          }
+          },
+          { headers: this.headers, withCredentials: true }
         )
         .pipe(
           catchError(this.handleError)

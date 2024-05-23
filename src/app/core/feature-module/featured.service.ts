@@ -72,7 +72,6 @@ export class FeaturedObjectsService {
         // For some reason, the method itself returns the full Learning Object,
         //    but when entered into the array it turns into a Promise.
         const object = await this.profileService.fetchLearningObject({
-          author: undefined,
           cuid: learningObject.cuid,
         });
         // Retrieve the outcomes for the learning object with the resource uri

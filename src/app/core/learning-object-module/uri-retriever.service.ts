@@ -207,8 +207,8 @@ export class UriRetrieverService {
   private setRoute(params: { cuidInfo?: { cuid: string, version?: number }, id?: string }) {
     let route;
     // Sets route to be hit based on if the id or if Learning Object name have been provided
-    if (params.id) {
-      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
+    if (params.cuidInfo?.cuid) {
+      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.cuidInfo.cuid);
     } else if (params.cuidInfo) {
       route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
     } else {

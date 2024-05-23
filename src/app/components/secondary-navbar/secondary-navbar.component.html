@@ -1,5 +1,21 @@
 <div class="secondary-navbar" *ngIf="isDesktop && showNav">
-    <div class="item browse" [routerLink]="['/browse']">Browse</div>
+    <div class="item browse" #browseAnchor (click)="dropdowns.toggleBrowseDropdown()" tabindex="0">Browse
+        <span *ngIf="!browseDropdown">
+            <i class="fa fa-chevron-down"></i>
+        </span>
+        <span *ngIf="browseDropdown">
+            <i class="fa fa-chevron-up"></i>
+        </span>
+    </div>
+    <clark-context-menu class="dropdown" *ngIf="browseDropdown" [anchor]="browseAnchor"
+        (close)="dropdowns.closeAll()">
+        <div #contextMenu>
+            <ul>
+                <li [routerLink]="'/browse'">Browse Curriculum</li>
+                <li (click)="utilityService.openCard()">Browse Resources</li>
+            </ul>
+        </div>
+    </clark-context-menu>
     <div class="item about-us" [routerLink]="['/about']">About CLARK</div>
     <div class="item collections" id="collectionsAnchor" #collectionsAnchor
         (click)="dropdowns.toggleCollectionDropdown()" tabindex="0">Collections
