@@ -5,7 +5,7 @@ import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { LearningObjectService } from '../learning-object.service';
-import { MetricService } from '../../core/metric-module/metric.service'
+import { MetricService } from '../../core/metric-module/metric.service';
 import { UtilityService } from '../../core/utility-module/utility.service';
 
 // This variable is used to decided whether or not percentages should be rendered.

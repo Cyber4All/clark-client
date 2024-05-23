@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GoogleTagService } from '../google-tag.service';
-import { MetricService } from '../../../core/metric-module/metric.service'
+import { MetricService } from '../../../core/metric-module/metric.service';
 import { UtilityService } from '../../../core/utility-module/utility.service';
 
 @Component({
