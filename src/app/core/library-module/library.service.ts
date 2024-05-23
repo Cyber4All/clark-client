@@ -46,8 +46,8 @@ export class LibraryService {
     }
 
     const query = new URLSearchParams({
-      page: page ? page.toString() : "1",
-      limit: limit ? limit.toString() : "10",
+      page: page ? page.toString() : '1',
+      limit: limit ? limit.toString() : '10',
     });
 
     return await this.http
