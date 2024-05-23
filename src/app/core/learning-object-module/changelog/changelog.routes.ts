@@ -8,10 +8,8 @@ export const CHANGELOG_ROUTES = {
      * @param userId - The id of the learning object author
      * @param learningObjectCuid - The cuid of the learning object
      */
-    CREATE_CHANGELOG(userId: string, learningObjectCuid: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            userId
-        )}/learning-objects/${encodeURIComponent(
+    CREATE_CHANGELOG(learningObjectCuid: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
             learningObjectCuid
         )}/changelog`;
     },
@@ -19,13 +17,10 @@ export const CHANGELOG_ROUTES = {
      * Request to get changelogs for a given Learning Object
      * @method GET
      * @auth required
-     * @param userId - The id of the Learning Object author
      * @param learningObjectId - The id of the Learning Object
      */
-    FETCH_CHANGELOGS(params: { userId: string, learningObjectCuid: string, minusRevision?: boolean }) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            params.userId
-        )}/learning-objects/${encodeURIComponent(
+    FETCH_CHANGELOGS(params: {learningObjectCuid: string, minusRevision?: boolean }) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
             params.learningObjectCuid
         )}/changelogs?minusRevision=${encodeURIComponent(
             params.minusRevision
