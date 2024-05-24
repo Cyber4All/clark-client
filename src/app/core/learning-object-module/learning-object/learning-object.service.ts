@@ -119,7 +119,7 @@ export class LearningObjectService {
         resourceUris[key] = object.resourceUris[key];
       });
     } else {
-      console.log('FIX ME: No resourceUris found for learning object')
+      console.log('FIX ME: No resourceUris found for learning object');
     }
 
     return merge(...Object.entries(resourceUris).map(([name, uri]) => {

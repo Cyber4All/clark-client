@@ -222,12 +222,12 @@ export class RatingService {
             // Map the _id to id
             const mappedRating = ({ ...rating, id: rating._id});
             delete mappedRating._id;
-  
+
             return mappedRating;
           });
           return { avgValue: learningObjectRatings.avgValue, ratings };
         } else {
-          console.log("FIX ME: No ratings found for learning object")
+          console.log('FIX ME: No ratings found for learning object');
         }
       });
   }
