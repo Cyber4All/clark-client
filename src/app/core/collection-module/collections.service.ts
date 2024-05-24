@@ -48,31 +48,30 @@ export class CollectionService {
    */
   async getAllCollections() {
     this.collections = await this.http
-      .get(
-        COLLECTION_ROUTES.GET_ALL_COLLECTIONS(),
-        { withCredentials: true }
-      )
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then(async (collections: Collection[]) => {
-        for (const c of collections) {
-          c.hasLogo = false;
+    .get<Collection[]>(
+      COLLECTION_ROUTES.GET_ALL_COLLECTIONS(),
+      { withCredentials: true }
+    )
+    .pipe(
+      catchError(this.handleError)
+    )
+    .toPromise()
+    .then(async (collections: Collection[]) => {
+      for (const c of collections) {
+        c.hasLogo = false;
 
-          try {
-            await this.http.head('../../assets/images/collections/' + c.abvName + '.png')
-              .toPromise()
-              .then(() => {
-                c.hasLogo = true;
-              });
-          } catch (error) {
-            console.log(error);
-            // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
-          }
+        try {
+          await this.http.head('../../assets/images/collections/' + c.abvName + '.png')
+            .toPromise()
+            .then(() => {
+              c.hasLogo = true;
+            });
+        } catch (error) {
+          // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
         }
-        return collections;
-      });
+      }
+      return collections;
+    });
     this.loading$.next(false);
   }
 

@@ -114,9 +114,13 @@ export class LearningObjectService {
 
   fetchLearningObjectResources(object: LearningObject, resources: string[]): Observable<{ name: string, data: any }> {
     const resourceUris: { [key: string]: string } = {};
-    Object.keys(object.resourceUris).filter(x => resources.includes(x)).map(key => {
-      resourceUris[key] = object.resourceUris[key];
-    });
+    if (object.resourceUris !== undefined) {
+      Object.keys(object.resourceUris).filter(x => resources.includes(x)).map(key => {
+        resourceUris[key] = object.resourceUris[key];
+      });
+    } else {
+      console.log('FIX ME: No resourceUris found for learning object')
+    }
 
     return merge(...Object.entries(resourceUris).map(([name, uri]) => {
       return this.fetchUri(uri, CALLBACKS[name]).pipe(

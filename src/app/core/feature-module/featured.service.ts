@@ -74,16 +74,20 @@ export class FeaturedObjectsService {
         const object = await this.profileService.fetchLearningObject({
           cuid: learningObject.cuid,
         });
-        // Retrieve the outcomes for the learning object with the resource uri
-        const outcomePromise: any = await this.http
-          .get(object.resourceUris.outcomes)
-          .toPromise();
-        // Resolve outcome promises
-        object.outcomes = await Promise.all(outcomePromise).then(
-          async (outcome: any) => {
-            return outcome;
-          },
-        );
+        if (object.resourceUris?.outcomes) {
+          // Retrieve the outcomes for the learning object with the resource uri
+          const outcomePromise: any = await this.http
+            .get(object.resourceUris.outcomes)
+            .toPromise();
+          // Resolve outcome promises
+          object.outcomes = await Promise.all(outcomePromise).then(
+            async (outcome: any) => {
+              return outcome;
+            },
+          );
+        } else {
+          console.log('FIX ME: No outcomes found for learning object');
+        }
         return object;
       },
     );
