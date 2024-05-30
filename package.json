@@ -10,7 +10,8 @@
     "build": "ng build",
     "lint": "npx ng lint clark",
     "storybook": "start-storybook",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "npx cypress open"
   },
   "@comment dependencies": [
     "DO NOT UPDATE ng2-ckeditor",
