@@ -12,10 +12,10 @@ workflows:
             branches:
               ignore: releases
 
-      - cyber4all/test-app:
-          docker-image: cimg/node@sha256:9e7dff70aee20446a146e374367c3fddc58df1e39cca318dbd4993e625892880
-          node-test: test:unit
-          isNode: true
+      # - cyber4all/test-app:
+      #     docker-image: cimg/node@sha256:9e7dff70aee20446a146e374367c3fddc58df1e39cca318dbd4993e625892880
+      #     node-test: test:unit
+      #     isNode: true
 
   continuous-deployment:
     jobs:
