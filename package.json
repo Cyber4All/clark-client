@@ -8,11 +8,10 @@
     "start": "ng serve",
     "start:prod": "ng serve --configuration=production",
     "build": "ng build",
-    "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
     "lint": "npx ng lint clark",
-    "e2e": "ng e2e",
     "storybook": "start-storybook",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "npx cypress open"
   },
   "@comment dependencies": [
     "DO NOT UPDATE ng2-ckeditor",
@@ -72,6 +71,7 @@
     "canvas": "^2.9.1",
     "chart.js": "^2.9.4",
     "chrome-launcher": "^0.13.4",
+    "cypress": "^13.8.1",
     "eslint": "^7.26.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "^37.6.1",
@@ -90,7 +90,6 @@
     "singleQuote": true
   },
   "engines": {
-    "node": ">=v16.13.2 <17",
     "npm": ">=8"
   }
 }
