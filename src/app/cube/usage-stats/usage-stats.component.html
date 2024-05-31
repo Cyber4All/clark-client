@@ -8,11 +8,11 @@
   <div class="charts top">
     <cube-distribution-chart [ariaLabel]="outcomeDistributionChartAria" class="chart" [chart]="outcomeDistributionChart" [moreInfoLink]="outcomeLearnMoreLink"
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
-    <cube-distribution-chart [ariaLabel]="lengthBreakdownChartAria" class="chart" [chart]="lengthDistributionChart" [moreInfoLink]="lengthLearnMoreLink"
+    <cube-distribution-chart [ariaLabel]="lengthBreakdownChartAria" class="chart" [chart]="lengthDistributionChart"
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
   </div>
   <div class="charts bottom">
-    <cube-distribution-chart [ariaLabel]="organizationBreakdownChartAria" class="chart" [chart]="organizationBreakdownChart" 
+    <cube-distribution-chart [ariaLabel]="organizationBreakdownChartAria" class="chart" [chart]="organizationBreakdownChart"
       (chartNotHovered)="handleChartNotHovered()"></cube-distribution-chart>
     <clark-top-downloads [learningObjects]="learningObjects" [loading]="loading"></clark-top-downloads>
   </div>

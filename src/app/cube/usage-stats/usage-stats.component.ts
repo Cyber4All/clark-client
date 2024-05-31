@@ -55,7 +55,6 @@ export class UsageStatsComponent implements OnInit {
   outcomeLearnMoreLink = 'https://cft.vanderbilt.edu/guides-sub-pages/blooms-taxonomy';
 
   lengthDistributionChart: PieChart;
-  lengthLearnMoreLink = 'http://about.clark.center/tutorial/#Uploading';
 
   counterStats: CounterStat[] = [];
 
