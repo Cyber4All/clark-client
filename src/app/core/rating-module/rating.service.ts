@@ -213,8 +213,11 @@ export class RatingService {
       )
       .pipe(
         catchError(this.handleError),
-        filter(rating => rating != null),
-        map((learningObjectRatings: LearningObjectRatings) => {
+        filter(rating => rating != null)
+      )
+      .toPromise()
+      .then((learningObjectRatings: LearningObjectRatings) => {
+        if (learningObjectRatings.ratings) {
           const ratings = learningObjectRatings.ratings.map((rating: Rating) => {
             // Map the _id to id
             const mappedRating = ({ ...rating, id: rating._id});
@@ -223,9 +226,10 @@ export class RatingService {
             return mappedRating;
           });
           return { avgValue: learningObjectRatings.avgValue, ratings };
-        })
-      )
-      .toPromise();
+        } else {
+          console.log('FIX ME: No ratings found for learning object');
+        }
+      });
   }
 
   /**

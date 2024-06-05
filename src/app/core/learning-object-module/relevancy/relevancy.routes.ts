@@ -15,16 +15,13 @@ export const RELEVANCY_ROUTES = {
     },
     /**
      * Request to update the curricular guidelines of a learning object
-     * @param username - The username of the author of the learning object
      * @param id - The id of the learning object to update
      * @param outcomeId - The id of the learning outcome to update
      * @auth required
      * @method PATCH
      */
-    UPDATE_MAPPING(username: string, id: string, outcomeId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(id)}/learning-outcomes/${encodeURIComponent(
+    UPDATE_MAPPING(id: string, outcomeId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/learning-outcomes/${encodeURIComponent(
             outcomeId
         )}/guidelines`;
     },

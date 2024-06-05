@@ -54,6 +54,10 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
 
     this.pictureLocation = '../../../assets/images/collections/' + this.collection.abvName + '.png';
 
+    if (this.collection.abvName === 'nccp') {
+      this.resetPictureLocation();
+    }
+
     if (this.collection.abvName === 'plan c') {
       this.showContribute = true;
     }

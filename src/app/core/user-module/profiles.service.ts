@@ -16,14 +16,13 @@ export class ProfileService {
   /**
    * Function to retrieve a learning object
    *
-   * @param params author is undefined - cuid is the current object cuid
+   * @param params cuid is the current object cuid
    * @returns a learning object with specified cuid
    */
-  fetchLearningObject(params: { author: string; cuid: string }): Promise<any> {
+  fetchLearningObject(params: { cuid: string }): Promise<any> {
     return this.http
       .get(
         LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
-          params.author,
           params.cuid
         ),
         {

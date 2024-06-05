@@ -10,6 +10,9 @@ export const LEARNING_OBJECT_ROUTES = {
     UPDATE_LEARNING_OBJECT_STATUS(learningObjectId) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/status`;
     },
+    CREATE_LEARNING_OBJECT() {
+        return `${environment.apiURL}/learning-objects`;
+    }
 };
 
 export const LEGACY_ADMIN_ROUTES = {
@@ -97,11 +100,6 @@ export const LEGACY_USER_ROUTES = {
             learningObjectId,
         )}/revisions/${encodeURIComponent(revisionId)}`;
     },
-    ADD_TO_MY_LEARNING_OBJECTS(username) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects`;
-    },
     UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
@@ -183,10 +181,8 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
     GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
         return `${environment.apiURL}/learning-objects?${query}`;
     },
-    GET_PUBLIC_LEARNING_OBJECT(author: string, cuid: string, version?: number) {
-        let uri = `${environment.apiURL}/users/${encodeURIComponent(
-            author,
-        )}/learning-objects/${encodeURIComponent(cuid)}`;
+    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version?: number) {
+        let uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}`;
 
         if (version !== undefined) {
             uri += '?version=' + version.toString();

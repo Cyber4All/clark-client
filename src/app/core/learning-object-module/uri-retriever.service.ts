@@ -204,13 +204,16 @@ export class UriRetrieverService {
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
-  private setRoute(params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string }) {
+  private setRoute(params: { cuidInfo?: { cuid: string, version?: number }, id?: string }) {
     let route;
-    // Sets route to be hit based on if the id or if author and Learning Object name have been provided
-    if (params.id) {
+    // Sets route to be hit based on if the id or if Learning Object name have been provided
+    if (params.cuidInfo?.cuid) {
+      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.cuidInfo.cuid);
+    } else if (params.cuidInfo) {
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
+    } else if (params.id) {
+      // TODO: Update this to use CUID only.
       route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
-    } else if (params.author && params.cuidInfo) {
-      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);
       throw err;

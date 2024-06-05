@@ -197,7 +197,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
    checkAccessGroups(): boolean {
     if(this.accessGroups && this.accessGroups.length > 0) {
-      return this.inBuilder && (this.accessGroups.includes('admin') || this.accessGroups.includes('curator'));
+      return this.inBuilder && (this.accessGroups.includes('admin') || this.accessGroups.includes('editor'));
     }
     return false;
   }

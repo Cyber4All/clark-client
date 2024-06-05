@@ -1,15 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import {
-  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEGACY_COLLECTIONS_ROUTES
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, skipWhile } from 'rxjs/operators';
-
-import { Query } from '../../interfaces/query';
-import { LearningObject } from '../../../entity/learning-object/learning-object';
-import * as querystring from 'querystring';
 import { COLLECTION_ROUTES } from './collections.routes';
 import { REPORT_ROUTES } from '../report-module/report.routes';
 
@@ -25,6 +20,7 @@ export interface Collection {
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
+  private headers: HttpHeaders = new HttpHeaders();
   darkMode502 = new BehaviorSubject<boolean>(true);
   constructor(private http: HttpClient) {
     this.getAllCollections();
@@ -52,31 +48,30 @@ export class CollectionService {
    */
   async getAllCollections() {
     this.collections = await this.http
-      .get(
-        COLLECTION_ROUTES.GET_ALL_COLLECTIONS(),
-        { withCredentials: true }
-      )
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then(async (collections: Collection[]) => {
-        for (const c of collections) {
-          c.hasLogo = false;
+    .get<Collection[]>(
+      COLLECTION_ROUTES.GET_ALL_COLLECTIONS(),
+      { withCredentials: true }
+    )
+    .pipe(
+      catchError(this.handleError)
+    )
+    .toPromise()
+    .then(async (collections: Collection[]) => {
+      for (const c of collections) {
+        c.hasLogo = false;
 
-          try {
-            await this.http.head('../../assets/images/collections/' + c.abvName + '.png')
-              .toPromise()
-              .then(() => {
-                c.hasLogo = true;
-              });
-          } catch (error) {
-            console.log(error);
-            // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
-          }
+        try {
+          await this.http.head('../../assets/images/collections/' + c.abvName + '.png')
+            .toPromise()
+            .then(() => {
+              c.hasLogo = true;
+            });
+        } catch (error) {
+          // the image doesn't exist, we don't need to do anything here since this is an expected error in many cases
         }
-        return collections;
-      });
+      }
+      return collections;
+    });
     this.loading$.next(false);
   }
 
@@ -152,7 +147,8 @@ export class CollectionService {
           {
             email,
             name
-          }
+          },
+          { headers: this.headers, withCredentials: true }
         )
         .pipe(
           catchError(this.handleError)

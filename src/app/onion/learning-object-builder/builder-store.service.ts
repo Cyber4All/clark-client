@@ -973,7 +973,7 @@ export class BuilderStore {
     this.serviceInteraction$.next(true);
     object.status = LearningObject.Status.UNRELEASED;
     this.learningObjectService
-      .create(object, this.auth.username)
+      .create(object)
       .then(learningObject => {
         this.learningObject = learningObject;
         this.serviceInteraction$.next(false);

@@ -50,7 +50,7 @@ export class LearningObjectService {
 
 
   fetchLearningObject(
-    params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
+    params: { cuidInfo?: { cuid: string, version?: number }, id?: string },
   ): Observable<LearningObject | HttpErrorResponse> {
     const route = this.buildRoute(params);
     return this.http.get(route).pipe(
@@ -114,9 +114,13 @@ export class LearningObjectService {
 
   fetchLearningObjectResources(object: LearningObject, resources: string[]): Observable<{ name: string, data: any }> {
     const resourceUris: { [key: string]: string } = {};
-    Object.keys(object.resourceUris).filter(x => resources.includes(x)).map(key => {
-      resourceUris[key] = object.resourceUris[key];
-    });
+    if (object.resourceUris !== undefined) {
+      Object.keys(object.resourceUris).filter(x => resources.includes(x)).map(key => {
+        resourceUris[key] = object.resourceUris[key];
+      });
+    } else {
+      console.log('FIX ME: No resourceUris found for learning object');
+    }
 
     return merge(...Object.entries(resourceUris).map(([name, uri]) => {
       return this.fetchUri(uri, CALLBACKS[name]).pipe(
@@ -179,13 +183,13 @@ export class LearningObjectService {
    * @param params includes either the author and Learning Object name or the id to set the route needed
    * to retrieve the Learning Object
    */
-  private buildRoute(params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string }) {
+  private buildRoute(params: { cuidInfo?: { cuid: string, version?: number }, id?: string }) {
     let route;
     // Sets route to be hit based on if the id or if author and Learning Object name have been provided
     if (params.id) {
       route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
-    } else if (params.author && params.cuidInfo) {
-      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.author, params.cuidInfo.cuid, params.cuidInfo.version);
+    } else if (params.cuidInfo) {
+      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);
       throw err;

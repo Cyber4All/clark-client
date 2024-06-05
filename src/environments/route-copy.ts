@@ -372,15 +372,6 @@ export const PUBLIC_LEARNING_OBJECT_ROUTES = {
   GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
     return `${environment.apiURL}/learning-objects?${query}`;
   },
-  GET_PUBLIC_LEARNING_OBJECT(author: string, cuid: string, version?: number) {
-    let uri = `${environment.apiURL}/users/${encodeURIComponent(author)}/learning-objects/${encodeURIComponent(cuid)}`;
-
-    if (version !== undefined) {
-      uri += '?version=' + version.toString();
-    }
-
-    return uri;
-  },
   GET_COLLECTION_META(name: string) {
     return `${environment.apiURL}/collections/${encodeURIComponent(name)}/meta`;
   },
@@ -558,10 +549,14 @@ export const RELEVANCY_ROUTES = {
     return `${environment.apiURL}/topics`;
   },
   PATCH_OBJECT_TOPICS(username: string, id: string) {
-    return `${environment.apiURL}/users/${username}/learning-objects/${id}/topics`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(id)}/topics`;
   },
   PATCH_OBJECT_OUTCOME_MAPPINGS(username: string, objectId: string, outcomeId: string) {
-    return `${environment.apiURL}/users/${username}/learning-objects/${objectId}/learning-outcomes/${outcomeId}/guidelines`;
+    return `${environment.apiURL}/users/${encodeURIComponent(
+      username
+    )}/learning-objects/${objectId}/learning-outcomes/${encodeURIComponent(
+      outcomeId
+    )}/guidelines`;
   },
 };
 
