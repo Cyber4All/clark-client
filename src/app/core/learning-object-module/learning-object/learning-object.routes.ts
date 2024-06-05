@@ -167,7 +167,7 @@ export const LEGACY_USER_ROUTES = {
             username,
         )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
     },
-    REMOVE_CHILD(childObjectId: string, learningObjectId: string) {
+    REMOVE_CHILD(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
     },
 };
