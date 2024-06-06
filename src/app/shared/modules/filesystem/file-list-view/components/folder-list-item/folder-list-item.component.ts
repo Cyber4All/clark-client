@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Component({
   selector: 'clark-folder-list-item',

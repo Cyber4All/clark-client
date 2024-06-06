@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Collection, CollectionService } from 'app/core/collection.service';
+import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
 import { CollectionService as AdminCollectionService } from 'app/admin/core/collection.service';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';

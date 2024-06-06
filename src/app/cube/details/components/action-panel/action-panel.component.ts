@@ -1,23 +1,25 @@
-import { Component,
-        ElementRef,
-        HostListener,
-        Input, OnDestroy,
-        OnInit,
-        Renderer2,
-        ViewChild,
-        ChangeDetectionStrategy,
-        ChangeDetectorRef} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input, OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
+} from '@angular/core';
 import { LearningObject } from '@entity';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
-import { LibraryService } from 'app/core/library.service';
+import { LibraryService } from 'app/core/library-module/library.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { Router } from '@angular/router';
 import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
-import { NavbarDropdownService } from '../../../../../app/core/navBarDropdown.service';
+import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -102,15 +104,15 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         this.downloading = (val);
         this.changeDetectorRef.markForCheck();
       });
-      this.dropdowns.userDropdown.subscribe(val => {
-        this.userDropdown = val;
-      });
+    this.dropdowns.userDropdown.subscribe(val => {
+      this.userDropdown = val;
+    });
   }
 
   get mapAndTag() {
     if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor) {
       const privileges = ['admin', 'editor', 'mapper', 'curator', 'reviewer'];
-      if(this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
+      if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
         return true;
       }
     }
@@ -144,7 +146,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
         if (!this.saved) {
           try {
-            await this.libraryService.addToLibrary(this.learningObject.author.username, this.learningObject);
+            await this.libraryService.addToLibrary(this.learningObject.cuid, this.learningObject.version);
           } catch (e) {
             if (e.status === 201) {
               this.toaster.success('Successfully Added!', 'Learning Object added to your library');
@@ -232,7 +234,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         FB.ui({
           method: 'share',
           href: this.url,
-        }, function(response) { });
+        }, (response) => { });
         break;
       case 'twitter':
         const text = 'Check out this learning object on CLARK! ClarkCan';
@@ -273,7 +275,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   removeFromLibrary() {
-    this.libraryService.removeFromLibrary(this.learningObject.cuid);
+    this.libraryService.removeFromLibrary(this.learningObject.id);
   }
 
   private buildLocation(encoded?: boolean) {
@@ -307,7 +309,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   public async sendEmailVerification() {
     try {
-      await this.auth.validateAndRefreshToken();
+      await this.auth.validateToken();
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();
@@ -316,7 +318,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
           `Email sent to ${this.auth.user.email}.
             Please check your inbox and spam.
             If you don't receive an email within 15 minutes reach out to info@secured.team.`
-          );
+        );
       }
     } catch (e) {
       this.toaster.error(`Could not send email`, `${e}`);

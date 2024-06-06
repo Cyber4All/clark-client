@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "5.6.8",
+  "version": "5.6.10",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -10,7 +10,10 @@
     "build": "ng build",
     "build:staging": "ng build --configuration=staging",
     "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
+    "build:prod": "ng build --configuration=production",
     "lint": "npx ng lint clark",
+    "lint:fix": "npx ng lint clark --fix",
+    "prettier": "prettier --check .",
     "e2e": "ng e2e",
     "storybook": "start-storybook",
     "prepare": "husky install"
@@ -81,6 +84,7 @@
     "jasmine-spec-reporter": "~5.0.0",
     "jest": "^27.4.7",
     "jest-preset-angular": "^11.0.1",
+    "prettier": "^3.1.1",
     "protractor": "~7.0.0",
     "sass": "^1.46.0",
     "ts-jest": "^27.1.3",

@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
-import { UsageStats, LearningObjectStats, UserStats } from '../shared/types/usage-stats';
+import { UsageStats, LearningObjectStats, UserMetrics } from '../shared/types/usage-stats';
 import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
-import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
-import { LearningObject } from '@entity';
+import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { LearningObjectService } from '../learning-object.service';
-import { UtilityService } from 'app/core/utility.service';
+import { MetricService } from '../../core/metric-module/metric.service';
+import { UtilityService } from '../../core/utility-module/utility.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -59,7 +59,7 @@ export class UsageStatsComponent implements OnInit {
   counterStats: CounterStat[] = [];
 
   objectStats: LearningObjectStats;
-  userStats: UserStats;
+  userStats: UserMetrics;
 
   outcomeDistributionChartAria: string;
   organizationBreakdownChartAria: string;
@@ -70,7 +70,7 @@ export class UsageStatsComponent implements OnInit {
   loading: boolean;
 
   constructor(
-    private statsService: UsageStatsService,
+    private metricService: MetricService,
     private learningObjectService: LearningObjectService,
     private utilityService: UtilityService
   ) {}
@@ -78,7 +78,7 @@ export class UsageStatsComponent implements OnInit {
   async ngOnInit() {
     this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
-    this.statsService.getLearningObjectStats().then(stats => {
+    this.metricService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
       this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
@@ -100,7 +100,7 @@ export class UsageStatsComponent implements OnInit {
       this.buildTopDownloads();
     });
 
-    this.statsService.getUserStats().then(stats => {
+    this.metricService.getUserMetrics().then(stats => {
       this.usageStats.users.accounts = stats.accounts;
       this.buildCounterStats();
     });

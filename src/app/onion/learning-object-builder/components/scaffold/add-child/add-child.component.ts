@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 

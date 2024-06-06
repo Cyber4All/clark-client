@@ -1,32 +1,26 @@
 version: 2.1
 
 orbs:
-  cyber4all: cyber4all/orb@1
+  cyber4all: cyber4all/orb@2.1.1
 
 workflows:
-  integration-testing:
+  deploy-clark-service-refactor:
+    when:
+        equal: [clark-service-refactor, <<pipeline.git.branch>>]
     jobs:
-      - cyber4all/deploy-s3:
-          deploy: false # explicitly shows in develeopment
-          filters:
-            branches:
-              ignore: releases
-
-      - cyber4all/test-app:
-          docker-image: cimg/node@sha256:9e7dff70aee20446a146e374367c3fddc58df1e39cca318dbd4993e625892880
-          node-test: test:unit
-          isNode: true
+      - cyber4all/s3:
+          context: [AWS, Slack]
+          bucket: "clark-client-staging"
+          role-arn: S3_STAGING_OIDC_ROLE
 
   continuous-deployment:
+    when:
+        equal: [releases, <<pipeline.git.branch>>]
     jobs:
-      - cyber4all/deploy-s3:
-          context:
-            [AWS, Slack]
-          tag: $(cat ./package.json | grep version | head -1 | awk -F= "{ print $2 }" | sed 's/[version:,\",]//g' | tr -d '[[:space:]]')
-          deploy: true
-          source: dist
-          isAngular: true
-          filters:
-            branches:
-              only:
-                - releases
+      - cyber4all/s3:
+          context: [AWS, Slack]
+          bucket: "clark-prod-file-uploads"
+      
+      - cyber4all/release:
+          context: [Github]
+          tag: $(jq -r '.version' package.json)

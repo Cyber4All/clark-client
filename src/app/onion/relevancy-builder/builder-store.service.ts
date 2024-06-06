@@ -7,8 +7,8 @@ import {
 } from '@entity';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { UriRetrieverService } from 'app/core/uri-retriever.service';
-import { RelevancyService } from 'app/core/relevancy.service';
+import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 /**
@@ -18,7 +18,9 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
  * @export
  * @class BuilderStore
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomes: LearningOutcome[];
@@ -33,7 +35,7 @@ export class BuilderStore {
     private relevancyService: RelevancyService,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
-  ) {}
+  ) { }
 
   get learningObject() {
     return this._learningObject;
@@ -49,7 +51,7 @@ export class BuilderStore {
 
   get activeGuidelines(): string[] {
     const outcome = this._outcomes.find(o => o.id === this._activeOutcome);
-    return (outcome && outcome.mappings) ? outcome.mappings.map( obj => obj.guidelineId ) : [];
+    return (outcome && outcome.mappings) ? outcome.mappings.map(obj => obj.guidelineId) : [];
   }
 
   public active(id: string) {
@@ -69,7 +71,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   fetch(id: string): Promise<LearningObject> {
-    return this.uriRetriever.getLearningObject({id}, ['outcomes']).toPromise().then(object => {
+    return this.uriRetriever.getLearningObject({ id }, ['outcomes']).toPromise().then(object => {
       this._learningObject = object;
       this._outcomes = this._learningObject.outcomes;
       this._topics = this._learningObject.topics || [];
@@ -133,10 +135,9 @@ export class BuilderStore {
    */
   async save() {
     try {
-      await this.relevancyService.updateObjectTopics(this._learningObject.author.username, this._learningObject.id, this._topics);
+      await this.relevancyService.updateObjectTopics(this._learningObject.id, this._topics);
       for (let i = 0; i < this.outcomes.length; i++) {
         await this.relevancyService.updateLearningOutcomeMappings(
-          this._learningObject.author.username,
           this._learningObject.id,
           this.outcomes[i].id,
           this.outcomes[i].mappings.map(g => g.guidelineId)

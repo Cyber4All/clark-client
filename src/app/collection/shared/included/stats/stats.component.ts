@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CollectionService } from 'app/core/collection.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 
 @Component({
@@ -11,7 +11,7 @@ export class StatsComponent implements OnInit {
   @Input() collectionName: string;
   name: string;
 
-  constructor(private collectionService: CollectionService) {}
+  constructor(private metricService: MetricService) { }
 
   objDownload: number;
   objReview: number;
@@ -19,7 +19,7 @@ export class StatsComponent implements OnInit {
   authorCollection: number;
 
   ngOnInit(): void {
-    this.collectionService.getCollectionMetricsData(this.collectionName).then((res: any ) => {
+    this.metricService.getCollectionMetrics(this.collectionName).then((res: any) => {
       this.objDownload = res.metrics.downloads;
       this.objReleased = res.metrics.statusMetrics[0].released;
       const num = res.metrics.statusMetrics[0].waiting + res.metrics.statusMetrics[0].peerReview + res.metrics.statusMetrics[0].proofing;

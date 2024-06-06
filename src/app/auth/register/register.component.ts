@@ -2,20 +2,20 @@ import { trigger, transition, style, animate, query, stagger, keyframes } from '
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthValidationService } from 'app/core/auth-validation.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Organization } from 'entity/organization';
-import { OrganizationService } from 'app/core/organization.service';
+import { OrganizationService } from 'app/core/utility-module/organization.service';
 import { Subject, interval } from 'rxjs';
 import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
-import { environment } from '@env/environment';
-import { CookieAgreementService } from 'app/core/cookie-agreement.service';
-import { UserService } from 'app/core/user.service';
+import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 
 const EMAIL_REGEX =
-// eslint-disable-next-line max-len
-/(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
+  // eslint-disable-next-line max-len
+  /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
 
 @Component({
   selector: 'clark-register',
@@ -59,9 +59,9 @@ const EMAIL_REGEX =
     ])
   ]
 })
-export class RegisterComponent implements OnInit, OnDestroy{
+export class RegisterComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
-  ssoRedirect = environment.apiURL + '/google';
+  ssoRedirect = AUTH_ROUTES.GOOGLE_SIGNUP();
 
   TEMPLATES = {
     info: { temp: 'info', index: 1 },
@@ -150,10 +150,10 @@ export class RegisterComponent implements OnInit, OnDestroy{
     this.validateEmail();
     this.validateUsername();
     this.organizationInput$.pipe(debounceTime(650))
-    .subscribe( async (value: string) => {
-      this.searchResults = (await this.orgService.searchOrgs(value.trim()));
-      this.loading = false;
-    });
+      .subscribe(async (value: string) => {
+        this.searchResults = (await this.orgService.searchOrgs(value.trim()));
+        this.loading = false;
+      });
     this.organizationInput$
       .subscribe((value: string) => {
         if (value && value !== '') {
@@ -178,15 +178,15 @@ export class RegisterComponent implements OnInit, OnDestroy{
     };
 
     this.auth.register(newUser)
-    .then(() => {
-      this.nextTemp();
-    },
-    error => {
-      if (error.message !== 'Internal Server Error') {
-        this.errorMsg = error.message;
-      }
-      this.authValidation.showError();
-    });
+      .then(() => {
+        this.nextTemp();
+      },
+        error => {
+          if (error.message !== 'Internal Server Error') {
+            this.errorMsg = error.message;
+          }
+          this.authValidation.showError();
+        });
   }
 
   /**
@@ -205,32 +205,32 @@ export class RegisterComponent implements OnInit, OnDestroy{
    */
   private validateUsername() {
     this.accountFormGroup.get('username').valueChanges
-    .pipe(
-      debounce(() => {
-        // Greys out the Register button while communicating with backend
-        this.loading = true;
-        return interval(600);
-      }),
-      takeUntil(this.ngUnsubscribe)
-    )
-    .subscribe(async (value) => {
-      this.loading = false;
-      await this.auth.usernameInUse(value)
-      .catch((err) => {
-        this.authValidation.showError();
-      })
-      .then((res: any) => {
-        this.usernameInUse = res.identifierInUse;
-        if (this.usernameInUse) {
-          this.accountFormGroup.get('username').setErrors({
-            inUse: true
+      .pipe(
+        debounce(() => {
+          // Greys out the Register button while communicating with backend
+          this.loading = true;
+          return interval(600);
+        }),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(async (value) => {
+        this.loading = false;
+        await this.auth.usernameInUse(value)
+          .catch((err) => {
+            this.authValidation.showError();
+          })
+          .then((res: any) => {
+            this.usernameInUse = res.identifierInUse;
+            if (this.usernameInUse) {
+              this.accountFormGroup.get('username').setErrors({
+                inUse: true
+              });
+              this.fieldErrorMsg = 'This username is already in use';
+            } else {
+              this.fieldErrorMsg = '';
+            }
           });
-          this.fieldErrorMsg = 'This username is already in use';
-        } else {
-          this.fieldErrorMsg = '';
-        }
       });
-    });
   }
 
   /**
@@ -239,33 +239,33 @@ export class RegisterComponent implements OnInit, OnDestroy{
    */
   private validateEmail() {
     this.infoFormGroup.get('email').valueChanges
-    .pipe(
-      debounce(() => {
-        this.loading = true;
-        return interval(600);
-      }),
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe(async (value) => {
-      this.loading = false;
-      this.isEmailRegexValid(value);
+      .pipe(
+        debounce(() => {
+          this.loading = true;
+          return interval(600);
+        }),
+        takeUntil(this.ngUnsubscribe)
+      ).subscribe(async (value) => {
+        this.loading = false;
+        this.isEmailRegexValid(value);
 
-      await this.auth.emailInUse(value)
-      .then((res: any) => {
-        this.emailInUse = res.identifierInUse;
-        if (this.emailInUse) {
-          this.fieldErrorMsg = 'This email is already in use';
-          this.infoFormGroup.get('email').setErrors({
-            emailInUse: true
+        await this.auth.emailInUse(value)
+          .then((res: any) => {
+            this.emailInUse = res.identifierInUse;
+            if (this.emailInUse) {
+              this.fieldErrorMsg = 'This email is already in use';
+              this.infoFormGroup.get('email').setErrors({
+                emailInUse: true
+              });
+            } else {
+              this.fieldErrorMsg = '';
+            }
+          })
+          .catch((err) => {
+            this.authValidation.showError();
           });
-        } else {
-          this.fieldErrorMsg = '';
-        }
-      })
-      .catch((err) => {
-        this.authValidation.showError();
-      });
 
-    });
+      });
   }
 
   /**
@@ -290,11 +290,11 @@ export class RegisterComponent implements OnInit, OnDestroy{
    */
   private toggleInfoNextButton() {
     this.infoFormGroup.statusChanges
-    .pipe(
-      takeUntil(this.ngUnsubscribe)
-    ).subscribe((value) => {
-      this.buttonGuards.isInfoPageInvalid = value === 'INVALID';
-    });
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      ).subscribe((value) => {
+        this.buttonGuards.isInfoPageInvalid = value === 'INVALID';
+      });
 
   }
 
@@ -304,12 +304,12 @@ export class RegisterComponent implements OnInit, OnDestroy{
    */
   private toggleRegisterButton() {
     this.accountFormGroup.statusChanges
-    .pipe(
-      takeUntil(this.ngUnsubscribe)
-    )
-    .subscribe((value) => {
-      this.buttonGuards.isRegisterPageInvalid = value === 'INVALID';
-    });
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((value) => {
+        this.buttonGuards.isRegisterPageInvalid = value === 'INVALID';
+      });
   }
 
 
@@ -339,7 +339,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
    */
   goBack(): void {
     this.fall = !this.fall;
-    if(this.currentTemp === this.TEMPLATES.account.temp) {
+    if (this.currentTemp === this.TEMPLATES.account.temp) {
       this.currentTemp = this.TEMPLATES.info.temp;
       this.currentIndex = this.TEMPLATES.info.index;
     }
@@ -374,7 +374,7 @@ export class RegisterComponent implements OnInit, OnDestroy{
    * @param org The organization selected
    */
   selectOrg(org?: Organization) {
-    if(org) {
+    if (org) {
       this.regInfo.organization = org.name;
       this.selectedOrg = org._id;
       this.infoFormGroup.get('organization')!.setValue(org.name);
@@ -391,9 +391,9 @@ export class RegisterComponent implements OnInit, OnDestroy{
    *
    * @param event The typing event
    */
-    keyup(event: any) {
-      this.organizationInput$.next(event.target.value);
-    }
+  keyup(event: any) {
+    this.organizationInput$.next(event.target.value);
+  }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
