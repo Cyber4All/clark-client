@@ -111,7 +111,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get mapAndTag() {
     if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor) {
-      const privileges = ['admin', 'editor', 'mapper', 'curator', 'reviewer'];
+      const privileges = ['admin', 'editor', 'mapper'];
       if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
         return true;
       }
