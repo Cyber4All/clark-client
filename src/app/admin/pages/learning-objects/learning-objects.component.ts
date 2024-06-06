@@ -6,17 +6,17 @@ import {
   ElementRef,
   Input,
   ChangeDetectorRef,
+  AfterViewInit,
 } from '@angular/core';
-import { LearningObjectService as PublicLearningObjectService } from 'app/cube/learning-object.service';
-import { OrderBy, Query, SortType } from 'app/interfaces/query';
-import { LearningObject, User } from '@entity';
+import { LearningObjectService as PublicLearningObjectService } from '../../../cube/learning-object.service';
+import { OrderBy, Query, SortType } from '../../../interfaces/query';
+import { LearningObject } from '../../../../entity';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
-import { UserService } from 'app/core/user-module/user.service';
+import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
+import { AuthService } from '../../../core/auth-module/auth.service';
+import { Collection, CollectionService } from '../../../core/collection-module/collections.service';
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
@@ -24,7 +24,7 @@ import { UserService } from 'app/core/user-module/user.service';
   providers: [PublicLearningObjectService]
 })
 export class LearningObjectsComponent
-  implements OnInit, OnDestroy {
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
   @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
 
@@ -87,11 +87,6 @@ export class LearningObjectsComponent
   ) {}
 
   async ngOnInit(): Promise<void> {
-    setTimeout(() => {
-      this.listViewHeightOffset =
-        this.listElement.nativeElement.getBoundingClientRect().top +
-        this.headersElement.nativeElement.getBoundingClientRect().height;
-    });
     this.isAdminOrEditor = this.auth.hasEditorAccess();
     this.isCurator = this.auth.hasCuratorAccess();
 
@@ -381,6 +376,14 @@ export class LearningObjectsComponent
     if (this.selected.size < this.learningObjects.length && this.allSelected) {
       this.allSelected = false;
     }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.listViewHeightOffset =
+        this.listElement.nativeElement.getBoundingClientRect().top +
+        this.headersElement.nativeElement.getBoundingClientRect().height;
+    }, 2000);
   }
 
   ngOnDestroy() {

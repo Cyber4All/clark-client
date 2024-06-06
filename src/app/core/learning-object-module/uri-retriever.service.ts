@@ -64,7 +64,7 @@ export class UriRetrieverService {
           return throwError(err);
         }),
         tap(entity => {
-
+          
           if (Array.isArray(entity)) {
             if (entity.length > 1) {
               entity = entity.filter(e => e.status === LearningObject.Status.RELEASED)[0];
@@ -77,6 +77,7 @@ export class UriRetrieverService {
           let completed = 0;
           Object.keys(uris).map(key => {
             if (!properties || properties.includes(key)) {
+              console.log('fetching', key);
               this.fetchUri(uris[key], CALLBACKS[key]).subscribe(value => {
                 responses.next({ requestKey: key, value });
                 if (++completed === properties.length || completed === uris.length) {
