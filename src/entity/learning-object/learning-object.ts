@@ -838,7 +838,8 @@ export namespace LearningObject {
 
   export namespace Material {
     export interface File {
-      id: string;
+      _id: string;
+      id: string; // Keeping for backward compat, may wanna remove?
       name: string;
       fileType: string;
       extension: string;

@@ -435,7 +435,7 @@ export class BuilderStore {
 
     // add folder's files to fileIDs list
     folder.getFiles().forEach(file => {
-      fileIDs.push(file.id);
+      fileIDs.push(file._id);
     });
 
     // recursively check subfolders for files and do the same thing
@@ -465,7 +465,7 @@ export class BuilderStore {
         event.state
       );
     } else { // event.item is a File
-      const fileID = [event.item.id];
+      const fileID = [event.item._id];
       await this.learningObjectService.toggleBundle(
         this.learningObject.id,
         fileID,

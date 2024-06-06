@@ -68,7 +68,7 @@ export class LearningObjectService {
         route,
         {
           fileIDs: fileIDs,
-          state: state
+          packagable: state
         },
         { headers: this.headers, withCredentials: true }
       )
