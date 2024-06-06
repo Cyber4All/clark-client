@@ -8,6 +8,8 @@
     "start": "ng serve",
     "start:prod": "ng serve --configuration=production",
     "build": "ng build",
+    "build:staging": "ng build --configuration=staging",
+    "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
     "build:prod": "ng build --configuration=production",
     "lint": "npx ng lint clark",
     "lint:fix": "npx ng lint clark --fix",
