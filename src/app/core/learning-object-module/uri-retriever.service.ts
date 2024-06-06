@@ -77,7 +77,6 @@ export class UriRetrieverService {
           let completed = 0;
           Object.keys(uris).map(key => {
             if (!properties || properties.includes(key)) {
-              console.log('fetching', key);
               this.fetchUri(uris[key], CALLBACKS[key]).subscribe(value => {
                 responses.next({ requestKey: key, value });
                 if (++completed === properties.length || completed === uris.length) {
