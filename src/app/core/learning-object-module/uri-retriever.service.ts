@@ -64,7 +64,7 @@ export class UriRetrieverService {
           return throwError(err);
         }),
         tap(entity => {
-          
+
           if (Array.isArray(entity)) {
             if (entity.length > 1) {
               entity = entity.filter(e => e.status === LearningObject.Status.RELEASED)[0];
