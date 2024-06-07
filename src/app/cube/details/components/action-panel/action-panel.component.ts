@@ -352,7 +352,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    * Opens the relevancy builder
    */
   mapAndTagObject() {
-    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.id}`]);
+    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.cuid}`]);
   }
 
   private capitalizeName(name) {
