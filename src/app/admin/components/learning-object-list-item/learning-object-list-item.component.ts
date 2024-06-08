@@ -208,7 +208,7 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Checks if the learning object has any children
    */
   async checkForChildren() {
-    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.author.username, this.learningObject.id);
+    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.id);
   }
 
   /**

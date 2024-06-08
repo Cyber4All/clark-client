@@ -101,7 +101,6 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     this.parents = await this.parentNames();
     this.children = await this.objectChildrenNames();
     this.hasChildren = await this.appLOService.doesLearningObjectHaveChildren(
-      this.learningObject.author.username,
       this.learningObject.id
     );
     this.cd.detectChanges();

@@ -162,10 +162,8 @@ export const LEGACY_USER_ROUTES = {
             username,
         )}/${encodeURIComponent(learningObjectName)}/children`;
     },
-    GET_CHILDREN(username: string, learningObjectID: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
+    GET_CHILDREN(learningObjectID: string) {
+        return `${environment.apiURL}/learning-objects/${ encodeURIComponent(learningObjectID)}/children`;
     },
 };
 

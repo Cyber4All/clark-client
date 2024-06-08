@@ -37,11 +37,7 @@ export class ChangeAuthorComponent implements OnInit {
 
 
   async ngOnInit() {
-    const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(
-      this.highlightedLearningObject.author.username
-      )}/learning-objects/${encodeURIComponent(
-      this.highlightedLearningObject.id
-    )}/children`;
+    const childrenUri = `${environment.apiURL}/learning-objects/${encodeURIComponent(this.highlightedLearningObject.id)}/children`;
 
     this.http.get(
       childrenUri,
