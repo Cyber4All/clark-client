@@ -11,16 +11,16 @@ export class SubmissionsService {
 
   constructor(private http: HttpClient) { }
 
-   /**
-    * Adds specified learning object to specified collection
-    *
-    * @param {string} learningObjectId id of learning object to be added to collection
-    * @param {string} collectionName name of collection in which to insert learning object
-    * @param {string} [submissionReason] reason for submitting a learning object to a collection
-    * @param {string[]} [selectedAuthorizations] authorizations that the author gave for changes
-    * @return {Promise<any>}
-    */
-   submit(params: {
+  /**
+   * Adds specified learning object to specified collection
+   *
+   * @param {string} learningObjectId id of learning object to be added to collection
+   * @param {string} collectionName name of collection in which to insert learning object
+   * @param {string} [submissionReason] reason for submitting a learning object to a collection
+   * @param {string[]} [selectedAuthorizations] authorizations that the author gave for changes
+   * @return {Promise<any>}
+   */
+  submit(params: {
     userId: string,
     learningObjectId: string,
     collectionName: string,
@@ -30,7 +30,6 @@ export class SubmissionsService {
     return this.http
       .post(
         SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-          userId: params.userId,
           learningObjectId: params.learningObjectId,
         }),
         {
@@ -74,5 +73,31 @@ export class SubmissionsService {
       // API returned error
       return throwError(error);
     }
+  }
+  /**
+   * Checks if the user is submitting a learning object for the first time
+   *
+   * @param userId The learning object's author ID
+   * @param learningObjectId The learning object's ID
+   * @param collection The collection submitting to
+   * @param hasSubmission If the object has a submission [SET TO TRUE]
+   * @memberof LearningObjectService
+   */
+  getFirstSubmission(learningObjectId: string, collection: string) {
+    return this.http
+      .get<{ isFirstSubmission: boolean }>(
+        SUBMISSION_ROUTES.CHECK_FIRST_SUBMISSION({
+          learningObjectId,
+          query: {
+            collection,
+          }
+        }),
+        { withCredentials: true }
+      )
+      .pipe(
+
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
 }

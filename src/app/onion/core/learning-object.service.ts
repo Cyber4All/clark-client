@@ -363,7 +363,6 @@ export class LearningObjectService {
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
       learningObjectId: learningObject.id,
-      userId: learningObject.author.id,
     });
     return this.http
       .post(
@@ -686,33 +685,6 @@ export class LearningObjectService {
         route,
         { description },
         { withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Checks if the user is submitting a learning object for the first time
-   *
-   * @param userId The learning object's author ID
-   * @param learningObjectId The learning object's ID
-   * @param collection The collection submitting to
-   * @param hasSubmission If the object has a submission [SET TO TRUE]
-   * @memberof LearningObjectService
-   */
-  getFirstSubmission(learningObjectId: string, collection: string) {
-    return this.http
-      .get<{ isFirstSubmission: boolean }>(
-        LEGACY_USER_ROUTES.CHECK_FIRST_SUBMISSION({
-          learningObjectId,
-          query: {
-            collection,
-          }
-        }),
-        { withCredentials: true }
       )
       .pipe(
 
