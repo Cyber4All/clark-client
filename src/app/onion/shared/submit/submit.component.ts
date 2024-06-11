@@ -218,7 +218,6 @@ export class SubmitComponent implements OnInit {
         this.submissionService
           .submit({
             learningObjectId: this.learningObject.id,
-            userId: this.learningObject.author.id,
             collectionName: this.collection,
             submissionReason: this.submissionReason,
             selectedAuthorizations: this.selectedAuthorizations,

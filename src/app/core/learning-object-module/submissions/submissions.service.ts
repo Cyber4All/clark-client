@@ -21,7 +21,6 @@ export class SubmissionsService {
    * @return {Promise<any>}
    */
   submit(params: {
-    userId: string,
     learningObjectId: string,
     collectionName: string,
     submissionReason?: string,
