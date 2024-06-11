@@ -76,7 +76,6 @@ export class SubmissionsService {
   /**
    * Checks if the user is submitting a learning object for the first time
    *
-   * @param userId The learning object's author ID
    * @param learningObjectId The learning object's ID
    * @param collection The collection submitting to
    * @param hasSubmission If the object has a submission [SET TO TRUE]
