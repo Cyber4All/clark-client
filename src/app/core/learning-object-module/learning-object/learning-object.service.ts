@@ -160,7 +160,6 @@ export class LearningObjectService {
   /**
    * Checks to see if a learning object has children
    *
-   * @param username The Username of the user
    * @param learningObjectId The object id of the learning object
    * @returns True if the learning object has children, false otherwise
    */
