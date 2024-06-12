@@ -8,6 +8,7 @@ import { AuthorshipService } from '../../core/authorship.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { UserService } from '../../../core/user-module/user.service';
 import { titleCase } from 'title-case';
+import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
 
 @Component({
   selector: 'clark-change-author',
@@ -37,7 +38,7 @@ export class ChangeAuthorComponent implements OnInit {
 
 
   async ngOnInit() {
-    const childrenUri = `${environment.apiURL}/learning-objects/${encodeURIComponent(this.highlightedLearningObject.id)}/children`;
+    const childrenUri = LEARNING_OBJECT_ROUTES.GET_CHILDREN(this.highlightedLearningObject.id);
 
     this.http.get(
       childrenUri,
