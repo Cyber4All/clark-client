@@ -9,7 +9,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef
 } from '@angular/core';
-import { LearningObject } from '@entity';
+import { LearningObject } from '../../../../../entity/learning-object/learning-object';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
@@ -110,8 +110,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   get mapAndTag() {
-    if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor) {
-      const privileges = ['admin', 'editor', 'mapper', 'curator', 'reviewer'];
+    const untaggable = this.learningObject.status === LearningObject.Status.RELEASED
+                              || this.learningObject.status === LearningObject.Status.UNRELEASED;
+    if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor && !untaggable) {
+      const privileges = ['admin', 'editor', 'mapper'];
       if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
         return true;
       }
@@ -352,7 +354,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    * Opens the relevancy builder
    */
   mapAndTagObject() {
-    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.id}`]);
+    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.cuid}`]);
   }
 
   private capitalizeName(name) {
