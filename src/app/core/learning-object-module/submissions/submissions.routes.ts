@@ -12,6 +12,11 @@ export const SUBMISSION_ROUTES = {
             userId
         )}/learning-objects/${encodeURIComponent(learningObjectId)}/submissions`;
     },
+    /**
+     * Request to check if a learning object has been submitted to a specific collection
+     * @param learningObjectId - The id of the learning object to check
+     * @param collection - The collection associated with the submission
+     */
     CHECK_FIRST_SUBMISSION(params: {
         learningObjectId: string;
         query: {
