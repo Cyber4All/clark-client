@@ -21,6 +21,7 @@ export class AttributeService {
       .toPromise();
     const children = await this.http.get(
       LEGACY_USER_ROUTES.GET_CHILDREN(
+        username,
         objectId
       ))
       .toPromise();
