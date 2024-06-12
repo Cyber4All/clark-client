@@ -7,12 +7,15 @@ export const LEARNING_OBJECT_ROUTES = {
      * @param learningObjectId the id of the learning object
      * @returns void
      */
+    GET_CHILDREN(learningObjectID: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
+    },
     UPDATE_LEARNING_OBJECT_STATUS(learningObjectId) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/status`;
     },
     CREATE_LEARNING_OBJECT() {
         return `${environment.apiURL}/learning-objects`;
-    }
+    },
 };
 
 export const LEGACY_ADMIN_ROUTES = {
@@ -162,9 +165,11 @@ export const LEGACY_USER_ROUTES = {
             username,
         )}/${encodeURIComponent(learningObjectName)}/children`;
     },
-    GET_CHILDREN(learningObjectID: string) {
-        return `${environment.apiURL}/learning-objects/${ encodeURIComponent(learningObjectID)}/children`;
-    },
+    GET_CHILDREN(username: string, learningObjectID: string) {
+        return `${environment.apiURL}/users/${encodeURIComponent(
+            username,
+        )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
+    }
 };
 
 export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {

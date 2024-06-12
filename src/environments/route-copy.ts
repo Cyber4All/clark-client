@@ -306,10 +306,11 @@ export const USER_ROUTES = {
       username
     )}/learning-objects/${objectId}/materials/files`;
   },
-  GET_CHILDREN(learningObjectID: string) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
+  GET_CHILDREN(username: string, learningObjectID: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects/${encodeURIComponent(
+      learningObjectID
+    )}/children`;
   },
-
   GET_METRICS(username: string, learningObjectID: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(
       username
