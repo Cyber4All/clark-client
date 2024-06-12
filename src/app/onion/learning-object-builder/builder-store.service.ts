@@ -856,7 +856,7 @@ export class BuilderStore {
     let index = -1;
     for (let i = 0; i < this.learningObject.materials.files.length; i++) {
       const file = this.learningObject.materials.files[i];
-      if (file.id === fileId) {
+      if (file._id === fileId) {
         index = i;
         break;
       }
