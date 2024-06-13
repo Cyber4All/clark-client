@@ -51,26 +51,24 @@ export class LearningObjectService {
   /**
    * Calls LO service to update the packageable status of toggled files
    *
-   * @param username The currently logged in user
    * @param learningObjectID The current learning object's ID
    * @param fileIDs An array of file IDs that need to be updated
    * @param state The new packageable property to update to
    * @returns A promise
    */
   toggleBundle(
-    username: string,
     learningObjectId: string,
     fileIDs: string[],
     state: boolean
   ) {
-    const route = BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ username, learningObjectId });
+    const route = BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ learningObjectId });
 
     return this.http
       .patch(
         route,
         {
           fileIDs: fileIDs,
-          state: state
+          packagable: state
         },
         { headers: this.headers, withCredentials: true }
       )
