@@ -49,12 +49,10 @@ export class SubmissionsService {
 
   unsubmit(params: {
     learningObjectId: string,
-    userId: string,
   }): Promise<any> {
     return this.http
       .delete(
         SUBMISSION_ROUTES.DELETE_SUBMISSION({
-          userId: params.userId,
           learningObjectId: params.learningObjectId,
         }),
         { withCredentials: true, responseType: 'text' }

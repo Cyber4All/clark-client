@@ -885,7 +885,6 @@ export class BuilderStore {
     this.submissionService
       .unsubmit({
         learningObjectId: this.learningObject.id,
-        userId: this.learningObject.author.id,
       })
       .then(() => {
         this.learningObject.status = LearningObject.Status.UNRELEASED;

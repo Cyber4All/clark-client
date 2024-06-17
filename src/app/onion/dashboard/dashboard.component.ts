@@ -256,7 +256,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   cancelSubmission(l: LearningObject): Promise<void> {
     return this.submissionService.unsubmit({
       learningObjectId: l.id,
-      userId: l.author.id,
     }).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
