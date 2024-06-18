@@ -60,13 +60,13 @@ export class HierarchyService {
    * Adds children to a learning object
    *
    * @param username the username of the author
-   * @param learningObjectId the Id of the learning object having children
+   * @param object the object having children
    * @param children the children to be had
    * @returns
    */
-  async addChildren(learningObjectId: string, children): Promise<any> {
+  async addChildren(username: string, object: any, children): Promise<any> {
     return await this.http.post(
-      LEGACY_USER_ROUTES.UPDATE_CHILDREN(learningObjectId),
+      LEGACY_USER_ROUTES.UPDATE_CHILDREN(object._id),
       {
         children
       },
