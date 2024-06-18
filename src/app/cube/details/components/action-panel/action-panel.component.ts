@@ -198,7 +198,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   download(author: string, learningObjectId: string) {
     this.toggleDownloadModal(true);
-    this.libraryService.learningObjectBundle(author, learningObjectId);
+    this.libraryService.learningObjectBundle(learningObjectId);
   }
 
   copyLink() {
