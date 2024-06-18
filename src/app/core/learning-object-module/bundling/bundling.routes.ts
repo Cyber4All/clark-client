@@ -35,10 +35,8 @@ export const BUNDLING_ROUTES = {
      * @param username - The username of the author of the learning object
      * @param learningObjectId - The id of the learning object to toggle the bundled status
      */
-    TOGGLE_BUNDLE_FILE(params: { username: string, learningObjectId: string }) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            params.username
-        )}/learning-objects/${encodeURIComponent(
+    TOGGLE_BUNDLE_FILE(params: { learningObjectId: string }) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
             params.learningObjectId
         )}/files/bundle`;
     },

@@ -105,15 +105,6 @@ export const LEGACY_USER_ROUTES = {
             username,
         )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
     },
-    CHECK_FIRST_SUBMISSION(params: {
-        learningObjectId: string;
-        query: {
-            collection: string;
-        };
-    }) {
-        const q = 'collection=' + params.query.collection;
-        return `/learning-objects/${params.learningObjectId}/submissions?${q}`;
-    },
     GET_LEARNING_OBJECT(id) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
     },

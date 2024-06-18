@@ -838,7 +838,7 @@ export namespace LearningObject {
 
   export namespace Material {
     export interface File {
-      id: string;
+      _id: string;
       name: string;
       fileType: string;
       extension: string;

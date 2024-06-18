@@ -211,6 +211,9 @@ export class UriRetrieverService {
       route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.cuidInfo.cuid);
     } else if (params.cuidInfo) {
       route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
+    } else if (params.id) {
+      // TODO: Update this to use CUID only.
+      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
     } else {
       const err = this.userError(params);
       throw err;
