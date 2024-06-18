@@ -157,10 +157,8 @@ export const LEGACY_USER_ROUTES = {
     VALIDATE_CAPTCHA() {
         return `${environment.apiURL}/users/validate-captcha`;
     },
-    SET_CHILDREN(username, learningObjectName) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            username,
-        )}/${encodeURIComponent(learningObjectName)}/children`;
+    UPDATE_CHILDREN(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
     },
     GET_CHILDREN(username: string, learningObjectID: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(

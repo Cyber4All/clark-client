@@ -473,17 +473,16 @@ export class LearningObjectService {
   }
 
   setChildren(
-    learningObjectName: string,
-    authorUsername: string,
+    learningObjectId: string,
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const route = LEGACY_USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
-
+    const removeRoute = LEGACY_USER_ROUTES.REMOVE_CHILD(learningObjectId);
+    const addRoute = LEGACY_USER_ROUTES.UPDATE_CHILDREN(learningObjectId);
     if (remove) {
       return this.http
         .patch(
-          route,
+          removeRoute,
           { id: children[0] },
           { withCredentials: true, responseType: 'text' }
         )
@@ -495,7 +494,7 @@ export class LearningObjectService {
     } else {
       return this.http
         .post(
-          route,
+          addRoute,
           { children },
           { withCredentials: true, responseType: 'text' }
         )
