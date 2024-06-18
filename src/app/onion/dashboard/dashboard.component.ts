@@ -232,7 +232,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else {
       this.submissionService.submit({
         learningObjectId: event.id,
-        userId: event.author.id,
         collectionName: event.collection,
       })
         .then(() => {
