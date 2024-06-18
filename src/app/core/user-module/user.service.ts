@@ -31,7 +31,7 @@ export class UserService {
       .toPromise()
       .then((val: any) => {
         const arr = val;
-        return arr.map((user) => new User(user));
+        return arr.users.map((user) => new User(user));
       });
   }
 
