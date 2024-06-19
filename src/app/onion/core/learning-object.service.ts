@@ -282,12 +282,11 @@ export class LearningObjectService {
   /**
    * Deletes an outcome on a given learning object
    *
-   * @param learningObjectId The learning object id to delete the outcome from
    * @param outcomeId The outcome Id
    */
-  deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
+  deleteOutcome(outcomeId: string): Promise<any> {
     return this.http
-      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
+      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { withCredentials: true })
       .pipe(
 
         catchError(this.handleError)
