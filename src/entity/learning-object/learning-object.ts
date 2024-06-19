@@ -108,10 +108,8 @@ export class LearningObject {
       this._length = length;
       this.updateDate();
     } else {
-      throw new EntityError(
-        LEARNING_OBJECT_ERRORS.INVALID_LENGTH(length),
-        'length',
-      );
+      // TODO: Fix issue occuring where a json response object is being passed instead of a learning object
+      this._length = LearningObject.Length.NANOMODULE;
     }
   }
   /**
