@@ -1,5 +1,5 @@
 <div class="dashboard-item">
-  <div class="row-item">  
+  <div class="row-item">
     <clark-checkbox [value]="selected" (action)="toggleSelect($event)"></clark-checkbox>
     <div>
       <div tabindex="0" class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
@@ -47,7 +47,11 @@
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleChangeCollectionModal(true)"><i class="fal fa-exchange"></i>Change Collection</li>
       <li *ngIf="learningObject.status === 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
+<<<<<<< HEAD
       <li *ngIf="learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor') || auth.user.accessGroups.includes('mapper') )" (click)="goToUrl('relevancy')"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
+=======
+      <li *ngIf="learningObject.status !== 'released' && learningObject.status !== 'unreleased'" (click)="goToUrl('relevancy')"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
+>>>>>>> 89ab6ef98f647bdbe3dc7e6f388a33ee2e34c686
     </ul>
   </div>
 </clark-context-menu>
@@ -84,7 +88,7 @@
   <div class="modal-container" #popupInner>
     <clark-change-author (close)="toggleChangeAuthorModal(false)" [highlightedLearningObject]="learningObject" [statusDescription]="statusDescription"></clark-change-author>
   </div>
-</clark-popup> 
+</clark-popup>
 
 <clark-popup *ngIf="showRelevancyDate" (closed)="toggleRelevancyDate(false)">
   <div class="modal-container" #popupInner>

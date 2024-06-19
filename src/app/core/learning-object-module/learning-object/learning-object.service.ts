@@ -147,9 +147,9 @@ export class LearningObjectService {
     );
   }
 
-  toggleFilesToBundle(username: string, learningObjectId: string, selected: string[], deselected: string[]) {
+  toggleFilesToBundle(learningObjectId: string, selected: string[], deselected: string[]) {
     return this.http.patch(
-      BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ username, learningObjectId }),
+      BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ learningObjectId }),
       {
         selected: selected,
         deselected: deselected,

@@ -108,7 +108,7 @@ export class LearningObject {
       this._length = length;
       this.updateDate();
     } else {
-      // An issue is occuring where a json response object is being passed instead of a learning object
+      // TODO: Fix issue occuring where a json response object is being passed instead of a learning object
       this._length = LearningObject.Length.NANOMODULE;
     }
   }
@@ -836,7 +836,7 @@ export namespace LearningObject {
 
   export namespace Material {
     export interface File {
-      id: string;
+      _id: string;
       name: string;
       fileType: string;
       extension: string;

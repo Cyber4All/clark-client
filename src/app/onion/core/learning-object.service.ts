@@ -51,26 +51,24 @@ export class LearningObjectService {
   /**
    * Calls LO service to update the packageable status of toggled files
    *
-   * @param username The currently logged in user
    * @param learningObjectID The current learning object's ID
    * @param fileIDs An array of file IDs that need to be updated
    * @param state The new packageable property to update to
    * @returns A promise
    */
   toggleBundle(
-    username: string,
     learningObjectId: string,
     fileIDs: string[],
     state: boolean
   ) {
-    const route = BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ username, learningObjectId });
+    const route = BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ learningObjectId });
 
     return this.http
       .patch(
         route,
         {
           fileIDs: fileIDs,
-          state: state
+          packagable: state
         },
         { headers: this.headers, withCredentials: true }
       )
@@ -363,7 +361,6 @@ export class LearningObjectService {
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
       learningObjectId: learningObject.id,
-      userId: learningObject.author.id,
     });
     return this.http
       .post(
@@ -686,33 +683,6 @@ export class LearningObjectService {
         route,
         { description },
         { withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Checks if the user is submitting a learning object for the first time
-   *
-   * @param userId The learning object's author ID
-   * @param learningObjectId The learning object's ID
-   * @param collection The collection submitting to
-   * @param hasSubmission If the object has a submission [SET TO TRUE]
-   * @memberof LearningObjectService
-   */
-  getFirstSubmission(learningObjectId: string, collection: string) {
-    return this.http
-      .get<{ isFirstSubmission: boolean }>(
-        LEGACY_USER_ROUTES.CHECK_FIRST_SUBMISSION({
-          learningObjectId,
-          query: {
-            collection,
-          }
-        }),
-        { withCredentials: true }
       )
       .pipe(
 

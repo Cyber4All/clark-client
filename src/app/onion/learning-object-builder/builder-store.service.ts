@@ -435,7 +435,7 @@ export class BuilderStore {
 
     // add folder's files to fileIDs list
     folder.getFiles().forEach(file => {
-      fileIDs.push(file.id);
+      fileIDs.push(file._id);
     });
 
     // recursively check subfolders for files and do the same thing
@@ -460,15 +460,13 @@ export class BuilderStore {
     if (event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
       await this.learningObjectService.toggleBundle(
-        this.auth.username,
         this.learningObject.id,
         fileIDs,
         event.state
       );
     } else { // event.item is a File
-      const fileID = [event.item.id];
+      const fileID = [event.item._id];
       await this.learningObjectService.toggleBundle(
-        this.auth.username,
         this.learningObject.id,
         fileID,
         event.state
@@ -858,7 +856,7 @@ export class BuilderStore {
     let index = -1;
     for (let i = 0; i < this.learningObject.materials.files.length; i++) {
       const file = this.learningObject.materials.files[i];
-      if (file.id === fileId) {
+      if (file._id === fileId) {
         index = i;
         break;
       }
