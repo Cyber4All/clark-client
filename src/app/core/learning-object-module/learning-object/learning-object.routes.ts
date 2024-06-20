@@ -3,16 +3,23 @@ import * as querystring from 'querystring';
 
 export const LEARNING_OBJECT_ROUTES = {
     /**
-     * Path to update the status of a learning object
-     * @param learningObjectId the id of the learning object
-     * @returns void
+     * Request to get the children of a learning object
+     * @param learningObjectID the id of the learning object
+     * @returns Promise<FullLearningObject[]>
      */
     GET_CHILDREN(learningObjectID: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
     },
+
+    /**
+     * Path to update the status of a learning object
+     * @param learningObjectId the id of the learning object
+     * @returns void
+     */
     UPDATE_LEARNING_OBJECT_STATUS(learningObjectId) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/status`;
     },
+
     CREATE_LEARNING_OBJECT() {
         return `${environment.apiURL}/learning-objects`;
     },
