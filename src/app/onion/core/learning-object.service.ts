@@ -428,9 +428,8 @@ export class LearningObjectService {
    * @returns {Promise<{}>}
    * @memberof LearningObjectService
    */
-  delete(authorUsername: string, learningObjectId: string): Promise<{}> {
+  delete(learningObjectId: string): Promise<{}> {
     const route = LEGACY_USER_ROUTES.DELETE_LEARNING_OBJECT(
-      authorUsername,
       learningObjectId
     );
     return this.http
@@ -474,8 +473,8 @@ export class LearningObjectService {
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const removeRoute = LEGACY_USER_ROUTES.REMOVE_CHILD(learningObjectId);
-    const addRoute = LEGACY_USER_ROUTES.UPDATE_CHILDREN(learningObjectId);
+    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_CHILD(learningObjectId);
+    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(learningObjectId);
     if (remove) {
       return this.http
         .patch(

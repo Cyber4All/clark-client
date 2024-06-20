@@ -208,7 +208,7 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Checks if the learning object has any children
    */
   async checkForChildren() {
-    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.author.username, this.learningObject.id);
+    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.id);
   }
 
   /**
@@ -235,7 +235,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     } else if (url === 'details') {
       window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}`);
     } else if (url === 'relevancy') {
-      window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
+      window.open(`/onion/relevancy-builder/${this.learningObject.cuid}`);
     }
   }
 
