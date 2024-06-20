@@ -15,9 +15,9 @@ export class AboutClarkComponent implements OnInit {
   usageStats: UsageStats = {
     objects: {
       released: 0,
+      total: 0,
       review: 0,
       downloads: 0,
-      collections: { number: 0},
       topDownloads: [],
       lengths: {
         nanomodule: 0,
@@ -30,7 +30,15 @@ export class AboutClarkComponent implements OnInit {
         remember_and_understand: 0,
         apply_and_analyze: 0,
         evaluate_and_synthesize: 0
-      }
+      },
+      status: {
+        waiting: 0,
+        peerReview: 0,
+        acceptedMinor: 0,
+        acceptedMajor: 0,
+        proofing: 0
+      },
+      collections: { number: 0 }
     },
     users: {
       accounts: 0,
