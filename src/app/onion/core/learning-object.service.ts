@@ -428,8 +428,9 @@ export class LearningObjectService {
    * @returns {Promise<{}>}
    * @memberof LearningObjectService
    */
-  delete(learningObjectId: string): Promise<{}> {
+  delete(authorUsername: string, learningObjectId: string): Promise<{}> {
     const route = LEGACY_USER_ROUTES.DELETE_LEARNING_OBJECT(
+      authorUsername,
       learningObjectId
     );
     return this.http
