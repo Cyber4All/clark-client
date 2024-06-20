@@ -948,7 +948,6 @@ export class BuilderStore {
       // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
       // in this case we'll use the current data instead
       value = value || data;
-      console.log('learning-object', value);
       if (!this.learningObject._id) {
         this.createLearningObject(value);
       } else {
