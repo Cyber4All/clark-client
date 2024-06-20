@@ -328,7 +328,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      return this.learningObjectService.delete(canDelete[0].author.username, canDelete[0]._id)
+      return this.learningObjectService.delete(canDelete[0]._id)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Object deleted!');
           await this.getDraftLearningObjects();

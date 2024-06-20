@@ -122,10 +122,8 @@ export const LEGACY_USER_ROUTES = {
     GET_LEARNING_OBJECT(id) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
     },
-    DELETE_LEARNING_OBJECT(username: string, id: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(id)}`;
+    DELETE_LEARNING_OBJECT(id: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
     },
     DELETE_MULTIPLE_LEARNING_OBJECTS(username, learningObjectNames) {
         return `${environment.apiURL}/users/${encodeURIComponent(
