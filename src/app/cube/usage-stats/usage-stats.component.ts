@@ -24,10 +24,10 @@ export class UsageStatsComponent implements OnInit {
   // Default values are set to -1 (invalid value) to trigger loading spinner
   usageStats: UsageStats = {
     objects: {
-      released: -1,
       review: -1,
+      total: -1,
+      released: -1,
       downloads: -1,
-      collections: { number: -1 },
       topDownloads: [],
       lengths: {
         nanomodule: -1,
@@ -40,7 +40,15 @@ export class UsageStatsComponent implements OnInit {
         remember_and_understand: -1,
         apply_and_analyze: -1,
         evaluate_and_synthesize: -1
-      }
+      },
+      status: {
+        waiting: -1,
+        peerReview: -1,
+        acceptedMinor: -1,
+        acceptedMajor: -1,
+        proofing: -1
+      },
+      collections: { number: -1 },
     },
     users: {
       accounts: -1,
@@ -79,10 +87,10 @@ export class UsageStatsComponent implements OnInit {
     this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
     this.metricService.getLearningObjectStats().then(stats => {
-      this.usageStats.objects.released = stats.released;
       this.usageStats.objects.review = stats.review;
+      this.usageStats.objects.total = stats.total;
+      this.usageStats.objects.released = stats.released;
       this.usageStats.objects.downloads = stats.downloads;
-      this.usageStats.objects.collections = stats.collections;
       this.usageStats.objects.topDownloads = stats.topDownloads;
       this.usageStats.objects.lengths = {
         nanomodule: stats.lengths.nanomodule,
@@ -91,8 +99,20 @@ export class UsageStatsComponent implements OnInit {
         unit: stats.lengths.unit,
         course: stats.lengths.course
       };
+      this.usageStats.objects.collections = stats.collections;
+      this.usageStats.objects.outcomes = {
+        remember_and_understand: stats.outcomes.remember_and_understand,
+        apply_and_analyze: stats.outcomes.apply_and_analyze,
+        evaluate_and_synthesize: stats.outcomes.evaluate_and_synthesize
+      };
+      this.usageStats.objects.status = {
+        waiting: stats.lengths.nanomodule,
+        peerReview: stats.lengths.micromodule,
+        acceptedMinor: stats.lengths.module,
+        acceptedMajor: stats.lengths.unit,
+        proofing: stats.lengths.course
+      };
 
-      this.usageStats.objects.outcomes = stats.outcomes;
 
       this.buildCounterStats();
       this.buildOutcomeDistributionChart();
