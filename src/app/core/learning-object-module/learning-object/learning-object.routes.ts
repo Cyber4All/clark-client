@@ -4,7 +4,7 @@ import * as querystring from 'querystring';
 export const LEARNING_OBJECT_ROUTES = {
     /**
      * Request to get the children of a learning object
-     * @param learningObjectID the id of the learning object
+     * @param learningObjectID the id of the parent learning object
      * @returns Promise<FullLearningObject[]>
      */
     GET_CHILDREN(learningObjectID: string) {
