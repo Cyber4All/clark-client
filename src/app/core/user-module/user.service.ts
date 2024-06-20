@@ -30,7 +30,6 @@ export class UserService {
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((res: {users: User[], total: number}) => {
-        console.log(res);
         return res.users.map((user) => new User(user));
       });
   }
