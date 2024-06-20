@@ -112,12 +112,14 @@ export class LibraryService {
    * @param learningObjectId the mongo id of the learning object
    */
   learningObjectBundle(
+    author: string,
     learningObjectId: string
   ) {
     // Show loading spinner
     this._loading$.next(true);
     // Url route for bundling
     const bundle = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
+      author,
       learningObjectId
     );
     /**
@@ -133,7 +135,7 @@ export class LibraryService {
     )
       .subscribe(() => {
         this.toaster.success('All Ready!', 'Your download will begin in a moment...');
-        this.downloadBundle(bundle);
+        this.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
       });
   }
 
