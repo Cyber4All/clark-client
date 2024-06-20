@@ -406,7 +406,6 @@ export class LearningObjectService {
    */
   triggerBundle(username: string, learningObjectId: string) {
     const route = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
-      username,
       learningObjectId
     );
     // POST needs the body arrgument
