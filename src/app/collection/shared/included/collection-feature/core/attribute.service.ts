@@ -3,9 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   LEARNING_OBJECT_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-  LEGACY_USER_ROUTES
 } from '../../../../../core/learning-object-module/learning-object/learning-object.routes';
-import { LEARNING_OBJECT_ERRORS } from 'entity/learning-object/error-messages';
 
 @Injectable({
   providedIn: 'root'
