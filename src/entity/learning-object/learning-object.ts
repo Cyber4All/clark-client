@@ -567,7 +567,6 @@ export class LearningObject {
    * @memberof LearningObject
    */
   addContributor(contributor: User): number {
-    console.log('yo wtf', contributor);
     if (contributor) {
       const addingUser =
         contributor instanceof User ? contributor : new User(contributor);
