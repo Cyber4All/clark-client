@@ -570,7 +570,6 @@ export class LearningObject {
     if (contributor) {
       const addingUser =
         contributor instanceof User ? contributor : new User(contributor);
-      console.log('yo wtf', addingUser);
       this.updateDate();
       return this._contributors.push(addingUser);
     } else {
