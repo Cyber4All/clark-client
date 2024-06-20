@@ -313,7 +313,7 @@ export class BuilderStore {
       );
       return children.toPromise();
     } else {
-      await this.fetch(this.learningObject.id);
+      await this.fetch(this.learningObject.cuid);
       return this.getChildren();
     }
   }
@@ -902,9 +902,9 @@ export class BuilderStore {
    */
   public async removeEmptyOutcomes() {
     // Get most up-to-date values for current learning object
-    await this.fetch(this.learningObject.id);
+    await this.fetch(this.learningObject.cuid);
     // Retrieve outcomes of current learning object
-    const value = await this.uriRetriever.getLearningObject({ id: this.learningObject.id }, ['outcomes']).toPromise();
+    const value = await this.uriRetriever.getLearningObject({ cuidInfo: {cuid: this.learningObject.cuid} }, ['outcomes']).toPromise();
     // Iterate through outcomes
     value.outcomes.map(outcome => {
       // If the outcome text is empty, remove outcome
