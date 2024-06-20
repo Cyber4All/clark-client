@@ -40,7 +40,7 @@ export class ChangeAuthorComponent implements OnInit {
     const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(
       this.highlightedLearningObject.author.username
       )}/learning-objects/${encodeURIComponent(
-      this.highlightedLearningObject.id
+      this.highlightedLearningObject._id
     )}/children`;
 
     this.http.get(
@@ -98,7 +98,7 @@ export class ChangeAuthorComponent implements OnInit {
     const author: User = await this.userService.getUser(this.highlightedLearningObject.author.username, 'username');
     this.authorshipService.changeAuthorship(
       author,
-      this.highlightedLearningObject.id,
+      this.highlightedLearningObject._id,
       this.selectedAuthor.id).then(
         () => {
           this.toaster.success('Success!', 'Learning Object Author changed.');
