@@ -974,7 +974,6 @@ export class BuilderStore {
     this.learningObjectService
       .create(object)
       .then(learningObject => {
-        console.log('learning-object res', learningObject);
         this.learningObject = learningObject;
         this.serviceInteraction$.next(false);
       })
