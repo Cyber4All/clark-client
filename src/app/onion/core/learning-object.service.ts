@@ -375,28 +375,6 @@ export class LearningObjectService {
   }
 
   /**
-   * Unsubmit a learning object
-   *
-   * @param {learningObject} learningObject the learning object to be unpublished
-   */
-  unsubmit(learningObject: LearningObject) {
-    const route = SUBMISSION_ROUTES.DELETE_SUBMISSION({
-      learningObjectId: learningObject._id,
-      userId: learningObject.author.id
-    });
-    return this.http
-      .delete(
-        route,
-        { headers: this.headers, withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
    * Function to initiate the bundling process for new and updated learning objects
    *
    * @param username Authors username of current learning object
