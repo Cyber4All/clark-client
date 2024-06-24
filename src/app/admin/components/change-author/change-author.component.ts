@@ -8,6 +8,7 @@ import { AuthorshipService } from '../../core/authorship.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { UserService } from '../../../core/user-module/user.service';
 import { titleCase } from 'title-case';
+import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
 
 @Component({
   selector: 'clark-change-author',
@@ -37,16 +38,11 @@ export class ChangeAuthorComponent implements OnInit {
 
 
   async ngOnInit() {
-    const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(
-      this.highlightedLearningObject.author.username
-      )}/learning-objects/${encodeURIComponent(
-      this.highlightedLearningObject.id
-    )}/children`;
-
+    const childrenUri = LEARNING_OBJECT_ROUTES.GET_CHILDREN(this.highlightedLearningObject._id);
     this.http.get(
       childrenUri,
       { headers: this.headers, withCredentials: true }
-      ).pipe(
+    ).pipe(
       take(1),
       catchError(e => of(e))
     ).subscribe(object => {
@@ -87,7 +83,7 @@ export class ChangeAuthorComponent implements OnInit {
    * @returns string unformated or title cased
    */
   organizationFormat(organization: string) {
-    if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+    if (organization.charAt(1) === organization.charAt(1).toUpperCase()) {
       return organization;
     } else {
       return titleCase(organization);
@@ -98,7 +94,7 @@ export class ChangeAuthorComponent implements OnInit {
     const author: User = await this.userService.getUser(this.highlightedLearningObject.author.username, 'username');
     this.authorshipService.changeAuthorship(
       author,
-      this.highlightedLearningObject.id,
+      this.highlightedLearningObject._id,
       this.selectedAuthor.id).then(
         () => {
           this.toaster.success('Success!', 'Learning Object Author changed.');

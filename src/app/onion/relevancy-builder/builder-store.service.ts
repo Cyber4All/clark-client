@@ -135,10 +135,10 @@ export class BuilderStore {
    */
   async save() {
     try {
-      await this.relevancyService.updateObjectTopics(this._learningObject.id, this._topics);
+      await this.relevancyService.updateObjectTopics(this._learningObject._id, this._topics);
       for (let i = 0; i < this.outcomes.length; i++) {
         await this.relevancyService.updateLearningOutcomeMappings(
-          this._learningObject.id,
+          this._learningObject._id,
           this.outcomes[i].id,
           this.outcomes[i].mappings.map(g => g.guidelineId)
         );

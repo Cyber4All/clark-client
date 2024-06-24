@@ -233,15 +233,14 @@ export class LearningObjectService {
   // TODO type this parameter
   save(
     id: string,
-    authorUsername: string,
-    learningObject: { [key: string]: any },
+    learningObject: Partial<LearningObject>,
     reason?: string,
   ): Promise<{}> {
-    const route = LEGACY_USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
+    const route = LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT(id);
     return this.http
       .patch(
         route,
-        { learningObject, reason },
+        { updates: learningObject, reason },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
@@ -360,8 +359,7 @@ export class LearningObjectService {
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject.id,
-      userId: learningObject.author.id,
+      learningObjectId: learningObject._id,
     });
     return this.http
       .post(
@@ -407,9 +405,8 @@ export class LearningObjectService {
    * @returns {Promise<{}>}
    * @memberof LearningObjectService
    */
-  delete(authorUsername: string, learningObjectId: string): Promise<{}> {
+  delete(learningObjectId: string): Promise<{}> {
     const route = LEGACY_USER_ROUTES.DELETE_LEARNING_OBJECT(
-      authorUsername,
       learningObjectId
     );
     return this.http
@@ -662,33 +659,6 @@ export class LearningObjectService {
         route,
         { description },
         { withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Checks if the user is submitting a learning object for the first time
-   *
-   * @param userId The learning object's author ID
-   * @param learningObjectId The learning object's ID
-   * @param collection The collection submitting to
-   * @param hasSubmission If the object has a submission [SET TO TRUE]
-   * @memberof LearningObjectService
-   */
-  getFirstSubmission(learningObjectId: string, collection: string) {
-    return this.http
-      .get<{ isFirstSubmission: boolean }>(
-        LEGACY_USER_ROUTES.CHECK_FIRST_SUBMISSION({
-          learningObjectId,
-          query: {
-            collection,
-          }
-        }),
-        { withCredentials: true }
       )
       .pipe(
 

@@ -201,7 +201,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (object) {
           this.learningObjectCuid = object.cuid;
           this.notes = object.materials.notes;
-          this.bucketUploadPath = `${object.author.username}/${object.id}`;
+          this.bucketUploadPath = `${object.author.username}/${object._id}`;
           this.files$.next(object.materials.files);
           this.folderMeta$.next(object.materials.folderDescriptions);
           this.solutionUpload = false;
@@ -632,10 +632,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     if ((update as UploadQueueCompleteUpdate).data.failed) {
       const unUploadedFiles = this.uploadQueue.filter((file) => !file.success);
       const fileNames = unUploadedFiles.map((file) => file.name).join(', ');
-      console.log(
-        Object.assign(this.uploadQueue),
-        'Failed Count: ' + unUploadedFiles.length,
-      );
       this.error$.next(UPLOAD_ERRORS.FILES_FAILED(fileNames));
       // TODO: Prompt user and Attempt retry?
       this.resetUploadStatuses();
@@ -694,7 +690,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async handleFileDownload(file: LearningObject.Material.File) {
     const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
-    const loId = learningObject.id;
+    const loId = learningObject._id;
     const url = FILE_ROUTES.DOWNLOAD_FILE(loId, file._id);
     window.open(url, '__blank');
   }

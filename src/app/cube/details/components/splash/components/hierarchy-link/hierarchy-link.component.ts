@@ -17,5 +17,4 @@ export class HierarchyLinkComponent {
   emitLinkClickEvent(): void {
     this.linkClickEvent.emit();
   }
-
 }
