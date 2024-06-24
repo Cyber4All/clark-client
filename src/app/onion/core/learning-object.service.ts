@@ -233,15 +233,14 @@ export class LearningObjectService {
   // TODO type this parameter
   save(
     id: string,
-    authorUsername: string,
-    learningObject: { [key: string]: any },
+    learningObject: Partial<LearningObject>,
     reason?: string,
   ): Promise<{}> {
-    const route = LEGACY_USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
+    const route = LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT(id);
     return this.http
       .patch(
         route,
-        { learningObject, reason },
+        { updates: learningObject, reason },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
@@ -360,7 +359,7 @@ export class LearningObjectService {
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject.id,
+      learningObjectId: learningObject._id,
     });
     return this.http
       .post(
@@ -382,7 +381,7 @@ export class LearningObjectService {
    */
   unsubmit(learningObject: LearningObject) {
     const route = SUBMISSION_ROUTES.DELETE_SUBMISSION({
-      learningObjectId: learningObject.id,
+      learningObjectId: learningObject._id,
       userId: learningObject.author.id
     });
     return this.http
