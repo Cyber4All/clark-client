@@ -64,11 +64,11 @@ export class ScaffoldComponent implements OnInit {
     this.ariaLabel = 'Add and delete Children';
 
     // if the Learning Object can have children, attempt to load them
-    if (this.learningObject.id && this.learningObject.length !== LearningObject.Length.NANOMODULE) {
+    if (this.learningObject._id && this.learningObject.length !== LearningObject.Length.NANOMODULE) {
       this.loading = true;
       this.store.getChildren().then(kiddos => {
         this.children = kiddos;
-        this.children.forEach(kid => this.childrenIDs.push(kid.id));
+        this.children.forEach(kid => this.childrenIDs.push(kid._id));
         this.loading = false;
       }).catch(error => {
         this.loading = false;
@@ -88,7 +88,7 @@ export class ScaffoldComponent implements OnInit {
       this.children.unshift(child);
 
       // add child to the childrenIDs array
-      this.childrenIDs.unshift(child.id);
+      this.childrenIDs.unshift(child._id);
     } else {
       // if we DO NOT already have a children array defined
 
@@ -96,7 +96,7 @@ export class ScaffoldComponent implements OnInit {
       this.children = [child];
 
       // add child to the childrenIDs array
-      this.childrenIDs = [child.id];
+      this.childrenIDs = [child._id];
     }
 
 
@@ -115,7 +115,7 @@ export class ScaffoldComponent implements OnInit {
 
     this.childrenIDs = [];
     // get the ids of the children in children array
-    this.children.forEach(kid => this.childrenIDs.push(kid.id));
+    this.children.forEach(kid => this.childrenIDs.push(kid._id));
 
     // set the ids of children to the same order as the childrenIDs
     this.store.setChildren(this.childrenIDs);
@@ -152,7 +152,7 @@ export class ScaffoldComponent implements OnInit {
 
     // set childrenIDs equal to the children array
     this.childrenIDs = [];
-    this.children.forEach(kid => this.childrenIDs.push(kid.id));
+    this.children.forEach(kid => this.childrenIDs.push(kid._id));
     this.store.setChildren(this.childrenIDs, true);
 
     // if deleted child was last child toggle off editContent because there is no longer content to edit
