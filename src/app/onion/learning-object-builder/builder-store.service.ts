@@ -883,9 +883,9 @@ export class BuilderStore {
 
   public cancelSubmission(): void {
     this.submissionService
-      .unsubmit({
-        learningObjectId: this.learningObject.id,
-      })
+      .unsubmit(
+        this.learningObject.id,
+      )
       .then(() => {
         this.learningObject.status = LearningObject.Status.UNRELEASED;
         this.validator.submissionMode = false;

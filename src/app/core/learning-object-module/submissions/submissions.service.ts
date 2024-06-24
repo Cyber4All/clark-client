@@ -47,14 +47,14 @@ export class SubmissionsService {
       .toPromise();
   }
 
-  unsubmit(params: {
+  unsubmit(
     learningObjectId: string,
-  }): Promise<any> {
+  ): Promise<any> {
     return this.http
       .delete(
-        SUBMISSION_ROUTES.DELETE_SUBMISSION({
-          learningObjectId: params.learningObjectId,
-        }),
+        SUBMISSION_ROUTES.DELETE_SUBMISSION(
+          learningObjectId,
+        ),
         { withCredentials: true, responseType: 'text' }
       )
       .pipe(

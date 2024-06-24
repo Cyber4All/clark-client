@@ -27,7 +27,7 @@ export const SUBMISSION_ROUTES = {
      * @param learningObjectId - The id of the learning object to cancel the submission for
      * @auth required
      */
-    DELETE_SUBMISSION(params: { learningObjectId: string }) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(params.learningObjectId)}/submissions`;
+    DELETE_SUBMISSION(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/submissions`;
     },
 };
