@@ -120,9 +120,9 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .pipe(takeUntil(this.destroyed$))
       .subscribe(async routeParams => {
-        const id = routeParams.get('learningObjectId');
-        if (id) {
-          await this.store.fetch(id);
+        const cuid = routeParams.get('cuid');
+        if (cuid) {
+          await this.store.fetch(cuid);
         }
       });
 

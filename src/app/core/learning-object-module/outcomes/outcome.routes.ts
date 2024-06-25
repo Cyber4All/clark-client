@@ -36,14 +36,9 @@ export const OUTCOME_ROUTES = {
     /**
      * Request to get the learning outcomes of a learning object
      * @method GET
-     * @param username - The username of the author of the learning object
      * @param learningObjectId - The id of the learning object to get the outcomes from
      */
-    GET_OUTCOMES(username: string, learningObjectId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId
-        )}/outcomes`;
+    GET_OUTCOMES(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/outcomes`;
     },
 };

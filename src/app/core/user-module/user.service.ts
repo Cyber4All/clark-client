@@ -29,9 +29,8 @@ export class UserService {
       })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((val: any) => {
-        const arr = val;
-        return arr.map((user) => new User(user));
+      .then((res: {users: User[], total: number}) => {
+        return res.users.map((user) => new User(user));
       });
   }
 

@@ -3,6 +3,15 @@ import * as querystring from 'querystring';
 
 export const LEARNING_OBJECT_ROUTES = {
     /**
+     * Request to get the children of a learning object
+     * @param learningObjectID the id of the parent learning object
+     * @returns Promise<FullLearningObject[]>
+     */
+    GET_CHILDREN(learningObjectID: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
+    },
+
+    /**
      * Path to update the status of a learning object
      * @param learningObjectId the id of the learning object
      * @returns void
@@ -10,9 +19,23 @@ export const LEARNING_OBJECT_ROUTES = {
     UPDATE_LEARNING_OBJECT_STATUS(learningObjectId) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/status`;
     },
+
+    /**
+     * Path to create a new learning object
+     * @returns LearningObject
+     */
     CREATE_LEARNING_OBJECT() {
         return `${environment.apiURL}/learning-objects`;
-    }
+    },
+
+    /**
+     * Path to update a learning object
+     * @param learningObjectId the id of the learning object
+     * @returns void
+     */
+    UPDATE_LEARNING_OBJECT(learningObjectId) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
+    },
 };
 
 export const LEGACY_ADMIN_ROUTES = {
@@ -108,10 +131,8 @@ export const LEGACY_USER_ROUTES = {
     GET_LEARNING_OBJECT(id) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
     },
-    DELETE_LEARNING_OBJECT(username: string, id: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(id)}`;
+    DELETE_LEARNING_OBJECT(id: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
     },
     DELETE_MULTIPLE_LEARNING_OBJECTS(username, learningObjectNames) {
         return `${environment.apiURL}/users/${encodeURIComponent(
@@ -157,7 +178,7 @@ export const LEGACY_USER_ROUTES = {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
         )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
-    },
+    }
 };
 
 export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
