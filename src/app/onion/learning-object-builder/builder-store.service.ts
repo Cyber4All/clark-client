@@ -523,7 +523,7 @@ export class BuilderStore {
     // grab the outcome that's about to be deleted
     const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
     // delete the outcome
-    this.outcomes.delete(outcome.serviceId);
+    this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
 
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
