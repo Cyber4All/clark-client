@@ -28,13 +28,10 @@ export const OUTCOME_ROUTES = {
      * Request to delete a learning outcome
      * @method DELETE
      * @auth required
-     * @param learningObjectId - The id of the learning object to delete the outcome from
-     * @param outcomeId - The id of the outcome to delete
+     * @param  outcomeId - The id of the learning object to delete the outcome from
      */
-    DELETE_OUTCOME(learningObjectId: string, outcomeId: string) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectId
-        )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
+    DELETE_OUTCOME(outcomeId: string) {
+        return `${environment.apiURL}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
     },
     /**
      * Request to get the learning outcomes of a learning object

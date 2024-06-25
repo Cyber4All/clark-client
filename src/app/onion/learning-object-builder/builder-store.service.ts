@@ -532,7 +532,6 @@ export class BuilderStore {
       this.serviceInteraction$.next(true);
       this.learningObjectService
         .deleteOutcome(
-          this.learningObject._id,
           (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || id,
         )
