@@ -87,21 +87,14 @@ export const LEGACY_USER_ROUTES = {
         // Onion
         let uri = `${environment.apiURL}/users/${encodeURIComponent(
             username,
-        )}/learning-objects?children=true&text=${encodeURIComponent(
-            query,
-        )}&${querystring.stringify(filters)}`;
-        if (childId) {
-            uri = uri + `&currentId=${encodeURIComponent(childId)}`;
-        }
+        )}/learning-objects?`;
         return uri;
     },
     GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
         // Onion Dashboard
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
-        )}/learning-objects?text=${encodeURIComponent(
-            query,
-        )}&${querystring.stringify(filters)}&draftsOnly=true`;
+        )}/learning-objects?draftsOnly=true`;
     },
     GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
         return `${environment.apiURL}/users/${encodeURIComponent(

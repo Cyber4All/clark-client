@@ -183,7 +183,7 @@ export class LearningObjectService {
     query?: string,
     childId?: string
   ): Promise<LearningObject[]> {
-    const route = LEGACY_USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters, query, childId);
+    const route = LEGACY_USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters, query);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -192,7 +192,8 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.map(object => new LearningObject(object));
+        console.log(response);
+        return response.objects.map(object => new LearningObject(object));
       });
   }
 
@@ -216,7 +217,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.map(object => new LearningObject(object));
+        return response.objects.map(object => new LearningObject(object));
       });
   }
 
