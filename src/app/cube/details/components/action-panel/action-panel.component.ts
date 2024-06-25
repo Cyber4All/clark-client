@@ -20,6 +20,7 @@ import { CollectionService } from 'app/core/collection-module/collections.servic
 import { Router } from '@angular/router';
 import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
+import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -138,7 +139,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
     if (download) {
       this.download(
-        this.learningObject.author.username,
         this.learningObject.id
       );
     }
@@ -183,7 +183,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   downloadRevised(download?: boolean) {
     if (download) {
       this.download(
-        this.learningObject.author.username,
         this.learningObject.id
       );
     }
@@ -192,13 +191,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   /**
    * Function to download the learning object zip file
    *
-   * @param author the learning objects author username
    * @param learningObjectId the unique mongo id of a learning object
    */
 
-  download(author: string, learningObjectId: string) {
+  download(learningObjectId: string) {
     this.toggleDownloadModal(true);
-    this.libraryService.learningObjectBundle(author, learningObjectId);
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
   }
 
   copyLink() {

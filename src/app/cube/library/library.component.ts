@@ -2,17 +2,16 @@ import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef, ViewChil
 import { LibraryService } from 'app/core/library-module/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Router } from '@angular/router';
-import { UserService } from 'app/core/user-module/user.service';
 import { LearningObjectRatings, RatingService } from 'app/core/rating-module/rating.service';
 import { NotificationsService } from 'app/core/notification-module/notification.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';
+import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
@@ -239,7 +238,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.currentIndex = index;
     this.downloading[index] = true;
     this.showDownloadModal = true;
-    this.libraryService.downloadBundle(object.id);
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(object.id));
     this.downloading[index] = false;
   }
 
