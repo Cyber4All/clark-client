@@ -128,6 +128,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
   }
 
   deleteOutcome(id: string) {
+    console.log('deleting outcome', id);
     this.store.execute(actions.DELETE_OUTCOME, { id }).then(() => {
       this.validateNewOutcome();
       if (this.iterableOutcomes.length) {

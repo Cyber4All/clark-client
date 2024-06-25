@@ -21,6 +21,14 @@ export class LearningOutcome {
     }
   }
 
+  private _serviceId!: string;
+  get serviceId(): string {
+    return this.serviceId;
+  }
+  set serviceId(serviceId: string) {
+    this._serviceId = serviceId;
+  }
+
   private _bloom!: string;
   /**
    * @property {string} bloom
@@ -130,6 +138,7 @@ export class LearningOutcome {
     this._verb = (taxonomy.taxons[this.bloom] as { verbs: string[] }).verbs[0];
     this._text = '';
     this._mappings = [];
+    this.serviceId = '';
 
     if (outcome) {
       this.copyOutcome(outcome);

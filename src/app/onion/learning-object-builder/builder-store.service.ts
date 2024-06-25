@@ -518,17 +518,19 @@ export class BuilderStore {
   }
 
   private deleteOutcome(id: string) {
+    console.log(id);
+    console.log('in builder delete outcome');
     // grab the outcome that's about to be deleted
     const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
-
     // delete the outcome
-    this.outcomes.delete(id);
+    this.outcomes.delete(outcome.serviceId);
     this.outcomeEvent.next(this.outcomes);
 
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
-    if (!checkIfUUID(id)) {
+    console.log('before the if');
+    if (!checkIfUUID(outcome.serviceId)) {
       this.serviceInteraction$.next(true);
       this.learningObjectService
         .deleteOutcome(
@@ -547,7 +549,7 @@ export class BuilderStore {
     params: { verb?: string | undefined; bloom?: string | undefined; text?: string }
   ) {
     const outcome = this.outcomes.get(id);
-
+    console.log(outcome);
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
       outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
@@ -574,7 +576,7 @@ export class BuilderStore {
       },
       true
     );
-
+    console.log(outcome);
     return outcome;
   }
 
@@ -1045,6 +1047,7 @@ export class BuilderStore {
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
 
+
     // if delay is true, combine the new properties with the object in the cache subject
     // the cache subject will automatically call this function again without a delay property
     if (delay) {
@@ -1061,6 +1064,7 @@ export class BuilderStore {
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
 
+      console.log(newValue); 
       if (this.newOutcomes.get(newValue.id)) {
         // this is a new outcome that hasn't been saved, create it
         this.createLearningOutcome(newValue);
@@ -1098,6 +1102,7 @@ export class BuilderStore {
     this.outcomeService
       .addLearningOutcome(this.learningObject._id, newOutcome)
       .then((serviceId: string) => {
+        console.log(serviceId);
         this.serviceInteraction$.next(false);
         // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
         this.newOutcomes.delete(newOutcome.id);
@@ -1107,6 +1112,7 @@ export class BuilderStore {
         } = this.outcomes.get(newOutcome.id);
         // store the temporary id in the outcome so that the page component know's which outcome to keep focused
         outcome.serviceId = serviceId;
+        console.log(outcome.serviceId);
         // re-enter outcome into map
         this.outcomes.set(newOutcome.id, outcome);
         this.outcomeEvent.next(this.outcomes);
