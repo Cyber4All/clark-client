@@ -111,7 +111,6 @@ export class OutcomeComponent implements OnInit {
   }
 
   emitDeletion() {
-    console.log('emitting deletion');
     this.deleted.emit();
   }
 

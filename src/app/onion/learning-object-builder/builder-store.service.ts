@@ -546,7 +546,6 @@ export class BuilderStore {
     params: { verb?: string | undefined; bloom?: string | undefined; text?: string }
   ) {
     const outcome = this.outcomes.get(id);
-    console.log(outcome);
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
       outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
@@ -573,7 +572,6 @@ export class BuilderStore {
       },
       true
     );
-    console.log(outcome);
     return outcome;
   }
 
@@ -1061,7 +1059,6 @@ export class BuilderStore {
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
 
-      console.log(newValue);
       if (this.newOutcomes.get(newValue.id)) {
         // this is a new outcome that hasn't been saved, create it
         this.createLearningOutcome(newValue);
@@ -1099,7 +1096,6 @@ export class BuilderStore {
     this.outcomeService
       .addLearningOutcome(this.learningObject._id, newOutcome)
       .then((serviceId: string) => {
-        console.log(serviceId);
         this.serviceInteraction$.next(false);
         // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
         this.newOutcomes.delete(newOutcome.id);
@@ -1109,7 +1105,6 @@ export class BuilderStore {
         } = this.outcomes.get(newOutcome.id);
         // store the temporary id in the outcome so that the page component know's which outcome to keep focused
         outcome.serviceId = serviceId;
-        console.log(outcome.serviceId);
         // re-enter outcome into map
         this.outcomes.set(newOutcome.id, outcome);
         this.outcomeEvent.next(this.outcomes);
