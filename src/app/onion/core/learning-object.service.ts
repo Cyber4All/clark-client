@@ -518,15 +518,13 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   addFileMeta({
-    username,
     objectId,
     files
   }: {
-    username: string;
     objectId: string;
     files: FileUploadMeta[];
   }): Promise<string[]> {
-    const route = FILE_ROUTES.UPLOAD_FILE_META(username, objectId);
+    const route = FILE_ROUTES.UPLOAD_FILE_META(objectId);
     return this.handleFileMetaRequests(files, route);
   }
 
