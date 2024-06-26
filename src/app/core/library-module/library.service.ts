@@ -112,14 +112,12 @@ export class LibraryService {
    * @param learningObjectId the mongo id of the learning object
    */
   learningObjectBundle(
-    author: string,
     learningObjectId: string
   ) {
     // Show loading spinner
     this._loading$.next(true);
     // Url route for bundling
     const bundle = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
-      author,
       learningObjectId
     );
     /**
