@@ -21,6 +21,12 @@ export class LearningOutcome {
     }
   }
 
+  /**
+   * @property {string} serviceId
+   *      the actual outcome ID stored in the database
+   *      this field is only populated if an outcome is completely created and stored in the database
+   *      used to delete an outcome from the database
+   */
   private _serviceId!: string;
   get serviceId(): string {
     return this.serviceId;
