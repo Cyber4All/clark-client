@@ -1106,7 +1106,6 @@ export class BuilderStore {
         } = this.outcomes.get(newOutcome.id);
         // store the temporary id in the outcome so that the page component know's which outcome to keep focused
         outcome.serviceId = serviceId;
-        console.log(outcome.serviceId);
         // re-enter outcome into map
         this.outcomes.set(newOutcome.id, outcome);
         this.outcomeEvent.next(this.outcomes);
