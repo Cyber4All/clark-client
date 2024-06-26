@@ -24,11 +24,11 @@ export class ChangelogService {
    * @memberof ChangelogService
    */
   createChangelog(learningObjectCuid: string, changelog: string): Promise<{}> {
-    const changelogEntries = {
+    const changelogEntries = [{
       authorId: this.authService.user.id,
       date: new Date(),
       text: changelog
-    };
+    }];
     return this.http
       .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(learningObjectCuid), changelogEntries, { responseType: 'text' })
       .pipe(
