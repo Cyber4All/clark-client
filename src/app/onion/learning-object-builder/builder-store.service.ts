@@ -1059,7 +1059,6 @@ export class BuilderStore {
       // clear the cache here so that new requests start a new cache
       this.outcomeCache$.next(undefined);
 
-      console.log(newValue);
       if (this.newOutcomes.get(newValue.id)) {
         // this is a new outcome that hasn't been saved, create it
         this.createLearningOutcome(newValue);
