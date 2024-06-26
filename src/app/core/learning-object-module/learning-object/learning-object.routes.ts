@@ -68,13 +68,10 @@ export const LEGACY_COLLECTIONS_ROUTES = {
      * Request to update the collection of a learning object
      * @method PATCH
      * @auth required
-     * @param username - The username of the author of the learning object
      * @param learningObjectCuid - The cuid of the learning object to update
      */
-    UPDATE_LEARNING_OBJECT_COLLECTION(username: string, learningObjectCuid: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(
+    UPDATE_LEARNING_OBJECT_COLLECTION(learningObjectCuid: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
             learningObjectCuid
         )}/collection`;
     },
