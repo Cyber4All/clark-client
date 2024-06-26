@@ -251,7 +251,7 @@ export class BuilderStore {
     const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
       // eslint-disable-next-line eqeqeq
       if (revisionId == 0) {
-        revisionId = await this.learningObjectService.createRevision(id);
+        revisionId = await this.learningObjectService.createRevision(cuid);
       }
 
       return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
