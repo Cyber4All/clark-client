@@ -38,16 +38,9 @@ export class ChangelogService {
    * @returns {Promise<{}>}
    * @memberof ChangelogService
    */
-  fetchAllChangelogs(params: {
-    userId: string,
-    learningObjectCuid: string,
-    minusRevision?: boolean,
-  }): Promise<any> {
+  getAllChangelogs(learningObjectCuid: string): Promise<any> {
     return this.http
-      .get(CHANGELOG_ROUTES.FETCH_CHANGELOGS({
-        learningObjectCuid: params.learningObjectCuid,
-        minusRevision: params.minusRevision,
-      }))
+      .get(CHANGELOG_ROUTES.GET_CHANGELOGS(learningObjectCuid))
       .pipe(
 
         catchError(this.handleError)

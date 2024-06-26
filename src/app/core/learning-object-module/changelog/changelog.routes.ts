@@ -19,11 +19,9 @@ export const CHANGELOG_ROUTES = {
      * @auth required
      * @param learningObjectId - The id of the Learning Object
      */
-    FETCH_CHANGELOGS(params: {learningObjectCuid: string, minusRevision?: boolean }) {
+    GET_CHANGELOGS(learningObjectCuid: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            params.learningObjectCuid
-        )}/changelogs?minusRevision=${encodeURIComponent(
-            params.minusRevision
-        )}`;
+            learningObjectCuid
+        )}/changelogs`;
     }
 };
