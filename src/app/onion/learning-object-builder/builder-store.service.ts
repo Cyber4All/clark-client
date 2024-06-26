@@ -573,7 +573,6 @@ export class BuilderStore {
       },
       true
     );
-    console.log(outcome);
     return outcome;
   }
 
