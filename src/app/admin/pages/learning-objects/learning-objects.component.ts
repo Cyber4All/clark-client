@@ -348,7 +348,7 @@ export class LearningObjectsComponent
      * @param l Learning Object to be selected
      */
   selectLearningObject(l: LearningObject) {
-    this.selected.set(l.id, l);
+    this.selected.set(l._id, l);
     this.selectedLearningObjects.push(l);
     this.cd.detectChanges();
 
@@ -366,7 +366,7 @@ export class LearningObjectsComponent
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {
-    this.selected.delete(l.id);
+    this.selected.delete(l._id);
     const index = this.selectedLearningObjects.indexOf(l);
     if (index > -1) {
       this.selectedLearningObjects.splice(index, 1);

@@ -160,16 +160,11 @@ export class LearningObjectService {
   /**
    * Checks to see if a learning object has children
    *
-   * @param username The Username of the user
    * @param learningObjectId The object id of the learning object
    * @returns True if the learning object has children, false otherwise
    */
-  async doesLearningObjectHaveChildren(username: string, learningObjectId: string): Promise<boolean> {
-    const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(username)
-      }/learning-objects/${encodeURIComponent(
-        learningObjectId
-      )}/children`;
-
+  async doesLearningObjectHaveChildren(learningObjectId: string): Promise<boolean> {
+    const childrenUri = LEARNING_OBJECT_ROUTES.GET_CHILDREN(learningObjectId);
     const hasChildren = await this.http.get(
       childrenUri,
       { headers: this.headers, withCredentials: true }

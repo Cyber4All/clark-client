@@ -165,7 +165,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   unreleaseLearningObject() {
     this.refactoredLearningObjectService
       .updateLearningObjectStatus(
-        this.learningObject.id,
+        this.learningObject._id,
         LearningObject.Status.PROOFING
       )
       .then(() => {
@@ -188,7 +188,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     const parentUri = `${environment.apiURL}/users/${encodeURIComponent(
       this.learningObject.author.username
     )}/learning-objects/${encodeURIComponent(
-      this.learningObject.id
+      this.learningObject._id
     )}/parents`;
 
     await this.http.get(
@@ -208,7 +208,7 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Checks if the learning object has any children
    */
   async checkForChildren() {
-    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.author.username, this.learningObject.id);
+    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject._id);
   }
 
   /**
@@ -229,7 +229,7 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   goToUrl(url) {
     if (url === 'builder') {
-      window.open(`/onion/learning-object-builder/${this.learningObject.id}`, '_blank');
+      window.open(`/onion/learning-object-builder/${this.learningObject._id}`, '_blank');
     } else if (url === 'contact') {
       window.open(`/users/${this.learningObject.author.username}`);
     } else if (url === 'details') {
@@ -249,7 +249,7 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   releaseHierarchy() {
     this.toggleReleasingHierarchy(true);
-    this.hierarchyService.releaseHierarchy(this.learningObject.id)
+    this.hierarchyService.releaseHierarchy(this.learningObject._id)
       .then(() => {
         this.toggleReleasingHierarchy(false);
         location.reload();

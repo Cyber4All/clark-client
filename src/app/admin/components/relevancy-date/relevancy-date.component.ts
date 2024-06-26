@@ -34,7 +34,7 @@ export class RelevancyDateComponent implements OnInit {
   }
 
   async setDate() {
-    await this.relevancyService.setNextCheckDate(this.learningObject.author.username, this.learningObject.id, this.selected);
+    await this.relevancyService.setNextCheckDate(this.learningObject.author.username, this.learningObject._id, this.selected);
     this.close.emit();
   }
 
