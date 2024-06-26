@@ -546,7 +546,6 @@ export class BuilderStore {
     params: { verb?: string | undefined; bloom?: string | undefined; text?: string }
   ) {
     const outcome = this.outcomes.get(id);
-    console.log(outcome);
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
       outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
