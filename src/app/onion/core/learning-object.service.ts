@@ -284,7 +284,6 @@ export class LearningObjectService {
    * @param outcomeId The outcome Id
    */
   deleteOutcome(outcomeId: string): Promise<any> {
-    console.log('here');
     return this.http
       .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
       .pipe(
