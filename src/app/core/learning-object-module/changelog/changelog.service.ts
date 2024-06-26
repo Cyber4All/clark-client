@@ -3,28 +3,35 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CHANGELOG_ROUTES } from './changelog.routes';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChangelogService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService
+  ) { }
 
   /**
    * Create a new changelog for the given learning object
    *
-   * @param {string} userId the id of the learning object author
    * @param {string} learningObjectId the id of the learning object
    * @param {string} changelog the text body of the changelog
    * @returns {Promise<{}>}
    * @memberof ChangelogService
    */
-  createChangelog(userId: string, learningObjectCuid: string, changelog: string): Promise<{}> {
+  createChangelog(learningObjectCuid: string, changelog: string): Promise<{}> {
+    const changelogEntries = {
+      authorId: this.authService.user.id,
+      date: new Date(),
+      text: changelog
+    };
     return this.http
-      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(learningObjectCuid), { changelogText: changelog }, { responseType: 'text' })
+      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(learningObjectCuid), changelogEntries, { responseType: 'text' })
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();

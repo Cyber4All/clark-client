@@ -5,7 +5,6 @@ export const CHANGELOG_ROUTES = {
      * Request to create a new changelog for a learning object
      * @method POST
      * @auth required
-     * @param userId - The id of the learning object author
      * @param learningObjectCuid - The cuid of the learning object
      */
     CREATE_CHANGELOG(learningObjectCuid: string) {
