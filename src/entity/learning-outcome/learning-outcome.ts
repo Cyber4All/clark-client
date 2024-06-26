@@ -29,7 +29,7 @@ export class LearningOutcome {
    */
   private _serviceId!: string;
   get serviceId(): string {
-    return this.serviceId;
+    return this._serviceId;
   }
   set serviceId(serviceId: string) {
     this._serviceId = serviceId;
