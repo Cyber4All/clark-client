@@ -45,11 +45,18 @@ export class ChangelogService {
    * @returns {Promise<{}>}
    * @memberof ChangelogService
    */
-  getAllChangelogs(learningObjectCuid: string): Promise<any> {
+  getAllChangelogs(
+    learningObjectCuid: string,
+    minusRevision?: boolean,
+    recent?: boolean
+  ): Promise<any> {
     return this.http
-      .get(CHANGELOG_ROUTES.GET_CHANGELOGS(learningObjectCuid))
+      .get(CHANGELOG_ROUTES.GET_CHANGELOGS(
+        learningObjectCuid,
+        minusRevision,
+        recent
+      ))
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();

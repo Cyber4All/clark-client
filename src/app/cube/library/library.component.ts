@@ -279,7 +279,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
     if (!this.openChangelogModal) {
       this.loadingChangelogs = true;
       try {
-        this.changelogs = await this.changelogService.getAllChangelogs(notification.attributes.cuid);
+        this.changelogs = await this.changelogService.getAllChangelogs(
+          notification.attributes.cuid,
+          true, // minusRevision
+        );
       } catch (error) {
         let errorMessage;
 

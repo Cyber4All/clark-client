@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
-import { takeUntil } from 'rxjs/operators';
+import { min, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { UserService } from 'app/core/user-module/user.service';
@@ -371,9 +371,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.loadingChangelogs = true;
       try {
         if (this.revisedVersion) {
-          this.changelogs = await this.changelogService.getAllChangelogs(this.learningObject.cuid);
+          this.changelogs = await this.changelogService.getAllChangelogs(
+            this.learningObject.cuid,
+            false, //minusRevision
+          );
         } else {
-          this.changelogs = await this.changelogService.getAllChangelogs(this.learningObject.cuid);
+          this.changelogs = await this.changelogService.getAllChangelogs(
+            this.learningObject.cuid,
+            true, //minusRevision
+          );
         }
       } catch (error) {
         let errorMessage;

@@ -18,9 +18,17 @@ export const CHANGELOG_ROUTES = {
      * @auth required
      * @param learningObjectId - The id of the Learning Object
      */
-    GET_CHANGELOGS(learningObjectCuid: string) {
+    GET_CHANGELOGS(
+        learningObjectCuid: string,
+        minusRevision?: boolean,
+        recent?: boolean
+    ) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
             learningObjectCuid
-        )}/changelogs`;
+        )}/changelogs?minusRevision=${encodeURIComponent(
+            minusRevision ?? false
+        )}&recent=${encodeURIComponent(
+            recent ?? false
+        )}`;
     }
 };
