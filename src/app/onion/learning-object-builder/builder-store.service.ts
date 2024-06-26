@@ -1096,7 +1096,6 @@ export class BuilderStore {
     this.outcomeService
       .addLearningOutcome(this.learningObject._id, newOutcome)
       .then((serviceId: string) => {
-        console.log(serviceId);
         this.serviceInteraction$.next(false);
         // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
         this.newOutcomes.delete(newOutcome.id);
