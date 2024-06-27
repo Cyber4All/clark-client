@@ -108,7 +108,7 @@ export class ListComponent {
    * @param l Learning Object to be selected
    */
   selectLearningObject(l: LearningObject) {
-    this.selected.set(l.id, l );
+    this.selected.set(l._id, l );
     this.cd.detectChanges();
 
     if (
@@ -125,7 +125,7 @@ export class ListComponent {
    * @param l Learning Object to be deselected
    */
   deselectLearningObject(l: LearningObject) {
-    this.selected.delete(l.id);
+    this.selected.delete(l._id);
     this.cd.detectChanges();
 
     if (this.selected.size < this.learningObjects.length && this.allSelected) {

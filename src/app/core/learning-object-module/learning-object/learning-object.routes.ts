@@ -20,6 +20,10 @@ export const LEARNING_OBJECT_ROUTES = {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/status`;
     },
 
+    /**
+     * Path to create a new learning object
+     * @returns LearningObject
+     */
     CREATE_LEARNING_OBJECT() {
         return `${environment.apiURL}/learning-objects`;
     },
@@ -40,6 +44,14 @@ export const LEARNING_OBJECT_ROUTES = {
      */
     REMOVE_CHILD(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
+    },
+    /**
+     * Path to update a learning object
+     * @param learningObjectId the id of the learning object
+     * @returns void
+     */
+    UPDATE_LEARNING_OBJECT(learningObjectId) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
     },
 };
 

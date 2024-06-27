@@ -72,9 +72,9 @@ export class EditorialActionPadComponent implements OnInit {
   editLearningObject() {
     const userOrAdminRoute = (this.userIsAuthor) ? 'onion' : 'admin';
     if (this.revisedLearningObject) {
-      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.revisedLearningObject.id]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.revisedLearningObject._id]);
     } else {
-      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.learningObject.id]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.learningObject._id]);
     }
   }
 
@@ -85,7 +85,7 @@ export class EditorialActionPadComponent implements OnInit {
     await this.learningObjectService
       .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
-        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
+        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject._id}`]);
       }).catch(e => {
         this.toaster.error('Error', e.error.message);
       });
