@@ -520,7 +520,6 @@ export class BuilderStore {
   private deleteOutcome(id: string) {
     // grab the outcome that's about to be deleted
     const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
-
     // delete the outcome
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
@@ -528,7 +527,7 @@ export class BuilderStore {
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
-    if (!checkIfUUID(id)) {
+    if (!checkIfUUID(outcome.serviceId) && outcome.serviceId) {
       this.serviceInteraction$.next(true);
       this.learningObjectService
         .deleteOutcome(
@@ -547,7 +546,6 @@ export class BuilderStore {
     params: { verb?: string | undefined; bloom?: string | undefined; text?: string }
   ) {
     const outcome = this.outcomes.get(id);
-
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
       outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
@@ -574,7 +572,6 @@ export class BuilderStore {
       },
       true
     );
-
     return outcome;
   }
 
@@ -1044,6 +1041,7 @@ export class BuilderStore {
     // retrieve current cached Map from storage and get the current cached value for given id
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
+
 
     // if delay is true, combine the new properties with the object in the cache subject
     // the cache subject will automatically call this function again without a delay property
