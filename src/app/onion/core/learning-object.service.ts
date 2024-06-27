@@ -479,8 +479,8 @@ export class LearningObjectService {
       return this.http
         .patch(
           removeRoute,
-          { id: children[0] },
-          { withCredentials: true, responseType: 'text' }
+          { childObjectId: children[0] },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
@@ -491,8 +491,8 @@ export class LearningObjectService {
       return this.http
         .post(
           addRoute,
-          { children },
-          { withCredentials: true, responseType: 'text' }
+          { childrenIds: children },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 

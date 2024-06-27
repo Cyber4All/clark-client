@@ -134,6 +134,7 @@ export class ScaffoldComponent implements OnInit {
    * @param index of the LO selected for deletion
    */
   deleteButton(index) {
+    console.log(index);
     this.deleteIndex = index;
     this.childrenConfirmationMessage = `Just to confirm, you want to remove '
         ${this.children[index].name}' as a child of '${this.learningObject.name
@@ -145,20 +146,25 @@ export class ScaffoldComponent implements OnInit {
   /**
    * Sends request to update the children array of the Learning Object
    */
-  deleteChild() {
+  async deleteChild() {
     this.toggleConfirmationModal(false);
     // remove the child that was selected to be deleted
+    console.log(this.deleteIndex);
     this.children.splice(this.deleteIndex, 1);
 
     // set childrenIDs equal to the children array
     this.childrenIDs = [];
     this.children.forEach(kid => this.childrenIDs.push(kid.id));
-    this.store.setChildren(this.childrenIDs, true);
+    console.log(this.childrenIDs);
+    await this.store.setChildren(this.childrenIDs, true);
 
     // if deleted child was last child toggle off editContent because there is no longer content to edit
     if (this.children.length === 0) {
       this.editContent = false;
     }
+
+    // get the children again to get current childrens array
+    await this.store.getChildren();
   }
   /**
    * Toggles the confirmation modal based on the boolean val
