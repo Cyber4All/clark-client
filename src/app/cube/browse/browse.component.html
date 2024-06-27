@@ -22,7 +22,7 @@
         <div class="results-options" id="results-options">
           <button *ngIf="isMobile" #filterMenuButtonElement aria-label="Filter search results" class="button sort" (activate)="toggleFilters()">{{ copy.FILTERS }} <i class="far fa-sliders-h"></i></button>
           <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria" tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
-          <a class="search-CARD" id="search-CARD" href="https://caeresource.directory/home/browse?q={{ query?.text }}" target=_blank *ngIf="query?.text !== ''">Search for non-curricular resources</a>
+          <a class="search-CARD" id="search-CARD" href="https://caeresource.directory/home/browse?q={{ query?.text }}" target=_blank *ngIf="query?.text?.length > 0">Search for non-curricular resources</a>
           <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">Sort By: {{ sortText }}<i class="far fa-angle-down"></i></button>
         </div>
         <!-- Filter Context Menu -->
