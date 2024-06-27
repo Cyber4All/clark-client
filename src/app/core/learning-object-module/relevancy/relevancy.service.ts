@@ -25,13 +25,12 @@ export class RelevancyService {
   /**
    * Sets the nextCheck of a learning object
    *
-   * @param username Username of the author
    * @param learningObjectId learningObjectId
    * @param date The date that nextCheck needs to updated to
    */
-  async setNextCheckDate(username: string, learningObjectId: string, date: Date): Promise<any> {
+  async setNextCheckDate(learningObjectId: string, date: Date): Promise<any> {
     return this.http
-      .patch(RELEVANCY_ROUTES.UPDATE_RELEVANCY_CHECK_DATE(username, learningObjectId),
+      .patch(RELEVANCY_ROUTES.UPDATE_RELEVANCY_CHECK_DATE(learningObjectId),
         { date },
         {
           headers: this.headers,
