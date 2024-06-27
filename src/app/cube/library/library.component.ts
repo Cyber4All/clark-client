@@ -239,7 +239,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.currentIndex = index;
     this.downloading[index] = true;
     this.showDownloadModal = true;
-    this.libraryService.learningObjectBundle(object.author.username, object._id);
+    this.libraryService.learningObjectBundle(object._id);
     this.downloading[index] = false;
   }
 

@@ -21,10 +21,8 @@ export const BUNDLING_ROUTES = {
      * @auth required
      * @param learningObjectId - The id of the learning object to bundle
      */
-    BUNDLE_LEARNING_OBJECT(username: string, learningObjectId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(
+    BUNDLE_LEARNING_OBJECT(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
             learningObjectId
         )}/bundle`;
     },
