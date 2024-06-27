@@ -27,8 +27,8 @@ export const METRIC_ROUTES = {
 
   /**
    * Gets the stats for all learning objects
-   * @returns LearningObjectStats object containing the lengths, statuses,
-   *  and blooms distribution for all learning objects
+   * @returns LearningObjectStats object containing the lengths, statuses, downloads,
+   *  and bloom's distribution for all learning objects
    */
   GET_LEARNING_OBJECT_STATS() {
     return `${environment.apiURL}/learning-objects/stats`;
