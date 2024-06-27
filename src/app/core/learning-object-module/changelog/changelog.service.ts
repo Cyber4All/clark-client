@@ -30,7 +30,7 @@ export class ChangelogService {
       text: changelog
     }];
     return this.http
-      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(learningObjectCuid), changelogEntries, { responseType: 'text' })
+      .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(learningObjectCuid), {changelogEntries: changelogEntries}, { responseType: 'text' })
       .pipe(
         catchError(this.handleError)
       )
