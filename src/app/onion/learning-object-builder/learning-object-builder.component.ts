@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavbarService } from '../../core/navbar.service';
+import { NavbarService } from '../../core/client-module/navbar.service';
 import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -18,10 +18,10 @@ import {
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from '../core/learning-object.service';
-import { HistorySnapshot, HistoryService } from 'app/core/history.service';
+import { HistorySnapshot, HistoryService } from 'app/core/client-module/history.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -150,7 +150,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
                 this.router.navigate(['onion/dashboard']);
               } else if (revision) {
                 this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.version);
+                  learningObject.author.username, learningObject._id, learningObject.version);
               } else {
                 this.setBuilderMode(learningObject);
               }

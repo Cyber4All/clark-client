@@ -9,8 +9,8 @@ import {
   Input,
 } from '@angular/core';
 import { User } from '@entity';
-import { UserService } from 'app/core/user.service';
-import { AuthService } from 'app/core/auth.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { titleCase } from 'title-case';

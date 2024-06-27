@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { UsageStats } from '../../../shared/types/usage-stats';
-import { UsageStatsService } from '../../../core/usage-stats/usage-stats.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 @Component({
   selector: 'clark-about-clark',
@@ -38,17 +38,17 @@ export class AboutClarkComponent implements OnInit {
     }
   };
 
-  constructor(private statsService: UsageStatsService) { }
+  constructor(private metricService: MetricService) { }
 
   ngOnInit() {
-    this.statsService.getLearningObjectStats().then(stats => {
+    this.metricService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
       this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
       this.usageStats.objects.collections = stats.collections;
       this.objectStatsLoaded = true;
     });
-    this.statsService.getUserStats().then(stats => {
+    this.metricService.getUserMetrics().then(stats => {
       this.usageStats.users.accounts = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
       this.userStatsLoaded = true;

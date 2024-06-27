@@ -3,12 +3,12 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserSearchWrapperComponent } from './user-search-wrapper.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { CookieModule } from 'ngx-cookie';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Collection } from 'app/core/collection.service';
+import { Collection } from 'app/core/collection-module/collections.service';
 
 describe('UserSearchWrapperComponent', () => {
   let component: UserSearchWrapperComponent;

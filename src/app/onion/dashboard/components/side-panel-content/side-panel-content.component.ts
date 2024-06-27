@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { LearningObject } from '@entity';
 import { Subject } from 'rxjs';
-import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 import { take, takeUntil, filter } from 'rxjs/operators';
 import { Router, NavigationStart } from '@angular/router';
 import { translateDown, sidePanelEnter, buttonWipeRight } from './side-panel-content.animations';
@@ -11,7 +11,7 @@ import { translateDown, sidePanelEnter, buttonWipeRight } from './side-panel-con
   selector: 'clark-side-panel-content',
   templateUrl: './side-panel-content.component.html',
   styleUrls: ['./side-panel-content.component.scss'],
-  animations: [ translateDown, sidePanelEnter, buttonWipeRight ]
+  animations: [translateDown, sidePanelEnter, buttonWipeRight]
 })
 export class SidePanelContentComponent implements OnChanges, OnDestroy {
   private isDestroyed$ = new Subject<void>();
@@ -97,7 +97,7 @@ export class SidePanelContentComponent implements OnChanges, OnDestroy {
     return new Promise((resolve, reject) => {
       this.uriRetrieverService.getLearningObject({
         author: username,
-        cuidInfo: { cuid, version},
+        cuidInfo: { cuid, version },
       }, ['metrics', 'ratings']).pipe(
         take(1),
       ).subscribe(object => {

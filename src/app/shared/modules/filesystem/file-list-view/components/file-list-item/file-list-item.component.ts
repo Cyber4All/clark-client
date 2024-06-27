@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
 import { getIcon } from 'app/shared/modules/filesystem/file-icons';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Component({
   selector: 'clark-file-list-item',

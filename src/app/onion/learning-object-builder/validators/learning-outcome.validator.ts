@@ -21,7 +21,9 @@ export class LearningOutcomeErrorGroup {
   }
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LearningOutcomeValidator {
   submissionMode: boolean;
   errors = new LearningOutcomeErrorGroup();

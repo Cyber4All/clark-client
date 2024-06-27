@@ -1,8 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ProfileService } from 'app/core/profiles.service';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { BehaviorSubject } from 'rxjs';
-import { AuthService } from 'app/core/auth.service';
 
 @Component({
   selector: 'clark-profile-header',
@@ -43,7 +41,6 @@ export class ProfileHeaderComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private profileService: ProfileService,
   ) {}
 
   async ngOnInit() {
@@ -76,7 +73,7 @@ export class ProfileHeaderComponent implements OnInit {
    * Method to update user info from service after changes have been made
    */
   async updateInfo() {
-    this.user = await this.profileService.fetchUserProfile(this.user.username);
+    this.user = await this.userService.fetchUserProfile(this.user.username);
   }
 
   /**

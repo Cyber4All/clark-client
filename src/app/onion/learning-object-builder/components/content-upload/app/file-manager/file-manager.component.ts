@@ -157,7 +157,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     };
 
     if (!(file instanceof DirectoryNode)) {
-      edit.id = file.id;
+      edit.id = file._id;
     } else {
       edit.path = file.getPath();
       edit.isFolder = true;
@@ -221,7 +221,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
     let fileIds = [];
     for (const file of files) {
-      fileIds.push(file.id);
+      fileIds.push(file._id);
     }
     for (const child of children) {
       fileIds = [...fileIds, ...this.getFileIds(child)];

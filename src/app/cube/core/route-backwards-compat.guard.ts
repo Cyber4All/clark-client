@@ -24,7 +24,6 @@ export class RouteBackwardsCompatGuard implements CanActivate {
           .toPromise().then(cuid => {
           return this.router.createUrlTree([`/details/${next.params.username}/${cuid}`]);
         }).catch(err => {
-          console.error(err);
           this.toaster.error('Error!', `Unable to get Learning Object details.`);
           // TODO: Route to Not Found page instead of home
           return this.router.createUrlTree(['']);

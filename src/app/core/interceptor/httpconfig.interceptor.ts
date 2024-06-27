@@ -7,10 +7,12 @@ import {
 } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie';
+import { CookieService } from 'ngx-cookie-service';
 import { environment } from '@env/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class HttpConfigInterceptor implements HttpInterceptor {
   private token: string;
   constructor(private cookie: CookieService) {

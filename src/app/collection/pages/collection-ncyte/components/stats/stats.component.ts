@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CollectionService } from 'app/core/collection.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 @Component({
   selector: 'clark-ncyte-stats',
@@ -17,7 +17,7 @@ export class StatsComponent implements OnInit {
   objSaved: number;
   authorCollection: number;
 
-  constructor(private collectionService: CollectionService) { }
+  constructor(private metricService: MetricService) { }
 
   async ngOnInit() {
     switch (this.collectionName) {
@@ -29,7 +29,7 @@ export class StatsComponent implements OnInit {
         break;
     }
 
-    await this.collectionService.getCollectionMetricsData(this.collectionName).then((res: any ) => {
+    await this.metricService.getCollectionMetrics(this.collectionName).then((res: any) => {
       this.objDownload = res.metrics.downloads;
       this.objSaved = res.metrics.saves;
       this.objReleased = res.metrics.statusMetrics[0].released;

@@ -5,7 +5,7 @@ import {
   ViewChild,
   Input
 } from '@angular/core';
-import { MessagesService } from 'app/core/messages.service';
+import { MessagesService } from 'app/core/utility-module/messages.service';
 @Component({
   selector: 'onion-column-wrapper',
   templateUrl: './column-wrapper.component.html',
@@ -22,7 +22,7 @@ export class ColumnWrapperComponent implements OnInit {
   columnOffset: number;
   columnHeight: number;
 
-  constructor(private messagesService: MessagesService) {}
+  constructor(private messagesService: MessagesService) { }
 
   async ngOnInit() {
     try {
@@ -40,7 +40,7 @@ export class ColumnWrapperComponent implements OnInit {
       this.columnOffset -
       (this.messageBar
         ? (document.querySelector('clark-message .wrapper') as HTMLElement)
-            .offsetHeight
+          .offsetHeight
         : 0) +
       30; // this +30 offsets the wrappers -30 offset
 

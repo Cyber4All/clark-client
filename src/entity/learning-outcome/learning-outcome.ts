@@ -21,6 +21,20 @@ export class LearningOutcome {
     }
   }
 
+  /**
+   * @property {string} serviceId
+   *      the actual outcome ID stored in the database
+   *      this field is only populated if an outcome is completely created and stored in the database
+   *      used to delete an outcome from the database
+   */
+  private _serviceId!: string;
+  get serviceId(): string {
+    return this._serviceId;
+  }
+  set serviceId(serviceId: string) {
+    this._serviceId = serviceId;
+  }
+
   private _bloom!: string;
   /**
    * @property {string} bloom
@@ -130,6 +144,7 @@ export class LearningOutcome {
     this._verb = (taxonomy.taxons[this.bloom] as { verbs: string[] }).verbs[0];
     this._text = '';
     this._mappings = [];
+    this.serviceId = '';
 
     if (outcome) {
       this.copyOutcome(outcome);

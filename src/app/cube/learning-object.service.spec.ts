@@ -36,7 +36,7 @@ describe('LearningObjectService', () => {
     });
   }));
   it('should return a single learning object', inject([LearningObjectService], (service: LearningObjectService) => {
-    return service.getLearningObject('nvisal1', 'Test Learning Object').then(val => {
+    return service.getLearningObject('Test Learning Object').then(val => {
       expect(val).toBeTruthy();
     });
   }));

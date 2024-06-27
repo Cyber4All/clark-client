@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CollectionService } from 'app/core/collection.service';
-import { Collection } from '../../core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
+import { Collection } from '../../core/collection-module/collections.service';
 
 @Component({
   selector: 'clark-collections',

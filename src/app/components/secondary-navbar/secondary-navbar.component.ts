@@ -1,7 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Topic } from '../../../entity';
-import { NavbarDropdownService } from '../../core/navBarDropdown.service';
-import { UtilityService } from 'app/core/utility.service';
+import { NavbarDropdownService } from '../../core/client-module/navBarDropdown.service';
+import { UtilityService } from '../../core/utility-module/utility.service';
 
 @Component({
   selector: 'clark-secondary-navbar',

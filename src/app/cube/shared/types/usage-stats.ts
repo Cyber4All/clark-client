@@ -18,12 +18,13 @@ export interface LearningObjectStats {
     evaluate_and_synthesize: number;
   };
 }
-export interface UserStats {
+
+export interface UserMetrics {
   accounts: number;
   organizations: number;
 }
 
 export interface UsageStats {
   objects: LearningObjectStats;
-  users: UserStats;
+  users: UserMetrics;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CollectionService } from '../../../core/collection.service';
+import { CollectionService } from '../../../core/collection-module/collections.service';
 import { LearningObject, Collection } from '@entity';
 import { titleCase } from 'title-case';
 
