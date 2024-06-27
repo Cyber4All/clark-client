@@ -21,6 +21,18 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     * Request to update the collection of a learning object
+     * @method PATCH
+     * @auth required
+     * @param learningObjectCuid - The cuid of the learning object to update
+     */
+        UPDATE_LEARNING_OBJECT_COLLECTION(learningObjectCuid: string) {
+            return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+                learningObjectCuid
+            )}/collection`;
+        },
+
+    /**
      * Path to create a new learning object
      * @returns LearningObject
      */
@@ -64,21 +76,6 @@ export const LEGACY_COLLECTIONS_ROUTES = {
     ADD_LEARNING_OBJECT_TO_COLLECTION(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/collections`;
     },
-    /**
-     * Request to update the collection of a learning object
-     * @method PATCH
-     * @auth required
-     * @param username - The username of the author of the learning object
-     * @param learningObjectCuid - The cuid of the learning object to update
-     */
-    UPDATE_LEARNING_OBJECT_COLLECTION(username: string, learningObjectCuid: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectCuid
-        )}/collection`;
-    },
-
     GET_COLLECTION_CURATORS(name: string) {
         return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
     },
