@@ -31,6 +31,7 @@ export class NavbarDropdownService {
     public showNavbars = new BehaviorSubject<boolean>(true);
 
     public externalResources = [
+    {name: 'CARD', link: 'https://caeresource.directory'},
     {name: 'Standard Guidelines', link: 'https://standard-guidelines.clark.center'},
     {name: 'Task Tool', link: 'https://tasktool.clark.center'},
     {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'},
