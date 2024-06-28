@@ -38,7 +38,7 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
-     * Path to remove a children of a learning object
+     * Path to remove a child of a learning object
      * @param learningObjectId the id of the parent learning object
      * @returns void
      */
