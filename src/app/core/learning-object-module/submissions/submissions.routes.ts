@@ -24,7 +24,7 @@ export const SUBMISSION_ROUTES = {
         };
     }) {
         const q = 'collection=' + params.query.collection;
-        return `/learning-objects/${params.learningObjectId}/submissions?${q}`;
+        return `${environment.apiURL}/learning-objects/${params.learningObjectId}/submissions?${q}`;
     },
     /**
      * Request to submit a learning object
