@@ -1,19 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import { METRIC_ROUTES } from './metric.routes';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { LearningObjectStats, UserMetrics } from 'app/cube/shared/types/usage-stats';
-import { LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
-
-interface BloomsDistribution {
-  blooms_distribution: {
-    remember: number;
-    apply: number;
-    evaluate: number;
-  };
-}
 
 @Injectable({
   providedIn: 'root'
@@ -36,34 +27,18 @@ export class MetricService {
   }
 
   /**
-   * Get metrics for a learning object
-   * @returns Metrics for one learning object or all released learning objects
+   * Gets metrics for all learning objects
+   * @returns the stats for learning object lengths, statuses, downloads, and bloom's distribution
    */
   async getLearningObjectStats(): Promise<LearningObjectStats> {
-    const [objects, library] = await Promise.all([
+    const stats = await
       this.http
-        .get<Partial<LearningObjectStats> & BloomsDistribution>(LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_STATS())
+        .get<LearningObjectStats>(METRIC_ROUTES.GET_LEARNING_OBJECT_STATS())
         .pipe(
           catchError(this.handleError)
         )
-        .toPromise(),
-      this.http
-        .get<{ metrics: any }>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS())
-        .pipe(
-          catchError(this.handleError)
-        )
-        .toPromise()
-    ]);
-
-    // map service data to LearningObjectStats object
-    objects.outcomes = {
-      remember_and_understand: objects.blooms_distribution.remember,
-      apply_and_analyze: objects.blooms_distribution.apply,
-      evaluate_and_synthesize: objects.blooms_distribution.evaluate,
-    };
-
-    delete objects.blooms_distribution;
-    return { ...objects, ...library.metrics } as LearningObjectStats;
+        .toPromise();
+    return stats as LearningObjectStats;
   }
 
   /**

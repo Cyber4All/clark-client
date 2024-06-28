@@ -15,9 +15,9 @@ export class AboutClarkComponent implements OnInit {
   usageStats: UsageStats = {
     objects: {
       released: 0,
+      total: 0,
       review: 0,
       downloads: 0,
-      collections: { number: 0},
       topDownloads: [],
       lengths: {
         nanomodule: 0,
@@ -30,7 +30,15 @@ export class AboutClarkComponent implements OnInit {
         remember_and_understand: 0,
         apply_and_analyze: 0,
         evaluate_and_synthesize: 0
-      }
+      },
+      status: {
+        waiting: 0,
+        peerReview: 0,
+        acceptedMinor: 0,
+        acceptedMajor: 0,
+        proofing: 0
+      },
+      collections: { number: 0 }
     },
     users: {
       accounts: 0,
@@ -40,15 +48,15 @@ export class AboutClarkComponent implements OnInit {
 
   constructor(private metricService: MetricService) { }
 
-  ngOnInit() {
-    this.metricService.getLearningObjectStats().then(stats => {
+  async ngOnInit() {
+    await this.metricService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.released = stats.released;
       this.usageStats.objects.review = stats.review;
       this.usageStats.objects.downloads = stats.downloads;
       this.usageStats.objects.collections = stats.collections;
       this.objectStatsLoaded = true;
     });
-    this.metricService.getUserMetrics().then(stats => {
+    await this.metricService.getUserMetrics().then(stats => {
       this.usageStats.users.accounts = stats.accounts;
       this.usageStats.users.organizations = stats.organizations;
       this.userStatsLoaded = true;
