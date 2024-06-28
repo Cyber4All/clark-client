@@ -80,9 +80,7 @@ export const FILE_ROUTES = {
    * @param username - The username of the author
    * @param id - The id of the learning object to upload the file to
    */
-  UPLOAD_FILE_META(username: string, id: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(id)}/materials/files`;
+  UPLOAD_FILE_META(id: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/materials/files`;
   },
 };
