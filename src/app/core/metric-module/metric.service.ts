@@ -38,7 +38,6 @@ export class MetricService {
           catchError(this.handleError)
         )
         .toPromise();
-        console.log("client response: ", stats);
     return stats as LearningObjectStats;
   }
 
