@@ -516,7 +516,7 @@ export class FileManagementService {
   delete(learningObject: LearningObject, fileId: string): Promise<{}> {
     const route = FILE_ROUTES.DELETE_FILE({
       username: learningObject.author.username,
-      learningObjectId: learningObject.id,
+      learningObjectId: learningObject._id,
       fileId
     });
 

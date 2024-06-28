@@ -231,8 +231,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.submitToCollection = true;
     } else {
       this.submissionService.submit({
-        learningObjectId: event.id,
-        userId: event.author.id,
+        learningObjectId: event._id,
         collectionName: event.collection,
       })
         .then(() => {
@@ -254,10 +253,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {LearningObject} learning object to be unpublished
    */
   cancelSubmission(l: LearningObject): Promise<void> {
-    return this.submissionService.unsubmit({
-      learningObjectId: l.id,
-      userId: l.author.id,
-    }).then(async () => {
+    return this.submissionService.unsubmit(
+      l._id,
+      ).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
       this.notificationService.success('Done!', 'Learning Object Submission Cancelled!');
@@ -278,7 +276,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;
     this.learningObjects = this.workingLearningObjects.concat(this.releasedLearningObjects);
-    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
+    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject._id === learningObjectId);
     try {
       this.changelogs = await this.changelogService.fetchAllChangelogs({
         userId: this.changelogLearningObject.author.username,
@@ -329,7 +327,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      return this.learningObjectService.delete(canDelete[0].author.username, canDelete[0].id)
+      return this.learningObjectService.delete(canDelete[0]._id)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Object deleted!');
           await this.getDraftLearningObjects();
@@ -340,7 +338,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else if (canDelete.length > 1) {
       const objectsToDeleteIDs = [];
       canDelete.forEach(object => {
-        objectsToDeleteIDs.push(object.id);
+        objectsToDeleteIDs.push(object._id);
       });
       return this.learningObjectService.deleteMultiple(objectsToDeleteIDs, this.objectsToDelete[0].author.username)
         .then(async () => {
