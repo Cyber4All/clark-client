@@ -16,12 +16,12 @@ const MAX_NAME_LENGTH = 170;
  * @class
  */
 export class LearningObject {
-  get id(): string {
-    return this._id;
+  get _id(): string {
+    return this.__id;
   }
-  set id(id: string) {
-    if (!this.id) {
-      this._id = id;
+  set _id(id: string) {
+    if (!this.__id) {
+      this.__id = id;
     } else {
       throw new EntityError(LEARNING_OBJECT_ERRORS.ID_SET, 'id');
     }
@@ -108,10 +108,8 @@ export class LearningObject {
       this._length = length;
       this.updateDate();
     } else {
-      throw new EntityError(
-        LEARNING_OBJECT_ERRORS.INVALID_LENGTH(length),
-        'length',
-      );
+      // TODO: Fix issue occuring where a json response object is being passed instead of a learning object
+      this._length = LearningObject.Length.NANOMODULE;
     }
   }
   /**
@@ -308,8 +306,8 @@ export class LearningObject {
    */
   constructor(object?: Partial<LearningObject>) {
     // @ts-ignore Id will be undefined on creation
-    this._id = undefined;
-    this._cuid = undefined;
+    this._id = '';
+    this._cuid = '';
     this._author = new User();
     this._name = '';
     this._description = '';
@@ -339,7 +337,8 @@ export class LearningObject {
     }
     this._constructed = true;
   }
-  private _id: string;
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  private __id: string;
   private _author: User;
   private _name!: string;
   private _description!: string;
@@ -572,7 +571,7 @@ export class LearningObject {
       const addingUser =
         contributor instanceof User ? contributor : new User(contributor);
       this.updateDate();
-      return this._contributors.push(addingUser) - 1;
+      return this._contributors.push(addingUser);
     } else {
       throw new EntityError(
         LEARNING_OBJECT_ERRORS.INVALID_CONTRIBUTOR,
@@ -639,8 +638,8 @@ export class LearningObject {
    * @memberof LearningObject
    */
   private copyObject(object: Partial<LearningObject>): void {
-    if (object.id) {
-      this.id = object.id;
+    if (object._id) {
+      this._id = object._id;
     }
 
     if (object.cuid) {
@@ -747,7 +746,7 @@ export class LearningObject {
    */
   public toPlainObject(): Partial<LearningObject> {
     const object: Partial<LearningObject> = {
-      id: this.id,
+      _id: this.__id,
       cuid: this.cuid,
       author: this.author.toPlainObject() as User,
       name: this.name,

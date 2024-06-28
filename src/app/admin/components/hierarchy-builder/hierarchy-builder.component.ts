@@ -35,7 +35,7 @@ export class HierarchyBuilderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.TREE_DATA[0] = { _id: this.parent.id, name: this.parent.name, length: this.parent.length, showForm: false, children: [] };
+    this.TREE_DATA[0] = { _id: this.parent._id, name: this.parent.name, length: this.parent.length, showForm: false, children: [] };
     this.contributors = this.parent.contributors.map(contrib => {
       return contrib.username;
     });
@@ -100,7 +100,7 @@ export class HierarchyBuilderComponent implements OnInit {
     for await (const child of node.children) {
       childrenIds.push(await this.createLearningObjects(child));
     }
-    let parentId = this.parent.id;
+    let parentId = this.parent._id;
     if (node.name !== this.parent.name) {
       parentId = await this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
     }

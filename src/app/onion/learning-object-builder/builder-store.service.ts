@@ -292,7 +292,7 @@ export class BuilderStore {
    */
   fetchMaterials(): void {
     this.learningObjectService
-      .getMaterials(this.learningObject.author.username, this.learningObject.id)
+      .getMaterials(this.learningObject.author.username, this.learningObject._id)
       .then(materials => {
         this.learningObject.materials = materials;
         this.learningObjectEvent.next(this.learningObject);
@@ -313,7 +313,7 @@ export class BuilderStore {
       );
       return children.toPromise();
     } else {
-      await this.fetch(this.learningObject.id);
+      await this.fetch(this.learningObject.cuid);
       return this.getChildren();
     }
   }
@@ -326,9 +326,9 @@ export class BuilderStore {
   async setChildren(children: string[], remove: boolean = false) {
     this.serviceInteraction$.next(true);
     if (remove) {
-      children = this.learningObject.children.filter(child => !children.includes(child.id)).map(child => child.id);
+      children = this.learningObject.children.filter(child => !children.includes(child._id)).map(child => child._id);
     }
-    await this.learningObjectService.setChildren(this.learningObject.id, this.learningObject.author.username, children, remove);
+    await this.learningObjectService.setChildren(this.learningObject._id, this.learningObject.author.username, children, remove);
     this.serviceInteraction$.next(false);
   }
 
@@ -460,14 +460,14 @@ export class BuilderStore {
     if (event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
       await this.learningObjectService.toggleBundle(
-        this.learningObject.id,
+        this.learningObject._id,
         fileIDs,
         event.state
       );
     } else { // event.item is a File
       const fileID = [event.item._id];
       await this.learningObjectService.toggleBundle(
-        this.learningObject.id,
+        this.learningObject._id,
         fileID,
         event.state
       );
@@ -491,7 +491,7 @@ export class BuilderStore {
 
   private async changeStatus(status: LearningObject.Status, reason?: string) {
     await this.refactoredLearningObjectService.updateLearningObjectStatus(
-      this.learningObject.id,
+      this.learningObject._id,
       status,
       reason,
     );
@@ -520,7 +520,6 @@ export class BuilderStore {
   private deleteOutcome(id: string) {
     // grab the outcome that's about to be deleted
     const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
-
     // delete the outcome
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
@@ -528,11 +527,10 @@ export class BuilderStore {
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
-    if (!checkIfUUID(id)) {
+    if (!checkIfUUID(outcome.serviceId) && outcome.serviceId) {
       this.serviceInteraction$.next(true);
       this.learningObjectService
         .deleteOutcome(
-          this.learningObject.id,
           (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || id,
         )
@@ -548,7 +546,6 @@ export class BuilderStore {
     params: { verb?: string | undefined; bloom?: string | undefined; text?: string }
   ) {
     const outcome = this.outcomes.get(id);
-
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
       outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
@@ -575,7 +572,6 @@ export class BuilderStore {
       },
       true
     );
-
     return outcome;
   }
 
@@ -654,7 +650,7 @@ export class BuilderStore {
 
     this.saveObject(
       {
-        contributors: this.learningObject.contributors.map(x => x.id)
+        contributors: this.learningObject.contributors.map(x => x._id)
       },
       true
     );
@@ -696,7 +692,7 @@ export class BuilderStore {
       .addFileMeta({
         files,
         username: this.learningObject.author.username,
-        objectId: this.learningObject.id
+        objectId: this.learningObject._id
       })
       .then(() => {
         this.fetchMaterials();
@@ -786,7 +782,7 @@ export class BuilderStore {
     this.learningObjectService
       .updateFileDescription(
         this.learningObject.author.username,
-        this.learningObject.id,
+        this.learningObject._id,
         fileId,
         description
       )
@@ -883,10 +879,9 @@ export class BuilderStore {
 
   public cancelSubmission(): void {
     this.submissionService
-      .unsubmit({
-        learningObjectId: this.learningObject.id,
-        userId: this.learningObject.author.id,
-      })
+      .unsubmit(
+        this.learningObject._id,
+      )
       .then(() => {
         this.learningObject.status = LearningObject.Status.UNRELEASED;
         this.validator.submissionMode = false;
@@ -902,9 +897,9 @@ export class BuilderStore {
    */
   public async removeEmptyOutcomes() {
     // Get most up-to-date values for current learning object
-    await this.fetch(this.learningObject.id);
+    await this.fetch(this.learningObject.cuid);
     // Retrieve outcomes of current learning object
-    const value = await this.uriRetriever.getLearningObject({ id: this.learningObject.id }, ['outcomes']).toPromise();
+    const value = await this.uriRetriever.getLearningObject({ cuidInfo: {cuid: this.learningObject.cuid} }, ['outcomes']).toPromise();
     // Iterate through outcomes
     value.outcomes.map(outcome => {
       // If the outcome text is empty, remove outcome
@@ -948,8 +943,7 @@ export class BuilderStore {
       // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
       // in this case we'll use the current data instead
       value = value || data;
-
-      if (!this.learningObject.id) {
+      if (!this.learningObject._id) {
         this.createLearningObject(value);
       } else {
         // this is an existing object and we can save it (has a saveable name)
@@ -1009,7 +1003,7 @@ export class BuilderStore {
   private updateLearningObject(object: Partial<LearningObject>) {
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .save(this.learningObject.id, this.learningObject.author.username, object)
+      .save(this.learningObject._id, object)
       .then(() => {
         this.serviceInteraction$.next(false);
       })
@@ -1047,6 +1041,7 @@ export class BuilderStore {
     // retrieve current cached Map from storage and get the current cached value for given id
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
+
 
     // if delay is true, combine the new properties with the object in the cache subject
     // the cache subject will automatically call this function again without a delay property
@@ -1099,7 +1094,7 @@ export class BuilderStore {
     }
 
     this.outcomeService
-      .addLearningOutcome(this.learningObject.id, newOutcome)
+      .addLearningOutcome(this.learningObject._id, newOutcome)
       .then((serviceId: string) => {
         this.serviceInteraction$.next(false);
         // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
@@ -1142,7 +1137,7 @@ export class BuilderStore {
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .saveOutcome(this.learningObject.id, updateValue as any)
+      .saveOutcome(this.learningObject._id, updateValue as any)
       .then(() => {
         this.serviceInteraction$.next(false);
       })
