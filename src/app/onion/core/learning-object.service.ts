@@ -233,15 +233,14 @@ export class LearningObjectService {
   // TODO type this parameter
   save(
     id: string,
-    authorUsername: string,
-    learningObject: { [key: string]: any },
+    learningObject: Partial<LearningObject>,
     reason?: string,
   ): Promise<{}> {
-    const route = LEGACY_USER_ROUTES.UPDATE_MY_LEARNING_OBJECT(authorUsername, id);
+    const route = LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT(id);
     return this.http
       .patch(
         route,
-        { learningObject, reason },
+        { updates: learningObject, reason },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
@@ -282,12 +281,11 @@ export class LearningObjectService {
   /**
    * Deletes an outcome on a given learning object
    *
-   * @param learningObjectId The learning object id to delete the outcome from
    * @param outcomeId The outcome Id
    */
-  deleteOutcome(learningObjectId: string, outcomeId: string): Promise<any> {
+  deleteOutcome(outcomeId: string): Promise<any> {
     return this.http
-      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(learningObjectId, outcomeId), { withCredentials: true })
+      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
       .pipe(
 
         catchError(this.handleError)
@@ -360,34 +358,12 @@ export class LearningObjectService {
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject.id,
+      learningObjectId: learningObject._id,
     });
     return this.http
       .post(
         route,
         { collection },
-        { headers: this.headers, withCredentials: true, responseType: 'text' }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Unsubmit a learning object
-   *
-   * @param {learningObject} learningObject the learning object to be unpublished
-   */
-  unsubmit(learningObject: LearningObject) {
-    const route = SUBMISSION_ROUTES.DELETE_SUBMISSION({
-      learningObjectId: learningObject.id,
-      userId: learningObject.author.id
-    });
-    return this.http
-      .delete(
-        route,
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
