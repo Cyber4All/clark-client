@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
+  LEARNING_OBJECT_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-  LEGACY_USER_ROUTES
 } from '../../../../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
@@ -20,9 +20,8 @@ export class AttributeService {
       ))
       .toPromise();
     const children = await this.http.get(
-      LEGACY_USER_ROUTES.GET_CHILDREN(
+      LEARNING_OBJECT_ROUTES.GET_CHILDREN(
         username,
-        objectId
       ))
       .toPromise();
 

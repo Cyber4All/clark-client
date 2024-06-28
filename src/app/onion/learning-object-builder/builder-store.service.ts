@@ -328,7 +328,7 @@ export class BuilderStore {
     if (remove) {
       children = this.learningObject.children.filter(child => !children.includes(child._id)).map(child => child._id);
     }
-    await this.learningObjectService.setChildren(this.learningObject._id, this.learningObject.author.username, children, remove);
+    await this.learningObjectService.setChildren(this.learningObject._id, children, remove);
     this.serviceInteraction$.next(false);
   }
 
