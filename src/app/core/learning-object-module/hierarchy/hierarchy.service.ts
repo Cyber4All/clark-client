@@ -14,8 +14,8 @@ export class HierarchyService {
 
   async addHierarchyObject(username: string, object: any): Promise<any> {
     return await this.http.post(
-      LEGACY_ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(username),
-      { object }, { withCredentials: true, responseType: 'text' }
+      LEGACY_ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(),
+      { object, username }, { withCredentials: true, responseType: 'text' }
     ).toPromise();
   }
 
