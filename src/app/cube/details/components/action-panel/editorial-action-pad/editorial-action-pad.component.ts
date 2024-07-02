@@ -85,7 +85,7 @@ export class EditorialActionPadComponent implements OnInit {
     await this.learningObjectService
       .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
-        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject._id}`]);
+        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.cuid}`]);
       }).catch(e => {
         this.toaster.error('Error', e.error.message);
       });
