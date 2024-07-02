@@ -278,10 +278,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.learningObjects = this.workingLearningObjects.concat(this.releasedLearningObjects);
     this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject._id === learningObjectId);
     try {
-      this.changelogs = await this.changelogService.fetchAllChangelogs({
-        userId: this.changelogLearningObject.author.username,
-        learningObjectCuid: this.changelogLearningObject.cuid,
-      });
+      this.changelogs = await this.changelogService.getAllChangelogs(this.changelogLearningObject.cuid);
     } catch (error) {
       let errorMessage;
 
