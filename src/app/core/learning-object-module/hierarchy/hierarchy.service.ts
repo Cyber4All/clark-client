@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
-import { LEGACY_ADMIN_ROUTES, LEGACY_USER_ROUTES } from '../learning-object/learning-object.routes';
+import { ADMIN_ROUTES, LEGACY_USER_ROUTES } from '../learning-object/learning-object.routes';
 import { HIERARCHY_ROUTES } from './hierarchy.routes';
 
 @Injectable({
@@ -14,8 +14,8 @@ export class HierarchyService {
 
   async addHierarchyObject(username: string, object: any): Promise<any> {
     return await this.http.post(
-      LEGACY_ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(username),
-      { object }, { withCredentials: true, responseType: 'text' }
+      ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(),
+      { object, username }, { withCredentials: true, responseType: 'text' }
     ).toPromise();
   }
 
