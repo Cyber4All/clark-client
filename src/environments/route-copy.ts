@@ -145,21 +145,16 @@ export const USER_ROUTES = {
   SEARCH_USERS(query: any) {
     return `${environment.apiURL}/users/search?${querystring.stringify(query)}`;
   },
-  GET_MY_LEARNING_OBJECTS(
-    username,
-    filters: any,
-    query: string,
-    childId?: string,
-) {
+  GET_MY_LEARNING_OBJECTS(username, filters: any, query: string, childId?: string) {
     // Onion
     let uri = `${environment.apiURL}/users/${encodeURIComponent(
-        username,
-    )}/learning-objects?${querystring.stringify(filters)}`;
-    if (query) {
-      uri += `&text=${encodeURIComponent(query)}`;
+      username
+    )}/learning-objects?children=true&text=${encodeURIComponent(query)}&${querystring.stringify(filters)}`;
+    if (childId) {
+      uri = uri + `&currentId=${encodeURIComponent(childId)}`;
     }
     return uri;
-},
+  },
   GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
     // Onion Dashboard
     return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?text=${encodeURIComponent(query

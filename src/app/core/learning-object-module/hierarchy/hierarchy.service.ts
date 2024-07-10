@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { LEGACY_ADMIN_ROUTES, LEGACY_USER_ROUTES } from '../learning-object/learning-object.routes';
 import { HIERARCHY_ROUTES } from './hierarchy.routes';
-import { USER_ROUTES } from '../../../../environments/route-copy';
 
 @Injectable({
   providedIn: 'root'
@@ -87,7 +86,7 @@ export class HierarchyService {
    */
   async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http
-      .get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(username, {}, objectName), { withCredentials: true })
+      .get(LEGACY_USER_ROUTES.GET_MY_LEARNING_OBJECTS(username, {}, objectName), { withCredentials: true })
       .toPromise()
       .then((response: any) => {
         const possibleMatches = response.map(object => {

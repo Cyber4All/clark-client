@@ -91,6 +91,18 @@ export const LEGACY_USER_ROUTES = {
             username,
         )}/learning-objects/profile`;
     },
+    GET_MY_LEARNING_OBJECTS(
+        username,
+        filters: any,
+        query: string,
+        childId?: string,
+    ) {
+        // Onion
+        let uri = `${environment.apiURL}/users/${encodeURIComponent(
+            username,
+        )}/learning-objects?`;
+        return uri;
+    },
     GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
         // Onion Dashboard
         return `${environment.apiURL}/users/${encodeURIComponent(
