@@ -3,7 +3,7 @@ export const environment = {
   experimental: false,
   apiURL: 'https://api.yeetbot.click',
   suggestionUrl: 'https://api.yeetbot.click', // TODO: Remove from client; delete env
-  s3Bucket: 'clark-prod-file-uploads-backup',
+  s3Bucket: 'clark-staging-file-uploads',
   s3BucketRegion: 'us-east-1',
   cognitoRegion: 'us-east-1',
   cognitoIdentityPoolId: 'us-east-1:3388292f-c48a-4257-aa55-d1816617b38f',
