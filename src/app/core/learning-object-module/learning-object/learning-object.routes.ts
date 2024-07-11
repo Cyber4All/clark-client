@@ -38,11 +38,9 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 };
 
-export const LEGACY_ADMIN_ROUTES = {
-    ADD_HIERARCHY_OBJECT(username) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/hierarchy-object`;
+export const ADMIN_ROUTES = {
+    ADD_HIERARCHY_OBJECT() {
+        return `${environment.apiURL}/hierarchy-object`;
     },
 };
 

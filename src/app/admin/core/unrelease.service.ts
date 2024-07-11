@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
-import { LEGACY_ADMIN_ROUTES } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
