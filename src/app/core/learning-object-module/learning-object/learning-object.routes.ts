@@ -42,16 +42,11 @@ export const USER_ROUTES = {
     GET_MY_LEARNING_OBJECTS(
       username,
       filters: any,
-      query: string,
     ) {
         // Onion
-        let uri = `${environment.apiURL}/users/${encodeURIComponent(
+        return `${environment.apiURL}/users/${encodeURIComponent(
             username,
         )}/learning-objects?${querystring.stringify(filters)}`;
-        if (query) {
-          uri += `&text=${encodeURIComponent(query)}`;
-        }
-        return uri;
     }
 };
 
@@ -108,7 +103,7 @@ export const LEGACY_USER_ROUTES = {
             username,
         )}/learning-objects/profile`;
     },
-    GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
+    GET_MY_DRAFT_LEARNING_OBJECTS(username) {
         // Onion Dashboard
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,

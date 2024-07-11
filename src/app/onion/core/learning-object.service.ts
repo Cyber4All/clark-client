@@ -181,10 +181,8 @@ export class LearningObjectService {
   getLearningObjects(
     authorUsername: string,
     filters?: any,
-    query?: string,
-    childId?: string
   ): Promise<LearningObject[]> {
-    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters, query);
+    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -208,7 +206,7 @@ export class LearningObjectService {
     filters?: any,
     query?: string
   ): Promise<LearningObject[]> {
-    const route = LEGACY_USER_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername, filters, query);
+    const route = LEGACY_USER_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(

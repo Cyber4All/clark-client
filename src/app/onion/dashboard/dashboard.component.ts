@@ -173,7 +173,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
     this.releasedLearningObjects = await this.learningObjectService
-      .getLearningObjects(this.auth.username, filters, text)
+      .getLearningObjects(this.auth.username, {...filters, text})
       .then((children: LearningObject[]) => {
         return children;
       });
@@ -213,7 +213,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param text
    */
   performSearch(text: string) {
-    this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED }, text);
+    this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED, text });
     this.getDraftLearningObjects(this.filters, text);
   }
 

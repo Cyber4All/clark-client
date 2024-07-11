@@ -86,7 +86,7 @@ export class HierarchyService {
    */
   async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http
-      .get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(username, {}, objectName), { withCredentials: true })
+      .get(USER_ROUTES.GET_MY_LEARNING_OBJECTS(username, {text: objectName}), { withCredentials: true })
       .toPromise()
       .then((response: any) => {
         const possibleMatches = response.map(object => {
