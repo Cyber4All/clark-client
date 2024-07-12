@@ -253,13 +253,11 @@ export class LearningObjectService {
   /**
    * Modify an outcome by sending a partial learning outcome
    *
-   * @param {string} learningObjectId the id of the source learning object
    * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
   saveOutcome(
-    learningObjectId: string,
     outcome: { id: string;[key: string]: any }
   ): Promise<any> {
     const outcomeId = outcome.id;
@@ -267,7 +265,7 @@ export class LearningObjectService {
 
     return this.http
       .patch(
-        OUTCOME_ROUTES.UPDATE_OUTCOME(learningObjectId, outcomeId),
+        OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
         { outcome },
         { withCredentials: true }
       )
