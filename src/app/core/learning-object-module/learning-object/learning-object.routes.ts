@@ -36,6 +36,18 @@ export const LEARNING_OBJECT_ROUTES = {
     UPDATE_LEARNING_OBJECT(learningObjectId) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
     },
+
+    /**
+     * Path to get an author's learning objects
+     * @param username username of the author
+     * @returns LearningObjects for Author Dashboard
+     */
+    GET_MY_DRAFT_LEARNING_OBJECTS(username) {
+        // Onion Dashboard
+        return `${environment.apiURL}/users/${encodeURIComponent(
+            username,
+        )}/learning-objects?draftsOnly=true`;
+    },
 };
 
 export const USER_ROUTES = {
@@ -100,12 +112,6 @@ export const LEGACY_USER_ROUTES = {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
         )}/learning-objects/profile`;
-    },
-    GET_MY_DRAFT_LEARNING_OBJECTS(username) {
-        // Onion Dashboard
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects?draftsOnly=true`;
     },
     GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
         return `${environment.apiURL}/users/${encodeURIComponent(

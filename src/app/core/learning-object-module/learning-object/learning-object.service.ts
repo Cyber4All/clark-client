@@ -8,7 +8,6 @@ import {
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES
 } from '../learning-object/learning-object.routes';
-import { environment } from '@env/environment';
 import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
 
 export const CALLBACKS = {
@@ -47,7 +46,6 @@ export class LearningObjectService {
     )
     .toPromise();
   }
-
 
   fetchLearningObject(
     params: { cuidInfo?: { cuid: string, version?: number }, id?: string },
