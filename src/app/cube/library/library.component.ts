@@ -224,7 +224,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async removeItem() {
     try {
-      await this.libraryService.removeFromLibrary(this.libraryItemToDelete.id);
+      await this.libraryService.removeFromLibrary(this.libraryItemToDelete._id);
       this.libraryItems = (await this.libraryService.getLibrary(1, 10)).cartItems;
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
