@@ -443,19 +443,18 @@ export class LearningObjectService {
   }
 
   setChildren(
-    learningObjectName: string,
-    authorUsername: string,
+    learningObjectId: string,
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const route = LEGACY_USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
-
+    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_CHILD(learningObjectId);
+    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(learningObjectId);
     if (remove) {
       return this.http
         .patch(
-          route,
-          { id: children[0] },
-          { withCredentials: true, responseType: 'text' }
+          removeRoute,
+          { childObjectId: children[0] },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
@@ -465,9 +464,9 @@ export class LearningObjectService {
     } else {
       return this.http
         .post(
-          route,
-          { children },
-          { withCredentials: true, responseType: 'text' }
+          addRoute,
+          { childrenIds: children },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
