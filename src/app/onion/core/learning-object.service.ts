@@ -18,7 +18,6 @@ import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES,
-  USER_ROUTES
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
@@ -182,7 +181,7 @@ export class LearningObjectService {
     authorUsername: string,
     filters?: any,
   ): Promise<LearningObject[]> {
-    const route = USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters);
+    const route = LEARNING_OBJECT_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(

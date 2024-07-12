@@ -43,23 +43,25 @@ export const LEARNING_OBJECT_ROUTES = {
      * @returns LearningObjects for Author Dashboard
      */
     GET_MY_DRAFT_LEARNING_OBJECTS(username) {
-        // Onion Dashboard
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
         )}/learning-objects?draftsOnly=true`;
     },
-};
 
-export const USER_ROUTES = {
+    /**
+     * Path to get released objects of an author
+     * @param username username of the author
+     * @param filters filters to apply to the request
+     * @returns LearningObjects for Author Dashboard
+     */
     GET_MY_LEARNING_OBJECTS(
-      username,
-      filters: any,
-    ) {
-        // Onion
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects?${querystring.stringify(filters)}`;
-    }
+        username,
+        filters: any,
+      ) {
+          return `${environment.apiURL}/users/${encodeURIComponent(
+              username,
+          )}/learning-objects?${querystring.stringify(filters)}`;
+      }
 };
 
 export const ADMIN_ROUTES = {
