@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
-import { LEARNING_OBJECT_ROUTES, LEGACY_ADMIN_ROUTES, LEGACY_USER_ROUTES } from '../learning-object/learning-object.routes';
+import { ADMIN_ROUTES, LEARNING_OBJECT_ROUTES, LEGACY_USER_ROUTES } from '../learning-object/learning-object.routes';
 import { HIERARCHY_ROUTES } from './hierarchy.routes';
 import { LEARNING_OBJECT_ERRORS } from 'entity/learning-object/error-messages';
 
@@ -15,8 +15,8 @@ export class HierarchyService {
 
   async addHierarchyObject(username: string, object: any): Promise<any> {
     return await this.http.post(
-      LEGACY_ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(username),
-      { object }, { withCredentials: true, responseType: 'text' }
+      ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(),
+      { object, username }, { withCredentials: true, responseType: 'text' }
     ).toPromise();
   }
 
@@ -87,7 +87,7 @@ export class HierarchyService {
    */
   async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http
-      .get(LEGACY_USER_ROUTES.GET_MY_LEARNING_OBJECTS(username, {}, objectName), { withCredentials: true })
+      .get(LEARNING_OBJECT_ROUTES.GET_MY_LEARNING_OBJECTS(username, {text: objectName}), { withCredentials: true })
       .toPromise()
       .then((response: any) => {
         const possibleMatches = response.map(object => {

@@ -53,13 +53,37 @@ export const LEARNING_OBJECT_ROUTES = {
     UPDATE_LEARNING_OBJECT(learningObjectId) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
     },
-};
 
-export const LEGACY_ADMIN_ROUTES = {
-    ADD_HIERARCHY_OBJECT(username) {
+    /**
+     * Path to get an author's learning objects
+     * @param username username of the author
+     * @returns LearningObjects for Author Dashboard
+     */
+    GET_MY_DRAFT_LEARNING_OBJECTS(username) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
-        )}/hierarchy-object`;
+        )}/learning-objects?draftsOnly=true`;
+    },
+
+    /**
+     * Path to get released objects of an author
+     * @param username username of the author
+     * @param filters filters to apply to the request
+     * @returns LearningObjects for Author Dashboard
+     */
+    GET_MY_LEARNING_OBJECTS(
+        username,
+        filters: any,
+      ) {
+          return `${environment.apiURL}/users/${encodeURIComponent(
+              username,
+          )}/learning-objects?${querystring.stringify(filters)}`;
+      }
+};
+
+export const ADMIN_ROUTES = {
+    ADD_HIERARCHY_OBJECT() {
+        return `${environment.apiURL}/hierarchy-object`;
     },
 };
 
@@ -107,31 +131,6 @@ export const LEGACY_USER_ROUTES = {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
         )}/learning-objects/profile`;
-    },
-    GET_MY_LEARNING_OBJECTS(
-        username,
-        filters: any,
-        query: string,
-        childId?: string,
-    ) {
-        // Onion
-        let uri = `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects?children=true&text=${encodeURIComponent(
-            query,
-        )}&${querystring.stringify(filters)}`;
-        if (childId) {
-            uri = uri + `&currentId=${encodeURIComponent(childId)}`;
-        }
-        return uri;
-    },
-    GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
-        // Onion Dashboard
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects?text=${encodeURIComponent(
-            query,
-        )}&${querystring.stringify(filters)}&draftsOnly=true`;
     },
     GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
         return `${environment.apiURL}/users/${encodeURIComponent(
