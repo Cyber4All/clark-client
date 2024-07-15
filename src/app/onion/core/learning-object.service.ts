@@ -377,9 +377,8 @@ export class LearningObjectService {
    * @param username Authors username of current learning object
    * @param learningObjectId id current learning object
    */
-  triggerBundle(username: string, learningObjectId: string) {
+  triggerBundle(learningObjectId: string) {
     const route = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
-      username,
       learningObjectId
     );
     // POST needs the body arrgument
@@ -515,15 +514,13 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   addFileMeta({
-    username,
     objectId,
     files
   }: {
-    username: string;
     objectId: string;
     files: FileUploadMeta[];
   }): Promise<string[]> {
-    const route = FILE_ROUTES.UPLOAD_FILE_META(username, objectId);
+    const route = FILE_ROUTES.UPLOAD_FILE_META(objectId);
     return this.handleFileMetaRequests(files, route);
   }
 

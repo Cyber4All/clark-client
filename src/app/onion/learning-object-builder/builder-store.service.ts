@@ -691,7 +691,6 @@ export class BuilderStore {
     await this.learningObjectService
       .addFileMeta({
         files,
-        username: this.learningObject.author.username,
         objectId: this.learningObject._id
       })
       .then(() => {
