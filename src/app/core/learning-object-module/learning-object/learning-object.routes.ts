@@ -64,6 +64,12 @@ export const LEARNING_OBJECT_ROUTES = {
       }
 };
 
+export const USER_ROUTES = {
+  SET_CHILDREN(learningObjectCuid) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectCuid)}/children`;
+  },
+};
+
 export const ADMIN_ROUTES = {
     ADD_HIERARCHY_OBJECT() {
         return `${environment.apiURL}/hierarchy-object`;
@@ -167,11 +173,6 @@ export const LEGACY_USER_ROUTES = {
     /** ROUTE NOT IN GATEWAY */
     VALIDATE_CAPTCHA() {
         return `${environment.apiURL}/users/validate-captcha`;
-    },
-    SET_CHILDREN(username, learningObjectName) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            username,
-        )}/${encodeURIComponent(learningObjectName)}/children`;
     },
     GET_CHILDREN(username: string, learningObjectID: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(

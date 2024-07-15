@@ -18,6 +18,7 @@ import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES,
+  USER_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
@@ -443,19 +444,18 @@ export class LearningObjectService {
   }
 
   setChildren(
-    learningObjectName: string,
-    authorUsername: string,
+    learningObjectCuid: string,
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const route = LEGACY_USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
+    const route = USER_ROUTES.SET_CHILDREN(learningObjectCuid);
 
     if (remove) {
       return this.http
         .patch(
           route,
-          { id: children[0] },
-          { withCredentials: true, responseType: 'text' }
+          { id: children },
+          { withCredentials: true, responseType: 'text', headers: this.headers, }
         )
         .pipe(
 
