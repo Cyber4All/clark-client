@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth-module/auth.service';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 import { LIBRARY_ROUTES } from './library.routes';
@@ -82,6 +82,19 @@ export class LibraryService {
         },
         { headers: this.headers, withCredentials: true }
       )
+      .pipe(
+        catchError((error) => {
+          // Check if the error is a 409 conflict error
+          if (error.status === 409) {
+            // Log the error or handle it as needed
+            console.log('Conflict error (409) occurred, but proceeding without throwing.');
+            // Return an observable that completes without emitting, effectively "skipping" the error
+            return of(null);
+          }
+          // For other errors, re-throw them or handle them as needed
+          return throwError(error);
+        })
+      )
       .toPromise();
   }
 
@@ -133,7 +146,7 @@ export class LibraryService {
     )
       .subscribe(() => {
         this.toaster.success('All Ready!', 'Your download will begin in a moment...');
-        this.downloadBundle(bundle);
+        this.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
       });
   }
 

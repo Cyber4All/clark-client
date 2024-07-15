@@ -17,7 +17,7 @@ import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes'
 import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-  LEARNING_OBJECT_ROUTES
+  LEARNING_OBJECT_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
@@ -180,10 +180,8 @@ export class LearningObjectService {
   getLearningObjects(
     authorUsername: string,
     filters?: any,
-    query?: string,
-    childId?: string
   ): Promise<LearningObject[]> {
-    const route = LEGACY_USER_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters, query, childId);
+    const route = LEARNING_OBJECT_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -192,7 +190,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.map(object => new LearningObject(object));
+        return response.objects.map(object => new LearningObject(object));
       });
   }
 
@@ -207,7 +205,7 @@ export class LearningObjectService {
     filters?: any,
     query?: string
   ): Promise<LearningObject[]> {
-    const route = LEGACY_USER_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername, filters, query);
+    const route = LEARNING_OBJECT_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -216,7 +214,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.map(object => new LearningObject(object));
+        return response.objects.map(object => new LearningObject(object));
       });
   }
 
@@ -285,7 +283,7 @@ export class LearningObjectService {
    */
   deleteOutcome(outcomeId: string): Promise<any> {
     return this.http
-      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { withCredentials: true })
+      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
       .pipe(
 
         catchError(this.handleError)
@@ -444,19 +442,18 @@ export class LearningObjectService {
   }
 
   setChildren(
-    learningObjectName: string,
-    authorUsername: string,
+    learningObjectId: string,
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const route = LEGACY_USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
-
+    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_CHILD(learningObjectId);
+    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(learningObjectId);
     if (remove) {
       return this.http
         .patch(
-          route,
-          { id: children[0] },
-          { withCredentials: true, responseType: 'text' }
+          removeRoute,
+          { childObjectId: children[0] },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
@@ -466,9 +463,9 @@ export class LearningObjectService {
     } else {
       return this.http
         .post(
-          route,
-          { children },
-          { withCredentials: true, responseType: 'text' }
+          addRoute,
+          { childrenIds: children },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
