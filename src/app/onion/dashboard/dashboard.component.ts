@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogLearningObject: LearningObject;
   changelogs: [];
-  learningObjects: LearningObject[];
+  learningObjects: any[];
 
   // submission
   submitToCollection: boolean;
@@ -270,7 +270,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;
     this.learningObjects = this.workingLearningObjects.concat(this.releasedLearningObjects);
-    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject._id === learningObjectId);
+    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
     try {
       this.changelogs = await this.changelogService.getAllChangelogs(this.changelogLearningObject.cuid);
     } catch (error) {
