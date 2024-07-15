@@ -32,7 +32,7 @@ export class SubmissionsService {
           learningObjectId: params.learningObjectId,
         }),
         {
-          collection: params.collectionName,
+          objectCollection: params.collectionName,
           submissionReason: params.submissionReason,
           selectedAuthorizations: params.selectedAuthorizations
         },
@@ -91,7 +91,6 @@ export class SubmissionsService {
         { withCredentials: true }
       )
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();

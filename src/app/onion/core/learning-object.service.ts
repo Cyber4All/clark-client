@@ -378,9 +378,8 @@ export class LearningObjectService {
    * @param username Authors username of current learning object
    * @param learningObjectId id current learning object
    */
-  triggerBundle(username: string, learningObjectId: string) {
+  triggerBundle(learningObjectId: string) {
     const route = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
-      username,
       learningObjectId
     );
     // POST needs the body arrgument
@@ -444,18 +443,18 @@ export class LearningObjectService {
   }
 
   setChildren(
-    learningObjectCuid: string,
+    learningObjectId: string,
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const route = USER_ROUTES.SET_CHILDREN(learningObjectCuid);
-
+    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_CHILD(learningObjectId);
+    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(learningObjectId);
     if (remove) {
       return this.http
         .patch(
-          route,
-          { id: children },
-          { withCredentials: true, responseType: 'text', headers: this.headers, }
+          removeRoute,
+          { childObjectId: children },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
@@ -465,9 +464,9 @@ export class LearningObjectService {
     } else {
       return this.http
         .post(
-          route,
-          { children },
-          { withCredentials: true, responseType: 'text' }
+          addRoute,
+          { childrenIds: children },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
@@ -516,15 +515,13 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   addFileMeta({
-    username,
     objectId,
     files
   }: {
-    username: string;
     objectId: string;
     files: FileUploadMeta[];
   }): Promise<string[]> {
-    const route = FILE_ROUTES.UPLOAD_FILE_META(username, objectId);
+    const route = FILE_ROUTES.UPLOAD_FILE_META(objectId);
     return this.handleFileMetaRequests(files, route);
   }
 
