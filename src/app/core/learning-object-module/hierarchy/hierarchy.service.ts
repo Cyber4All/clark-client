@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { ADMIN_ROUTES, LEARNING_OBJECT_ROUTES, LEGACY_USER_ROUTES } from '../learning-object/learning-object.routes';
 import { HIERARCHY_ROUTES } from './hierarchy.routes';
+import { LEARNING_OBJECT_ERRORS } from 'entity/learning-object/error-messages';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +67,7 @@ export class HierarchyService {
    */
   async addChildren(username: string, object: any, children): Promise<any> {
     return await this.http.post(
-      LEGACY_USER_ROUTES.SET_CHILDREN(username, object),
+      LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(object._id),
       {
         children
       },

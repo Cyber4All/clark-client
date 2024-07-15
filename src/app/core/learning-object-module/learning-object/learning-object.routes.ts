@@ -29,6 +29,23 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     * Path to update the children of a learning object
+     * @param learningObjectId the id of the parent learning object
+     * @returns void
+     */
+    UPDATE_CHILDREN(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
+    },
+
+    /**
+     * Path to remove a child of a learning object
+     * @param learningObjectId the id of the parent learning object
+     * @returns void
+     */
+    REMOVE_CHILD(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
+    },
+    /**
      * Path to update a learning object
      * @param learningObjectId the id of the learning object
      * @returns void
@@ -168,16 +185,6 @@ export const LEGACY_USER_ROUTES = {
     VALIDATE_CAPTCHA() {
         return `${environment.apiURL}/users/validate-captcha`;
     },
-    SET_CHILDREN(username, learningObjectName) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            username,
-        )}/${encodeURIComponent(learningObjectName)}/children`;
-    },
-    GET_CHILDREN(username: string, learningObjectID: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
-    }
 };
 
 export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
