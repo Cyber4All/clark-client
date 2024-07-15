@@ -265,7 +265,7 @@ export class LearningObjectService {
       .patch(
         OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
         { outcome },
-        { withCredentials: true }
+        { headers: this.headers, withCredentials: true },
       )
       .pipe(
 
