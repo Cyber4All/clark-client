@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentlySubmittingObject: LearningObject;
 
   // delete
-  objectsToDelete: LearningObject[];
+  objectsToDelete: any[];
 
   historySnapshot: HistorySnapshot;
 
@@ -81,7 +81,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
     public auth: AuthService,
-    private collectionService: CollectionService,
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
@@ -321,7 +320,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      return this.learningObjectService.delete(canDelete[0]._id)
+      return this.learningObjectService.delete(canDelete[0].id)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Object deleted!');
           await this.getDraftLearningObjects();

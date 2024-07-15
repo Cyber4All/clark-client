@@ -214,7 +214,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.objects.map(object => new LearningObject(object));
+        return response.objects;
       });
   }
 
