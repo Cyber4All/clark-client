@@ -3,7 +3,7 @@ import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.
 import { NavigationEnd, ActivatedRoute, Router } from '@angular/router';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { LearningObjectService } from '../core/learning-object.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogLearningObject: LearningObject;
   changelogs: [];
-  learningObjects: LearningObject[];
+  learningObjects: any[];
 
   // submission
   submitToCollection: boolean;
@@ -159,10 +159,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     this.workingLearningObjects = await this.learningObjectService
-      .getDraftLearningObjects(this.auth.username, filters, text)
-      .then((children: LearningObject[]) => {
-        return children;
-      });
+      .getDraftLearningObjects(this.auth.username, filters, text);
   }
 
   /**
@@ -173,10 +170,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
     this.releasedLearningObjects = await this.learningObjectService
-      .getLearningObjects(this.auth.username, filters, text)
-      .then((children: LearningObject[]) => {
-        return children;
-      });
+      .getLearningObjects(this.auth.username, {...filters, text});
 
     this.checkQueryParams$.next();
   }
@@ -213,7 +207,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param text
    */
   performSearch(text: string) {
-    this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED }, text);
+    this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED, text });
     this.getDraftLearningObjects(this.filters, text);
   }
 
@@ -276,12 +270,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;
     this.learningObjects = this.workingLearningObjects.concat(this.releasedLearningObjects);
-    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject._id === learningObjectId);
+    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
     try {
-      this.changelogs = await this.changelogService.fetchAllChangelogs({
-        userId: this.changelogLearningObject.author.username,
-        learningObjectCuid: this.changelogLearningObject.cuid,
-      });
+      this.changelogs = await this.changelogService.getAllChangelogs(this.changelogLearningObject.cuid);
     } catch (error) {
       let errorMessage;
 

@@ -4,7 +4,6 @@ import { RELEVANCY_ROUTES } from './relevancy.routes';
 import { AuthService } from '../../auth-module/auth.service';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { Topic } from '@entity';
 import { TOPICS_ROUTES } from '../topics/topics.routes';
 @Injectable({
   providedIn: 'root'
@@ -26,13 +25,12 @@ export class RelevancyService {
   /**
    * Sets the nextCheck of a learning object
    *
-   * @param username Username of the author
    * @param learningObjectId learningObjectId
    * @param date The date that nextCheck needs to updated to
    */
-  async setNextCheckDate(username: string, learningObjectId: string, date: Date): Promise<any> {
+  async setNextCheckDate(learningObjectId: string, date: Date): Promise<any> {
     return this.http
-      .patch(RELEVANCY_ROUTES.UPDATE_RELEVANCY_CHECK_DATE(username, learningObjectId),
+      .patch(RELEVANCY_ROUTES.UPDATE_RELEVANCY_CHECK_DATE(learningObjectId),
         { date },
         {
           headers: this.headers,
@@ -91,37 +89,6 @@ export class RelevancyService {
         catchError(this.handleError)
       )
       .toPromise();
-  }
-
-  /**
-   * This gets the list of object topics from the backend to display
-   *
-   * @returns A list of topics
-   */
-  async getTopics(): Promise<Topic[]> {
-    return await new Promise((resolve, reject) => {
-      this.http
-        .get<Topic[]>(TOPICS_ROUTES.GET_ALL_TOPICS(),
-          {
-            headers: this.headers,
-            withCredentials: true,
-          }
-        )
-        .pipe(
-
-          catchError(this.handleError)
-        )
-        .toPromise()
-        .then(
-          (res: any) => {
-            const sorted = res.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-            resolve(sorted);
-          },
-          (err) => {
-            reject(err);
-          }
-        );
-    });
   }
 
   /**

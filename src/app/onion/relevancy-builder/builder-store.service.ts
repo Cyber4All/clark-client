@@ -10,6 +10,7 @@ import { Title } from '@angular/platform-browser';
 import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 /**
  * A central storage repository for communication between relevancy builder components.
@@ -33,6 +34,7 @@ export class BuilderStore {
   constructor(
     private toaster: ToastrOvenService,
     private relevancyService: RelevancyService,
+    private topicsService: TopicsService,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
   ) { }
@@ -90,7 +92,7 @@ export class BuilderStore {
    * @returns array of topics
    */
   getTopics(): Promise<Topic[]> {
-    return this.relevancyService.getTopics();
+    return this.topicsService.getTopics();
   }
 
   /**

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild }
 import { Router } from '@angular/router';
 import { LearningObject, Topic } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
-import { RelevancyService } from '../../../../core/learning-object-module/relevancy/relevancy.service';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-teach-now',
@@ -27,7 +27,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   loading = false;
 
   constructor(
-    private relevancyService: RelevancyService,
+    private topicsService: TopicsService,
     private objectService: LearningObjectService,
     private router: Router,
   ) { }
@@ -35,7 +35,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.loading = true;
     this.objects = this.loadingObjects;
-    this.relevancyService.getTopics().then(topics => {
+    this.topicsService.getTopics().then(topics => {
       this.topics = topics;
       if (topics.length > 0) {
         this.selectTopic(this.topics[0]._id);
