@@ -79,7 +79,6 @@ export class SubmitComponent implements OnInit {
       this.loading.push(true);
       this.changelogService
         .createChangelog(
-          this.learningObject.author.username,
           this.learningObject.cuid,
           this.changelog
         )
