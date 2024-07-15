@@ -176,7 +176,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
       // If any data has be changed on the LO, then we need to rebundle
       if (this.store.touched) {
-        this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject._id);
+        this.learningObjectService.triggerBundle(this.learningObject._id);
       }
       if (leaveBuilder) {
         this.historySnapshot.rewind('/onion/dashboard');

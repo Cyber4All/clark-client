@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 export interface LearningObjectStats {
-  released: number;
   review: number;
+  total: number;
+  released: number;
   downloads: number;
-  collections: { number: number };
   topDownloads: any[];
   lengths: {
     nanomodule: number;
@@ -17,6 +17,14 @@ export interface LearningObjectStats {
     apply_and_analyze: number;
     evaluate_and_synthesize: number;
   };
+  status: {
+    waiting: number;
+    peerReview: number;
+    acceptedMinor: number;
+    acceptedMajor: number;
+    proofing: number;
+  };
+  collections: { number: number };
 }
 
 export interface UserMetrics {

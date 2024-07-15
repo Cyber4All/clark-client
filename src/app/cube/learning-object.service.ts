@@ -137,8 +137,7 @@ export class LearningObjectService {
   /**
    * Creates a Revision of an existing learning object
    *
-   * @param learningObjectId
-   * @param authorUsername
+   * @param cuid the CUID of the learning object to create a revision of
    */
   async createRevision(cuid: string): Promise<any> {
     const route = REVISION_ROUTES.CREATE_REVISION(cuid);

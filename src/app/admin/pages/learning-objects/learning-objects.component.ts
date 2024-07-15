@@ -322,7 +322,7 @@ export class LearningObjectsComponent
     if (this.allSelected) {
       this.selected = new Map(
         // @ts-ignore
-        this.learningObjects.map((learningObject) => [learningObject.id, learningObject])
+        this.learningObjects.map((learningObject) => [learningObject._id, learningObject])
       );
       this.selectedLearningObjects = this.learningObjects;
       this.cd.detectChanges();

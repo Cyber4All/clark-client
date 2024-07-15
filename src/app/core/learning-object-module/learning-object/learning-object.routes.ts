@@ -21,6 +21,18 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     * Request to update the collection of a learning object
+     * @method PATCH
+     * @auth required
+     * @param learningObjectCuid - The cuid of the learning object to update
+     */
+        UPDATE_LEARNING_OBJECT_COLLECTION(learningObjectCuid: string) {
+            return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+                learningObjectCuid
+            )}/collection`;
+        },
+
+    /**
      * Path to create a new learning object
      * @returns LearningObject
      */
@@ -29,6 +41,23 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     * Path to update the children of a learning object
+     * @param learningObjectId the id of the parent learning object
+     * @returns void
+     */
+    UPDATE_CHILDREN(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
+    },
+
+    /**
+     * Path to remove a child of a learning object
+     * @param learningObjectId the id of the parent learning object
+     * @returns void
+     */
+    REMOVE_CHILD(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
+    },
+    /**
      * Path to update a learning object
      * @param learningObjectId the id of the learning object
      * @returns void
@@ -36,13 +65,37 @@ export const LEARNING_OBJECT_ROUTES = {
     UPDATE_LEARNING_OBJECT(learningObjectId) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
     },
-};
 
-export const LEGACY_ADMIN_ROUTES = {
-    ADD_HIERARCHY_OBJECT(username) {
+    /**
+     * Path to get an author's learning objects
+     * @param username username of the author
+     * @returns LearningObjects for Author Dashboard
+     */
+    GET_MY_DRAFT_LEARNING_OBJECTS(username) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
-        )}/hierarchy-object`;
+        )}/learning-objects?draftsOnly=true`;
+    },
+
+    /**
+     * Path to get released objects of an author
+     * @param username username of the author
+     * @param filters filters to apply to the request
+     * @returns LearningObjects for Author Dashboard
+     */
+    GET_MY_LEARNING_OBJECTS(
+        username,
+        filters: any,
+      ) {
+          return `${environment.apiURL}/users/${encodeURIComponent(
+              username,
+          )}/learning-objects?${querystring.stringify(filters)}`;
+      }
+};
+
+export const ADMIN_ROUTES = {
+    ADD_HIERARCHY_OBJECT() {
+        return `${environment.apiURL}/hierarchy-object`;
     },
 };
 
@@ -64,21 +117,6 @@ export const LEGACY_COLLECTIONS_ROUTES = {
     ADD_LEARNING_OBJECT_TO_COLLECTION(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/collections`;
     },
-    /**
-     * Request to update the collection of a learning object
-     * @method PATCH
-     * @auth required
-     * @param username - The username of the author of the learning object
-     * @param learningObjectCuid - The cuid of the learning object to update
-     */
-    UPDATE_LEARNING_OBJECT_COLLECTION(username: string, learningObjectCuid: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectCuid
-        )}/collection`;
-    },
-
     GET_COLLECTION_CURATORS(name: string) {
         return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
     },
@@ -90,31 +128,6 @@ export const LEGACY_USER_ROUTES = {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
         )}/learning-objects/profile`;
-    },
-    GET_MY_LEARNING_OBJECTS(
-        username,
-        filters: any,
-        query: string,
-        childId?: string,
-    ) {
-        // Onion
-        let uri = `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects?children=true&text=${encodeURIComponent(
-            query,
-        )}&${querystring.stringify(filters)}`;
-        if (childId) {
-            uri = uri + `&currentId=${encodeURIComponent(childId)}`;
-        }
-        return uri;
-    },
-    GET_MY_DRAFT_LEARNING_OBJECTS(username, filters: any, query: string) {
-        // Onion Dashboard
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects?text=${encodeURIComponent(
-            query,
-        )}&${querystring.stringify(filters)}&draftsOnly=true`;
     },
     GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
         return `${environment.apiURL}/users/${encodeURIComponent(
@@ -169,16 +182,6 @@ export const LEGACY_USER_ROUTES = {
     VALIDATE_CAPTCHA() {
         return `${environment.apiURL}/users/validate-captcha`;
     },
-    SET_CHILDREN(username, learningObjectName) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            username,
-        )}/${encodeURIComponent(learningObjectName)}/children`;
-    },
-    GET_CHILDREN(username: string, learningObjectID: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
-    }
 };
 
 export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
