@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
-import { AuthService } from '../auth-module/auth.service';
+import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { COLLECTION_ROUTES } from '../collection-module/collections.routes';
+import { AuthService } from '../auth-module/auth.service';
+import { LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,7 @@ export class ProfileService {
   fetchLearningObject(params: { cuid: string }): Promise<any> {
     return this.http
       .get(
-        LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
+        LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
           params.cuid
         ),
         {

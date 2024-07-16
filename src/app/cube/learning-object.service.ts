@@ -1,4 +1,5 @@
 import {
+  LEARNING_OBJECT_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEGACY_USER_ROUTES,
 } from '../core/learning-object-module/learning-object/learning-object.routes';
@@ -82,9 +83,9 @@ export class LearningObjectService {
   }
 
   /**
-   * Fetches LearningObject by id
+   * Fetches LearningObject by cuid
    *
-   * @param {string} id
+   * @param {string} cuid
    * @returns {Promise<LearningObject>}
    * @memberof LearningObjectService
    */
@@ -92,7 +93,7 @@ export class LearningObjectService {
     cuid: string,
     version?: number,
   ): Promise<LearningObject> {
-    const route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
+    const route = LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
       cuid,
       version
     );
@@ -126,7 +127,7 @@ export class LearningObjectService {
   }
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     return this.http
-      .get(USER_ROUTE.GET_USER_PROFILE(username), { withCredentials: true })
+      .get(USER_ROUTE.GET_USER(username), { withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {

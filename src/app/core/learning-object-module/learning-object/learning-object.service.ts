@@ -1,14 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { take, map, catchError, mergeMap, finalize } from 'rxjs/operators';
-import { of, Observable, merge, Subject, throwError } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { LearningObject, LearningOutcome } from '@entity';
-import {
-  LEGACY_USER_ROUTES,
-  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-  LEARNING_OBJECT_ROUTES
-} from '../learning-object/learning-object.routes';
+import { merge, Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, finalize, map, mergeMap, take } from 'rxjs/operators';
 import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
+import {
+  LEARNING_OBJECT_ROUTES,
+  LEGACY_USER_ROUTES
+} from '../learning-object/learning-object.routes';
 
 export const CALLBACKS = {
   outcomes: (outcomes: any[]) => {
@@ -182,7 +181,7 @@ export class LearningObjectService {
     if (params.id) {
       route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
     } else if (params.cuidInfo) {
-      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
+      route = LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);
       throw err;
