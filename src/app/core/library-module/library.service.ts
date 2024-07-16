@@ -39,19 +39,18 @@ export class LibraryService {
     // this.headers.append('Content-Type', 'application/json');
   }
 
-  async getLibrary(page?: number, limit?: number,
-                    learningObjectCuid?: string,
-                    version?: number): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+  async getLibrary(opts?: { learningObjectCuid?: string, version?: number,
+                  page?: number, limit?: number }): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     this.updateUser();
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
 
     const query = new URLSearchParams({
-      page: page ? page.toString() : '1',
-      limit: limit ? limit.toString() : '10',
-      cuid: learningObjectCuid ? learningObjectCuid : '',
-      version: version ? version.toString() : '0'
+      page: opts.page ? opts.page.toString() : '1',
+      limit: opts.limit ? opts.limit.toString() : '10',
+      cuid: opts.learningObjectCuid ? opts.learningObjectCuid : '',
+      version: opts.version ? opts.version.toString() : '0'
     });
 
     return await this.http
