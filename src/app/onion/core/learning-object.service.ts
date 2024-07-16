@@ -453,7 +453,7 @@ export class LearningObjectService {
       return this.http
         .patch(
           removeRoute,
-          { childObjectId: children },
+          { childObjectId: children[0] },
           { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
