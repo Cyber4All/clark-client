@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class EmailBannerComponent implements OnInit {
    */
   public async sendEmailVerification() {
     try {
-      await this.auth.validateAndRefreshToken();
+      await this.auth.validateToken();
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();

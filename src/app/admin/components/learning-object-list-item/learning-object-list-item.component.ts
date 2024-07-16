@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
@@ -19,8 +19,11 @@ import { of } from 'rxjs/internal/observable/of';
 import { UnreleaseService } from 'app/admin/core/unrelease.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Router } from '@angular/router';
-import { HierarchyService } from '../../../core/hierarchy.service';
-import { LearningObjectService } from 'app/core/learning-object.service';
+import { HierarchyService } from '../../../core/learning-object-module/hierarchy/hierarchy.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import {
+  LearningObjectService as RefactoredLearningObjectService
+} from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -76,7 +79,8 @@ export class LearningObjectListItemComponent implements OnChanges {
     private toaster: ToastrOvenService,
     private router: Router,
     private hierarchyService: HierarchyService,
-    private loService: LearningObjectService
+    private loService: LearningObjectService,
+    private refactoredLearningObjectService: RefactoredLearningObjectService
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -159,11 +163,16 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Reaches to a service to unrelease the object.
    */
   unreleaseLearningObject() {
-    this.unreleaseService.unreleaseLearningObject(this.learningObject.author.username, this.learningObject.id)
+    this.refactoredLearningObjectService
+      .updateLearningObjectStatus(
+        this.learningObject._id,
+        LearningObject.Status.PROOFING
+      )
       .then(() => {
-      this.toaster.success('Success', 'Learning object was successfully unreleased');
-      this.learningObject.status = LearningObject.Status.PROOFING;
-    }).catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
+        this.toaster.success('Success', 'Learning object was successfully unreleased');
+        this.learningObject.status = LearningObject.Status.PROOFING;
+      })
+      .catch(() => this.toaster.error('Error', 'There was an issue unreleasing this learning object, please try again later'));
   }
 
   /**
@@ -178,14 +187,14 @@ export class LearningObjectListItemComponent implements OnChanges {
   async checkForParents() {
     const parentUri = `${environment.apiURL}/users/${encodeURIComponent(
       this.learningObject.author.username
-      )}/learning-objects/${encodeURIComponent(
-      this.learningObject.id
+    )}/learning-objects/${encodeURIComponent(
+      this.learningObject._id
     )}/parents`;
 
     await this.http.get(
       parentUri,
       { headers: this.headers, withCredentials: true }
-      ).pipe(
+    ).pipe(
       take(1),
       catchError(e => of(e))
     ).subscribe(object => {
@@ -199,65 +208,65 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Checks if the learning object has any children
    */
   async checkForChildren() {
-    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.author.username, this.learningObject.id);
+    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject._id);
   }
 
   /**
    * Toggles the modal for Relevancy Date selection
    */
 
-   toggleRelevancyDate(toggle: boolean) {
+  toggleRelevancyDate(toggle: boolean) {
     this.showRelevancyDate = toggle;
-   }
+  }
 
-   /**
-    * Toggles the delete revision selection
-    */
+  /**
+   * Toggles the delete revision selection
+   */
 
-   toggleRevisionDelete(toggle: boolean) {
-     this.showDeleteRevisionConfirmation = toggle;
-   }
+  toggleRevisionDelete(toggle: boolean) {
+    this.showDeleteRevisionConfirmation = toggle;
+  }
 
-   goToUrl(url) {
-     if(url === 'builder') {
-      window.open(`/onion/learning-object-builder/${this.learningObject.id}`, '_blank');
-     } else if (url === 'contact') {
+  goToUrl(url) {
+    if (url === 'builder') {
+      window.open(`/onion/learning-object-builder/${this.learningObject._id}`, '_blank');
+    } else if (url === 'contact') {
       window.open(`/users/${this.learningObject.author.username}`);
-     } else if (url === 'details') {
+    } else if (url === 'details') {
       window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}`);
-     } else if (url === 'relevancy') {
-       window.open(`/onion/relevancy-builder/${this.learningObject.id}`);
-     }
-   }
+    } else if (url === 'relevancy') {
+      window.open(`/onion/relevancy-builder/${this.learningObject.cuid}`);
+    }
+  }
 
-   toggleHierarchyBuilder(val: boolean) {
+  toggleHierarchyBuilder(val: boolean) {
     this.showHierarchyBuilder = val;
-   }
+  }
 
-   toggleReleasingHierarchy(val: boolean) {
-     this.showReleasingHierarchyPopup = val;
-   }
+  toggleReleasingHierarchy(val: boolean) {
+    this.showReleasingHierarchyPopup = val;
+  }
 
-   releaseHierarchy() {
+  releaseHierarchy() {
     this.toggleReleasingHierarchy(true);
-    this.hierarchyService.releaseHierarchy(this.learningObject.id)
-    .then(() => {
-      this.toggleReleasingHierarchy(false);
-      location.reload();
-    }).catch(error => {
-      this.toaster.error('Error!', error.message);
-    });
-   }
+    this.hierarchyService.releaseHierarchy(this.learningObject._id)
+      .then(() => {
+        this.toggleReleasingHierarchy(false);
+        location.reload();
+      }).catch(error => {
+        this.toaster.error('Error!', error.message);
+      });
+  }
 
-   deleteRevision() {
+  deleteRevision() {
     this.unreleaseService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version + 1)
-    .then(() => {
-      this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
-    }).catch(() => {
-      this.toaster.error('Error', 'There was an issue deleting the revision of this learning object, please try again later');
-    });
+      .then(() => {
+        this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
+      }).catch(() => {
+        this.toaster.error('Error', 'There was an issue deleting the revision of this learning object, please try again later');
+      });
     this.toggleRevisionDelete(false);
-   }
+  }
   /**
    * Emits a value for checkbox to parent component
    *

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuard } from '../core/auth-guard.service';
+import { AuthGuard } from '../core/auth-module/auth-guard.service';
 import { OnionComponent } from './onion.component';
 
 /**
@@ -21,25 +21,25 @@ const onion_routes: Routes = [
       {
         path: 'dashboard',
         loadChildren:
-          () => import('app/onion/dashboard/dashboard.module').then(m => m.DashboardModule),
+          () => import('../onion/dashboard/dashboard.module').then(m => m.DashboardModule),
         canActivate: [AuthGuard],
         data: { state: 'dashboard', title: 'Your Dashboard' }
       },
       {
         path: 'learning-object-builder',
         loadChildren:
-          () => import('app/onion/learning-object-builder/learning-object-builder.module').then(m => m.LearningObjectBuilderModule),
+          () => import('../onion/learning-object-builder/learning-object-builder.module').then(m => m.LearningObjectBuilderModule),
         canActivate: [AuthGuard]
       },
       {
-        path: 'relevancy-builder/:learningObjectId',
+        path: 'relevancy-builder/:cuid',
         loadChildren:
-          () => import('app/onion/relevancy-builder/relevancy-builder.module').then(m => m.RelevancyBuilderModule),
+          () => import('../onion/relevancy-builder/relevancy-builder.module').then(m => m.RelevancyBuilderModule),
       },
       {
         path: 'learning-object-builder/:learningObjectId',
         loadChildren:
-          () => import('app/onion/learning-object-builder/learning-object-builder.module').then(m => m.LearningObjectBuilderModule),
+          () => import('../onion/learning-object-builder/learning-object-builder.module').then(m => m.LearningObjectBuilderModule),
         canActivate: [AuthGuard]
       },
       { path: '**', redirectTo: 'dashboard' }

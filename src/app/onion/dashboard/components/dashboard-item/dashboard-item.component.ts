@@ -11,11 +11,11 @@ import {
 } from '@angular/core';
 
 import { StatusDescriptions } from 'environments/status-descriptions';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { LearningObjectService as AppLOService } from 'app/core/learning-object.service';
-import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { LearningObjectService as AppLOService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 
 
 @Component({
@@ -46,7 +46,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
   @Input()
   meatball = true;
   // does this object have an active checkmark
-  @Input ()
+  @Input()
   showCheck = true;
 
   // fired when the checkbox for this element is fired
@@ -72,7 +72,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
   viewAllChangelogs: EventEmitter<string> = new EventEmitter();
 
   @Output()
-  viewSidePanel: EventEmitter<boolean> = new EventEmitter ();
+  viewSidePanel: EventEmitter<boolean> = new EventEmitter();
 
   // id of the context menu returned from the context-menu component
   itemMenu: string;
@@ -95,14 +95,13 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     private learningObjectService: LearningObjectService,
     private appLOService: AppLOService,
     private uriRetriever: UriRetrieverService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.parents = await this.parentNames();
     this.children = await this.objectChildrenNames();
     this.hasChildren = await this.appLOService.doesLearningObjectHaveChildren(
-      this.learningObject.author.username,
-      this.learningObject.id
+      this.learningObject._id
     );
     this.cd.detectChanges();
   }
@@ -164,12 +163,12 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     return p.includes(this.status);
   }
 
-   /**
-    * Given a string representation of a context menu action, returns true if that action should be allowed based on
-    * parameters such as learning object length and learning object status
-    *
-    * @param action {string} the action in question
-    */
+  /**
+   * Given a string representation of a context menu action, returns true if that action should be allowed based on
+   * parameters such as learning object length and learning object status
+   *
+   * @param action {string} the action in question
+   */
   adminActionPermissions() {
     return this.auth.hasCuratorAccess();
   }
@@ -224,7 +223,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    */
   async parentNames() {
     const parents = [];
-    return this.learningObjectService.fetchParents(this.learningObject.author.username, this.learningObject.id).then(returners => {
+    return this.learningObjectService.fetchParents(this.learningObject.author.username, this.learningObject._id).then(returners => {
       returners.forEach(parent => {
         parents.push(parent.name);
       });

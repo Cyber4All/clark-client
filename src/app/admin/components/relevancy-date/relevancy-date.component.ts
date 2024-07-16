@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
-import { RelevancyService } from 'app/core/relevancy.service';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 
 @Component({
   selector: 'clark-relevancy-date',
@@ -16,7 +16,7 @@ export class RelevancyDateComponent implements OnInit {
   maxDate: Date;
   selected: Date;
 
-  constructor(private relevancyService: RelevancyService) {}
+  constructor(private relevancyService: RelevancyService) { }
 
   ngOnInit(): void {
     // Set the current nextCheck
@@ -34,7 +34,7 @@ export class RelevancyDateComponent implements OnInit {
   }
 
   async setDate() {
-    await this.relevancyService.setNextCheckDate(this.learningObject.author.username, this.learningObject.id, this.selected);
+    await this.relevancyService.setNextCheckDate(this.learningObject._id, this.selected);
     this.close.emit();
   }
 

@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 
@@ -53,12 +53,12 @@ export class AddChildComponent implements OnInit, OnDestroy {
   async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
     this.loading = true;
     return this.learningObjectService
-      .getLearningObjects(this.child.author.username, filters, query, this.child.id)
+      .getLearningObjects(this.child.author.username, {...filters, text: query, childId: this.child._id } )
       .then((children: LearningObject[]) => {
         this.loading = false;
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
-        children = children.filter(child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length)));
+        children = children.filter(child => (!this.currentChildren.includes(child._id) && childrenLengths.includes(child.length)));
         return children;
       });
   }

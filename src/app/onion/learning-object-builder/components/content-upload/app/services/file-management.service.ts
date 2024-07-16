@@ -1,7 +1,6 @@
 import * as AWS from 'aws-sdk';
 
 import { Injectable } from '@angular/core';
-import { USER_ROUTES } from '@env/route';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { retry, catchError, takeUntil } from 'rxjs/operators';
@@ -9,7 +8,7 @@ import { throwError, Subject, Observable } from 'rxjs';
 import { LearningObject } from '@entity';
 import { environment } from '@env/environment';
 import { FileInput } from '../upload/upload.component';
-import { AuthService, OpenIdToken } from 'app/core/auth.service';
+import { AuthService, OpenIdToken } from 'app/core/auth-module/auth.service';
 import {
   UploadUpdate,
   QueueStatus,
@@ -20,11 +19,14 @@ import {
   UploadErrorReason,
   UploadErrorUpdate
 } from './typings';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { FILE_ROUTES } from '../../../../../../core/learning-object-module/file/file.routes';
 
 const DEFAULT_CONCURRENT_UPLOADS = 10;
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FileManagementService {
   private S3: AWS.S3;
 
@@ -32,7 +34,7 @@ export class FileManagementService {
     private http: HttpClient,
     private auth: AuthService,
     private userService: UserService
-  ) {}
+  ) { }
 
   /**
    * Uploads files to S3 using S3 SDK
@@ -512,16 +514,16 @@ export class FileManagementService {
    * @memberof FileManagementService
    */
   delete(learningObject: LearningObject, fileId: string): Promise<{}> {
-    const route = USER_ROUTES.DELETE_FILE_FROM_LEARNING_OBJECT({
-      authorUsername: learningObject.author.username,
-      learningObjectId: learningObject.id,
+    const route = FILE_ROUTES.DELETE_FILE({
+      username: learningObject.author.username,
+      learningObjectId: learningObject._id,
       fileId
     });
 
     return this.http
       .delete(route, { withCredentials: true, responseType: 'text' })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise();

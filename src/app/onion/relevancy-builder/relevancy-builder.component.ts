@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavbarService } from '../../core/navbar.service';
+import { NavbarService } from '../../core/client-module/navbar.service';
 import { BuilderStore } from './builder-store.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -16,7 +16,7 @@ import {
   animateChild
 } from '@angular/animations';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { HistorySnapshot, HistoryService } from 'app/core/history.service';
+import { HistorySnapshot, HistoryService } from 'app/core/client-module/history.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -120,9 +120,9 @@ export class RelevancyBuilderComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .pipe(takeUntil(this.destroyed$))
       .subscribe(async routeParams => {
-        const id = routeParams.get('learningObjectId');
-        if (id) {
-          await this.store.fetch(id);
+        const cuid = routeParams.get('cuid');
+        if (cuid) {
+          await this.store.fetch(cuid);
         }
       });
 

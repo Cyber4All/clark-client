@@ -11,7 +11,7 @@ import {
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { BuilderStore } from '../../builder-store.service';
 import { LearningObject } from '@entity';
-import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 import { catchError } from 'rxjs/operators';
 
 @Component({
@@ -64,11 +64,11 @@ export class ScaffoldComponent implements OnInit {
     this.ariaLabel = 'Add and delete Children';
 
     // if the Learning Object can have children, attempt to load them
-    if (this.learningObject.id && this.learningObject.length !== LearningObject.Length.NANOMODULE) {
+    if (this.learningObject._id && this.learningObject.length !== LearningObject.Length.NANOMODULE) {
       this.loading = true;
       this.store.getChildren().then(kiddos => {
         this.children = kiddos;
-        this.children.forEach(kid => this.childrenIDs.push(kid.id));
+        this.children.forEach(kid => this.childrenIDs.push(kid._id));
         this.loading = false;
       }).catch(error => {
         this.loading = false;
@@ -88,15 +88,15 @@ export class ScaffoldComponent implements OnInit {
       this.children.unshift(child);
 
       // add child to the childrenIDs array
-      this.childrenIDs.unshift(child.id);
+      this.childrenIDs.unshift(child._id);
     } else {
       // if we DO NOT already have a children array defined
 
       // add child to the children array
-      this.children = [ child ];
+      this.children = [child];
 
       // add child to the childrenIDs array
-      this.childrenIDs = [ child.id ];
+      this.childrenIDs = [child._id];
     }
 
 
@@ -115,7 +115,7 @@ export class ScaffoldComponent implements OnInit {
 
     this.childrenIDs = [];
     // get the ids of the children in children array
-    this.children.forEach(kid => this.childrenIDs.push(kid.id));
+    this.children.forEach(kid => this.childrenIDs.push(kid._id));
 
     // set the ids of children to the same order as the childrenIDs
     this.store.setChildren(this.childrenIDs);
@@ -136,8 +136,7 @@ export class ScaffoldComponent implements OnInit {
   deleteButton(index) {
     this.deleteIndex = index;
     this.childrenConfirmationMessage = `Just to confirm, you want to remove '
-        ${this.children[index].name}' as a child of '${
-      this.learningObject.name
+        ${this.children[index].name}' as a child of '${this.learningObject.name
       }'?`;
 
     this.toggleConfirmationModal(true);
@@ -146,20 +145,23 @@ export class ScaffoldComponent implements OnInit {
   /**
    * Sends request to update the children array of the Learning Object
    */
-  deleteChild() {
+  async deleteChild() {
     this.toggleConfirmationModal(false);
     // remove the child that was selected to be deleted
     this.children.splice(this.deleteIndex, 1);
 
     // set childrenIDs equal to the children array
     this.childrenIDs = [];
-    this.children.forEach(kid => this.childrenIDs.push(kid.id));
-    this.store.setChildren(this.childrenIDs, true);
+    this.children.forEach(kid => this.childrenIDs.push(kid._id));
+    await this.store.setChildren(this.childrenIDs, true);
 
     // if deleted child was last child toggle off editContent because there is no longer content to edit
     if (this.children.length === 0) {
       this.editContent = false;
     }
+
+    // get the children again to get current childrens array
+    await this.store.getChildren();
   }
   /**
    * Toggles the confirmation modal based on the boolean val

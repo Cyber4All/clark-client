@@ -7,7 +7,7 @@ import {
   OnDestroy,
   Input
 } from '@angular/core';
-import { MessagesService } from 'app/core/messages.service';
+import { MessagesService } from 'app/core/utility-module/messages.service';
 
 @Component({
   selector: 'clark-column-wrapper',
@@ -24,7 +24,7 @@ export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy 
   columnOffset: number;
   columnHeight: number;
 
-  constructor(private messagesService: MessagesService) {}
+  constructor(private messagesService: MessagesService) { }
 
   async ngOnInit() {
     try {
@@ -42,7 +42,7 @@ export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy 
       this.columnOffset -
       (this.messageBar
         ? (document.querySelector('clark-message .wrapper') as HTMLElement)
-            .offsetHeight
+          .offsetHeight
         : 0) +
       30; // this +30 offsets the wrappers -30 offset
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, IterableDiffers, IterableDiffer, DoCheck } from '@angular/core';
-import { UserService } from 'app/core/user.service';
-import { AuthService } from 'app/core/auth.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { User } from '@entity';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';

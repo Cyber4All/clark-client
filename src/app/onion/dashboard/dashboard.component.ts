@@ -1,17 +1,17 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { HistoryService, HistorySnapshot } from 'app/core/history.service';
+import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { NavigationEnd, ActivatedRoute, Router } from '@angular/router';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { AuthService } from 'app/core/auth.service';
+import { LearningObjectService } from '../core/learning-object.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { CollectionService } from 'app/core/collection.service';
-import { ChangelogService } from 'app/core/changelog.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
-import { HierarchyService } from 'app/core/hierarchy.service';
+import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -21,17 +21,17 @@ import { HierarchyService } from 'app/core/hierarchy.service';
     trigger('dashboardList', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(-20px)' }),
-        animate('200ms 400ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
+        animate('200ms 400ms ease-out', style({ opacity: 1, transform: 'translateY(-0px)' })),
       ]),
     ]),
     trigger('Loading', [
       transition(':enter', [
         style({ opacity: 0, transform: 'translateY(-20px)' }),
-        animate('400ms 500ms ease-out', style({opacity: 1, transform: 'translateY(-0px)'})),
+        animate('400ms 500ms ease-out', style({ opacity: 1, transform: 'translateY(-0px)' })),
       ]),
       transition(':leave', [
-        style({ opacity: 1, transform: 'translateY(0px)'}),
-        animate('200ms ease-out', style({opacity: 0, transform: 'translateY(20px)'})),
+        style({ opacity: 1, transform: 'translateY(0px)' }),
+        animate('200ms ease-out', style({ opacity: 0, transform: 'translateY(20px)' })),
       ])
     ]),
   ]
@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogLearningObject: LearningObject;
   changelogs: [];
-  learningObjects: LearningObject[];
+  learningObjects: any[];
 
   // submission
   submitToCollection: boolean;
@@ -80,12 +80,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
-    private hierarchyService: HierarchyService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
+    private submissionService: SubmissionsService
   ) {
     this.navbar.hide();
   }
@@ -99,7 +99,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }, 1100);
     // retrieve released learning objects
     setTimeout(async () => {
-      await this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+      await this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED });
       this.loading = false;
     }, 1100);
 
@@ -159,26 +159,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     this.workingLearningObjects = await this.learningObjectService
-      .getDraftLearningObjects(this.auth.username, filters, text)
-      .then((children: LearningObject[]) => {
-        return children;
-      });
+      .getDraftLearningObjects(this.auth.username, filters, text);
   }
 
-   /**
-    * Retrieves an array of learningObjects to populate the released list of learning objects
-    *
-    * @param filters
-    * @param query
-    */
+  /**
+   * Retrieves an array of learningObjects to populate the released list of learning objects
+   *
+   * @param filters
+   * @param query
+   */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
     this.releasedLearningObjects = await this.learningObjectService
-      .getLearningObjects(this.auth.username, filters, text)
-      .then((children: LearningObject[]) => {
-        return children;
-      });
+      .getLearningObjects(this.auth.username, {...filters, text});
 
-      this.checkQueryParams$.next();
+    this.checkQueryParams$.next();
   }
   /**
    * Toggles between the draft tab and the released tab
@@ -201,7 +195,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.filters = filters;
     const filter = Array.from(filters.keys());
     if (filter.length !== 0) {
-      this.getDraftLearningObjects({status: filter});
+      this.getDraftLearningObjects({ status: filter });
     } else {
       this.getDraftLearningObjects();
     }
@@ -213,51 +207,49 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param text
    */
   performSearch(text: string) {
-    this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED}, text);
+    this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED, text });
     this.getDraftLearningObjects(this.filters, text);
   }
 
   // SUBMISSION AND CANCEL SUBMISSION LOGIC
 
-   /**
-    * Submits learning object to collection
-    *
-    * @param event
-    */
+  /**
+   * Submits learning object to collection
+   *
+   * @param event
+   */
   submitLearningObjectToCollection(event: LearningObject) {
     // If the object is unreleased, submit it, else resubmit it (because minor/major changes were asked for)
     if (LearningObject.Status.UNRELEASED === event.status) {
       this.currentlySubmittingObject = event;
       this.submitToCollection = true;
     } else {
-      this.collectionService.submit({
-        learningObjectId: event.id,
-        userId: event.author.id,
+      this.submissionService.submit({
+        learningObjectId: event._id,
         collectionName: event.collection,
       })
-      .then(() => {
-        this.notificationService.success('Done!', 'Learning Object Resubmitted for Review!');
-        event.status = LearningObject.Status.WAITING;
-      })
-      .catch(e => {
-        this.notificationService.error(
-          'Error!',
-          `There was an issue resubmitting the learning object, please try again later...`,
-        );
-      });
+        .then(() => {
+          this.notificationService.success('Done!', 'Learning Object Resubmitted for Review!');
+          event.status = LearningObject.Status.WAITING;
+        })
+        .catch(e => {
+          this.notificationService.error(
+            'Error!',
+            `There was an issue resubmitting the learning object, please try again later...`,
+          );
+        });
     }
   }
 
-   /**
-    * Cancel a submission while in waiting status
-    *
-    * @param l {LearningObject} learning object to be unpublished
-    */
+  /**
+   * Cancel a submission while in waiting status
+   *
+   * @param l {LearningObject} learning object to be unpublished
+   */
   cancelSubmission(l: LearningObject): Promise<void> {
-    return this.collectionService.unsubmit({
-      learningObjectId: l.id,
-      userId: l.author.id,
-    }).then(async () => {
+    return this.submissionService.unsubmit(
+      l._id,
+      ).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
       this.cd.detectChanges();
       this.notificationService.success('Done!', 'Learning Object Submission Cancelled!');
@@ -268,22 +260,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // CHANGELOG MODAL LOGIC
 
-   /**
-    * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
-    *
-    * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
-    * @memberof DashboardComponent
-    */
+  /**
+   * Opens the Change Log modal for a specified Learning Object and fetches the appropriate change logs
+   *
+   * @param {string} learningObjectId the id of the Learning Object for which to fetch change logs
+   * @memberof DashboardComponent
+   */
   async openViewAllChangelogsModal(learningObjectId: string) {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;
     this.learningObjects = this.workingLearningObjects.concat(this.releasedLearningObjects);
     this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
     try {
-      this.changelogs =  await this.changelogService.fetchAllChangelogs({
-        userId: this.changelogLearningObject.author.username,
-        learningObjectCuid: this.changelogLearningObject.cuid,
-      });
+      this.changelogs = await this.changelogService.getAllChangelogs(this.changelogLearningObject.cuid);
     } catch (error) {
       let errorMessage;
 
@@ -329,27 +318,27 @@ export class DashboardComponent implements OnInit, OnDestroy {
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      return this.learningObjectService.delete(canDelete[0].author.username, canDelete[0].id)
-      .then(async () => {
-        this.notificationService.success('Done!', 'Learning Object deleted!');
-        await this.getDraftLearningObjects();
-      })
-      .catch(err => {
-        this.notificationService.error('Error!', 'Learning Object could not be deleted!');
-      });
+      return this.learningObjectService.delete(canDelete[0]._id)
+        .then(async () => {
+          this.notificationService.success('Done!', 'Learning Object deleted!');
+          await this.getDraftLearningObjects();
+        })
+        .catch(err => {
+          this.notificationService.error('Error!', 'Learning Object could not be deleted!');
+        });
     } else if (canDelete.length > 1) {
       const objectsToDeleteIDs = [];
       canDelete.forEach(object => {
-        objectsToDeleteIDs.push(object.id);
+        objectsToDeleteIDs.push(object._id);
       });
       return this.learningObjectService.deleteMultiple(objectsToDeleteIDs, this.objectsToDelete[0].author.username)
-      .then(async () => {
-        this.notificationService.success('Done!', 'Learning Objects deleted!');
-        await this.getDraftLearningObjects();
-      })
-      .catch(err => {
-        this.notificationService.error('Error!', 'Learning Object could not be deleted!');
-      });
+        .then(async () => {
+          this.notificationService.success('Done!', 'Learning Objects deleted!');
+          await this.getDraftLearningObjects();
+        })
+        .catch(err => {
+          this.notificationService.error('Error!', 'Learning Object could not be deleted!');
+        });
     } else {
       this.notificationService.error('Error!', 'Selected Learning Objects could not be deleted!');
 
@@ -365,8 +354,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createRevision(object: LearningObject) {
-    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid, object.author.username).then(() => {
-      this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid).then(() => {
+      this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED });
     });
   }
 
@@ -375,7 +364,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   submitRevisionPromiseHandler(submitted: boolean) {
-    this.sidePanelPromiseResolver = new Promise<void> ((resolve, reject) => {
+    this.sidePanelPromiseResolver = new Promise<void>((resolve, reject) => {
       if (submitted) {
         resolve();
       } else {
@@ -391,7 +380,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   deleteRevision(object: LearningObject) {
     if (true) {
       this.sidePanelPromiseResolver = this.deleteObjects([object]).then(() => {
-        this.getReleasedLearningObjects({status: LearningObject.Status.RELEASED});
+        this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED });
       });
     }
   }

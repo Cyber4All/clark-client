@@ -1,8 +1,8 @@
 
-import { NestedTreeControl} from '@angular/cdk/tree';
+import { NestedTreeControl } from '@angular/cdk/tree';
 import { Component, Input, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from '@entity';
-import { HierarchyService } from 'app/core/hierarchy.service';
+import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hierarchy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectNode, TreeDataSource } from './tree-datasource';
 
@@ -26,16 +26,16 @@ export class HierarchyBuilderComponent implements OnInit {
   @Output() close: EventEmitter<void> = new EventEmitter();
   treeControl = new NestedTreeControl<LearningObjectNode>(node => node.children);
   dataSource = new TreeDataSource(this.treeControl, this.TREE_DATA);
-  contributors: string [];
+  contributors: string[];
   acknowledge: boolean;
 
   constructor(
     private hierarchyService: HierarchyService,
     private toaster: ToastrOvenService,
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.TREE_DATA[0] = { _id: this.parent.id, name: this.parent.name, length: this.parent.length, showForm: false, children: []};
+    this.TREE_DATA[0] = { _id: this.parent._id, name: this.parent.name, length: this.parent.length, showForm: false, children: [] };
     this.contributors = this.parent.contributors.map(contrib => {
       return contrib.username;
     });
@@ -52,17 +52,17 @@ export class HierarchyBuilderComponent implements OnInit {
    */
   addLearningObject(parentNode: LearningObjectNode) {
     let length = 'unit';
-    if(parentNode.length === 'unit') {
+    if (parentNode.length === 'unit') {
       length = 'module';
     }
-    if(parentNode.length === 'module') {
+    if (parentNode.length === 'module') {
       length = 'micromodule';
     }
-    if(parentNode.length === 'micromodule') {
+    if (parentNode.length === 'micromodule') {
       length = 'nanomodule';
     }
     const obj = { name: '', length: length, showForm: true };
-    if(parentNode.length !== 'nanomodule') {
+    if (parentNode.length !== 'nanomodule') {
       obj['children'] = [];
     }
     obj['contributors'] = this.contributors;
@@ -92,20 +92,21 @@ export class HierarchyBuilderComponent implements OnInit {
    */
 
   async createLearningObjects(node: any) {
-
-    if(node.children.length === 0) {
+    if (node.children.length === 0) {
       return this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
     }
     const childrenIds = [];
     for await (const child of node.children) {
-      childrenIds.push(await this.createLearningObjects(child));
+      const obj = JSON.parse(await this.createLearningObjects(child));
+      childrenIds.push(obj._id);
     }
-    let parentId = this.parent.id;
-    if(node.name !== this.parent.name) {
-      parentId = await this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
+    let parentId = this.parent._id;
+    if (node.name !== this.parent.name) {
+      const obj = JSON.parse(await this.hierarchyService.addHierarchyObject(this.parent.author.username, node));
+      parentId = obj._id;
     }
     const newNode = await this.setParents(parentId, childrenIds);
-    if(node.name === this.parent.name) {
+    if (node.name === this.parent.name) {
       this.toaster.success(
         'Success',
         'Hierarchy Created!'

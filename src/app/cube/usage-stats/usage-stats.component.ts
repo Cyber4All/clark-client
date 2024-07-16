@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
-import { UsageStats, LearningObjectStats, UserStats } from '../shared/types/usage-stats';
+import { UsageStats, LearningObjectStats, UserMetrics } from '../shared/types/usage-stats';
 import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
-import { UsageStatsService } from '../core/usage-stats/usage-stats.service';
-import { LearningObject } from '@entity';
+import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { LearningObjectService } from '../learning-object.service';
-import { UtilityService } from 'app/core/utility.service';
+import { MetricService } from '../../core/metric-module/metric.service';
+import { UtilityService } from '../../core/utility-module/utility.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -24,10 +24,10 @@ export class UsageStatsComponent implements OnInit {
   // Default values are set to -1 (invalid value) to trigger loading spinner
   usageStats: UsageStats = {
     objects: {
-      released: -1,
       review: -1,
+      total: -1,
+      released: -1,
       downloads: -1,
-      collections: { number: -1 },
       topDownloads: [],
       lengths: {
         nanomodule: -1,
@@ -40,7 +40,15 @@ export class UsageStatsComponent implements OnInit {
         remember_and_understand: -1,
         apply_and_analyze: -1,
         evaluate_and_synthesize: -1
-      }
+      },
+      status: {
+        waiting: -1,
+        peerReview: -1,
+        acceptedMinor: -1,
+        acceptedMajor: -1,
+        proofing: -1
+      },
+      collections: { number: -1 },
     },
     users: {
       accounts: -1,
@@ -59,7 +67,7 @@ export class UsageStatsComponent implements OnInit {
   counterStats: CounterStat[] = [];
 
   objectStats: LearningObjectStats;
-  userStats: UserStats;
+  userStats: UserMetrics;
 
   outcomeDistributionChartAria: string;
   organizationBreakdownChartAria: string;
@@ -70,7 +78,7 @@ export class UsageStatsComponent implements OnInit {
   loading: boolean;
 
   constructor(
-    private statsService: UsageStatsService,
+    private metricService: MetricService,
     private learningObjectService: LearningObjectService,
     private utilityService: UtilityService
   ) {}
@@ -78,11 +86,11 @@ export class UsageStatsComponent implements OnInit {
   async ngOnInit() {
     this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
-    this.statsService.getLearningObjectStats().then(stats => {
-      this.usageStats.objects.released = stats.released;
+    await this.metricService.getLearningObjectStats().then(stats => {
       this.usageStats.objects.review = stats.review;
+      this.usageStats.objects.total = stats.total;
+      this.usageStats.objects.released = stats.released;
       this.usageStats.objects.downloads = stats.downloads;
-      this.usageStats.objects.collections = stats.collections;
       this.usageStats.objects.topDownloads = stats.topDownloads;
       this.usageStats.objects.lengths = {
         nanomodule: stats.lengths.nanomodule,
@@ -91,8 +99,20 @@ export class UsageStatsComponent implements OnInit {
         unit: stats.lengths.unit,
         course: stats.lengths.course
       };
+      this.usageStats.objects.collections = stats.collections;
+      this.usageStats.objects.outcomes = {
+        remember_and_understand: stats.outcomes.remember_and_understand,
+        apply_and_analyze: stats.outcomes.apply_and_analyze,
+        evaluate_and_synthesize: stats.outcomes.evaluate_and_synthesize
+      };
+      this.usageStats.objects.status = {
+        waiting: stats.lengths.nanomodule,
+        peerReview: stats.lengths.micromodule,
+        acceptedMinor: stats.lengths.module,
+        acceptedMajor: stats.lengths.unit,
+        proofing: stats.lengths.course
+      };
 
-      this.usageStats.objects.outcomes = stats.outcomes;
 
       this.buildCounterStats();
       this.buildOutcomeDistributionChart();
@@ -100,7 +120,7 @@ export class UsageStatsComponent implements OnInit {
       this.buildTopDownloads();
     });
 
-    this.statsService.getUserStats().then(stats => {
+    await this.metricService.getUserMetrics().then(stats => {
       this.usageStats.users.accounts = stats.accounts;
       this.buildCounterStats();
     });
@@ -345,10 +365,10 @@ export class UsageStatsComponent implements OnInit {
   private async buildTopDownloads() {
     this.loading = true;
     for (let i = 0; i < this.usageStats.objects.topDownloads.length; i++) {
-      const cuid = this.usageStats.objects.topDownloads[i].learningObjectCuid;
+      const cuid = this.usageStats.objects.topDownloads[i].cuid;
       // This will need to be fixed once we add logic to learning object service to verify the author. As of right now
       // learning object service will return a released learning object as long as the learningObject cuid is found.
-      const object = await this.learningObjectService.getLearningObject(undefined, cuid);
+      const object = await this.learningObjectService.getLearningObject(cuid);
       object.metrics.downloads = this.usageStats.objects.topDownloads[i].downloads;
       this.learningObjects.push(object);
     }

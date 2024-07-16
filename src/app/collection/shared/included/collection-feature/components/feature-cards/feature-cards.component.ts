@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CollectionService } from '../../../../../../core/collection.service';
+import { CollectionService } from '../../../../../../core/collection-module/collections.service';
 import { AttributeService } from '../../core/attribute.service';
 
 @Component({
@@ -28,7 +28,7 @@ export class FeatureCardsComponent implements OnInit {
     this.setColorScheme();
     const hierarchy = await this.attributeService.getHierarchy(
       this.learningObject.author.username,
-      this.learningObject.id
+      this.learningObject._id
     );
     this.parents = hierarchy.parents;
     this.children = hierarchy.children;
