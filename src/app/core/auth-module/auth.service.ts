@@ -79,6 +79,12 @@ export class AuthService {
    * @memberof AuthService
    */
   private setSession({ user, tokens }: { user: AuthUser; tokens: Tokens }) {
+    this.cookies.set("presence", tokens.bearer, {
+      expires: 1,
+      path: '/',
+      secure: false,
+      sameSite: 'Lax',
+    });
     this.user = user;
     this.openIdToken = tokens.openId;
     this.changeStatus(true);
