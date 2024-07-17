@@ -86,11 +86,19 @@ export const LEARNING_OBJECT_ROUTES = {
     GET_MY_LEARNING_OBJECTS(
         username,
         filters: any,
-      ) {
-          return `${environment.apiURL}/users/${encodeURIComponent(
-              username,
-          )}/learning-objects?${querystring.stringify(filters)}`;
-      }
+    ) {
+        return `${environment.apiURL}/users/${encodeURIComponent(
+            username,
+        )}/learning-objects?${querystring.stringify(filters)}`;
+    },
+
+    /**
+     * Route to delete a learning object
+     * @param learningObjectId id of the learning object to delete 
+     */
+    DELETE_LEARNING_OBJECT(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
+    },
 };
 
 export const ADMIN_ROUTES = {
@@ -143,14 +151,6 @@ export const LEGACY_USER_ROUTES = {
     },
     GET_LEARNING_OBJECT(id) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
-    },
-    DELETE_LEARNING_OBJECT(id: string) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
-    },
-    DELETE_MULTIPLE_LEARNING_OBJECTS(username, learningObjectNames) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
     },
     POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(

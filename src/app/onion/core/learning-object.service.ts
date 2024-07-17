@@ -214,7 +214,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.objects.map(object => new LearningObject(object));
+        return response.objects;
       });
   }
 
@@ -402,7 +402,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   delete(learningObjectId: string): Promise<{}> {
-    const route = LEGACY_USER_ROUTES.DELETE_LEARNING_OBJECT(
+    const route = LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(
       learningObjectId
     );
     return this.http
@@ -419,26 +419,25 @@ export class LearningObjectService {
   }
 
   /**
-   * Bulk deletion
+   * Method to delete multiple learning objects
    *
-   * @param {(string)[]} ids
-   * @returns {Promise<{}>}
-   * @memberof LearningObjectService
+   * @param learningObjectIds Array of learning object ids to delete
+   * @returns Promise of all delete requests
    */
-  deleteMultiple(names: string[], authorUsername: string): Promise<any> {
-    const route = LEGACY_USER_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(authorUsername, names);
-
-    return this.http
-      .delete(route, {
+  deleteMultiple(learningObjectIds: string[]): Promise<any> {
+    const deletePromises = learningObjectIds.map(objectId => 
+      this.http.delete(LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(objectId), {
         headers: this.headers,
         withCredentials: true,
         responseType: 'text'
       })
       .pipe(
-
         catchError(this.handleError)
       )
-      .toPromise();
+      .toPromise()
+    );
+  
+    return Promise.all(deletePromises);
   }
 
   setChildren(
