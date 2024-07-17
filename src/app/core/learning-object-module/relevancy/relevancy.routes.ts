@@ -3,15 +3,12 @@ import { environment } from '../../../../environments/environment';
 export const RELEVANCY_ROUTES = {
     /**
      * Request to update the next-check-date of a learning object
-     * @param username - The username of the author of the learning object
      * @param id - The id of the learning object to update
      * @auth required
      * @method PATCH
      */
-    UPDATE_RELEVANCY_CHECK_DATE(username: string, id: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(id)}/relevancy-check`;
+    UPDATE_RELEVANCY_CHECK_DATE(id: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/relevancy-check`;
     },
     /**
      * Request to update the curricular guidelines of a learning object
