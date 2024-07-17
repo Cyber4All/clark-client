@@ -80,7 +80,7 @@ export class ListComponent {
     if (this.allSelected) {
       this.selected = new Map(
         // @ts-ignore
-        this.learningObjects.map((learningObject) => [learningObject.id, learningObject])
+        this.learningObjects.map((learningObject) => [learningObject._id, learningObject])
       );
       this.cd.detectChanges();
     } else {
