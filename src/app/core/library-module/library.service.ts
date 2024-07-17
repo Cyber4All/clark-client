@@ -39,21 +39,24 @@ export class LibraryService {
     // this.headers.append('Content-Type', 'application/json');
   }
 
-  async getLibrary(page?: number, limit?: number): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+  async getLibrary(opts?: { learningObjectCuid?: string, version?: number,
+                  page?: number, limit?: number }): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     this.updateUser();
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
 
     const query = new URLSearchParams({
-      page: page ? page.toString() : '1',
-      limit: limit ? limit.toString() : '10',
+      page: opts.page ? opts.page.toString() : '1',
+      limit: opts.limit ? opts.limit.toString() : '10',
+      cuid: opts.learningObjectCuid ? opts.learningObjectCuid : '',
+      version: opts.version ? opts.version.toString() : '0'
     });
 
     return await this.http
       .get(LIBRARY_ROUTES.GET_USERS_LIBRARY(this.user.username, query), {
         withCredentials: true,
-        headers: this.headers
+        headers: this.headers,
       })
       .pipe(
         catchError((error) => this.handleError(error))

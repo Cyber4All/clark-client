@@ -124,7 +124,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async loadLibrary() {
     try {
       this.loading = true;
-      const libraryItemInformation = await this.libraryService.getLibrary(this.currentPageNumber, 10);
+      const libraryItemInformation = await this.libraryService.getLibrary({page: this.currentPageNumber, limit: 10});
       this.libraryItems = libraryItemInformation.cartItems;
       this.lastPageNumber = libraryItemInformation.lastPage;
       this.libraryItems.map(async (libraryItem: LearningObject) => {
@@ -224,8 +224,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async removeItem() {
     try {
-      await this.libraryService.removeFromLibrary(this.libraryItemToDelete._id);
-      this.libraryItems = (await this.libraryService.getLibrary(1, 10)).cartItems;
+      await this.libraryService.removeFromLibrary(this.libraryItemToDelete.id);
+      this.libraryItems = (await this.libraryService.getLibrary({page: 1, limit: 10})).cartItems;
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
@@ -309,7 +309,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async changeLibraryItemPage(pageNumber: number) {
     this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    const libraryItemInformation = await this.libraryService.getLibrary(pageNumber, 10);
+    const libraryItemInformation = await this.libraryService.getLibrary({page: pageNumber, limit: 10});
     this.libraryItems = libraryItemInformation.cartItems;
     this.lastPageNumber = libraryItemInformation.lastPage;
     this.currentPageNumber = pageNumber;
