@@ -328,9 +328,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else if (canDelete.length > 1) {
       const objectsToDeleteIDs = [];
       canDelete.forEach(object => {
-        objectsToDeleteIDs.push(object._id);
+        objectsToDeleteIDs.push(object.id);
       });
-      return this.learningObjectService.deleteMultiple(objectsToDeleteIDs, this.objectsToDelete[0].author.username)
+      return this.learningObjectService.deleteMultiple(objectsToDeleteIDs)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Objects deleted!');
           await this.getDraftLearningObjects();
