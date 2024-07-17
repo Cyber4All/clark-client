@@ -426,7 +426,7 @@ export class LearningObjectService {
    * @returns Promise of all delete requests
    */
   deleteMultiple(learningObjectIds: string[]): Promise<any> {
-    const deletePromises = learningObjectIds.map(objectId => 
+    const deletePromises = learningObjectIds.map(objectId =>
       this.http.delete(LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(objectId), {
         headers: this.headers,
         withCredentials: true,
@@ -437,7 +437,7 @@ export class LearningObjectService {
       )
       .toPromise()
     );
-  
+
     return Promise.all(deletePromises);
   }
 

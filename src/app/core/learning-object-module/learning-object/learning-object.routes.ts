@@ -94,7 +94,7 @@ export const LEARNING_OBJECT_ROUTES = {
 
     /**
      * Route to delete a learning object
-     * @param learningObjectId id of the learning object to delete 
+     * @param learningObjectId id of the learning object to delete
      */
     DELETE_LEARNING_OBJECT(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
