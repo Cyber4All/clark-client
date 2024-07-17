@@ -101,6 +101,12 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 };
 
+export const USER_ROUTES = {
+  SET_CHILDREN(learningObjectCuid) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectCuid)}/children`;
+  },
+};
+
 export const ADMIN_ROUTES = {
     ADD_HIERARCHY_OBJECT() {
         return `${environment.apiURL}/hierarchy-object`;

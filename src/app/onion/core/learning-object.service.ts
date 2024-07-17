@@ -18,6 +18,7 @@ import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES,
+  USER_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({

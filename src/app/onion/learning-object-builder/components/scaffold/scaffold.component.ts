@@ -64,7 +64,7 @@ export class ScaffoldComponent implements OnInit {
     this.ariaLabel = 'Add and delete Children';
 
     // if the Learning Object can have children, attempt to load them
-    if (this.learningObject._id && this.learningObject.length !== LearningObject.Length.NANOMODULE) {
+    if (this.learningObject.length !== LearningObject.Length.NANOMODULE) {
       this.loading = true;
       this.store.getChildren().then(kiddos => {
         this.children = kiddos;
@@ -153,6 +153,7 @@ export class ScaffoldComponent implements OnInit {
     // set childrenIDs equal to the children array
     this.childrenIDs = [];
     this.children.forEach(kid => this.childrenIDs.push(kid._id));
+    await this.store.fetch(this.learningObject.cuid);
     await this.store.setChildren(this.childrenIDs, true);
 
     // if deleted child was last child toggle off editContent because there is no longer content to edit
