@@ -185,7 +185,6 @@ export class FeaturedObjectsService {
    */
   getCollectionFeatured(collection: string) {
     return this.http
-      // This don't work
       .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collection))
       .pipe(catchError(this.handleError))
       .toPromise()
