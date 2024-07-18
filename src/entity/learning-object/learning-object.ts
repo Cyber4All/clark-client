@@ -27,6 +27,10 @@ export class LearningObject {
     }
   }
 
+  get id(): string {
+    return this.__id;
+  }
+
   private _cuid?: string;
 
   /**
@@ -638,8 +642,10 @@ export class LearningObject {
    * @memberof LearningObject
    */
   private copyObject(object: Partial<LearningObject>): void {
-    if (object._id) {
-      this._id = object._id;
+    if (object.id) {
+      this.__id = object.id;
+    } else if (object._id) {
+      this.__id = object._id;
     }
 
     if (object.cuid) {
