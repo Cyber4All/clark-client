@@ -97,7 +97,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
     this.url = this.buildLocation();
     // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
-    await this.libraryService.getLibrary();
+    await this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid, version: this.learningObject.version});
     this.saved = this.libraryService.has(this.learningObject);
     this.getCollection();
     this.libraryService.loaded
@@ -171,7 +171,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   async toggleBundle() {
     this.toaster.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
-    await this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject._id);
+    await this.learningObjectService.triggerBundle(this.learningObject._id);
   }
 
 

@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   loadingChangelogs: boolean;
   changelogLearningObject: LearningObject;
   changelogs: [];
-  learningObjects: LearningObject[];
+  learningObjects: any[];
 
   // submission
   submitToCollection: boolean;
@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentlySubmittingObject: LearningObject;
 
   // delete
-  objectsToDelete: LearningObject[];
+  objectsToDelete: any[];
 
   historySnapshot: HistorySnapshot;
 
@@ -81,7 +81,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
     public auth: AuthService,
-    private collectionService: CollectionService,
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
@@ -270,12 +269,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.openChangelogModal = true;
     this.loadingChangelogs = true;
     this.learningObjects = this.workingLearningObjects.concat(this.releasedLearningObjects);
-    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject._id === learningObjectId);
+    this.changelogLearningObject = this.learningObjects.find(learningObject => learningObject.id === learningObjectId);
     try {
-      this.changelogs = await this.changelogService.fetchAllChangelogs({
-        userId: this.changelogLearningObject.author.username,
-        learningObjectCuid: this.changelogLearningObject.cuid,
-      });
+      this.changelogs = await this.changelogService.getAllChangelogs(this.changelogLearningObject.cuid);
     } catch (error) {
       let errorMessage;
 
@@ -321,7 +317,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      return this.learningObjectService.delete(canDelete[0]._id)
+      return this.learningObjectService.delete(canDelete[0].id)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Object deleted!');
           await this.getDraftLearningObjects();
@@ -332,9 +328,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else if (canDelete.length > 1) {
       const objectsToDeleteIDs = [];
       canDelete.forEach(object => {
-        objectsToDeleteIDs.push(object._id);
+        objectsToDeleteIDs.push(object.id);
       });
-      return this.learningObjectService.deleteMultiple(objectsToDeleteIDs, this.objectsToDelete[0].author.username)
+      return this.learningObjectService.deleteMultiple(objectsToDeleteIDs)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Objects deleted!');
           await this.getDraftLearningObjects();
