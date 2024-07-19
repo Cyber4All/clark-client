@@ -1,4 +1,5 @@
 import { environment } from '@env/environment';
+import * as querystring from 'querystring';
 
 export const STANDARD_GUIDELINES_ROUTES = {
     /**
@@ -34,7 +35,7 @@ export const STANDARD_GUIDELINES_ROUTES = {
      * @returns list of frameworks
      */
     SEARCH_FRAMEWORKS(query: any) {
-        return `${environment.apiURL}/frameworks/?${query}`;
+        return `${environment.apiURL}/frameworks/?${querystring.stringify(query)}`;
     },
     /**
      * Request to retrieve a list of guidelines
