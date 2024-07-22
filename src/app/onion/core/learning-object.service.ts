@@ -104,6 +104,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((res: any) => {
+        res.id = res._id;
         return new LearningObject(res);
       });
     // TODO: Verify this response gives the learning object name
