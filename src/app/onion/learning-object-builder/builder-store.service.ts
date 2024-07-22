@@ -650,7 +650,7 @@ export class BuilderStore {
 
     this.saveObject(
       {
-        contributors: this.learningObject.contributors.map(x => x._id)
+        contributors: this.learningObject.contributors.map(x => x.userId)
       },
       true
     );
@@ -671,7 +671,7 @@ export class BuilderStore {
 
       this.saveObject(
         {
-          contributors: this.learningObject.contributors.map(x => x.id)
+          contributors: this.learningObject.contributors.map(x => x.userId)
         },
         true
       );

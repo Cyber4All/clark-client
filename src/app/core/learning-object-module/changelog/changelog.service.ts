@@ -25,10 +25,12 @@ export class ChangelogService {
    */
   createChangelog(learningObjectCuid: string, changelog: string): Promise<{}> {
     const changelogEntries = [{
-      authorId: this.authService.user.id,
-      date: new Date(),
+      authorId: this.authService.user.userId,
+      date: Date.now(),
       text: changelog
     }];
+    console.log(this.authService.user)
+    console.log({changelogEntries: changelogEntries});
     return this.http
       .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(learningObjectCuid), {changelogEntries: changelogEntries}, { responseType: 'text' })
       .pipe(
