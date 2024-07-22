@@ -371,17 +371,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.loadingChangelogs = true;
       try {
         if (this.revisedVersion) {
-          this.changelogs = await this.changelogService.fetchAllChangelogs({
-            userId: this.learningObject.author.id,
-            learningObjectCuid: this.learningObject.cuid,
-            minusRevision: false,
-          });
+          this.changelogs = await this.changelogService.getAllChangelogs(
+            this.learningObject.cuid,
+            false, //minusRevision
+          );
         } else {
-          this.changelogs = await this.changelogService.fetchAllChangelogs({
-            userId: this.learningObject.author.id,
-            learningObjectCuid: this.learningObject.cuid,
-            minusRevision: true,
-          });
+          this.changelogs = await this.changelogService.getAllChangelogs(
+            this.learningObject.cuid,
+            true, //minusRevision
+          );
         }
       } catch (error) {
         let errorMessage;

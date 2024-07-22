@@ -18,6 +18,7 @@ import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES,
+  USER_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
@@ -214,7 +215,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.objects.map(object => new LearningObject(object));
+        return response.objects;
       });
   }
 
@@ -356,7 +357,7 @@ export class LearningObjectService {
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject._id,
+      learningObjectId: learningObject.id,
     });
     return this.http
       .post(
@@ -377,9 +378,8 @@ export class LearningObjectService {
    * @param username Authors username of current learning object
    * @param learningObjectId id current learning object
    */
-  triggerBundle(username: string, learningObjectId: string) {
+  triggerBundle(learningObjectId: string) {
     const route = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
-      username,
       learningObjectId
     );
     // POST needs the body arrgument
@@ -403,7 +403,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   delete(learningObjectId: string): Promise<{}> {
-    const route = LEGACY_USER_ROUTES.DELETE_LEARNING_OBJECT(
+    const route = LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(
       learningObjectId
     );
     return this.http
@@ -420,42 +420,40 @@ export class LearningObjectService {
   }
 
   /**
-   * Bulk deletion
+   * Method to delete multiple learning objects
    *
-   * @param {(string)[]} ids
-   * @returns {Promise<{}>}
-   * @memberof LearningObjectService
+   * @param learningObjectIds Array of learning object ids to delete
+   * @returns Promise of all delete requests
    */
-  deleteMultiple(names: string[], authorUsername: string): Promise<any> {
-    const route = LEGACY_USER_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(authorUsername, names);
-
-    return this.http
-      .delete(route, {
+  deleteMultiple(learningObjectIds: string[]): Promise<any> {
+    const deletePromises = learningObjectIds.map(objectId =>
+      this.http.delete(LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(objectId), {
         headers: this.headers,
         withCredentials: true,
         responseType: 'text'
       })
       .pipe(
-
         catchError(this.handleError)
       )
-      .toPromise();
+      .toPromise()
+    );
+
+    return Promise.all(deletePromises);
   }
 
   setChildren(
-    learningObjectName: string,
-    authorUsername: string,
+    learningObjectId: string,
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const route = LEGACY_USER_ROUTES.SET_CHILDREN(authorUsername, learningObjectName);
-
+    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_CHILD(learningObjectId);
+    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(learningObjectId);
     if (remove) {
       return this.http
         .patch(
-          route,
-          { id: children[0] },
-          { withCredentials: true, responseType: 'text' }
+          removeRoute,
+          { childObjectId: children[0] },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
@@ -465,9 +463,9 @@ export class LearningObjectService {
     } else {
       return this.http
         .post(
-          route,
-          { children },
-          { withCredentials: true, responseType: 'text' }
+          addRoute,
+          { childrenIds: children },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
 
@@ -516,15 +514,13 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   addFileMeta({
-    username,
     objectId,
     files
   }: {
-    username: string;
     objectId: string;
     files: FileUploadMeta[];
   }): Promise<string[]> {
-    const route = FILE_ROUTES.UPLOAD_FILE_META(username, objectId);
+    const route = FILE_ROUTES.UPLOAD_FILE_META(objectId);
     return this.handleFileMetaRequests(files, route);
   }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { Topic } from '../../../entity';
-import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
+import { TopicsService } from '../learning-object-module/topics/topics.service';
 
 
 @Injectable({
@@ -12,7 +12,7 @@ export class NavbarDropdownService {
 
     constructor(
         private router: Router,
-        private relevancyService: RelevancyService
+        private topicsService: TopicsService
     ) { }
     //mobile or desktop
     public isDesktop = new BehaviorSubject<boolean>(true);
@@ -33,7 +33,8 @@ export class NavbarDropdownService {
     public showNavbars = new BehaviorSubject<boolean>(true);
 
     public externalResources = [
-    {name: 'Standard Guidelines', link: 'https://standard-guidelines.clark.center'},
+    {name: 'CAE Resource Directory (CARD)', link: 'https://caeresource.directory'},
+    {name: 'Standard Guidelines Tool', link: 'https://standard-guidelines.clark.center'},
     {name: 'Task Tool', link: 'https://tasktool.clark.center'},
     {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'},
     {name: 'CPNC Competency Constructor', link: 'https://cybercompetencies.com'}
@@ -42,7 +43,7 @@ export class NavbarDropdownService {
     public topicSelection = new BehaviorSubject<Topic>({ _id: '', name: '' });
 
     async getTopicList(): Promise<void> {
-        this.topics.next(await this.relevancyService.getTopics());
+        this.topics.next(await this.topicsService.getTopics());
     }
 
     public setTopic(topic: Topic): void {

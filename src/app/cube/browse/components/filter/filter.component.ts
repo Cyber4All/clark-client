@@ -2,11 +2,11 @@ import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, OnDestroy, 
 import { LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
-import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FilterSectionInfo } from '../filter-section/filter-section.component';
 import { Query } from '../../../../interfaces/query';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-filter',
@@ -36,7 +36,7 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   constructor(
     private collectionService: CollectionService,
-    private relevancyService: RelevancyService,
+    private topicsService: TopicsService,
     private guidelineService: GuidelineService,
     private cd: ChangeDetectorRef
   ) { }
@@ -221,7 +221,7 @@ export class FilterComponent implements OnInit, OnDestroy {
    * Gets the topic filters
    */
   async getTopicFilters() {
-    const topics = await this.relevancyService.getTopics();
+    const topics = await this.topicsService.getTopics();
     this.topicFilter = {
       section: 'Topic',
       filters: topics.map(topic => ({
