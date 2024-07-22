@@ -17,7 +17,7 @@ export const LEARNING_OBJECT_ROUTES = {
      * @returns Promise<FullLearningObject[]>
      */
     GET_LEARNING_OBJECT_PARENTS(learningObjectId: string) {
-        return `${environment.apiURL}/learning-objects/${id}/parents`;
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/parents`;
     },
 
     /**
