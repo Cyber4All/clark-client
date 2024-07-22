@@ -29,7 +29,7 @@ export class ChangelogService {
       date: Date.now(),
       text: changelog
     }];
-    console.log(this.authService.user)
+    console.log(this.authService.user);
     console.log({changelogEntries: changelogEntries});
     return this.http
       .post(CHANGELOG_ROUTES.CREATE_CHANGELOG(learningObjectCuid), {changelogEntries: changelogEntries}, { responseType: 'text' })

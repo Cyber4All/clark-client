@@ -75,7 +75,7 @@ export class SubmitComponent implements OnInit {
    * Create a new changelog for the active Learning Object
    */
   createChangelog() {
-    
+
     if (this.changelog) {
       console.log(this.changelog);
       this.loading.push(true);
