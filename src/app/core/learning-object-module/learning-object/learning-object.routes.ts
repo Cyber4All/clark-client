@@ -16,7 +16,7 @@ export const LEARNING_OBJECT_ROUTES = {
      * @param id id of a children learning object
      * @returns Promise<FullLearningObject[]>
      */
-    GET_LEARNING_OBJECT_PARENTS(id: string) {
+    GET_LEARNING_OBJECT_PARENTS(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${id}/parents`;
     },
 
