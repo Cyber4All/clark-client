@@ -18,6 +18,7 @@ import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES,
+  USER_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
@@ -103,6 +104,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((res: any) => {
+        res.id = res._id;
         return new LearningObject(res);
       });
     // TODO: Verify this response gives the learning object name
@@ -214,7 +216,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.objects.map(object => new LearningObject(object));
+        return response.objects;
       });
   }
 
@@ -354,7 +356,7 @@ export class LearningObjectService {
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject._id,
+      learningObjectId: learningObject.id,
     });
     return this.http
       .post(
@@ -375,9 +377,8 @@ export class LearningObjectService {
    * @param username Authors username of current learning object
    * @param learningObjectId id current learning object
    */
-  triggerBundle(username: string, learningObjectId: string) {
+  triggerBundle(learningObjectId: string) {
     const route = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
-      username,
       learningObjectId
     );
     // POST needs the body arrgument
@@ -401,7 +402,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   delete(learningObjectId: string): Promise<{}> {
-    const route = LEGACY_USER_ROUTES.DELETE_LEARNING_OBJECT(
+    const route = LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(
       learningObjectId
     );
     return this.http
@@ -418,26 +419,25 @@ export class LearningObjectService {
   }
 
   /**
-   * Bulk deletion
+   * Method to delete multiple learning objects
    *
-   * @param {(string)[]} ids
-   * @returns {Promise<{}>}
-   * @memberof LearningObjectService
+   * @param learningObjectIds Array of learning object ids to delete
+   * @returns Promise of all delete requests
    */
-  deleteMultiple(names: string[], authorUsername: string): Promise<any> {
-    const route = LEGACY_USER_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(authorUsername, names);
-
-    return this.http
-      .delete(route, {
+  deleteMultiple(learningObjectIds: string[]): Promise<any> {
+    const deletePromises = learningObjectIds.map(objectId =>
+      this.http.delete(LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(objectId), {
         headers: this.headers,
         withCredentials: true,
         responseType: 'text'
       })
       .pipe(
-
         catchError(this.handleError)
       )
-      .toPromise();
+      .toPromise()
+    );
+
+    return Promise.all(deletePromises);
   }
 
   setChildren(
@@ -495,8 +495,8 @@ export class LearningObjectService {
    *
    * @param id of learning object
    */
-  fetchParents(username: string, id: string) {
-    const route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(username, id);
+  fetchParents(id: string) {
+    const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(id);
     return this.http.get<LearningObject[]>(route, { withCredentials: true }).toPromise().then(parents => {
       return parents;
     });
@@ -513,15 +513,13 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   addFileMeta({
-    username,
     objectId,
     files
   }: {
-    username: string;
     objectId: string;
     files: FileUploadMeta[];
   }): Promise<string[]> {
-    const route = FILE_ROUTES.UPLOAD_FILE_META(username, objectId);
+    const route = FILE_ROUTES.UPLOAD_FILE_META(objectId);
     return this.handleFileMetaRequests(files, route);
   }
 

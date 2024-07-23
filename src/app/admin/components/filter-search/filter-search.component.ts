@@ -15,8 +15,8 @@ import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Topic } from '@entity';
-import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
 import { ActivatedRoute } from '@angular/router';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -56,7 +56,7 @@ export class FilterSearchComponent implements OnInit {
 
   constructor(
     private collectionService: CollectionService,
-    private relevancyService: RelevancyService,
+    private topicsService: TopicsService,
     private authService: AuthService,
     private toaster: ToastrOvenService,
     private route: ActivatedRoute
@@ -134,7 +134,7 @@ export class FilterSearchComponent implements OnInit {
   }
 
   private getTopics(): void {
-    this.relevancyService
+    this.topicsService
       .getTopics()
       .then(topics => {
         this.topics = topics;

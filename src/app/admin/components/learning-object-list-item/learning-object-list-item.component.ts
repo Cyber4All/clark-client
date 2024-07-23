@@ -24,6 +24,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -165,7 +166,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   unreleaseLearningObject() {
     this.refactoredLearningObjectService
       .updateLearningObjectStatus(
-        this.learningObject._id,
+        this.learningObject.id,
         LearningObject.Status.PROOFING
       )
       .then(() => {
@@ -188,11 +189,11 @@ export class LearningObjectListItemComponent implements OnChanges {
     const parentUri = `${environment.apiURL}/users/${encodeURIComponent(
       this.learningObject.author.username
     )}/learning-objects/${encodeURIComponent(
-      this.learningObject._id
+      this.learningObject.id
     )}/parents`;
 
     await this.http.get(
-      parentUri,
+      LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(this.learningObject.id),
       { headers: this.headers, withCredentials: true }
     ).pipe(
       take(1),
@@ -208,7 +209,7 @@ export class LearningObjectListItemComponent implements OnChanges {
    * Checks if the learning object has any children
    */
   async checkForChildren() {
-    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject._id);
+    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.id);
   }
 
   /**
@@ -229,7 +230,7 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   goToUrl(url) {
     if (url === 'builder') {
-      window.open(`/onion/learning-object-builder/${this.learningObject._id}`, '_blank');
+      window.open(`/onion/learning-object-builder/${this.learningObject.id}`, '_blank');
     } else if (url === 'contact') {
       window.open(`/users/${this.learningObject.author.username}`);
     } else if (url === 'details') {
@@ -249,7 +250,7 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   releaseHierarchy() {
     this.toggleReleasingHierarchy(true);
-    this.hierarchyService.releaseHierarchy(this.learningObject._id)
+    this.hierarchyService.releaseHierarchy(this.learningObject.id)
       .then(() => {
         this.toggleReleasingHierarchy(false);
         location.reload();
