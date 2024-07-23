@@ -270,7 +270,9 @@ export class SubmitComponent implements OnInit {
       .then(val => {
         this.collection = collection;
         if (!val.isFirstSubmission) {
-          this.needsChangelog = true;
+          // if this is a first submission there is no need for a change log
+          this.needsChangelog = false;
+          console.log(val.isFirstSubmission)
         }
       });
   }
