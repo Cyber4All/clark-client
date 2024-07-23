@@ -29,6 +29,15 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     *
+     * @param id id of a children learning object
+     * @returns Promise<FullLearningObject[]>
+     */
+    GET_LEARNING_OBJECT_PARENTS(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/parents`;
+    },
+
+    /**
      * Path to update the status of a learning object
      * @param learningObjectId the id of the learning object
      * @returns void
@@ -38,6 +47,18 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     * Request to update the collection of a learning object
+     * @method PATCH
+     * @auth required
+     * @param learningObjectCuid - The cuid of the learning object to update
+     */
+        UPDATE_LEARNING_OBJECT_COLLECTION(learningObjectCuid: string) {
+            return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+                learningObjectCuid
+            )}/collection`;
+        },
+
+    /**
      * Path to create a new learning object
      * @returns LearningObject
      */
@@ -45,6 +66,23 @@ export const LEARNING_OBJECT_ROUTES = {
         return `${environment.apiURL}/learning-objects`;
     },
 
+    /**
+     * Path to update the children of a learning object
+     * @param learningObjectId the id of the parent learning object
+     * @returns void
+     */
+    UPDATE_CHILDREN(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
+    },
+
+    /**
+     * Path to remove a child of a learning object
+     * @param learningObjectId the id of the parent learning object
+     * @returns void
+     */
+    REMOVE_CHILD(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/children`;
+    },
     /**
      * Path to update a learning object
      * @param learningObjectId the id of the learning object
@@ -74,11 +112,25 @@ export const LEARNING_OBJECT_ROUTES = {
     GET_MY_LEARNING_OBJECTS(
         username,
         filters: any,
-      ) {
-          return `${environment.apiURL}/users/${encodeURIComponent(
-              username,
-          )}/learning-objects?${querystring.stringify(filters)}`;
-      }
+    ) {
+        return `${environment.apiURL}/users/${encodeURIComponent(
+            username,
+        )}/learning-objects?${querystring.stringify(filters)}`;
+    },
+
+    /**
+     * Route to delete a learning object
+     * @param learningObjectId id of the learning object to delete
+     */
+    DELETE_LEARNING_OBJECT(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
+    },
+};
+
+export const USER_ROUTES = {
+  SET_CHILDREN(learningObjectCuid) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectCuid)}/children`;
+  },
 };
 
 export const ADMIN_ROUTES = {
@@ -105,21 +157,6 @@ export const LEGACY_COLLECTIONS_ROUTES = {
     ADD_LEARNING_OBJECT_TO_COLLECTION(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/collections`;
     },
-    /**
-     * Request to update the collection of a learning object
-     * @method PATCH
-     * @auth required
-     * @param username - The username of the author of the learning object
-     * @param learningObjectCuid - The cuid of the learning object to update
-     */
-    UPDATE_LEARNING_OBJECT_COLLECTION(username: string, learningObjectCuid: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectCuid
-        )}/collection`;
-    },
-
     GET_COLLECTION_CURATORS(name: string) {
         return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
     },
@@ -146,14 +183,6 @@ export const LEGACY_USER_ROUTES = {
     },
     GET_LEARNING_OBJECT(id) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
-    },
-    DELETE_LEARNING_OBJECT(id: string) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
-    },
-    DELETE_MULTIPLE_LEARNING_OBJECTS(username, learningObjectNames) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
     },
     POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(
@@ -185,16 +214,6 @@ export const LEGACY_USER_ROUTES = {
     VALIDATE_CAPTCHA() {
         return `${environment.apiURL}/users/validate-captcha`;
     },
-    SET_CHILDREN(username, learningObjectName) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            username,
-        )}/${encodeURIComponent(learningObjectName)}/children`;
-    },
-    GET_CHILDREN(username: string, learningObjectID: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
-    }
 };
 
 export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
@@ -209,8 +228,14 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
     GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
         return `${environment.apiURL}/learning-objects?${query}`;
     },
-    GET_LEARNING_OBJECT_PARENTS(username: string, id: string) {
-        return `${environment.apiURL}/users/${username}/learning-objects/${id}/parents`;
+    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version?: number) {
+        let uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}`;
+
+        if (version !== undefined) {
+            uri += '?version=' + version.toString();
+        }
+
+        return uri;
     },
     DOWNLOAD_FILE(params: {
         username: string;

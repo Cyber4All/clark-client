@@ -124,7 +124,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async loadLibrary() {
     try {
       this.loading = true;
-      const libraryItemInformation = await this.libraryService.getLibrary(this.currentPageNumber, 10);
+      const libraryItemInformation = await this.libraryService.getLibrary({page: this.currentPageNumber, limit: 10});
       this.libraryItems = libraryItemInformation.cartItems;
       this.lastPageNumber = libraryItemInformation.lastPage;
       this.libraryItems.map(async (libraryItem: LearningObject) => {
@@ -224,8 +224,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async removeItem() {
     try {
-      await this.libraryService.removeFromLibrary(this.libraryItemToDelete._id);
-      this.libraryItems = (await this.libraryService.getLibrary(1, 10)).cartItems;
+      await this.libraryService.removeFromLibrary(this.libraryItemToDelete.id);
+      this.libraryItems = (await this.libraryService.getLibrary({page: 1, limit: 10})).cartItems;
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
@@ -238,7 +238,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.currentIndex = index;
     this.downloading[index] = true;
     this.showDownloadModal = true;
-    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(object._id));
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(object.id));
     this.downloading[index] = false;
   }
 
@@ -278,11 +278,10 @@ export class LibraryComponent implements OnInit, OnDestroy {
     if (!this.openChangelogModal) {
       this.loadingChangelogs = true;
       try {
-        this.changelogs = await this.changelogService.fetchAllChangelogs({
-          userId: notification.attributes.learningObjectAuthorID,
-          learningObjectCuid: notification.attributes.cuid,
-          minusRevision: true,
-        });
+        this.changelogs = await this.changelogService.getAllChangelogs(
+          notification.attributes.cuid,
+          true, // minusRevision
+        );
       } catch (error) {
         let errorMessage;
 
@@ -310,7 +309,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async changeLibraryItemPage(pageNumber: number) {
     this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    const libraryItemInformation = await this.libraryService.getLibrary(pageNumber, 10);
+    const libraryItemInformation = await this.libraryService.getLibrary({page: pageNumber, limit: 10});
     this.libraryItems = libraryItemInformation.cartItems;
     this.lastPageNumber = libraryItemInformation.lastPage;
     this.currentPageNumber = pageNumber;

@@ -11,11 +11,11 @@
     <clark-toggle-switch *ngIf="!loadingChildrenError" identity="children" [state]="editContent" style="blue" [aria]="ariaLabel" (toggled)="toggleAddDelete()"></clark-toggle-switch>
   </div>
 </div>
-<clark-skip-link *ngIf="!editContent || learningObject?.length === 'nanomodule'" title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 
+<clark-skip-link *ngIf="!editContent || learningObject?.length === 'nanomodule'" title="Skip to Builder Form" skipLocation="form"></clark-skip-link>
 <div [ngTemplateOutlet]="addChild" *ngIf="editContent || children?.length === 0"></div>
 <ng-template [ngIf]="children && children.length > 0">
   <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
-    <div *ngFor="let c of children; let i = index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag> 
+    <div *ngFor="let c of children; let i = index" class="child-box" cdkDragLockAxis="y" cdkDragBoundary=".children-list" cdkDrag>
       <div class = "info">
         <div class = "top-row">
           <div class = "child-title" [tip]="c.name" tipPosition="top">{{c.name}}</div>
@@ -51,7 +51,7 @@
 
 <ng-template [ngIf]="children?.length === 0 && learningObject?.length !== 'nanomodule'">
   <div class= "no-children">
-    This learning object has no children  
+    This learning object has no children
   </div>
 </ng-template>
 

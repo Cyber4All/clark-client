@@ -93,7 +93,7 @@ export class ChangeStatusModalComponent implements OnInit {
   private moveToMapAndTag() {
     // Set a small timeout before navigating so that the change in status applies
     setTimeout(() => {
-      this.router.navigate(['onion', 'relevancy-builder', this.learningObject._id, 'outcomes']);
+      this.router.navigate(['onion', 'relevancy-builder', this.learningObject.id, 'outcomes']);
     }, 1000);
   }
 
@@ -183,7 +183,6 @@ export class ChangeStatusModalComponent implements OnInit {
    */
   async createChangelog(): Promise<{}> {
     return this.changelogService.createChangelog(
-      this.builderStore.learningObjectEvent.getValue().author.username,
       this.builderStore.learningObjectEvent.getValue().cuid,
       this.changelog,
     );

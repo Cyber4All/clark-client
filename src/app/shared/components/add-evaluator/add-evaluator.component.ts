@@ -53,7 +53,7 @@ export class AddEvaluatorComponent implements OnInit {
   async removeEvaluators() {
     if (this.checkEvaluatorsBody(this.removedEvaluators)) {
       const cuid = this.learningObject.cuid;
-      const assignerIds = this.removedEvaluators.map(obj => obj.id);
+      const assignerIds = this.removedEvaluators.map(obj => obj.userId);
 
       await this.relevancyService.removeEvaluators({
         cuids: [cuid],
@@ -78,7 +78,7 @@ export class AddEvaluatorComponent implements OnInit {
   async assignEvaluators() {
     if (this.checkEvaluatorsBody(this.assignedEvaluators)) {
       const cuid = this.learningObject.cuid;
-      const assignerIds = this.assignedEvaluators.map(obj => obj.id);
+      const assignerIds = this.assignedEvaluators.map(obj => obj.userId);
 
       // Filter out any evaluators already existing on this.learningObject
       if (this.learningObject.assigned) {

@@ -89,11 +89,11 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
         text: query,
         accessGroups: 'admin,curator,editor,reviewer'
       }).then( (results: User[]) => {
-        const assignedEvaluatorsIds = this.assignedEvaluators.map(user => user.id);
+        const assignedEvaluatorsIds = this.assignedEvaluators.map(user => user.userId);
         const filteredUsers = [];
         results.forEach( user => {
-          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.id)
-              && !assignedEvaluatorsIds.includes(user.id)) {
+          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.userId)
+              && !assignedEvaluatorsIds.includes(user.userId)) {
             filteredUsers.push(user);
           }
         });

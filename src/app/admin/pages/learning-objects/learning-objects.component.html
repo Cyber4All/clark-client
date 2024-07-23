@@ -39,7 +39,7 @@
               *ngFor="let l of learningObjects"
               [learningObject]="l"
               [status]="l.status"
-              [selected]="this.selected.get(l._id) !== undefined"
+              [selected]="this.selected.get(l.id) !== undefined"
               (select)="toggleSelect(l, $event, i)"
               (viewUser)="getUserLearningObjects($event)"
               (changeStatus)="openChangeStatusModal($event)"
