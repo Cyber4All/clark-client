@@ -223,7 +223,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    */
   async parentNames() {
     const parents = [];
-    return this.learningObjectService.fetchParents(this.learningObject.author.username, this.learningObject.id).then(returners => {
+    return this.learningObjectService.fetchParents(this.learningObject.id).then(returners => {
       returners.forEach(parent => {
         parents.push(parent.name);
       });

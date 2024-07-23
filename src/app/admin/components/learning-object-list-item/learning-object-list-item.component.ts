@@ -24,6 +24,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -192,7 +193,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     )}/parents`;
 
     await this.http.get(
-      parentUri,
+      LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(this.learningObject.id),
       { headers: this.headers, withCredentials: true }
     ).pipe(
       take(1),
