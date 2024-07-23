@@ -186,6 +186,12 @@ export class LearningObjectListItemComponent implements OnChanges {
   }
 
   async checkForParents() {
+    const parentUri = `${environment.apiURL}/users/${encodeURIComponent(
+      this.learningObject.author.username
+    )}/learning-objects/${encodeURIComponent(
+      this.learningObject.id
+    )}/parents`;
+
     await this.http.get(
       LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(this.learningObject.id),
       { headers: this.headers, withCredentials: true }
