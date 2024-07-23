@@ -16,13 +16,10 @@ export const OUTCOME_ROUTES = {
      * Request to update a learning outcome
      * @method PATCH
      * @auth required
-     * @param learningObjectId - The id of the learning object to update the outcome for
      * @param outcomeId - The id of the outcome to update
      */
-    UPDATE_OUTCOME(learningObjectId: string, outcomeId: string) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectId
-        )}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
+    UPDATE_OUTCOME(outcomeId: string) {
+        return `${environment.apiURL}/learning-outcomes/${encodeURIComponent(outcomeId)}`;
     },
     /**
      * Request to delete a learning outcome
