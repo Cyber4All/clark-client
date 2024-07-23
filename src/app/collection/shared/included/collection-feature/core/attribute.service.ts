@@ -14,8 +14,7 @@ export class AttributeService {
 
   async getHierarchy(username: string, objectId: string): Promise<{ parents: any, children: any }> {
     const parents = await this.http.get(
-      LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(
-        username,
+      LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(
         objectId
       ))
       .toPromise();

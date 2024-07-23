@@ -29,6 +29,15 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     *
+     * @param id id of a children learning object
+     * @returns Promise<FullLearningObject[]>
+     */
+    GET_LEARNING_OBJECT_PARENTS(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/parents`;
+    },
+
+    /**
      * Path to update the status of a learning object
      * @param learningObjectId the id of the learning object
      * @returns void
@@ -219,8 +228,14 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
     GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query) {
         return `${environment.apiURL}/learning-objects?${query}`;
     },
-    GET_LEARNING_OBJECT_PARENTS(username: string, id: string) {
-        return `${environment.apiURL}/users/${username}/learning-objects/${id}/parents`;
+    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version?: number) {
+        let uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}`;
+
+        if (version !== undefined) {
+            uri += '?version=' + version.toString();
+        }
+
+        return uri;
     },
     DOWNLOAD_FILE(params: {
         username: string;

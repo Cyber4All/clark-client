@@ -25,8 +25,8 @@ export class ChangelogService {
    */
   createChangelog(learningObjectCuid: string, changelog: string): Promise<{}> {
     const changelogEntries = [{
-      authorId: this.authService.user.id,
-      date: new Date(),
+      authorId: this.authService.user.userId,
+      date: Date.now(),
       text: changelog
     }];
     return this.http

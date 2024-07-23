@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../auth-module/auth.service';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 import { LIBRARY_ROUTES } from './library.routes';
@@ -39,8 +39,10 @@ export class LibraryService {
     // this.headers.append('Content-Type', 'application/json');
   }
 
-  async getLibrary(opts?: { learningObjectCuid?: string, version?: number,
-                  page?: number, limit?: number }): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+  async getLibrary(opts?: {
+    learningObjectCuid?: string, version?: number,
+    page?: number, limit?: number
+  }): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     this.updateUser();
     if (!this.user) {
       return Promise.reject('User is undefined');
@@ -63,7 +65,14 @@ export class LibraryService {
       )
       .toPromise()
       .then((val: any) => {
-        this.libraryItems = val.userLibraryItems.map(object => new LearningObject(object.learningObject));
+        this.libraryItems = val.userLibraryItems
+          .filter(object => object && object.learningObject) // Filter out objects without learningObject
+          .map(object => {
+            if (object.learningObject) {
+              object.learningObject.id = object.learningObject._id;
+            }
+            return new LearningObject(object.learningObject);
+          });
         return { cartItems: this.libraryItems, lastPage: val.lastPage };
       });
   }
@@ -127,54 +136,91 @@ export class LibraryService {
    * @param author the author username of the learning object
    * @param learningObjectId the mongo id of the learning object
    */
-  learningObjectBundle(
-    learningObjectId: string
-  ) {
+  learningObjectBundle(learningObjectId: string) {
     // Show loading spinner
     this._loading$.next(true);
+
+    console.log('yeet yetet learningobjectbundle');
     // Url route for bundling
-    const bundle = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
-      learningObjectId
-    );
-    /**
-     * 1. HEAD hits the bundle 'GET' route and receieves response code
-     * 2. Error is caught and piped
-     * 3. Call @function downloadBundle() to start local bundle download
-     */
-    this.http.head(bundle, {
+    const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
+    const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
+
+    this.http.head(bundleUrl, {
       headers: this.headers,
       withCredentials: true
     }).pipe(
-      catchError((error) => this.handleError(error))
-    )
-      .subscribe(() => {
+      catchError((error) => {
+        this._loading$.next(false);
+        return this.handleError(error);
+      })
+    ).subscribe(
+      () => {
         this.toaster.success('All Ready!', 'Your download will begin in a moment...');
-        this.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
-      });
+        this.downloadBundle(downloadUrl).then(
+          () => {
+            this._loading$.next(false);
+          },
+          (error) => {
+            this._loading$.next(false);
+            this.toaster.error('Download failed', error.message);
+          }
+        );
+      },
+      (error) => {
+        this._loading$.next(false);
+        this.toaster.error('Preparation failed', error.message);
+      }
+    );
   }
 
-  /**
-   * Function to create a hidden page element to download a bundle
-   *
-   * @param url URL string for bundle download
-   */
-  downloadBundle(
-    url: string
-  ) {
-    // Create the iframe HTML element
-    const iframe = document.createElement('iframe');
-    // Hide the iframe
-    iframe.setAttribute('sandbox', 'allow-same-origin allow-downloads');
-    iframe.setAttribute('id', iframeParentID);
-    iframe.style.visibility = 'hidden';
-    iframe.style.position = 'fixed';
-    // Append iframe to the page
-    document.body.appendChild(iframe);
-    // Retrieve bundle from service
-    iframe.src = url;
-    // Toggle off loading spinner
-    this._loading$.next(false);
+  downloadBundle(url: string): Promise<any> {
+    console.log('yooooo download bundle');
+    return this.http.get(
+      url, {
+      responseType: 'blob',
+      headers: this.headers,
+      withCredentials: true
+    }
+    )
+      .toPromise()
+      .then(res => {
+        {
+          console.log('Response here dude');
+          const blob = new Blob([res]);
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = 'bundle.zip'; // Or use a dynamic name if available
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      });
   }
+  // return new Observable(observer => {
+  //   console.log("ya boi in observer");
+  //   this.http.get(url, {
+  //     responseType: 'blob',
+  //     headers: this.headers,
+  //     withCredentials: true
+  //   }).subscribe(
+  //     response => {
+  //       console.log("Response here dude");
+  //       const blob = new Blob([response]);
+  //       const link = document.createElement('a');
+  //       link.href = window.URL.createObjectURL(blob);
+  //       link.download = 'bundle.zip'; // Or use a dynamic name if available
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //       observer.next(response);
+  //       observer.complete();
+  //     },
+  //     error => {
+  //       console.error('Download error:', error);
+  //       observer.error(error);
+  //     }
+  //   );
+  // });
 
   has(object: LearningObject): boolean {
     const inLibrary = this.libraryItems.filter(
