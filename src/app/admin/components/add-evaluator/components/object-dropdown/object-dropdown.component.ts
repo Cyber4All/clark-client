@@ -84,7 +84,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
 
           // Filters out already selected objects
           results.learningObjects.forEach( (obj: LearningObject) => {
-            if (!assignedIds.includes(obj._id) && (Array.isArray(obj.assigned) && !obj.assigned.includes(this.user.id))) {
+            if (!assignedIds.includes(obj._id) && (Array.isArray(obj.assigned) && !obj.assigned.includes(this.user.userId))) {
               filteredObjects.push(obj);
             }
           });
