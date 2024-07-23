@@ -31,6 +31,7 @@ export class UserService {
       .toPromise()
       .then((res: {users: any[], total: number}) => {
         return res.users.map((user) => {
+          // this matches the _id attribute returned from the service to the client expected userId attribute
           user.userId = user._id;
           return new User(user);
         });
@@ -90,6 +91,7 @@ export class UserService {
           (val: any) => {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             const user_res = val;
+            // this matches the _id attribute returned from the service to the client expected userId attribute 
             user_res.userId = user_res._id;
             return user_res ? new User(user_res) : null;
           },
