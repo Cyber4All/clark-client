@@ -567,7 +567,7 @@ export class LearningObject {
    * @memberof LearningObject
    */
   addContributor(contributor: any): number {
-    // when adding contributors, the id field can come back from the service as id or _id
+    // when adding contributors, the original contributor id field can come back from the service as id or _id
     // this matches it to userId attribute in either case
     if (contributor) {
       if(contributor.id) {
