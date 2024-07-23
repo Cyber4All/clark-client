@@ -39,8 +39,10 @@ export class LibraryService {
     // this.headers.append('Content-Type', 'application/json');
   }
 
-  async getLibrary(opts?: { learningObjectCuid?: string, version?: number,
-                  page?: number, limit?: number }): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+  async getLibrary(opts?: {
+    learningObjectCuid?: string, version?: number,
+    page?: number, limit?: number
+  }): Promise<{ cartItems: LearningObject[], lastPage: number }> {
     this.updateUser();
     if (!this.user) {
       return Promise.reject('User is undefined');
@@ -63,7 +65,14 @@ export class LibraryService {
       )
       .toPromise()
       .then((val: any) => {
-        this.libraryItems = val.userLibraryItems.map(object => new LearningObject(object.learningObject));
+        this.libraryItems = val.userLibraryItems
+          // Filter out LibraryItems without learningObject field
+          .filter(libraryItems => libraryItems.learningObject)
+          .map(libraryItems => {
+            // Client has got to stop fumbling id's
+            libraryItems.learningObject.id = libraryItems.learningObject._id;
+            return new LearningObject(libraryItems.learningObject);
+          });
         return { cartItems: this.libraryItems, lastPage: val.lastPage };
       });
   }
