@@ -32,7 +32,7 @@ export class UserService {
       .then((res: {users: any[], total: number}) => {
         return res.users.map((user) => {
           user.userId = user._id;
-          return new User(user)
+          return new User(user);
         });
       });
   }
