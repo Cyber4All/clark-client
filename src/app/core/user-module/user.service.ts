@@ -29,8 +29,11 @@ export class UserService {
       })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((res: {users: User[], total: number}) => {
-        return res.users.map((user) => new User(user));
+      .then((res: {users: any[], total: number}) => {
+        return res.users.map((user) => {
+          user.userId = user._id;
+          return new User(user)
+        });
       });
   }
 

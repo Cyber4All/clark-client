@@ -566,8 +566,14 @@ export class LearningObject {
    * @returns {number} index of the contributor
    * @memberof LearningObject
    */
-  addContributor(contributor: User): number {
+  addContributor(contributor: any): number {
     if (contributor) {
+      if(contributor.id) {
+        contributor.userId = contributor.id;
+      }
+      if(contributor._id){
+        contributor.userId = contributor._id;
+      }
       const addingUser =
         contributor instanceof User ? contributor : new User(contributor);
       this.updateDate();
