@@ -38,7 +38,7 @@ export class ChangeAuthorComponent implements OnInit {
 
 
   async ngOnInit() {
-    const childrenUri = LEARNING_OBJECT_ROUTES.GET_CHILDREN(this.highlightedLearningObject._id);
+    const childrenUri = LEARNING_OBJECT_ROUTES.GET_CHILDREN(this.highlightedLearningObject.id);
     this.http.get(
       childrenUri,
       { headers: this.headers, withCredentials: true }
@@ -94,7 +94,7 @@ export class ChangeAuthorComponent implements OnInit {
     const author: User = await this.userService.getUser(this.highlightedLearningObject.author.username, 'username');
     this.authorshipService.changeAuthorship(
       author,
-      this.highlightedLearningObject._id,
+      this.highlightedLearningObject.id,
       this.selectedAuthor.userId).then(
         () => {
           this.toaster.success('Success!', 'Learning Object Author changed.');

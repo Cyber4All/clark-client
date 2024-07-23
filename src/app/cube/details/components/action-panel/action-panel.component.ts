@@ -139,7 +139,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
     if (download) {
       this.download(
-        this.learningObject._id
+        this.learningObject.id
       );
     }
     try {
@@ -171,7 +171,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   async toggleBundle() {
     this.toaster.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
-    await this.learningObjectService.triggerBundle(this.learningObject._id);
+    await this.learningObjectService.triggerBundle(this.learningObject.id);
   }
 
 
@@ -183,7 +183,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   downloadRevised(download?: boolean) {
     if (download) {
       this.download(
-        this.learningObject._id
+        this.learningObject.id
       );
     }
   }
@@ -275,7 +275,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   removeFromLibrary() {
-    this.libraryService.removeFromLibrary(this.learningObject._id);
+    this.libraryService.removeFromLibrary(this.learningObject.id);
   }
 
   private buildLocation(encoded?: boolean) {

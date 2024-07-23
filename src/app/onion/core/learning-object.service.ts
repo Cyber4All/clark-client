@@ -104,6 +104,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((res: any) => {
+        res.id = res._id;
         return new LearningObject(res);
       });
     // TODO: Verify this response gives the learning object name
@@ -357,7 +358,7 @@ export class LearningObjectService {
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject._id,
+      learningObjectId: learningObject.id,
     });
     return this.http
       .post(

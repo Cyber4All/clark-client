@@ -101,7 +101,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     this.parents = await this.parentNames();
     this.children = await this.objectChildrenNames();
     this.hasChildren = await this.appLOService.doesLearningObjectHaveChildren(
-      this.learningObject._id
+      this.learningObject.id
     );
     this.cd.detectChanges();
   }
@@ -223,7 +223,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    */
   async parentNames() {
     const parents = [];
-    return this.learningObjectService.fetchParents(this.learningObject._id).then(returners => {
+    return this.learningObjectService.fetchParents(this.learningObject.id).then(returners => {
       returners.forEach(parent => {
         parents.push(parent.name);
       });
