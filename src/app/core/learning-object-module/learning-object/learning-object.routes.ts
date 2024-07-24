@@ -1,7 +1,24 @@
-import { environment } from '../../../../environments/environment';
 import * as querystring from 'querystring';
+import { environment } from '../../../../environments/environment';
 
 export const LEARNING_OBJECT_ROUTES = {
+    /**
+     * Request to get a learning object by cuid
+     * Optionally, by version
+     * If version is not provided, then it returns all versions of a learning object
+     * @param cuid
+     * @param version?
+     * @returns Promise<FullLearningObject[]>
+     */
+    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version?: number) {
+        let uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}`;
+
+        if (version !== undefined) {
+            uri += '?version=' + version.toString();
+        }
+
+        return uri;
+    },
     /**
      * Request to get the children of a learning object
      * @param learningObjectID the id of the parent learning object

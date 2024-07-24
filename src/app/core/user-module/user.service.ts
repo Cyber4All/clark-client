@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
-import { USER_ROUTE } from './user.routes';
-import { AuthService } from '../auth-module/auth.service';
+import { Injectable } from '@angular/core';
 import { User } from '@entity';
+import { UserQuery } from 'app/interfaces/query';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { UserQuery } from 'app/interfaces/query';
+import { AuthService } from '../auth-module/auth.service';
+import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
+import { USER_ROUTE } from './user.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -130,7 +130,7 @@ export class UserService {
    */
   fetchUserProfile(username: string): Promise<any> {
     return this.http
-      .get(USER_ROUTE.GET_USER_PROFILE(username), {
+      .get(USER_ROUTE.GET_USER(username), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))

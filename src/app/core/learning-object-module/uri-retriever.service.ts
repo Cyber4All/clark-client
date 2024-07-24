@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError, Subject, of } from 'rxjs';
-import { LearningObject } from '@entity';
-import { LEGACY_USER_ROUTES, LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
-import { LearningOutcome } from '@entity';
-import { catchError, retry, map, tap, filter, take, takeUntil, finalize } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { LearningObject, LearningOutcome } from '@entity';
+import { Observable, Subject, of, throwError } from 'rxjs';
+import { catchError, filter, finalize, map, take, takeUntil, tap } from 'rxjs/operators';
+import { LEARNING_OBJECT_ROUTES, LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 
 // TODO this service should be deleted and its instances should be replced with the LearningObjectService in core
 
@@ -210,7 +209,7 @@ export class UriRetrieverService {
     if (params.cuidInfo?.cuid) {
       route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.cuidInfo.cuid);
     } else if (params.cuidInfo) {
-      route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
+      route = LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
     } else if (params.id) {
       // TODO: Update this to use CUID only.
       route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
