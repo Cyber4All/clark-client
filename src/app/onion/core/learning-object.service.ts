@@ -104,6 +104,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((res: any) => {
+        res.id = res._id;
         return new LearningObject(res);
       });
     // TODO: Verify this response gives the learning object name
@@ -252,13 +253,11 @@ export class LearningObjectService {
   /**
    * Modify an outcome by sending a partial learning outcome
    *
-   * @param {string} learningObjectId the id of the source learning object
    * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
   saveOutcome(
-    learningObjectId: string,
     outcome: { id: string;[key: string]: any }
   ): Promise<any> {
     const outcomeId = outcome.id;
@@ -266,9 +265,9 @@ export class LearningObjectService {
 
     return this.http
       .patch(
-        OUTCOME_ROUTES.UPDATE_OUTCOME(learningObjectId, outcomeId),
+        OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
         { outcome },
-        { withCredentials: true }
+        { headers: this.headers, withCredentials: true },
       )
       .pipe(
 
@@ -357,7 +356,7 @@ export class LearningObjectService {
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject._id,
+      learningObjectId: learningObject.id,
     });
     return this.http
       .post(
@@ -496,8 +495,8 @@ export class LearningObjectService {
    *
    * @param id of learning object
    */
-  fetchParents(username: string, id: string) {
-    const route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(username, id);
+  fetchParents(id: string) {
+    const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(id);
     return this.http.get<LearningObject[]>(route, { withCredentials: true }).toPromise().then(parents => {
       return parents;
     });

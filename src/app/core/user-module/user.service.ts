@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
-import { USER_ROUTE } from './user.routes';
-import { AuthService } from '../auth-module/auth.service';
+import { Injectable } from '@angular/core';
 import { User } from '@entity';
+import { UserQuery } from 'app/interfaces/query';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { UserQuery } from 'app/interfaces/query';
+import { AuthService } from '../auth-module/auth.service';
+import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
+import { USER_ROUTE } from './user.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -29,8 +29,12 @@ export class UserService {
       })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((res: {users: User[], total: number}) => {
-        return res.users.map((user) => new User(user));
+      .then((res: {users: any[], total: number}) => {
+        return res.users.map((user) => {
+          // this matches the _id attribute returned from the service to the client expected userId attribute
+          user.userId = user._id;
+          return new User(user);
+        });
       });
   }
 
@@ -87,6 +91,8 @@ export class UserService {
           (val: any) => {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             const user_res = val;
+            // this matches the _id attribute returned from the service to the client expected userId attribute 
+            user_res.userId = user_res._id;
             return user_res ? new User(user_res) : null;
           },
           (error) => {
@@ -130,7 +136,7 @@ export class UserService {
    */
   fetchUserProfile(username: string): Promise<any> {
     return this.http
-      .get(USER_ROUTE.GET_USER_PROFILE(username), {
+      .get(USER_ROUTE.GET_USER(username), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))

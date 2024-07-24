@@ -16,12 +16,12 @@ const MAX_NAME_LENGTH = 170;
  * @class
  */
 export class LearningObject {
-  get _id(): string {
-    return this.__id;
+  get id(): string {
+    return this._id;
   }
-  set _id(id: string) {
-    if (!this.__id) {
-      this.__id = id;
+  set id(id: string) {
+    if (!this._id) {
+      this._id = id;
     } else {
       throw new EntityError(LEARNING_OBJECT_ERRORS.ID_SET, 'id');
     }
@@ -338,7 +338,7 @@ export class LearningObject {
     this._constructed = true;
   }
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  private __id: string;
+  private _id: string;
   private _author: User;
   private _name!: string;
   private _description!: string;
@@ -566,8 +566,16 @@ export class LearningObject {
    * @returns {number} index of the contributor
    * @memberof LearningObject
    */
-  addContributor(contributor: User): number {
+  addContributor(contributor: any): number {
+    // when adding contributors, the original contributor id field can come back from the service as id or _id
+    // this matches it to userId attribute in either case
     if (contributor) {
+      if(contributor.id) {
+        contributor.userId = contributor.id;
+      }
+      if(contributor._id){
+        contributor.userId = contributor._id;
+      }
       const addingUser =
         contributor instanceof User ? contributor : new User(contributor);
       this.updateDate();
@@ -638,8 +646,8 @@ export class LearningObject {
    * @memberof LearningObject
    */
   private copyObject(object: Partial<LearningObject>): void {
-    if (object._id) {
-      this._id = object._id;
+    if (object.id) {
+      this._id = object.id;
     }
 
     if (object.cuid) {
@@ -746,7 +754,7 @@ export class LearningObject {
    */
   public toPlainObject(): Partial<LearningObject> {
     const object: Partial<LearningObject> = {
-      _id: this.__id,
+      id: this._id,
       cuid: this.cuid,
       author: this.author.toPlainObject() as User,
       name: this.name,
