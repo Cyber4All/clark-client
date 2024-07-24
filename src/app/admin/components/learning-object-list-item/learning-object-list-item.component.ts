@@ -55,7 +55,6 @@ export class LearningObjectListItemComponent implements OnChanges {
   statusDescription: string;
 
   showChangeAuthor: boolean;
-  showAddEvaluator: boolean;
   showUnreleaseConfirm: boolean;
   showRelevancyDate: boolean;
   showDeleteRevisionConfirmation: boolean;
@@ -77,7 +76,6 @@ export class LearningObjectListItemComponent implements OnChanges {
     private cd: ChangeDetectorRef,
     private http: HttpClient,
     private toaster: ToastrOvenService,
-    private router: Router,
     private hierarchyService: HierarchyService,
     private loService: LearningObjectService,
     private refactoredLearningObjectService: RefactoredLearningObjectService
@@ -116,15 +114,6 @@ export class LearningObjectListItemComponent implements OnChanges {
    */
   toggleChangeAuthorModal(value: boolean) {
     this.showChangeAuthor = value;
-  }
-
-  /**
-   * Toggles the add evaluator modal from showing/hiding
-   *
-   * @param value True if showing, false otherwise
-   */
-  toggleAddEvaluatorModal(value: boolean) {
-    this.showAddEvaluator = value;
   }
 
   /**
