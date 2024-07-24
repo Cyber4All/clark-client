@@ -16,7 +16,7 @@ export class AuthorshipService {
 
   async changeAuthorship(oldAuthor: User, id: string, newAuthor: string) {
     return this.http
-      .post(CHANGE_AUTHORSHIP_ROUTES.CHANGE_AUTHORSHIP(oldAuthor.id, id),
+      .post(CHANGE_AUTHORSHIP_ROUTES.CHANGE_AUTHORSHIP(oldAuthor.userId, id),
         {
           'author': newAuthor,
         },

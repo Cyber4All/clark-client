@@ -97,7 +97,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
     this.url = this.buildLocation();
     // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
-    await this.libraryService.getLibrary();
+    await this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid, version: this.learningObject.version});
     this.saved = this.libraryService.has(this.learningObject);
     this.getCollection();
     this.libraryService.loaded
@@ -139,7 +139,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
     if (download) {
       this.download(
-        this.learningObject._id
+        this.learningObject.id
       );
     }
     try {
@@ -171,7 +171,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   async toggleBundle() {
     this.toaster.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
-    await this.learningObjectService.triggerBundle(this.learningObject._id);
+    await this.learningObjectService.triggerBundle(this.learningObject.id);
   }
 
 
@@ -183,7 +183,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   downloadRevised(download?: boolean) {
     if (download) {
       this.download(
-        this.learningObject._id
+        this.learningObject.id
       );
     }
   }
@@ -275,7 +275,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   removeFromLibrary() {
-    this.libraryService.removeFromLibrary(this.learningObject._id);
+    this.libraryService.removeFromLibrary(this.learningObject.id);
   }
 
   private buildLocation(encoded?: boolean) {

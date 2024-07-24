@@ -79,7 +79,7 @@ export class AuthService {
    * @memberof AuthService
    */
   private setSession({ user, tokens }: { user: AuthUser; tokens: Tokens }) {
-    this.cookies.set("presence", tokens.bearer, {
+    this.cookies.set('presence', tokens.bearer, {
       expires: 1,
       path: '/',
       secure: false,

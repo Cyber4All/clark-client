@@ -72,9 +72,9 @@ export class EditorialActionPadComponent implements OnInit {
   editLearningObject() {
     const userOrAdminRoute = (this.userIsAuthor) ? 'onion' : 'admin';
     if (this.revisedLearningObject) {
-      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.revisedLearningObject._id]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.revisedLearningObject.id]);
     } else {
-      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.learningObject._id]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.learningObject.id]);
     }
   }
 

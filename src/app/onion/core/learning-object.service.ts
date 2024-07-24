@@ -18,6 +18,7 @@ import {
   LEGACY_USER_ROUTES,
   LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES,
+  USER_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 
 @Injectable({
@@ -103,6 +104,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((res: any) => {
+        res.id = res._id;
         return new LearningObject(res);
       });
     // TODO: Verify this response gives the learning object name
@@ -214,7 +216,7 @@ export class LearningObjectService {
       )
       .toPromise()
       .then((response: any) => {
-        return response.objects.map(object => new LearningObject(object));
+        return response.objects;
       });
   }
 
@@ -251,13 +253,11 @@ export class LearningObjectService {
   /**
    * Modify an outcome by sending a partial learning outcome
    *
-   * @param {string} learningObjectId the id of the source learning object
    * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
   saveOutcome(
-    learningObjectId: string,
     outcome: { id: string;[key: string]: any }
   ): Promise<any> {
     const outcomeId = outcome.id;
@@ -265,9 +265,9 @@ export class LearningObjectService {
 
     return this.http
       .patch(
-        OUTCOME_ROUTES.UPDATE_OUTCOME(learningObjectId, outcomeId),
+        OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
         { outcome },
-        { withCredentials: true }
+        { headers: this.headers, withCredentials: true },
       )
       .pipe(
 
@@ -356,7 +356,7 @@ export class LearningObjectService {
    */
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject._id,
+      learningObjectId: learningObject.id,
     });
     return this.http
       .post(
@@ -402,7 +402,7 @@ export class LearningObjectService {
    * @memberof LearningObjectService
    */
   delete(learningObjectId: string): Promise<{}> {
-    const route = LEGACY_USER_ROUTES.DELETE_LEARNING_OBJECT(
+    const route = LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(
       learningObjectId
     );
     return this.http
@@ -419,26 +419,25 @@ export class LearningObjectService {
   }
 
   /**
-   * Bulk deletion
+   * Method to delete multiple learning objects
    *
-   * @param {(string)[]} ids
-   * @returns {Promise<{}>}
-   * @memberof LearningObjectService
+   * @param learningObjectIds Array of learning object ids to delete
+   * @returns Promise of all delete requests
    */
-  deleteMultiple(names: string[], authorUsername: string): Promise<any> {
-    const route = LEGACY_USER_ROUTES.DELETE_MULTIPLE_LEARNING_OBJECTS(authorUsername, names);
-
-    return this.http
-      .delete(route, {
+  deleteMultiple(learningObjectIds: string[]): Promise<any> {
+    const deletePromises = learningObjectIds.map(objectId =>
+      this.http.delete(LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(objectId), {
         headers: this.headers,
         withCredentials: true,
         responseType: 'text'
       })
       .pipe(
-
         catchError(this.handleError)
       )
-      .toPromise();
+      .toPromise()
+    );
+
+    return Promise.all(deletePromises);
   }
 
   setChildren(
@@ -496,8 +495,8 @@ export class LearningObjectService {
    *
    * @param id of learning object
    */
-  fetchParents(username: string, id: string) {
-    const route = LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(username, id);
+  fetchParents(id: string) {
+    const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(id);
     return this.http.get<LearningObject[]>(route, { withCredentials: true }).toPromise().then(parents => {
       return parents;
     });

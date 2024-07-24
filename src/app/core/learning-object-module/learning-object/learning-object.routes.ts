@@ -1,7 +1,24 @@
-import { environment } from '../../../../environments/environment';
 import * as querystring from 'querystring';
+import { environment } from '../../../../environments/environment';
 
 export const LEARNING_OBJECT_ROUTES = {
+    /**
+     * Request to get a learning object by cuid
+     * Optionally, by version
+     * If version is not provided, then it returns all versions of a learning object
+     * @param cuid
+     * @param version?
+     * @returns Promise<FullLearningObject[]>
+     */
+    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version?: number) {
+        let uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}`;
+
+        if (version !== undefined) {
+            uri += '?version=' + version.toString();
+        }
+
+        return uri;
+    },
     /**
      * Request to get the children of a learning object
      * @param learningObjectID the id of the parent learning object
@@ -9,6 +26,15 @@ export const LEARNING_OBJECT_ROUTES = {
      */
     GET_CHILDREN(learningObjectID: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectID)}/children`;
+    },
+
+    /**
+     *
+     * @param id id of a children learning object
+     * @returns Promise<FullLearningObject[]>
+     */
+    GET_LEARNING_OBJECT_PARENTS(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${learningObjectId}/parents`;
     },
 
     /**
@@ -86,11 +112,25 @@ export const LEARNING_OBJECT_ROUTES = {
     GET_MY_LEARNING_OBJECTS(
         username,
         filters: any,
-      ) {
-          return `${environment.apiURL}/users/${encodeURIComponent(
-              username,
-          )}/learning-objects?${querystring.stringify(filters)}`;
-      }
+    ) {
+        return `${environment.apiURL}/users/${encodeURIComponent(
+            username,
+        )}/learning-objects?${querystring.stringify(filters)}`;
+    },
+
+    /**
+     * Route to delete a learning object
+     * @param learningObjectId id of the learning object to delete
+     */
+    DELETE_LEARNING_OBJECT(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
+    },
+};
+
+export const USER_ROUTES = {
+  SET_CHILDREN(learningObjectCuid) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectCuid)}/children`;
+  },
 };
 
 export const ADMIN_ROUTES = {
@@ -144,14 +184,6 @@ export const LEGACY_USER_ROUTES = {
     GET_LEARNING_OBJECT(id) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
     },
-    DELETE_LEARNING_OBJECT(id: string) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
-    },
-    DELETE_MULTIPLE_LEARNING_OBJECTS(username, learningObjectNames) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/multiple/${encodeURIComponent(learningObjectNames)}`;
-    },
     POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
@@ -204,9 +236,6 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
         }
 
         return uri;
-    },
-    GET_LEARNING_OBJECT_PARENTS(username: string, id: string) {
-        return `${environment.apiURL}/users/${username}/learning-objects/${id}/parents`;
     },
     DOWNLOAD_FILE(params: {
         username: string;

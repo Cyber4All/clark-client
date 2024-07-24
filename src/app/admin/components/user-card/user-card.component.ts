@@ -81,7 +81,7 @@ export class AdminUserCardComponent {
    * @memberof AdminUserCardComponent
    */
   removeReviewer() {
-    this.removeMember.emit(this.user.id);
+    this.removeMember.emit(this.user.userId);
   }
 
   toggleAddEvaluator(show: boolean) {
