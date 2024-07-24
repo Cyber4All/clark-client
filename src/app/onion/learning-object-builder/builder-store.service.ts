@@ -1136,7 +1136,7 @@ export class BuilderStore {
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .saveOutcome(this.learningObject.id, updateValue as any)
+      .saveOutcome(updateValue as any)
       .then(() => {
         this.serviceInteraction$.next(false);
       })
