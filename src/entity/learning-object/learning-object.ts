@@ -566,8 +566,16 @@ export class LearningObject {
    * @returns {number} index of the contributor
    * @memberof LearningObject
    */
-  addContributor(contributor: User): number {
+  addContributor(contributor: any): number {
+    // when adding contributors, the original contributor id field can come back from the service as id or _id
+    // this matches it to userId attribute in either case
     if (contributor) {
+      if(contributor.id) {
+        contributor.userId = contributor.id;
+      }
+      if(contributor._id){
+        contributor.userId = contributor._id;
+      }
       const addingUser =
         contributor instanceof User ? contributor : new User(contributor);
       this.updateDate();
