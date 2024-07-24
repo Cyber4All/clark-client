@@ -335,7 +335,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.loading = true;
     this.learningObjects = [];
     // Trim leading and trailing whitespace
-    query.text = query.text ? query.text.trim() : undefined;
+    query.text = query.text ? query.text.trim() : '';
     try {
       const {
         learningObjects,

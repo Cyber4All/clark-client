@@ -1,19 +1,18 @@
-import {
-  LEARNING_OBJECT_ROUTES,
-  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-  LEGACY_USER_ROUTES,
-} from '../core/learning-object-module/learning-object/learning-object.routes';
-import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { LearningObject } from '@entity';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { LearningObject } from '@entity';
+import {
+  LEARNING_OBJECT_ROUTES,
+  LEGACY_USER_ROUTES
+} from '../core/learning-object-module/learning-object/learning-object.routes';
 import { Query } from '../interfaces/query';
 
-import * as querystring from 'querystring';
-import { USER_ROUTE } from '../core/user-module/user.routes';
-import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
+import * as querystring from 'querystring';
+import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
+import { USER_ROUTE } from '../core/user-module/user.routes';
 
 // TODO: move to core module
 @Injectable({
@@ -62,7 +61,7 @@ export class LearningObjectService {
           queryClone.standardOutcomes as string[]
         ).map((o) => o['id']);
       }
-      const queryString = querystring.stringify(queryClone);
+      const queryString = new URLSearchParams(queryClone).toString();
       route =
         SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
     } else {
