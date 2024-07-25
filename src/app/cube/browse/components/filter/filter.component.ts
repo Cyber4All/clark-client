@@ -153,6 +153,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       query['standardOutcomes'] = this.guidelineFilter;
     }
 
+    console.log(query);
     // Emits changes
     this.changed.emit(query);
   }
