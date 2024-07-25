@@ -1,12 +1,12 @@
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LearningObject } from '../../../entity/learning-object/learning-object';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { AuthService } from '../auth-module/auth.service';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
-import { LIBRARY_ROUTES } from './library.routes';
+import { AuthService } from '../auth-module/auth.service';
 import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
+import { LIBRARY_ROUTES } from './library.routes';
 
 export const iframeParentID = 'learning-object-download';
 @Injectable({
@@ -133,14 +133,12 @@ export class LibraryService {
    * Service function to download a learning object bundle.
    * The call to download the bundle is made in @function downloadBundle()
    *
-   * @param author the author username of the learning object
    * @param learningObjectId the mongo id of the learning object
    */
   learningObjectBundle(learningObjectId: string) {
     // Show loading spinner
     this._loading$.next(true);
 
-    console.log('yeet yetet learningobjectbundle');
     // Url route for bundling
     const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
     const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
@@ -174,7 +172,6 @@ export class LibraryService {
   }
 
   downloadBundle(url: string): Promise<any> {
-    console.log('yooooo download bundle');
     return this.http.get(
       url, {
       responseType: 'blob',
@@ -185,42 +182,15 @@ export class LibraryService {
       .toPromise()
       .then(res => {
         {
-          console.log('Response here dude');
           const blob = new Blob([res]);
           const link = document.createElement('a');
           link.href = window.URL.createObjectURL(blob);
-          link.download = 'bundle.zip'; // Or use a dynamic name if available
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
         }
       });
   }
-  // return new Observable(observer => {
-  //   console.log("ya boi in observer");
-  //   this.http.get(url, {
-  //     responseType: 'blob',
-  //     headers: this.headers,
-  //     withCredentials: true
-  //   }).subscribe(
-  //     response => {
-  //       console.log("Response here dude");
-  //       const blob = new Blob([response]);
-  //       const link = document.createElement('a');
-  //       link.href = window.URL.createObjectURL(blob);
-  //       link.download = 'bundle.zip'; // Or use a dynamic name if available
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  //       observer.next(response);
-  //       observer.complete();
-  //     },
-  //     error => {
-  //       console.error('Download error:', error);
-  //       observer.error(error);
-  //     }
-  //   );
-  // });
 
   has(object: LearningObject): boolean {
     const inLibrary = this.libraryItems.filter(
