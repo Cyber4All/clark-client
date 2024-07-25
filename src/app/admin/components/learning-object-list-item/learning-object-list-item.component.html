@@ -43,12 +43,10 @@
       <li (click)="goToUrl('contact')"><i class="far fa-user"></i>View Author Contact</li>
       <li (click)="goToUrl('details')"><i class="far fa-cube"></i>View details</li>
       <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
-      <li (click)="toggleAddEvaluatorModal(true)"><i class="fal fa-user-plus"></i>Assign Evaluators</li>
       <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
       <li *ngIf="learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleChangeCollectionModal(true)"><i class="fal fa-exchange"></i>Change Collection</li>
       <li *ngIf="learningObject.status === 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
       <li *ngIf="learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor') || auth.user.accessGroups.includes('mapper') )" (click)="goToUrl('relevancy')"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
-      <li *ngIf="learningObject.status !== 'released' && learningObject.status !== 'unreleased'" (click)="goToUrl('relevancy')"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
     </ul>
   </div>
 </clark-context-menu>
@@ -72,12 +70,6 @@
       <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
       <button (click)="closeUnreleaseModal(false)" class="button good">No</button>
     </div>
-  </div>
-</clark-popup>
-
-<clark-popup *ngIf="showAddEvaluator" (closed)="toggleAddEvaluatorModal(false)">
-  <div class="modal-container" #popupInner>
-    <clark-add-evaluator (close)="toggleAddEvaluatorModal(false)" [learningObject]="learningObject"></clark-add-evaluator>
   </div>
 </clark-popup>
 
