@@ -239,7 +239,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     if (delay) {
       this.searchDelaySubject.next();
     } else {
-      const isFilterChange = false;
       if (this.filters && Object.keys(this.filters).length > 0) {
         // Remove the removed filter categories from the query object
         (this.filters.removed as string[]).forEach(category => delete this.query[category]);
@@ -251,7 +250,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       }
 
       // if we're adding a filter that isn't a page change, reset the currPage in query to 1
-      if (isFilterChange && this.shouldResetPage) {
+      if (this.shouldResetPage) {
         this.query.currPage = 1;
       }
       this.shouldResetPage = true;
