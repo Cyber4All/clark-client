@@ -232,7 +232,9 @@ export class LibraryService {
    */
   private getBundleName(contentDisposition: string): string {
     // If no content disposition header, return default name
-    if (!contentDisposition) return DEFAULT_BUNDLE_NAME;
+    if (!contentDisposition) {
+      return DEFAULT_BUNDLE_NAME;
+    }
     // Split the content disposition header by semicolon
     const split = contentDisposition.split(';');
     for (const part of split) {
