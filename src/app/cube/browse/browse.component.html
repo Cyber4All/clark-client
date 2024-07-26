@@ -4,9 +4,11 @@
     <div *ngIf="filters" class="sidebar-wrapper" [ngClass]="{'active': filtersDownMobile}">
       <div class="column-title">
         {{ copy.FILTERS }}
-        <div class="filters-clear-all" id="filters-clear-all" (activate)="clearAllFilters()">{{ copy.CLEARFILTERS }}</div>
+        <div class="filters-clear-all" id="filters-clear-all" (activate)="clearAllFilters()">{{ copy.CLEARFILTERS }}
+        </div>
       </div>
-      <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" [selected]="query" [clear]="filterClearSubject$.asObservable()" (changed)="filter($event)"></clark-filter>
+      <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" [selected]="query"
+        [clear]="filterClearSubject$.asObservable()" (changed)="filter($event)"></clark-filter>
 
       <div class="btn-group to-right">
         <button (activate)="applyFilters(); toggleFilters();" class="button good">Apply</button>
@@ -15,49 +17,61 @@
     </div>
     <div *ngIf="learningObjects" class="content" id="pageContent" tabindex="0">
       <div class="column-title" id="column-title">
-        <span tabindex="0" id="results">{{ copy.RESULTS }} ({{ this.totalLearningObjects ? this.totalLearningObjects : '0' }})
-          <a class="clear-search" id="clear-search" (activate)="clearSearch()" *ngIf="query?.text !== ''">{{ copy.CLEARSEARCH }} </a>
+        <span tabindex="0" id="results">{{ copy.RESULTS }} ({{ this.totalLearningObjects ? this.totalLearningObjects :
+          '0' }})
+          <a class="clear-search" id="clear-search" (activate)="clearSearch()"
+            *ngIf="query?.text !== '' || (query?.standardOutcomes && query?.standardOutcomes.length > 0)">{{
+            copy.CLEARSEARCH }} </a>
           <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span>
         </span>
         <div class="results-options" id="results-options">
-          <button *ngIf="isMobile" #filterMenuButtonElement aria-label="Filter search results" class="button sort" (activate)="toggleFilters()">{{ copy.FILTERS }} <i class="far fa-sliders-h"></i></button>
-          <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria" tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
-          <a class="search-CARD" id="search-CARD" href="https://caeresource.directory/browse?q={{ query?.text }}" target=_blank *ngIf="query?.text?.length > 0">Search for non-curricular resources</a>
-          <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort" (activate)="toggleSortMenu(true)">Sort By: {{ sortText }}<i class="far fa-angle-down"></i></button>
+          <button *ngIf="isMobile" #filterMenuButtonElement aria-label="Filter search results" class="button sort"
+            (activate)="toggleFilters()">{{ copy.FILTERS }} <i class="far fa-sliders-h"></i></button>
+          <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria"
+            tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
+          <a class="search-CARD" id="search-CARD" href="https://caeresource.directory/browse?q={{ query?.text }}"
+            target=_blank *ngIf="query?.text?.length > 0">Search for non-curricular resources</a>
+          <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort"
+            (activate)="toggleSortMenu(true)">Sort By: {{ sortText }}<i class="far fa-angle-down"></i></button>
         </div>
         <!-- Filter Context Menu -->
         <ng-container>
-            <clark-context-menu *ngIf="sortMenuDown" [anchor]="sortMenuButtonElement" [offset]="{ top: 10, left: 5, right: 0 }" (close)="toggleSortMenu(false)">
-              <div #contextMenu class="sort-menu">
-                <ul>
-                  <li [ngClass]="{selected: sortText === 'Newest'}"  class="list-item" (activate)="toggleSort('dd')">
-                    Date (Newest first)
-                  </li>
-                  <li [ngClass]="{selected: sortText === 'Oldest'}" class="list-item" (activate)="toggleSort('da')">
-                    Date (Oldest first)
-                  </li>
-                  <li [ngClass]="{selected: sortText === 'Name (Desc)'}" class="list-item" (activate)="toggleSort('nd')">
-                    Name (desc)
-                  </li>
-                  <li [ngClass]="{selected: sortText === 'Name (Asc)'}" class="list-item" (activate)="toggleSort('na')">
-                    Name (asc)
-                  </li>
-                </ul>
-              </div>
-            </clark-context-menu>
-          </ng-container>
+          <clark-context-menu *ngIf="sortMenuDown" [anchor]="sortMenuButtonElement"
+            [offset]="{ top: 10, left: 5, right: 0 }" (close)="toggleSortMenu(false)">
+            <div #contextMenu class="sort-menu">
+              <ul>
+                <li [ngClass]="{selected: sortText === 'Newest'}" class="list-item" (activate)="toggleSort('dd')">
+                  Date (Newest first)
+                </li>
+                <li [ngClass]="{selected: sortText === 'Oldest'}" class="list-item" (activate)="toggleSort('da')">
+                  Date (Oldest first)
+                </li>
+                <li [ngClass]="{selected: sortText === 'Name (Desc)'}" class="list-item" (activate)="toggleSort('nd')">
+                  Name (desc)
+                </li>
+                <li [ngClass]="{selected: sortText === 'Name (Asc)'}" class="list-item" (activate)="toggleSort('na')">
+                  Name (asc)
+                </li>
+              </ul>
+            </div>
+          </clark-context-menu>
+        </ng-container>
       </div>
       <h3 *ngIf="!learningObjects || learningObjects.length === 0">{{ copy.NORESULTS }}</h3>
-      <clark-learning-object-component *ngFor="let l of learningObjects" [learningObject]="l" [loading]="loading"></clark-learning-object-component>
+      <clark-learning-object-component *ngFor="let l of learningObjects" [learningObject]="l"
+        [loading]="loading"></clark-learning-object-component>
     </div>
   </div>
   <div *ngIf="learningObjects.length" class="paginationCtrl">
     <ul>
-      <li (activate)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left" aria-label="Previous page of results"></i> Back </li>
-      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage === p}" (activate)="goToPage(p)" attr.aria-label="Page {{ p }} of results">
+      <li (activate)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"
+          aria-label="Previous page of results"></i> Back </li>
+      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage === p}" (activate)="goToPage(p)"
+        attr.aria-label="Page {{ p }} of results">
         {{ p }}
       </li>
-      <li (activate)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"> Next <i class="far fa-chevron-right" aria-label="Next page of results"></i></li>
+      <li (activate)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"> Next <i
+          class="far fa-chevron-right" aria-label="Next page of results"></i></li>
     </ul>
   </div>
 </div>
