@@ -254,7 +254,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       if (isFilterChange && this.shouldResetPage) {
         this.query.currPage = 1;
       }
-        this.shouldResetPage = true;
+      this.shouldResetPage = true;
 
       this.router.navigate(['browse'], {
         queryParams: this.removeObjFalsy(this.query)
@@ -348,7 +348,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       this.cd.detectChanges();
     } catch (e) {
       console.log(`Error: ${e}`);
-      console.log('length?');
     }
   }
 
