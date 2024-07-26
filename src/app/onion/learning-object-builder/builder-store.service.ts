@@ -733,7 +733,7 @@ export class BuilderStore {
       this.learningObject.materials.urls[index] = url;
       this.learningObjectEvent.next(this.learningObject);
       this.saveObject({
-        'materials.urls': this.learningObject.materials.urls
+        materials: { urls: this.learningObject.materials.urls }
       });
     }
   }
@@ -750,7 +750,7 @@ export class BuilderStore {
     }
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
-      'materials.urls': this.learningObject.materials.urls
+      materials: { urls: this.learningObject.materials.urls }
     });
   }
 
@@ -764,7 +764,7 @@ export class BuilderStore {
   private updateNotes(notes: string): void {
     this.learningObject.materials.notes = notes;
     this.learningObjectEvent.next(this.learningObject);
-    this.saveObject({ 'materials.notes': notes });
+    this.saveObject({ materials: { notes: notes } });
   }
 
   /**
@@ -818,8 +818,8 @@ export class BuilderStore {
     }
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
-      'materials.folderDescriptions': this.learningObject.materials
-        .folderDescriptions
+      materials: { folderDescriptions: this.learningObject.materials
+        .folderDescriptions }
     });
   }
 
