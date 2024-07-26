@@ -15,7 +15,7 @@ export const FEATURED_ROUTES = {
    * @param collectionAbvName the abbreviated name of the collection
    */
   GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName: string) {
-    return `${environment.apiURL}/featured/learning-objects/${encodeURIComponent(collectionAbvName)}`;
+    return `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(collectionAbvName)}`;
   },
   /**
    * Request to update the list of featured learning objects
