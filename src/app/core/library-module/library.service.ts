@@ -1,7 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 import { AuthService } from '../auth-module/auth.service';
@@ -9,6 +9,7 @@ import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.rou
 import { LIBRARY_ROUTES } from './library.routes';
 
 export const iframeParentID = 'learning-object-download';
+const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
   providedIn: 'root'
 })
@@ -171,25 +172,48 @@ export class LibraryService {
     );
   }
 
-  downloadBundle(url: string): Promise<any> {
+  /**
+   * Method to start bundle stream and download the zip file
+   * @param url request to api for zip in stream
+   * @returns void - blob stream is downloaded to user's machine
+   */
+  async downloadBundle(url: string): Promise<void> {
     return this.http.get(
       url, {
       responseType: 'blob',
+      observe: 'response',
       headers: this.headers,
-      withCredentials: true
-    }
+      withCredentials: true,
+    })
+    .pipe(
+      timeout(30000), // 30 seconds timeout
+      catchError(error => {
+        throw this.handleError(error);
+      })
     )
-      .toPromise()
-      .then(res => {
-        {
-          const blob = new Blob([res]);
-          const link = document.createElement('a');
-          link.href = window.URL.createObjectURL(blob);
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-        }
-      });
+    .toPromise()
+    .then((response: HttpResponse<Blob>) => {
+      // Get the content disposition header from the response
+      const contentDisposition = response.headers.get('content-disposition');
+      // Get the blob from the response
+      const blob = response.body;
+      // Validate that the blob is not empty
+      if (!blob) {
+        throw this.handleError(new HttpErrorResponse({error: 'No content in response body', status: 500}));
+      }
+      // Create an element on the DOM to download the zip file
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      // REQUIRED: Set the download attribute to the name of the file
+      link.download = this.getBundleName(contentDisposition);
+      document.body.appendChild(link);
+      // Trigger the download
+      link.click();
+      // Remove the element from the DOM
+      document.body.removeChild(link);
+      // Revoke the object URL to prevent memory leaks
+      window.URL.revokeObjectURL(link.href);
+    });
   }
 
   has(object: LearningObject): boolean {
@@ -200,6 +224,28 @@ export class LibraryService {
     return inLibrary;
   }
 
+  /**
+   * Method to extract the bundle name from the content disposition header
+   * @param contentDisposition content disposition header
+   * @attribute filename standard attribute for content disposition header
+   * @returns name of the bundle zip file
+   */
+  private getBundleName(contentDisposition: string): string {
+    // If no content disposition header, return default name
+    if (!contentDisposition) return DEFAULT_BUNDLE_NAME;
+    // Split the content disposition header by semicolon
+    const split = contentDisposition.split(';');
+    for (const part of split) {
+      const [key, value] = part.trim().split('=');
+      // Match only the filename key
+      if (key === 'filename') {
+        return value.replace(/"/g, '').trim();
+      }
+    }
+    // Return default bundle name if no filename key found
+    return DEFAULT_BUNDLE_NAME;
+  }
+
   private handleError(error: HttpErrorResponse) {
     // Toggle off loading spinner *** needs to stay here in case error is thrown in http HEAD request ***
     this._loading$.next(false);
@@ -207,7 +253,7 @@ export class LibraryService {
       // Client-side or network returned error
       return throwError(error.error.message);
     } else if (error.status === 425) {
-      // At time of implementation, 425 is recgonized as an experimental status
+      // At time of implementation, 425 is recognized as an experimental status
       this.toaster.warning(
         'Hang Tight!',
         `The download for this learning object isn't ready yet, check back shortly to see if it has finished bundling.`
