@@ -105,7 +105,7 @@ export class FeaturedObjectsService {
   filterOutFeaturedObjects() {
     this.featuredObjectIds = [];
     this.featuredStore.featured.forEach((object) => {
-      this.featuredObjectIds.push(object._id);
+      this.featuredObjectIds.push(object.id);
     });
   }
 
@@ -122,7 +122,7 @@ export class FeaturedObjectsService {
   removeFeaturedObject(featured) {
     this.featuredStore.featured = this.featuredStore.featured.filter(
       (object) => {
-        return object._id !== featured._id;
+        return object.id !== featured.id;
       },
     );
     this.filterOutFeaturedObjects();

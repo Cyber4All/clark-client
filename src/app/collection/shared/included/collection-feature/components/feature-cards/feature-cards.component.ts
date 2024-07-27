@@ -28,7 +28,7 @@ export class FeatureCardsComponent implements OnInit {
     this.setColorScheme();
     const hierarchy = await this.attributeService.getHierarchy(
       this.learningObject.author.username,
-      this.learningObject._id
+      this.learningObject.id
     );
     this.parents = hierarchy.parents;
     this.children = hierarchy.children;

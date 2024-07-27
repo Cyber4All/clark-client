@@ -189,7 +189,7 @@ export class SubmitComponent implements OnInit {
     if (proceed) {
       this.loading.push(true);
       if (this.isHierarchySubmission) {
-        this.hierarchyService.submitHierarchy(this.learningObject._id, this.collection)
+        this.hierarchyService.submitHierarchy(this.learningObject.id, this.collection)
           .then(() => {
             this.closeModal(true);
             this.loading.pop();
@@ -218,7 +218,7 @@ export class SubmitComponent implements OnInit {
       } else {
         this.submissionService
           .submit({
-            learningObjectId: this.learningObject._id,
+            learningObjectId: this.learningObject.id,
             collectionName: this.collection,
             submissionReason: this.submissionReason,
             selectedAuthorizations: this.selectedAuthorizations,
@@ -266,7 +266,7 @@ export class SubmitComponent implements OnInit {
    * @param collection The selected collection
    */
   getCollectionSelected(collection: string) {
-    this.submissionService.getFirstSubmission(this.learningObject._id, collection)
+    this.submissionService.getFirstSubmission(this.learningObject.id, collection)
       .then(val => {
         this.collection = collection;
         if (!val.isFirstSubmission) {

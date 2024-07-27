@@ -68,7 +68,7 @@ export class ScaffoldComponent implements OnInit {
       this.loading = true;
       this.store.getChildren().then(kiddos => {
         this.children = kiddos;
-        this.children.forEach(kid => this.childrenIDs.push(kid._id));
+        this.children.forEach(kid => this.childrenIDs.push(kid.id));
         this.loading = false;
       }).catch(error => {
         this.loading = false;
@@ -88,7 +88,7 @@ export class ScaffoldComponent implements OnInit {
       this.children.unshift(child);
 
       // add child to the childrenIDs array
-      this.childrenIDs.unshift(child._id);
+      this.childrenIDs.unshift(child.id);
     } else {
       // if we DO NOT already have a children array defined
 
@@ -96,7 +96,7 @@ export class ScaffoldComponent implements OnInit {
       this.children = [child];
 
       // add child to the childrenIDs array
-      this.childrenIDs = [child._id];
+      this.childrenIDs = [child.id];
     }
 
 
@@ -115,7 +115,7 @@ export class ScaffoldComponent implements OnInit {
 
     this.childrenIDs = [];
     // get the ids of the children in children array
-    this.children.forEach(kid => this.childrenIDs.push(kid._id));
+    this.children.forEach(kid => this.childrenIDs.push(kid.id));
 
     // set the ids of children to the same order as the childrenIDs
     this.store.setChildren(this.childrenIDs);
@@ -152,7 +152,7 @@ export class ScaffoldComponent implements OnInit {
 
     // set childrenIDs equal to the children array
     this.childrenIDs = [];
-    this.children.forEach(kid => this.childrenIDs.push(kid._id));
+    this.children.forEach(kid => this.childrenIDs.push(kid.id));
     await this.store.fetch(this.learningObject.cuid);
     await this.store.setChildren(this.childrenIDs, true);
 

@@ -13,11 +13,7 @@ private _id: string;
     return this._id;
   }
   set userId(id: string) {
-    if (!this.userId) {
       this._id = id;
-    } else {
-      throw new EntityError(USER_ERRORS.ID_SET, 'id');
-    }
   }
   _username: string;
   /**

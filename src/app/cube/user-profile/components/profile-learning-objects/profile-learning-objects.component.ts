@@ -51,7 +51,7 @@ export class ProfileLearningObjectsComponent implements OnChanges {
       this.collectionsUnreleased = [];
       // Sort learning objects by status
       objects.map((learningObject: any) => {
-        if(learningObject.status === 'released') {
+        if (learningObject.status === 'released') {
           this.learningObjectsReleased.push(learningObject);
         } else {
           this.learningObjectsUnreleased.push(learningObject);

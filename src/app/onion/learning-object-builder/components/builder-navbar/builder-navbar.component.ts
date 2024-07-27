@@ -169,14 +169,14 @@ export class BuilderNavbarComponent implements OnDestroy {
       this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
     }
     // Trigger new PDF generation
-    Promise.all(await this.learningObjectService.updateReadme(this.learningObject._id));
+    Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));
     // Remove outcomes that have null text
     this.store.removeEmptyOutcomes();
     // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
       // If any data has be changed on the LO, then we need to rebundle
       if (this.store.touched) {
-        this.learningObjectService.triggerBundle(this.learningObject._id);
+        this.learningObjectService.triggerBundle(this.learningObject.id);
       }
       if (leaveBuilder) {
         this.historySnapshot.rewind('/onion/dashboard');
