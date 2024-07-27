@@ -8,7 +8,6 @@ import { AuthService } from '../auth-module/auth.service';
 import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
 import { LIBRARY_ROUTES } from './library.routes';
 
-export const iframeParentID = 'learning-object-download';
 const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
   providedIn: 'root'
