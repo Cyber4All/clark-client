@@ -66,7 +66,6 @@ export class LibraryService {
       .toPromise()
       .then((val: any) => {
         this.libraryItems = val.userLibraryItems
-          .filter(object => object && object.learningObject) // Filter out objects without learningObject
           .map(object => {
             if (object.learningObject) {
               object.learningObject.id = object.learningObject._id;
@@ -184,35 +183,35 @@ export class LibraryService {
       headers: this.headers,
       withCredentials: true,
     })
-    .pipe(
-      timeout(30000), // 30 seconds timeout
-      catchError(error => {
-        throw this.handleError(error);
-      })
-    )
-    .toPromise()
-    .then((response: HttpResponse<Blob>) => {
-      // Get the content disposition header from the response
-      const contentDisposition = response.headers.get('content-disposition');
-      // Get the blob from the response
-      const blob = response.body;
-      // Validate that the blob is not empty
-      if (!blob) {
-        throw this.handleError(new HttpErrorResponse({error: 'No content in response body', status: 500}));
-      }
-      // Create an element on the DOM to download the zip file
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      // REQUIRED: Set the download attribute to the name of the file
-      link.download = this.getBundleName(contentDisposition);
-      document.body.appendChild(link);
-      // Trigger the download
-      link.click();
-      // Remove the element from the DOM
-      document.body.removeChild(link);
-      // Revoke the object URL to prevent memory leaks
-      window.URL.revokeObjectURL(link.href);
-    });
+      .pipe(
+        timeout(30000), // 30 seconds timeout
+        catchError(error => {
+          throw this.handleError(error);
+        })
+      )
+      .toPromise()
+      .then((response: HttpResponse<Blob>) => {
+        // Get the content disposition header from the response
+        const contentDisposition = response.headers.get('content-disposition');
+        // Get the blob from the response
+        const blob = response.body;
+        // Validate that the blob is not empty
+        if (!blob) {
+          throw this.handleError(new HttpErrorResponse({ error: 'No content in response body', status: 500 }));
+        }
+        // Create an element on the DOM to download the zip file
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        // REQUIRED: Set the download attribute to the name of the file
+        link.download = this.getBundleName(contentDisposition);
+        document.body.appendChild(link);
+        // Trigger the download
+        link.click();
+        // Remove the element from the DOM
+        document.body.removeChild(link);
+        // Revoke the object URL to prevent memory leaks
+        window.URL.revokeObjectURL(link.href);
+      });
   }
 
   has(object: LearningObject): boolean {
