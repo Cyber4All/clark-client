@@ -252,9 +252,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       // if we're adding a filter that isn't a page change, reset the currPage in query to 1
       if (this.shouldResetPage) {
         this.query.currPage = 1;
-      } else {
-        this.shouldResetPage = true;
       }
+      this.shouldResetPage = true;
 
       this.router.navigate(['browse'], {
         queryParams: this.removeObjFalsy(this.query)
@@ -335,7 +334,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.loading = true;
     this.learningObjects = [];
     // Trim leading and trailing whitespace
-    query.text = query.text ? query.text.trim() : undefined;
+    query.text = query.text ? query.text.trim() : '';
     try {
       const {
         learningObjects,
