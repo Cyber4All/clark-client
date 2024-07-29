@@ -77,10 +77,8 @@ export class ChangeStatusModalComponent implements OnInit {
         ];
         break;
       case LearningObject.Status.ACCEPTED_MINOR:
-        this.statuses = [LearningObject.Status.WAITING];
-        break;
       case LearningObject.Status.ACCEPTED_MAJOR:
-        this.statuses = [LearningObject.Status.WAITING];
+        this.statuses = [LearningObject.Status.WAITING, LearningObject.Status.PROOFING];
         break;
       case LearningObject.Status.PROOFING:
         this.statuses = [LearningObject.Status.RELEASED, LearningObject.Status.REJECTED];
