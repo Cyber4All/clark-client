@@ -117,7 +117,7 @@ export class LibraryService {
     }
     const cartId = this.cartItems
     .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
-    .map(cart => cart._id)[0]; 
+    .map(cart => cart._id)[0];
     console.log(cartId);
     this.http
       .delete(
