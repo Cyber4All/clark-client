@@ -27,10 +27,10 @@ export const LIBRARY_ROUTES = {
    * @method DELETE
    * @auth required
    * @param username username of the user's library
-   * @param learningObjectId cuid of the learning object to remove
+   * @param libraryItemId object Id of the cart item in database
    */
-  REMOVE_LEARNING_OBJECT_FROM_LIBRARY(username, learningObjectId) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/${encodeURIComponent(learningObjectId)}`;
+  REMOVE_LEARNING_OBJECT_FROM_LIBRARY(username, libraryItemId) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/library/${encodeURIComponent(libraryItemId)}`;
   },
 
 };

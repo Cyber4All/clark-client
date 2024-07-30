@@ -15,7 +15,7 @@ const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 export class LibraryService {
   private user;
   private headers = new HttpHeaders();
-
+  private cartItems: Array<any> = [];
   public libraryItems: Array<LearningObject> = [];
 
   // Observable boolean to toggle download spinner in components
@@ -65,6 +65,8 @@ export class LibraryService {
       )
       .toPromise()
       .then((val: any) => {
+        // preserves carts from cartsdb
+        this.cartItems = val.userLibraryItems;
         this.libraryItems = val.userLibraryItems
           .map(object => {
             if (object.learningObject) {
@@ -113,11 +115,15 @@ export class LibraryService {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
+    const cartId = this.cartItems
+    .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
+    .map(cart => cart._id)[0]; 
+    console.log(cartId);
     this.http
       .delete(
         LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
           this.user.username,
-          learningObjectId
+          cartId
         ),
         { headers: this.headers, withCredentials: true }
       )
