@@ -82,6 +82,10 @@ export class ChangeStatusModalComponent implements OnInit {
         break;
       case LearningObject.Status.PROOFING:
         this.statuses = [LearningObject.Status.RELEASED, LearningObject.Status.REJECTED];
+        break;
+      case LearningObject.Status.RELEASED:
+        this.statuses = [LearningObject.Status.PROOFING];
+        break;
     }
   }
 
