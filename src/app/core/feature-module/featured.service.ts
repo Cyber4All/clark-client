@@ -197,6 +197,7 @@ export class FeaturedObjectsService {
    * Get the featured learning objects for a collection with a limit
    *
    * @param collection
+   * @param limit
    * @returns [LearningObject]
    */
   getCollectionFeaturedWithLimit(collection: string, limit: number) {
