@@ -631,7 +631,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
       const u = this.auth.username;
       if (this.ratings && this.ratings.length) {
         for (let i = 0, l = this.ratings.length; i < l; i++) {
-          if (u === ratings[i].user.username) {
+          if (u === this.ratings[i].user.username) {
             // this is the user's rating
             // we deep copy this to prevent direct modification from component subtree
             this.userRating = Object.assign({}, ratings[i]);
