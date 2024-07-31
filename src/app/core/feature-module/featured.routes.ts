@@ -17,6 +17,15 @@ export const FEATURED_ROUTES = {
   GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName: string) {
     return `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(collectionAbvName)}`;
   },
+    /**
+     * Request to retrieve the featured learning objects for a specific collection with a limit
+     * @method GET
+     * @param collectionAbvName the abbreviated name of the collection
+     */
+    GET_COLLECTION_FEATURED_OBJECTS_WITH_LIMIT(collectionAbvName: string, limit: number) {
+      return `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(collectionAbvName)}
+      &limit=${encodeURIComponent(limit)}`;
+    },
   /**
    * Request to update the list of featured learning objects
    * @method PATCH

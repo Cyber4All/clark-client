@@ -193,6 +193,22 @@ export class FeaturedObjectsService {
       });
   }
 
+  /**
+   * Get the featured learning objects for a collection with a limit
+   *
+   * @param collection
+   * @returns [LearningObject]
+   */
+  getCollectionFeaturedWithLimit(collection: string, limit: number) {
+    return this.http
+      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS_WITH_LIMIT(collection, limit))
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((response: any) => {
+        return response;
+      });
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error

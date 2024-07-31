@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObjectService } from 'app/cube/learning-object.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { OrderBy, Query, SortType } from 'app/interfaces/query';
 import { LearningObject } from 'entity/learning-object/learning-object';
 
@@ -12,7 +12,7 @@ import { LearningObject } from 'entity/learning-object/learning-object';
 })
 export class CollectionLearningObjectListComponent implements OnInit {
   @Input() collectionName: string;
-  constructor(private learningObjectService: LearningObjectService) { }
+  constructor(private featureService: FeaturedObjectsService) { }
 
   learningObjects: LearningObject[];
   query: Query = {
@@ -24,11 +24,9 @@ export class CollectionLearningObjectListComponent implements OnInit {
   };
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.query.collection = this.collectionName;
-    this.learningObjectService.getLearningObjects(this.query).then((res) => {
-      this.learningObjects = res.learningObjects;
-    });
+    this.learningObjects = await this.featureService.getCollectionFeaturedWithLimit(this.collectionName, this.query.limit);
   }
 
 }
