@@ -1,6 +1,5 @@
 import { LearningObject } from '@entity';
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObjectService } from '../../learning-object.service';
 import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,7 +23,7 @@ export class FeaturedComponent implements OnInit {
   loading = false;
   collectionName: string;
 
-  constructor(private learningObjectService: LearningObjectService, private featureService: FeaturedObjectsService) {
+  constructor(private featureService: FeaturedObjectsService) {
     this.learningObjects = this.learningObjects.fill(new LearningObject());
   }
 
@@ -50,9 +49,9 @@ export class FeaturedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.learningObjects = (await this.learningObjectService.getLearningObjects(
-        this.query
-      )).learningObjects;
+      this.learningObjects = (await this.featureService.getCollectionFeatured(
+        this.collectionName
+      ));
       this.loading = false;
     } catch (e) {
       this.loading = false;
