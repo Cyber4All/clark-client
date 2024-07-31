@@ -27,7 +27,6 @@ export class FeatureCardsComponent implements OnInit {
     this.loading = true;
     this.setColorScheme();
     const hierarchy = await this.attributeService.getHierarchy(
-      this.learningObject.author.username,
       this.learningObject.id
     );
     this.parents = hierarchy.parents;
@@ -36,7 +35,7 @@ export class FeatureCardsComponent implements OnInit {
     this.setHierarchy();
     this.setDescription();
 
-    this.learningObject.collection = await (await this.collectionService.getCollection(this.learningObject.collectionName)).name;
+    this.learningObject.collection = await (await this.collectionService.getCollection(this.learningObject.collectionName));
     this.loading = false;
   }
 
