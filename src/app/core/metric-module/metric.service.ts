@@ -4,7 +4,7 @@ import { METRIC_ROUTES } from './metric.routes';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { LearningObjectStats, UserMetrics } from 'app/cube/shared/types/usage-stats';
+import { LearningObjectMetrics, LearningObjectStats, UserMetrics } from 'app/cube/shared/types/usage-stats';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +39,20 @@ export class MetricService {
         )
         .toPromise();
     return stats as LearningObjectStats;
+  }
+
+  /**
+   * Gets metrics for one learning object or all released learning objects
+   * @param cuid - The cuid of the learning object to get metrics for
+   * @returns metrics for one learning object or all released learning objects
+   */
+  async getLearningObjectMetrics(cuid?: string) {
+    return this.http
+    .get<LearningObjectMetrics>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS(cuid))
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
 
   /**
