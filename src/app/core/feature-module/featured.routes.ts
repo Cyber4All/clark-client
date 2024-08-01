@@ -24,9 +24,12 @@ export const FEATURED_ROUTES = {
    * @param limit the number of featured learning objects to retrieve
    */
   GET_COLLECTION_FEATURED_OBJECTS_WITH_LIMIT(collectionAbvName: string, limit: number) {
-      return `${environment.apiURL}/featured/learning-objects?
-        collection=${encodeURIComponent(collectionAbvName)}&limit=${encodeURIComponent(limit)}`;
-    },
+    return `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(
+      collectionAbvName,
+    )}&limit=${encodeURIComponent(
+      limit
+    )}`;
+  },
   /**
    * Request to update the list of featured learning objects
    * @method PATCH
