@@ -27,6 +27,17 @@ export interface LearningObjectStats {
   collections: { number: number };
 }
 
+export interface LearningObjectMetrics {
+  saves: number;
+  downloads: number;
+  topDownloads?: LearningObjectDownloads[];
+}
+
+export interface LearningObjectDownloads {
+  cuid: string;
+  downloads: number;
+}
+
 export interface UserMetrics {
   accounts: number;
   organizations: number;

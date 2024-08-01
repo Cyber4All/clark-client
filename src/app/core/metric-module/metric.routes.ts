@@ -13,8 +13,8 @@ export const METRIC_ROUTES = {
    * Gets learning object metrics
    * @returns metrics for one learning object or all released learning objects
    */
-  GET_LEARNING_OBJECT_METRICS() {
-    return `${environment.apiURL}/learning-objects/metrics`;
+  GET_LEARNING_OBJECT_METRICS(cuid?: string) {
+    return `${environment.apiURL}/learning-objects/metrics?${querystring.stringify({cuid: cuid})}`;
   },
 
   /**
