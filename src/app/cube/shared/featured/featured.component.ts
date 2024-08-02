@@ -1,6 +1,6 @@
 import { LearningObject } from '@entity';
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObjectService } from '../../learning-object.service';
+import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,8 +24,7 @@ export class FeaturedComponent implements OnInit {
   loading = false;
   collectionName: string;
 
-  constructor(private learningObjectService: LearningObjectService, private featureService: FeaturedObjectsService) {
-    this.learningObjects = this.learningObjects.fill(new LearningObject());
+  constructor(private learningObjectService: LearningObjectService, private featureService: FeaturedObjectsService) {    this.learningObjects = this.learningObjects.fill(new LearningObject());
   }
 
   ngOnInit() {

@@ -53,8 +53,6 @@ export class Collection502Component implements OnInit {
   async fetchLearningObjects(query: Query) {
     this.loading = true;
     this.learningObjects = [];
-    // Trim leading and trailing whitespace
-    query.text = query.text ? query.text.trim() : undefined;
     try {
       const {
         learningObjects,

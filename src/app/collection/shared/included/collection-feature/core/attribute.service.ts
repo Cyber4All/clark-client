@@ -12,7 +12,7 @@ export class AttributeService {
 
   constructor(private http: HttpClient) { }
 
-  async getHierarchy(username: string, objectId: string): Promise<{ parents: any, children: any }> {
+  async getHierarchy(objectId: string): Promise<{ parents: any, children: any }> {
     const parents = await this.http.get(
       LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(
         objectId
@@ -20,7 +20,7 @@ export class AttributeService {
       .toPromise();
     const children = await this.http.get(
       LEARNING_OBJECT_ROUTES.GET_CHILDREN(
-        username,
+        objectId
       ))
       .toPromise();
 

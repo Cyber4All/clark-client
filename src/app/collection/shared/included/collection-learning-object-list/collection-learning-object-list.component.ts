@@ -13,7 +13,7 @@ import { LearningObject } from 'entity/learning-object/learning-object';
 export class CollectionLearningObjectListComponent implements OnInit {
   @Input() collectionName: string;
   constructor(private learningObjectService: LearningObjectService) { }
-
+  
   learningObjects: LearningObject[];
   query: Query = {
     limit: 6,
@@ -24,7 +24,7 @@ export class CollectionLearningObjectListComponent implements OnInit {
   };
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.query.collection = this.collectionName;
     this.learningObjectService.getLearningObjects(this.query).then((res) => {
       this.learningObjects = res.learningObjects;
