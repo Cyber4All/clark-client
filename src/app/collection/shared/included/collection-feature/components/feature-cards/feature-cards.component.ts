@@ -9,6 +9,7 @@ import { AttributeService } from '../../core/attribute.service';
 })
 export class FeatureCardsComponent implements OnInit {
 
+  @Input()collection: string;
   @Input()learningObject: any;
   @Input()primaryColor: string;
 
@@ -35,7 +36,7 @@ export class FeatureCardsComponent implements OnInit {
     this.setHierarchy();
     this.setDescription();
 
-    this.learningObject.collection = await (await this.collectionService.getCollection(this.learningObject.collectionName));
+    this.learningObject.collection = await (await this.collectionService.getCollection(this.collection)).name;
     this.loading = false;
   }
 
