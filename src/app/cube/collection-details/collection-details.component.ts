@@ -45,11 +45,10 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
   }
 
   async fetchCollection(abvName: string) {
-    console.log(abvName);
     this.collection = await this.collectionService.getCollectionMetadata(abvName).catch(e => {
-      // if (e.status === 404) {
-      //   this.router.navigate(['not-found']);
-      // }
+      if (e.status === 404) {
+        this.router.navigate(['not-found']);
+      }
     });
     this.key.next(this.collection.abvName);
 
