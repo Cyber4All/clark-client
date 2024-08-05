@@ -91,7 +91,7 @@ export class ChangeStatusModalComponent implements OnInit {
   private moveToMapAndTag() {
     // Set a small timeout before navigating so that the change in status applies
     setTimeout(() => {
-      this.router.navigate(['onion', 'relevancy-builder', this.learningObject.id, 'outcomes']);
+      this.router.navigate(['onion', 'relevancy-builder', this.learningObject.cuid, 'outcomes']);
     }, 1000);
   }
 
