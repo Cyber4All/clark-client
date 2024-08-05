@@ -9,7 +9,7 @@ export const sections = {
 						question: 'Why must my curriculum be evaluated?',
 						answer: 'Since all released curricula fall under Creative Commons, all types of curricula must be evaluated' +
                         ' to ensure educational quality, adaptability, and accountability in the learning process. Any curriculum to be' +
-                        ' released on CLARK must comply with all of the characteristics mentioned in our evaluatuion procress. '
+                        ' released on CLARK must comply with all of the characteristics mentioned in our evaluation process. '
 					},
 					{
 						question: 'How is the curriculum evaluated?',
