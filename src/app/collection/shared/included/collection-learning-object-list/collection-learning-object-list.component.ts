@@ -13,7 +13,7 @@ import { LearningObject } from 'entity/learning-object/learning-object';
 export class CollectionLearningObjectListComponent implements OnInit {
   @Input() collectionName: string;
   constructor(private learningObjectService: LearningObjectService) { }
-  
+
   learningObjects: LearningObject[];
   query: Query = {
     limit: 6,
