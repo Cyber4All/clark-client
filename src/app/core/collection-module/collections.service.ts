@@ -118,7 +118,7 @@ export class CollectionService {
   }
 
   getCollectionMetadata(name: string) {
-    return this.http.get(LEGACY_COLLECTIONS_ROUTES.GET_COLLECTION_META(name))
+    return this.http.get(COLLECTION_ROUTES.GET_COLLECTION_METADATA(name))
       .pipe(
         catchError(this.handleError)
       )

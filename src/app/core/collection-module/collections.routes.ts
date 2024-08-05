@@ -20,4 +20,13 @@ export const COLLECTION_ROUTES = {
     GET_ALL_COLLECTIONS() {
         return `${environment.apiURL}/collections`;
     },
+
+    /**
+     * Route to retrieve object meta data for a collection
+     * @param abvName abbreviated name of the collection
+     * @returns List of top five objects in the collection
+     */
+    GET_COLLECTION_METADATA(abvName: string) {
+        return `${environment.apiURL}/collections/${encodeURIComponent(abvName)}`;
+    }
 };
