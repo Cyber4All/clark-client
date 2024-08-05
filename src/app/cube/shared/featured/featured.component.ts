@@ -24,7 +24,8 @@ export class FeaturedComponent implements OnInit {
   loading = false;
   collectionName: string;
 
-  constructor(private learningObjectService: LearningObjectService, private featureService: FeaturedObjectsService) {    this.learningObjects = this.learningObjects.fill(new LearningObject());
+  constructor(private learningObjectService: LearningObjectService, private featureService: FeaturedObjectsService) {
+    this.learningObjects = this.learningObjects.fill(new LearningObject());
   }
 
   ngOnInit() {
