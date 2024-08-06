@@ -49,10 +49,10 @@ export class LibraryService {
     }
 
     const query = new URLSearchParams({
-      page: opts.page ? opts.page.toString() : '1',
-      limit: opts.limit ? opts.limit.toString() : '10',
-      cuid: opts.learningObjectCuid ? opts.learningObjectCuid : '',
-      version: opts.version ? opts.version.toString() : '0'
+      page: opts?.page ? opts.page.toString() : '1',
+      limit: opts?.limit ? opts.limit.toString() : '10',
+      cuid: opts?.learningObjectCuid ? opts.learningObjectCuid : '',
+      version: opts?.version ? opts.version.toString() : '0'
     });
 
     return await this.http
