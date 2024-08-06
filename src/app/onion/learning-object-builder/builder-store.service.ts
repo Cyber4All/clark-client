@@ -10,6 +10,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { LearningObjectService as BestLearningObjectService} from 'app/cube/learning-object.service';
 import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
@@ -156,7 +157,8 @@ export class BuilderStore {
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
     private submissionService: SubmissionsService,
-    private outcomeService: OutcomeService
+    private outcomeService: OutcomeService,
+    private bestLearningObjectService: BestLearningObjectService,
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -244,24 +246,26 @@ export class BuilderStore {
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(id: string, revisionId?: any, username?: string): Promise<LearningObject> {
+  fetch(id: string, version: number): Promise<LearningObject> {
     this.touched = true;
 
     // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
-    const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
-      // eslint-disable-next-line eqeqeq
-      if (revisionId == 0) {
-        revisionId = await this.learningObjectService.createRevision(id);
-      }
+    // const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
+    //   // eslint-disable-next-line eqeqeq
+    //   if (revisionId == 0) {
+    //     revisionId = await this.learningObjectService.createRevision(id);
+    //   }
 
-      return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
-    } : async () => {
-      const value = this.uriRetriever.getLearningObject({ id }, ['children', 'parents', 'materials', 'outcomes']);
-      return value.toPromise();
-    };
+    //   return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
+    // } : async () => {
+    //   const value = this.uriRetriever.getLearningObject({ id }, ['children', 'parents', 'materials', 'outcomes']);
+    //   console.log("value", value);
+    //   return value.toPromise();
+    // };
 
-    return retrieve()
+    return this.bestLearningObjectService.getLearningObject(id, version)
       .then(object => {
+        console.log('le object', object);
         this.learningObject = object;
         // this learning object is submitted, ensure submission mode is on
         this.validator.submissionMode =
@@ -313,7 +317,7 @@ export class BuilderStore {
       );
       return children.toPromise();
     } else {
-      await this.fetch(this.learningObject.cuid);
+      await this.fetch(this.learningObject.cuid, this.learningObject.version);
       return this.getChildren();
     }
   }
@@ -896,7 +900,7 @@ export class BuilderStore {
    */
   public async removeEmptyOutcomes() {
     // Get most up-to-date values for current learning object
-    await this.fetch(this.learningObject.cuid);
+    await this.fetch(this.learningObject.cuid, this.learningObject.version);
     // Retrieve outcomes of current learning object
     const value = await this.uriRetriever.getLearningObject({ cuidInfo: {cuid: this.learningObject.cuid} }, ['outcomes']).toPromise();
     // Iterate through outcomes

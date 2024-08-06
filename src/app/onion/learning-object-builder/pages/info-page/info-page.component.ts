@@ -8,7 +8,7 @@ import { LearningObject, User } from '@entity';
 import { COPY } from './info-page.copy';
 import { Subject } from 'rxjs';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
-
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 @Component({
   selector: 'clark-info-page',
   templateUrl: './info-page.component.html',
@@ -26,7 +26,12 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
   destroyed$: Subject<void> = new Subject();
 
-  constructor(private store: BuilderStore, public validator: LearningObjectValidator, public cd: ChangeDetectorRef) {}
+  constructor(
+    private store: BuilderStore,
+    public validator: LearningObjectValidator,
+    public cd: ChangeDetectorRef,
+    private learningObjectService: LearningObjectService,
+  ) { }
 
   ngOnInit() {
     // listen for outcome events and update component stores

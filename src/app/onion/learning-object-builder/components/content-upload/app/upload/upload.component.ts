@@ -654,6 +654,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   private handleUploadError(update: UploadErrorUpdate) {
+    console.log(update);
     if (update.error.name === UploadErrorReason.Credentials) {
       this.handleCredentialsError();
     } else {

@@ -129,19 +129,22 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .pipe(takeUntil(this.destroyed$))
       .subscribe(routeParams => {
-        const id = routeParams.get('learningObjectId');
+        const cuid = routeParams.get('cuid');
+        const version: number = +routeParams.get('version');
         const revision = this.route.snapshot.queryParamMap.get('revisionId');
         const authorUsername = this.route.snapshot.queryParamMap.get('author');
 
         // if name parameter found, instruct store to fetch full learning object
-        if (revision !== undefined && id) {
+        if (revision !== undefined && cuid) {
+          console.log('if (revision !== undefined && cuid)');
           this.isRevision = true;
           this.store.isRevision = true;
-          this.store.fetch(id, revision, authorUsername).then(learningObject => {
+          this.store.fetch(cuid, version).then(learningObject => {
             this.setBuilderMode(learningObject);
           });
-        } else if (id) {
-          this.store.fetch(id).then(learningObject => {
+        } else if (cuid) {
+          console.log('else if (cuid)');
+          this.store.fetch(cuid, version).then(learningObject => {
             if (learningObject.status === LearningObject.Status.RELEASED) {
               this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
             } else {
