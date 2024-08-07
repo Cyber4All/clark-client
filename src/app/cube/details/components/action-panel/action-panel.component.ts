@@ -149,6 +149,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       if (!this.saved) {
         try {
           await this.libraryService.addToLibrary(this.learningObject.cuid, this.learningObject.version);
+
+          this.toaster.success('Successfully Added!', 'Learning Object added to your library');
+          this.saved = true;
+          this.animateSaves();
         } catch (err: any) {
           if (err.status !== 201) {
             this.toaster.error('Error!', 'There was an error adding to your library');
@@ -161,10 +165,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         }
       }
     }
-
-    this.toaster.success('Successfully Added!', 'Learning Object added to your library');
-    this.saved = true;
-    this.animateSaves();
 
     this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid });
     this.addingToLibrary = false;
