@@ -165,7 +165,6 @@ export class ChangeStatusModalComponent implements OnInit {
           }
           return;
         }),
-      this.changelog ? this.createChangelog() : undefined
     ]).then(() => {
       // If we can't update the status, just close the modal after showing an error.
       if (unableToUpdate) {
@@ -173,6 +172,9 @@ export class ChangeStatusModalComponent implements OnInit {
         this.serviceInteraction = false;
         return;
       }
+
+      // Create a changelog.
+      this.changelog ? this.createChangelog() : undefined;
 
       // If the object released, move to map and tag, else update the valid status moves
       this.learningObject.status = this.selectedStatus as LearningObject.Status;
