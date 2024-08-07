@@ -136,14 +136,12 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
         // if name parameter found, instruct store to fetch full learning object
         if (revision !== undefined && cuid) {
-          console.log('if (revision !== undefined && cuid)');
           this.isRevision = true;
           this.store.isRevision = true;
           this.store.fetch(cuid, version).then(learningObject => {
             this.setBuilderMode(learningObject);
           });
         } else if (cuid) {
-          console.log('else if (cuid)');
           this.store.fetch(cuid, version).then(learningObject => {
             if (learningObject.status === LearningObject.Status.RELEASED) {
               this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
