@@ -242,30 +242,33 @@ export class BuilderStore {
   /**
    * Retrieve a learning object from the service by id
    *
-   * @param {string} id
+   * @param {string} cuid
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(id: string, version: number): Promise<LearningObject> {
+  fetch(cuid: string, version?: any, username?: string): Promise<LearningObject> {
     this.touched = true;
 
+    // don't ask, don't tell
+    // but if anything breaks, this might be a culprit
+    let revisionId: any = 0;
     // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
-    // const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
-    //   // eslint-disable-next-line eqeqeq
-    //   if (revisionId == 0) {
-    //     revisionId = await this.learningObjectService.createRevision(id);
-    //   }
+    const retrieve = this._isRevision && revisionId !== undefined && username ?
+    async () => {
+      // eslint-disable-next-line eqeqeq
+      if (revisionId == 0) {
+        revisionId = await this.learningObjectService.createRevision(cuid);
+      }
 
-    //   return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
-    // } : async () => {
-    //   const value = this.uriRetriever.getLearningObject({ id }, ['children', 'parents', 'materials', 'outcomes']);
-    //   console.log("value", value);
-    //   return value.toPromise();
-    // };
+      return this.learningObjectService.getLearningObjectRevision(username, cuid, revisionId);
+    } :
+    async () => {
+      const value = this.uriRetriever.getLearningObject({cuidInfo: {cuid, version}}, ['children', 'parents', 'materials', 'outcomes']);
+      return value.toPromise();
+    };
 
-    return this.bestLearningObjectService.getLearningObject(id, version)
+    return retrieve()
       .then(object => {
-        console.log('le object', object);
         this.learningObject = object;
         // this learning object is submitted, ensure submission mode is on
         this.validator.submissionMode =

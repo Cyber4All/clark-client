@@ -178,7 +178,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.setAcademicLevels();
           this.setLearningObjectAuthors();
           this.loading = false;
-          console.log('bleh', this.releasedLearningObject);
           if (
             this.learningObject.collection === 'ncyte' ||
             this.learningObject.collection === 'nice'
@@ -275,7 +274,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     try {
       this.resetRatings();
       this.revisedLearningObject = await this.learningObjectService.fetchUri(this.learningObject.revisionUri, ([o]) => {
-        console.log('what is this?', o);
         return new LearningObject(o);
       }).toPromise();
 

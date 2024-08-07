@@ -207,8 +207,6 @@ export class UriRetrieverService {
     let route;
     // Sets route to be hit based on if the id or if Learning Object name have been provided
     if (params.cuidInfo?.cuid) {
-      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.cuidInfo.cuid);
-    } else if (params.cuidInfo) {
       route = LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
     } else if (params.id) {
       // TODO: Update this to use CUID only.
