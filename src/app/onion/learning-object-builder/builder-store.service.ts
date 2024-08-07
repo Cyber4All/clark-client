@@ -10,7 +10,6 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { LearningObjectService as BestLearningObjectService} from 'app/cube/learning-object.service';
 import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
@@ -158,7 +157,6 @@ export class BuilderStore {
     private uriRetriever: UriRetrieverService,
     private submissionService: SubmissionsService,
     private outcomeService: OutcomeService,
-    private bestLearningObjectService: BestLearningObjectService,
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
