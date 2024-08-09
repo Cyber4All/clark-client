@@ -1,7 +1,7 @@
 <div class="dashboard-list">
   <div class="dashboard-list__top">
     <p class="dashboard-list__title" tabindex="0">
-      {{ title || 'Learning Objects' }} 
+      {{ title || 'Learning Objects' }}
       <span *ngIf="learningObjects; else noLearningObjects">({{ learningObjects.length }})</span>
     </p>
     <div *ngIf="showOptions; else buttonPlaceholderTemplate" class="dashboard-list__options">
@@ -27,6 +27,14 @@
               <li class="review" (activate)="toggleFilter('review')">
                 <div *ngIf="filters.get('review')" class="indicator"></div>
                 <i class="far fa-sync"></i>Under Review
+              </li>
+              <li class="accepted_major" (activate)="toggleFilter('accepted_major')">
+                <div *ngIf="filters.get('accepted_major')" class="indicator"></div>
+                <i class="far fa-check"></i>Major Changes Requested
+              </li>
+              <li class="accepted_minor" (activate)="toggleFilter('accepted_minor')">
+                <div *ngIf="filters.get('accepted_minor')" class="indicator"></div>
+                <i class="far fa-check-double"></i>Minor Changes Requested
               </li>
               <li class="proofing" (activate)="toggleFilter('proofing')">
                 <div *ngIf="filters.get('proofing')" class="indicator"></div>
