@@ -95,12 +95,13 @@ export const LEARNING_OBJECT_ROUTES = {
     /**
      * Path to get an author's learning objects
      * @param username username of the author
+     * @param filters learning object status filters
      * @returns LearningObjects for Author Dashboard
      */
-    GET_MY_DRAFT_LEARNING_OBJECTS(username) {
+    GET_MY_DRAFT_LEARNING_OBJECTS(username, filters) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
-        )}/learning-objects?draftsOnly=true`;
+        )}/learning-objects?draftsOnly=true&${querystring.stringify(filters)}`;
     },
 
     /**

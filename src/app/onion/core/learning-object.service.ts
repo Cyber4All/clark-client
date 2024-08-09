@@ -207,7 +207,7 @@ export class LearningObjectService {
     filters?: any,
     query?: string
   ): Promise<LearningObject[]> {
-    const route = LEARNING_OBJECT_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername);
+    const route = LEARNING_OBJECT_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername, filters);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
