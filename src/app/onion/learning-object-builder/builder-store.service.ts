@@ -156,7 +156,7 @@ export class BuilderStore {
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
     private submissionService: SubmissionsService,
-    private outcomeService: OutcomeService
+    private outcomeService: OutcomeService,
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -240,23 +240,28 @@ export class BuilderStore {
   /**
    * Retrieve a learning object from the service by id
    *
-   * @param {string} id
+   * @param {string} cuid
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(id: string, revisionId?: any, username?: string): Promise<LearningObject> {
+  fetch(cuid: string, version?: any, username?: string): Promise<LearningObject> {
     this.touched = true;
 
+    // don't ask, don't tell
+    // but if anything breaks, this might be a culprit
+    let revisionId: any = 0;
     // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
-    const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
+    const retrieve = this._isRevision && revisionId !== undefined && username ?
+    async () => {
       // eslint-disable-next-line eqeqeq
       if (revisionId == 0) {
-        revisionId = await this.learningObjectService.createRevision(id);
+        revisionId = await this.learningObjectService.createRevision(cuid);
       }
 
-      return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
-    } : async () => {
-      const value = this.uriRetriever.getLearningObject({ id }, ['children', 'parents', 'materials', 'outcomes']);
+      return this.learningObjectService.getLearningObjectRevision(username, cuid, revisionId);
+    } :
+    async () => {
+      const value = this.uriRetriever.getLearningObject({cuidInfo: {cuid, version}}, ['children', 'parents', 'materials', 'outcomes']);
       return value.toPromise();
     };
 
@@ -313,7 +318,7 @@ export class BuilderStore {
       );
       return children.toPromise();
     } else {
-      await this.fetch(this.learningObject.cuid);
+      await this.fetch(this.learningObject.cuid, this.learningObject.version);
       return this.getChildren();
     }
   }
@@ -896,7 +901,7 @@ export class BuilderStore {
    */
   public async removeEmptyOutcomes() {
     // Get most up-to-date values for current learning object
-    await this.fetch(this.learningObject.cuid);
+    await this.fetch(this.learningObject.cuid, this.learningObject.version);
     // Retrieve outcomes of current learning object
     const value = await this.uriRetriever.getLearningObject({ cuidInfo: {cuid: this.learningObject.cuid} }, ['outcomes']).toPromise();
     // Iterate through outcomes
