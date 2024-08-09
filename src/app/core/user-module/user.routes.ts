@@ -31,8 +31,8 @@ export const USER_ROUTE = {
    * @method PATCH
    * @auth required
    */
-  UPDATE_USER() {
-    return `${environment.apiURL}/users`;
+  UPDATE_USER(user: string) {
+    return `${environment.apiURL}/users/${encodeURIComponent(user)}`;
   },
   /**
    * Request to retrieve a user's profile

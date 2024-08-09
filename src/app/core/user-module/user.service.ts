@@ -117,8 +117,8 @@ export class UserService {
   }): Promise<any> {
     return this.http
       .patch(
-        USER_ROUTE.UPDATE_USER(),
-        { user },
+        USER_ROUTE.UPDATE_USER(user.username),
+         user,
         {
           withCredentials: true,
           responseType: 'text',

@@ -132,12 +132,29 @@ export class EditProfileComponent implements OnChanges, OnInit {
       return;
     }
 
+    const changedFields: any = {};
+    if (edits.name !== this.user.name) {
+      changedFields.name = edits.name;
+    }
+    if (edits.email !== this.user.email) {
+      changedFields.email = edits.email;
+    }
+    if (edits.organization !== this.user.organization) {
+      changedFields.organization = edits.organization;
+    }
+    if (edits.bio !== this.user.bio) {
+      changedFields.bio = edits.bio;
+    }
+
+    // Always include the username for identification
+    changedFields.username = this.user.username;
+
     try {
-      await this.userService.editUserInfo(edits).then(async res => {
+      await this.userService.editUserInfo(changedFields).then(async res => {
         await this.auth.validateToken();
         this.userInfo.next(edits);
         this.close.next();
-        this.noteService.success('Success!', res);
+        this.noteService.success('Success!', 'Information updated');
       });
     } catch (e) {
       // FIXME: No errors are being caught/thrown from user service
