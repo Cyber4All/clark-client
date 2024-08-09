@@ -52,15 +52,25 @@ export class AddChildComponent implements OnInit, OnDestroy {
    */
   async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
     this.loading = true;
-    return this.learningObjectService
-      .getLearningObjects(this.child.author.username, {...filters, text: query, childId: this.child.id } )
+    const draftObjects = await this.learningObjectService.getDraftLearningObjects(this.child.author.username, { ...filters, text: query })
       .then((children: LearningObject[]) => {
-        this.loading = false;
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
         children = children.filter(child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length)));
         return children;
       });
+
+    const releasedObjects = await this.learningObjectService
+      .getLearningObjects(this.child.author.username, {...filters, text: query, childId: this.child.id } )
+      .then((children: LearningObject[]) => {
+        const indx = this.lengths.indexOf(this.child.length);
+        const childrenLengths = this.lengths.slice(0, indx);
+        children = children.filter(child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length)));
+        return children;
+      });
+
+    this.loading = false;
+    return [...draftObjects, ...releasedObjects];
   }
   /**
    * Takes the index of the LO within the array and emits it to the parent
