@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subject } from 'rxjs';
-import { Collection } from 'app/core/collection.service';
+import { Collection } from 'app/core/collection-module/collections.service';
 import { sidebarAnimations } from './sidebar.component.animation';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

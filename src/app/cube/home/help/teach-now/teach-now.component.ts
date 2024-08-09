@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild }
 import { Router } from '@angular/router';
 import { LearningObject, Topic } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
-import { RelevancyService } from '../../../../core/relevancy.service';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-teach-now',
@@ -27,7 +27,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   loading = false;
 
   constructor(
-    private relevancyService: RelevancyService,
+    private topicsService: TopicsService,
     private objectService: LearningObjectService,
     private router: Router,
   ) { }
@@ -35,7 +35,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.loading = true;
     this.objects = this.loadingObjects;
-    this.relevancyService.getTopics().then(topics => {
+    this.topicsService.getTopics().then(topics => {
       this.topics = topics;
       if (topics.length > 0) {
         this.selectTopic(this.topics[0]._id);
@@ -59,11 +59,11 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
     // The max distance to scroll right
     // 203 is the pixel length from the shadow left and right divs
     // The (window.outerWidth / 2) accounts for overscrolling to the right
-    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203) {
+    if (this.scrollDistance > this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203) {
       this.scrollDistance = this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203;
     }
     // The min distance to scroll left
-    if(this.scrollDistance < 0) {
+    if (this.scrollDistance < 0) {
       this.scrollDistance = 0;
     }
     this.scroll.nativeElement.scrollLeft += event.deltaY;
@@ -73,15 +73,15 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   horizontalScrollOnClick(right: boolean) {
     // right determines the direction to scroll
     right ? this.scrollDistance += window.outerWidth / 2 :
-            this.scrollDistance -= window.outerWidth / 2;
+      this.scrollDistance -= window.outerWidth / 2;
     // The max distance to scroll right
     // 203 comes from the shadow left and right divs
     // The (window.outerWidth / 2) accounts for overscrolling to the right
-    if(this.scrollDistance > this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203) {
+    if (this.scrollDistance > this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203) {
       this.scrollDistance = this.scroll.nativeElement.scrollWidth - (window.outerWidth / 2) - 203;
     }
     // The min distance to scroll left
-    if(this.scrollDistance < 0) {
+    if (this.scrollDistance < 0) {
       this.scrollDistance = 0;
     }
     this.scroll.nativeElement.scrollTo({
@@ -97,7 +97,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    * @param event The window resize event
    */
   @HostListener('window:resize', ['$event'])
-  onResize(event){
+  onResize(event) {
     this.width = event.target.innerWidth;
   }
 
@@ -133,7 +133,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
    * Navigates to the browse page with the selected topic
    */
   navigate() {
-    this.router.navigate(['browse'], { queryParams: { topics: this.selectedTopic }});
+    this.router.navigate(['browse'], { queryParams: { topics: this.selectedTopic } });
   }
 
 }

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Collection, CollectionService } from 'app/core/collection.service';
+import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
 import { CollectionService as AdminCollectionService } from 'app/admin/core/collection.service';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -40,7 +40,7 @@ export class ChangeCollectionComponent implements OnInit {
    * Confirms the object's new submitted collection
    */
   confirm() {
-    this.adminCollectionService.updateSubmittedCollection(this.object.author.username, this.object.cuid, this.selectedCollection)
+    this.adminCollectionService.updateSubmittedCollection(this.object.cuid, this.selectedCollection)
       .then(() => this.object.collection = this.selectedCollection)
       .catch(() => this.toaster.error('Error', 'There was an error changing collections, please try again later.'))
       .finally(() => this.close.emit());

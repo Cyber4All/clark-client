@@ -12,7 +12,7 @@ import { DirectoryNode } from '../DirectoryNode';
 import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { LearningObject } from '@entity';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Component({
   selector: 'clark-file-list-view',
@@ -53,7 +53,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   file: LearningObject.Material.File;
   directoryListing = [];
 
-  toggleToolTip = `Selected items will be included in the bundle download. 
+  toggleToolTip = `Selected items will be included in the bundle download.
     Deselected items will be accessible through a download link in the PDF.`;
   accessGroups: string[];
 
@@ -186,7 +186,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     if (elm instanceof DirectoryNode) {
       return elm.getPath();
     }
-    return elm.id || index;
+    return elm._id || index;
   }
 
   /**

@@ -32,7 +32,7 @@
                 <div class="objects">
                     <div *ngFor="let object of learningObjects">
                         <a [routerLink]="['/details', object.author.username, object.cuid]">
-                            <clark-collection-feature-cards *ngIf="collection === 'ncyte'" [learningObject]="object"
+                            <clark-collection-feature-cards *ngIf="collection === 'ncyte'" [collection]="collection" [learningObject]="object"
                                 [primaryColor]="primaryColor"></clark-collection-feature-cards>
                         </a>
                     </div>

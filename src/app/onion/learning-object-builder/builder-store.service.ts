@@ -5,19 +5,24 @@ import {
   User,
   Guideline
 } from '@entity';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import {
+  LearningObjectService as RefactoredLearningObjectService
+} from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileUploadMeta } from './components/content-upload/app/services/typings';
 import { Title } from '@angular/platform-browser';
-import { UriRetrieverService } from 'app/core/uri-retriever.service';
+import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 import { v4 as uuidv4 } from 'uuid';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
+import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
+import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -73,7 +78,9 @@ export enum BUILDER_ERRORS {
  * @export
  * @class BuilderStore
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BuilderStore {
   private _learningObject: LearningObject;
   private _outcomesMap: Map<string, Partial<LearningOutcome>> = new Map();
@@ -143,10 +150,13 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
+    private refactoredLearningObjectService: RefactoredLearningObjectService,
     private collectionService: CollectionService,
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
+    private submissionService: SubmissionsService,
+    private outcomeService: OutcomeService,
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -230,23 +240,28 @@ export class BuilderStore {
   /**
    * Retrieve a learning object from the service by id
    *
-   * @param {string} id
+   * @param {string} cuid
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(id: string, revisionId?: any, username?: string): Promise<LearningObject> {
+  fetch(cuid: string, version?: any, username?: string): Promise<LearningObject> {
     this.touched = true;
 
+    // don't ask, don't tell
+    // but if anything breaks, this might be a culprit
+    let revisionId: any = 0;
     // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
-    const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
+    const retrieve = this._isRevision && revisionId !== undefined && username ?
+    async () => {
       // eslint-disable-next-line eqeqeq
       if (revisionId == 0) {
-        revisionId = await this.learningObjectService.createRevision(username, id);
+        revisionId = await this.learningObjectService.createRevision(cuid);
       }
 
-      return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
-    } : async () => {
-      const value = this.uriRetriever.getLearningObject({id}, ['children', 'parents', 'materials', 'outcomes']);
+      return this.learningObjectService.getLearningObjectRevision(username, cuid, revisionId);
+    } :
+    async () => {
+      const value = this.uriRetriever.getLearningObject({cuidInfo: {cuid, version}}, ['children', 'parents', 'materials', 'outcomes']);
       return value.toPromise();
     };
 
@@ -299,11 +314,11 @@ export class BuilderStore {
   async getChildren(): Promise<LearningObject[]> {
     if (this.learningObject.resourceUris !== undefined) {
       const children = this.uriRetriever.getLearningObjectChildren(
-        {uri: this.learningObject.resourceUris.children }
+        { uri: this.learningObject.resourceUris.children }
       );
       return children.toPromise();
     } else {
-      await this.fetch(this.learningObject.id);
+      await this.fetch(this.learningObject.cuid, this.learningObject.version);
       return this.getChildren();
     }
   }
@@ -318,7 +333,7 @@ export class BuilderStore {
     if (remove) {
       children = this.learningObject.children.filter(child => !children.includes(child.id)).map(child => child.id);
     }
-    await this.learningObjectService.setChildren(this.learningObject.id, this.learningObject.author.username, children, remove);
+    await this.learningObjectService.setChildren(this.learningObject.id, children, remove);
     this.serviceInteraction$.next(false);
   }
 
@@ -425,7 +440,7 @@ export class BuilderStore {
 
     // add folder's files to fileIDs list
     folder.getFiles().forEach(file => {
-      fileIDs.push(file.id);
+      fileIDs.push(file._id);
     });
 
     // recursively check subfolders for files and do the same thing
@@ -447,18 +462,16 @@ export class BuilderStore {
     state: boolean,
     item: any
   }) {
-    if(event.item instanceof DirectoryNode) { // event.item is a Folder
+    if (event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
       await this.learningObjectService.toggleBundle(
-        this.auth.username,
         this.learningObject.id,
         fileIDs,
         event.state
       );
     } else { // event.item is a File
-      const fileID = [event.item.id];
+      const fileID = [event.item._id];
       await this.learningObjectService.toggleBundle(
-        this.auth.username,
         this.learningObject.id,
         fileID,
         event.state
@@ -482,12 +495,11 @@ export class BuilderStore {
   ///////////////////////////////
 
   private async changeStatus(status: LearningObject.Status, reason?: string) {
-    await this.learningObjectService.changeStatus({
-      username: this.learningObject.author.username,
-      objectId: this.learningObject.id,
+    await this.refactoredLearningObjectService.updateLearningObjectStatus(
+      this.learningObject.id,
       status,
       reason,
-    });
+    );
   }
 
   private createOutcome() {
@@ -513,7 +525,6 @@ export class BuilderStore {
   private deleteOutcome(id: string) {
     // grab the outcome that's about to be deleted
     const outcome: Partial<LearningOutcome> = this.outcomes.get(id);
-
     // delete the outcome
     this.outcomes.delete(id);
     this.outcomeEvent.next(this.outcomes);
@@ -521,11 +532,10 @@ export class BuilderStore {
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
-    if (!checkIfUUID(id)) {
+    if (!checkIfUUID(outcome.serviceId) && outcome.serviceId) {
       this.serviceInteraction$.next(true);
       this.learningObjectService
         .deleteOutcome(
-          this.learningObject.id,
           (outcome as Partial<LearningOutcome> & { serviceId?: string })
             .serviceId || id,
         )
@@ -541,7 +551,6 @@ export class BuilderStore {
     params: { verb?: string | undefined; bloom?: string | undefined; text?: string }
   ) {
     const outcome = this.outcomes.get(id);
-
     if (params.bloom && params.bloom !== outcome.bloom) {
       outcome.bloom = params.bloom;
       outcome.verb = taxonomy.taxons[params.bloom].verbs[0];
@@ -568,7 +577,6 @@ export class BuilderStore {
       },
       true
     );
-
     return outcome;
   }
 
@@ -636,7 +644,7 @@ export class BuilderStore {
       this.learningObject = new LearningObject(learningObject);
     }
 
-    if(this.validator.saveable) {
+    if (this.validator.saveable) {
       this.saveObject(data, true);
     }
   }
@@ -647,7 +655,7 @@ export class BuilderStore {
 
     this.saveObject(
       {
-        contributors: this.learningObject.contributors.map(x => x.id)
+        contributors: this.learningObject.contributors.map(x => x.userId)
       },
       true
     );
@@ -668,7 +676,7 @@ export class BuilderStore {
 
       this.saveObject(
         {
-          contributors: this.learningObject.contributors.map(x => x.id)
+          contributors: this.learningObject.contributors.map(x => x.userId)
         },
         true
       );
@@ -687,16 +695,15 @@ export class BuilderStore {
     this.serviceInteraction$.next(true);
     await this.learningObjectService
       .addFileMeta({
-      files,
-      username: this.learningObject.author.username,
-      objectId: this.learningObject.id
+        files,
+        objectId: this.learningObject.id
       })
       .then(() => {
-         this.fetchMaterials();
+        this.fetchMaterials();
       })
       .catch(e => {
         this.handleServiceError(e, BUILDER_ERRORS.ADD_FILE_META);
-    });
+      });
     this.serviceInteraction$.next(false);
   }
 
@@ -731,7 +738,7 @@ export class BuilderStore {
       this.learningObject.materials.urls[index] = url;
       this.learningObjectEvent.next(this.learningObject);
       this.saveObject({
-        'materials.urls': this.learningObject.materials.urls
+        materials: { urls: this.learningObject.materials.urls }
       });
     }
   }
@@ -748,7 +755,7 @@ export class BuilderStore {
     }
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
-      'materials.urls': this.learningObject.materials.urls
+      materials: { urls: this.learningObject.materials.urls }
     });
   }
 
@@ -762,7 +769,7 @@ export class BuilderStore {
   private updateNotes(notes: string): void {
     this.learningObject.materials.notes = notes;
     this.learningObjectEvent.next(this.learningObject);
-    this.saveObject({ 'materials.notes': notes });
+    this.saveObject({ materials: { notes: notes } });
   }
 
   /**
@@ -816,8 +823,8 @@ export class BuilderStore {
     }
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
-      'materials.folderDescriptions': this.learningObject.materials
-        .folderDescriptions
+      materials: { folderDescriptions: this.learningObject.materials
+        .folderDescriptions }
     });
   }
 
@@ -849,7 +856,7 @@ export class BuilderStore {
     let index = -1;
     for (let i = 0; i < this.learningObject.materials.files.length; i++) {
       const file = this.learningObject.materials.files[i];
-      if (file.id === fileId) {
+      if (file._id === fileId) {
         index = i;
         break;
       }
@@ -875,11 +882,10 @@ export class BuilderStore {
   }
 
   public cancelSubmission(): void {
-    this.collectionService
-      .unsubmit({
-        learningObjectId: this.learningObject.id,
-        userId: this.learningObject.author.id,
-      })
+    this.submissionService
+      .unsubmit(
+        this.learningObject.id,
+      )
       .then(() => {
         this.learningObject.status = LearningObject.Status.UNRELEASED;
         this.validator.submissionMode = false;
@@ -895,13 +901,13 @@ export class BuilderStore {
    */
   public async removeEmptyOutcomes() {
     // Get most up-to-date values for current learning object
-    await this.fetch(this.learningObject.id);
+    await this.fetch(this.learningObject.cuid, this.learningObject.version);
     // Retrieve outcomes of current learning object
-    const value = await this.uriRetriever.getLearningObject({id: this.learningObject.id}, ['outcomes']).toPromise();
+    const value = await this.uriRetriever.getLearningObject({ cuidInfo: {cuid: this.learningObject.cuid} }, ['outcomes']).toPromise();
     // Iterate through outcomes
     value.outcomes.map(outcome => {
       // If the outcome text is empty, remove outcome
-      if(outcome.text === '' || outcome.text === null) {
+      if (outcome.text === '' || outcome.text === null) {
         this.deleteOutcome(outcome.id);
       }
     });
@@ -941,7 +947,6 @@ export class BuilderStore {
       // if value is undefined here, this means we've called this function without a delay and there aren't any cached values
       // in this case we'll use the current data instead
       value = value || data;
-
       if (!this.learningObject.id) {
         this.createLearningObject(value);
       } else {
@@ -966,7 +971,7 @@ export class BuilderStore {
     this.serviceInteraction$.next(true);
     object.status = LearningObject.Status.UNRELEASED;
     this.learningObjectService
-      .create(object, this.auth.username)
+      .create(object)
       .then(learningObject => {
         this.learningObject = learningObject;
         this.serviceInteraction$.next(false);
@@ -983,7 +988,7 @@ export class BuilderStore {
         } else if (e.status === 400) {
           this.validator.errors.saveErrors.set(
             'name',
-           e.error.message
+            e.error.message
           );
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
@@ -1002,7 +1007,7 @@ export class BuilderStore {
   private updateLearningObject(object: Partial<LearningObject>) {
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .save(this.learningObject.id, this.learningObject.author.username, object)
+      .save(this.learningObject.id, object)
       .then(() => {
         this.serviceInteraction$.next(false);
       })
@@ -1017,7 +1022,7 @@ export class BuilderStore {
         } else if (e.status === 400) {
           this.validator.errors.saveErrors.set(
             'name',
-           JSON.parse(e.error).message
+            JSON.parse(e.error).message
           );
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
@@ -1040,6 +1045,7 @@ export class BuilderStore {
     // retrieve current cached Map from storage and get the current cached value for given id
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
+
 
     // if delay is true, combine the new properties with the object in the cache subject
     // the cache subject will automatically call this function again without a delay property
@@ -1080,7 +1086,18 @@ export class BuilderStore {
    */
   private createLearningOutcome(newOutcome: LearningOutcome) {
     this.serviceInteraction$.next(true);
-    this.learningObjectService
+
+    // TODO: If the learning object id does not exist yet (i.e Basic Info not
+    // filled out yet) then don't try and create the learning outcome yet.
+    // This is a bug if the user refreshes once on the learning outcome tab
+
+    // If the outcome does not have a verb or outcome text then don't try
+    // and create the learning outcome yet.
+    if (!newOutcome.verb || !newOutcome.text) {
+      return;
+    }
+
+    this.outcomeService
       .addLearningOutcome(this.learningObject.id, newOutcome)
       .then((serviceId: string) => {
         this.serviceInteraction$.next(false);
@@ -1097,7 +1114,8 @@ export class BuilderStore {
         this.outcomeEvent.next(this.outcomes);
       })
       .catch(e => {
-        this.handleServiceError(e, BUILDER_ERRORS.CREATE_OUTCOME);
+        this.serviceInteraction$.next(null);
+        this.serviceError$.next(BUILDER_ERRORS.INCOMPLETE_OUTCOME);
       });
   }
 
@@ -1123,7 +1141,7 @@ export class BuilderStore {
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
     this.learningObjectService
-      .saveOutcome(this.learningObject.id, updateValue as any)
+      .saveOutcome(updateValue as any)
       .then(() => {
         this.serviceInteraction$.next(false);
       })

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Collection, CollectionService } from 'app/core/collection.service';
+import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
 
 @Component({
   selector: 'clark-collections-grid',

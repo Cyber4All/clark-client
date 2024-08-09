@@ -1,9 +1,11 @@
 import { ModalListElement } from './modal-list-element';
 import { Position } from './position';
-import { Observable ,  Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ModalService {
   contextMenuContent: object = {};
   dialogMenuContent: object = {};
@@ -34,7 +36,7 @@ export class ModalService {
     buttons?: Array<ModalListElement>
   ): Observable<string> {
 
-    const toSend = {name: name, title: title, text: text};
+    const toSend = { name: name, title: title, text: text };
 
     if (canCancel) {
       toSend['canCancel'] = canCancel;
@@ -80,7 +82,7 @@ export class ModalService {
       throw new Error('Must provide either an Element or a Position!');
     }
 
-    const toSend = {name: name, classes: classes, list: list, inFlow: inFlow};
+    const toSend = { name: name, classes: classes, list: list, inFlow: inFlow };
 
     if (el) {
       toSend['el'] = el;
@@ -96,7 +98,7 @@ export class ModalService {
     return this.listen(name);
   }
 
-  private listen(name: string): Observable<string>  {
+  private listen(name: string): Observable<string> {
     if (this.sub !== undefined) {
       // unsubscribe from old subscriptions to prevent multiple open and unused subscriptions
       this.sub.unsubscribe();
@@ -140,8 +142,8 @@ export class ModalService {
 
   offset(el) {
     const rect = el.getBoundingClientRect(),
-    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+      scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
   }
 }

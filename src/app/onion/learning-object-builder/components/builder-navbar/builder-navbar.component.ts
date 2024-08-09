@@ -1,14 +1,14 @@
 import { Component, OnDestroy, Input } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { CollectionService, Collection } from 'app/core/collection.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
-import { HistoryService, HistorySnapshot } from 'app/core/history.service';
+import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { LearningObjectService } from '../../../core/learning-object.service';
 
 @Component({
@@ -164,7 +164,7 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @var this.store.upload is a toggle string variable to block the 'Back' button if a file upload
    * is not finished. See the builder store for more details.
    */
-   async triggerExitProcess(leaveBuilder = true) {
+  async triggerExitProcess(leaveBuilder = true) {
     if (this.adminMode && !leaveBuilder) {
       this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
     }
@@ -176,7 +176,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
       // If any data has be changed on the LO, then we need to rebundle
       if (this.store.touched) {
-        this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject.id);
+        this.learningObjectService.triggerBundle(this.learningObject.id);
       }
       if (leaveBuilder) {
         this.historySnapshot.rewind('/onion/dashboard');

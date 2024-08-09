@@ -9,14 +9,14 @@ import {
 } from '@angular/core';
 
 
-import { CollectionService, Collection } from 'app/core/collection.service';
-import { AuthService } from 'app/core/auth.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Topic } from '@entity';
-import { RelevancyService } from 'app/core/relevancy.service';
 import { ActivatedRoute } from '@angular/router';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -41,7 +41,7 @@ export class FilterSearchComponent implements OnInit {
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
   @Output() topicFilter = new EventEmitter<string[]>();
-  @Output() relevancyCheck = new EventEmitter<{start: string, end: string}>();
+  @Output() relevancyCheck = new EventEmitter<{ start: string, end: string }>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
@@ -56,11 +56,11 @@ export class FilterSearchComponent implements OnInit {
 
   constructor(
     private collectionService: CollectionService,
-    private relevancyService: RelevancyService,
+    private topicsService: TopicsService,
     private authService: AuthService,
     private toaster: ToastrOvenService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   async ngOnInit() {
     await this.getCollections();
@@ -76,12 +76,12 @@ export class FilterSearchComponent implements OnInit {
     this.relevancyStart = new Date();
 
     //check for params in the query and add them to the filter dropdown bars
-    const qParams= this.route.parent.snapshot.queryParams;
+    const qParams = this.route.parent.snapshot.queryParams;
     //if there are topics in the query, toggle them in the filter dropdown
-    if(qParams.topics) {
+    if (qParams.topics) {
       //more than one topic
-      if(Array.isArray(qParams.topics)) {
-        for(const topic of qParams.topics) {
+      if (Array.isArray(qParams.topics)) {
+        for (const topic of qParams.topics) {
           this.toggleTopicFilter({ name: '', _id: topic });
         }
         // one topic
@@ -90,10 +90,10 @@ export class FilterSearchComponent implements OnInit {
       }
     }
     //if there are statuses in the query add them too the filter dropdowns
-    if(qParams.status){
-    //multiple statuses in query
-      if(Array.isArray(qParams.status)) {
-        for(const status of qParams.status) {
+    if (qParams.status) {
+      //multiple statuses in query
+      if (Array.isArray(qParams.status)) {
+        for (const status of qParams.status) {
           this.toggleStatusFilter(status);
         }
         //one status in query
@@ -103,7 +103,7 @@ export class FilterSearchComponent implements OnInit {
     }
     //if there is a collection selected in the query, toggle it
     //there will only ever be a single collection selected at a time
-    if(qParams.collection){
+    if (qParams.collection) {
       this.toggleCollectionFilter(qParams.collection);
     }
   }
@@ -111,7 +111,7 @@ export class FilterSearchComponent implements OnInit {
   /**
    * Fetches the collections from the CollectionService and formats them for use in the context menu.
    */
-   private async getCollections(): Promise<void> {
+  private async getCollections(): Promise<void> {
     await this.collectionService
       .getCollections()
       .then(collections => {
@@ -134,11 +134,11 @@ export class FilterSearchComponent implements OnInit {
   }
 
   private getTopics(): void {
-    this.relevancyService
+    this.topicsService
       .getTopics()
       .then(topics => {
         this.topics = topics;
-        this.topics = [].concat([{_id: 'all', name: 'All'}], Array.from(topics));
+        this.topics = [].concat([{ _id: 'all', name: 'All' }], Array.from(topics));
       });
   }
 
@@ -227,7 +227,7 @@ export class FilterSearchComponent implements OnInit {
     if (this.relevancyEnd !== undefined) {
       end = this.relevancyEnd.getTime().toString();
     }
-    this.relevancyCheck.emit({start, end});
+    this.relevancyCheck.emit({ start, end });
     this.toggleRelevancyMenu(false);
   }
 

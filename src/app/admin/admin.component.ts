@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operators';
-import { AuthService } from 'app/core/auth.service';
-import { CollectionService, Collection } from 'app/core/collection.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { MessagesService } from 'app/core/messages.service';
+import { MessagesService } from 'app/core/utility-module/messages.service';
 
 
 @Component({
@@ -36,7 +36,7 @@ export class AdminComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     public toaster: ToastrOvenService,
     private messagesService: MessagesService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     // hide CLARK navbar
@@ -59,7 +59,7 @@ export class AdminComponent implements OnInit, OnDestroy {
       map(() => this.route),
       map(route => route.firstChild),
       switchMap(route => route.data),
-    ).subscribe(data =>  {
+    ).subscribe(data => {
       this.canScroll = typeof data.canScroll === 'boolean' ? data.canScroll : true;
     });
 
@@ -85,7 +85,6 @@ export class AdminComponent implements OnInit, OnDestroy {
         }
       }).catch(error => {
         this.toaster.error('Error!', 'There was an error retrieving collections. Please try again later.');
-        console.error(error);
       });
     }
   }
@@ -101,10 +100,10 @@ export class AdminComponent implements OnInit, OnDestroy {
       skipWhile(x => x === false),
       take(1)
     )
-    .toPromise()
-    .then(async () => {
-      await this.retrieveAuthorizedCollections();
-    });
+      .toPromise()
+      .then(async () => {
+        await this.retrieveAuthorizedCollections();
+      });
   }
 
   /**
@@ -116,10 +115,10 @@ export class AdminComponent implements OnInit, OnDestroy {
     // we're sure the user is logged in here and so access groups should be defined
     return await Promise.all(
       this.authService.user.accessGroups
-      .filter(group => group.includes('curator@'))
-      .map(group =>
-        this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))
-      ))
+        .filter(group => group.includes('curator@'))
+        .map(group =>
+          this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))
+        ))
       .then(() => {
         // remove the initialization block
         this.collectionsLoaded = true;

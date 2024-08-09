@@ -1,10 +1,10 @@
 import { LearningObject } from '@entity';
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObjectService } from '../../learning-object.service';
+import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 
 @Component({
   selector: 'cube-featured',

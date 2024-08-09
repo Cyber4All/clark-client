@@ -7,16 +7,13 @@ import { EntityError } from '../errors/entity-error';
  * @class
  */
 export class User {
-  private _id: string;
-  get id(): string {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+private _id: string;
+  get userId(): string {
     return this._id;
   }
-  set id(id: string) {
-    if (!this.id) {
+  set userId(id: string) {
       this._id = id;
-    } else {
-      throw new EntityError(USER_ERRORS.ID_SET, 'id');
-    }
   }
   _username: string;
   /**
@@ -132,8 +129,7 @@ export class User {
    * @memberof User
    */
   constructor(user?: Partial<User>) {
-    // @ts-ignore Id will be undefined on creation
-    this._id = undefined;
+    this._id = '';
     this._username = '';
     this._name = '';
     this._email = '';
@@ -154,8 +150,8 @@ export class User {
    * @memberof User
    */
   private copyUser(user: Partial<User>): void {
-    if (user.id) {
-      this._id = user.id;
+    if (user.userId) {
+      this._id = user.userId;
     }
     this._username = user.username || this.username;
     this.name = user.name || this.name;
@@ -177,7 +173,7 @@ export class User {
    */
   public toPlainObject(): Partial<User> {
     const user: Partial<User> = {
-      id: this.id,
+      userId: this._id,
       username: this.username,
       name: this.name,
       email: this.email,

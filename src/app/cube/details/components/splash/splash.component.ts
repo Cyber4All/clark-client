@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { LearningObject } from '@entity';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 

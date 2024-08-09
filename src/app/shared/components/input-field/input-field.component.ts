@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { AuthValidationService } from 'app/core/auth-validation.service';
+import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 /**
  * input field for authentication module using
  * angular material input field and designed
@@ -21,14 +21,14 @@ import { AuthValidationService } from 'app/core/auth-validation.service';
   ]
 })
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
-// true if the field is for a password.
+  // true if the field is for a password.
   @Input() isPwrd: Boolean = false;
-// placeholder text, which becomes label
+  // placeholder text, which becomes label
   @Input() phold: String = '';
-// fControlType: 'email' | 'username' | 'password' | 'text' -
-// describes the type of validation needed for the field. default 'text'
-// no validation
-  @Input() fControlType: 'email' | 'username' | 'password' | 'required' |'text' = 'text';
+  // fControlType: 'email' | 'username' | 'password' | 'text' -
+  // describes the type of validation needed for the field. default 'text'
+  // no validation
+  @Input() fControlType: 'email' | 'username' | 'password' | 'required' | 'text' = 'text';
   @Input() errorMsg: String = '';
 
   /**
@@ -40,15 +40,15 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
 
   //required for ControlValueAccessor
   public value: string;
-  public changed: ( value: string ) => void;
+  public changed: (value: string) => void;
   public touched: () => void;
 
   constructor(public authValidation: AuthValidationService) { }
 
   async ngOnInit(): Promise<void> {
     this.control = !this.control ?
-                    this.authValidation.getInputFormControl(this.fControlType) :
-                    this.control;
+      this.authValidation.getInputFormControl(this.fControlType) :
+      this.control;
     this.hide = this.isPwrd;
   }
 
