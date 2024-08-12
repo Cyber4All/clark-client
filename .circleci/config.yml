@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  cyber4all: cyber4all/orb@2.1.2
+  cyber4all: cyber4all/orb@2.1.5
 
 workflows:
   deploy-clark-service-refactor:
@@ -13,7 +13,7 @@ workflows:
             - aws_staging
             - Slack
           bucket: "clark-client-staging"
-          # distribution_id: STAGING_CLOUDFRONT_ID
+          distribution_id: STAGING_CLOUDFRONT_ID
 
   continuous-deployment:
     when:
