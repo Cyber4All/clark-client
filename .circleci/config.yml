@@ -12,7 +12,7 @@ workflows:
           context:
             - aws_staging
             - Slack
-          bucket: clark-client-staging
+          bucket: "clark-client-staging"
           distribution_id: STAGING_CLOUDFRONT_ID
 
   continuous-deployment:
@@ -28,5 +28,5 @@ workflows:
             - AWS
             - Slack
           requires: [cyber4all/release]
-          bucket: curriculum-listings
+          bucket: "curriculum-listings"
     
