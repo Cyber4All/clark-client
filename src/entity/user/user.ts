@@ -121,7 +121,6 @@ private _id: string;
     return this._createdAt;
   }
 
-  cognitoIdentityId: string;
   /**
    * Creates an instance of User.
    *
@@ -129,40 +128,14 @@ private _id: string;
    * @memberof User
    */
   constructor(user?: Partial<User>) {
-    this._id = '';
-    this._username = '';
-    this._name = '';
-    this._email = '';
-    this._emailVerified = false;
-    this._organization = '';
-    this._bio = '';
-    this._createdAt = Date.now().toString();
-    if (user) {
-      this.copyUser(user);
-    }
-  }
-
-  /**
-   * Copies properties of user to this user if defined
-   *
-   * @private
-   * @param {Partial<User>} user
-   * @memberof User
-   */
-  private copyUser(user: Partial<User>): void {
-    if (user.userId) {
-      this._id = user.userId;
-    }
-    this._username = user.username || this.username;
-    this.name = user.name || this.name;
-    if (user.email) {
-      this.email = user.email as string;
-    }
-    this._emailVerified = user.emailVerified || this.emailVerified;
-    this.organization = user.organization || this.organization;
-    this.bio = user.bio || this.bio;
-    this._createdAt = user.createdAt || this.createdAt;
-    this.cognitoIdentityId = user.cognitoIdentityId;
+    this._id = user?.userId || '';
+    this._username = user?.username || '';
+    this._name = user?.name || '';
+    this._email = user?.email || '';
+    this._emailVerified = user?.emailVerified || false;
+    this._organization = user?.organization || '';
+    this._bio = user?.bio || '';
+    this._createdAt = user?.createdAt || Date.now().toString();
   }
 
   /**
@@ -181,7 +154,6 @@ private _id: string;
       organization: this.organization,
       bio: this.bio,
       createdAt: this.createdAt,
-      cognitoIdentityId: this.cognitoIdentityId
     };
     return user;
   }

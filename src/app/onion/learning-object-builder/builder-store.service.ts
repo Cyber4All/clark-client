@@ -297,7 +297,7 @@ export class BuilderStore {
    */
   fetchMaterials(): void {
     this.learningObjectService
-      .getMaterials(this.learningObject.author.username, this.learningObject.id)
+      .getMaterials(this.learningObject.id)
       .then(materials => {
         this.learningObject.materials = materials;
         this.learningObjectEvent.next(this.learningObject);

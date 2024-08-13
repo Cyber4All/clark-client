@@ -78,28 +78,31 @@ export class UserService {
     );
   }
 
-  //TO-DO: Remove the q parameter because it won't be used with the new route implementation
-  getUser(user: string, q: string): Promise<User> {
-    return user && user !== 'undefined'
-      ? this.http
+  getUser(user: string): Promise<User> {
+    return this.http
         .get(USER_ROUTE.GET_USER(user), {
           withCredentials: true,
         })
         .pipe(catchError(this.handleError))
         .toPromise()
         .then(
-          (val: any) => {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            const user_res = val;
-            // this matches the _id attribute returned from the service to the client expected userId attribute
-            user_res.userId = user_res._id;
-            return user_res ? new User(user_res) : null;
+          (res: any) => {
+            return new User(res);
           },
           (error) => {
             return null;
           }
-        )
-      : Promise.resolve(null);
+        );
+  }
+
+  getUserFileAccessId(username: string): Promise<string> {
+    return this.http
+      .get(USER_ROUTE.GET_USER_FILE_ACCESS_ID(username), {
+        withCredentials: true,
+      })
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((fileAccessId: { fileAccessId: string }) => fileAccessId.fileAccessId);
   }
 
   /**

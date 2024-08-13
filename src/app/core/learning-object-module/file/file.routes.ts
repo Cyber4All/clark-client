@@ -66,10 +66,8 @@ export const FILE_ROUTES = {
    * @param username - The username of the author
    * @param id - The id of the learning object to get the materials from
    */
-  GET_MATERIALS(username: string, id: string, filter?: MaterialsFilter) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(
+  GET_MATERIALS(id: string, filter?: MaterialsFilter) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       id,
     )}/materials?status=${encodeURIComponent(filter)}`;
   },
