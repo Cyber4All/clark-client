@@ -19,7 +19,7 @@ export class ChangelogItemComponent implements OnInit {
   async ngOnInit() {
 
     if (this.contributors.every(contributor => contributor.userId === this.changelog.authorId)) {
-      this.user = await this.userService.getUser(this.changelog.authorId, '');
+      this.user = await this.userService.getUser(this.changelog.authorId);
       this.author = {
         name: this.user.name,
         profileImage: await this.userService.getGravatarImage(this.user.email, 200),
