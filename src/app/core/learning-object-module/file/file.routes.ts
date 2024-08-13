@@ -12,9 +12,7 @@ export const FILE_ROUTES = {
    * @param fileId - The id of the file to update
    */
   UPDATE_FILE(username: string, learningObjectId: string, fileId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId,
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
@@ -31,9 +29,7 @@ export const FILE_ROUTES = {
     learningObjectId: string;
     fileId: string;
   }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId,
     )}/materials/files/${encodeURIComponent(params.fileId)}`;
   },

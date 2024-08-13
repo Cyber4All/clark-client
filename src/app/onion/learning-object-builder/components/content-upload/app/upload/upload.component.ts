@@ -800,50 +800,25 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async handleEdit(file: LearningObject.Material.File | any): Promise<void> {
     try {
+      // If the file is not a folder, update the file description
       if (!file.isFolder) {
         this.fileDescriptionUpdated.emit({
           id: file.id,
           description: file.description,
         });
-      } else {
-        const index = await this.findFolder(file.path);
-        if (index > -1) {
-          this.folderDescriptionUpdated.emit({
-            index,
-            description: file.description,
-          });
-        } else {
-          this.folderDescriptionUpdated.emit({
-            path: file.path,
-            description: file.description,
-          });
-        }
+
+        // Early return to prevent updating folder description
+        return;
       }
+
+      // Update the folder description
+      this.folderDescriptionUpdated.emit({
+        path: file.path,
+        description: file.description,
+      });
     } catch (e) {
       console.error(e);
     }
-  }
-
-  /**
-   * Finds index of folder
-   *
-   * @private
-   * @param {string} path
-   * @returns {number}
-   * @memberof UploadComponent
-   */
-  private async findFolder(path: string): Promise<number> {
-    let index = -1;
-    const object = await this.learningObject$.pipe(take(1)).toPromise();
-    const folders = object.materials.folderDescriptions;
-    for (let i = 0; i < folders.length; i++) {
-      const folderPath = folders[i].path;
-      if (folderPath === path) {
-        index = i;
-        break;
-      }
-    }
-    return index;
   }
 
   ngOnDestroy() {

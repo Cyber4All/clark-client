@@ -135,8 +135,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   }
 
   async handleFolderDescriptionUpdate(folderMeta: {
-    path?: string;
-    index?: number;
+    path: string;
     description: string;
   }) {
     try {

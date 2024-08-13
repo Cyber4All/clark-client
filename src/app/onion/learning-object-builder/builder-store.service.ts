@@ -413,7 +413,6 @@ export class BuilderStore {
       case BUILDER_ACTIONS.UPDATE_FOLDER_DESCRIPTION:
         return await this.updateFolderDescription({
           path: data.path,
-          index: data.index,
           description: data.description
         });
       case BUILDER_ACTIONS.DELETE_FILES:
@@ -807,20 +806,25 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private updateFolderDescription(params: {
-    path?: string;
-    index?: number;
+    path: string;
     description: string;
   }): void {
-    if (params.index !== undefined) {
-      this.learningObject.materials.folderDescriptions[
-        params.index
-      ].description = params.description;
+    // If the folder path already exists, update the description
+    // Otherwise, add a new folder description
+    const index = this.learningObject.materials.folderDescriptions.findIndex(
+      folder => folder.path === params.path
+    );
+    if (index !== -1) {
+      this.learningObject.materials.folderDescriptions[index].description =
+        params.description;
     } else {
       this.learningObject.materials.folderDescriptions.push({
         path: params.path,
         description: params.description
       });
     }
+
+    // Update the learning object
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
       materials: { folderDescriptions: this.learningObject.materials
