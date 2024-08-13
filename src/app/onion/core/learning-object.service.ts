@@ -455,7 +455,6 @@ export class LearningObjectService {
           { headers: this.headers, withCredentials: true, responseType: 'text' }
         )
         .pipe(
-
           catchError(this.handleError)
         )
         .toPromise();
@@ -653,7 +652,7 @@ export class LearningObjectService {
       .patch(
         route,
         { description },
-        { withCredentials: true, responseType: 'text' }
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
 
