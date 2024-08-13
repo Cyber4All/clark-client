@@ -746,11 +746,11 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       try {
         // Get the learning object
         const object = await this.learningObject$.pipe(take(1)).toPromise();
-        
+
         // Delete each file
         files.forEach(async (fileId) => {
           await this.fileService.deleteLearningObjectFileMetadata(object.id, fileId);
-        })
+        });
 
         // Emit the deleted files
         this.filesDeleted.emit(files);
