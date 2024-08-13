@@ -525,41 +525,4 @@ export class FileManagementService {
       }
     });
   }
-
-  /**
-   * Deletes specified from Learning Object using CLARK API
-   *
-   * @param {string} learningObjectID
-   * @param {string} filename
-   * @returns {Promise<{}>}
-   * @memberof FileManagementService
-   */
-  delete(learningObject: LearningObject, fileId: string): Promise<{}> {
-    const route = FILE_ROUTES.DELETE_FILE({
-      username: learningObject.author.username,
-      learningObjectId: learningObject.id,
-      fileId
-    });
-
-    return this.http
-      .delete(route, { withCredentials: true, responseType: 'text' })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (
-      error.error instanceof ErrorEvent ||
-      (error.error && error.error.message)
-    ) {
-      // Client-side or network returned error
-      return throwError(error.error.message);
-    } else {
-      // API returned error
-      return throwError(error);
-    }
-  }
 }

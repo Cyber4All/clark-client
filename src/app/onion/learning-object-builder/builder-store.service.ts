@@ -840,6 +840,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private removeFiles(fileIds: string[]) {
+    console.log("remove files", fileIds);
     fileIds.forEach(fileId => {
       const index = this.findFile(fileId);
       this.learningObject.materials.files.splice(index, 1);

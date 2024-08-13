@@ -178,7 +178,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
     if (!(file instanceof DirectoryNode)) {
       // @ts-ignore
-      scheduledDeletions = [file.id];
+      scheduledDeletions = [file._id];
       name = file.name;
     } else {
       const folder = file;
