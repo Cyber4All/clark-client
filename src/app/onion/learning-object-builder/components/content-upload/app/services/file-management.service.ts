@@ -168,6 +168,7 @@ export class FileManagementService {
     if (!environment.production) {
       AWS.config.credentials = new AWS.Credentials({
         accessKeyId: 'root',
+        // deepcode ignore HardcodedNonCryptoSecret: Mock password, not real
         secretAccessKey: 'password'
       });
 
