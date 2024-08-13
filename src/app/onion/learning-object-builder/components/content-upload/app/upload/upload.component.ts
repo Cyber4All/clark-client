@@ -513,7 +513,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         })
         .subscribe((update) => this.handleUploadUpdates(update));
     } catch (e) {
-      console.error('UPLOAD ERROR', e);
       if (e.name === UploadErrorReason.Credentials) {
         this.handleCredentialsError();
       } else {

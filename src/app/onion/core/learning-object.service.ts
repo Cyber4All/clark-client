@@ -576,10 +576,15 @@ export class LearningObjectService {
     responses$: Promise<string[]>[],
     sendNextBatch$: Subject<void>
   ) {
+    console.log('batch', batch);
     const response$ = this.http
-      .post(route, { fileMeta: batch }, { withCredentials: true })
+      .post(route, 
+        { fileMeta: batch },
+        { 
+          headers: this.headers,
+          withCredentials: true 
+        })
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise()
@@ -616,11 +621,10 @@ export class LearningObjectService {
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
-  getMaterials(username: string, objectId: string): Promise<any> {
-    const route = FILE_ROUTES.GET_MATERIALS(username, objectId, 'unreleased');
+  getMaterials(objectId: string): Promise<any> {
+    const route = FILE_ROUTES.GET_MATERIALS(objectId, 'unreleased');
     return this.http.get(route, { withCredentials: true })
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();
