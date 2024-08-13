@@ -18,7 +18,7 @@ export class ChangelogItemComponent implements OnInit {
 
   async ngOnInit() {
 
-    if (this.contributors.includes(this.changelog.authorId)) {
+    if (this.contributors.every(contributor => contributor.userId === this.changelog.authorId)) {
       this.user = await this.userService.getUser(this.changelog.authorId, '');
       this.author = {
         name: this.user.name,
