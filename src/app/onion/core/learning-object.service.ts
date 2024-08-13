@@ -207,7 +207,7 @@ export class LearningObjectService {
     filters?: any,
     query?: string
   ): Promise<LearningObject[]> {
-    const route = LEARNING_OBJECT_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername);
+    const route = LEARNING_OBJECT_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername, filters, query);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -266,7 +266,7 @@ export class LearningObjectService {
     return this.http
       .patch(
         OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
-        { outcome },
+        { ...outcome },
         { headers: this.headers, withCredentials: true },
       )
       .pipe(
@@ -577,9 +577,13 @@ export class LearningObjectService {
     sendNextBatch$: Subject<void>
   ) {
     const response$ = this.http
-      .post(route, { fileMeta: batch }, { withCredentials: true })
+      .post(route,
+        { fileMeta: batch },
+        {
+          headers: this.headers,
+          withCredentials: true
+        })
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise()
@@ -616,11 +620,10 @@ export class LearningObjectService {
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
-  getMaterials(username: string, objectId: string): Promise<any> {
-    const route = FILE_ROUTES.GET_MATERIALS(username, objectId, 'unreleased');
+  getMaterials(objectId: string): Promise<any> {
+    const route = FILE_ROUTES.GET_MATERIALS(objectId, 'unreleased');
     return this.http.get(route, { withCredentials: true })
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();

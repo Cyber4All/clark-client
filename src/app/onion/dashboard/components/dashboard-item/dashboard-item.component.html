@@ -37,14 +37,14 @@
             </div>
             <div class="orb"></div>
           </div>
-  
+
           <clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="meatballOpen = false">
             <div #contextMenu>
               <ul (activate)="toggleContextMenu($event)">
-          
-                <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.cuid]" activate><i class="far fa-pencil"></i>Edit</li>
+
+                <li *ngIf="actionPermissions('edit')" [routerLink]="['/onion/learning-object-builder', learningObject.cuid, learningObject.version]" activate><i class="far fa-pencil"></i>Edit</li>
                 <li *ngIf="actionPermissions('infoPanel')" activate [routerLink]="['./']" [queryParams]="{ activeLearningObject: learningObject.cuid, version: learningObject.version }"><i class="fas fa-info-circle"></i>Info</li>
-                <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.cuid, 'materials']" activate><i class="far fa-upload"></i>Manage Materials</li>
+                <li *ngIf="actionPermissions('manageMaterials')" [routerLink]="['/onion/learning-object-builder', learningObject.cuid, learningObject.version, 'materials']" activate><i class="far fa-upload"></i>Manage Materials</li>
                 <li *ngIf="actionPermissions('submit')" (activate)="submit.emit()"><i class="far fa-eye"></i>Submit for Review</li>
                 <li *ngIf="actionPermissions('submitHierarchy')" (activate)="submitHierarchy.emit()"> <i class="fa fa-level-down"></i>Submit Full Hierarchy</li>
                 <li (activate)="viewAllChangelogs.emit(learningObject.id)"><i class="far fa-comment-alt-lines"></i>View Changelogs</li>

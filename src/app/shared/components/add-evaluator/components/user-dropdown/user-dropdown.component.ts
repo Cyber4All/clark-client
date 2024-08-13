@@ -48,7 +48,7 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
     if (this.learningObject.assigned) {
       for (let i = 0; i < this.learningObject.assigned.length; i++) {
         const userId = this.learningObject.assigned[i];
-        const user = await this.userService.getUser(userId, 'userId');
+        const user = await this.userService.getUser(userId);
         this.assignedEvaluators.push(user);
       }
       this.cd.detectChanges();
