@@ -92,7 +92,7 @@ export class UserService {
           (error) => {
             return null;
           }
-        )
+        );
   }
 
   getUserFileAccessId(username: string): Promise<string> {

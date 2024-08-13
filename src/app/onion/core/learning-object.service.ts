@@ -578,11 +578,11 @@ export class LearningObjectService {
   ) {
     console.log('batch', batch);
     const response$ = this.http
-      .post(route, 
+      .post(route,
         { fileMeta: batch },
-        { 
+        {
           headers: this.headers,
-          withCredentials: true 
+          withCredentials: true
         })
       .pipe(
         catchError(this.handleError)

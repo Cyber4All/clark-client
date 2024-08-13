@@ -28,7 +28,7 @@ export const USER_ROUTE = {
   },
   /**
    * Gets the user's fileAccessId also known as the Cognito Identity Id
-   * 
+   *
    * @param username the username of the user
    * @returns the file access id of the user (i.e Cognito Identity Id)
    */

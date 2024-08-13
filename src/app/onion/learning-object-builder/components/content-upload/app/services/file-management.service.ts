@@ -65,7 +65,7 @@ export class FileManagementService {
     });
 
     this.configureS3Client();
-    
+
     const uploadUpdate$ = new Subject<UploadUpdate>();
     this.getCognitoIdentityId(authorUsername)
       .then(cognitoIdentityId => {
@@ -167,9 +167,9 @@ export class FileManagementService {
     // for the S3 client to connect to the Minio server
     if (!environment.production) {
       AWS.config.credentials = new AWS.Credentials({
-        accessKeyId: "root",
-        secretAccessKey: "password"
-      })
+        accessKeyId: 'root',
+        secretAccessKey: 'password'
+      });
 
       // Setup the S3 client to use the local Minio server
       this.S3 = new AWS.S3({
@@ -202,7 +202,7 @@ export class FileManagementService {
         },
         { region: environment.cognitoRegion }
       );
-      
+
       // Configure S3 client with region
       this.S3 = new AWS.S3({ region: environment.s3BucketRegion });
     }
