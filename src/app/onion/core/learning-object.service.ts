@@ -576,7 +576,6 @@ export class LearningObjectService {
     responses$: Promise<string[]>[],
     sendNextBatch$: Subject<void>
   ) {
-    console.log('batch', batch);
     const response$ = this.http
       .post(route,
         { fileMeta: batch },
