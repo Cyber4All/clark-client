@@ -1,19 +1,14 @@
 <div class="changelog-item">
   <div class="item__image-wrapper">
-    <img class="profile-image-container__avatar" src="{{ changelog.author.profileImage }}" alt="Author Image">
+    <img class="profile-image-container__avatar" src="{{ author.profileImage }}" alt="Author Image">
   </div>
   <div class="changelog__right">
     <div class="changelog-item__name">
-      {{ changelog.author.name | titlecase }}
-      <div class="changelog-item__badge">
-        <clark-identification-pill
-          [accessGroup]='changelog.author.role'
-          [theme]="changelog.author.role === 'author' ? 'default' : 'proofing'"
-        ></clark-identification-pill>
-      </div>
-      <div class="changelog-item__date">
-        on {{ changelog.date | date:'shortDate' }}
-      </div>
+      {{ author.name | titlecase }}
+      <!-- the date property is not present with the data in the database -->
+      <!-- <div class="changelog-item__date"> -->
+        <!-- on {{ changelog.date | date:'shortDate' }} -->
+      <!-- </div> -->
     </div>
     <div class="changelog-item__text" [innerHtml]="changelog.text"></div>
   </div>

@@ -21,6 +21,7 @@ import { trigger, transition, stagger, style, animate, query } from '@angular/an
 export class ChangelogListComponent implements OnInit {
 
   @Input() changelogs: [];
+  @Input() learningObject: any;
 
   constructor() { }
 
