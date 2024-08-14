@@ -34,6 +34,7 @@ import { getUserAgentBrowser } from 'getUserAgentBrowser';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FILE_ROUTES } from 'app/core/learning-object-module/file/file.routes';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -176,6 +177,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: ToastrOvenService,
     private changeDetector: ChangeDetectorRef,
     private fileManager: FileManagementService,
+    private fileService: FileService,
     private auth: AuthService,
   ) {
     this.checkDragDropSupport();
@@ -734,17 +736,23 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async *handleDeletion(files: string[]) {
+    // Show delete confirmation modal
     this.showDeleteConfirmation();
+
+    // Wait for user to confirm deletion
     const confirmed: boolean = yield;
     if (confirmed) {
       this.saving$.next(true);
       try {
+        // Get the learning object
         const object = await this.learningObject$.pipe(take(1)).toPromise();
-        await Promise.all(
-          files.map(async (fileId) => {
-            await this.fileManager.delete(object, fileId);
-          }),
-        );
+
+        // Delete each file
+        files.forEach(async (fileId) => {
+          await this.fileService.deleteLearningObjectFileMetadata(object.id, fileId);
+        });
+
+        // Emit the deleted files
         this.filesDeleted.emit(files);
       } catch (e) {
         this.error$.next(e);
