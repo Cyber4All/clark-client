@@ -25,7 +25,6 @@ export const FILE_ROUTES = {
    * @param fileId - The id of the file to delete
    */
   DELETE_FILE(params: {
-    username: string;
     learningObjectId: string;
     fileId: string;
   }) {

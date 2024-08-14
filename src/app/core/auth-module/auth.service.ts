@@ -42,6 +42,7 @@ export interface OpenIdToken {
 }
 
 // Location of logged in user's access tokens in local storage
+// deepcode ignore HardcodedNonCryptoSecret: Not sensitive data
 const TOKEN_STORAGE_KEY = 'clark.center:access-tokens';
 
 @Injectable({
