@@ -13,7 +13,11 @@ private _id: string;
     return this._id;
   }
   set userId(id: string) {
+    if (!this._id) {
       this._id = id;
+    } else {
+      throw new EntityError(USER_ERRORS.ID_SET, 'id');
+    }
   }
   _username: string;
   /**
@@ -124,18 +128,19 @@ private _id: string;
   /**
    * Creates an instance of User.
    *
-   * @param {Partial<User>} [user]
+   * @param {Partial<any>}
+   * User entity needs a rewrite, hence the `any`
    * @memberof User
    */
-  constructor(user?: Partial<User>) {
-    this._id = user?.userId || '';
-    this._username = user?.username || '';
-    this._name = user?.name || '';
-    this._email = user?.email || '';
-    this._emailVerified = user?.emailVerified || false;
-    this._organization = user?.organization || '';
-    this._bio = user?.bio || '';
-    this._createdAt = user?.createdAt || Date.now().toString();
+  constructor(user?: Partial<any>) {
+    this._id = user?._id ?? '';
+    this._username = user?.username ?? '';
+    this._name = user?.name ?? '';
+    this._email = user?.email ?? '';
+    this._emailVerified = user?.emailVerified ?? false;
+    this._organization = user?.organization ?? '';
+    this._bio = user?.bio ?? '';
+    this._createdAt = user?.createdAt ?? Date.now().toString();
   }
 
   /**
