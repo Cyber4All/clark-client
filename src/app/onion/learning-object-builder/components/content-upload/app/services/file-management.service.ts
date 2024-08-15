@@ -174,7 +174,7 @@ export class FileManagementService {
 
       // Setup the S3 client to use the local Minio server
       this.S3 = new AWS.S3({
-        endpoint: environment.s3Endpoint,
+        endpoint: 'http://localhost:9000',
         s3ForcePathStyle: true,
         signatureVersion: 'v4',
       });
