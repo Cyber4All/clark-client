@@ -531,14 +531,17 @@ export class BuilderStore {
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
-    if (!checkIfUUID(outcome.serviceId || outcome.id) && (outcome.serviceId || outcome.id)) {
+    if (!checkIfUUID(outcome.serviceId) && outcome.serviceId) {
       this.serviceInteraction$.next(true);
       this.learningObjectService
-      .deleteOutcome(outcome.serviceId || outcome.id)
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME));
+        .deleteOutcome(
+          (outcome as Partial<LearningOutcome> & { serviceId?: string })
+            .serviceId || id,
+        )
+        .then(() => {
+          this.serviceInteraction$.next(false);
+        })
+        .catch(e => this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME));
     }
   }
 
