@@ -150,14 +150,32 @@ export class ChangeStatusModalComponent implements OnInit {
    */
   async updateStatus() {
     this.serviceInteraction = true;
+    let unableToUpdate = false;
+
     await Promise.all([
       this.builderStore
         .execute(BUILDER_ACTIONS.CHANGE_STATUS, { status: this.selectedStatus, reason: this.reason })
         .catch(error => {
-          this.toaster.error('Error!', 'There was an error trying to update the status of this learning object. Please try again later!');
+          // Set a variable to track update state and throw up a error toaster.
+          unableToUpdate = true;
+          if (error.status === 400) {
+            this.toaster.error('Error!', error.error.message);
+          } else {
+            this.toaster.error('Error!', 'There was an error trying to update the status of this learning object. Please try again later!');
+          }
+          return;
         }),
-      this.changelog ? this.createChangelog() : undefined
     ]).then(() => {
+      // If we can't update the status, just close the modal after showing an error.
+      if (unableToUpdate) {
+        this.closeModal();
+        this.serviceInteraction = false;
+        return;
+      }
+
+      // Create a changelog.
+      this.changelog ? this.createChangelog() : undefined;
+
       // If the object released, move to map and tag, else update the valid status moves
       this.learningObject.status = this.selectedStatus as LearningObject.Status;
       if (this.selectedStatus === LearningObject.Status.RELEASED) {
