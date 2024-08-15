@@ -167,8 +167,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   learningObjectCuid: string;
 
-  private bucketUploadPath = '';
-
   private newFileMeta: FileUploadMeta[] = [];
 
   private credentialRefreshAttempted = false;
@@ -203,17 +201,21 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (object) {
           this.learningObjectCuid = object.cuid;
           this.notes = object.materials.notes;
-          this.bucketUploadPath = `${object.author.username}/${object.id}`;
-          this.files$.next(object.materials.files);
+          
+          // Set the material information
           this.folderMeta$.next(object.materials.folderDescriptions);
+          this.files$.next(object.materials.files);
+
+          // Check if the learning object has a solution file
           this.solutionUpload = false;
-          this.files$.value.forEach((file) => {
+          this.files$.value?.forEach((file) => {
             if (file.name.toLowerCase().indexOf('solution') >= 0) {
               this.solutionUpload = true;
             }
           });
         }
       });
+    
     this.notes$
       .pipe(takeUntil(this.unsubscribe$), debounceTime(650))
       .subscribe((notes) => {
@@ -506,6 +508,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       const learningObject = await this.learningObject$
         .pipe(take(1))
         .toPromise();
+        console.log(learningObject);
       this.fileManager
         .upload({
           authorUsername: learningObject.author.username,

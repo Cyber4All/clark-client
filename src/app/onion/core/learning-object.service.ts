@@ -20,6 +20,7 @@ import {
   LEARNING_OBJECT_ROUTES,
   USER_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
+import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,8 @@ export class LearningObjectService {
 
   constructor(
     private http: HttpClient,
-    private cookies: CookieService
+    private cookies: CookieService,
+    private bundlingService: BundlingService,
   ) {
     const token = this.cookies.get('presence');
     if (token !== null) {
@@ -377,21 +379,8 @@ export class LearningObjectService {
    * @param username Authors username of current learning object
    * @param learningObjectId id current learning object
    */
-  triggerBundle(learningObjectId: string) {
-    const route = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(
-      learningObjectId
-    );
-    // POST needs the body arrgument
-    return this.http
-      .post(
-        route,
-        {},
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise();
+  async triggerBundle(learningObjectId: string) {
+    await this.bundlingService.bundleLearningObject(learningObjectId);
   }
 
   /**

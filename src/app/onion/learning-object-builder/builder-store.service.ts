@@ -212,6 +212,7 @@ export class BuilderStore {
    */
   private set learningObject(object: LearningObject) {
     this._learningObject = object;
+    console.log('learning object', object, this.learningObject);
     this.learningObjectEvent.next(this.learningObject);
 
     if (
