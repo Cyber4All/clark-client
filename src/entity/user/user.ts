@@ -128,7 +128,7 @@ private _id: string;
    * @memberof User
    */
   // Had to update the constructor to accept any type of user object
-  // because the backend now returns _id instead of userId and the 
+  // because the backend now returns _id instead of userId and the
   // frontend uses userId...
   constructor(user?: any) {
     this._id = user?.userId || user?._id || '';

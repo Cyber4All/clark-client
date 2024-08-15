@@ -110,7 +110,7 @@ export class LearningObjectService {
         res.id = res._id;
 
         const learningObject: LearningObject = new LearningObject(res);
-        
+
         // Fetch the author of the learning object and set it as the
         // author of the learning object
         this.userService.getUser(res.authorID).then(user => {
