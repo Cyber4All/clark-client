@@ -169,7 +169,7 @@ export class BuilderNavbarComponent implements OnDestroy {
       this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
     }
     // Trigger new PDF generation only if the learning object id exists
-    // It may not present when opening the builder for the first time for 
+    // It may not present when opening the builder for the first time for
     // a new learning object
     if (this.learningObject.id) {
       Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));

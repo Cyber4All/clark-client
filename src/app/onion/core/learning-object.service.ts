@@ -408,10 +408,9 @@ export class LearningObjectService {
       .delete(route, {
         headers: this.headers,
         withCredentials: true,
-        responseType: 'text'
+        responseType: 'json'
       })
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();
