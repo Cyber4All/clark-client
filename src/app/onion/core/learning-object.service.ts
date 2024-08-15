@@ -21,6 +21,7 @@ import {
   USER_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+import { UserService } from 'app/core/user-module/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,7 @@ export class LearningObjectService {
     private http: HttpClient,
     private cookies: CookieService,
     private bundlingService: BundlingService,
+    private userService: UserService,
   ) {
     const token = this.cookies.get('presence');
     if (token !== null) {
@@ -101,13 +103,21 @@ export class LearningObjectService {
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise()
       .then((res: any) => {
         res.id = res._id;
-        return new LearningObject(res);
+
+        const learningObject: LearningObject = new LearningObject(res);
+        
+        // Fetch the author of the learning object and set it as the
+        // author of the learning object
+        this.userService.getUser(res.authorID).then(user => {
+          learningObject.author = user;
+        });
+
+        return learningObject;
       });
     // TODO: Verify this response gives the learning object name
   }

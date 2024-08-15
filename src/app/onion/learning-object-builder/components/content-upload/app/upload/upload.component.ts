@@ -152,6 +152,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   tips = TOOLTIP_TEXT;
 
+  // Subject to break subscription to observables
+  // upon component destruction
   unsubscribe$ = new Subject<void>();
 
   openPath: string;
@@ -166,6 +168,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   dragAndDropSupported = false;
 
   learningObjectCuid: string;
+
+  learningObject: LearningObject;
 
   private newFileMeta: FileUploadMeta[] = [];
 
@@ -201,7 +205,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (object) {
           this.learningObjectCuid = object.cuid;
           this.notes = object.materials.notes;
-          
+
+          // Temporarily store the learning obejct to test if it is being updated
+          this.learningObject = object;
+
           // Set the material information
           this.folderMeta$.next(object.materials.folderDescriptions);
           this.files$.next(object.materials.files);
@@ -215,7 +222,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           });
         }
       });
-    
+
     this.notes$
       .pipe(takeUntil(this.unsubscribe$), debounceTime(650))
       .subscribe((notes) => {
@@ -508,7 +515,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       const learningObject = await this.learningObject$
         .pipe(take(1))
         .toPromise();
-        console.log(learningObject);
       this.fileManager
         .upload({
           authorUsername: learningObject.author.username,
