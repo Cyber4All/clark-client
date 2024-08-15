@@ -545,17 +545,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
     delete response.index;
 
     if (ratingId) {
-      const result = await this.ratingService
-        .createResponse({
-          ratingId,
-          response,
-        });
-      if (result) {
-        this.getLearningObjectRatings();
-        this.toastService.success('Success!', 'Response submitted successfully!');
-      } else {
-        this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
-      }
+      await this.ratingService
+        .createResponse({ratingId, response})
+        .then(
+          () => {
+            this.getLearningObjectRatings();
+            this.toastService.success('Success!', 'Response submitted successfully!');
+          },
+          (error) => {
+            this.toastService.error('Error!', 'An error occurred and your response could not be submitted ' + error.error.message);
+          }
+        );
     } else {
       this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
     }
@@ -572,6 +572,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     index: number,
   }) {
     // locate target rating and then delete the index param from the response
+    console.log(this.learningObject);
     const ratingId = this.learningObject.ratings.ratings[response.index].id;
     const responseId = this.ratings[response.index].response[0]._id;
     if (ratingId) {

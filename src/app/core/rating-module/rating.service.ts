@@ -41,19 +41,17 @@ export class RatingService {
    * @param {{comment:string}} response
    * @returns {Promise<any>}
    */
-  createResponse(params: {
+  async createResponse(params: {
     ratingId: string;
     response: { comment: string }
-  }): Promise<any> {
-    const res = this.http.post(
+  }): Promise<void> {
+    this.http.post(
       RATING_ROUTES.CREATE_RESPONSE(params.ratingId),
       params.response,
       { withCredentials: true },
-    ).toPromise()
-      .catch(result => {
-        return Promise.resolve(result.status === 200);
-      });
-    return res;
+    )
+    .pipe(catchError(this.handleError))
+    .toPromise()
   }
 
 
