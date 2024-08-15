@@ -51,7 +51,7 @@ export class RatingService {
       { withCredentials: true },
     )
     .pipe(catchError(this.handleError))
-    .toPromise()
+    .toPromise();
   }
 
 
