@@ -60,7 +60,7 @@ export class FileManagementService {
     this.validateFileNames(files, learningObjectCuid);
     this.validateUploadParams({
       authorUsername,
-      learningObjectId: learningObjectCuid,
+      learningObjectCuid,
       learningObjectRevisionId
     });
 
@@ -104,11 +104,11 @@ export class FileManagementService {
    */
   private validateUploadParams({
     authorUsername,
-    learningObjectId,
+    learningObjectCuid,
     learningObjectRevisionId
   }: {
     authorUsername: string;
-    learningObjectId: string;
+    learningObjectCuid: string;
     learningObjectRevisionId: number;
   }) {
     if (!authorUsername) {
@@ -116,9 +116,9 @@ export class FileManagementService {
         'Cannot start upload. Learning Object\'s author\'s username must be provided.'
       );
     }
-    if (!learningObjectId) {
+    if (!learningObjectCuid) {
       throw new Error(
-        'Cannot start upload. Learning Object\'s id must be provided.'
+        'Cannot start upload. Learning Object\'s cuid must be provided.'
       );
     }
     if (learningObjectRevisionId == null) {
@@ -174,7 +174,7 @@ export class FileManagementService {
 
       // Setup the S3 client to use the local Minio server
       this.S3 = new AWS.S3({
-        endpoint: environment.s3Endpoint,
+        endpoint: 'http://localhost:9000',
         s3ForcePathStyle: true,
         signatureVersion: 'v4',
       });

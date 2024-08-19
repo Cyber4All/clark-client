@@ -14,7 +14,6 @@ import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
-import { CollectionService } from 'app/core/collection-module/collections.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileUploadMeta } from './components/content-upload/app/services/typings';
 import { Title } from '@angular/platform-browser';
@@ -151,7 +150,6 @@ export class BuilderStore {
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
     private refactoredLearningObjectService: RefactoredLearningObjectService,
-    private collectionService: CollectionService,
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
@@ -651,7 +649,6 @@ export class BuilderStore {
   private addContributor(user: User) {
     this.learningObject.addContributor(user);
     this.validator.validateLearningObject(this.learningObject);
-
     this.saveObject(
       {
         contributors: this.learningObject.contributors.map(x => x.userId)
@@ -840,12 +837,10 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private removeFiles(fileIds: string[]) {
-    console.log("remove files", fileIds);
     fileIds.forEach(fileId => {
       const index = this.findFile(fileId);
       this.learningObject.materials.files.splice(index, 1);
     });
-    this.learningObjectEvent.next(this.learningObject);
     this.learningObjectEvent.next(this.learningObject);
   }
 

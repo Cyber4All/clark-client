@@ -152,6 +152,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   tips = TOOLTIP_TEXT;
 
+  // Subject to break subscription to observables
+  // upon component destruction
   unsubscribe$ = new Subject<void>();
 
   openPath: string;
@@ -167,7 +169,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   learningObjectCuid: string;
 
-  private bucketUploadPath = '';
+  learningObject: LearningObject;
 
   private newFileMeta: FileUploadMeta[] = [];
 
@@ -203,17 +205,24 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (object) {
           this.learningObjectCuid = object.cuid;
           this.notes = object.materials.notes;
-          this.bucketUploadPath = `${object.author.username}/${object.id}`;
-          this.files$.next(object.materials.files);
+
+          // Temporarily store the learning obejct to test if it is being updated
+          this.learningObject = object;
+
+          // Set the material information
           this.folderMeta$.next(object.materials.folderDescriptions);
+          this.files$.next(object.materials.files);
+
+          // Check if the learning object has a solution file
           this.solutionUpload = false;
-          this.files$.value.forEach((file) => {
+          this.files$.value?.forEach((file) => {
             if (file.name.toLowerCase().indexOf('solution') >= 0) {
               this.solutionUpload = true;
             }
           });
         }
       });
+
     this.notes$
       .pipe(takeUntil(this.unsubscribe$), debounceTime(650))
       .subscribe((notes) => {
