@@ -53,11 +53,8 @@ export class UserProfileComponent implements OnInit {
         const tempObjects = [];
         // Await each learning object for a users profile
         const promises = collectionMeta.map(async (objectMeta) => {
-          const params = {
-            cuid: objectMeta.cuid
-          };
           // Return a promise for the current learning object
-          return await this.profileService.fetchLearningObject(params);
+          return await this.profileService.fetchLearningObject(objectMeta.cuid, objectMeta.version);
         });
         // Resolve all calls to retrieve a learning object
         await Promise.allSettled(promises).then(promise => {
