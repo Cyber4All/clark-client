@@ -98,7 +98,6 @@ export class UsersComponent implements AfterViewInit {
         this.users.splice(0, 0, user);
       }).catch(error => {
         this.toaster.error('Error!', 'Could not add reviewer. Please try again later');
-        console.log(error);
       });
   }
 
@@ -128,7 +127,6 @@ export class UsersComponent implements AfterViewInit {
       })
       .catch(error => {
         this.toaster.error('Error!', 'Could not remove reviewer. Please try again later');
-        console.log(error);
       });
   }
 

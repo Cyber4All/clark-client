@@ -4,6 +4,12 @@ orbs:
   cyber4all: cyber4all/orb@2.1.7
 
 workflows:
+  continuous-integration:
+    jobs:
+      - cyber4all/lint
+
+      - cyber4all/build
+
   deploy-clark-service-refactor:
     when:
         equal: [clark-service-refactor, <<pipeline.git.branch>>]
@@ -14,6 +20,7 @@ workflows:
             - Slack
           bucket: "clark-client-staging"
           distribution_id: STAGING_CLOUDFRONT_ID
+          script: build:staging
 
   continuous-deployment:
     when:

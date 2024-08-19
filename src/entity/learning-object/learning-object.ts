@@ -51,6 +51,10 @@ export class LearningObject {
   get author(): User {
     return this._author;
   }
+  set author(user: User) {
+    this._author = user;
+  }
+
   /**
    * @property {string} name
    *       the object's identifying name, unique over a user

@@ -77,7 +77,6 @@ export class SubmitComponent implements OnInit {
   createChangelog() {
 
     if (this.changelog) {
-      console.log(this.changelog);
       this.loading.push(true);
       this.changelogService
         .createChangelog(

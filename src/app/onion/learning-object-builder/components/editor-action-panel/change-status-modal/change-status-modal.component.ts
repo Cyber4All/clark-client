@@ -179,7 +179,7 @@ export class ChangeStatusModalComponent implements OnInit {
       // If the object released, move to map and tag, else update the valid status moves
       this.learningObject.status = this.selectedStatus as LearningObject.Status;
       if (this.selectedStatus === LearningObject.Status.RELEASED) {
-        this.moveToMapAndTag();
+        this.moveToAdminDashboard();
       } else if (this.learningObject.status === LearningObject.Status.REJECTED) {
         this.moveToAdminDashboard();
       } else {
