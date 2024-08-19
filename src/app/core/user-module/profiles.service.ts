@@ -18,12 +18,10 @@ export class ProfileService {
    * @param params cuid is the current object cuid
    * @returns a learning object with specified cuid
    */
-  fetchLearningObject(params: { cuid: string }): Promise<any> {
+  fetchLearningObject(cuid: string, version: number): Promise<any> {
     return this.http
       .get(
-        LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
-          params.cuid
-        ),
+        LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(cuid, version),
         {
           withCredentials: true,
           responseType: 'text',

@@ -71,9 +71,10 @@ export class FeaturedObjectsService {
         // Grabs the complete Learning Object from the LO database
         // For some reason, the method itself returns the full Learning Object,
         //    but when entered into the array it turns into a Promise.
-        const object = await this.profileService.fetchLearningObject({
-          cuid: learningObject.cuid,
-        });
+        const object = await this.profileService.fetchLearningObject(
+         learningObject.cuid,
+         learningObject.version,
+        );
         if (object.resourceUris?.outcomes) {
           // Retrieve the outcomes for the learning object with the resource uri
           const outcomePromise: any = await this.http

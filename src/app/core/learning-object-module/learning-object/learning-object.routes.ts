@@ -10,14 +10,8 @@ export const LEARNING_OBJECT_ROUTES = {
      * @param version?
      * @returns Promise<FullLearningObject[]>
      */
-    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version?: number) {
-        let uri = `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}`;
-
-        if (version !== undefined) {
-            uri += '?version=' + version.toString();
-        }
-
-        return uri;
+    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version: number) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}?version=${encodeURIComponent(version)}`;
     },
     /**
      * Request to get the children of a learning object

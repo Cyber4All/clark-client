@@ -7,7 +7,7 @@
             <div class="body">
                 <div class="objects">
                     <div *ngFor="let object of learningObjects">
-                        <a [routerLink]="['/details', object.author.username, object.cuid]">
+                        <a [routerLink]="['/details', object.author.username, object.cuid, object.version]">
                             <clark-feature-cards-fiveotwo [learningObject]="object"
                                 [primaryColor]="primaryColor"></clark-feature-cards-fiveotwo>
                         </a>
@@ -31,7 +31,7 @@
             <div class="body">
                 <div class="objects">
                     <div *ngFor="let object of learningObjects">
-                        <a [routerLink]="['/details', object.author.username, object.cuid]">
+                        <a [routerLink]="['/details', object.author.username, object.cuid, object.version]">
                             <clark-collection-feature-cards *ngIf="collection === 'ncyte'" [collection]="collection" [learningObject]="object"
                                 [primaryColor]="primaryColor"></clark-collection-feature-cards>
                         </a>
