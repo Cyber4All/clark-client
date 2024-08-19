@@ -573,7 +573,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     index: number,
   }) {
     // locate target rating and then delete the index param from the response
-    console.log(this.learningObject);
     const ratingId = this.learningObject.ratings.ratings[response.index].id;
     const responseId = this.ratings[response.index].response[0]._id;
     if (!ratingId) {
