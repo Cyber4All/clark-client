@@ -77,34 +77,33 @@ export class FilterSearchComponent implements OnInit {
 
     //check for params in the query and add them to the filter dropdown bars
     const qParams = this.route.parent.snapshot.queryParams;
+
     //if there are topics in the query, toggle them in the filter dropdown
-    if (qParams.topics) {
-      //more than one topic
-      if (Array.isArray(qParams.topics)) {
+    if (qParams.topics && qParams.topics.length > 0) {
+      const topics = [];
         for (const topic of qParams.topics) {
-          this.toggleTopicFilter({ name: '', _id: topic });
+          topics.push({ name: '', _id: topic });
         }
-        // one topic
-      } else {
-        this.toggleTopicFilter({ name: '', _id: qParams.topics });
-      }
+        this.toggleTopicFilter(topics[0]);
     }
+
     //if there are statuses in the query add them too the filter dropdowns
-    if (qParams.status) {
-      //multiple statuses in query
-      if (Array.isArray(qParams.status)) {
+    if (qParams.status && qParams.status.length > 0) {
+        const statuses = [];
         for (const status of qParams.status) {
-          this.toggleStatusFilter(status);
+          statuses.push(status);
         }
-        //one status in query
-      } else {
-        this.toggleStatusFilter(qParams.status);
-      }
+
+        console.log(statuses);
+
+        this.toggleStatusFilter(statuses);
     }
     //if there is a collection selected in the query, toggle it
     //there will only ever be a single collection selected at a time
     if (qParams.collection) {
       this.toggleCollectionFilter(qParams.collection);
+    } else {
+      this.toggleCollectionFilter(this.route.parent.snapshot.params.collection);
     }
   }
 
@@ -246,18 +245,22 @@ export class FilterSearchComponent implements OnInit {
    *
    * @param filter {string} the filter to be toggled
    */
-  toggleStatusFilter(filter: string) {
-    if (filter.toLowerCase() === 'all') {
-      this.clearStatusFilters();
-      this.toggleFilterMenu(undefined);
-      return;
+  toggleStatusFilter(filters: string[]) {
+    for (const filter of filters) {
+      if (filter.toLowerCase() === 'all') {
+        this.clearStatusFilters();
+        this.toggleFilterMenu(undefined);
+        return;
+      }
+
+      if (!this.filters.has(filter)) {
+        this.filters.add(filter);
+      } else {
+        this.filters.delete(filter);
+      }
+
     }
 
-    if (this.filters.has(filter)) {
-      this.filters.delete(filter);
-    } else {
-      this.filters.add(filter);
-    }
     this.statusFilter.emit(Array.from(this.filters));
   }
 
