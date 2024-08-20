@@ -78,28 +78,42 @@ export class FilterSearchComponent implements OnInit {
     //check for params in the query and add them to the filter dropdown bars
     const qParams = this.route.parent.snapshot.queryParams;
 
+    /**
+     * TODO: refactor this to send a complete search query
+     * at the first request instead of sending a request
+     * every time we emit an event on the toggle filter functions.
+     *
+     * this COULD be a cause of the client sending bad data back
+     * to the user, so just be aware.
+     */
+
     //if there are topics in the query, toggle them in the filter dropdown
     if (qParams.topics && qParams.topics.length > 0) {
       const topics = [];
         for (const topic of qParams.topics) {
           topics.push({ name: '', _id: topic });
         }
+
         this.toggleTopicFilter(topics[0]);
     }
 
-    //if there are statuses in the query add them too the filter dropdowns
+    // if there are statuses in the query add them to the filter dropdowns
     if (qParams.status && qParams.status.length > 0) {
-        const statuses = [];
+      const statuses = [];
+
+      if (Array.isArray(qParams.status) === false) {
+        statuses.push(qParams.status);
+        this.toggleStatusFilter(statuses);
+
+      } else {
         for (const status of qParams.status) {
           statuses.push(status);
         }
-
-        console.log(statuses);
-
         this.toggleStatusFilter(statuses);
+      }
     }
-    //if there is a collection selected in the query, toggle it
-    //there will only ever be a single collection selected at a time
+
+    // Set the collection if it exists, otherwise default back to the params.
     if (qParams.collection) {
       this.toggleCollectionFilter(qParams.collection);
     } else {
