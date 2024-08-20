@@ -90,11 +90,15 @@ export class FilterSearchComponent implements OnInit {
     //if there are topics in the query, toggle them in the filter dropdown
     if (qParams.topics && qParams.topics.length > 0) {
       const topics = [];
+      if (Array.isArray(qParams.topics)) {
         for (const topic of qParams.topics) {
           topics.push({ name: '', _id: topic });
         }
 
-        this.toggleTopicFilter(topics[0]);
+        this.toggleTopicFilter(topics);
+      } else {
+        this.toggleTopicFilter([{ name: '', _id: qParams.topics }]);
+      }
     }
 
     // if there are statuses in the query add them to the filter dropdowns
@@ -299,16 +303,19 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
-  toggleTopicFilter(filter: { name?: string, _id: string }) {
-    if (filter.name.toLowerCase() === 'all') {
-      this.clearTopicFilters();
-      this.toggleTopicMenu(undefined);
-      return;
-    }
-    if (this.filterTopics.has(filter._id)) {
-      this.filterTopics.delete(filter._id);
-    } else {
-      this.filterTopics.add(filter._id);
+  toggleTopicFilter(filters?: { name?: string, _id: string }[]) {
+    for (const filter of filters) {
+      if (filter.name.toLowerCase() === 'all') {
+        this.clearTopicFilters();
+        this.toggleTopicMenu(undefined);
+        return;
+      }
+
+      if (this.filterTopics.has(filter._id)) {
+        this.filterTopics.delete(filter._id);
+      } else {
+        this.filterTopics.add(filter._id);
+      }
     }
     this.topicFilter.emit(Array.from(this.filterTopics));
   }
