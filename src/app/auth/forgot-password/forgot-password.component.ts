@@ -57,7 +57,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.authValidationService.getErrorState().subscribe(err => this.showError = err);
-    this.validateEmail();
   }
 
   /**
@@ -76,40 +75,48 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
    * Displays an error banner if an error is thrown.
    */
   submit(): void {
-    if (this.submitButton === 'enabled') {
-      this.authService.initiateResetPassword(this.emails.get('email').value).subscribe(val => {
-        this.showDone = true;
-      }, error => {
-        this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
-        this.authValidationService.showError();
-      });
+    // Validate the email first
+    this.validateEmail();
+
+    // Check if the form is valid
+    if (this.emails.valid) {
+      this.authService.initiateResetPassword(this.emails.get('email').value).subscribe(
+        val => {
+          this.showDone = true;
+        },
+        error => {
+          const parsedError = JSON.parse(error);
+          this.errorMessage = parsedError.message;
+          this.authValidationService.showError();
+        }
+      );
+    } else {
+      // Handle form invalid state
+      this.toggleButton();
     }
   }
 
-  /**
-   * Validates the email by ensuring that it exists in the database
-   * Displays an error message beneath the input if the email does not exist
-   */
-  private validateEmail() {
-    this.emails.get('email').valueChanges.pipe(
-      debounce(() => {
-        return interval(600);
-      }),
-      takeUntil(this.ngUnsubscribe)).subscribe(
-        async (value) => {
-          await this.authService.emailInUse(value)
-            .then((res: any) => {
-              this.emailInUse = res.identifierInUse;
-              if (!this.emailInUse) {
-                this.emailErrorMsg = 'This email is not registered!';
-                this.emails.get('email').setErrors({ emailInUse: false });
-              }
-            })
-            .catch((err) => {
-              this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
-              this.authValidationService.showError();
-            });
-        });
+  private validateEmail(): void {
+    const emails = this.emails.get('email');
+
+    // Clear any previous errors
+    emails.setErrors(null);
+
+    this.authService.emailInUse(emails.value)
+      .then((res: any) => {
+        this.emailInUse = res.identifierInUse;
+        if (this.emailInUse) {
+          this.emailErrorMsg = 'This email is already registered!';
+          emails.setErrors({ emailInUse: true });
+        } else {
+          this.emailErrorMsg = '';
+        }
+      })
+      .catch((err) => {
+        const parsedError = JSON.parse(err);
+        this.errorMessage = parsedError.message;
+        this.authValidationService.showError();
+      });
   }
 
   ngOnDestroy(): void {

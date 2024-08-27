@@ -14,7 +14,6 @@ import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
-import { CollectionService } from 'app/core/collection-module/collections.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileUploadMeta } from './components/content-upload/app/services/typings';
 import { Title } from '@angular/platform-browser';
@@ -151,12 +150,11 @@ export class BuilderStore {
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
     private refactoredLearningObjectService: RefactoredLearningObjectService,
-    private collectionService: CollectionService,
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
     private submissionService: SubmissionsService,
-    private outcomeService: OutcomeService
+    private outcomeService: OutcomeService,
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -240,23 +238,28 @@ export class BuilderStore {
   /**
    * Retrieve a learning object from the service by id
    *
-   * @param {string} id
+   * @param {string} cuid
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(id: string, revisionId?: any, username?: string): Promise<LearningObject> {
+  fetch(cuid: string, version?: any, username?: string): Promise<LearningObject> {
     this.touched = true;
 
+    // don't ask, don't tell
+    // but if anything breaks, this might be a culprit
+    let revisionId: any = 0;
     // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
-    const retrieve = this._isRevision && revisionId !== undefined && username ? async () => {
+    const retrieve = this._isRevision && revisionId !== undefined && username ?
+    async () => {
       // eslint-disable-next-line eqeqeq
       if (revisionId == 0) {
-        revisionId = await this.learningObjectService.createRevision(id);
+        revisionId = await this.learningObjectService.createRevision(cuid);
       }
 
-      return this.learningObjectService.getLearningObjectRevision(username, id, revisionId);
-    } : async () => {
-      const value = this.uriRetriever.getLearningObject({ id }, ['children', 'parents', 'materials', 'outcomes']);
+      return this.learningObjectService.getLearningObjectRevision(username, cuid, revisionId);
+    } :
+    async () => {
+      const value = this.uriRetriever.getLearningObject({cuidInfo: {cuid, version}}, ['children', 'parents', 'materials', 'outcomes']);
       return value.toPromise();
     };
 
@@ -292,7 +295,7 @@ export class BuilderStore {
    */
   fetchMaterials(): void {
     this.learningObjectService
-      .getMaterials(this.learningObject.author.username, this.learningObject.id)
+      .getMaterials(this.learningObject.id)
       .then(materials => {
         this.learningObject.materials = materials;
         this.learningObjectEvent.next(this.learningObject);
@@ -313,7 +316,7 @@ export class BuilderStore {
       );
       return children.toPromise();
     } else {
-      await this.fetch(this.learningObject.cuid);
+      await this.fetch(this.learningObject.cuid, this.learningObject.version);
       return this.getChildren();
     }
   }
@@ -408,7 +411,6 @@ export class BuilderStore {
       case BUILDER_ACTIONS.UPDATE_FOLDER_DESCRIPTION:
         return await this.updateFolderDescription({
           path: data.path,
-          index: data.index,
           description: data.description
         });
       case BUILDER_ACTIONS.DELETE_FILES:
@@ -644,7 +646,6 @@ export class BuilderStore {
   private addContributor(user: User) {
     this.learningObject.addContributor(user);
     this.validator.validateLearningObject(this.learningObject);
-
     this.saveObject(
       {
         contributors: this.learningObject.contributors.map(x => x.userId)
@@ -799,20 +800,25 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private updateFolderDescription(params: {
-    path?: string;
-    index?: number;
+    path: string;
     description: string;
   }): void {
-    if (params.index !== undefined) {
-      this.learningObject.materials.folderDescriptions[
-        params.index
-      ].description = params.description;
+    // If the folder path already exists, update the description
+    // Otherwise, add a new folder description
+    const index = this.learningObject.materials.folderDescriptions.findIndex(
+      folder => folder.path === params.path
+    );
+    if (index !== -1) {
+      this.learningObject.materials.folderDescriptions[index].description =
+        params.description;
     } else {
       this.learningObject.materials.folderDescriptions.push({
         path: params.path,
         description: params.description
       });
     }
+
+    // Update the learning object
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
       materials: { folderDescriptions: this.learningObject.materials
@@ -832,7 +838,6 @@ export class BuilderStore {
       const index = this.findFile(fileId);
       this.learningObject.materials.files.splice(index, 1);
     });
-    this.learningObjectEvent.next(this.learningObject);
     this.learningObjectEvent.next(this.learningObject);
   }
 
@@ -893,7 +898,7 @@ export class BuilderStore {
    */
   public async removeEmptyOutcomes() {
     // Get most up-to-date values for current learning object
-    await this.fetch(this.learningObject.cuid);
+    await this.fetch(this.learningObject.cuid, this.learningObject.version);
     // Retrieve outcomes of current learning object
     const value = await this.uriRetriever.getLearningObject({ cuidInfo: {cuid: this.learningObject.cuid} }, ['outcomes']).toPromise();
     // Iterate through outcomes

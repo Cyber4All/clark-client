@@ -121,48 +121,25 @@ private _id: string;
     return this._createdAt;
   }
 
-  cognitoIdentityId: string;
   /**
    * Creates an instance of User.
    *
-   * @param {Partial<User>} [user]
+   * @param {Partial<any>}
+   * User entity needs a rewrite, hence the `any`
    * @memberof User
    */
-  constructor(user?: Partial<User>) {
-    this._id = '';
-    this._username = '';
-    this._name = '';
-    this._email = '';
-    this._emailVerified = false;
-    this._organization = '';
-    this._bio = '';
-    this._createdAt = Date.now().toString();
-    if (user) {
-      this.copyUser(user);
-    }
-  }
-
-  /**
-   * Copies properties of user to this user if defined
-   *
-   * @private
-   * @param {Partial<User>} user
-   * @memberof User
-   */
-  private copyUser(user: Partial<User>): void {
-    if (user.userId) {
-      this._id = user.userId;
-    }
-    this._username = user.username || this.username;
-    this.name = user.name || this.name;
-    if (user.email) {
-      this.email = user.email as string;
-    }
-    this._emailVerified = user.emailVerified || this.emailVerified;
-    this.organization = user.organization || this.organization;
-    this.bio = user.bio || this.bio;
-    this._createdAt = user.createdAt || this.createdAt;
-    this.cognitoIdentityId = user.cognitoIdentityId;
+  // Had to update the constructor to accept any type of user object
+  // because the backend now returns _id instead of userId and the
+  // frontend uses userId...
+  constructor(user?: any) {
+    this._id = user?.userId || user?._id || '';
+    this._username = user?.username || '';
+    this._name = user?.name || '';
+    this._email = user?.email || '';
+    this._emailVerified = user?.emailVerified || false;
+    this._organization = user?.organization || '';
+    this._bio = user?.bio || '';
+    this._createdAt = user?.createdAt || Date.now().toString();
   }
 
   /**
@@ -181,7 +158,6 @@ private _id: string;
       organization: this.organization,
       bio: this.bio,
       createdAt: this.createdAt,
-      cognitoIdentityId: this.cognitoIdentityId
     };
     return user;
   }

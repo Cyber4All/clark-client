@@ -34,6 +34,7 @@ import { getUserAgentBrowser } from 'getUserAgentBrowser';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FILE_ROUTES } from 'app/core/learning-object-module/file/file.routes';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -151,6 +152,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   tips = TOOLTIP_TEXT;
 
+  // Subject to break subscription to observables
+  // upon component destruction
   unsubscribe$ = new Subject<void>();
 
   openPath: string;
@@ -166,7 +169,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
 
   learningObjectCuid: string;
 
-  private bucketUploadPath = '';
+  learningObject: LearningObject;
 
   private newFileMeta: FileUploadMeta[] = [];
 
@@ -176,6 +179,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: ToastrOvenService,
     private changeDetector: ChangeDetectorRef,
     private fileManager: FileManagementService,
+    private fileService: FileService,
     private auth: AuthService,
   ) {
     this.checkDragDropSupport();
@@ -201,17 +205,24 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         if (object) {
           this.learningObjectCuid = object.cuid;
           this.notes = object.materials.notes;
-          this.bucketUploadPath = `${object.author.username}/${object.id}`;
-          this.files$.next(object.materials.files);
+
+          // Temporarily store the learning obejct to test if it is being updated
+          this.learningObject = object;
+
+          // Set the material information
           this.folderMeta$.next(object.materials.folderDescriptions);
+          this.files$.next(object.materials.files);
+
+          // Check if the learning object has a solution file
           this.solutionUpload = false;
-          this.files$.value.forEach((file) => {
+          this.files$.value?.forEach((file) => {
             if (file.name.toLowerCase().indexOf('solution') >= 0) {
               this.solutionUpload = true;
             }
           });
         }
       });
+
     this.notes$
       .pipe(takeUntil(this.unsubscribe$), debounceTime(650))
       .subscribe((notes) => {
@@ -513,7 +524,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         })
         .subscribe((update) => this.handleUploadUpdates(update));
     } catch (e) {
-      console.error('UPLOAD ERROR', e);
       if (e.name === UploadErrorReason.Credentials) {
         this.handleCredentialsError();
       } else {
@@ -735,17 +745,23 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    * @memberof UploadComponent
    */
   async *handleDeletion(files: string[]) {
+    // Show delete confirmation modal
     this.showDeleteConfirmation();
+
+    // Wait for user to confirm deletion
     const confirmed: boolean = yield;
     if (confirmed) {
       this.saving$.next(true);
       try {
+        // Get the learning object
         const object = await this.learningObject$.pipe(take(1)).toPromise();
-        await Promise.all(
-          files.map(async (fileId) => {
-            await this.fileManager.delete(object, fileId);
-          }),
-        );
+
+        // Delete each file
+        files.forEach(async (fileId) => {
+          await this.fileService.deleteLearningObjectFileMetadata(object.id, fileId);
+        });
+
+        // Emit the deleted files
         this.filesDeleted.emit(files);
       } catch (e) {
         this.error$.next(e);
@@ -801,50 +817,25 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async handleEdit(file: LearningObject.Material.File | any): Promise<void> {
     try {
+      // If the file is not a folder, update the file description
       if (!file.isFolder) {
         this.fileDescriptionUpdated.emit({
           id: file.id,
           description: file.description,
         });
-      } else {
-        const index = await this.findFolder(file.path);
-        if (index > -1) {
-          this.folderDescriptionUpdated.emit({
-            index,
-            description: file.description,
-          });
-        } else {
-          this.folderDescriptionUpdated.emit({
-            path: file.path,
-            description: file.description,
-          });
-        }
+
+        // Early return to prevent updating folder description
+        return;
       }
+
+      // Update the folder description
+      this.folderDescriptionUpdated.emit({
+        path: file.path,
+        description: file.description,
+      });
     } catch (e) {
       console.error(e);
     }
-  }
-
-  /**
-   * Finds index of folder
-   *
-   * @private
-   * @param {string} path
-   * @returns {number}
-   * @memberof UploadComponent
-   */
-  private async findFolder(path: string): Promise<number> {
-    let index = -1;
-    const object = await this.learningObject$.pipe(take(1)).toPromise();
-    const folders = object.materials.folderDescriptions;
-    for (let i = 0; i < folders.length; i++) {
-      const folderPath = folders[i].path;
-      if (folderPath === path) {
-        index = i;
-        break;
-      }
-    }
-    return index;
   }
 
   ngOnDestroy() {

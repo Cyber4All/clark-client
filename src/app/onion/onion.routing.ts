@@ -37,7 +37,7 @@ const onion_routes: Routes = [
           () => import('../onion/relevancy-builder/relevancy-builder.module').then(m => m.RelevancyBuilderModule),
       },
       {
-        path: 'learning-object-builder/:learningObjectId',
+        path: 'learning-object-builder/:cuid/:version',
         loadChildren:
           () => import('../onion/learning-object-builder/learning-object-builder.module').then(m => m.LearningObjectBuilderModule),
         canActivate: [AuthGuard]

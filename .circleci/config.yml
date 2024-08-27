@@ -1,26 +1,39 @@
 version: 2.1
 
 orbs:
-  cyber4all: cyber4all/orb@2.1.1
+  cyber4all: cyber4all/orb@2.1.7
 
 workflows:
+  continuous-integration:
+    jobs:
+      - cyber4all/lint
+
+      - cyber4all/build
+
   deploy-clark-service-refactor:
     when:
         equal: [clark-service-refactor, <<pipeline.git.branch>>]
     jobs:
       - cyber4all/s3:
-          context: [AWS, Slack]
+          context:
+            - aws_staging
+            - Slack
           bucket: "clark-client-staging"
-          role-arn: S3_STAGING_OIDC_ROLE
+          distribution_id: STAGING_CLOUDFRONT_ID
+          script: build:staging
 
   continuous-deployment:
     when:
         equal: [releases, <<pipeline.git.branch>>]
     jobs:
-      - cyber4all/s3:
-          context: [AWS, Slack]
-          bucket: "clark-prod-file-uploads"
-      
       - cyber4all/release:
           context: [Github]
           tag: $(jq -r '.version' package.json)
+      
+      - cyber4all/s3:
+          context: 
+            - AWS
+            - Slack
+          requires: [cyber4all/release]
+          bucket: "curriculum-listings"
+    

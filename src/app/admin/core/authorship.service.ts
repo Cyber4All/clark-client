@@ -14,11 +14,11 @@ export class AuthorshipService {
 
   constructor(private http: HttpClient) { }
 
-  async changeAuthorship(oldAuthor: User, id: string, newAuthor: string) {
+  async changeAuthorship(oldAuthorId: string, learningObjectId: string, newAuthorId: string) {
     return this.http
-      .post(CHANGE_AUTHORSHIP_ROUTES.CHANGE_AUTHORSHIP(oldAuthor.userId, id),
+      .post(CHANGE_AUTHORSHIP_ROUTES.CHANGE_AUTHORSHIP(oldAuthorId, learningObjectId),
         {
-          'author': newAuthor,
+          'author': newAuthorId,
         },
         { withCredentials: true, responseType: 'text' }
       )

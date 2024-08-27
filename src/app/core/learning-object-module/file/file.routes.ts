@@ -12,9 +12,7 @@ export const FILE_ROUTES = {
    * @param fileId - The id of the file to update
    */
   UPDATE_FILE(username: string, learningObjectId: string, fileId: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       learningObjectId,
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
@@ -27,13 +25,10 @@ export const FILE_ROUTES = {
    * @param fileId - The id of the file to delete
    */
   DELETE_FILE(params: {
-    username: string;
     learningObjectId: string;
     fileId: string;
   }) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      params.username,
-    )}/learning-objects/${encodeURIComponent(
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       params.learningObjectId,
     )}/materials/files/${encodeURIComponent(params.fileId)}`;
   },
@@ -66,10 +61,8 @@ export const FILE_ROUTES = {
    * @param username - The username of the author
    * @param id - The id of the learning object to get the materials from
    */
-  GET_MATERIALS(username: string, id: string, filter?: MaterialsFilter) {
-    return `${environment.apiURL}/users/${encodeURIComponent(
-      username,
-    )}/learning-objects/${encodeURIComponent(
+  GET_MATERIALS(id: string, filter?: MaterialsFilter) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
       id,
     )}/materials?status=${encodeURIComponent(filter)}`;
   },

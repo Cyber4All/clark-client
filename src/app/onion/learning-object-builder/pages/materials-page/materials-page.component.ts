@@ -58,6 +58,8 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   constructor(private store: BuilderStore) { }
 
   ngOnInit() {
+    // Sets the learning object observable to continuously update the
+    // learning object in the store until the component is destroyed
     this.learningObject$ = this.store.learningObjectEvent.pipe(
       takeUntil(this.destroyed$)
     );
@@ -135,8 +137,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
   }
 
   async handleFolderDescriptionUpdate(folderMeta: {
-    path?: string;
-    index?: number;
+    path: string;
     description: string;
   }) {
     try {

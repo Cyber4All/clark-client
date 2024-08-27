@@ -60,10 +60,12 @@ export class FileManagementService {
     this.validateFileNames(files, learningObjectCuid);
     this.validateUploadParams({
       authorUsername,
-      learningObjectId: learningObjectCuid,
+      learningObjectCuid,
       learningObjectRevisionId
     });
+
     this.configureS3Client();
+
     const uploadUpdate$ = new Subject<UploadUpdate>();
     this.getCognitoIdentityId(authorUsername)
       .then(cognitoIdentityId => {
@@ -102,11 +104,11 @@ export class FileManagementService {
    */
   private validateUploadParams({
     authorUsername,
-    learningObjectId,
+    learningObjectCuid,
     learningObjectRevisionId
   }: {
     authorUsername: string;
-    learningObjectId: string;
+    learningObjectCuid: string;
     learningObjectRevisionId: number;
   }) {
     if (!authorUsername) {
@@ -114,9 +116,9 @@ export class FileManagementService {
         'Cannot start upload. Learning Object\'s author\'s username must be provided.'
       );
     }
-    if (!learningObjectId) {
+    if (!learningObjectCuid) {
       throw new Error(
-        'Cannot start upload. Learning Object\'s id must be provided.'
+        'Cannot start upload. Learning Object\'s cuid must be provided.'
       );
     }
     if (learningObjectRevisionId == null) {
@@ -135,19 +137,17 @@ export class FileManagementService {
    * @memberof FileManagementService
    */
   private async getCognitoIdentityId(username: string): Promise<string> {
-    let cognitoIdentityId;
+    // Check if user has permission to upload files for the given username
+    // If user is not an admin or editor, they can only upload files for themselves
     if (username !== this.auth.user.username && !this.auth.isAdminOrEditor()) {
       throw new Error(
         `Invalid access. You do not have permission to upload files for ${username}.`
       );
     }
-    if (username === this.auth.user.username) {
-      cognitoIdentityId = this.auth.getOpenIdToken().IdentityId;
-    } else {
-      // Get user data and return cognito id
-      const user = await this.userService.getUser(username, 'username');
-      cognitoIdentityId = user.cognitoIdentityId;
-    }
+
+    // Get user data and return cognito id
+    // const user = await this.userService.getUser(username);
+    const cognitoIdentityId = await this.userService.getUserFileAccessId(username);
     if (!cognitoIdentityId) {
       throw new Error(
         `Cannot start upload. Unable to get upload location for ${username}.`
@@ -163,28 +163,50 @@ export class FileManagementService {
    * @memberof FileManagementService
    */
   private configureS3Client(): void {
-    const openIdToken: OpenIdToken = this.auth.getOpenIdToken();
-    if (!openIdToken) {
-      const credentialsError = new Error();
-      credentialsError.name = UploadErrorReason.Credentials;
-      throw credentialsError;
+    // When in local development, use mocked credentials
+    // for the S3 client to connect to the Minio server
+    if (!environment.production) {
+      AWS.config.credentials = new AWS.Credentials({
+        accessKeyId: 'root',
+        // deepcode ignore HardcodedNonCryptoSecret: Mock password, not real
+        secretAccessKey: 'password'
+      });
+
+      // Setup the S3 client to use the local Minio server
+      this.S3 = new AWS.S3({
+        endpoint: 'http://localhost:9000',
+        s3ForcePathStyle: true,
+        signatureVersion: 'v4',
+      });
+    } else {
+      // Get the user's Cognito OpenIdToken to use for S3 uploads
+      const openIdToken: OpenIdToken = this.auth.getOpenIdToken();
+      if (!openIdToken) {
+        const credentialsError = new Error();
+        credentialsError.name = UploadErrorReason.Credentials;
+        throw credentialsError;
+      }
+
+      // Set the IdentityPoolId based on the user's role
+      const IdentityPoolId = this.auth.isAdminOrEditor()
+        ? environment.cognitoAdminIdentityPoolId
+        : environment.cognitoIdentityPoolId;
+
+      // Configure S3 client with user's Cognito credentials
+      AWS.config.credentials = new AWS.CognitoIdentityCredentials(
+        {
+          IdentityPoolId,
+          IdentityId: openIdToken.IdentityId,
+          Logins: {
+            'cognito-identity.amazonaws.com': openIdToken.Token
+          }
+        },
+        { region: environment.cognitoRegion }
+      );
+
+      // Configure S3 client with region
+      this.S3 = new AWS.S3({ region: environment.s3BucketRegion });
     }
-    const Logins = {
-      'cognito-identity.amazonaws.com': openIdToken.Token
-    };
-    const IdentityPoolId = this.auth.isAdminOrEditor()
-      ? environment.cognitoAdminIdentityPoolId
-      : environment.cognitoIdentityPoolId;
-    const IdentityId = openIdToken.IdentityId;
-    AWS.config.credentials = new AWS.CognitoIdentityCredentials(
-      {
-        IdentityPoolId,
-        IdentityId,
-        Logins
-      },
-      { region: environment.cognitoRegion }
-    );
-    this.S3 = new AWS.S3({ region: environment.s3BucketRegion });
   }
 
   /**
@@ -503,42 +525,5 @@ export class FileManagementService {
         failed: queueStatus.failed
       }
     });
-  }
-
-  /**
-   * Deletes specified from Learning Object using CLARK API
-   *
-   * @param {string} learningObjectID
-   * @param {string} filename
-   * @returns {Promise<{}>}
-   * @memberof FileManagementService
-   */
-  delete(learningObject: LearningObject, fileId: string): Promise<{}> {
-    const route = FILE_ROUTES.DELETE_FILE({
-      username: learningObject.author.username,
-      learningObjectId: learningObject.id,
-      fileId
-    });
-
-    return this.http
-      .delete(route, { withCredentials: true, responseType: 'text' })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (
-      error.error instanceof ErrorEvent ||
-      (error.error && error.error.message)
-    ) {
-      // Client-side or network returned error
-      return throwError(error.error.message);
-    } else {
-      // API returned error
-      return throwError(error);
-    }
   }
 }

@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -97,7 +98,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
     this.url = this.buildLocation();
     // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
-    await this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid, version: this.learningObject.version});
+    await this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid, version: this.learningObject.version });
     this.saved = this.libraryService.has(this.learningObject);
     this.getCollection();
     this.libraryService.loaded
@@ -142,26 +143,30 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         this.learningObject.id
       );
     }
-    try {
-      if (!this.userIsAuthor && this.isReleased) {
-        this.saved = this.libraryService.has(this.learningObject);
+    if (!this.userIsAuthor && this.isReleased) {
+      this.saved = this.libraryService.has(this.learningObject);
 
-        if (!this.saved) {
-          try {
-            await this.libraryService.addToLibrary(this.learningObject.cuid, this.learningObject.version);
-          } catch (e) {
-            if (e.status === 201) {
-              this.toaster.success('Successfully Added!', 'Learning Object added to your library');
-              this.saved = true;
-              this.animateSaves();
-            }
+      if (!this.saved) {
+        try {
+          await this.libraryService.addToLibrary(this.learningObject.cuid, this.learningObject.version);
+
+          this.toaster.success('Successfully Added!', 'Learning Object added to your library');
+          this.saved = true;
+          this.animateSaves();
+        } catch (err: any) {
+          if (err.status !== 201) {
+            this.toaster.error('Error!', 'There was an error adding to your library');
+            this.addingToLibrary = false;
+            this.changeDetectorRef.detectChanges();
+            return;
+          } else {
+            // Do nothing if status is 201.
           }
         }
       }
-    } catch (error) {
-      this.toaster.error('Error!', 'There was an error adding to your library');
     }
-    this.libraryService.getLibrary();
+
+    this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid });
     this.addingToLibrary = false;
     this.changeDetectorRef.detectChanges();
   }
