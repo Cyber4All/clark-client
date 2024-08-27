@@ -233,15 +233,4 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
 
         return uri;
     },
-    DOWNLOAD_FILE(params: {
-        username: string;
-        loId: string;
-        fileId: string;
-        open?: boolean;
-    }) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            params.username,
-        )}/learning-objects/${params.loId}/files/${params.fileId}/download${params.open ? '?open=true' : ''
-            }`;
-    },
 };
