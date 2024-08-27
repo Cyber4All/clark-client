@@ -127,8 +127,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.reviewer = this.auth.hasReviewerAccess();
       }
     });
-    this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
-      this.fetchReleasedLearningObject(username, learningObjectName);
+    this.route.params.subscribe(({ username, cuid, version }: { username: string, cuid: string, version: number }) => {
+      this.fetchReleasedLearningObject(username, cuid, version);
     });
   }
 
@@ -139,7 +139,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param author the author of the learning object
    * @param name the name of the learning object
    */
-  async fetchReleasedLearningObject(author: string, cuid: string) {
+  async fetchReleasedLearningObject(author: string, cuid: string, version: number) {
     this.loading = true;
 
     try {
@@ -148,7 +148,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
       await this.learningObjectService.fetchLearningObjectWithResources(
-        { author, cuidInfo: { cuid } }, resources
+        { author, cuidInfo: { cuid, version } }, resources
       ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object instanceof LearningObject) {
           this.releasedLearningObject = object;
@@ -451,12 +451,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
    *
    * @param rating the rating object to be updated
    */
-  updateRating(rating: { value: number; comment: string; id?: string }) {
+  async updateRating(rating: { value: number; comment: string; id?: string }) {
     const { id, ...updates } = rating;
     if (!rating.id) {
       this.toastService.error('Error!', 'An error occured and your rating could not be updated');
       return;
     }
+
     this.ratingService
       .editRating({
         CUID: this.learningObject.cuid,
@@ -470,7 +471,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.showAddRating = false;
           this.toastService.success('Success!', 'Review updated successfully!');
         },
-        error => {
+        (error) => {
           this.showAddRating = false;
           this.toastService.error('Error!', 'An error occurred and your rating could not be updated');
         }
@@ -545,17 +546,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
     delete response.index;
 
     if (ratingId) {
-      const result = await this.ratingService
-        .createResponse({
-          ratingId,
-          response,
-        });
-      if (result) {
-        this.getLearningObjectRatings();
-        this.toastService.success('Success!', 'Response submitted successfully!');
-      } else {
-        this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
-      }
+      await this.ratingService
+        .createResponse({ratingId, response})
+        .then(
+          () => {
+            this.getLearningObjectRatings();
+            this.toastService.success('Success!', 'Response submitted successfully!');
+          },
+          (error) => {
+            this.toastService.error('Error!', 'An error occurred and your response could not be submitted ' + error.error.message);
+          }
+        );
     } else {
       this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
     }
@@ -574,20 +575,25 @@ export class DetailsComponent implements OnInit, OnDestroy {
     // locate target rating and then delete the index param from the response
     const ratingId = this.learningObject.ratings.ratings[response.index].id;
     const responseId = this.ratings[response.index].response[0]._id;
+    if (!ratingId) {
+      this.toastService.error('Error!', 'An error occurred and your response could not be updated');
+      return;
+    }
+
     if (ratingId) {
-      const result = await this.ratingService
+      await this.ratingService
         .editResponse({
           responseId,
           updates: response,
-        });
-      if (result) {
-        this.getLearningObjectRatings();
-        this.toastService.success('Success!', 'Response updated successfully!');
-      } else {
-        this.toastService.error('Error!', 'An error occurred and your response could not be updated');
-      }
-    } else {
-      this.toastService.error('Error!', 'An error occurred and your response could not be updated');
+        }).then(
+          () => {
+            this.getLearningObjectRatings();
+            this.toastService.success('Success!', 'Response updated successfully!');
+          },
+          (error) => {
+            this.toastService.error('Error!', 'An error occurred and your response could not be updated');
+          }
+        );
     }
   }
 

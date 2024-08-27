@@ -72,7 +72,7 @@ export class LearningObjectService {
   }
 
   fetchLearningObjectWithResources(
-    params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
+    params: { author?: string, cuidInfo?: { cuid: string, version: number }, id?: string },
     resources?: string[],
     options?: { asyncDelivery?: boolean }
   ): Observable<LearningObject | any> {

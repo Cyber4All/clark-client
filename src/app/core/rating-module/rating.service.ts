@@ -41,19 +41,17 @@ export class RatingService {
    * @param {{comment:string}} response
    * @returns {Promise<any>}
    */
-  createResponse(params: {
+  async createResponse(params: {
     ratingId: string;
     response: { comment: string }
-  }): Promise<any> {
-    const res = this.http.post(
+  }): Promise<void> {
+    this.http.post(
       RATING_ROUTES.CREATE_RESPONSE(params.ratingId),
       params.response,
       { withCredentials: true },
-    ).toPromise()
-      .catch(result => {
-        return Promise.resolve(result.status === 200);
-      });
-    return res;
+    )
+    .pipe(catchError(this.handleError))
+    .toPromise();
   }
 
 
@@ -68,15 +66,15 @@ export class RatingService {
     responseId: string;
     updates: { comment: string };
   }): Promise<any> {
-    const res = this.http.patch(
+    return this.http.patch(
       RATING_ROUTES.UPDATE_RESPONSE(params.responseId),
       params.updates,
       { withCredentials: true },
-    ).toPromise()
-      .catch(result => {
-        return Promise.resolve(result.status === 200);
-      });
-    return res;
+    )
+    .pipe(
+      catchError(this.handleError)
+    )
+    .toPromise();
   }
 
   /**
@@ -183,7 +181,6 @@ export class RatingService {
         }
       )
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise();

@@ -242,13 +242,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.downloading[index] = false;
   }
 
+  // TODO: Come back and cry about this
   goToNotification(notification: any) {
     const parsedDetailsPath = notification.link.split('/');
     this.router.navigate(['/details/', parsedDetailsPath[2], parsedDetailsPath[3]]);
   }
 
   goToItem(object: LearningObject) {
-    this.router.navigate(['/details/', object.author.username, object.cuid]);
+    this.router.navigate(['/details/', object.author.username, object.cuid, object.version]);
   }
 
   async getRatings(learningObject: LearningObject): Promise<LearningObjectRatings> {
