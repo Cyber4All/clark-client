@@ -7,7 +7,7 @@ import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitte
 })
 export class NewRatingComponent implements OnInit, OnChanges {
   @Input() count = 5;
-  @Input() rating: {value: number, comment: string, id?: string};
+  @Input() rating: {value: number, comment: string, id: string};
   @Input() editing = false;
   @Output() setRating: EventEmitter<{value: number, comment: string, id?: string, editing?: boolean}> = new EventEmitter();
   @Output() cancelRating: EventEmitter<void> = new EventEmitter();

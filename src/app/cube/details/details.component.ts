@@ -54,6 +54,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   learningObjectOwners: string[];
   averageRatingValue = 0;
   showAddRating = false;
+  editRating = false;
   showAddResponse = false;
 
   // Removed rating type to avoid conflict with the
@@ -75,12 +76,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     response?: object;
   }[] = [];
 
-  userRating: {
-    user?: User;
-    number?: number;
-    comment?: string;
-    date?: string;
-  } = {};
+  userRating: {value?: number, comment?: string, id?: string} = {};
 
   openChangelogModal = false;
   loadingChangelogs: boolean;
@@ -446,14 +442,34 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.canAddNewRating = false;
   }
 
+  triggerUpdateRating(event: { value: number; comment: string, index: number }) {
+    // Set the showAddRating to true so that the rating form is displayed
+    this.showAddRating = true;
+
+    // Set the editRating to true so that the form knows to update the rating
+    this.editRating = true;
+
+    // Set the userRating to the rating they want to edit
+    const rating = this.ratings[event.index];
+    this.userRating = {
+      value: event.value,
+      comment: event.comment,
+      id: rating.id,
+    };
+  }
+
   /**
    * Edits an existing rating. An id must be supplied.
    *
    * @param rating the rating object to be updated
    */
-  async updateRating(rating: { value: number; comment: string; id?: string }) {
-    const { id, ...updates } = rating;
-    if (!rating.id) {
+  async updateRating(rating: {
+    value: number;
+    comment: string;
+    id?: string;
+  }) {
+    const { value, comment, id } = rating;
+    if (!id) {
       this.toastService.error('Error!', 'An error occured and your rating could not be updated');
       return;
     }
@@ -462,14 +478,14 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .editRating({
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
-        ratingId: rating.id,
-        rating: updates,
+        ratingId: id,
+        rating: {value, comment},
       })
       .then(
         () => {
           this.getLearningObjectRatings();
           this.showAddRating = false;
-          this.toastService.success('Success!', 'Review updated successfully!');
+          this.toastService.success('Success!', 'Rating updated successfully!');
         },
         (error) => {
           this.showAddRating = false;
