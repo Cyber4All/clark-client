@@ -118,9 +118,11 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     if (url) {
       this.fileService.previewLearningObjectFile(url)
         .then((previewUrl) => {
-          window.open(previewUrl, "_blank");
+          window.open(previewUrl, '_blank');
         })
-        .catch((err) => { console.error(err); });
+        .catch((err) => {
+ console.error(err);
+});
     } else {
       this.file = file;
       this.preview = false;

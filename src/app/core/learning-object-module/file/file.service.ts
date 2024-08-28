@@ -14,7 +14,7 @@ export class FileService {
   constructor(
     private http: HttpClient,
     private cookies: CookieService
-  ) { 
+  ) {
     const token = this.cookies.get('presence');
     if (token) {
       this.headers = new HttpHeaders().append('Authorization',`Bearer ${token}`);
@@ -39,7 +39,7 @@ export class FileService {
   /**
    * Makes a request to the previewUrl with authorization headers to get the file
    * and returns the blob url of the file that can be opened in a new tab
-   * 
+   *
    * @param url the previewUrl of the material on the learning object
    * @returns the blob url of the file
    */
