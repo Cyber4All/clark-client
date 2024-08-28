@@ -189,7 +189,7 @@ export class BuilderStore {
    * @readonly
    * @memberof BuilderStore
    */
-  private get learningObject() {
+  get learningObject() {
     return this._learningObject;
   }
 
@@ -475,6 +475,9 @@ export class BuilderStore {
       );
     }
   }
+
+
+  
   /**
    *
    *
