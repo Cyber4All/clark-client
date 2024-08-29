@@ -5,23 +5,26 @@ import {
   OnInit,
   Input,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 
-import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
+import {
+  CollectionService,
+  Collection,
+} from 'app/core/collection-module/collections.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Topic } from '@entity';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-admin-filter-search',
   templateUrl: './filter-search.component.html',
-  styleUrls: ['./filter-search.component.scss']
+  styleUrls: ['./filter-search.component.scss'],
 })
 export class FilterSearchComponent implements OnInit {
   collections: Collection[] = [];
@@ -41,7 +44,7 @@ export class FilterSearchComponent implements OnInit {
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
   @Output() topicFilter = new EventEmitter<string[]>();
-  @Output() relevancyCheck = new EventEmitter<{ start: string, end: string }>();
+  @Output() relevancyCheck = new EventEmitter<{ start: string; end: string }>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
@@ -53,14 +56,13 @@ export class FilterSearchComponent implements OnInit {
   relevancyEnd: Date;
   relevancyMenuDown: boolean;
 
-
   constructor(
     private collectionService: CollectionService,
     private topicsService: TopicsService,
     private authService: AuthService,
     private toaster: ToastrOvenService,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+  ) {}
 
   async ngOnInit() {
     await this.getCollections();
@@ -71,7 +73,7 @@ export class FilterSearchComponent implements OnInit {
     this.statuses.splice(0, 0);
 
     this.statuses = this.statuses.filter(
-      s => !['rejected', 'unreleased'].includes(s.toLowerCase())
+      (s) => !['rejected', 'unreleased'].includes(s.toLowerCase()),
     );
     this.relevancyStart = new Date();
 
@@ -131,7 +133,7 @@ export class FilterSearchComponent implements OnInit {
   private async getCollections(): Promise<void> {
     await this.collectionService
       .getCollections()
-      .then(collections => {
+      .then((collections) => {
         this.collections = Array.from(collections);
         this.collections.push({ abvName: 'all', name: 'All', hasLogo: false });
 
@@ -145,18 +147,19 @@ export class FilterSearchComponent implements OnInit {
           return 0;
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.toaster.error('Error!', error);
       });
   }
 
   private getTopics(): void {
-    this.topicsService
-      .getTopics()
-      .then(topics => {
-        this.topics = topics;
-        this.topics = [].concat([{ _id: 'all', name: 'All' }], Array.from(topics));
-      });
+    this.topicsService.getTopics().then((topics) => {
+      this.topics = topics;
+      this.topics = [].concat(
+        [{ _id: 'all', name: 'All' }],
+        Array.from(topics),
+      );
+    });
   }
 
   /**
@@ -177,7 +180,7 @@ export class FilterSearchComponent implements OnInit {
    */
   setSelectedCollection(abvName: string) {
     this._selectedCollection = this.collections.filter(
-      x => x.abvName === abvName
+      (x) => x.abvName === abvName,
     )[0];
   }
 
@@ -276,7 +279,6 @@ export class FilterSearchComponent implements OnInit {
       } else {
         this.filters.delete(filter);
       }
-
     }
 
     this.statusFilter.emit(Array.from(this.filters));
@@ -303,7 +305,7 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
-  toggleTopicFilter(filters?: { name?: string, _id: string }[]) {
+  toggleTopicFilter(filters?: { name?: string; _id: string }[]) {
     for (const filter of filters) {
       if (filter.name.toLowerCase() === 'all') {
         this.clearTopicFilters();
@@ -401,9 +403,11 @@ export class FilterSearchComponent implements OnInit {
    */
   isToday(date: Date): boolean {
     const today = new Date();
-    return date.getDate() === today.getDate() &&
+    return (
+      date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
+      date.getFullYear() === today.getFullYear()
+    );
   }
 
   /**
