@@ -8,7 +8,6 @@ import {
   ViewChild,
 } from '@angular/core';
 
-
 import {
   CollectionService,
   Collection,
@@ -78,7 +77,7 @@ export class FilterSearchComponent implements OnInit {
     this.relevancyStart = new Date();
 
     //check for params in the query and add them to the filter dropdown bars
-    const qParams = this.route.parent.snapshot.queryParams;
+    const qParams = this.route.parent.snapshot.queryParamMap;
 
     /**
      * TODO: refactor this to send a complete search query
@@ -89,39 +88,27 @@ export class FilterSearchComponent implements OnInit {
      * to the user, so just be aware.
      */
 
-    //if there are topics in the query, toggle them in the filter dropdown
-    if (qParams.topics && qParams.topics.length > 0) {
-      const topics = [];
-      if (Array.isArray(qParams.topics)) {
-        for (const topic of qParams.topics) {
-          topics.push({ name: '', _id: topic });
-        }
+    const queryTopics = qParams.getAll('topics');
+    const queryStatuses = qParams.getAll('statuses');
 
-        this.toggleTopicFilter(topics);
-      } else {
-        this.toggleTopicFilter([{ name: '', _id: qParams.topics }]);
+    //if there are topics in the query, toggle them in the filter dropdown
+    if (queryTopics) {
+      const topics = [];
+      for (const topic of queryTopics) {
+        topics.push({ name: '', _id: topic });
       }
+
+      this.toggleTopicFilter(topics);
     }
 
     // if there are statuses in the query add them to the filter dropdowns
-    if (qParams.status && qParams.status.length > 0) {
-      const statuses = [];
-
-      if (Array.isArray(qParams.status) === false) {
-        statuses.push(qParams.status);
-        this.toggleStatusFilter(statuses);
-
-      } else {
-        for (const status of qParams.status) {
-          statuses.push(status);
-        }
-        this.toggleStatusFilter(statuses);
-      }
+    if (queryStatuses) {
+      this.toggleStatusFilter(queryStatuses);
     }
 
     // Set the collection if it exists, otherwise default back to the params.
-    if (qParams.collection) {
-      this.toggleCollectionFilter(qParams.collection);
+    if (qParams.get('collection')) {
+      this.toggleCollectionFilter(qParams.get('collection'));
     } else {
       this.toggleCollectionFilter(this.route.parent.snapshot.params.collection);
     }
