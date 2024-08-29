@@ -1,5 +1,4 @@
 import { environment } from '@env/environment';
-import querystring from 'querystring';
 
 export const METRIC_ROUTES = {
   /**
@@ -15,7 +14,8 @@ export const METRIC_ROUTES = {
    * @returns metrics for one learning object or all released learning objects
    */
   GET_LEARNING_OBJECT_METRICS(cuid?: string) {
-    return `${environment.apiURL}/learning-objects/metrics?${querystring.stringify({cuid: cuid})}`;
+    const url = `${environment.apiURL}/learning-objects/metrics`;
+    return cuid ? `${url}?cuid=${cuid}` : url;
   },
 
   /**
