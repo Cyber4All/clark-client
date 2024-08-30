@@ -29,7 +29,7 @@ export class NotificationService {
         }
       )
       .toPromise();
-  
+
     this.http.get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username, 1, 1), {
         withCredentials: true,
       })

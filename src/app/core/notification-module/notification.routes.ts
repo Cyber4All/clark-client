@@ -11,8 +11,8 @@ export const NOTIFICATIONS_ROUTES = {
    * @returns list of learning object notifications
    */
   GET_NOTIFICATIONS(username: string, page: number, limit: number) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/notifications?${new URLSearchParams({ 
-      page: page.toString(), 
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/notifications?${new URLSearchParams({
+      page: page.toString(),
       limit: limit.toString() })
       .toString()}`;
   },
