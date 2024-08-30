@@ -6,7 +6,6 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class NotificationsService {
-  userNotifications: any;
   constructor(private http: HttpClient) { }
 
   getNotifications(username: string): Promise<any> {
@@ -29,18 +28,6 @@ export class NotificationsService {
         }
       )
       .toPromise();
-    this.getNotificationCount(username);
     return deleteValue;
-  }
-
-  getNotificationCount(username: string) {
-    this.http
-      .get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username), {
-        withCredentials: true,
-      })
-      .toPromise()
-      .then((val: any) => {
-        this.userNotifications = val;
-      });
   }
 }
