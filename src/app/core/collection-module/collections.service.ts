@@ -7,6 +7,7 @@ import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, skipWhile } from 'rxjs/operators';
 import { COLLECTION_ROUTES } from './collections.routes';
 import { REPORT_ROUTES } from '../report-module/report.routes';
+import { USER_ROUTES } from '../user-module/user.routes';
 
 export interface Collection {
   name: string;
@@ -107,14 +108,6 @@ export class CollectionService {
         }
       }
     });
-  }
-
-  getCollectionCuratorsInfo(name: string) {
-    return this.http.get(LEGACY_COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise();
   }
 
   getCollectionMetadata(name: string) {

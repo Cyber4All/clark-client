@@ -46,6 +46,7 @@ export class MetricService {
    * @param cuid - The cuid of the learning object to get metrics for
    * @returns metrics for one learning object or all released learning objects
    */
+  // TODO: This isn't being referenced anywhere and may not be needed
   async getLearningObjectMetrics(cuid?: string) {
     return this.http
     .get<LearningObjectMetrics>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS(cuid))
