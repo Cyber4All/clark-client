@@ -35,7 +35,7 @@
                         <div #contextMenu class="context-popup">
                             <ul>
                                 <li tabindex="0" *ngIf="auth.hasCuratorAccess()" [routerLink]="['admin']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                                <li tabindex="0" [routerLink]="['library']" (activate)="dropdowns.toggleUserDropdown()"><i class="fas fa-books"></i>Library</li>
+                                <li tabindex="0" [routerLink]="['library']" (activate)="dropdowns.toggleUserDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="notificationService.userNotifications?.notifications?.length > 0" class="notifications"> {{ notificationService.userNotifications?.lastPage }}</span></li>
                                 <li tabindex="0" [routerLink]="['onion', 'dashboard']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-columns"></i>Dashboard</li>
                                 <li tabindex="0" [routerLink]="['users', auth.user?.username]" id="clark-user-dropdown" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-user"></i>Profile</li>
                                 <li tabindex="0" [routerLink]="['auth', 'forgot-password']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>

@@ -5,19 +5,20 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationsService {
+export class NotificationService {
+  userNotifications: { notifications: any[], count: number };
   constructor(private http: HttpClient) { }
 
-  getNotifications(username: string): Promise<any> {
+  async getNotifications(username: string, page: number, limit: number): Promise<any> {
     return this.http
-      .get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username), {
+      .get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username, page, limit), {
         withCredentials: true,
       })
       .toPromise();
   }
 
-  deleteNotification(username: string, notificationID: string) {
-    const deleteValue = this.http
+  async deleteNotification(username: string, notificationID: string): Promise<void> {
+    this.http
       .delete(
         NOTIFICATIONS_ROUTES.DELETE_NOTIFICATION(
           username,
@@ -28,6 +29,12 @@ export class NotificationsService {
         }
       )
       .toPromise();
-    return deleteValue;
+  
+    this.http.get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username, 1, 1), {
+        withCredentials: true,
+      })
+      .toPromise().then((val: any) => {
+        this.userNotifications = val;
+      });
   }
 }
