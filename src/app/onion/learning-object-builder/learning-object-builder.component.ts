@@ -22,7 +22,6 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from '../core/learning-object.service';
 import { HistorySnapshot, HistoryService } from 'app/core/client-module/history.service';
-import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -121,7 +120,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private learningObjectService: LearningObjectService,
     private history: HistoryService,
-    private bundlingService: BundlingService,
   ) { }
 
   ngOnInit() {
