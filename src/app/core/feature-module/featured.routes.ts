@@ -38,13 +38,4 @@ export const FEATURED_ROUTES = {
   UPDATE_FEATURED_OBJECTS() {
     return `${environment.apiURL}/featured/learning-objects`;
   },
-  /**
-   * Request to update the featured learning objects for a specific collection
-   * @method PATCH
-   * @auth required
-   * @param collectionAbvName the abbreviated name of the collection
-   */
-  UPDATE_COLLECTION_FEATURED_OBJECTS(collectionAbvName: string) {
-    return `${environment.apiURL}/featured/learning-objects/${encodeURIComponent(collectionAbvName)}`;
-  },
 };
