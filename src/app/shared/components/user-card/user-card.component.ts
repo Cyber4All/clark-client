@@ -25,11 +25,12 @@ export class UserCardComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    // XXX: When is this called??
     this.fetchLearningObjects();
   }
 
   async fetchLearningObjects() {
-    this.objects = await this.learningObjectService.getUsersLearningObjects(this.user.username);
+    this.objects = await this.userService.getUsersLearningObjects(this.user.username);
   }
 
   showGravatarModal(e: Event) {

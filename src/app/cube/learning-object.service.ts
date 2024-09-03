@@ -124,15 +124,6 @@ export class LearningObjectService {
         return learningObject;
       });
   }
-  getUsersLearningObjects(username: string): Promise<LearningObject[]> {
-    return this.http
-      .get(USER_ROUTES.GET_USER(username), { withCredentials: true })
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((val: any) => {
-        return val.map((l) => new LearningObject(l));
-      });
-  }
 
   /**
    * Creates a Revision of an existing learning object

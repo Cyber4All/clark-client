@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '@entity';
+import { LearningObject, User } from '@entity';
 import { UserQuery } from 'app/interfaces/query';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
@@ -93,6 +93,16 @@ export class UserService {
             return null;
           }
         );
+  }
+
+  getUsersLearningObjects(username: string): Promise<LearningObject[]> {
+    return this.http
+      .get(USER_ROUTES.GET_USER(username), { withCredentials: true })
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((val: any) => {
+        return val.map((l) => new LearningObject(l));
+      });
   }
 
   getUserFileAccessId(username: string): Promise<string> {
