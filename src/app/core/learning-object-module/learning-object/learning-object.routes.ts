@@ -160,12 +160,6 @@ export const LEGACY_COLLECTIONS_ROUTES = {
 };
 
 export const LEGACY_USER_ROUTES = {
-    // Route still available in gateway to LOS
-    LOAD_USER_PROFILE(username: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/profile`;
-    },
     GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
