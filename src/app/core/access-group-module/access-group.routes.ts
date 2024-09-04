@@ -25,7 +25,7 @@ export const ACCESS_GROUP_ROUTES = {
       username
     )}`;
   },
-  
+
   /**
    * Request to add a single access group from a user
    * @param username username of the user
