@@ -3,16 +3,17 @@ import { environment } from '@env/environment';
 export const ACCESS_GROUP_ROUTES = {
   /**
    * Request to retrieve the access groups for the given user
-   * @param id user id
+   * @param userId the _id of the user
    * @method GET
    * @auth required
    * @returns the access groups for the given user
    */
-  GET_USER_ACCESS_GROUPS(id: string) {
+  GET_USER_ACCESS_GROUPS(userId: string) {
     return `${environment.apiURL}/access-groups/users/${encodeURIComponent(
-      id
+      userId
     )}`;
   },
+
   /**
    * Request to add a single access group from a user
    * @param username username of the user
@@ -24,6 +25,7 @@ export const ACCESS_GROUP_ROUTES = {
       username
     )}`;
   },
+  
   /**
    * Request to add a single access group from a user
    * @param username username of the user
