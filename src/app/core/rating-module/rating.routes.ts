@@ -101,7 +101,8 @@ export const RATING_ROUTES = {
    * @auth required
    * @returns array of flags
    */
-  GET_FLAG(ratingID: string) {
+  // TODO: See sc-32843. Implement this on the admin side.
+  GET_FLAGS(ratingID: string) {
     return `${environment.apiURL}/ratings/${encodeURIComponent(ratingID)}/flags`;
   },
   /**

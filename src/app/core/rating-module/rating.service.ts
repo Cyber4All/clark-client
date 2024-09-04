@@ -230,6 +230,22 @@ export class RatingService {
   }
 
   /**
+   * Get a rating's flags.
+   *
+   * @param {string} ratingId
+   * @returns {Promise<any>}
+   */
+  // TODO: See sc-32843. Implement this on the admin side.
+  getRatingFlags(ratingId: string): Promise<any> {
+    return this.http.get(
+      RATING_ROUTES.GET_FLAGS(
+        ratingId
+      ),
+      { withCredentials: true }
+    ).toPromise();
+  }
+
+  /**
    * Flag a rating
    *
    * @param {string} ratingId
