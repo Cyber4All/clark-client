@@ -87,7 +87,7 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
     if (query && query !== '') {
       this.userService.searchUsers({
         text: query,
-        accessGroups: 'admin,curator,editor,reviewer'
+        accessGroups: ['admin', 'curator' , 'editor', 'reviewer']
       }).then( (results: User[]) => {
         const assignedEvaluatorsIds = this.assignedEvaluators.map(user => user.userId);
         const filteredUsers = [];

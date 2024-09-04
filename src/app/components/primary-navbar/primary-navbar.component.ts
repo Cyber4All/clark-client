@@ -4,6 +4,7 @@ import { UserService } from 'app/core/user-module/user.service';
 import { NavbarDropdownService } from 'app/core/client-module/navBarDropdown.service';
 import { Router, NavigationStart, Event as NavigationEvent } from '@angular/router';
 import { Topic } from '../../../entity';
+import { NotificationService } from 'app/core/notification-module/notification.service';
 
 
 @Component({
@@ -38,6 +39,7 @@ export class PrimaryNavbarComponent implements OnInit {
     private auth: AuthService,
     private dropdowns: NavbarDropdownService,
     private userService: UserService,
+    private notificationService: NotificationService,
     private router: Router,
   ) {
     if (!this.auth.user) {
