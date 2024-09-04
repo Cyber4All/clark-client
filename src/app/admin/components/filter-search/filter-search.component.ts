@@ -5,23 +5,25 @@ import {
   OnInit,
   Input,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
-
-import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
+import {
+  CollectionService,
+  Collection,
+} from 'app/core/collection-module/collections.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Topic } from '@entity';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-admin-filter-search',
   templateUrl: './filter-search.component.html',
-  styleUrls: ['./filter-search.component.scss']
+  styleUrls: ['./filter-search.component.scss'],
 })
 export class FilterSearchComponent implements OnInit {
   collections: Collection[] = [];
@@ -41,7 +43,7 @@ export class FilterSearchComponent implements OnInit {
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
   @Output() topicFilter = new EventEmitter<string[]>();
-  @Output() relevancyCheck = new EventEmitter<{ start: string, end: string }>();
+  @Output() relevancyCheck = new EventEmitter<{ start: string; end: string }>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
@@ -53,14 +55,13 @@ export class FilterSearchComponent implements OnInit {
   relevancyEnd: Date;
   relevancyMenuDown: boolean;
 
-
   constructor(
     private collectionService: CollectionService,
     private topicsService: TopicsService,
     private authService: AuthService,
     private toaster: ToastrOvenService,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+  ) {}
 
   async ngOnInit() {
     await this.getCollections();
@@ -71,40 +72,45 @@ export class FilterSearchComponent implements OnInit {
     this.statuses.splice(0, 0);
 
     this.statuses = this.statuses.filter(
-      s => !['rejected', 'unreleased'].includes(s.toLowerCase())
+      (s) => !['rejected', 'unreleased'].includes(s.toLowerCase()),
     );
     this.relevancyStart = new Date();
 
     //check for params in the query and add them to the filter dropdown bars
-    const qParams = this.route.parent.snapshot.queryParams;
+    const qParams = this.route.parent.snapshot.queryParamMap;
+
+    /**
+     * TODO: refactor this to send a complete search query, see sc-32835
+     * at the first request instead of sending a request
+     * every time we emit an event on the toggle filter functions.
+     *
+     * this COULD be a cause of the client sending bad data back
+     * to the user, so just be aware.
+     */
+
+    const queryTopics = qParams.getAll('topics');
+    const queryStatuses = qParams.getAll('statuses');
+
     //if there are topics in the query, toggle them in the filter dropdown
-    if (qParams.topics) {
-      //more than one topic
-      if (Array.isArray(qParams.topics)) {
-        for (const topic of qParams.topics) {
-          this.toggleTopicFilter({ name: '', _id: topic });
-        }
-        // one topic
-      } else {
-        this.toggleTopicFilter({ name: '', _id: qParams.topics });
+    if (queryTopics) {
+      const topics = [];
+      for (const topic of queryTopics) {
+        topics.push({ name: '', _id: topic });
       }
+
+      this.toggleTopicFilter(topics);
     }
-    //if there are statuses in the query add them too the filter dropdowns
-    if (qParams.status) {
-      //multiple statuses in query
-      if (Array.isArray(qParams.status)) {
-        for (const status of qParams.status) {
-          this.toggleStatusFilter(status);
-        }
-        //one status in query
-      } else {
-        this.toggleStatusFilter(qParams.status);
-      }
+
+    // if there are statuses in the query add them to the filter dropdowns
+    if (queryStatuses) {
+      this.toggleStatusFilter(queryStatuses);
     }
-    //if there is a collection selected in the query, toggle it
-    //there will only ever be a single collection selected at a time
-    if (qParams.collection) {
-      this.toggleCollectionFilter(qParams.collection);
+
+    // Set the collection if it exists, otherwise default back to the params.
+    if (qParams.get('collection')) {
+      this.toggleCollectionFilter(qParams.get('collection'));
+    } else {
+      this.toggleCollectionFilter(this.route.parent.snapshot.params.collection);
     }
   }
 
@@ -114,7 +120,7 @@ export class FilterSearchComponent implements OnInit {
   private async getCollections(): Promise<void> {
     await this.collectionService
       .getCollections()
-      .then(collections => {
+      .then((collections) => {
         this.collections = Array.from(collections);
         this.collections.push({ abvName: 'all', name: 'All', hasLogo: false });
 
@@ -128,18 +134,19 @@ export class FilterSearchComponent implements OnInit {
           return 0;
         });
       })
-      .catch(error => {
+      .catch((error) => {
         this.toaster.error('Error!', error);
       });
   }
 
   private getTopics(): void {
-    this.topicsService
-      .getTopics()
-      .then(topics => {
-        this.topics = topics;
-        this.topics = [].concat([{ _id: 'all', name: 'All' }], Array.from(topics));
-      });
+    this.topicsService.getTopics().then((topics) => {
+      this.topics = topics;
+      this.topics = [].concat(
+        [{ _id: 'all', name: 'All' }],
+        Array.from(topics),
+      );
+    });
   }
 
   /**
@@ -160,7 +167,7 @@ export class FilterSearchComponent implements OnInit {
    */
   setSelectedCollection(abvName: string) {
     this._selectedCollection = this.collections.filter(
-      x => x.abvName === abvName
+      (x) => x.abvName === abvName,
     )[0];
   }
 
@@ -246,18 +253,21 @@ export class FilterSearchComponent implements OnInit {
    *
    * @param filter {string} the filter to be toggled
    */
-  toggleStatusFilter(filter: string) {
-    if (filter.toLowerCase() === 'all') {
-      this.clearStatusFilters();
-      this.toggleFilterMenu(undefined);
-      return;
+  toggleStatusFilter(filters: string[]) {
+    for (const filter of filters) {
+      if (filter.toLowerCase() === 'all') {
+        this.clearStatusFilters();
+        this.toggleFilterMenu(undefined);
+        return;
+      }
+
+      if (!this.filters.has(filter)) {
+        this.filters.add(filter);
+      } else {
+        this.filters.delete(filter);
+      }
     }
 
-    if (this.filters.has(filter)) {
-      this.filters.delete(filter);
-    } else {
-      this.filters.add(filter);
-    }
     this.statusFilter.emit(Array.from(this.filters));
   }
 
@@ -282,16 +292,19 @@ export class FilterSearchComponent implements OnInit {
     }
   }
 
-  toggleTopicFilter(filter: { name?: string, _id: string }) {
-    if (filter.name.toLowerCase() === 'all') {
-      this.clearTopicFilters();
-      this.toggleTopicMenu(undefined);
-      return;
-    }
-    if (this.filterTopics.has(filter._id)) {
-      this.filterTopics.delete(filter._id);
-    } else {
-      this.filterTopics.add(filter._id);
+  toggleTopicFilter(filters?: { name?: string; _id: string }[]) {
+    for (const filter of filters) {
+      if (filter.name.toLowerCase() === 'all') {
+        this.clearTopicFilters();
+        this.toggleTopicMenu(undefined);
+        return;
+      }
+
+      if (this.filterTopics.has(filter._id)) {
+        this.filterTopics.delete(filter._id);
+      } else {
+        this.filterTopics.add(filter._id);
+      }
     }
     this.topicFilter.emit(Array.from(this.filterTopics));
   }
@@ -377,9 +390,11 @@ export class FilterSearchComponent implements OnInit {
    */
   isToday(date: Date): boolean {
     const today = new Date();
-    return date.getDate() === today.getDate() &&
+    return (
+      date.getDate() === today.getDate() &&
       date.getMonth() === today.getMonth() &&
-      date.getFullYear() === today.getFullYear();
+      date.getFullYear() === today.getFullYear()
+    );
   }
 
   /**
