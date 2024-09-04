@@ -7,11 +7,12 @@ export const LEARNING_OBJECT_ROUTES = {
      * Optionally, by version
      * If version is not provided, then it returns all versions of a learning object
      * @param cuid
-     * @param version?
+     * @param version
      * @returns Promise<FullLearningObject[]>
      */
-    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version: number) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}?version=${encodeURIComponent(version)}`;
+    GET_PUBLIC_LEARNING_OBJECT(cuid: string, version?: number) {
+        const versionQuery = version ? `?version=${version}` : '';
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}${versionQuery}`;
     },
     /**
      * Request to get the children of a learning object
@@ -46,11 +47,11 @@ export const LEARNING_OBJECT_ROUTES = {
      * @auth required
      * @param learningObjectCuid - The cuid of the learning object to update
      */
-        UPDATE_LEARNING_OBJECT_COLLECTION(learningObjectCuid: string) {
-            return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-                learningObjectCuid
-            )}/collection`;
-        },
+    UPDATE_LEARNING_OBJECT_COLLECTION(learningObjectCuid: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+            learningObjectCuid
+        )}/collection`;
+    },
 
     /**
      * Path to create a new learning object
@@ -177,8 +178,8 @@ export const LEGACY_USER_ROUTES = {
             username,
         )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
     },
-    GET_LEARNING_OBJECT(id) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}`;
+    GET_LEARNING_OBJECT(learningObjectId) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
     },
     POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(
@@ -232,16 +233,5 @@ export const LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES = {
         }
 
         return uri;
-    },
-    DOWNLOAD_FILE(params: {
-        username: string;
-        loId: string;
-        fileId: string;
-        open?: boolean;
-    }) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            params.username,
-        )}/learning-objects/${params.loId}/files/${params.fileId}/download${params.open ? '?open=true' : ''
-            }`;
     },
 };

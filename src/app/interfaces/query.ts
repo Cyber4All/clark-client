@@ -1,3 +1,5 @@
+import * as querystring from 'querystring';
+
 export enum OrderBy {
   Name = 'name',
   Date = 'date'
@@ -40,9 +42,10 @@ export interface FilterQuery extends Query {
   level?: string[];
 }
 
-export interface UserQuery {
-  currPage?: number;
-  limit?: number;
-  text?: string;
-  accessGroups?: string;
+export interface UserQuery extends querystring.ParsedUrlQueryInput{
+  accessGroups?: string[],
+  sortType?: string,
+  page?: number,
+  limit?: number,
+  text?: string,
 }

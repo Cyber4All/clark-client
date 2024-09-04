@@ -7,7 +7,7 @@ import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../auth-module/auth.service';
 import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
-import { USER_ROUTE } from './user.routes';
+import { USER_ROUTES } from './user.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class UserService {
    */
   searchUsers(query: UserQuery): Promise<User[]> {
     return this.http
-      .get(USER_ROUTE.SEARCH_USERS(query), {
+      .get(USER_ROUTES.SEARCH_USERS(query), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))
@@ -80,7 +80,7 @@ export class UserService {
 
   getUser(user: string): Promise<User> {
     return this.http
-        .get(USER_ROUTE.GET_USER(user), {
+        .get(USER_ROUTES.GET_USER(user), {
           withCredentials: true,
         })
         .pipe(catchError(this.handleError))
@@ -97,7 +97,7 @@ export class UserService {
 
   getUserFileAccessId(username: string): Promise<string> {
     return this.http
-      .get(USER_ROUTE.GET_USER_FILE_ACCESS_ID(username), {
+      .get(USER_ROUTES.GET_USER_FILE_ACCESS_ID(username), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))
@@ -120,7 +120,7 @@ export class UserService {
   }): Promise<any> {
     return this.http
       .patch(
-        USER_ROUTE.UPDATE_USER(user.username),
+        USER_ROUTES.UPDATE_USER(user.username),
          user,
         {
           withCredentials: true,
@@ -139,7 +139,7 @@ export class UserService {
    */
   fetchUserProfile(username: string): Promise<any> {
     return this.http
-      .get(USER_ROUTE.GET_USER(username), {
+      .get(USER_ROUTES.GET_USER(username), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))

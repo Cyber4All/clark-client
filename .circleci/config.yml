@@ -2,14 +2,17 @@ version: 2.1
 
 orbs:
   cyber4all: cyber4all/orb@2.1.7
+  node: circleci/node@6.1.0
 
 workflows:
   continuous-integration:
     jobs:
-      - cyber4all/lint
+      - node/run:
+          npm-run: lint
 
-      - cyber4all/build:
-          language: node
+      # Tests building the project with production settings
+      - node/run:
+          npm-run: build:prod
 
   deploy-clark-service-refactor:
     when:

@@ -12,7 +12,7 @@ import { Query } from '../interfaces/query';
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
 import * as querystring from 'querystring';
 import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
-import { USER_ROUTE } from '../core/user-module/user.routes';
+import { USER_ROUTES } from '../core/user-module/user.routes';
 
 // TODO: move to core module
 @Injectable({
@@ -126,7 +126,7 @@ export class LearningObjectService {
   }
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     return this.http
-      .get(USER_ROUTE.GET_USER(username), { withCredentials: true })
+      .get(USER_ROUTES.GET_USER(username), { withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
