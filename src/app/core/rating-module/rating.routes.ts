@@ -113,14 +113,4 @@ export const RATING_ROUTES = {
   FLAG_LEARNING_OBJECT_RATING(ratingId: string) {
     return `${environment.apiURL}/ratings/${encodeURIComponent(ratingId)}/flags`;
   },
-  /**
-   * Request to delete a flag
-   * @param ratingID id of rating to delete flag from
-   * @param flagId id of flag to delete
-   * @method DELETE
-   * @auth required
-   */
-  DELETE_FLAG(ratingID: string, flagId: string) {
-    return `${environment.apiURL}/ratings/${encodeURIComponent(ratingID)}/flags/${encodeURIComponent(flagId)}`;
-  },
 };
