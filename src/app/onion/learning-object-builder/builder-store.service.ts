@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
+import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -155,6 +156,7 @@ export class BuilderStore {
     private uriRetriever: UriRetrieverService,
     private submissionService: SubmissionsService,
     private outcomeService: OutcomeService,
+    private revisionsSerivce: RevisionsService,
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -253,7 +255,7 @@ export class BuilderStore {
     async () => {
       // eslint-disable-next-line eqeqeq
       if (revisionId == 0) {
-        revisionId = await this.learningObjectService.createRevision(cuid);
+        revisionId = await this.revisionsSerivce.createRevision(cuid);
       }
 
       return this.learningObjectService.getLearningObjectRevision(username, cuid, revisionId);
