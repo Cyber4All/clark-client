@@ -80,7 +80,7 @@ export class FilterSearchComponent implements OnInit {
     const qParams = this.route.parent.snapshot.queryParamMap;
 
     /**
-     * TODO: refactor this to send a complete search query
+     * TODO: refactor this to send a complete search query, see sc-32835
      * at the first request instead of sending a request
      * every time we emit an event on the toggle filter functions.
      *
