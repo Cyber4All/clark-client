@@ -33,6 +33,21 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     * Get the revision of a learning object
+     * @param username
+     * @param learningObjectId
+     * @param revisionId
+     * @returns
+     */
+    GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
+      return `${environment.apiURL}/users/${encodeURIComponent(
+          username,
+      )}/learning-objects/${encodeURIComponent(
+          learningObjectId,
+      )}/revisions/${encodeURIComponent(revisionId)}`;
+  },
+
+    /**
      * Path to update the status of a learning object
      * @param learningObjectId the id of the learning object
      * @returns void
