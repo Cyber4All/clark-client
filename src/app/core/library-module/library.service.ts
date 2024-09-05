@@ -8,7 +8,7 @@ import { AuthService } from '../auth-module/auth.service';
 import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
 import { LIBRARY_ROUTES } from './library.routes';
 
-export type LibraryItem = { _id: string, savedBy: string, savedOn: string, learningObject: LearningObject };
+export interface LibraryItem { _id: string, savedBy: string, savedOn: string, learningObject: LearningObject }
 
 const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
@@ -47,9 +47,9 @@ export class LibraryService {
   }
 
   /**
-   * 
-   * @param opts 
-   * @returns 
+   *
+   * @param opts
+   * @returns
    */
   async getLibrary(opts?: {
     learningObjectCuid?: string, version?: number,
@@ -82,12 +82,12 @@ export class LibraryService {
         this.libraryItems = val.userLibraryItems
           .map((libraryItem) => {
             libraryItem.learningObject.id = libraryItem.learningObject?._id;
-            
-            return { 
-              _id: libraryItem._id, 
-              savedBy: libraryItem.savedBy, 
-              savedOn: libraryItem.savedOn, 
-              learningObject: new LearningObject(libraryItem.learningObject) 
+
+            return {
+              _id: libraryItem._id,
+              savedBy: libraryItem.savedBy,
+              savedOn: libraryItem.savedOn,
+              learningObject: new LearningObject(libraryItem.learningObject)
             };
           });
         return { libraryItems: this.libraryItems, lastPage: val.lastPage };
@@ -132,7 +132,7 @@ export class LibraryService {
       return Promise.reject('User is undefined');
     }
 
-    console.log("DELETE", this.libraryItems);
+    console.log('DELETE', this.libraryItems);
 
     const libraryItemIds = this.libraryItems
       .filter((libraryItem: LibraryItem) => libraryItem.learningObject?.id === learningObjectId)
@@ -243,7 +243,7 @@ export class LibraryService {
   /**
    * Returns whether the learning object exists in the user's library
    * This is done by checking the library items for the learningObjectId
-   * 
+   *
    * @param learningObjectId the learning object to check for in the library
    * @returns whether the learning object exists in the library
    */
@@ -272,7 +272,7 @@ export class LibraryService {
         return value.replace(/"/g, '').trim();
       }
     }
-    
+
     // Return default bundle name if no filename key found
     return DEFAULT_BUNDLE_NAME;
   }
