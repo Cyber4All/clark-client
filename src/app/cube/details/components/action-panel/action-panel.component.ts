@@ -21,7 +21,6 @@ import { Router } from '@angular/router';
 import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -99,7 +98,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.url = this.buildLocation();
     // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
     await this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid, version: this.learningObject.version });
-    this.saved = this.libraryService.has(this.learningObject);
+    this.saved = this.libraryService.has(this.learningObject.id);
     this.getCollection();
     this.libraryService.loaded
       .subscribe(val => {
@@ -144,7 +143,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       );
     }
     if (!this.userIsAuthor && this.isReleased) {
-      this.saved = this.libraryService.has(this.learningObject);
+      this.saved = this.libraryService.has(this.learningObject.id);
 
       if (!this.saved) {
         try {
