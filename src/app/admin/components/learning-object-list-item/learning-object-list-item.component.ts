@@ -16,7 +16,6 @@ import { environment } from '@env/environment';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs/internal/observable/of';
-import { UnreleaseService } from 'app/admin/core/unrelease.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Router } from '@angular/router';
 import { HierarchyService } from '../../../core/learning-object-module/hierarchy/hierarchy.service';
@@ -25,6 +24,7 @@ import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
+import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -72,14 +72,14 @@ export class LearningObjectListItemComponent implements OnChanges {
   private headers = new HttpHeaders();
   constructor(
     private auth: AuthService,
-    private unreleaseService: UnreleaseService,
     private statuses: StatusDescriptions,
     private cd: ChangeDetectorRef,
     private http: HttpClient,
     private toaster: ToastrOvenService,
     private hierarchyService: HierarchyService,
     private loService: LearningObjectService,
-    private refactoredLearningObjectService: RefactoredLearningObjectService
+    private refactoredLearningObjectService: RefactoredLearningObjectService,
+    private revisionsService: RevisionsService,
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -249,7 +249,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   }
 
   deleteRevision() {
-    this.unreleaseService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version + 1)
+    this.revisionsService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version + 1)
       .then(() => {
         this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
       }).catch(() => {
