@@ -44,15 +44,5 @@ export const USER_ROUTES = {
    */
   UPDATE_USER(user: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(user)}`;
-  },
-  /**
-   * Request to retrieve a user's profile
-   * @method GET
-   * @auth required
-   * @param username the username of the user
-   * @returns the user's profile
-   */
-  GET_USER_PROFILE(username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/profile`;
-  },
+  }
 };
