@@ -98,7 +98,7 @@ export class ClarkComponent implements OnInit {
       this.authService.isLoggedIn.subscribe((value: boolean) => {
         // Loads the user's library if they are logged in
         if (value) {
-          this.libraryService.getLibrary();
+          this.libraryService.getLibrary({});
         }
       });
 

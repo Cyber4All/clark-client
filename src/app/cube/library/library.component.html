@@ -51,7 +51,7 @@
                         [learningObject]='libraryItem.learningObject'
                         [learningObjectAverageRating]='libraryItem.avgRating'
                         (downloadButtonClicked)='downloadObject($event, libraryItem.learningObject, i)'
-                        (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemToDelete = libraryItem.learningObject;'
+                        (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemIdToDelete = libraryItem._id;'
                         (titleClicked)='goToItem(libraryItem.learningObject)'
                         [currIndex]='currentIndex'
                         [myIndex]=i

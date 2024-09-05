@@ -62,7 +62,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   showDeleteLibraryItemModal = false;
   changelogs = [];
   changelogLearningObject;
-  libraryItemToDelete;
+  libraryItemIdToDelete: string;
   lastPageNumber;
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
@@ -137,6 +137,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       });
       this.loading = false;
     } catch (e) {
+      console.log(e);
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
       this.serviceError = true;
       this.loading = false;
@@ -226,7 +227,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async removeItem() {
     try {
-      await this.libraryService.removeFromLibrary(this.libraryItemToDelete.id);
+      await this.libraryService.removeFromLibrary(this.libraryItemIdToDelete);
       this.libraryItems = (await this.libraryService.getLibrary({page: 1, limit: 10})).libraryItems;
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
@@ -312,10 +313,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async changeLibraryItemPage(pageNumber: number) {
     this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    const libraryItemResponse = await this.libraryService.getLibrary({page: pageNumber, limit: 10});
-    this.libraryItems = libraryItemResponse.libraryItems;
-    this.lastPageNumber = libraryItemResponse.lastPage;
     this.currentPageNumber = pageNumber;
+    await this.loadLibrary();
   }
 
   ngOnDestroy() {

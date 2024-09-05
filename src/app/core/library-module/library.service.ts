@@ -51,9 +51,11 @@ export class LibraryService {
    * @param opts
    * @returns
    */
-  async getLibrary(opts?: {
-    learningObjectCuid?: string, version?: number,
-    page?: number, limit?: number
+  async getLibrary(opts: {
+    learningObjectCuid?: string,
+    version?: number,
+    page?: number,
+    limit?: number
   }): Promise<{ libraryItems: LibraryItem[], lastPage: number }> {
     // Resets the auth token in the headers
     this.updateUser();
@@ -62,10 +64,10 @@ export class LibraryService {
     }
 
     const query = new URLSearchParams({
-      page: opts?.page ? opts.page.toString() : '1',
-      limit: opts?.limit ? opts.limit.toString() : '10',
-      cuid: opts?.learningObjectCuid ? opts.learningObjectCuid : '',
-      version: opts?.version ? opts.version.toString() : '0'
+      page: opts.page ? opts.page.toString() : '1',
+      limit: opts.limit ? opts.limit.toString() : '10',
+      cuid: opts.learningObjectCuid ? opts.learningObjectCuid : '',
+      version: opts.version ? opts.version.toString() : '0'
     });
 
     return await this.http
@@ -81,13 +83,14 @@ export class LibraryService {
         // preserves carts from cartsdb
         this.libraryItems = val.userLibraryItems
           .map((libraryItem) => {
-            libraryItem.learningObject.id = libraryItem.learningObject?._id;
+            const learningObject = new LearningObject(libraryItem.learningObject);
+            learningObject.id = libraryItem.learningObject?._id;
 
             return {
               _id: libraryItem._id,
               savedBy: libraryItem.savedBy,
               savedOn: libraryItem.savedOn,
-              learningObject: new LearningObject(libraryItem.learningObject)
+              learningObject
             };
           });
         return { libraryItems: this.libraryItems, lastPage: val.lastPage };
@@ -127,26 +130,16 @@ export class LibraryService {
       .toPromise();
   }
 
-  removeFromLibrary(learningObjectId: string): Promise<void> {
+  removeFromLibrary(libraryItemId: string): Promise<void> {
     if (!this.user) {
       return Promise.reject('User is undefined');
-    }
-
-    console.log('DELETE', this.libraryItems);
-
-    const libraryItemIds = this.libraryItems
-      .filter((libraryItem: LibraryItem) => libraryItem.learningObject?.id === learningObjectId)
-      .map((libraryItem: LibraryItem) => libraryItem._id);
-
-    if  (libraryItemIds.length === 0) {
-      return Promise.reject('Learning object not found in library');
     }
 
     this.http
       .delete(
         LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
           this.user.username,
-          libraryItemIds[0]
+          libraryItemId
         ),
         { headers: this.headers, withCredentials: true }
       )
