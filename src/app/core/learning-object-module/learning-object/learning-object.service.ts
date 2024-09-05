@@ -178,9 +178,7 @@ export class LearningObjectService {
   private buildRoute(params: { cuidInfo?: { cuid: string, version?: number }, id?: string }) {
     let route;
     // Sets route to be hit based on if the id or if author and Learning Object name have been provided
-    if (params.id) {
-      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
-    } else if (params.cuidInfo) {
+    if (params.cuidInfo) {
       route = LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
     } else {
       const err = this.userError(params);

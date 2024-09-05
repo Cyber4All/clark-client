@@ -175,21 +175,6 @@ export const LEGACY_COLLECTIONS_ROUTES = {
 };
 
 export const LEGACY_USER_ROUTES = {
-    GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId,
-        )}/revisions/${encodeURIComponent(revisionId)}`;
-    },
-    UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
-    },
-    GET_LEARNING_OBJECT(learningObjectId) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
-    },
     POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
