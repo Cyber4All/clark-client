@@ -25,7 +25,7 @@ export class AccessGroupService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
   /**
-   * Fetches the access groups for the given user
+   * Gets the access groups for the given user
    *
    * @param userId the id of the user
    * @returns {Promise<string[]>} the access groups for the given user
@@ -83,35 +83,28 @@ export class AccessGroupService {
       .patch(
         ACCESS_GROUP_ROUTES.REMOVE_ACCESS_GROUP_FROM_USER(username),
         { accessGroup, collection },
-        {
-          withCredentials: true,
-          responseType: 'text',
-        }
+        { withCredentials: true }
       )
-      .pipe(
-        catchError(this.handleError)
-      )
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
   /**
-   * Fetches the users with access group to the given collection
+   * Gets the users with access to the given collection
    * @param {string} collectionAbvName the abbreviated name of the collection
    * @param {string} accessGroup the string representation of the access group
-   * @param {*} role
    * @returns {Promise<User[]>}
    * @memberof UserService
    */
-  getUsersWithAccessToCollection(collectionAbvName: string, accessGroup): Promise<User[]> {
+  getUsersWithAccessToCollection(collectionAbvName: string, accessGroup: string): Promise<User[]> {
     return this.http
       .get(ACCESS_GROUP_ROUTES.GET_USERS_WITH_ACCESS_TO_COLLECTION(collectionAbvName, accessGroup),
         { withCredentials: true }
       )
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((val: any) => {
-        const arr = val;
-        return arr.map((member) => new User(member));
+      .then((users: any) => {
+        return users.map((user) => new User(user));
       });
   }
 
