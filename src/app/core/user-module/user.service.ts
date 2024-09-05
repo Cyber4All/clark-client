@@ -6,7 +6,6 @@ import * as md5 from 'md5';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../auth-module/auth.service';
-import { LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 import { USER_ROUTES } from './user.routes';
 
 @Injectable({
@@ -35,25 +34,6 @@ export class UserService {
           user.userId = user._id;
           return new User(user);
         });
-      });
-  }
-
-  /**
-   * Retrieve a list of user's that belong to a given organization
-   *
-   * @param {string} organization
-   * @returns {Promise<User[]>}
-   * @memberof UserService
-   */
-  getOrganizationMembers(organization: string): Promise<User[]> {
-    const route = LEGACY_USER_ROUTES.GET_SAME_ORGANIZATION(organization);
-    return this.http
-      .get(route)
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((val: any) => {
-        const arr = val;
-        return arr.map((member) => new User(member));
       });
   }
 

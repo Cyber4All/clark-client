@@ -3,10 +3,7 @@ import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import {
-  LEARNING_OBJECT_ROUTES,
-  LEGACY_USER_ROUTES
-} from '../core/learning-object-module/learning-object/learning-object.routes';
+import { LEARNING_OBJECT_ROUTES } from '../core/learning-object-module/learning-object/learning-object.routes';
 import { Query } from '../interfaces/query';
 
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';

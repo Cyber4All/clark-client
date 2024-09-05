@@ -4,10 +4,7 @@ import { LearningObject, LearningOutcome } from '@entity';
 import { merge, Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, finalize, map, mergeMap, take } from 'rxjs/operators';
 import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
-import {
-  LEARNING_OBJECT_ROUTES,
-  LEGACY_USER_ROUTES
-} from '../learning-object/learning-object.routes';
+import { LEARNING_OBJECT_ROUTES } from '../learning-object/learning-object.routes';
 
 export const CALLBACKS = {
   outcomes: (outcomes: any[]) => {

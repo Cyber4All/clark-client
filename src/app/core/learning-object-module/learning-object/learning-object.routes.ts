@@ -137,6 +137,28 @@ export const LEARNING_OBJECT_ROUTES = {
     DELETE_LEARNING_OBJECT(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
     },
+
+    POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
+        return `${environment.apiURL}/users/${encodeURIComponent(
+            username,
+        )}/learning-objects/${encodeURIComponent(
+            learningObjectId,
+        )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
+    },
+    DELETE_MAPPING(
+          username: string,
+          learningObjectId: string,
+          outcomeId: string,
+          mappingsId: string,
+      ) {
+          return `${environment.apiURL}/users/${encodeURIComponent(
+              username,
+          )}/learning-objects/${encodeURIComponent(
+              learningObjectId,
+          )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(
+              mappingsId,
+          )}`;
+      },
 };
 
 export const USER_ROUTES = {
@@ -171,39 +193,6 @@ export const LEGACY_COLLECTIONS_ROUTES = {
     },
     GET_COLLECTION_CURATORS(name: string) {
         return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
-    },
-};
-
-export const LEGACY_USER_ROUTES = {
-    POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId,
-        )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
-    },
-    DELETE_MAPPING(
-        username: string,
-        learningObjectId: string,
-        outcomeId: string,
-        mappingsId: string,
-    ) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId,
-        )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(
-            mappingsId,
-        )}`;
-    },
-    // FIXME: This route is not in the gateway
-    GET_SAME_ORGANIZATION(organization) {
-        return `${environment.apiURL
-            }/users/search?organization=${encodeURIComponent(organization)}`;
-    },
-    /** ROUTE NOT IN GATEWAY */
-    VALIDATE_CAPTCHA() {
-        return `${environment.apiURL}/users/validate-captcha`;
     },
 };
 

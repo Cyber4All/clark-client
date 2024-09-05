@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { LearningObject, LearningOutcome } from '@entity';
 import { Observable, Subject, of, throwError } from 'rxjs';
 import { catchError, filter, finalize, map, take, takeUntil, tap } from 'rxjs/operators';
-import { LEARNING_OBJECT_ROUTES, LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
+import { LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
 
 // TODO this service should be deleted and its instances should be replced with the LearningObjectService in core
 

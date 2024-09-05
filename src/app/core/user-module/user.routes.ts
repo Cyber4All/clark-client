@@ -44,5 +44,9 @@ export const USER_ROUTES = {
    */
   UPDATE_USER(user: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(user)}`;
-  }
+  },
+
+  VALIDATE_CAPTCHA() {
+    return `${environment.apiURL}/users/validate-captcha`;
+  },
 };

@@ -14,12 +14,7 @@ import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bund
 import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
 import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
-import {
-  LEGACY_USER_ROUTES,
-  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-  LEARNING_OBJECT_ROUTES,
-  USER_ROUTES,
-} from '../../core/learning-object-module/learning-object/learning-object.routes';
+import { LEARNING_OBJECT_ROUTES } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { UserService } from 'app/core/user-module/user.service';
 
@@ -301,7 +296,7 @@ export class LearningObjectService {
 
     return this.http
       .post(
-        LEGACY_USER_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
+        LEARNING_OBJECT_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
         { guidelineID: outcome.mappings[outcome.mappings.length - 1] },
         { headers: this.headers, withCredentials: true }
       )
@@ -330,7 +325,7 @@ export class LearningObjectService {
 
     return this.http
       .delete(
-        LEGACY_USER_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
+        LEARNING_OBJECT_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
         { headers: this.headers, withCredentials: true }
       )
       .pipe(
