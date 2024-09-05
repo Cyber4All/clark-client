@@ -106,24 +106,6 @@ export class LearningObjectService {
         return learningObject;
       });
   }
-  /**
-   * Fetches LearningObject by id
-   *
-   * @param {string} id
-   * @returns {Promise<LearningObject>}
-   * @memberof LearningObjectService
-   */
-  getRevisedLearningObject(learningObjectId: String): Promise<LearningObject> {
-    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
-    return this.http
-      .get(route)
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((res: any) => {
-        const learningObject = new LearningObject(res);
-        return learningObject;
-      });
-  }
 
   /**
    * Creates a Revision of an existing learning object

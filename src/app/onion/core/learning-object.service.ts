@@ -143,26 +143,6 @@ export class LearningObjectService {
         return response;
       });
   }
-  /**
-   * Fetches Learning Object by ID (full)
-   *
-   * @param {string} learningObjectID
-   * @returns {Promise<LearningObject>}
-   * @memberof LearningObjectService
-   */
-  getLearningObject(learningObjectId: string): Promise<LearningObject> {
-    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
-    return this.http
-      .get(route, { headers: this.headers, withCredentials: true })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((response: any) => {
-        return new LearningObject(response);
-      });
-  }
 
   /**
    * Fetches a learning objects revision
