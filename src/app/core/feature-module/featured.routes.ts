@@ -15,16 +15,12 @@ export const FEATURED_ROUTES = {
    * @param collectionAbvName the abbreviated name of the collection
    * @param limit (optional) the number of featured learning objects to retrieve
    */
-  GET_COLLECTION_FEATURED_OBJECTS(
-    collectionAbvName: string,
-    limit?: number,
-  ) {
-    if (typeof limit !== 'undefined') {
-      return `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(
-        collectionAbvName,
-      )}&limit=${encodeURIComponent(limit)}`;
+  GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName: string, limit?: number) {
+    let url = `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(collectionAbvName)}`;
+    if (limit) {
+      url += `&limit=${encodeURIComponent(limit)}`;
     }
-    return `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(collectionAbvName)}`;
+    return url;
   },
   /**
    * Request to update the list of featured learning objects
