@@ -11,9 +11,9 @@ export const REPORT_ROUTES = {
         date?: { start: string; end: string },
     ) {
         let route = `${environment.apiURL}/reports?output=csv&collection=${collections.join(',')}`;
-        
+
         route += (date ? `&${new URLSearchParams(date).toString()}` : '');
 
-        return route
+        return route;
     }
 };
