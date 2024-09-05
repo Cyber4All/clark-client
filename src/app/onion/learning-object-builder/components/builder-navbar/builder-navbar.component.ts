@@ -10,6 +10,7 @@ import { CollectionService, Collection } from 'app/core/collection-module/collec
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { LearningObjectService } from '../../../core/learning-object.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -54,7 +55,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     private history: HistoryService,
     public validator: LearningObjectValidator,
     public store: BuilderStore,
-    public learningObjectService: LearningObjectService
+    public learningObjectService: LearningObjectService,
+    public fileService: FileService
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -173,7 +175,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     // a new learning object
     if (this.learningObject.id) {
       // This will also bundle the learning object after the README is updated
-      Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));
+      Promise.all(await this.fileService.updateReadme(this.learningObject.id));
     }
     // Remove outcomes that have null text
     this.store.removeEmptyOutcomes();

@@ -22,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -149,6 +150,7 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
+    private fileService: FileService,
     private refactoredLearningObjectService: RefactoredLearningObjectService,
     private validator: LearningObjectValidator,
     private titleService: Title,
@@ -294,7 +296,7 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   fetchMaterials(): void {
-    this.learningObjectService
+    this.fileService
       .getMaterials(this.learningObject.id)
       .then(materials => {
         this.learningObject.materials = materials;
@@ -687,7 +689,7 @@ export class BuilderStore {
    */
   private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
     this.serviceInteraction$.next(true);
-    await this.learningObjectService
+    await this.fileService
       .addFileMeta({
         files,
         objectId: this.learningObject.id
@@ -777,8 +779,8 @@ export class BuilderStore {
   private updateFileDescription(fileId: any, description: any): void {
     const index = this.findFile(fileId);
     this.learningObject.materials.files[index].description = description;
-    this.learningObjectService
-      .updateFileDescription(
+    this.fileService
+    .updateFileDescription(
         this.learningObject.author.username,
         this.learningObject.id,
         fileId,
