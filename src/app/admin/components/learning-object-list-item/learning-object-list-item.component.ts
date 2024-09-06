@@ -249,7 +249,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   }
 
   deleteRevision() {
-    this.revisionsService.deleteRevision(this.learningObject.author.username, this.learningObject.cuid, this.learningObject.version + 1)
+    this.revisionsService.deleteRevision(this.learningObject.cuid, this.learningObject.version + 1)
       .then(() => {
         this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
       }).catch(() => {
