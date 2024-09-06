@@ -77,11 +77,11 @@ export class UserService {
 
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     return this.http
-      .get(USER_ROUTES.GET_USER(username), { withCredentials: true })
+      .get(USER_ROUTES.GET_USER_LEARNING_OBJECTS(username), { withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
-        return val.map((l) => new LearningObject(l));
+        return val.objects.map((r) => new LearningObject(r));
       });
   }
 
