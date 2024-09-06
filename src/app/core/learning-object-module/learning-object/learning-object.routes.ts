@@ -97,7 +97,7 @@ export const LEARNING_OBJECT_ROUTES = {
     GET_MY_DRAFT_LEARNING_OBJECTS(username, filters, query) {
         return `${environment.apiURL}/users/${encodeURIComponent(
             username,
-        )}/learning-objects?draftsOnly=true&${querystring.stringify(filters, query)}`;
+        )}/learning-objects?draftsOnly=true&limit=200&${querystring.stringify(filters, query)}`;
     },
 
     /**
