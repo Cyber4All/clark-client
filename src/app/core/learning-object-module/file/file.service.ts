@@ -128,7 +128,7 @@ export class FileService {
         .toPromise();
     }
 
-    /**
+  /**
    * Adds file meta to a Learning Object's materials
    * Adding files are handled by a job queue to avoid sending too large of a payload to the server
    *
@@ -138,10 +138,10 @@ export class FileService {
    * @returns {Promise<string[]>}
    * @memberof LearningObjectService
    */
-    addFileMeta({
-      objectId,
-      files
-    }: {
+  addFileMeta({
+    objectId,
+    files
+  }: {
       objectId: string;
       files: FileUploadMeta[];
     }): Promise<string[]> {
@@ -218,7 +218,7 @@ export class FileService {
     sendNextBatch$.next();
   }
 
-    /**
+  /**
    * Handles completion of requests for all file metadata that was enqueued
    *
    * @private
@@ -227,10 +227,10 @@ export class FileService {
    * @returns
    * @memberof LearningObjectService
    */
-    private async handleFileMetaRequestQueueCompletion(
-      completed$: Subject<boolean>,
-      responses$: Promise<string[]>[]
-    ): Promise<string[]> {
+  private async handleFileMetaRequestQueueCompletion(
+    completed$: Subject<boolean>,
+    responses$: Promise<string[]>[]
+  ): Promise<string[]> {
       completed$.next(true);
       completed$.unsubscribe();
       const fileIdsArrays = await Promise.all(responses$);
