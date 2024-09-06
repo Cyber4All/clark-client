@@ -79,7 +79,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private toaster: ToastrOvenService,
     private authService: AuthService,
     private router: Router,
-    private ratings: RatingService,
+    private ratingService: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
     private navbarService: NavbarService,
@@ -257,7 +257,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async getRatings(learningObject: LearningObject): Promise<LearningObjectRatings> {
     const { cuid, version } = learningObject;
-    return await this.ratings.getLearningObjectRatings(
+    return await this.ratingService.getLearningObjectRatings(
       cuid,
       version,
     );
