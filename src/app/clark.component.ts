@@ -95,10 +95,10 @@ export class ClarkComponent implements OnInit {
   ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
-      this.authService.isLoggedIn.subscribe(val => {
-        if (val) {
-          this.libraryService.updateUser();
-          this.libraryService.getLibrary();
+      this.authService.isLoggedIn.subscribe((value: boolean) => {
+        // Loads the user's library if they are logged in
+        if (value) {
+          this.libraryService.getLibrary({});
         }
       });
 
