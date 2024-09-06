@@ -8,6 +8,8 @@ import { AuthService } from '../auth-module/auth.service';
 import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
 import { LIBRARY_ROUTES } from './library.routes';
 
+export interface LibraryItem { _id: string, savedBy: string, savedOn: string, learningObject: LearningObject }
+
 const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
   providedIn: 'root'
@@ -15,8 +17,7 @@ const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 export class LibraryService {
   private user;
   private headers = new HttpHeaders();
-  private cartItems: Array<any> = [];
-  public libraryItems: Array<LearningObject> = [];
+  public libraryItems: Array<LibraryItem> = [];
 
   // Observable boolean to toggle download spinner in components
   private _loading$ = new BehaviorSubject<boolean>(false);
@@ -26,33 +27,47 @@ export class LibraryService {
     return this._loading$.asObservable();
   }
 
-  constructor(private http: HttpClient, private auth: AuthService, public toaster: ToastrOvenService) {
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService,
+    public toaster: ToastrOvenService
+  ) {
     this.updateUser();
   }
 
+  /**
+   * Method to update the user object and headers with the latest user information
+   */
   updateUser() {
     // get new user from auth service
     this.user = this.auth.user || undefined;
 
     // reset headers with new users auth token
     this.headers = new HttpHeaders();
-    // this.headers.append('Content-Type', 'application/json');
   }
 
-  async getLibrary(opts?: {
-    learningObjectCuid?: string, version?: number,
-    page?: number, limit?: number
-  }): Promise<{ cartItems: LearningObject[], lastPage: number }> {
+  /**
+   *
+   * @param opts
+   * @returns
+   */
+  async getLibrary(opts: {
+    learningObjectCuid?: string,
+    version?: number,
+    page?: number,
+    limit?: number
+  }): Promise<{ libraryItems: LibraryItem[], lastPage: number }> {
+    // Resets the auth token in the headers
     this.updateUser();
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
 
     const query = new URLSearchParams({
-      page: opts?.page ? opts.page.toString() : '1',
-      limit: opts?.limit ? opts.limit.toString() : '10',
-      cuid: opts?.learningObjectCuid ? opts.learningObjectCuid : '',
-      version: opts?.version ? opts.version.toString() : '0'
+      page: opts.page ? opts.page.toString() : '1',
+      limit: opts.limit ? opts.limit.toString() : '10',
+      cuid: opts.learningObjectCuid ? opts.learningObjectCuid : '',
+      version: opts.version ? opts.version.toString() : '0'
     });
 
     return await this.http
@@ -66,15 +81,19 @@ export class LibraryService {
       .toPromise()
       .then((val: any) => {
         // preserves carts from cartsdb
-        this.cartItems = val.userLibraryItems;
         this.libraryItems = val.userLibraryItems
-          .map(object => {
-            if (object.learningObject) {
-              object.learningObject.id = object.learningObject._id;
-            }
-            return new LearningObject(object.learningObject);
+          .map((libraryItem) => {
+            const learningObject = new LearningObject(libraryItem.learningObject);
+            learningObject.id = libraryItem.learningObject?._id;
+
+            return {
+              _id: libraryItem._id,
+              savedBy: libraryItem.savedBy,
+              savedOn: libraryItem.savedOn,
+              learningObject
+            };
           });
-        return { cartItems: this.libraryItems, lastPage: val.lastPage };
+        return { libraryItems: this.libraryItems, lastPage: val.lastPage };
       });
   }
 
@@ -111,25 +130,20 @@ export class LibraryService {
       .toPromise();
   }
 
-  removeFromLibrary(learningObjectId: string): Promise<void> {
+  removeFromLibrary(libraryItemId: string): Promise<void> {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
-    const cartId = this.cartItems
-    .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
-    .map(cart => cart._id)[0];
+
     this.http
       .delete(
         LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
           this.user.username,
-          cartId
+          libraryItemId
         ),
         { headers: this.headers, withCredentials: true }
       )
-      .pipe(
-
-        catchError((error) => this.handleError(error))
-      )
+      .pipe(catchError((error) => this.handleError(error)))
       .toPromise();
   }
 
@@ -219,12 +233,15 @@ export class LibraryService {
       });
   }
 
-  has(object: LearningObject): boolean {
-    const inLibrary = this.libraryItems.filter(
-      o =>
-        o.cuid === object.cuid
-    ).length > 0;
-    return inLibrary;
+  /**
+   * Returns whether the learning object exists in the user's library
+   * This is done by checking the library items for the learningObjectId
+   *
+   * @param learningObjectId the learning object to check for in the library
+   * @returns whether the learning object exists in the library
+   */
+  has(learningObjectId: string): boolean {
+    return this.libraryItems.filter((libraryItem: LibraryItem) => libraryItem.learningObject.id === learningObjectId).length > 0;
   }
 
   /**
@@ -238,6 +255,7 @@ export class LibraryService {
     if (!contentDisposition) {
       return DEFAULT_BUNDLE_NAME;
     }
+
     // Split the content disposition header by semicolon
     const split = contentDisposition.split(';');
     for (const part of split) {
@@ -247,6 +265,7 @@ export class LibraryService {
         return value.replace(/"/g, '').trim();
       }
     }
+
     // Return default bundle name if no filename key found
     return DEFAULT_BUNDLE_NAME;
   }
