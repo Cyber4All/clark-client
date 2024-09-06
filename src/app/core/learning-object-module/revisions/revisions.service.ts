@@ -2,15 +2,15 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { REVISION_ROUTES } from './revisions.routes';
+import { REVISION_ROUTES } from '../revisions/revisions.routes';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RevisionsService {
 
-  constructor(private http: HttpClient) { }
-
+  constructor(private http: HttpClient) {}
+  
   /**
    * Creates a Revision of an existing learning object
    *
@@ -29,10 +29,11 @@ export class RevisionsService {
    * Deletes a revision of a learning object. This is designed to allow an editor to create a new
    * revision when it is necessary for the editorial process to continue.
    *
+   * @param username username of the author
    * @param cuid cuid of the learning object
    * @returns
    */
-  deleteRevision(cuid: string, version: number) {
+  deleteRevision(username: string, cuid: string, version: number) {
     return this.http
       .delete(REVISION_ROUTES.DELETE_REVISION(cuid, version), {
         withCredentials: true,

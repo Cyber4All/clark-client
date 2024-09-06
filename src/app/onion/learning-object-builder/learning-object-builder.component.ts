@@ -3,7 +3,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { NavbarService } from '../../core/client-module/navbar.service';
 import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
 import { Subject } from 'rxjs';
 import {
   trigger,

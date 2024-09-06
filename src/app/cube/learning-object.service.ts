@@ -10,6 +10,8 @@ import {
 import { Query } from '../interfaces/query';
 
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
+import * as querystring from 'querystring';
+import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
 import { USER_ROUTES } from '../core/user-module/user.routes';
 
 // TODO: move to core module

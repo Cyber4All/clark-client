@@ -22,7 +22,7 @@ export class FeaturedObjectsService {
   private _mutationError$ = new BehaviorSubject<boolean>(false);
   // Errors that occur if the featuredObjects array does not contain exactly 5 objects
   private _submitError$ = new BehaviorSubject<boolean>(false);
-  private featuredStore: { featured } = { featured: [] };
+  private featuredStore: { featured: any } = { featured: [] };
 
   private headers = new HttpHeaders();
   featuredObjectIds: string[];

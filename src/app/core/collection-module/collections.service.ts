@@ -3,6 +3,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, skipWhile } from 'rxjs/operators';
 import { COLLECTION_ROUTES } from './collections.routes';
+import { REPORT_ROUTES } from '../report-module/report.routes';
+import { USER_ROUTES } from '../user-module/user.routes';
 
 export interface Collection {
   name: string;

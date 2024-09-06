@@ -1,7 +1,11 @@
 version: 2.1
 
 orbs:
+<<<<<<< HEAD
   cyber4all: cyber4all/orb@2.1.8
+=======
+  cyber4all: cyber4all/orb@2.1.7
+>>>>>>> dfe10b96dbbebf335b20d6975852330d2435f067
   node: circleci/node@6.1.0
 
 workflows:
