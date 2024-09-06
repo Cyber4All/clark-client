@@ -10,7 +10,7 @@ import { REVISION_ROUTES } from '../revisions/revisions.routes';
 export class RevisionsService {
 
   constructor(private http: HttpClient) {}
-  
+
   /**
    * Creates a Revision of an existing learning object
    *
@@ -33,7 +33,7 @@ export class RevisionsService {
    * @param cuid cuid of the learning object
    * @returns
    */
-  deleteRevision(username: string, cuid: string, version: number) {
+  deleteRevision(cuid: string, version: number) {
     return this.http
       .delete(REVISION_ROUTES.DELETE_REVISION(cuid, version), {
         withCredentials: true,
