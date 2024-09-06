@@ -6,12 +6,12 @@ import { AuthValidationService } from 'app/core/auth-module/auth-validation.serv
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Organization } from 'entity/organization';
+import { OrganizationService } from 'app/core/utility-module/organization.service';
 import { Subject, interval } from 'rxjs';
 import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
 import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
-import { UtilityService } from 'app/core/utility-module/utility.service';
 
 const EMAIL_REGEX =
   // eslint-disable-next-line max-len
@@ -129,7 +129,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private userService: UserService,
     private router: Router,
-    private utilityService: UtilityService,
+    private orgService: OrganizationService,
     private cookieAgreement: CookieAgreementService,
     private route: ActivatedRoute,
   ) {
@@ -151,7 +151,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.validateUsername();
     this.organizationInput$.pipe(debounceTime(650))
       .subscribe(async (value: string) => {
-        this.searchResults = (await this.utilityService.searchOrgs(value.trim()));
+        this.searchResults = (await this.orgService.searchOrgs(value.trim()));
         this.loading = false;
       });
     this.organizationInput$

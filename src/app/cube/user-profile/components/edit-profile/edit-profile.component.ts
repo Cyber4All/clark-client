@@ -15,8 +15,8 @@ import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Organization } from '../../../../../entity/organization';
+import { OrganizationService } from '../../../../core/utility-module/organization.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
-import { UtilityService } from 'app/core/utility-module/utility.service';
 
 @Component({
   selector: 'clark-edit-profile',
@@ -58,7 +58,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
     private noteService: ToastrOvenService,
     private auth: AuthService,
     private userService: UserService,
-    private utilityService: UtilityService,
+    private orgService: OrganizationService,
     private router: Router
   ) { }
 
@@ -72,7 +72,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
     this.organizationInput$
       .pipe(debounceTime(650))
       .subscribe(async (value: string) => {
-        this.searchResults = await this.utilityService.searchOrgs(value.trim());
+        this.searchResults = await this.orgService.searchOrgs(value.trim());
         this.loading = false;
       });
     this.organizationInput$.subscribe((value: string) => {

@@ -123,22 +123,6 @@ export class UtilityService {
     }
   }
 
-  async searchOrgs(query: string): Promise<Array<Organization>> {
-    return new Promise((resolve, reject) => {
-      this.http
-        .get(UTILITY_ROUTES.SEARCH_ORGANIZATIONS(query))
-        .toPromise()
-        .then(
-          (res: any) => {
-            resolve(res);
-          },
-          (err) => {
-            reject(err);
-          }
-        );
-    });
-  }
-
   private handleError(error: HttpErrorResponse | any) {
     if (
       error.error instanceof ErrorEvent ||
