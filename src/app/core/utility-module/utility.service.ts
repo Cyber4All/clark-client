@@ -6,6 +6,8 @@ import { AuthService } from '../auth-module/auth.service';
 import { Observable, throwError } from 'rxjs';
 import { Blog } from 'app/components/blogs/types/blog';
 import { catchError } from 'rxjs/operators';
+import { Downtime } from './messages.service';
+import { Organization } from 'entity/organization';
 
 @Injectable({
   providedIn: 'root'
@@ -102,11 +104,39 @@ export class UtilityService {
     });
   }
 
+  getDowntime(): Promise<Downtime> {
+    return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
+      .pipe(
+
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((val: Downtime) => {
+        return val;
+      });
+  }
+
   public openCard() {
     // Ask the user if they are sure they want to leave
     if (confirm('You are now leaving CLARK. You will be redirected to the CAE Resource Directory.')) {
       window.open('https://caeresource.directory', '_blank');
     }
+  }
+
+  async searchOrgs(query: string): Promise<Array<Organization>> {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get(UTILITY_ROUTES.SEARCH_ORGANIZATIONS(query))
+        .toPromise()
+        .then(
+          (res: any) => {
+            resolve(res);
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+    });
   }
 
   private handleError(error: HttpErrorResponse | any) {

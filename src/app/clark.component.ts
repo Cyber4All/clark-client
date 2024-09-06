@@ -85,7 +85,6 @@ export class ClarkComponent implements OnInit {
     private titleService: Title,
     private route: ActivatedRoute,
     private _: HistoryService,
-    private messages: MessagesService,
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
     private cookieAgreement: CookieAgreementService,
@@ -123,12 +122,12 @@ export class ClarkComponent implements OnInit {
 
   ngOnInit(): void {
     if (environment.production) {
-      this.messages.getDowntime().then(down => {
+      this.utilityService.getDowntime().then(down => {
         this.downtime = down;
       });
       // Determine if the application is currently under maintenance
       setInterval(async () => {
-        this.messages.getDowntime().then(down => {
+        this.utilityService.getDowntime().then(down => {
           this.downtime = down;
         });
       }, 300000); // 5 min interval

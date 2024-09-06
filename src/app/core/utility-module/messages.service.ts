@@ -22,28 +22,5 @@ export class MessagesService {
   get message() {
     return this._downtime;
   }
-
-  constructor(private http: HttpClient) { }
-  getDowntime(): Promise<Downtime> {
-    return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((val: Downtime) => {
-        return val;
-      });
-  }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-      // Client-side or network returned error
-      return throwError(error.error.message);
-    } else {
-      // API returned error
-      return throwError(error);
-    }
-  }
 }
 

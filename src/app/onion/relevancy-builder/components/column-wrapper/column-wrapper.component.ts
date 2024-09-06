@@ -6,6 +6,7 @@ import {
   Input
 } from '@angular/core';
 import { MessagesService } from 'app/core/utility-module/messages.service';
+import { UtilityService } from 'app/core/utility-module/utility.service';
 @Component({
   selector: 'onion-column-wrapper',
   templateUrl: './column-wrapper.component.html',
@@ -22,11 +23,11 @@ export class ColumnWrapperComponent implements OnInit {
   columnOffset: number;
   columnHeight: number;
 
-  constructor(private messagesService: MessagesService) { }
+  constructor(private utilityService: UtilityService) { }
 
   async ngOnInit() {
     try {
-      this.messageBar = !!(await this.messagesService.getDowntime()).message;
+      this.messageBar = !!(await this.utilityService.getDowntime()).message;
     } catch (error) {
       // FIXME this suppresses the error resulting in the lambda function for messages being disabled
     }
