@@ -42,6 +42,46 @@ export class OutcomeService {
       .toPromise();
   }
 
+  /**
+   * Modify an outcome by sending a partial learning outcome
+   *
+   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
+   * @returns {Promise<any>}
+   * @memberof LearningObjectService
+   */
+  saveOutcome(
+    outcome: { id: string;[key: string]: any }
+  ): Promise<any> {
+    const outcomeId = outcome.id;
+    delete outcome.id;
+
+    return this.http
+      .patch(
+        OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
+        { ...outcome },
+        { headers: this.headers, withCredentials: true },
+      )
+      .pipe(
+
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Deletes an outcome on a given learning object
+   *
+   * @param outcomeId The outcome Id
+   */
+    deleteOutcome(outcomeId: string): Promise<any> {
+      return this.http
+        .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
+        .pipe(
+  
+          catchError(this.handleError)
+        )
+        .toPromise();
+    }
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
