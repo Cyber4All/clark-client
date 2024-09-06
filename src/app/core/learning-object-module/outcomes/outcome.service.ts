@@ -77,7 +77,7 @@ export class OutcomeService {
       return this.http
         .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
         .pipe(
-  
+
           catchError(this.handleError)
         )
         .toPromise();
