@@ -83,7 +83,6 @@ export class EditorialActionPadComponent implements OnInit {
   // Create a revision and then redirects to the builder for the revision˝
   async createRevision() {
     this.closeRevisionModal();
-    // Test
     this.toaster.success('One Moment Please', 'Your revision is being created.');
     // TODO: Update the createRevision's response to be a revised learning object rather than
     // using a GET request to make a request that would effectively do the same thing.
