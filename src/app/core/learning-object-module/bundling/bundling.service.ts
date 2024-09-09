@@ -8,20 +8,6 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 
-export const DownloadBundleToggle = {
-  callDownloadBundle(learningObjectId: string) {
-    const value = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
-    return value;
-  },
-  callBundleLearningObject(learningObjectId: string) {
-    const value = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
-    return value;
-  },
-  // callTOGGLE_BUNDLE_FILE(params: { learningObjectId: string }){
-  //   BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({learningObjectId});
-  // }
-
-};
 export class BundlingService {
   private headers = new HttpHeaders();
 
@@ -42,6 +28,17 @@ export class BundlingService {
       .toPromise();
   }
 
+  callDownloadBundle(learningObjectId: string): string {
+    const value = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
+    return value;
+  }
+
+
+  callBundleLearningObject(learningObjectId: string): string {
+    const value = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
+    return value;
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (
       error.error instanceof ErrorEvent ||
@@ -54,4 +51,5 @@ export class BundlingService {
       return throwError(error);
     }
   }
+
 }
