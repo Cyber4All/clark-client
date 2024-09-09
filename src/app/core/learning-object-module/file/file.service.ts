@@ -146,25 +146,6 @@ export class FileService {
       files: FileUploadMeta[];
     }): Promise<string[]> {
       const route = FILE_ROUTES.UPLOAD_FILE_META(objectId);
-      return this.handleFileMetaRequests(files, route);
-    }
-
-  /**
-   * Handles file meta data requests
-   *
-   * *** NOTE ***
-   * Requests are handled in batches if data payload is too large (Will only send at most `MAX_PER_REQUEST` file meta in a single request)
-   *
-   * @private
-   * @param {FileUploadMeta[]} files [List of file meta to be added]
-   * @param {string} route [Route to make request to]
-   * @returns
-   * @memberof LearningObjectService
-   */
-  private handleFileMetaRequests(
-    files: FileUploadMeta[],
-    route: string
-  ): Promise<string[]> {
     const MAX_PER_REQUEST = 100;
     const responses$: Promise<string[]>[] = [];
     const completed$: Subject<boolean> = new Subject<boolean>();
