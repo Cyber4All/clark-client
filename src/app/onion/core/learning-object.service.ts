@@ -9,7 +9,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/typings';
-import { SUBMISSION_ROUTES } from '../../core/learning-object-module/submissions/submissions.routes';
 import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bundling.routes';
 import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
@@ -330,29 +329,6 @@ export class LearningObjectService {
       .delete(
         LEGACY_USER_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
         { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Publish a learning object
-   *
-   * @param {LearningObject} learningObject the learning object to be published
-   * @param {string} collection the abreviated name of the collection to which to submit this learning object
-   */
-  submit(learningObject: LearningObject, collection: string): Promise<{}> {
-    const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject.id,
-    });
-    return this.http
-      .post(
-        route,
-        { collection },
-        { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
 
