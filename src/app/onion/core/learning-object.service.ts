@@ -227,8 +227,8 @@ export class LearningObjectService {
         catchError(this.handleError)
       )
       .toPromise()
-      .then((response: any) => {
-        return response.objects;
+      .then((learningObjects: any[]) => {
+        return learningObjects.map(learningObject => new LearningObject(learningObject));
       });
   }
 
