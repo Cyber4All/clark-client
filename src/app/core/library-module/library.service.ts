@@ -7,7 +7,7 @@ import { ToastrOvenService } from '../../shared/modules/toaster/notification.ser
 import { AuthService } from '../auth-module/auth.service';
 import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
 import { LIBRARY_ROUTES } from './library.routes';
-import { BundlingService } from '../learning-object-module/bundling/bundling.service';
+
 
 
 const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
@@ -31,7 +31,7 @@ export class LibraryService {
   constructor(private http: HttpClient,
     private auth: AuthService,
     public toaster: ToastrOvenService,
-    private bundlingService: BundlingService) {
+  ) {
     this.updateUser();
   }
 
@@ -149,8 +149,8 @@ export class LibraryService {
     this._loading$.next(true);
 
     // Url route for bundling
-    const bundleUrl = this.bundlingService.callBundleLearningObject(learningObjectId);
-    const downloadUrl = this.bundlingService.callDownloadBundle(learningObjectId);
+    const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
+    const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
 
     this.http.head(bundleUrl, {
       headers: this.headers,

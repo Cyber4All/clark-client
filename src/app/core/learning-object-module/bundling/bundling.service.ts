@@ -28,16 +28,8 @@ export class BundlingService {
       .toPromise();
   }
 
-  callDownloadBundle(learningObjectId: string): string {
-    const value = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
-    return value;
-  }
 
 
-  callBundleLearningObject(learningObjectId: string): string {
-    const value = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
-    return value;
-  }
 
   private handleError(error: HttpErrorResponse) {
     if (

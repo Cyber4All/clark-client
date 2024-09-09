@@ -20,7 +20,7 @@ import { CollectionService } from 'app/core/collection-module/collections.servic
 import { Router } from '@angular/router';
 import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
-import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 import { HttpErrorResponse } from '@angular/common/http';
 
 
@@ -84,8 +84,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private router: Router,
     private learningObjectService: LearningObjectService,
-    private dropdowns: NavbarDropdownService,
-    private bundlingService: BundlingService
+    private dropdowns: NavbarDropdownService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -203,7 +202,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   download(learningObjectId: string) {
     this.toggleDownloadModal(true);
-    this.libraryService.downloadBundle(this.bundlingService.callBundleLearningObject(learningObjectId));
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
   }
 
   copyLink() {
