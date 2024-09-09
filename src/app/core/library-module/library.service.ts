@@ -146,8 +146,8 @@ export class LibraryService {
     this._loading$.next(true);
 
     // Url route for bundling
-    const bundleUrl = DownloadBundleToggle.callBUNDLE_LEARNING_OBJECT(learningObjectId);
-    const downloadUrl = DownloadBundleToggle.callDOWNLOAD_BUNDLE(learningObjectId);
+    const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
+    const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
 
     this.http.head(bundleUrl, {
       headers: this.headers,
