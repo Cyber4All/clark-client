@@ -29,15 +29,6 @@ export const USER_ROUTES = {
     return `${environment.apiURL}/users/${encodeURIComponent(user)}`;
   },
   /**
-   * Request to retrieve a user's learning objects
-   * @method GET
-   * @param user the username or userId of the user
-   * @returns the learning objects
-   */
-  GET_USER_LEARNING_OBJECTS(user: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(user)}/learning-objects`;
-  },
-  /**
    * Gets the user's fileAccessId also known as the Cognito Identity Id
    *
    * @param username the username of the user

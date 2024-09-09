@@ -76,16 +76,6 @@ export class UserService {
         );
   }
 
-  getUsersLearningObjects(username: string): Promise<LearningObject[]> {
-    return this.http
-      .get(USER_ROUTES.GET_USER_LEARNING_OBJECTS(username), { withCredentials: true })
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((val: any) => {
-        return val.objects.map((r) => new LearningObject(r));
-      });
-  }
-
   getUserFileAccessId(username: string): Promise<string> {
     return this.http
       .get(USER_ROUTES.GET_USER_FILE_ACCESS_ID(username), {

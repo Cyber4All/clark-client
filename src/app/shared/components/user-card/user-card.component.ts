@@ -3,6 +3,7 @@ import { UserService } from 'app/core/user-module/user.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { User, LearningObject } from '@entity';
 import { ModalService, ModalListElement } from '../../modules/modals/modal.module';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-user-card',
@@ -18,19 +19,24 @@ export class UserCardComponent implements OnInit, OnChanges {
   objects: Array<LearningObject>;
   icon: string;
   imgSize: number;
-  constructor(private learningObjectService: LearningObjectService, private userService: UserService, private modals: ModalService) { }
+
+  constructor(
+    private userService: UserService,
+    private modals: ModalService,
+    private searchService: SearchService
+  ) { }
+
   ngOnInit() {
     this.imgSize = 100;
     this.icon = this.userService.getGravatarImage(this.user.email, this.imgSize);
   }
 
   ngOnChanges() {
-    // XXX: When is this called??
     this.fetchLearningObjects();
   }
 
   async fetchLearningObjects() {
-    this.objects = await this.userService.getUsersLearningObjects(this.user.username);
+    this.objects = await this.searchService.getUsersLearningObjects(this.user.username);
   }
 
   showGravatarModal(e: Event) {
