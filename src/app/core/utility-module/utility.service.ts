@@ -6,14 +6,22 @@ import { AuthService } from '../auth-module/auth.service';
 import { Observable, throwError } from 'rxjs';
 import { Blog } from 'app/components/blogs/types/blog';
 import { catchError } from 'rxjs/operators';
-import { Downtime } from './messages.service';
-import { Organization } from 'entity/organization';
+
+export class Downtime {
+  constructor(public isDown: boolean, public message: string) { }
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilityService {
   constructor(private http: HttpClient, private auth: AuthService) { }
+
+  private _downtime: Downtime;
+
+  get message() {
+    return this._downtime;
+  }
 
   /**
    * Gets all blogs from the database

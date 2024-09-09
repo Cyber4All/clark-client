@@ -5,7 +5,6 @@ import {
   ViewChild,
   Input
 } from '@angular/core';
-import { MessagesService } from 'app/core/utility-module/messages.service';
 import { UtilityService } from 'app/core/utility-module/utility.service';
 @Component({
   selector: 'onion-column-wrapper',
