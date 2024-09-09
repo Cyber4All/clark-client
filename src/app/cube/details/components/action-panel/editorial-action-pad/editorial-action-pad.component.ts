@@ -84,6 +84,7 @@ export class EditorialActionPadComponent implements OnInit {
   async createRevision() {
     this.closeRevisionModal();
     this.toaster.success('One Moment Please', 'Your revision is being created.');
+    //TODO: Update createRevision to return the revised learning object than the URI that we use to make a GET request directly after.
     await this.revisionsService
       .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
