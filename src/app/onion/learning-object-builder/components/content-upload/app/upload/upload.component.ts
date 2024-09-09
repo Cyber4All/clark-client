@@ -34,6 +34,7 @@ import { getUserAgentBrowser } from 'getUserAgentBrowser';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
+import { FILE_ROUTES } from 'app/core/learning-object-module/file/file.routes';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -689,6 +690,19 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       this.resetUploadStatuses();
       this.error$.next(UPLOAD_ERRORS.INVALID_CREDENTIALS);
     }
+  }
+
+  /**
+   * Handles downloading a file by opening the stream url in a new window
+   *
+   * @param {LearningObject.Material.File} file[The file to be downloaded]
+   * @memberof UploadComponent
+   */
+  async handleFileDownload(file: LearningObject.Material.File) {
+    const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
+    const loId = learningObject.id;
+    const url = FILE_ROUTES.DOWNLOAD_FILE(loId, file._id);
+    window.open(url, '__blank');
   }
 
   /**
