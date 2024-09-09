@@ -133,7 +133,7 @@ export class UserService {
    * @param {string} token the token to verify
    * @returns an object with the result if fail, or null if true.
    */
-  validateToken(token: string) {
+  validateCaptcha(token: string) {
     return (_: AbstractControl) => {
       return this.http.get(USER_ROUTES.VALIDATE_CAPTCHA(), { params: { token } }).pipe(
         map((res: any) => {

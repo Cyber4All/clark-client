@@ -162,7 +162,7 @@ export class RecaptchaDirective
    * @param token
    */
   verifyToken(token: string) {
-    this.userService.validateToken(token);
+    this.userService.validateCaptcha(token);
   }
 
   /**
