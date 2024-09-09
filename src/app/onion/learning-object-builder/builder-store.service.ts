@@ -532,7 +532,7 @@ export class BuilderStore {
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
     if (!checkIfUUID(outcome.serviceId || outcome.id) && (outcome.serviceId || outcome.id)) {
       this.serviceInteraction$.next(true);
-      this.learningObjectService
+      this.outcomeService
       .deleteOutcome(outcome.serviceId || outcome.id)
       .then(() => {
         this.serviceInteraction$.next(false);
@@ -1138,7 +1138,7 @@ export class BuilderStore {
     // delete any lingering serviceId properties before sending to service
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
-    this.learningObjectService
+    this.outcomeService
       .saveOutcome(updateValue as any)
       .then(() => {
         this.serviceInteraction$.next(false);
