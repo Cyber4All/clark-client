@@ -137,28 +137,6 @@ export const LEARNING_OBJECT_ROUTES = {
     DELETE_LEARNING_OBJECT(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
     },
-
-    POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId,
-        )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
-    },
-    DELETE_MAPPING(
-          username: string,
-          learningObjectId: string,
-          outcomeId: string,
-          mappingsId: string,
-      ) {
-          return `${environment.apiURL}/users/${encodeURIComponent(
-              username,
-          )}/learning-objects/${encodeURIComponent(
-              learningObjectId,
-          )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(
-              mappingsId,
-          )}`;
-      },
 };
 
 export const USER_ROUTES = {

@@ -278,62 +278,6 @@ export class LearningObjectService {
       .toPromise();
   }
 
-  /**
-   * Add a guideline to the guidelines array of a Learning Outcome
-   *
-   * @param {string} learningObjectId the id of the source learning object
-   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @param username The learning object author's username
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
-  addGuideline(
-    learningObjectId: string,
-    outcome: Partial<LearningOutcome>,
-    username: string
-  ): Promise<any> {
-    const outcomeId = outcome.id;
-
-    return this.http
-      .post(
-        LEARNING_OBJECT_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
-        { guidelineID: outcome.mappings[outcome.mappings.length - 1] },
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Add a guideline to the guidelines array of a Learning Outcome
-   *
-   * @param {string} learningObjectId the id of the source learning object
-   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @param username The learning object author's username
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
-  deleteGuideline(
-    learningObjectId: string,
-    outcome: string,
-    username: string,
-    mappingId: string,
-  ): Promise<any> {
-
-    return this.http
-      .delete(
-        LEARNING_OBJECT_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
 
   /**
    * Publish a learning object
