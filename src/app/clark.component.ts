@@ -13,7 +13,7 @@ import { Title } from '@angular/platform-browser';
 import { HistoryService } from './core/client-module/history.service';
 import { filter } from 'rxjs/operators';
 import { LearningObject } from '../entity/learning-object/learning-object';
-import { Downtime } from './core/utility-module/utility.service'; 
+import { Downtime } from './core/utility-module/utility.service';
 import { environment } from '@env/environment';
 import { ToastrOvenService } from './shared/modules/toaster/notification.service';
 import { CookieAgreementService } from './core/auth-module/cookie-agreement.service';
