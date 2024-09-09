@@ -56,17 +56,6 @@ export const FILE_ROUTES = {
     )}/files/${encodeURIComponent(fileId)}/download`;
   },
   /**
-   * Request to get the materials of a learning object
-   * @method GET
-   * @param username - The username of the author
-   * @param id - The id of the learning object to get the materials from
-   */
-  GET_MATERIALS(id: string, filter?: MaterialsFilter) {
-    return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-      id,
-    )}/materials?status=${encodeURIComponent(filter)}`;
-  },
-  /**
    * Request to upload a file to a learning object
    * @method POST
    * @auth required

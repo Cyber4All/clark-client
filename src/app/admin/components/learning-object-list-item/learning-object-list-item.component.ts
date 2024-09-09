@@ -78,7 +78,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     private http: HttpClient,
     private toaster: ToastrOvenService,
     private hierarchyService: HierarchyService,
-    private loService: LearningObjectService,
+    private learningObjectService: LearningObjectService,
     private refactoredLearningObjectService: RefactoredLearningObjectService
   ) { }
 
@@ -175,30 +175,14 @@ export class LearningObjectListItemComponent implements OnChanges {
   }
 
   async checkForParents() {
-    const parentUri = `${environment.apiURL}/users/${encodeURIComponent(
-      this.learningObject.author.username
-    )}/learning-objects/${encodeURIComponent(
-      this.learningObject.id
-    )}/parents`;
-
-    await this.http.get(
-      LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(this.learningObject.id),
-      { headers: this.headers, withCredentials: true }
-    ).pipe(
-      take(1),
-      catchError(e => of(e))
-    ).subscribe(object => {
-      if (object && object.length) {
-        this.hasParents = true;
-      }
-    });
+    this.hasParents = (await this.learningObjectService.getLearningObjectParents(this.learningObject.id)).length > 0;
   }
 
   /**
    * Checks if the learning object has any children
    */
   async checkForChildren() {
-    this.hasChildren = await this.loService.doesLearningObjectHaveChildren(this.learningObject.id);
+    this.hasChildren = (await this.learningObjectService.getLearningObjectChildren(this.learningObject.id)).length > 0;
   }
 
   /**

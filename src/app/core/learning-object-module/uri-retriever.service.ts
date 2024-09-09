@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject, LearningOutcome } from '@entity';
 import { Observable, Subject, of, throwError } from 'rxjs';
-import { catchError, filter, finalize, map, take, takeUntil, tap } from 'rxjs/operators';
-import { LEARNING_OBJECT_ROUTES, LEGACY_USER_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
+import { catchError, filter, finalize, map, take } from 'rxjs/operators';
+import { LearningObjectService } from './learning-object/learning-object.service';
 
 // TODO this service should be deleted and its instances should be replced with the LearningObjectService in core
 
@@ -19,7 +19,10 @@ export const CALLBACKS = {
 })
 export class UriRetrieverService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private learningObjectService: LearningObjectService
+  ) { }
 
   /**
    * This function will return the metadata and the requested resources for a learning object as a promise of a Learning Object.
@@ -28,71 +31,12 @@ export class UriRetrieverService {
    * @params resources (i.e. children, parents, outcomes, etc) that need to be loaded with the metadata
    */
   getLearningObject(
-    params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
+    params: { author?: string, cuidInfo: { cuid: string, version?: number }, id?: string },
     resources?: string[]
   ): Observable<LearningObject> {
     try {
-      const request = this.getLearningObjectResources(params, resources || []);
+      const request = this.learningObjectService.getLearningObjectResources(params, resources || []);
       return this.getFullLearningObject(request, resources);
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  /**
-   * This function will return a subject that includes the requested Learning Objects metadata and
-   * all of the requested properties.
-   *
-   * @param params the author, name, or id needed to retrieve the metadata for a Learning Object
-   * @param properties the properties (i.e. children, parents, etc) that have been requested
-   */
-  getLearningObjectResources(
-    params: { author?: string, cuidInfo?: { cuid: string, version?: number }, learningObjectId?: string },
-    properties?: string[]
-  ) {
-    try {
-      const route = this.setRoute(params);
-
-      const responses: Subject<any> = new Subject();
-      const end = new Subject();
-
-      this.http.get<LearningObject | any>(route).pipe(
-        catchError(err => {
-          responses.error(err);
-          end.complete();
-          return throwError(err);
-        }),
-        tap(entity => {
-
-          if (Array.isArray(entity)) {
-            if (entity.length > 1) {
-              entity = entity.filter(e => e.status === LearningObject.Status.RELEASED)[0];
-            } else {
-              entity = entity.pop();
-            }
-          }
-
-          const uris = Object.assign(entity.resourceUris);
-          let completed = 0;
-          Object.keys(uris).map(key => {
-            if (!properties || properties.includes(key)) {
-              this.fetchUri(uris[key], CALLBACKS[key]).subscribe(value => {
-                responses.next({ requestKey: key, value });
-                if (++completed === properties.length || completed === uris.length) {
-                  responses.complete();
-                  end.next();
-                  end.complete();
-                }
-              });
-            }
-          });
-
-          responses.next(new LearningObject(entity));
-        }),
-        takeUntil(end),
-      ).subscribe();
-
-      return responses;
     } catch (err) {
       throw err;
     }
@@ -195,42 +139,6 @@ export class UriRetrieverService {
     });
 
     return payload.pipe(take(1), map(o => new LearningObject(o)));
-  }
-
-  /**
-   * Returns the route that needs to be hit in order to load Learning Object based on the params passed in
-   *
-   * @param params includes either the author and Learning Object name or the id to set the route needed
-   * to retrieve the Learning Object
-   */
-  private setRoute(params: { cuidInfo?: { cuid: string, version?: number }, learningObjectId?: string }) {
-    let route;
-    // Sets route to be hit based on if the id or if Learning Object name have been provided
-    if (params.cuidInfo?.cuid) {
-      route = LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
-    } else if (params.learningObjectId) {
-      // TODO: Update this to use CUID only.
-      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.learningObjectId);
-    } else {
-      const err = this.userError(params);
-      throw err;
-    }
-    return route;
-  }
-
-  /**
-   * Returns an error message based on the params that are missing and are needed to retrieve Learning Object
-   *
-   * @param params either the author and name or the id of the Learning Object
-   */
-  private userError(params: { author?: string, name?: string, learningObjectId?: string }) {
-    if (params.author && !params.name) {
-      return new Error('Cannot find Learning Object ' + params.name + 'for ' + params.author);
-    } else if (params.name && !params.author) {
-      return new Error('Cannot find Learning Object' + params.name + 'for ' + params.author);
-    } else if (!params.author && !params.name && !params.learningObjectId) {
-      return new Error('Cannot find Learning Object. No identifiers found.');
-    }
   }
 
 }

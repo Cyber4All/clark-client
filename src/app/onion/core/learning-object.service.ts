@@ -16,12 +16,12 @@ import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/rev
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
 import {
   LEGACY_USER_ROUTES,
-  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
   LEARNING_OBJECT_ROUTES,
-  USER_ROUTES,
 } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
+import * as querystring from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -195,7 +195,7 @@ export class LearningObjectService {
     authorUsername: string,
     filters?: any,
   ): Promise<LearningObject[]> {
-    const route = LEARNING_OBJECT_ROUTES.GET_MY_LEARNING_OBJECTS(authorUsername, filters);
+    const route = SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(authorUsername, filters);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -219,11 +219,11 @@ export class LearningObjectService {
     filters?: any,
     query?: string
   ): Promise<LearningObject[]> {
-    const route = LEARNING_OBJECT_ROUTES.GET_MY_DRAFT_LEARNING_OBJECTS(authorUsername, filters, query);
     return this.http
-      .get(route, { headers: this.headers, withCredentials: true })
+      .get(
+        SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(authorUsername, `draftsOnly=true&limit=200&${querystring.stringify(filters, query)}`),
+        { headers: this.headers, withCredentials: true })
       .pipe(
-
         catchError(this.handleError)
       )
       .toPromise()
@@ -443,8 +443,8 @@ export class LearningObjectService {
     children: string[],
     remove: boolean,
   ): Promise<any> {
-    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_CHILD(learningObjectId);
-    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(learningObjectId);
+    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_LEARNING_OBJECT_CHILD(learningObjectId);
+    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_CHILDREN(learningObjectId);
     if (remove) {
       return this.http
         .patch(
@@ -482,21 +482,8 @@ export class LearningObjectService {
       }
     )
       .pipe(
-
         catchError(this.handleError)
       ).toPromise();
-  }
-
-  /**
-   * Fetches the parents of a learning object
-   *
-   * @param id of learning object
-   */
-  fetchParents(id: string) {
-    const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(id);
-    return this.http.get<LearningObject[]>(route, { withCredentials: true }).toPromise().then(parents => {
-      return parents;
-    });
   }
 
   /**
@@ -608,23 +595,7 @@ export class LearningObjectService {
     return fileIds;
   }
 
-  /**
-   * Fetches Learning Object's Materials
-   *
-   * @param {string} authorUsername
-   * @param {string} objectId
-   * @param {string} description
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
-  getMaterials(objectId: string): Promise<any> {
-    const route = FILE_ROUTES.GET_MATERIALS(objectId, 'unreleased');
-    return this.http.get(route, { withCredentials: true })
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
+
   /**
    * Makes request to update file description
    *

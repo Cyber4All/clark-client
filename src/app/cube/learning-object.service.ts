@@ -63,9 +63,9 @@ export class LearningObjectService {
       }
       const queryString = new URLSearchParams(queryClone).toString();
       route =
-        SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
+        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryString);
     } else {
-      route = SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS();
     }
 
     return this.http
@@ -78,32 +78,6 @@ export class LearningObjectService {
           learningObjects: objects.map((object) => new LearningObject(object)),
           total: response.total,
         };
-      });
-  }
-
-  /**
-   * Fetches LearningObject by cuid
-   *
-   * @param {string} cuid
-   * @returns {Promise<LearningObject>}
-   * @memberof LearningObjectService
-   */
-  getLearningObject(
-    cuid: string,
-    version?: number,
-  ): Promise<LearningObject> {
-    const route = LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(
-      cuid,
-      version
-    );
-
-    return this.http
-      .get(route)
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((res: any) => {
-        const learningObject = new LearningObject(res[0]);
-        return learningObject;
       });
   }
   /**

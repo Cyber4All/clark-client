@@ -10,6 +10,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { LearningObjectService as NewLearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
@@ -149,7 +150,9 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     private learningObjectService: LearningObjectService,
+    // TODO: This is temporary while working on story this should be updated with the actual name once the other is removed.
     private refactoredLearningObjectService: RefactoredLearningObjectService,
+    private newLearningObjectService: NewLearningObjectService,
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
@@ -294,8 +297,8 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   fetchMaterials(): void {
-    this.learningObjectService
-      .getMaterials(this.learningObject.id)
+    this.newLearningObjectService
+      .getLearningObjectMaterials(this.learningObject.id)
       .then(materials => {
         this.learningObject.materials = materials;
         this.learningObjectEvent.next(this.learningObject);

@@ -18,7 +18,6 @@ import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
 import { FileManagementService } from '../services/file-management.service';
-import { LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../../../../../../core/learning-object-module/learning-object/learning-object.routes';
 import {
   FileUploadMeta,
   UploadErrorReason,

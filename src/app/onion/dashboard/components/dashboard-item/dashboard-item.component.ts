@@ -13,8 +13,7 @@ import {
 import { StatusDescriptions } from 'environments/status-descriptions';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
-import { LearningObjectService as AppLOService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 
 
@@ -93,16 +92,15 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     private statuses: StatusDescriptions,
     private cd: ChangeDetectorRef,
     private learningObjectService: LearningObjectService,
-    private appLOService: AppLOService,
     private uriRetriever: UriRetrieverService
   ) { }
 
   async ngOnInit() {
     this.parents = await this.parentNames();
     this.children = await this.objectChildrenNames();
-    this.hasChildren = await this.appLOService.doesLearningObjectHaveChildren(
+    this.hasChildren = (await this.learningObjectService.getLearningObjectChildren(
       this.learningObject.id
-    );
+    )).length > 0;
     this.cd.detectChanges();
   }
 
@@ -222,12 +220,8 @@ export class DashboardItemComponent implements OnInit, OnChanges {
    * Returns the learning objects parent names in an array of strings
    */
   async parentNames() {
-    const parents = [];
-    return this.learningObjectService.fetchParents(this.learningObject.id).then(returners => {
-      returners.forEach(parent => {
-        parents.push(parent.name);
-      });
-      return parents;
+    return (await this.learningObjectService.getLearningObjectParents(this.learningObject.id)).map((parent: LearningObject) => {
+      return parent.name;
     });
   }
 }

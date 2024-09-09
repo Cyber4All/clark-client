@@ -1,8 +1,11 @@
 import { environment } from '../../../../environments/environment';
 
 export const SEARCH_ROUTES = {
-  GET_PUBLIC_LEARNING_OBJECTS: `${environment.apiURL}/learning-objects`,
-  GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(query: string) {
+  SEARCH_LEARNING_OBJECTS(query?: string) {
     return `${environment.apiURL}/learning-objects?${query}`;
   },
+
+  GET_USERS_LEARNING_OBJECTS(username: string, query: string) {
+    return `${environment.apiURL}/users/${username}/learning-objects?${query}`;
+  }
 };
