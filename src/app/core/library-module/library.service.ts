@@ -7,6 +7,8 @@ import { ToastrOvenService } from '../../shared/modules/toaster/notification.ser
 import { AuthService } from '../auth-module/auth.service';
 import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
 import { LIBRARY_ROUTES } from './library.routes';
+import { DownloadBundleToggle } from '../learning-object-module/bundling/bundling.service';
+
 
 const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
@@ -116,8 +118,8 @@ export class LibraryService {
       return Promise.reject('User is undefined');
     }
     const cartId = this.cartItems
-    .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
-    .map(cart => cart._id)[0];
+      .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
+      .map(cart => cart._id)[0];
     this.http
       .delete(
         LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
@@ -144,8 +146,8 @@ export class LibraryService {
     this._loading$.next(true);
 
     // Url route for bundling
-    const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
-    const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
+    const bundleUrl = DownloadBundleToggle.callBUNDLE_LEARNING_OBJECT(learningObjectId);
+    const downloadUrl = DownloadBundleToggle.callDOWNLOAD_BUNDLE(learningObjectId);
 
     this.http.head(bundleUrl, {
       headers: this.headers,

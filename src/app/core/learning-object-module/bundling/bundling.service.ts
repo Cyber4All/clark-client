@@ -7,6 +7,21 @@ import { throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
+export const DownloadBundleToggle = {
+  callDownloadBundle(learningObjectId: string) {
+    const value = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
+    return value;
+  },
+  callBundleLearningObject(learningObjectId: string) {
+    const value = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
+    return value;
+  },
+  // callTOGGLE_BUNDLE_FILE(params: { learningObjectId: string }){
+  //   BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({learningObjectId});
+  // }
+
+};
 export class BundlingService {
   private headers = new HttpHeaders();
 
