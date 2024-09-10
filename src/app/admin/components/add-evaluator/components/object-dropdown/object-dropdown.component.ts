@@ -12,6 +12,8 @@ import { LearningObject, User } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { SearchService } from 'app/admin/core/search.service';
+
 @Component({
   selector: 'clark-object-dropdown',
   templateUrl: './object-dropdown.component.html',
@@ -36,7 +38,8 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
 
   constructor(
     private learningObjectService: LearningObjectService,
-    private differs: IterableDiffers
+    private differs: IterableDiffers,
+    private searchService: SearchService,
   ) {
     this.differ = this.differs.find([]).create(null);
   }
@@ -76,7 +79,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   async findObjects(query: string) {
     if (query && query !== '') {
       // Search for learning objects
-      await this.learningObjectService
+      await this.searchService
         .getLearningObjects({text: query})
         .then( (results: {learningObjects: LearningObject[], total: number}) => {
           const assignedIds = this.assignedObjects.map(obj => obj.id);

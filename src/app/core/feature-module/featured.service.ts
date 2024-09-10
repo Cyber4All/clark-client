@@ -8,10 +8,7 @@ import {
 import { FEATURED_ROUTES } from './featured.routes';
 import { catchError } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
-import { Query } from 'app/interfaces/query';
-import * as querystring from 'querystring';
 import { ProfileService } from '../user-module/profiles.service';
-import { SEARCH_ROUTES } from '../learning-object-module/search/search.routes';
 
 @Injectable({
   providedIn: 'root',
@@ -146,34 +143,6 @@ export class FeaturedObjectsService {
         )
         .toPromise();
     }
-  }
-
-  /**
-   * Fetches Array of Learning Objects that are not currently featured
-   *
-   * @returns {Promise<LearningObject[]>}
-   * @memberof LearningObjectService
-   */
-  getNotFeaturedLearningObjects(
-    query?: Query,
-  ): Promise<{ learningObjects: LearningObject[]; total: number }> {
-    let route = '';
-    if (query) {
-      const queryClone = Object.assign({}, query);
-      const queryString = querystring.stringify(queryClone);
-      route =
-        SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
-    } else {
-      route = SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
-    }
-
-    return this.http
-      .get(route)
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((response: any) => {
-        return { learningObjects: response.objects, total: response.total };
-      });
   }
 
   /** COLLECTION FEATURED ROUTES */
