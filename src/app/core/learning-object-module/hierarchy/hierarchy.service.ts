@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { LearningObject } from '@entity';
-import { ADMIN_ROUTES, LEARNING_OBJECT_ROUTES } from '../learning-object/learning-object.routes';
 import { HIERARCHY_ROUTES } from './hierarchy.routes';
 import { SEARCH_ROUTES } from '../search/search.routes';
 
@@ -15,46 +13,8 @@ export class HierarchyService {
 
   async addHierarchyObject(username: string, object: any): Promise<any> {
     return await this.http.post(
-      ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(),
+      HIERARCHY_ROUTES.ADD_NEW_HIERARCHY_OBJECT(),
       { object, username }, { withCredentials: true, responseType: 'text' }
-    ).toPromise();
-  }
-
-  /**
-   * Releases an entire hierarchy from the admin dashboard, should
-   * only be called for root objects, but can be used for subtrees
-   * according to Hierarchy Service docs.
-   *
-   * @param id id of the root learning object of a hierarchy
-   * @returns A promise
-   */
-  async releaseHierarchy(id: string): Promise<any> {
-    return await this.http.patch(
-      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
-      {
-        status: LearningObject.Status.RELEASED
-      },
-      { withCredentials: true, responseType: 'json' }
-    ).toPromise();
-  }
-
-  /**
-   * Submits an entire hierarchy from the user dashboard, should
-   * only be called for root objects, but can be used for subtrees
-   * according to Hierarchy Service docs.
-   *
-   * @param id id of the root learning object of a hierarchy
-   * @param collection the collection the objects will belong to
-   * @returns A promise
-   */
-  async submitHierarchy(id: string, collection: string): Promise<any> {
-    return await this.http.patch(
-      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
-      {
-        status: LearningObject.Status.WAITING,
-        collection: collection
-      },
-      { withCredentials: true, responseType: 'json' }
     ).toPromise();
   }
 
@@ -65,6 +25,7 @@ export class HierarchyService {
    * @param objectName the objectName to check for
    * @returns
    */
+  // TODO: Wherever this is used, it should be refactored to the use the SearchService getUserLearningObjects method
   async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http
       .get(SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(username, `text=${objectName}`), { withCredentials: true })

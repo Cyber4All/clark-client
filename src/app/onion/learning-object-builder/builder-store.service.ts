@@ -259,7 +259,7 @@ export class BuilderStore {
         revisionId = await this.learningObjectService.createRevision(cuid);
       }
 
-      return this.learningObjectService.getLearningObjectRevision(username, cuid, revisionId);
+      return this.refactoredLearningObjectService.getLearningObject(cuid, revisionId);
     } :
     async () => {
       const value = this.uriRetriever.getLearningObject({cuidInfo: {cuid, version}}, ['children', 'parents', 'materials', 'outcomes']);

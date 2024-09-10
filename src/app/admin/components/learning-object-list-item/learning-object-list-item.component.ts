@@ -223,7 +223,7 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   releaseHierarchy() {
     this.toggleReleasingHierarchy(true);
-    this.hierarchyService.releaseHierarchy(this.learningObject.id)
+    this.learningObjectService.releaseHierarchy(this.learningObject.id)
       .then(() => {
         this.toggleReleasingHierarchy(false);
         location.reload();

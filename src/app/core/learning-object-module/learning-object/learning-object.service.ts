@@ -291,6 +291,44 @@ export class LearningObjectService {
     .toPromise();
   }
 
+    /**
+   * Releases an entire hierarchy from the admin dashboard, should
+   * only be called for root objects, but can be used for subtrees
+   * according to Hierarchy Service docs.
+   *
+   * @param id id of the root learning object of a hierarchy
+   * @returns A promise
+   */
+    async releaseHierarchy(id: string): Promise<any> {
+      return await this.http.patch(
+        LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(id),
+        {
+          status: LearningObject.Status.RELEASED
+        },
+        { withCredentials: true, responseType: 'json' }
+      ).toPromise();
+    }
+  
+    /**
+     * Submits an entire hierarchy from the user dashboard, should
+     * only be called for root objects, but can be used for subtrees
+     * according to Hierarchy Service docs.
+     *
+     * @param id id of the root learning object of a hierarchy
+     * @param collection the collection the objects will belong to
+     * @returns A promise
+     */
+    async submitHierarchy(id: string, collection: string): Promise<any> {
+      return await this.http.patch(
+        LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(id),
+        {
+          status: LearningObject.Status.WAITING,
+          collection: collection
+        },
+        { withCredentials: true, responseType: 'json' }
+      ).toPromise();
+    }
+
   /**
    * Adds children to a learning object
    *

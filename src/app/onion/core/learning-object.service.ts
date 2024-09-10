@@ -4,7 +4,7 @@ import {
   HttpHeaders,
   HttpErrorResponse
 } from '@angular/common/http';
-import { LearningObject, LearningOutcome } from '@entity';
+import { LearningObject } from '@entity';
 import { CookieService } from 'ngx-cookie-service';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
@@ -14,10 +14,6 @@ import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bund
 import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
 import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
-import {
-  LEGACY_USER_ROUTES,
-  LEARNING_OBJECT_ROUTES,
-} from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
@@ -103,47 +99,6 @@ export class LearningObjectService {
       )
       .toPromise().then(response => {
         return response;
-      });
-  }
-  /**
-   * Fetches Learning Object by ID (full)
-   *
-   * @param {string} learningObjectID
-   * @returns {Promise<LearningObject>}
-   * @memberof LearningObjectService
-   */
-  getLearningObject(learningObjectId: string): Promise<LearningObject> {
-    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
-    return this.http
-      .get(route, { headers: this.headers, withCredentials: true })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((response: any) => {
-        return new LearningObject(response);
-      });
-  }
-
-  /**
-   * Fetches a learning objects revision
-   *
-   * @param username
-   * @param learningObjectID
-   * @param revisionID
-   */
-  getLearningObjectRevision(username: string, learningObjectID: string, revisionID: number) {
-    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT_REVISION(username, learningObjectID, revisionID);
-    return this.http
-      .get(route, { headers: this.headers, withCredentials: true })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((res: any) => {
-        return new LearningObject(res);
       });
   }
 
@@ -236,63 +191,6 @@ export class LearningObjectService {
   }
 
   /**
-   * Add a guideline to the guidelines array of a Learning Outcome
-   *
-   * @param {string} learningObjectId the id of the source learning object
-   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @param username The learning object author's username
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
-  addGuideline(
-    learningObjectId: string,
-    outcome: Partial<LearningOutcome>,
-    username: string
-  ): Promise<any> {
-    const outcomeId = outcome.id;
-
-    return this.http
-      .post(
-        LEGACY_USER_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
-        { guidelineID: outcome.mappings[outcome.mappings.length - 1] },
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Add a guideline to the guidelines array of a Learning Outcome
-   *
-   * @param {string} learningObjectId the id of the source learning object
-   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @param username The learning object author's username
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
-  deleteGuideline(
-    learningObjectId: string,
-    outcome: string,
-    username: string,
-    mappingId: string,
-  ): Promise<any> {
-
-    return this.http
-      .delete(
-        LEGACY_USER_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
    * Publish a learning object
    *
    * @param {LearningObject} learningObject the learning object to be published
@@ -325,7 +223,7 @@ export class LearningObjectService {
     await this.bundlingService.bundleLearningObject(learningObjectId);
   }
 
-  
+
 
   async updateReadme(id: string): Promise<any> {
     return await this.http.patch(
