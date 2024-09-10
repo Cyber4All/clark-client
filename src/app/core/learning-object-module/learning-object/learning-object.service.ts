@@ -6,8 +6,8 @@ import { catchError, finalize, map, mergeMap, take, takeUntil, tap } from 'rxjs/
 import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
 import {
   LEARNING_OBJECT_ROUTES,
-  LEGACY_USER_ROUTES
 } from '../learning-object/learning-object.routes';
+import { UserService } from 'app/core/user-module/user.service';
 
 export const CALLBACKS = {
   outcomes: (outcomes: any[]) => {
@@ -32,7 +32,10 @@ export const CALLBACKS = {
 export class LearningObjectService {
   private headers = new HttpHeaders();
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private userService: UserService
+  ) { }
 
   // TODO: The following functions all use the same underlying route. They eventually should be condensed into
   // one function that handles all of the different types of requests that can be made to the learning object
@@ -286,6 +289,182 @@ export class LearningObjectService {
       catchError(this.handleError)
     )
     .toPromise();
+  }
+
+  /**
+   * Adds children to a learning object
+   *
+   * @param username the username of the author
+   * @param object the object having children
+   * @param children the children to be had
+   * @returns
+   */
+  async addChildren(username: string, object: any, children): Promise<any> {
+    return await this.http.post(
+      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_CHILDREN(object.id),
+      {
+        children
+      },
+      {
+        withCredentials: true,
+        responseType: 'text'
+      }
+    ).toPromise();
+  }
+
+  // TODO: The UPDATE_LEARNING_OBJECT_CHILDREN is actually an add learning object children.
+  setChildren(
+    learningObjectId: string,
+    children: string[],
+    remove: boolean,
+  ): Promise<any> {
+    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_LEARNING_OBJECT_CHILD(learningObjectId);
+    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_CHILDREN(learningObjectId);
+    if (remove) {
+      return this.http
+        .patch(
+          removeRoute,
+          // TODO: This should remove each child that is passed in not just the first one
+          { childObjectId: children[0] },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
+        )
+        .pipe(
+          catchError(this.handleError)
+        )
+        .toPromise();
+    } else {
+      return this.http
+        .post(
+          addRoute,
+          { childrenIds: children },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
+        )
+        .pipe(
+
+          catchError(this.handleError)
+        )
+        .toPromise();
+    }
+  }
+
+  /**
+   * Sends serialized Learning Object to API for creation
+   * Returns new Learningbject's ID on success
+   * Returns error on error
+   *
+   * @param {any} learningObject
+   * @returns {Promise<string>}
+   * @memberof LearningObjectService
+   */
+  create(learningObject): Promise<LearningObject> {
+    const route = LEARNING_OBJECT_ROUTES.CREATE_LEARNING_OBJECT();
+
+    return this.http
+      .post(
+        route,
+        { object: learningObject },
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        res.id = res._id;
+
+        const learningObject: LearningObject = new LearningObject(res);
+
+        // Fetch the author of the learning object and set it as the
+        // author of the learning object
+        this.userService.getUser(res.authorID).then(user => {
+          learningObject.author = user;
+        });
+
+        return learningObject;
+      });
+    // TODO: Verify this response gives the learning object name
+  }
+
+  async updateSubmittedCollection(cuid: string, collection: string) {
+    await this.http.patch(
+      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_COLLECTION(cuid),
+      { collection }, { withCredentials: true, responseType: 'text' }
+    ).toPromise();
+  }
+
+  /**
+   * Sends updated Learning Object to API for updating.
+   * Returns null success.
+   * Returns error on error
+   *
+   * @param {string} id
+   * @param {LearningObject} learningObject
+   * @returns {Promise<{}>}
+   * @memberof LearningObjectService
+   */
+  // TODO type this parameter
+  save(
+    id: string,
+    learningObject: Partial<LearningObject>,
+    reason?: string,
+  ): Promise<{}> {
+    const route = LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT(id);
+    return this.http
+      .patch(
+        route,
+        { updates: learningObject, reason },
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Sends Learning Object's ID to API for deletion
+   *
+   * @param {(string)} id
+   * @returns {Promise<{}>}
+   * @memberof LearningObjectService
+   */
+  delete(learningObjectId: string): Promise<{}> {
+    const route = LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(
+      learningObjectId
+    );
+    return this.http
+      .delete(route, {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'json'
+      })
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Method to delete multiple learning objects
+   *
+   * @param learningObjectIds Array of learning object ids to delete
+   * @returns Promise of all delete requests
+   */
+  deleteMultiple(learningObjectIds: string[]): Promise<any> {
+    const deletePromises = learningObjectIds.map(objectId =>
+      this.http.delete(LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(objectId), {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'text'
+      })
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise()
+    );
+
+    return Promise.all(deletePromises);
   }
 
   toggleFilesToBundle(learningObjectId: string, selected: string[], deselected: string[]) {

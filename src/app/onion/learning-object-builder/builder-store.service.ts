@@ -334,7 +334,7 @@ export class BuilderStore {
     if (remove) {
       children = this.learningObject.children.filter(child => !children.includes(child.id)).map(child => child.id);
     }
-    await this.learningObjectService.setChildren(this.learningObject.id, children, remove);
+    await this.refactoredLearningObjectService.setChildren(this.learningObject.id, children, remove);
     this.serviceInteraction$.next(false);
   }
 
@@ -971,7 +971,7 @@ export class BuilderStore {
   private createLearningObject(object: Partial<LearningObject>) {
     this.serviceInteraction$.next(true);
     object.status = LearningObject.Status.UNRELEASED;
-    this.learningObjectService
+    this.refactoredLearningObjectService
       .create(object)
       .then(learningObject => {
         this.learningObject = learningObject;
@@ -1007,7 +1007,7 @@ export class BuilderStore {
    */
   private updateLearningObject(object: Partial<LearningObject>) {
     this.serviceInteraction$.next(true);
-    this.learningObjectService
+    this.refactoredLearningObjectService
       .save(this.learningObject.id, object)
       .then(() => {
         this.serviceInteraction$.next(false);

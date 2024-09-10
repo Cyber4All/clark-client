@@ -7,11 +7,11 @@ import { LearningObjectService } from '../core/learning-object.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { CollectionService } from 'app/core/collection-module/collections.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
+import { LearningObjectService as NewLearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -80,6 +80,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
+    private newLearningObjectService: NewLearningObjectService,
     public auth: AuthService,
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
@@ -317,7 +318,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      return this.learningObjectService.delete(canDelete[0].id)
+      return this.newLearningObjectService.delete(canDelete[0].id)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Object deleted!');
           await this.getDraftLearningObjects();
@@ -330,7 +331,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       canDelete.forEach(object => {
         objectsToDeleteIDs.push(object.id);
       });
-      return this.learningObjectService.deleteMultiple(objectsToDeleteIDs)
+      return this.newLearningObjectService.deleteMultiple(objectsToDeleteIDs)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Objects deleted!');
           await this.getDraftLearningObjects();

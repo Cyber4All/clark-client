@@ -57,26 +57,6 @@ export class HierarchyService {
       { withCredentials: true, responseType: 'json' }
     ).toPromise();
   }
-  /**
-   * Adds children to a learning object
-   *
-   * @param username the username of the author
-   * @param object the object having children
-   * @param children the children to be had
-   * @returns
-   */
-  async addChildren(username: string, object: any, children): Promise<any> {
-    return await this.http.post(
-      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_CHILDREN(object.id),
-      {
-        children
-      },
-      {
-        withCredentials: true,
-        responseType: 'text'
-      }
-    ).toPromise();
-  }
 
   /**
    * Checks if the name of the learning object is already taken for the author
