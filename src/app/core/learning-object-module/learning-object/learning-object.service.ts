@@ -292,13 +292,13 @@ export class LearningObjectService {
   }
 
     /**
-   * Releases an entire hierarchy from the admin dashboard, should
-   * only be called for root objects, but can be used for subtrees
-   * according to Hierarchy Service docs.
-   *
-   * @param id id of the root learning object of a hierarchy
-   * @returns A promise
-   */
+     * Releases an entire hierarchy from the admin dashboard, should
+     * only be called for root objects, but can be used for subtrees
+     * according to Hierarchy Service docs.
+     *
+     * @param id id of the root learning object of a hierarchy
+     * @returns A promise
+     */
     async releaseHierarchy(id: string): Promise<any> {
       return await this.http.patch(
         LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(id),
@@ -308,7 +308,7 @@ export class LearningObjectService {
         { withCredentials: true, responseType: 'json' }
       ).toPromise();
     }
-  
+
     /**
      * Submits an entire hierarchy from the user dashboard, should
      * only be called for root objects, but can be used for subtrees

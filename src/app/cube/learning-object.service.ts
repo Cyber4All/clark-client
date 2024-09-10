@@ -6,7 +6,6 @@ import { catchError } from 'rxjs/operators';
 import { Query } from '../interfaces/query';
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
 import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
-import { USER_ROUTES } from '../core/user-module/user.routes';
 
 // TODO: move to core module
 @Injectable({
@@ -40,6 +39,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
+  // TODO: This needs to be moved to the search service
   getLearningObjects(
     query?: Query,
   ): Promise<{ learningObjects: LearningObject[]; total: number }> {
@@ -75,9 +75,10 @@ export class LearningObjectService {
       });
   }
 
+  // TODO: This needs to be moved to the search service
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     return this.http
-      .get(USER_ROUTES.GET_USER(username), { withCredentials: true })
+      .get(SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(username, ''), { withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
@@ -90,6 +91,7 @@ export class LearningObjectService {
    *
    * @param cuid the CUID of the learning object to create a revision of
    */
+  // TODO: This needs to be moved to the revisions service
   async createRevision(cuid: string): Promise<any> {
     const route = REVISION_ROUTES.CREATE_REVISION(cuid);
     const response = await this.http

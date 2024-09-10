@@ -57,6 +57,7 @@ export class LearningObjectService {
    * @param state The new packageable property to update to
    * @returns A promise
    */
+  // TODO: Move to bundling service
   toggleBundle(
     learningObjectId: string,
     fileIDs: string[],
@@ -86,6 +87,7 @@ export class LearningObjectService {
    * @param learningObjectId
    * @param authorUsername
    */
+  // TODO: Move to revisions service
   createRevision(cuid: string) {
     const route = REVISION_ROUTES.CREATE_REVISION(cuid);
     return this.http
@@ -108,6 +110,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
+  // TODO: This needs to be moved to the search service
   getLearningObjects(
     authorUsername: string,
     filters?: any,
@@ -131,6 +134,7 @@ export class LearningObjectService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
+  // TODO: This needs to be moved to the search service
   getDraftLearningObjects(
     authorUsername: string,
     filters?: any,
@@ -156,6 +160,7 @@ export class LearningObjectService {
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
+  // TODO: This needs to be moved to the outcomes service
   saveOutcome(
     outcome: { id: string;[key: string]: any }
   ): Promise<any> {
@@ -180,6 +185,7 @@ export class LearningObjectService {
    *
    * @param outcomeId The outcome Id
    */
+  // TODO: This needs to be moved to the outcomes service
   deleteOutcome(outcomeId: string): Promise<any> {
     return this.http
       .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
@@ -196,6 +202,7 @@ export class LearningObjectService {
    * @param {LearningObject} learningObject the learning object to be published
    * @param {string} collection the abreviated name of the collection to which to submit this learning object
    */
+  // TODO: This needs to be moved to the submissions service
   submit(learningObject: LearningObject, collection: string): Promise<{}> {
     const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
       learningObjectId: learningObject.id,
@@ -219,12 +226,12 @@ export class LearningObjectService {
    * @param username Authors username of current learning object
    * @param learningObjectId id current learning object
    */
+  // This level of abstraction is unnecessary and should be removed, call bundling service directly
   async triggerBundle(learningObjectId: string) {
     await this.bundlingService.bundleLearningObject(learningObjectId);
   }
 
-
-
+  // TODO: This needs to be moved to the file service
   async updateReadme(id: string): Promise<any> {
     return await this.http.patch(
       FILE_ROUTES.UPDATE_PDF(id),
@@ -250,6 +257,7 @@ export class LearningObjectService {
    * @returns {Promise<string[]>}
    * @memberof LearningObjectService
    */
+  // TODO: This needs to be moved to the file service
   addFileMeta({
     objectId,
     files
@@ -273,6 +281,7 @@ export class LearningObjectService {
    * @returns
    * @memberof LearningObjectService
    */
+  // TODO: This needs to be moved to the file service
   private handleFileMetaRequests(
     files: FileUploadMeta[],
     route: string
@@ -308,6 +317,7 @@ export class LearningObjectService {
    * @param {Subject<void>} sendNextBatch$ [Observable used to signal that the next batch should be sent]
    * @memberof LearningObjectService
    */
+  // TODO: This needs to be moved to the file service
   private handleFileMetaBatch(
     route: string,
     batch: FileUploadMeta[],
@@ -360,6 +370,7 @@ export class LearningObjectService {
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
+  // TODO: This needs to be moved to the file service
   updateFileDescription(
     authorUsername: string,
     objectId: string,
