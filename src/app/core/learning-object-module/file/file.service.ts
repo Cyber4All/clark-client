@@ -219,6 +219,18 @@ export class FileService {
       return fileIds;
     }
 
+  /**
+   * Handles downloading a file by opening the stream url in a new window
+   *
+   * @param {LearningObject.Material.File} file [The file to be downloaded]
+   * @memberof UploadComponent
+   */
+  async handleFileDownload(file: LearningObject.Material.File, learningObject: LearningObject) {
+    const loId = learningObject.id;
+    const url = FILE_ROUTES.DOWNLOAD_FILE(loId, file._id);
+    window.open(url, '__blank');
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (
       error.error instanceof ErrorEvent ||
