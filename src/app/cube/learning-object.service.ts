@@ -36,7 +36,7 @@ export class LearningObjectService {
   openLearningObject(url: string) {
     window.open(url);
   }
-  
+
 
   /**
    * Fetches LearningObject by cuid

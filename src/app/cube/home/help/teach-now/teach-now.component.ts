@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject, Topic } from '@entity';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-teach-now',
@@ -28,7 +28,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
 
   constructor(
     private topicsService: TopicsService,
-    private objectService: LearningObjectService,
+    private searchService: SearchService,
     private router: Router,
   ) { }
 
@@ -118,7 +118,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   getObjects() {
     this.loading = true;
     this.objects = this.loadingObjects;
-    this.objectService.getLearningObjects({
+    this.searchService.getLearningObjects({
       limit: 4,
       currPage: 1,
       status: ['released'],

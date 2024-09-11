@@ -8,7 +8,6 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
 } from '@angular/core';
-import { LearningObjectService as PublicLearningObjectService } from '../../../cube/learning-object.service';
 import { OrderBy, Query, SortType } from '../../../interfaces/query';
 import { LearningObject } from '../../../../entity';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,11 +16,12 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { Collection, CollectionService } from '../../../core/collection-module/collections.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
   styleUrls: ['./learning-objects.component.scss'],
-  providers: [PublicLearningObjectService]
+  providers: []
 })
 export class LearningObjectsComponent
   implements OnInit, OnDestroy, AfterViewInit {
@@ -77,13 +77,13 @@ export class LearningObjectsComponent
   allSelected = false;
 
   constructor(
-    private publicLearningObjectService: PublicLearningObjectService,
     private route: ActivatedRoute,
     private router: Router,
     private toaster: ToastrOvenService,
     private auth: AuthService,
     private cd: ChangeDetectorRef,
     private collectionService: CollectionService,
+    private searchService: SearchService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -200,7 +200,7 @@ export class LearningObjectsComponent
       // we know there are more objects to pull
       this.loading = true;
 
-      await this.publicLearningObjectService
+      await this.searchService
         .getLearningObjects(this.query)
         .then(val => {
           this.learningObjects = val.learningObjects;

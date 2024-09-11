@@ -7,13 +7,11 @@ import { Query } from 'app/interfaces/query';
 import * as querystring from 'querystring';
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Fetches Array of Learning Objects
@@ -56,41 +54,41 @@ export class SearchService {
       });
   }
 
-    /**
+  /**
    * Fetches Array of Learning Objects that are not currently featured
    *
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-    getNotFeaturedLearningObjects(
-      query?: Query,
-    ): Promise<{ learningObjects: LearningObject[]; total: number }> {
-      let route = '';
-      if (query) {
-        const queryClone = Object.assign({}, query);
-        const queryString = querystring.stringify(queryClone);
-        route =
-          SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
-      } else {
-        route = SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
-      }
-  
-      return this.http
-        .get(route)
-        .pipe(catchError(this.handleError))
-        .toPromise()
-        .then((response: any) => {
-          return { learningObjects: response.objects, total: response.total };
-        });
+  getNotFeaturedLearningObjects(
+    query?: Query,
+  ): Promise<{ learningObjects: LearningObject[]; total: number }> {
+    let route = '';
+    if (query) {
+      const queryClone = Object.assign({}, query);
+      const queryString = querystring.stringify(queryClone);
+      route =
+        SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
+    } else {
+      route = SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
     }
 
-    private handleError(error: HttpErrorResponse) {
-      if (error.error instanceof ErrorEvent) {
-        // Client-side or network returned error
-        return throwError(error.error.message);
-      } else {
-        // API returned error
-        return throwError(error);
-      }
+    return this.http
+      .get(route)
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((response: any) => {
+        return { learningObjects: response.objects, total: response.total };
+      });
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // Client-side or network returned error
+      return throwError(error.error.message);
+    } else {
+      // API returned error
+      return throwError(error);
     }
+  }
 }

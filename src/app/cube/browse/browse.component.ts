@@ -8,6 +8,7 @@ import { Observable, Subject } from 'rxjs';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { LearningObjectService } from '../learning-object.service';
 import { NavbarService } from 'app/core/client-module/navbar.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'cube-browse',
@@ -78,7 +79,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private navService: NavbarService
+    private navService: NavbarService,
+    private searchService: SearchService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -339,7 +341,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       const {
         learningObjects,
         total
-      } = await this.learningObjectService.getLearningObjects(query);
+      } = await this.searchService.getLearningObjects(query);
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);

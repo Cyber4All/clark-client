@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { OrderBy, Query, SortType } from 'app/interfaces/query';
 import { LearningObject } from 'entity/learning-object/learning-object';
-
-
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-collection-learning-object-list',
@@ -12,7 +10,7 @@ import { LearningObject } from 'entity/learning-object/learning-object';
 })
 export class CollectionLearningObjectListComponent implements OnInit {
   @Input() collectionName: string;
-  constructor(private learningObjectService: LearningObjectService) { }
+  constructor(private searchService: SearchService) {}
 
   learningObjects: LearningObject[];
   query: Query = {
@@ -26,7 +24,7 @@ export class CollectionLearningObjectListComponent implements OnInit {
 
   async ngOnInit() {
     this.query.collection = this.collectionName;
-    this.learningObjectService.getLearningObjects(this.query).then((res) => {
+    this.searchService.getLearningObjects(this.query).then((res) => {
       this.learningObjects = res.learningObjects;
     });
   }

@@ -9,10 +9,9 @@ import {
   Input,
 } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { SearchService } from 'app/admin/core/search.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-object-dropdown',
@@ -37,7 +36,6 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   @Output() learningObjects: EventEmitter<any> = new EventEmitter(); // Objects selected
 
   constructor(
-    private learningObjectService: LearningObjectService,
     private differs: IterableDiffers,
     private searchService: SearchService,
   ) {
@@ -79,8 +77,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   async findObjects(query: string) {
     if (query && query !== '') {
       // Search for learning objects
-      await this.searchService
-        .getLearningObjects({text: query})
+      await this.searchService.getLearningObjects({text: query})
         .then( (results: {learningObjects: LearningObject[], total: number}) => {
           const assignedIds = this.assignedObjects.map(obj => obj.id);
           const filteredObjects: LearningObject[] = [];

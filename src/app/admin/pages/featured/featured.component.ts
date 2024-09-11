@@ -7,6 +7,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-featured',
@@ -52,7 +53,8 @@ export class FeaturedComponent implements OnInit, OnDestroy {
 
   constructor(
     private featureService: FeaturedObjectsService,
-    public toaster: ToastrOvenService,
+    private searchService: SearchService,
+    private toaster: ToastrOvenService,
   ) { }
 
   async ngOnInit() {
@@ -102,7 +104,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
   async getLearningObjects() {
-    this.featureService.getNotFeaturedLearningObjects(this.query).then(objects => {
+    this.searchService.getNotFeaturedLearningObjects(this.query).then(objects => {
       this.learningObjects = objects.learningObjects;
       this.lastPage = Math.ceil(objects.total / 5);
     });
