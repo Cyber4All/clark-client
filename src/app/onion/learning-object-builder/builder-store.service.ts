@@ -23,6 +23,8 @@ import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
+import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
+import { Revision } from 'aws-sdk/clients/codepipeline';
 
 /**
  * Defines a list of actions the builder can take
@@ -157,6 +159,7 @@ export class BuilderStore {
     private uriRetriever: UriRetrieverService,
     private submissionService: SubmissionsService,
     private outcomeService: OutcomeService,
+    private revisionsService: RevisionsService,
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -255,7 +258,7 @@ export class BuilderStore {
     async () => {
       // eslint-disable-next-line eqeqeq
       if (revisionId == 0) {
-        revisionId = await this.learningObjectService.createRevision(cuid);
+        revisionId = await this.revisionsService.createRevision(cuid);
       }
 
       return this.learningObjectService.getLearningObjectRevision(username, cuid, revisionId);
@@ -534,7 +537,7 @@ export class BuilderStore {
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
     if (!checkIfUUID(outcome.serviceId || outcome.id) && (outcome.serviceId || outcome.id)) {
       this.serviceInteraction$.next(true);
-      this.learningObjectService
+      this.outcomeService
       .deleteOutcome(outcome.serviceId || outcome.id)
       .then(() => {
         this.serviceInteraction$.next(false);
@@ -1140,7 +1143,7 @@ export class BuilderStore {
     // delete any lingering serviceId properties before sending to service
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
-    this.learningObjectService
+    this.outcomeService
       .saveOutcome(updateValue as any)
       .then(() => {
         this.serviceInteraction$.next(false);

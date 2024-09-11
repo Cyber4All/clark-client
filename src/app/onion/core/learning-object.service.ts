@@ -12,7 +12,6 @@ import { FileUploadMeta } from '../learning-object-builder/components/content-up
 import { SUBMISSION_ROUTES } from '../../core/learning-object-module/submissions/submissions.routes';
 import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bundling.routes';
 import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
-import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
 import {
   LEGACY_USER_ROUTES,
@@ -122,27 +121,6 @@ export class LearningObjectService {
     // TODO: Verify this response gives the learning object name
   }
 
-  /**
-   * Creates a Revision of an existing learning object
-   *
-   * @param learningObjectId
-   * @param authorUsername
-   */
-  createRevision(cuid: string) {
-    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
-    return this.http
-      .post(
-        route, {},
-        { withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise().then(response => {
-        return response;
-      });
-  }
   /**
    * Fetches Learning Object by ID (full)
    *
@@ -255,47 +233,6 @@ export class LearningObjectService {
         { updates: learningObject, reason },
         { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Modify an outcome by sending a partial learning outcome
-   *
-   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
-  saveOutcome(
-    outcome: { id: string;[key: string]: any }
-  ): Promise<any> {
-    const outcomeId = outcome.id;
-    delete outcome.id;
-
-    return this.http
-      .patch(
-        OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
-        { ...outcome },
-        { headers: this.headers, withCredentials: true },
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Deletes an outcome on a given learning object
-   *
-   * @param outcomeId The outcome Id
-   */
-  deleteOutcome(outcomeId: string): Promise<any> {
-    return this.http
-      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
       .pipe(
 
         catchError(this.handleError)
