@@ -12,7 +12,6 @@ import { FileUploadMeta } from '../learning-object-builder/components/content-up
 import { SUBMISSION_ROUTES } from '../../core/learning-object-module/submissions/submissions.routes';
 import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bundling.routes';
 import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
-import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
 import {
   LEGACY_USER_ROUTES,
@@ -122,27 +121,6 @@ export class LearningObjectService {
     // TODO: Verify this response gives the learning object name
   }
 
-  /**
-   * Creates a Revision of an existing learning object
-   *
-   * @param learningObjectId
-   * @param authorUsername
-   */
-  createRevision(cuid: string) {
-    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
-    return this.http
-      .post(
-        route, {},
-        { withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise().then(response => {
-        return response;
-      });
-  }
   /**
    * Fetches Learning Object by ID (full)
    *
