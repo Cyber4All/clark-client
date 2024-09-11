@@ -84,8 +84,8 @@ export class EditorialActionPadComponent implements OnInit {
   async createRevision() {
     this.closeRevisionModal();
     this.toaster.success('One Moment Please', 'Your revision is being created.');
-    // TODO: Update the createRevision's response to be a revised learning object rather than 
-    // using a GET request to make a request that would effectively do the same thing. 
+    // TODO: Update the createRevision's response to be a revised learning object rather than
+    // using a GET request to make a request that would effectively do the same thing.
     // This will cut down on requests and simplify abstraction.
     await this.revisionsService
       .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
