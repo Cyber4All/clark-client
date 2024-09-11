@@ -341,7 +341,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       const {
         learningObjects,
         total
-      } = await this.searchService.getLearningObjects(query);
+      } = await this.searchService.getPublicLearningObjects(query);
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);

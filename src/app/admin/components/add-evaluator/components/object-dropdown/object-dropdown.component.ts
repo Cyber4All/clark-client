@@ -77,7 +77,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   async findObjects(query: string) {
     if (query && query !== '') {
       // Search for learning objects
-      await this.searchService.getLearningObjects({text: query})
+      await this.searchService.getPublicLearningObjects({text: query})
         .then( (results: {learningObjects: LearningObject[], total: number}) => {
           const assignedIds = this.assignedObjects.map(obj => obj.id);
           const filteredObjects: LearningObject[] = [];

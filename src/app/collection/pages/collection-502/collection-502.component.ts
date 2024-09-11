@@ -57,7 +57,7 @@ export class Collection502Component implements OnInit {
       const {
         learningObjects,
         total
-      } = await this.searchService.getLearningObjects(query);
+      } = await this.searchService.getPublicLearningObjects(query);
       this.learningObjects = learningObjects;
       this.loading = false;
     } catch (e) {

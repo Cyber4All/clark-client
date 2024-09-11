@@ -19,7 +19,7 @@ export class SearchService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(
+  getPublicLearningObjects(
     query?: Query,
   ): Promise<{ learningObjects: LearningObject[]; total: number }> {
     let route = '';
@@ -60,7 +60,7 @@ export class SearchService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getNotFeaturedLearningObjects(
+  getNotPublicLearningObjects(
     query?: Query,
   ): Promise<{ learningObjects: LearningObject[]; total: number }> {
     let route = '';

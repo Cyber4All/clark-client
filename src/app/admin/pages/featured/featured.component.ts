@@ -104,7 +104,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
   async getLearningObjects() {
-    this.searchService.getNotFeaturedLearningObjects(this.query).then(objects => {
+    this.searchService.getNotPublicLearningObjects(this.query).then(objects => {
       this.learningObjects = objects.learningObjects;
       this.lastPage = Math.ceil(objects.total / 5);
     });
