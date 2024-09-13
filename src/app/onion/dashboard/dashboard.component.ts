@@ -161,8 +161,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     this.workingLearningObjects = await this.searchLearningObjectService.getUsersLearningObjects(this.auth.username, {
-      draftsOnly: true, 
-      text, 
+      draftsOnly: true,
+      text,
       ...filters});
   }
 
