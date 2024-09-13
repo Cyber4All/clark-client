@@ -268,9 +268,9 @@ export class SubmitComponent implements OnInit {
     this.submissionService.getFirstSubmission(this.learningObject.id, collection)
       .then(val => {
         this.collection = collection;
+        // If the learning object has been submitted before then it needs a changelog
         if (!val.isFirstSubmission) {
-          // if this is a first submission there is no need for a change log
-          this.needsChangelog = false;
+          this.needsChangelog = true;
         }
       });
   }
