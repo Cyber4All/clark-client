@@ -17,6 +17,7 @@ import { ToastrOvenService } from '../../../shared/modules/toaster/notification.
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { Collection } from '../../../core/collection-module/collections.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
@@ -83,6 +84,7 @@ export class LearningObjectsComponent
     private auth: AuthService,
     private cd: ChangeDetectorRef,
     private userService: UserService,
+    private searchService: SearchService,
   ) {}
 
   async ngOnInit(): Promise<void> {
