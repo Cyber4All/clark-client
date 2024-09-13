@@ -1103,16 +1103,20 @@ export class BuilderStore {
 
     this.outcomeService
       .addLearningOutcome(this.learningObject.id, newOutcome)
-      .then((serviceId: string) => {
+      .then((response: { id: string }) => {
         this.serviceInteraction$.next(false);
+
         // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
         this.newOutcomes.delete(newOutcome.id);
+        
         // retrieve the outcome from the map keyed by it's temp ID, and then delete that entry;
         const outcome: Partial<LearningOutcome> & {
           serviceId?: string;
         } = this.outcomes.get(newOutcome.id);
+
         // store the temporary id in the outcome so that the page component know's which outcome to keep focused
-        outcome.serviceId = serviceId;
+        outcome.serviceId = response.id;
+        
         // re-enter outcome into map
         this.outcomes.set(newOutcome.id, outcome);
         this.outcomeEvent.next(this.outcomes);
