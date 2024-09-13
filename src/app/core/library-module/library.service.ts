@@ -139,48 +139,6 @@ export class LibraryService {
   }
 
   /**
-   * Service function to download a learning object bundle.
-   * The call to download the bundle is made in @function downloadBundle()
-   *
-   * @param learningObjectId the mongo id of the learning object
-   */
-  learningObjectBundle(learningObjectId: string) {
-    // Show loading spinner
-    this._loading$.next(true);
-
-    // Url route for bundling
-    const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
-    const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
-
-    this.http.head(bundleUrl, {
-      headers: this.headers,
-      withCredentials: true
-    }).pipe(
-      catchError((error) => {
-        this._loading$.next(false);
-        return this.handleError(error);
-      })
-    ).subscribe(
-      () => {
-        this.toaster.success('All Ready!', 'Your download will begin in a moment...');
-        this.downloadBundle(downloadUrl).then(
-          () => {
-            this._loading$.next(false);
-          },
-          (error) => {
-            this._loading$.next(false);
-            this.toaster.error('Download failed', error.message);
-          }
-        );
-      },
-      (error) => {
-        this._loading$.next(false);
-        this.toaster.error('Preparation failed', error.message);
-      }
-    );
-  }
-
-  /**
    * Method to start bundle stream and download the zip file
    * @param url request to api for zip in stream
    * @returns void - blob stream is downloaded to user's machine

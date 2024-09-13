@@ -22,6 +22,8 @@ import { LearningObjectService } from '../../../../../app/onion/core/learning-ob
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+
 
 
 @Component({
@@ -84,7 +86,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private router: Router,
     private learningObjectService: LearningObjectService,
-    private dropdowns: NavbarDropdownService
+    private dropdowns: NavbarDropdownService,
+    private bundlingService: BundlingService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -140,7 +143,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       this.addingToLibrary = true;
     }
     if (download) {
-      this.download(
+      this.bundlingService.download(  // use import to solve this
         this.learningObject.id
       );
     }
@@ -188,7 +191,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   downloadRevised(download?: boolean) {
     if (download) {
-      this.download(
+      this.bundlingService.download(  // use import to solve this
         this.learningObject.id
       );
     }
@@ -200,10 +203,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    * @param learningObjectId the unique mongo id of a learning object
    */
 
-  download(learningObjectId: string) {
-    this.toggleDownloadModal(true);
-    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
-  }
+  // download(learningObjectId: string) {
+  //   this.toggleDownloadModal(true);
+  //   this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
+  // }
 
   copyLink() {
     const el = this.objectLinkElement.nativeElement;
@@ -228,9 +231,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.toaster.success('Success!', 'Attribution information has been copied to your clipboard!');
   }
 
-  toggleDownloadModal(val?: boolean) {
-    this.showDownloadModal = val;
-  }
+  // toggleDownloadModal(val?: boolean) {
+  //   this.showDownloadModal = val;
+  // }
 
   shareButton(event, type) {
     switch (type) {
