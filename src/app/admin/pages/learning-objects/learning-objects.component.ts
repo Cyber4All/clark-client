@@ -18,6 +18,7 @@ import { ToastrOvenService } from '../../../shared/modules/toaster/notification.
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { Collection } from '../../../core/collection-module/collections.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
@@ -78,7 +79,7 @@ export class LearningObjectsComponent
   allSelected = false;
 
   constructor(
-    private publicLearningObjectService: PublicLearningObjectService,
+    private searchLearningObjectService: SearchService,
     private route: ActivatedRoute,
     private router: Router,
     private toaster: ToastrOvenService,
@@ -215,7 +216,7 @@ export class LearningObjectsComponent
       // we know there are more objects to pull
       this.loading = true;
 
-      await this.publicLearningObjectService
+      await this.searchLearningObjectService
         .getLearningObjects(this.query)
         .then(val => {
           this.learningObjects = val.learningObjects;

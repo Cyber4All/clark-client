@@ -9,15 +9,10 @@ import { CookieService } from 'ngx-cookie-service';
 import { catchError, takeUntil } from 'rxjs/operators';
 import { throwError, Subject, BehaviorSubject } from 'rxjs';
 import { FileUploadMeta } from '../learning-object-builder/components/content-upload/app/services/typings';
-import { SUBMISSION_ROUTES } from '../../core/learning-object-module/submissions/submissions.routes';
 import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bundling.routes';
-import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
-import { REVISION_ROUTES } from '../../core/learning-object-module/revisions/revisions.routes';
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { UserService } from 'app/core/user-module/user.service';
-import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
-import * as querystring from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -73,145 +68,6 @@ export class LearningObjectService {
           packagable: state
         },
         { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Creates a Revision of an existing learning object
-   *
-   * @param learningObjectId
-   * @param authorUsername
-   */
-  // TODO: Move to revisions service
-  createRevision(cuid: string) {
-    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
-    return this.http
-      .post(
-        route, {},
-        { withCredentials: true }
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise().then(response => {
-        return response;
-      });
-  }
-
-  /**
-   * Fetches user's Learning Objects (partial)
-   *
-   * @returns {Promise<LearningObject[]>}
-   * @memberof LearningObjectService
-   */
-  // TODO: This needs to be moved to the search service
-  getLearningObjects(
-    authorUsername: string,
-    filters?: any,
-  ): Promise<LearningObject[]> {
-    const route = SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(authorUsername, filters);
-    return this.http
-      .get(route, { headers: this.headers, withCredentials: true })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((response: any) => {
-        return response.objects.map(object => new LearningObject(object));
-      });
-  }
-
-  /**
-   * Fetches user's Learning Objects (partial)
-   *
-   * @returns {Promise<LearningObject[]>}
-   * @memberof LearningObjectService
-   */
-  // TODO: This needs to be moved to the search service
-  getDraftLearningObjects(
-    authorUsername: string,
-    filters?: any,
-    query?: string
-  ): Promise<LearningObject[]> {
-    return this.http
-      .get(
-        SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(authorUsername, `draftsOnly=true&limit=200&${querystring.stringify(filters, query)}`),
-        { headers: this.headers, withCredentials: true })
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((learningObjects: any[]) => {
-        return learningObjects.map(learningObject => new LearningObject(learningObject));
-      });
-  }
-
-  /**
-   * Modify an outcome by sending a partial learning outcome
-   *
-   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
-  // TODO: This needs to be moved to the outcomes service
-  saveOutcome(
-    outcome: { id: string;[key: string]: any }
-  ): Promise<any> {
-    const outcomeId = outcome.id;
-    delete outcome.id;
-
-    return this.http
-      .patch(
-        OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
-        { ...outcome },
-        { headers: this.headers, withCredentials: true },
-      )
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Deletes an outcome on a given learning object
-   *
-   * @param outcomeId The outcome Id
-   */
-  // TODO: This needs to be moved to the outcomes service
-  deleteOutcome(outcomeId: string): Promise<any> {
-    return this.http
-      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
-  /**
-   * Publish a learning object
-   *
-   * @param {LearningObject} learningObject the learning object to be published
-   * @param {string} collection the abreviated name of the collection to which to submit this learning object
-   */
-  // TODO: This needs to be moved to the submissions service
-  submit(learningObject: LearningObject, collection: string): Promise<{}> {
-    const route = SUBMISSION_ROUTES.SUBMIT_LEARNING_OBJECT({
-      learningObjectId: learningObject.id,
-    });
-    return this.http
-      .post(
-        route,
-        { collection },
-        { headers: this.headers, withCredentials: true, responseType: 'text' }
       )
       .pipe(
 

@@ -18,15 +18,6 @@ export const UTILITY_ROUTES = {
     return `${environment.apiURL}/blogs?recent=true`;
   },
   /**
-   * Request to post a blog
-   * @method POST
-   * @auth required
-   * @returns the blog that was posted
-   */
-  POST_BLOGS() {
-    return `${environment.apiURL}/blogs`;
-  },
-  /**
    * Request to retrieve the client version
    * @method GET
    * @returns the client version

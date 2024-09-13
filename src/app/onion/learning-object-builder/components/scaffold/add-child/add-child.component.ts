@@ -4,6 +4,7 @@ import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-add-child',
@@ -28,6 +29,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
 
   constructor(
     private learningObjectService: LearningObjectService,
+    private searchLearningObjectService: SearchService,
     public auth: AuthService,
   ) {
     this.searchString$
@@ -52,7 +54,8 @@ export class AddChildComponent implements OnInit, OnDestroy {
    */
   async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
     this.loading = true;
-    const draftObjects = await this.learningObjectService.getDraftLearningObjects(this.child.author.username, { ...filters, text: query })
+    const draftObjects = await this.searchLearningObjectService
+      .getUsersLearningObjects(this.child.author.username, { ...filters, text: query })
       .then((children: LearningObject[]) => {
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
@@ -60,13 +63,16 @@ export class AddChildComponent implements OnInit, OnDestroy {
         return children;
       });
 
-    const releasedObjects = await this.learningObjectService
-      .getLearningObjects(this.child.author.username, {...filters, text: query, childId: this.child.id } )
-      .then((children: LearningObject[]) => {
+    const releasedObjects = await this.searchLearningObjectService
+      .getLearningObjects({...filters, text: query, childId: this.child.id } )
+      .then((response: { learningObjects: LearningObject[], total: number}) => {
+        let { learningObjects } = response;
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
-        children = children.filter(child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length)));
-        return children;
+        learningObjects = learningObjects.filter(
+          child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length))
+        );
+        return learningObjects;
       });
 
     this.loading = false;

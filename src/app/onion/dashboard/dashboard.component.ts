@@ -3,7 +3,6 @@ import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.
 import { NavigationEnd, ActivatedRoute, Router } from '@angular/router';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from '../core/learning-object.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -11,7 +10,9 @@ import { ChangelogService } from 'app/core/learning-object-module/changelog/chan
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
-import { LearningObjectService as NewLearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -80,12 +81,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
-    private newLearningObjectService: NewLearningObjectService,
+    private searchLearningObjectService: SearchService,
     public auth: AuthService,
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
-    private submissionService: SubmissionsService
+    private submissionService: SubmissionsService,
+    private revisionsService: RevisionsService,
   ) {
     this.navbar.hide();
   }
@@ -158,8 +160,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       text = filters;
     }
 
-    this.workingLearningObjects = await this.learningObjectService
-      .getDraftLearningObjects(this.auth.username, filters, text);
+    this.workingLearningObjects = await this.searchLearningObjectService.getUsersLearningObjects(this.auth.username, {text, ...filters});
   }
 
   /**
@@ -169,8 +170,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param query
    */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
-    this.releasedLearningObjects = await this.learningObjectService
-      .getLearningObjects(this.auth.username, {...filters, text});
+    this.releasedLearningObjects = (await this.searchLearningObjectService
+      .getLearningObjects({...filters, text})).learningObjects;
 
     this.checkQueryParams$.next();
   }
@@ -318,7 +319,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       s => [LearningObject.Status.UNRELEASED, LearningObject.Status.REJECTED].includes(s.status)
     );
     if (canDelete.length === 1) {
-      return this.newLearningObjectService.delete(canDelete[0].id)
+      return this.learningObjectService.delete(canDelete[0].id)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Object deleted!');
           await this.getDraftLearningObjects();
@@ -331,7 +332,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       canDelete.forEach(object => {
         objectsToDeleteIDs.push(object.id);
       });
-      return this.newLearningObjectService.deleteMultiple(objectsToDeleteIDs)
+      return this.learningObjectService.deleteMultiple(objectsToDeleteIDs)
         .then(async () => {
           this.notificationService.success('Done!', 'Learning Objects deleted!');
           await this.getDraftLearningObjects();
@@ -354,7 +355,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createRevision(object: LearningObject) {
-    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid).then(() => {
+    this.sidePanelPromiseResolver = this.revisionsService.createRevision(object.cuid).then(() => {
       this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED });
     });
   }
