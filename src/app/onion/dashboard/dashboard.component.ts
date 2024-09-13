@@ -12,6 +12,7 @@ import { ChangelogService } from 'app/core/learning-object-module/changelog/chan
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
+import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -84,7 +85,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
-    private submissionService: SubmissionsService
+    private submissionService: SubmissionsService,
+    private revisionsService: RevisionsService,
   ) {
     this.navbar.hide();
   }
@@ -223,7 +225,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.currentlySubmittingObject = event;
       this.submitToCollection = true;
     } else {
-      this.submissionService.submit({
+      this.submissionService.submitLearningObject({
         learningObjectId: event.id,
         collectionName: event.collection,
       })
@@ -246,7 +248,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {LearningObject} learning object to be unpublished
    */
   cancelSubmission(l: LearningObject): Promise<void> {
-    return this.submissionService.unsubmit(
+    return this.submissionService.unsubmitLearningObject(
       l.id,
       ).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;
@@ -353,7 +355,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createRevision(object: LearningObject) {
-    this.sidePanelPromiseResolver = this.learningObjectService.createRevision(object.cuid).then(() => {
+    this.sidePanelPromiseResolver = this.revisionsService.createRevision(object.cuid).then(() => {
       this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED });
     });
   }

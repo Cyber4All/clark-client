@@ -15,8 +15,8 @@ import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
 import { AuthService } from '../../../core/auth-module/auth.service';
-import { Collection, CollectionService } from '../../../core/collection-module/collections.service';
-import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { Collection } from '../../../core/collection-module/collections.service';
+import { UserService } from 'app/core/user-module/user.service';
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
@@ -82,8 +82,12 @@ export class LearningObjectsComponent
     private toaster: ToastrOvenService,
     private auth: AuthService,
     private cd: ChangeDetectorRef,
+<<<<<<< HEAD
     private collectionService: CollectionService,
     private searchService: SearchService,
+=======
+    private userService: UserService,
+>>>>>>> d1dc2e875665784ebd5bd869d1bd6c9e8f40ebc3
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -92,20 +96,34 @@ export class LearningObjectsComponent
 
     if (this.isCurator && !this.isAdminOrEditor) {
       // Get first curator access group only
-      const groups = this.auth.accessGroups[0];
+      const curatorAccessGroup = this.auth.accessGroups.find(accessGroup => accessGroup.includes('curator'));
+
       // Split to get collection name
-      const collection = groups.split('@');
-      // Retrieve curators for collection
-      const curators: any = await this.collectionService.getCollectionCuratorsInfo(collection[1]);
-      // If the user is a curator, set the collection
-      curators.map(curator => {
-        if (curator.username === this.auth.user.username) {
-          this.query = {
-            collection: collection[1]
-          };
-        }
-      });
+      const collection = curatorAccessGroup.split('@');
+
+      // If the curator access group has a collection then we want to
+      // set the query to that collection
+      if (collection.length === 2) {
+
+        // Verify that the current user is actually a curator for the collection
+        // before setting the query to the collection. This is to prevent users
+        // from updating the access groups on the browser and getting access to
+        // collections they are not supposed to have access to.
+        this.userService.searchUsers({ accessGroups: [curatorAccessGroup] })
+          .then((curators) => {
+            curators.forEach(curator => {
+              if (curator.username === this.auth.user.username) {
+                this.query = {
+                  collection: collection[1]
+                };
+              }
+            });
+          });
+      } else {
+        console.warn(`Curator access group is not formatted correctly: ${curatorAccessGroup}`);
+      }
     }
+
     // query by anything if it's passed in
     // reset page to 1 since we can't scroll backwards
     this.route.queryParams.subscribe(params => {

@@ -7,8 +7,10 @@ import {
   LEARNING_OBJECT_ROUTES,
   LEGACY_USER_ROUTES
 } from '../core/learning-object-module/learning-object/learning-object.routes';
-import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
-import { USER_ROUTE } from '../core/user-module/user.routes';
+import { Query } from '../interfaces/query';
+
+import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
+import { USER_ROUTES } from '../core/user-module/user.routes';
 
 // TODO: move to core module
 @Injectable({
@@ -83,26 +85,12 @@ export class LearningObjectService {
   }
   getUsersLearningObjects(username: string): Promise<LearningObject[]> {
     return this.http
-      .get(USER_ROUTE.GET_USER(username), { withCredentials: true })
+      .get(USER_ROUTES.GET_USER(username), { withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
         return val.map((l) => new LearningObject(l));
       });
-  }
-
-  /**
-   * Creates a Revision of an existing learning object
-   *
-   * @param cuid the CUID of the learning object to create a revision of
-   */
-  async createRevision(cuid: string): Promise<any> {
-    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
-    const response = await this.http
-      .post(route, {}, { withCredentials: true })
-      .pipe(catchError(this.handleError))
-      .toPromise();
-    return response;
   }
 
   private handleError(error: HttpErrorResponse) {

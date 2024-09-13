@@ -49,7 +49,7 @@ export class FeaturedObjectsService {
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((featured: any) => {
-        const featuredObjects = featured.map((object) => {
+        const featuredObjects = featured.map((object: any) => {
           object.collection = object.collectionName;
           return object;
         });
@@ -69,8 +69,8 @@ export class FeaturedObjectsService {
         // For some reason, the method itself returns the full Learning Object,
         //    but when entered into the array it turns into a Promise.
         const object = await this.profileService.fetchLearningObject(
-         learningObject.cuid,
-         learningObject.version,
+          learningObject.cuid,
+          learningObject.version,
         );
         if (object.resourceUris?.outcomes) {
           // Retrieve the outcomes for the learning object with the resource uri
@@ -107,7 +107,7 @@ export class FeaturedObjectsService {
     });
   }
 
-  setFeatured(objects) {
+  setFeatured(objects: LearningObject[]) {
     this.featuredStore.featured = objects;
     this.filterOutFeaturedObjects();
     if (this.featuredStore.featured.length === 5) {
@@ -117,9 +117,9 @@ export class FeaturedObjectsService {
     this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
-  removeFeaturedObject(featured) {
+  removeFeaturedObject(featured: LearningObject) {
     this.featuredStore.featured = this.featuredStore.featured.filter(
-      (object) => {
+      (object: LearningObject) => {
         return object.id !== featured.id;
       },
     );
@@ -146,21 +146,18 @@ export class FeaturedObjectsService {
   }
 
   /** COLLECTION FEATURED ROUTES */
-
   /**
    * Get the featured learning objects for a collection
    *
    * @param collection
    * @returns [LearningObject]
    */
-  getCollectionFeatured(collection: string) {
-    return this.http
-      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collection))
+  async getCollectionFeatured(collectionAbvName: string) {
+    const response = await this.http
+      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName))
       .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((response: any) => {
-        return response;
-      });
+      .toPromise();
+    return response as LearningObject[];
   }
 
   /**
@@ -170,14 +167,12 @@ export class FeaturedObjectsService {
    * @param limit
    * @returns [LearningObject]
    */
-  getCollectionFeaturedWithLimit(collection: string, limit: number) {
-    return this.http
-      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS_WITH_LIMIT(collection, limit))
+  async getCollectionFeaturedWithLimit(collectionAbvName: string, limit: number) {
+    const response = await this.http
+      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName, limit))
       .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((response: any) => {
-        return response;
-      });
+      .toPromise();
+    return response as LearningObject[];
   }
 
   private handleError(error: HttpErrorResponse) {

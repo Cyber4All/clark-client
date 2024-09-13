@@ -10,25 +10,17 @@ export const FEATURED_ROUTES = {
     return `${environment.apiURL}/featured/learning-objects`;
   },
   /**
-   * Request to retrieve the featured learning objects for a specific collection
+   * Request to retrieve the featured learning objects for a specific collection with an optional limit
    * @method GET
    * @param collectionAbvName the abbreviated name of the collection
+   * @param limit (optional) the number of featured learning objects to retrieve
    */
-  GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName: string) {
-    return `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(collectionAbvName)}`;
-  },
-  /**
-   * Request to retrieve the featured learning objects for a specific collection with a limit
-   * @method GET
-   * @param collectionAbvName the abbreviated name of the collection
-   * @param limit the number of featured learning objects to retrieve
-   */
-  GET_COLLECTION_FEATURED_OBJECTS_WITH_LIMIT(collectionAbvName: string, limit: number) {
-    return `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(
-      collectionAbvName,
-    )}&limit=${encodeURIComponent(
-      limit
-    )}`;
+  GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName: string, limit?: number) {
+    let url = `${environment.apiURL}/featured/learning-objects?collection=${encodeURIComponent(collectionAbvName)}`;
+    if (limit) {
+      url += `&limit=${encodeURIComponent(limit)}`;
+    }
+    return url;
   },
   /**
    * Request to update the list of featured learning objects

@@ -9,7 +9,6 @@ import { LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-objec
   providedIn: 'root'
 })
 export class ProfileService {
-  userNotifications: any;
   constructor(private http: HttpClient, private auth: AuthService) { }
 
   /**

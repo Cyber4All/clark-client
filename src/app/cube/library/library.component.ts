@@ -6,7 +6,7 @@ import { Subject } from 'rxjs';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Router } from '@angular/router';
 import { LearningObjectRatings, RatingService } from 'app/core/rating-module/rating.service';
-import { NotificationsService } from 'app/core/notification-module/notification.service';
+import { NotificationService } from 'app/core/notification-module/notification.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
@@ -79,11 +79,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private toaster: ToastrOvenService,
     private authService: AuthService,
     private router: Router,
-    private ratings: RatingService,
+    private ratingService: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
     private navbarService: NavbarService,
-    private notificationService: NotificationsService
+    private notificationService: NotificationService
   ) { }
 
   @HostListener('window:resize', ['$event'])
@@ -148,12 +148,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
    */
   async getNotifications(apiPage: number) {
     let result = { 'notifications': [], 'lastPage': 1 };
-    const notificationCount = await this.notificationService.getNotifications(this.authService.username);
+    const notificationCount = await this.notificationService.getNotifications(this.authService.username, 1, 1);
     this.notificationCount = notificationCount.lastPage;
     if (this.notificationCount <= 20) {
-      result = await this.notificationService.getNotifications(this.authService.user.username);
+      result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
     } else {
-      result = await this.notificationService.getNotifications(this.authService.user.username);
+      result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, 20);
     }
     this.localNotifications = [...this.localNotifications, ...result.notifications];
     this.lastNotificationsPageNumber = result.lastPage;
@@ -254,7 +254,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async getRatings(learningObject: LearningObject): Promise<LearningObjectRatings> {
     const { cuid, version } = learningObject;
-    return await this.ratings.getLearningObjectRatings(
+    return await this.ratingService.getLearningObjectRatings(
       cuid,
       version,
     );
