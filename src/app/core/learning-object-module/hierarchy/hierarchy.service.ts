@@ -28,7 +28,7 @@ export class HierarchyService {
   // TODO: Wherever this is used, it should be refactored to the use the SearchService getUserLearningObjects method
   async checkName(username: string, objectName: string): Promise<boolean> {
     return this.http
-      .get(SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(username, `text=${objectName}`), { withCredentials: true })
+      .get(SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(username, {text: objectName}), { withCredentials: true })
       .toPromise()
       .then((response: any) => {
         const possibleMatches = response.map(object => {

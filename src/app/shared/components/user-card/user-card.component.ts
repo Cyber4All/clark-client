@@ -34,7 +34,7 @@ export class UserCardComponent implements OnInit, OnChanges {
   }
 
   async fetchLearningObjects() {
-    this.objects = await this.searchLearningObjectService.getUsersLearningObjects(this.user.username, {});
+    this.objects = await this.searchLearningObjectService.getUsersLearningObjects(this.user.username);
   }
 
   showGravatarModal(e: Event) {

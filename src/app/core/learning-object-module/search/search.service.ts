@@ -58,13 +58,19 @@ export class SearchService {
   }
 
   // TODO: This needs to be moved to the search service
-  getUsersLearningObjects(username: string, query?: any): Promise<LearningObject[]> {
+  getUsersLearningObjects(username: string, query?: {
+    draftsOnly?: boolean,
+    text?: string,
+    status?: string,
+    limit?: number,
+    page?: number,
+  }): Promise<LearningObject[]> {
     return this.http
-      .get(SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(username, new URLSearchParams(query).toString()), { withCredentials: true })
+      .get(SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(username, query), { withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((val: any) => {
-        return val.map((l) => new LearningObject(l));
+      .then((response: { objects: any[], total: number}) => {
+        return response.objects.map((learningObject) => new LearningObject(learningObject));
       });
   }
 
