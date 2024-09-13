@@ -82,12 +82,7 @@ export class LearningObjectsComponent
     private toaster: ToastrOvenService,
     private auth: AuthService,
     private cd: ChangeDetectorRef,
-<<<<<<< HEAD
-    private collectionService: CollectionService,
-    private searchService: SearchService,
-=======
     private userService: UserService,
->>>>>>> d1dc2e875665784ebd5bd869d1bd6c9e8f40ebc3
   ) {}
 
   async ngOnInit(): Promise<void> {
