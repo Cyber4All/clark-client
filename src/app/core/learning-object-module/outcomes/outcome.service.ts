@@ -20,7 +20,7 @@ export class OutcomeService {
   /**
    * Create an outcome for a source learning object
    *
-   * @param {LearningObject} source the learningObject
+   * @param {LearningObject} source the learningObject id
    * @param {LearningOutcome} outcome
    * @param username The username of the learning object author
    * @memberof LearningObjectService
@@ -33,7 +33,6 @@ export class OutcomeService {
         {
           headers: this.headers,
           withCredentials: true,
-          responseType: 'text'
         }
       )
       .pipe(
@@ -50,7 +49,7 @@ export class OutcomeService {
    * @memberof LearningObjectService
    */
   saveOutcome(
-    outcome: { id: string;[key: string]: any }
+    outcome: { id: string; [key: string]: any }
   ): Promise<any> {
     const outcomeId = outcome.id;
     delete outcome.id;
