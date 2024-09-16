@@ -16,29 +16,46 @@ export class SearchService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Fetches Array of Learning Objects
-   *
+   * Searches and returns an array of Learning Objects that are/are not currently featured
+   * @param {Query} [query] - Optional parameter containing search query parameters to filter the Learning Objects
+   * @param {Object} [options] - Optional object to customize the search behavior
+   * @param {boolean} [options.handleStandardOutcomes=true] - Use this when you need to extract the id before sending the query
+   * @param {boolean} [options.mapToLearningObjectInstance=true] - Set false when you need to receive raw objects instead of LearningObject
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
-   */
-  getPublicLearningObjects(
+   * */
+
+  searchLearningObjects(
     query?: Query,
-  ): Promise<{ learningObjects: LearningObject[]; total: number }> {
+    options?: {
+      handleStandardOutcomes?: boolean;
+      mapToLearningObjectInstance?: boolean;
+    },
+  ): Promise<{ learningObjects: LearningObject[] | any[]; total: number }> {
+    // Set default options if not provided
+    const {
+      handleStandardOutcomes = true,
+      mapToLearningObjectInstance = true,
+    } = options || {};
+
     let route = '';
     if (query) {
-      const queryClone = Object.assign({}, query);
+      const queryClone = { ...query };
+
+      // Handle standard outcomes if the option is enabled
       if (
+        handleStandardOutcomes &&
         queryClone.standardOutcomes &&
         queryClone.standardOutcomes.length &&
         typeof queryClone.standardOutcomes[0] !== 'string'
       ) {
-        queryClone.standardOutcomes = (
-          queryClone.standardOutcomes as string[]
-        ).map((o) => o['id']);
+        queryClone.standardOutcomes = queryClone.standardOutcomes.map(
+          (o) => o['id'],
+        );
       }
-      const queryString = new URLSearchParams(queryClone).toString();
-      route =
-        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS_WITH_FILTER(queryString);
+
+      const queryString = new URLSearchParams(queryClone as any).toString();
+      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS_WITH_FILTER(queryString);
     } else {
       route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS;
     }
@@ -49,38 +66,14 @@ export class SearchService {
       .toPromise()
       .then((response: any) => {
         const objects = response.objects;
-        return {
-          learningObjects: objects.map((object) => new LearningObject(object)),
-          total: response.total,
-        };
-      });
-  }
+        const total = response.total;
 
-  /**
-   * Fetches Array of Learning Objects that are not currently featured
-   *
-   * @returns {Promise<LearningObject[]>}
-   * @memberof LearningObjectService
-   */
-  getNotPublicLearningObjects(
-    query?: Query,
-  ): Promise<{ learningObjects: LearningObject[]; total: number }> {
-    let route = '';
-    if (query) {
-      const queryClone = Object.assign({}, query);
-      const queryString = querystring.stringify(queryClone);
-      route =
-        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS_WITH_FILTER(queryString);
-    } else {
-      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS;
-    }
+        // Map to LearningObject instances if the option is enabled
+        const learningObjects = mapToLearningObjectInstance
+          ? objects.map((object: any) => new LearningObject(object))
+          : objects;
 
-    return this.http
-      .get(route)
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((response: any) => {
-        return { learningObjects: response.objects, total: response.total };
+        return { learningObjects, total };
       });
   }
 

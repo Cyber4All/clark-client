@@ -216,7 +216,7 @@ export class LearningObjectsComponent
       this.loading = true;
 
       await this.searchService
-        .getPublicLearningObjects(this.query)
+        .searchLearningObjects(this.query)
         .then(val => {
           this.learningObjects = val.learningObjects;
 

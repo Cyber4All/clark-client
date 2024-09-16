@@ -50,7 +50,7 @@ export class FeaturedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.learningObjects = (await this.searchService.getPublicLearningObjects(
+      this.learningObjects = (await this.searchService.searchLearningObjects(
         this.query
       )).learningObjects;
       this.loading = false;

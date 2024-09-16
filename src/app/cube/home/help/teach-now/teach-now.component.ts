@@ -118,7 +118,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   getObjects() {
     this.loading = true;
     this.objects = this.loadingObjects;
-    this.searchService.getPublicLearningObjects({
+    this.searchService.searchLearningObjects({
       limit: 4,
       currPage: 1,
       status: ['released'],
