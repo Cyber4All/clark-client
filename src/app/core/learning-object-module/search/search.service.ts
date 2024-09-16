@@ -38,9 +38,9 @@ export class SearchService {
       }
       const queryString = new URLSearchParams(queryClone).toString();
       route =
-        SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
+        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS_WITH_FILTER(queryString);
     } else {
-      route = SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS;
     }
 
     return this.http
@@ -70,9 +70,9 @@ export class SearchService {
       const queryClone = Object.assign({}, query);
       const queryString = querystring.stringify(queryClone);
       route =
-        SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS_WITH_FILTER(queryString);
+        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS_WITH_FILTER(queryString);
     } else {
-      route = SEARCH_ROUTES.GET_PUBLIC_LEARNING_OBJECTS;
+      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS;
     }
 
     return this.http
