@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { AuthorshipService } from '../../core/authorship.service';
+import { ChangeAuthorshipService } from 'app/core/learning-object-module/change-authorship/change-authorship.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { UserService } from '../../../core/user-module/user.service';
 import { titleCase } from 'title-case';
@@ -31,7 +31,7 @@ export class ChangeAuthorComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private authorshipService: AuthorshipService,
+    private changeAuthorshipService: ChangeAuthorshipService,
     public toaster: ToastrOvenService,
     private userService: UserService,
   ) { }
@@ -92,7 +92,7 @@ export class ChangeAuthorComponent implements OnInit {
 
   async changeAuthor() {
     const author: User = await this.userService.getUser(this.highlightedLearningObject.author._username);
-    this.authorshipService.changeAuthorship(
+    this.changeAuthorshipService.changeAuthorship(
       author.userId,
       this.highlightedLearningObject.id,
       this.selectedAuthor.userId).then(
