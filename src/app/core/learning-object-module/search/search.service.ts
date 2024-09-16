@@ -2,17 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { LearningObject } from '@entity';
 import { catchError } from 'rxjs/operators';
-import { Subject, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { Query } from 'app/interfaces/query';
-import * as querystring from 'querystring';
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  needsChange$: Subject<void> = new Subject();
-
   constructor(private http: HttpClient) {}
 
   /**
@@ -78,7 +75,7 @@ export class SearchService {
   }
 
   registerChange() {
-    this.needsChange$.next();
+    SEARCH_ROUTES.REGISTER_CHANGE();
   }
 
   private handleError(error: HttpErrorResponse) {
