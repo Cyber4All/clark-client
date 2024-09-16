@@ -505,16 +505,6 @@ export class LearningObjectService {
     return Promise.all(deletePromises);
   }
 
-  toggleFilesToBundle(learningObjectId: string, selected: string[], deselected: string[]) {
-    return this.http.patch(
-      BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ learningObjectId }),
-      {
-        selected: selected,
-        deselected: deselected,
-      }
-    );
-  }
-
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error

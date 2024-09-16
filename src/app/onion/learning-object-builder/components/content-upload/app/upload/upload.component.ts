@@ -32,7 +32,6 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { getUserAgentBrowser } from 'getUserAgentBrowser';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FILE_ROUTES } from 'app/core/learning-object-module/file/file.routes';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 export interface FileInput extends File {
@@ -694,14 +693,12 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
    * Handles downloading a file by opening the stream url in a new window
    *
-   * @param {LearningObject.Material.File} file[The file to be downloaded]
+   * @param {LearningObject.Material.File} file [The file to be downloaded]
    * @memberof UploadComponent
    */
   async handleFileDownload(file: LearningObject.Material.File) {
     const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
-    const loId = learningObject.id;
-    const url = FILE_ROUTES.DOWNLOAD_FILE(loId, file._id);
-    window.open(url, '__blank');
+    this.fileService.handleFileDownload(file, learningObject);
   }
 
   /**

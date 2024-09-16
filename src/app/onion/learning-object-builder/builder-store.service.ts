@@ -23,6 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
 import { Revision } from 'aws-sdk/clients/codepipeline';
 
@@ -151,7 +152,8 @@ export class BuilderStore {
 
   constructor(
     private auth: AuthService,
-    private learningObjectService: LearningObjectService,
+    // TODO: The last routes that need to be moved over from learningObjectService (the legacy one) is bundling related
+    private learningObjectService: LearningObjectService, 
     // TODO: This is temporary while working on story this should be updated with the actual name once the other is removed.
     private refactoredLearningObjectService: RefactoredLearningObjectService,
     private newLearningObjectService: NewLearningObjectService,
@@ -161,6 +163,7 @@ export class BuilderStore {
     private submissionService: SubmissionsService,
     private outcomeService: OutcomeService,
     private revisionsService: RevisionsService,
+    private fileService: FileService
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -467,14 +470,14 @@ export class BuilderStore {
   }) {
     if (event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
-      await this.learningObjectService.toggleBundle(
+      await this.fileService.toggleBundle(
         this.learningObject.id,
         fileIDs,
         event.state
       );
     } else { // event.item is a File
       const fileID = [event.item._id];
-      await this.learningObjectService.toggleBundle(
+      await this.fileService.toggleBundle(
         this.learningObject.id,
         fileID,
         event.state
@@ -693,7 +696,7 @@ export class BuilderStore {
    */
   private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
     this.serviceInteraction$.next(true);
-    await this.learningObjectService
+    await this.fileService
       .addFileMeta({
         files,
         objectId: this.learningObject.id
@@ -783,9 +786,8 @@ export class BuilderStore {
   private updateFileDescription(fileId: any, description: any): void {
     const index = this.findFile(fileId);
     this.learningObject.materials.files[index].description = description;
-    this.learningObjectService
-      .updateFileDescription(
-        this.learningObject.author.username,
+    this.fileService
+    .updateFileDescription(
         this.learningObject.id,
         fileId,
         description
