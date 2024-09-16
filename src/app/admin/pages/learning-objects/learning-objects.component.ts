@@ -18,6 +18,8 @@ import { ToastrOvenService } from '../../../shared/modules/toaster/notification.
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { Collection } from '../../../core/collection-module/collections.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
+
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
@@ -80,6 +82,7 @@ export class LearningObjectsComponent
 
   constructor(
     private publicLearningObjectService: PublicLearningObjectService,
+    private searchService: SearchService,
     private route: ActivatedRoute,
     private router: Router,
     private toaster: ToastrOvenService,
@@ -216,29 +219,70 @@ export class LearningObjectsComponent
    * @memberof LearningObjectsComponent
    */
   async getLearningObjects() {
+    const allStatuses = [
+      'UNRELEASED',
+      'WAITING',
+      'REVIEW',
+      'ACCEPTED_MAJOR',
+      'ACCEPTED_MINOR',
+      'PROOFING',
+      'REJECTED',
+      'RELEASED',
+    ];
+
     if (!this.allResultsReceived) {
       // we know there are more objects to pull
       this.loading = true;
 
-      await this.publicLearningObjectService
-        .getLearningObjects(this.query)
-        .then((val) => {
-          this.learningObjects = val.learningObjects;
+      if (this.query.username && this.query.username.length > 0) {
+        await this.searchService
+          .getUsersLearningObjects(this.query.username, {
+            ...this.query,
+            // too lazy to lowercase allStatuses values
+            status: allStatuses.map((v) => v.toLowerCase()),
+            // TODO: prefer currPage on clark-service
+            page: this.query.currPage,
+          })
+          .then((val) => {
+            this.learningObjects = [...val.objects];
 
-          if (this.learningObjects.length === val.total) {
-            this.allResultsReceived = true;
-          }
-          this.lastPage = Math.ceil(val.total / 20);
-        })
-        .catch((error) => {
-          this.toaster.error(
-            'Error!',
-            'There was an error fetching Learning Objects. Please try again later.',
-          );
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+            if (this.learningObjects.length === val.total) {
+              this.allResultsReceived = true;
+            }
+            this.lastPage = Math.ceil(val.total / 20);
+          })
+          .catch((error) => {
+            console.error(error);
+            this.toaster.error(
+              'Error!',
+              'There was an error fetching Learning Objects. Please try again later.',
+            );
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        await this.publicLearningObjectService
+          .getLearningObjects(this.query)
+          .then((val) => {
+            this.learningObjects = val.learningObjects;
+
+            if (this.learningObjects.length === val.total) {
+              this.allResultsReceived = true;
+            }
+            this.lastPage = Math.ceil(val.total / 20);
+          })
+          .catch((error) => {
+            console.error(error);
+            this.toaster.error(
+              'Error!',
+              'There was an error fetching Learning Objects. Please try again later.',
+            );
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
     }
   }
 
