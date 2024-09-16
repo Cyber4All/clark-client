@@ -16,6 +16,7 @@ import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes'
 import { LEARNING_OBJECT_ROUTES } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { REVISION_ROUTES } from 'app/core/learning-object-module/revisions/revisions.routes';
 
 @Injectable({
   providedIn: 'root'
