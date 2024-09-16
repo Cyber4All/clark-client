@@ -33,6 +33,21 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     * Get the revision of a learning object
+     * @param username
+     * @param learningObjectId
+     * @param revisionId
+     * @returns
+     */
+    GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
+      return `${environment.apiURL}/users/${encodeURIComponent(
+          username,
+      )}/learning-objects/${encodeURIComponent(
+          learningObjectId,
+      )}/revisions/${encodeURIComponent(revisionId)}`;
+  },
+
+    /**
      * Path to update the status of a learning object
      * @param learningObjectId the id of the learning object
      * @returns void
@@ -156,60 +171,6 @@ export const LEGACY_COLLECTIONS_ROUTES = {
     },
     GET_COLLECTION_CURATORS(name: string) {
         return `${environment.apiURL}/users/curators/${encodeURIComponent(name)}`;
-    },
-};
-
-export const LEGACY_USER_ROUTES = {
-    // Route still available in gateway to LOS
-    LOAD_USER_PROFILE(username: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/profile`;
-    },
-    GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId,
-        )}/revisions/${encodeURIComponent(revisionId)}`;
-    },
-    UPDATE_MY_LEARNING_OBJECT(username, learningObjectName) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(learningObjectName)}`;
-    },
-    GET_LEARNING_OBJECT(learningObjectId) {
-        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}`;
-    },
-    POST_MAPPING(username: string, learningObjectId: string, outcomeId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId,
-        )}/outcomes/${encodeURIComponent(outcomeId)}/mappings`;
-    },
-    DELETE_MAPPING(
-        username: string,
-        learningObjectId: string,
-        outcomeId: string,
-        mappingsId: string,
-    ) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username,
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId,
-        )}/outcomes/${encodeURIComponent(outcomeId)}/mappings/${encodeURIComponent(
-            mappingsId,
-        )}`;
-    },
-    // FIXME: This route is not in the gateway
-    GET_SAME_ORGANIZATION(organization) {
-        return `${environment.apiURL
-            }/users/search?organization=${encodeURIComponent(organization)}`;
-    },
-    /** ROUTE NOT IN GATEWAY */
-    VALIDATE_CAPTCHA() {
-        return `${environment.apiURL}/users/validate-captcha`;
     },
 };
 

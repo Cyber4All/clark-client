@@ -3,10 +3,7 @@ import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import {
-  LEARNING_OBJECT_ROUTES,
-  LEGACY_USER_ROUTES
-} from '../core/learning-object-module/learning-object/learning-object.routes';
+import { LEARNING_OBJECT_ROUTES } from '../core/learning-object-module/learning-object/learning-object.routes';
 import { Query } from '../interfaces/query';
 
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
@@ -102,33 +99,6 @@ export class LearningObjectService {
       .then((res: any) => {
         const learningObject = new LearningObject(res[0]);
         return learningObject;
-      });
-  }
-  /**
-   * Fetches LearningObject by id
-   *
-   * @param {string} id
-   * @returns {Promise<LearningObject>}
-   * @memberof LearningObjectService
-   */
-  getRevisedLearningObject(learningObjectId: String): Promise<LearningObject> {
-    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
-    return this.http
-      .get(route)
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((res: any) => {
-        const learningObject = new LearningObject(res);
-        return learningObject;
-      });
-  }
-  getUsersLearningObjects(username: string): Promise<LearningObject[]> {
-    return this.http
-      .get(USER_ROUTES.GET_USER(username), { withCredentials: true })
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((val: any) => {
-        return val.map((l) => new LearningObject(l));
       });
   }
 

@@ -13,14 +13,10 @@ import { SUBMISSION_ROUTES } from '../../core/learning-object-module/submissions
 import { BUNDLING_ROUTES } from '../../core/learning-object-module/bundling/bundling.routes';
 import { OUTCOME_ROUTES } from '../../core/learning-object-module/outcomes/outcome.routes';
 import { FILE_ROUTES } from '../../core/learning-object-module/file/file.routes';
-import {
-  LEGACY_USER_ROUTES,
-  LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES,
-  LEARNING_OBJECT_ROUTES,
-  USER_ROUTES,
-} from '../../core/learning-object-module/learning-object/learning-object.routes';
+import { LEARNING_OBJECT_ROUTES } from '../../core/learning-object-module/learning-object/learning-object.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { REVISION_ROUTES } from 'app/core/learning-object-module/revisions/revisions.routes';
 
 @Injectable({
   providedIn: 'root'
@@ -122,23 +118,24 @@ export class LearningObjectService {
   }
 
   /**
-   * Fetches Learning Object by ID (full)
+   * Creates a Revision of an existing learning object
    *
-   * @param {string} learningObjectID
-   * @returns {Promise<LearningObject>}
-   * @memberof LearningObjectService
+   * @param learningObjectId
+   * @param authorUsername
    */
-  getLearningObject(learningObjectId: string): Promise<LearningObject> {
-    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(learningObjectId);
+  createRevision(cuid: string) {
+    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
     return this.http
-      .get(route, { headers: this.headers, withCredentials: true })
+      .post(
+        route, {},
+        { withCredentials: true }
+      )
       .pipe(
 
         catchError(this.handleError)
       )
-      .toPromise()
-      .then((response: any) => {
-        return new LearningObject(response);
+      .toPromise().then(response => {
+        return response;
       });
   }
 
@@ -150,7 +147,7 @@ export class LearningObjectService {
    * @param revisionID
    */
   getLearningObjectRevision(username: string, learningObjectID: string, revisionID: number) {
-    const route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT_REVISION(username, learningObjectID, revisionID);
+    const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_REVISION(username, learningObjectID, revisionID);
     return this.http
       .get(route, { headers: this.headers, withCredentials: true })
       .pipe(
@@ -241,26 +238,23 @@ export class LearningObjectService {
   }
 
   /**
-   * Add a guideline to the guidelines array of a Learning Outcome
+   * Modify an outcome by sending a partial learning outcome
    *
-   * @param {string} learningObjectId the id of the source learning object
    * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @param username The learning object author's username
    * @returns {Promise<any>}
    * @memberof LearningObjectService
    */
-  addGuideline(
-    learningObjectId: string,
-    outcome: Partial<LearningOutcome>,
-    username: string
+  saveOutcome(
+    outcome: { id: string;[key: string]: any }
   ): Promise<any> {
     const outcomeId = outcome.id;
+    delete outcome.id;
 
     return this.http
-      .post(
-        LEGACY_USER_ROUTES.POST_MAPPING(username, learningObjectId, outcomeId),
-        { guidelineID: outcome.mappings[outcome.mappings.length - 1] },
-        { headers: this.headers, withCredentials: true }
+      .patch(
+        OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
+        { ...outcome },
+        { headers: this.headers, withCredentials: true },
       )
       .pipe(
 
@@ -270,26 +264,13 @@ export class LearningObjectService {
   }
 
   /**
-   * Add a guideline to the guidelines array of a Learning Outcome
+   * Deletes an outcome on a given learning object
    *
-   * @param {string} learningObjectId the id of the source learning object
-   * @param {{ id: string, [key: string]: any }} outcome the properties of the outcome to change
-   * @param username The learning object author's username
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
+   * @param outcomeId The outcome Id
    */
-  deleteGuideline(
-    learningObjectId: string,
-    outcome: string,
-    username: string,
-    mappingId: string,
-  ): Promise<any> {
-
+  deleteOutcome(outcomeId: string): Promise<any> {
     return this.http
-      .delete(
-        LEGACY_USER_ROUTES.DELETE_MAPPING(username, learningObjectId, outcome, mappingId),
-        { headers: this.headers, withCredentials: true }
-      )
+      .delete(OUTCOME_ROUTES.DELETE_OUTCOME(outcomeId), { headers: this.headers, withCredentials: true })
       .pipe(
 
         catchError(this.handleError)
