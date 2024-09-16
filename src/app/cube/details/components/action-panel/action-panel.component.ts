@@ -22,9 +22,6 @@ import { LearningObjectService } from '../../../../../app/onion/core/learning-ob
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 import { HttpErrorResponse } from '@angular/common/http';
-import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
-
-
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -86,8 +83,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private router: Router,
     private learningObjectService: LearningObjectService,
-    private dropdowns: NavbarDropdownService,
-    private bundlingService: BundlingService
+    private dropdowns: NavbarDropdownService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -117,7 +113,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get mapAndTag() {
     const untaggable = this.learningObject.status === LearningObject.Status.RELEASED
-      || this.learningObject.status === LearningObject.Status.UNRELEASED;
+                              || this.learningObject.status === LearningObject.Status.UNRELEASED;
     if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor && !untaggable) {
       const privileges = ['admin', 'editor', 'mapper'];
       if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
@@ -143,7 +139,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       this.addingToLibrary = true;
     }
     if (download) {
-      this.bundlingService.download(  // use import to solve this
+      this.download(
         this.learningObject.id
       );
     }
@@ -191,7 +187,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   downloadRevised(download?: boolean) {
     if (download) {
-      this.bundlingService.download(  // use import to solve this
+      this.download(
         this.learningObject.id
       );
     }
@@ -203,10 +199,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    * @param learningObjectId the unique mongo id of a learning object
    */
 
-  // download(learningObjectId: string) {
-  //   this.toggleDownloadModal(true);
-  //   this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
-  // }
+  download(learningObjectId: string) {
+    this.toggleDownloadModal(true);
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
+  }
 
   copyLink() {
     const el = this.objectLinkElement.nativeElement;
@@ -231,9 +227,9 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.toaster.success('Success!', 'Attribution information has been copied to your clipboard!');
   }
 
-  // toggleDownloadModal(val?: boolean) {
-  //   this.showDownloadModal = val;
-  // }
+  toggleDownloadModal(val?: boolean) {
+    this.showDownloadModal = val;
+  }
 
   shareButton(event, type) {
     switch (type) {

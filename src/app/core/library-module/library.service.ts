@@ -8,8 +8,6 @@ import { AuthService } from '../auth-module/auth.service';
 import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
 import { LIBRARY_ROUTES } from './library.routes';
 
-
-
 const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
   providedIn: 'root'
@@ -28,10 +26,7 @@ export class LibraryService {
     return this._loading$.asObservable();
   }
 
-  constructor(private http: HttpClient,
-    private auth: AuthService,
-    public toaster: ToastrOvenService,
-  ) {
+  constructor(private http: HttpClient, private auth: AuthService, public toaster: ToastrOvenService) {
     this.updateUser();
   }
 
@@ -121,8 +116,8 @@ export class LibraryService {
       return Promise.reject('User is undefined');
     }
     const cartId = this.cartItems
-      .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
-      .map(cart => cart._id)[0];
+    .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
+    .map(cart => cart._id)[0];
     this.http
       .delete(
         LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
@@ -136,6 +131,48 @@ export class LibraryService {
         catchError((error) => this.handleError(error))
       )
       .toPromise();
+  }
+
+  /**
+   * Service function to download a learning object bundle.
+   * The call to download the bundle is made in @function downloadBundle()
+   *
+   * @param learningObjectId the mongo id of the learning object
+   */
+  learningObjectBundle(learningObjectId: string) {
+    // Show loading spinner
+    this._loading$.next(true);
+
+    // Url route for bundling
+    const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
+    const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
+
+    this.http.head(bundleUrl, {
+      headers: this.headers,
+      withCredentials: true
+    }).pipe(
+      catchError((error) => {
+        this._loading$.next(false);
+        return this.handleError(error);
+      })
+    ).subscribe(
+      () => {
+        this.toaster.success('All Ready!', 'Your download will begin in a moment...');
+        this.downloadBundle(downloadUrl).then(
+          () => {
+            this._loading$.next(false);
+          },
+          (error) => {
+            this._loading$.next(false);
+            this.toaster.error('Download failed', error.message);
+          }
+        );
+      },
+      (error) => {
+        this._loading$.next(false);
+        this.toaster.error('Preparation failed', error.message);
+      }
+    );
   }
 
   /**

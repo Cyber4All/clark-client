@@ -40,10 +40,10 @@ export class LearningObjectService {
       { status, reason },
       { withCredentials: true }
     )
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise();
+    .pipe(
+      catchError(this.handleError)
+    )
+    .toPromise();
   }
 
   fetchLearningObject(
@@ -141,6 +141,16 @@ export class LearningObjectService {
       take(1),
       map(res => callback ? callback(res) : res),
       catchError(e => of(e))
+    );
+  }
+
+  toggleFilesToBundle(learningObjectId: string, selected: string[], deselected: string[]) {
+    return this.http.patch(
+      BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ learningObjectId }),
+      {
+        selected: selected,
+        deselected: deselected,
+      }
     );
   }
 

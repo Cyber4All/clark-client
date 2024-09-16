@@ -61,28 +61,28 @@ export class LearningObjectService {
    * @param state The new packageable property to update to
    * @returns A promise
    */
-  // toggleBundle(
-  //   learningObjectId: string,
-  //   fileIDs: string[],
-  //   state: boolean
-  // ) {
-  //   const route = BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ learningObjectId });
+  toggleBundle(
+    learningObjectId: string,
+    fileIDs: string[],
+    state: boolean
+  ) {
+    const route = BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ learningObjectId });
 
-  //   return this.http
-  //     .patch(
-  //       route,
-  //       {
-  //         fileIDs: fileIDs,
-  //         packagable: state
-  //       },
-  //       { headers: this.headers, withCredentials: true }
-  //     )
-  //     .pipe(
+    return this.http
+      .patch(
+        route,
+        {
+          fileIDs: fileIDs,
+          packagable: state
+        },
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
 
-  //       catchError(this.handleError)
-  //     )
-  //     .toPromise();
-  // }
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
 
   /**
    * Sends serialized Learning Object to API for creation
@@ -429,10 +429,10 @@ export class LearningObjectService {
         withCredentials: true,
         responseType: 'text'
       })
-        .pipe(
-          catchError(this.handleError)
-        )
-        .toPromise()
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise()
     );
 
     return Promise.all(deletePromises);
