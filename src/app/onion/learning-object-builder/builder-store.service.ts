@@ -153,7 +153,7 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     // TODO: The last routes that need to be moved over from learningObjectService (the legacy one) is bundling related
-    private learningObjectService: LearningObjectService, 
+    private learningObjectService: LearningObjectService,
     // TODO: This is temporary while working on story this should be updated with the actual name once the other is removed.
     private refactoredLearningObjectService: RefactoredLearningObjectService,
     private newLearningObjectService: NewLearningObjectService,

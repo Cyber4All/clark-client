@@ -26,7 +26,7 @@ export const FILE_METADATA_ROUTES = {
       learningObjectId,
     )}/materials/files/${encodeURIComponent(fileId)}`;
   },
-}
+};
 
 export const FILE_MANAGER_ROUTES = {
   DOWNLOAD_FILE(learningObjectId: string, fileId: string) {
@@ -46,4 +46,4 @@ export const FILE_MANAGER_ROUTES = {
       learningObjectId,
     )}/pdf`;
   },
-}
+};
