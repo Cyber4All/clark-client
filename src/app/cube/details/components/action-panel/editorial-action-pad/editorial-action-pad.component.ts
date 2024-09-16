@@ -4,6 +4,7 @@ import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
 
 /**
  * EditorialActionPadComponent coordinates all editor functionality inside of the
@@ -30,6 +31,7 @@ export class EditorialActionPadComponent implements OnInit {
     private learningObjectService: LearningObjectService,
     private learningObjectServiceUri: LOUri,
     private toaster: ToastrOvenService,
+    private revisionsService: RevisionsService,
   ) { }
 
   async ngOnInit() {
@@ -82,7 +84,10 @@ export class EditorialActionPadComponent implements OnInit {
   async createRevision() {
     this.closeRevisionModal();
     this.toaster.success('One Moment Please', 'Your revision is being created.');
-    await this.learningObjectService
+    // TODO: Update the createRevision's response to be a revised learning object rather than
+    // using a GET request to make a request that would effectively do the same thing.
+    // This will cut down on requests and simplify abstraction.
+    await this.revisionsService
       .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
         this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.cuid}`]);

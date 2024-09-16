@@ -7,8 +7,6 @@ import { LEARNING_OBJECT_ROUTES } from '../core/learning-object-module/learning-
 import { Query } from '../interfaces/query';
 
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
-import * as querystring from 'querystring';
-import { REVISION_ROUTES } from '../core/learning-object-module/revisions/revisions.routes';
 import { USER_ROUTES } from '../core/user-module/user.routes';
 
 // TODO: move to core module
@@ -102,20 +100,6 @@ export class LearningObjectService {
         const learningObject = new LearningObject(res[0]);
         return learningObject;
       });
-  }
-
-  /**
-   * Creates a Revision of an existing learning object
-   *
-   * @param cuid the CUID of the learning object to create a revision of
-   */
-  async createRevision(cuid: string): Promise<any> {
-    const route = REVISION_ROUTES.CREATE_REVISION(cuid);
-    const response = await this.http
-      .post(route, {}, { withCredentials: true })
-      .pipe(catchError(this.handleError))
-      .toPromise();
-    return response;
   }
 
   private handleError(error: HttpErrorResponse) {

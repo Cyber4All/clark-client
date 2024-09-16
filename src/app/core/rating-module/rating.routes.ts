@@ -101,7 +101,8 @@ export const RATING_ROUTES = {
    * @auth required
    * @returns array of flags
    */
-  GET_FLAG(ratingID: string) {
+  // TODO: See sc-32843. Implement this on the admin side.
+  GET_FLAGS(ratingID: string) {
     return `${environment.apiURL}/ratings/${encodeURIComponent(ratingID)}/flags`;
   },
   /**
@@ -112,15 +113,5 @@ export const RATING_ROUTES = {
    */
   FLAG_LEARNING_OBJECT_RATING(ratingId: string) {
     return `${environment.apiURL}/ratings/${encodeURIComponent(ratingId)}/flags`;
-  },
-  /**
-   * Request to delete a flag
-   * @param ratingID id of rating to delete flag from
-   * @param flagId id of flag to delete
-   * @method DELETE
-   * @auth required
-   */
-  DELETE_FLAG(ratingID: string, flagId: string) {
-    return `${environment.apiURL}/ratings/${encodeURIComponent(ratingID)}/flags/${encodeURIComponent(flagId)}`;
   },
 };
