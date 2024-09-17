@@ -238,8 +238,6 @@ export class LearningObjectsComponent implements OnInit, OnDestroy, AfterViewIni
             ...this.query,
             // too lazy to lowercase allStatuses values
             status: allStatuses.map((v) => v.toLowerCase()),
-            // TODO: prefer currPage on clark-service
-            page: this.query.currPage,
           })
           .then((val) => {
             this.learningObjects = [...val.objects];
