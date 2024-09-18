@@ -29,6 +29,7 @@ export interface Query {
   startNextCheck?: string;
   endNextCheck?: string;
   topics?: string[];
+  username?: string;
 }
 
 export interface MappingQuery extends Query {

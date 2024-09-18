@@ -11,15 +11,19 @@ import { catchError } from 'rxjs/operators';
 export class SearchService {
   constructor(private http: HttpClient) {}
 
-  getUsersLearningObjects(username: string): Promise<LearningObject[]> {
+  getUsersLearningObjects(
+    username: string,
+    query?: any,
+    draftsOnly?: boolean,
+  ): Promise<{ objects: LearningObject[]; total: number }> {
     return this.http
-      .get(SEARCH_ROUTES.GET_USER_LEARNING_OBJECTS(username), {
+      .get(SEARCH_ROUTES.GET_USER_LEARNING_OBJECTS(username, query), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((val: any) => {
-        return val.objects.map((r) => new LearningObject(r));
+        return val;
       });
   }
 
