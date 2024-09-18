@@ -167,8 +167,11 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.lastNotificationsPageNumber = result.lastPage;
 
     // If the last page is greater than the current page, then we need to get the next page
-    this.currentNotificationsPageNumber = this.lastNotificationsPageNumber === this.localNotifications.length ?
-      this.localNotifications.length : apiPage;
+    if (this.lastNotificationsPageNumber === this.localNotifications.length) {
+      this.currentNotificationsPageNumber = this.lastNotificationsPageNumber;
+    } else {
+      this.currentNotificationsPageNumber = apiPage;
+    }
   }
 
   /**
