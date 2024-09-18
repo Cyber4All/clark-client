@@ -27,8 +27,7 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
   providers: [PublicLearningObjectService],
 })
 export class LearningObjectsComponent
-  implements OnInit, OnDestroy, AfterViewInit
-{
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
   @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
 
