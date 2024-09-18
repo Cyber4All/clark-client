@@ -19,12 +19,7 @@ export class FileService {
 
   constructor(
     private http: HttpClient,
-    private cookies: CookieService
   ) {
-    const token = this.cookies.get('presence');
-    if (token) {
-      this.headers = new HttpHeaders().append('Authorization',`Bearer ${token}`);
-    }
   }
 
   // TODO: Upload should be moved from the file mnager to this file
