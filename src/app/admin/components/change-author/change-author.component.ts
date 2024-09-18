@@ -33,14 +33,14 @@ export class ChangeAuthorComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private authorshipService: AuthorshipService,
-    private learningObjectServie: LearningObjectService,
+    private learningObjectService: LearningObjectService,
     public toaster: ToastrOvenService,
     private userService: UserService,
   ) { }
 
 
   async ngOnInit() {
-    this.children = await this.learningObjectServie.getLearningObjectChildren(this.highlightedLearningObject.id);
+    this.children = await this.learningObjectService.getLearningObjectChildren(this.highlightedLearningObject.id);
     this.hasChildren = this.children.length > 0;
   }
 
