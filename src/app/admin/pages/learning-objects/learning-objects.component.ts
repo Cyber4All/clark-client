@@ -232,7 +232,7 @@ export class LearningObjectsComponent
             ),
           })
           .then((val) => {
-            this.learningObjects = [...val.objects];
+            this.learningObjects = val.objects;
 
             if (this.learningObjects.length === val.total) {
               this.allResultsReceived = true;
