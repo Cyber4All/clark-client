@@ -150,21 +150,25 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param apiPage The page that we need to retrieve from Notifications service
    */
   async getNotifications(apiPage: number) {
-    let result = { 'notifications': [], 'lastPage': 1 };
-    const notificationCount = await this.notificationService.getNotifications(this.authService.username, 1, 1);
-    this.notificationCount = notificationCount.lastPage;
-    if (this.notificationCount <= 20) {
-      result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
-    } else {
-      result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, 20);
-    }
-    this.localNotifications = [...this.localNotifications, ...result.notifications];
+    /**
+     * TODO:  Notification service definitely needs to be refactored. The service itself
+     * currently calculates the last page number incorrectly.
+     *
+     * The last page number should be calculated as follows:
+     * (numberOfNotifications / limit) + (numberOfNotifications % limit)
+     * Example. int(7 / 5) + 7 % 5 = 1 + 2 = 3 which should actually be 2
+     */
+
+    // Get the notifications from the Notification service
+    const result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, 5);
+
+    // Add the notifications to the localNotifications array
+    this.localNotifications.concat(result.notifications);
     this.lastNotificationsPageNumber = result.lastPage;
-    if (this.lastNotificationsPageNumber === this.localNotifications.length) {
-      this.currentNotificationsPageNumber = this.localNotifications.length;
-    } else {
-      this.currentNotificationsPageNumber = apiPage;
-    }
+
+    // If the last page is greater than the current page, then we need to get the next page
+    this.currentNotificationsPageNumber = this.lastNotificationsPageNumber === this.localNotifications.length ?
+      this.localNotifications.length : apiPage;
   }
 
   /**
