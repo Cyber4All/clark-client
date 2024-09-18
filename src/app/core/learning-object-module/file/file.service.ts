@@ -47,7 +47,7 @@ export class FileService {
         responseType: 'blob'
       })
       .pipe(catchError(this.handleError))
-      .toPromise()  
+      .toPromise()
       .then((blob) => window.URL.createObjectURL(blob));
   }
 
