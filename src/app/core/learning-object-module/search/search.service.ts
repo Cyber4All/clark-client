@@ -56,7 +56,6 @@ export class SearchService {
       });
   }
 
-  // TODO: This needs to be moved to the search service
   getUsersLearningObjects(username: string, query?: {
     draftsOnly?: boolean,
     text?: string,
