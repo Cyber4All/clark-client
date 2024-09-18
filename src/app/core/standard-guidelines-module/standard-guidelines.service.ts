@@ -24,7 +24,7 @@ interface GuidelinesFilter {
 export class GuidelineService {
   constructor(public http: HttpClient) {}
 
-  getGuidelines(
+  async getGuidelines(
     filter?: GuidelinesFilter,
   ): Promise<{ total: number; results: SearchItemDocument[] }> {
     let query = '';
@@ -32,15 +32,12 @@ export class GuidelineService {
       query = querystring.stringify(this.formatFilter(filter));
     }
     // CLARK-SERVICE-FIX: SUPPORT SEARCH QUERY
-    return this.http
-      .get<{ total: number; results: SearchItemDocument[] }>(
-        STANDARD_GUIDELINES_ROUTES.SEARCH_GUIDELINES(),
-      )
+    const res = await this.http
+      .get<{ total: number; results: SearchItemDocument[]; }>(
+        STANDARD_GUIDELINES_ROUTES.SEARCH_GUIDELINES())
       .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((res: { total: number; results: any[] }) => {
-        return res;
-      });
+      .toPromise();
+    return res;
   }
 
   // CLARK-SERVICE-FIX: SUPPORT SEARCH QUERY
