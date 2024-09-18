@@ -27,7 +27,8 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
   providers: [PublicLearningObjectService],
 })
 export class LearningObjectsComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
   @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
 
@@ -226,11 +227,10 @@ export class LearningObjectsComponent
         await this.searchService
           .getUsersLearningObjects(this.query.username, {
             ...this.query,
-            // "all" is not a valid status
-            status: Object.values(LearningObject.Status).filter(
-              (v) => v !== 'all',
-            ),
-          })
+            status: Object.values(LearningObject.Status)
+              // "all" is not a valid status
+              .filter((v) => v !== 'all'),
+            })
           .then((val) => {
             this.learningObjects = val.objects;
 
