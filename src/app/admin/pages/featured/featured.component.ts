@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
 import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
@@ -12,7 +11,6 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
   styleUrls: ['./featured.component.scss'],
-  providers: [LearningObjectService]
 })
 export class FeaturedComponent implements OnInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;

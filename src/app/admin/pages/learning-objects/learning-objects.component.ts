@@ -8,7 +8,6 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
 } from '@angular/core';
-import { LearningObjectService as PublicLearningObjectService } from '../../../cube/learning-object.service';
 import { OrderBy, Query, SortType } from '../../../interfaces/query';
 import { LearningObject } from '../../../../entity';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,7 +22,6 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
   styleUrls: ['./learning-objects.component.scss'],
-  providers: [PublicLearningObjectService]
 })
 export class LearningObjectsComponent
   implements OnInit, OnDestroy, AfterViewInit {

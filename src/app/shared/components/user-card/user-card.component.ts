@@ -1,4 +1,3 @@
-import { LearningObjectService } from '../../../cube/learning-object.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { User, LearningObject } from '@entity';
@@ -9,7 +8,6 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
   selector: 'clark-user-card',
   templateUrl: './user-card.component.html',
   styleUrls: ['./user-card.component.scss'],
-  providers: [LearningObjectService]
 })
 export class UserCardComponent implements OnInit, OnChanges {
   @Input() user: User;
@@ -20,7 +18,7 @@ export class UserCardComponent implements OnInit, OnChanges {
   icon: string;
   imgSize: number;
   constructor(
-    private searchLearningObjectService: SearchService,
+    private searchService: SearchService,
     private userService: UserService,
     private modals: ModalService
   ) { }
@@ -34,7 +32,7 @@ export class UserCardComponent implements OnInit, OnChanges {
   }
 
   async fetchLearningObjects() {
-    this.objects = await this.searchLearningObjectService.getUsersLearningObjects(this.user.username);
+    this.objects = await this.searchService.getUsersLearningObjects(this.user.username);
   }
 
   showGravatarModal(e: Event) {

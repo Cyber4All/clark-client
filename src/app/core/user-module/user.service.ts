@@ -1,12 +1,13 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '@entity';
+import { LearningObject, User } from '@entity';
 import { UserQuery } from 'app/interfaces/query';
 import * as md5 from 'md5';
 import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../auth-module/auth.service';
 import { USER_ROUTES } from './user.routes';
+import { AbstractControl } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -124,6 +125,24 @@ export class UserService {
       })
       .pipe(catchError(this.handleError))
       .toPromise();
+  }
+
+  /**
+   * Validate a user's captcha token
+   *
+   * @param {string} token the token to verify
+   * @returns an object with the result if fail, or null if true.
+   */
+  validateCaptcha(token: string) {
+    return (_: AbstractControl) => {
+      return this.http.get(USER_ROUTES.VALIDATE_CAPTCHA(), { params: { token } }).pipe(
+        map((res: any) => {
+          if (!res.success) {
+            return { tokenInvalid: true };
+          }
+          return null;
+        }));
+    };
   }
 
   combineName(firstname: string, lastname: string, combined?: boolean) {

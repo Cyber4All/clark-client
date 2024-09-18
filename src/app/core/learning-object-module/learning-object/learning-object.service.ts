@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { LearningObject, LearningOutcome } from '@entity';
 import { merge, Observable, of, Subject, throwError } from 'rxjs';
 import { catchError, finalize, map, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
-import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
 import {
   LEARNING_OBJECT_ROUTES,
 } from '../learning-object/learning-object.routes';

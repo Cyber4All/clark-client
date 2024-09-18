@@ -4,6 +4,8 @@ import { LearningObject, LearningOutcome } from '@entity';
 import { Observable, Subject, of, throwError } from 'rxjs';
 import { catchError, filter, finalize, map, take } from 'rxjs/operators';
 import { LearningObjectService } from './learning-object/learning-object.service';
+import { LEARNING_OBJECT_ROUTES } from '../learning-object-module/learning-object/learning-object.routes';
+import { SEARCH_ROUTES } from './search/search.routes';
 
 // TODO this service should be deleted and its instances should be replced with the LearningObjectService in core
 
@@ -139,6 +141,39 @@ export class UriRetrieverService {
     });
 
     return payload.pipe(take(1), map(o => new LearningObject(o)));
+  }
+
+  /**
+   * Returns the route that needs to be hit in order to load Learning Object based on the params passed in
+   *
+   * @param params includes either the author and Learning Object name or the id to set the route needed
+   * to retrieve the Learning Object
+   */
+  private setRoute(params: { cuidInfo?: { cuid: string, version?: number }, learningObjectId?: string }) {
+    let route;
+    // Sets route to be hit based on if the id or if Learning Object name have been provided
+    if (params.cuidInfo?.cuid) {
+      route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
+    } else {
+      const err = this.userError(params);
+      throw err;
+    }
+    return route;
+  }
+
+  /**
+   * Returns an error message based on the params that are missing and are needed to retrieve Learning Object
+   *
+   * @param params either the author and name or the id of the Learning Object
+   */
+  private userError(params: { author?: string, name?: string, learningObjectId?: string }) {
+    if (params.author && !params.name) {
+      return new Error('Cannot find Learning Object ' + params.name + 'for ' + params.author);
+    } else if (params.name && !params.author) {
+      return new Error('Cannot find Learning Object' + params.name + 'for ' + params.author);
+    } else if (!params.author && !params.name && !params.learningObjectId) {
+      return new Error('Cannot find Learning Object. No identifiers found.');
+    }
   }
 
 }

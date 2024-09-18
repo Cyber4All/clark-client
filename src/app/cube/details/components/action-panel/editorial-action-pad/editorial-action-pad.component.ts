@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
@@ -28,7 +27,6 @@ export class EditorialActionPadComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private learningObjectService: LearningObjectService,
     private learningObjectServiceUri: LOUri,
     private toaster: ToastrOvenService,
     private revisionsService: RevisionsService,

@@ -12,6 +12,5 @@ import { SharedModule } from 'app/shared/shared.module';
     SharedModule,
   ],
   exports: [ EditorialActionPadComponent ],
-  providers: [],
 })
 export class EditorialActionPadModule {}

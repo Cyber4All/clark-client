@@ -1,13 +1,13 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SEARCH_ROUTES } from './search.routes';
 import { catchError } from 'rxjs/operators';
 import { LearningObject } from '@entity';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { Query } from 'app/interfaces/query';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
 
