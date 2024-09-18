@@ -25,12 +25,12 @@ export class HierarchyService {
    * only be called for root objects, but can be used for subtrees
    * according to Hierarchy Service docs.
    *
-   * @param id id of the root learning object of a hierarchy
+   * @param learningObjectId id of the root learning object of a hierarchy
    * @returns A promise
    */
-  async releaseHierarchy(id: string): Promise<any> {
+  async releaseHierarchy(learningObjectId: string): Promise<any> {
     return await this.http.patch(
-      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
+      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(learningObjectId),
       {
         status: LearningObject.Status.RELEASED
       },
@@ -43,13 +43,13 @@ export class HierarchyService {
    * only be called for root objects, but can be used for subtrees
    * according to Hierarchy Service docs.
    *
-   * @param id id of the root learning object of a hierarchy
+   * @param learningObjectId id of the root learning object of a hierarchy
    * @param collection the collection the objects will belong to
    * @returns A promise
    */
-  async submitHierarchy(id: string, collection: string): Promise<any> {
+  async submitHierarchy(learningObjectId: string, collection: string): Promise<any> {
     return await this.http.patch(
-      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
+      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(learningObjectId),
       {
         status: LearningObject.Status.WAITING,
         collection: collection
@@ -65,7 +65,7 @@ export class HierarchyService {
    * @param children the children to be had
    * @returns
    */
-  async addChildren(username: string, object: any, children): Promise<any> {
+  async addChildren(object: any, children): Promise<any> {
     return await this.http.post(
       LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(object.id),
       {
