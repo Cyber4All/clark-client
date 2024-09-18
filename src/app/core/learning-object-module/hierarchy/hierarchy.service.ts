@@ -59,7 +59,6 @@ export class HierarchyService {
   /**
    * Adds children to a learning object
    *
-   * @param username the username of the author
    * @param object the object having children
    * @param children the children to be had
    * @returns
