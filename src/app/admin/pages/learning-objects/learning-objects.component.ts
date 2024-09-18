@@ -26,7 +26,8 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
   styleUrls: ['./learning-objects.component.scss'],
   providers: [PublicLearningObjectService],
 })
-export class LearningObjectsComponent implements OnInit, OnDestroy, AfterViewInit {
+export class LearningObjectsComponent
+  implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
   @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
 
@@ -217,17 +218,6 @@ export class LearningObjectsComponent implements OnInit, OnDestroy, AfterViewIni
    * @memberof LearningObjectsComponent
    */
   async getLearningObjects() {
-    const allStatuses = [
-      'UNRELEASED',
-      'WAITING',
-      'REVIEW',
-      'ACCEPTED_MAJOR',
-      'ACCEPTED_MINOR',
-      'PROOFING',
-      'REJECTED',
-      'RELEASED',
-    ];
-
     if (!this.allResultsReceived) {
       // we know there are more objects to pull
       this.loading = true;
@@ -236,8 +226,10 @@ export class LearningObjectsComponent implements OnInit, OnDestroy, AfterViewIni
         await this.searchService
           .getUsersLearningObjects(this.query.username, {
             ...this.query,
-            // too lazy to lowercase allStatuses values
-            status: allStatuses.map((v) => v.toLowerCase()),
+            // "all" is not a valid status
+            status: Object.values(LearningObject.Status).filter(
+              (v) => v !== 'all',
+            ),
           })
           .then((val) => {
             this.learningObjects = [...val.objects];
