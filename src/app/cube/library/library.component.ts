@@ -12,6 +12,7 @@ import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
+import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
@@ -83,7 +84,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
     private navbarService: NavbarService,
-    private notificationService: NotificationsService
+    private notificationService: NotificationsService,
+    private bundlingService: BundlingService
   ) { }
 
   @HostListener('window:resize', ['$event'])
@@ -124,7 +126,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async loadLibrary() {
     try {
       this.loading = true;
-      const libraryItemInformation = await this.libraryService.getLibrary({page: this.currentPageNumber, limit: 10});
+      const libraryItemInformation = await this.libraryService.getLibrary({ page: this.currentPageNumber, limit: 10 });
       this.libraryItems = libraryItemInformation.cartItems;
       this.lastPageNumber = libraryItemInformation.lastPage;
       this.libraryItems.map(async (libraryItem: LearningObject) => {
@@ -225,7 +227,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async removeItem() {
     try {
       await this.libraryService.removeFromLibrary(this.libraryItemToDelete.id);
-      this.libraryItems = (await this.libraryService.getLibrary({page: 1, limit: 10})).cartItems;
+      this.libraryItems = (await this.libraryService.getLibrary({ page: 1, limit: 10 })).cartItems;
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
@@ -233,14 +235,14 @@ export class LibraryComponent implements OnInit, OnDestroy {
     }
   }
 
-  downloadObject(event: MouseEvent, object: LearningObject, index: number) {
-    event.stopPropagation();
-    this.currentIndex = index;
-    this.downloading[index] = true;
-    this.showDownloadModal = true;
-    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(object.id));
-    this.downloading[index] = false;
-  }
+  // downloadObject(event: MouseEvent, object: LearningObject, index: number) {
+  //   event.stopPropagation();
+  //   this.currentIndex = index;
+  //   this.downloading[index] = true;
+  //   this.showDownloadModal = true;
+  //   this.bundlingService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(object.id));
+  //   this.downloading[index] = false;
+  // }
 
   goToNotification(notification: any) {
     const parsedDetailsPath = notification.link.split('/');
@@ -309,7 +311,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async changeLibraryItemPage(pageNumber: number) {
     this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    const libraryItemInformation = await this.libraryService.getLibrary({page: pageNumber, limit: 10});
+    const libraryItemInformation = await this.libraryService.getLibrary({ page: pageNumber, limit: 10 });
     this.libraryItems = libraryItemInformation.cartItems;
     this.lastPageNumber = libraryItemInformation.lastPage;
     this.currentPageNumber = pageNumber;

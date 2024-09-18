@@ -8,7 +8,6 @@ import { AuthService } from '../auth-module/auth.service';
 import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
 import { LIBRARY_ROUTES } from './library.routes';
 
-const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
   providedIn: 'root'
 })
@@ -116,8 +115,8 @@ export class LibraryService {
       return Promise.reject('User is undefined');
     }
     const cartId = this.cartItems
-    .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
-    .map(cart => cart._id)[0];
+      .filter(cart => cart.learningObject && cart.learningObject._id === learningObjectId)
+      .map(cart => cart._id)[0];
     this.http
       .delete(
         LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
@@ -139,85 +138,85 @@ export class LibraryService {
    *
    * @param learningObjectId the mongo id of the learning object
    */
-  learningObjectBundle(learningObjectId: string) {
-    // Show loading spinner
-    this._loading$.next(true);
+  // learningObjectBundle(learningObjectId: string) {
+  //   // Show loading spinner
+  //   this._loading$.next(true);
 
-    // Url route for bundling
-    const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
-    const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
+  //   // Url route for bundling
+  //   const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
+  //   const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
 
-    this.http.head(bundleUrl, {
-      headers: this.headers,
-      withCredentials: true
-    }).pipe(
-      catchError((error) => {
-        this._loading$.next(false);
-        return this.handleError(error);
-      })
-    ).subscribe(
-      () => {
-        this.toaster.success('All Ready!', 'Your download will begin in a moment...');
-        this.downloadBundle(downloadUrl).then(
-          () => {
-            this._loading$.next(false);
-          },
-          (error) => {
-            this._loading$.next(false);
-            this.toaster.error('Download failed', error.message);
-          }
-        );
-      },
-      (error) => {
-        this._loading$.next(false);
-        this.toaster.error('Preparation failed', error.message);
-      }
-    );
-  }
+  //   this.http.head(bundleUrl, {
+  //     headers: this.headers,
+  //     withCredentials: true
+  //   }).pipe(
+  //     catchError((error) => {
+  //       this._loading$.next(false);
+  //       return this.handleError(error);
+  //     })
+  //   ).subscribe(
+  //     () => {
+  //       this.toaster.success('All Ready!', 'Your download will begin in a moment...');
+  //       this.downloadBundle(downloadUrl).then(
+  //         () => {
+  //           this._loading$.next(false);
+  //         },
+  //         (error) => {
+  //           this._loading$.next(false);
+  //           this.toaster.error('Download failed', error.message);
+  //         }
+  //       );
+  //     },
+  //     (error) => {
+  //       this._loading$.next(false);
+  //       this.toaster.error('Preparation failed', error.message);
+  //     }
+  //   );
+  // }
 
   /**
    * Method to start bundle stream and download the zip file
    * @param url request to api for zip in stream
    * @returns void - blob stream is downloaded to user's machine
    */
-  async downloadBundle(url: string): Promise<void> {
-    return this.http.get(
-      url, {
-      responseType: 'blob',
-      observe: 'response',
-      headers: this.headers,
-      withCredentials: true,
-    })
-      .pipe(
-        timeout(30000), // 30 seconds timeout
-        catchError(error => {
-          throw this.handleError(error);
-        })
-      )
-      .toPromise()
-      .then((response: HttpResponse<Blob>) => {
-        // Get the content disposition header from the response
-        const contentDisposition = response.headers.get('content-disposition');
-        // Get the blob from the response
-        const blob = response.body;
-        // Validate that the blob is not empty
-        if (!blob) {
-          throw this.handleError(new HttpErrorResponse({ error: 'No content in response body', status: 500 }));
-        }
-        // Create an element on the DOM to download the zip file
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        // REQUIRED: Set the download attribute to the name of the file
-        link.download = this.getBundleName(contentDisposition);
-        document.body.appendChild(link);
-        // Trigger the download
-        link.click();
-        // Remove the element from the DOM
-        document.body.removeChild(link);
-        // Revoke the object URL to prevent memory leaks
-        window.URL.revokeObjectURL(link.href);
-      });
-  }
+  // async downloadBundle(url: string): Promise<void> {
+  //   return this.http.get(
+  //     url, {
+  //     responseType: 'blob',
+  //     observe: 'response',
+  //     headers: this.headers,
+  //     withCredentials: true,
+  //   })
+  //     .pipe(
+  //       timeout(30000), // 30 seconds timeout
+  //       catchError(error => {
+  //         throw this.handleError(error);
+  //       })
+  //     )
+  //     .toPromise()
+  //     .then((response: HttpResponse<Blob>) => {
+  //       // Get the content disposition header from the response
+  //       const contentDisposition = response.headers.get('content-disposition');
+  //       // Get the blob from the response
+  //       const blob = response.body;
+  //       // Validate that the blob is not empty
+  //       if (!blob) {
+  //         throw this.handleError(new HttpErrorResponse({ error: 'No content in response body', status: 500 }));
+  //       }
+  //       // Create an element on the DOM to download the zip file
+  //       const link = document.createElement('a');
+  //       link.href = window.URL.createObjectURL(blob);
+  //       // REQUIRED: Set the download attribute to the name of the file
+  //       link.download = this.getBundleName(contentDisposition);
+  //       document.body.appendChild(link);
+  //       // Trigger the download
+  //       link.click();
+  //       // Remove the element from the DOM
+  //       document.body.removeChild(link);
+  //       // Revoke the object URL to prevent memory leaks
+  //       window.URL.revokeObjectURL(link.href);
+  //     });
+  // }
 
   has(object: LearningObject): boolean {
     const inLibrary = this.libraryItems.filter(
@@ -233,23 +232,23 @@ export class LibraryService {
    * @attribute filename standard attribute for content disposition header
    * @returns name of the bundle zip file
    */
-  private getBundleName(contentDisposition: string): string {
-    // If no content disposition header, return default name
-    if (!contentDisposition) {
-      return DEFAULT_BUNDLE_NAME;
-    }
-    // Split the content disposition header by semicolon
-    const split = contentDisposition.split(';');
-    for (const part of split) {
-      const [key, value] = part.trim().split('=');
-      // Match only the filename key
-      if (key === 'filename') {
-        return value.replace(/"/g, '').trim();
-      }
-    }
-    // Return default bundle name if no filename key found
-    return DEFAULT_BUNDLE_NAME;
-  }
+  // private getBundleName(contentDisposition: string): string {
+  //   // If no content disposition header, return default name
+  //   if (!contentDisposition) {
+  //     return DEFAULT_BUNDLE_NAME;
+  //   }
+  //   // Split the content disposition header by semicolon
+  //   const split = contentDisposition.split(';');
+  //   for (const part of split) {
+  //     const [key, value] = part.trim().split('=');
+  //     // Match only the filename key
+  //     if (key === 'filename') {
+  //       return value.replace(/"/g, '').trim();
+  //     }
+  //   }
+  //   // Return default bundle name if no filename key found
+  //   return DEFAULT_BUNDLE_NAME;
+  // }
 
   private handleError(error: HttpErrorResponse) {
     // Toggle off loading spinner *** needs to stay here in case error is thrown in http HEAD request ***
