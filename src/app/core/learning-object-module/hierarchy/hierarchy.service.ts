@@ -12,10 +12,10 @@ export class HierarchyService {
   constructor(private http: HttpClient) { }
 
 
-  async addHierarchyObject(username: string, object: any): Promise<any> {
+  async addHierarchyObject(username: string, learningObject: LearningObject): Promise<any> {
     return await this.http.post(
       ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(),
-      { object, username }, { withCredentials: true, responseType: 'text' }
+      { object: learningObject, username }, { withCredentials: true, responseType: 'text' }
     ).toPromise();
   }
 
@@ -59,13 +59,13 @@ export class HierarchyService {
   /**
    * Adds children to a learning object
    *
-   * @param object the object having children
+   * @param parent the object having children
    * @param children the children to be had
    * @returns
    */
-  async addChildren(object: any, children): Promise<any> {
+  async addChildren(parent: LearningObject, children: LearningObject): Promise<any> {
     return await this.http.post(
-      LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(object.id),
+      LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(parent.id),
       {
         children
       },
@@ -80,18 +80,18 @@ export class HierarchyService {
    * Checks if the name of the learning object is already taken for the author
    *
    * @param username the username of the author
-   * @param objectName the objectName to check for
+   * @param learningObjectName the objectName to check for
    * @returns
    */
-  async checkName(username: string, objectName: string): Promise<boolean> {
+  async checkName(username: string, learningObjectName: string): Promise<boolean> {
     return this.http
-      .get(LEARNING_OBJECT_ROUTES.GET_MY_LEARNING_OBJECTS(username, {text: objectName}), { withCredentials: true })
+      .get(LEARNING_OBJECT_ROUTES.GET_MY_LEARNING_OBJECTS(username, {text: learningObjectName}), { withCredentials: true })
       .toPromise()
       .then((response: any) => {
         const possibleMatches = response.map(object => {
           return object.name;
         });
-        return possibleMatches.includes(objectName) ? true : false;
+        return possibleMatches.includes(learningObjectName) ? true : false;
       });
   }
 }
