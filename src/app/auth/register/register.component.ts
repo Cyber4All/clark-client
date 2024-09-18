@@ -75,7 +75,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   registrationFailure: Boolean = false;
   verified = false;
-  siteKey = '6LfS5kwUAAAAAIN69dqY5eHzFlWsK40jiTV4ULCV';
+  siteKey = '6LdyW0gqAAAAAOk_dM0BwMM-_4qtLxILh2hW0ksu';
   errorMsg = 'There was an issue on our end with your registration, we are sorry for the inconvience.\n Please try again later!';
   fieldErrorMsg = '';
   redirectUrl;
