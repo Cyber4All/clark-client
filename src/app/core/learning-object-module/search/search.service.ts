@@ -21,7 +21,6 @@ export class SearchService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  // TODO: This needs to be moved to the search service
   getLearningObjects(
     query?: Query,
   ): Promise<{ learningObjects: LearningObject[]; total: number }> {
