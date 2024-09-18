@@ -40,7 +40,7 @@ export class ChangeAuthorComponent implements OnInit {
 
 
   async ngOnInit() {
-    this.children = await this.learningObjectServie.getLearningObjectChildren(this.highlightedLearningObject.id);
+    this.children = await this.learningObjectService.getLearningObjectChildren(this.highlightedLearningObject.id);
     this.hasChildren = this.children.length > 0;
   }
 
