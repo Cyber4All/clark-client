@@ -1,5 +1,5 @@
 import { Injectable, Input } from '@angular/core';
-import { FILE_ROUTES } from './file.routes';
+import { FILE_MANAGER_ROUTES, FILE_METADATA_ROUTES } from './file.routes';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject, throwError } from 'rxjs';
@@ -19,22 +19,14 @@ export class FileService {
 
   constructor(
     private http: HttpClient,
-    private cookies: CookieService
   ) {
-    const token = this.cookies.get('presence');
-    if (token) {
-      this.headers = new HttpHeaders().append('Authorization',`Bearer ${token}`);
-    }
   }
 
   // TODO: Upload should be moved from the file mnager to this file
 
   async deleteLearningObjectFileMetadata(learningObjectId: string, fileId: string): Promise<void> {
     this.http
-      .delete(FILE_ROUTES.DELETE_FILE({
-        learningObjectId: learningObjectId,
-        fileId: fileId
-      }), {
+      .delete(FILE_METADATA_ROUTES.DELETE_LEARNING_OBJECT_FILE_METADATA(learningObjectId, fileId), {
         headers: this.headers,
         withCredentials: true,
       })
@@ -50,12 +42,12 @@ export class FileService {
    * @returns the blob url of the file
    */
   async previewLearningObjectFile(url: string): Promise<string> {
-    return fetch(url, {
-        headers: {
-          Authorization: this.headers.get('Authorization')
-        }
+    return this.http.get(url, {
+        withCredentials: true,
+        responseType: 'blob'
       })
-      .then((response) => response.blob())
+      .pipe(catchError(this.handleError))
+      .toPromise()
       .then((blob) => window.URL.createObjectURL(blob));
   }
 
@@ -70,13 +62,11 @@ export class FileService {
    * @memberof LearningObjectService
    */
   updateFileDescription(
-    authorUsername: string,
     objectId: string,
     fileId: string,
     description: string
   ): Promise<any> {
-    const route = FILE_ROUTES.UPDATE_FILE(
-      authorUsername,
+    const route = FILE_METADATA_ROUTES.UPDATE_LEARNING_OBJECT_FILE_METADATA(
       objectId,
       fileId
     );
@@ -96,7 +86,7 @@ export class FileService {
   // Updates the README of a learning object
   async updateReadme(id: string): Promise<any> {
     return await this.http.patch(
-      FILE_ROUTES.UPDATE_PDF(id),
+      FILE_MANAGER_ROUTES.UPDATE_README(id),
       {},
       {
         headers: this.headers,
@@ -109,24 +99,6 @@ export class FileService {
         catchError(this.handleError)
       ).toPromise();
   }
-
-  /**
-   * Fetches Learning Object's Materials
-   *
-   * @param {string} authorUsername
-   * @param {string} objectId
-   * @param {string} description
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
-    getMaterials(objectId: string): Promise<any> {
-      const route = FILE_ROUTES.GET_MATERIALS(objectId, 'unreleased');
-      return this.http.get(route, { withCredentials: true })
-        .pipe(
-          catchError(this.handleError)
-        )
-        .toPromise();
-    }
 
   /**
    * Adds file meta to a Learning Object's materials
@@ -145,7 +117,7 @@ export class FileService {
       objectId: string;
       files: FileUploadMeta[];
     }): Promise<string[]> {
-      const route = FILE_ROUTES.UPLOAD_FILE_META(objectId);
+      const route = FILE_METADATA_ROUTES.ADD_LEARNING_OBJECT_FILE_METADATA(objectId);
     const MAX_PER_REQUEST = 100;
     const responses$: Promise<string[]>[] = [];
     const completed$: Subject<boolean> = new Subject<boolean>();
@@ -165,6 +137,36 @@ export class FileService {
     });
     sendNextBatch$.next();
     return response;
+  }
+
+  /**
+   * Calls LO service to update the packageable status of toggled files
+   *
+   * @param learningObjectID The current learning object's ID
+   * @param fileIDs An array of file IDs that need to be updated
+   * @param state The new packageable property to update to
+   * @returns A promise
+   */
+  // TODO: Move to bundling service
+  toggleBundle(
+    learningObjectId: string,
+    fileIDs: string[],
+    state: boolean
+  ) {
+    return this.http
+      .patch(
+        FILE_MANAGER_ROUTES.UPDATE_BUNDLE(learningObjectId),
+        {
+          fileIDs: fileIDs,
+          packagable: state
+        },
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
+
+        catchError(this.handleError)
+      )
+      .toPromise();
   }
 
   /**
@@ -227,7 +229,7 @@ export class FileService {
    */
   async handleFileDownload(file: LearningObject.Material.File, learningObject: LearningObject) {
     const loId = learningObject.id;
-    const url = FILE_ROUTES.DOWNLOAD_FILE(loId, file._id);
+    const url = FILE_MANAGER_ROUTES.DOWNLOAD_FILE(loId, file._id);
     window.open(url, '__blank');
   }
 

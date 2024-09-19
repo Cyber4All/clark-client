@@ -9,7 +9,7 @@ import {
   Input,
 } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { LearningObjectService } from 'app/cube/learning-object.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 @Component({
@@ -35,7 +35,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   @Output() learningObjects: EventEmitter<any> = new EventEmitter(); // Objects selected
 
   constructor(
-    private learningObjectService: LearningObjectService,
+    private searchLearningObjectService: SearchService,
     private differs: IterableDiffers
   ) {
     this.differ = this.differs.find([]).create(null);
@@ -76,7 +76,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   async findObjects(query: string) {
     if (query && query !== '') {
       // Search for learning objects
-      await this.learningObjectService
+      await this.searchLearningObjectService
         .getLearningObjects({text: query})
         .then( (results: {learningObjects: LearningObject[], total: number}) => {
           const assignedIds = this.assignedObjects.map(obj => obj.id);

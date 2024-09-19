@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '../../../../entity/learning-object/learning-object';
 import { NavbarService } from '../../../core/client-module/navbar.service';
-import { LearningObjectService } from '../../../cube/learning-object.service';
 import { Query } from '../../../interfaces/query';
 import { CollectionService } from '../../../core/collection-module/collections.service';
 import { Title } from '@angular/platform-browser';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-502-collection-index',
@@ -24,7 +24,7 @@ export class Collection502Component implements OnInit {
 
   constructor(
     private navbarService: NavbarService,
-    private learningObjectService: LearningObjectService,
+    private searchLearningObjectService: SearchService,
     private collectionService: CollectionService,
     private titleService: Title
   ) { }
@@ -57,7 +57,7 @@ export class Collection502Component implements OnInit {
       const {
         learningObjects,
         total
-      } = await this.learningObjectService.getLearningObjects(query);
+      } = await this.searchLearningObjectService.getLearningObjects(query);
       this.learningObjects = learningObjects;
       this.loading = false;
     } catch (e) {

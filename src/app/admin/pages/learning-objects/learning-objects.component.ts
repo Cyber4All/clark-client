@@ -8,7 +8,6 @@ import {
   ChangeDetectorRef,
   AfterViewInit,
 } from '@angular/core';
-import { LearningObjectService as PublicLearningObjectService } from '../../../cube/learning-object.service';
 import { OrderBy, Query, SortType } from '../../../interfaces/query';
 import { LearningObject } from '../../../../entity';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,12 +18,10 @@ import { AuthService } from '../../../core/auth-module/auth.service';
 import { Collection } from '../../../core/collection-module/collections.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
-
 @Component({
   selector: 'clark-learning-objects',
   templateUrl: './learning-objects.component.html',
   styleUrls: ['./learning-objects.component.scss'],
-  providers: [PublicLearningObjectService],
 })
 export class LearningObjectsComponent
   implements OnInit, OnDestroy, AfterViewInit {
@@ -80,7 +77,6 @@ export class LearningObjectsComponent
   allSelected = false;
 
   constructor(
-    private publicLearningObjectService: PublicLearningObjectService,
     private searchService: SearchService,
     private route: ActivatedRoute,
     private router: Router,
@@ -226,17 +222,14 @@ export class LearningObjectsComponent
         await this.searchService
           .getUsersLearningObjects(this.query.username, {
             ...this.query,
-            status: Object.values(LearningObject.Status)
-              // "all" is not a valid status
-              .filter((v) => v !== 'all'),
             })
-          .then((val) => {
-            this.learningObjects = val.objects;
+          .then((response: {learningObjects: LearningObject[], total: number}) => {
+            this.learningObjects = response.learningObjects;
 
-            if (this.learningObjects.length === val.total) {
+            if (this.learningObjects.length === response.total) {
               this.allResultsReceived = true;
             }
-            this.lastPage = Math.ceil(val.total / 20);
+            this.lastPage = Math.ceil(response.total / 20);
           })
           .catch((error) => {
             console.error(error);
@@ -249,7 +242,7 @@ export class LearningObjectsComponent
             this.loading = false;
           });
       } else {
-        await this.publicLearningObjectService
+        await this.searchService
           .getLearningObjects(this.query)
           .then((val) => {
             this.learningObjects = val.learningObjects;

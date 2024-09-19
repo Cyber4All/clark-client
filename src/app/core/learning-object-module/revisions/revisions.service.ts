@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -8,6 +8,8 @@ import { REVISION_ROUTES } from './revisions.routes';
   providedIn: 'root'
 })
 export class RevisionsService {
+
+  httpHeaders = new HttpHeaders();
 
   constructor(private http: HttpClient) { }
 
@@ -19,7 +21,7 @@ export class RevisionsService {
   async createRevision(cuid: string): Promise<any> {
     const route = REVISION_ROUTES.CREATE_REVISION(cuid);
     const response = await this.http
-      .post(route, {}, { withCredentials: true })
+      .post(route, {}, { headers: this.httpHeaders, withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise();
     return response;

@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { LearningObjectRatings, RatingService } from 'app/core/rating-module/rating.service';
 import { NotificationService } from 'app/core/notification-module/notification.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
-import { LearningObjectService } from '../learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';

@@ -3,7 +3,7 @@ import { Collection, LearningObject, LearningOutcome } from '@entity';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { Subject } from 'rxjs';
 import { CollectionService } from 'app/core/collection-module/collections.service';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { first } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
@@ -188,7 +188,7 @@ export class SubmitComponent implements OnInit {
     if (proceed) {
       this.loading.push(true);
       if (this.isHierarchySubmission) {
-        this.hierarchyService.submitHierarchy(this.learningObject.id, this.collection)
+        this.learningObjectService.submitHierarchy(this.learningObject.id, this.collection)
           .then(() => {
             this.closeModal(true);
             this.loading.pop();
@@ -266,12 +266,10 @@ export class SubmitComponent implements OnInit {
    */
   getCollectionSelected(collection: string) {
     this.submissionService.getFirstSubmission(this.learningObject.id, collection)
-      .then(val => {
+      .then(response => {
         this.collection = collection;
-        if (!val.isFirstSubmission) {
-          // if this is a first submission there is no need for a change log
-          this.needsChangelog = false;
-        }
+        // If the learning object has been submitted before then it needs a changelog
+        this.needsChangelog = !response.isFirstSubmission;
       });
   }
 
