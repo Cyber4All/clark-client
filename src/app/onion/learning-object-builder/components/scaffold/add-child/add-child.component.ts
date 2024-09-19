@@ -56,11 +56,12 @@ export class AddChildComponent implements OnInit, OnDestroy {
     this.loading = true;
     const draftObjects = await this.searchLearningObjectService
       .getUsersLearningObjects(this.child.author.username, { ...filters, text: query })
-      .then((children: LearningObject[]) => {
+      .then((response: {learningObjects: LearningObject[], total: number}) => {
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
-        children = children.filter(child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length)));
-        return children;
+        return response.learningObjects.filter((child: LearningObject) => {
+          (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length))
+      });
       });
 
     const releasedObjects = await this.searchLearningObjectService

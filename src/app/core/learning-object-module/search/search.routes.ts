@@ -1,18 +1,19 @@
 import { environment } from '../../../../environments/environment';
-import * as queryString from 'querystring';
+import * as querystring from 'querystring';
 
 export const SEARCH_ROUTES = {
   SEARCH_LEARNING_OBJECTS(query?: string) {
     return `${environment.apiURL}/learning-objects?${query}`;
   },
 
-  GET_USERS_LEARNING_OBJECTS(username: string, query: {
-    draftsOnly?: boolean,
-    text?: string,
-    status?: string,
-    limit?: number,
-    page?: number,
-  }) {
-    return `${environment.apiURL}/users/${username}/learning-objects?${queryString.stringify(query)}`;
-  }
+  /**
+   * Request to retrieve a user's learning objects
+   * @method GET
+   * @param username the username of the user
+   * @param query the query filters to apply to the search
+   * @returns the learning objects
+   */
+  GET_USER_LEARNING_OBJECTS(username: string, query: any) {
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?${querystring.stringify(query)}`;
+  },
 };

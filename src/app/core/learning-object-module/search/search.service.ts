@@ -56,19 +56,13 @@ export class SearchService {
       });
   }
 
-  getUsersLearningObjects(username: string, query?: {
-    draftsOnly?: boolean,
-    text?: string,
-    status?: string,
-    limit?: number,
-    page?: number,
-  }): Promise<LearningObject[]> {
+  getUsersLearningObjects(username: string, query?: any): Promise<{learningObjects: LearningObject[], total: number}> {
     return this.http
-      .get(SEARCH_ROUTES.GET_USERS_LEARNING_OBJECTS(username, query), { withCredentials: true })
+      .get(SEARCH_ROUTES.GET_USER_LEARNING_OBJECTS(username, query), { withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((response: { objects: any[], total: number}) => {
-        return response.objects.map((learningObject) => new LearningObject(learningObject));
+        return {learningObjects: response.objects.map((learningObject) => new LearningObject(learningObject)), total: response.total};
       });
   }
 
