@@ -149,9 +149,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
               // redirect user to dashboard if the object is in the working stage
               if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
                 this.router.navigate(['onion/dashboard']);
-              } else if (revision) {
-                this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.version);
               } else {
                 this.setBuilderMode(learningObject);
               }

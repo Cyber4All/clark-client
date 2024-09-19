@@ -6,7 +6,7 @@ import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operato
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { MessagesService } from 'app/core/utility-module/messages.service';
+import { UtilityService } from 'app/core/utility-module/utility.service';
 
 
 @Component({
@@ -35,14 +35,14 @@ export class AdminComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private collectionService: CollectionService,
     public toaster: ToastrOvenService,
-    private messagesService: MessagesService
+    private utilityServicce: UtilityService
   ) { }
 
   async ngOnInit() {
     // hide CLARK navbar
     this.navbarService.hide();
 
-    if (!!(await this.messagesService.getDowntime()).message) {
+    if (!!(await this.utilityServicce.getDowntime()).message) {
       // the message banner is down, adjust UI to account for it
       setTimeout(() => {
         this.topAdjustment = document.querySelector('clark-message .wrapper').getBoundingClientRect().height;

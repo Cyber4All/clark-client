@@ -9,12 +9,16 @@ export class NotificationService {
   userNotifications: { notifications: any[], count: number };
   constructor(private http: HttpClient) { }
 
-  async getNotifications(username: string, page: number, limit: number): Promise<any> {
+  async getNotifications(username: string, page: number, limit: number = 20): Promise<{notifications: [], lastPage: number}> {
     return this.http
       .get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username, page, limit), {
         withCredentials: true,
       })
-      .toPromise();
+      .toPromise()
+      .then((response: any) => {
+        return { notifications: response.notifications ?? [], lastPage: response.lastPage };
+      }
+    );
   }
 
   async deleteNotification(username: string, notificationID: string): Promise<void> {

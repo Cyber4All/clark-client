@@ -20,7 +20,6 @@ import {
   UploadErrorUpdate
 } from './typings';
 import { UserService } from 'app/core/user-module/user.service';
-import { FILE_ROUTES } from '../../../../../../core/learning-object-module/file/file.routes';
 
 const DEFAULT_CONCURRENT_UPLOADS = 10;
 

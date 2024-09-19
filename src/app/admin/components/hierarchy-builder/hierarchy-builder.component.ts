@@ -5,6 +5,7 @@ import { LearningObject } from '@entity';
 import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hierarchy.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectNode, TreeDataSource } from './tree-datasource';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-hierarchy-builder',
@@ -32,6 +33,7 @@ export class HierarchyBuilderComponent implements OnInit {
   constructor(
     private hierarchyService: HierarchyService,
     private toaster: ToastrOvenService,
+    private learningObjectService: LearningObjectService,
   ) { }
 
   ngOnInit() {
@@ -124,7 +126,7 @@ export class HierarchyBuilderComponent implements OnInit {
    * @returns
    */
   async setParents(node, childs) {
-    await this.hierarchyService.addChildren(node, childs);
+    await this.learningObjectService.addChildren(this.parent.author.username, node, childs);
     return node;
   }
 }

@@ -12,9 +12,7 @@ export const REPORT_ROUTES = {
     ) {
         let route = `${environment.apiURL}/reports?output=csv&collection=${collections.join(',')}`;
 
-        if (date) {
-            route += `&start=${date.start}&end=${date.end}`;
-        }
+        route += (date ? `&${new URLSearchParams(date).toString()}` : '');
 
         return route;
     }

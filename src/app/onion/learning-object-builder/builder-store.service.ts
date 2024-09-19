@@ -10,6 +10,7 @@ import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
 import { LearningObjectService } from 'app/onion/core/learning-object.service';
+import { LearningObjectService as NewLearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
@@ -22,6 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
 import { Revision } from 'aws-sdk/clients/codepipeline';
 
@@ -150,14 +152,18 @@ export class BuilderStore {
 
   constructor(
     private auth: AuthService,
+    // TODO: The last routes that need to be moved over from learningObjectService (the legacy one) is bundling related
     private learningObjectService: LearningObjectService,
+    // TODO: This is temporary while working on story this should be updated with the actual name once the other is removed.
     private refactoredLearningObjectService: RefactoredLearningObjectService,
+    private newLearningObjectService: NewLearningObjectService,
     private validator: LearningObjectValidator,
     private titleService: Title,
     private uriRetriever: UriRetrieverService,
     private submissionService: SubmissionsService,
     private outcomeService: OutcomeService,
     private revisionsService: RevisionsService,
+    private fileService: FileService
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
     this.objectCache$
@@ -259,7 +265,7 @@ export class BuilderStore {
         revisionId = await this.revisionsService.createRevision(cuid);
       }
 
-      return this.learningObjectService.getLearningObjectRevision(username, cuid, revisionId);
+      return this.refactoredLearningObjectService.getLearningObject(cuid, revisionId);
     } :
     async () => {
       const value = this.uriRetriever.getLearningObject({cuidInfo: {cuid, version}}, ['children', 'parents', 'materials', 'outcomes']);
@@ -297,8 +303,8 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   fetchMaterials(): void {
-    this.learningObjectService
-      .getMaterials(this.learningObject.id)
+    this.newLearningObjectService
+      .getLearningObjectMaterials(this.learningObject.id)
       .then(materials => {
         this.learningObject.materials = materials;
         this.learningObjectEvent.next(this.learningObject);
@@ -334,7 +340,7 @@ export class BuilderStore {
     if (remove) {
       children = this.learningObject.children.filter(child => !children.includes(child.id)).map(child => child.id);
     }
-    await this.learningObjectService.setChildren(this.learningObject.id, children, remove);
+    await this.refactoredLearningObjectService.setChildren(this.learningObject.id, children, remove);
     this.serviceInteraction$.next(false);
   }
 
@@ -464,14 +470,14 @@ export class BuilderStore {
   }) {
     if (event.item instanceof DirectoryNode) { // event.item is a Folder
       const fileIDs = this.getAllFolderFileIDs(event.item);
-      await this.learningObjectService.toggleBundle(
+      await this.fileService.toggleBundle(
         this.learningObject.id,
         fileIDs,
         event.state
       );
     } else { // event.item is a File
       const fileID = [event.item._id];
-      await this.learningObjectService.toggleBundle(
+      await this.fileService.toggleBundle(
         this.learningObject.id,
         fileID,
         event.state
@@ -535,7 +541,7 @@ export class BuilderStore {
     // we make a service call here instead of referring to the saveObject method since the API has a different route for outcome deletion
     if (!checkIfUUID(outcome.serviceId || outcome.id) && (outcome.serviceId || outcome.id)) {
       this.serviceInteraction$.next(true);
-      this.learningObjectService
+      this.outcomeService
       .deleteOutcome(outcome.serviceId || outcome.id)
       .then(() => {
         this.serviceInteraction$.next(false);
@@ -690,7 +696,7 @@ export class BuilderStore {
    */
   private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
     this.serviceInteraction$.next(true);
-    await this.learningObjectService
+    await this.fileService
       .addFileMeta({
         files,
         objectId: this.learningObject.id
@@ -780,9 +786,8 @@ export class BuilderStore {
   private updateFileDescription(fileId: any, description: any): void {
     const index = this.findFile(fileId);
     this.learningObject.materials.files[index].description = description;
-    this.learningObjectService
-      .updateFileDescription(
-        this.learningObject.author.username,
+    this.fileService
+    .updateFileDescription(
         this.learningObject.id,
         fileId,
         description
@@ -971,7 +976,7 @@ export class BuilderStore {
   private createLearningObject(object: Partial<LearningObject>) {
     this.serviceInteraction$.next(true);
     object.status = LearningObject.Status.UNRELEASED;
-    this.learningObjectService
+    this.refactoredLearningObjectService
       .create(object)
       .then(learningObject => {
         this.learningObject = learningObject;
@@ -1007,7 +1012,7 @@ export class BuilderStore {
    */
   private updateLearningObject(object: Partial<LearningObject>) {
     this.serviceInteraction$.next(true);
-    this.learningObjectService
+    this.refactoredLearningObjectService
       .save(this.learningObject.id, object)
       .then(() => {
         this.serviceInteraction$.next(false);
@@ -1100,16 +1105,20 @@ export class BuilderStore {
 
     this.outcomeService
       .addLearningOutcome(this.learningObject.id, newOutcome)
-      .then((serviceId: string) => {
+      .then((response: { id: string }) => {
         this.serviceInteraction$.next(false);
+
         // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
         this.newOutcomes.delete(newOutcome.id);
+
         // retrieve the outcome from the map keyed by it's temp ID, and then delete that entry;
         const outcome: Partial<LearningOutcome> & {
           serviceId?: string;
         } = this.outcomes.get(newOutcome.id);
+
         // store the temporary id in the outcome so that the page component know's which outcome to keep focused
-        outcome.serviceId = serviceId;
+        outcome.serviceId = response.id;
+
         // re-enter outcome into map
         this.outcomes.set(newOutcome.id, outcome);
         this.outcomeEvent.next(this.outcomes);
@@ -1141,7 +1150,7 @@ export class BuilderStore {
     // delete any lingering serviceId properties before sending to service
     delete updateValue.serviceId;
     this.serviceInteraction$.next(true);
-    this.learningObjectService
+    this.outcomeService
       .saveOutcome(updateValue as any)
       .then(() => {
         this.serviceInteraction$.next(false);

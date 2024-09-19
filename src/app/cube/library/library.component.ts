@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { LibraryService } from 'app/core/library-module/library.service';
+import { LibraryItem, LibraryService } from 'app/core/library-module/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 import { LearningObjectRatings, RatingService } from 'app/core/rating-module/rating.service';
 import { NotificationService } from 'app/core/notification-module/notification.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
-import { LearningObjectService } from '../learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
@@ -47,7 +47,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   @ViewChild('savedList') topOfList: ElementRef;
   loading: boolean;
   serviceError: boolean;
-  libraryItems: LearningObject[] = [];
+  libraryItems: LibraryItem[] = [];
   downloading = [];
   currentIndex = null;
   destroyed$ = new Subject<void>();
@@ -62,7 +62,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   showDeleteLibraryItemModal = false;
   changelogs = [];
   changelogLearningObject;
-  libraryItemToDelete;
+  libraryItemIdToDelete: string;
   lastPageNumber;
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
@@ -124,17 +124,20 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async loadLibrary() {
     try {
       this.loading = true;
-      const libraryItemInformation = await this.libraryService.getLibrary({page: this.currentPageNumber, limit: 10});
-      this.libraryItems = libraryItemInformation.cartItems;
-      this.lastPageNumber = libraryItemInformation.lastPage;
-      this.libraryItems.map(async (libraryItem: LearningObject) => {
-        const ratings = await this.getRatings(libraryItem);
+      const getLibraryResponse = await this.libraryService.getLibrary({page: this.currentPageNumber, limit: 10});
+
+      this.libraryItems = getLibraryResponse.libraryItems;
+      this.lastPageNumber = getLibraryResponse.lastPage;
+
+      this.libraryItems.map(async (libraryItem: LibraryItem) => {
+        const ratings = await this.getRatings(libraryItem.learningObject);
         if (ratings) {
           libraryItem['avgRating'] = ratings.avgValue;
         }
       });
       this.loading = false;
     } catch (e) {
+      console.log(e);
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
       this.serviceError = true;
       this.loading = false;
@@ -147,18 +150,25 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param apiPage The page that we need to retrieve from Notifications service
    */
   async getNotifications(apiPage: number) {
-    let result = { 'notifications': [], 'lastPage': 1 };
-    const notificationCount = await this.notificationService.getNotifications(this.authService.username, 1, 1);
-    this.notificationCount = notificationCount.lastPage;
-    if (this.notificationCount <= 20) {
-      result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
-    } else {
-      result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, 20);
-    }
-    this.localNotifications = [...this.localNotifications, ...result.notifications];
+    /**
+     * TODO:  Notification service definitely needs to be refactored. The service itself
+     * currently calculates the last page number incorrectly.
+     *
+     * The last page number should be calculated as follows:
+     * (numberOfNotifications / limit) + (numberOfNotifications % limit)
+     * Example. int(7 / 5) + 7 % 5 = 1 + 2 = 3 which should actually be 2
+     */
+
+    // Get the notifications from the Notification service
+    const result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, 5);
+
+    // Add the notifications to the localNotifications array
+    this.localNotifications.concat(result.notifications);
     this.lastNotificationsPageNumber = result.lastPage;
+
+    // If the last page is greater than the current page, then we need to get the next page
     if (this.lastNotificationsPageNumber === this.localNotifications.length) {
-      this.currentNotificationsPageNumber = this.localNotifications.length;
+      this.currentNotificationsPageNumber = this.lastNotificationsPageNumber;
     } else {
       this.currentNotificationsPageNumber = apiPage;
     }
@@ -224,8 +234,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async removeItem() {
     try {
-      await this.libraryService.removeFromLibrary(this.libraryItemToDelete.id);
-      this.libraryItems = (await this.libraryService.getLibrary({page: 1, limit: 10})).cartItems;
+      await this.libraryService.removeFromLibrary(this.libraryItemIdToDelete);
+      this.libraryItems = (await this.libraryService.getLibrary({page: 1, limit: 10})).libraryItems;
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
@@ -310,10 +320,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async changeLibraryItemPage(pageNumber: number) {
     this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    const libraryItemInformation = await this.libraryService.getLibrary({page: pageNumber, limit: 10});
-    this.libraryItems = libraryItemInformation.cartItems;
-    this.lastPageNumber = libraryItemInformation.lastPage;
     this.currentPageNumber = pageNumber;
+    await this.loadLibrary();
   }
 
   ngOnDestroy() {
