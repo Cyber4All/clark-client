@@ -60,7 +60,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
         return response.learningObjects.filter((child: LearningObject) => {
-          (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length))
+          (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length));
       });
       });
 
