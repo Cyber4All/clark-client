@@ -41,7 +41,6 @@ export class LearningObjectService {
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
-    private bundlingService: BundlingService,
     private userService: UserService,
   ) {
     const token = this.cookies.get('presence');
@@ -384,16 +383,6 @@ export class LearningObjectService {
   }
 
   /**
-   * Function to initiate the bundling process for new and updated learning objects
-   *
-   * @param username Authors username of current learning object
-   * @param learningObjectId id current learning object
-   */
-  async triggerBundle(learningObjectId: string) {
-    await this.bundlingService.bundleLearningObject(learningObjectId);
-  }
-
-  /**
    * Sends Learning Object's ID to API for deletion
    *
    * @param {(string)} id
@@ -430,10 +419,10 @@ export class LearningObjectService {
         withCredentials: true,
         responseType: 'text'
       })
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise()
+        .pipe(
+          catchError(this.handleError)
+        )
+        .toPromise()
     );
 
     return Promise.all(deletePromises);

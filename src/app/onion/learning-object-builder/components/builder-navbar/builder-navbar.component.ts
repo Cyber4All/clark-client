@@ -10,6 +10,7 @@ import { CollectionService, Collection } from 'app/core/collection-module/collec
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { LearningObjectService } from '../../../core/learning-object.service';
+import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -54,7 +55,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     private history: HistoryService,
     public validator: LearningObjectValidator,
     public store: BuilderStore,
-    public learningObjectService: LearningObjectService
+    public learningObjectService: LearningObjectService,
+    private bundlingService: BundlingService
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -176,7 +178,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
       // If any data has be changed on the LO, then we need to rebundle
       if (this.store.touched) {
-        this.learningObjectService.triggerBundle(this.learningObject.id);
+        this.bundlingService.bundleLearningObject(this.learningObject.id);
       }
       if (leaveBuilder) {
         this.historySnapshot.rewind('/onion/dashboard');

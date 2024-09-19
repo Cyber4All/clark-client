@@ -142,7 +142,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       this.addingToLibrary = true;
     }
     if (download) {
-      this.bundlingService.download(
+      this.download(
         this.learningObject.id
       );
     }
@@ -179,7 +179,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   async toggleBundle() {
     this.toaster.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
-    await this.learningObjectService.triggerBundle(this.learningObject.id);
+    await this.bundlingService.bundleLearningObject(this.learningObject.id);
   }
 
 
@@ -190,7 +190,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   downloadRevised(download?: boolean) {
     if (download) {
-      this.bundlingService.download(
+      this.download(
         this.learningObject.id
       );
     }
@@ -202,10 +202,10 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    * @param learningObjectId the unique mongo id of a learning object
    */
 
-  // download(learningObjectId: string) {
-  //   this.toggleDownloadModal(true);
-  //   this.bundlingService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
-  // }
+  download(learningObjectId: string) {
+    this.toggleDownloadModal(true);
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
+  }
 
   copyLink() {
     const el = this.objectLinkElement.nativeElement;
