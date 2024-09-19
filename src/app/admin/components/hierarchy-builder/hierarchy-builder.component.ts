@@ -124,7 +124,7 @@ export class HierarchyBuilderComponent implements OnInit {
    * @returns
    */
   async setParents(node, childs) {
-    await this.hierarchyService.addChildren(this.parent.author.username, node, childs);
+    await this.hierarchyService.addChildren(node, childs);
     return node;
   }
 }

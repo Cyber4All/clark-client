@@ -884,7 +884,7 @@ export class BuilderStore {
 
   public cancelSubmission(): void {
     this.submissionService
-      .unsubmit(
+      .unsubmitLearningObject(
         this.learningObject.id,
       )
       .then(() => {

@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
-import { ADMIN_ROUTES, LEARNING_OBJECT_ROUTES, LEGACY_USER_ROUTES, USER_ROUTES } from '../learning-object/learning-object.routes';
+import { ADMIN_ROUTES, LEARNING_OBJECT_ROUTES } from '../learning-object/learning-object.routes';
 import { HIERARCHY_ROUTES } from './hierarchy.routes';
-import { LEARNING_OBJECT_ERRORS } from 'entity/learning-object/error-messages';
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +12,10 @@ export class HierarchyService {
   constructor(private http: HttpClient) { }
 
 
-  async addHierarchyObject(username: string, object: any): Promise<any> {
+  async addHierarchyObject(username: string, learningObject: LearningObject): Promise<any> {
     return await this.http.post(
       ADMIN_ROUTES.ADD_HIERARCHY_OBJECT(),
-      { object, username }, { withCredentials: true, responseType: 'text' }
+      { object: learningObject, username }, { withCredentials: true, responseType: 'text' }
     ).toPromise();
   }
 
@@ -25,12 +24,12 @@ export class HierarchyService {
    * only be called for root objects, but can be used for subtrees
    * according to Hierarchy Service docs.
    *
-   * @param id id of the root learning object of a hierarchy
+   * @param learningObjectId id of the root learning object of a hierarchy
    * @returns A promise
    */
-  async releaseHierarchy(id: string): Promise<any> {
+  async releaseHierarchy(learningObjectId: string): Promise<any> {
     return await this.http.patch(
-      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
+      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(learningObjectId),
       {
         status: LearningObject.Status.RELEASED
       },
@@ -43,13 +42,13 @@ export class HierarchyService {
    * only be called for root objects, but can be used for subtrees
    * according to Hierarchy Service docs.
    *
-   * @param id id of the root learning object of a hierarchy
+   * @param learningObjectId id of the root learning object of a hierarchy
    * @param collection the collection the objects will belong to
    * @returns A promise
    */
-  async submitHierarchy(id: string, collection: string): Promise<any> {
+  async submitHierarchy(learningObjectId: string, collection: string): Promise<any> {
     return await this.http.patch(
-      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(id),
+      HIERARCHY_ROUTES.CHANGE_HIERARCHY_STATUS(learningObjectId),
       {
         status: LearningObject.Status.WAITING,
         collection: collection
@@ -60,14 +59,13 @@ export class HierarchyService {
   /**
    * Adds children to a learning object
    *
-   * @param username the username of the author
-   * @param object the object having children
+   * @param parent the object having children
    * @param children the children to be had
    * @returns
    */
-  async addChildren(username: string, object: any, children): Promise<any> {
+  async addChildren(parent: LearningObject, children: LearningObject): Promise<any> {
     return await this.http.post(
-      LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(object.id),
+      LEARNING_OBJECT_ROUTES.UPDATE_CHILDREN(parent.id),
       {
         children
       },
@@ -82,18 +80,18 @@ export class HierarchyService {
    * Checks if the name of the learning object is already taken for the author
    *
    * @param username the username of the author
-   * @param objectName the objectName to check for
+   * @param learningObjectName the objectName to check for
    * @returns
    */
-  async checkName(username: string, objectName: string): Promise<boolean> {
+  async checkName(username: string, learningObjectName: string): Promise<boolean> {
     return this.http
-      .get(LEARNING_OBJECT_ROUTES.GET_MY_LEARNING_OBJECTS(username, {text: objectName}), { withCredentials: true })
+      .get(LEARNING_OBJECT_ROUTES.GET_MY_LEARNING_OBJECTS(username, {text: learningObjectName}), { withCredentials: true })
       .toPromise()
       .then((response: any) => {
         const possibleMatches = response.map(object => {
           return object.name;
         });
-        return possibleMatches.includes(objectName) ? true : false;
+        return possibleMatches.includes(learningObjectName) ? true : false;
       });
   }
 }

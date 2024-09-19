@@ -20,7 +20,7 @@ export class SubmissionsService {
    * @param {string[]} [selectedAuthorizations] authorizations that the author gave for changes
    * @return {Promise<any>}
    */
-  submit(params: {
+  submitLearningObject(params: {
     learningObjectId: string,
     collectionName: string,
     submissionReason?: string,
@@ -45,7 +45,7 @@ export class SubmissionsService {
       .toPromise();
   }
 
-  unsubmit(
+  unsubmitLearningObject(
     learningObjectId: string,
   ): Promise<any> {
     return this.http
