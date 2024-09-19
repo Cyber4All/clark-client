@@ -42,12 +42,12 @@ export class FileService {
    * @returns the blob url of the file
    */
   async previewLearningObjectFile(url: string): Promise<string> {
-    return fetch(url, {
-        headers: {
-          Authorization: this.headers.get('Authorization')
-        }
+    return this.http.get(url, {
+        withCredentials: true,
+        responseType: 'blob'
       })
-      .then((response) => response.blob())
+      .pipe(catchError(this.handleError))
+      .toPromise()
       .then((blob) => window.URL.createObjectURL(blob));
   }
 
