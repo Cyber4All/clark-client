@@ -216,7 +216,7 @@ export class SubmitComponent implements OnInit {
           });
       } else {
         this.submissionService
-          .submit({
+          .submitLearningObject({
             learningObjectId: this.learningObject.id,
             collectionName: this.collection,
             submissionReason: this.submissionReason,

@@ -92,36 +92,6 @@ export class RelevancyService {
   }
 
   /**
-   *  This function updates the learning the object with the selected tagged topics
-   *
-   * @param username  username of learning object owner
-   * @param id  user id
-   * @param topicIds  id of Topic object
-   */
-  async updateObjectTopics(id: string, topicIds: string[]): Promise<void> {
-    return await new Promise((resolve, reject) => {
-      this.http
-        .patch(TOPICS_ROUTES.UPDATE_TOPIC(id),
-          { topicIds },
-          {
-            headers: this.headers,
-            withCredentials: true,
-            responseType: 'text',
-          }
-        )
-        .pipe(
-
-          catchError(this.handleError)
-        )
-        .toPromise()
-        .then(
-          (res: any) => resolve(res),
-          (err) => reject(err),
-        );
-    });
-  }
-
-  /**
    *  Function to update the learning object with new outcome mappings
    *
    * @param objectId learning objectId

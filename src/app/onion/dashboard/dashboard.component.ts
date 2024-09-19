@@ -228,7 +228,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.currentlySubmittingObject = event;
       this.submitToCollection = true;
     } else {
-      this.submissionService.submit({
+      this.submissionService.submitLearningObject({
         learningObjectId: event.id,
         collectionName: event.collection,
       })
@@ -251,7 +251,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {LearningObject} learning object to be unpublished
    */
   cancelSubmission(l: LearningObject): Promise<void> {
-    return this.submissionService.unsubmit(
+    return this.submissionService.unsubmitLearningObject(
       l.id,
       ).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;

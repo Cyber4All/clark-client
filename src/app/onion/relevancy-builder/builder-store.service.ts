@@ -137,7 +137,7 @@ export class BuilderStore {
    */
   async save() {
     try {
-      await this.relevancyService.updateObjectTopics(this._learningObject.id, this._topics);
+      await this.topicsService.updateObjectTopics(this._learningObject.id, this._topics);
       for (let i = 0; i < this.outcomes.length; i++) {
         await this.relevancyService.updateLearningOutcomeMappings(
           this._learningObject.id,
