@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
-    private searchLearningObjectService: SearchService,
+    private searchService: SearchService,
     public auth: AuthService,
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
@@ -160,10 +160,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       text = filters;
     }
 
-    this.workingLearningObjects = (await this.searchLearningObjectService.getUsersLearningObjects(this.auth.username, {
+    this.searchService.getUsersLearningObjects(this.auth.username, {
       draftsOnly: true,
       text,
-      ...filters})).learningObjects;
+      ...filters
+    }).then((response: { learningObjects: LearningObject[], total: number }) => {
+      this.workingLearningObjects = response.learningObjects;
+    });
   }
 
   /**
@@ -173,8 +176,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param query
    */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
-    this.releasedLearningObjects = (await this.searchLearningObjectService
-      .getLearningObjects({...filters, text})).learningObjects;
+    this.searchService
+      .getLearningObjects({...filters, text})
+      .then((response: {learningObjects: LearningObject[], total: number}) => {
+        this.releasedLearningObjects = response.learningObjects;
+      });
 
     this.checkQueryParams$.next();
   }
