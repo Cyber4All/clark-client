@@ -169,15 +169,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
    * Register a user
    */
   public submit(): void {
-    const newUser = {
+    this.auth.register({
       username: this.regInfo.username.trim(),
-      name: this.userService.combineName(this.regInfo.firstname, this.regInfo.lastname),
+      firstname: this.regInfo.firstname.trim(),
+      lastname: this.regInfo.lastname.trim(),
       email: this.regInfo.email.trim(),
       organization: this.regInfo.organization.trim(),
       password: this.regInfo.password
-    };
-
-    this.auth.register(newUser)
+    })
       .then(() => {
         this.nextTemp();
       },

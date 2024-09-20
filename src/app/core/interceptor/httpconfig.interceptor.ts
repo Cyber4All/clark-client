@@ -18,10 +18,15 @@ export class HttpConfigInterceptor implements HttpInterceptor {
   constructor(private cookie: CookieService) {
     this.token = this.cookie.get('presence');
   }
+
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    if (!this.token) {
+      this.token = this.cookie.get('presence');
+    }
+
     let headers = request.headers.set('Content-Type', 'application/json');
     if (
       !request.url.includes(environment.cardOrganizationUrl) &&
