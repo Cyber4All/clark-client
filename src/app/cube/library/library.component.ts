@@ -11,6 +11,7 @@ import { ChangelogService } from 'app/core/learning-object-module/changelog/chan
 import { LearningObjectService } from '../learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';
+import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 
 @Component({
   selector: 'clark-library',
@@ -231,6 +232,15 @@ export class LibraryComponent implements OnInit, OnDestroy {
     } catch (e) {
       console.error(e);
     }
+  }
+
+  downloadObject(event: MouseEvent, object: LearningObject, index: number) {
+    event.stopPropagation();
+    this.currentIndex = index;
+    this.downloading[index] = true;
+    this.showDownloadModal = true;
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(object.id));
+    this.downloading[index] = false;
   }
 
   goToNotification(notification: any) {
