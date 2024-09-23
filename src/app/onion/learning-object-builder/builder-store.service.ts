@@ -9,7 +9,6 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { taxonomy } from '@cyber4all/clark-taxonomy';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { LearningObjectService as NewLearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import {
   LearningObjectService as RefactoredLearningObjectService
@@ -153,7 +152,6 @@ export class BuilderStore {
   constructor(
     private auth: AuthService,
     // TODO: The last routes that need to be moved over from learningObjectService (the legacy one) is bundling related
-    private learningObjectService: LearningObjectService,
     // TODO: This is temporary while working on story this should be updated with the actual name once the other is removed.
     private refactoredLearningObjectService: RefactoredLearningObjectService,
     private newLearningObjectService: NewLearningObjectService,
@@ -259,18 +257,18 @@ export class BuilderStore {
     let revisionId: any = 0;
     // conditionally call either the getLearningObject function or the getLearningObjectRevision function based on function input
     const retrieve = this._isRevision && revisionId !== undefined && username ?
-    async () => {
-      // eslint-disable-next-line eqeqeq
-      if (revisionId == 0) {
-        revisionId = await this.revisionsService.createRevision(cuid);
-      }
+      async () => {
+        // eslint-disable-next-line eqeqeq
+        if (revisionId == 0) {
+          revisionId = await this.revisionsService.createRevision(cuid);
+        }
 
-      return this.refactoredLearningObjectService.getLearningObject(cuid, revisionId);
-    } :
-    async () => {
-      const value = this.uriRetriever.getLearningObject({cuidInfo: {cuid, version}}, ['children', 'parents', 'materials', 'outcomes']);
-      return value.toPromise();
-    };
+        return this.refactoredLearningObjectService.getLearningObject(cuid, revisionId);
+      } :
+      async () => {
+        const value = this.uriRetriever.getLearningObject({ cuidInfo: { cuid, version } }, ['children', 'parents', 'materials', 'outcomes']);
+        return value.toPromise();
+      };
 
     return retrieve()
       .then(object => {
@@ -542,11 +540,11 @@ export class BuilderStore {
     if (!checkIfUUID(outcome.serviceId || outcome.id) && (outcome.serviceId || outcome.id)) {
       this.serviceInteraction$.next(true);
       this.outcomeService
-      .deleteOutcome(outcome.serviceId || outcome.id)
-      .then(() => {
-        this.serviceInteraction$.next(false);
-      })
-      .catch(e => this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME));
+        .deleteOutcome(outcome.serviceId || outcome.id)
+        .then(() => {
+          this.serviceInteraction$.next(false);
+        })
+        .catch(e => this.handleServiceError(e, BUILDER_ERRORS.DELETE_OUTCOME));
     }
   }
 
@@ -787,7 +785,7 @@ export class BuilderStore {
     const index = this.findFile(fileId);
     this.learningObject.materials.files[index].description = description;
     this.fileService
-    .updateFileDescription(
+      .updateFileDescription(
         this.learningObject.id,
         fileId,
         description
@@ -830,8 +828,10 @@ export class BuilderStore {
     // Update the learning object
     this.learningObjectEvent.next(this.learningObject);
     this.saveObject({
-      materials: { folderDescriptions: this.learningObject.materials
-        .folderDescriptions }
+      materials: {
+        folderDescriptions: this.learningObject.materials
+          .folderDescriptions
+      }
     });
   }
 
@@ -909,7 +909,7 @@ export class BuilderStore {
     // Get most up-to-date values for current learning object
     await this.fetch(this.learningObject.cuid, this.learningObject.version);
     // Retrieve outcomes of current learning object
-    const value = await this.uriRetriever.getLearningObject({ cuidInfo: {cuid: this.learningObject.cuid} }, ['outcomes']).toPromise();
+    const value = await this.uriRetriever.getLearningObject({ cuidInfo: { cuid: this.learningObject.cuid } }, ['outcomes']).toPromise();
     // Iterate through outcomes
     value.outcomes.map(outcome => {
       // If the outcome text is empty, remove outcome

@@ -9,7 +9,6 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
-import { LearningObjectService } from '../../../core/learning-object.service';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
 
@@ -56,7 +55,6 @@ export class BuilderNavbarComponent implements OnDestroy {
     private history: HistoryService,
     public validator: LearningObjectValidator,
     public store: BuilderStore,
-    public learningObjectService: LearningObjectService,
     private bundlingService: BundlingService,
     public fileService: FileService
   ) {

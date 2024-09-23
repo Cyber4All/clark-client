@@ -18,7 +18,6 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { takeUntil } from 'rxjs/operators';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { Router } from '@angular/router';
-import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
@@ -83,7 +82,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private collectionService: CollectionService,
     private router: Router,
-    private learningObjectService: LearningObjectService,
     private dropdowns: NavbarDropdownService,
     private bundlingService: BundlingService
   ) { }
