@@ -18,7 +18,6 @@ import { LearningObject } from '@entity';
 import { BehaviorSubject, fromEvent, Observable, Subject } from 'rxjs';
 
 import { FileManagementService } from '../services/file-management.service';
-import { LEGACY_PUBLIC_LEARNING_OBJECT_ROUTES } from '../../../../../../core/learning-object-module/learning-object/learning-object.routes';
 import {
   FileUploadMeta,
   UploadErrorReason,
@@ -34,7 +33,6 @@ import { getUserAgentBrowser } from 'getUserAgentBrowser';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
-import { FILE_ROUTES } from 'app/core/learning-object-module/file/file.routes';
 
 export interface FileInput extends File {
   fullPath?: string;

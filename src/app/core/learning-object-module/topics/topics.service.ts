@@ -45,6 +45,35 @@ export class TopicsService {
     });
   }
 
+  /**
+   *  This function updates the learning the object with the selected tagged topics
+   *
+   * @param username  username of learning object owner
+   * @param learningObjectId  user id
+   * @param topicIds  id of Topic object
+   */
+  async updateObjectTopics(learningObjectId: string, topicIds: string[]): Promise<void> {
+    return await new Promise((resolve, reject) => {
+      this.http
+        .patch(TOPICS_ROUTES.UPDATE_TOPIC(learningObjectId),
+          { topicIds },
+          {
+            headers: this.headers,
+            withCredentials: true,
+            responseType: 'text',
+          }
+        )
+        .pipe(
+          catchError(this.handleError)
+        )
+        .toPromise()
+        .then(
+          (res: any) => resolve(res),
+          (err) => reject(err),
+        );
+    });
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error

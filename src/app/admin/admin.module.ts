@@ -33,7 +33,6 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { AddEvaluatorComponent } from './components/add-evaluator/add-evaluator.component';
 import { ObjectDropdownComponent } from './components/add-evaluator/components/object-dropdown/object-dropdown.component';
 import { SelectedUserComponent } from './components/add-evaluator/components/selected-user/selected-user.component';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { ChangeCollectionComponent } from './components/change-collection/change-collection.component';
 import { HierarchyBuilderComponent } from './components/hierarchy-builder/hierarchy-builder.component';
 import { MatTreeModule } from '@angular/material/tree';
@@ -83,6 +82,5 @@ import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarc
     MatSelectModule,
     ReactiveFormsModule,
   ],
-  providers: [LearningObjectService]
 })
 export class AdminModule { }

@@ -1,10 +1,10 @@
 import { LearningObject } from '@entity';
 import { Component, OnInit, Input } from '@angular/core';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'cube-featured',
@@ -24,7 +24,10 @@ export class FeaturedComponent implements OnInit {
   loading = false;
   collectionName: string;
 
-  constructor(private learningObjectService: LearningObjectService, private featureService: FeaturedObjectsService) {
+  constructor(
+    private searchLearningObjectService: SearchService,
+    private featureService: FeaturedObjectsService
+  ) {
     this.learningObjects = this.learningObjects.fill(new LearningObject());
   }
 
@@ -50,7 +53,7 @@ export class FeaturedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.learningObjects = (await this.learningObjectService.getLearningObjects(
+      this.learningObjects = (await this.searchLearningObjectService.getLearningObjects(
         this.query
       )).learningObjects;
       this.loading = false;
