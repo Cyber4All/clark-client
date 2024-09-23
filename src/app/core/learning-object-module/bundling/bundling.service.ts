@@ -9,11 +9,6 @@ const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
   providedIn: 'root'
 })
 export class BundlingService {
-
-  showDownloadModal = false;
-  downloading = [];
-  currentIndex = null;
-
   private headers = new HttpHeaders();
 
   constructor(
