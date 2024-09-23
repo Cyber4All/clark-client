@@ -88,7 +88,6 @@ export class LearningObjectRatingsComponent implements OnInit {
   }
 
   submitEditResponse(response: { comment: string, index: number }) {
-    this.cancelEditResponse(response.index);
     this.editResponse.emit(response);
   }
 

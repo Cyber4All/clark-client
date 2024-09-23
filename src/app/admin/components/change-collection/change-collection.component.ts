@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
-import { CollectionService as AdminCollectionService } from 'app/admin/core/collection.service';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-change-collection',
@@ -19,7 +19,7 @@ export class ChangeCollectionComponent implements OnInit {
 
   constructor(
     private collectionService: CollectionService,
-    private adminCollectionService: AdminCollectionService,
+    private learningObjectService: LearningObjectService,
     private toaster: ToastrOvenService
   ) { }
 
@@ -40,7 +40,7 @@ export class ChangeCollectionComponent implements OnInit {
    * Confirms the object's new submitted collection
    */
   confirm() {
-    this.adminCollectionService.updateSubmittedCollection(this.object.cuid, this.selectedCollection)
+    this.learningObjectService.updateSubmittedCollection(this.object.cuid, this.selectedCollection)
       .then(() => this.object.collection = this.selectedCollection)
       .catch(() => this.toaster.error('Error', 'There was an error changing collections, please try again later.'))
       .finally(() => this.close.emit());

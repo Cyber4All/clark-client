@@ -20,7 +20,6 @@ import {
   UploadErrorUpdate
 } from './typings';
 import { UserService } from 'app/core/user-module/user.service';
-import { FILE_ROUTES } from '../../../../../../core/learning-object-module/file/file.routes';
 
 const DEFAULT_CONCURRENT_UPLOADS = 10;
 
@@ -174,7 +173,7 @@ export class FileManagementService {
 
       // Setup the S3 client to use the local Minio server
       this.S3 = new AWS.S3({
-        endpoint: environment.s3Endpoint,
+        endpoint: 'http://localhost:9000',
         s3ForcePathStyle: true,
         signatureVersion: 'v4',
       });

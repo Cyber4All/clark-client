@@ -124,7 +124,8 @@ private _id: string;
   /**
    * Creates an instance of User.
    *
-   * @param {Partial<User>} [user]
+   * @param {Partial<any>}
+   * User entity needs a rewrite, hence the `any`
    * @memberof User
    */
   // Had to update the constructor to accept any type of user object

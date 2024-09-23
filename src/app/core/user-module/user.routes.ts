@@ -1,6 +1,8 @@
 import { environment } from '@env/environment';
+import { UserQuery } from 'app/interfaces/query';
+import * as querystring from 'querystring';
 
-export const USER_ROUTE = {
+export const USER_ROUTES = {
   /**
    * Request to retrieve a list of users
    * @method GET
@@ -12,10 +14,10 @@ export const USER_ROUTE = {
   /**
    * Request to retrieve a user
    * @method GET
-   * @param user the username of the user
+   * @param query the query parameters
    */
-  SEARCH_USERS(query: any) {
-    return `${environment.apiURL}/users?${new URLSearchParams(query).toString()}`;
+  SEARCH_USERS(query: UserQuery = {}) {
+    return `${environment.apiURL}/users?${querystring.stringify(query)}`;
   },
   /**
    * Request to retrieve a user
@@ -43,14 +45,8 @@ export const USER_ROUTE = {
   UPDATE_USER(user: string) {
     return `${environment.apiURL}/users/${encodeURIComponent(user)}`;
   },
-  /**
-   * Request to retrieve a user's profile
-   * @method GET
-   * @auth required
-   * @param username the username of the user
-   * @returns the user's profile
-   */
-  GET_USER_PROFILE(username: string) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/profile`;
+
+  VALIDATE_CAPTCHA() {
+    return `${environment.apiURL}/users/validate-captcha`;
   },
 };

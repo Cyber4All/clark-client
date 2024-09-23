@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Downtime } from 'app/core/utility-module/messages.service';
+import { Downtime } from 'app/core/utility-module/utility.service';
 
 @Component({
   selector: 'clark-message',

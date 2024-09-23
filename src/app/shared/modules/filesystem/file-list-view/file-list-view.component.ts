@@ -13,6 +13,7 @@ import { FormControl } from '@angular/forms';
 import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth-module/auth.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'clark-file-list-view',
@@ -57,7 +58,10 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     Deselected items will be accessible through a download link in the PDF.`;
   accessGroups: string[];
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private fileService: FileService
+  ) {}
 
   ngOnInit(): void {
     this.subToDirChange();
@@ -109,10 +113,11 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    * @param {LearningObject.Material.File} file
    * @memberof FileListViewComponent
    */
-  openFile(file: LearningObject.Material.File): void {
+  async openFile(file: LearningObject.Material.File): Promise<void> {
     const url = this.auth.isLoggedIn.value ? file.previewUrl : '';
     if (url) {
-      window.open(url, '_blank');
+      const previewUrl = await this.fileService.previewLearningObjectFile(url);
+      window.open(previewUrl, '_blank');
       this.preview = true;
     } else {
       this.file = file;

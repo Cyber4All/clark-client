@@ -66,14 +66,14 @@ export class BuilderStore {
   }
 
   /**
-   * Retrieve a learning object from the service by id
+   * Retrieve a learning object from the service by cuid
    *
-   * @param {string} id
+   * @param {string} cuid The cuid of the learning object to retrieve
    * @returns {Promise<LearningObject>}
    * @memberof BuilderStore
    */
-  fetch(id: string): Promise<LearningObject> {
-    return this.uriRetriever.getLearningObject({ id }, ['outcomes']).toPromise().then(object => {
+  fetch(cuid: string): Promise<LearningObject> {
+    return this.uriRetriever.getLearningObject({ cuidInfo: {cuid} }, ['outcomes']).toPromise().then(object => {
       this._learningObject = object;
       this._outcomes = this._learningObject.outcomes;
       this._topics = this._learningObject.topics || [];
@@ -137,7 +137,7 @@ export class BuilderStore {
    */
   async save() {
     try {
-      await this.relevancyService.updateObjectTopics(this._learningObject.id, this._topics);
+      await this.topicsService.updateObjectTopics(this._learningObject.id, this._topics);
       for (let i = 0; i < this.outcomes.length; i++) {
         await this.relevancyService.updateLearningOutcomeMappings(
           this._learningObject.id,

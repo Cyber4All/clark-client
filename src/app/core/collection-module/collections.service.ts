@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import {
-  LEGACY_COLLECTIONS_ROUTES
-} from '../../core/learning-object-module/learning-object/learning-object.routes';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { catchError, skipWhile } from 'rxjs/operators';
 import { COLLECTION_ROUTES } from './collections.routes';
-import { REPORT_ROUTES } from '../report-module/report.routes';
 
 export interface Collection {
   name: string;
@@ -20,7 +16,6 @@ export interface Collection {
 export class CollectionService {
   private collections: Collection[];
   private loading$ = new BehaviorSubject<boolean>(true);
-  private headers: HttpHeaders = new HttpHeaders();
   darkMode502 = new BehaviorSubject<boolean>(true);
   constructor(private http: HttpClient) {
     this.getAllCollections();
@@ -109,14 +104,6 @@ export class CollectionService {
     });
   }
 
-  getCollectionCuratorsInfo(name: string) {
-    return this.http.get(LEGACY_COLLECTIONS_ROUTES.GET_COLLECTION_CURATORS(name))
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise();
-  }
-
   getCollectionMetadata(name: string) {
     return this.http.get(COLLECTION_ROUTES.GET_COLLECTION_METADATA(name))
       .pipe(
@@ -128,32 +115,6 @@ export class CollectionService {
   changeStatus502(status: boolean) {
     if (this.darkMode502.getValue() !== status) {
       this.darkMode502.next(status);
-    }
-  }
-
-  async generateCollectionReport(
-    collections: string[],
-    email: string,
-    name: string,
-    date?: {
-      start: string,
-      end: string
-    }) {
-    if (collections.length > 0) {
-      const route = REPORT_ROUTES.GENERATE_REPORT(collections, date);
-      this.http
-        .post(
-          route,
-          {
-            email,
-            name
-          },
-          { headers: this.headers, withCredentials: true }
-        )
-        .pipe(
-          catchError(this.handleError)
-        )
-        .toPromise();
     }
   }
 

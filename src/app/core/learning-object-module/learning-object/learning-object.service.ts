@@ -2,12 +2,11 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { LearningObject, LearningOutcome } from '@entity';
 import { merge, Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, finalize, map, mergeMap, take } from 'rxjs/operators';
-import { BUNDLING_ROUTES } from '../bundling/bundling.routes';
+import { catchError, finalize, map, mergeMap, take, takeUntil, tap } from 'rxjs/operators';
 import {
   LEARNING_OBJECT_ROUTES,
-  LEGACY_USER_ROUTES
 } from '../learning-object/learning-object.routes';
+import { UserService } from 'app/core/user-module/user.service';
 
 export const CALLBACKS = {
   outcomes: (outcomes: any[]) => {
@@ -32,24 +31,18 @@ export const CALLBACKS = {
 export class LearningObjectService {
   private headers = new HttpHeaders();
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private userService: UserService
+  ) { }
 
-  async updateLearningObjectStatus(learningObjectId: string, status: LearningObject.Status, reason?: string): Promise<any> {
-    return this.http.post(
-      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(learningObjectId),
-      { status, reason },
-      { withCredentials: true }
-    )
-    .pipe(
-      catchError(this.handleError)
-    )
-    .toPromise();
-  }
+  // TODO: The following functions all use the same underlying route. They eventually should be condensed into
+  // one function that handles all of the different types of requests that can be made to the learning object
 
-  fetchLearningObject(
-    params: { cuidInfo?: { cuid: string, version?: number }, id?: string },
+  getLearningObjectObservable(
+    params: { cuidInfo: { cuid: string, version?: number } },
   ): Observable<LearningObject | HttpErrorResponse> {
-    const route = this.buildRoute(params);
+    const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
     return this.http.get(route).pipe(
       take(1),
       catchError(e => of(e)),
@@ -71,42 +64,139 @@ export class LearningObjectService {
     );
   }
 
-  fetchLearningObjectWithResources(
-    params: { author?: string, cuidInfo?: { cuid: string, version?: number }, id?: string },
-    resources?: string[],
-    options?: { asyncDelivery?: boolean }
-  ): Observable<LearningObject | any> {
-    const asyncDelivery = options && options.asyncDelivery;
 
-    if (asyncDelivery) {
-      // simply merge all observables and emit their values separately
-      return this.fetchLearningObject(params).pipe(
-        mergeMap((object: LearningObject) => this.fetchLearningObjectResources(object, resources))
-      );
-    } else {
-      const s = new Subject<LearningObject | HttpErrorResponse>();
+  /**
+   * Fetches LearningObject by cuid
+   *
+   * @param {string} cuid
+   * @returns {Promise<LearningObject>}
+   * @memberof LearningObjectService
+   */
+  getLearningObject(
+    cuid: string,
+    version?: number,
+  ): Promise<LearningObject> {
+    const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT(
+      cuid,
+      version
+    );
 
-      this.fetchLearningObject(params).pipe(
-        take(1)
-      ).subscribe(object => {
-        if (object instanceof LearningObject) {
-          this.fetchLearningObjectResources(object, resources).pipe(
-            take(resources.length),
-            finalize(() => {
-              s.next(object);
-              s.complete();
-            })
-          ).subscribe(resource => {
-            object[resource.name] = resource.data;
-          });
-        } else {
-          s.next(object);
-          s.complete();
-        }
+    return this.http
+      .get(route)
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((res: any) => {
+        const learningObject = new LearningObject(res[0]);
+        return learningObject;
       });
+  }
 
-      return s;
+  /**
+   * This function will return a subject that includes the requested Learning Objects metadata and
+   * all of the requested properties.
+   *
+   * @param params the author, name, or id needed to retrieve the metadata for a Learning Object
+   * @param properties the properties (i.e. children, parents, etc) that have been requested
+   */
+  getLearningObjectResources(
+    params: { author?: string, cuidInfo: { cuid: string, version?: number } },
+    properties?: string[]
+  ) {
+    try {
+      const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
+
+      const responses: Subject<any> = new Subject();
+      const end = new Subject();
+
+      this.http.get<LearningObject | any>(route).pipe(
+        catchError(err => {
+          responses.error(err);
+          end.complete();
+          return throwError(err);
+        }),
+        tap(entity => {
+          if (Array.isArray(entity)) {
+            if (entity.length > 1) {
+              entity = entity.filter(e => e.status === LearningObject.Status.RELEASED)[0];
+            } else {
+              entity = entity.pop();
+            }
+          }
+
+          const uris = Object.assign(entity.resourceUris);
+          let completed = 0;
+          Object.keys(uris).map(key => {
+            if (!properties || properties.includes(key)) {
+              this.fetchUri(uris[key], CALLBACKS[key]).subscribe(value => {
+                responses.next({ requestKey: key, value });
+                if (++completed === properties.length || completed === uris.length) {
+                  responses.complete();
+                  end.next();
+                  end.complete();
+                }
+              });
+            }
+          });
+
+          responses.next(new LearningObject(entity));
+        }),
+        takeUntil(end),
+      ).subscribe();
+
+      return responses;
+    } catch (err) {
+      throw err;
     }
+  }
+
+  /**
+   * Function to retrieve a learning object
+   *
+   * @param params cuid is the current object cuid
+   * @returns a learning object with specified cuid
+   */
+  fetchLearningObject(cuid: string, version: number): Promise<any> {
+    return this.http
+      .get(
+        LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT(cuid, version),
+        {
+          withCredentials: true,
+          responseType: 'text',
+        }
+      )
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((val) => {
+        return JSON.parse(val)[0];
+      });
+  }
+
+  fetchLearningObjectWithResources(
+    params: { author?: string, cuidInfo: { cuid: string, version: number } },
+    resources?: string[],
+  ): Observable<LearningObject | HttpErrorResponse> {
+    const subject = new Subject<LearningObject | HttpErrorResponse>();
+    this.getLearningObjectObservable(params).pipe(
+      take(1)
+    ).subscribe(object => {
+      // TODO: I don't think this if is ever true because
+      if (object instanceof LearningObject) {
+        this.fetchLearningObjectResources(object, resources).pipe(
+          take(resources.length),
+          finalize(() => {
+            subject.next(object);
+            subject.complete();
+          })
+        ).subscribe(resource => {
+          object[resource.name] = resource.data;
+        });
+      } else {
+        subject.next(object);
+        subject.complete();
+      }
+    });
+
+    return subject;
   }
 
   fetchLearningObjectResources(object: LearningObject, resources: string[]): Observable<{ name: string, data: any }> {
@@ -144,64 +234,274 @@ export class LearningObjectService {
     );
   }
 
-  toggleFilesToBundle(learningObjectId: string, selected: string[], deselected: string[]) {
-    return this.http.patch(
-      BUNDLING_ROUTES.TOGGLE_BUNDLE_FILE({ learningObjectId }),
-      {
-        selected: selected,
-        deselected: deselected,
-      }
-    );
-  }
-
-  /**
-   * Checks to see if a learning object has children
-   *
-   * @param learningObjectId The object id of the learning object
-   * @returns True if the learning object has children, false otherwise
-   */
-  async doesLearningObjectHaveChildren(learningObjectId: string): Promise<boolean> {
-    const childrenUri = LEARNING_OBJECT_ROUTES.GET_CHILDREN(learningObjectId);
-    const hasChildren = await this.http.get(
-      childrenUri,
+  async getLearningObjectChildren(learningObjectId: string): Promise<LearningObject[]> {
+    return this.http.get(
+      LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_CHILDREN(learningObjectId),
       { headers: this.headers, withCredentials: true }
+    )
+    .pipe(catchError(this.handleError))
+    .toPromise()
+    .then((learningObjects: any[]) => {
+      return learningObjects.map(learningObject => new LearningObject(learningObject));
+    });
+  }
+
+  async getLearningObjectParents(learningObjectId: string): Promise<LearningObject[]> {
+    return this.http.get(
+      LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_PARENTS(learningObjectId),
+      { headers: this.headers, withCredentials: true }
+    )
+    .pipe(catchError(this.handleError))
+    .toPromise()
+    .then((learningObjects: any[]) => {
+      return learningObjects.map(learningObject => new LearningObject(learningObject));
+    });
+  }
+
+   /**
+    * Fetches Learning Object's Materials
+    *
+    * @param {string} authorUsername
+    * @param {string} objectId
+    * @param {string} description
+    * @returns {Promise<any>}
+    * @memberof LearningObjectService
+    */
+   getLearningObjectMaterials(objectId: string): Promise<any> {
+    return this.http
+      .get(
+        LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_MATERIALS(objectId),
+        { withCredentials: true })
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  async updateLearningObjectStatus(learningObjectId: string, status: LearningObject.Status, reason?: string): Promise<any> {
+    return this.http.post(
+      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(learningObjectId),
+      { status, reason },
+      { withCredentials: true }
+    )
+    .pipe(
+      catchError(this.handleError)
+    )
+    .toPromise();
+  }
+
+    /**
+     * Releases an entire hierarchy from the admin dashboard, should
+     * only be called for root objects, but can be used for subtrees
+     * according to Hierarchy Service docs.
+     *
+     * @param id id of the root learning object of a hierarchy
+     * @returns A promise
+     */
+    async releaseHierarchy(id: string): Promise<any> {
+      return await this.http.patch(
+        LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(id),
+        {
+          status: LearningObject.Status.RELEASED
+        },
+        { withCredentials: true, responseType: 'json' }
+      ).toPromise();
+    }
+
+    /**
+     * Submits an entire hierarchy from the user dashboard, should
+     * only be called for root objects, but can be used for subtrees
+     * according to Hierarchy Service docs.
+     *
+     * @param id id of the root learning object of a hierarchy
+     * @param collection the collection the objects will belong to
+     * @returns A promise
+     */
+    async submitHierarchy(id: string, collection: string): Promise<any> {
+      return await this.http.patch(
+        LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(id),
+        {
+          status: LearningObject.Status.WAITING,
+          collection: collection
+        },
+        { withCredentials: true, responseType: 'json' }
+      ).toPromise();
+    }
+
+  /**
+   * Adds children to a learning object
+   *
+   * @param username the username of the author
+   * @param object the object having children
+   * @param children the children to be had
+   * @returns
+   */
+  async addChildren(username: string, object: any, children): Promise<any> {
+    return await this.http.post(
+      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_CHILDREN(object.id),
+      {
+        children
+      },
+      {
+        withCredentials: true,
+        responseType: 'text'
+      }
     ).toPromise();
-    return Array.from(hasChildren as any).length > 0;
   }
 
-  /**
-   * Returns the route that needs to be hit in order to load Learning Object based on the params passed in
-   *
-   * @param params includes either the author and Learning Object name or the id to set the route needed
-   * to retrieve the Learning Object
-   */
-  private buildRoute(params: { cuidInfo?: { cuid: string, version?: number }, id?: string }) {
-    let route;
-    // Sets route to be hit based on if the id or if author and Learning Object name have been provided
-    if (params.id) {
-      route = LEGACY_USER_ROUTES.GET_LEARNING_OBJECT(params.id);
-    } else if (params.cuidInfo) {
-      route = LEARNING_OBJECT_ROUTES.GET_PUBLIC_LEARNING_OBJECT(params.cuidInfo.cuid, params.cuidInfo.version);
+  // TODO: The UPDATE_LEARNING_OBJECT_CHILDREN is actually an add learning object children.
+  setChildren(
+    learningObjectId: string,
+    children: string[],
+    remove: boolean,
+  ): Promise<any> {
+    const removeRoute = LEARNING_OBJECT_ROUTES.REMOVE_LEARNING_OBJECT_CHILD(learningObjectId);
+    const addRoute = LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_CHILDREN(learningObjectId);
+    if (remove) {
+      return this.http
+        .patch(
+          removeRoute,
+          // TODO: This should remove each child that is passed in not just the first one
+          { childObjectId: children[0] },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
+        )
+        .pipe(
+          catchError(this.handleError)
+        )
+        .toPromise();
     } else {
-      const err = this.userError(params);
-      throw err;
+      return this.http
+        .post(
+          addRoute,
+          { childrenIds: children },
+          { headers: this.headers, withCredentials: true, responseType: 'text' }
+        )
+        .pipe(
+
+          catchError(this.handleError)
+        )
+        .toPromise();
     }
-    return route;
   }
 
   /**
-   * Returns an error message based on the params that are missing and are needed to retrieve Learning Object
+   * Sends serialized Learning Object to API for creation
+   * Returns new Learningbject's ID on success
+   * Returns error on error
    *
-   * @param params either the author and name or the id of the Learning Object
+   * @param {any} learningObject
+   * @returns {Promise<string>}
+   * @memberof LearningObjectService
    */
-  private userError(params: { author?: string, name?: string, id?: string }) {
-    if (params.author && !params.name) {
-      return new Error('Cannot find Learning Object ' + params.name + 'for ' + params.author);
-    } else if (params.name && !params.author) {
-      return new Error('Cannot find Learning Object' + params.name + 'for ' + params.author);
-    } else if (!params.author && !params.name && !params.id) {
-      return new Error('Cannot find Learning Object. No identifiers found.');
-    }
+  create(learningObject): Promise<LearningObject> {
+    const route = LEARNING_OBJECT_ROUTES.CREATE_LEARNING_OBJECT();
+
+    return this.http
+      .post(
+        route,
+        { object: learningObject },
+        { headers: this.headers, withCredentials: true }
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((res: any) => {
+        res.id = res._id;
+
+        const learningObject: LearningObject = new LearningObject(res);
+
+        // Fetch the author of the learning object and set it as the
+        // author of the learning object
+        this.userService.getUser(res.authorID).then(user => {
+          learningObject.author = user;
+        });
+
+        return learningObject;
+      });
+    // TODO: Verify this response gives the learning object name
+  }
+
+  async updateSubmittedCollection(cuid: string, collection: string) {
+    await this.http.patch(
+      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_COLLECTION(cuid),
+      { collection }, { withCredentials: true, responseType: 'text' }
+    ).toPromise();
+  }
+
+  /**
+   * Sends updated Learning Object to API for updating.
+   * Returns null success.
+   * Returns error on error
+   *
+   * @param {string} id
+   * @param {LearningObject} learningObject
+   * @returns {Promise<{}>}
+   * @memberof LearningObjectService
+   */
+  // TODO type this parameter
+  save(
+    id: string,
+    learningObject: Partial<LearningObject>,
+    reason?: string,
+  ): Promise<{}> {
+    const route = LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT(id);
+    return this.http
+      .patch(
+        route,
+        { updates: learningObject, reason },
+        { headers: this.headers, withCredentials: true, responseType: 'text' }
+      )
+      .pipe(
+
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Sends Learning Object's ID to API for deletion
+   *
+   * @param {(string)} id
+   * @returns {Promise<{}>}
+   * @memberof LearningObjectService
+   */
+  delete(learningObjectId: string): Promise<{}> {
+    const route = LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(
+      learningObjectId
+    );
+    return this.http
+      .delete(route, {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'json'
+      })
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise();
+  }
+
+  /**
+   * Method to delete multiple learning objects
+   *
+   * @param learningObjectIds Array of learning object ids to delete
+   * @returns Promise of all delete requests
+   */
+  deleteMultiple(learningObjectIds: string[]): Promise<any> {
+    const deletePromises = learningObjectIds.map(objectId =>
+      this.http.delete(LEARNING_OBJECT_ROUTES.DELETE_LEARNING_OBJECT(objectId), {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'text'
+      })
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise()
+    );
+
+    return Promise.all(deletePromises);
   }
 
   private handleError(error: HttpErrorResponse) {

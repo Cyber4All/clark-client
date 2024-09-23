@@ -31,33 +31,11 @@ export const RELEVANCY_ROUTES = {
         return `${environment.apiURL}/learning-objects/evaluators`;
     },
     /**
-     * Request to add date of when a learning object was last evaluated
-     * @param username - The username of the author of the learning object
-     * @param cuid - The cuid of the learning object to update
-     * @auth required
-     * @method PATCH
-     */
-    ADD_EVALUATION_DATE(username: string, cuid: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(cuid)}/evaluation`;
-    },
-    /**
      * Request to update evaluators of a learning object
      * @auth required
      * @method PATCH
      */
     UPDATE_EVALUATORS() {
         return `${environment.apiURL}/learning-objects/evaluators`;
-    },
-    /**
-     * Request to get evaluations for a user
-     * @param username - The username of the evaluator
-     * @method GET
-     */
-    GET_EVALUATIONS(username: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/evaluations`;
     },
 };

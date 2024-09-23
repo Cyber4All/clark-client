@@ -9,6 +9,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { UserService } from '../../../core/user-module/user.service';
 import { titleCase } from 'title-case';
 import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-change-author',
@@ -32,25 +33,15 @@ export class ChangeAuthorComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private authorshipService: AuthorshipService,
+    private learningObjectService: LearningObjectService,
     public toaster: ToastrOvenService,
     private userService: UserService,
   ) { }
 
 
   async ngOnInit() {
-    const childrenUri = LEARNING_OBJECT_ROUTES.GET_CHILDREN(this.highlightedLearningObject.id);
-    this.http.get(
-      childrenUri,
-      { headers: this.headers, withCredentials: true }
-    ).pipe(
-      take(1),
-      catchError(e => of(e))
-    ).subscribe(object => {
-      if (object && object.length) {
-        this.hasChildren = true;
-        this.children = object;
-      }
-    });
+    this.children = await this.learningObjectService.getLearningObjectChildren(this.highlightedLearningObject.id);
+    this.hasChildren = this.children.length > 0;
   }
 
   toggleState(renderFinalStage: boolean) {
@@ -91,9 +82,9 @@ export class ChangeAuthorComponent implements OnInit {
   }
 
   async changeAuthor() {
-    const author: User = await this.userService.getUser(this.highlightedLearningObject.author.username);
+    const author: User = await this.userService.getUser(this.highlightedLearningObject.author._username);
     this.authorshipService.changeAuthorship(
-      author,
+      author.userId,
       this.highlightedLearningObject.id,
       this.selectedAuthor.userId).then(
         () => {

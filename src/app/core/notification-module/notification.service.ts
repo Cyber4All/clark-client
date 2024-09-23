@@ -5,20 +5,24 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class NotificationsService {
-  userNotifications: any;
+export class NotificationService {
+  userNotifications: { notifications: any[], count: number };
   constructor(private http: HttpClient) { }
 
-  getNotifications(username: string): Promise<any> {
+  async getNotifications(username: string, page: number, limit: number = 20): Promise<{notifications: [], lastPage: number}> {
     return this.http
-      .get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username), {
+      .get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username, page, limit), {
         withCredentials: true,
       })
-      .toPromise();
+      .toPromise()
+      .then((response: any) => {
+        return { notifications: response.notifications ?? [], lastPage: response.lastPage };
+      }
+    );
   }
 
-  deleteNotification(username: string, notificationID: string) {
-    const deleteValue = this.http
+  async deleteNotification(username: string, notificationID: string): Promise<void> {
+    this.http
       .delete(
         NOTIFICATIONS_ROUTES.DELETE_NOTIFICATION(
           username,
@@ -29,17 +33,11 @@ export class NotificationsService {
         }
       )
       .toPromise();
-    this.getNotificationCount(username);
-    return deleteValue;
-  }
 
-  getNotificationCount(username: string) {
-    this.http
-      .get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username), {
+    this.http.get(NOTIFICATIONS_ROUTES.GET_NOTIFICATIONS(username, 1, 1), {
         withCredentials: true,
       })
-      .toPromise()
-      .then((val: any) => {
+      .toPromise().then((val: any) => {
         this.userNotifications = val;
       });
   }

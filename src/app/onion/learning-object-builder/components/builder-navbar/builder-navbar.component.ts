@@ -11,6 +11,7 @@ import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { LearningObjectService } from '../../../core/learning-object.service';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -56,7 +57,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     public validator: LearningObjectValidator,
     public store: BuilderStore,
     public learningObjectService: LearningObjectService,
-    private bundlingService: BundlingService
+    private bundlingService: BundlingService,
+    public fileService: FileService
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -170,8 +172,13 @@ export class BuilderNavbarComponent implements OnDestroy {
     if (this.adminMode && !leaveBuilder) {
       this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
     }
-    // Trigger new PDF generation
-    Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));
+    // Trigger new PDF generation only if the learning object id exists
+    // It may not present when opening the builder for the first time for
+    // a new learning object
+    if (this.learningObject.id) {
+      // This will also bundle the learning object after the README is updated
+      Promise.all(await this.fileService.updateReadme(this.learningObject.id));
+    }
     // Remove outcomes that have null text
     this.store.removeEmptyOutcomes();
     // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')

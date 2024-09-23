@@ -1,9 +1,19 @@
 version: 2.1
 
 orbs:
-  cyber4all: cyber4all/orb@2.1.7
+  cyber4all: cyber4all/orb@2.1.8
+  node: circleci/node@6.1.0
 
 workflows:
+  continuous-integration:
+    jobs:
+      - node/run:
+          npm-run: lint
+
+      # Tests building the project with production settings
+      - node/run:
+          npm-run: build:prod
+
   deploy-clark-service-refactor:
     when:
         equal: [clark-service-refactor, <<pipeline.git.branch>>]
@@ -14,6 +24,7 @@ workflows:
             - Slack
           bucket: "clark-client-staging"
           distribution_id: STAGING_CLOUDFRONT_ID
+          script: build:staging
 
   continuous-deployment:
     when:

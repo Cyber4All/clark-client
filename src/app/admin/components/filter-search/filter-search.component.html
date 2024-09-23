@@ -8,7 +8,7 @@
         >
         <span *ngIf="!startNextCheck">Filter By Relevancy Check Dates</span>
         </button>
-        <button 
+        <button
           #toggleTopicMenuElement
           class="button neutral filters-button"
           (activate)="toggleTopicMenu(true)"
@@ -30,7 +30,7 @@
               <li
                 *ngFor="let topic of topics"
                 [className]="topic.name"
-                (activate)="toggleTopicFilter(topic)"
+                (activate)="toggleTopicFilter([topic])"
               >
                 <div
                   *ngIf="filterTopics.has(topic.name)"
@@ -95,10 +95,10 @@
         >
           <div #contextMenu id="contextMenu" class="filter-status__container">
             <ul>
-              <li 
+              <li
                 *ngFor="let status of statuses"
                 [ngClass]="status"
-                (activate)="toggleStatusFilter(status)">
+                (activate)="toggleStatusFilter([status])">
                   <div *ngIf="filters.has(status)" class="indicator"></div>
                   <i [ngClass]="getStatusIcon(status)"></i> {{ status.replace('_', ' ') | titlecase }}
               </li>

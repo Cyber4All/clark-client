@@ -119,7 +119,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     public noteService: ToastrOvenService,
     private authService: AuthService,
     private learningObjectService: LearningObjectService,
-    private history: HistoryService
+    private history: HistoryService,
   ) { }
 
   ngOnInit() {
@@ -132,7 +132,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
         const cuid = routeParams.get('cuid');
         const version: number = +routeParams.get('version');
         const revision = this.route.snapshot.queryParamMap.get('revisionId');
-        const authorUsername = this.route.snapshot.queryParamMap.get('author');
 
         // if name parameter found, instruct store to fetch full learning object
         if (revision !== undefined && cuid) {
@@ -143,15 +142,13 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
           });
         } else if (cuid) {
           this.store.fetch(cuid, version).then(learningObject => {
+
             if (learningObject.status === LearningObject.Status.RELEASED) {
               this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
             } else {
               // redirect user to dashboard if the object is in the working stage
               if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
                 this.router.navigate(['onion/dashboard']);
-              } else if (revision) {
-                this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.version);
               } else {
                 this.setBuilderMode(learningObject);
               }
@@ -213,8 +210,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
    */
   private handleBuilderError(error: BUILDER_ERRORS) {
     const toasterTitle = 'Error!';
-    const toasterClass = 'bad';
-    const toasterIcon = 'far fa-times';
     switch (error) {
       case BUILDER_ERRORS.SERVICE_FAILURE:
         this.showServiceFailureModal = true;
