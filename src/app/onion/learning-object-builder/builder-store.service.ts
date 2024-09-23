@@ -266,7 +266,8 @@ export class BuilderStore {
         return this.refactoredLearningObjectService.getLearningObject(cuid, revisionId);
       } :
       async () => {
-        const value = this.uriRetriever.getLearningObject({ cuidInfo: { cuid, version } }, ['children', 'parents', 'materials', 'outcomes']);
+        const value = this.uriRetriever.getLearningObject({ cuidInfo: { cuid, version } },
+          ['children', 'parents', 'materials', 'outcomes']);
         return value.toPromise();
       };
 
