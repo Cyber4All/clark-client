@@ -40,9 +40,7 @@ export class FilterSearchComponent implements OnInit {
 
   @Input() adminOrEditor: boolean;
   @Input() showStatus: boolean;
-  @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
-  @Output() topicFilter = new EventEmitter<string[]>();
   @Output() filterQuery = new EventEmitter<{
     status: string[],
     topic: string[],
@@ -83,15 +81,6 @@ export class FilterSearchComponent implements OnInit {
 
     //check for params in the query and add them to the filter dropdown bars
     const qParams = this.route.parent.snapshot.queryParamMap;
-
-    /**
-     * TODO: refactor this to send a complete search query, see sc-32835
-     * at the first request instead of sending a request
-     * every time we emit an event on the toggle filter functions.
-     *
-     * this COULD be a cause of the client sending bad data back
-     * to the user, so just be aware.
-     */
 
     const queryTopics = qParams.getAll('topics');
     const queryStatuses = qParams.getAll('statuses');
@@ -316,7 +305,7 @@ export class FilterSearchComponent implements OnInit {
   filter() {
     // Emit the selected filters
     const filters = {
-       status:  Array.from(this.filters || []), 
+       status:  Array.from(this.filters || []),
        topic: Array.from(this.filterTopics || []),
        collection: this.selectedCollection ? this.selectedCollection.abvName : '',
       };
@@ -328,7 +317,7 @@ export class FilterSearchComponent implements OnInit {
    */
   clearStatusFilters() {
     this.filters.clear();
-    this.statusFilter.emit([]);
+    this.filter();
   }
 
   /**
@@ -338,12 +327,12 @@ export class FilterSearchComponent implements OnInit {
    */
   clearCollectionFilters() {
     this.setSelectedCollection(undefined);
-    this.collectionFilter.emit(undefined);
+    this.filter();
   }
 
   clearTopicFilters() {
     this.filterTopics.clear();
-    this.topicFilter.emit([]);
+    this.filter();
   }
 
   /**

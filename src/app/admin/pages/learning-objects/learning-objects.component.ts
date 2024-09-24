@@ -356,12 +356,10 @@ export class LearningObjectsComponent
   }
 
   handleFilterQuery(filters: { status: string[], topic: string[], collection: string }) {
-    // Call the learning object fucntions
-    setTimeout(() => {
-      this.getStatusFilteredLearningObjects(filters.status);
-      this.getCollectionFilteredLearningObjects(filters.collection);
-      this.getTopicsFilteredLearningObjects(filters.topic);
-    }, 0);
+    this.query = { status: filters.status, topics: filters.topic, collection: filters.collection, currPage: 1 };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
   }
   
     /**
