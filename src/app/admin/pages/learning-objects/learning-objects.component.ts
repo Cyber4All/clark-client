@@ -361,7 +361,7 @@ export class LearningObjectsComponent
 
     this.getLearningObjects();
   }
-  
+
     /**
      * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
      *
