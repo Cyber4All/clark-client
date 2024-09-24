@@ -12,6 +12,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
+
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
@@ -124,7 +125,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async loadLibrary() {
     try {
       this.loading = true;
-      const getLibraryResponse = await this.libraryService.getLibrary({page: this.currentPageNumber, limit: 10});
+      const getLibraryResponse = await this.libraryService.getLibrary({ page: this.currentPageNumber, limit: 10 });
 
       this.libraryItems = getLibraryResponse.libraryItems;
       this.lastPageNumber = getLibraryResponse.lastPage;
@@ -235,7 +236,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async removeItem() {
     try {
       await this.libraryService.removeFromLibrary(this.libraryItemIdToDelete);
-      this.libraryItems = (await this.libraryService.getLibrary({page: 1, limit: 10})).libraryItems;
+      this.libraryItems = (await this.libraryService.getLibrary({ page: 1, limit: 10 })).libraryItems;
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {

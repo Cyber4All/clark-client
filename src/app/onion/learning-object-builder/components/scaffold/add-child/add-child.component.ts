@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -28,7 +27,6 @@ export class AddChildComponent implements OnInit, OnDestroy {
   lengths = ['nanomodule', 'micromodule', 'module', 'unit', 'course'];
 
   constructor(
-    private learningObjectService: LearningObjectService,
     private searchLearningObjectService: SearchService,
     public auth: AuthService,
   ) {
@@ -56,17 +54,17 @@ export class AddChildComponent implements OnInit, OnDestroy {
     this.loading = true;
     const draftObjects = await this.searchLearningObjectService
       .getUsersLearningObjects(this.child.author.username, { ...filters, text: query })
-      .then((response: {learningObjects: LearningObject[], total: number}) => {
+      .then((response: { learningObjects: LearningObject[], total: number }) => {
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
         return response.learningObjects.filter((child: LearningObject) => {
           (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length));
-      });
+        });
       });
 
     const releasedObjects = await this.searchLearningObjectService
-      .getLearningObjects({...filters, text: query, childId: this.child.id } )
-      .then((response: { learningObjects: LearningObject[], total: number}) => {
+      .getLearningObjects({ ...filters, text: query, childId: this.child.id })
+      .then((response: { learningObjects: LearningObject[], total: number }) => {
         let { learningObjects } = response;
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
