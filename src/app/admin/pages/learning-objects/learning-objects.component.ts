@@ -355,6 +355,15 @@ export class LearningObjectsComponent
     value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
   }
 
+  handleFilterQuery(filters: { status: string[], topic: string[], collection: string }) {
+    // Call the learning object fucntions
+    setTimeout(() => {
+      this.getStatusFilteredLearningObjects(filters.status);
+      this.getCollectionFilteredLearningObjects(filters.collection);
+      this.getTopicsFilteredLearningObjects(filters.topic);
+    }, 0);
+  }
+  
     /**
      * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
      *

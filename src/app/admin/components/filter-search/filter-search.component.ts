@@ -43,6 +43,11 @@ export class FilterSearchComponent implements OnInit {
   @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
   @Output() topicFilter = new EventEmitter<string[]>();
+  @Output() filterQuery = new EventEmitter<{
+    status: string[],
+    topic: string[],
+    collection: string,
+  }>();
   @Output() relevancyCheck = new EventEmitter<{ start: string; end: string }>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -267,8 +272,7 @@ export class FilterSearchComponent implements OnInit {
         this.filters.delete(filter);
       }
     }
-
-    this.statusFilter.emit(Array.from(this.filters));
+    this.filter();
   }
 
   /**
@@ -288,8 +292,8 @@ export class FilterSearchComponent implements OnInit {
       this.clearCollectionFilters();
     } else {
       this.setSelectedCollection(filter);
-      this.collectionFilter.emit(filter);
     }
+    this.filter();
   }
 
   toggleTopicFilter(filters?: { name?: string; _id: string }[]) {
@@ -306,8 +310,18 @@ export class FilterSearchComponent implements OnInit {
         this.filterTopics.add(filter._id);
       }
     }
-    this.topicFilter.emit(Array.from(this.filterTopics));
+    this.filter();
   }
+
+  filter() {
+    // Emit the selected filters
+    const filters = {
+       status:  Array.from(this.filters || []), 
+       topic: Array.from(this.filterTopics || []),
+       collection: this.selectedCollection ? this.selectedCollection.abvName : '',
+      };
+      this.filterQuery.emit(filters);
+   }
 
   /**
    * Remove all applied status filters
