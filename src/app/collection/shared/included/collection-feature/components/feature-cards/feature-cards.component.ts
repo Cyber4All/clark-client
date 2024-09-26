@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CollectionService } from '../../../../../../core/collection-module/collections.service';
-import { AttributeService } from '../../core/attribute.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-collection-feature-cards',
@@ -20,18 +20,16 @@ export class FeatureCardsComponent implements OnInit {
   loading = true;
 
   constructor(
-    private attributeService: AttributeService,
-    private collectionService: CollectionService
+    private collectionService: CollectionService,
+    private learningObjectService: LearningObjectService,
     ) { }
 
   async ngOnInit() {
     this.loading = true;
     this.setColorScheme();
-    const hierarchy = await this.attributeService.getHierarchy(
-      this.learningObject.id
-    );
-    this.parents = hierarchy.parents;
-    this.children = hierarchy.children;
+
+    this.parents = await this.learningObjectService.getLearningObjectParents(this.learningObject.id);
+    this.children = await this.learningObjectService.getLearningObjectChildren(this.learningObject.id);
 
     this.setHierarchy();
     this.setDescription();

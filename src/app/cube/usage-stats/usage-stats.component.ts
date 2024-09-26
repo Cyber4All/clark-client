@@ -4,7 +4,7 @@ import { UsageStats, LearningObjectStats, UserMetrics } from '../shared/types/us
 import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
-import { LearningObjectService } from '../learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { MetricService } from '../../core/metric-module/metric.service';
 import { UtilityService } from '../../core/utility-module/utility.service';
 

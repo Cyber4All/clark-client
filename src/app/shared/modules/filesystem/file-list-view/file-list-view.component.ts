@@ -113,16 +113,12 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    * @param {LearningObject.Material.File} file
    * @memberof FileListViewComponent
    */
-  openFile(file: LearningObject.Material.File): void {
+  async openFile(file: LearningObject.Material.File): Promise<void> {
     const url = this.auth.isLoggedIn.value ? file.previewUrl : '';
     if (url) {
-      this.fileService.previewLearningObjectFile(url)
-        .then((previewUrl) => {
-          window.open(previewUrl, '_blank');
-        })
-        .catch((err) => {
- console.error(err);
-});
+      const previewUrl = await this.fileService.previewLearningObjectFile(url);
+      window.open(previewUrl, '_blank');
+      this.preview = true;
     } else {
       this.file = file;
       this.preview = false;

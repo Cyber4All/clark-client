@@ -5,7 +5,6 @@ import { catchError, timeout } from 'rxjs/operators';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 import { AuthService } from '../auth-module/auth.service';
-import { BUNDLING_ROUTES } from '../learning-object-module/bundling/bundling.routes';
 import { LIBRARY_ROUTES } from './library.routes';
 
 export interface LibraryItem { _id: string, savedBy: string, savedOn: string, learningObject: LearningObject }
@@ -134,7 +133,6 @@ export class LibraryService {
     if (!this.user) {
       return Promise.reject('User is undefined');
     }
-
     this.http
       .delete(
         LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
@@ -145,48 +143,6 @@ export class LibraryService {
       )
       .pipe(catchError((error) => this.handleError(error)))
       .toPromise();
-  }
-
-  /**
-   * Service function to download a learning object bundle.
-   * The call to download the bundle is made in @function downloadBundle()
-   *
-   * @param learningObjectId the mongo id of the learning object
-   */
-  learningObjectBundle(learningObjectId: string) {
-    // Show loading spinner
-    this._loading$.next(true);
-
-    // Url route for bundling
-    const bundleUrl = BUNDLING_ROUTES.BUNDLE_LEARNING_OBJECT(learningObjectId);
-    const downloadUrl = BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId);
-
-    this.http.head(bundleUrl, {
-      headers: this.headers,
-      withCredentials: true
-    }).pipe(
-      catchError((error) => {
-        this._loading$.next(false);
-        return this.handleError(error);
-      })
-    ).subscribe(
-      () => {
-        this.toaster.success('All Ready!', 'Your download will begin in a moment...');
-        this.downloadBundle(downloadUrl).then(
-          () => {
-            this._loading$.next(false);
-          },
-          (error) => {
-            this._loading$.next(false);
-            this.toaster.error('Download failed', error.message);
-          }
-        );
-      },
-      (error) => {
-        this._loading$.next(false);
-        this.toaster.error('Preparation failed', error.message);
-      }
-    );
   }
 
   /**

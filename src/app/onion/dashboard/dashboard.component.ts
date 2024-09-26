@@ -3,16 +3,16 @@ import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.
 import { NavigationEnd, ActivatedRoute, Router } from '@angular/router';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from '../core/learning-object.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { CollectionService } from 'app/core/collection-module/collections.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil, take } from 'rxjs/operators';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -81,6 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private navbar: NavbarService,
     private learningObjectService: LearningObjectService,
+    private searchService: SearchService,
     public auth: AuthService,
     private changelogService: ChangelogService,
     public notificationService: ToastrOvenService,
@@ -159,8 +160,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       text = filters;
     }
 
-    this.workingLearningObjects = await this.learningObjectService
-      .getDraftLearningObjects(this.auth.username, filters, text);
+    this.searchService.getUsersLearningObjects(this.auth.username, {
+      draftsOnly: true,
+      text,
+      ...filters
+    }).then((response: { learningObjects: LearningObject[], total: number }) => {
+      this.workingLearningObjects = response.learningObjects;
+    });
   }
 
   /**
@@ -170,8 +176,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param query
    */
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
-    this.releasedLearningObjects = await this.learningObjectService
-      .getLearningObjects(this.auth.username, {...filters, text});
+    this.searchService
+      .getLearningObjects({...filters, text})
+      .then((response: {learningObjects: LearningObject[], total: number}) => {
+        this.releasedLearningObjects = response.learningObjects;
+      });
 
     this.checkQueryParams$.next();
   }
@@ -225,7 +234,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.currentlySubmittingObject = event;
       this.submitToCollection = true;
     } else {
-      this.submissionService.submit({
+      this.submissionService.submitLearningObject({
         learningObjectId: event.id,
         collectionName: event.collection,
       })
@@ -248,7 +257,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
    * @param l {LearningObject} learning object to be unpublished
    */
   cancelSubmission(l: LearningObject): Promise<void> {
-    return this.submissionService.unsubmit(
+    return this.submissionService.unsubmitLearningObject(
       l.id,
       ).then(async () => {
       l.status = LearningObject.Status.UNRELEASED;

@@ -19,19 +19,4 @@ export const TOPICS_ROUTES = {
             learningObjectId
         )}/topics`;
     },
-    /**
-     * Request to delete a topic from a learning object
-     * @method DELETE
-     * @auth required
-     * @param username - The username of the learning object author
-     * @param learningObjectId - The id of the learning object
-     * @param topicId - The id of the topic
-     */
-    DELETE_TOPIC(username: string, learningObjectId: string, topicId: string) {
-        return `${environment.apiURL}/users/${encodeURIComponent(
-            username
-        )}/learning-objects/${encodeURIComponent(
-            learningObjectId
-        )}/topics/${encodeURIComponent(topicId)}`;
-    },
 };

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SubscriptionLike as ISubscription } from 'rxjs';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { ProfileService } from 'app/core/user-module/profiles.service';
 import { CollectionService } from 'app/core/collection-module/collections.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 @Component({
   selector: 'clark-user-profile',
   templateUrl: './user-profile.component.html',
@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
-    private profileService: ProfileService,
+    private learningObjectService: LearningObjectService,
     private collectionService: CollectionService
   ) { }
 
@@ -54,7 +54,7 @@ export class UserProfileComponent implements OnInit {
         // Await each learning object for a users profile
         const promises = collectionMeta.map(async (objectMeta) => {
           // Return a promise for the current learning object
-          return await this.profileService.fetchLearningObject(objectMeta.cuid, objectMeta.version);
+          return await this.learningObjectService.fetchLearningObject(objectMeta.cuid, objectMeta.version);
         });
         // Resolve all calls to retrieve a learning object
         await Promise.allSettled(promises).then(promise => {
