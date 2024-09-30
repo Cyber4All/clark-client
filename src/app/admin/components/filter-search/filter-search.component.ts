@@ -40,9 +40,12 @@ export class FilterSearchComponent implements OnInit {
 
   @Input() adminOrEditor: boolean;
   @Input() showStatus: boolean;
-  @Output() statusFilter = new EventEmitter<any[]>();
   @Output() collectionFilter = new EventEmitter<string>();
-  @Output() topicFilter = new EventEmitter<string[]>();
+  @Output() filterQuery = new EventEmitter<{
+    status: string[],
+    topic: string[],
+    collection: string,
+  }>();
   @Output() relevancyCheck = new EventEmitter<{ start: string; end: string }>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -78,15 +81,6 @@ export class FilterSearchComponent implements OnInit {
 
     //check for params in the query and add them to the filter dropdown bars
     const qParams = this.route.parent.snapshot.queryParamMap;
-
-    /**
-     * TODO: refactor this to send a complete search query, see sc-32835
-     * at the first request instead of sending a request
-     * every time we emit an event on the toggle filter functions.
-     *
-     * this COULD be a cause of the client sending bad data back
-     * to the user, so just be aware.
-     */
 
     const queryTopics = qParams.getAll('topics');
     const queryStatuses = qParams.getAll('statuses');
@@ -267,8 +261,7 @@ export class FilterSearchComponent implements OnInit {
         this.filters.delete(filter);
       }
     }
-
-    this.statusFilter.emit(Array.from(this.filters));
+    this.filter();
   }
 
   /**
@@ -288,8 +281,8 @@ export class FilterSearchComponent implements OnInit {
       this.clearCollectionFilters();
     } else {
       this.setSelectedCollection(filter);
-      this.collectionFilter.emit(filter);
     }
+    this.filter();
   }
 
   toggleTopicFilter(filters?: { name?: string; _id: string }[]) {
@@ -306,15 +299,25 @@ export class FilterSearchComponent implements OnInit {
         this.filterTopics.add(filter._id);
       }
     }
-    this.topicFilter.emit(Array.from(this.filterTopics));
+    this.filter();
   }
+
+  filter() {
+    // Emit the selected filters
+    const filters = {
+       status:  Array.from(this.filters || []),
+       topic: Array.from(this.filterTopics || []),
+       collection: this.selectedCollection ? this.selectedCollection.abvName : '',
+      };
+      this.filterQuery.emit(filters);
+   }
 
   /**
    * Remove all applied status filters
    */
   clearStatusFilters() {
     this.filters.clear();
-    this.statusFilter.emit([]);
+    this.filter();
   }
 
   /**
@@ -324,12 +327,12 @@ export class FilterSearchComponent implements OnInit {
    */
   clearCollectionFilters() {
     this.setSelectedCollection(undefined);
-    this.collectionFilter.emit(undefined);
+    this.filter();
   }
 
   clearTopicFilters() {
     this.filterTopics.clear();
-    this.topicFilter.emit([]);
+    this.filter();
   }
 
   /**
