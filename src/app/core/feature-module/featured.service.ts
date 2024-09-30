@@ -8,7 +8,10 @@ import {
 import { FEATURED_ROUTES } from './featured.routes';
 import { catchError } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';
-import { ProfileService } from '../user-module/profiles.service';
+import { Query } from 'app/interfaces/query';
+import * as querystring from 'querystring';
+import { SEARCH_ROUTES } from '../learning-object-module/search/search.routes';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +29,7 @@ export class FeaturedObjectsService {
 
   constructor(
     private http: HttpClient,
-    private profileService: ProfileService,
+    private learningObjectService: LearningObjectService
   ) {}
 
   get featuredObjects() {
@@ -68,7 +71,7 @@ export class FeaturedObjectsService {
         // Grabs the complete Learning Object from the LO database
         // For some reason, the method itself returns the full Learning Object,
         //    but when entered into the array it turns into a Promise.
-        const object = await this.profileService.fetchLearningObject(
+        const object = await this.learningObjectService.fetchLearningObject(
           learningObject.cuid,
           learningObject.version,
         );
@@ -143,6 +146,34 @@ export class FeaturedObjectsService {
         )
         .toPromise();
     }
+  }
+
+  /**
+   * Fetches Array of Learning Objects that are not currently featured
+   *
+   * @returns {Promise<LearningObject[]>}
+   * @memberof LearningObjectService
+   */
+  getNotFeaturedLearningObjects(
+    query?: Query,
+  ): Promise<{ learningObjects: LearningObject[]; total: number }> {
+    let route = '';
+    if (query) {
+      const queryClone = Object.assign({}, query);
+      const queryString = querystring.stringify(queryClone);
+      route =
+        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryString);
+    } else {
+      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS();
+    }
+
+    return this.http
+      .get(route)
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((response: any) => {
+        return { learningObjects: response.objects, total: response.total };
+      });
   }
 
   /** COLLECTION FEATURED ROUTES */

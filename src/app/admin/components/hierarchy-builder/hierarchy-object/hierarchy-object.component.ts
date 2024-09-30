@@ -1,9 +1,9 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hierarchy.service';
+import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, Validators } from '@angular/forms';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Observable } from 'rxjs';
 import { LearningObjectNode } from '../tree-datasource';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class HierarchyObjectComponent implements OnInit {
     { validators: [Validators.required, Validators.minLength(2), this.forbiddenNameValidator()], updateOn: 'blur' }
   );
   constructor(
-    private hierarchyService: HierarchyService,
+    private searchService: SearchService,
     private toaster: ToastrOvenService,
   ) { }
 
@@ -104,17 +104,23 @@ export class HierarchyObjectComponent implements OnInit {
   forbiddenNameValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {
       if (this.node) {
-        return this.hierarchyService.checkName(this.username, this.node.name).then(val => {
-          if (val === true) {
-            this.toaster.error(
-              'Error',
-              'Name already exists!'
-            );
-            return { forbiddenName: { value: val } };
-          } else {
-            return;
-          }
-        });
+        return this.searchService.getUsersLearningObjects(this.username, { text: control.value })
+          .then((response: { learningObjects: any[]; total: number }) => {
+            const possibleMatches = response.learningObjects.map(object => {
+              return object.name;
+            });
+
+            // If the name is already taken, return an error
+            if(possibleMatches.includes(control.value)) {
+              this.toaster.error(
+                'Error',
+                'Name already exists!'
+              );
+              return { forbiddenName: { value: control.value } };
+            } else {
+              return;
+            }
+          });
       }
     };
   }

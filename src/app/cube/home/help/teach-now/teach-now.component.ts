@@ -28,7 +28,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
 
   constructor(
     private topicsService: TopicsService,
-    private searchService: SearchService,
+    private searchlearningObjectService: SearchService,
     private router: Router,
   ) { }
 
@@ -118,7 +118,7 @@ export class TeachNowComponent implements OnInit, AfterViewInit {
   getObjects() {
     this.loading = true;
     this.objects = this.loadingObjects;
-    this.searchService.searchLearningObjects({
+    this.searchlearningObjectService.getLearningObjects({
       limit: 4,
       currPage: 1,
       status: ['released'],

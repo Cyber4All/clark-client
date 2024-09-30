@@ -388,7 +388,14 @@ export class AuthService {
    *
    * @param user the user's data from the registration component
    */
-  async register(user: any): Promise<User> {
+  async register(user: {
+    username: string,
+    firstname: string,
+    lastname: string,
+    email: string,
+    organization: string,
+    password: string,
+  }): Promise<User> {
     try {
       const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http

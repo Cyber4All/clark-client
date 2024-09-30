@@ -24,6 +24,7 @@ export class Collection502Component implements OnInit {
 
   constructor(
     private navbarService: NavbarService,
+    private searchLearningObjectService: SearchService,
     private collectionService: CollectionService,
     private titleService: Title,
     private searchService: SearchService,
@@ -57,7 +58,7 @@ export class Collection502Component implements OnInit {
       const {
         learningObjects,
         total
-      } = await this.searchService.searchLearningObjects(query);
+      } = await this.searchLearningObjectService.getLearningObjects(query);
       this.learningObjects = learningObjects;
       this.loading = false;
     } catch (e) {

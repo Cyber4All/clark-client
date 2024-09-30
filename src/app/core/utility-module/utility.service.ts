@@ -7,11 +7,21 @@ import { Observable, throwError } from 'rxjs';
 import { Blog } from 'app/components/blogs/types/blog';
 import { catchError } from 'rxjs/operators';
 
+export class Downtime {
+  constructor(public isDown: boolean, public message: string) { }
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class UtilityService {
   constructor(private http: HttpClient, private auth: AuthService) { }
+
+  private _downtime: Downtime;
+
+  get message() {
+    return this._downtime;
+  }
 
   /**
    * Gets all blogs from the database
@@ -100,6 +110,18 @@ export class UtilityService {
           }
         );
     });
+  }
+
+  getDowntime(): Promise<Downtime> {
+    return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
+      .pipe(
+
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then((val: Downtime) => {
+        return val;
+      });
   }
 
   public openCard() {

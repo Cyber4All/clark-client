@@ -24,7 +24,10 @@ export class FeaturedComponent implements OnInit {
   loading = false;
   collectionName: string;
 
-  constructor(private featureService: FeaturedObjectsService, private searchService: SearchService) {
+  constructor(
+    private searchLearningObjectService: SearchService,
+    private featureService: FeaturedObjectsService
+  ) {
     this.learningObjects = this.learningObjects.fill(new LearningObject());
   }
 
@@ -50,7 +53,7 @@ export class FeaturedComponent implements OnInit {
     this.loading = true;
 
     try {
-      this.learningObjects = (await this.searchService.searchLearningObjects(
+      this.learningObjects = (await this.searchLearningObjectService.getLearningObjects(
         this.query
       )).learningObjects;
       this.loading = false;

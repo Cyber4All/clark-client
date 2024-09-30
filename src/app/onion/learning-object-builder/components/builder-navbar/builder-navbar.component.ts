@@ -9,7 +9,8 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
 import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
-import { LearningObjectService } from '../../../core/learning-object.service';
+import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -54,7 +55,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     private history: HistoryService,
     public validator: LearningObjectValidator,
     public store: BuilderStore,
-    public learningObjectService: LearningObjectService
+    private bundlingService: BundlingService,
+    public fileService: FileService
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -173,12 +175,16 @@ export class BuilderNavbarComponent implements OnDestroy {
     // a new learning object
     if (this.learningObject.id) {
       // This will also bundle the learning object after the README is updated
-      Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));
+      Promise.all(await this.fileService.updateReadme(this.learningObject.id));
     }
     // Remove outcomes that have null text
     this.store.removeEmptyOutcomes();
     // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
+      // If any data has be changed on the LO, then we need to rebundle
+      if (this.store.touched) {
+        this.bundlingService.bundleLearningObject(this.learningObject.id);
+      }
       if (leaveBuilder) {
         this.historySnapshot.rewind('/onion/dashboard');
       }

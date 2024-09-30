@@ -10,7 +10,7 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
 })
 export class CollectionLearningObjectListComponent implements OnInit {
   @Input() collectionName: string;
-  constructor(private searchService: SearchService) {}
+  constructor(private searchLearningObjectService: SearchService) { }
 
   learningObjects: LearningObject[];
   query: Query = {
@@ -24,7 +24,7 @@ export class CollectionLearningObjectListComponent implements OnInit {
 
   async ngOnInit() {
     this.query.collection = this.collectionName;
-    this.searchService.searchLearningObjects(this.query).then((res) => {
+    this.searchLearningObjectService.getLearningObjects(this.query).then((res) => {
       this.learningObjects = res.learningObjects;
     });
   }

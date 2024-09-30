@@ -20,7 +20,6 @@ import { LearningObjectValidator } from './validators/learning-object.validator'
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from '../core/learning-object.service';
 import { HistorySnapshot, HistoryService } from 'app/core/client-module/history.service';
 
 export const builderTransitions = trigger('builderTransition', [
@@ -118,7 +117,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private validator: LearningObjectValidator,
     public noteService: ToastrOvenService,
     private authService: AuthService,
-    private learningObjectService: LearningObjectService,
     private history: HistoryService,
   ) { }
 
@@ -149,9 +147,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
               // redirect user to dashboard if the object is in the working stage
               if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
                 this.router.navigate(['onion/dashboard']);
-              } else if (revision) {
-                this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.version);
               } else {
                 this.setBuilderMode(learningObject);
               }

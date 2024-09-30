@@ -1,4 +1,3 @@
-import { LearningObjectService } from 'app/onion/core/learning-object.service';
 import { environment } from '../../../../environments/environment';
 
 export const SUBMISSION_ROUTES = {

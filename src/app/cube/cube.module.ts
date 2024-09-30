@@ -7,9 +7,6 @@ import { CommonModule } from '@angular/common';
 // Routes
 import { CubeRoutingModule } from './cube.routing';
 
-// Services
-import { LearningObjectService } from './learning-object.service';
-
 // Modules
 import { CubeCoreModule } from './core/cube-core.module';
 import { CubeSharedModule } from './shared/cube-shared.module';
@@ -111,6 +108,5 @@ import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/ph
     MatExpansionModule,
     HomeModule
   ],
-  providers: [LearningObjectService]
 })
 export class CubeModule { }

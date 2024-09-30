@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { LearningObject } from '@entity';
 import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Query } from 'app/interfaces/query';
 import {
   CdkDragDrop,
@@ -23,7 +22,6 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
   styleUrls: ['./featured.component.scss'],
-  providers: [LearningObjectService],
 })
 export class FeaturedComponent implements OnInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
@@ -111,15 +109,10 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
   async getLearningObjects() {
-    this.searchService
-      .searchLearningObjects(this.query, {
-        handleStandardOutcomes: false,
-        mapToLearningObjectInstance: false,
-      })
-      .then((objects) => {
-        this.learningObjects = objects.learningObjects;
-        this.lastPage = Math.ceil(objects.total / 5);
-      });
+    this.searchService.getLearningObjects(this.query).then((objects) => {
+      this.learningObjects = objects.learningObjects;
+      this.lastPage = Math.ceil(objects.total / 5);
+    });
   }
 
   /**

@@ -36,8 +36,8 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   @Output() learningObjects: EventEmitter<any> = new EventEmitter(); // Objects selected
 
   constructor(
-    private differs: IterableDiffers,
-    private searchService: SearchService,
+    private searchLearningObjectService: SearchService,
+    private differs: IterableDiffers
   ) {
     this.differ = this.differs.find([]).create(null);
   }
@@ -77,7 +77,8 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   async findObjects(query: string) {
     if (query && query !== '') {
       // Search for learning objects
-      await this.searchService.searchLearningObjects({text: query})
+      await this.searchLearningObjectService
+        .getLearningObjects({text: query})
         .then( (results: {learningObjects: LearningObject[], total: number}) => {
           const assignedIds = this.assignedObjects.map(obj => obj.id);
           const filteredObjects: LearningObject[] = [];

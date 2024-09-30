@@ -18,10 +18,10 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { takeUntil } from 'rxjs/operators';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { Router } from '@angular/router';
-import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
-import { HttpErrorResponse } from '@angular/common/http';
+import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -82,8 +82,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private collectionService: CollectionService,
     private router: Router,
-    private learningObjectService: LearningObjectService,
-    private dropdowns: NavbarDropdownService
+    private dropdowns: NavbarDropdownService,
+    private bundlingService: BundlingService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -99,7 +99,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.url = this.buildLocation();
     // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
     await this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid, version: this.learningObject.version });
-    this.saved = this.libraryService.has(this.learningObject);
+    this.saved = this.libraryService.has(this.learningObject.id);
     this.getCollection();
     this.libraryService.loaded
       .subscribe(val => {
@@ -113,7 +113,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
   get mapAndTag() {
     const untaggable = this.learningObject.status === LearningObject.Status.RELEASED
-                              || this.learningObject.status === LearningObject.Status.UNRELEASED;
+      || this.learningObject.status === LearningObject.Status.UNRELEASED;
     if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor && !untaggable) {
       const privileges = ['admin', 'editor', 'mapper'];
       if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
@@ -144,7 +144,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
       );
     }
     if (!this.userIsAuthor && this.isReleased) {
-      this.saved = this.libraryService.has(this.learningObject);
+      this.saved = this.libraryService.has(this.learningObject.id);
 
       if (!this.saved) {
         try {
@@ -176,7 +176,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   async toggleBundle() {
     this.toaster.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
-    await this.learningObjectService.triggerBundle(this.learningObject.id);
+    await this.bundlingService.bundleLearningObject(this.learningObject.id);
   }
 
 
