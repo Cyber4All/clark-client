@@ -6,6 +6,7 @@ import { LearningObject } from '../../../entity/learning-object/learning-object'
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 import { AuthService } from '../auth-module/auth.service';
 import { LIBRARY_ROUTES } from './library.routes';
+import { environment } from '@env/environment';
 
 export interface LibraryItem { _id: string, savedBy: string, savedOn: string, learningObject: LearningObject }
 
@@ -153,7 +154,7 @@ export class LibraryService {
   async downloadBundle(url: string): Promise<void> {
     return this.http.get(
       url, {
-      responseType: 'blob',
+      responseType: 'json',
       observe: 'response',
       headers: this.headers,
       withCredentials: true,
@@ -165,27 +166,13 @@ export class LibraryService {
         })
       )
       .toPromise()
-      .then((response: HttpResponse<Blob>) => {
-        // Get the content disposition header from the response
-        const contentDisposition = response.headers.get('content-disposition');
-        // Get the blob from the response
-        const blob = response.body;
-        // Validate that the blob is not empty
-        if (!blob) {
-          throw this.handleError(new HttpErrorResponse({ error: 'No content in response body', status: 500 }));
+      .then((response: HttpResponse<{url: string}>) => {
+        const { url } = response.body;
+        if (!url) {
+          throw this.handleError(new HttpErrorResponse({ error: 'No URL for content download', status: 500 }));
         }
-        // Create an element on the DOM to download the zip file
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        // REQUIRED: Set the download attribute to the name of the file
-        link.download = this.getBundleName(contentDisposition);
-        document.body.appendChild(link);
-        // Trigger the download
-        link.click();
-        // Remove the element from the DOM
-        document.body.removeChild(link);
-        // Revoke the object URL to prevent memory leaks
-        window.URL.revokeObjectURL(link.href);
+
+        window.open(url);
       });
   }
 
