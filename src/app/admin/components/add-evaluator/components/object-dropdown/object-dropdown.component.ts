@@ -9,9 +9,10 @@ import {
   Input,
 } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
+
 @Component({
   selector: 'clark-object-dropdown',
   templateUrl: './object-dropdown.component.html',

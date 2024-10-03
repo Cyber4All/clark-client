@@ -10,10 +10,7 @@ import { Query } from 'app/interfaces/query';
   providedIn: 'root',
 })
 export class SearchService {
-
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Fetches Array of Learning Objects
@@ -37,8 +34,7 @@ export class SearchService {
         ).map((o) => o['id']);
       }
       const queryString = new URLSearchParams(queryClone).toString();
-      route =
-        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryString);
+      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryString);
     } else {
       route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS();
     }
@@ -56,13 +52,23 @@ export class SearchService {
       });
   }
 
-  getUsersLearningObjects(username: string, query?: any): Promise<{learningObjects: LearningObject[], total: number}> {
+  getUsersLearningObjects(
+    username: string,
+    query?: any,
+  ): Promise<{ learningObjects: LearningObject[]; total: number }> {
     return this.http
-      .get(SEARCH_ROUTES.GET_USER_LEARNING_OBJECTS(username, query), { withCredentials: true })
+      .get(SEARCH_ROUTES.GET_USER_LEARNING_OBJECTS(username, query), {
+        withCredentials: true,
+      })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((response: { objects: any[], total: number}) => {
-        return {learningObjects: response.objects.map((learningObject) => new LearningObject(learningObject)), total: response.total};
+      .then((response: { objects: any[]; total: number }) => {
+        return {
+          learningObjects: response.objects.map(
+            (learningObject) => new LearningObject(learningObject),
+          ),
+          total: response.total,
+        };
       });
   }
 

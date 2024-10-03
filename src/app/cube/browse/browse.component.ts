@@ -78,7 +78,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private cd: ChangeDetectorRef,
-    private navService: NavbarService
+    private navService: NavbarService,
+    private searchService: SearchService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();

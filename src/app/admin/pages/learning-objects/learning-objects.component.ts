@@ -77,13 +77,13 @@ export class LearningObjectsComponent
   allSelected = false;
 
   constructor(
-    private searchService: SearchService,
     private route: ActivatedRoute,
     private router: Router,
     private toaster: ToastrOvenService,
     private auth: AuthService,
     private cd: ChangeDetectorRef,
     private userService: UserService,
+    private searchLearningObjectService: SearchService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -219,7 +219,7 @@ export class LearningObjectsComponent
       this.loading = true;
 
       if (this.query.username && this.query.username.length > 0) {
-        await this.searchService
+        await this.searchLearningObjectService
           .getUsersLearningObjects(this.query.username, {
             ...this.query,
             })
@@ -242,7 +242,7 @@ export class LearningObjectsComponent
             this.loading = false;
           });
       } else {
-        await this.searchService
+        await this.searchLearningObjectService
           .getLearningObjects(this.query)
           .then((val) => {
             this.learningObjects = val.learningObjects;

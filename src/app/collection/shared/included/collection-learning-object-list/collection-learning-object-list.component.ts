@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { OrderBy, Query, SortType } from 'app/interfaces/query';
 import { LearningObject } from 'entity/learning-object/learning-object';
-
-
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-collection-learning-object-list',
