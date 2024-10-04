@@ -178,7 +178,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   async getReleasedLearningObjects(filters?: any, text?: string): Promise<void> {
     this.searchService
       .getUsersLearningObjects(this.auth.username, {
-        ...filters, 
+        ...filters,
         text
       }).then((response: {learningObjects: LearningObject[], total: number}) => {
         this.releasedLearningObjects = response.learningObjects;
