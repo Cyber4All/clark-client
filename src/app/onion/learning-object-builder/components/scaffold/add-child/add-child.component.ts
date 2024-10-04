@@ -62,20 +62,8 @@ export class AddChildComponent implements OnInit, OnDestroy {
         });
       });
 
-    const releasedObjects = await this.searchLearningObjectService
-      .getLearningObjects({ ...filters, text: query, childId: this.child.id })
-      .then((response: { learningObjects: LearningObject[], total: number }) => {
-        let { learningObjects } = response;
-        const indx = this.lengths.indexOf(this.child.length);
-        const childrenLengths = this.lengths.slice(0, indx);
-        learningObjects = learningObjects.filter(
-          child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length))
-        );
-        return learningObjects;
-      });
-
     this.loading = false;
-    return [...draftObjects, ...releasedObjects];
+    return draftObjects;
   }
   /**
    * Takes the index of the LO within the array and emits it to the parent
