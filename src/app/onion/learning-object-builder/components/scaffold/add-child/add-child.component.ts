@@ -53,7 +53,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
   async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
     this.loading = true;
     const draftObjects = await this.searchLearningObjectService
-      .getUsersLearningObjects(this.child.author.username, { ...filters, text: query })
+      .getUsersLearningObjects(this.child.author.username, { ...filters, text: query ?? '' })
       .then((response: { learningObjects: LearningObject[], total: number }) => {
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
@@ -63,7 +63,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
       });
 
     const releasedObjects = await this.searchLearningObjectService
-      .getLearningObjects({ ...filters, text: query, childId: this.child.id })
+      .getLearningObjects({ ...filters, text: query ?? '', childId: this.child.id })
       .then((response: { learningObjects: LearningObject[], total: number }) => {
         let { learningObjects } = response;
         const indx = this.lengths.indexOf(this.child.length);
