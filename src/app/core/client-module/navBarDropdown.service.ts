@@ -38,7 +38,8 @@ export class NavbarDropdownService {
     {name: 'Task Tool', link: 'https://tasktool.clark.center'},
     {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'},
     {name: 'CPNC Competency Constructor', link: 'https://cybercompetencies.com'},
-    {name: 'Competency Library', link: 'https://lib.cybercompetencies.com'}
+    {name: 'Competency Library', link: 'https://lib.cybercompetencies.com'},
+    {name: 'Curriculum Task Force', link: 'https://cyberedtaskforce.org'}
     ];
     public topics = new BehaviorSubject<Topic[]>([]);
     public topicSelection = new BehaviorSubject<Topic>({ _id: '', name: '' });
