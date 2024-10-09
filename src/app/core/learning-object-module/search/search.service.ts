@@ -5,11 +5,14 @@ import { catchError } from 'rxjs/operators';
 import { LearningObject } from '@entity';
 import { throwError } from 'rxjs';
 import { Query } from 'app/interfaces/query';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
+
+  needsChange$: Subject<void> = new Subject();
 
   constructor(
     private http: HttpClient
@@ -56,13 +59,13 @@ export class SearchService {
       });
   }
 
-  getUsersLearningObjects(username: string, query?: any): Promise<{learningObjects: LearningObject[], total: number}> {
+  getUsersLearningObjects(username: string, query?: any): Promise<{ learningObjects: LearningObject[], total: number }> {
     return this.http
       .get(SEARCH_ROUTES.GET_USER_LEARNING_OBJECTS(username, query), { withCredentials: true })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((response: { objects: any[], total: number}) => {
-        return {learningObjects: response.objects.map((learningObject) => new LearningObject(learningObject)), total: response.total};
+      .then((response: { objects: any[], total: number }) => {
+        return { learningObjects: response.objects.map((learningObject) => new LearningObject(learningObject)), total: response.total };
       });
   }
 
@@ -74,5 +77,9 @@ export class SearchService {
       // API returned error
       return throwError(error);
     }
+  }
+
+  registerChange() {
+    this.needsChange$.next();
   }
 }
