@@ -167,8 +167,14 @@ export class LibraryService {
       )
       .toPromise()
       .then((response: HttpResponse<{url: string}>) => {
+        /**
+         * We get the pre-signed download URL from the response body, check if it's empty,
+         * then open the download URL in a new tab and begin downloading the bundle from S3.
+         */
         const { url } = response.body;
         if (!url) {
+          // Ideally we should NEVER reach this null case, or else something has gone
+          // really wrong with S3 or clark-service, as we would 404 when an object does not exist.
           throw this.handleError(new HttpErrorResponse({ error: 'No URL for content download', status: 500 }));
         }
 
