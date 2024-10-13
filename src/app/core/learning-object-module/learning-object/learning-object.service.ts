@@ -336,11 +336,11 @@ export class LearningObjectService {
    * @param children the children to be had
    * @returns
    */
-  async addChildren(username: string, object: any, children): Promise<any> {
+  async addChildren(username: string, object: any, childrenIds): Promise<any> {
     return await this.http.post(
-      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_CHILDREN(object.id),
+      LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_CHILDREN(object._id),
       {
-        children
+        childrenIds
       },
       {
         withCredentials: true,
