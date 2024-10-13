@@ -105,10 +105,8 @@ export class HierarchyBuilderComponent implements OnInit {
       childrenIds.push(obj._id);
     }
 
-    let parentId = this.parent.id;
     if (node.name !== this.parent.name) {
       const obj = await this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
-      parentId = obj._id;
       finalObj = obj;
     }
 
