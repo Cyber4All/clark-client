@@ -11,6 +11,7 @@
     <ng-container *ngIf="!loading; else loadingTemplate">
       <clark-changelog-list *ngIf="changelogs; else emptyTemplate"
         [changelogs] = "changelogs?.logs"
+        [learningObject] = "learningObject"
       ></clark-changelog-list>
     </ng-container>
   </div>

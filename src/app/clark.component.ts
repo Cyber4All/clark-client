@@ -1,19 +1,25 @@
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Component, OnInit, HostListener, ViewContainerRef } from '@angular/core';
-import { AuthService } from './core/auth.service';
-import { LibraryService } from './core/library.service';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ViewContainerRef,
+} from '@angular/core';
+import { AuthService } from './core/auth-module/auth.service';
+import { LibraryService } from './core/library-module/library.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
 
-import { HistoryService } from './core/history.service';
+import { HistoryService } from './core/client-module/history.service';
 import { filter } from 'rxjs/operators';
 import { LearningObject } from '../entity/learning-object/learning-object';
-import { Downtime, MessagesService } from './core/messages.service';
+import { Downtime } from './core/utility-module/utility.service';
 import { environment } from '@env/environment';
 import { ToastrOvenService } from './shared/modules/toaster/notification.service';
-import { CookieAgreementService } from './core/cookie-agreement.service';
-import { SubscriptionAgreementService } from './core/subscription-agreement.service';
+import { CookieAgreementService } from './core/auth-module/cookie-agreement.service';
+import { SubscriptionAgreementService } from './core/utility-module/subscription-agreement.service';
 import { CookieService } from 'ngx-cookie-service';
+import { UtilityService } from './core/utility-module/utility.service';
 
 @Component({
   selector: 'clark-root',
@@ -79,19 +85,19 @@ export class ClarkComponent implements OnInit {
     private titleService: Title,
     private route: ActivatedRoute,
     private _: HistoryService,
-    private messages: MessagesService,
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
     private cookieAgreement: CookieAgreementService,
     private subscriptionAgreement: SubscriptionAgreementService,
     private cookies: CookieService,
+    private utilityService: UtilityService
   ) {
     this.isSupportedBrowser = !(/msie\s|trident\/|edge\//i.test(window.navigator.userAgent));
     !this.isSupportedBrowser ? this.router.navigate(['/unsupported']) :
-      this.authService.isLoggedIn.subscribe(val => {
-        if (val) {
-          this.libraryService.updateUser();
-          this.libraryService.getLibrary();
+      this.authService.isLoggedIn.subscribe((value: boolean) => {
+        // Loads the user's library if they are logged in
+        if (value) {
+          this.libraryService.getLibrary({});
         }
       });
 
@@ -109,26 +115,26 @@ export class ClarkComponent implements OnInit {
     this.toaster.init(this.view);
     this.route.queryParams.subscribe(() => {
       if (this.route.snapshot.queryParams.err) {
-        this.toaster.error( 'SSO Error', decodeURIComponent(this.route.snapshot.queryParams.err));
+        this.toaster.error('SSO Error', decodeURIComponent(this.route.snapshot.queryParams.err));
       }
     });
   }
 
   ngOnInit(): void {
     if (environment.production) {
-      this.messages.getDowntime().then(down => {
+      this.utilityService.getDowntime().then(down => {
         this.downtime = down;
       });
       // Determine if the application is currently under maintenance
       setInterval(async () => {
-        this.messages.getDowntime().then(down => {
+        this.utilityService.getDowntime().then(down => {
           this.downtime = down;
         });
       }, 300000); // 5 min interval
       // check to see if the current version is behind the latest verison
       setInterval(async () => {
         try {
-          await this.authService.checkClientVersion();
+          await this.utilityService.checkClientVersion();
         } catch (e) {
           this.errorMessage = e.error.split('.');
           this.isOldVersion = true;
@@ -143,7 +149,7 @@ export class ClarkComponent implements OnInit {
       const redirect = localStorage.getItem('ssoRedirect');
       this.router.navigateByUrl(redirect);
       localStorage.removeItem('ssoRedirect');
-    } else if(localStorage.getItem('ssoRedirect')) {
+    } else if (localStorage.getItem('ssoRedirect')) {
       localStorage.removeItem('ssoRedirect');
     }
 
@@ -201,8 +207,8 @@ export class ClarkComponent implements OnInit {
           }
           // Determines if the route is to the users profile
           if (activeRoute.snapshot.params.username) {
-              data = activeRoute.snapshot.params.username;
-          // if not to users profile sets data to the title in the route
+            data = activeRoute.snapshot.params.username;
+            // if not to users profile sets data to the title in the route
           } else {
             data = activeRoute.snapshot.data.title;
           }

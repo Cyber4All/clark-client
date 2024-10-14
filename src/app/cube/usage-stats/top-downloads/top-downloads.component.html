@@ -6,7 +6,7 @@
           <div [ngClass]="'length ' + lo.length">
             {{ lo.length | titlecase }}
           </div>
-          <a class="name" [routerLink]="['/details', lo.author.username, lo.cuid]">
+          <a class="name" [routerLink]="['/details', lo.author.username, lo.cuid, lo.version]">
             {{ lo.name }}
           </a>
           <div class="count">

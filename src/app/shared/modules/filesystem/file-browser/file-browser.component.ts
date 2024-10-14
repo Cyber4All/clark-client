@@ -138,7 +138,12 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
    */
   private subToFolderMeta(): void {
     this.folderMeta$.pipe(takeUntil(this.killSub$)).subscribe((folders) => {
-      this.linkFolderMeta(folders);
+      // Associate folder with meta data if it exists
+      // When creating a new learning object, there will be no folders
+      // and we don't want to throw an error with 'linkFolderMeta'
+      if (folders) {
+        this.linkFolderMeta(folders);
+      }
     });
   }
 

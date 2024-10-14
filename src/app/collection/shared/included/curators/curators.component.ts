@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CollectionService } from 'app/core/collection.service';
+import { UserService } from 'app/core/user-module/user.service';
 
 @Component({
   selector: 'clark-curators',
@@ -10,10 +10,12 @@ export class CuratorsComponent implements OnInit {
   @Input() collectionName: string;
   curators: any;
 
-  constructor(private collectionService: CollectionService) { }
+  constructor(private userService: UserService) { }
 
   async ngOnInit(): Promise<void> {
-    this.curators = await this.collectionService.getCollectionCuratorsInfo(this.collectionName);
+    this.curators = await this.userService.searchUsers({
+      accessGroups: [`curator@${this.collectionName}`]
+    });
   }
 
 }

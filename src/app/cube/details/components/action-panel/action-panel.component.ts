@@ -1,23 +1,27 @@
-import { Component,
-        ElementRef,
-        HostListener,
-        Input, OnDestroy,
-        OnInit,
-        Renderer2,
-        ViewChild,
-        ChangeDetectionStrategy,
-        ChangeDetectorRef} from '@angular/core';
-import { LearningObject } from '@entity';
-import { AuthService } from 'app/core/auth.service';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input, OnDestroy,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef
+} from '@angular/core';
+import { LearningObject } from '../../../../../entity/learning-object/learning-object';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { Subject } from 'rxjs';
-import { LibraryService } from 'app/core/library.service';
+import { LibraryService } from 'app/core/library-module/library.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { Router } from '@angular/router';
-import { LearningObjectService } from '../../../../../app/onion/core/learning-object.service';
-import { NavbarDropdownService } from '../../../../../app/core/navBarDropdown.service';
+import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
+import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
+import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+
 
 @Component({
   selector: 'cube-details-action-panel',
@@ -78,8 +82,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private changeDetectorRef: ChangeDetectorRef,
     private collectionService: CollectionService,
     private router: Router,
-    private learningObjectService: LearningObjectService,
-    private dropdowns: NavbarDropdownService
+    private dropdowns: NavbarDropdownService,
+    private bundlingService: BundlingService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -94,23 +98,25 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
     this.url = this.buildLocation();
     // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
-    await this.libraryService.getLibrary();
-    this.saved = this.libraryService.has(this.learningObject);
+    await this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid, version: this.learningObject.version });
+    this.saved = this.libraryService.has(this.learningObject.id);
     this.getCollection();
     this.libraryService.loaded
       .subscribe(val => {
         this.downloading = (val);
         this.changeDetectorRef.markForCheck();
       });
-      this.dropdowns.userDropdown.subscribe(val => {
-        this.userDropdown = val;
-      });
+    this.dropdowns.userDropdown.subscribe(val => {
+      this.userDropdown = val;
+    });
   }
 
   get mapAndTag() {
-    if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor) {
-      const privileges = ['admin', 'editor', 'mapper', 'curator', 'reviewer'];
-      if(this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
+    const untaggable = this.learningObject.status === LearningObject.Status.RELEASED
+      || this.learningObject.status === LearningObject.Status.UNRELEASED;
+    if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor && !untaggable) {
+      const privileges = ['admin', 'editor', 'mapper'];
+      if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
         return true;
       }
     }
@@ -134,30 +140,33 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
     if (download) {
       this.download(
-        this.learningObject.author.username,
         this.learningObject.id
       );
     }
-    try {
-      if (!this.userIsAuthor && this.isReleased) {
-        this.saved = this.libraryService.has(this.learningObject);
+    if (!this.userIsAuthor && this.isReleased) {
+      this.saved = this.libraryService.has(this.learningObject.id);
 
-        if (!this.saved) {
-          try {
-            await this.libraryService.addToLibrary(this.learningObject.author.username, this.learningObject);
-          } catch (e) {
-            if (e.status === 201) {
-              this.toaster.success('Successfully Added!', 'Learning Object added to your library');
-              this.saved = true;
-              this.animateSaves();
-            }
+      if (!this.saved) {
+        try {
+          await this.libraryService.addToLibrary(this.learningObject.cuid, this.learningObject.version);
+
+          this.toaster.success('Successfully Added!', 'Learning Object added to your library');
+          this.saved = true;
+          this.animateSaves();
+        } catch (err: any) {
+          if (err.status !== 201) {
+            this.toaster.error('Error!', 'There was an error adding to your library');
+            this.addingToLibrary = false;
+            this.changeDetectorRef.detectChanges();
+            return;
+          } else {
+            // Do nothing if status is 201.
           }
         }
       }
-    } catch (error) {
-      this.toaster.error('Error!', 'There was an error adding to your library');
     }
-    this.libraryService.getLibrary();
+
+    this.libraryService.getLibrary({ learningObjectCuid: this.learningObject.cuid });
     this.addingToLibrary = false;
     this.changeDetectorRef.detectChanges();
   }
@@ -167,7 +176,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   async toggleBundle() {
     this.toaster.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
-    await this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject.id);
+    await this.bundlingService.bundleLearningObject(this.learningObject.id);
   }
 
 
@@ -179,7 +188,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   downloadRevised(download?: boolean) {
     if (download) {
       this.download(
-        this.learningObject.author.username,
         this.learningObject.id
       );
     }
@@ -188,13 +196,12 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   /**
    * Function to download the learning object zip file
    *
-   * @param author the learning objects author username
    * @param learningObjectId the unique mongo id of a learning object
    */
 
-  download(author: string, learningObjectId: string) {
+  download(learningObjectId: string) {
     this.toggleDownloadModal(true);
-    this.libraryService.learningObjectBundle(author, learningObjectId);
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId));
   }
 
   copyLink() {
@@ -232,7 +239,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         FB.ui({
           method: 'share',
           href: this.url,
-        }, function(response) { });
+        }, (response) => { });
         break;
       case 'twitter':
         const text = 'Check out this learning object on CLARK! ClarkCan';
@@ -273,14 +280,15 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
   }
 
   removeFromLibrary() {
-    this.libraryService.removeFromLibrary(this.learningObject.cuid);
+    this.libraryService.removeFromLibrary(this.learningObject.id);
   }
 
   private buildLocation(encoded?: boolean) {
     const u = window.location.protocol + '//' + window.location.host +
       '/details' +
       '/' + encodeURIComponent(this.learningObject.author.username) +
-      '/' + encodeURIComponent(this.learningObject.cuid);
+      '/' + encodeURIComponent(this.learningObject.cuid)
+      + '/' + encodeURIComponent(this.learningObject.version);
 
     return encoded ? encodeURIComponent(u) : u;
   }
@@ -307,7 +315,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    */
   public async sendEmailVerification() {
     try {
-      await this.auth.validateAndRefreshToken();
+      await this.auth.validateToken();
 
       if (!this.auth.user.emailVerified) {
         await this.auth.sendEmailVerification().toPromise();
@@ -316,7 +324,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
           `Email sent to ${this.auth.user.email}.
             Please check your inbox and spam.
             If you don't receive an email within 15 minutes reach out to info@secured.team.`
-          );
+        );
       }
     } catch (e) {
       this.toaster.error(`Could not send email`, `${e}`);
@@ -350,7 +358,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    * Opens the relevancy builder
    */
   mapAndTagObject() {
-    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.id}`]);
+    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.cuid}`]);
   }
 
   private capitalizeName(name) {

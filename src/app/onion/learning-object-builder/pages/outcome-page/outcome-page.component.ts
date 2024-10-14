@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObject } from '@entity';
-
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 @Component({
   selector: 'clark-outcome-page',
   templateUrl: './outcome-page.component.html',
@@ -33,7 +33,8 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     private toaster: ToastrOvenService,
     private store: BuilderStore,
     private validator: LearningObjectValidator,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private learningObjectService: LearningObjectService,
   ) {}
 
   ngOnInit() {

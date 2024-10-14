@@ -20,7 +20,7 @@ export class LearningObject {
     return this._id;
   }
   set id(id: string) {
-    if (!this.id) {
+    if (!this._id) {
       this._id = id;
     } else {
       throw new EntityError(LEARNING_OBJECT_ERRORS.ID_SET, 'id');
@@ -51,6 +51,10 @@ export class LearningObject {
   get author(): User {
     return this._author;
   }
+  set author(user: User) {
+    this._author = user;
+  }
+
   /**
    * @property {string} name
    *       the object's identifying name, unique over a user
@@ -108,10 +112,8 @@ export class LearningObject {
       this._length = length;
       this.updateDate();
     } else {
-      throw new EntityError(
-        LEARNING_OBJECT_ERRORS.INVALID_LENGTH(length),
-        'length',
-      );
+      // TODO: Fix issue occuring where a json response object is being passed instead of a learning object
+      this._length = LearningObject.Length.NANOMODULE;
     }
   }
   /**
@@ -308,8 +310,8 @@ export class LearningObject {
    */
   constructor(object?: Partial<LearningObject>) {
     // @ts-ignore Id will be undefined on creation
-    this._id = undefined;
-    this._cuid = undefined;
+    this._id = '';
+    this._cuid = '';
     this._author = new User();
     this._name = '';
     this._description = '';
@@ -339,6 +341,7 @@ export class LearningObject {
     }
     this._constructed = true;
   }
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   private _id: string;
   private _author: User;
   private _name!: string;
@@ -567,12 +570,20 @@ export class LearningObject {
    * @returns {number} index of the contributor
    * @memberof LearningObject
    */
-  addContributor(contributor: User): number {
+  addContributor(contributor: any): number {
+    // when adding contributors, the original contributor id field can come back from the service as id or _id
+    // this matches it to userId attribute in either case
     if (contributor) {
+      if(contributor.id) {
+        contributor.userId = contributor.id;
+      }
+      if(contributor._id){
+        contributor.userId = contributor._id;
+      }
       const addingUser =
         contributor instanceof User ? contributor : new User(contributor);
       this.updateDate();
-      return this._contributors.push(addingUser) - 1;
+      return this._contributors.push(addingUser);
     } else {
       throw new EntityError(
         LEARNING_OBJECT_ERRORS.INVALID_CONTRIBUTOR,
@@ -640,7 +651,7 @@ export class LearningObject {
    */
   private copyObject(object: Partial<LearningObject>): void {
     if (object.id) {
-      this.id = object.id;
+      this._id = object.id;
     }
 
     if (object.cuid) {
@@ -747,7 +758,7 @@ export class LearningObject {
    */
   public toPlainObject(): Partial<LearningObject> {
     const object: Partial<LearningObject> = {
-      id: this.id,
+      id: this._id,
       cuid: this.cuid,
       author: this.author.toPlainObject() as User,
       name: this.name,
@@ -838,7 +849,7 @@ export namespace LearningObject {
 
   export namespace Material {
     export interface File {
-      id: string;
+      _id: string;
       name: string;
       fileType: string;
       extension: string;

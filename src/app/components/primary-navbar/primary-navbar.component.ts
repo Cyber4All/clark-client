@@ -1,9 +1,10 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { AuthService } from 'app/core/auth.service';
-import { UserService } from 'app/core/user.service';
-import { NavbarDropdownService } from 'app/core/navBarDropdown.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { NavbarDropdownService } from 'app/core/client-module/navBarDropdown.service';
 import { Router, NavigationStart, Event as NavigationEvent } from '@angular/router';
 import { Topic } from '../../../entity';
+import { NotificationService } from 'app/core/notification-module/notification.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class PrimaryNavbarComponent implements OnInit {
   showResources: boolean;
   topics: Topic[];
   resizeThreshold = 825;
-  externalResources: {name: string, link: string}[];
+  externalResources: { name: string, link: string }[];
   levelChoice: string;
   redirectUrl: string;
   // levelsDropdown: boolean;
@@ -38,21 +39,22 @@ export class PrimaryNavbarComponent implements OnInit {
     private auth: AuthService,
     private dropdowns: NavbarDropdownService,
     private userService: UserService,
+    private notificationService: NotificationService,
     private router: Router,
   ) {
-    if(!this.auth.user) {
+    if (!this.auth.user) {
       this.router.events
-      .subscribe(
-        (event: NavigationEvent) => {
-          if(event instanceof NavigationStart) {
-            const url = event.url.split('/');
-            if(url[1] !== 'auth') {
-              this.redirectUrl = event.url;
-              localStorage.setItem('ssoRedirect', (this.redirectUrl));
+        .subscribe(
+          (event: NavigationEvent) => {
+            if (event instanceof NavigationStart) {
+              const url = event.url.split('/');
+              if (url[1] !== 'auth') {
+                this.redirectUrl = event.url;
+                localStorage.setItem('ssoRedirect', (this.redirectUrl));
+              }
             }
           }
-        }
-      );
+        );
     }
   }
 

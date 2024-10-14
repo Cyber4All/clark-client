@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PressCoverageService, Mention } from '../../core/press-coverage.service';
+import { PressCoverageService, Mention } from '../../core/client-module/press-coverage.service';
 import * as AWS from 'aws-sdk';
 import { writeFileSync } from 'fs';
 

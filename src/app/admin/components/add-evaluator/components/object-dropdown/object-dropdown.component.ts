@@ -9,9 +9,10 @@ import {
   Input,
 } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
+
 @Component({
   selector: 'clark-object-dropdown',
   templateUrl: './object-dropdown.component.html',
@@ -35,7 +36,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   @Output() learningObjects: EventEmitter<any> = new EventEmitter(); // Objects selected
 
   constructor(
-    private learningObjectService: LearningObjectService,
+    private searchLearningObjectService: SearchService,
     private differs: IterableDiffers
   ) {
     this.differ = this.differs.find([]).create(null);
@@ -76,7 +77,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
   async findObjects(query: string) {
     if (query && query !== '') {
       // Search for learning objects
-      await this.learningObjectService
+      await this.searchLearningObjectService
         .getLearningObjects({text: query})
         .then( (results: {learningObjects: LearningObject[], total: number}) => {
           const assignedIds = this.assignedObjects.map(obj => obj.id);
@@ -84,7 +85,7 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
 
           // Filters out already selected objects
           results.learningObjects.forEach( (obj: LearningObject) => {
-            if (!assignedIds.includes(obj.id) && (Array.isArray(obj.assigned) && !obj.assigned.includes(this.user.id))) {
+            if (!assignedIds.includes(obj.id) && (Array.isArray(obj.assigned) && !obj.assigned.includes(this.user.userId))) {
               filteredObjects.push(obj);
             }
           });

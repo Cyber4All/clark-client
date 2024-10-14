@@ -46,13 +46,13 @@
                 Saved Items
             </h2>
             <div *ngIf='libraryItems?.length; else emptyLibraryTemplate' class='library-items__list-items'>
-                <div *ngFor='let item of libraryItems; let i = index'>
+                <div *ngFor='let libraryItem of libraryItems; let i = index'>
                     <clark-library-item
-                        [learningObject]='item'
-                        [learningObjectAverageRating]='item.avgRating'
-                        (downloadButtonClicked)='downloadObject($event, item, i)'
-                        (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemToDelete = item;'
-                        (titleClicked)='goToItem(item)'
+                        [learningObject]='libraryItem.learningObject'
+                        [learningObjectAverageRating]='libraryItem.avgRating'
+                        (downloadButtonClicked)='downloadObject($event, libraryItem.learningObject, i)'
+                        (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemIdToDelete = libraryItem._id;'
+                        (titleClicked)='goToItem(libraryItem.learningObject)'
                         [currIndex]='currentIndex'
                         [myIndex]=i
                     ></clark-library-item>

@@ -8,23 +8,10 @@
     bottom: 0;
     z-index: 19;
 
-    .triangle {
-        border: 10px solid white;
-        border-top-color: transparent;
-        border-right-color: transparent;
-        border-left-color: transparent;
-        width: 0px;
-        height: 0px;
-        z-index: 21;
-        top: 135px;
-        position: absolute;
-        margin-left: 200px;
-    }
-
     .collections-dropdown {
         position: absolute;
         z-index: 20;
-        top: 155px;
+        top: 195px;
         padding: 0 0 40px 20px;
         margin-left: 100px;
         margin-right: 20px;

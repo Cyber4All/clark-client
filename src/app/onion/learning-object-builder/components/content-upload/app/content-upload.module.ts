@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 import { routes } from './content-upload.routes';
 
 // Services
-import { LearningObjectService } from '../../../../core/learning-object.service';
 import { FileManagementService } from './services/file-management.service';
 
 // Components
@@ -46,7 +45,7 @@ import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.mo
     UrlManagerComponent,
     UrlRowComponent
   ],
-  providers: [LearningObjectService, FileManagementService],
+  providers: [FileManagementService],
   bootstrap: [ContentUploadComponent]
 })
-export class ContentUploadModule {}
+export class ContentUploadModule { }

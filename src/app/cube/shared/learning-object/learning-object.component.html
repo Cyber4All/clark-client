@@ -1,7 +1,8 @@
 <a [routerLink]="[
     '/details',
     learningObject.author.username,
-    learningObject.cuid
+    learningObject.cuid,
+    learningObject.version
   ]"
   attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{ learningObject.author.name }}, last updated on {{ learningObject.date | date:'longDate' }}">
   <div class="learning-object" id="learning-object">

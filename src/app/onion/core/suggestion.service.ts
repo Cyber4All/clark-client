@@ -5,7 +5,9 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { environment } from '@env/environment';
 import * as querystring from 'querystring';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SuggestionService {
   suggestion = new Subject<{}[]>();
   mappedStandards = [];
@@ -46,7 +48,7 @@ export class SuggestionService {
         headers: this.headers
       })
       .pipe(
-        retry(3),
+
         catchError(this.handleError)
       )
       .toPromise()

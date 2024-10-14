@@ -3,21 +3,16 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 import { Component, HostListener, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
-
-import {
-  SuggestionService
-} from '../../onion/core/suggestion.service';
 import { COPY } from './browse.copy';
 import { Observable, Subject } from 'rxjs';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
-import { LearningObjectService } from '../learning-object.service';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'cube-browse',
   templateUrl: './browse.component.html',
   styleUrls: ['./browse.component.scss'],
-  providers: [SuggestionService]
 })
 export class BrowseComponent implements AfterViewInit, OnDestroy {
   copy = COPY;
@@ -79,12 +74,12 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   constructor(
-    public learningObjectService: LearningObjectService,
+    private searchLearningObjectService: SearchService,
     private route: ActivatedRoute,
     private router: Router,
-    public mappingService: SuggestionService,
     private cd: ChangeDetectorRef,
-    private navService: NavbarService
+    private navService: NavbarService,
+    private searchService: SearchService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -258,9 +253,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       // if we're adding a filter that isn't a page change, reset the currPage in query to 1
       if (this.shouldResetPage) {
         this.query.currPage = 1;
-      } else {
-        this.shouldResetPage = true;
       }
+      this.shouldResetPage = true;
 
       this.router.navigate(['browse'], {
         queryParams: this.removeObjFalsy(this.query)
@@ -341,12 +335,12 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.loading = true;
     this.learningObjects = [];
     // Trim leading and trailing whitespace
-    query.text = query.text ? query.text.trim() : undefined;
+    query.text = query.text ? query.text.trim() : '';
     try {
       const {
         learningObjects,
         total
-      } = await this.learningObjectService.getLearningObjects(query);
+      } = await this.searchLearningObjectService.getLearningObjects(query);
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);

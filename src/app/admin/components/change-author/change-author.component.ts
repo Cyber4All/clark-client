@@ -4,10 +4,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { take, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { AuthorshipService } from '../../core/authorship.service';
+import { ChangeAuthorshipService } from 'app/core/learning-object-module/change-authorship/change-authorship.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { UserService } from '../../../../app/core/user.service';
+import { UserService } from '../../../core/user-module/user.service';
 import { titleCase } from 'title-case';
+import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 
 @Component({
   selector: 'clark-change-author',
@@ -30,31 +32,16 @@ export class ChangeAuthorComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
-    private authorshipService: AuthorshipService,
+    private changeAuthorshipService: ChangeAuthorshipService,
+    private learningObjectService: LearningObjectService,
     public toaster: ToastrOvenService,
     private userService: UserService,
   ) { }
 
 
   async ngOnInit() {
-    const childrenUri = `${environment.apiURL}/users/${encodeURIComponent(
-      this.highlightedLearningObject.author.username
-      )}/learning-objects/${encodeURIComponent(
-      this.highlightedLearningObject.id
-    )}/children`;
-
-    this.http.get(
-      childrenUri,
-      { headers: this.headers, withCredentials: true }
-      ).pipe(
-      take(1),
-      catchError(e => of(e))
-    ).subscribe(object => {
-      if (object && object.length) {
-        this.hasChildren = true;
-        this.children = object;
-      }
-    });
+    this.children = await this.learningObjectService.getLearningObjectChildren(this.highlightedLearningObject.id);
+    this.hasChildren = this.children.length > 0;
   }
 
   toggleState(renderFinalStage: boolean) {
@@ -87,7 +74,7 @@ export class ChangeAuthorComponent implements OnInit {
    * @returns string unformated or title cased
    */
   organizationFormat(organization: string) {
-    if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
+    if (organization.charAt(1) === organization.charAt(1).toUpperCase()) {
       return organization;
     } else {
       return titleCase(organization);
@@ -95,11 +82,11 @@ export class ChangeAuthorComponent implements OnInit {
   }
 
   async changeAuthor() {
-    const author: User = await this.userService.getUser(this.highlightedLearningObject.author.username, 'username');
-    this.authorshipService.changeAuthorship(
-      author,
+    const author: User = await this.userService.getUser(this.highlightedLearningObject.author._username);
+    this.changeAuthorshipService.changeAuthorship(
+      author.userId,
       this.highlightedLearningObject.id,
-      this.selectedAuthor.id).then(
+      this.selectedAuthor.userId).then(
         () => {
           this.toaster.success('Success!', 'Learning Object Author changed.');
           this.close.emit();

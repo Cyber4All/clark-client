@@ -1,18 +1,27 @@
-import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
 import { LearningObject } from '@entity';
-import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
-import { LearningObjectService } from 'app/cube/learning-object.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { Query } from 'app/interfaces/query';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-featured',
   templateUrl: './featured.component.html',
   styleUrls: ['./featured.component.scss'],
-  providers: [LearningObjectService]
 })
 export class FeaturedComponent implements OnInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;
@@ -52,8 +61,9 @@ export class FeaturedComponent implements OnInit, OnDestroy {
 
   constructor(
     private featureService: FeaturedObjectsService,
-    public toaster: ToastrOvenService,
-  ) { }
+    private searchService: SearchService,
+    private toaster: ToastrOvenService,
+  ) {}
 
   async ngOnInit() {
     setTimeout(() => {
@@ -62,33 +72,30 @@ export class FeaturedComponent implements OnInit, OnDestroy {
         this.headersElement.nativeElement.getBoundingClientRect().height;
     });
 
-    this.featureService.featuredObjects.subscribe(objects => {
+    this.featureService.featuredObjects.subscribe((objects) => {
       this.featuredObjects = objects;
     });
     await this.featureService.getFeaturedObjects();
     // Subscribe to mutation Error
-    this.featureService.mutationError.subscribe(mutationError => {
+    this.featureService.mutationError.subscribe((mutationError) => {
       this.mutationError = mutationError;
     });
     // Subscribe to Submit Error
-    this.featureService.submitError.subscribe(submitError => {
+    this.featureService.submitError.subscribe((submitError) => {
       this.submitError = submitError;
     });
 
     this.getLearningObjects();
     // listen for input events from the search component and perform the search action
     this.userSearchInput$
-      .pipe(
-        takeUntil(this.componentDestroyed$),
-        debounceTime(650)
-      )
-      .subscribe(searchTerm => {
+      .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
+      .subscribe((searchTerm) => {
         this.query = {
           currPage: 1,
           text: searchTerm,
           status: [LearningObject.Status.RELEASED],
           collection: this.activeCollection,
-          limit: 5
+          limit: 5,
         };
         this.learningObjects = [];
 
@@ -102,7 +109,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
   async getLearningObjects() {
-    this.featureService.getNotFeaturedLearningObjects(this.query).then(objects => {
+    this.searchService.getLearningObjects(this.query).then((objects) => {
       this.learningObjects = objects.learningObjects;
       this.lastPage = Math.ceil(objects.total / 5);
     });
@@ -116,17 +123,21 @@ export class FeaturedComponent implements OnInit, OnDestroy {
    */
   getCollectionFilteredLearningObjects(collection: string) {
     this.activeCollection = collection;
-    this.query = { collection, currPage: 1, status: [LearningObject.Status.RELEASED]};
+    this.query = {
+      collection,
+      currPage: 1,
+      status: [LearningObject.Status.RELEASED],
+    };
     this.learningObjects = [];
 
     this.getLearningObjects();
   }
 
-   /**
-    * Clear the filters of both collection and status and reset the Learning Objects query
-    *
-    * @memberof LearningObjectsComponent
-    */
+  /**
+   * Clear the filters of both collection and status and reset the Learning Objects query
+   *
+   * @memberof LearningObjectsComponent
+   */
   clearCollectionFilters() {
     this.query = { collection: undefined, currPage: 1 };
     this.learningObjects = [];
@@ -143,21 +154,30 @@ export class FeaturedComponent implements OnInit, OnDestroy {
       () => {
         this.toaster.success('Success!', 'Featured learning objects updated!');
       },
-      error => {
-        this.toaster.error('Error!', 'Unable to update Featured learning objects.');
-      }
+      (error) => {
+        this.toaster.error(
+          'Error!',
+          'Unable to update Featured learning objects.',
+        );
+      },
     );
   }
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
     } else {
       if (this.featuredObjects.length < 5) {
-        transferArrayItem(event.previousContainer.data,
+        transferArrayItem(
+          event.previousContainer.data,
           event.container.data,
           event.previousIndex,
-          event.currentIndex);
+          event.currentIndex,
+        );
       }
     }
     this.featureService.setFeatured(this.featuredObjects);
@@ -169,6 +189,3 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     this.destroyed$.unsubscribe();
   }
 }
-
-
-

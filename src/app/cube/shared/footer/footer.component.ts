@@ -1,10 +1,10 @@
 
-import {filter} from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { COPY } from './footer.copy';
 import { environment } from '../../../../environments/environment';
-import { SubscriptionAgreementService } from '../../../core/subscription-agreement.service';
+import { SubscriptionAgreementService } from '../../../core/utility-module/subscription-agreement.service';
 import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
 
 @Component({

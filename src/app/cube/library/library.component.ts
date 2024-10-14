@@ -1,17 +1,18 @@
 import { Component, OnInit, OnDestroy, HostListener, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { LibraryService } from 'app/core/library.service';
+import { LibraryItem, LibraryService } from 'app/core/library-module/library.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { Router } from '@angular/router';
-import { UserService } from 'app/core/user.service';
-import { RatingService } from 'app/core/rating.service';
-import { ChangelogService } from 'app/core/changelog.service';
-import { LearningObjectService } from '../learning-object.service';
+import { LearningObjectRatings, RatingService } from 'app/core/rating-module/rating.service';
+import { NotificationService } from 'app/core/notification-module/notification.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
-import { NavbarService } from 'app/core/navbar.service';
+import { NavbarService } from 'app/core/client-module/navbar.service';
+import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
+
 @Component({
   selector: 'clark-library',
   templateUrl: './library.component.html',
@@ -26,7 +27,7 @@ import { NavbarService } from 'app/core/navbar.service';
             zIndex: 1,
             'pointer-events': 'none',
           }),
-          animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1}))
+          animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
         ]),
       ])),
       transition(':decrement', group([
@@ -47,7 +48,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   @ViewChild('savedList') topOfList: ElementRef;
   loading: boolean;
   serviceError: boolean;
-  libraryItems: LearningObject[] = [];
+  libraryItems: LibraryItem[] = [];
   downloading = [];
   currentIndex = null;
   destroyed$ = new Subject<void>();
@@ -62,7 +63,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   showDeleteLibraryItemModal = false;
   changelogs = [];
   changelogLearningObject;
-  libraryItemToDelete;
+  libraryItemIdToDelete: string;
   lastPageNumber;
   currentPageNumber = 1;
   currentNotificationsPageNumber = 1;
@@ -79,12 +80,12 @@ export class LibraryComponent implements OnInit, OnDestroy {
     private toaster: ToastrOvenService,
     private authService: AuthService,
     private router: Router,
-    private user: UserService,
-    private ratings: RatingService,
+    private ratingService: RatingService,
     private changelogService: ChangelogService,
     private learningObjectService: LearningObjectService,
     private navbarService: NavbarService,
-  ) {}
+    private notificationService: NotificationService
+  ) { }
 
   @HostListener('window:resize', ['$event'])
   async getScreenSize() {
@@ -124,18 +125,20 @@ export class LibraryComponent implements OnInit, OnDestroy {
   async loadLibrary() {
     try {
       this.loading = true;
-      const libraryItemInformation = await this.libraryService.getLibrary(this.currentPageNumber, 10);
-      this.libraryItems = libraryItemInformation.cartItems;
-      this.lastPageNumber = libraryItemInformation.lastPage;
-      this.libraryItems.map(async (libraryItem: LearningObject) => {
-        const ratings = await this.getRatings(libraryItem);
+      const getLibraryResponse = await this.libraryService.getLibrary({ page: this.currentPageNumber, limit: 10 });
+
+      this.libraryItems = getLibraryResponse.libraryItems;
+      this.lastPageNumber = getLibraryResponse.lastPage;
+
+      this.libraryItems.map(async (libraryItem: LibraryItem) => {
+        const ratings = await this.getRatings(libraryItem.learningObject);
         if (ratings) {
           libraryItem['avgRating'] = ratings.avgValue;
         }
       });
       this.loading = false;
     } catch (e) {
-      console.error(e);
+      console.log(e);
       this.toaster.error('Error!', 'Unable to load your library. Please try again later.');
       this.serviceError = true;
       this.loading = false;
@@ -148,18 +151,25 @@ export class LibraryComponent implements OnInit, OnDestroy {
    * @param apiPage The page that we need to retrieve from Notifications service
    */
   async getNotifications(apiPage: number) {
-    let result = { 'notifications': [], 'lastPage': 1 };
-    const notificationCount = await this.user.getNotifications(this.authService.username, 1, 1);
-    this.notificationCount = notificationCount.lastPage;
-    if (this.notificationCount <= 20) {
-      result = await this.user.getNotifications(this.authService.user.username, apiPage, this.notificationCount);
-    } else {
-      result = await this.user.getNotifications(this.authService.user.username, apiPage, 20);
-    }
-    this.localNotifications = [...this.localNotifications, ...result.notifications];
+    /**
+     * TODO:  Notification service definitely needs to be refactored. The service itself
+     * currently calculates the last page number incorrectly.
+     *
+     * The last page number should be calculated as follows:
+     * (numberOfNotifications / limit) + (numberOfNotifications % limit)
+     * Example. int(7 / 5) + 7 % 5 = 1 + 2 = 3 which should actually be 2
+     */
+
+    // Get the notifications from the Notification service
+    const result = await this.notificationService.getNotifications(this.authService.user.username, apiPage, 5);
+
+    // Add the notifications to the localNotifications array
+    this.localNotifications.concat(result.notifications);
     this.lastNotificationsPageNumber = result.lastPage;
+
+    // If the last page is greater than the current page, then we need to get the next page
     if (this.lastNotificationsPageNumber === this.localNotifications.length) {
-      this.currentNotificationsPageNumber = this.localNotifications.length;
+      this.currentNotificationsPageNumber = this.lastNotificationsPageNumber;
     } else {
       this.currentNotificationsPageNumber = apiPage;
     }
@@ -207,7 +217,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
       this.firstIndex = this.firstIndex + this.notificationCardCount;
       this.lastIndex = this.lastIndex + this.notificationCardCount;
     } else if ((this.lastIndex + this.notificationCardCount) >= this.localNotifications.length
-                && this.lastIndex !== this.localNotifications.length) {
+      && this.lastIndex !== this.localNotifications.length) {
       if (this.lastNotificationsPageNumber > this.currentNotificationsPageNumber) {
         await this.getNotifications(this.currentNotificationsPageNumber + 1);
       }
@@ -217,7 +227,7 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async deleteNotification(notification: any) {
-    await this.user.deleteNotification(this.authService.user.username, notification.id);
+    await this.notificationService.deleteNotification(this.authService.user.username, notification.id);
     this.localNotifications = [];
     await this.getNotifications(this.currentPageNumber);
     this.setNotifications(this.firstIndex);
@@ -225,8 +235,8 @@ export class LibraryComponent implements OnInit, OnDestroy {
 
   async removeItem() {
     try {
-      await this.libraryService.removeFromLibrary(this.libraryItemToDelete.cuid);
-      this.libraryItems = (await this.libraryService.getLibrary(1, 10)).cartItems;
+      await this.libraryService.removeFromLibrary(this.libraryItemIdToDelete);
+      this.libraryItems = (await this.libraryService.getLibrary({ page: 1, limit: 10 })).libraryItems;
       this.changeLibraryItemPage(this.currentPageNumber);
       this.showDeleteLibraryItemModal = false;
     } catch (e) {
@@ -239,28 +249,26 @@ export class LibraryComponent implements OnInit, OnDestroy {
     this.currentIndex = index;
     this.downloading[index] = true;
     this.showDownloadModal = true;
-    this.libraryService.learningObjectBundle(object.author.username, object.id);
+    this.libraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(object.id));
     this.downloading[index] = false;
   }
 
+  // TODO: Come back and cry about this
   goToNotification(notification: any) {
     const parsedDetailsPath = notification.link.split('/');
     this.router.navigate(['/details/', parsedDetailsPath[2], parsedDetailsPath[3]]);
   }
 
   goToItem(object: LearningObject) {
-    this.router.navigate(['/details/', object.author.username, object.cuid]);
+    this.router.navigate(['/details/', object.author.username, object.cuid, object.version]);
   }
 
-  async getRatings(learningObject: LearningObject) {
-    const { author, cuid, version } = learningObject;
-    const params = {
-      username: author.username,
-      CUID: cuid,
+  async getRatings(learningObject: LearningObject): Promise<LearningObjectRatings> {
+    const { cuid, version } = learningObject;
+    return await this.ratingService.getLearningObjectRatings(
+      cuid,
       version,
-    };
-    const ratings = await this.ratings.getLearningObjectRatings(params);
-    return ratings;
+    );
   }
 
   toggleDownloadModal(val?: boolean) {
@@ -276,18 +284,16 @@ export class LibraryComponent implements OnInit, OnDestroy {
    */
   async openViewAllChangelogsModal(notification: any) {
     this.changelogLearningObject = await this.learningObjectService.getLearningObject(
-      notification.attributes.learningObjectAuthorUsername,
       notification.attributes.cuid,
       notification.attributes.version
     );
     if (!this.openChangelogModal) {
       this.loadingChangelogs = true;
       try {
-        this.changelogs = await this.changelogService.fetchAllChangelogs({
-          userId: notification.attributes.learningObjectAuthorID,
-          learningObjectCuid: notification.attributes.cuid,
-          minusRevision: true,
-        });
+        this.changelogs = await this.changelogService.getAllChangelogs(
+          notification.attributes.cuid,
+          true, // minusRevision
+        );
       } catch (error) {
         let errorMessage;
 
@@ -314,11 +320,9 @@ export class LibraryComponent implements OnInit, OnDestroy {
   }
 
   async changeLibraryItemPage(pageNumber: number) {
-    this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start'});
-    const libraryItemInformation = await this.libraryService.getLibrary(pageNumber, 10);
-    this.libraryItems = libraryItemInformation.cartItems;
-    this.lastPageNumber = libraryItemInformation.lastPage;
+    this.topOfList.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     this.currentPageNumber = pageNumber;
+    await this.loadLibrary();
   }
 
   ngOnDestroy() {

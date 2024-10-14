@@ -1,6 +1,6 @@
 import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavbarService } from '../../core/navbar.service';
+import { NavbarService } from '../../core/client-module/navbar.service';
 import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -18,10 +18,9 @@ import {
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectValidator } from './validators/learning-object.validator';
 import { LearningOutcomeValidator } from './validators/learning-outcome.validator';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from '../core/learning-object.service';
-import { HistorySnapshot, HistoryService } from 'app/core/history.service';
+import { HistorySnapshot, HistoryService } from 'app/core/client-module/history.service';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -118,8 +117,7 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     private validator: LearningObjectValidator,
     public noteService: ToastrOvenService,
     private authService: AuthService,
-    private learningObjectService: LearningObjectService,
-    private history: HistoryService
+    private history: HistoryService,
   ) { }
 
   ngOnInit() {
@@ -129,28 +127,26 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     this.route.paramMap
       .pipe(takeUntil(this.destroyed$))
       .subscribe(routeParams => {
-        const id = routeParams.get('learningObjectId');
+        const cuid = routeParams.get('cuid');
+        const version: number = +routeParams.get('version');
         const revision = this.route.snapshot.queryParamMap.get('revisionId');
-        const authorUsername = this.route.snapshot.queryParamMap.get('author');
 
         // if name parameter found, instruct store to fetch full learning object
-        if (revision !== undefined && id) {
+        if (revision !== undefined && cuid) {
           this.isRevision = true;
           this.store.isRevision = true;
-          this.store.fetch(id, revision, authorUsername).then(learningObject => {
+          this.store.fetch(cuid, version).then(learningObject => {
             this.setBuilderMode(learningObject);
           });
-        } else if (id) {
-          this.store.fetch(id).then(learningObject => {
+        } else if (cuid) {
+          this.store.fetch(cuid, version).then(learningObject => {
+
             if (learningObject.status === LearningObject.Status.RELEASED) {
               this.router.navigate(['onion/dashboard'], { queryParams: { status: 403 } });
             } else {
               // redirect user to dashboard if the object is in the working stage
               if (this.isInReviewStage(learningObject) && !this.authService.hasEditorAccess) {
                 this.router.navigate(['onion/dashboard']);
-              } else if (revision) {
-                this.learningObjectService.getLearningObjectRevision(
-                  learningObject.author.username, learningObject.id, learningObject.version);
               } else {
                 this.setBuilderMode(learningObject);
               }
@@ -212,8 +208,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
    */
   private handleBuilderError(error: BUILDER_ERRORS) {
     const toasterTitle = 'Error!';
-    const toasterClass = 'bad';
-    const toasterIcon = 'far fa-times';
     switch (error) {
       case BUILDER_ERRORS.SERVICE_FAILURE:
         this.showServiceFailureModal = true;

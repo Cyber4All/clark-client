@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Component({
   selector: 'clark-email-verified',
@@ -38,7 +38,7 @@ export class EmailVerifiedComponent implements OnInit {
         this.pMessage = 'We were unable to verify your email at this time. Please check back later.';
       }
     } else {
-      this.authService.validateAndRefreshToken()
+      this.authService.validateToken()
       .then(async () => {
         // Email successfully verified, display success content to user
         this.iconSuccess = true;

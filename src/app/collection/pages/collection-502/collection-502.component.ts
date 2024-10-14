@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObject } from '../../../../entity/learning-object/learning-object';
-import { NavbarService } from '../../../core/navbar.service';
-import { LearningObjectService } from '../../../cube/learning-object.service';
+import { NavbarService } from '../../../core/client-module/navbar.service';
 import { Query } from '../../../interfaces/query';
-import { CollectionService } from '../../../core/collection.service';
+import { CollectionService } from '../../../core/collection-module/collections.service';
 import { Title } from '@angular/platform-browser';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-502-collection-index',
@@ -24,9 +24,10 @@ export class Collection502Component implements OnInit {
 
   constructor(
     private navbarService: NavbarService,
-    private learningObjectService: LearningObjectService,
+    private searchLearningObjectService: SearchService,
     private collectionService: CollectionService,
-    private titleService: Title
+    private titleService: Title,
+    private searchService: SearchService,
   ) { }
 
   async ngOnInit() {
@@ -45,7 +46,7 @@ export class Collection502Component implements OnInit {
     this.collectionService.darkMode502.subscribe(mode => {
       this.currentTheme = mode ? 'dark' : 'light';
     });
-    if(this.currentTheme === 'dark'){
+    if (this.currentTheme === 'dark') {
       document!.getElementById('mat-slide-toggle-1-input')!.click();
     };
   }
@@ -53,13 +54,11 @@ export class Collection502Component implements OnInit {
   async fetchLearningObjects(query: Query) {
     this.loading = true;
     this.learningObjects = [];
-    // Trim leading and trailing whitespace
-    query.text = query.text ? query.text.trim() : undefined;
     try {
       const {
         learningObjects,
         total
-      } = await this.learningObjectService.getLearningObjects(query);
+      } = await this.searchLearningObjectService.getLearningObjects(query);
       this.learningObjects = learningObjects;
       this.loading = false;
     } catch (e) {

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CollectionService } from 'app/core/collection.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 @Component({
   selector: 'clark-ncyte-stats',
@@ -17,7 +17,7 @@ export class StatsComponent implements OnInit {
   objSaved: number;
   authorCollection: number;
 
-  constructor(private collectionService: CollectionService) { }
+  constructor(private metricService: MetricService) { }
 
   async ngOnInit() {
     switch (this.collectionName) {
@@ -29,13 +29,13 @@ export class StatsComponent implements OnInit {
         break;
     }
 
-    await this.collectionService.getCollectionMetricsData(this.collectionName).then((res: any ) => {
-      this.objDownload = res.metrics.downloads;
-      this.objSaved = res.metrics.saves;
-      this.objReleased = res.metrics.statusMetrics[0].released;
-      const num = res.metrics.statusMetrics[0].waiting + res.metrics.statusMetrics[0].peerReview + res.metrics.statusMetrics[0].proofing;
+    await this.metricService.getCollectionMetrics(this.collectionName).then((res: any) => {
+      this.objDownload = res.downloads;
+      this.objSaved = res.saves;
+      this.objReleased = res.statusMetrics[0].count;
+      const num = res.statusMetrics[0].waiting + res.statusMetrics[0].peerReview + res.statusMetrics[0].proofing;
       this.objReview = num;
-      this.authorCollection = res.metrics.authors.length;
+      this.authorCollection = res.authors.length;
     });
   }
 

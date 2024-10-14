@@ -35,7 +35,7 @@ import { OnionCoreModule } from '../../onion/core/core.module';
     CommonModule,
     RouterModule.forChild([
       {
-        path: ':username/:learningObjectName',
+        path: ':username/:cuid/:version',
         component: DetailsComponent,
         canActivate: [ RouteBackwardsCompatGuard ]
       }

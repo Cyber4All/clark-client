@@ -1,6 +1,5 @@
 import { EventEmitter, forwardRef, OnInit, AfterViewInit } from '@angular/core';
 import { Output } from '@angular/core';
-import { RecaptchaValidator } from './recaptcha-validator.service';
 import { ElementRef, Injector, NgZone } from '@angular/core';
 import { Input } from '@angular/core';
 import { Directive } from '@angular/core';
@@ -10,6 +9,7 @@ import {
   Validators,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
+import { UserService } from 'app/core/user-module/user.service';
 
 export interface ReCaptchaConfig {
   theme?: 'dark' | 'light';
@@ -34,7 +34,7 @@ declare global {
       useExisting: forwardRef(() => RecaptchaDirective),
       multi: true
     },
-    RecaptchaValidator
+    UserService
   ]
 })
 export class RecaptchaDirective
@@ -58,7 +58,7 @@ export class RecaptchaDirective
     private element: ElementRef,
     private ngZone: NgZone,
     private injector: Injector,
-    private validator: RecaptchaValidator,
+    private userService: UserService,
   ) {}
 
   ngOnInit() {
@@ -75,7 +75,7 @@ export class RecaptchaDirective
         ...this.config,
         sitekey: this.key,
         callback: this.onSuccess.bind(this),
-        'expired-callback': this.onExpired.bind(this)
+        'expired-callback': this.onExpired.bind(this),
       };
       this.widgetId = this.render(this.element.nativeElement, config);
     };
@@ -162,7 +162,7 @@ export class RecaptchaDirective
    * @param token
    */
   verifyToken(token: string) {
-    this.validator.validateToken(token);
+    this.userService.validateCaptcha(token);
   }
 
   /**

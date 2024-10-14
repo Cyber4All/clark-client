@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from '@entity';
-import { AuthService } from 'app/core/auth.service';
-import { UserService } from 'app/core/user.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { UserService } from 'app/core/user-module/user.service';
 
 @Component({
   selector: 'clark-learning-object-ratings',
@@ -88,7 +88,6 @@ export class LearningObjectRatingsComponent implements OnInit {
   }
 
   submitEditResponse(response: { comment: string, index: number }) {
-    this.cancelEditResponse(response.index);
     this.editResponse.emit(response);
   }
 

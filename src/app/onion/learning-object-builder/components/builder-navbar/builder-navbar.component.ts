@@ -1,15 +1,16 @@
 import { Component, OnDestroy, Input } from '@angular/core';
 import { BuilderStore } from '../../builder-store.service';
-import { AuthService } from 'app/core/auth.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { CollectionService, Collection } from 'app/core/collection.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
-import { HistoryService, HistorySnapshot } from 'app/core/history.service';
-import { LearningObjectService } from '../../../core/learning-object.service';
+import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
+import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -54,7 +55,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     private history: HistoryService,
     public validator: LearningObjectValidator,
     public store: BuilderStore,
-    public learningObjectService: LearningObjectService
+    private bundlingService: BundlingService,
+    public fileService: FileService
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
@@ -164,19 +166,24 @@ export class BuilderNavbarComponent implements OnDestroy {
    * @var this.store.upload is a toggle string variable to block the 'Back' button if a file upload
    * is not finished. See the builder store for more details.
    */
-   async triggerExitProcess(leaveBuilder = true) {
+  async triggerExitProcess(leaveBuilder = true) {
     if (this.adminMode && !leaveBuilder) {
       this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
     }
-    // Trigger new PDF generation
-    Promise.all(await this.learningObjectService.updateReadme(this.learningObject.id));
+    // Trigger new PDF generation only if the learning object id exists
+    // It may not present when opening the builder for the first time for
+    // a new learning object
+    if (this.learningObject.id) {
+      // This will also bundle the learning object after the README is updated
+      Promise.all(await this.fileService.updateReadme(this.learningObject.id));
+    }
     // Remove outcomes that have null text
     this.store.removeEmptyOutcomes();
     // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
       // If any data has be changed on the LO, then we need to rebundle
       if (this.store.touched) {
-        this.learningObjectService.triggerBundle(this.learningObject.author.username, this.learningObject.id);
+        this.bundlingService.bundleLearningObject(this.learningObject.id);
       }
       if (leaveBuilder) {
         this.historySnapshot.rewind('/onion/dashboard');

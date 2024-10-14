@@ -77,8 +77,13 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.files$.pipe(takeUntil(this.componentDestroyed$)).subscribe((files) => {
-      this.directoryTree.addFiles(files);
-      this.directoryTree$.next(this.directoryTree);
+      // If there are files, add them to the directory tree
+      // Upon creating a new learning object there will be no files
+      // so we don't want to throw an error with 'addFiles'
+      if (files) {
+        this.directoryTree.addFiles(files);
+        this.directoryTree$.next(this.directoryTree);
+      }
     });
   }
 
@@ -157,7 +162,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     };
 
     if (!(file instanceof DirectoryNode)) {
-      edit.id = file.id;
+      edit.id = file._id;
     } else {
       edit.path = file.getPath();
       edit.isFolder = true;
@@ -178,7 +183,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
     if (!(file instanceof DirectoryNode)) {
       // @ts-ignore
-      scheduledDeletions = [file.id];
+      scheduledDeletions = [file._id];
       name = file.name;
     } else {
       const folder = file;
@@ -221,7 +226,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     }
     let fileIds = [];
     for (const file of files) {
-      fileIds.push(file.id);
+      fileIds.push(file._id);
     }
     for (const child of children) {
       fileIds = [...fileIds, ...this.getFileIds(child)];

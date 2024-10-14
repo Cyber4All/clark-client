@@ -10,7 +10,6 @@ import { CollectionsRoutingModule } from './collection.routing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
 import { Collection502Component } from './pages/collection-502/collection-502.component';
-import { LearningObjectService } from 'app/cube/learning-object.service';
 import { IncludedModule } from './shared/included/included.module';
 import { SharedModule } from '../shared/shared.module';
 import { HeaderComponent } from './pages/collection-ncyte/components/header/header.component';
@@ -84,6 +83,5 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatCardModule,
     MatExpansionModule
   ],
-  providers: [LearningObjectService]
 })
 export class CollectionModule { }
