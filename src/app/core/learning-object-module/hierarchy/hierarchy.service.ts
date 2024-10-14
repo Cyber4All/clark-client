@@ -11,10 +11,10 @@ export class HierarchyService {
   constructor(private http: HttpClient) { }
 
 
-  async addHierarchyObject(username: string, learningObject: LearningObject): Promise<any> {
-    return await this.http.post(
+  async addHierarchyObject(username: string, object: LearningObject): Promise<any> {
+    return this.http.post(
       HIERARCHY_ROUTES.ADD_NEW_HIERARCHY_OBJECT(),
-      { learningObject, username }, { withCredentials: true, responseType: 'text' }
+      { object, username }, { withCredentials: true, responseType: 'json' }
     ).toPromise();
   }
 }
