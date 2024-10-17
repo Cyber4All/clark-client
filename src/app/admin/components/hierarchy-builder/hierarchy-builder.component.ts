@@ -94,20 +94,23 @@ export class HierarchyBuilderComponent implements OnInit {
    */
 
   async createLearningObjects(node: any) {
+    let finalObj;
     if (node.children.length === 0) {
-      return this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
+      return await this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
     }
+
     const childrenIds = [];
     for await (const child of node.children) {
-      const obj = JSON.parse(await this.createLearningObjects(child));
-      childrenIds.push(obj.id);
+      const obj = await this.createLearningObjects(child);
+      childrenIds.push(obj._id);
     }
-    let parentId = this.parent.id;
+
     if (node.name !== this.parent.name) {
-      const obj = JSON.parse(await this.hierarchyService.addHierarchyObject(this.parent.author.username, node));
-      parentId = obj.id;
+      const obj = await this.hierarchyService.addHierarchyObject(this.parent.author.username, node);
+      finalObj = obj;
     }
-    const newNode = await this.setParents(parentId, childrenIds);
+
+    const newNode = await this.setParents(finalObj || node, childrenIds);
     if (node.name === this.parent.name) {
       this.toaster.success(
         'Success',

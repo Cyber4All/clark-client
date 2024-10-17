@@ -77,13 +77,13 @@ export class LearningObjectsComponent
   allSelected = false;
 
   constructor(
-    private searchService: SearchService,
     private route: ActivatedRoute,
     private router: Router,
     private toaster: ToastrOvenService,
     private auth: AuthService,
     private cd: ChangeDetectorRef,
     private userService: UserService,
+    private searchLearningObjectService: SearchService,
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -219,7 +219,7 @@ export class LearningObjectsComponent
       this.loading = true;
 
       if (this.query.username && this.query.username.length > 0) {
-        await this.searchService
+        await this.searchLearningObjectService
           .getUsersLearningObjects(this.query.username, {
             ...this.query,
             })
@@ -242,7 +242,7 @@ export class LearningObjectsComponent
             this.loading = false;
           });
       } else {
-        await this.searchService
+        await this.searchLearningObjectService
           .getLearningObjects(this.query)
           .then((val) => {
             this.learningObjects = val.learningObjects;
@@ -264,19 +264,6 @@ export class LearningObjectsComponent
           });
       }
     }
-  }
-
-  /**
-   * Update the status filters object and reset the Learning Objects query
-   *
-   * @param {string[]} statuses the list of statuses by which to filter
-   * @memberof LearningObjectsComponent
-   */
-  getStatusFilteredLearningObjects(statuses: string[]) {
-    this.query = { status: statuses, currPage: 1 };
-    this.learningObjects = [];
-
-    this.getLearningObjects();
   }
 
   /**
@@ -305,18 +292,6 @@ export class LearningObjectsComponent
   }
 
   /**
-   * Update the Query's collection parameter and reset the Learning Objects query
-   *
-   * @param {string} collection the abbreviated name of the collection by which to filter
-   * @memberof LearningObjectsComponent
-   */
-  getCollectionFilteredLearningObjects(collection: string) {
-    this.query = { collection, currPage: 1 };
-    this.learningObjects = [];
-
-    this.getLearningObjects();
-  }
-  /**
    * Updates the queries startNextcheck and endNextCheck values
    *
    * @param dates The start and end dates for the relevancy date filter
@@ -328,18 +303,6 @@ export class LearningObjectsComponent
       endNextCheck: dates.end,
       currPage: 1,
     };
-    this.learningObjects = [];
-
-    this.getLearningObjects();
-  }
-
-  /**
-   * Updates the query topics value
-   *
-   * @param topics The array of topic names to filter by
-   */
-  getTopicsFilteredLearningObjects(topics: any[]) {
-    this.query = { topics, currPage: 1 };
     this.learningObjects = [];
 
     this.getLearningObjects();
@@ -391,11 +354,18 @@ export class LearningObjectsComponent
     value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
   }
 
-  /**
-   * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
-   *
-   * @param l Learning Object to be selected
-   */
+  handleFilterQuery(filters: { status: string[], topic: string[], collection: string }) {
+    this.query = { status: filters.status, topics: filters.topic, collection: filters.collection, currPage: 1 };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
+
+    /**
+     * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
+     *
+     * @param l Learning Object to be selected
+     */
   selectLearningObject(l: LearningObject) {
     this.selected.set(l.id, l);
     this.selectedLearningObjects.push(l);

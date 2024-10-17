@@ -26,7 +26,8 @@ export class Collection502Component implements OnInit {
     private navbarService: NavbarService,
     private searchLearningObjectService: SearchService,
     private collectionService: CollectionService,
-    private titleService: Title
+    private titleService: Title,
+    private searchService: SearchService,
   ) { }
 
   async ngOnInit() {

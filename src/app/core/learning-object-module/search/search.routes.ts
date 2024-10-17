@@ -3,7 +3,9 @@ import * as querystring from 'querystring';
 
 export const SEARCH_ROUTES = {
   SEARCH_LEARNING_OBJECTS(query?: string) {
-    return `${environment.apiURL}/learning-objects?${query}`;
+    return query
+      ? `${environment.apiURL}/learning-objects?${query}`
+      : `${environment.apiURL}/learning-objects`;
   },
 
   /**
