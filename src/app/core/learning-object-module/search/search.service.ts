@@ -5,12 +5,18 @@ import { catchError } from 'rxjs/operators';
 import { LearningObject } from '@entity';
 import { throwError } from 'rxjs';
 import { Query } from 'app/interfaces/query';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SearchService {
-  constructor(private http: HttpClient) {}
+
+  needsChange$: Subject<void> = new Subject();
+
+  constructor(
+    private http: HttpClient
+  ) { }
 
   /**
    * Fetches Array of Learning Objects
@@ -80,5 +86,9 @@ export class SearchService {
       // API returned error
       return throwError(error);
     }
+  }
+
+  registerChange() {
+    this.needsChange$.next();
   }
 }

@@ -53,30 +53,27 @@ export class AddChildComponent implements OnInit, OnDestroy {
   async getLearningObjects(filters?: any, query?: string): Promise<LearningObject[]> {
     this.loading = true;
     const draftObjects = await this.searchLearningObjectService
-      .getUsersLearningObjects(this.child.author.username, { ...filters, text: query ?? '' })
+      .getUsersLearningObjects(this.child.author.username, { ...filters, text: query, draftsOnly: true })
       .then((response: { learningObjects: LearningObject[], total: number }) => {
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
         return response.learningObjects.filter((child: LearningObject) => {
-          (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length));
+          return (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length));
         });
       });
-
     const releasedObjects = await this.searchLearningObjectService
-      .getLearningObjects({ ...filters, text: query ?? '', childId: this.child.id })
+      .getUsersLearningObjects(this.child.author.username, { ...filters, text: query })
       .then((response: { learningObjects: LearningObject[], total: number }) => {
-        let { learningObjects } = response;
         const indx = this.lengths.indexOf(this.child.length);
         const childrenLengths = this.lengths.slice(0, indx);
-        learningObjects = learningObjects.filter(
-          child => (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length))
-        );
-        return learningObjects;
+        return response.learningObjects.filter((child: LearningObject) => {
+          return (!this.currentChildren.includes(child.id) && childrenLengths.includes(child.length));
+        });
       });
-
     this.loading = false;
     return [...draftObjects, ...releasedObjects];
   }
+
   /**
    * Takes the index of the LO within the array and emits it to the parent
    * and also removes it from the array of candidate children for the LO
