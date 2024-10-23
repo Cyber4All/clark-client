@@ -19,6 +19,10 @@
             margin-left: 5px;
         }
     }
+    a:hover {
+        color: $dark-grey;
+        text-decoration: none;
+    }
 
     .item:first-child {
         padding-left: 0;
