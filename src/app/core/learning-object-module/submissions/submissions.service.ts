@@ -81,7 +81,7 @@ export class SubmissionsService {
    */
   getFirstSubmission(learningObjectId: string, collection: string) {
     return this.http
-      .get<{ isFirstSubmission: boolean }>(
+      .get<{ firstSubmission: boolean }>(
         SUBMISSION_ROUTES.CHECK_FIRST_SUBMISSION({
           learningObjectId,
           query: {

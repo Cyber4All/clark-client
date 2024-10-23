@@ -269,7 +269,7 @@ export class SubmitComponent implements OnInit {
       .then(response => {
         this.collection = collection;
         // If the learning object has been submitted before then it needs a changelog
-        this.needsChangelog = !response.isFirstSubmission;
+        this.needsChangelog = !response.firstSubmission;
       });
   }
 
