@@ -34,7 +34,7 @@ export class GuidelineService {
     // CLARK-SERVICE-FIX: SUPPORT SEARCH QUERY
     const res = await this.http
       .get<{ total: number; results: SearchItemDocument[]; }>(
-        STANDARD_GUIDELINES_ROUTES.SEARCH_GUIDELINES())
+        STANDARD_GUIDELINES_ROUTES.SEARCH_GUIDELINES(query))
       .pipe(catchError(this.handleError))
       .toPromise();
     return res;

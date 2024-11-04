@@ -15,7 +15,7 @@ export const STANDARD_GUIDELINES_ROUTES = {
      * @method GET
      * @returns list of guidelines
      */
-    SEARCH_GUIDELINES() {
-        return `${environment.apiURL}/guidelines`;
+    SEARCH_GUIDELINES(query: any) {
+        return `${environment.apiURL}/guidelines/?${query}`;
     }
 };
