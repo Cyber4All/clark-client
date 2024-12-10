@@ -25,6 +25,17 @@ workflows:
           bucket: "clark-client-staging"
           distribution_id: STAGING_CLOUDFRONT_ID
           script: build:staging
+      
+      # Temporary job to deploy to the new production bucket
+      # in cyber4all-prod account
+      # This job will be removed once the Dec. 16 deployment
+      # is complete, and this bucket should be updated for
+      # releases workflow
+      - cyber4all/s3:
+          context: 
+            - AWS
+            - Slack
+          bucket: "clark.center"
 
   continuous-deployment:
     when:
