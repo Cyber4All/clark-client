@@ -1,6 +1,6 @@
 import { environment } from '@env/environment';
 import { UserQuery } from 'app/interfaces/query';
-import * as querystring from 'querystring';
+import { stringify } from '../shared/stringify';
 
 export const USER_ROUTES = {
   /**
@@ -17,7 +17,7 @@ export const USER_ROUTES = {
    * @param query the query parameters
    */
   SEARCH_USERS(query: UserQuery = {}) {
-    return `${environment.apiURL}/users?${querystring.stringify(query)}`;
+    return `${environment.apiURL}/users?${stringify(query)}`;
   },
   /**
    * Request to retrieve a user

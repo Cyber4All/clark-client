@@ -1,5 +1,6 @@
+import { HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import * as querystring from 'querystring';
+import { stringify } from 'app/core/shared/stringify';
 
 export const SEARCH_ROUTES = {
   SEARCH_LEARNING_OBJECTS(query?: string) {
@@ -16,6 +17,6 @@ export const SEARCH_ROUTES = {
    * @returns the learning objects
    */
   GET_USER_LEARNING_OBJECTS(username: string, query: any) {
-    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?${querystring.stringify(query)}`;
+    return `${environment.apiURL}/users/${encodeURIComponent(username)}/learning-objects?${stringify(query)}`;
   },
 };

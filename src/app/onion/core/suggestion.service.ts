@@ -1,9 +1,9 @@
 import { Observable, Subject, throwError } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { environment } from '@env/environment';
-import * as querystring from 'querystring';
+import { stringify } from 'app/core/shared/stringify';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +40,7 @@ export class SuggestionService {
   }
 
   emit(text, filter?) {
-    const query = `text=${text}&${querystring.stringify(
+    const query = `text=${text}&${stringify(
       this.formatFilter(filter)
     )}`;
     this.http

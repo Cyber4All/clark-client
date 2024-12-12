@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import * as querystring from 'querystring';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { STANDARD_GUIDELINES_ROUTES } from './standard-guidelines.routes';
 import { FrameworkDocument } from '../../../entity/standard-guidelines/Framework';
 import { SearchItemDocument } from '../../../entity/standard-guidelines/search-index';
+import { stringify } from '../shared/stringify';
 
 interface GuidelinesFilter {
   text?: string;
@@ -27,9 +27,9 @@ export class GuidelineService {
   async getGuidelines(
     filter?: GuidelinesFilter,
   ): Promise<{ total: number; results: SearchItemDocument[] }> {
-    let query = '';
+    let query = new HttpParams();
     if (filter) {
-      query = querystring.stringify(this.formatFilter(filter));
+      query = stringify(this.formatFilter(filter));
     }
     // CLARK-SERVICE-FIX: SUPPORT SEARCH QUERY
     const res = await this.http

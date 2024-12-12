@@ -12,6 +12,7 @@ import { Query } from 'app/interfaces/query';
 import * as querystring from 'querystring';
 import { SEARCH_ROUTES } from '../learning-object-module/search/search.routes';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { stringify } from '../shared/stringify';
 
 @Injectable({
   providedIn: 'root',
@@ -160,7 +161,7 @@ export class FeaturedObjectsService {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
-      const queryString = querystring.stringify(queryClone);
+      const queryString = new URLSearchParams(queryClone).toString();
       route =
         SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryString);
     } else {
