@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering*/
-import { GUIDELINE_ERRORS } from './error-messages';
-import { EntityError } from '../errors/entity-error';
-import { LEVEL, VALID_LEVELS } from '../standard-guidelines/IGuideline';
+import { LEVEL } from '../standard-guidelines/IGuideline';
 import { SearchItem } from 'entity/standard-guidelines/search-index';
 
 /**
