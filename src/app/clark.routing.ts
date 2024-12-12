@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UnsupportedComponent } from './unsupported.component';
-import { NotFoundComponent } from './not-found.component';
+import { UnsupportedComponent } from './unsupported/unsupported.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 import { AccessGroupGuard } from './core/access-group-module/access-group-guard';
-import { UnauthorizedComponent } from './unauthorized.component';
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { BlogRedirectGuard } from './core/utility-module/blog-redirect.guard';
 import { RedirectComponent } from './redirect/redirect.component';
 
