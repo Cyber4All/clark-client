@@ -24,7 +24,7 @@
                 padding-top: 30px;
                 
                 &-image {
-                    background-image: url('../../../assets/images/logo.png');
+                    background-image: url('/assets/images/logo.png');
                     width: 40px;
                     background-size: contain;
                     background-repeat: no-repeat;
@@ -160,7 +160,7 @@
         padding: 20px;
         width: 10vw;
         &-image {
-            background-image: url('../../../assets/images/logo.png');
+            background-image: url('/assets/images/logo.png');
             width: 40px;
             background-size: contain;
             background-repeat: no-repeat;

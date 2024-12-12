@@ -13,19 +13,19 @@ a:visited {
 }
 .header{
     &.module{
-        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
+        background-image: url("/assets/images/pexels-tima-miroshnichenko-5380642.jpg");
     }
     &.micromodule{
-        background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
+        background-image: url('/assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
     }
     &.nanomodule{
-        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
+        background-image: url("/assets/images/pexels-tima-miroshnichenko-5380618.jpg");
     }
     &.unit{
-        background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
+        background-image: url("/assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
     }
     &.course{
-        background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
+        background-image: url("/assets/images/pexels-scott-webb-430208.jpg");
     }
     display: flex;
     align-items: center;
