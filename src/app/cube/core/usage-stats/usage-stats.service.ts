@@ -38,9 +38,9 @@ export class UsageStatsService {
 
     // map service data to LearningObjectStats object
     objects.outcomes = {
-      remember_and_understand: objects.blooms_distribution.remember,
-      apply_and_analyze: objects.blooms_distribution.apply,
-      evaluate_and_synthesize: objects.blooms_distribution.evaluate,
+      remember_and_understand: objects.outcomes.remember_and_understand,
+      apply_and_analyze: objects.outcomes.apply_and_analyze,
+      evaluate_and_synthesize: objects.outcomes.evaluate_and_synthesize,
     };
 
     delete objects.blooms_distribution;

@@ -1,30 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObjectService } from 'app/core/learning-object.service';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
-import { UserService } from 'app/core/user.service';
-import { RatingService } from 'app/core/rating.service';
+import { UserService } from 'app/core/user-module/user.service';
+import { RatingService } from 'app/core/rating-module/rating.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { ModalListElement, ModalService } from 'app/shared/modules/modals/modal.module';
-import { AuthService } from 'app/core/auth.service';
-import { ChangelogService } from 'app/core/changelog.service';
+import { ModalService } from 'app/shared/modules/modals/modal.module';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-export interface Rating {
-  id?: string;
-  user: User;
-  value: number;
-  comment: string;
-  date: number;
-  source?: {
-    cuid: string,
-    version: number,
-  };
-  response?: object;
-}
 @Component({
   selector: 'clark-details',
   templateUrl: './details.component.html',
@@ -66,14 +54,29 @@ export class DetailsComponent implements OnInit, OnDestroy {
   learningObjectOwners: string[];
   averageRatingValue = 0;
   showAddRating = false;
+  editRating = false;
   showAddResponse = false;
-  ratings: Rating[] = [];
-  userRating: {
-    user?: User;
-    number?: number;
-    comment?: string;
-    date?: string;
-  } = {};
+
+  // Removed rating type to avoid conflict with the
+  // rating type from the backend
+  ratings: {
+    id?: string;
+    user: {
+      name: string;
+      username: string;
+      email: string;
+    };
+    value: number;
+    comment: string;
+    date: number;
+    source?: {
+      cuid: string,
+      version: number,
+    };
+    response?: object;
+  }[] = [];
+
+  userRating: {value?: number, comment?: string, id?: string} = {};
 
   openChangelogModal = false;
   loadingChangelogs: boolean;
@@ -120,8 +123,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.reviewer = this.auth.hasReviewerAccess();
       }
     });
-    this.route.params.subscribe(({ username, learningObjectName }: { username: string, learningObjectName: string }) => {
-      this.fetchReleasedLearningObject(username, learningObjectName);
+    this.route.params.subscribe(({ username, cuid, version }: { username: string, cuid: string, version: number }) => {
+      this.fetchReleasedLearningObject(username, cuid, version);
     });
   }
 
@@ -132,7 +135,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @param author the author of the learning object
    * @param name the name of the learning object
    */
-  async fetchReleasedLearningObject(author: string, cuid: string) {
+  async fetchReleasedLearningObject(author: string, cuid: string, version: number) {
     this.loading = true;
 
     try {
@@ -141,7 +144,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
       const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
       await this.learningObjectService.fetchLearningObjectWithResources(
-        { author, cuidInfo: { cuid } }, resources
+        { author, cuidInfo: { cuid, version } }, resources
       ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
         if (object instanceof LearningObject) {
           this.releasedLearningObject = object;
@@ -364,17 +367,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.loadingChangelogs = true;
       try {
         if (this.revisedVersion) {
-          this.changelogs = await this.changelogService.fetchAllChangelogs({
-            userId: this.learningObject.author.id,
-            learningObjectCuid: this.learningObject.cuid,
-            minusRevision: false,
-          });
+          this.changelogs = await this.changelogService.getAllChangelogs(
+            this.learningObject.cuid,
+            false, //minusRevision
+          );
         } else {
-          this.changelogs = await this.changelogService.fetchAllChangelogs({
-            userId: this.learningObject.author.id,
-            learningObjectCuid: this.learningObject.cuid,
-            minusRevision: true,
-          });
+          this.changelogs = await this.changelogService.getAllChangelogs(
+            this.learningObject.cuid,
+            true, //minusRevision
+          );
         }
       } catch (error) {
         let errorMessage;
@@ -423,7 +424,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
   createRating(rating: { value: number; comment: string; id?: string }) {
     this.ratingService
       .createRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         rating,
@@ -442,36 +442,54 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.canAddNewRating = false;
   }
 
+  triggerUpdateRating(event: { value: number; comment: string, index: number }) {
+    // Set the showAddRating to true so that the rating form is displayed
+    this.showAddRating = true;
+
+    // Set the editRating to true so that the form knows to update the rating
+    this.editRating = true;
+
+    // Set the userRating to the rating they want to edit
+    const rating = this.ratings[event.index];
+    this.userRating = {
+      value: event.value,
+      comment: event.comment,
+      id: rating.id,
+    };
+  }
+
   /**
    * Edits an existing rating. An id must be supplied.
    *
    * @param rating the rating object to be updated
    */
-  updateRating(rating: { value: number; comment: string; id?: string }) {
-    const { id, ...updates } = rating;
-    if (!rating.id) {
+  async updateRating(rating: {
+    value: number;
+    comment: string;
+    id?: string;
+  }) {
+    const { value, comment, id } = rating;
+    if (!id) {
       this.toastService.error('Error!', 'An error occured and your rating could not be updated');
-      console.error('Error: rating id not set');
       return;
     }
+
     this.ratingService
       .editRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
-        ratingId: rating.id,
-        rating: updates,
+        ratingId: id,
+        rating: {value, comment},
       })
       .then(
         () => {
           this.getLearningObjectRatings();
           this.showAddRating = false;
-          this.toastService.success('Success!', 'Review updated successfully!');
+          this.toastService.success('Success!', 'Rating updated successfully!');
         },
-        error => {
+        (error) => {
           this.showAddRating = false;
           this.toastService.error('Error!', 'An error occurred and your rating could not be updated');
-          console.error(error);
         }
       );
   }
@@ -485,7 +503,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     // 'index' here is the index in the ratings array to delete
     this.ratingService
       .deleteRating({
-        username: this.learningObject.author.username,
         CUID: this.learningObject.cuid,
         version: this.learningObject.version,
         ratingId: this.ratings[index].id,
@@ -515,9 +532,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (ratingId) {
       this.ratingService
         .flagLearningObjectRating({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
           ratingId,
           report
         })
@@ -548,20 +562,17 @@ export class DetailsComponent implements OnInit, OnDestroy {
     delete response.index;
 
     if (ratingId) {
-      const result = await this.ratingService
-        .createResponse({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
-          ratingId,
-          response,
-        });
-      if (result) {
-        this.getLearningObjectRatings();
-        this.toastService.success('Success!', 'Response submitted successfully!');
-      } else {
-        this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
-      }
+      await this.ratingService
+        .createResponse({ratingId, response})
+        .then(
+          () => {
+            this.getLearningObjectRatings();
+            this.toastService.success('Success!', 'Response submitted successfully!');
+          },
+          (error) => {
+            this.toastService.error('Error!', 'An error occurred and your response could not be submitted ' + error.error.message);
+          }
+        );
     } else {
       this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
     }
@@ -580,24 +591,25 @@ export class DetailsComponent implements OnInit, OnDestroy {
     // locate target rating and then delete the index param from the response
     const ratingId = this.learningObject.ratings.ratings[response.index].id;
     const responseId = this.ratings[response.index].response[0]._id;
+    if (!ratingId) {
+      this.toastService.error('Error!', 'An error occurred and your response could not be updated');
+      return;
+    }
+
     if (ratingId) {
-      const result = await this.ratingService
+      await this.ratingService
         .editResponse({
-          username: this.learningObject.author.username,
-          CUID: this.learningObject.cuid,
-          version: this.learningObject.version,
-          ratingId,
           responseId,
           updates: response,
-        });
-      if (result) {
-        this.getLearningObjectRatings();
-        this.toastService.success('Success!', 'Response updated successfully!');
-      } else {
-        this.toastService.error('Error!', 'An error occurred and your response could not be updated');
-      }
-    } else {
-      this.toastService.error('Error!', 'An error occurred and your response could not be updated');
+        }).then(
+          () => {
+            this.getLearningObjectRatings();
+            this.toastService.success('Success!', 'Response updated successfully!');
+          },
+          (error) => {
+            this.toastService.error('Error!', 'An error occurred and your response could not be updated');
+          }
+        );
     }
   }
 
@@ -608,14 +620,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
    */
   async deleteResponse(index: number) {
     // locate target rating and then delete the index param from the response
-    const ratingId = this.ratings[index].id;
     const responseId = this.ratings[index].response[0]._id;
     this.ratingService
       .deleteResponse({
-        username: this.learningObject.author.username,
-        CUID: this.learningObject.cuid,
-        version: this.learningObject.version,
-        ratingId,
         responseId,
       })
       .then(val => {
@@ -633,23 +640,23 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * If the service does not return any ratings, the UI resets to default rating values.
    */
   private async getLearningObjectRatings() {
-    this.learningObjectService.fetchLearningObjectResources(this.learningObject, ['ratings']).toPromise().then(({ name, data }) => {
+      const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
 
-      if (!data) {
+      if (!ratings) {
         this.resetRatings();
         return;
       }
 
-      this.ratings = data.ratings;
-      this.averageRatingValue = data.avgValue;
+      this.ratings = ratings.ratings;
+      this.averageRatingValue = ratings.avgValue;
 
       const u = this.auth.username;
       if (this.ratings && this.ratings.length) {
         for (let i = 0, l = this.ratings.length; i < l; i++) {
-          if (u === data.ratings[i].user.username) {
+          if (u === this.ratings[i].user.username) {
             // this is the user's rating
             // we deep copy this to prevent direct modification from component subtree
-            this.userRating = Object.assign({}, data.ratings[i]);
+            this.userRating = Object.assign({}, ratings[i]);
             // See if the user can add new rating or will have the option to edit their current rating
             if (this.userRating) {
               this.canAddNewRating = false;
@@ -660,8 +667,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
       }
       // if we found the rating, we've returned from the function at this point
       this.userRating = {};
-    });
-  }
+  };
+
 
   /**
    * Returns a boolean whether or not the object is the owner's

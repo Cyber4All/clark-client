@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Mention } from 'app/core/press-coverage.service';
+import { Mention } from 'app/core/client-module/press-coverage.service';
 
 @Component({
   selector: 'clark-media-card',

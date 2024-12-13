@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { LearningObjectService } from 'app/cube/learning-object.service';
-import { LearningObjectService as LOUri} from 'app/core/learning-object.service';
+import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
 
 /**
  * EditorialActionPadComponent coordinates all editor functionality inside of the
@@ -27,10 +27,10 @@ export class EditorialActionPadComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private learningObjectService: LearningObjectService,
     private learningObjectServiceUri: LOUri,
     private toaster: ToastrOvenService,
-    ) { }
+    private revisionsService: RevisionsService,
+  ) { }
 
   async ngOnInit() {
   }
@@ -41,19 +41,19 @@ export class EditorialActionPadComponent implements OnInit {
   }
   // Determines if an editor can make edits to a waiting, review, or proofing learning object
   get makeEdits() {
-  return (this.learningObject.status === 'waiting' || (this.revisedLearningObject && this.revisedLearningObject.status === 'waiting')) ||
-         (this.learningObject.status === 'review' || (this.revisedLearningObject && this.revisedLearningObject.status === 'review')) ||
-         (this.learningObject.status === 'proofing' || (this.revisedLearningObject && this.revisedLearningObject.status === 'proofing')) ||
-         (this.learningObject.status === 'unreleased' ||
-         (this.revisedLearningObject && this.revisedLearningObject.status === 'unreleased'));
+    return (this.learningObject.status === 'waiting' || (this.revisedLearningObject && this.revisedLearningObject.status === 'waiting')) ||
+      (this.learningObject.status === 'review' || (this.revisedLearningObject && this.revisedLearningObject.status === 'review')) ||
+      (this.learningObject.status === 'proofing' || (this.revisedLearningObject && this.revisedLearningObject.status === 'proofing')) ||
+      (this.learningObject.status === 'unreleased' ||
+        (this.revisedLearningObject && this.revisedLearningObject.status === 'unreleased'));
   }
 
   // Determines if an editor is not permitted to create a revision or make edits
   get notPermitted() {
     return (this.learningObject.status === 'released' &&
       (this.revisedLearningObject &&
-      (this.revisedLearningObject.status === 'unreleased' || this.revisedLearningObject.status === 'rejected'))) ||
-     (this.learningObject.status === 'rejected');
+        (this.revisedLearningObject.status === 'unreleased' || this.revisedLearningObject.status === 'rejected'))) ||
+      (this.learningObject.status === 'rejected');
   }
 
   // Handles opening the create revision modal
@@ -72,9 +72,9 @@ export class EditorialActionPadComponent implements OnInit {
   editLearningObject() {
     const userOrAdminRoute = (this.userIsAuthor) ? 'onion' : 'admin';
     if (this.revisedLearningObject) {
-      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.revisedLearningObject.id]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.revisedLearningObject.cuid]);
     } else {
-      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.learningObject.id]);
+      this.router.navigate([userOrAdminRoute, 'learning-object-builder', this.learningObject.cuid]);
     }
   }
 
@@ -82,12 +82,15 @@ export class EditorialActionPadComponent implements OnInit {
   async createRevision() {
     this.closeRevisionModal();
     this.toaster.success('One Moment Please', 'Your revision is being created.');
-    await this.learningObjectService
-      .createRevision(this.learningObject.cuid, this.learningObject.author.username).then(async (revisionUri: any) => {
+    // TODO: Update the createRevision's response to be a revised learning object rather than
+    // using a GET request to make a request that would effectively do the same thing.
+    // This will cut down on requests and simplify abstraction.
+    await this.revisionsService
+      .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
-        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.id}`]);
+        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.cuid}`]);
       }).catch(e => {
         this.toaster.error('Error', e.error.message);
       });
-    }
+  }
 }

@@ -92,12 +92,14 @@ export class LearningObjectErrorGroup {
  * @export
  * @class LearningObjectValidator
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LearningObjectValidator {
   submissionMode: boolean;
   errors = new LearningObjectErrorGroup();
 
-  constructor(public outcomeValidator: LearningOutcomeValidator) {}
+  constructor(public outcomeValidator: LearningOutcomeValidator) { }
 
   /**
    * Retrieves the first string error for a learning object, checks save errors first, then checks submit errors if

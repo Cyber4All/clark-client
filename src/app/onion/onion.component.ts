@@ -1,7 +1,7 @@
 import { ModalService, ModalListElement, Position } from '../shared/modules/modals/modal.module';
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AuthService } from '../core/auth.service';
+import { AuthService } from '../core/auth-module/auth.service';
 import { trigger, transition, style, animate, animateChild, query, group } from '@angular/animations';
 
 export const onionTransitions = trigger('onionTransitions', [

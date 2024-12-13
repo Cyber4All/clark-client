@@ -62,9 +62,9 @@
               [averageRating]="averageRatingValue"
               [learningObjectOwners]="learningObjectOwners"
               [loggedIn]="loggedin"
-              (editRating)="showAddRating = true;"
+              (editRating)="triggerUpdateRating($event)"
               (deleteRating)="deleteRating($event)"
-              (editResponse)="editResponse($event);"
+              (editResponse)="editResponse($event)"
               (deleteResponse)="deleteResponse($event)"
               (reportRating)="reportRating($event)"
               (respondRating)="submitResponse($event)">
@@ -113,7 +113,7 @@
   <div #popupInner style="min-width: 300px; max-width:100vw" class="popup-inner">
     <div class="new-rating">
       <div class="title">Rate this Learning Object</div>
-      <clark-new-rating [rating]="userRating" [editing]="userRating.date ? true : false" (setRating)="handleRatingSubmission($event)"
+      <clark-new-rating [rating]="userRating" [editing]="editRating" (setRating)="handleRatingSubmission($event)"
         (cancelRating)="showAddRating = false;"></clark-new-rating>
     </div>
   </div>

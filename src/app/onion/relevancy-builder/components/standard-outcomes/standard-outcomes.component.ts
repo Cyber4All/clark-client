@@ -8,7 +8,7 @@ import {
   EventEmitter,
 } from '@angular/core';
 import { Guideline } from '@entity';
-import { GuidelineService } from 'app/core/guideline.service';
+import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
 import { BuilderStore } from '../../builder-store.service';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, filter, map } from 'rxjs/operators';
@@ -51,8 +51,8 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
     private guidelineService: GuidelineService,
     private store: BuilderStore
   ) {
-      // handle searching
-      this.searchString$
+    // handle searching
+    this.searchString$
       .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
       .subscribe(() => {
         this.performSearch();

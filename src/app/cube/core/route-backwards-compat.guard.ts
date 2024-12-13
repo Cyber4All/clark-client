@@ -15,16 +15,15 @@ export class RouteBackwardsCompatGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if (next.params.learningObjectName.indexOf('-') === 8) {
+      if (next.params.cuid.indexOf('-') === 8) {
         return true;
       } else {
         return this.http
           .get(`${environment.apiURL}/learning-objects/${encodeURI(next.params.username)}/${encodeURI(next.params.learningObjectName)}`,
             { withCredentials: true })
           .toPromise().then(cuid => {
-          return this.router.createUrlTree([`/details/${next.params.username}/${cuid}`]);
+          return this.router.createUrlTree([`/details/${next.params.username}`]);
         }).catch(err => {
-          console.error(err);
           this.toaster.error('Error!', `Unable to get Learning Object details.`);
           // TODO: Route to Not Found page instead of home
           return this.router.createUrlTree(['']);

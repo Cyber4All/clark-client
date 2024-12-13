@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CollectionService } from '../../core/collection.service';
+import { CollectionService } from '../../core/collection-module/collections.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
@@ -27,7 +27,7 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private titleService: Title,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.params

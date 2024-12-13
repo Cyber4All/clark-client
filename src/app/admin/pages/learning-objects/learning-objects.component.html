@@ -8,10 +8,8 @@
   ></clark-admin-search-bar>
   <clark-admin-filter-search
     filter-options
-    (statusFilter)="getStatusFilteredLearningObjects($event)"
-    (collectionFilter)="getCollectionFilteredLearningObjects($event)"
+    (filterQuery)="handleFilterQuery($event)"
     (relevancyCheck)="getRelevancyFilteredLearningObjects($event)"
-    (topicFilter)="getTopicsFilteredLearningObjects($event)"
     (clearAll)="clearStatusAndCollectionFilters()"
     [adminOrEditor]="isAdminOrEditor"
     [showStatus]="true"
