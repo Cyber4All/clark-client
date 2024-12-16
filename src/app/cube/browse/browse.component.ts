@@ -294,8 +294,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   clearSort(event) {
     this.showClearSort = false;
     event.stopPropagation();
-    delete this.query.orderBy
-    delete this.query.sortType
+    delete this.query.orderBy;
+    delete this.query.sortType;
     this.sortText = '';
     this.performSearch();
   }
