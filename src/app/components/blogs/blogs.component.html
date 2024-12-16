@@ -1,16 +1,18 @@
 <div class="blogs-component" *ngIf="blogObservable | async as blog;">
-    <div @blogView class="first-view" *ngIf="view===0">
+    <div class="first-view" *ngIf="view===0">
         <div class="left">
-            <i class="fal fa-newspaper fa-2x"></i>
+            <i class="fal fa-wrench fa-2x"></i>
+            <!-- <i class="fal fa-newspaper fa-2x"></i> -->
             <p>
-                <strong>{{blog[0].name}} </strong> {{" " + blog[0].description}}
-                <a [href]="blog[0].url" target="_blank">See blog for more details.</a>
+                <!-- <strong>{{blog[0].name}} </strong> {{" " + blog[0].description}}
+                <a [href]="blog[0].url" target="_blank">See blog for more details.</a> -->
+                CLARK will be unavailable <strong>December 16, 2024 from 8:00AM EST - 10:00AM EST</strong> for scheduled maintenance. We thank you for your patience as we work to improve your experience.
             </p>
         </div>
-        <div class="side-by-side">
+        <!-- <div class="side-by-side">
             <button class="dismiss" [tip]="dismissText" (click)="dismiss()" >Dismiss</button>
             <button class="dismissOnce" [tip]="dismissOnceText" (click)="dismissOnce()">Dismiss Once</button>
-        </div>
+        </div> -->
     </div>
 
 </div>
