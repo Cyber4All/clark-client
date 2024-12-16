@@ -23,7 +23,7 @@ export const UTILITY_ROUTES = {
    * @returns the client version
    */
   GET_CLIENT_VERSION(clientVersion: string) {
-    return `${environment.apiURL}/clientversion&clientVersion=${encodeURIComponent(clientVersion)}`;
+    return `${environment.apiURL}/clientversion?clientVersion=${encodeURIComponent(clientVersion)}`;
   },
   /**
    * Request to see if service is down or if there is a banner message
