@@ -183,7 +183,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
       // If any data has be changed on the LO, then we need to rebundle
       if (this.store.touched) {
-        let lo = this.learningObject as any;
+        const lo = this.learningObject as any;
         this.bundlingService.bundleLearningObject(lo._id);
       }
       if (leaveBuilder) {
