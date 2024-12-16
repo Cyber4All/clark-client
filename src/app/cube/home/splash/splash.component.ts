@@ -18,7 +18,7 @@ export class SplashComponent implements OnInit {
     ) { }
 
   async ngOnInit(): Promise<void> {
-    this.learningObjectService.getLearningObjects().then(stats => {
+    this.learningObjectService.getLearningObjects({'status': ['released']}).then(stats => {
       this.numReleasedObjects = Math.floor(stats.total / 10) * 10;
     });
     await this.utilityService.getAllResources().then((res: any) => {

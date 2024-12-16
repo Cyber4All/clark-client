@@ -162,6 +162,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.searchService.getUsersLearningObjects(this.auth.username, {
       draftsOnly: true,
+      limit: 1000,
       text,
       ...filters
     }).then((response: { learningObjects: LearningObject[], total: number }) => {
