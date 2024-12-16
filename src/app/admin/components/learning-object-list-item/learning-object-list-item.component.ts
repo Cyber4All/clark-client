@@ -195,7 +195,8 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   goToUrl(url) {
     if (url === 'builder') {
-      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version}`);
+      // Always get the version +1
+      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version + 1}`);
     } else if (url === 'contact') {
       window.open(`/users/${this.learningObject.author.username}`);
     } else if (url === 'details') {
