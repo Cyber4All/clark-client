@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { GoogleTagService } from '../google-tag.service';
-import { UtilityService } from 'app/core/utility.service';
-import { LearningObjectService } from 'app/cube/learning-object.service';
+import { UtilityService } from '../../../core/utility-module/utility.service';
+import { SearchService } from '../../../core/learning-object-module/search/search.service';
 
 @Component({
   selector: 'clark-splash',
@@ -14,7 +14,7 @@ export class SplashComponent implements OnInit {
   constructor(
     public googleTagService: GoogleTagService,
     public utilityService: UtilityService,
-    public learningObjectService: LearningObjectService
+    public learningObjectService: SearchService
     ) { }
 
   async ngOnInit(): Promise<void> {
