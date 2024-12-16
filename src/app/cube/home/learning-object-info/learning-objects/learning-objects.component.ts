@@ -25,10 +25,10 @@ export class LearningObjectsComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.searchService.getLearningObjects({"status": ["released"]}).then(total => {
+    await this.searchService.getLearningObjects({'status': ['released']}).then(total => {
       this.numReleasedObjects = Math.floor(total.total / 10) * 10;
     });
-    
+
     // Stats is being annoying so just no for now
     // await this.metricService.getLearningObjectStats().then(stats => {
     //   this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
