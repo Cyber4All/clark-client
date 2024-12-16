@@ -33,10 +33,11 @@ export class NavbarDropdownService {
     public showNavbars = new BehaviorSubject<boolean>(true);
 
     public externalResources = [
-    {name: 'CPNC Competency Constructor', link: 'https://cybercompetencies.com'},
+    {name: 'CAE Resource Directory (CARD)', link: 'https://caeresource.directory'},
+    {name: 'Standard Guidelines Tool', link: 'https://standard-guidelines.clark.center'},
     {name: 'Competency Library', link: 'https://lib.cybercompetencies.com'},
+    {name: 'CPNC Competency Constructor', link: 'https://cybercompetencies.com'},
     {name: 'Curriculum Task Force', link: 'https://cyberedtaskforce.org'},
-    {name: 'Standard and Guidelines Tool', link: 'https://standard-guidelines.clark.center'},
     {name: 'Task Tool', link: 'https://tasktool.clark.center'},
     {name: 'CAE Community Site', link: 'https://www.caecommunity.org/'},
     ];
