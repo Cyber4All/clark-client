@@ -4,6 +4,7 @@ import { FeaturedObjectsService } from 'app/core/feature-module/featured.service
 import { UserService } from 'app/core/user-module/user.service';
 import { GoogleTagService } from '../../google-tag.service';
 import { MetricService } from 'app/core/metric-module/metric.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 
 @Component({
@@ -19,13 +20,19 @@ export class LearningObjectsComponent implements OnInit {
   constructor(private featureService: FeaturedObjectsService,
     private userService: UserService,
     private metricService: MetricService,
-    public googleTagService: GoogleTagService
+    public googleTagService: GoogleTagService,
+    private searchService: SearchService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.metricService.getLearningObjectStats().then(stats => {
-      this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
+    await this.searchService.getLearningObjects({'status': ['released']}).then(total => {
+      this.numReleasedObjects = Math.floor(total.total / 10) * 10;
     });
+
+    // Stats is being annoying so just no for now
+    // await this.metricService.getLearningObjectStats().then(stats => {
+    //   this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
+    // });
     await this.featureService.getFeaturedObjects();
     await this.featureService.featuredObjects.subscribe(objects => {
       this.featuredObject = objects[1];
