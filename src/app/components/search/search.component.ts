@@ -86,8 +86,16 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   performSearch(searchbar) {
     searchbar.value = searchbar.value.trim();
+    const errorMessage = document.getElementById('search-alert');
     const text = searchbar.value;
-    if (text.length) {
+    if(text.length < 3) {
+      errorMessage.style.display = 'block';
+      setTimeout(() => {
+        errorMessage.style.display = 'none'; // Hide after 3 seconds
+      }, 3000);
+      return;
+    }
+    else if (text.length) {
       searchbar.blur();
       this.router.navigate(['/browse'], { queryParams: { text, currPage: 1 } });
     }
