@@ -33,6 +33,12 @@ export class EditorialActionPadComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+    // Check for the revisions
+    const version = await this.learningObjectServiceUri.getLearningObject(this.learningObject.cuid, this.learningObject.version + 1);
+    if(version) {
+      this.hasRevision = true;
+      this.revisedLearningObject = version;
+    }
   }
 
   // Determines if an editor can create a revision of a learning object
@@ -73,16 +79,16 @@ export class EditorialActionPadComponent implements OnInit {
     const userOrAdminRoute = (this.userIsAuthor) ? 'onion' : 'admin';
     if (this.revisedLearningObject) {
       this.router.navigate([
-        userOrAdminRoute,
+        'onion',
         'learning-object-builder',
         this.revisedLearningObject.cuid,
         this.revisedLearningObject.version]);
     } else {
       this.router.navigate([
-        userOrAdminRoute,
+        'onion',
         'learning-object-builder',
         this.learningObject.cuid,
-        this.revisedLearningObject.version]);
+        this.learningObject.version]);
     }
   }
 
@@ -96,7 +102,7 @@ export class EditorialActionPadComponent implements OnInit {
     await this.revisionsService
       .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
-        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.cuid}`]);
+        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.cuid}/${this.revisedLearningObject.version}`]);
       }).catch(e => {
         this.toaster.error('Error', e.error.message);
       });
