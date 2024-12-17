@@ -195,14 +195,15 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   goToUrl(url) {
     if (url === 'builder') {
-      // Always get the version +1
-      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version + 1}`);
+      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version}`);
     } else if (url === 'contact') {
       window.open(`/users/${this.learningObject.author.username}`);
     } else if (url === 'details') {
       window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}/${this.learningObject.version}`);
     } else if (url === 'relevancy') {
       window.open(`/onion/relevancy-builder/${this.learningObject.cuid}`);
+    } else if (url === 'revision builder') {
+      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version + 1}`)
     }
   }
 
