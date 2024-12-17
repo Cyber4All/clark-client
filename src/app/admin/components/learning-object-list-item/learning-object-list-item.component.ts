@@ -203,7 +203,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     } else if (url === 'relevancy') {
       window.open(`/onion/relevancy-builder/${this.learningObject.cuid}`);
     } else if (url === 'revision builder') {
-      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version + 1}`)
+      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version + 1}`);
     }
   }
 
