@@ -94,8 +94,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         errorMessage.style.display = 'none'; // Hide after 3 seconds
       }, 3000);
       return;
-    }
-    else if (text.length) {
+    } else if (text.length) {
       searchbar.blur();
       this.router.navigate(['/browse'], { queryParams: { text, currPage: 1 } });
     }
