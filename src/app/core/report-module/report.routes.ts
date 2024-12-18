@@ -7,13 +7,7 @@ export const REPORT_ROUTES = {
      * @auth required
      */
     GENERATE_REPORT(
-        collections: string[],
-        date?: { start: string; end: string },
     ) {
-        let route = `${environment.apiURL}/reports?output=csv&collection=${collections.join(',')}`;
-
-        route += (date ? `&${new URLSearchParams(date).toString()}` : '');
-
-        return route;
+        return `${environment.apiURL}/reports`;
     }
 };
