@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   cyber4all: cyber4all/orb@2.1.9
-  node: circleci/node@6.1.0
+  node: circleci/node@7.0.0
 
 workflows:
   continuous-integration:
@@ -14,9 +14,9 @@ workflows:
       - node/run:
           npm-run: build:prod
 
-  deploy-clark-service-refactor:
+  deploy-staging:
     when:
-        equal: [clark-service-refactor, <<pipeline.git.branch>>]
+        equal: [main, <<pipeline.git.branch>>]
     jobs:
       - cyber4all/s3:
           context:
@@ -26,18 +26,8 @@ workflows:
           distribution_id: STAGING_CLOUDFRONT_ID
           script: build:staging
       
-      # Temporary job to deploy to the new production bucket
-      # in cyber4all-prod account
-      # This job will be removed once the Dec. 16 deployment
-      # is complete, and this bucket should be updated for
-      # releases workflow
-      - cyber4all/s3:
-          context: 
-            - AWS
-            - Slack
-          bucket: "clark.center"
 
-  continuous-deployment:
+  deploy-prod:
     when:
         equal: [releases, <<pipeline.git.branch>>]
     jobs:
@@ -49,6 +39,5 @@ workflows:
           context: 
             - AWS
             - Slack
-          requires: [cyber4all/release]
-          bucket: "curriculum-listings"
+          bucket: "clark.center"
     
