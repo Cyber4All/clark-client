@@ -27,7 +27,7 @@ export class ReportService {
         {
           startDate: date.start,
           endDate: date.end,
-          name
+          collection: collections[0]
         },
         {
           headers: this.headers,
