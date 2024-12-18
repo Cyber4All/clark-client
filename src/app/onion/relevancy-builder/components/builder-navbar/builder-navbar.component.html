@@ -10,7 +10,7 @@
       <clark-lo-status-indicator
         [status]="store.learningObject.status"
       ></clark-lo-status-indicator>
-      <a class="title" [routerLink]="['/details/', store.learningObject.author.username, store.learningObject.cuid]" target="_blank">
+      <a class="title" [routerLink]="['/details/', store.learningObject.author.username, store.learningObject.cuid, store.learningObject.version]" target="_blank">
         {{ store.learningObject.name }}
       </a>
       <span>{{ store.learningObject.length | titlecase }} | {{ store.learningObject.author.name | titlecase }} | Updated {{ store.learningObject.date | date: 'mediumDate' }}</span>

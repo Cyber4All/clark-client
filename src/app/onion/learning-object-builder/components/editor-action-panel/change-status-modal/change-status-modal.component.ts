@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BUILDER_ACTIONS, BuilderStore } from '../../../builder-store.service';
-import { ChangelogService } from 'app/core/changelog.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { carousel } from './clark-change-status-modal.animations';
 import { Router } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -17,7 +17,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
   selector: 'clark-change-status-modal',
   templateUrl: './change-status-modal.component.html',
   styleUrls: ['./change-status-modal.component.scss'],
-  animations: [ carousel ]
+  animations: [carousel]
 })
 export class ChangeStatusModalComponent implements OnInit {
   @Input() shouldShow;
@@ -39,7 +39,7 @@ export class ChangeStatusModalComponent implements OnInit {
     private toaster: ToastrOvenService,
     private cd: ChangeDetectorRef,
     private router: Router,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.setValidStatusMoves();
@@ -77,10 +77,8 @@ export class ChangeStatusModalComponent implements OnInit {
         ];
         break;
       case LearningObject.Status.ACCEPTED_MINOR:
-        this.statuses = [LearningObject.Status.WAITING];
-        break;
       case LearningObject.Status.ACCEPTED_MAJOR:
-        this.statuses = [LearningObject.Status.WAITING];
+        this.statuses = [LearningObject.Status.WAITING, LearningObject.Status.PROOFING];
         break;
       case LearningObject.Status.PROOFING:
         this.statuses = [LearningObject.Status.RELEASED, LearningObject.Status.REJECTED];
@@ -93,7 +91,7 @@ export class ChangeStatusModalComponent implements OnInit {
   private moveToMapAndTag() {
     // Set a small timeout before navigating so that the change in status applies
     setTimeout(() => {
-      this.router.navigate(['onion', 'relevancy-builder', this.learningObject.id, 'outcomes']);
+      this.router.navigate(['onion', 'relevancy-builder', this.learningObject.cuid, 'outcomes']);
     }, 1000);
   }
 
@@ -152,18 +150,36 @@ export class ChangeStatusModalComponent implements OnInit {
    */
   async updateStatus() {
     this.serviceInteraction = true;
+    let unableToUpdate = false;
+
     await Promise.all([
       this.builderStore
-      .execute(BUILDER_ACTIONS.CHANGE_STATUS, { status: this.selectedStatus, reason: this.reason })
-      .catch(error => {
-        this.toaster.error('Error!', 'There was an error trying to update the status of this learning object. Please try again later!');
-      }),
-      this.changelog ? this.createChangelog() : undefined
+        .execute(BUILDER_ACTIONS.CHANGE_STATUS, { status: this.selectedStatus, reason: this.reason })
+        .catch(error => {
+          // Set a variable to track update state and throw up a error toaster.
+          unableToUpdate = true;
+          if (error.status === 400) {
+            this.toaster.error('Error!', error.error.message);
+          } else {
+            this.toaster.error('Error!', 'There was an error trying to update the status of this learning object. Please try again later!');
+          }
+          return;
+        }),
     ]).then(() => {
+      // If we can't update the status, just close the modal after showing an error.
+      if (unableToUpdate) {
+        this.closeModal();
+        this.serviceInteraction = false;
+        return;
+      }
+
+      // Create a changelog.
+      this.changelog ? this.createChangelog() : undefined;
+
       // If the object released, move to map and tag, else update the valid status moves
       this.learningObject.status = this.selectedStatus as LearningObject.Status;
       if (this.selectedStatus === LearningObject.Status.RELEASED) {
-        this.moveToMapAndTag();
+        this.moveToAdminDashboard();
       } else if (this.learningObject.status === LearningObject.Status.REJECTED) {
         this.moveToAdminDashboard();
       } else {
@@ -183,7 +199,6 @@ export class ChangeStatusModalComponent implements OnInit {
    */
   async createChangelog(): Promise<{}> {
     return this.changelogService.createChangelog(
-      this.builderStore.learningObjectEvent.getValue().author.username,
       this.builderStore.learningObjectEvent.getValue().cuid,
       this.changelog,
     );

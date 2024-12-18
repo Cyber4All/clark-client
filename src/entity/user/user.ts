@@ -7,16 +7,13 @@ import { EntityError } from '../errors/entity-error';
  * @class
  */
 export class User {
-  private _id: string;
-  get id(): string {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+private _id: string;
+  get userId(): string {
     return this._id;
   }
-  set id(id: string) {
-    if (!this.id) {
+  set userId(id: string) {
       this._id = id;
-    } else {
-      throw new EntityError(USER_ERRORS.ID_SET, 'id');
-    }
   }
   _username: string;
   /**
@@ -124,49 +121,25 @@ export class User {
     return this._createdAt;
   }
 
-  cognitoIdentityId: string;
   /**
    * Creates an instance of User.
    *
-   * @param {Partial<User>} [user]
+   * @param {Partial<any>}
+   * User entity needs a rewrite, hence the `any`
    * @memberof User
    */
-  constructor(user?: Partial<User>) {
-    // @ts-ignore Id will be undefined on creation
-    this._id = undefined;
-    this._username = '';
-    this._name = '';
-    this._email = '';
-    this._emailVerified = false;
-    this._organization = '';
-    this._bio = '';
-    this._createdAt = Date.now().toString();
-    if (user) {
-      this.copyUser(user);
-    }
-  }
-
-  /**
-   * Copies properties of user to this user if defined
-   *
-   * @private
-   * @param {Partial<User>} user
-   * @memberof User
-   */
-  private copyUser(user: Partial<User>): void {
-    if (user.id) {
-      this._id = user.id;
-    }
-    this._username = user.username || this.username;
-    this.name = user.name || this.name;
-    if (user.email) {
-      this.email = user.email as string;
-    }
-    this._emailVerified = user.emailVerified || this.emailVerified;
-    this.organization = user.organization || this.organization;
-    this.bio = user.bio || this.bio;
-    this._createdAt = user.createdAt || this.createdAt;
-    this.cognitoIdentityId = user.cognitoIdentityId;
+  // Had to update the constructor to accept any type of user object
+  // because the backend now returns _id instead of userId and the
+  // frontend uses userId...
+  constructor(user?: any) {
+    this._id = user?.userId || user?._id || '';
+    this._username = user?.username || '';
+    this._name = user?.name || '';
+    this._email = user?.email || '';
+    this._emailVerified = user?.emailVerified || false;
+    this._organization = user?.organization || '';
+    this._bio = user?.bio || '';
+    this._createdAt = user?.createdAt || Date.now().toString();
   }
 
   /**
@@ -177,7 +150,7 @@ export class User {
    */
   public toPlainObject(): Partial<User> {
     const user: Partial<User> = {
-      id: this.id,
+      userId: this._id,
       username: this.username,
       name: this.name,
       email: this.email,
@@ -185,7 +158,6 @@ export class User {
       organization: this.organization,
       bio: this.bio,
       createdAt: this.createdAt,
-      cognitoIdentityId: this.cognitoIdentityId
     };
     return user;
   }

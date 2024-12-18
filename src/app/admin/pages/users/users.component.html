@@ -21,7 +21,7 @@
           <clark-user-search-wrapper
             [users]="users"
             [collection]="activeCollection"
-            (selectedUser)="addReviewer($event)"
+            (selectedUser)="addAccessGroupToUser($event)"
           ></clark-user-search-wrapper>
         </div>
       </div>
@@ -32,13 +32,13 @@
     <div *ngIf="!loading; else loadingTemplate">
       <div *ngIf="users?.length; else emptyTemplate" class="user-cards" [@staggerChildren]>
         <ng-container *ngFor="let user of users;trackBy: trackby">
-          <clark-admin-user-card *ngIf="user.id !== authService.user.id" class="user-cards__card"
+          <clark-admin-user-card class="user-cards__card"
             [user]="user"
             [reviewer]="authService.hasCuratorAccess() && !authService.hasEditorAccess()"
             [canEditPrivilege]="authService.hasEditorAccess()"
             (navigateToUserObjects)="navigateToUserObjects(user.username)"
             (editPrivileges)="editPrivileges(user)"
-            (removeMember)="removeReviewer(user.id)"
+            (removeMember)="removeAccessGroupFromUser(user.username)"
             [@fade]
           ></clark-admin-user-card>
         </ng-container>

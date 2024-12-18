@@ -6,8 +6,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { AuthService } from 'app/core/auth.service';
-import { CollectionService } from 'app/core/collection.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { of } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 

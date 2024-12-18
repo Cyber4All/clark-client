@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalService } from '../shared/modules/modals/modal.service';
-import { NavbarService } from '../core/navbar.service';
+import { NavbarService } from '../core/client-module/navbar.service';
 
 @Component({
   selector: 'clark-cube',

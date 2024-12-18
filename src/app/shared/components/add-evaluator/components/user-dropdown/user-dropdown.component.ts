@@ -10,7 +10,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { UserService } from 'app/core/user.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 
@@ -48,7 +48,7 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
     if (this.learningObject.assigned) {
       for (let i = 0; i < this.learningObject.assigned.length; i++) {
         const userId = this.learningObject.assigned[i];
-        const user = await this.userService.getUser(userId, 'userId');
+        const user = await this.userService.getUser(userId);
         this.assignedEvaluators.push(user);
       }
       this.cd.detectChanges();
@@ -87,13 +87,13 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
     if (query && query !== '') {
       this.userService.searchUsers({
         text: query,
-        accessGroups: 'admin,curator,editor,reviewer'
+        accessGroups: ['admin', 'curator' , 'editor', 'reviewer']
       }).then( (results: User[]) => {
-        const assignedEvaluatorsIds = this.assignedEvaluators.map(user => user.id);
+        const assignedEvaluatorsIds = this.assignedEvaluators.map(user => user.userId);
         const filteredUsers = [];
         results.forEach( user => {
-          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.id)
-              && !assignedEvaluatorsIds.includes(user.id)) {
+          if (this.learningObject.assigned && !this.learningObject.assigned.includes(user.userId)
+              && !assignedEvaluatorsIds.includes(user.userId)) {
             filteredUsers.push(user);
           }
         });
