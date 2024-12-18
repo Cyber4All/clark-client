@@ -25,19 +25,7 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker disabled="false"></mat-date-range-picker>
     </mat-form-field>
-    <div class="input-group">
-      <clark-input-field
-        phold="Enter an email..."
-        fControlType="email"
-        errorMsg="Email is required"
-        [control]="email"
-      ></clark-input-field>
-      <clark-input-field
-        phold="Enter a name..."
-        errorMsg="Name is required"
-        [control]="name"
-      ></clark-input-field>
-    </div>
+    <br>
     <button (click)="onDownload()">Download a CSV of All Individual Learning Objects</button>
   </div>
 </div>
