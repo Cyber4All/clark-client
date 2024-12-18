@@ -3,7 +3,7 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LearningObjectComponent } from './learning-object.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CollectionPipe } from 'app/shared/pipes/collection.pipe';
-import { CollectionService } from 'app/core/collection.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LearningObject } from '@entity';
 

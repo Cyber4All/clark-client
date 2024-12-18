@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from 'entity/learning-object/learning-object';
-import { LibraryService } from 'app/core/library.service';
+import { LibraryService } from 'app/core/library-module/library.service';
 
 @Component({
   selector: 'clark-library-item',

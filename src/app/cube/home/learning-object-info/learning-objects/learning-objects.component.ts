@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { LearningObject, User } from '@entity';
-import { FeaturedObjectsService } from 'app/core/featuredObjects.service';
-import { UserService } from 'app/core/user.service';
-import { UsageStatsService } from 'app/cube/core/usage-stats/usage-stats.service';
+import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
+import { UserService } from 'app/core/user-module/user.service';
 import { GoogleTagService } from '../../google-tag.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 
 
 @Component({
@@ -14,18 +15,24 @@ import { GoogleTagService } from '../../google-tag.service';
 export class LearningObjectsComponent implements OnInit {
   featuredObject: LearningObject; // the learning object to display
   numReleasedObjects = 0; // default number of released objects before the service provides a new number
-  page='homepage';
+  page = 'homepage';
 
   constructor(private featureService: FeaturedObjectsService,
-              private userService: UserService,
-              private usageStatsService: UsageStatsService,
-              public googleTagService: GoogleTagService
-              ) { }
+    private userService: UserService,
+    private metricService: MetricService,
+    public googleTagService: GoogleTagService,
+    private searchService: SearchService
+  ) { }
 
   async ngOnInit(): Promise<void> {
-    await this.usageStatsService.getLearningObjectStats().then(stats => {
-      this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
+    await this.searchService.getLearningObjects({'status': ['released']}).then(total => {
+      this.numReleasedObjects = Math.floor(total.total / 10) * 10;
     });
+
+    // Stats is being annoying so just no for now
+    // await this.metricService.getLearningObjectStats().then(stats => {
+    //   this.numReleasedObjects = Math.floor(stats.released / 10) * 10;
+    // });
     await this.featureService.getFeaturedObjects();
     await this.featureService.featuredObjects.subscribe(objects => {
       this.featuredObject = objects[1];
@@ -38,13 +45,13 @@ export class LearningObjectsComponent implements OnInit {
    * @returns A comma separated string of learning object levels
    */
   displayFeaturedObjectLevels() {
-    if(this.featuredObject?.levels.length === 1) {
+    if (this.featuredObject?.levels.length === 1) {
       return this.featuredObject.levels[0];
     }
 
     let levels = '';
     this.featuredObject.levels.forEach((level, index, array) => {
-      if(index === array.length - 1) {
+      if (index === array.length - 1) {
         levels += ' and ' + level;
       } else {
         levels += level + ', ';

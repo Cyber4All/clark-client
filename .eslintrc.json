@@ -69,26 +69,43 @@
           "error",
           {
             "selector": "default",
-            "format": ["camelCase", "UPPER_CASE", "StrictPascalCase"],
+            "format": [
+              "camelCase",
+              "UPPER_CASE",
+              "StrictPascalCase"
+            ],
             "leadingUnderscore": "allow"
           },
           {
             "selector": "enum",
-            "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+            "format": [
+              "camelCase",
+              "UPPER_CASE",
+              "PascalCase"
+            ]
           },
           {
             "selector": "enumMember",
-            "format": ["camelCase", "UPPER_CASE", "PascalCase"]
+            "format": [
+              "camelCase",
+              "UPPER_CASE",
+              "PascalCase"
+            ]
           },
           {
             "selector": "variable",
-            "format": ["camelCase", "UPPER_CASE", "StrictPascalCase"],
+            "format": [
+              "camelCase",
+              "UPPER_CASE",
+              "StrictPascalCase"
+            ],
             "leadingUnderscore": "allow"
           },
-      
           {
             "selector": "typeLike",
-            "format": ["PascalCase"],
+            "format": [
+              "PascalCase"
+            ],
             "leadingUnderscore": "allow"
           }
         ],
@@ -102,6 +119,7 @@
           "1tbs"
         ],
         "id-blacklist": "off",
+        "jsdoc/newline-after-description": "off",
         "jsdoc/no-types": "off",
         "no-throw-literal": "off",
         "no-underscore-dangle": "off",
