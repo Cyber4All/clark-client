@@ -25,8 +25,8 @@ export class ReportService {
           this.http
       .post(REPORT_ROUTES.GENERATE_REPORT(),
         {
-          start: date.start,
-          end: date.end,
+          startDate: date.start,
+          endDate: date.end,
           name
         },
         {
