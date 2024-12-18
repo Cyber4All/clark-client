@@ -8,6 +8,6 @@ export const REPORT_ROUTES = {
      */
     GENERATE_REPORT(
     ) {
-        return `${environment.apiURL}/reports`
+        return `${environment.apiURL}/reports`;
     }
 };
