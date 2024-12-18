@@ -39,6 +39,6 @@ export const UTILITY_ROUTES = {
    * @returns list of organizations
    */
   SEARCH_ORGANIZATIONS(queryString: string) {
-    return `${environment.cardOrganizationUrl}&text=${queryString}`;
+    return `${environment.cardUrl}/organizations?type=&verified=verified&mine=&sort=&text=${queryString}`;
   }
 };

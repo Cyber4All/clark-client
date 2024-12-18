@@ -29,7 +29,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
     let headers = request.headers.set('Content-Type', 'application/json');
     if (
-      !request.url.includes(environment.cardOrganizationUrl) &&
+      !request.url.includes(`${environment.cardUrl}/organizations?type=&verified=verified&mine=&sort=`) &&
       !request.url.includes(environment.cardUrl+ '/resources') &&
       !request.url.includes(environment.cardUrl+ '/organizations')
     ) {
