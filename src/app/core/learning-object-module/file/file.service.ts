@@ -50,7 +50,6 @@ export class FileService {
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((response: any) => {
-
         // Extract the blob from the response
         const blob = response.body;
         // Create a URL for the blob
@@ -256,7 +255,27 @@ export class FileService {
       )
       .pipe(
         catchError(this.handleError)
-      );
+      )
+      .toPromise()
+      .then((response: any) => {
+        // Extract the blob from the response
+        const blob = response.body;
+        // Create a URL for the blob
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        // Trigger a download using an anchor element
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = file.name; // Use the extracted filename
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Revoke the blob URL to free memory
+        window.URL.revokeObjectURL(blobUrl);
+        return '';
+      } );
   }
 
   private handleError(error: HttpErrorResponse) {
