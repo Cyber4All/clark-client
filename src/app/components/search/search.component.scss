@@ -45,23 +45,31 @@ $buttonWidth: 135px;
       }
     }
 
-      input {
-        width: 100%;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        border: 0;
-        background: transparent;
-        flex-grow: 2;
-        outline: 0;
-        padding: 10px;
-        font-size: $small;
-      }
+    input {
+      width: 100%;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border: 0;
+      background: transparent;
+      flex-grow: 2;
+      outline: 0;
+      padding: 10px;
+      font-size: $small;
+    }
 
     .keyword-search form {
       display: flex;
       flex-direction: row;
       align-items: stretch;
       width: 100%;
+    }
+
+    // Alert message styling
+    #search-alert {
+      color: red;
+      font-weight: bold;
+      margin-top: 5px;
+      display: none;
     }
   }
 

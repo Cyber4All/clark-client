@@ -44,11 +44,37 @@ export class FileService {
   async previewLearningObjectFile(url: string): Promise<string> {
     return this.http.get(url, {
         withCredentials: true,
-        responseType: 'blob'
+        responseType: 'blob',
+        observe: 'response'
       })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((blob) => window.URL.createObjectURL(blob));
+      .then((response: any) => {
+        // Extract the blob from the response
+        const blob = response.body;
+
+        // Extract the filename from the Content-Disposition header
+        const contentDisposition = response.headers.get('Content-Disposition');
+        const filename = contentDisposition
+          ? contentDisposition.split('filename=')[1]?.replace(/"/g, '') // Extract filename
+          : 'downloaded_file'; // Fallback filename
+
+        // Create a URL for the blob
+        const blobUrl = window.URL.createObjectURL(blob);
+
+        // Trigger a download using an anchor element
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = filename; // Use the extracted filename
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Revoke the blob URL to free memory
+        window.URL.revokeObjectURL(blobUrl);
+        return '';
+    });
   }
 
   /**
