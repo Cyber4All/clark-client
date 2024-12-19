@@ -53,7 +53,7 @@ export class FileService {
         // Extract the blob from the response
         const blob = response.body;
 
-        console.log('headers', response.headers)
+        console.log('headers', response.headers);
         // Extract the filename from the Content-Disposition header
         const contentDisposition = response.headers.get('Content-Disposition');
         console.log('Content ', contentDisposition);
