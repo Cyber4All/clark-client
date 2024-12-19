@@ -257,7 +257,7 @@ export class FileService {
         catchError(this.handleError)
       )
       .toPromise()
-      .then((response:any) => {
+      .then((response: any) => {
         // Extract the blob from the response
         const blob = response.body;
         // Create a URL for the blob
