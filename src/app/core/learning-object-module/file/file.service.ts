@@ -230,7 +230,7 @@ export class FileService {
   handleFileDownload(file: LearningObject.Material.File, learningObject: LearningObject) {
     const loId = learningObject.id;
     return this.http
-      .patch(
+      .get(
         FILE_MANAGER_ROUTES.DOWNLOAD_FILE(loId, file._id),
         { headers: this.headers, withCredentials: true, responseType: 'blob' }
       )
