@@ -41,7 +41,7 @@ export class FileService {
    * @param url the previewUrl of the material on the learning object
    * @returns the blob url of the file
    */
-  async previewLearningObjectFile(url: string) {
+  async previewLearningObjectFile(url: string): Promise<string> {
     return this.http.get(url, {
         withCredentials: true,
         responseType: 'blob',
@@ -73,6 +73,7 @@ export class FileService {
 
         // Revoke the blob URL to free memory
         window.URL.revokeObjectURL(blobUrl);
+        return '';
     });
   }
 
