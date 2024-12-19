@@ -55,9 +55,8 @@ export class FileService {
 
         // Extract the filename from the Content-Disposition header
         const contentDisposition = response.headers.get('Content-Disposition');
-        const filename = contentDisposition
-          ? contentDisposition.split('filename=')[1]?.replace(/"/g, '') // Extract filename
-          : 'downloaded_file'; // Fallback filename
+        console.log('Content ', contentDisposition);
+        const filename = contentDisposition?.match(/filename="?([^"]+)"?/)?.[1] || 'downloaded_file';
 
         // Create a URL for the blob
         const blobUrl = window.URL.createObjectURL(blob);
