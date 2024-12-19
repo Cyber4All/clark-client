@@ -41,7 +41,7 @@ export class FileService {
    * @param url the previewUrl of the material on the learning object
    * @returns the blob url of the file
    */
-  async previewLearningObjectFile(url: string): Promise<string> {
+  async previewLearningObjectFile(url: string, name: string): Promise<string> {
     return this.http.get(url, {
         withCredentials: true,
         responseType: 'blob',
@@ -50,11 +50,6 @@ export class FileService {
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((response: any) => {
-        console.log('All headers:', response.headers.keys());
-        // Extract the filename from the Content-Disposition header
-        const contentDisposition = response.headers.get('Content-Disposition');
-        console.log('Content ', contentDisposition);
-        const filename = contentDisposition?.match(/filename="?([^"]+)"?/)?.[1] || 'downloaded_file';
 
         // Extract the blob from the response
         const blob = response.body;
@@ -64,7 +59,7 @@ export class FileService {
         // Trigger a download using an anchor element
         const a = document.createElement('a');
         a.href = blobUrl;
-        a.download = filename; // Use the extracted filename
+        a.download = name; // Use the extracted filename
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
