@@ -227,10 +227,16 @@ export class FileService {
    * @param {LearningObject.Material.File} file [The file to be downloaded]
    * @memberof UploadComponent
    */
-  async handleFileDownload(file: LearningObject.Material.File, learningObject: LearningObject) {
+  handleFileDownload(file: LearningObject.Material.File, learningObject: LearningObject) {
     const loId = learningObject.id;
-    const url = FILE_MANAGER_ROUTES.DOWNLOAD_FILE(loId, file._id);
-    window.open(url, '__blank');
+    return this.http
+      .get(
+        FILE_MANAGER_ROUTES.DOWNLOAD_FILE(loId, file._id),
+        { headers: this.headers, withCredentials: true, responseType: 'blob' }
+      )
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   private handleError(error: HttpErrorResponse) {
