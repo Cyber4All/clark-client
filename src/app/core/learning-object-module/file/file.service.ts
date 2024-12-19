@@ -41,7 +41,7 @@ export class FileService {
    * @param url the previewUrl of the material on the learning object
    * @returns the blob url of the file
    */
-  async previewLearningObjectFile(url: string): Promise<string> {
+  async previewLearningObjectFile(url: string) {
     return this.http.get(url, {
         withCredentials: true,
         responseType: 'blob',
@@ -53,7 +53,7 @@ export class FileService {
         // Extract the blob from the response
         const blob = response.body;
 
-        console.log('headers', response.headers);
+        console.log('All headers:', response.headers.keys());
         // Extract the filename from the Content-Disposition header
         const contentDisposition = response.headers.get('Content-Disposition');
         console.log('Content ', contentDisposition);
@@ -73,7 +73,6 @@ export class FileService {
 
         // Revoke the blob URL to free memory
         window.URL.revokeObjectURL(blobUrl);
-        return '';
     });
   }
 
