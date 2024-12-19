@@ -49,7 +49,7 @@ export class FileService {
       })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((response:any) => {
+      .then((response: any) => {
         // Extract the blob from the response
         const blob = response.body;
 
@@ -73,7 +73,7 @@ export class FileService {
 
         // Revoke the blob URL to free memory
         window.URL.revokeObjectURL(blobUrl);
-        return ''
+        return '';
     });
   }
 
