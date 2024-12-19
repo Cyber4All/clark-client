@@ -60,7 +60,7 @@ export class LibraryService {
     // Resets the auth token in the headers
     this.updateUser();
     if (!this.user) {
-      return Promise.reject('User is undefined');
+      return;
     }
 
     const query = new URLSearchParams({
@@ -101,7 +101,7 @@ export class LibraryService {
     cuid: string, version: number
   ): Promise<any> {
     if (!this.user) {
-      return Promise.reject('User is undefined');
+      return;
     }
     return await this.http
       .post(
@@ -132,7 +132,7 @@ export class LibraryService {
 
   removeFromLibrary(libraryItemId: string): Promise<void> {
     if (!this.user) {
-      return Promise.reject('User is undefined');
+      return;
     }
     this.http
       .delete(
