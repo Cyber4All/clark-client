@@ -236,7 +236,7 @@ export class FileService {
       )
       .pipe(
         catchError(this.handleError)
-      )
+      );
   }
 
   private handleError(error: HttpErrorResponse) {
