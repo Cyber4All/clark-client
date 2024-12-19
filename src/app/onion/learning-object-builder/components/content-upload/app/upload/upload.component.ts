@@ -698,20 +698,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   async handleFileDownload(file: LearningObject.Material.File) {
     const learningObject = await this.learningObject$.pipe(take(1)).toPromise();
-    this.fileService.handleFileDownload(file, learningObject).subscribe((response: any) => {
-      // Extract file name from Content-Disposition header
-      const contentDisposition = response.headers.get('Content-Disposition');
-      const matches = /filename="([^"]+)"/.exec(contentDisposition || '');
-      const fileName = matches?.[1] || 'downloaded-file';
-
-      // Create object URL and download
-      const blob = response.body;
+    this.fileService.handleFileDownload(file, learningObject).subscribe((blob: any) => {
       const fileURL = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = fileURL;
-      a.download = fileName; // Set the file name
-      a.click();
-      window.URL.revokeObjectURL(fileURL);
+      window.open(fileURL, '_blank');
     });
   }
 
