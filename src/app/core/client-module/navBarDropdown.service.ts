@@ -52,7 +52,7 @@ export class NavbarDropdownService {
         this.closeAll();
         this.router.navigate(['/browse'], { queryParams: { currPage: 1, limit: 10, status: 'released', topics: topic } })
             .then(() => window.location.reload());
-    }    
+    }
 
     //close mobile slideouts
     public closeMobileMenus(): void {
