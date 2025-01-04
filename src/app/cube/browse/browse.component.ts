@@ -174,6 +174,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.query.text = '';
     this.query.standardOutcomes = [];
     this.query.currPage = 1;
+    this.query.sortType = -1;
+    this.query.orderBy = OrderBy.Date;
     this.router.navigate(['browse'], { queryParams: {} });
   }
 
