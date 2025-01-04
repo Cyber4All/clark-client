@@ -51,8 +51,10 @@ export class UserProfileComponent implements OnInit {
     await this.collectionService
       .getUserSubmittedCollections(this.user.username).then(async (collectionMeta) => {
         const tempObjects = [];
+        // Filter for released objects
+        const filteredMeta = collectionMeta.filter(objectMeta => objectMeta.status === 'released');
         // Await each learning object for a users profile
-        const promises = collectionMeta.map(async (objectMeta) => {
+        const promises = filteredMeta.map(async (objectMeta) => {
           // Return a promise for the current learning object
           return await this.learningObjectService.fetchLearningObject(objectMeta.cuid, objectMeta.version);
         });
