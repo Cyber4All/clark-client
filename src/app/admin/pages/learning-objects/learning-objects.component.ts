@@ -355,7 +355,12 @@ export class LearningObjectsComponent
   }
 
   handleFilterQuery(filters: { status: string[], topic: string[], collection: string }) {
-    this.query = { status: filters.status, topics: filters.topic, collection: filters.collection, currPage: 1 };
+    
+    const query = { status: filters.status, topics: filters.topic, collection: filters.collection, currPage: 1 };
+    if(this.query.collection && query.collection.length === 0) {
+      query.collection = this.query.collection
+    }
+    this.query = query;
     this.learningObjects = [];
 
     this.getLearningObjects();
