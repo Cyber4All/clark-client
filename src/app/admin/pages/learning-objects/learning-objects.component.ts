@@ -355,10 +355,10 @@ export class LearningObjectsComponent
   }
 
   handleFilterQuery(filters: { status: string[], topic: string[], collection: string }) {
-    
+
     const query = { status: filters.status, topics: filters.topic, collection: filters.collection, currPage: 1 };
     if(this.query.collection && query.collection.length === 0) {
-      query.collection = this.query.collection
+      query.collection = this.query.collection;
     }
     this.query = query;
     this.learningObjects = [];

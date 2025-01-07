@@ -30,7 +30,7 @@ export class SearchService {
     let route = '';
     if (query) {
       const queryClone = Object.assign({}, query);
-      console.log("called");
+      console.log('called');
       if (
         queryClone.standardOutcomes &&
         queryClone.standardOutcomes.length &&
