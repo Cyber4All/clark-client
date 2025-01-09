@@ -26,7 +26,6 @@ export class EditorialActionPadComponent implements OnInit {
   @Input() revisedLearningObject: LearningObject;
 
   constructor(
-    private router: Router,
     private learningObjectServiceUri: LOUri,
     private toaster: ToastrOvenService,
     private editorialService: EditorialService,
@@ -68,7 +67,11 @@ export class EditorialActionPadComponent implements OnInit {
 
   // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object
   editLearningObject() {
-    this.editorialService.navigateToEditor(this.learningObject, this.revisedLearningObject);
+    if (this.revisedLearningObject) {
+      this.editorialService.navigateToEditor(this.revisedLearningObject);
+    } else {
+      this.editorialService.navigateToEditor(this.learningObject);
+    }
   }
 
   // Create a revision and then redirects to the builder for the revision˝
@@ -81,7 +84,7 @@ export class EditorialActionPadComponent implements OnInit {
     await this.editorialService
       .createRevision(this.learningObject.cuid).then(async (revisionUri: any) => {
         this.revisedLearningObject = (await this.learningObjectServiceUri.fetchUri(revisionUri.revisionUri).toPromise())[0];
-        this.router.navigate([`/onion/learning-object-builder/${this.revisedLearningObject.cuid}/${this.revisedLearningObject.version}`]);
+        this.editorialService.navigateToEditor(this.revisedLearningObject);
       }).catch(e => {
         this.toaster.error('Error', e.error.message);
       });

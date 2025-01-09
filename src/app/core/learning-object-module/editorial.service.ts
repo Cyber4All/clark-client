@@ -16,7 +16,10 @@ import { Router } from '@angular/router';
 export class EditorialService {
   httpHeaders = new HttpHeaders();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   /**
    * Creates a Revision of an existing learning object
@@ -49,20 +52,18 @@ export class EditorialService {
       .toPromise();
   }
 
-  navigateToEditor(learningObject: LearningObject, revisedLearningObject: LearningObject) {
-    if (revisedLearningObject) {
-      this.router.navigate([
-        'onion',
-        'learning-object-builder',
-        revisedLearningObject.cuid,
-        revisedLearningObject.version]);
-    } else {
-      this.router.navigate([
-        'onion',
-        'learning-object-builder',
-        learningObject.cuid,
-        learningObject.version]);
-    }
+  /**
+   * Navigate to the learning object editor.
+   * @param learningObject Learning Object
+   * @param revisedLearningObject Revised Learning Object
+   */
+  navigateToEditor(learningObject: LearningObject) {
+    this.router.navigate([
+      'onion',
+      'learning-object-builder',
+      learningObject.cuid,
+      learningObject.version,
+    ]);
   }
 
   // TODO: clean up these checks for better readability
@@ -104,8 +105,7 @@ export class EditorialService {
       learningObject.status === 'proofing' ||
       (revisedLearningObject && revisedLearningObject.status === 'proofing') ||
       learningObject.status === 'unreleased' ||
-      (revisedLearningObject &&
-        revisedLearningObject.status === 'unreleased')
+      (revisedLearningObject && revisedLearningObject.status === 'unreleased')
     );
   }
 
