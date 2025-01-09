@@ -18,7 +18,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
-import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
+import { EditorialService } from 'app/core/learning-object-module/editorial.service';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -71,7 +71,7 @@ export class LearningObjectListItemComponent implements OnChanges {
     private toaster: ToastrOvenService,
     private learningObjectService: LearningObjectService,
     private refactoredLearningObjectService: RefactoredLearningObjectService,
-    private revisionsService: RevisionsService,
+    private editorialService: EditorialService,
   ) { }
 
   async ngOnChanges(changes: SimpleChanges) {
@@ -227,7 +227,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   }
 
   deleteRevision() {
-    this.revisionsService.deleteRevision(this.learningObject.cuid, this.learningObject.version + 1)
+    this.editorialService.deleteRevision(this.learningObject.cuid, this.learningObject.version + 1)
       .then(() => {
         this.toaster.success('Success', 'Learning object unreleased revision deleted successfully');
       }).catch(() => {

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { REVISION_ROUTES } from './revisions/revisions.routes';
 import { catchError } from 'rxjs/operators';
 import { EDITORIAL_ROUTES } from './editorial.routes';
 

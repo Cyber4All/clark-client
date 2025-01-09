@@ -11,8 +11,8 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { takeUntil, take } from 'rxjs/operators';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
-import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { EditorialService } from 'app/core/learning-object-module/editorial.service';
 
 @Component({
   selector: 'clark-dashboard',
@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public notificationService: ToastrOvenService,
     private cd: ChangeDetectorRef,
     private submissionService: SubmissionsService,
-    private revisionsService: RevisionsService,
+    private editorialService: EditorialService,
   ) {
     this.navbar.hide();
   }
@@ -367,7 +367,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   createRevision(object: LearningObject) {
-    this.sidePanelPromiseResolver = this.revisionsService.createRevision(object.cuid).then(() => {
+    this.sidePanelPromiseResolver = this.editorialService.createRevision(object.cuid).then(() => {
       this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED });
     });
   }
