@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { EDITORIAL_ROUTES } from './editorial.routes';
+import { LearningObject } from '@entity';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +16,7 @@ import { EDITORIAL_ROUTES } from './editorial.routes';
 export class EditorialService {
   httpHeaders = new HttpHeaders();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   /**
    * Creates a Revision of an existing learning object
@@ -41,6 +47,79 @@ export class EditorialService {
       })
       .pipe(catchError(this.handleError))
       .toPromise();
+  }
+
+  navigateToEditor(learningObject: LearningObject, revisedLearningObject: LearningObject) {
+    if (revisedLearningObject) {
+      this.router.navigate([
+        'onion',
+        'learning-object-builder',
+        revisedLearningObject.cuid,
+        revisedLearningObject.version]);
+    } else {
+      this.router.navigate([
+        'onion',
+        'learning-object-builder',
+        learningObject.cuid,
+        learningObject.version]);
+    }
+  }
+
+  // TODO: clean up these checks for better readability
+
+  /**
+   * Checks if an editor is NOT permitted to create a revision or make edits.
+   * @param learningObject Learning Object
+   * @param revisedLearningObjects Revised Learning Object
+   * @returns {boolean}
+   */
+  isNotPermittedToMakeChanges(
+    learningObject: LearningObject,
+    revisedLearningObject: LearningObject,
+  ) {
+    return (
+      (learningObject.status === 'released' &&
+        revisedLearningObject &&
+        (revisedLearningObject.status === 'unreleased' ||
+          revisedLearningObject.status === 'rejected')) ||
+      learningObject.status === 'rejected'
+    );
+  }
+
+  /**
+   * Checks if an editor is permitted to make edits to a waiting, review, or proofing Learning Object
+   * @param learningObject Learning Object
+   * @param revisedLearningObject Revised Learning Object
+   * @returns {boolean}
+   */
+  canMakeEdits(
+    learningObject: LearningObject,
+    revisedLearningObject: LearningObject,
+  ) {
+    return (
+      learningObject.status === 'waiting' ||
+      (revisedLearningObject && revisedLearningObject.status === 'waiting') ||
+      learningObject.status === 'review' ||
+      (revisedLearningObject && revisedLearningObject.status === 'review') ||
+      learningObject.status === 'proofing' ||
+      (revisedLearningObject && revisedLearningObject.status === 'proofing') ||
+      learningObject.status === 'unreleased' ||
+      (revisedLearningObject &&
+        revisedLearningObject.status === 'unreleased')
+    );
+  }
+
+  /**
+   * Checks if a learning object can have a new revision made to itself.
+   * @param learningObject Learning Object
+   * @param revisedLearningObject Revised Learning Object
+   * @returns {boolean}
+   */
+  canCreateRevision(
+    learningObject: LearningObject,
+    revisedLearningObject: LearningObject,
+  ) {
+    return learningObject.status === 'released' && !revisedLearningObject;
   }
 
   private handleError(error: HttpErrorResponse) {
