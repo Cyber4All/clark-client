@@ -19,6 +19,7 @@ import {
   LearningObjectService as RefactoredLearningObjectService
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { EditorialService } from 'app/core/learning-object-module/editorial.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'clark-learning-object-list-item',
@@ -66,6 +67,7 @@ export class LearningObjectListItemComponent implements OnChanges {
   private headers = new HttpHeaders();
   constructor(
     private auth: AuthService,
+    private router: Router,
     private statuses: StatusDescriptions,
     private cd: ChangeDetectorRef,
     private toaster: ToastrOvenService,
@@ -195,15 +197,15 @@ export class LearningObjectListItemComponent implements OnChanges {
 
   goToUrl(url) {
     if (url === 'builder') {
-      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version}`);
+      this.editorialService.navigateToEditor(this.learningObject);
     } else if (url === 'contact') {
-      window.open(`/users/${this.learningObject.author.username}`);
+      this.router.navigate([`/users/${this.learningObject.author.username}`]);
     } else if (url === 'details') {
-      window.open(`/details/${this.learningObject.author.username}/${this.learningObject.cuid}/${this.learningObject.version}`);
+      this.router.navigate([`/details/${this.learningObject.author.username}/${this.learningObject.cuid}/${this.learningObject.version}`]);
     } else if (url === 'relevancy') {
-      window.open(`/onion/relevancy-builder/${this.learningObject.cuid}`);
+      this.editorialService.navigateToRelevancyBuilder(this.learningObject);
     } else if (url === 'revision builder') {
-      window.open(`/onion/learning-object-builder/${this.learningObject.cuid}/${this.learningObject.version + 1}`);
+      this.editorialService.navigateToEditor(this.learningObject, { version: this.learningObject.version + 1 });
     }
   }
 

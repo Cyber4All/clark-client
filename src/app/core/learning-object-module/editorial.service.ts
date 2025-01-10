@@ -9,6 +9,7 @@ import { catchError } from 'rxjs/operators';
 import { EDITORIAL_ROUTES } from './editorial.routes';
 import { LearningObject } from '@entity';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth-module/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class EditorialService {
 
   constructor(
     private http: HttpClient,
+    private auth: AuthService,
     private router: Router,
   ) {}
 
@@ -59,13 +61,17 @@ export class EditorialService {
    * @param learningObject Learning Object
    * @param revisedLearningObject Revised Learning Object
    */
-  navigateToEditor(learningObject: LearningObject) {
+  navigateToEditor(learningObject: LearningObject, params?: { version?: number }) {
     this.router.navigate([
       'onion',
       'learning-object-builder',
       learningObject.cuid,
-      learningObject.version,
+      params?.version ?? learningObject.version,
     ]);
+  }
+
+  navigateToRelevancyBuilder(learningObject: LearningObject) {
+    this.router.navigate([`/onion/relevancy-builder/${learningObject.cuid}`]);
   }
 
   /**
@@ -120,6 +126,22 @@ export class EditorialService {
     revisedLearningObject: LearningObject,
   ) {
     return learningObject.status === 'released' && !revisedLearningObject;
+  }
+
+  canMapAndTag(learningObject: LearningObject) {
+    const userIsAuthor = learningObject.author.username === this.auth.username;
+    const untaggable = learningObject.status === LearningObject.Status.RELEASED
+      || learningObject.status === LearningObject.Status.UNRELEASED;
+
+    if (this.auth.user && this.auth.user.accessGroups && !userIsAuthor && !untaggable) {
+      const privileges = ['admin', 'editor', 'mapper'];
+
+      if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   private handleError(error: HttpErrorResponse) {
