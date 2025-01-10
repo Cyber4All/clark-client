@@ -27,12 +27,14 @@ export class EditorialService {
    * @param cuid the CUID of the learning object to create a revision of
    */
   async createRevision(cuid: string): Promise<any> {
-    const route = EDITORIAL_ROUTES.CREATE_REVISION(cuid);
-    const response = await this.http
-      .post(route, {}, { headers: this.httpHeaders, withCredentials: true })
+    return await this.http
+      .post(
+        EDITORIAL_ROUTES.CREATE_REVISION(cuid),
+        {},
+        { headers: this.httpHeaders, withCredentials: true },
+      )
       .pipe(catchError(this.handleError))
       .toPromise();
-    return response;
   }
 
   /**
@@ -65,8 +67,6 @@ export class EditorialService {
       learningObject.version,
     ]);
   }
-
-  // TODO: clean up these checks for better readability
 
   /**
    * Checks if an editor is NOT permitted to create a revision or make edits.
