@@ -21,6 +21,7 @@ import { Router } from '@angular/router';
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
+import { EditorialService } from 'app/core/learning-object-module/editorial.service';
 
 
 @Component({
@@ -83,7 +84,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private router: Router,
     private dropdowns: NavbarDropdownService,
-    private bundlingService: BundlingService
+    private bundlingService: BundlingService,
+    private editorialService: EditorialService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -111,16 +113,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  get mapAndTag() {
-    const untaggable = this.learningObject.status === LearningObject.Status.RELEASED
-      || this.learningObject.status === LearningObject.Status.UNRELEASED;
-    if (this.auth.user && this.auth.user.accessGroups && !this.userIsAuthor && !untaggable) {
-      const privileges = ['admin', 'editor', 'mapper'];
-      if (this.auth.user.accessGroups.some(priv => privileges.includes(priv))) {
-        return true;
-      }
-    }
-    return false;
+  get canMapAndTag() {
+    return this.editorialService.canMapAndTag(this.learningObject);
   }
 
   get isReleased(): boolean {
@@ -358,7 +352,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
    * Opens the relevancy builder
    */
   mapAndTagObject() {
-    this.router.navigate([`/onion/relevancy-builder/${this.learningObject.cuid}`]);
+    return this.editorialService.navigateToRelevancyBuilder(this.learningObject);
   }
 
   private capitalizeName(name) {

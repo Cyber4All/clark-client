@@ -1,6 +1,10 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
-export const REVISION_ROUTES = {
+export const EDITORIAL_ROUTES = {
+
+
+  /** Revision routes */
+
   /**
    * Request to create a new revision of a learning object
    * @method POST
