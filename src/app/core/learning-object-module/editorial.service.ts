@@ -58,6 +58,7 @@ export class EditorialService {
 
   /**
    * Navigate to the learning object editor.
+   *
    * @param learningObject Learning Object
    * @param revisedLearningObject Revised Learning Object
    */
@@ -70,6 +71,11 @@ export class EditorialService {
     ]);
   }
 
+  /**
+   * Navigates to the relevancy builder.
+   *
+   * @param learningObject Learning Object
+   */
   navigateToRelevancyBuilder(learningObject: LearningObject) {
     this.router.navigate([`/onion/relevancy-builder/${learningObject.cuid}`]);
   }
@@ -128,6 +134,14 @@ export class EditorialService {
     return learningObject.status === 'released' && !revisedLearningObject;
   }
 
+
+  /**
+   * Checks if an editor can map and tag a learning object based on their
+   * access groups.
+   *
+   * @param learningObject Learning Object
+   * @returns {boolean}
+   */
   canMapAndTag(learningObject: LearningObject) {
     const userIsAuthor = learningObject.author.username === this.auth.username;
     const untaggable = learningObject.status === LearningObject.Status.RELEASED
