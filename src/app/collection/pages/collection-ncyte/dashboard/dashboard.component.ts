@@ -10,7 +10,6 @@ import { ToastrOvenService } from '../../../../shared/modules/toaster/notificati
   styleUrls: ['./dashboard.component.scss']
 })
 export class NcyteDashboardComponent implements OnInit {
-  when = 'All-time';
   range = new FormGroup({
     start: new FormControl(null),
     end: new FormControl(null),
@@ -29,20 +28,15 @@ export class NcyteDashboardComponent implements OnInit {
   }
 
   onDownload(): void {
-
-    if (this.when === 'Date Range' && !this.range.value.start && !this.range.value.end) {
+    if (!this.range.value.start && !this.range.value.end) {
       this.toaster.error('Error!', 'Please enter a date range.');
       return;
     }
 
-    if (this.when === 'All-time') {
-      this.reportService.generateCollectionReport(['ncyte'], this.name.value);
-    } else {
-      const start = `${this.range.value.start.getFullYear()}-${this.range.value.start.getMonth() + 1}-${this.range.value.start.getDate()}`;
-      const end = `${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`;
-      this.reportService.generateCollectionReport(['ncyte'], this.name.value, { start: start, end: end });
-    }
+    const start = `${this.range.value.start.getFullYear()}-${this.range.value.start.getMonth() + 1}-${this.range.value.start.getDate()}`;
+    const end = `${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`;
 
-    this.toaster.alert('We\'re working on it!', 'Please check your email in a few minutes for your report.');
+    this.reportService.generateCollectionReport(['ncyte'], this.name.value, { start: start, end: end });
+    this.toaster.alert('We\'re working on it!', 'Please wait while we generate the report.');
   }
 }
