@@ -30,6 +30,7 @@ import {EditorActionPanelModule} from './components/editor-action-panel/editor-a
 import { AddChildComponent } from './components/scaffold/add-child/add-child.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { MaterialNotesComponent } from './components/material-notes/material-notes.component';
+import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 /*
   NOTE: BuilderStore and validator services aren't provided here, they're provided in the learning-object-builder.component file.
   This is because those services should be singletons across the builder, but cease to exist when the builder is
@@ -48,7 +49,8 @@ import { MaterialNotesComponent } from './components/material-notes/material-not
     OnionSharedModule,
     EditorActionPanelModule,
     OnionSharedModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    NgxSimpleTextEditorModule
   ],
   declarations: [
     LearningObjectBuilderComponent,
