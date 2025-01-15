@@ -426,7 +426,7 @@ function generatePieSliceLabels() {
   ctx.textBaseline = 'bottom';
   // If user is not hovering over chart (meaning tooltips are visible), render percentage slices
   if (!CHART_HOVERED) {
-    this.data.datasets.forEach(function (dataset) {
+    this.data.datasets.forEach(function(dataset) {
       // Sum of data values
       const total = dataset._meta[Object.keys(dataset._meta)[0]].total;
       for (let i = 0; i < dataset.data.length; i++) {
