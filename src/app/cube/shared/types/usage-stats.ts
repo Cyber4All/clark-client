@@ -23,9 +23,11 @@ export interface LearningObjectStats {
 }
 
 export interface LearningOutcomeStats {
-  remember_and_understand: number;
-  apply_and_analyze: number;
-  evaluate_and_synthesize: number;
+  outcomes: {
+    remember_and_understand: number;
+    apply_and_analyze: number;
+    evaluate_and_synthesize: number;
+  };
 }
 
 export interface LearningObjectMetrics {
@@ -46,6 +48,6 @@ export interface UserMetrics {
 
 export interface UsageStats {
   objects: LearningObjectStats;
-  outcomes: LearningOutcomeStats;
+  outcomes: LearningOutcomeStats['outcomes'];
   users: UserMetrics;
 }

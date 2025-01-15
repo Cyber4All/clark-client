@@ -80,11 +80,12 @@ export class OutcomeService {
    * Gets outcome stats for all learning objects
    * @returns the outcomes stats for learning object apply_and_analyze, evaluate_and_synthesize, and remember_and_understand
    */
-  async getLearningObjectStats(): Promise<LearningOutcomeStats> {
+  async getLearningOutcomeStats(): Promise<LearningOutcomeStats> {
     const stats = await this.http
       .get<LearningOutcomeStats>(OUTCOME_ROUTES.GET_LEARNING_OUTCOME_STATS())
       .pipe(catchError(this.handleError))
       .toPromise();
+
     return stats as LearningOutcomeStats;
   }
 
