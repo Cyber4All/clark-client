@@ -26,7 +26,7 @@ import {
         <st-editor
           [formControl]="description"
           [(ngModel)]="learningObject.description"
-          [config]="boxConfig"
+          [config]="config"
         ></st-editor>
       </div>
     </div>
@@ -49,7 +49,7 @@ export class LearningObjectDescriptionComponent implements OnInit {
   @Input() learningObject;
 
   description = new FormControl('');
-  boxConfig = {
+  config = {
     buttons: [
       UNDO_BUTTON,
       REDO_BUTTON,

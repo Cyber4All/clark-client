@@ -11,6 +11,18 @@ import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hier
 import { CHANGE_AUTHORIZATION_LIST } from '../../../../environments/strings';
 import { Router } from '@angular/router';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
+import {
+  BOLD_BUTTON,
+  ITALIC_BUTTON,
+  LINK_INPUT,
+  ORDERED_LIST_BUTTON,
+  REDO_BUTTON,
+  REMOVE_FORMAT_BUTTON,
+  UNDERLINE_BUTTON,
+  UNDO_BUTTON,
+  UNORDERED_LIST_BUTTON,
+  SEPARATOR
+} from 'ngx-simple-text-editor';
 
 @Component({
   selector: 'clark-submit',
@@ -26,6 +38,24 @@ export class SubmitComponent implements OnInit {
 
   @Output() submitted: EventEmitter<void> = new EventEmitter();
 
+  config = {
+    buttons: [
+      UNDO_BUTTON,
+      REDO_BUTTON,
+      SEPARATOR,
+      BOLD_BUTTON,
+      ITALIC_BUTTON,
+      UNDERLINE_BUTTON,
+      SEPARATOR,
+      REMOVE_FORMAT_BUTTON,
+      SEPARATOR,
+      ORDERED_LIST_BUTTON,
+      UNORDERED_LIST_BUTTON,
+      SEPARATOR,
+      LINK_INPUT,
+    ],
+  };
+
   carouselAction$: Subject<number> = new Subject();
   changelogComplete$: Subject<boolean> = new Subject();
 
@@ -35,7 +65,7 @@ export class SubmitComponent implements OnInit {
   needsChangelog: boolean;
 
   loading: boolean[] = [];
-  submissionReason: string;
+  submissionReason = '';
   selectedAuthorizations: string[] = [];
   changeAuthorizationList = CHANGE_AUTHORIZATION_LIST;
   collections: Collection[];
@@ -74,14 +104,13 @@ export class SubmitComponent implements OnInit {
   /**
    * Create a new changelog for the active Learning Object
    */
-  createChangelog() {
-
-    if (this.changelog) {
+  createChangelog(changelog: string) {
+    if (changelog) {
       this.loading.push(true);
       this.changelogService
         .createChangelog(
           this.learningObject.cuid,
-          this.changelog
+          changelog
         )
         .then(() => {
           this.changelogComplete$.next(true);
@@ -279,7 +308,7 @@ export class SubmitComponent implements OnInit {
    * @memberof SubmitComponent
    */
   closeModal(submitted?: boolean) {
-    this.submissionReason = undefined;
+    this.submissionReason = '';
     if (this.visible) {
       this.close.emit(submitted || false);
       this.visible = false;
