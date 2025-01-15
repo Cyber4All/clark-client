@@ -50,6 +50,7 @@ export class LearningObjectDescriptionComponent implements OnInit {
 
   description = new FormControl('');
   config = {
+    placeholder: 'Enter Learning Object description here',
     buttons: [
       UNDO_BUTTON,
       REDO_BUTTON,
@@ -71,6 +72,7 @@ export class LearningObjectDescriptionComponent implements OnInit {
   @Output() textOutput: EventEmitter<string> = new EventEmitter();
 
   ngOnInit() {
+    // Watch for any updates to the description form.
     this.description.valueChanges.subscribe((description: string) => {
       this.textOutput.emit(description);
     });
