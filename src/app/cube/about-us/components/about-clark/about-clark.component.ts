@@ -26,11 +26,6 @@ export class AboutClarkComponent implements OnInit {
         unit: 0,
         course: 0
       },
-      outcomes: {
-        remember_and_understand: 0,
-        apply_and_analyze: 0,
-        evaluate_and_synthesize: 0
-      },
       status: {
         waiting: 0,
         peerReview: 0,
@@ -39,6 +34,11 @@ export class AboutClarkComponent implements OnInit {
         proofing: 0
       },
       collections: { number: 0 }
+    },
+    outcomes: {
+      remember_and_understand: 0,
+      apply_and_analyze: 0,
+      evaluate_and_synthesize: 0
     },
     users: {
       accounts: 0,

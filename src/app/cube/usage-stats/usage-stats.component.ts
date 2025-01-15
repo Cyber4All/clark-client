@@ -36,11 +36,6 @@ export class UsageStatsComponent implements OnInit {
         unit: -1,
         course: -1
       },
-      outcomes: {
-        remember_and_understand: -1,
-        apply_and_analyze: -1,
-        evaluate_and_synthesize: -1
-      },
       status: {
         waiting: -1,
         peerReview: -1,
@@ -49,6 +44,11 @@ export class UsageStatsComponent implements OnInit {
         proofing: -1
       },
       collections: { number: -1 },
+    },
+    outcomes: {
+      remember_and_understand: -1,
+      apply_and_analyze: -1,
+      evaluate_and_synthesize: -1
     },
     users: {
       accounts: -1,
@@ -100,11 +100,11 @@ export class UsageStatsComponent implements OnInit {
         course: stats.lengths.course
       };
       this.usageStats.objects.collections = stats.collections;
-      this.usageStats.objects.outcomes = {
-        remember_and_understand: stats.outcomes.remember_and_understand,
-        apply_and_analyze: stats.outcomes.apply_and_analyze,
-        evaluate_and_synthesize: stats.outcomes.evaluate_and_synthesize
-      };
+      // this.usageStats.outcomes = {
+      //   remember_and_understand: stats.outcomesremember_and_understand,
+      //   apply_and_analyze: stats.outcomes.apply_and_analyze,
+      //   evaluate_and_synthesize: stats.outcomes.evaluate_and_synthesize
+      // };
       this.usageStats.objects.status = {
         waiting: stats.lengths.nanomodule,
         peerReview: stats.lengths.micromodule,
@@ -315,9 +315,9 @@ export class UsageStatsComponent implements OnInit {
         'Evaluate and Synthesize'
       ],
       data: [
-        this.usageStats.objects.outcomes.apply_and_analyze,
-        this.usageStats.objects.outcomes.remember_and_understand,
-        this.usageStats.objects.outcomes.evaluate_and_synthesize
+        // this.usageStats.objects.outcomes.apply_and_analyze,
+        // this.usageStats.objects.outcomes.remember_and_understand,
+        // this.usageStats.objects.outcomes.evaluate_and_synthesize
       ],
       legend: true,
       options: {
