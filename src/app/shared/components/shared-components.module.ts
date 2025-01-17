@@ -4,9 +4,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-// Third-Party Modules
-import { CKEditorModule } from 'ng2-ckeditor';
-
 // CLARK Modules
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
 import { SharedPipesModule } from '../pipes/shared-pipes.module';
@@ -43,8 +40,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     ReactiveFormsModule,
     RouterModule,
     MatInputModule,
-    // third-part modules
-    CKEditorModule,
+    // third-party modules
     VirtualScrollerModule,
     // CLARK modules
     SharedDirectivesModule,
