@@ -69,12 +69,14 @@ export class EditorialActionPadComponent implements OnInit {
     this.openRevisionModal = false;
   }
 
+  // Handles opening the create relevancy modal
   openCreateRelevancyStoryModal() {
     if (!this.openRelevancyStoryModal) {
       this.openRelevancyStoryModal = true;
     }
   }
 
+  // Handles closing the create relevancy modal
   closeCreateRelevancyModal() {
     this.openRelevancyStoryModal = false;
   }
