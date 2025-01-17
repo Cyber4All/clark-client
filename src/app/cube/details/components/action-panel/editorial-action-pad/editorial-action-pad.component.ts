@@ -20,10 +20,14 @@ export class EditorialActionPadComponent implements OnInit {
   @Input() hasRevision: boolean;
   @Input() learningObject: LearningObject;
   @Input() userIsAuthor: boolean;
-  openRevisionModal: boolean;
-  showPopup = false;
-
   @Input() revisedLearningObject: LearningObject;
+
+  openRevisionModal: boolean;
+  openRelevancyStoryModal = false;
+  showPopup = false;
+  editorNotes = '';
+  textBoxConfig = [];
+
 
   constructor(
     private learningObjectServiceUri: LOUri,
@@ -65,6 +69,16 @@ export class EditorialActionPadComponent implements OnInit {
     this.openRevisionModal = false;
   }
 
+  openCreateRelevancyStoryModal() {
+    if (!this.openRelevancyStoryModal) {
+      this.openRelevancyStoryModal = true;
+    }
+  }
+
+  closeCreateRelevancyModal() {
+    this.openRelevancyStoryModal = false;
+  }
+
   // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object
   editLearningObject() {
     if (this.revisedLearningObject) {
@@ -88,5 +102,18 @@ export class EditorialActionPadComponent implements OnInit {
       }).catch(e => {
         this.toaster.error('Error', e.error.message);
       });
+  }
+
+  async createRelevancyStory() {
+    this.closeCreateRelevancyModal();
+    await this.editorialService.createRelevancyStory(
+      this.learningObject.cuid,
+      this.learningObject.version,
+      this.editorNotes
+    ).then(async (response: { url: string }) => {
+      console.log(response.url);
+    }).catch(e => {
+      this.toaster.error('Error', e.error.message);
+    });;
   }
 }

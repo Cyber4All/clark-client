@@ -43,13 +43,14 @@ export class EditorialService {
    * Create a relevancy story for a learning object
    *
    * @param cuid The cuid of the learning object to create a story for.
+   * @param version The version of the learning object to create a story for.
    * @returns {string} a URI of the Shortcut story.
    */
-  async createRelevancyStory(cuid: string): Promise<any> {
+  async createRelevancyStory(cuid: string, version: number, editorNotes?: string): Promise<any> {
     return await this.http
       .post(
         EDITORIAL_ROUTES.CREATE_RELEVANCY_STORY(cuid),
-        {},
+        { version, editorNotes },
         { headers: this.httpHeaders, withCredentials: true },
       )
       .pipe(catchError(this.handleError))

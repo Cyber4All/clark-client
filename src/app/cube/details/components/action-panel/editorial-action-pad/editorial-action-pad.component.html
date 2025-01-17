@@ -16,6 +16,15 @@
 </button>
 
 <button
+  *ngIf="canMakeEdits"
+  class="button neutral"
+  (activate)="openCreateRelevancyStoryModal()"
+  aria-label="Create Relevancy Story"
+  >
+  Create Relevancy Story
+</button>
+
+<button
   *ngIf="isNotPermitted"
   class="button neutral disabled"
   aria-label="Released Learning Objects cannot be Revised">
@@ -25,5 +34,21 @@
 <clark-popup *ngIf="openRevisionModal" (closed)="closeRevisionModal()">
   <div #popupInner style="max-width: 600px;">
     <clark-revision-notice-popup (createRevision)="createRevision()" (close)="closeRevisionModal()"></clark-revision-notice-popup>
+  </div>
+</clark-popup>
+
+<clark-popup *ngIf="openRelevancyStoryModal" (closed)="closeCreateRelevancyModal">
+  <div #popupInner style="max-width: 600px;">
+    <div class="modal-title">Create a relevancy story</div>
+    <div class='modal-text'>
+        Creating a relevancy story will mark this learning object for relevancy. You may add any notes that will help in evaluating the relevancy of this object.
+    </div>
+    <div>
+      <st-editor [(ngModel)]="editorNotes" [config]=""></st-editor>
+    </div>
+    <div class="btn-group center">
+      <button class="button good" (activate)="createRevision.emit()">Confirm</button>
+      <button class="button bad" (activate)="closeCreateRelevancyModal()">Cancel</button>
+    </div>
   </div>
 </clark-popup>
