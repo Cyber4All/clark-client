@@ -6,6 +6,7 @@ import { SubmitComponent } from './submit/submit.component';
 import { EditChangelogComponent } from './edit-changelog/edit-changelog.component';
 import { FormsModule } from '@angular/forms';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     CommonModule,
     SharedModule,
     FormsModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    NgxSimpleTextEditorModule
   ],
   exports: [
     LearningObjectStatusIndicatorComponent,

@@ -54,8 +54,7 @@
       </ng-template>
       <ng-template>
         <div class="carousel__item">
-          <clark-text-editor name="description" (textOutput)="setSubmissionReason($event)"
-            [(savedContent)]="submissionReason"></clark-text-editor>
+          <st-editor [(ngModel)]="submissionReason" [config]="config"></st-editor>
           <div class="button-bar">
             <div class="btn-group to-left">
               <button (activate)="regress()" class="button neutral">Back</button>
@@ -114,7 +113,7 @@
       <ng-template>
         <div class="carousel__item">
           <p>You've submitted this Learning Object to this collection before! What did you change in this submission?</p>
-          <clark-edit-changelog [(changelog)]="changelog" (back)="regress()" (cancel)="closeModal(); regress();" (confirm)="createChangelog()"></clark-edit-changelog>
+          <clark-edit-changelog [(changelog)]="changelog" (back)="regress()" (cancel)="closeModal(); regress();" (confirm)="createChangelog($event)"></clark-edit-changelog>
         </div>
       </ng-template>
     </clark-carousel>
