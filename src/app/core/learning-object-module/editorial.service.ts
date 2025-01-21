@@ -7,7 +7,7 @@ import {
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { EDITORIAL_ROUTES } from './editorial.routes';
-import { LearningObject } from '@entity';
+import { LearningObject, User } from '@entity';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth-module/auth.service';
 
@@ -150,6 +150,14 @@ export class EditorialService {
     revisedLearningObject: LearningObject,
   ) {
     return learningObject.status === 'released' && !revisedLearningObject;
+  }
+
+  /**
+   * Checks if a user can create a relevancy story.
+   * @returns {boolean}
+   */
+  canCreateRelevancyStory() {
+    return this.auth.user.accessGroups.includes('admin') || this.auth.user.accessGroups.includes('editor');
   }
 
 

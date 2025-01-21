@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -25,9 +24,6 @@ export class EditorialActionPadComponent implements OnInit {
   openRevisionModal: boolean;
   openRelevancyStoryModal = false;
   showPopup = false;
-  editorNotes = '';
-  textBoxConfig = [];
-
 
   constructor(
     private learningObjectServiceUri: LOUri,
@@ -52,10 +48,15 @@ export class EditorialActionPadComponent implements OnInit {
     return this.editorialService.canMakeEdits(this.learningObject, this.revisedLearningObject);
   }
 
+  get canCreateRelevancyStory() {
+    return this.editorialService.canCreateRelevancyStory();
+  }
+
   // Determines if an editor is not permitted to create a revision or make edits
   get isNotPermitted() {
     return this.editorialService.isNotPermittedToMakeChanges(this.learningObject, this.revisedLearningObject);
   }
+
 
   // Handles opening the create revision modal
   openCreateRevisionModal() {
@@ -106,16 +107,18 @@ export class EditorialActionPadComponent implements OnInit {
       });
   }
 
-  async createRelevancyStory() {
-    this.closeCreateRelevancyModal();
+  // Create a relevancy story with `editorNotes` provided from the popup
+  async createRelevancyStory(editorNotes: string) {
+    this.openRelevancyStoryModal = false;
+
     await this.editorialService.createRelevancyStory(
       this.learningObject.cuid,
       this.learningObject.version,
-      this.editorNotes
-    ).then(async (response: { url: string }) => {
-      console.log(response.url);
+      editorNotes
+    ).then(async (_) => {
+      this.toaster.success('Story created!', 'See the #content-team slack channel for the story.');
     }).catch(e => {
       this.toaster.error('Error', e.error.message);
-    });;
+    });
   }
 }
