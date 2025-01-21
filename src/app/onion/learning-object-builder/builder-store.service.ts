@@ -23,8 +23,7 @@ import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
 import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
-import { RevisionsService } from 'app/core/learning-object-module/revisions/revisions.service';
-import { Revision } from 'aws-sdk/clients/codepipeline';
+import { EditorialService } from 'app/core/learning-object-module/editorial.service';
 
 /**
  * Defines a list of actions the builder can take
@@ -160,7 +159,7 @@ export class BuilderStore {
     private uriRetriever: UriRetrieverService,
     private submissionService: SubmissionsService,
     private outcomeService: OutcomeService,
-    private revisionsService: RevisionsService,
+    private editorialService: EditorialService,
     private fileService: FileService
   ) {
     // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
@@ -260,7 +259,7 @@ export class BuilderStore {
       async () => {
         // eslint-disable-next-line eqeqeq
         if (revisionId == 0) {
-          revisionId = await this.revisionsService.createRevision(cuid);
+          revisionId = await this.editorialService.createRevision(cuid);
         }
 
         return this.refactoredLearningObjectService.getLearningObject(cuid, revisionId);

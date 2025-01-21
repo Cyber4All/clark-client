@@ -1,6 +1,6 @@
 
 <button
-  *ngIf="makeRevision"
+  *ngIf="canCreateRevision"
   class="button neutral"
   (activate)="openCreateRevisionModal()"
   aria-label="Create a Revision">
@@ -8,7 +8,7 @@
 </button>
 
 <button
-  *ngIf="makeEdits"
+  *ngIf="canMakeEdits"
   class="button neutral"
   (activate)="editLearningObject()"
   aria-label="Edit Learning Object">
@@ -16,7 +16,7 @@
 </button>
 
 <button
-  *ngIf="notPermitted"
+  *ngIf="isNotPermitted"
   class="button neutral disabled"
   aria-label="Released Learning Objects cannot be Revised">
   Edits and Revisions not Permitted

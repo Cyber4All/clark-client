@@ -5,6 +5,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
+// third-party
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
+
 // non-angular modules
 import {BuilderRoutingModule} from './learning-object-builder.routing';
 import {SharedModule} from 'app/shared/shared.module';
@@ -28,7 +32,6 @@ import { ScaffoldComponent } from './components/scaffold/scaffold.component';
 import {OnionSharedModule} from '../shared/onion-shared.module';
 import {EditorActionPanelModule} from './components/editor-action-panel/editor-action-panel.module';
 import { AddChildComponent } from './components/scaffold/add-child/add-child.component';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { MaterialNotesComponent } from './components/material-notes/material-notes.component';
 /*
   NOTE: BuilderStore and validator services aren't provided here, they're provided in the learning-object-builder.component file.
@@ -48,7 +51,8 @@ import { MaterialNotesComponent } from './components/material-notes/material-not
     OnionSharedModule,
     EditorActionPanelModule,
     OnionSharedModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    NgxSimpleTextEditorModule
   ],
   declarations: [
     LearningObjectBuilderComponent,

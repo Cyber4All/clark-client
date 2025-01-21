@@ -12,11 +12,6 @@ export interface LearningObjectStats {
     unit: number;
     course: number;
   };
-  outcomes: {
-    remember_and_understand: number;
-    apply_and_analyze: number;
-    evaluate_and_synthesize: number;
-  };
   status: {
     waiting: number;
     peerReview: number;
@@ -25,6 +20,14 @@ export interface LearningObjectStats {
     proofing: number;
   };
   collections: { number: number };
+}
+
+export interface LearningOutcomeStats {
+  outcomes: {
+    remember_and_understand: number;
+    apply_and_analyze: number;
+    evaluate_and_synthesize: number;
+  };
 }
 
 export interface LearningObjectMetrics {
@@ -45,5 +48,6 @@ export interface UserMetrics {
 
 export interface UsageStats {
   objects: LearningObjectStats;
+  outcomes: LearningOutcomeStats['outcomes'];
   users: UserMetrics;
 }
