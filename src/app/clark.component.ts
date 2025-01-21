@@ -63,7 +63,7 @@ export class ClarkComponent implements OnInit {
   hidingOutlines = true;
   learningObject: LearningObject;
 
-  downtime: Downtime = new Downtime(false, '');
+  downtime: Downtime = new Downtime(true, '');
 
   @HostListener('window:click', ['$event'])
   @HostListener('window:keyup', ['$event'])
