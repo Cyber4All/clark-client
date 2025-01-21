@@ -4,14 +4,17 @@ import { METRIC_ROUTES } from './metric.routes';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { LearningObjectMetrics, LearningObjectStats, UserMetrics } from 'app/cube/shared/types/usage-stats';
+import {
+  LearningObjectMetrics,
+  LearningObjectStats,
+  UserMetrics,
+} from 'app/cube/shared/types/usage-stats';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MetricService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Get metrics for a collection
@@ -19,10 +22,9 @@ export class MetricService {
    * @returns Metrics for the given collection
    */
   getCollectionMetrics(collectionAbvName: string) {
-    return this.http.get(METRIC_ROUTES.GET_COLLECTION_METRICS(collectionAbvName))
-      .pipe(
-        catchError(this.handleError)
-      )
+    return this.http
+      .get(METRIC_ROUTES.GET_COLLECTION_METRICS(collectionAbvName))
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -31,13 +33,10 @@ export class MetricService {
    * @returns the stats for learning object lengths, statuses, downloads, and bloom's distribution
    */
   async getLearningObjectStats(): Promise<LearningObjectStats> {
-    const stats = await
-      this.http
-        .get<LearningObjectStats>(METRIC_ROUTES.GET_LEARNING_OBJECT_STATS())
-        .pipe(
-          catchError(this.handleError)
-        )
-        .toPromise();
+    const stats = await this.http
+      .get<LearningObjectStats>(METRIC_ROUTES.GET_LEARNING_OBJECT_STATS())
+      .pipe(catchError(this.handleError))
+      .toPromise();
     return stats as LearningObjectStats;
   }
 
@@ -49,10 +48,10 @@ export class MetricService {
   // TODO: This isn't being referenced anywhere and may not be needed
   async getLearningObjectMetrics(cuid?: string) {
     return this.http
-    .get<LearningObjectMetrics>(METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS(cuid))
-      .pipe(
-        catchError(this.handleError)
+      .get<LearningObjectMetrics>(
+        METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS(cuid),
       )
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -61,15 +60,19 @@ export class MetricService {
    * @returns UserMetrics object containing the total number of users and organizations
    */
   async getUserMetrics(): Promise<UserMetrics> {
-    const userMetrics: { users: number, organizations: number } = await this.http
-      .get<{ users: number, organizations: number }>(METRIC_ROUTES.GET_USER_METRICS())
-      .pipe(
-        catchError(this.handleError)
-      )
-      .toPromise();
-    return { accounts: userMetrics.users, organizations: userMetrics.organizations };
+    const userMetrics: { users: number; organizations: number } =
+      await this.http
+        .get<{
+          users: number;
+          organizations: number;
+        }>(METRIC_ROUTES.GET_USER_METRICS())
+        .pipe(catchError(this.handleError))
+        .toPromise();
+    return {
+      accounts: userMetrics.users,
+      organizations: userMetrics.organizations,
+    };
   }
-
 
   private handleError(error: HttpErrorResponse | any) {
     if (
