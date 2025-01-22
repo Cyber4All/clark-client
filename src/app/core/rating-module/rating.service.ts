@@ -198,6 +198,8 @@ export class RatingService {
     cuid: string,
     version: number,
   ): Promise<LearningObjectRatings> {
+    // console.log("cuid: " + cuid);
+    // console.log("version: " + version);
     return this.http
       .get(
         RATING_ROUTES.GET_LEARNING_OBJECT_RATINGS(
@@ -223,9 +225,11 @@ export class RatingService {
             return mappedRating;
           });
           return { avgValue: learningObjectRatings.avgValue, ratings };
-        } else {
-          console.log('FIX ME: No ratings found for learning object');
-        }
+        } 
+        // else {
+        //   // return;
+        //   console.log('FIX ME: No ratings found for learning object');
+        // }
       });
   }
 
