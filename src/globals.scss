@@ -11,6 +11,10 @@
   left: -100px;
 }
 
+// .ng-star-inserted {
+//   position: relative;
+// }
+
 body {
   font-family: 'Source Sans Pro', sans-serif;
   background: $wrapper-background !important;
@@ -159,7 +163,7 @@ a:visited {
 
 .popup-wrapper {
   background: rgba(0, 0, 0, 0.6);
-  position: fixed;
+  // position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -170,7 +174,7 @@ a:visited {
 }
 
 .popup {
-  position: fixed;
+  // position: fixed;
   z-index: $popup-z;
   background: white;
   border-radius: 1px;
