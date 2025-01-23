@@ -8,12 +8,12 @@ import { LearningObject } from '@entity';
 })
 export class TaggingBuilderComponent implements OnInit {
 
-  @Input() learningObject: LearningObject
-  currentTab = 'topics'
+  @Input() learningObject: LearningObject;
+  currentTab = 'topics';
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.learningObject)
+    console.log(this.learningObject);
   }
 
 }
