@@ -226,10 +226,6 @@ export class RatingService {
           });
           return { avgValue: learningObjectRatings.avgValue, ratings };
         } 
-        // else {
-        //   // return;
-        //   console.log('FIX ME: No ratings found for learning object');
-        // }
       });
   }
 
