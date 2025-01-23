@@ -225,7 +225,7 @@ export class RatingService {
             return mappedRating;
           });
           return { avgValue: learningObjectRatings.avgValue, ratings };
-        } 
+        }
       });
   }
 
