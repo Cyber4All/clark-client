@@ -16,6 +16,12 @@
 </button>
 
 <button
+  class="button neutral"
+  (activate)="openTaggingModal()"
+>Tag Learning Object
+</button>
+
+<button
   *ngIf="isNotPermitted"
   class="button neutral disabled"
   aria-label="Released Learning Objects cannot be Revised">
@@ -23,7 +29,13 @@
 </button>
 
 <clark-popup *ngIf="openRevisionModal" (closed)="closeRevisionModal()">
-  <div #popupInner style="max-width: 600px;">
+  <div #popupInner style="width: 600px;">
     <clark-revision-notice-popup (createRevision)="createRevision()" (close)="closeRevisionModal()"></clark-revision-notice-popup>
+  </div>
+</clark-popup>
+
+<clark-popup *ngIf="openTagModal" (closed)="closeTaggingModal()">
+  <div #popupInner style="width: 600px; margin-top: 10px">
+    <clark-tagging-builder [learningObject]="learningObject"></clark-tagging-builder>
   </div>
 </clark-popup>

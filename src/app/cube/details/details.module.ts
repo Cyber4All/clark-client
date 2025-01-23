@@ -30,6 +30,7 @@ import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-pan
 import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
 import { RouteBackwardsCompatGuard } from '../core/route-backwards-compat.guard';
 import { OnionCoreModule } from '../../onion/core/core.module';
+
 @NgModule({
   imports: [
     CommonModule,
