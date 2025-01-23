@@ -116,7 +116,7 @@ export class EditorialActionPadComponent implements OnInit {
       this.learningObject.version,
       editorNotes
     ).then(async (_) => {
-      this.toaster.success('Story created!', 'See the #content-team slack channel for the story.');
+      this.toaster.success('Story created!', 'See the Relevancy board for more details.');
     }).catch(e => {
       this.toaster.error('Error', e.error.message);
     });
