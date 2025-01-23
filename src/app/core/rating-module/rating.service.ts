@@ -227,7 +227,6 @@ export class RatingService {
           console.log('FIX ME: No ratings found for learning object');
         }
       });
-
   }
 
   /**
