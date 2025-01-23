@@ -21,6 +21,7 @@ export class EditorialActionPadComponent implements OnInit {
   @Input() learningObject: LearningObject;
   @Input() userIsAuthor: boolean;
   openRevisionModal: boolean;
+  openTagModal: boolean;
   showPopup = false;
 
   @Input() revisedLearningObject: LearningObject;
@@ -63,6 +64,14 @@ export class EditorialActionPadComponent implements OnInit {
   // Handles closing the create revision modal
   closeRevisionModal() {
     this.openRevisionModal = false;
+  }
+
+  openTaggingModal() {
+    this.openTagModal = true;
+  }
+
+  closeTaggingModal() {
+    this.openTagModal = false;
   }
 
   // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object

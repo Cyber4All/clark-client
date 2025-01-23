@@ -1,0 +1,25 @@
+
+<div class="tabs">
+    <button 
+      class="tab" 
+      [class.active]="currentTab === 'topics'" 
+      (click)="currentTab = 'topics'">
+      Topics
+    </button>
+    <button 
+      class="tab" 
+      [class.active]="currentTab === 'tags'" 
+      (click)="currentTab = 'tags'">
+      Tags
+    </button>
+  </div>
+  
+  <div class="tab-content">
+    <ng-container *ngIf="currentTab === 'topics'">
+      <p>Topics</p>
+    </ng-container>
+  
+    <ng-container *ngIf="currentTab === 'tags'">
+        <p>Tags</p>
+    </ng-container>
+  </div>
