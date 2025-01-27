@@ -7,6 +7,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FilterSectionInfo } from '../filter-section/filter-section.component';
 import { Query } from '../../../../interfaces/query';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 
 @Component({
   selector: 'clark-filter',
@@ -22,6 +23,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   collectionFilter: FilterSectionInfo;
   lengthFilter: FilterSectionInfo;
   topicFilter: FilterSectionInfo;
+  tagFilter: FilterSectionInfo;
   materialFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
   frameworkFilter: FilterSectionInfo;
@@ -37,6 +39,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   constructor(
     private collectionService: CollectionService,
     private topicsService: TopicsService,
+    private tagsService: TagsService,
     private guidelineService: GuidelineService,
     private cd: ChangeDetectorRef
   ) { }
@@ -229,6 +232,22 @@ export class FilterComponent implements OnInit, OnDestroy {
         value: topic._id,
         active: false,
       })),
+    };
+  }
+
+  /**
+   * Gets the tag filters
+   */
+  async getTagFilters() {
+    const tags = (await this.tagsService.getTags()).tags;
+    this.tagFilter = {
+      section: 'Tags',
+      filters: tags
+        .map((tag) => ({
+          name: tag.name,
+          value: tag._id,
+          active: false,
+        })),
     };
   }
 
