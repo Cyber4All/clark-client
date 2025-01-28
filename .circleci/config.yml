@@ -4,11 +4,21 @@ orbs:
   cyber4all: cyber4all/orb@2.1.9
   node: circleci/node@6.3.0
 
+jobs:
+  install-node-example:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - node/install:
+          install-yarn: true
+          node-version: '18.0.0'
+      - run: node --version
+
 workflows:
   continuous-integration:
     jobs:
-      - node/install:
-          node-version: 18.0.0
+      - install-node-example
       - node/run:
           name: lint
           npm-run: lint
