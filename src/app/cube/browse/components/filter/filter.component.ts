@@ -79,6 +79,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.parseCategorySelected(this.selected.length, this.lengthFilter.filters);
       this.parseCategorySelected(this.selected.level, this.levelFilter.filters);
       this.parseCategorySelected(this.selected.topics, this.topicFilter.filters);
+      this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
       this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
       this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
       this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
@@ -125,6 +126,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.clearFilterCategory(this.levelFilter.filters);
     this.clearFilterCategory(this.materialFilter.filters);
     this.clearFilterCategory(this.topicFilter.filters);
+    this.clearFilterCategory(this.tagFilter.filters);
     this.clearFilterCategory(this.frameworkFilter.filters);
     this.guidelineFilter = [];
 
@@ -154,6 +156,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.checkFilter('level', this.levelFilter.filters, query);
     this.checkFilter('fileTypes', this.materialFilter.filters, query);
     this.checkFilter('topics', this.topicFilter.filters, query);
+    this.checkFilter('tags', this.tagFilter.filters, query);
     this.checkFilter('guidelines', this.frameworkFilter.filters, query);
     if (this.guidelineFilter && this.guidelineFilter.length > 0) {
       query['standardOutcomes'] = this.guidelineFilter;
@@ -198,7 +201,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       // i.e. if you want tags with type 'code', this will only return
       //      the tags that include the tag type 'code'.
       filters: this.tagFilter.filters.filter((t) =>
-        t.tagType.includes(providedType.value),
+        t.tagType?.includes(providedType.value),
       ),
     };
   }
