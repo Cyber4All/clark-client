@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   cyber4all: cyber4all/orb@2.1.9
-  node: circleci/node@7.0.0
+  node: circleci/node@6.3.0
 
 workflows:
   continuous-integration:
