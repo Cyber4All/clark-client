@@ -11,19 +11,18 @@ jobs:
     steps:
       - checkout
       - node/install:
-          install-yarn: true
           node-version: '18.0.0'
+      - node/run:
+          npm-run: lint
+      - node/run:
+          npm-run: build:prod
       - run: node --version
 
 workflows:
   continuous-integration:
     jobs:
       - install-node-example
-      - node/run:
-          name: lint
-          npm-run: lint
-          needs: 
-            - install-node-example
+    
 
       # # Tests building the project with production settings
       # - node/run:
