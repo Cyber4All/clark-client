@@ -5,7 +5,7 @@ orbs:
   node: circleci/node@6.3.0
 
 jobs:
-  install-node-example:
+  install-node-lint-build:
     docker:
       - image: cimg/base:stable
     steps:
@@ -13,19 +13,14 @@ jobs:
       - node/install:
           node-version: '18.0.0'
       - run: npm install
-      - run: npm lint
-      - run: npm build:prod
+      - run: npm run lint
+      - run: npm run build:prod
       - run: node --version
 
 workflows:
   continuous-integration:
     jobs:
-      - install-node-example
-    
-
-      # # Tests building the project with production settings
-      # - node/run:
-      #     npm-run: build:prod
+      - install-node-lint-build
 
   deploy-staging:
     when:
