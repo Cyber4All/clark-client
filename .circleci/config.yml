@@ -7,6 +7,8 @@ orbs:
 workflows:
   continuous-integration:
     jobs:
+      - node/install:
+          node-version: 18.0.0
       - node/run:
           name: lint
           npm-run: lint
