@@ -80,5 +80,7 @@ export interface FilterSectionInfo {
     name: string;
     value: string;
     tip?: string;
+    // Tag usage only
+    tagType?: string[];
   }[];
 }

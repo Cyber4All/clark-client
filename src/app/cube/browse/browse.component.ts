@@ -214,7 +214,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     // correctly interface with sort and search
     this.filters = filters;
     this.filters.removed = [];
-    ['collection', 'length', 'topics', 'fileTypes', 'level', 'guidelines', 'standardOutcomes'].forEach(category => {
+    ['collection', 'length', 'topics', 'tags', 'fileTypes', 'level', 'guidelines', 'standardOutcomes'].forEach(category => {
       if (!this.filters[category]) {
         this.filters.removed.push(category);
       }
