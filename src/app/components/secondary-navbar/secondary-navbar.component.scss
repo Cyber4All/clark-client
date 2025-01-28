@@ -9,6 +9,11 @@
     border: solid 1px $secondary-white;
     z-index: 4;
 
+    .ng-star-inserted {
+        position: relative;
+        
+      }
+
     .item {
         cursor: pointer;
         font-weight: 400;
