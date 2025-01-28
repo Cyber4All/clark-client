@@ -12,10 +12,9 @@ jobs:
       - checkout
       - node/install:
           node-version: '18.0.0'
-      - node/run:
-          npm-run: lint
-      - node/run:
-          npm-run: build:prod
+      - run: npm install
+      - run: npm lint
+      - run: npm build:prod
       - run: node --version
 
 workflows:
