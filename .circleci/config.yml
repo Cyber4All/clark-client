@@ -22,6 +22,8 @@ workflows:
       - node/run:
           name: lint
           npm-run: lint
+          needs: 
+            - install-node-example
 
       # # Tests building the project with production settings
       # - node/run:
