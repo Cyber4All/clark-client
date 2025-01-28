@@ -47,7 +47,7 @@ export class ContextMenuViewerComponent {
   //     if (dropdownBottom > windowBottom) {
   //       this.activateClose();
   //     }
-    
+
   // }
 
   /**

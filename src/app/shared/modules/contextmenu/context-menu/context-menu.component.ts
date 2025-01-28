@@ -186,7 +186,7 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
   //     if (dropdownBottom > windowBottom) {
   //       this.close.emit();
   //     }
-    
+
   // }
   /**
    * Calculates position for context menu when anchored near an element by the elements position and the offset parameter
