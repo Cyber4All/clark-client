@@ -223,8 +223,6 @@ export class RatingService {
             return mappedRating;
           });
           return { avgValue: learningObjectRatings.avgValue, ratings };
-        } else {
-          console.log('FIX ME: No ratings found for learning object');
         }
       });
   }
