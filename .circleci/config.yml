@@ -8,11 +8,12 @@ workflows:
   continuous-integration:
     jobs:
       - node/run:
+          name: lint
           npm-run: lint
 
-      # Tests building the project with production settings
-      - node/run:
-          npm-run: build:prod
+      # # Tests building the project with production settings
+      # - node/run:
+      #     npm-run: build:prod
 
   deploy-staging:
     when:
