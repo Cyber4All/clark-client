@@ -3,23 +3,34 @@
     <button 
       class="tab" 
       [class.active]="currentTab === 'topics'" 
-      (click)="currentTab = 'topics'">
+      (click)="switchTab('topics')">
       Topics
     </button>
     <button 
       class="tab" 
       [class.active]="currentTab === 'tags'" 
-      (click)="currentTab = 'tags'">
+      (click)="switchTab('tags')">
       Tags
     </button>
+    <div class="underline" [ngStyle]="{ left: underlineLeft, width: underlineWidth }"></div>
+  </div>
+  <div *ngIf="!loading">
+    <div class="tab-content">
+      <ng-container *ngIf="currentTab === 'topics'">
+          <clark-topic-tagging></clark-topic-tagging>
+      </ng-container>
+    
+      <ng-container *ngIf="currentTab === 'tags'">
+        <clark-tagging></clark-tagging>
+      </ng-container>
+    </div>
+    <div class="buttons">
+      <div class="button neutral" (click)="cancel()">
+        Cancel
+      </div>
+      <div class="button good" (click)="save()">
+        Save
+      </div>
+    </div>
   </div>
   
-  <div class="tab-content">
-    <ng-container *ngIf="currentTab === 'topics'">
-      <p>Topics</p>
-    </ng-container>
-  
-    <ng-container *ngIf="currentTab === 'tags'">
-        <p>Tags</p>
-    </ng-container>
-  </div>

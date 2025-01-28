@@ -3,12 +3,12 @@ import { Topic } from '@entity';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { TOPICS_ROUTES } from './topics.routes';
+import { TAGS_ROUTES } from './tags.routes';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TopicsService {
+export class TagsService {
   private headers = new HttpHeaders();
 
   constructor(private http: HttpClient) {
@@ -19,10 +19,15 @@ export class TopicsService {
    *
    * @returns A list of topics
    */
-  async getTopics(): Promise<Topic[]> {
+  async getTags(query?: any): Promise<Topic[]> {
+    query = {
+      text: query?.text,
+      sort: 1,
+      limit: 40
+    };
     return await new Promise((resolve, reject) => {
       this.http
-        .get<Topic[]>(TOPICS_ROUTES.GET_ALL_TOPICS(),
+        .get<Topic[]>(TAGS_ROUTES.GET_ALL_TAGS(query),
           {
             headers: this.headers,
             withCredentials: true,
@@ -35,8 +40,7 @@ export class TopicsService {
         .toPromise()
         .then(
           (res: any) => {
-            const sorted = res.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-            resolve(sorted);
+            resolve(res.tags);
           },
           (err) => {
             reject(err);
@@ -52,12 +56,11 @@ export class TopicsService {
    * @param learningObjectId  user id
    * @param topicIds  id of Topic object
    */
-  async updateObjectTopics(learningObjectId: string, topicIds: string[]): Promise<void> {
-    console.log('We gucci');
+  async updateObjectTags(learningObjectCuid: string, tags: string[]): Promise<void> {
     return await new Promise((resolve, reject) => {
       this.http
-        .patch(TOPICS_ROUTES.UPDATE_TOPIC(learningObjectId),
-          { topicIds },
+        .put(TAGS_ROUTES.UPDATE_TAG(learningObjectCuid),
+          { tags },
           {
             headers: this.headers,
             withCredentials: true,

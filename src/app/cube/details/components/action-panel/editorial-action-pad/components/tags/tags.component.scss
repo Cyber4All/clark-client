@@ -1,0 +1,65 @@
+@import 'vars.scss';
+.filter-results {
+  display: flex; /* Enable Flexbox layout */
+  gap: 16px; /* Add spacing between the filters and the pill-container */
+  width: 100%; /* Ensure the container spans the full width of the parent */
+}
+
+.filters {
+  flex: 0 0 30%; /* Fix width to 30% of the parent container */
+  padding: 16px; /* Optional: Add some padding */
+}
+
+.pill-container {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    margin: 10px 0;
+  }
+  
+  button {
+    padding: 5px 10px;
+    border: 1px solid $light-blue;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: $primary-white;
+    white-space: nowrap;
+    color: $light-blue;
+  }
+  
+  button.selected {
+    background-color: $light-blue;
+    color: $primary-white;
+    border-color: $light-blue;
+  }
+
+  .input-container{
+    background-color: $light-grey;
+    position: relative;
+    padding: 8px 10px;
+    border-radius: 5px;
+    i {
+      position: absolute; 
+      padding: 10px;
+    }
+  }
+  
+  .tag-dropdown__search-input {
+    appearance: none;
+    font-size: $small;
+    border: none;   
+    color: $medium-grey;
+    background-color: inherit;
+    outline: 0;
+    max-width: 550px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0px 15px;
+  
+    &:focus {
+      border-color: $light-blue;
+    }
+  }
+

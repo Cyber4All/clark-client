@@ -1,0 +1,33 @@
+<div class="search">
+  <div class="input-container">
+    <i class="fas fa-search"></i> 
+    <input 
+      type="text"
+      aria-label="Find for tags"
+      class="tag-dropdown__search-input"
+      placeholder="Search for Tags"
+      (input)="search()"
+      [(ngModel)]="query"
+      >
+  </div>
+</div>
+<div class="filter-results">
+  <div class="filters">
+    option 1
+    <br>
+    option 2
+    <br>
+    option 3
+  </div>
+  <div *ngIf="tags.length > 0" class="pill-container">
+      <div *ngFor="let item of tags">
+        <button
+          [class.selected]="selectedTags.includes(item)"
+          (click)="toggleTags(item)"
+        >
+          {{ item.name }}
+        </button>
+      </div>
+    </div>
+</div>
+

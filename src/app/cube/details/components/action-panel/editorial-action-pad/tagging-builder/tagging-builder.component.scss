@@ -1,27 +1,49 @@
+@import 'vars.scss';
 .tabs {
-    display: flex; // Make buttons align horizontally
-    width: 100%; // Ensure the parent container takes the full width
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin-bottom: 20px;
   
     .tab {
-      flex: 1; // Make each button take equal space within the parent
-      padding: 10px; // Add padding for better usability
-      border: none; // Remove default border
-      text-align: center; // Center the text
-      font-size: 16px; // Adjust font size as needed
-      cursor: pointer; // Change cursor to pointer on hover
-      background-color: #1c70dd; // Default background color
-      color: white; // Default text color
-      transition: background-color 0.3s ease; // Smooth background color transition
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background-color: transparent;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      color: $light-blue;
+      position: relative;
+      transition: color 0.3s ease;
   
       &.active {
-        background-color: white; // Active state background
-        color: #1c70dd; // Active state text color
-        font-weight: bold; // Emphasize active button with bold text
+        font-weight: bold;
       }
   
       &:hover {
-        background-color: gray; // Slightly darker shade for hover effect
+        color: $light-blue;
       }
     }
+  
+    .underline {
+      position: absolute;
+      bottom: 0;
+      height: 2px;
+      background-color: $light-blue;
+      transition: left 0.3s ease, width 0.3s ease;
+    }
   }
+  
+  .tab-content {
+    min-height: 300px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  
+  
   

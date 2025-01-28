@@ -1,0 +1,24 @@
+@import 'vars.scss';
+.pill-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+    margin: 10px 0;
+  }
+  
+  button {
+    padding: 5px 10px;
+    border: 1px solid $light-blue;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: $primary-white;
+    white-space: nowrap;
+    color: $light-blue;
+  }
+  
+  button.selected {
+    background-color: $light-blue;
+    color: $primary-white;
+    border-color: $light-blue;
+  }
