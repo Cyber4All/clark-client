@@ -3,6 +3,7 @@
 # ----------------------------------------------------------------
     FROM node:18.0.0 AS build
 
+    COPY . /build
     # Install system dependencies for building native modules
     RUN apt-get update && apt-get install -y \
         build-essential \
