@@ -13,6 +13,7 @@ FROM node:16 as build
 COPY . /build
 WORKDIR /build
 # Install dependencies and run the build command
+RUN npm install -g node-gyp
 RUN npm install
 RUN npm run build
 
