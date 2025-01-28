@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -20,10 +19,11 @@ export class EditorialActionPadComponent implements OnInit {
   @Input() hasRevision: boolean;
   @Input() learningObject: LearningObject;
   @Input() userIsAuthor: boolean;
-  openRevisionModal: boolean;
-  showPopup = false;
-
   @Input() revisedLearningObject: LearningObject;
+
+  openRevisionModal: boolean;
+  openRelevancyStoryModal = false;
+  showPopup = false;
 
   constructor(
     private learningObjectServiceUri: LOUri,
@@ -48,10 +48,15 @@ export class EditorialActionPadComponent implements OnInit {
     return this.editorialService.canMakeEdits(this.learningObject, this.revisedLearningObject);
   }
 
+  get canCreateRelevancyStory() {
+    return this.editorialService.canCreateRelevancyStory();
+  }
+
   // Determines if an editor is not permitted to create a revision or make edits
   get isNotPermitted() {
     return this.editorialService.isNotPermittedToMakeChanges(this.learningObject, this.revisedLearningObject);
   }
+
 
   // Handles opening the create revision modal
   openCreateRevisionModal() {
@@ -63,6 +68,18 @@ export class EditorialActionPadComponent implements OnInit {
   // Handles closing the create revision modal
   closeRevisionModal() {
     this.openRevisionModal = false;
+  }
+
+  // Handles opening the create relevancy modal
+  openCreateRelevancyStoryModal() {
+    if (!this.openRelevancyStoryModal) {
+      this.openRelevancyStoryModal = true;
+    }
+  }
+
+  // Handles closing the create relevancy modal
+  closeCreateRelevancyModal() {
+    this.openRelevancyStoryModal = false;
   }
 
   // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object
@@ -88,5 +105,20 @@ export class EditorialActionPadComponent implements OnInit {
       }).catch(e => {
         this.toaster.error('Error', e.error.message);
       });
+  }
+
+  // Create a relevancy story with `editorNotes` provided from the popup
+  async createRelevancyStory(editorNotes: string) {
+    this.openRelevancyStoryModal = false;
+
+    await this.editorialService.createRelevancyStory(
+      this.learningObject.cuid,
+      this.learningObject.version,
+      editorNotes
+    ).then(async (_) => {
+      this.toaster.success('Story created!', 'See the Relevancy board for more details.');
+    }).catch(e => {
+      this.toaster.error('Error', e.error.message);
+    });
   }
 }

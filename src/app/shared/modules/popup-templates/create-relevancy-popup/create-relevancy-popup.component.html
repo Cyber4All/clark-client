@@ -1,0 +1,12 @@
+<div class="modal-title">Create a relevancy story</div>
+<div class='modal-text'>
+  Creating a relevancy story will mark this learning object for relevancy. You may add any notes that will help in
+  evaluating the relevancy of this object.
+</div>
+<div>
+  <st-editor [(ngModel)]="editorNotes" [config]="textBoxConfig"></st-editor>
+</div>
+<div class="btn-group center">
+  <button class="button good" (click)="submit()">Confirm</button>
+  <button class="button bad" (click)="closeModal.emit()">Cancel</button>
+</div>

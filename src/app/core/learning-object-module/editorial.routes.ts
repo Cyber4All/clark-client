@@ -16,6 +16,17 @@ export const EDITORIAL_ROUTES = {
       cuid,
     )}/versions`;
   },
+
+  /**
+   * Request to create a new relevancy story
+   *
+   * @param cuid The cuid of the learning object to create a story for.
+   * @returns The URI for creating a new relevancy story
+   */
+  CREATE_RELEVANCY_STORY(cuid: string) {
+    return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}/versions/story`;
+  },
+
   /**
    * Request to delete a revision of a learning object
    * @method DELETE
