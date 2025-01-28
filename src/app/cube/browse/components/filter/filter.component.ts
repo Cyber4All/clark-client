@@ -28,7 +28,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   levelFilter: FilterSectionInfo;
   frameworkFilter: FilterSectionInfo;
   guidelineFilter: string[] = [];
-  tagTypes: any[] = [];
+  tagTypes: { name: string, value: string }[] = [];
 
   // Used to communicate filter changes
   filterChanged$ = new Subject(); // Used to debounce the time to avoid spammed filter changes
