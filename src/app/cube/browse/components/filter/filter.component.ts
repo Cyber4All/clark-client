@@ -28,6 +28,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   levelFilter: FilterSectionInfo;
   frameworkFilter: FilterSectionInfo;
   guidelineFilter: string[] = [];
+  tagTypes: any[] = [];
 
   // Used to communicate filter changes
   filterChanged$ = new Subject(); // Used to debounce the time to avoid spammed filter changes
@@ -49,6 +50,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     await this.getCollectionFilters();
     this.getLengthFilters();
     await this.getTopicFilters();
+    await this.getTagFilters();
+    await this.getTagTypes();
     this.getMaterialFilters();
     this.getLevelFilters();
     await this.getFrameworkFilters();
@@ -182,6 +185,25 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Get a list of tags based on a provided tag type.
+   * @param {string} tagType The type of tag you want to filter by
+   *
+   * @see filter.component.html:12 This dropdown uses this function.
+   * @returns An object named after the tagType with a list of tags filtered by that tagType
+   */
+  getFilteredTags(providedType: any): { section: string; filters: any[] } {
+    return {
+      section: providedType.name,
+      // get the tags that are of type `providedType`.
+      // i.e. if you want tags with type 'code', this will only return
+      //      the tags that include the tag type 'code'.
+      filters: this.tagFilter.filters.filter((t) =>
+        t.tagType.includes(providedType.value),
+      ),
+    };
+  }
+
+  /**
    * Gets the collection filters
    */
   async getCollectionFilters() {
@@ -227,7 +249,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     const topics = await this.topicsService.getTopics();
     this.topicFilter = {
       section: 'Topic',
-      filters: topics.map(topic => ({
+      filters: topics.map((topic) => ({
         name: topic.name,
         value: topic._id,
         active: false,
@@ -242,13 +264,18 @@ export class FilterComponent implements OnInit, OnDestroy {
     const tags = (await this.tagsService.getTags()).tags;
     this.tagFilter = {
       section: 'Tags',
-      filters: tags
-        .map((tag) => ({
-          name: tag.name,
-          value: tag._id,
-          active: false,
-        })),
+      filters: tags.map((tag) => ({
+        name: tag.name,
+        tagType: tag.type,
+        value: tag._id,
+        active: false,
+      })),
     };
+  }
+
+  async getTagTypes() {
+    const tagTypes = await this.tagsService.getTagTypes();
+    this.tagTypes = tagTypes.types;
   }
 
   /**
