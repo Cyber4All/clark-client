@@ -2,17 +2,25 @@ version: 2.1
 
 orbs:
   cyber4all: cyber4all/orb@2.1.9
-  node: circleci/node@7.0.0
+  node: circleci/node@6.3.0
+
+# This is a solution for the outdated version of angular we are using
+jobs:
+  install-node-lint-build:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - node/install:
+          node-version: '18.0.0'
+      - run: npm install
+      - run: npm run lint
+      - run: npm run build:prod
 
 workflows:
   continuous-integration:
     jobs:
-      - node/run:
-          npm-run: lint
-
-      # Tests building the project with production settings
-      - node/run:
-          npm-run: build:prod
+      - install-node-lint-build
 
   deploy-staging:
     when:
