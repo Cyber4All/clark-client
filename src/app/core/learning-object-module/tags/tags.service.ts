@@ -81,7 +81,7 @@ export class TagsService {
 
   /**
    * Returns all the valid types for a tag
-   * 
+   *
    * @returns A list of type tags
    */
   async getTypes(): Promise<{[key: string]: boolean}[]> {
