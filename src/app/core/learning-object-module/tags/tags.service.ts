@@ -21,6 +21,7 @@ export class TagsService {
    */
   async getTags(query?: any): Promise<Topic[]> {
     query = {
+      type: query?.type,
       text: query?.text,
       sort: 1,
       limit: 40
@@ -77,6 +78,29 @@ export class TagsService {
         );
     });
   }
+
+
+  async getTypes(): Promise<{[key: string]: boolean}[]> {
+    return await new Promise((resolve, reject) => {
+      this.http
+        .get<Topic[]>(TAGS_ROUTES.GET_ALL_TAG_TYPES())
+        .pipe(
+
+          catchError(this.handleError)
+        )
+        .toPromise()
+        .then(
+          (res: any) => {
+            resolve(res.types);
+          },
+          (err) => {
+            reject(err);
+          }
+        );
+    });
+  }
+
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

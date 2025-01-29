@@ -5,6 +5,7 @@ export const TAGS_ROUTES = {
     /**
      * Request to get all topics
      * @method GET
+     * @param query the text, type, limit, and sort values
      */
     GET_ALL_TAGS(query?: any) {
         return `${environment.apiURL}/tags?${querystring.stringify(query)}`;
@@ -20,4 +21,12 @@ export const TAGS_ROUTES = {
             learningObjectCuid
         )}/tags`;
     },
+
+    /**
+     * Request to get all types
+     * @method GET
+     */
+    GET_ALL_TAG_TYPES() {
+        return `${environment.apiURL}/tags/types`;
+    }
 };

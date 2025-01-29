@@ -64,6 +64,7 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
 
   /**
    * Switches the tab and only has two valid options 'topics' or 'tags'
+   * Note: This can be expanded if we need in the future
    * @param tab
    */
   switchTab(tab: 'topics' | 'tags') {
@@ -99,13 +100,15 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
   }
 
   async save() {
+    // Clean the selected arrays into string arrays for the PUT request
     const tagIds = this.taggingService.finalTags.map(tag => {
- return tag._id;
-});
+      return tag._id;
+    });
     const topicIds = this.taggingService.finalTopics.map(topic => {
- return topic._id;
-});
+      return topic._id;
+    });
 
+    // Only send a request if there are selected options to avoid a 400 from the service
     if(topicIds.length > 0) {
       await this.topicService.updateObjectTopics(this.learningObject.id, topicIds);
     }

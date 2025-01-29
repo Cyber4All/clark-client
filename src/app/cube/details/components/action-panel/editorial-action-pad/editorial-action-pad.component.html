@@ -16,6 +16,7 @@
 </button>
 
 <button
+  *ngIf="canMapAndTag"
   class="button neutral"
   (activate)="openTaggingModal()"
 >Tag Learning Object

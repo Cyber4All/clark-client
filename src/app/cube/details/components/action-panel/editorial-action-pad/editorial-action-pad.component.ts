@@ -54,6 +54,10 @@ export class EditorialActionPadComponent implements OnInit {
     return this.editorialService.isNotPermittedToMakeChanges(this.learningObject, this.revisedLearningObject);
   }
 
+  get canMapAndTag() {
+    return this.editorialService.canMapAndTag(this.learningObject);
+  }
+
   // Handles opening the create revision modal
   openCreateRevisionModal() {
     if (!this.openRevisionModal) {
@@ -72,6 +76,7 @@ export class EditorialActionPadComponent implements OnInit {
 
   closeTaggingModal() {
     this.openTagModal = false;
+    window.location.href = window.location.href;
   }
 
   // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object

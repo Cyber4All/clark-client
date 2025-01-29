@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 import { TaggingService } from '../../services/tagging.service';
 import { Tag } from '@entity';
@@ -14,14 +14,19 @@ export class TagsComponent implements OnInit, OnDestroy {
   tags: Tag[];
   selectedTags: Tag[];
   query: string;
-  types: string;
+
+  types: { [key: string]: boolean }[] = [];
+  selectedTypes: { [key: string]: boolean } = {};
 
   private destroy$ = new Subject<void>();
-  private searchSubject$ = new Subject<string>();
+
+  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
+
 
   constructor(
     private tagsService: TagsService,
-    private taggingService: TaggingService
+    private taggingService: TaggingService,
+    private cdr: ChangeDetectorRef
   ) {
   }
 
@@ -34,9 +39,15 @@ export class TagsComponent implements OnInit, OnDestroy {
     this.taggingService.selectedTags$.pipe(takeUntil(this.destroy$)).subscribe((selected: any) => {
       this.selectedTags = selected;
     });
+
+    this.types = await this.tagsService.getTypes();
+    this.types.forEach((type: any) => {
+      this.selectedTypes[type.value] = false;
+    });
+    this.cdr.detectChanges();
   }
 
-  // Toggle item selection for Array One
+  // Toggle item selection of tags
   toggleTags(item: any): void {
     this.taggingService.toggleItemInArray('tags', item);
   }
@@ -46,9 +57,20 @@ export class TagsComponent implements OnInit, OnDestroy {
     this.taggingService.setSourceArray('tags', tags);
   }
 
-  async filter(): Promise<void> {
-    const tags = await this.tagsService.getTags({ text: this.query, type: this.types });
+  async filter(val: string): Promise<void> {
+    this.selectedTypes[val] = !this.selectedTypes[val];
+    const keys = Object.keys(this.selectedTypes).filter(key => this.selectedTypes[key] === true);
+    const tags = await this.tagsService.getTags({ text: this.query, type: keys });
     this.taggingService.setSourceArray('tags', tags);
+    this.cdr.detectChanges();
+  }
+
+  selected(item: Tag) {
+    return this.selectedTags.some(tag => tag._id === item._id);
+  }
+
+  focusInput() {
+    this.searchInput.nativeElement.focus();
   }
 
   ngOnDestroy(): void {
