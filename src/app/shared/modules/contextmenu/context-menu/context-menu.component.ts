@@ -11,9 +11,7 @@ import {
   EmbeddedViewRef,
   ChangeDetectionStrategy,
   ElementRef,
-  OnDestroy,
-  ViewChild,
-  HostListener
+  OnDestroy
 } from '@angular/core';
 import { ContextMenuViewerComponent } from '../context-menu-viewer/context-menu-viewer.component';
 

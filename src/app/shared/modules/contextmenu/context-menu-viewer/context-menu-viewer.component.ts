@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, HostListener } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
