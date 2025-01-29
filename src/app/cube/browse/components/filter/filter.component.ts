@@ -189,12 +189,12 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   /**
    * Get a list of tags based on a provided tag type.
-   * @param {string} tagType The type of tag you want to filter by
+   * @param {string} providedType The type of tag you want to filter by
    *
    * @see filter.component.html:12 This dropdown uses this function.
-   * @returns An object named after the tagType with a list of tags filtered by that tagType
+   * @returns An object named after the providedType with a list of tags filtered by that providedType
    */
-  getFilteredTags(providedType: any): { section: string; filters: any[] } {
+  getFilteredTags(providedType: { name: string, value: string }): { section: string; filters: any[] } {
     return {
       section: providedType.name,
       // get the tags that are of type `providedType`.
