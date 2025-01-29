@@ -37,7 +37,6 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
 
   @Output() id: EventEmitter<string> = new EventEmitter();
   @Output() close: EventEmitter<void> = new EventEmitter();
-  // @ViewChild('dropdownMenu') dropdownMenu: ElementRef;
 
   viewer;
 
@@ -174,20 +173,6 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
     }, 1000);
   }
 
-  // @HostListener('window:scroll', ['$event'])
-  // onScroll(event: any) {
-  //     const dropdown = this.dropdownMenu.nativeElement;
-
-  //     // Check if the dropdown is scrolled to the bottom
-  //     const dropdownBottom = dropdown.offsetTop + dropdown.scrollHeight;
-  //     const windowBottom = window.innerHeight + window.scrollY;
-
-  //     // Close the dropdown if the bottom of the window is below the dropdown's content
-  //     if (dropdownBottom > windowBottom) {
-  //       this.close.emit();
-  //     }
-
-  // }
   /**
    * Calculates position for context menu when anchored near an element by the elements position and the offset parameter
    *

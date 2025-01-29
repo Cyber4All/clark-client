@@ -25,7 +25,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class ContextMenuViewerComponent {
   @Input() close: EventEmitter<void> = new EventEmitter();
-  // @ViewChild('ng-star-inserted') dropdownMenu: ElementRef;
 
   @HostListener('window:keyup', ['$event']) handleKeyPress(
     event: KeyboardEvent
@@ -35,20 +34,10 @@ export class ContextMenuViewerComponent {
     }
   }
 
-  // @HostListener('window:scroll', ['$event'])
-  // onScroll(event: any) {
-  //     const dropdown = this.dropdownMenu.nativeElement;
-
-  //     // Check if the dropdown is scrolled to the bottom
-  //     const dropdownBottom = dropdown.offsetTop + dropdown.scrollHeight;
-  //     const windowBottom = window.innerHeight + window.scrollY;
-
-  //     // Close the dropdown if the bottom of the window is below the dropdown's content
-  //     if (dropdownBottom > windowBottom) {
-  //       this.activateClose();
-  //     }
-
-  // }
+  @HostListener('window:scroll', ['event'])
+  onScroll(event){
+    this.activateClose();
+  }
 
   /**
    * Send a close event up to the master component
