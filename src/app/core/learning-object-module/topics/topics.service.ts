@@ -53,7 +53,6 @@ export class TopicsService {
    * @param topicIds  id of Topic object
    */
   async updateObjectTopics(learningObjectId: string, topicIds: string[]): Promise<void> {
-    console.log('We gucci');
     return await new Promise((resolve, reject) => {
       this.http
         .patch(TOPICS_ROUTES.UPDATE_TOPIC(learningObjectId),

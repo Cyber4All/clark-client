@@ -3,7 +3,7 @@ import * as querystring from 'querystring';
 
 export const TAGS_ROUTES = {
     /**
-     * Request to get all topics
+     * Request to get all tags
      * @method GET
      * @param query the text, type, limit, and sort values
      */
@@ -11,10 +11,10 @@ export const TAGS_ROUTES = {
         return `${environment.apiURL}/tags?${querystring.stringify(query)}`;
     },
     /**
-     * Request to update a topic for a learning object
+     * Request to update tags  for a learning object
      * @method PATCH
      * @auth required
-     * @param learningObjectId - The id of the learning object
+     * @param learningObjectCuid - The cuid of the learning object
      */
     UPDATE_TAG(learningObjectCuid: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(

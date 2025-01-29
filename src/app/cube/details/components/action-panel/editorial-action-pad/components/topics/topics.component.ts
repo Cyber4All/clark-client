@@ -22,7 +22,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    // Subscribe to the source arrays
+    // Subscribe to the source arrays for topics
     this.taggingService.topics$.pipe(takeUntil(this.destroy$)).subscribe((items: any) => {
       this.topics = items;
     });
@@ -33,8 +33,7 @@ export class TopicsComponent implements OnInit, OnDestroy {
 
   }
 
-
-  // Toggle item selection for Array One
+  // Toggle item selection for selectedTopics array
   toggleTopics(item: any): void {
     this.taggingService.toggleItemInArray('topics', item);
   }

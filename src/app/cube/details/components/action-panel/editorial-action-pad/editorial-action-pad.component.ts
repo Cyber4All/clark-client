@@ -76,6 +76,7 @@ export class EditorialActionPadComponent implements OnInit {
 
   closeTaggingModal() {
     this.openTagModal = false;
+    // Easiest way to reload the page so newest data is in the client
     window.location.href = window.location.href;
   }
 

@@ -15,9 +15,9 @@ export class TagsService {
   }
 
   /**
-   * This gets the list of object topics from the backend to display
+   * This gets the list of object tags from the backend to display
    *
-   * @returns A list of topics
+   * @returns A list of tags
    */
   async getTags(query?: any): Promise<Topic[]> {
     query = {
@@ -51,11 +51,10 @@ export class TagsService {
   }
 
   /**
-   *  This function updates the learning the object with the selected tagged topics
+   *  This function updates the learning the object with the selected tags
    *
-   * @param username  username of learning object owner
-   * @param learningObjectId  user id
-   * @param topicIds  id of Topic object
+   * @param learningObjectCuid  the learningObjectCuid
+   * @param tags  array of ids of tag objects
    */
   async updateObjectTags(learningObjectCuid: string, tags: string[]): Promise<void> {
     return await new Promise((resolve, reject) => {
@@ -80,6 +79,11 @@ export class TagsService {
   }
 
 
+  /**
+   * Returns all the valid types for a tag
+   * 
+   * @returns A list of type tags
+   */
   async getTypes(): Promise<{[key: string]: boolean}[]> {
     return await new Promise((resolve, reject) => {
       this.http
