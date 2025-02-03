@@ -7,6 +7,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FilterSectionInfo } from '../filter-section/filter-section.component';
 import { Query } from '../../../../interfaces/query';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 
 @Component({
   selector: 'clark-filter',
@@ -22,10 +23,12 @@ export class FilterComponent implements OnInit, OnDestroy {
   collectionFilter: FilterSectionInfo;
   lengthFilter: FilterSectionInfo;
   topicFilter: FilterSectionInfo;
+  tagFilter: FilterSectionInfo;
   materialFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
   frameworkFilter: FilterSectionInfo;
   guidelineFilter: string[] = [];
+  tagTypes: { name: string, value: string }[] = [];
 
   // Used to communicate filter changes
   filterChanged$ = new Subject(); // Used to debounce the time to avoid spammed filter changes
@@ -37,6 +40,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   constructor(
     private collectionService: CollectionService,
     private topicsService: TopicsService,
+    private tagsService: TagsService,
     private guidelineService: GuidelineService,
     private cd: ChangeDetectorRef
   ) { }
@@ -46,6 +50,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     await this.getCollectionFilters();
     this.getLengthFilters();
     await this.getTopicFilters();
+    await this.getTagFilters();
+    await this.getTagTypes();
     this.getMaterialFilters();
     this.getLevelFilters();
     await this.getFrameworkFilters();
@@ -73,6 +79,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.parseCategorySelected(this.selected.length, this.lengthFilter.filters);
       this.parseCategorySelected(this.selected.level, this.levelFilter.filters);
       this.parseCategorySelected(this.selected.topics, this.topicFilter.filters);
+      this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
       this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
       this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
       this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
@@ -119,6 +126,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.clearFilterCategory(this.levelFilter.filters);
     this.clearFilterCategory(this.materialFilter.filters);
     this.clearFilterCategory(this.topicFilter.filters);
+    this.clearFilterCategory(this.tagFilter.filters);
     this.clearFilterCategory(this.frameworkFilter.filters);
     this.guidelineFilter = [];
 
@@ -148,6 +156,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.checkFilter('level', this.levelFilter.filters, query);
     this.checkFilter('fileTypes', this.materialFilter.filters, query);
     this.checkFilter('topics', this.topicFilter.filters, query);
+    this.checkFilter('tags', this.tagFilter.filters, query);
     this.checkFilter('guidelines', this.frameworkFilter.filters, query);
     if (this.guidelineFilter && this.guidelineFilter.length > 0) {
       query['standardOutcomes'] = this.guidelineFilter;
@@ -176,6 +185,36 @@ export class FilterComponent implements OnInit, OnDestroy {
    */
   registerChange() {
     this.filterChanged$.next();
+  }
+
+  /**
+   * Get a list of tags based on a provided tag type.
+   * @param {string} providedType The type of tag you want to filter by
+   *
+   * @see filter.component.html:12 This dropdown uses this function.
+   * @returns An object named after the providedType with a list of tags filtered by that providedType
+   */
+  getFilteredTags(providedType: { name: string, value: string }): { section?: string; filters?: any[] } {
+    // Get the tags that are of type `providedType`.
+    // i.e. if you want tags with type 'code', this will only return
+    //      the tags that include the tag type 'code'.
+    const currFilter = this.tagFilter.filters.filter((t) =>
+      t.tagType?.includes(providedType.value),
+    );
+
+    // If the filter doesn't have any items, return undefined
+    // so that `filter-section` doesn't render the dropdown
+    // when `ngDoCheck`
+    if (currFilter.length < 1) {
+      return undefined;
+    }
+
+    // Return the dropdown with the section of the tag name,
+    // and tag items with that tag.
+    return {
+      section: providedType.name,
+      filters: currFilter
+    };
   }
 
   /**
@@ -224,12 +263,33 @@ export class FilterComponent implements OnInit, OnDestroy {
     const topics = await this.topicsService.getTopics();
     this.topicFilter = {
       section: 'Topic',
-      filters: topics.map(topic => ({
+      filters: topics.map((topic) => ({
         name: topic.name,
         value: topic._id,
         active: false,
       })),
     };
+  }
+
+  /**
+   * Gets the tag filters
+   */
+  async getTagFilters() {
+    const tags = (await this.tagsService.getTags());
+    this.tagFilter = {
+      section: 'Tags',
+      filters: tags.map((tag) => ({
+        name: tag.name,
+        tagType: tag.type,
+        value: tag._id,
+        active: false,
+      })),
+    };
+  }
+
+  async getTagTypes() {
+    const tagTypes = await this.tagsService.getTagTypes();
+    this.tagTypes = tagTypes.types;
   }
 
   /**

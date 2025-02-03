@@ -29,6 +29,7 @@ export interface Query {
   startNextCheck?: string;
   endNextCheck?: string;
   topics?: string[];
+  tags?: string[]
   username?: string;
 }
 
