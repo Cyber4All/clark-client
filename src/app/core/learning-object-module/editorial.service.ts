@@ -144,8 +144,7 @@ export class EditorialService {
    */
   canMapAndTag(learningObject: LearningObject) {
     const userIsAuthor = learningObject.author.username === this.auth.username;
-    const untaggable = learningObject.status === LearningObject.Status.RELEASED
-      || learningObject.status === LearningObject.Status.UNRELEASED;
+    const untaggable = learningObject.status === LearningObject.Status.UNRELEASED;
 
     if (this.auth.user && this.auth.user.accessGroups && !userIsAuthor && !untaggable) {
       const privileges = ['admin', 'editor', 'mapper'];

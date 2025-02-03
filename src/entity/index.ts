@@ -6,7 +6,8 @@ import { LearningOutcome } from './learning-outcome/learning-outcome';
 import { SubmittableLearningOutcome } from './learning-outcome/submittable-learning-outcome';
 import { Collection } from './collection/collection';
 import { Topic } from './topic/topic';
-import { Tag } from './tag/tag';
+import { Tag } from './tags/tag';
+
 
 // Exports All Interfaces
 export {
