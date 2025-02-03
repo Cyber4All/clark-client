@@ -194,15 +194,26 @@ export class FilterComponent implements OnInit, OnDestroy {
    * @see filter.component.html:12 This dropdown uses this function.
    * @returns An object named after the providedType with a list of tags filtered by that providedType
    */
-  getFilteredTags(providedType: { name: string, value: string }): { section: string; filters: any[] } {
+  getFilteredTags(providedType: { name: string, value: string }): { section?: string; filters?: any[] } {
+    // Get the tags that are of type `providedType`.
+    // i.e. if you want tags with type 'code', this will only return
+    //      the tags that include the tag type 'code'.
+    const currFilter = this.tagFilter.filters.filter((t) =>
+      t.tagType?.includes(providedType.value),
+    );
+
+    // If the filter doesn't have any items, return undefined
+    // so that `filter-section` doesn't render the dropdown
+    // when `ngDoCheck`
+    if (currFilter.length < 1) {
+      return undefined;
+    }
+
+    // Return the dropdown with the section of the tag name,
+    // and tag items with that tag.
     return {
       section: providedType.name,
-      // get the tags that are of type `providedType`.
-      // i.e. if you want tags with type 'code', this will only return
-      //      the tags that include the tag type 'code'.
-      filters: this.tagFilter.filters.filter((t) =>
-        t.tagType?.includes(providedType.value),
-      ),
+      filters: currFilter
     };
   }
 
