@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Topic } from '@entity';
+import { Tag } from '@entity';
 import { catchError } from 'rxjs/operators';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { TAGS_ROUTES } from './tags.routes';
+import { TagType } from 'entity/tag/tag';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class TagsService {
    *
    * @returns A list of tags
    */
-  async getTags(query?: any): Promise<Topic[]> {
+  async getTags(query?: any): Promise<Tag[]> {
     query = {
       type: query?.type,
       text: query?.text,
@@ -28,7 +29,7 @@ export class TagsService {
     };
     return await new Promise((resolve, reject) => {
       this.http
-        .get<Topic[]>(TAGS_ROUTES.GET_ALL_TAGS(query),
+        .get<Tag[]>(TAGS_ROUTES.GET_ALL_TAGS(query),
           {
             headers: this.headers,
             withCredentials: true,
@@ -82,12 +83,12 @@ export class TagsService {
   /**
    * Returns all the valid types for a tag
    *
-   * @returns A list of type tags
+   * @returns A list of type tags for the selection
    */
   async getTypes(): Promise<{[key: string]: boolean}[]> {
     return await new Promise((resolve, reject) => {
       this.http
-        .get<Topic[]>(TAGS_ROUTES.GET_ALL_TAG_TYPES())
+        .get<Tag[]>(TAGS_ROUTES.GET_ALL_TAG_TYPES())
         .pipe(
 
           catchError(this.handleError)
@@ -102,6 +103,18 @@ export class TagsService {
           }
         );
     });
+  }
+
+  /** Used for Browse */
+  public async getTagTypes(): Promise<{
+    types: { name: string; value: TagType }[];
+  }> {
+    return await this.http
+      .get<{
+        types: { name: string; value: TagType }[];
+      }>(TAGS_ROUTES.GET_ALL_TAG_TYPES())
+      .pipe(catchError(this.handleError))
+      .toPromise();
   }
 
 

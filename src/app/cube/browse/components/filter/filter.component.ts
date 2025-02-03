@@ -264,7 +264,7 @@ export class FilterComponent implements OnInit, OnDestroy {
    * Gets the tag filters
    */
   async getTagFilters() {
-    const tags = (await this.tagsService.getTags()).tags;
+    const tags = (await this.tagsService.getTags());
     this.tagFilter = {
       section: 'Tags',
       filters: tags.map((tag) => ({
