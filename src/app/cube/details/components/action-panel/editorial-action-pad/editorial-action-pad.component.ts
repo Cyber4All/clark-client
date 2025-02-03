@@ -21,6 +21,7 @@ export class EditorialActionPadComponent implements OnInit {
   @Input() learningObject: LearningObject;
   @Input() userIsAuthor: boolean;
   openRevisionModal: boolean;
+  openTagModal: boolean;
   showPopup = false;
 
   @Input() revisedLearningObject: LearningObject;
@@ -53,6 +54,10 @@ export class EditorialActionPadComponent implements OnInit {
     return this.editorialService.isNotPermittedToMakeChanges(this.learningObject, this.revisedLearningObject);
   }
 
+  get canMapAndTag() {
+    return this.editorialService.canMapAndTag(this.learningObject);
+  }
+
   // Handles opening the create revision modal
   openCreateRevisionModal() {
     if (!this.openRevisionModal) {
@@ -63,6 +68,16 @@ export class EditorialActionPadComponent implements OnInit {
   // Handles closing the create revision modal
   closeRevisionModal() {
     this.openRevisionModal = false;
+  }
+
+  openTaggingModal() {
+    this.openTagModal = true;
+  }
+
+  closeTaggingModal() {
+    this.openTagModal = false;
+    // Easiest way to reload the page so newest data is in the client
+    window.location.href = window.location.href;
   }
 
   // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object
