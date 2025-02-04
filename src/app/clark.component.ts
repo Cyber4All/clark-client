@@ -132,14 +132,15 @@ export class ClarkComponent implements OnInit {
         });
       }, 300000); // 5 min interval
       // check to see if the current version is behind the latest verison
-      setInterval(async () => {
-        try {
-          await this.utilityService.checkClientVersion();
-        } catch (e) {
-          this.errorMessage = e.error.split('.');
-          this.isOldVersion = true;
-        }
-      }, 600000); // 10 minute interval for setting the timeout <- Comment from orb deployment
+      // As of February 4, 2025 there is not a solution to this issue and it clogging up our coralogix errors so we are disabling it
+      // setInterval(async () => {
+      //   try {
+      //     await this.utilityService.checkClientVersion();
+      //   } catch (e) {
+      //     this.errorMessage = e.error.split('.');
+      //     this.isOldVersion = true;
+      //   }
+      // }, 600000); // 10 minute interval for setting the timeout <- Comment from orb deployment
     }
 
     this.setPageTitle();
