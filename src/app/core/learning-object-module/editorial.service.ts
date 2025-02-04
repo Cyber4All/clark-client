@@ -7,7 +7,7 @@ import {
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { EDITORIAL_ROUTES } from './editorial.routes';
-import { LearningObject } from '@entity';
+import { LearningObject, User } from '@entity';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth-module/auth.service';
 
@@ -33,6 +33,24 @@ export class EditorialService {
       .post(
         EDITORIAL_ROUTES.CREATE_REVISION(cuid),
         {},
+        { headers: this.httpHeaders, withCredentials: true },
+      )
+      .pipe(catchError(this.handleError))
+      .toPromise();
+  }
+
+  /**
+   * Create a relevancy story for a learning object
+   *
+   * @param cuid The cuid of the learning object to create a story for.
+   * @param version The version of the learning object to create a story for.
+   * @returns {string} a URI of the Shortcut story.
+   */
+  async createRelevancyStory(cuid: string, version: number, editorNotes?: string): Promise<any> {
+    return await this.http
+      .post(
+        EDITORIAL_ROUTES.CREATE_RELEVANCY_STORY(cuid),
+        { version, editorNotes },
         { headers: this.httpHeaders, withCredentials: true },
       )
       .pipe(catchError(this.handleError))
@@ -134,6 +152,14 @@ export class EditorialService {
     return learningObject.status === 'released' && !revisedLearningObject;
   }
 
+  /**
+   * Checks if a user can create a relevancy story.
+   * @returns {boolean}
+   */
+  canCreateRelevancyStory() {
+    return this.auth.user.accessGroups.includes('admin') || this.auth.user.accessGroups.includes('editor');
+  }
+
 
   /**
    * Checks if an editor can map and tag a learning object based on their
@@ -144,8 +170,7 @@ export class EditorialService {
    */
   canMapAndTag(learningObject: LearningObject) {
     const userIsAuthor = learningObject.author.username === this.auth.username;
-    const untaggable = learningObject.status === LearningObject.Status.RELEASED
-      || learningObject.status === LearningObject.Status.UNRELEASED;
+    const untaggable = learningObject.status === LearningObject.Status.UNRELEASED;
 
     if (this.auth.user && this.auth.user.accessGroups && !userIsAuthor && !untaggable) {
       const privileges = ['admin', 'editor', 'mapper'];
