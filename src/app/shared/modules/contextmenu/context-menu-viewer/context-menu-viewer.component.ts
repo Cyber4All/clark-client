@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, HostListener, Renderer2, 
-  ElementRef, ChangeDetectorRef, AfterViewInit, SimpleChanges, AfterViewChecked } from '@angular/core';
+import { Component, EventEmitter, Input, HostListener, Renderer2,
+ElementRef, ChangeDetectorRef, AfterViewInit, SimpleChanges, AfterViewChecked } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 /**
