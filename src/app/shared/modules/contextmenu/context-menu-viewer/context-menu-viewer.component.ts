@@ -105,8 +105,10 @@ export class ContextMenuViewerComponent implements AfterViewInit {
         //   console.log('Element is not visible or not yet rendered');
         // }
 
-        
-        this.element.onmouseout = function() { console.log("mouse over the element") };
+
+        this.element.onmouseout = function() {
+ console.log('mouse over the element');
+};
         // this.checkIfMouseIsOver(this.element);
         // this.element.onscroll = function() { console.log("scrolling inside the pop up (hopefully)") };
       }
@@ -115,8 +117,8 @@ export class ContextMenuViewerComponent implements AfterViewInit {
 
   detectMouseLeave(e: HTMLElement){
     e.onmouseleave = function() {
-      console.log("mouse left the element");
-    }
+      console.log('mouse left the element');
+    };
   }
 
 
@@ -155,11 +157,11 @@ export class ContextMenuViewerComponent implements AfterViewInit {
     //   }
     // }
 
-    console.log("scrolling");
+    console.log('scrolling');
   }
 
   checkIfMouseIsOver(element: HTMLElement) {
-    console.log("checking...");
+    console.log('checking...');
     this.renderer.listen(element, 'mouseenter', () => {
       console.log('Mouse entered the element.');
     });
