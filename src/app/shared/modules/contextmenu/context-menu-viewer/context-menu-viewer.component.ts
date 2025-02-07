@@ -26,7 +26,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class ContextMenuViewerComponent {
 
   private isMouseOverElement = false;
- 
+
   @Input() close: EventEmitter<void> = new EventEmitter();
 
   @HostListener('window:keyup', ['$event']) handleKeyPress(
