@@ -30,7 +30,6 @@ export class StatsComponent implements OnInit {
     }
 
     await this.metricService.getCollectionMetrics(this.collectionName).then((res: any) => {
-      console.log(res);
       this.objDownload = res.downloads;
       this.objSaved = res.saves;
       this.objReleased = res.statusMetrics[0].count;
