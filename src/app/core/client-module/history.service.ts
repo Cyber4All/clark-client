@@ -33,6 +33,7 @@ export class HistoryService {
 
       if (!this.skipNextEvent) {
         this.history.push(route.url);
+        console.log('[HistoryService] Current History Stack:', this.history);
       }
 
       this.skipNextEvent = false;

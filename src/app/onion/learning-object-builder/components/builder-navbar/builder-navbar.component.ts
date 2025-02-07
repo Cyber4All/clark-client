@@ -6,16 +6,22 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
+import {
+  CollectionService,
+  Collection,
+} from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
-import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
+import {
+  HistoryService,
+  HistorySnapshot,
+} from 'app/core/client-module/history.service';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'onion-builder-navbar',
   templateUrl: './builder-navbar.component.html',
-  styleUrls: ['./builder-navbar.component.scss']
+  styleUrls: ['./builder-navbar.component.scss'],
 })
 export class BuilderNavbarComponent implements OnDestroy {
   isSaving: boolean;
@@ -56,13 +62,13 @@ export class BuilderNavbarComponent implements OnDestroy {
     public validator: LearningObjectValidator,
     public store: BuilderStore,
     private bundlingService: BundlingService,
-    public fileService: FileService
+    public fileService: FileService,
   ) {
     // subscribe to the serviceInteraction observable to display in the client when the application
     // is interacting with the service
     this.store.serviceInteraction$
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(params => {
+      .subscribe((params) => {
         if (params) {
           this.isSaving = true;
         } else {
@@ -72,10 +78,10 @@ export class BuilderNavbarComponent implements OnDestroy {
 
     this.store.learningObjectEvent
       .pipe(
-        filter(val => typeof val !== 'undefined'),
-        takeUntil(this.destroyed$)
+        filter((val) => typeof val !== 'undefined'),
+        takeUntil(this.destroyed$),
       )
-      .subscribe(val => {
+      .subscribe((val) => {
         this.learningObject = val;
         this.getCollection();
       });
@@ -168,7 +174,11 @@ export class BuilderNavbarComponent implements OnDestroy {
    */
   async triggerExitProcess(leaveBuilder = true) {
     if (this.adminMode && !leaveBuilder) {
-      this.toasterService.alert('Ready to Bundle...', 'This learning object is queued for bundling.');
+      this.toasterService.alert(
+        'Ready to Bundle...',
+        'This learning object is queued for bundling.',
+      );
+      return;
     }
     // Trigger new PDF generation only if the learning object id exists
     // It may not present when opening the builder for the first time for
@@ -180,7 +190,12 @@ export class BuilderNavbarComponent implements OnDestroy {
     // Remove outcomes that have null text
     this.store.removeEmptyOutcomes();
     // Enforcing all files/folders are uploaded prior to leaving the builder (upload = 'true')
-    if (this.store.upload !== undefined && this.store.upload !== 'false' && this.store.upload !== 'secondClickBack') {
+    console.log(this.store.upload);
+    if (
+      this.store.upload !== undefined &&
+      this.store.upload !== 'false' &&
+      this.store.upload !== 'secondClickBack'
+    ) {
       // If any data has be changed on the LO, then we need to rebundle
       if (this.store.touched) {
         const lo = this.learningObject as any;
@@ -193,14 +208,14 @@ export class BuilderNavbarComponent implements OnDestroy {
       // User has tried to exit the builder twice during an upload process (upload = 'true')
       this.toasterService.error(
         'Uh-oh!',
-        'Looks like your upload is taking a long time. Please remain patient or refresh the page and try again...'
+        'Looks like your upload is taking a long time. Please remain patient or refresh the page and try again...',
       );
       this.store.toggleUploadComplete('true');
     } else {
       // Users attempt to exit the builder during an upload process (upload = 'false' || 'undefined')
       this.toasterService.warning(
         'Hang On!',
-        'We are still uploading your files, please stay on this page until this process is complete.'
+        'We are still uploading your files, please stay on this page until this process is complete.',
       );
       this.store.toggleUploadComplete('secondClickBack');
     }
@@ -234,7 +249,10 @@ export class BuilderNavbarComponent implements OnDestroy {
       }
 
       // notify user
-      this.toasterService.error('Error!', 'Please correct the errors and try again!');
+      this.toasterService.error(
+        'Error!',
+        'Please correct the errors and try again!',
+      );
 
       if (errorPages.size && !errorPages.get(currentRoute)) {
         // we've found errors on other pages and none on our current page, so route to that page
@@ -247,8 +265,8 @@ export class BuilderNavbarComponent implements OnDestroy {
           // route directly to bad outcome if possible
           target.push(
             Array.from(
-              this.validator.outcomeValidator.errors.submitErrors.keys()
-            )[0]
+              this.validator.outcomeValidator.errors.submitErrors.keys(),
+            )[0],
           );
         }
 
@@ -269,9 +287,8 @@ export class BuilderNavbarComponent implements OnDestroy {
       [
         LearningObject.Status.REJECTED,
         {
-          tip:
-            'This learning object was rejected. Contact your review team for further information'
-        }
+          tip: 'This learning object was rejected. Contact your review team for further information',
+        },
       ],
       [
         LearningObject.Status.RELEASED,
@@ -279,8 +296,8 @@ export class BuilderNavbarComponent implements OnDestroy {
           tip:
             'This learning object is published to the ' +
             (this.collection ? this.collection.name : '') +
-            ' collection and can be browsed for.'
-        }
+            ' collection and can be browsed for.',
+        },
       ],
       [
         LearningObject.Status.REVIEW,
@@ -288,8 +305,8 @@ export class BuilderNavbarComponent implements OnDestroy {
           tip:
             'This object is currently under review by the ' +
             (this.collection ? this.collection.name : '') +
-            ' review team, It is not yet published and cannot be edited until the review process is complete.'
-        }
+            ' review team, It is not yet published and cannot be edited until the review process is complete.',
+        },
       ],
       [
         LearningObject.Status.WAITING,
@@ -297,29 +314,30 @@ export class BuilderNavbarComponent implements OnDestroy {
           tip:
             'This learning object is waiting to be reviewed by the next available reviewer from the ' +
             (this.collection ? this.collection.name : '') +
-            ' review team'
-        }
+            ' review team',
+        },
       ],
       [
         LearningObject.Status.UNRELEASED,
         {
-          tip:
-            'This learning object is visible only to you. Submit it for review to make it publicly available.'
-        }
+          tip: 'This learning object is visible only to you. Submit it for review to make it publicly available.',
+        },
       ],
       [
         LearningObject.Status.ACCEPTED_MAJOR,
         {
-          tip: 'The learning object is in the review process. A reviewer, curator, or editor has asked '
-            + 'for major changes before it can be released.'
-        }
+          tip:
+            'The learning object is in the review process. A reviewer, curator, or editor has asked ' +
+            'for major changes before it can be released.',
+        },
       ],
       [
         LearningObject.Status.ACCEPTED_MINOR,
         {
-          tip: 'The learning object is in the review process. A reviewer, curator, or editor has asked for minor '
-            + 'changes before it can be released.'
-        }
+          tip:
+            'The learning object is in the review process. A reviewer, curator, or editor has asked for minor ' +
+            'changes before it can be released.',
+        },
       ],
     ]);
   }
@@ -339,7 +357,7 @@ export class BuilderNavbarComponent implements OnDestroy {
   getCollection() {
     this.collectionService
       .getCollection(this.learningObject.collection)
-      .then(col => {
+      .then((col) => {
         this.collection = col;
         this.buildTooltip();
       });
