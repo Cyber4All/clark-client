@@ -1,0 +1,11 @@
+<div *ngIf="topics.length > 0" class="pill-container">
+    <div *ngFor="let item of topics">
+      <button
+        [class.selected]="selectedTopics.includes(item)"
+        (click)="toggleTopics(item)"
+      >
+        {{ item.name }}
+      </button>
+    </div>
+  </div>
+

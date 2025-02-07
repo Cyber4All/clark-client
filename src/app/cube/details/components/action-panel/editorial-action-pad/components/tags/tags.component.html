@@ -1,0 +1,44 @@
+<div class="search">
+  <div class="input-container" (click)="focusInput()">
+    <i class="fas fa-search"></i> 
+    <input 
+      #searchInput
+      type="text"
+      aria-label="Find for tags"
+      class="tag-dropdown__search-input"
+      placeholder="Search for Tags"
+      (input)="search()"
+      [(ngModel)]="query"
+      >
+  </div>
+</div>
+<div class="filter-results">
+  <div class="filters">
+    <p>Types</p>
+    <form *ngIf="types.length > 0">
+      <div *ngFor="let type of types">
+          <input
+            type="checkbox"
+            [value]="type.value"
+            (change)="filter(type.value)"
+            name="filterCheckbox"
+          />
+          <label>
+          {{ type?.name }}
+        </label>
+        <br />
+      </div>
+    </form>
+  </div>
+  <div *ngIf="tags.length > 0" class="pill-container">
+      <div *ngFor="let item of tags">
+        <button
+          [class.selected]="selected(item)"
+          (click)="toggleTags(item)"
+        >
+          {{ item.name }}
+        </button>
+      </div>
+    </div>
+</div>
+

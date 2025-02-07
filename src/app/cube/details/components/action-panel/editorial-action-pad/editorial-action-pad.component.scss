@@ -8,8 +8,6 @@ p {
   font-size: $normal;
 }
 .btn-group {
-  margin-top: 50px;
-
   button {
     width: auto;
   }
@@ -33,7 +31,7 @@ p {
   }
 }
 
-.modal-container{ 
+.modal-container{
   width: 600px;
 
   &.center {
