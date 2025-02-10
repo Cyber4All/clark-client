@@ -173,21 +173,6 @@ export class BuilderNavbarComponent implements OnDestroy {
    * is not finished. See the builder store for more details.
    */
   async triggerExitProcess(leaveBuilder = true) {
-    /* 
-    - When a user accesses the learning object builder directly through a link and they're unauntheticated, I want to redirect them to the dashboard, 
-      and then if they back click again, I want to redirect them to the home page
-
-    - When a user accesses the learning object builder directly through a link and they're authenticated, I want to redirect them to the dashboard, 
-      and then if they back click agian, I want to redirect them to the home page
-
-    - When a user is from the details page and the back button is hit, it should redirect them to dashboard -> details 
-
-    - Admin mode, do nothing, return early
-
-    */
-
-
-
     if (this.adminMode && !leaveBuilder) {
       this.toasterService.alert(
         'Ready to Bundle...',
