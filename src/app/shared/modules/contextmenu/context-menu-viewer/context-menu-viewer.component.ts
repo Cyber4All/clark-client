@@ -43,7 +43,7 @@ export class ContextMenuViewerComponent {
     // get location of mouse pointer
     const e = document.elementFromPoint(event.clientX, event.clientY);
     // check if mouse is over the dropdown list options
-    if(e.tagName !== "svg" && e.tagName !== "path"){
+    if(e.tagName !== 'svg' && e.tagName !== 'path'){
       if(!e.className.includes('full-screen')){
         this.isMouseOverElement = true;
       }
