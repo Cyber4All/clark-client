@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 // Other
@@ -19,7 +19,8 @@ import { SharedModule } from '../../../../../shared/shared.module';
 import { UrlManagerComponent } from './upload/url-manager/url-manager.component';
 import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
 import { UrlRowComponent } from './upload/url-manager/url-row/url-row.component';
-import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.module';
+import { FileBrowserModule } from '../../../../../shared/modules/filesystem/file-browser.module';
+import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,9 @@ import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.mo
     SharedModule,
     FileBrowserModule,
     FormsModule,
-    routes
+    ReactiveFormsModule,
+    routes,
+    NgxSimpleTextEditorModule
   ],
   exports: [
     RouterModule,

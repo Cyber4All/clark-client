@@ -57,13 +57,12 @@
           <div class="slide-title">Notes</div>
         </div>
         <div class="notes">
-          <clark-text-editor 
-            editorPlaceholder="Add any notes on copyright, grant acknowledgments, etc." 
-            [(savedContent)]="notes" 
-            (textOutput)="updateNotes($event)"
+          <st-editor
+            [(ngModel)]="notes"
+            [config]="config"
             (keyup)="updateNotes($event)"
-            name="notes"
-          ></clark-text-editor>
+            [formControl]="notesText"
+          ></st-editor>
         </div>
       </div>
     </div>
