@@ -34,6 +34,20 @@ import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
 
+import {
+  BOLD_BUTTON,
+  ITALIC_BUTTON,
+  LINK_INPUT,
+  ORDERED_LIST_BUTTON,
+  REDO_BUTTON,
+  REMOVE_FORMAT_BUTTON,
+  UNDERLINE_BUTTON,
+  UNDO_BUTTON,
+  UNORDERED_LIST_BUTTON,
+  SEPARATOR,
+} from 'ngx-simple-text-editor';
+import { FormControl } from '@angular/forms';
+
 export interface FileInput extends File {
   fullPath?: string;
   webkitRelativePath: string;
@@ -44,6 +58,25 @@ export interface EnqueuedFile extends FileInput {
   success?: boolean;
   totalUploaded?: number;
 }
+
+const config = {
+  placeholder: 'Add any notes on copyright, grant acknowledgments, etc.',
+  buttons: [
+    UNDO_BUTTON,
+    REDO_BUTTON,
+    SEPARATOR,
+    BOLD_BUTTON,
+    ITALIC_BUTTON,
+    UNDERLINE_BUTTON,
+    SEPARATOR,
+    REMOVE_FORMAT_BUTTON,
+    SEPARATOR,
+    ORDERED_LIST_BUTTON,
+    UNORDERED_LIST_BUTTON,
+    SEPARATOR,
+    LINK_INPUT,
+  ],
+};
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
@@ -76,6 +109,7 @@ export interface EnqueuedFile extends FileInput {
   ],
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
+  notesText = new FormControl('');
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('folderInput') folderInput: ElementRef;
 
@@ -219,6 +253,10 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             }
           });
         }
+      });
+
+      this.notesText.valueChanges.subscribe((notes: string) => {
+        this.notes$.next(notes);
       });
 
     this.notes$
