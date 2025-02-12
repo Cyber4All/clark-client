@@ -8,6 +8,10 @@
   <!-- Topics Filters -->
   <clark-filter-section [info]="topicFilter" (change)="registerChange()"></clark-filter-section>
 
+  <!--Will uncomment once tags are ready to go-->
+  <!-- Dynamic tag type filter sections
+  <clark-filter-section *ngFor="let tagType of tagTypes" [info]="getFilteredTags(tagType)" (change)="registerChange()"></clark-filter-section> -->
+
   <!-- Materials Filters -->
   <clark-filter-section [info]="materialFilter" (change)="registerChange()"></clark-filter-section>
 

@@ -24,6 +24,9 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class ContextMenuViewerComponent {
+
+  private isMouseOverElement = false;
+
   @Input() close: EventEmitter<void> = new EventEmitter();
 
   @HostListener('window:keyup', ['$event']) handleKeyPress(
@@ -34,6 +37,28 @@ export class ContextMenuViewerComponent {
     }
   }
 
+
+  @HostListener('window:mousemove', ['$event'])
+  onMouseMove(event){
+    // get location of mouse pointer
+    const e = document.elementFromPoint(event.clientX, event.clientY);
+    // check if mouse is over the dropdown list options
+    if(e.tagName !== 'svg' && e.tagName !== 'path'){
+      if(!e.className.includes('full-screen')){
+        this.isMouseOverElement = true;
+      }
+      if(e.className.includes('full-screen') && this.isMouseOverElement === true){
+        this.activateClose();
+      }
+    }
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(){
+    // close context menu when user scrolls past all the options
+    this.activateClose();
+  }
+
   /**
    * Send a close event up to the master component
    */
@@ -41,3 +66,4 @@ export class ContextMenuViewerComponent {
     this.close.emit();
   }
 }
+
