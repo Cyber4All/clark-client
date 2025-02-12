@@ -93,7 +93,7 @@ export class UsageStatsComponent implements OnInit {
   async ngOnInit() {
     this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
-    await this.metricService.getLearningObjectStats().then((stats) => {
+    this.metricService.getLearningObjectStats().then((stats) => {
       this.usageStats.objects.review = stats.review;
       this.usageStats.objects.total = stats.total;
       this.usageStats.objects.released = stats.released;
@@ -120,7 +120,7 @@ export class UsageStatsComponent implements OnInit {
       this.buildTopDownloads();
     });
 
-    await this.outcomeService.getLearningOutcomeStats().then((stats) => {
+    this.outcomeService.getLearningOutcomeStats().then((stats) => {
       this.usageStats.outcomes = {
         remember_and_understand: stats.outcomes.remember_and_understand,
         apply_and_analyze: stats.outcomes.apply_and_analyze,
@@ -130,12 +130,12 @@ export class UsageStatsComponent implements OnInit {
       this.buildOutcomeDistributionChart();
     });
 
-    await this.metricService.getUserMetrics().then((stats) => {
+    this.metricService.getUserMetrics().then((stats) => {
       this.usageStats.users.accounts = stats.accounts;
       this.buildCounterStats();
     });
 
-    await this.utilityService.getOrganizations().then((organizations) => {
+    this.utilityService.getOrganizations().then((organizations) => {
       this.usageStats.users.organizations = organizations.length;
       this.buildCounterStats();
     });
