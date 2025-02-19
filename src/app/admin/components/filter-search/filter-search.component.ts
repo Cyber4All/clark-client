@@ -75,7 +75,7 @@ export class FilterSearchComponent implements OnInit {
     this.statuses.splice(0, 0);
 
     this.statuses = this.statuses.filter(
-      (s) => !['rejected', 'unreleased'].includes(s.toLowerCase()),
+      (s) => !['unreleased'].includes(s.toLowerCase()),
     );
     this.relevancyStart = new Date();
 
