@@ -36,6 +36,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { CyberskillsDashboardComponent } from './cyberskills-dashboard/cyberskills-dashboard.component';
+import { UsageStatsModule } from '../cube/usage-stats/usage-stats.module';
+import { DetailsModule } from '../cube/details/details.module';
+import { LibraryModule } from '../cube/library/library.module';
 
 @NgModule({
   declarations: [
@@ -57,7 +61,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CuratorCardComponent,
     TitleComponent,
     FeaturedComponent,
-    NcyteDashboardComponent
+    NcyteDashboardComponent,
+    CyberskillsDashboardComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -81,7 +86,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    UsageStatsModule,
+    DetailsModule,
+    LibraryModule
   ],
 })
 export class CollectionModule { }
