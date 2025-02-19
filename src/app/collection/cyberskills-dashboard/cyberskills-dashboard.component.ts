@@ -41,7 +41,7 @@ export class CyberskillsDashboardComponent implements OnInit {
         limit: 20,
         status: ['released', 'waiting', 'proofing', 'review', 'accepted_major'],
         sortType: 1,
-        orderBy: OrderBy.Date 
+        orderBy: OrderBy.Date
       })).learningObjects;
     this.learningObjects.forEach(async (lo) => {
       const ratings = await this.getRatings(lo);
