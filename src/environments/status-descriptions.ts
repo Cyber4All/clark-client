@@ -52,6 +52,7 @@ export class StatusDescriptions {
    * @memberof StatusDescriptions
    */
   async getDescription(status: LearningObject.Status, collectionAbbreviation?: string): Promise<string> {
+    console.log(status, collectionAbbreviation)
     let collection: string;
 
     // the list of statuses that require loading the full collection
@@ -61,7 +62,7 @@ export class StatusDescriptions {
     ];
 
     if (needsCollection.includes(status)) {
-      collection = (await this.collectionService.getCollection(collectionAbbreviation)).name;
+      collection = (await this.collectionService.getCollection(collectionAbbreviation))?.name;
     }
 
     return this.templates[status](collection);
