@@ -558,9 +558,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
           learningObjectRevisionId: learningObject.version,
           files,
         })
-        .subscribe((update) => {
-          console.log('this is throwing')
-          this.handleUploadUpdates(update)});
+        .subscribe((update) => this.handleUploadUpdates(update));
     } catch (e) {
       if (e.name === UploadErrorReason.Credentials) {
         this.handleCredentialsError();
