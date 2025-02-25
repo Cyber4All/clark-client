@@ -84,9 +84,21 @@ export class FileManagementService {
    * @param cuid The cuid of the file
    */
   private validateFileNames(files: FileInput[], cuid: string) {
-    files.forEach(file => {
+    // A pattern matching bad charaters per AWS S3. (https://regex101.com/r/DFTn1M/1)
+    // https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html
+    const badCharPattern = /[&$@=;\/\\:+,?{\^}%`"\[\]~#|]/gm;
+
+    files.forEach((file) => {
+      if (badCharPattern.test(file.name)) {
+        throw new Error(
+          `File name contains one or more invalid characters: & $ @ = ; / : + , ? \\ { ^ } % \` \] \" > [ ~ < # |`,
+        );
+      }
+
       if (file.name === `${cuid}.zip`) {
-        throw new Error(`Cannot upload file with name ${cuid}.zip because this is a reserved file name`);
+        throw new Error(
+          `Cannot upload file with name ${cuid}.zip because this is a reserved file name`,
+        );
       }
     });
   }
