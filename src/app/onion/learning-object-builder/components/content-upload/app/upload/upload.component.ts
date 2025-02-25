@@ -563,7 +563,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
       if (e.name === UploadErrorReason.Credentials) {
         this.handleCredentialsError();
       } else if (e.message.includes('File name contains')) {
-        this.uploadComplete.emit('true');
+        this.resetUploadStatuses();
         this.error$.next(e.message);
       } else {
         this.error$.next(UPLOAD_ERRORS.SERVICE_ERROR);
