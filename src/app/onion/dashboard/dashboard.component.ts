@@ -402,7 +402,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   navigateHome() {
     this.router.navigate(['/home']);
-  }  
+  }
 
   ngOnDestroy() {
     this.destroyed$.next();
