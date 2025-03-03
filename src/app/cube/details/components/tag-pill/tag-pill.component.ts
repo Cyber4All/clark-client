@@ -9,44 +9,44 @@ import { Tag } from '../../../../../entity/tag/tag';
 export class TagPillComponent implements OnInit {
   @Input() tag: Tag;
 
-  iconClass = "far fa-book";
+  iconClass = 'far fa-book';
 
   constructor() { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     switch(this.tag.type as any) {
-      case 'badge': 
-        this.iconClass = "far fa-certificate";
+      case 'badge':
+        this.iconClass = 'far fa-certificate';
         break;
-      case 'info': 
-        this.iconClass = "far fa-info";
+      case 'info':
+        this.iconClass = 'far fa-info';
         break;
       case 'code':
-        this.iconClass = "far fa-code";
+        this.iconClass = 'far fa-code';
         break;
       case 'lang':
-        this.iconClass = "far fa-language";
+        this.iconClass = 'far fa-language';
         break;
       case 'tech':
-        this.iconClass = "far fa-microchip";
+        this.iconClass = 'far fa-microchip';
         break;
       case 'trending':
-        this.iconClass = "far fa-arrow-trend-up";
+        this.iconClass = 'far fa-arrow-trend-up';
         break;
-      case 'quality': 
-        this.iconClass = "far fa-check";
+      case 'quality':
+        this.iconClass = 'far fa-check';
         break;
-      case 'work_role': 
-        this.iconClass = "far fa-user";
+      case 'work_role':
+        this.iconClass = 'far fa-user';
         break;
-      case 'modality': 
-        this.iconClass = "far fa-chalkboard-user";
+      case 'modality':
+        this.iconClass = 'far fa-chalkboard-user';
         break;
       case 'materials':
-        this.iconClass = "far fa-book";
+        this.iconClass = 'far fa-book';
         break;
       default:
-        this.iconClass = "far fa-information";
+        this.iconClass = 'far fa-information';
         break;
     }
   }
