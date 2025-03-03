@@ -1,6 +1,6 @@
 <div class="dashboard">
   <clark-dashboard-splash
-    (navigateBack)="historySnapshot.rewind()"
+    (navigateBack)="navigateHome()"
     (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
   <div [@dashboardList] class="dashboard__lists" *ngIf="!loading; else loadingTemplate">

@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { NavigationEnd, ActivatedRoute, Router } from '@angular/router';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { LearningObject } from '@entity';
@@ -67,8 +66,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // delete
   objectsToDelete: any[];
 
-  historySnapshot: HistorySnapshot;
-
   sidePanelPromiseResolver: Promise<any>;
 
   checkQueryParams$ = new Subject<void>();
@@ -76,7 +73,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<void>();
 
   constructor(
-    private history: HistoryService,
     private route: ActivatedRoute,
     private router: Router,
     private navbar: NavbarService,
@@ -144,8 +140,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         });
       }
     });
-
-    this.historySnapshot = this.history.snapshot();
   }
 
   /**
@@ -402,12 +396,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.focusedLearningObject = undefined;
 
     if (event && event.shouldRoute) {
-      // rewind to the history snapshot to take us to wherever we were before entering the dashboard
-      this.historySnapshot.rewind();
-
-      // now navigate back to the dashboard so that the history stack is correct
-      this.router.navigate([], { queryParams: {} });
+      this.router.navigate(['/home']);
     }
+  }
+
+  navigateHome() {
+    this.router.navigate(['/home']);
   }
 
   ngOnDestroy() {
