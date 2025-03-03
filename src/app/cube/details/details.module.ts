@@ -55,7 +55,7 @@ import { OnionCoreModule } from '../../onion/core/core.module';
     EditorialActionPadModule,
     OnionCoreModule
   ],
-  exports: [],
+  exports: [LengthComponent],
   declarations: [
     // root level component
     DetailsComponent,
