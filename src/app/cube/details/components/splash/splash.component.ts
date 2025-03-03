@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, AfterViewInit, HostListener } from '@angular/core';
-import { LearningObject } from '@entity';
+import { LearningObject, Tag } from '@entity';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 
 
 @Component({
@@ -31,6 +32,8 @@ export class SplashComponent implements OnInit, AfterViewInit {
 
   showMobileSidePanel: boolean;
 
+  fullTags = [];
+
   @HostListener('window:resize', []) onResize() {
     if (window.innerWidth >= 750) {
       this.showMobileSidePanel = false;
@@ -41,15 +44,24 @@ export class SplashComponent implements OnInit, AfterViewInit {
 
   constructor(
     private collectionService: CollectionService,
+    private tagsService: TagsService
   ) {}
 
   ngOnInit() {
     this.showMobileSidePanel = window.innerWidth < 750;
   }
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
     this.collectionService.getCollections().then(collections => {
       this.collections = new Map(collections.map(c => [c.abvName, c.name] as [string, string]));
+    });
+
+    const tags = await this.tagsService.getTags();
+    // Get the full tags to pass in
+    this.fullTags = tags.filter((tag: Tag) => {
+      if(this.learningObject.tags.includes(tag._id)) {
+        return tag;
+      }
     });
   }
 
