@@ -47,21 +47,22 @@ export class FeaturedObjectsService {
    */
   async getFeaturedObjects() {
     // Grabs featured Learning Objects from the Featured Database
-    const objects: LearningObject[] = await this.http
+    const objects = await this.http
       .get(FEATURED_ROUTES.GET_FEATURED_OBJECTS())
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((featured: any) => {
         const featuredObjects = featured.map((object: any) => {
-          object.collection = object.collectionName;
-          return object;
+          if(object != null) {
+            return object as LearningObject;
+          } else {
+            return featured[0];
+          }
         });
         this.featuredStore.featured = featuredObjects;
         if (featuredObjects.length === 5) {
           this.filterOutFeaturedObjects();
           this._mutationError$.next(true);
-        } else if (featuredObjects.length !== 5) {
-          this._submitError$.next(true);
         }
         return featuredObjects;
       });
