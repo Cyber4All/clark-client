@@ -61,7 +61,7 @@ export class StatusDescriptions {
     ];
 
     if (needsCollection.includes(status)) {
-      collection = (await this.collectionService.getCollection(collectionAbbreviation)).name;
+      collection = (await this.collectionService.getCollection(collectionAbbreviation))?.name;
     }
 
     return this.templates[status](collection);

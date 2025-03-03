@@ -287,6 +287,14 @@ export class LearningObject {
     this._topics = topics;
   }
 
+  get tags(): string[] {
+    return this._tags;
+  }
+
+  set tags(tags) {
+    this._tags;
+  }
+
   version = 0;
 
   /**
@@ -369,6 +377,7 @@ export class LearningObject {
   };
   private _nextCheck: Date;
   private _topics: string[];
+  private _tags: string[];
 
   private _revisionUri?: string;
 
@@ -745,6 +754,10 @@ export class LearningObject {
       this._topics = object.topics;
     }
 
+    if (object.tags) {
+      this._tags = object.tags;
+    }
+
     this.collection = object.collection as string || this.collection;
     this.status = object.status as LearningObject.Status || this.status;
     this.metrics = object.metrics as LearningObject.Metrics || this.metrics;
@@ -787,6 +800,7 @@ export class LearningObject {
       revision: this.revision,
       assigned: this.assigned,
       topics: this.topics || [],
+      tags: this.tags || []
     };
     return object;
   }

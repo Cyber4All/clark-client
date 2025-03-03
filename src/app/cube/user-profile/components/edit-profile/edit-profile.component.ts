@@ -159,7 +159,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
     } catch (e) {
       // FIXME: No errors are being caught/thrown from user service
       if (e.status === 400) {
-        this.noteService.error('Error!', e.error);
+        this.noteService.error('Error!', JSON.parse(e.error).message);
       } else {
         this.noteService.error('Error!', 'We couldn\'t update your user information!');
       }

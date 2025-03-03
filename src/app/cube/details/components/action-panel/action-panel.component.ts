@@ -113,10 +113,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     });
   }
 
-  get canMapAndTag() {
-    return this.editorialService.canMapAndTag(this.learningObject);
-  }
-
   get isReleased(): boolean {
     return this.learningObject.status === LearningObject.Status.RELEASED;
   }

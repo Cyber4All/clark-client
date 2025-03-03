@@ -9,8 +9,6 @@ import { AuthService } from './core/auth-module/auth.service';
 import { LibraryService } from './core/library-module/library.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Title } from '@angular/platform-browser';
-
-import { HistoryService } from './core/client-module/history.service';
 import { filter } from 'rxjs/operators';
 import { LearningObject } from '../entity/learning-object/learning-object';
 import { Downtime } from './core/utility-module/utility.service';
@@ -84,7 +82,6 @@ export class ClarkComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private titleService: Title,
     private route: ActivatedRoute,
-    private _: HistoryService,
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
     private cookieAgreement: CookieAgreementService,
@@ -132,14 +129,15 @@ export class ClarkComponent implements OnInit {
         });
       }, 300000); // 5 min interval
       // check to see if the current version is behind the latest verison
-      setInterval(async () => {
-        try {
-          await this.utilityService.checkClientVersion();
-        } catch (e) {
-          this.errorMessage = e.error.split('.');
-          this.isOldVersion = true;
-        }
-      }, 600000); // 10 minute interval for setting the timeout <- Comment from orb deployment
+      // As of February 4, 2025 there is not a solution to this issue and it clogging up our coralogix errors so we are disabling it
+      // setInterval(async () => {
+      //   try {
+      //     await this.utilityService.checkClientVersion();
+      //   } catch (e) {
+      //     this.errorMessage = e.error.split('.');
+      //     this.isOldVersion = true;
+      //   }
+      // }, 600000); // 10 minute interval for setting the timeout <- Comment from orb deployment
     }
 
     this.setPageTitle();

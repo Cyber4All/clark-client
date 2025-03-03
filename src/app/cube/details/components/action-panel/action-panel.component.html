@@ -79,7 +79,7 @@
 </clark-popup>
 
 <ng-template #libraryButtonsTemplate>
-  <button [tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons, 'hide': hasReviewerAccess}"
+  <button *ngIf="!auth?.hasEditorAccess()"[tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons, 'hide': hasReviewerAccess}"
     class="button good" id="download-button" (activate)="addToLibrary(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
     <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
       <span *ngIf="downloading">
@@ -89,7 +89,7 @@
     <span tabindex="0" *ngIf="!hasDownloadAccess">Log in to Download</span>
   </button>
   <div #downloadOptions>
-    <button *ngIf="isSubmitted" class="button good" (click)="dropdowns.toggleUserDropdown()" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons, 'hide': !hasReviewerAccess}">
+    <button *ngIf="isSubmitted && auth?.hasEditorAccess()" class="button good" (click)="dropdowns.toggleUserDropdown()" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons, 'hide': !hasReviewerAccess}">
       <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download' : 'Downloading'}}
         <span class="arrow" *ngIf="!userDropdown">
           <i class="fas fa-chevron-down"></i>
@@ -119,9 +119,4 @@
       <i class="fal fa-spinner-third fa-spin"></i>
     </span>
   </button>
-  <button
-    *ngIf="canMapAndTag"
-    class="button neutral"
-    aria-label="Map and Tag"
-    (activate)="mapAndTagObject()">Map and Tag</button>
 </ng-template>
