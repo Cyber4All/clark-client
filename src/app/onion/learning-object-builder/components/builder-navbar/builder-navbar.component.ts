@@ -10,6 +10,7 @@ import { CollectionService, Collection } from 'app/core/collection-module/collec
 import { LearningObject } from '@entity';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
+import { LearningObjectStatus } from '@env/environment';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -168,7 +169,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     // Trigger new PDF generation only if the learning object id exists
     // It may not present when opening the builder for the first time for
     // a new learning object
-    if (this.learningObject.id) {
+    if (this.learningObject.id && this.learningObject.status !== 'unreleased') {
       // This will also bundle the learning object after the README is updated
       Promise.all(await this.fileService.updateReadme(this.learningObject.id));
     }
