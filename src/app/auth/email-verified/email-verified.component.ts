@@ -44,12 +44,6 @@ export class EmailVerifiedComponent implements OnInit {
         this.iconSuccess = true;
         this.h1Message = 'Email Verified!';
         this.pMessage = 'Welcome to CLARK!';
-      })
-      .catch(e => {
-        // Unauthenticated login, invalid token
-        this.iconSuccess = false;
-        this.h1Message = 'Invalid Log In';
-        this.pMessage = 'Your token was invalid. Please log in to refresh your token.';
       });
     }
   }
