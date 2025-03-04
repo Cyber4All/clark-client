@@ -56,8 +56,9 @@ export class SplashComponent implements OnInit, AfterViewInit {
       this.collections = new Map(collections.map(c => [c.abvName, c.name] as [string, string]));
     });
 
+    // Get all the tags on the system, this only requires 1 network request
     const tags = await this.tagsService.getTags();
-    // Get the full tags to pass in
+    // Get the full tags to pass into the pills component
     this.fullTags = tags.filter((tag: Tag) => {
       if(this.learningObject.tags.includes(tag._id)) {
         return tag;
