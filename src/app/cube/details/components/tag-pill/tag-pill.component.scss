@@ -1,0 +1,26 @@
+@import 'vars.scss';
+.pill {
+    background-color: $light-grey;
+    line-height: 2px;
+    padding: 1px 5px 1px;
+    border-radius: 10px;
+    font-size: $smaller;
+    display: flex;
+    justify-content: center;
+    margin: 1px;
+
+    .icon {
+        background-color: $light-blue;
+        color: $light-grey;
+        margin-top: 3px;
+        margin-right: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        text-align: center;
+    }
+    
+}
