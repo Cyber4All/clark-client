@@ -6,7 +6,7 @@ import {
   Output,
   Input
 } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
@@ -42,7 +42,7 @@ export class EditProfileComponent implements OnChanges, OnInit {
     bio: ''
   };
 
-  editFormGroup: FormGroup = new FormGroup({
+  editFormGroup: UntypedFormGroup = new UntypedFormGroup({
   });
 
   organizationInput$: Subject<string> = new Subject<string>();
@@ -63,11 +63,11 @@ export class EditProfileComponent implements OnChanges, OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.editFormGroup = new FormGroup({
-      firstname: new FormControl(this.user.name, Validators.required),
-      lastname: new FormControl(this.user.name, Validators.required),
-      email: new FormControl(this.user.email, Validators.required),
-      organization: new FormControl(this.user.organization, Validators.required),
+    this.editFormGroup = new UntypedFormGroup({
+      firstname: new UntypedFormControl(this.user.name, Validators.required),
+      lastname: new UntypedFormControl(this.user.name, Validators.required),
+      email: new UntypedFormControl(this.user.email, Validators.required),
+      organization: new UntypedFormControl(this.user.organization, Validators.required),
     });
     this.organizationInput$
       .pipe(debounceTime(650))

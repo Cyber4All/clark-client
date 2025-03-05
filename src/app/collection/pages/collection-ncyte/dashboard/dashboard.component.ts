@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { AuthValidationService } from '../../../../core/auth-module/auth-validation.service';
 import { ReportService } from '../../../../core/report-module/report.service';
 import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
@@ -10,9 +10,9 @@ import { ToastrOvenService } from '../../../../shared/modules/toaster/notificati
   styleUrls: ['./dashboard.component.scss']
 })
 export class NcyteDashboardComponent implements OnInit {
-  range = new FormGroup({
-    start: new FormControl(null),
-    end: new FormControl(null),
+  range = new UntypedFormGroup({
+    start: new UntypedFormControl(null),
+    end: new UntypedFormControl(null),
   });
   name = this.authValidationService.getInputFormControl('text');
 

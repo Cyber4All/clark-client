@@ -46,7 +46,7 @@ import {
   UNORDERED_LIST_BUTTON,
   SEPARATOR,
 } from 'ngx-simple-text-editor';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -109,7 +109,7 @@ const config = {
   ],
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
-  notesText = new FormControl('');
+  notesText = new UntypedFormControl('');
   @ViewChild('fileInput') fileInput: ElementRef;
   @ViewChild('folderInput') folderInput: ElementRef;
 
