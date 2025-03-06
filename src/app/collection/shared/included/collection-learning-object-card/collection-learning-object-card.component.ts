@@ -9,14 +9,14 @@ export class CollectionLearningObjectCardComponent implements OnInit {
   @Input() learnObj = new Input();
   constructor() { }
 
-  mobile: boolean = false;
+  mobile = false;
 
   ngOnInit(): void {
     if (window.screen.width < 400) { // 768px portrait
       this.mobile = true;
     }
 
-    console.log(this.mobile)
+    console.log(this.mobile);
   }
 
   @HostListener('window:resize', ['$event'])
@@ -26,7 +26,7 @@ export class CollectionLearningObjectCardComponent implements OnInit {
     } else {
       this.mobile = false;
     }
-    console.log(this.mobile)
+    console.log(this.mobile);
   }
 
 }
