@@ -31,13 +31,15 @@
 }
 
 .curators {
-    color: $dark-grey;
+    color: transparent;
     flex-basis: 30%;
     display: flex;
     justify-content: space-evenly;
     margin: auto;
     padding-top: 20px;
-
+    flex-wrap: wrap;
+    // justify-content: flex-start;
+    gap: 10px;
     p {
         font-weight: normal;
         font-size: $large;

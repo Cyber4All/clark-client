@@ -1,6 +1,10 @@
 @import 'vars.scss';
 @import '../../../../collection-globals.scss';
 
+.button {
+  color: gray;
+}
+
 .wrapper {
   display: flex;
   justify-content: space-between;
@@ -24,7 +28,7 @@
       }
       h2 {
         margin: 0px;
-        .nice-link {
+        .xp-cyber-link {
           color: $xp-cyber-dark;  
         }
       }

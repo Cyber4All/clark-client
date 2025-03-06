@@ -1,11 +1,71 @@
 
-p{
-    font-weight: 300;
-}
-img{
-   border-radius: 1000px;
-}
-div{
-    margin: 0 10px;
-}
+// p{
+//     font-weight: 300;
+// }
+// img{
+//    border-radius: 1000px;
+// }
+// div{
+//     margin: 0 10px;
+// }
 
+.curator-card {
+    display: inline-block;
+    margin: 10px;
+    color: black;
+    flex-basis: 500px;
+    // width: 650px;
+  }
+  
+  .card-content {
+    display: flex;
+    // text-align: center;
+    align-items: center; 
+    // .p {
+    //     margin-right: 10%;
+    // }
+    .item{
+        margin: 10px;
+        text-align: center;
+        .grav {
+            width: 60px; 
+            height: 60px;
+            border-radius: 1000px;
+            // margin-right: 10px; 
+        }
+    }
+  }
+
+// .curator-card {
+//     display: inline-block;
+//     margin: 10px;
+//     color: black;
+//     flex-basis: 500px;
+//   }
+  
+//   .card-content {
+//     display: flex;
+//     align-items: flex-start; // Aligns all items at the start of the row (top)
+//     justify-content: flex-start; // Keeps everything aligned to the left
+//   }
+  
+//   .item {
+//     margin: 10px;
+//     display: flex;
+//     flex-direction: column; // Stack the text vertically
+//     justify-content: center; // Center the content vertically within each item
+//     align-items: flex-start; // Align text to the start (left)
+  
+//     // Optional: Set width for the text containers to ensure they are the same size
+//     // Ensure the text containers (name and organization) have equal width
+//     .name, .organization {
+//       min-width: 200px; // Adjust this value based on your layout needs
+//     }
+  
+//     .grav {
+//       width: 60px; 
+//       height: 60px;
+//       border-radius: 50%;
+//     }
+//   }
+  

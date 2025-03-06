@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clark-collection-learning-object-card',
@@ -9,8 +9,24 @@ export class CollectionLearningObjectCardComponent implements OnInit {
   @Input() learnObj = new Input();
   constructor() { }
 
-  ngOnInit(): void {
+  mobile: boolean = false;
 
+  ngOnInit(): void {
+    if (window.screen.width < 400) { // 768px portrait
+      this.mobile = true;
+    }
+
+    console.log(this.mobile)
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    if (window.screen.width < 400) { // 768px portrait
+      this.mobile = true;
+    } else {
+      this.mobile = false;
+    }
+    console.log(this.mobile)
   }
 
 }

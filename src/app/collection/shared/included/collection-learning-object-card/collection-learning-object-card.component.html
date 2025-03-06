@@ -4,13 +4,19 @@ learnObj.author.username,
 learnObj.cuid
 ]"
 attr.aria-label="{{ learnObj.name }}, {{ learnObj.length }}, by {{ learnObj.author.name }}, last updated on {{ learnObj.date | date:'longDate' }}"
+
+[ngClass] = "{
+    'wide': !mobile,
+    'mobile': mobile
+}"
 >
-    <div class = "container">
-        <div class = "header" [ngClass] = "learnObj.length">
-            <div class = "overlay">
-                {{learnObj.length}}
-            </div>
+    <div class = "header" [ngClass] = "learnObj.length">
+        <div class = "overlay">
+            {{learnObj.length}}
         </div>
+    </div>
+    <div class = "container">
+        
         <div class="obj-info">
             <div class = "obj-title">
                 {{learnObj.name}}
