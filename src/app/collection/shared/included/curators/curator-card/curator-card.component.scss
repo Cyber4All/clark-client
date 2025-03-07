@@ -1,29 +1,12 @@
-
-// p{
-//     font-weight: 300;
-// }
-// img{
-//    border-radius: 1000px;
-// }
-// div{
-//     margin: 0 10px;
-// }
-
 .curator-card {
     display: inline-block;
-    // margin: 10px;
     color: black;
     flex-basis: 500px;
-    // width: 650px;
 }
   
   .card-content {
     display: flex;
-    // text-align: center;
-    align-items: center; 
-    // .p {
-    //     margin-right: 10%;
-    // }
+    align-items: center;
     .icon{
         width: 100px;
         height: 80px;
@@ -36,12 +19,7 @@
             width: 60px; 
             height: 60px;
             border-radius: 100px;
-            // margin-right: 10px; 
-            // align-content: ;
         }
-        // .p {
-        //     display: inline-block;
-        // }
     }
     .name{
         width: 200px;
