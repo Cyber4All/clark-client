@@ -12,21 +12,18 @@ export class CollectionLearningObjectCardComponent implements OnInit {
   mobile = false;
 
   ngOnInit(): void {
-    if (window.screen.width < 400) { // 768px portrait
+    if (window.screen.width < 450) { // 768px portrait
       this.mobile = true;
     }
-
-    console.log(this.mobile);
   }
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
-    if (window.screen.width < 400) { // 768px portrait
+    if (window.screen.width < 450) { // 768px portrait
       this.mobile = true;
     } else {
       this.mobile = false;
     }
-    console.log(this.mobile);
   }
 
 }

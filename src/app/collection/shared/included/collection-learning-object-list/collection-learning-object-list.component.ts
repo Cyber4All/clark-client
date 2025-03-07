@@ -24,12 +24,9 @@ export class CollectionLearningObjectListComponent implements OnInit {
 
   async ngOnInit() {
     this.query.collection = this.collectionName;
-    console.log(this.query);
     await this.searchLearningObjectService.getLearningObjects(this.query).then((res) => {
       this.learningObjects = res.learningObjects;
     });
-
-    console.log(this.learningObjects);
   }
 
 }

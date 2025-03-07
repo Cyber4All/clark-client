@@ -11,11 +11,11 @@
 
 .curator-card {
     display: inline-block;
-    margin: 10px;
+    // margin: 10px;
     color: black;
     flex-basis: 500px;
     // width: 650px;
-  }
+}
   
   .card-content {
     display: flex;
@@ -24,48 +24,48 @@
     // .p {
     //     margin-right: 10%;
     // }
-    .item{
-        margin: 10px;
+    .icon{
+        width: 100px;
+        height: 80px;
+        margin-top: 50px;
+        margin-right: 20px;
         text-align: center;
+        
         .grav {
+            margin-top: 15px;
             width: 60px; 
             height: 60px;
-            border-radius: 1000px;
+            border-radius: 100px;
             // margin-right: 10px; 
+            // align-content: ;
         }
+        // .p {
+        //     display: inline-block;
+        // }
+    }
+    .name{
+        width: 200px;
+        height: 80px;
+        margin-top: 50px;
+        margin-right: 20px;
+        text-align: center;
+    }
+    .organization{
+        width: 200px;
+        height: 80px;
+        margin-top: 0px;
+        text-align: center;
     }
   }
 
-// .curator-card {
-//     display: inline-block;
-//     margin: 10px;
-//     color: black;
-//     flex-basis: 500px;
-//   }
-  
-//   .card-content {
-//     display: flex;
-//     align-items: flex-start; // Aligns all items at the start of the row (top)
-//     justify-content: flex-start; // Keeps everything aligned to the left
-//   }
-  
-//   .item {
-//     margin: 10px;
-//     display: flex;
-//     flex-direction: column; // Stack the text vertically
-//     justify-content: center; // Center the content vertically within each item
-//     align-items: flex-start; // Align text to the start (left)
-  
-//     // Optional: Set width for the text containers to ensure they are the same size
-//     // Ensure the text containers (name and organization) have equal width
-//     .name, .organization {
-//       min-width: 200px; // Adjust this value based on your layout needs
-//     }
-  
-//     .grav {
-//       width: 60px; 
-//       height: 60px;
-//       border-radius: 50%;
-//     }
-//   }
-  
+  .card-content-mobile {
+    p{
+        font-weight: 300;
+    }
+    img{
+    border-radius: 1000px;
+    }
+    div{
+        margin: 0 10px;
+    }
+  }
