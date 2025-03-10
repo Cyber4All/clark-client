@@ -14,13 +14,13 @@ export class RelevancyDateComponent implements OnInit {
 
   minDate: Date;
   maxDate: Date;
-  selected: Date;
+  selected: string;
 
   constructor(private relevancyService: RelevancyService) { }
 
   ngOnInit(): void {
     // Set the current nextCheck
-    this.selected = new Date(this.learningObject.nextCheck);
+    this.selected = new Date(this.learningObject.nextCheck).toISOString();
 
     // Set min and maxes for calendar picks
     this.minDate = new Date();
@@ -34,7 +34,7 @@ export class RelevancyDateComponent implements OnInit {
   }
 
   async setDate() {
-    await this.relevancyService.setNextCheckDate(this.learningObject.id, this.selected);
+    await this.relevancyService.setNextCheckDate(this.learningObject.id, new Date(this.selected));
     this.close.emit();
   }
 
