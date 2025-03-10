@@ -5,7 +5,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import { CollectionIndexComponent } from './pages/collection-index/collection-index.component';
 import { GenericPageComponent } from './pages/generic-page/generic-page.component';
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
-import { NiceChallengeModule } from './pages/nice-challenge/nice-challenge.module';
+import { XPCyberModule } from './pages/xp-cyber/xp-cyber.module';
 import { CollectionsRoutingModule } from './collection.routing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
@@ -67,7 +67,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CommonModule,
     IncludedModule,
     CollectionsRoutingModule,
-    NiceChallengeModule,
+    XPCyberModule,
     RouterModule,
     SharedModule,
     CubeSharedModule,

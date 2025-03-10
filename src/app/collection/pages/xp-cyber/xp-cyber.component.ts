@@ -3,11 +3,11 @@ import { NavbarService } from 'app/core/client-module/navbar.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  selector: 'clark-nice-challenge',
-  templateUrl: './nice-challenge.component.html',
-  styleUrls: ['./nice-challenge.component.scss']
+  selector: 'clark-xp-cyber',
+  templateUrl: './xp-cyber.component.html',
+  styleUrls: ['./xp-cyber.component.scss']
 })
-export class NiceChallengeComponent implements OnInit {
+export class XPCyberComponent implements OnInit {
 
   constructor(
     private navbarService: NavbarService,
@@ -16,7 +16,7 @@ export class NiceChallengeComponent implements OnInit {
   ngOnInit(): void {
     this.navbarService.show();
 
-    this.titleService.setTitle('CLARK | NICE Challenge');
+    this.titleService.setTitle('CLARK | XP Cyber');
   }
 
 }

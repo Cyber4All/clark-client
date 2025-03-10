@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './components/header/header.component';
 import { PhilosophyComponent } from './components/philosophy/philosophy.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { NiceChallengeComponent } from './nice-challenge.component';
-import { IncludedModule } from '../../../collection/shared/included/included.module';
+import { XPCyberComponent } from './xp-cyber.component';
+import { IncludedModule } from '../../shared/included/included.module';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -13,7 +13,7 @@ import { SharedModule } from '../../../shared/shared.module';
     HeaderComponent,
     PhilosophyComponent,
     FooterComponent,
-    NiceChallengeComponent,
+    XPCyberComponent,
   ],
   imports: [
     IncludedModule,
@@ -22,11 +22,11 @@ import { SharedModule } from '../../../shared/shared.module';
     SharedModule
   ],
   exports: [
-    NiceChallengeComponent,
+    XPCyberComponent,
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
     CUSTOM_ELEMENTS_SCHEMA
   ],
 })
-export class NiceChallengeModule { }
+export class XPCyberModule { }

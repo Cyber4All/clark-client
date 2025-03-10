@@ -21,8 +21,8 @@
         min-height: 20vh;
         border-radius: 0 10px 10px 0;
 
-        &.nice {
-            background-color: $nice-blue;
+        &.xpcyber {
+            background-color: $xp-cyber-dark;
         }
         &.ncyte {
             background-color: $ncyte-blue;
@@ -31,13 +31,14 @@
 }
 
 .curators {
-    color: $dark-grey;
+    color: transparent;
     flex-basis: 30%;
     display: flex;
     justify-content: space-evenly;
     margin: auto;
     padding-top: 20px;
-
+    flex-wrap: wrap;
+    gap: 10px;
     p {
         font-weight: normal;
         font-size: $large;

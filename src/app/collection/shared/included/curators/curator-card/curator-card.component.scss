@@ -1,11 +1,49 @@
+.curator-card {
+    display: inline-block;
+    color: black;
+    flex-basis: 500px;
+}
+  
+  .card-content {
+    display: flex;
+    align-items: center;
+    .icon{
+        width: 100px;
+        height: 80px;
+        margin-top: 50px;
+        margin-right: 20px;
+        text-align: center;
+        
+        .grav {
+            margin-top: 15px;
+            width: 60px; 
+            height: 60px;
+            border-radius: 100px;
+        }
+    }
+    .name{
+        width: 200px;
+        height: 80px;
+        margin-top: 50px;
+        margin-right: 20px;
+        text-align: center;
+    }
+    .organization{
+        width: 200px;
+        height: 80px;
+        margin-top: 0px;
+        text-align: center;
+    }
+  }
 
-p{
-    font-weight: 300;
-}
-img{
-   border-radius: 1000px;
-}
-div{
-    margin: 0 10px;
-}
-
+  .card-content-mobile {
+    p{
+        font-weight: 300;
+    }
+    img{
+    border-radius: 1000px;
+    }
+    div{
+        margin: 0 10px;
+    }
+  }

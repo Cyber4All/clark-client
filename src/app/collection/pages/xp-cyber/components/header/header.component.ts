@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToBrowse() {
-    this.router.navigate(['/browse'], { queryParams: { collection: 'nice', currPage: 1 }});
+    this.router.navigate(['/browse'], { queryParams: { collection: 'xpcyber', currPage: 1 }});
   }
 
 }
