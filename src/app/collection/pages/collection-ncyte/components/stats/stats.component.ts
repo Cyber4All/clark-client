@@ -16,7 +16,6 @@ export class StatsComponent implements OnInit {
   @Input() collectionName: string;
   @Input() dashboardView: boolean;
   name: string;
-  // dashboardView: boolean;
 
   objDownload: number;
   objReview: number;
