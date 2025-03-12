@@ -8,9 +8,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
-import { HistoryService, HistorySnapshot } from 'app/core/client-module/history.service';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
+import { LearningObjectStatus } from '@env/environment';
 
 @Component({
   selector: 'onion-builder-navbar',
@@ -44,15 +44,12 @@ export class BuilderNavbarComponent implements OnDestroy {
 
   @Input() adminMode = false;
 
-  historySnapshot: HistorySnapshot;
-
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private auth: AuthService,
     private toasterService: ToastrOvenService,
     private collectionService: CollectionService,
-    private history: HistoryService,
     public validator: LearningObjectValidator,
     public store: BuilderStore,
     private bundlingService: BundlingService,
@@ -83,7 +80,6 @@ export class BuilderNavbarComponent implements OnDestroy {
     // check to see if we're editing a learning object or creating a new one by checking for an id in the url
     this.editing = !!this.activatedRoute.snapshot.params['learningObjectId'];
 
-    this.historySnapshot = this.history.snapshot();
   }
 
   /**
@@ -173,7 +169,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     // Trigger new PDF generation only if the learning object id exists
     // It may not present when opening the builder for the first time for
     // a new learning object
-    if (this.learningObject.id) {
+    if (this.learningObject.id && this.learningObject.status !== 'unreleased') {
       // This will also bundle the learning object after the README is updated
       Promise.all(await this.fileService.updateReadme(this.learningObject.id));
     }
@@ -187,7 +183,7 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.bundlingService.bundleLearningObject(lo._id);
       }
       if (leaveBuilder) {
-        this.historySnapshot.rewind('/onion/dashboard');
+        this.router.navigate(['/onion/dashboard']);
       }
     } else if (this.store.upload === 'secondClickBack') {
       // User has tried to exit the builder twice during an upload process (upload = 'true')

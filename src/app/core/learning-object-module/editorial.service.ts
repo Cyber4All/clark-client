@@ -81,12 +81,7 @@ export class EditorialService {
    * @param revisedLearningObject Revised Learning Object
    */
   navigateToEditor(learningObject: LearningObject, params?: { version?: number }) {
-    this.router.navigate([
-      'onion',
-      'learning-object-builder',
-      learningObject.cuid,
-      params?.version ?? learningObject.version,
-    ]);
+    window.open(`onion/learning-object-builder/${learningObject.cuid}/${params?.version ?? learningObject.version}`, '_blank');
   }
 
   /**
