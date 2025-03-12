@@ -43,7 +43,7 @@
     </div>
 
 
-<div class="bottom">
+<div class="bottom" *ngIf="this.dashboard === true">
     <clark-top-downloads [learningObjects]="learningObjects"></clark-top-downloads>
     <cube-distribution-chart 
       class="chart"

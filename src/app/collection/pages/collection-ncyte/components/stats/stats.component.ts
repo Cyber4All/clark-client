@@ -14,7 +14,9 @@ let CHART_HOVERED = false;
 export class StatsComponent implements OnInit {
 
   @Input() collectionName: string;
+  @Input() dashboard: boolean;
   name: string;
+  // dashboardView: boolean;
 
   objDownload: number;
   objReview: number;
@@ -90,11 +92,11 @@ export class StatsComponent implements OnInit {
       type: 'doughnut',
       labels: ['Nanomodule', 'Micromodule', 'Module', 'Unit', 'Course'],
       data: [
-        stats.lengthMetrics.nanomodule,
-        stats.lengthMetrics.micromodule,
-        stats.lengthMetrics.module,
-        stats.lengthMetrics.unit,
-        stats.lengthMetrics.course,
+        stats.lengthMetrics.nanomodules,
+        stats.lengthMetrics.micromodules,
+        stats.lengthMetrics.modules,
+        stats.lengthMetrics.units,
+        stats.lengthMetrics.courses,
       ],
       legend: true,
       options: {

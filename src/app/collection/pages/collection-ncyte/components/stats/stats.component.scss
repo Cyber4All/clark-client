@@ -101,7 +101,7 @@
         display: grid;
         grid-template-columns: 60% 40%;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
         gap: 10px;
     }
 }
