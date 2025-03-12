@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   experimental: false,
-  apiURL: 'http://localhost:3000',
+  apiURL: 'https://api.clark.center',
   s3Bucket: 'clark-dev-file-uploads',
   s3BucketRegion: 'us-east-1',
   cognitoRegion: 'us-east-1',
