@@ -18,12 +18,12 @@ export class CyberskillsDashboardComponent implements OnInit {
     start: new FormControl(null),
     end: new FormControl(null),
   });
+
   name = this.authValidationService.getInputFormControl('text');
-
   learningObjects: any = [];
-
   lastPage=8;
-  currPage = 3;
+  currPage = 1;
+
   constructor(
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
@@ -36,22 +36,7 @@ export class CyberskillsDashboardComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.toaster.init(this.view);
-    this.learningObjects = (await this.learningObjectService.getLearningObjects(
-      { collection: 'cyberskills2work',
-        limit: 20,
-        status: ['released', 'waiting', 'proofing', 'review', 'accepted_major'],
-        sortType: 1,
-        orderBy: OrderBy.Date
-      })).learningObjects;
-    this.learningObjects.forEach(async (lo) => {
-      const ratings = await this.getRatings(lo);
-      if(ratings) {
-        lo.ratings = ratings.avgValue;
-      }
-      if(lo.status === 'released') {
-        lo.metrics = await this.metricsService.getLearningObjectMetrics(lo.cuid);
-      }
-    });
+    this.loadLearningObjects()
   }
 
   onDownload(): void {
@@ -74,6 +59,35 @@ export class CyberskillsDashboardComponent implements OnInit {
       cuid,
       version,
     );
+  }
+
+  async loadLearningObjects(){
+    this.learningObjects = (await this.learningObjectService.getLearningObjects(
+      { 
+        collection: 'cyberskills2work',
+        limit: 20,
+        status: ['released', 'waiting', 'proofing', 'review', 'accepted_major'],
+        sortType: 1,
+        orderBy: OrderBy.Date,
+        currPage: this.currPage
+      })).learningObjects;
+    this.learningObjects.forEach(async (lo) => {
+      const ratings = await this.getRatings(lo);
+      if(ratings) {
+        lo.ratings = ratings.avgValue;
+      }
+      if(lo.status === 'released') {
+        lo.metrics = await this.metricsService.getLearningObjectMetrics(lo.cuid);
+      }
+    });
+
+  
+    console.log(this.learningObjects);
+  }
+
+  async changeLearningObjectsPage(pageNumber: number) {
+    this.currPage = pageNumber;
+    await this.loadLearningObjects();
   }
 
 }
