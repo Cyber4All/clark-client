@@ -36,7 +36,7 @@ export class CyberskillsDashboardComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.toaster.init(this.view);
-    this.loadLearningObjects()
+    this.loadLearningObjects();
   }
 
   onDownload(): void {
@@ -63,7 +63,7 @@ export class CyberskillsDashboardComponent implements OnInit {
 
   async loadLearningObjects(){
     this.learningObjects = (await this.learningObjectService.getLearningObjects(
-      { 
+      {
         collection: 'cyberskills2work',
         limit: 20,
         status: ['released', 'waiting', 'proofing', 'review', 'accepted_major'],
@@ -81,7 +81,7 @@ export class CyberskillsDashboardComponent implements OnInit {
       }
     });
 
-  
+
     console.log(this.learningObjects);
   }
 
