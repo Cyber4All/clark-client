@@ -31,7 +31,7 @@ export class CyberSkillsGuard implements CanActivate {
           return (
             this.auth.accessGroups.includes('admin') ||
             this.auth.accessGroups.includes('editor') ||
-            this.auth.accessGroups.includes('curator')
+            this.auth.accessGroups.includes('curator@cyberskills2work')
           );
         },
         (error) => {
