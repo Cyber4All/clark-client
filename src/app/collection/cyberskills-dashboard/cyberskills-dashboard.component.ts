@@ -36,7 +36,7 @@ export class CyberskillsDashboardComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.toaster.init(this.view);
-    this.loadLearningObjects();
+    await this.loadLearningObjects();
   }
 
   onDownload(): void {
