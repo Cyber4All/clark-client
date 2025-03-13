@@ -21,8 +21,8 @@ export class CyberskillsDashboardComponent implements OnInit {
 
   name = this.authValidationService.getInputFormControl('text');
   learningObjects: any = [];
-  lastPage=8;
-  currPage = 1;
+  lastPage: number;
+  currPage: number;
 
   constructor(
     private toaster: ToastrOvenService,
@@ -35,6 +35,7 @@ export class CyberskillsDashboardComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    this.currPage = 1;
     this.toaster.init(this.view);
     await this.loadLearningObjects();
   }
@@ -62,7 +63,7 @@ export class CyberskillsDashboardComponent implements OnInit {
   }
 
   async loadLearningObjects(){
-    this.learningObjects = (await this.learningObjectService.getLearningObjects(
+    const objects = await this.learningObjectService.getLearningObjects(
       {
         collection: 'cyberskills2work',
         limit: 20,
@@ -70,7 +71,9 @@ export class CyberskillsDashboardComponent implements OnInit {
         sortType: 1,
         orderBy: OrderBy.Date,
         currPage: this.currPage
-      })).learningObjects;
+      });
+    this.lastPage = Math.ceil(objects.total / 20 );  // calc # of pages needed for total learning objects
+    this.learningObjects = objects.learningObjects;
     this.learningObjects.forEach(async (lo) => {
       const ratings = await this.getRatings(lo);
       if(ratings) {
@@ -80,9 +83,6 @@ export class CyberskillsDashboardComponent implements OnInit {
         lo.metrics = await this.metricsService.getLearningObjectMetrics(lo.cuid);
       }
     });
-
-
-    console.log(this.learningObjects);
   }
 
   async changeLearningObjectsPage(pageNumber: number) {
