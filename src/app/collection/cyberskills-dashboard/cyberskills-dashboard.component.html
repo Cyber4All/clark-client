@@ -1,12 +1,13 @@
 <div class="container">
     <h1 class="title">CyberSkills2Work Collection Statistics Dashboard</h1>
-  
+
     <clark-ncyte-stats [collectionName]="'cyberskills2work'"></clark-ncyte-stats>
 
     <div class="downloads-header">
       <h2>All Learning Objects</h2>
       <div class="buttons">
-        <button id="status" class="button neutral">Status <i class="fa fa-caret-down"></i></button>
+        <clark-cyberskills2work-filters (filterQuery)="getLearningObjects($event)"></clark-cyberskills2work-filters>
+
         <button id="status" class="button neutral">Length <i class="fa fa-caret-down"></i></button>
         <button class="button good" (click)="onDownload()">Download a CSV of All Learning Objects</button>
       </div>
@@ -22,7 +23,7 @@
         <span>Rating <i class="fa fa-caret-down"></i></span>
         <span></span>
       </div>
-    
+
       <div *ngFor="let learningObject of learningObjects" class="row">
         <!-- Status -->
         <div class="status" tabindex="0" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status">
@@ -35,7 +36,7 @@
           <span *ngIf="learningObject.status === 'accepted_minor'"><i class="fas fa-check-double"></i></span>
           <span *ngIf="learningObject.status === 'accepted_major'"><i class="fas fa-check"></i></span>
         </div>
-    
+
         <!-- Length -->
         <div class="info">
           <clark-details-splash-length [length]="learningObject.length"></clark-details-splash-length>
@@ -43,29 +44,29 @@
 
         <!-- Name -->
         <div class="info name">{{ learningObject.name }}</div>
-    
+
         <!-- Last Updated -->
         <div class="info date">
           {{ learningObject.date | date:'MM/dd/yyyy' }}
         </div>
-    
+
         <!-- Downloads (only if released) -->
         <div class="info">
           <span *ngIf="learningObject.status === 'released'">{{ learningObject.metrics.downloads }}</span>
         </div>
-    
+
         <!-- Rating (only if released) -->
         <div class="info">
           <clark-rating-stars *ngIf="learningObject.status === 'released'" [rating]="learningObject.rating ? learningObject.rating : 0" color="gold"></clark-rating-stars>
         </div>
-    
+
         <!-- Actions -->
         <div class="info">
           <a [routerLink]="['/details', learningObject.author.username, learningObject.cuid]" class="details-link">View Details ></a>
         </div>
       </div>
     </div>
-    
+
       <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"></clark-pagination>
 
 
@@ -86,4 +87,4 @@
     </div> -->
   </div>
   <cube-footer></cube-footer>
-  
+

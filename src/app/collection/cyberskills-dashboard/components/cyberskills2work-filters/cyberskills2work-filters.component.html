@@ -1,0 +1,35 @@
+<ng-container>
+  <button
+    #toggleFilterMenuElement
+    class="button neutral filters-button"
+    (click)="toggleStatusMenu(true)"
+    [ngClass]="{ 'filters-button--down': statusMenuActive }"
+  >
+    <span class="filter-badge" *ngIf="filters.size">
+      {{ filters.size }}
+    </span>
+    <span *ngIf="!filters.size">
+      All
+    </span>
+    Statuses <i class="fas fa-chevron-down"></i>
+  </button>
+  <clark-context-menu
+    *ngIf="statusMenuActive"
+    class="filter-status"
+    [anchor]="toggleFilterMenuElement"
+    [offset]="{ top: 10, left: 10 }"
+    (close)="toggleStatusMenu(false)"
+  >
+    <div #contextMenu id="contextMenu" class="filter-status__container">
+      <ul>
+        <li
+          *ngFor="let status of statuses"
+          [ngClass]="status"
+          (click)="toggleStatusFilter([status])">
+            <div *ngIf="filters.has(status)" class="indicator"></div>
+            <i [ngClass]="getStatusIcon(status)"></i> {{ status.replace('_', ' ') | titlecase }}
+        </li>
+      </ul>
+    </div>
+  </clark-context-menu>
+</ng-container>
