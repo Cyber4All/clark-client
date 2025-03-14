@@ -9,6 +9,7 @@ import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dash
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
 import { NcyteDashboardGuard } from '../core/client-module/ncyte-dashboard.guard';
 import { CyberskillsDashboardComponent } from './cyberskills-dashboard/cyberskills-dashboard.component';
+import { CyberSkillsGuard } from '../core/client-module/cyber-skills.guard';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const collection_routes: Routes = [
@@ -33,7 +34,7 @@ const collection_routes: Routes = [
     {
         path: 'cyberskills2work/dashboard',
         component: CyberskillsDashboardComponent,
-        // canActivate: [CyberSkillsGuard]
+        canActivate: [CyberSkillsGuard]
     },
     {
         path: '502-project',
