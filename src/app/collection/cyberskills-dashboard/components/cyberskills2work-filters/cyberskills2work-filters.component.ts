@@ -6,17 +6,14 @@ import {
   Input,
   Output,
   ViewChild,
-  ChangeDetectorRef,
 } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import { TopicsService } from '../../../../core/learning-object-module/topics/topics.service';
 import {
   FilterQuery,
   OrderBy,
-  Query,
   SortType,
 } from '../../../../interfaces/query';
 
@@ -50,9 +47,7 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
   lengthMenuActive: boolean;
   sortDateMenuActive: boolean;
 
-  constructor(
-    private route: ActivatedRoute,
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   async ngOnInit() {
     // add the 'all' option into the list of statuses
