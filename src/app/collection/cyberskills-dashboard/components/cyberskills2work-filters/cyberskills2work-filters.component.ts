@@ -22,6 +22,7 @@ import {
   templateUrl: './cyberskills2work-filters.component.html',
   styleUrls: [
     '../../../../admin/components/filter-search/filter-search.component.scss',
+    '../../cyberskills-dashboard.component.scss'
   ],
 })
 export class Cyberskills2WorkFiltersComponent implements OnInit {
