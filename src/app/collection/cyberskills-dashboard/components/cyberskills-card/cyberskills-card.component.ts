@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class CyberskillsCardComponent implements OnInit {
   @Input() learningObject: any;
-  @Input() statusDescription: string = ''; 
+  @Input() statusDescription = '';
 
   constructor() { }
 
