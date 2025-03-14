@@ -1,6 +1,6 @@
-<div class="row">
+<mat-card class="row">
   <!-- Status -->
-  <div class="status" tabindex="0"
+  <div class="status" data-label="Status" tabindex="0"
     [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription"
     [ngClass]="learningObject.status">
     <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
@@ -14,32 +14,38 @@
   </div>
 
   <!-- Length -->
-  <div class="info">
+  <div class="info" data-label="Length">
     <clark-details-splash-length [length]="learningObject.length"></clark-details-splash-length>
   </div>
 
   <!-- Name -->
-  <div class="info name">{{ learningObject.name }}</div>
+  <div class="info name" data-label="Name">
+    {{ learningObject.name }}
+  </div>
 
   <!-- Last Updated -->
-  <div class="info date">
+  <div class="info date" data-label="Last Updated">
     {{ learningObject.date | date:'MM/dd/yyyy' }}
   </div>
 
   <!-- Downloads (only if released) -->
-  <div class="info">
-    <span *ngIf="learningObject.status === 'released'">{{ learningObject.metrics.downloads }}</span>
+  <div class="info" data-label="Downloads">
+    <span *ngIf="learningObject.status === 'released'">
+      {{ learningObject.metrics.downloads }}
+    </span>
   </div>
 
   <!-- Rating (only if released) -->
-  <div class="info">
+  <div class="info" data-label="Rating">
     <clark-rating-stars *ngIf="learningObject.status === 'released'"
-      [rating]="learningObject.rating ? learningObject.rating : 0" color="gold"></clark-rating-stars>
+      [rating]="learningObject.rating ? learningObject.rating : 0" color="gold">
+    </clark-rating-stars>
   </div>
 
   <!-- Actions -->
-  <div class="info">
-    <a [routerLink]="['/details', learningObject.author.username, learningObject.cuid]" class="details-link">View
-      Details ></a>
+  <div class="info" data-label="Actions">
+    <a [routerLink]="['/details', learningObject.author.username, learningObject.cuid]" class="details-link">
+      View Details &gt;
+    </a>
   </div>
-</div>
+</mat-card>

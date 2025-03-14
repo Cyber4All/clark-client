@@ -7,40 +7,19 @@
   align-items: center;
   padding: 8px;
   border-bottom: 1px solid #ddd;
+
+  &:nth-child(even) {
+    background-color: #fafafa;
+  }
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
 }
 
 .status {
   text-align: center;
   font-size: 1.2rem;
-}
-
-.info {
-  padding: 4px;
-}
-
-.name {
-  font-weight: bold;
-}
-
-.date {
-  color: #666;
-}
-
-.details-link {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-}
-
-.row:nth-child(even) {
-  background-color: #fafafa;
-}
-
-.row:hover {
-  background-color: #f0f0f0;
-}
-
-.status {
   width: 32px;
   height: 32px;
   color: white;
@@ -87,3 +66,40 @@
   }
 }
 
+.info {
+  padding: 4px;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.date {
+  color: #666;
+}
+
+.details-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+/* Instead of a 7-column grid, collapse everything vertically as blocks */
+@media (max-width: 768px) {
+  .row {
+    display: block;
+  }
+  
+  .row > .info {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eee;
+    padding: 8px 0;
+  }
+
+  .row > .info::before {
+    content: attr(data-label) ": ";
+    font-weight: bold;
+    margin-right: 8px;
+  }
+}

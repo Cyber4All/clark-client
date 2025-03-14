@@ -97,3 +97,9 @@
   background-color: #f5f5f5;
   text-align: left;
 }
+
+@media (max-width: 768px) {
+  .header {
+    display: none;
+  }
+}
