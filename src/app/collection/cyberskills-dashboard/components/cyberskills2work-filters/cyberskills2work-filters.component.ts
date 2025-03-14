@@ -52,7 +52,6 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
