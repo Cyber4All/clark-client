@@ -6,7 +6,7 @@ import { ToastrOvenService } from '../../shared/modules/toaster/notification.ser
 import { LearningObjectRatings, RatingService } from '../../core/rating-module/rating.service';
 import { SearchService } from '../../core/learning-object-module/search/search.service';
 import { MetricService } from '../../core/metric-module/metric.service';
-import { FilterQuery, OrderBy } from '../../interfaces/query';
+import { FilterQuery, OrderBy, SortType } from '../../interfaces/query';
 
 @Component({
   selector: 'clark-cyberskills-dashboard',
@@ -66,8 +66,8 @@ export class CyberskillsDashboardComponent implements OnInit {
         limit: 20,
         status: this.filterQuery?.status || [],
         length: this.filterQuery?.length || [],
-        sortType: 1,
-        orderBy: OrderBy.Date
+        sortType: this.filterQuery?.sortType || SortType.Ascending,
+        orderBy: this.filterQuery?.orderBy || OrderBy.Date
       })).learningObjects;
   }
 

@@ -8,10 +8,7 @@
     <span class="filter-badge" *ngIf="statusFilters.size">
       {{ statusFilters.size }}
     </span>
-    <span *ngIf="!statusFilters.size">
-      All
-    </span>
-    Statuses <i class="fas fa-chevron-down"></i>
+    Status <i class="fas fa-chevron-down"></i>
   </button>
   <clark-context-menu
     *ngIf="statusMenuActive"
@@ -42,10 +39,7 @@
     <span class="filter-badge" *ngIf="lengthFilters.size">
       {{ lengthFilters.size }}
     </span>
-    <span *ngIf="!lengthFilters.size">
-      All
-    </span>
-    Lengths <i class="fas fa-chevron-down"></i>
+    Length <i class="fas fa-chevron-down"></i>
   </button>
   <clark-context-menu
     *ngIf="lengthMenuActive"
@@ -62,6 +56,41 @@
           (click)="toggleLengthFilter([length])">
             <div *ngIf="lengthFilters.has(length)" class="indicator"></div>
             {{ length.replace('_', ' ') | titlecase }}
+        </li>
+      </ul>
+    </div>
+  </clark-context-menu>
+
+  <button
+    #toggleSortDateMenuAnchor
+    class="button neutral filters-button"
+    (click)="toggleSortDateMenu(true)"
+    [ngClass]="{ 'filters-button--down': sortDateMenuActive }"
+  >
+    Sort by last updated <i class="fas fa-chevron-down"></i>
+  </button>
+  <clark-context-menu
+    *ngIf="sortDateMenuActive"
+    class="sort-dates"
+    [anchor]="toggleSortDateMenuAnchor"
+    [offset]="{ top: 10, left: 10 }"
+    (close)="toggleSortDateMenu(false)"
+  >
+    <div #contextMenu id="contextMenu" class="filter-status__container">
+      <ul>
+        <!--
+          TODO: Find a way to display these programatically, just in case someone
+                thinks that -1 should be ascending and vice versa...
+        -->
+        <li
+          (click)="setLastUpdatedSort(1)">
+          <span *ngIf="selectedSortType === 1" class="indicator"></span>
+
+          Ascending
+        </li>
+        <li (click)="setLastUpdatedSort(-1)">
+          <span *ngIf="selectedSortType === -1" class="indicator"></span>
+          Descending
         </li>
       </ul>
     </div>

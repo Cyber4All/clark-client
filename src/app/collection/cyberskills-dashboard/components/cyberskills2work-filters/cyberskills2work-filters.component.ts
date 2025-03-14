@@ -13,20 +13,31 @@ import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { TopicsService } from '../../../../core/learning-object-module/topics/topics.service';
-import { FilterQuery } from '../../../../interfaces/query';
-
+import {
+  FilterQuery,
+  OrderBy,
+  Query,
+  SortType,
+} from '../../../../interfaces/query';
 
 @Component({
   selector: 'clark-cyberskills2work-filters',
   templateUrl: './cyberskills2work-filters.component.html',
-  styleUrls: ['../../../../admin/components/filter-search/filter-search.component.scss']
+  styleUrls: [
+    '../../../../admin/components/filter-search/filter-search.component.scss',
+  ],
 })
 export class Cyberskills2WorkFiltersComponent implements OnInit {
   filtersModified$: Subject<void> = new Subject();
   statusFilters: Set<string> = new Set();
   lengthFilters: Set<string> = new Set();
+
+  selectedOrderBy: OrderBy;
+  selectedSortType: SortType;
+
   statuses = Object.values(LearningObject.Status);
   lengths = Object.values(LearningObject.Length);
+  sortValues = Object.values(SortType);
 
   @Input() adminOrEditor: boolean;
   @Input() showStatus: boolean;
@@ -37,10 +48,11 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
 
   statusMenuActive: boolean;
   lengthMenuActive: boolean;
+  sortDateMenuActive: boolean;
 
   constructor(
     private route: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
@@ -50,7 +62,6 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
     this.statuses = this.statuses.filter(
       (s) => !['rejected', 'unreleased'].includes(s.toLowerCase()),
     );
-    this.statusMenuActive = false;
 
     //check for params in the query and add them to the filter dropdown bars
     const qParams = this.route.parent?.snapshot.queryParamMap;
@@ -60,6 +71,12 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
     if (queryStatuses) {
       this.toggleStatusFilter(queryStatuses);
     }
+
+    this.statusMenuActive = false;
+    this.lengthMenuActive = false;
+    this.sortDateMenuActive = false;
+
+    this.filter();
   }
 
   /**
@@ -74,6 +91,13 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
    */
   toggleLengthMenu(value: boolean) {
     this.lengthMenuActive = value;
+  }
+
+  /**
+   * Hide or show the sort date dropdown menu
+   */
+  toggleSortDateMenu(value: boolean) {
+    this.sortDateMenuActive = value;
   }
 
   /**
@@ -115,6 +139,17 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
   }
 
   /**
+   * Set the sort value for last updated/created
+   * @param sort the sort value for ascending or descending
+   */
+  setLastUpdatedSort(sort: SortType) {
+    this.selectedOrderBy = OrderBy.Date;
+    this.selectedSortType = sort;
+
+    this.filter();
+  }
+
+  /**
    * Set the sort value for download count
    * @param {SortType} sort the sort value for ascending or descending
    */
@@ -128,12 +163,15 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
 
   filter() {
     // Emit the selected filters
-    const filters = {
-       status: Array.from(this.statusFilters || []),
-       length: Array.from(this.lengthFilters || []),
-      };
-      this.filterQuery.emit(filters);
-   }
+    const filters: FilterQuery = {
+      status: Array.from(this.statusFilters || []),
+      length: Array.from(this.lengthFilters || []),
+      orderBy: this.selectedOrderBy,
+      sortType: this.selectedSortType,
+    };
+
+    this.filterQuery.emit(filters);
+  }
 
   /**
    * Remove all applied status filters
