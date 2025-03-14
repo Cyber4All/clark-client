@@ -22,7 +22,7 @@ export class CyberskillsDashboardComponent implements OnInit {
   name = this.authValidationService.getInputFormControl('text');
   learningObjects: any = [];
   lastPage: number;
-  currPage: number = 1;
+  currPage = 1;
 
   constructor(
     private toaster: ToastrOvenService,
