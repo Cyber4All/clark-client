@@ -114,6 +114,17 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
     this.filter();
   }
 
+  /**
+   * Set the sort value for download count
+   * @param {SortType} sort the sort value for ascending or descending
+   */
+  setDownloadCountSort(sort: SortType) {}
+
+  /**
+   * Set the sort value for rating.
+   * @param {SortType} sort the sort value for ascending or descending
+   */
+  setRatingSort(sort: SortType) {}
 
   filter() {
     // Emit the selected filters
