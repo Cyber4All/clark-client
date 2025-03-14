@@ -23,8 +23,10 @@ import { FilterQuery } from '../../../../interfaces/query';
 })
 export class Cyberskills2WorkFiltersComponent implements OnInit {
   filtersModified$: Subject<void> = new Subject();
-  filters: Set<string> = new Set();
+  statusFilters: Set<string> = new Set();
+  lengthFilters: Set<string> = new Set();
   statuses = Object.values(LearningObject.Status);
+  lengths = Object.values(LearningObject.Length);
 
   @Input() adminOrEditor: boolean;
   @Input() showStatus: boolean;
@@ -34,6 +36,7 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
   @ViewChild('searchInput') searchInput: ElementRef;
 
   statusMenuActive: boolean;
+  lengthMenuActive: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,16 +63,23 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
   }
 
   /**
-   * Hide or show the filter dropdown menu
+   * Hide or show the status filter dropdown menu
    */
   toggleStatusMenu(value: boolean) {
     this.statusMenuActive = value;
   }
 
   /**
-   * Add or remove filter from filters list
+   * Hide or show the length filter dropdown menu
+   */
+  toggleLengthMenu(value: boolean) {
+    this.lengthMenuActive = value;
+  }
+
+  /**
+   * Add or remove filter from status filter list
    *
-   * @param filter {string} the filter to be toggled
+   * @param {string} filter the filter to be toggled
    */
   toggleStatusFilter(filters: string[]) {
     for (const filter of filters) {
@@ -79,20 +89,37 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
         return;
       }
 
-      if (!this.filters.has(filter)) {
-        this.filters.add(filter);
+      if (!this.statusFilters.has(filter)) {
+        this.statusFilters.add(filter);
       } else {
-        this.filters.delete(filter);
+        this.statusFilters.delete(filter);
       }
     }
     this.filter();
   }
 
+  /**
+   * Add or remove length filter from length filter list
+   *
+   * @param {string} filter the filter to be toggled
+   */
+  toggleLengthFilter(filters: string[]) {
+    for (const filter of filters) {
+      if (!this.lengthFilters.has(filter)) {
+        this.lengthFilters.add(filter);
+      } else {
+        this.lengthFilters.delete(filter);
+      }
+    }
+    this.filter();
+  }
+
+
   filter() {
     // Emit the selected filters
     const filters = {
-       status:  Array.from(this.filters || []),
-       length: []
+       status: Array.from(this.statusFilters || []),
+       length: Array.from(this.lengthFilters || []),
       };
       this.filterQuery.emit(filters);
    }
@@ -101,7 +128,15 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
    * Remove all applied status filters
    */
   clearStatusFilters() {
-    this.filters.clear();
+    this.statusFilters.clear();
+    this.filter();
+  }
+
+  /**
+   * Remove all applied length filters
+   */
+  clearLengthFilters() {
+    this.lengthFilters.clear();
     this.filter();
   }
 
@@ -111,7 +146,7 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
    * @memberof FilterSearchComponent
    */
   clearAllFilters() {
-    this.filters.clear();
+    this.statusFilters.clear();
     this.clearAll.emit();
   }
 

@@ -39,13 +39,7 @@ export class CyberskillsDashboardComponent implements OnInit {
     this.toaster.init(this.view);
 
     // Do an initial fetch of learning objects with pre-set statuses.
-    this.learningObjects = (await this.learningObjectService.getLearningObjects(
-      { collection: 'cyberskills2work',
-        limit: 20,
-        status: ['released', 'waiting', 'proofing', 'review', 'accepted_major'],
-        sortType: 1,
-        orderBy: OrderBy.Date
-      })).learningObjects;
+    this.getLearningObjects();
 
     this.learningObjects.forEach(async (lo) => {
       const ratings = await this.getRatings(lo);
@@ -62,12 +56,16 @@ export class CyberskillsDashboardComponent implements OnInit {
    * Get a new list of learning objects with filterQuery object data.
    * @param {FilterQuery} ev New data from filter pickers.
    */
-  async getLearningObjects(ev: FilterQuery) {
-    this.filterQuery = ev;
+  async getLearningObjects(ev?: FilterQuery) {
+    if (ev) {
+      this.filterQuery = ev;
+    }
+
     this.learningObjects =(await this.learningObjectService.getLearningObjects(
       { collection: 'cyberskills2work',
         limit: 20,
-        status: this.filterQuery.status,
+        status: this.filterQuery?.status || [],
+        length: this.filterQuery?.length || [],
         sortType: 1,
         orderBy: OrderBy.Date
       })).learningObjects;
