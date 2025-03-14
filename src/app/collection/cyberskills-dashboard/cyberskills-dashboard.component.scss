@@ -30,7 +30,6 @@
   padding: 10px 20px; // Adds spacing
 }
 
-
 .downloads-body {
   display: flex;
   flex-direction: column;
@@ -84,7 +83,8 @@
 #status {
   margin-right: 10px;
 }
-.header, .row {
+
+.header {
   display: grid;
   grid-template-columns: 70px 100px 2fr 1fr 1fr 1fr 1fr;
   align-items: center;
@@ -97,83 +97,3 @@
   background-color: #f5f5f5;
   text-align: left;
 }
-
-.status {
-  text-align: center;
-  font-size: 1.2rem;
-}
-
-.info {
-  padding: 4px;
-}
-
-.name {
-  font-weight: bold;
-}
-
-.date {
-  color: #666;
-}
-
-.details-link {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-}
-
-.row:nth-child(even) {
-  background-color: #fafafa;
-}
-
-.row:hover {
-  background-color: #f0f0f0;
-}
-
-
-.status {
-  width: 32px;
-  height: 32px;
-  color: white;
-  font-size: $normal;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $status_unreleased;
-  transition: all 0.2s ease;
-  box-shadow: none;
-  margin: 0 10px;
-
-  &.waiting {
-    background: $status_waiting;
-  }
-
-  &.review {
-    background: $status_review;
-  }
-
-  &.accepted_minor {
-    background: $status_accepted_minor;
-  }
-
-  &.accepted_major {
-    background: $status_accepted_major;
-  }
-
-  &.proofing {
-    background: $status_proofing;
-  }
-
-  &.released {
-    background: $status_released;
-  }
-
-  &.rejected {
-    background: $status_rejected;
-  }
-
-  &:hover {
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
-  }
-}
-

@@ -40,6 +40,7 @@ import { CyberskillsDashboardComponent } from './cyberskills-dashboard/cyberskil
 import { UsageStatsModule } from '../cube/usage-stats/usage-stats.module';
 import { DetailsModule } from '../cube/details/details.module';
 import { LibraryModule } from '../cube/library/library.module';
+import { CyberskillsCardComponent } from './cyberskills-dashboard/components/cyberskills-card/cyberskills-card.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { LibraryModule } from '../cube/library/library.module';
     TitleComponent,
     FeaturedComponent,
     NcyteDashboardComponent,
-    CyberskillsDashboardComponent
+    CyberskillsDashboardComponent,
+    CyberskillsCardComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
