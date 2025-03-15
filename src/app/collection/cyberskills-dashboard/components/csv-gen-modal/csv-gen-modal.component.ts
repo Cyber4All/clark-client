@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { ReportService } from '../../../../core/report-module/report.service';
+import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-csv-gen-modal',
@@ -14,7 +16,11 @@ export class CsvGenModalComponent implements OnInit {
   filterSelected = false;
   showModal = true;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private toaster: ToastrOvenService,
+    private reportService: ReportService,
+  ) {}
 
   ngOnInit(): void {
     this.range = this.fb.group({
@@ -28,7 +34,28 @@ export class CsvGenModalComponent implements OnInit {
     this.filterSelected = false;
   }
 
-  generateCsv(): void {}
+  onDownload(): void {
+    if (!this.range.value.start && !this.range.value.end) {
+      this.toaster.error('Error!', 'Please enter a date range.');
+      return;
+    }
+
+    const start = `${this.range.value.start.getFullYear()}-${this.range.value.start.getMonth() + 1}-${this.range.value.start.getDate()}`;
+    const end = `${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`;
+
+    this.reportService.generateCollectionReport(
+      ['cyberskills2work'],
+      `cyberskills2work_from_${start}_to_${end}`,
+      {
+        start: start,
+        end: end,
+      },
+    );
+    this.toaster.alert(
+      "We're working on it!",
+      'Please wait while we generate the report.',
+    );
+  }
 
   onCancel(): void {
     this.closeModal();
