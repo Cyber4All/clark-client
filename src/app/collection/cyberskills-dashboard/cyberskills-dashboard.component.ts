@@ -6,7 +6,7 @@ import { ToastrOvenService } from '../../shared/modules/toaster/notification.ser
 import { LearningObjectRatings, RatingService } from '../../core/rating-module/rating.service';
 import { SearchService } from '../../core/learning-object-module/search/search.service';
 import { MetricService } from '../../core/metric-module/metric.service';
-import { OrderBy } from '../../interfaces/query';
+import { FilterQuery, OrderBy, SortType } from '../../interfaces/query';
 
 @Component({
   selector: 'clark-cyberskills-dashboard',
@@ -21,6 +21,7 @@ export class CyberskillsDashboardComponent implements OnInit {
   name = this.authValidationService.getInputFormControl('text');
 
   learningObjects: any = [];
+  filterQuery: FilterQuery = {};
 
   lastPage=8;
   currPage = 3;
@@ -36,13 +37,10 @@ export class CyberskillsDashboardComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.toaster.init(this.view);
-    this.learningObjects = (await this.learningObjectService.getLearningObjects(
-      { collection: 'cyberskills2work',
-        limit: 20,
-        status: ['released', 'waiting', 'proofing', 'review', 'accepted_major'],
-        sortType: 1,
-        orderBy: OrderBy.Date
-      })).learningObjects;
+
+    // Do an initial fetch of learning objects with pre-set statuses.
+    this.getLearningObjects();
+
     this.learningObjects.forEach(async (lo) => {
       const ratings = await this.getRatings(lo);
       if(ratings) {
@@ -52,6 +50,25 @@ export class CyberskillsDashboardComponent implements OnInit {
         lo.metrics = await this.metricsService.getLearningObjectMetrics(lo.cuid);
       }
     });
+  }
+
+  /**
+   * Get a new list of learning objects with filterQuery object data.
+   * @param {FilterQuery} ev New data from filter pickers.
+   */
+  async getLearningObjects(ev?: FilterQuery) {
+    if (ev) {
+      this.filterQuery = ev;
+    }
+
+    this.learningObjects =(await this.learningObjectService.getLearningObjects(
+      { collection: 'cyberskills2work',
+        limit: 20,
+        status: this.filterQuery?.status || [],
+        length: this.filterQuery?.length || [],
+        sortType: this.filterQuery?.sortType || SortType.Ascending,
+        orderBy: this.filterQuery?.orderBy || OrderBy.Date
+      })).learningObjects;
   }
 
   onDownload(): void {
