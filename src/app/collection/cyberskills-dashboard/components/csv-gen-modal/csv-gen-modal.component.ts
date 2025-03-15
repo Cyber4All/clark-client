@@ -51,7 +51,7 @@ export class CsvGenModalComponent implements OnInit {
         end: end,
       },
     );
-    
+
     this.toaster.alert(
       'We\'re working on it!',
       'Please wait while we generate the report.',
