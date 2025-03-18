@@ -16,14 +16,14 @@ import {
 } from '../../../../interfaces/query';
 
 @Component({
-  selector: 'clark-cyberskills2work-filters',
-  templateUrl: './cyberskills2work-filters.component.html',
+  selector: 'clark-cyberskills-filters',
+  templateUrl: './cyberskills-filters.component.html',
   styleUrls: [
     '../../../../admin/components/filter-search/filter-search.component.scss',
     '../../cyberskills-dashboard.component.scss'
   ],
 })
-export class Cyberskills2WorkFiltersComponent implements OnInit {
+export class CyberskillsFiltersComponent implements OnInit {
   statusFilters: Set<string> = new Set();
   lengthFilters: Set<string> = new Set();
 
