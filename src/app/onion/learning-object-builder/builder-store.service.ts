@@ -571,17 +571,19 @@ export class BuilderStore {
     // validateLearningObject here over validateLearningOutcome to remove a "must contain one valid outcome" error if it exists
     this.validator.validateLearningObject(this.learningObject, this.outcomes);
 
-    this.saveOutcome(
-      {
-        id: outcome.id,
-        bloom: outcome.bloom,
-        verb: outcome.verb,
-        text: outcome.text,
-        serviceId: (outcome as Partial<LearningOutcome> & { serviceId?: string })
-          .serviceId
-      },
-      true
-    );
+    if(outcome.bloom && outcome.verb && outcome.text) {
+      this.saveOutcome(
+        {
+          id: outcome.id,
+          bloom: outcome.bloom,
+          verb: outcome.verb,
+          text: outcome.text,
+          serviceId: (outcome as Partial<LearningOutcome> & { serviceId?: string })
+            .serviceId
+        },
+        true
+      );
+    }
     return outcome;
   }
 
@@ -1094,7 +1096,6 @@ export class BuilderStore {
    * @memberof BuilderStore
    */
   private createLearningOutcome(newOutcome: LearningOutcome) {
-    this.serviceInteraction$.next(true);
 
     // TODO: If the learning object id does not exist yet (i.e Basic Info not
     // filled out yet) then don't try and create the learning outcome yet.
@@ -1103,8 +1104,12 @@ export class BuilderStore {
     // If the outcome does not have a verb or outcome text then don't try
     // and create the learning outcome yet.
     if (!newOutcome.verb || !newOutcome.text) {
+      this.serviceInteraction$.next(false);
       return;
     }
+
+    // Now that we know we're actually making a trip to the db let's set this true
+    this.serviceInteraction$.next(true);
 
     this.outcomeService
       .addLearningOutcome(this.learningObject.id, newOutcome)
@@ -1159,6 +1164,7 @@ export class BuilderStore {
         this.serviceInteraction$.next(false);
       })
       .catch(e => {
+        this.serviceInteraction$.next(null);
         this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME);
       });
   }
