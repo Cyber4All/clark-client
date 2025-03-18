@@ -522,7 +522,10 @@ export class BuilderStore {
     this.outcomes.set(outcome.id, outcome);
     this.outcomeEvent.next(this.outcomes);
 
-    this.validator.validateLearningOutcome(outcome);
+    // Only validate if the id is a mongo id
+    if(outcome.id.length === 24) {
+      this.validator.validateLearningOutcome(outcome);
+    }
 
     return outcome.id;
   }
