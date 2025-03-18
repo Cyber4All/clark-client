@@ -6,7 +6,7 @@
     <div class="downloads-header">
       <h2>All Learning Objects</h2>
       <div class="buttons">
-        <clark-cyberskills2work-filters class="buttons" (filterQuery)="getLearningObjects($event)"></clark-cyberskills2work-filters>
+        <clark-cyberskills2work-filters class="buttons" (filterQuery)="getLearningObjects($event)" (clearAll)="getLearningObjects({})"></clark-cyberskills2work-filters>
         <button class="button good" (click)="onDownload()">Download a CSV of All Learning Objects</button>
       </div>
     </div>
@@ -55,7 +55,7 @@
 
         <!-- Rating (only if released) -->
         <div class="info">
-          <clark-rating-stars *ngIf="learningObject.status === 'released'" [rating]="learningObject.ratings ? learningObject.ratings : 0" color="gold"></clark-rating-stars>
+          <clark-rating-stars *ngIf="learningObject.status === 'released'" [rating]="learningObject.averageRating ? learningObject.averageRating : 0" color="gold"></clark-rating-stars>
         </div>
 
         <!-- Actions -->

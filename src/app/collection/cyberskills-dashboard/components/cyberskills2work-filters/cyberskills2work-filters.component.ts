@@ -30,7 +30,6 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
   selectedOrderBy: OrderBy;
   selectedLastUpdatedSortType?: SortType;
   selectedRatingSortType?: SortType;
-  selectedDownloadsSortType?: SortType;
 
   statuses = Object.values(LearningObject.Status);
   lengths = Object.values(LearningObject.Length);
@@ -146,24 +145,12 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
     this.selectedOrderBy = OrderBy.Date;
     this.selectedLastUpdatedSortType = sort;
 
-    // Un-set the rating and downloads sort value
-    this.selectedRatingSortType = undefined;
-    this.selectedDownloadsSortType = undefined;
-
-    this.filter();
-  }
-
-  /**
-   * Set the sort value for download count
-   * @param {SortType} sort the sort value for ascending or descending
-   */
-  setDownloadCountSort(sort: SortType) {
-    // Un-set the last updated and rating sort value
-    this.selectedLastUpdatedSortType = undefined;
+    // Un-set the rating sort value
     this.selectedRatingSortType = undefined;
 
     this.filter();
   }
+
 
   /**
    * Set the sort value for rating.
@@ -173,9 +160,8 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
     this.selectedOrderBy = OrderBy.Rating;
     this.selectedRatingSortType = sort;
 
-    // Un-set the last updated and downloads sort value
+    // Un-set the last updated sort value
     this.selectedLastUpdatedSortType = undefined;
-    this.selectedDownloadsSortType = undefined;
 
     this.filter();
   }
@@ -216,6 +202,9 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
   clearAllFilters() {
     this.statusFilters.clear();
     this.lengthFilters.clear();
+    this.selectedLastUpdatedSortType = undefined;
+    this.selectedRatingSortType = undefined;
+
     this.clearAll.emit();
   }
 
