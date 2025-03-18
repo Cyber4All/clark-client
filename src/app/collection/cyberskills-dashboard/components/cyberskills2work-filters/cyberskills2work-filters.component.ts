@@ -31,7 +31,9 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
   lengthFilters: Set<string> = new Set();
 
   selectedOrderBy: OrderBy;
-  selectedSortType: SortType;
+  selectedLastUpdatedSortType: SortType;
+  selectedRatingSortType: SortType;
+  selectedDownloadsSortType: SortType;
 
   statuses = Object.values(LearningObject.Status);
   lengths = Object.values(LearningObject.Length);
@@ -47,6 +49,8 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
   statusMenuActive: boolean;
   lengthMenuActive: boolean;
   sortDateMenuActive: boolean;
+  sortRatingMenuActive: boolean;
+  sortDownloadsMenuActive: boolean;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -70,8 +74,7 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
     this.statusMenuActive = false;
     this.lengthMenuActive = false;
     this.sortDateMenuActive = false;
-
-    this.filter();
+    this.sortRatingMenuActive = false;
   }
 
   /**
@@ -93,6 +96,13 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
    */
   toggleSortDateMenu(value: boolean) {
     this.sortDateMenuActive = value;
+  }
+
+  /**
+   * Hide or show the sort rating dropdown menu
+   */
+  toggleSortRatingMenu(value: boolean) {
+    this.sortRatingMenuActive = value;
   }
 
   /**
@@ -139,7 +149,11 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
    */
   setLastUpdatedSort(sort: SortType) {
     this.selectedOrderBy = OrderBy.Date;
-    this.selectedSortType = sort;
+    this.selectedLastUpdatedSortType = sort;
+
+    // Un-set the rating and downloads sort value
+    this.selectedRatingSortType = undefined;
+    this.selectedDownloadsSortType = undefined;
 
     this.filter();
   }
@@ -148,13 +162,28 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
    * Set the sort value for download count
    * @param {SortType} sort the sort value for ascending or descending
    */
-  setDownloadCountSort(sort: SortType) {}
+  setDownloadCountSort(sort: SortType) {
+    // Un-set the last updated and rating sort value
+    this.selectedLastUpdatedSortType = undefined;
+    this.selectedRatingSortType = undefined;
+
+    this.filter();
+  }
 
   /**
    * Set the sort value for rating.
    * @param {SortType} sort the sort value for ascending or descending
    */
-  setRatingSort(sort: SortType) {}
+  setRatingSort(sort: SortType) {
+    this.selectedOrderBy = OrderBy.Rating;
+    this.selectedRatingSortType = sort;
+
+    // Un-set the last updated and downloads sort value
+    this.selectedLastUpdatedSortType = undefined;
+    this.selectedDownloadsSortType = undefined;
+
+    this.filter();
+  }
 
   filter() {
     // Emit the selected filters
@@ -162,7 +191,7 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
       status: Array.from(this.statusFilters || []),
       length: Array.from(this.lengthFilters || []),
       orderBy: this.selectedOrderBy,
-      sortType: this.selectedSortType,
+      sortType: this.selectedLastUpdatedSortType || this.selectedRatingSortType,
     };
 
     this.filterQuery.emit(filters);

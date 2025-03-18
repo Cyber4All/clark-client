@@ -39,7 +39,7 @@
 
   <button #toggleSortDateMenuAnchor class="button neutral filters-button" (click)="toggleSortDateMenu(true)"
     [ngClass]="{ 'filters-button--down': sortDateMenuActive }">
-    Sort by last updated <i class="fas fa-chevron-down"></i>
+    Last Updated <i class="fas fa-chevron-down"></i>
   </button>
   <clark-context-menu *ngIf="sortDateMenuActive" class="sort-dates" [anchor]="toggleSortDateMenuAnchor"
     [offset]="{ top: 10, left: 10 }" (close)="toggleSortDateMenu(false)">
@@ -50,12 +50,36 @@
                 thinks that -1 should be ascending and vice versa...
         -->
         <li (click)="setLastUpdatedSort(1)">
-          <span *ngIf="selectedSortType === 1" class="indicator"></span>
+          <span *ngIf="selectedLastUpdatedSortType === 1" class="indicator"></span>
 
           Ascending
         </li>
         <li (click)="setLastUpdatedSort(-1)">
-          <span *ngIf="selectedSortType === -1" class="indicator"></span>
+          <span *ngIf="selectedLastUpdatedSortType === -1" class="indicator"></span>
+          Descending
+        </li>
+      </ul>
+    </div>
+  </clark-context-menu>
+  <button #toggleSortRatingMenuAnchor class="button neutral filters-button" (click)="toggleSortRatingMenu(true)"
+    [ngClass]="{ 'filters-button--down': sortRatingMenuActive }">
+    Rating <i class="fas fa-chevron-down"></i>
+  </button>
+  <clark-context-menu *ngIf="sortRatingMenuActive" class="sort-dates" [anchor]="toggleSortRatingMenuAnchor"
+    [offset]="{ top: 10, left: 10 }" (close)="toggleSortRatingMenu(false)">
+    <div #contextMenu id="contextMenu" class="filter-status__container">
+      <ul>
+        <!--
+          TODO: Find a way to display these programatically, just in case someone
+                thinks that -1 should be ascending and vice versa...
+        -->
+        <li (click)="setRatingSort(1)">
+          <span *ngIf="selectedRatingSortType === 1" class="indicator"></span>
+
+          Ascending
+        </li>
+        <li (click)="setRatingSort(-1)">
+          <span *ngIf="selectedRatingSortType === -1" class="indicator"></span>
           Descending
         </li>
       </ul>
