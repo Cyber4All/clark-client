@@ -40,7 +40,7 @@ export class CyberskillsDashboardComponent implements OnInit {
 
     // Do an initial fetch of learning objects with pre-set statuses.
     this.getLearningObjects().then(() => {
-      this.computeRatings();
+      this.retrieveMetrics();
     });
   }
 
@@ -62,21 +62,14 @@ export class CyberskillsDashboardComponent implements OnInit {
         orderBy: this.filterQuery?.orderBy || OrderBy.Date
       })).learningObjects;
 
-    this.computeRatings();
+    this.retrieveMetrics();
   }
 
   /**
-   * Get a rating value for each learning object.
-   *
-   * TODO: remove this after clark-service/pull/365
-   *       is merged ;)
+   * Get metrics for each learning object
    */
-  computeRatings() {
+  retrieveMetrics() {
     this.learningObjects.forEach(async (lo) => {
-      const ratings = await this.getRatings(lo);
-      if(ratings) {
-        lo.ratings = ratings.avgValue;
-      }
       if(lo.status === 'released') {
         lo.metrics = await this.metricsService.getLearningObjectMetrics(lo.cuid);
       }
