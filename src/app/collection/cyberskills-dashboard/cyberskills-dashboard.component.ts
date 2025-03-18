@@ -67,7 +67,7 @@ export class CyberskillsDashboardComponent implements OnInit {
       {
         collection: 'cyberskills2work',
         limit: 20,
-        status: ['released', 'waiting', 'proofing', 'review', 'accepted_major'],
+        status: ['released', 'waiting', 'proofing', 'review', 'accepted_major', 'accepted_minor'],
         sortType: 1,
         orderBy: OrderBy.Date,
         currPage: this.currPage
