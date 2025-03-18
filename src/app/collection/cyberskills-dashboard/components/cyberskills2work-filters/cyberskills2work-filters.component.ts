@@ -3,12 +3,10 @@ import {
   ElementRef,
   EventEmitter,
   OnInit,
-  Input,
   Output,
   ViewChild,
 } from '@angular/core';
 
-import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import {
@@ -26,21 +24,18 @@ import {
   ],
 })
 export class Cyberskills2WorkFiltersComponent implements OnInit {
-  filtersModified$: Subject<void> = new Subject();
   statusFilters: Set<string> = new Set();
   lengthFilters: Set<string> = new Set();
 
   selectedOrderBy: OrderBy;
-  selectedLastUpdatedSortType: SortType;
-  selectedRatingSortType: SortType;
-  selectedDownloadsSortType: SortType;
+  selectedLastUpdatedSortType?: SortType;
+  selectedRatingSortType?: SortType;
+  selectedDownloadsSortType?: SortType;
 
   statuses = Object.values(LearningObject.Status);
   lengths = Object.values(LearningObject.Length);
   sortValues = Object.values(SortType);
 
-  @Input() adminOrEditor: boolean;
-  @Input() showStatus: boolean;
   // Output a new query object to trigger a new LO query.
   @Output() filterQuery = new EventEmitter<FilterQuery>();
   @Output() clearAll = new EventEmitter<void>();
@@ -220,6 +215,7 @@ export class Cyberskills2WorkFiltersComponent implements OnInit {
    */
   clearAllFilters() {
     this.statusFilters.clear();
+    this.lengthFilters.clear();
     this.clearAll.emit();
   }
 
