@@ -48,16 +48,15 @@
       <ul>
         <!--
           TODO: Find a way to display these programatically, just in case someone
-                thinks that -1 should be ascending and vice versa...
+                thinks that -1 should be "oldest" and vice versa...
         -->
-        <li (click)="setLastUpdatedSort(1)">
-          <span *ngIf="selectedLastUpdatedSortType === 1" class="indicator"></span>
-
-          Ascending
-        </li>
         <li (click)="setLastUpdatedSort(-1)">
           <span *ngIf="selectedLastUpdatedSortType === -1" class="indicator"></span>
-          Descending
+          Newest
+        </li>
+        <li (click)="setLastUpdatedSort(1)">
+          <span *ngIf="selectedLastUpdatedSortType === 1" class="indicator"></span>
+          Oldest
         </li>
       </ul>
     </div>
@@ -72,16 +71,15 @@
       <ul>
         <!--
           TODO: Find a way to display these programatically, just in case someone
-                thinks that -1 should be ascending and vice versa...
+                thinks that -1 should be "least ratings" and vice versa...
         -->
-        <li (click)="setRatingSort(1)">
-          <span *ngIf="selectedRatingSortType === 1" class="indicator"></span>
-
-          Ascending
-        </li>
         <li (click)="setRatingSort(-1)">
           <span *ngIf="selectedRatingSortType === -1" class="indicator"></span>
-          Descending
+          Most Ratings
+        </li>
+        <li (click)="setRatingSort(1)">
+          <span *ngIf="selectedRatingSortType === 1" class="indicator"></span>
+          No Ratings
         </li>
       </ul>
     </div>
