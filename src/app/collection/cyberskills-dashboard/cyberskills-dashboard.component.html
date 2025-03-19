@@ -68,9 +68,8 @@
           Details ></a>
       </div>
     </div>
-  </div>
-
-  <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"></clark-pagination>
+    
+      <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage" (newPageNumberClicked) = 'handlePaginationAndLoadItems($event)'></clark-pagination>
 
 
   <!-- <h2 class="downloads-header">Individual Learning Object Report</h2>
