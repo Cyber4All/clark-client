@@ -52,11 +52,11 @@ export class FeaturedObjectsService {
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((featured: any) => {
-        const featuredObjects = featured.map((object: any) => {
+        const featuredObjects = featured.filter((object: any) => {
           if(object != null) {
             return object as LearningObject;
           } else {
-            return featured[0];
+            return featured[5] as LearningObject;
           }
         });
         this.featuredStore.featured = featuredObjects;
