@@ -83,6 +83,8 @@ export class CyberskillsDashboardComponent implements OnInit {
 
   async handlePaginationAndLoadItems(pageNumber, event?: FilterQuery) {
     this.currPage = pageNumber;
+
+    // If a filter query is provided, set it to filterQuery (even if it's empty)
     if (event) {
       this.filterQuery = event;
     }
