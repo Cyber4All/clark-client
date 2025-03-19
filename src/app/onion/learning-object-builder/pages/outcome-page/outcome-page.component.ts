@@ -117,14 +117,8 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
 
   newOutcome() {
     this.store.execute(actions.CREATE_OUTCOME, {}).then(id => {
-      // TODO remove this
-      const outcome = this.store.outcomeEvent.getValue().get(id);
-      this.validator.validateLearningOutcome(outcome);
+      this.activeOutcome = id;
       this.validateNewOutcome();
-      setTimeout(async () => {
-        this.activeOutcome = id;
-        await this.store.execute(actions.MUTATE_OUTCOME, { id, params: this.activeOutcomeObject });
-      }, 100);
     });
   }
 
@@ -165,6 +159,7 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     if (lastOutcome === undefined) {
       this.saveable = true;
     } else {
+      // 24 is the length of a mongo id and the outcome would only have this if it is in the database
       if (lastOutcome.bloom !== '' && lastOutcome.text !== '' && lastOutcome.verb !== '') {
         this.saveable = true;
       } else {

@@ -69,40 +69,42 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
         takeUntil(this.componentDestroyed$)
       )
       .subscribe((val: string) => {
-        // remove bullets and update the text of the outcome
-        const regex = /^\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/;
-        const i = val.search(regex);
-        if (i === 0) {
-          val = val.replace(regex, '');
-        }
-
-        const index = val.indexOf(' ');
-        this.text = val;
-
-        if (!this.verb) {
-          // we haven't set a verb yet, let's set the verb now
-          if (index >= 0) {
-            // make sure we're doing this after a 'space' character
-            this.verb = val.substring(0, index);
-            this.verb =
-              this.verb.charAt(0).toUpperCase() + this.verb.substring(1); // capitalize the first letter of the verb
-            this.text = val.substring(index).trim();
-            this.goodVerb = this.isGoodVerb(this.verb);
+        if(val !== this.verb) {
+          // remove bullets and update the text of the outcome
+          const regex = /^\d\.\s+|[a-z]\)\s+|•\s+|[A-Z]\.\s+|[IVX]+\.\s+/;
+          const i = val.search(regex);
+          if (i === 0) {
+            val = val.replace(regex, '');
           }
-        } else if (index === -1 && this.text.length === 0) {
-          // we've backspaced to the verb, remove the dropdown and put the text inline
-          this.text = this.verb;
 
-          this.verb = undefined;
-          this.bloom = undefined;
-          this.goodVerb = false;
+          const index = val.indexOf(' ');
+          this.text = val;
+
+          if (!this.verb) {
+            // we haven't set a verb yet, let's set the verb now
+            if (index >= 0) {
+              // make sure we're doing this after a 'space' character
+              this.verb = val.substring(0, index);
+              this.verb =
+                this.verb.charAt(0).toUpperCase() + this.verb.substring(1); // capitalize the first letter of the verb
+              this.text = val.substring(index).trim();
+              this.goodVerb = this.isGoodVerb(this.verb);
+            }
+          } else if (index === -1 && this.text.length === 0) {
+            // we've backspaced to the verb, remove the dropdown and put the text inline
+            this.text = this.verb;
+
+            this.verb = undefined;
+            this.bloom = undefined;
+            this.goodVerb = false;
+          }
+
+          // we want to always emit changes from the outcome fields even if they are null
+          // there's a function that will validate each field and will throw an error if needed
+          this.enteredText.emit(this.text);
+          this.selectedVerb.emit(this.verb);
+          this.selectedCategory.emit(this.bloom);
         }
-
-        // we want to always emit changes from the outcome fields even if they are null
-        // there's a function that will validate each field and will throw an error if needed
-        this.enteredText.emit(this.text);
-        this.selectedVerb.emit(this.verb);
-        this.selectedCategory.emit(this.bloom);
       });
   }
 
