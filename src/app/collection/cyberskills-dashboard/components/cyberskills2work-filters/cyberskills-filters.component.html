@@ -46,10 +46,6 @@
     [offset]="{ top: 10, left: 10 }" (close)="toggleSortDateMenu(false)">
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
-        <!--
-          TODO: Find a way to display these programatically, just in case someone
-                thinks that -1 should be "oldest" and vice versa...
-        -->
         <li (click)="setLastUpdatedSort(-1)">
           <span *ngIf="selectedLastUpdatedSortType === -1" class="indicator"></span>
           Newest
@@ -69,10 +65,6 @@
     [offset]="{ top: 10, left: 10 }" (close)="toggleSortRatingMenu(false)">
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
-        <!--
-          TODO: Find a way to display these programatically, just in case someone
-                thinks that -1 should be "least ratings" and vice versa...
-        -->
         <li (click)="setRatingSort(-1)">
           <span *ngIf="selectedRatingSortType === -1" class="indicator"></span>
           Most Ratings
