@@ -93,7 +93,7 @@ export class CyberskillsDashboardComponent implements OnInit {
       await this.learningObjectService.getLearningObjects({
         collection: 'cyberskills2work',
         limit: 20,
-        status: this.filterQuery?.status || [],
+        status: this.filterQuery?.status || ['released', 'waiting', 'proofing', 'review', 'accepted_major', 'accepted_minor'],
         length: this.filterQuery?.length || [],
         sortType: this.filterQuery?.sortType || SortType.Ascending,
         orderBy: this.filterQuery?.orderBy || OrderBy.Date,
