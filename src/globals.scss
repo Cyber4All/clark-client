@@ -21,6 +21,10 @@ body {
   &.hide-outlines * {
     outline: 0 !important;
   }
+
+  &.no-scroll {
+    overflow-y: hidden;
+  }
 }
 
 a,
