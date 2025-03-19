@@ -6,7 +6,7 @@
   grid-template-columns: 70px 100px 2fr 1fr 1fr 1fr 1fr;
   align-items: center;
   padding: 8px;
-  border-bottom: 1px solid $light-grey;
+  border-bottom: 1px solid $secondary-white-background;
   margin-bottom: 2px;
 
   &:nth-child(even) {
@@ -90,8 +90,8 @@
   .row {
     display: block;
   }
-  
-  .row > .info {
+
+  .row>.info {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid $ternary-white-background;
@@ -99,7 +99,7 @@
     margin-bottom: 2px;
   }
 
-  .row > .info::before {
+  .row>.info::before {
     content: attr(data-label) ": ";
     font-weight: bold;
     margin-right: 8px;

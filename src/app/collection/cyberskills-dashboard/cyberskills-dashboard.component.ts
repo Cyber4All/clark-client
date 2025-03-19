@@ -77,7 +77,7 @@ export class CyberskillsDashboardComponent implements OnInit {
       { start: start, end: end },
     );
     this.toaster.alert(
-      "We're working on it!",
+      'We\'re working on it!',
       'Please wait while we generate the report.',
     );
   }
