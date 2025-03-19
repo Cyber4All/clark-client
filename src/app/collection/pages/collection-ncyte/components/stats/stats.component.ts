@@ -7,7 +7,7 @@ import { PieChart } from 'app/cube/usage-stats/types/chart';
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
 let CHART_HOVERED = false;
 @Component({
-  selector: 'clark-ncyte-stats',
+  selector: 'clark-dashboard-stats',
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })
