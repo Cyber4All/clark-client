@@ -46,11 +46,11 @@ export class CyberskillsDashboardComponent implements OnInit {
 
   /**
    * Get a new list of learning objects with filterQuery object data.
-   * @param {FilterQuery} ev New data from filter pickers.
+   * @param {FilterQuery} event New data from filter pickers.
    */
-  async getLearningObjects(ev?: FilterQuery) {
-    if (ev) {
-      this.filterQuery = ev;
+  async getLearningObjects(event?: FilterQuery) {
+    if (event) {
+      this.filterQuery = event;
     }
 
     this.learningObjects =(await this.learningObjectService.getLearningObjects(
