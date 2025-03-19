@@ -5,12 +5,39 @@
 
   <div class="downloads-header">
     <h2>All Learning Objects</h2>
-    <div class="buttons">
-      <button id="status" class="button neutral">Status <i class="fa fa-caret-down"></i></button>
-      <button id="status" class="button neutral">Length <i class="fa fa-caret-down"></i></button>
-      <button class="button good" (click)="onDownload()">Download a CSV of All Learning Objects</button>
+
+    <div class="buttons desktop-buttons">
+      <button id="status" class="button neutral">
+        Status <i class="fa fa-caret-down"></i>
+      </button>
+      <button id="length" class="button neutral">
+        Length <i class="fa fa-caret-down"></i>
+      </button>
+      <button class="button good" (click)="onDownload()">
+        Download a CSV of All Learning Objects
+      </button>
+    </div>
+
+    <!-- Mobile View -->
+    <div class="dropdown-wrapper mobile-only">
+      <button class="options-button" (click)="toggleOptionsMenu()">
+        <i class="fa fa-bars"></i> Options
+      </button>
+
+      <div class="dropdown-content" *ngIf="showOptions">
+        <button id="status" class="button neutral">
+          Status <i class="fa fa-caret-down"></i>
+        </button>
+        <button id="length" class="button neutral">
+          Length <i class="fa fa-caret-down"></i>
+        </button>
+        <button class="button good" (click)="onDownload()">
+          Download a CSV of All Learning Objects
+        </button>
+      </div>
     </div>
   </div>
+
 
   <div class="learning-object-table">
     <div class="header">
