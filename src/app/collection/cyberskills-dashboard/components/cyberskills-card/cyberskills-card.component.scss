@@ -6,14 +6,15 @@
   grid-template-columns: 70px 100px 2fr 1fr 1fr 1fr 1fr;
   align-items: center;
   padding: 8px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid $light-grey;
+  margin-bottom: 2px;
 
   &:nth-child(even) {
-    background-color: #fafafa;
+    background-color: $wrapper-background;
   }
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: $secondary-white-background;
   }
 }
 
@@ -22,7 +23,7 @@
   font-size: 1.2rem;
   width: 32px;
   height: 32px;
-  color: white;
+  color: $wrapper-background;
   font-size: $normal;
   border-radius: 50%;
   display: flex;
@@ -75,12 +76,12 @@
 }
 
 .date {
-  color: #666;
+  color: $dark-grey;
 }
 
 .details-link {
   text-decoration: none;
-  color: #007bff;
+  color: $light-blue;
   font-weight: bold;
 }
 
@@ -93,13 +94,15 @@
   .row > .info {
     display: flex;
     justify-content: space-between;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $ternary-white-background;
     padding: 8px 0;
+    margin-bottom: 2px;
   }
 
   .row > .info::before {
     content: attr(data-label) ": ";
     font-weight: bold;
     margin-right: 8px;
+    margin-bottom: 2px;
   }
 }
