@@ -8,6 +8,7 @@
   padding: 8px;
   border-bottom: 1px solid $secondary-white-background;
   margin-bottom: 2px;
+  justify-items: start;
 
   &:nth-child(even) {
     background-color: $wrapper-background;
@@ -69,6 +70,8 @@
 
 .info {
   padding: 4px;
+  text-align: left;
+  align-items: center;
 }
 
 .name {
@@ -93,7 +96,7 @@
 
   .row>.info {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     border-bottom: 1px solid $ternary-white-background;
     padding: 8px 0;
     margin-bottom: 2px;
