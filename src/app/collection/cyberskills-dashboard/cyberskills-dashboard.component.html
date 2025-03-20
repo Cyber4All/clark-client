@@ -6,8 +6,16 @@
   <div class="downloads-header">
     <h2>All Learning Objects</h2>
     <div class="buttons">
-      <button id="status" class="button neutral">Status <i class="fa fa-caret-down"></i></button>
-      <button id="status" class="button neutral">Length <i class="fa fa-caret-down"></i></button>
+      <!--
+        When filterQuery is emitted, we will always load the first page
+        because the contents are bound to change and there's no guarantee
+        that the currPage will have any content to serve.
+
+        We do the same for clearAll once filterQuery is empty.
+      -->
+      <clark-cyberskills-filters class="buttons" (filterQuery)="handlePaginationAndLoadItems(1, $event)"
+        (clearAll)="handlePaginationAndLoadItems(1, {})"></clark-cyberskills-filters>
+
       <button class="button good" (click)="openCsvGenModal()">Download CSV of Released Learning Objects</button>
     </div>
   </div>
@@ -17,9 +25,9 @@
       <span>Status</span>
       <span>Length</span>
       <span>Name</span>
-      <span>Last Updated <i class="fa fa-caret-down"></i></span>
+      <span>Last Updated</span>
       <span>Downloads</span>
-      <span>Rating <i class="fa fa-caret-down"></i></span>
+      <span>Rating</span>
       <span></span>
     </div>
 
@@ -59,7 +67,7 @@
       <!-- Rating (only if released) -->
       <div class="info">
         <clark-rating-stars *ngIf="learningObject.status === 'released'"
-          [rating]="learningObject.rating ? learningObject.rating : 0" color="gold"></clark-rating-stars>
+          [rating]="learningObject.averageRating ? learningObject.averageRating : 0" color="gold"></clark-rating-stars>
       </div>
 
       <!-- Actions -->
@@ -68,10 +76,9 @@
           Details ></a>
       </div>
     </div>
-    
-      <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage" (newPageNumberClicked) = 'handlePaginationAndLoadItems($event)'></clark-pagination>
-
-
+  </div>
+  <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"
+    (newPageNumberClicked)='handlePaginationAndLoadItems($event)'></clark-pagination>
   <!-- <h2 class="downloads-header">Individual Learning Object Report</h2>
     <div class="downloads-body">
       <mat-form-field>
