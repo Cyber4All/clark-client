@@ -37,10 +37,14 @@ import { SecurityInjectionsHeaderComponent } from './pages/security-injections/c
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CyberskillsDashboardComponent } from './cyberskills-dashboard/cyberskills-dashboard.component';
+import {
+  CyberskillsFiltersComponent
+} from './cyberskills-dashboard/components/cyberskills2work-filters/cyberskills-filters.component';
 import { UsageStatsModule } from '../cube/usage-stats/usage-stats.module';
 import { DetailsModule } from '../cube/details/details.module';
 import { LibraryModule } from '../cube/library/library.module';
 import { CyberskillsCardComponent } from './cyberskills-dashboard/components/cyberskills-card/cyberskills-card.component';
+import { CyberskillsFilterDropdownComponent } from './cyberskills-dashboard/components/cyberskills-filter-dropdown/cyberskills-filter-dropdown.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +68,9 @@ import { CyberskillsCardComponent } from './cyberskills-dashboard/components/cyb
     FeaturedComponent,
     NcyteDashboardComponent,
     CyberskillsDashboardComponent,
-    CyberskillsCardComponent
+    CyberskillsCardComponent,
+    CyberskillsFiltersComponent,
+    CyberskillsFilterDropdownComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
