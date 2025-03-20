@@ -122,7 +122,7 @@ export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
     this.close();
 
     this.triggerElement.nativeElement.focus();
-    
+
     document.body.classList.remove('no-scroll');
   }
 
