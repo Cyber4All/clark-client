@@ -64,7 +64,7 @@ export class CyberskillsDashboardComponent implements OnInit {
   closeCsvModal(): void {
     this.showCsvModal = false;
   }
-  
+
   async getRatings(learningObject: any): Promise<any> {
     const { cuid, version } = learningObject;
     return await this.ratingService.getLearningObjectRatings(cuid, version);
