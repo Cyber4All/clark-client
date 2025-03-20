@@ -27,7 +27,6 @@ export class CsvGenModalComponent implements OnInit {
       start: [null],
       end: [null],
     });
-    document.body.classList.add('no-scroll');
   }
 
   clearDates(): void {
@@ -61,12 +60,10 @@ export class CsvGenModalComponent implements OnInit {
 
   onCancel(): void {
     this.closeModal();
-    document.body.classList.remove('no-scroll');
   }
 
   closeModal(): void {
     this.showModal = false;
-    document.body.classList.remove('no-scroll');
     this.closed.emit();
   }
 }

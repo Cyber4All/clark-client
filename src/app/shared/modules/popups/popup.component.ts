@@ -63,6 +63,9 @@ export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
       // no last-focused-element existed on the DOM, set the trigger element instead to the document's activeElement
       this.triggerElement = new ElementRef(document.activeElement as HTMLElement);
     }
+
+    // Prevents scrolling while in this popup
+    document.body.classList.add('no-scroll');
   }
 
   ngAfterViewInit() {
@@ -119,6 +122,8 @@ export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
     this.close();
 
     this.triggerElement.nativeElement.focus();
+    
+    document.body.classList.remove('no-scroll');
   }
 
   close() {
