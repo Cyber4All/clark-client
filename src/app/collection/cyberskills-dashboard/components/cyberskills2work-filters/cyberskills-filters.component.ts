@@ -20,7 +20,8 @@ import {
   templateUrl: './cyberskills-filters.component.html',
   styleUrls: [
     '../../../../admin/components/filter-search/filter-search.component.scss',
-    '../../cyberskills-dashboard.component.scss'
+    '../../cyberskills-dashboard.component.scss',
+    './cyberskills-filters.component.scss'
   ],
 })
 export class CyberskillsFiltersComponent implements OnInit {
@@ -34,6 +35,8 @@ export class CyberskillsFiltersComponent implements OnInit {
   statuses = Object.values(LearningObject.Status);
   lengths = Object.values(LearningObject.Length);
   sortValues = Object.values(SortType);
+
+  showOptions = false;
 
   // Output a new query object to trigger a new LO query.
   @Output() filterQuery = new EventEmitter<FilterQuery>();
@@ -69,6 +72,13 @@ export class CyberskillsFiltersComponent implements OnInit {
     this.lengthMenuActive = false;
     this.sortDateMenuActive = false;
     this.sortRatingMenuActive = false;
+  }
+
+  /**
+   * Hide or show options menu for mobile view
+   */
+  toggleOptionsMenu() {
+    this.showOptions = !this.showOptions;
   }
 
   /**

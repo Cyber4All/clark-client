@@ -5,8 +5,7 @@
 
   <div class="downloads-header">
     <h2>All Learning Objects</h2>
-
-    <div class="buttons desktop-buttons">
+    <div class="filters-wrap">
       <!--
         When filterQuery is emitted, we will always load the first page
         because the contents are bound to change and there's no guarantee
@@ -14,15 +13,14 @@
 
         We do the same for clearAll once filterQuery is empty.
       -->
-      <clark-cyberskills-filters class="buttons" (filterQuery)="handlePaginationAndLoadItems(1, $event)"
-        (clearAll)="handlePaginationAndLoadItems(1, {})"></clark-cyberskills-filters>
-      <button class="button good" (click)="onDownload()">Download a CSV of All Learning Objects</button>
+      <clark-cyberskills-filters (filterQuery)="handlePaginationAndLoadItems(1, $event)"
+        (clearAll)="handlePaginationAndLoadItems(1, {})">
+      </clark-cyberskills-filters>
+
+      <button class="button good desktop-buttons" (click)="onDownload()">
+        <span class="csv-button-text">Download a CSV of All Learning Objects</span>
+      </button>
     </div>
-
-    <clark-cyberskills-filter-dropdown class="mobile-only" (filterQuery)="handlePaginationAndLoadItems(1, $event)"
-      (clearAll)="handlePaginationAndLoadItems(1, {})">
-    </clark-cyberskills-filter-dropdown>
-
   </div>
 
   <div class="learning-object-table">

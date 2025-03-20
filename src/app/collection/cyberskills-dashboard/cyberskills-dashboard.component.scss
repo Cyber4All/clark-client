@@ -32,26 +32,31 @@
     display: flex;
   }
 
-  .mobile-only {
-    display: none;
-    position: relative;
+  .filters-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: auto; /* pushes them to the right of .downloads-header */
   }
+
 }
 
 /* Media query for desktop & mobile */
 @media (max-width: 768px) {
-  .downloads-header {
-    .desktop-buttons {
-      display: none;
-    }
-
-    .mobile-only {
-      display: block;
-    }
+  /* Force-hide the combined .desktop-filter.desktop-only in mobile */
+  .desktop-filter.desktop-only {
+    display: none !important;
   }
 
   .learning-object-table .header {
     display: none;
+  }
+
+  .desktop-buttons .csv-button-text {
+    display: none;
+  }
+  .desktop-buttons::after {
+    content: "CSV";
   }
 }
 
