@@ -44,7 +44,8 @@ import { UsageStatsModule } from '../cube/usage-stats/usage-stats.module';
 import { DetailsModule } from '../cube/details/details.module';
 import { LibraryModule } from '../cube/library/library.module';
 import { CyberskillsCardComponent } from './cyberskills-dashboard/components/cyberskills-card/cyberskills-card.component';
-import { CyberskillsFilterDropdownComponent } from './cyberskills-dashboard/components/cyberskills-filter-dropdown/cyberskills-filter-dropdown.component';
+import { CyberskillsFilterDropdownComponent } from 
+'./cyberskills-dashboard/components/cyberskills-filter-dropdown/cyberskills-filter-dropdown.component';
 
 @NgModule({
   declarations: [

@@ -7,35 +7,22 @@
     <h2>All Learning Objects</h2>
 
     <div class="buttons desktop-buttons">
-      <button id="status" class="button neutral">
-        Status <i class="fa fa-caret-down"></i>
-      </button>
-      <button id="length" class="button neutral">
-        Length <i class="fa fa-caret-down"></i>
-      </button>
-      <button class="button good" (click)="onDownload()">
-        Download a CSV of All Learning Objects
-      </button>
+      <!--
+        When filterQuery is emitted, we will always load the first page
+        because the contents are bound to change and there's no guarantee
+        that the currPage will have any content to serve.
+
+        We do the same for clearAll once filterQuery is empty.
+      -->
+      <clark-cyberskills-filters class="buttons" (filterQuery)="handlePaginationAndLoadItems(1, $event)"
+        (clearAll)="handlePaginationAndLoadItems(1, {})"></clark-cyberskills-filters>
+      <button class="button good" (click)="onDownload()">Download a CSV of All Learning Objects</button>
     </div>
 
-    <!-- Mobile View -->
-    <div class="dropdown-wrapper mobile-only">
-      <button class="options-button" (click)="toggleOptionsMenu()">
-        <i class="fa fa-bars"></i> Options
-      </button>
+    <clark-cyberskills-filter-dropdown class="mobile-only" (filterQuery)="handlePaginationAndLoadItems(1, $event)"
+      (clearAll)="handlePaginationAndLoadItems(1, {})">
+    </clark-cyberskills-filter-dropdown>
 
-      <div class="dropdown-content" *ngIf="showOptions">
-        <button id="status" class="button neutral">
-          Status <i class="fa fa-caret-down"></i>
-        </button>
-        <button id="length" class="button neutral">
-          Length <i class="fa fa-caret-down"></i>
-        </button>
-        <button class="button good" (click)="onDownload()">
-          Download a CSV of All Learning Objects
-        </button>
-      </div>
-    </div>
   </div>
 
   <div class="learning-object-table">
@@ -57,21 +44,5 @@
 
   <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"
     (newPageNumberClicked)='handlePaginationAndLoadItems($event)'></clark-pagination>
-
-  <!-- <h2 class="downloads-header">Individual Learning Object Report</h2>
-    <div class="downloads-body">
-      <mat-form-field>
-        <mat-label>Enter a date range</mat-label>
-        <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
-          <input matStartDate formControlName="start" placeholder="Start date">
-          <input matEndDate formControlName="end" placeholder="End date">
-        </mat-date-range-input>
-        <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
-      </mat-form-field>
-      <br>
-      <button (click)="onDownload()">Download a CSV of All Individual Learning Objects</button>
-    </div> -->
+  <cube-footer></cube-footer>
 </div>
-<cube-footer></cube-footer>
