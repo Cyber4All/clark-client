@@ -3,14 +3,14 @@
         'card-content': !mobile,
         'card-content-mobile': mobile
     }">
-        <div class="icon">
         <img class="grav" *ngIf="profileImg" [src]="profileImg" alt="Curator's Logo" />
-        </div>
-        <div class="name">
-        <p>{{ curator.name | titlecase }}</p>
-        </div>
-        <div class="organization">
-        <p>{{ organizationFormat(curator.organization) }}</p>
+        <div class="info">
+            <div class="name">
+                <p>{{ curator.name | titlecase }}</p>
+            </div>
+            <div class="organization">
+                <p>{{ organizationFormat(curator.organization) }}</p>
+            </div>
         </div>
     </div>
 </div>

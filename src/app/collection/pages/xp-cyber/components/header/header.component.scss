@@ -17,19 +17,21 @@
     align-items: center;
 
     .logo {
-      width: 500px;
+      width: 350px;
     }
     .title {
       margin-top: 20px;
       color: $xp-cyber-dark;
       text-align: center;
       .title-header {
-         width: 415px;
+         width: 450px;
+         font-size: $larger;
       }
       h2 {
         margin: 0px;
         .xp-cyber-link {
-          color: $xp-cyber-dark;  
+          color: $xp-cyber-dark; 
+          text-decoration: underline; 
         }
       }
     }

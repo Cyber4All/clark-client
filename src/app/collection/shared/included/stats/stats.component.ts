@@ -29,7 +29,7 @@ export class StatsComponent implements OnInit {
 
     switch (this.collectionName) {
       case 'xpcyber':
-        this.name = 'XP-Cyber';
+        this.name = 'XP CYBER';
         break;
       case 'ncyte':
         this.name = 'NCyTE';

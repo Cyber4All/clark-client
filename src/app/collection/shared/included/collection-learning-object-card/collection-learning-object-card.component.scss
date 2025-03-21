@@ -1,5 +1,4 @@
 @import '../../../collection-globals.scss';
-.wide{
 a {
     text-decoration: none;
     color: $darker-grey;
@@ -7,78 +6,78 @@ a {
 a:visited {
     color: $darker-grey;
 }
-.container{
-    width: 20vw;
-    margin-bottom: 50px;
-    display: flex;
-}
-.header{
-    &.module{
-        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
-    }
-    &.micromodule{
-        background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
-    }
-    &.nanomodule{
-        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
-    }
-    &.unit{
-        background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
-    }
-    &.course{
-        background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
-    }
-    display: flex;
-    align-items: center;
-    margin: 0 15px;
-    color: #fff;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    max-width: 150px;
-    min-width: 150px;
-    min-height: 200px;
-    border-radius: 10px;
-    width: 100%;
-}
-.overlay{
-    background-color: $medium-grey;
-    max-width: 150px;
-    width: 100%;
-    text-align: center;
-    padding: 5px 0;
-    text-transform: uppercase;
-}
-div{ 
-    font-size: $smaller;
-}
-.obj-title{
-    padding-top: 20px;
-    font-size: $normal;
-    font-weight: 700;
-}
-@media (max-width: 800px){
+
+.wide{
     .container{
-        justify-content: space-between;
-    }
-    .obj-info{
-        margin: auto;
-        padding-top: 5px;
-        min-width: 60vw;
-        margin-left: 100%;
-        text-align: center;
+        width: 20vw;
+        margin-bottom: 50px;
+        display: flex;
     }
     .header{
-        min-width: 30vw;
-        min-height: 20vh;
+        &.module{
+            background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
+        }
+        &.micromodule{
+            background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
+        }
+        &.nanomodule{
+            background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
+        }
+        &.unit{
+            background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
+        }
+        &.course{
+            background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
+        }
+        display: flex;
+        align-items: center;
+        color: #fff;
+        background-size: cover;
+        background-position: center;
+        min-height: 100px;
+        border-radius: 10px;
+        width: 100%;
     }
     .overlay{
-        min-width: 30vw;
+        background-color: $medium-grey;
+        width: 100%;
+        text-align: center;
+        padding: 5px 0;
+        text-transform: uppercase;
     }
- 
+    div{ 
+        font-size: $smaller;
+    }
+    .obj-info{
+        font-size: $normal;
+        .obj-title{
+            padding-top: 20px;
+            font-size: $normal;
+            font-weight: 700;
+            height: 10vh; 
+        }
+    }
+    @media (max-width: 800px){
+        .container{
+            justify-content: space-between;
+        }
+        .obj-info{
+            margin: auto;
+            padding-top: 5px;
+            min-width: 60vw;
+            text-align: center;
+        }
+        .header{
+            min-width: 30vw;
+            min-height: 20vh;
+        }
+        .overlay{
+            min-width: 30vw;
+        }
+    
+    }
 }
 
-}
 .mobile {
     a {
         text-decoration: none;
@@ -110,32 +109,30 @@ div{
         }
         display: flex;
         align-items: center;
-        margin: 0 15px;
+        // margin: 0 45px;
         color: #fff;
-        background-repeat: no-repeat;
         background-size: cover;
-        background-position: center;
-        max-width: 150px;
-        min-width: 150px;
-        min-height: 200px;
+        background-position: center; 
         border-radius: 10px;
-        width: 100%;
-        margin-left: 100%;
+        width: 250px;
+        height: 300px;
+        margin-left: 25%;
     }
     .overlay{
         background-color: $medium-grey;
-        max-width: 150px;
+        height: 35px;
         width: 100%;
         text-align: center;
         padding: 5px 0;
         text-transform: uppercase;
+        font-size: x-large;
     }
     div{ 
-        font-size: $smaller;
+        font-size: $normal;
     }
     .obj-title{
         padding-top: 20px;
-        font-size: $normal;
+        font-size: $large;
         font-weight: 700;
     }
     @media (max-width: 800px){
