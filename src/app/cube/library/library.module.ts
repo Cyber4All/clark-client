@@ -30,7 +30,8 @@ const routes: Routes = [
   ],
   exports: [
     PaginationComponent,
-    RouterModule
+    RouterModule,
+    LibraryItemComponent
   ]
 })
 export class LibraryModule { }
