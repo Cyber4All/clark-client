@@ -14,7 +14,7 @@ let CHART_HOVERED = false;
 export class StatsComponent implements OnInit {
 
   @Input() collectionName: string;
-  @Input() dashboardView: boolean;
+  @Input() displayCharts: boolean;
   name: string;
 
   objDownload: number;
