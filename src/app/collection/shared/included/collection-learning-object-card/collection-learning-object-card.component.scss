@@ -13,6 +13,15 @@ a:visited {
         margin-bottom: 50px;
         display: flex;
     }
+    .obj-info{
+        font-size: $normal;
+        .obj-title{
+            padding-top: 20px;
+            font-size: $normal;
+            font-weight: 700;
+            height: 10vh; 
+        }
+    }
     .header{
         &.module{
             background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
@@ -48,15 +57,6 @@ a:visited {
     div{ 
         font-size: $smaller;
     }
-    .obj-info{
-        font-size: $normal;
-        .obj-title{
-            padding-top: 20px;
-            font-size: $normal;
-            font-weight: 700;
-            height: 10vh; 
-        }
-    }
     @media (max-width: 800px){
         .container{
             justify-content: space-between;
@@ -90,6 +90,18 @@ a:visited {
         width: 20vw;
         margin-bottom: 50px;
         display: flex;
+        .obj-info{
+            margin: auto;
+            padding-top: 5px;
+            min-width: 60vw;
+            margin-left: 100%;
+            text-align: center;
+            .obj-title{
+                padding-top: 20px;
+                font-size: $large;
+                font-weight: 700;
+            }
+        }
     }
     .header{
         &.module{
@@ -129,11 +141,6 @@ a:visited {
     }
     div{ 
         font-size: $normal;
-    }
-    .obj-title{
-        padding-top: 20px;
-        font-size: $large;
-        font-weight: 700;
     }
     @media (max-width: 800px){
         .container{

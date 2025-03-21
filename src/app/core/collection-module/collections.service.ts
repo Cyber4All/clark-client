@@ -79,7 +79,6 @@ export class CollectionService {
     if (this.loading$.value) {
       // If the service is loading collections, create a promise that will
       // resolve the collections once the value of loading is false
-      console.log('GETTING COLLECTIONS');
       const p = new Promise<Collection[]>(resolve => {
         this.loading$
           .pipe(
