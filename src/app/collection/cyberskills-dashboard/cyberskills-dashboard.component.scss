@@ -90,6 +90,7 @@
   align-items: center;
   padding: 8px;
   border-bottom: 1px solid #ddd;
+  height: 60px;
 }
 
 .header {
@@ -177,3 +178,9 @@
   }
 }
 
+.buttons {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  gap: 0.5rem;
+}

@@ -54,6 +54,16 @@ export class LearningObject {
   set author(user: User) {
     this._author = user;
   }
+  /**
+   * @property {number} averageRating
+   *       the average rating the learning object has
+   */
+  get averageRating() {
+    return this._averageRating;
+  }
+  set averageRating(averageRating: number) {
+    this._averageRating = averageRating;
+  }
 
   /**
    * @property {string} name
@@ -352,6 +362,7 @@ export class LearningObject {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   private _id: string;
   private _author: User;
+  private _averageRating?: number;
   private _name!: string;
   private _description!: string;
   private _date: string;
@@ -669,6 +680,10 @@ export class LearningObject {
 
     if (object.author) {
       this._author = new User(object.author);
+    }
+
+    if (object.averageRating) {
+      this._averageRating = object.averageRating;
     }
 
     if (object.name !== undefined) {

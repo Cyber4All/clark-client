@@ -37,6 +37,9 @@ import { SecurityInjectionsHeaderComponent } from './pages/security-injections/c
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { CyberskillsDashboardComponent } from './cyberskills-dashboard/cyberskills-dashboard.component';
+import {
+  CyberskillsFiltersComponent
+} from './cyberskills-dashboard/components/cyberskills2work-filters/cyberskills-filters.component';
 import { UsageStatsModule } from '../cube/usage-stats/usage-stats.module';
 import { DetailsModule } from '../cube/details/details.module';
 import { LibraryModule } from '../cube/library/library.module';
@@ -62,7 +65,8 @@ import { LibraryModule } from '../cube/library/library.module';
     TitleComponent,
     FeaturedComponent,
     NcyteDashboardComponent,
-    CyberskillsDashboardComponent
+    CyberskillsDashboardComponent,
+    CyberskillsFiltersComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
