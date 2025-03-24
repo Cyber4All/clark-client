@@ -18,20 +18,22 @@ export class CollectionLearningObjectCardComponent implements OnInit {
     }
 
     if(this.learnObj.description){
-      this.shortenedDesc = this.truncateHtml(this.learnObj.description)
+      this.shortenedDesc = this.truncateHtml(this.learnObj.description);
     }
   }
 
   truncateHtml(html: string): string {
-    if (!html) return html;
+    if (!html) {
+      return html;
+    }
 
     const doc = new DOMParser().parseFromString(html, 'text/html');
-    let text = doc.body.textContent || "";
-    
+    let text = doc.body.textContent || '';
+
     if (text.length > 70) {
       text = text.substring(0, 70) + '...';
     }
-    
+
     return text;
   }
 
