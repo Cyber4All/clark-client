@@ -19,17 +19,12 @@ attr.aria-label="{{ learnObj.name }}, {{ learnObj.length }}, by {{ learnObj.auth
         
         <div class="obj-info">
             <div class = "obj-title">
-                {{learnObj.name.substring(16, learnObj.name.length)}}
+                {{learnObj.name}}
             </div>
             <div>
                 {{learnObj.date | date:'longDate'}}
             </div>  
-            <p *ngIf = "learnObj.description">
-                {{
-                learnObj.description.length > 70
-                    ? learnObj.description.substring(3, 70) + "..."
-                    : learnObj.description.substring(3, learnObj.description.length-4)
-                }}
+            <p *ngIf = "learnObj.description" [innerHtml]="shortenedDesc">
             </p>
         </div>
     </div>
