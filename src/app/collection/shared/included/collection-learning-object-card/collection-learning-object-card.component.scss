@@ -6,11 +6,35 @@ a {
 a:visited {
     color: $darker-grey;
 }
-
+.header{
+    &.module{
+        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
+    }
+    &.micromodule{
+        background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
+    }
+    &.nanomodule{
+        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
+    }
+    &.unit{
+        background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
+    }
+    &.course{
+        background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
+    }
+    display: flex;
+    align-items: center;
+    color: #fff;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    margin-left: 30px;
+}
 .wide{
     .container{
         width: 20vw;
         margin-bottom: 50px;
+        margin-left: 30px;
         display: flex;
     }
     .obj-info{
@@ -19,32 +43,11 @@ a:visited {
             padding-top: 20px;
             font-size: $normal;
             font-weight: 700;
-            height: 10vh; 
+            height: 6vh; 
         }
     }
-    .header{
-        &.module{
-            background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
-        }
-        &.micromodule{
-            background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
-        }
-        &.nanomodule{
-            background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
-        }
-        &.unit{
-            background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
-        }
-        &.course{
-            background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
-        }
-        display: flex;
-        align-items: center;
-        color: #fff;
-        background-size: cover;
-        background-position: center;
+    .header{     
         min-height: 100px;
-        border-radius: 10px;
         width: 100%;
     }
     .overlay{
@@ -57,25 +60,6 @@ a:visited {
     div{ 
         font-size: $smaller;
     }
-    @media (max-width: 800px){
-        .container{
-            justify-content: space-between;
-        }
-        .obj-info{
-            margin: auto;
-            padding-top: 5px;
-            min-width: 60vw;
-            text-align: center;
-        }
-        .header{
-            min-width: 30vw;
-            min-height: 20vh;
-        }
-        .overlay{
-            min-width: 30vw;
-        }
-    
-    }
 }
 
 .mobile {
@@ -87,14 +71,10 @@ a:visited {
         color: $darker-grey;
     }
     .container{
-        width: 20vw;
+        width: 100%;
         margin-bottom: 50px;
         display: flex;
         .obj-info{
-            margin: auto;
-            padding-top: 5px;
-            min-width: 60vw;
-            margin-left: 100%;
             text-align: center;
             .obj-title{
                 padding-top: 20px;
@@ -104,30 +84,9 @@ a:visited {
         }
     }
     .header{
-        &.module{
-            background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
-        }
-        &.micromodule{
-            background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
-        }
-        &.nanomodule{
-            background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
-        }
-        &.unit{
-            background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
-        }
-        &.course{
-            background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
-        }
-        display: flex;
-        align-items: center;
-        color: #fff;
-        background-size: cover;
-        background-position: center; 
-        border-radius: 10px;
         width: 250px;
         height: 300px;
-        margin-left: 25%;
+        margin: 0 auto;
     }
     .overlay{
         background-color: $medium-grey;
@@ -140,25 +99,5 @@ a:visited {
     }
     div{ 
         font-size: $normal;
-    }
-    @media (max-width: 800px){
-        .container{
-            justify-content: space-between;
-        }
-        .obj-info{
-            margin: auto;
-            padding-top: 5px;
-            min-width: 60vw;
-            margin-left: 100%;
-            text-align: center;
-        }
-        .header{
-            min-width: 30vw;
-            min-height: 20vh;
-        }
-        .overlay{
-            min-width: 30vw;
-        }
-     
     }
 }

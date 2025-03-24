@@ -37,12 +37,6 @@
 
 }
 
-.object-list{
-    margin: auto;
-    padding-top: 40px;
-    flex-basis: 20%;
-}
-
 @media (max-width: 1200px){
     .section-featured-learning{
         flex-wrap: wrap;
@@ -54,17 +48,5 @@
     }
     .accent-content{
        padding-bottom: 80px;
-    }
-}
-
-@media (max-width: 1200px){
-.object-list{
-    margin-top: 50px;
-}
-}
-@media (max-width: 800px){
-    .object-list{
-        margin: 0;
-        padding-right: 80px;
     }
 }

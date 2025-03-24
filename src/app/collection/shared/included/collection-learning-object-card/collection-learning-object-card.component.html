@@ -19,7 +19,7 @@ attr.aria-label="{{ learnObj.name }}, {{ learnObj.length }}, by {{ learnObj.auth
         
         <div class="obj-info">
             <div class = "obj-title">
-                {{learnObj.name}}
+                {{learnObj.name.substring(16, learnObj.name.length)}}
             </div>
             <div>
                 {{learnObj.date | date:'longDate'}}
