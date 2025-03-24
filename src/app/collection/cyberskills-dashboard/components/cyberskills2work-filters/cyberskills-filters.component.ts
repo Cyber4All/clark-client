@@ -5,15 +5,12 @@ import {
   OnInit,
   Output,
   ViewChild,
+  HostListener,
 } from '@angular/core';
 
 import { LearningObject } from '@entity';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import {
-  FilterQuery,
-  OrderBy,
-  SortType,
-} from '../../../../interfaces/query';
+import { FilterQuery, OrderBy, SortType } from '../../../../interfaces/query';
 
 @Component({
   selector: 'clark-cyberskills-filters',
@@ -21,7 +18,7 @@ import {
   styleUrls: [
     '../../../../admin/components/filter-search/filter-search.component.scss',
     '../../cyberskills-dashboard.component.scss',
-    './cyberskills-filters.component.scss'
+    './cyberskills-filters.component.scss',
   ],
 })
 export class CyberskillsFiltersComponent implements OnInit {
@@ -49,7 +46,10 @@ export class CyberskillsFiltersComponent implements OnInit {
   sortRatingMenuActive: boolean;
   sortDownloadsMenuActive: boolean;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private elRef: ElementRef,
+  ) {}
 
   async ngOnInit() {
     // add the 'all' option into the list of statuses
@@ -75,38 +75,59 @@ export class CyberskillsFiltersComponent implements OnInit {
   }
 
   /**
-   * Hide or show options menu for mobile view
-   */
-  toggleOptionsMenu() {
-    this.showOptions = !this.showOptions;
-  }
-
-  /**
    * Hide or show the status filter dropdown menu
    */
-  toggleStatusMenu(value: boolean) {
-    this.statusMenuActive = value;
+  toggleStatusMenu() {
+    // If already open, just close it
+    if (this.statusMenuActive) {
+      this.statusMenuActive = false;
+    } else {
+      // Otherwise, close all other menus, then open this one
+      this.closeAllMenus();
+      this.statusMenuActive = true;
+    }
   }
 
   /**
    * Hide or show the length filter dropdown menu
    */
-  toggleLengthMenu(value: boolean) {
-    this.lengthMenuActive = value;
+  toggleLengthMenu() {
+    // If already open, just close it
+    if (this.lengthMenuActive) {
+      this.lengthMenuActive = false;
+    } else {
+      // Otherwise, close all other menus, then open this one
+      this.closeAllMenus();
+      this.lengthMenuActive = true;
+    }
   }
 
   /**
    * Hide or show the sort date dropdown menu
    */
-  toggleSortDateMenu(value: boolean) {
-    this.sortDateMenuActive = value;
+  toggleSortDateMenu() {
+    // If already open, just close it
+    if (this.sortDateMenuActive) {
+      this.sortDateMenuActive = false;
+    } else {
+      // Otherwise, close all other menus, then open this one
+      this.closeAllMenus();
+      this.sortDateMenuActive = true;
+    }
   }
 
   /**
    * Hide or show the sort rating dropdown menu
    */
-  toggleSortRatingMenu(value: boolean) {
-    this.sortRatingMenuActive = value;
+  toggleSortRatingMenu() {
+    // If already open, just close it
+    if (this.sortRatingMenuActive) {
+      this.sortRatingMenuActive = false;
+    } else {
+      // Otherwise, close all other menus, then open this one
+      this.closeAllMenus();
+      this.sortRatingMenuActive = true;
+    }
   }
 
   /**
@@ -118,7 +139,7 @@ export class CyberskillsFiltersComponent implements OnInit {
     for (const filter of filters) {
       if (filter.toLowerCase() === 'all') {
         this.clearStatusFilters();
-        this.toggleStatusMenu(false);
+        this.toggleStatusMenu();
         return;
       }
 
@@ -160,7 +181,6 @@ export class CyberskillsFiltersComponent implements OnInit {
 
     this.filter();
   }
-
 
   /**
    * Set the sort value for rating.
@@ -259,5 +279,34 @@ export class CyberskillsFiltersComponent implements OnInit {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     );
+  }
+
+  /**
+   * Hide or show options menu for mobile view
+   */
+  toggleOptionsMenu() {
+    this.showOptions = !this.showOptions;
+    // If we open the mobile "Options", close all sub-menus first
+    if (this.showOptions) {
+      this.closeAllMenus();
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    // If the click is outside our component, close all open menus
+    if (!this.elRef.nativeElement.contains(event.target)) {
+      this.closeAllMenus();
+    }
+  }
+
+  /**
+   * Closes all filter menus for mobile view
+   */
+  private closeAllMenus() {
+    this.statusMenuActive = false;
+    this.lengthMenuActive = false;
+    this.sortDateMenuActive = false;
+    this.sortRatingMenuActive = false;
   }
 }

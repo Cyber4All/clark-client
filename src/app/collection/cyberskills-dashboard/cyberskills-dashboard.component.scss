@@ -55,6 +55,18 @@
   .desktop-buttons .csv-button-text {
     display: none;
   }
+}
+
+@media (max-width: 1024px) {
+  /* Force-hide the combined .desktop-filter.desktop-only in mobile */
+  .desktop-filter.desktop-only {
+    display: none !important;
+  }
+
+  .desktop-buttons .csv-button-text {
+    display: none;
+  }
+  
   .desktop-buttons::after {
     content: "CSV";
   }
