@@ -12,6 +12,7 @@ import {
   UNORDERED_LIST_BUTTON,
   SEPARATOR
 } from 'ngx-simple-text-editor';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'onion-learning-object-description',
@@ -73,8 +74,8 @@ export class LearningObjectDescriptionComponent implements OnInit {
 
   ngOnInit() {
     // Watch for any updates to the description form.
-    this.description.valueChanges.subscribe((description: string) => {
-      this.textOutput.emit(description);
+    this.description.valueChanges.pipe(skip(1)).subscribe((description: string) => {
+        this.textOutput.emit(description);
     });
 
     if (this.learningObject.description) {

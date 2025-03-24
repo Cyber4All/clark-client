@@ -101,6 +101,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
       this.guidelineService
         .getGuidelines({
           text: this.searchStringValue,
+          deprecated: 'false'
         })
         .then((res) => {
           if (this.suggestions.length) {
@@ -127,6 +128,7 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
       this.guidelineService
         .getGuidelines({
           text: val,
+          deprecated: 'false'
         })
         .then((res) => {
           this.suggestions = res.results.map((o) => {

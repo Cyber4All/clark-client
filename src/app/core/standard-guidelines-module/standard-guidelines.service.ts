@@ -16,6 +16,7 @@ interface GuidelinesFilter {
   limit?: number;
   type?: string;
   frameworks?: string | string[];
+  deprecated?: string
 }
 
 @Injectable({
@@ -68,6 +69,7 @@ export class GuidelineService {
       limit: filter.limit ? filter.limit : undefined,
       type: filter.type !== '' ? filter.type : undefined,
       frameworks: filter.frameworks !== '' ? filter.frameworks : undefined,
+      deprecated: filter.deprecated !== '' ? filter.deprecated: 'all'
     };
   }
 

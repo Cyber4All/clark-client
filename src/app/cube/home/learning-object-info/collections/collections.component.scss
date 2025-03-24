@@ -25,6 +25,11 @@
             .card__name {
                 height: 20px;
                 color: black;
+
+                &.small {
+                    padding: 0px;
+                    margin-top: 0px;
+                }
             }
 
             .card__image {
@@ -34,6 +39,11 @@
                 &.long {
                     height: 55px;
                     width: 180px;
+                }
+
+                &.small {
+                    height: 150px;
+                    width: 150px;
                 }
             }
         }
