@@ -68,6 +68,10 @@
                         &.long {
                             font-size: x-small;
                         }
+                        &.small {
+                            padding: 0px;
+                            margin-top: 0px;
+                        }
                     }
 
                     .card__image {
@@ -77,6 +81,10 @@
                         &.long {
                             height: 70px;
                             width: 180px;
+                        }
+                        &.small {
+                            height: 150px;
+                            width: 150px;
                         }
                     }
                 }
