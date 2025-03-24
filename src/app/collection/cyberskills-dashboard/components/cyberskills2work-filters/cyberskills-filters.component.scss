@@ -109,37 +109,3 @@
         }
     }
 }
-
-.dropdown-item {
-    position: relative;
-    margin-bottom: 8px;
-  }
-  
-  .filter-dropdown {
-    position: absolute;
-    top: calc(100% + 10px); // This adds a small offset
-    right: 0;
-    background-color: $wrapper-background;
-    border: 1px solid $secondary-white-background;
-    border-radius: 4px;
-    min-width: 220px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 999;
-    padding: 8px;
-  
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-  
-      li {
-        padding: 4px 8px;
-        cursor: pointer;
-  
-        &:hover {
-          background: #eee;
-        }
-      }
-    }
-  }
-  

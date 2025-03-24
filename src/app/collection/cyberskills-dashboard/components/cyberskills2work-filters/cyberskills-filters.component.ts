@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { LearningObject } from '@entity';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FilterQuery, OrderBy, SortType } from '../../../../interfaces/query';
 
 @Component({
@@ -35,7 +35,6 @@ export class CyberskillsFiltersComponent implements OnInit {
 
   showOptions = false;
 
-  // Output a new query object to trigger a new LO query.
   @Output() filterQuery = new EventEmitter<FilterQuery>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
@@ -44,7 +43,6 @@ export class CyberskillsFiltersComponent implements OnInit {
   lengthMenuActive: boolean;
   sortDateMenuActive: boolean;
   sortRatingMenuActive: boolean;
-  sortDownloadsMenuActive: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -52,22 +50,23 @@ export class CyberskillsFiltersComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // add the 'all' option into the list of statuses
+    // Insert 'all' into the list of statuses
     this.statuses.splice(0, 0);
 
     this.statuses = this.statuses.filter(
       (s) => !['rejected', 'unreleased'].includes(s.toLowerCase()),
     );
 
-    //check for params in the query and add them to the filter dropdown bars
+    // Check for query params in the URL
     const qParams = this.route.parent?.snapshot.queryParamMap;
     const queryStatuses = qParams?.getAll('statuses');
 
-    // if there are statuses in the query add them to the filter dropdowns
+    // If there are statuses in the query, apply them
     if (queryStatuses) {
       this.toggleStatusFilter(queryStatuses);
     }
 
+    // Boolean controllers for menus
     this.statusMenuActive = false;
     this.lengthMenuActive = false;
     this.sortDateMenuActive = false;
@@ -75,71 +74,126 @@ export class CyberskillsFiltersComponent implements OnInit {
   }
 
   /**
-   * Hide or show the status filter dropdown menu
+   * Toggles the mobile "Options" menu.
+   * If opening, closes all other filter menus first.
    */
-  toggleStatusMenu() {
-    // If already open, just close it
-    if (this.statusMenuActive) {
-      this.statusMenuActive = false;
-    } else {
-      // Otherwise, close all other menus, then open this one
+  toggleOptionsMenu() {
+    this.showOptions = !this.showOptions;
+    // If we open the mobile "Options", close all sub-menus first
+    if (this.showOptions) {
       this.closeAllMenus();
-      this.statusMenuActive = true;
     }
   }
 
   /**
-   * Hide or show the length filter dropdown menu
+   * Host listener to detect clicks outside this component.
+   * If the click is external, closes all menus.
    */
-  toggleLengthMenu() {
-    // If already open, just close it
-    if (this.lengthMenuActive) {
-      this.lengthMenuActive = false;
-    } else {
-      // Otherwise, close all other menus, then open this one
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    // If the click is outside our component, close all open menus
+    if (!this.elRef.nativeElement.contains(event.target)) {
       this.closeAllMenus();
-      this.lengthMenuActive = true;
     }
   }
 
   /**
-   * Hide or show the sort date dropdown menu
+   * Hide or show the status filter dropdown menu in mobile view
    */
-  toggleSortDateMenu() {
-    // If already open, just close it
-    if (this.sortDateMenuActive) {
-      this.sortDateMenuActive = false;
+  toggleStatusMenuMobile() {
+    this.toggleMobileFilterMenu('statusMenuActive');
+  }
+
+  /**
+   * Hide or show the length filter dropdown menu in mobile view
+   */
+  toggleLengthMenuMobile() {
+    this.toggleMobileFilterMenu('lengthMenuActive');
+  }
+
+  /**
+   * Hide or show the date filter dropdown menu in mobile view
+   */
+  toggleSortDateMenuMobile() {
+    this.toggleMobileFilterMenu('sortDateMenuActive');
+  }
+
+  /**
+   * Hide or show the rating filter dropdown menu in mobile view
+   */
+  toggleSortRatingMenuMobile() {
+    this.toggleMobileFilterMenu('sortRatingMenuActive');
+  }
+
+  /**
+   * Helper function to open/close a given menu property in mobile view.
+   * Closes all other menus before opening the chosen one.
+   */
+  private toggleMobileFilterMenu(
+    propertyName:
+      | 'statusMenuActive'
+      | 'lengthMenuActive'
+      | 'sortDateMenuActive'
+      | 'sortRatingMenuActive',
+  ) {
+    if (this[propertyName]) {
+      // If already open, just close it
+      this[propertyName] = false;
     } else {
-      // Otherwise, close all other menus, then open this one
+      // Otherwise, close all menus and open this one
       this.closeAllMenus();
-      this.sortDateMenuActive = true;
+      this[propertyName] = true;
     }
   }
 
   /**
-   * Hide or show the sort rating dropdown menu
+   * Closes all mobile filter menus
    */
-  toggleSortRatingMenu() {
-    // If already open, just close it
-    if (this.sortRatingMenuActive) {
-      this.sortRatingMenuActive = false;
-    } else {
-      // Otherwise, close all other menus, then open this one
-      this.closeAllMenus();
-      this.sortRatingMenuActive = true;
-    }
+  private closeAllMenus() {
+    this.statusMenuActive = false;
+    this.lengthMenuActive = false;
+    this.sortDateMenuActive = false;
+    this.sortRatingMenuActive = false;
   }
 
   /**
-   * Add or remove filter from status filter list
-   *
-   * @param {string} filter the filter to be toggled
+   * Hide or show the status filter dropdown menu in desktop view
+   */
+  toggleStatusMenuDesktop(value: boolean) {
+    this.statusMenuActive = value;
+  }
+
+  /**
+   * Hide or show the length filter dropdown menu in desktop view
+   */
+  toggleLengthMenuDesktop(value: boolean) {
+    this.lengthMenuActive = value;
+  }
+
+  /**
+   * Hide or show the date filter dropdown menu in desktop view
+   */
+  toggleSortDateMenuDesktop(value: boolean) {
+    this.sortDateMenuActive = value;
+  }
+
+  /**
+   * Hide or show the rating filter dropdown menu in desktop view
+   */
+  toggleSortRatingMenuDesktop(value: boolean) {
+    this.sortRatingMenuActive = value;
+  }
+
+  /**
+   * Toggle one or more status filters.
+   * If "all" is clicked, clear them all and close the menu.
    */
   toggleStatusFilter(filters: string[]) {
     for (const filter of filters) {
       if (filter.toLowerCase() === 'all') {
         this.clearStatusFilters();
-        this.toggleStatusMenu();
+        // Close the status menu so user sees it's cleared
+        this.statusMenuActive = false;
         return;
       }
 
@@ -175,8 +229,7 @@ export class CyberskillsFiltersComponent implements OnInit {
   setLastUpdatedSort(sort: SortType) {
     this.selectedOrderBy = OrderBy.Date;
     this.selectedLastUpdatedSortType = sort;
-
-    // Un-set the rating sort value
+    // Unset rating sort
     this.selectedRatingSortType = undefined;
 
     this.filter();
@@ -189,22 +242,22 @@ export class CyberskillsFiltersComponent implements OnInit {
   setRatingSort(sort: SortType) {
     this.selectedOrderBy = OrderBy.Rating;
     this.selectedRatingSortType = sort;
-
-    // Un-set the last updated sort value
+    // Unset date sort
     this.selectedLastUpdatedSortType = undefined;
-
     this.filter();
   }
 
+  /**
+   * Builds the FilterQuery and emits it to the parent
+   */
   filter() {
     // Emit the selected filters
     const filters: FilterQuery = {
-      status: Array.from(this.statusFilters || []),
-      length: Array.from(this.lengthFilters || []),
+      status: Array.from(this.statusFilters),
+      length: Array.from(this.lengthFilters),
       orderBy: this.selectedOrderBy,
       sortType: this.selectedLastUpdatedSortType || this.selectedRatingSortType,
     };
-
     this.filterQuery.emit(filters);
   }
 
@@ -234,7 +287,6 @@ export class CyberskillsFiltersComponent implements OnInit {
     this.lengthFilters.clear();
     this.selectedLastUpdatedSortType = undefined;
     this.selectedRatingSortType = undefined;
-
     this.clearAll.emit();
   }
 
@@ -279,34 +331,5 @@ export class CyberskillsFiltersComponent implements OnInit {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     );
-  }
-
-  /**
-   * Hide or show options menu for mobile view
-   */
-  toggleOptionsMenu() {
-    this.showOptions = !this.showOptions;
-    // If we open the mobile "Options", close all sub-menus first
-    if (this.showOptions) {
-      this.closeAllMenus();
-    }
-  }
-
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event: MouseEvent) {
-    // If the click is outside our component, close all open menus
-    if (!this.elRef.nativeElement.contains(event.target)) {
-      this.closeAllMenus();
-    }
-  }
-
-  /**
-   * Closes all filter menus for mobile view
-   */
-  private closeAllMenus() {
-    this.statusMenuActive = false;
-    this.lengthMenuActive = false;
-    this.sortDateMenuActive = false;
-    this.sortRatingMenuActive = false;
   }
 }
