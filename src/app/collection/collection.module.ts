@@ -42,6 +42,7 @@ import { UsageStatsModule } from '../cube/usage-stats/usage-stats.module';
 import { DetailsModule } from '../cube/details/details.module';
 import { LibraryModule } from '../cube/library/library.module';
 import { CyberskillsCardComponent } from './cyberskills-dashboard/components/cyberskills-card/cyberskills-card.component';
+import { CsvGenModalComponent } from './cyberskills-dashboard/components/csv-gen-modal/csv-gen-modal.component';
 
 @NgModule({
   declarations: [
@@ -66,9 +67,13 @@ import { CyberskillsCardComponent } from './cyberskills-dashboard/components/cyb
     NcyteDashboardComponent,
     CyberskillsDashboardComponent,
     CyberskillsCardComponent,
-    CyberskillsFiltersComponent,
+    CsvGenModalComponent,
+    CyberskillsFiltersComponent
   ],
-  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [
+    NO_ERRORS_SCHEMA,
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
   imports: [
     CommonModule,
     IncludedModule,

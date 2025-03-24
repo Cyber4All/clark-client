@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { AuthValidationService } from '../../core/auth-module/auth-validation.service';
 import { ReportService } from '../../core/report-module/report.service';
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
@@ -7,6 +6,7 @@ import { RatingService } from '../../core/rating-module/rating.service';
 import { SearchService } from '../../core/learning-object-module/search/search.service';
 import { MetricService } from '../../core/metric-module/metric.service';
 import { FilterQuery, OrderBy, SortType } from '../../interfaces/query';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'clark-cyberskills-dashboard',
@@ -25,6 +25,7 @@ export class CyberskillsDashboardComponent implements OnInit {
   filterQuery: FilterQuery = {};
   lastPage: number;
   currPage = 1;
+  showCsvModal = false;
 
   constructor(
     private toaster: ToastrOvenService,
@@ -56,24 +57,12 @@ export class CyberskillsDashboardComponent implements OnInit {
     });
   }
 
-  onDownload(): void {
-    if (!this.range.value.start && !this.range.value.end) {
-      this.toaster.error('Error!', 'Please enter a date range.');
-      return;
-    }
+  openCsvGenModal(): void {
+    this.showCsvModal = true;
+  }
 
-    const start = `${this.range.value.start.getFullYear()}-${this.range.value.start.getMonth() + 1}-${this.range.value.start.getDate()}`;
-    const end = `${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`;
-
-    this.reportService.generateCollectionReport(
-      ['cyberskills2work'],
-      this.name.value,
-      { start: start, end: end },
-    );
-    this.toaster.alert(
-      'We\'re working on it!',
-      'Please wait while we generate the report.',
-    );
+  closeCsvModal(): void {
+    this.showCsvModal = false;
   }
 
   async getRatings(learningObject: any): Promise<any> {

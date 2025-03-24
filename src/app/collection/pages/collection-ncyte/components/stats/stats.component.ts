@@ -7,13 +7,14 @@ import { PieChart } from 'app/cube/usage-stats/types/chart';
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
 let CHART_HOVERED = false;
 @Component({
-  selector: 'clark-ncyte-stats',
+  selector: 'clark-dashboard-stats',
   templateUrl: './stats.component.html',
   styleUrls: ['./stats.component.scss']
 })
 export class StatsComponent implements OnInit {
 
   @Input() collectionName: string;
+  @Input() displayCharts: boolean;
   name: string;
 
   objDownload: number;
@@ -90,11 +91,11 @@ export class StatsComponent implements OnInit {
       type: 'doughnut',
       labels: ['Nanomodule', 'Micromodule', 'Module', 'Unit', 'Course'],
       data: [
-        stats.lengthMetrics.nanomodule,
-        stats.lengthMetrics.micromodule,
-        stats.lengthMetrics.module,
-        stats.lengthMetrics.unit,
-        stats.lengthMetrics.course,
+        stats.lengthMetrics.nanomodules,
+        stats.lengthMetrics.micromodules,
+        stats.lengthMetrics.modules,
+        stats.lengthMetrics.units,
+        stats.lengthMetrics.courses,
       ],
       legend: true,
       options: {

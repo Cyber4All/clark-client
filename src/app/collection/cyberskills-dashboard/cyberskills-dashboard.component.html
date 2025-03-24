@@ -1,7 +1,7 @@
 <div class="container">
-  <h1 class="title">CyberSkills2Work Collection Statistics Dashboard</h1>
-
-  <clark-ncyte-stats [collectionName]="'cyberskills2work'"></clark-ncyte-stats>
+    <h1 class="title">CyberSkills2Work Collection Statistics Dashboard</h1>
+  
+    <clark-dashboard-stats [collectionName]="'cyberskills2work'" [displayCharts]="true"></clark-dashboard-stats>
 
   <div class="downloads-header">
     <h2>All Learning Objects</h2>
@@ -17,8 +17,8 @@
         (clearAll)="handlePaginationAndLoadItems(1, {})">
       </clark-cyberskills-filters>
 
-      <button class="button good desktop-buttons" (click)="onDownload()">
-        <span class="csv-button-text">Download a CSV of All Learning Objects</span>
+      <button class="button good desktop-buttons" (click)="openCsvGenModal()">
+        <span class="csv-button-text">Download CSV of Released Learning Objects</span>
       </button>
     </div>
   </div>
@@ -42,5 +42,8 @@
 
   <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"
     (newPageNumberClicked)='handlePaginationAndLoadItems($event)'></clark-pagination>
-  <cube-footer></cube-footer>
 </div>
+<cube-footer></cube-footer>
+
+<clark-csv-gen-modal *ngIf="showCsvModal" (closed)="closeCsvModal()">
+</clark-csv-gen-modal>
