@@ -74,12 +74,12 @@ export class CyberskillsFiltersComponent implements OnInit {
   }
 
   /**
-   * Toggles the mobile "Options" menu.
+   * Toggles the mobile "Filters" menu.
    * If opening, closes all other filter menus first.
    */
-  toggleOptionsMenu() {
+  toggleFiltersMenu() {
     this.showOptions = !this.showOptions;
-    // If we open the mobile "Options", close all sub-menus first
+    // If we open the mobile "Filters", close all sub-menus first
     if (this.showOptions) {
       this.closeAllMenus();
     }
