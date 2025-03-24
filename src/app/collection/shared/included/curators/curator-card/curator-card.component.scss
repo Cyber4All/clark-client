@@ -1,11 +1,42 @@
+@import '../../../../collection-globals.scss';
+.curator-card {
+    display: inline-block;
+    color: black;
+    flex-basis: 500px;
+  .card-content {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    .grav {
+        margin-top: 30px;
+        margin-right: 30px;
+        width: 80px; 
+        height: 80px;
+        border-radius: 100px;
+    }
+    .name {
+        height: 40px;
+        text-align: center;
+        font-size: $largest;
+    }
+    .organization {
+        width: 300px;
+        height: 40px;
+        text-align: center;
+        font-size: $normal;
+    }
+  }
 
-p{
-    font-weight: 300;
+  .card-content-mobile {
+    margin-top: 10%;
+    p{
+        font-weight: 300;
+    }
+    img{
+    border-radius: 1000px;
+    }
+    div{
+        margin: 0 10px;
+    }
+  }
 }
-img{
-   border-radius: 1000px;
-}
-div{
-    margin: 0 10px;
-}
-

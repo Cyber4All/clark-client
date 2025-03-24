@@ -1,6 +1,10 @@
 @import 'vars.scss';
 @import '../../../../collection-globals.scss';
 
+.button {
+  color: gray;
+}
+
 .wrapper {
   display: flex;
   justify-content: space-between;
@@ -13,26 +17,28 @@
     align-items: center;
 
     .logo {
-      width: 500px;
+      width: 350px;
     }
     .title {
       margin-top: 20px;
-      color: $nice-blue;
+      color: $xp-cyber-dark;
       text-align: center;
       .title-header {
-         width: 415px;
+         width: 450px;
+         font-size: $larger;
       }
       h2 {
         margin: 0px;
-        .nice-link {
-          color: $nice-blue;  
+        .xp-cyber-link {
+          color: $xp-cyber-dark; 
+          text-decoration: underline; 
         }
       }
     }
   }
   .browse-container {
     width: 440px;
-    background: $nice-blue;
+    background: $xp-cyber-dark;
     border-radius: 0px 0px 0px 10px;
 
     .section-accent {
