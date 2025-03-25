@@ -39,16 +39,16 @@
     margin-left: auto;
   }
 
+  .options-button,
+  .button.good {
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 4px;
+  }
 }
 
 /* Media query for desktop & mobile */
 @media (max-width: 768px) {
-
-  /* Force-hide the combined .desktop-filter.desktop-only in mobile */
-  .desktop-filter.desktop-only {
-    display: none !important;
-  }
-
   .learning-object-table .header {
     display: none;
   }
@@ -57,17 +57,14 @@
     display: none;
   }
 
-  /* Force-hide the combined .desktop-filter.desktop-only in mobile */
-  .desktop-filter.desktop-only {
-    display: none !important;
-  }
-
-  .desktop-buttons .csv-button-text {
-    display: none;
-  }
-
   .desktop-buttons::after {
     content: "CSV";
+  }
+}
+
+@media (min-width: 769px) {
+  .dropdown-wrapper.mobile-only {
+    display: none !important;
   }
 }
 

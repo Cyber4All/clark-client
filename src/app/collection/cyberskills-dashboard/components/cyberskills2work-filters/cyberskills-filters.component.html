@@ -1,7 +1,7 @@
 <!-- MOBILE VIEW -->
 <div class="dropdown-wrapper mobile-only">
   <button class="options-button" (click)="toggleFiltersMenu()">
-    <i class="fa fa-bars"></i> Filters
+    Filters
   </button>
 
   <div class="dropdown-content" *ngIf="showOptions" (click)="$event.stopPropagation()">
@@ -12,14 +12,15 @@
 
     <!-- Status Filter -->
     <div class="dropdown-item">
-      <button class="button neutral filters-button" (click)="toggleStatusMenuMobile()"
-        [ngClass]="{ 'filters-button--down': statusMenuActive }">
+      <button class="button neutral filters-button" (click)="toggleMobileStatusMenu()"
+        [ngClass]="{ 'filters-button--down': mobileStatusMenuActive }">
         <span class="filter-badge" *ngIf="statusFilters.size">
           {{ statusFilters.size }}
         </span>
         Status <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="filter-status__container filter-dropdown" *ngIf="statusMenuActive" (click)="$event.stopPropagation()">
+      <div class="filter-status__container filter-dropdown" *ngIf="mobileStatusMenuActive"
+        (click)="$event.stopPropagation()">
         <ul>
           <li *ngFor="let status of statuses" [ngClass]="status" (click)="toggleStatusFilter([status])">
             <div *ngIf="statusFilters.has(status)" class="indicator"></div>
@@ -32,14 +33,15 @@
 
     <!-- Length Filter -->
     <div class="dropdown-item">
-      <button class="button neutral filters-button" (click)="toggleLengthMenuMobile()"
-        [ngClass]="{ 'filters-button--down': lengthMenuActive }">
+      <button class="button neutral filters-button" (click)="toggleMobileLengthMenu()"
+        [ngClass]="{ 'filters-button--down': mobileLengthMenuActive }">
         <span class="filter-badge" *ngIf="lengthFilters.size">
           {{ lengthFilters.size }}
         </span>
         Length <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="filter-status__container filter-dropdown" *ngIf="lengthMenuActive" (click)="$event.stopPropagation()">
+      <div class="filter-status__container filter-dropdown" *ngIf="mobileLengthMenuActive"
+        (click)="$event.stopPropagation()">
         <ul>
           <li *ngFor="let length of lengths" [ngClass]="length" (click)="toggleLengthFilter([length])">
             <div *ngIf="lengthFilters.has(length)" class="indicator"></div>
@@ -51,11 +53,11 @@
 
     <!-- Last Updated Sort -->
     <div class="dropdown-item">
-      <button class="button neutral filters-button" (click)="toggleSortDateMenuMobile()"
-        [ngClass]="{ 'filters-button--down': sortDateMenuActive }">
+      <button class="button neutral filters-button" (click)="toggleMobileSortDateMenu()"
+        [ngClass]="{ 'filters-button--down': mobileSortDateMenuActive }">
         Last Updated <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="filter-status__container filter-dropdown" *ngIf="sortDateMenuActive"
+      <div class="filter-status__container filter-dropdown" *ngIf="mobileSortDateMenuActive"
         (click)="$event.stopPropagation()">
         <ul>
           <li (click)="setLastUpdatedSort(-1)">
@@ -72,11 +74,11 @@
 
     <!-- Rating Sort -->
     <div class="dropdown-item">
-      <button class="button neutral filters-button" (click)="toggleSortRatingMenuMobile()"
-        [ngClass]="{ 'filters-button--down': sortRatingMenuActive }">
+      <button class="button neutral filters-button" (click)="toggleMobileSortRatingMenu()"
+        [ngClass]="{ 'filters-button--down': mobileSortRatingMenuActive }">
         Rating <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="filter-status__container filter-dropdown" *ngIf="sortRatingMenuActive"
+      <div class="filter-status__container filter-dropdown" *ngIf="mobileSortRatingMenuActive"
         (click)="$event.stopPropagation()">
         <ul>
           <li (click)="setRatingSort(-1)">
@@ -90,41 +92,44 @@
         </ul>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- DESKTOP VIEW -->
 <div class="desktop-filter desktop-only" (click)="$event.stopPropagation()">
-  <span class="filters-clear-all"><a (activate)="clearAllFilters()">Clear all filters</a></span>
-  <button #toggleStatusFilterMenu class="button neutral filters-button" (click)="toggleStatusMenuDesktop(true)"
-    [ngClass]="{ 'filters-button--down': statusMenuActive }">
+  <span class="filters-clear-all">
+    <a (activate)="clearAllFilters()">Clear all filters</a>
+  </span>
+
+  <button #toggleStatusFilterMenu class="button neutral filters-button" (click)="toggleDesktopStatusMenu(true)"
+    [ngClass]="{ 'filters-button--down': desktopStatusMenuActive }">
     <span class="filter-badge" *ngIf="statusFilters.size">
       {{ statusFilters.size }}
     </span>
     Status <i class="fas fa-chevron-down"></i>
   </button>
-  <clark-context-menu *ngIf="statusMenuActive" class="filter-status" [anchor]="toggleStatusFilterMenu"
-    [offset]="{ top: 10, left: 10 }" (close)="toggleStatusMenuDesktop(false)">
+  <clark-context-menu *ngIf="desktopStatusMenuActive" class="filter-status" [anchor]="toggleStatusFilterMenu"
+    [offset]="{ top: 10, left: 10 }" (close)="toggleDesktopStatusMenu(false)">
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
         <li *ngFor="let status of statuses" [ngClass]="status" (click)="toggleStatusFilter([status])">
           <div *ngIf="statusFilters.has(status)" class="indicator"></div>
-          <i [ngClass]="getStatusIcon(status)"></i> {{ status.replace('_', ' ') | titlecase }}
+          <i [ngClass]="getStatusIcon(status)"></i>
+          {{ status.replace('_', ' ') | titlecase }}
         </li>
       </ul>
     </div>
   </clark-context-menu>
 
-  <button #toggleLengthFilterMenu class="button neutral filters-button" (click)="toggleLengthMenuDesktop(true)"
-    [ngClass]="{ 'filters-button--down': lengthMenuActive }">
+  <button #toggleLengthFilterMenu class="button neutral filters-button" (click)="toggleDesktopLengthMenu(true)"
+    [ngClass]="{ 'filters-button--down': desktopLengthMenuActive }">
     <span class="filter-badge" *ngIf="lengthFilters.size">
       {{ lengthFilters.size }}
     </span>
     Length <i class="fas fa-chevron-down"></i>
   </button>
-  <clark-context-menu *ngIf="lengthMenuActive" class="filter-lengths" [anchor]="toggleLengthFilterMenu"
-    [offset]="{ top: 10, left: 10 }" (close)="toggleLengthMenuDesktop(false)">
+  <clark-context-menu *ngIf="desktopLengthMenuActive" class="filter-lengths" [anchor]="toggleLengthFilterMenu"
+    [offset]="{ top: 10, left: 10 }" (close)="toggleDesktopLengthMenu(false)">
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
         <li *ngFor="let length of lengths" [ngClass]="length" (click)="toggleLengthFilter([length])">
@@ -135,12 +140,12 @@
     </div>
   </clark-context-menu>
 
-  <button #toggleSortDateMenuAnchor class="button neutral filters-button" (click)="toggleSortDateMenuDesktop(true)"
-    [ngClass]="{ 'filters-button--down': sortDateMenuActive }">
+  <button #toggleSortDateMenuAnchor class="button neutral filters-button" (click)="toggleDesktopSortDateMenu(true)"
+    [ngClass]="{ 'filters-button--down': desktopSortDateMenuActive }">
     Last Updated <i class="fas fa-chevron-down"></i>
   </button>
-  <clark-context-menu *ngIf="sortDateMenuActive" class="sort-dates" [anchor]="toggleSortDateMenuAnchor"
-    [offset]="{ top: 10, left: 10 }" (close)="toggleSortDateMenuDesktop(false)">
+  <clark-context-menu *ngIf="desktopSortDateMenuActive" class="sort-dates" [anchor]="toggleSortDateMenuAnchor"
+    [offset]="{ top: 10, left: 10 }" (close)="toggleDesktopSortDateMenu(false)">
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
         <li (click)="setLastUpdatedSort(-1)">
@@ -154,12 +159,13 @@
       </ul>
     </div>
   </clark-context-menu>
-  <button #toggleSortRatingMenuAnchor class="button neutral filters-button" (click)="toggleSortRatingMenuDesktop(true)"
-    [ngClass]="{ 'filters-button--down': sortRatingMenuActive }">
+
+  <button #toggleSortRatingMenuAnchor class="button neutral filters-button" (click)="toggleDesktopSortRatingMenu(true)"
+    [ngClass]="{ 'filters-button--down': desktopSortRatingMenuActive }">
     Rating <i class="fas fa-chevron-down"></i>
   </button>
-  <clark-context-menu *ngIf="sortRatingMenuActive" class="sort-dates" [anchor]="toggleSortRatingMenuAnchor"
-    [offset]="{ top: 10, left: 10 }" (close)="toggleSortRatingMenuDesktop(false)">
+  <clark-context-menu *ngIf="desktopSortRatingMenuActive" class="sort-dates" [anchor]="toggleSortRatingMenuAnchor"
+    [offset]="{ top: 10, left: 10 }" (close)="toggleDesktopSortRatingMenu(false)">
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
         <li (click)="setRatingSort(-1)">

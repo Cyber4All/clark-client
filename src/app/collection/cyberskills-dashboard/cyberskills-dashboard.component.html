@@ -1,7 +1,7 @@
 <div class="container">
-    <h1 class="title">CyberSkills2Work Collection Statistics Dashboard</h1>
-  
-    <clark-dashboard-stats [collectionName]="'cyberskills2work'" [displayCharts]="true"></clark-dashboard-stats>
+  <h1 class="title">CyberSkills2Work Collection Statistics Dashboard</h1>
+
+  <clark-dashboard-stats [collectionName]="'cyberskills2work'" [displayCharts]="true"></clark-dashboard-stats>
 
   <div class="downloads-header">
     <h2>All Learning Objects</h2>
@@ -37,11 +37,10 @@
     <clark-cyberskills-card *ngFor="let learningObject of learningObjects" [learningObject]="learningObject"
       [statusDescription]="statusDescription">
     </clark-cyberskills-card>
-
   </div>
 
   <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"
-    (newPageNumberClicked)='handlePaginationAndLoadItems($event)'></clark-pagination>
+    (newPageNumberClicked)="handlePaginationAndLoadItems($event)"></clark-pagination>
 </div>
 <cube-footer></cube-footer>
 
