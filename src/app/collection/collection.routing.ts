@@ -23,7 +23,8 @@ const collection_routes: Routes = [
     },
     {
         path: 'nice',
-        redirectTo: 'xpcyber'
+        redirectTo: 'xpcyber',
+        pathMatch: 'full'
     },
     {
         path: 'ncyte',
