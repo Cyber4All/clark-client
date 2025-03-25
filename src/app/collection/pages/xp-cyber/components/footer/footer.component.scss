@@ -1,4 +1,5 @@
 @import 'vars.scss';
+@import '../../../../collection-globals.scss';
 
 
 a {
@@ -7,10 +8,13 @@ a {
 
 .wrapper {
   color: white;
-  background: $dark-grey;
+  background: $xp-cyber-dark;
 
   .rights-container {
     padding: 50px ;
+    .rights-text-box{
+      text-align: center;
+    }
   }
 
   .logo-container {
@@ -28,6 +32,7 @@ a {
     align-items: center;
     .grants-text-box {
       padding-right: 20px;
+      text-align: center;
     }
   }
 }

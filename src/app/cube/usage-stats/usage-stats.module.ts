@@ -10,7 +10,11 @@ import { TopDownloadsComponent } from './top-downloads/top-downloads.component';
 
 @NgModule({
   imports: [CommonModule, ChartsModule, UsageStatsRoutingModule],
-  exports: [UsageStatsComponent],
+  exports: [
+    UsageStatsComponent,
+    DistributionChartComponent,
+    TopDownloadsComponent
+  ],
   declarations: [
     UsageStatsComponent,
     DistributionChartComponent,

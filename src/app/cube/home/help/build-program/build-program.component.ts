@@ -101,7 +101,8 @@ export class BuildProgramComponent implements OnInit {
   handleFrameworkClicked(event: string) {
     this.buildProgramComponentService.updateCurrentFramework(event);
     this.guidelineService.getGuidelines({
-      frameworks: this.currentFramework
+      frameworks: this.currentFramework,
+      deprecated: 'all'
     })
       .then(result => {
         this.currentFrameworkGuidelines = result.results

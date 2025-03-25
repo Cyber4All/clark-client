@@ -6,11 +6,6 @@ a {
 a:visited {
     color: $darker-grey;
 }
-.container{
-    width: 20vw;
-    margin-bottom: 50px;
-    display: flex;
-}
 .header{
     &.module{
         background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
@@ -29,48 +24,81 @@ a:visited {
     }
     display: flex;
     align-items: center;
-    margin: 0 15px;
     color: #fff;
-    background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    max-width: 150px;
-    min-width: 150px;
-    min-height: 100px;
     border-radius: 10px;
-    width: 100%;
+    margin-left: 30px;
 }
-.overlay{
-    background-color: $medium-grey;
-    max-width: 150px;
-    width: 100%;
-    text-align: center;
-    padding: 5px 0;
-    text-transform: uppercase;
-}
-div{ 
-    font-size: $smaller;
-}
-.obj-title{
-    padding-top: 20px;
-    font-size: $normal;
-    font-weight: 700;
-}
-@media (max-width: 800px){
+.wide{
     .container{
-        justify-content: space-between;
+        width: 20vw;
+        max-width: 350px;
+        margin-bottom: 50px;
+        margin-left: 30px;
+        display: flex;
     }
     .obj-info{
-        margin: auto;
-        padding-top: 5px;
-        min-width: 60vw;
+        font-size: $normal;
+        .obj-title{
+            padding-top: 20px;
+            font-size: $normal;
+            font-weight: 700;
+            height: 8vh; 
+        }
     }
-    .header{
-        min-width: 30vw;
-        min-height: 20vh;
+    .header{     
+        min-height: 100px;
+        width: 100%;
     }
     .overlay{
-        min-width: 30vw;
+        background-color: $medium-grey;
+        width: 100%;
+        text-align: center;
+        padding: 5px 0;
+        text-transform: uppercase;
     }
- 
+    div{ 
+        font-size: $smaller;
+    }
+}
+
+.mobile {
+    a {
+        text-decoration: none;
+        color: $darker-grey;
+    }
+    a:visited {
+        color: $darker-grey;
+    }
+    .container{
+        width: 100%;
+        margin-bottom: 50px;
+        display: flex;
+        .obj-info{
+            text-align: center;
+            .obj-title{
+                padding-top: 20px;
+                font-size: $large;
+                font-weight: 700;
+            }
+        }
+    }
+    .header{
+        width: 250px;
+        height: 300px;
+        margin: 0 auto;
+    }
+    .overlay{
+        background-color: $medium-grey;
+        height: 35px;
+        width: 100%;
+        text-align: center;
+        padding: 5px 0;
+        text-transform: uppercase;
+        font-size: x-large;
+    }
+    div{ 
+        font-size: $normal;
+    }
 }

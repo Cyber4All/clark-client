@@ -121,6 +121,7 @@ export class GuidelineFilterComponent implements OnInit, OnDestroy {
     const query: any = {
       text: this.query,
       page: this.page,
+      deprecated: 'all'
     };
     const framework = this.getSelectedFramework();
     if (framework) {

@@ -56,7 +56,7 @@ import { TagPillComponent } from './components/tag-pill/tag-pill.component';
     EditorialActionPadModule,
     OnionCoreModule
   ],
-  exports: [],
+  exports: [LengthComponent],
   declarations: [
     // root level component
     DetailsComponent,
