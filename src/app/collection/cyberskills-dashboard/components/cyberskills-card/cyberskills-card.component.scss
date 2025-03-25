@@ -1,0 +1,111 @@
+@import "vars.scss";
+@import "../../../collection-globals.scss";
+
+.row {
+  display: grid;
+  grid-template-columns: 70px 100px 2fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid $secondary-white-background;
+  margin-bottom: 2px;
+  justify-items: start;
+
+  &:nth-child(even) {
+    background-color: $wrapper-background;
+  }
+
+  &:hover {
+    background-color: $secondary-white-background;
+  }
+}
+
+.status {
+  text-align: center;
+  font-size: 1.2rem;
+  width: 32px;
+  height: 32px;
+  color: $wrapper-background;
+  font-size: $normal;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $status_unreleased;
+  transition: all 0.2s ease;
+  box-shadow: none;
+  margin: 0 10px;
+
+  &.waiting {
+    background: $status_waiting;
+  }
+
+  &.review {
+    background: $status_review;
+  }
+
+  &.accepted_minor {
+    background: $status_accepted_minor;
+  }
+
+  &.accepted_major {
+    background: $status_accepted_major;
+  }
+
+  &.proofing {
+    background: $status_proofing;
+  }
+
+  &.released {
+    background: $status_released;
+  }
+
+  &.rejected {
+    background: $status_rejected;
+  }
+
+  &:hover {
+    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.info {
+  padding: 4px;
+  text-align: left;
+  align-items: center;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.date {
+  color: $dark-grey;
+}
+
+.details-link {
+  text-decoration: none;
+  color: $light-blue;
+  font-weight: bold;
+}
+
+/* Instead of a 7-column grid, collapse everything vertically as blocks */
+@media (max-width: 768px) {
+  .row {
+    display: block;
+  }
+
+  .row>.info {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid $ternary-white-background;
+    padding: 8px 0;
+    margin-bottom: 2px;
+  }
+
+  .row>.info::before {
+    content: attr(data-label) ": ";
+    font-weight: bold;
+    margin-right: 8px;
+    margin-bottom: 2px;
+  }
+}

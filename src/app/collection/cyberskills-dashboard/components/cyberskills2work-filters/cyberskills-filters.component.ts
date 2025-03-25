@@ -5,22 +5,19 @@ import {
   OnInit,
   Output,
   ViewChild,
+  HostListener,
 } from '@angular/core';
 
 import { LearningObject } from '@entity';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
-import {
-  FilterQuery,
-  OrderBy,
-  SortType,
-} from '../../../../interfaces/query';
+import { ActivatedRoute } from '@angular/router';
+import { FilterQuery, OrderBy, SortType } from '../../../../interfaces/query';
 
 @Component({
   selector: 'clark-cyberskills-filters',
   templateUrl: './cyberskills-filters.component.html',
   styleUrls: [
     '../../../../admin/components/filter-search/filter-search.component.scss',
-    '../../cyberskills-dashboard.component.scss'
+    './cyberskills-filters.component.scss',
   ],
 })
 export class CyberskillsFiltersComponent implements OnInit {
@@ -35,83 +32,182 @@ export class CyberskillsFiltersComponent implements OnInit {
   lengths = Object.values(LearningObject.Length);
   sortValues = Object.values(SortType);
 
-  // Output a new query object to trigger a new LO query.
+  // Mobile Menu States
+  mobileStatusMenuActive: boolean;
+  mobileLengthMenuActive: boolean;
+  mobileSortDateMenuActive: boolean;
+  mobileSortRatingMenuActive: boolean;
+
+  // Desktop Menu States
+  desktopStatusMenuActive: boolean;
+  desktopLengthMenuActive: boolean;
+  desktopSortDateMenuActive: boolean;
+  desktopSortRatingMenuActive: boolean;
+
+  showOptions = false;
+
   @Output() filterQuery = new EventEmitter<FilterQuery>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
-  statusMenuActive: boolean;
-  lengthMenuActive: boolean;
-  sortDateMenuActive: boolean;
-  sortRatingMenuActive: boolean;
-  sortDownloadsMenuActive: boolean;
-
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private elRef: ElementRef,
+  ) {}
 
   async ngOnInit() {
-    // add the 'all' option into the list of statuses
+    // Insert 'all' into the list of statuses
     this.statuses.splice(0, 0);
 
     this.statuses = this.statuses.filter(
       (s) => !['rejected', 'unreleased'].includes(s.toLowerCase()),
     );
 
-    //check for params in the query and add them to the filter dropdown bars
+    // Check for query params in the URL
     const qParams = this.route.parent?.snapshot.queryParamMap;
     const queryStatuses = qParams?.getAll('statuses');
 
-    // if there are statuses in the query add them to the filter dropdowns
+    // If there are statuses in the query, apply them
     if (queryStatuses) {
       this.toggleStatusFilter(queryStatuses);
     }
 
-    this.statusMenuActive = false;
-    this.lengthMenuActive = false;
-    this.sortDateMenuActive = false;
-    this.sortRatingMenuActive = false;
+    // Initialize mobile booleans
+    this.mobileStatusMenuActive = false;
+    this.mobileLengthMenuActive = false;
+    this.mobileSortDateMenuActive = false;
+    this.mobileSortRatingMenuActive = false;
+
+    // Initialize desktop booleans
+    this.desktopStatusMenuActive = false;
+    this.desktopLengthMenuActive = false;
+    this.desktopSortDateMenuActive = false;
+    this.desktopSortRatingMenuActive = false;
   }
 
   /**
-   * Hide or show the status filter dropdown menu
+   * Toggles the mobile "Filters" menu.
+   * If opening, closes all sub-menus first.
    */
-  toggleStatusMenu(value: boolean) {
-    this.statusMenuActive = value;
+  toggleFiltersMenu() {
+    this.showOptions = !this.showOptions;
+    if (this.showOptions) {
+      this.closeAllMenus();
+    }
   }
 
   /**
-   * Hide or show the length filter dropdown menu
+   * Host listener to detect clicks outside this component.
+   * If the click is external, closes all menus.
    */
-  toggleLengthMenu(value: boolean) {
-    this.lengthMenuActive = value;
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: MouseEvent) {
+    if (!this.elRef.nativeElement.contains(event.target)) {
+      this.closeAllMenus();
+      this.showOptions = false; // also hide the entire mobile filter dropdown
+    }
   }
 
   /**
-   * Hide or show the sort date dropdown menu
+   * Closes all MOBILE sub-menus.
    */
-  toggleSortDateMenu(value: boolean) {
-    this.sortDateMenuActive = value;
+  private closeAllMenus() {
+    this.mobileStatusMenuActive = false;
+    this.mobileLengthMenuActive = false;
+    this.mobileSortDateMenuActive = false;
+    this.mobileSortRatingMenuActive = false;
   }
 
   /**
-   * Hide or show the sort rating dropdown menu
+   * Hide or show the status filter dropdown menu in mobile view
    */
-  toggleSortRatingMenu(value: boolean) {
-    this.sortRatingMenuActive = value;
+  toggleMobileStatusMenu() {
+    if (this.mobileStatusMenuActive) {
+      this.mobileStatusMenuActive = false;
+    } else {
+      this.closeAllMenus();
+      this.mobileStatusMenuActive = true;
+    }
   }
 
   /**
-   * Add or remove filter from status filter list
-   *
-   * @param {string} filter the filter to be toggled
+   * Hide or show the length filter dropdown menu in mobile view
+   */
+  toggleMobileLengthMenu() {
+    if (this.mobileLengthMenuActive) {
+      this.mobileLengthMenuActive = false;
+    } else {
+      this.closeAllMenus();
+      this.mobileLengthMenuActive = true;
+    }
+  }
+
+  /**
+   * Hide or show the date filter dropdown menu in mobile view
+   */
+  toggleMobileSortDateMenu() {
+    if (this.mobileSortDateMenuActive) {
+      this.mobileSortDateMenuActive = false;
+    } else {
+      this.closeAllMenus();
+      this.mobileSortDateMenuActive = true;
+    }
+  }
+
+  /**
+   * Hide or show the rating filter dropdown menu in mobile view
+   */
+  toggleMobileSortRatingMenu() {
+    if (this.mobileSortRatingMenuActive) {
+      this.mobileSortRatingMenuActive = false;
+    } else {
+      this.closeAllMenus();
+      this.mobileSortRatingMenuActive = true;
+    }
+  }
+
+  /**
+   * Hide or show the status filter dropdown menu in desktop view
+   */
+  toggleDesktopStatusMenu(value: boolean) {
+    this.desktopStatusMenuActive = value;
+  }
+
+  /**
+   * Hide or show the length filter dropdown menu in desktop view
+   */
+  toggleDesktopLengthMenu(value: boolean) {
+    this.desktopLengthMenuActive = value;
+  }
+
+  /**
+   * Hide or show the date filter dropdown menu in desktop view
+   */
+  toggleDesktopSortDateMenu(value: boolean) {
+    this.desktopSortDateMenuActive = value;
+  }
+
+  /**
+   * Hide or show the rating filter dropdown menu in desktop view
+   */
+  toggleDesktopSortRatingMenu(value: boolean) {
+    this.desktopSortRatingMenuActive = value;
+  }
+
+  /**
+   * Toggle one or more status filters.
+   * If "all" is clicked, clear them all and close the menu.
    */
   toggleStatusFilter(filters: string[]) {
     for (const filter of filters) {
       if (filter.toLowerCase() === 'all') {
         this.clearStatusFilters();
-        this.toggleStatusMenu(false);
+        // Also close desktop menu if open
+        this.desktopStatusMenuActive = false;
+        // Also close mobile menu if open
+        this.mobileStatusMenuActive = false;
         return;
       }
-
       if (!this.statusFilters.has(filter)) {
         this.statusFilters.add(filter);
       } else {
@@ -144,13 +240,10 @@ export class CyberskillsFiltersComponent implements OnInit {
   setLastUpdatedSort(sort: SortType) {
     this.selectedOrderBy = OrderBy.Date;
     this.selectedLastUpdatedSortType = sort;
-
-    // Un-set the rating sort value
+    // Unset rating sort
     this.selectedRatingSortType = undefined;
-
     this.filter();
   }
-
 
   /**
    * Set the sort value for rating.
@@ -159,22 +252,21 @@ export class CyberskillsFiltersComponent implements OnInit {
   setRatingSort(sort: SortType) {
     this.selectedOrderBy = OrderBy.Rating;
     this.selectedRatingSortType = sort;
-
-    // Un-set the last updated sort value
+    // Unset date sort
     this.selectedLastUpdatedSortType = undefined;
-
     this.filter();
   }
 
+  /**
+   * Builds the FilterQuery and emits it to the parent
+   */
   filter() {
-    // Emit the selected filters
     const filters: FilterQuery = {
-      status: Array.from(this.statusFilters || []),
-      length: Array.from(this.lengthFilters || []),
+      status: Array.from(this.statusFilters),
+      length: Array.from(this.lengthFilters),
       orderBy: this.selectedOrderBy,
       sortType: this.selectedLastUpdatedSortType || this.selectedRatingSortType,
     };
-
     this.filterQuery.emit(filters);
   }
 
@@ -196,8 +288,6 @@ export class CyberskillsFiltersComponent implements OnInit {
 
   /**
    * Remove all active status filters and collection filters
-   *
-   * @memberof FilterSearchComponent
    */
   clearAllFilters() {
     this.statusFilters.clear();
@@ -205,6 +295,20 @@ export class CyberskillsFiltersComponent implements OnInit {
     this.selectedLastUpdatedSortType = undefined;
     this.selectedRatingSortType = undefined;
 
+    // Close desktop menus
+    this.desktopStatusMenuActive = false;
+    this.desktopLengthMenuActive = false;
+    this.desktopSortDateMenuActive = false;
+    this.desktopSortRatingMenuActive = false;
+
+    // Close mobile menus
+    this.mobileStatusMenuActive = false;
+    this.mobileLengthMenuActive = false;
+    this.mobileSortDateMenuActive = false;
+    this.mobileSortRatingMenuActive = false;
+
+    this.showOptions = false;
+    this.filter();
     this.clearAll.emit();
   }
 
@@ -213,7 +317,6 @@ export class CyberskillsFiltersComponent implements OnInit {
    *
    * @param {string} status the status for which to return an icon
    * @returns {string}
-   * @memberof FilterSearchComponent
    */
   getStatusIcon(status: string): string {
     switch (status) {

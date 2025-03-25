@@ -4,7 +4,7 @@
 .container {
   min-height: 100vh;
   padding: 20px 50px;
-  background-color: white;
+  background-color: $wrapper-background;
   display: flex;
   flex-direction: column;
 }
@@ -17,60 +17,54 @@
 }
 
 .downloads-header {
+  display: flex;
+  justify-content: space-between; // Pushes elements to opposite sides
+  align-items: center; // Aligns items vertically
+  width: 100%; // Ensures full width
+
   h2 {
     color: $light-blue;
     font-size: $largest;
     font-weight: 600;
   }
 
-  display: flex;
-  justify-content: space-between; // Pushes elements to opposite sides
-  align-items: center; // Aligns items vertically
-  width: 100%; // Ensures full width
-  padding: 10px 20px; // Adds spacing
+  .desktop-buttons {
+    display: flex;
+  }
+
+  .filters-wrap {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
+  }
+
+  .options-button,
+  .button.good {
+    font-size: 14px; 
+    padding: 8px 14px;
+    border-radius: 4px;
+  } 
 }
 
-
-.downloads-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .date {
-    .tip {
-      margin-right: 10px;
-    }
-
-    label {
-      margin-right: 5px;
-    }
-
-    mat-radio-group mat-radio-button {
-      margin-right: 10px;
-    }
+/* Media query for desktop & mobile */
+@media (max-width: 768px) {
+  .learning-object-table .header {
+    display: none;
   }
 
-  mat-form-field {
-    margin: 10px 0;
+  .desktop-buttons .csv-button-text {
+    display: none;
   }
 
-  button {
-    padding: 16px 27px;
-    background-color: $light-blue;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    box-shadow: 0px 6px 12px -6px $homepage-light-blue;
-    width: fit-content;
+  .desktop-buttons::after {
+    content: "CSV";
+  }
+}
 
-    &:hover {
-      opacity: 80%;
-    }
-
-    &:active {
-      opacity: 100%;
-    }
+@media (min-width: 769px) {
+  .dropdown-wrapper.mobile-only {
+    display: none !important;
   }
 }
 
@@ -81,108 +75,13 @@
   width: 100%;
 }
 
-#status {
-  margin-right: 10px;
-}
-
-.header,
-.row {
+.header {
   display: grid;
   grid-template-columns: 70px 100px 2fr 1fr 1fr 1fr 1fr;
   align-items: center;
   padding: 8px;
-  border-bottom: 1px solid #ddd;
-  height: 60px;
-}
-
-.header {
+  border-bottom: 1px solid $ternary-white-background;
   font-weight: bold;
-  background-color: #f5f5f5;
+  background-color: $light-grey;
   text-align: left;
-}
-
-.status {
-  text-align: center;
-  font-size: 1.2rem;
-}
-
-.info {
-  padding: 4px;
-}
-
-.name {
-  font-weight: bold;
-}
-
-.date {
-  color: #666;
-}
-
-.details-link {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-}
-
-.row:nth-child(even) {
-  background-color: #fafafa;
-}
-
-.row:hover {
-  background-color: #f0f0f0;
-}
-
-
-.status {
-  width: 32px;
-  height: 32px;
-  color: white;
-  font-size: $normal;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $status_unreleased;
-  transition: all 0.2s ease;
-  box-shadow: none;
-  margin: 0 10px;
-
-  &.waiting {
-    background: $status_waiting;
-  }
-
-  &.review {
-    background: $status_review;
-  }
-
-  &.accepted_minor {
-    background: $status_accepted_minor;
-  }
-
-  &.accepted_major {
-    background: $status_accepted_major;
-  }
-
-  &.proofing {
-    background: $status_proofing;
-  }
-
-  &.released {
-    background: $status_released;
-  }
-
-  &.rejected {
-    background: $status_rejected;
-  }
-
-  &:hover {
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
-  }
-}
-
-.buttons {
-  display: flex;
-  flex-flow: row;
-  align-items: center;
-  gap: 0.5rem;
 }
