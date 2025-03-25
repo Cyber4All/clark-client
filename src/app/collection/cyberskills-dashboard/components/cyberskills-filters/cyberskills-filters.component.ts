@@ -92,7 +92,7 @@ export class CyberskillsFiltersComponent implements OnInit {
   toggleFiltersMenu() {
     this.showOptions = !this.showOptions;
     if (this.showOptions) {
-      this.closeAllMenus(); // closes mobile sub-menus
+      this.closeAllMenus();
     }
   }
 
@@ -110,7 +110,6 @@ export class CyberskillsFiltersComponent implements OnInit {
 
   /**
    * Closes all MOBILE sub-menus.
-   * (Desktop sub-menus use separate booleans & toggles.)
    */
   private closeAllMenus() {
     this.mobileStatusMenuActive = false;
@@ -119,7 +118,6 @@ export class CyberskillsFiltersComponent implements OnInit {
     this.mobileSortRatingMenuActive = false;
   }
 
-  // ============== MOBILE MENU TOGGLES ==============
   /**
    * Hide or show the status filter dropdown menu in mobile view
    */
@@ -168,7 +166,6 @@ export class CyberskillsFiltersComponent implements OnInit {
     }
   }
 
-  // ============== DESKTOP MENU TOGGLES ==============
   /**
    * Hide or show the status filter dropdown menu in desktop view
    */
@@ -197,7 +194,6 @@ export class CyberskillsFiltersComponent implements OnInit {
     this.desktopSortRatingMenuActive = value;
   }
 
-  // ============== SHARED FILTER LOGIC ==============
   /**
    * Toggle one or more status filters.
    * If "all" is clicked, clear them all and close the menu.
