@@ -22,8 +22,8 @@
       <div class="filter-status__container filter-dropdown" *ngIf="mobileStatusMenuActive"
         (click)="$event.stopPropagation()">
         <ul>
-          <li *ngFor="let status of statuses" [ngClass]="status" (click)="toggleStatusFilter([status])">
-            <div *ngIf="statusFilters.has(status)" class="indicator"></div>
+          <li *ngFor="let status of statuses" [ngClass]="[status, statusFilters.has(status) ? 'selected' : '']"
+            (click)="toggleStatusFilter([status])">
             <i [ngClass]="getStatusIcon(status)"></i>
             {{ status.replace('_', ' ') | titlecase }}
           </li>
@@ -43,8 +43,8 @@
       <div class="filter-status__container filter-dropdown" *ngIf="mobileLengthMenuActive"
         (click)="$event.stopPropagation()">
         <ul>
-          <li *ngFor="let length of lengths" [ngClass]="length" (click)="toggleLengthFilter([length])">
-            <div *ngIf="lengthFilters.has(length)" class="indicator"></div>
+          <li *ngFor="let length of lengths" [ngClass]="{ 'selected': lengthFilters.has(length) }"
+            (click)="toggleLengthFilter([length])">
             {{ length.replace('_', ' ') | titlecase }}
           </li>
         </ul>
@@ -60,12 +60,10 @@
       <div class="filter-status__container filter-dropdown" *ngIf="mobileSortDateMenuActive"
         (click)="$event.stopPropagation()">
         <ul>
-          <li (click)="setLastUpdatedSort(-1)">
-            <span *ngIf="selectedLastUpdatedSortType === -1" class="indicator"></span>
+          <li (click)="setLastUpdatedSort(-1)" [ngClass]="{ 'selected': selectedLastUpdatedSortType === -1 }">
             Newest
           </li>
-          <li (click)="setLastUpdatedSort(1)">
-            <span *ngIf="selectedLastUpdatedSortType === 1" class="indicator"></span>
+          <li (click)="setLastUpdatedSort(1)" [ngClass]="{ 'selected': selectedLastUpdatedSortType === 1 }">
             Oldest
           </li>
         </ul>
@@ -81,12 +79,10 @@
       <div class="filter-status__container filter-dropdown" *ngIf="mobileSortRatingMenuActive"
         (click)="$event.stopPropagation()">
         <ul>
-          <li (click)="setRatingSort(-1)">
-            <span *ngIf="selectedRatingSortType === -1" class="indicator"></span>
+          <li (click)="setRatingSort(-1)" [ngClass]="{ 'selected': selectedRatingSortType === -1 }">
             Highest Rated
           </li>
-          <li (click)="setRatingSort(1)">
-            <span *ngIf="selectedRatingSortType === 1" class="indicator"></span>
+          <li (click)="setRatingSort(1)" [ngClass]="{ 'selected': selectedRatingSortType === 1 }">
             Lowest Rated
           </li>
         </ul>
@@ -113,6 +109,7 @@
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
         <li *ngFor="let status of statuses" [ngClass]="status" (click)="toggleStatusFilter([status])">
+          <!-- Desktop view keeps the indicator -->
           <div *ngIf="statusFilters.has(status)" class="indicator"></div>
           <i [ngClass]="getStatusIcon(status)"></i>
           {{ status.replace('_', ' ') | titlecase }}
@@ -133,6 +130,7 @@
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
         <li *ngFor="let length of lengths" [ngClass]="length" (click)="toggleLengthFilter([length])">
+          <!-- Desktop view keeps the indicator -->
           <div *ngIf="lengthFilters.has(length)" class="indicator"></div>
           {{ length.replace('_', ' ') | titlecase }}
         </li>

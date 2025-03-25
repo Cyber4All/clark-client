@@ -98,11 +98,14 @@
                 color: $dark-grey;
             }
 
-            .indicator {
-                width: 8px;
-                height: 8px;
+            /* For mobile, the entire block turns blue with white text/icon when selected */
+            &.selected {
                 background-color: $light-blue;
-                border-radius: 50%;
+                color: $wrapper-background;
+
+                i {
+                    color: $wrapper-background;
+                }
             }
         }
     }
@@ -138,6 +141,36 @@
 
         &--down i {
             transform: rotate(180deg);
+        }
+    }
+
+    .filter-status__container ul li {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 0;
+        border-bottom: 1px solid $secondary-white-background;
+        cursor: pointer;
+        list-style: none;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &:hover {
+            background-color: $ternary-white-background;
+        }
+
+        i {
+            font-size: 14px;
+            color: $dark-grey;
+        }
+
+        .indicator {
+            width: 8px;
+            height: 8px;
+            background-color: $light-blue;
+            border-radius: 50%;
         }
     }
 }
