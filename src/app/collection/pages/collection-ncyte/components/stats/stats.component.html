@@ -1,6 +1,6 @@
 <div class="stats">
     <div class="inner">
-        <h1 class="header">{{ name }} by the Numbers</h1>
+        <!-- <h1 class="header">{{ name }} by the Numbers</h1> -->
         <div class="section-stats">
             <div class="stat">
                 <div class="stat__icon release">
@@ -39,15 +39,17 @@
                     Collection Author<span *ngIf="authorCollection !== 1">s</span>
                 </p>
             </div>
-            <div class="stat">
-                <div class="stat__icon saves">
-                    <i class="far fa-university"></i>
-                </div>
-                <div class="num">{{ objSaved }}</div>
-                <p>
-                    Save<span *ngIf="objSaved !== 1">s</span>
-                </p>
-            </div>
         </div>
     </div>
+
+
+<div class="bottom" *ngIf="this.displayCharts === true">
+    <clark-top-downloads [learningObjects]="learningObjects"></clark-top-downloads>
+    <cube-distribution-chart 
+      class="chart"
+      [chart]="lengthDistributionChart"
+      (chartNotHovered)="handleChartNotHovered()">
+    </cube-distribution-chart>
+  </div>
 </div>
+  
