@@ -38,7 +38,7 @@
   <!-- Rating (only if released) -->
   <div class="info" data-label="Rating">
     <clark-rating-stars *ngIf="learningObject.status === 'released'"
-      [rating]="learningObject.rating ? learningObject.rating : 0" color="gold">
+      [rating]="learningObject.averageRating ? learningObject.averageRating : 0" color="gold">
     </clark-rating-stars>
   </div>
 
