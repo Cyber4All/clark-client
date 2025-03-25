@@ -22,6 +22,10 @@ const collection_routes: Routes = [
         component: XPCyberComponent
     },
     {
+        path: 'nice',
+        redirectTo: 'xpcyber'
+    },
+    {
         path: 'ncyte',
         component: CollectionNcyteComponent
     },
