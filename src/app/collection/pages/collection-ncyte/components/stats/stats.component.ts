@@ -21,8 +21,8 @@ export class StatsComponent implements OnInit {
 
   async ngOnInit() {
     switch (this.collectionName) {
-      case 'nice':
-        this.name = 'NICE';
+      case 'xpcyber':
+        this.name = 'XP Cyber';
         break;
       case 'ncyte':
         this.name = 'NCyTE';

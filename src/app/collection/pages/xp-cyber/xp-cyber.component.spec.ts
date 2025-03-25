@@ -1,21 +1,21 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NiceChallengeComponent } from './nice-challenge.component';
+import { XPCyberComponent } from './xp-cyber.component';
 
-describe('NiceChallengeComponent', () => {
-  let component: NiceChallengeComponent;
-  let fixture: ComponentFixture<NiceChallengeComponent>;
+describe('XPCyberComponent', () => {
+  let component: XPCyberComponent;
+  let fixture: ComponentFixture<XPCyberComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [NiceChallengeComponent],
+    declarations: [XPCyberComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NiceChallengeComponent);
+    fixture = TestBed.createComponent(XPCyberComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

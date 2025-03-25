@@ -176,7 +176,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.loading = false;
           if (
             this.learningObject.collection === 'ncyte' ||
-            this.learningObject.collection === 'nice'
+            this.learningObject.collection === 'xpcyber'
           ) {
             this.link = '/collections/' + this.learningObject.collection;
           } else {
