@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { AuthValidationService } from '../../core/auth-module/auth-validation.service';
-import { ReportService } from '../../core/report-module/report.service';
-import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
-import { RatingService } from '../../core/rating-module/rating.service';
-import { SearchService } from '../../core/learning-object-module/search/search.service';
-import { MetricService } from '../../core/metric-module/metric.service';
-import { FilterQuery, OrderBy, SortType } from '../../interfaces/query';
+import { AuthValidationService } from '../../../core/auth-module/auth-validation.service';
+import { ReportService } from '../../../core/report-module/report.service';
+import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
+import { RatingService } from '../../../core/rating-module/rating.service';
+import { SearchService } from '../../../core/learning-object-module/search/search.service';
+import { MetricService } from '../../../core/metric-module/metric.service';
+import { FilterQuery, OrderBy, SortType } from '../../../interfaces/query';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({

@@ -8,7 +8,7 @@ import { NotFoundComponent } from 'app/not-found.component';
 import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dashboard.component';
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
 import { NcyteDashboardGuard } from '../core/client-module/ncyte-dashboard.guard';
-import { CyberskillsDashboardComponent } from './cyberskills-dashboard/cyberskills-dashboard.component';
+import { CyberskillsDashboardComponent } from './pages/cyberskills-dashboard/cyberskills-dashboard.component';
 import { CyberSkillsGuard } from '../core/client-module/cyber-skills.guard';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention

@@ -10,7 +10,7 @@ import {
 
 import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
-import { FilterQuery, OrderBy, SortType } from '../../../../interfaces/query';
+import { FilterQuery, OrderBy, SortType } from '../../../../../interfaces/query';
 
 @Component({
   selector: 'clark-cyberskills-filters',
