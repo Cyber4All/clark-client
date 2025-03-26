@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CollectionIndexComponent } from './pages/collection-index/collection-index.component';
 import { XPCyberComponent } from './pages/xp-cyber/xp-cyber.component';
 import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
 import { Collection502Component } from './pages/collection-502/collection-502.component';
