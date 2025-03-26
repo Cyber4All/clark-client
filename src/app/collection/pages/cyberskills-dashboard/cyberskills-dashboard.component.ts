@@ -78,6 +78,8 @@ export class CyberskillsDashboardComponent implements OnInit {
       this.filterQuery = event;
     }
 
+    console.log()
+
     const objects = (this.learningObjects =
       await this.learningObjectService.getLearningObjects({
         collection: 'cyberskills2work',
