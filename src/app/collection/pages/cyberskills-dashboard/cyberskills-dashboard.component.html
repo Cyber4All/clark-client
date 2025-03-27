@@ -5,7 +5,7 @@
 
   <div class="downloads-header">
     <h2>All Learning Objects</h2>
-    <div class="filters-wrap">
+    <div class="filters-wrap" *ngIf="!showCsvModal">
       <!--
         When filterQuery is emitted, we will always load the first page
         because the contents are bound to change and there's no guarantee
@@ -13,7 +13,8 @@
 
         We do the same for clearAll once filterQuery is empty.
       -->
-      <clark-cyberskills-filters (filterQuery)="handlePaginationAndLoadItems(1, $event)"
+      <clark-cyberskills-filters 
+        (filterQuery)="handlePaginationAndLoadItems(1, $event)"
         (clearAll)="handlePaginationAndLoadItems(1, {})">
       </clark-cyberskills-filters>
 
