@@ -49,6 +49,13 @@
   } 
 }
 
+.no-objects-message {
+  margin: auto;
+  padding: 40px;
+  font-size: $larger;
+  color: $darker-grey;
+}
+
 /* Media query for desktop & mobile */
 @media (max-width: 768px) {
   .learning-object-table .header {

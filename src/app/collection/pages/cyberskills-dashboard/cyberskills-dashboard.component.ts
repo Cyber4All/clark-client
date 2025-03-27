@@ -98,7 +98,7 @@ export class CyberskillsDashboardComponent implements OnInit {
       }));
     this.lastPage = Math.ceil(objects.total / 20); // calc # of pages needed for total learning objects
     this.learningObjects = objects.learningObjects;
-
+    
     this.retrieveMetrics();
   }
 }

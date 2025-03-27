@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <div class="learning-object-table">
+  <div *ngIf="learningObjects.length > 0; else noObjects" class="learning-object-table">
     <div class="header">
       <span>Status</span>
       <span>Length</span>
@@ -37,12 +37,17 @@
     <clark-cyberskills-card *ngFor="let learningObject of learningObjects" [learningObject]="learningObject"
       [statusDescription]="statusDescription">
     </clark-cyberskills-card>
+
+    <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"
+    (newPageNumberClicked)="handlePaginationAndLoadItems($event)"></clark-pagination>
   </div>
 
-  <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"
-    (newPageNumberClicked)="handlePaginationAndLoadItems($event)"></clark-pagination>
 </div>
 <cube-footer></cube-footer>
 
 <clark-csv-gen-modal *ngIf="showCsvModal" (closed)="closeCsvModal()">
 </clark-csv-gen-modal>
+
+<ng-template #noObjects>
+  <p class="no-objects-message">No Learning Objects</p>
+</ng-template>
