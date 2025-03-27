@@ -31,7 +31,6 @@ export class CyberskillsDashboardComponent implements OnInit {
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
     private authValidationService: AuthValidationService,
-    private reportService: ReportService,
     private ratingService: RatingService,
     private learningObjectService: SearchService,
     private metricsService: MetricService,
@@ -78,19 +77,15 @@ export class CyberskillsDashboardComponent implements OnInit {
       this.filterQuery = event;
     }
 
+    console.log(this.filterQuery?.status)
 
     const objects = (this.learningObjects =
       await this.learningObjectService.getLearningObjects({
         collection: 'cyberskills2work',
         limit: 20,
-        status: this.filterQuery?.status || [
-          'released',
-          'waiting',
-          'proofing',
-          'review',
-          'accepted_major',
-          'accepted_minor',
-        ],
+        status: this.filterQuery?.status?.length
+        ? this.filterQuery.status
+        : ['released', 'waiting', 'proofing', 'review', 'accepted_major', 'accepted_minor'],
         length: this.filterQuery?.length || [],
         sortType: this.filterQuery?.sortType || SortType.Ascending,
         orderBy: this.filterQuery?.orderBy || OrderBy.Date,
@@ -98,7 +93,7 @@ export class CyberskillsDashboardComponent implements OnInit {
       }));
     this.lastPage = Math.ceil(objects.total / 20); // calc # of pages needed for total learning objects
     this.learningObjects = objects.learningObjects;
-    
+
     this.retrieveMetrics();
   }
 }
