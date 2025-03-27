@@ -16,7 +16,7 @@ import { FilterQuery, OrderBy, SortType } from '../../../../../interfaces/query'
   selector: 'clark-cyberskills-filters',
   templateUrl: './cyberskills-filters.component.html',
   styleUrls: [
-    '../../../../admin/components/filter-search/filter-search.component.scss',
+    '../../../../../admin/components/filter-search/filter-search.component.scss',
     './cyberskills-filters.component.scss',
   ],
 })
@@ -35,16 +35,15 @@ export class CyberskillsFiltersComponent implements OnInit {
   // Mobile Menu States
   mobileStatusMenuActive: boolean;
   mobileLengthMenuActive: boolean;
-  mobileSortDateMenuActive: boolean;
-  mobileSortRatingMenuActive: boolean;
+  mobileSortMenuActive: boolean;
 
   // Desktop Menu States
   desktopStatusMenuActive: boolean;
   desktopLengthMenuActive: boolean;
-  desktopSortDateMenuActive: boolean;
-  desktopSortRatingMenuActive: boolean;
+  desktopSortMenuActive: boolean;
 
   showOptions = false;
+  filtersApplied = false;
 
   @Output() filterQuery = new EventEmitter<FilterQuery>();
   @Output() clearAll = new EventEmitter<void>();
@@ -68,21 +67,19 @@ export class CyberskillsFiltersComponent implements OnInit {
     const queryStatuses = qParams?.getAll('statuses');
 
     // If there are statuses in the query, apply them
-    if (queryStatuses) {
+    if (queryStatuses && queryStatuses.length > 0) {
       this.toggleStatusFilter(queryStatuses);
     }
 
     // Initialize mobile booleans
     this.mobileStatusMenuActive = false;
     this.mobileLengthMenuActive = false;
-    this.mobileSortDateMenuActive = false;
-    this.mobileSortRatingMenuActive = false;
+    this.mobileSortMenuActive = false;
 
     // Initialize desktop booleans
     this.desktopStatusMenuActive = false;
     this.desktopLengthMenuActive = false;
-    this.desktopSortDateMenuActive = false;
-    this.desktopSortRatingMenuActive = false;
+    this.desktopSortMenuActive = false;
   }
 
   /**
@@ -114,8 +111,7 @@ export class CyberskillsFiltersComponent implements OnInit {
   private closeAllMenus() {
     this.mobileStatusMenuActive = false;
     this.mobileLengthMenuActive = false;
-    this.mobileSortDateMenuActive = false;
-    this.mobileSortRatingMenuActive = false;
+    this.mobileSortMenuActive = false;
   }
 
   /**
@@ -142,27 +138,16 @@ export class CyberskillsFiltersComponent implements OnInit {
     }
   }
 
-  /**
-   * Hide or show the date filter dropdown menu in mobile view
-   */
-  toggleMobileSortDateMenu() {
-    if (this.mobileSortDateMenuActive) {
-      this.mobileSortDateMenuActive = false;
-    } else {
-      this.closeAllMenus();
-      this.mobileSortDateMenuActive = true;
-    }
-  }
 
   /**
    * Hide or show the rating filter dropdown menu in mobile view
    */
-  toggleMobileSortRatingMenu() {
-    if (this.mobileSortRatingMenuActive) {
-      this.mobileSortRatingMenuActive = false;
+  toggleMobileSortMenu() {
+    if (this.mobileSortMenuActive) {
+      this.mobileSortMenuActive = false;
     } else {
       this.closeAllMenus();
-      this.mobileSortRatingMenuActive = true;
+      this.mobileSortMenuActive = true;
     }
   }
 
@@ -181,17 +166,10 @@ export class CyberskillsFiltersComponent implements OnInit {
   }
 
   /**
-   * Hide or show the date filter dropdown menu in desktop view
-   */
-  toggleDesktopSortDateMenu(value: boolean) {
-    this.desktopSortDateMenuActive = value;
-  }
-
-  /**
    * Hide or show the rating filter dropdown menu in desktop view
    */
-  toggleDesktopSortRatingMenu(value: boolean) {
-    this.desktopSortRatingMenuActive = value;
+  toggleDesktopSortMenu(value: boolean) {
+    this.desktopSortMenuActive = value;
   }
 
   /**
@@ -234,39 +212,37 @@ export class CyberskillsFiltersComponent implements OnInit {
   }
 
   /**
-   * Set the sort value for last updated/created
-   * @param sort the sort value for ascending or descending
+   * Set the sort value based on the selected order type.
+   * @param orderBy the field to sort by (Date or Rating)
+   * @param sort the sort direction (ascending or descending)
    */
-  setLastUpdatedSort(sort: SortType) {
-    this.selectedOrderBy = OrderBy.Date;
-    this.selectedLastUpdatedSortType = sort;
-    // Unset rating sort
-    this.selectedRatingSortType = undefined;
+  setSort(orderBy: OrderBy, sort: SortType) {
+    this.selectedOrderBy = orderBy;
+
+    if (orderBy === OrderBy.Date) {
+      this.selectedLastUpdatedSortType = sort;
+      this.selectedRatingSortType = undefined;
+    } else if (orderBy === OrderBy.Rating) {
+      this.selectedRatingSortType = sort;
+      this.selectedLastUpdatedSortType = undefined;
+    }
+
     this.filter();
   }
 
-  /**
-   * Set the sort value for rating.
-   * @param {SortType} sort the sort value for ascending or descending
-   */
-  setRatingSort(sort: SortType) {
-    this.selectedOrderBy = OrderBy.Rating;
-    this.selectedRatingSortType = sort;
-    // Unset date sort
-    this.selectedLastUpdatedSortType = undefined;
-    this.filter();
-  }
 
   /**
    * Builds the FilterQuery and emits it to the parent
    */
   filter() {
+    console.log('calling the filters bruh')
     const filters: FilterQuery = {
       status: Array.from(this.statusFilters),
       length: Array.from(this.lengthFilters),
       orderBy: this.selectedOrderBy,
       sortType: this.selectedLastUpdatedSortType || this.selectedRatingSortType,
     };
+    this.filtersApplied = true;
     this.filterQuery.emit(filters);
   }
 
@@ -298,16 +274,15 @@ export class CyberskillsFiltersComponent implements OnInit {
     // Close desktop menus
     this.desktopStatusMenuActive = false;
     this.desktopLengthMenuActive = false;
-    this.desktopSortDateMenuActive = false;
-    this.desktopSortRatingMenuActive = false;
+    this.desktopSortMenuActive = false;
 
     // Close mobile menus
     this.mobileStatusMenuActive = false;
     this.mobileLengthMenuActive = false;
-    this.mobileSortDateMenuActive = false;
-    this.mobileSortRatingMenuActive = false;
+    this.mobileSortMenuActive = false;
 
     this.showOptions = false;
+    this.filtersApplied = false;
     this.filter();
     this.clearAll.emit();
   }
