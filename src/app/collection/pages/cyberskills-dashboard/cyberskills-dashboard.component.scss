@@ -4,6 +4,8 @@
 .container {
   min-height: 100vh;
   padding: 20px 50px;
+  max-width: 1500px; // on big screens this helps the rows of LOs not look stretched out
+  margin: auto;
   background-color: $wrapper-background;
   display: flex;
   flex-direction: column;
