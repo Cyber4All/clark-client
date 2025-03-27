@@ -241,7 +241,16 @@ export class CyberskillsFiltersComponent implements OnInit {
       orderBy: this.selectedOrderBy,
       sortType: this.selectedLastUpdatedSortType || this.selectedRatingSortType,
     };
-    this.filtersApplied = true;
+    if(
+      filters.status?.length !== 0 ||
+      filters.length?.length !== 0 ||
+      filters.orderBy !== undefined ||
+      filters.sortType !== undefined
+    ) {
+      this.filtersApplied = true;
+    } else {
+      this.filtersApplied = false;
+    }
     this.filterQuery.emit(filters);
   }
 
@@ -281,8 +290,9 @@ export class CyberskillsFiltersComponent implements OnInit {
     this.mobileSortMenuActive = false;
 
     this.showOptions = false;
-    this.filtersApplied = false;
+
     this.filter();
+    this.filtersApplied = false;
     this.clearAll.emit();
   }
 
