@@ -86,7 +86,7 @@ export class CyberskillsDashboardComponent implements OnInit {
         ? this.filterQuery.status
         : ['released', 'waiting', 'proofing', 'review', 'accepted_major', 'accepted_minor'],
         length: this.filterQuery?.length || [],
-        sortType: this.filterQuery?.sortType || SortType.Ascending,
+        sortType: this.filterQuery?.sortType || SortType.Descending,
         orderBy: this.filterQuery?.orderBy || OrderBy.Date,
         currPage: this.currPage,
       }));
