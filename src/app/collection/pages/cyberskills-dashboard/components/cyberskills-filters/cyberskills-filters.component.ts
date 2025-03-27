@@ -235,7 +235,6 @@ export class CyberskillsFiltersComponent implements OnInit {
    * Builds the FilterQuery and emits it to the parent
    */
   filter() {
-    console.log('calling the filters bruh')
     const filters: FilterQuery = {
       status: Array.from(this.statusFilters),
       length: Array.from(this.lengthFilters),
