@@ -10,6 +10,10 @@
 }
 
 @media (max-width: 768px) {
+    .dropdown-item {
+        margin-bottom: 5px;
+    }
+
     .mobile-only {
         display: block !important;
     }

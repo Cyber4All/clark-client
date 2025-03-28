@@ -104,4 +104,10 @@
         align-items: flex-start;
         gap: 10px;
     }
+
+    @media (max-width: 768px) {
+        .bottom {
+            grid-template-columns: 1fr;
+        }
+    }
 }
