@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ReportService } from '../../../../core/report-module/report.service';
-import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
+import { ReportService } from '../../../../../core/report-module/report.service';
+import { ToastrOvenService } from '../../../../../shared/modules/toaster/notification.service';
 
 @Component({
   selector: 'clark-csv-gen-modal',
