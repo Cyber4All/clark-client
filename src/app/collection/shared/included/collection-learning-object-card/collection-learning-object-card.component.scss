@@ -23,38 +23,39 @@
     border-radius: 10px;
     margin-left: 30px;
 
-.wide{
-    .container{
-        width: 20vw;
-        max-width: 350px;
-        margin-bottom: 50px;
-        margin-left: 30px;
-        display: flex;
-    }
-    .obj-info{
-        font-size: $normal;
-        .obj-title{
-            padding-top: 20px;
+    .wide {
+        .container{
+            width: 20vw;
+            max-width: 350px;
+            margin-bottom: 50px;
+            margin-left: 30px;
+            display: flex;
+        }
+        .obj-info{
             font-size: $normal;
-            font-weight: 700;
-            height: 8vh; 
+            .obj-title{
+                padding-top: 20px;
+                font-size: $normal;
+                font-weight: 700;
+                height: 8vh; 
+            }
+        }
+        .header{     
+            min-height: 100px;
+            width: 100%;
+        }
+        .overlay{
+            background-color: $medium-grey;
+            width: 100%;
+            text-align: center;
+            padding: 5px 0;
+            text-transform: uppercase;
+        }
+        div{ 
+            font-size: $smaller;
         }
     }
-    .header{     
-        min-height: 100px;
-        width: 100%;
-    }
-    .overlay{
-        background-color: $medium-grey;
-        width: 100%;
-        text-align: center;
-        padding: 5px 0;
-        text-transform: uppercase;
-    }
-    div{ 
-        font-size: $smaller;
-    }
-}
+
 
     &.module {
       background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
