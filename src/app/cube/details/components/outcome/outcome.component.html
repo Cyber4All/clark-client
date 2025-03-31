@@ -14,7 +14,7 @@
       <div class='text-container__mapped-to'>
         {{ outcome?.mappings.length ? 'Mapped to' : 'No Mappings' }}
         <span *ngFor='let mapping of mappingsFrameworks let i = index'>
-          {{ mapping?.frameworkName }}<span *ngIf='i < mappingsFrameworks.length - 1'>,</span>
+          {{ mapping?.frameworkName }}<span *ngIf="i < mappingsFrameworks.length - 1">,</span>
         </span>
       </div>
     </div>
@@ -23,7 +23,7 @@
         {{ outcome?.mappings.length }}
       </div>
       <div class='mapped-outcomes-count-container__text'>
-        Mapped Outcomes
+        Mapping<span *ngIf="outcome?.mappings.length > 1 || outcome?.mappings.length == 0">s</span>
       </div>
     </div>
     <div 
@@ -38,7 +38,7 @@
     <ul class='outcome__mappings-display__list'>
       <li [@outcome] class='mappings-display__list__item' *ngFor='let mapping of outcome?.mappings'>
         <div class='list__item__header-text'>
-          {{ mapping?.author }} - {{ mapping?.guidelineName }} - {{ mapping?.year }}
+          {{ mapping?.frameworkName }} - {{ mapping?.guidelineName }} - {{ mapping?.year }}
         </div>
         <div class='list__item__outcome-text'>
           {{ mapping?.guidelineDescription }}
