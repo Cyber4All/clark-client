@@ -6,7 +6,7 @@
 
   <div class="dropdown-content" *ngIf="showOptions" (click)="$event.stopPropagation()">
     <!-- Clear all filters -->
-    <span class="filters-clear-all">
+    <span *ngIf="filtersApplied === true" class="filters-clear-all">
       <a (click)="clearAllFilters()">Clear all filters</a>
     </span>
 
@@ -51,39 +51,30 @@
       </div>
     </div>
 
-    <!-- Last Updated Sort -->
+    <!-- Rating and Date Sort -->
     <div class="dropdown-item">
-      <button class="button neutral filters-button" (click)="toggleMobileSortDateMenu()"
-        [ngClass]="{ 'filters-button--down': mobileSortDateMenuActive }">
-        Last Updated <i class="fas fa-chevron-down"></i>
+      <button class="button neutral filters-button" (click)="toggleMobileSortMenu()"
+        [ngClass]="{ 'filters-button--down': mobileSortMenuActive }">
+        Sort <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="filter-status__container filter-dropdown" *ngIf="mobileSortDateMenuActive"
+      <div class="filter-status__container filter-dropdown" *ngIf="mobileSortMenuActive"
         (click)="$event.stopPropagation()">
         <ul>
-          <li (click)="setLastUpdatedSort(-1)" [ngClass]="{ 'selected': selectedLastUpdatedSortType === -1 }">
-            Newest
+          <li (click)="setSort('date', -1)">
+            <span *ngIf="selectedLastUpdatedSortType === -1" class="indicator"></span>
+            Date (Newest)
           </li>
-          <li (click)="setLastUpdatedSort(1)" [ngClass]="{ 'selected': selectedLastUpdatedSortType === 1 }">
-            Oldest
+          <li (click)="setSort('date', 1)">
+            <span *ngIf="selectedLastUpdatedSortType === 1" class="indicator"></span>
+            Date (Oldest)
           </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Rating Sort -->
-    <div class="dropdown-item">
-      <button class="button neutral filters-button" (click)="toggleMobileSortRatingMenu()"
-        [ngClass]="{ 'filters-button--down': mobileSortRatingMenuActive }">
-        Rating <i class="fas fa-chevron-down"></i>
-      </button>
-      <div class="filter-status__container filter-dropdown" *ngIf="mobileSortRatingMenuActive"
-        (click)="$event.stopPropagation()">
-        <ul>
-          <li (click)="setRatingSort(-1)" [ngClass]="{ 'selected': selectedRatingSortType === -1 }">
-            Highest Rated
+          <li (click)="setSort('rating', -1)">
+            <span *ngIf="selectedRatingSortType === -1" class="indicator"></span>
+            Average Rating (Highest)
           </li>
-          <li (click)="setRatingSort(1)" [ngClass]="{ 'selected': selectedRatingSortType === 1 }">
-            Lowest Rated
+          <li (click)="setSort('rating', 1)">
+            <span *ngIf="selectedRatingSortType === 1" class="indicator"></span>
+            Average Rating (Lowest)
           </li>
         </ul>
       </div>
@@ -93,7 +84,7 @@
 
 <!-- DESKTOP VIEW -->
 <div class="desktop-filter desktop-only" (click)="$event.stopPropagation()">
-  <span class="filters-clear-all">
+  <span *ngIf="filtersApplied === true" class="filters-clear-all">
     <a (activate)="clearAllFilters()">Clear all filters</a>
   </span>
 
@@ -138,41 +129,30 @@
     </div>
   </clark-context-menu>
 
-  <button #toggleSortDateMenuAnchor class="button neutral filters-button" (click)="toggleDesktopSortDateMenu(true)"
-    [ngClass]="{ 'filters-button--down': desktopSortDateMenuActive }">
-    Last Updated <i class="fas fa-chevron-down"></i>
-  </button>
-  <clark-context-menu *ngIf="desktopSortDateMenuActive" class="sort-dates" [anchor]="toggleSortDateMenuAnchor"
-    [offset]="{ top: 10, left: 10 }" (close)="toggleDesktopSortDateMenu(false)">
-    <div #contextMenu id="contextMenu" class="filter-status__container">
-      <ul>
-        <li (click)="setLastUpdatedSort(-1)">
-          <span *ngIf="selectedLastUpdatedSortType === -1" class="indicator"></span>
-          Newest
-        </li>
-        <li (click)="setLastUpdatedSort(1)">
-          <span *ngIf="selectedLastUpdatedSortType === 1" class="indicator"></span>
-          Oldest
-        </li>
-      </ul>
-    </div>
-  </clark-context-menu>
 
-  <button #toggleSortRatingMenuAnchor class="button neutral filters-button" (click)="toggleDesktopSortRatingMenu(true)"
-    [ngClass]="{ 'filters-button--down': desktopSortRatingMenuActive }">
-    Rating <i class="fas fa-chevron-down"></i>
+  <button #toggleSortMenuAnchor class="button neutral filters-button" (click)="toggleDesktopSortMenu(true)"
+    [ngClass]="{ 'filters-button--down': desktopSortMenuActive }">
+    Sort <i class="fas fa-chevron-down"></i>
   </button>
-  <clark-context-menu *ngIf="desktopSortRatingMenuActive" class="sort-dates" [anchor]="toggleSortRatingMenuAnchor"
-    [offset]="{ top: 10, left: 10 }" (close)="toggleDesktopSortRatingMenu(false)">
+  <clark-context-menu *ngIf="desktopSortMenuActive" class="sort-dates" [anchor]="toggleSortMenuAnchor"
+    [offset]="{ top: 10, left: 10 }" (close)="toggleDesktopSortMenu(false)">
     <div #contextMenu id="contextMenu" class="filter-status__container">
       <ul>
-        <li (click)="setRatingSort(-1)">
-          <span *ngIf="selectedRatingSortType === -1" class="indicator"></span>
-          Highest Rated
+        <li (click)="setSort('date', -1)">
+          <span *ngIf="selectedLastUpdatedSortType === -1" class="indicator"></span>
+          Date (Newest)
         </li>
-        <li (click)="setRatingSort(1)">
+        <li (click)="setSort('date', 1)">
+          <span *ngIf="selectedLastUpdatedSortType === 1" class="indicator"></span>
+          Date (Oldest)
+        </li>
+        <li (click)="setSort('rating', -1)">
+          <span *ngIf="selectedRatingSortType === -1" class="indicator"></span>
+          Average Rating (Highest)
+        </li>
+        <li (click)="setSort('rating', 1)">
           <span *ngIf="selectedRatingSortType === 1" class="indicator"></span>
-          Lowest Rated
+          Average Rating (Lowest)
         </li>
       </ul>
     </div>

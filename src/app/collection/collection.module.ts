@@ -36,13 +36,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { CyberskillsDashboardComponent } from './cyberskills-dashboard/cyberskills-dashboard.component';
-import { CyberskillsFiltersComponent } from './cyberskills-dashboard/components/cyberskills-filters/cyberskills-filters.component';
+import { CyberskillsDashboardComponent } from './pages/cyberskills-dashboard/cyberskills-dashboard.component';
+import { CyberskillsFiltersComponent } from './pages/cyberskills-dashboard/components/cyberskills-filters/cyberskills-filters.component';
 import { UsageStatsModule } from '../cube/usage-stats/usage-stats.module';
 import { DetailsModule } from '../cube/details/details.module';
 import { LibraryModule } from '../cube/library/library.module';
-import { CyberskillsCardComponent } from './cyberskills-dashboard/components/cyberskills-card/cyberskills-card.component';
-import { CsvGenModalComponent } from './cyberskills-dashboard/components/csv-gen-modal/csv-gen-modal.component';
+import { CyberskillsCardComponent } from './pages/cyberskills-dashboard/components/cyberskills-card/cyberskills-card.component';
+import { CsvGenModalComponent } from './pages/cyberskills-dashboard/components/csv-gen-modal/csv-gen-modal.component';
 
 @NgModule({
   declarations: [

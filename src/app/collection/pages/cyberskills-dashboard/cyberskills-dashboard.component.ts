@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { AuthValidationService } from '../../core/auth-module/auth-validation.service';
-import { ReportService } from '../../core/report-module/report.service';
-import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
-import { RatingService } from '../../core/rating-module/rating.service';
-import { SearchService } from '../../core/learning-object-module/search/search.service';
-import { MetricService } from '../../core/metric-module/metric.service';
-import { FilterQuery, OrderBy, SortType } from '../../interfaces/query';
+import { AuthValidationService } from '../../../core/auth-module/auth-validation.service';
+import { ReportService } from '../../../core/report-module/report.service';
+import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
+import { RatingService } from '../../../core/rating-module/rating.service';
+import { SearchService } from '../../../core/learning-object-module/search/search.service';
+import { MetricService } from '../../../core/metric-module/metric.service';
+import { FilterQuery, OrderBy, SortType } from '../../../interfaces/query';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
@@ -31,7 +31,6 @@ export class CyberskillsDashboardComponent implements OnInit {
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
     private authValidationService: AuthValidationService,
-    private reportService: ReportService,
     private ratingService: RatingService,
     private learningObjectService: SearchService,
     private metricsService: MetricService,
@@ -78,20 +77,16 @@ export class CyberskillsDashboardComponent implements OnInit {
       this.filterQuery = event;
     }
 
+
     const objects = (this.learningObjects =
       await this.learningObjectService.getLearningObjects({
         collection: 'cyberskills2work',
         limit: 20,
-        status: this.filterQuery?.status || [
-          'released',
-          'waiting',
-          'proofing',
-          'review',
-          'accepted_major',
-          'accepted_minor',
-        ],
+        status: this.filterQuery?.status?.length
+        ? this.filterQuery.status
+        : ['released', 'waiting', 'proofing', 'review', 'accepted_major', 'accepted_minor'],
         length: this.filterQuery?.length || [],
-        sortType: this.filterQuery?.sortType || SortType.Ascending,
+        sortType: this.filterQuery?.sortType || SortType.Descending,
         orderBy: this.filterQuery?.orderBy || OrderBy.Date,
         currPage: this.currPage,
       }));

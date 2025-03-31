@@ -1,9 +1,11 @@
 @import "vars.scss";
-@import '../collection-globals.scss';
+@import '../../collection-globals.scss';
 
 .container {
   min-height: 100vh;
   padding: 20px 50px;
+  max-width: 1500px; // on big screens this helps the rows of LOs not look stretched out
+  margin: auto;
   background-color: $wrapper-background;
   display: flex;
   flex-direction: column;
@@ -45,6 +47,13 @@
     padding: 8px 14px;
     border-radius: 4px;
   } 
+}
+
+.no-objects-message {
+  margin: auto;
+  padding: 40px;
+  font-size: $larger;
+  color: $darker-grey;
 }
 
 /* Media query for desktop & mobile */
