@@ -53,11 +53,11 @@
 
     <!-- Rating and Date Sort -->
     <div class="dropdown-item">
-      <button class="button neutral filters-button" (click)="toggleMobileSortRatingMenu()"
+      <button class="button neutral filters-button" (click)="toggleMobileSortMenu()"
         [ngClass]="{ 'filters-button--down': mobileSortMenuActive }">
         Sort <i class="fas fa-chevron-down"></i>
       </button>
-      <div class="filter-status__container filter-dropdown" *ngIf="mobileSortRatingMenuActive"
+      <div class="filter-status__container filter-dropdown" *ngIf="mobileSortMenuActive"
         (click)="$event.stopPropagation()">
         <ul>
           <li (click)="setSort('date', -1)">
