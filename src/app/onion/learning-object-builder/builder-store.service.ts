@@ -1056,6 +1056,8 @@ export class BuilderStore {
     // retrieve current cached Map from storage and get the current cached value for given id
     const cache = this.objectCache$.getValue();
     const newValue = cache ? Object.assign(cache, data) : data;
+    // make verb full lowercase before sending in request for taxonomy comparison
+    newValue.verb = newValue.verb.toLowerCase();
 
 
     // if delay is true, combine the new properties with the object in the cache subject
