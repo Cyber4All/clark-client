@@ -96,4 +96,18 @@
             }
         }
     }
+
+    .bottom {
+        display: grid;
+        grid-template-columns: 60% 40%;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .bottom {
+            grid-template-columns: 1fr;
+        }
+    }
 }

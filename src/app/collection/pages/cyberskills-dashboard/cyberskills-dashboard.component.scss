@@ -1,0 +1,96 @@
+@import "vars.scss";
+@import '../../collection-globals.scss';
+
+.container {
+  min-height: 100vh;
+  padding: 20px 50px;
+  max-width: 1500px; // on big screens this helps the rows of LOs not look stretched out
+  margin: auto;
+  background-color: $wrapper-background;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin-bottom: 25px;
+  font-size: $largest;
+  color: $darker-grey;
+  font-weight: 500;
+}
+
+.downloads-header {
+  display: flex;
+  justify-content: space-between; // Pushes elements to opposite sides
+  align-items: center; // Aligns items vertically
+  width: 100%; // Ensures full width
+
+  h2 {
+    color: $light-blue;
+    font-size: $largest;
+    font-weight: 600;
+  }
+
+  .desktop-buttons {
+    display: flex;
+  }
+
+  .filters-wrap {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: auto;
+  }
+
+  .options-button,
+  .button.good {
+    font-size: 14px; 
+    padding: 8px 14px;
+    border-radius: 4px;
+  } 
+}
+
+.no-objects-message {
+  margin: auto;
+  padding: 40px;
+  font-size: $larger;
+  color: $darker-grey;
+}
+
+/* Media query for desktop & mobile */
+@media (max-width: 768px) {
+  .learning-object-table .header {
+    display: none;
+  }
+
+  .desktop-buttons .csv-button-text {
+    display: none;
+  }
+
+  .desktop-buttons::after {
+    content: "CSV";
+  }
+}
+
+@media (min-width: 769px) {
+  .dropdown-wrapper.mobile-only {
+    display: none !important;
+  }
+}
+
+.learning-object-table {
+  display: grid;
+  grid-template-rows: auto;
+  gap: 8px;
+  width: 100%;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 70px 100px 2fr 1fr 1fr 1fr 1fr;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid $ternary-white-background;
+  font-weight: bold;
+  background-color: $light-grey;
+  text-align: left;
+}

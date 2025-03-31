@@ -1,0 +1,72 @@
+@import "vars.scss";
+@import "../../../../collection-globals.scss";
+
+.modal-container {
+    margin: 0 auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    border-radius: 8px;
+
+    .modal-title {
+        text-align: center;
+        color: $ncyte-blue;
+        font-size: $largest;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+
+    .modal__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1.5rem;
+
+        mat-form-field {
+            width: 100%;
+            max-width: 400px;
+        }
+    }
+
+    .btn-group.select {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .button {
+        padding: 16px 27px;
+        background-color: $homepage-light-blue;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 0px 6px 12px -6px $homepage-light-blue;
+        width: fit-content;
+
+        &:hover {
+            opacity: 80%;
+        }
+
+        &:active {
+            opacity: 100%;
+        }
+
+        &.neutral {
+            background-color: #999;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-container {
+        padding: 1rem;
+    }
+
+    .button {
+        padding: 10px 16px;
+    }
+}

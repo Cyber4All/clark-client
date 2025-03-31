@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { CollectionIndexComponent } from './pages/collection-index/collection-index.component';
 import { GenericPageComponent } from './pages/generic-page/generic-page.component';
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
@@ -28,14 +28,21 @@ import { FeaturedComponent } from './pages/collection-502/components/featured/fe
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dashboard.component';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { CyberskillsDashboardComponent } from './pages/cyberskills-dashboard/cyberskills-dashboard.component';
+import { CyberskillsFiltersComponent } from './pages/cyberskills-dashboard/components/cyberskills-filters/cyberskills-filters.component';
+import { UsageStatsModule } from '../cube/usage-stats/usage-stats.module';
+import { DetailsModule } from '../cube/details/details.module';
+import { LibraryModule } from '../cube/library/library.module';
+import { CyberskillsCardComponent } from './pages/cyberskills-dashboard/components/cyberskills-card/cyberskills-card.component';
+import { CsvGenModalComponent } from './pages/cyberskills-dashboard/components/csv-gen-modal/csv-gen-modal.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +64,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CuratorCardComponent,
     TitleComponent,
     FeaturedComponent,
-    NcyteDashboardComponent
+    NcyteDashboardComponent,
+    CyberskillsDashboardComponent,
+    CyberskillsCardComponent,
+    CsvGenModalComponent,
+    CyberskillsFiltersComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -81,7 +92,10 @@ import { MatExpansionModule } from '@angular/material/expansion';
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    UsageStatsModule,
+    DetailsModule,
+    LibraryModule,
   ],
 })
-export class CollectionModule { }
+export class CollectionModule {}
