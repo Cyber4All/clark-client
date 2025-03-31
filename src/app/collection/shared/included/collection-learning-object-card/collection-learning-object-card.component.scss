@@ -1,35 +1,28 @@
 @import '../../../collection-globals.scss';
-a {
+
+.card {
+    max-width: 300px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+  }
+  
+  .card a {
     text-decoration: none;
-    color: $darker-grey;
-}
-a:visited {
-    color: $darker-grey;
-}
-.header{
-    &.module{
-        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
-    }
-    &.micromodule{
-        background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash\ 2.png');
-    }
-    &.nanomodule{
-        background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
-    }
-    &.unit{
-        background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash\ 1.png");
-    }
-    &.course{
-        background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
-    }
+    color: inherit;
+    display: block;
+  }
+  
+  .header {
     display: flex;
     align-items: center;
     color: #fff;
+    height: 150px;
     background-size: cover;
     background-position: center;
     border-radius: 10px;
     margin-left: 30px;
-}
+
 .wide{
     .container{
         width: 20vw;
@@ -63,42 +56,53 @@ a:visited {
     }
 }
 
-.mobile {
-    a {
-        text-decoration: none;
-        color: $darker-grey;
+    &.module {
+      background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380642.jpg");
     }
-    a:visited {
-        color: $darker-grey;
+
+    &.micromodule {
+      background-image: url('../../../../../assets/images/adi-goldstein-EUsVwEOsblE-unsplash 2.png');
     }
-    .container{
-        width: 100%;
-        margin-bottom: 50px;
-        display: flex;
-        .obj-info{
-            text-align: center;
-            .obj-title{
-                padding-top: 20px;
-                font-size: $large;
-                font-weight: 700;
-            }
-        }
+
+    &.nanomodule {
+      background-image: url("../../../../../assets/images/pexels-tima-miroshnichenko-5380618.jpg");
     }
-    .header{
-        width: 250px;
-        height: 300px;
-        margin: 0 auto;
+
+    &.unit {
+      background-image: url("../../../../../assets/images/michael-dziedzic-nLFqr9Mr9H8-unsplash 1.png");
     }
-    .overlay{
-        background-color: $medium-grey;
-        height: 35px;
-        width: 100%;
-        text-align: center;
-        padding: 5px 0;
-        text-transform: uppercase;
-        font-size: x-large;
+
+    &.course {
+      background-image: url("../../../../../assets/images/pexels-scott-webb-430208.jpg");
     }
-    div{ 
-        font-size: $normal;
-    }
-}
+  }
+  
+  .overlay {
+    background-color: $dark-grey;
+    color: #fff;
+    width: 100%;
+    text-align: center;
+    padding: 6px 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: $normal;
+    bottom: 0;
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+  
+  .obj-info {
+    font-size: $smaller;
+    color: $dark-grey;
+  }
+  
+  .obj-title {
+    font-size: $normal;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  
+
+

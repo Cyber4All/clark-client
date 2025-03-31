@@ -1,31 +1,26 @@
-<a [routerLink]="[
-'/details',
-learnObj.author.username,
-learnObj.cuid
-]"
-attr.aria-label="{{ learnObj.name }}, {{ learnObj.length }}, by {{ learnObj.author.name }}, last updated on {{ learnObj.date | date:'longDate' }}"
-
-[ngClass] = "{
-    'wide': !mobile,
-    'mobile': mobile
-}"
->
-    <div class = "header" [ngClass] = "learnObj.length">
-        <div class = "overlay">
-            {{learnObj.length}}
-        </div>
-    </div>
-    <div class = "container">
-        
-        <div class="obj-info">
-            <div class = "obj-title">
-                {{learnObj.name}}
+<div class="card">
+    <a 
+        [routerLink]="['/details', learnObj.author.username, learnObj.cuid]"
+        attr.aria-label="{{ learnObj.name }}, {{ learnObj.length }}, by {{ learnObj.author.name }}, last updated on {{ learnObj.date | date:'longDate' }}"
+        [ngClass] = "{ 'wide': !mobile, 'mobile': mobile }"
+    >
+        <div class = "header" [ngClass] = "learnObj.length">
+            <div class = "overlay">
+                {{learnObj.length}}
             </div>
-            <div>
-                {{learnObj.date | date:'longDate'}}
-            </div>  
-            <p *ngIf = "learnObj.description" [innerHtml]="shortenedDesc">
-            </p>
         </div>
-    </div>
-</a>
+        <div class = "container">
+            
+            <div class="obj-info">
+                <div class = "obj-title">
+                    {{learnObj.name}}
+                </div>
+                <div>
+                    {{learnObj.date | date:'longDate'}}
+                </div>  
+                <p *ngIf = "learnObj.description" [innerHtml]="shortenedDesc">
+                </p>
+            </div>
+        </div>
+    </a>
+</div>
