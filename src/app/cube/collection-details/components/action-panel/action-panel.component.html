@@ -1,6 +1,7 @@
 <div class="wrapper">
     <button *ngIf="showContribute" class="button good" aria-label='Contribute to Collection' (activate)="contribute()">Contribute to {{ collectionName }}</button>
     <button class="button neutral" aria-label='Browse Collection' (activate)="navigateToBrowse()">Browse Collection</button>
+    <button *ngIf="showCyberSkillsDashboardButton()" class="button neutral" aria-label="Navigate to Dashboard" (activate)="navigateToDashboard()">Collection Dashboard</button>
 </div>
 
 
