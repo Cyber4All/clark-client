@@ -123,7 +123,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
 
   get date() {
     // eslint-disable-next-line radix
-    return new Date(parseInt(this.learningObject.date));
+    return new Date(this.learningObject.date);
   }
 
   /**
