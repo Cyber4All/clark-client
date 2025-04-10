@@ -89,7 +89,7 @@ export class DraggableLearningObjectComponent implements OnInit {
 
   get date() {
     // eslint-disable-next-line radix
-    return new Date(parseInt(this.learningObject.date));
+    return new Date(this.learningObject.date);
   }
 
   /**
