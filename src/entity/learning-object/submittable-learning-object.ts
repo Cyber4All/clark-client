@@ -123,8 +123,8 @@ export namespace SubmittableLearningObject {
   }
   export function validateDescription(description: string) {
     // Matches anything that does not have a closing HTML tag.
-    // Example: https://regex101.com/r/yWbTFg/1
-    const nonTerminatingTagRegex = /<([a-z]+)(\s[^>]*)?>(?![\s\S]*<\/\1>)/gi;
+    // Example: https://regex101.com/r/qDSGWv/1
+    const nonTerminatingTagRegex = /<([a-z]+)(\s[^>]*)?(?<!\/)>(?![\s\S]*<\/\1>)/gi;
 
     if (!description || !description.trim()) {
       throw new EntityError(
