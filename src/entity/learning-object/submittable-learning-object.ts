@@ -135,7 +135,7 @@ export namespace SubmittableLearningObject {
 
     // st-editor will always close HTML tags, so theoretically we shouldn't hit this.
     if (description.match(nonTerminatingTagRegex)) {
-      throw new EntityError(SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION_REGEX, 'description');
+      throw new EntityError(SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION_BAD_HTML, 'description');
     }
   }
   export function validateOutcomes(outcomes: LearningOutcome[]) {
