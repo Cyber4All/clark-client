@@ -36,5 +36,6 @@ export const LEARNING_OBJECT_ERRORS = {
 
 export const SUBMITTABLE_LEARNING_OBJECT_ERRORS = {
   INVALID_DESCRIPTION: 'Description must not be an empty string.',
+  INVALID_DESCRIPTION_REGEX: 'Description contains bad tags.',
   INVALID_OUTCOMES: 'Outcomes must contain at least one valid outcome.'
 };

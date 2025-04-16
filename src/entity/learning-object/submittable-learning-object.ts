@@ -122,11 +122,20 @@ export namespace SubmittableLearningObject {
     }
   }
   export function validateDescription(description: string) {
+    // Matches anything that does not have a closing HTML tag.
+    // Example: https://regex101.com/r/yWbTFg/1
+    const nonTerminatingTagRegex = /<([a-z]+)(\s[^>]*)?>(?![\s\S]*<\/\1>)/gi;
+
     if (!description || !description.trim()) {
       throw new EntityError(
         SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION,
         'description',
       );
+    }
+
+    // st-editor will always close HTML tags, so theoretically we shouldn't hit this.
+    if (description.match(nonTerminatingTagRegex)) {
+      throw new EntityError(SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION_REGEX, 'description');
     }
   }
   export function validateOutcomes(outcomes: LearningOutcome[]) {
