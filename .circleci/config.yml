@@ -15,7 +15,7 @@ jobs:
           node-version: '18.0.0'
       - run: npm install
       - run: npm run lint
-      - run: npm run build:prod
+      - run: npm run build:prod clark
 
 workflows:
   continuous-integration:
