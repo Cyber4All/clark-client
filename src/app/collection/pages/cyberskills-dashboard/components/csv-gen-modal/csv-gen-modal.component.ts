@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { ReportService } from '../../../../../core/report-module/report.service';
 import { ToastrOvenService } from '../../../../../shared/modules/toaster/notification.service';
 
@@ -12,12 +12,12 @@ export class CsvGenModalComponent implements OnInit {
   @Output() generateCSV = new EventEmitter<{ start: Date; end: Date }>();
   @Output() closed = new EventEmitter<void>();
 
-  range: FormGroup;
+  range: UntypedFormGroup;
   filterSelected = false;
   showModal = true;
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private toaster: ToastrOvenService,
     private reportService: ReportService,
   ) {}
