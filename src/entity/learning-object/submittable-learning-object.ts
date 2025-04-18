@@ -114,6 +114,10 @@ export class SubmittableLearningObject extends LearningObject {
 }
 
 export namespace SubmittableLearningObject {
+  // Matches anything that does not have a closing HTML tag.
+  // Example: https://regex101.com/r/qDSGWv/1
+  const NON_TERMINATING_HTML_REGEX = /<([a-z]+)(\s[^>]*)?(?<!\/)>(?![\s\S]*<\/\1>)/gi;
+
   export function validateName(name: string) {
     try {
       new LearningObject({ name });
@@ -122,10 +126,6 @@ export namespace SubmittableLearningObject {
     }
   }
   export function validateDescription(description: string) {
-    // Matches anything that does not have a closing HTML tag.
-    // Example: https://regex101.com/r/qDSGWv/1
-    const nonTerminatingTagRegex = /<([a-z]+)(\s[^>]*)?(?<!\/)>(?![\s\S]*<\/\1>)/gi;
-
     if (!description || !description.trim()) {
       throw new EntityError(
         SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION,
@@ -134,7 +134,7 @@ export namespace SubmittableLearningObject {
     }
 
     // st-editor will always close HTML tags, so theoretically we shouldn't hit this.
-    if (description.match(nonTerminatingTagRegex)) {
+    if (description.match(NON_TERMINATING_HTML_REGEX)) {
       throw new EntityError(SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION_BAD_HTML, 'description');
     }
   }
@@ -169,6 +169,12 @@ export namespace SubmittableLearningObject {
       }
     }
   }
+  export function validateNotes(notes: string) {
+    // st-editor will always close HTML tags, so theoretically we shouldn't hit this.
+    if (notes.match(NON_TERMINATING_HTML_REGEX)) {
+      throw new EntityError(SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_NOTES_BAD_HTML, 'notes');
+    }
+  }
 
   export function validateContributors(contributors: User[]) {
     if (contributors.length <= 0) {
@@ -196,6 +202,10 @@ export namespace SubmittableLearningObject {
       {
         function: SubmittableLearningObject.validateContributors,
         arguments: [object.contributors]
+      },
+      {
+        function: SubmittableLearningObject.validateNotes,
+        arguments: [object.materials.notes]
       }
     ];
     validationFunctions.forEach(func => {
