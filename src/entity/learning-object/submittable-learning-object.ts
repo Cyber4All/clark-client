@@ -115,8 +115,8 @@ export class SubmittableLearningObject extends LearningObject {
 
 export namespace SubmittableLearningObject {
   // Matches anything that does not have a closing HTML tag.
-  // Example: https://regex101.com/r/qDSGWv/1
-  const NON_TERMINATING_HTML_REGEX = /<([a-z]+)(\s[^>]*)?(?<!\/)>(?![\s\S]*<\/\1>)/gi;
+  // Example: https://regex101.com/r/TCRXf8/1
+  const NON_TERMINATING_HTML_REGEX = /<(?!(br\b))([a-z]+)(\s[^>]*)?(?<!\/)>(?![\s\S]*<\/\2>)/gi;
 
   export function validateName(name: string) {
     try {
