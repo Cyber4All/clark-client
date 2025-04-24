@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import {
   BOLD_BUTTON,
   ITALIC_BUTTON,
@@ -49,7 +49,7 @@ import { skip } from 'rxjs/operators';
 export class LearningObjectDescriptionComponent implements OnInit {
   @Input() learningObject;
 
-  description = new FormControl('');
+  description = new UntypedFormControl('');
   config = {
     placeholder: 'Enter Learning Object description here',
     buttons: [

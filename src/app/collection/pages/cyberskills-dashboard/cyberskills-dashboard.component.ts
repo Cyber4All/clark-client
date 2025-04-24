@@ -6,7 +6,7 @@ import { RatingService } from '../../../core/rating-module/rating.service';
 import { SearchService } from '../../../core/learning-object-module/search/search.service';
 import { MetricService } from '../../../core/metric-module/metric.service';
 import { FilterQuery, OrderBy, SortType } from '../../../interfaces/query';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 
 @Component({
   selector: 'clark-cyberskills-dashboard',
@@ -14,9 +14,9 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./cyberskills-dashboard.component.scss'],
 })
 export class CyberskillsDashboardComponent implements OnInit {
-  range = new FormGroup({
-    start: new FormControl(null),
-    end: new FormControl(null),
+  range = new UntypedFormGroup({
+    start: new UntypedFormControl(null),
+    end: new UntypedFormControl(null),
   });
 
   name = this.authValidationService.getInputFormControl('text');
