@@ -32,9 +32,9 @@ const admin_routes: Routes = [
       { path: '', redirectTo: 'learning-objects', pathMatch: 'full' }
     ],
   },
-  { path: ':collection', redirectTo: '/admin/:collection/learning-objects', canActivate: [AdminGuard], pathMatch: 'full' },
+  { path: ':collection', redirectTo: '/admin/:collection/learning-objects', pathMatch: 'full' },
   {
-    path: ':collection', component: AdminComponent, children: [
+    path: ':collection', component: AdminComponent, canActivate: [AdminGuard],  children: [
       {
         path: 'learning-objects', component: LearningObjectsComponent,
         data: { canScroll: false, title: 'Collection Dashboard Learning Objects' }
