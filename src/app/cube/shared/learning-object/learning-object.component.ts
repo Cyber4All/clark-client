@@ -15,6 +15,7 @@ import { LearningObject } from '@entity';
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { CollectionService } from '../../../core/collection-module/collections.service';
 import { titleCase } from 'title-case';
+import { RatingService } from 'app/core/rating-module/rating.service';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -37,10 +38,15 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   // FIXME this removes the download icons while issues with the Library service are resolved
   downloadService = false;
 
+  averageRating: number;
+  reviewsCount: number;
+  starColor = 'gold';
+
   constructor(
     private hostEl: ElementRef,
     private renderer: Renderer2,
     private library: LibraryService,
+    private ratingService: RatingService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
@@ -56,13 +62,17 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     }
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.collectionService.getCollections().then(collections => {
       this.collections = new Map(
         collections.map(c => [c.abvName, c.name] as [string, string])
       );
       this.onResize();
     });
+    
+    const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
+    this.averageRating = ratings.avgValue;
+    this.reviewsCount = ratings.ratings?.length;
   }
 
   goals() {
@@ -163,4 +173,6 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   ngOnDestroy() {
     this.cd.detach();
   }
+
+  get
 }
