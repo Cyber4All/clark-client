@@ -250,6 +250,11 @@ a {
     position: relative;
     width: 100%;
 
+    .rating-stars-container {
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+
     .content__topbar {
       display: flex;
       justify-content: space-between;

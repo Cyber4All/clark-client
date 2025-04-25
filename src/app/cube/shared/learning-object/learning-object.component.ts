@@ -69,7 +69,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
       );
       this.onResize();
     });
-    
+
     const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
     this.averageRating = ratings.avgValue;
     this.reviewsCount = ratings.ratings?.length;
@@ -173,6 +173,4 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   ngOnDestroy() {
     this.cd.detach();
   }
-
-  get
 }
