@@ -111,6 +111,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     this.dropdowns.userDropdown.subscribe(val => {
       this.userDropdown = val;
     });
+
+    console.log("download access: " + this.hasDownloadAccess);
   }
 
   get isReleased(): boolean {
