@@ -301,6 +301,8 @@ export class LearningObjectsComponent
     this.query = {
       startNextCheck: dates.start,
       endNextCheck: dates.end,
+      start: '',
+      end: '',
       currPage: 1,
     };
     this.learningObjects = [];
@@ -317,6 +319,8 @@ export class LearningObjectsComponent
     this.query = {
       start: dates.start,
       end: dates.end,
+      startNextCheck: '',
+      endNextCheck: '',
       currPage: 1,
     };
     this.learningObjects = [];
