@@ -281,8 +281,8 @@ export class LearningObjectsComponent
       this.query.sortType = SortType.Ascending;
     } else if (this.query.sortType.toString() === '1') {
       this.query = {
-        sortType: undefined,
-        orderBy: undefined,
+        sortType: SortType.Descending,
+        orderBy: OrderBy.Date,
       };
     }
 
