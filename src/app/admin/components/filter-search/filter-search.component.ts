@@ -42,9 +42,9 @@ export class FilterSearchComponent implements OnInit {
   @Input() showStatus: boolean;
   @Output() collectionFilter = new EventEmitter<string>();
   @Output() filterQuery = new EventEmitter<{
-    status: string[],
-    topic: string[],
-    collection: string,
+    status: string[];
+    topic: string[];
+    collection: string;
   }>();
   @Output() relevancyCheck = new EventEmitter<{ start: string; end: string }>();
   @Output() dateSearchFilter = new EventEmitter<{
@@ -342,12 +342,14 @@ export class FilterSearchComponent implements OnInit {
   filter() {
     // Emit the selected filters
     const filters = {
-       status:  Array.from(this.filters || []),
-       topic: Array.from(this.filterTopics || []),
-       collection: this.selectedCollection ? this.selectedCollection.abvName : '',
-      };
-      this.filterQuery.emit(filters);
-   }
+      status: Array.from(this.filters || []),
+      topic: Array.from(this.filterTopics || []),
+      collection: this.selectedCollection
+        ? this.selectedCollection.abvName
+        : '',
+    };
+    this.filterQuery.emit(filters);
+  }
 
   /**
    * Remove all applied status filters
