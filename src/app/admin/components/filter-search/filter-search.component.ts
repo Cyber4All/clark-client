@@ -47,6 +47,10 @@ export class FilterSearchComponent implements OnInit {
     collection: string,
   }>();
   @Output() relevancyCheck = new EventEmitter<{ start: string; end: string }>();
+  @Output() dateSearchFilter = new EventEmitter<{
+    start: string;
+    end: string;
+  }>();
   @Output() clearAll = new EventEmitter<void>();
   @ViewChild('searchInput') searchInput: ElementRef;
 
@@ -56,7 +60,10 @@ export class FilterSearchComponent implements OnInit {
 
   relevancyStart: Date;
   relevancyEnd: Date;
+  dateSearchStart: Date;
+  dateSearchEnd: Date;
   relevancyMenuDown: boolean;
+  dateSearchMenuDown: boolean;
 
   constructor(
     private collectionService: CollectionService,
@@ -217,6 +224,15 @@ export class FilterSearchComponent implements OnInit {
   }
 
   /**
+   * Toggles the date select modal menu
+   *
+   * @param value
+   */
+  toggleDateSearchMenu(value?: boolean) {
+    this.dateSearchMenuDown = value;
+  }
+
+  /**
    * Sets the relevancy date filters
    */
   setDates() {
@@ -233,6 +249,17 @@ export class FilterSearchComponent implements OnInit {
   }
 
   /**
+   * Sets the date search filters
+   */
+  setDateSearch() {
+    this.dateSearchFilter.emit({
+      start: this.dateSearchStart ? this.dateSearchStart.toISOString() : '',
+      end: this.dateSearchEnd ? this.dateSearchEnd.toISOString() : '',
+    });
+    this.toggleDateSearchMenu(false);
+  }
+
+  /**
    * Clears the relevancy date filters
    */
   clearDates() {
@@ -240,6 +267,16 @@ export class FilterSearchComponent implements OnInit {
     this.relevancyEnd = undefined;
     this.relevancyCheck.emit({ start: undefined, end: undefined });
     this.toggleRelevancyMenu(false);
+  }
+
+  /**
+   * Clears the date search filters
+   */
+  clearDateSearch() {
+    this.dateSearchStart = undefined;
+    this.dateSearchEnd = undefined;
+    this.dateSearchFilter.emit({ start: undefined, end: undefined });
+    this.toggleDateSearchMenu(false);
   }
 
   /**

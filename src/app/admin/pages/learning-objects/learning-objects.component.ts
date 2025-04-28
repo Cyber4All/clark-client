@@ -309,6 +309,22 @@ export class LearningObjectsComponent
   }
 
   /**
+   * Updates the queries start and end values
+   *
+   * @param dates The start and end dates for the date search filter
+   */
+  getDateFilteredLearningObjects(dates: {start: Date, end: Date}) {
+    this.query = {
+      start: dates.start,
+      end: dates.end,
+      currPage: 1,
+    };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
+
+  /**
    * Clear the filters of both collection and status and reset the Learning Objects query
    *
    * @memberof LearningObjectsComponent
