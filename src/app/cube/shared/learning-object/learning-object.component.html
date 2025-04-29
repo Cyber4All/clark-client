@@ -81,6 +81,10 @@
         </div>
       </div>
 
+      <div class='rating-stars-container'> 
+        <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
+      </div>
+
     <div class="details">
       <span class="author">
         {{ learningObject.contributors[0]?.name | titlecase }} at
