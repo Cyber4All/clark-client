@@ -12,7 +12,8 @@
           class="button neutral filters-button"
           (activate)="toggleDateSearchMenu(true)"
         >
-        <span>Search by Date Range</span>
+          <div [ngClass]="{ 'indicator': dateSearchStart || dateSearchEnd }"></div>
+          <span>Search by Date Range</span>
         </button>
         <button
           #toggleTopicMenuElement
@@ -139,7 +140,7 @@
     </div>
     <div class="btn-group select">
       <div>
-        <button *ngIf="filterSelected" class="button bad" (activate)="clearDateSearch()">Clear Filter</button>
+        <button class="button bad" *ngIf="dateSearchStart || dateSearchEnd" (activate)="clearDateSearch()">Clear</button>
       </div>
       <div>
         <button class="button neutral" (activate)="toggleDateSearchMenu(false)">Cancel</button>

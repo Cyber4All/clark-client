@@ -275,7 +275,7 @@ export class FilterSearchComponent implements OnInit {
   clearDateSearch() {
     this.dateSearchStart = undefined;
     this.dateSearchEnd = undefined;
-    this.dateSearchFilter.emit({ start: undefined, end: undefined });
+    this.dateSearchFilter.emit({ start: '', end: '' });
     this.toggleDateSearchMenu(false);
   }
 
