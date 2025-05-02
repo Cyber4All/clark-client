@@ -73,6 +73,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
     this.averageRating = ratings.avgValue;
     this.reviewsCount = ratings.ratings?.length;
+
+    this.cd.detectChanges();
   }
 
   goals() {
