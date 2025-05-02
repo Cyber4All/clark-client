@@ -28,6 +28,8 @@ export interface Query {
   collection?: string;
   status?: string[];
   fileTypes?: string[];
+  start?: Date | string;
+  end?: Date | string;
   startNextCheck?: string;
   endNextCheck?: string;
   topics?: string[];

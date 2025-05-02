@@ -281,8 +281,8 @@ export class LearningObjectsComponent
       this.query.sortType = SortType.Ascending;
     } else if (this.query.sortType.toString() === '1') {
       this.query = {
-        sortType: undefined,
-        orderBy: undefined,
+        sortType: SortType.Descending,
+        orderBy: OrderBy.Date,
       };
     }
 
@@ -301,6 +301,26 @@ export class LearningObjectsComponent
     this.query = {
       startNextCheck: dates.start,
       endNextCheck: dates.end,
+      start: '',
+      end: '',
+      currPage: 1,
+    };
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
+
+  /**
+   * Updates the queries start and end values
+   *
+   * @param dates The start and end dates for the date search filter
+   */
+  getDateFilteredLearningObjects(dates: {start: Date, end: Date}) {
+    this.query = {
+      start: dates.start,
+      end: dates.end,
+      startNextCheck: '',
+      endNextCheck: '',
       currPage: 1,
     };
     this.learningObjects = [];

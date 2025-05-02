@@ -10,13 +10,14 @@
     filter-options
     (filterQuery)="handleFilterQuery($event)"
     (relevancyCheck)="getRelevancyFilteredLearningObjects($event)"
+    (dateSearchFilter)="getDateFilteredLearningObjects($event)"
     (clearAll)="clearStatusAndCollectionFilters()"
     [adminOrEditor]="isAdminOrEditor"
     [showStatus]="true"
   ></clark-admin-filter-search>
-  
-  <div #list class="list" main>  
-    <div #listInner>  
+
+  <div #list class="list" main>
+    <div #listInner>
       <div class="list__body">
         <div *ngIf="learningObjects?.length; else emptyTemplate" >
           <div #headers class="body__column-headers">
