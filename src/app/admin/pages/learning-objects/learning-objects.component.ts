@@ -46,6 +46,7 @@ export class LearningObjectsComponent
     orderBy: OrderBy.Date,
     text: '',
     collection: '',
+    admin: 'true'
   };
 
   displayStatusModal = false;
