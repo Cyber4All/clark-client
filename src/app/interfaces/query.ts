@@ -35,6 +35,7 @@ export interface Query {
   topics?: string[];
   tags?: string[]
   username?: string;
+  admin?: string;
 }
 
 export interface MappingQuery extends Query {
