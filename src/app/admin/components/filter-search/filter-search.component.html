@@ -9,6 +9,13 @@
         <span *ngIf="!startNextCheck">Filter By Relevancy Check Dates</span>
         </button>
         <button
+          class="button neutral filters-button"
+          (activate)="toggleDateSearchMenu(true)"
+        >
+          <div [ngClass]="{ 'indicator': dateSearchStart || dateSearchEnd }"></div>
+          <span>Search by Date Range</span>
+        </button>
+        <button
           #toggleTopicMenuElement
           class="button neutral filters-button"
           (activate)="toggleTopicMenu(true)"
@@ -116,6 +123,32 @@
   </div>
 </div>
 
+<clark-popup *ngIf="dateSearchMenuDown" (closed)="toggleDateSearchMenu(false)">
+  <div class="modal-container" #popupInner>
+    <div class="modal-title">Search by Date Range</div>
+    <div class="modal__inner">
+      <mat-form-field class="input">
+        <input matInput [matDatepicker]="startPicker" placeholder="Choose a start date" [(ngModel)]="dateSearchStart">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker startView="year" [startAt]="dateSearchStart"></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="input">
+        <input matInput [matDatepicker]="endPicker" placeholder="Choose an end date" [(ngModel)]="dateSearchEnd">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker startView="year" [startAt]="dateSearchEnd"></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="btn-group select">
+      <div>
+        <button class="button bad" *ngIf="dateSearchStart || dateSearchEnd" (activate)="clearDateSearch()">Clear</button>
+      </div>
+      <div>
+        <button class="button neutral" (activate)="toggleDateSearchMenu(false)">Cancel</button>
+        <button class="button good" (activate)="setDateSearch()">Apply</button>
+      </div>
+    </div>
+  </div>
+</clark-popup>
 
 <clark-popup *ngIf="relevancyMenuDown" (closed)="toggleRelevancyMenu(false)">
   <div class="modal-container" #popupInner>

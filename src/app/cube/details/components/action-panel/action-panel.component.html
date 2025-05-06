@@ -79,7 +79,7 @@
 </clark-popup>
 
 <ng-template #libraryButtonsTemplate>
-  <button *ngIf="!auth?.hasEditorAccess()"[tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons, 'hide': hasReviewerAccess}"
+  <button *ngIf="!auth?.hasEditorAccess()"[tip]="tips.DOWNLOAD_NOW" tipPosition="top" [tipDisabled]="hasDownloadAccess || !loggedin" [ngClass]="{'disabled': !auth.user || !hasDownloadAccess || downloading || disableLibraryButtons}"
     class="button good" id="download-button" (activate)="addToLibrary(true)" attr.aria-label="{{hasDownloadAccess ? 'Clickable Download Now button' : 'Not Available for Download'}}">
     <span *ngIf="hasDownloadAccess">{{!downloading ? 'Download Now' : 'Downloading'}}
       <span *ngIf="downloading">

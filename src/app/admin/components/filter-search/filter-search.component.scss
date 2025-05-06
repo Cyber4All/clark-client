@@ -46,7 +46,7 @@
     $lighter-blue: rgba(red($light-blue), green($light-blue), blue($light-blue), 0.1);
     background: $lighter-blue;
     color: $light-blue;
-    
+
     & > .svg-inline--fa {
       transform: rotate(180deg);
     }
@@ -54,6 +54,19 @@
     &:after {
       border-color: transparent;
     }
+  }
+
+  .indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    background: $light-blue;
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
   }
 }
 .addEvaluators,
