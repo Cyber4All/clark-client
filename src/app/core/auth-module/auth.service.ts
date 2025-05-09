@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 import {
   HttpClient,
@@ -11,6 +12,7 @@ import { User } from '@entity';
 import { catchError } from 'rxjs/operators';
 import { EncryptionService } from './encryption.service';
 import { AUTH_ROUTES } from './auth.routes';
+import { CoralogixRum } from '@coralogix/browser';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -46,7 +48,7 @@ export interface OpenIdToken {
 const TOKEN_STORAGE_KEY = 'clark.center:access-tokens';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   user: AuthUser;
@@ -59,7 +61,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private cookies: CookieService,
-    private encryptionService: EncryptionService
+    private encryptionService: EncryptionService,
   ) {
     if (this.cookies.get('presence')) {
       this.validateToken();
@@ -92,7 +94,7 @@ export class AuthService {
     this.assignUserToGroup();
     localStorage.setItem(
       TOKEN_STORAGE_KEY,
-      JSON.stringify({ bearer: tokens.bearer, openId: tokens.openId })
+      JSON.stringify({ bearer: tokens.bearer, openId: tokens.openId }),
     );
   }
 
@@ -116,7 +118,7 @@ export class AuthService {
       '/',
       domain,
       true,
-      'None'
+      'None',
     );
     this.setSession({
       user: user,
@@ -325,12 +327,9 @@ export class AuthService {
   async refreshToken(): Promise<void | Partial<{ message: string }>> {
     try {
       const response = await this.http
-        .get<AuthUser & { tokens: Tokens }>(
-          AUTH_ROUTES.REFRESH_TOKEN(),
-          {
-            withCredentials: true,
-          }
-        )
+        .get<AuthUser & { tokens: Tokens }>(AUTH_ROUTES.REFRESH_TOKEN(), {
+          withCredentials: true,
+        })
         .pipe(catchError(this.handleError))
         .toPromise();
       const tokens: Tokens = response.tokens;
@@ -353,17 +352,30 @@ export class AuthService {
     try {
       const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http
-        .post<AuthUser & { tokens: Tokens }>(AUTH_ROUTES.LOGIN(),
-          data,
-          {
-            withCredentials: true,
-          })
+        .post<AuthUser & { tokens: Tokens }>(AUTH_ROUTES.LOGIN(), data, {
+          withCredentials: true,
+        })
         .pipe(catchError(this.handleError))
         .toPromise();
       const tokens: Tokens = response.tokens;
       delete response.tokens;
       const authUser: AuthUser = response as AuthUser;
       this.setSession({ user: authUser, tokens });
+
+      // Configures RUM to monitor user session
+      CoralogixRum.setUserContext({
+        user_id: authUser.userId,
+        user_name: authUser.username,
+        user_email: authUser.email,
+        user_metadata: {
+          user_accessgroups: authUser.accessGroups,
+          user_bio: authUser.bio,
+          user_createdat: authUser.createdAt,
+          user_emailverified: authUser.emailVerified,
+          user_firstname: authUser.firstName,
+          user_lastname: authUser.lastName,
+        },
+      });
       return this.user;
     } catch (error) {
       this.endSession();
@@ -389,23 +401,19 @@ export class AuthService {
    * @param user the user's data from the registration component
    */
   async register(user: {
-    username: string,
-    firstname: string,
-    lastname: string,
-    email: string,
-    organization: string,
-    password: string,
+    username: string;
+    firstname: string;
+    lastname: string;
+    email: string;
+    organization: string;
+    password: string;
   }): Promise<User> {
     try {
       const data = await this.encryptionService.encryptRSA(user);
       const response = await this.http
-        .post<AuthUser & { tokens: Tokens }>(
-          AUTH_ROUTES.REGISTER(),
-          data,
-          {
-            withCredentials: true,
-          }
-        )
+        .post<AuthUser & { tokens: Tokens }>(AUTH_ROUTES.REGISTER(), data, {
+          withCredentials: true,
+        })
         .pipe(catchError(this.handleError))
         .toPromise();
       const tokens: Tokens = response.tokens;
@@ -431,7 +439,7 @@ export class AuthService {
       .post(
         AUTH_ROUTES.OTA_SEND_EMAIL(),
         { email },
-        { withCredentials: true, responseType: 'text' }
+        { withCredentials: true, responseType: 'text' },
       )
       .pipe(catchError(this.handleError));
   }
@@ -449,7 +457,7 @@ export class AuthService {
       .patch(
         AUTH_ROUTES.OTA_RESET_PASSWORD(code),
         { payload },
-        { withCredentials: true, responseType: 'text' }
+        { withCredentials: true, responseType: 'text' },
       )
       .pipe(catchError(this.handleError));
   }
@@ -466,7 +474,7 @@ export class AuthService {
       .post(
         AUTH_ROUTES.OTA_VERIFY_EMAIL(),
         { email: email || this.user.email },
-        { withCredentials: true, responseType: 'text' }
+        { withCredentials: true, responseType: 'text' },
       )
       .pipe(catchError(this.handleError));
   }
@@ -480,12 +488,10 @@ export class AuthService {
    */
   async usernameInUse(username: string) {
     const val = await this.http
-      .get(AUTH_ROUTES.VALIDATE_USERNAME(username),
-        {
-          headers: this.httpHeaders,
-          withCredentials: true,
-        }
-      )
+      .get(AUTH_ROUTES.VALIDATE_USERNAME(username), {
+        headers: this.httpHeaders,
+        withCredentials: true,
+      })
       .pipe(catchError(this.handleError))
       .toPromise();
     this.inUse = val;

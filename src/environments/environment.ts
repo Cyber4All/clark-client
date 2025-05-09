@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   experimental: false,
+  environment: 'development',
   apiURL: 'http://localhost:3000',
   s3Bucket: 'clark-dev-file-uploads',
   s3BucketRegion: 'us-east-1',
@@ -20,5 +21,5 @@ export enum LearningObjectStatus {
   UNDER_REVIEW = 'review',
   WAITING = 'waiting',
   DENIED = 'denied',
-  UNPUBLISHED = 'unpublished'
+  UNPUBLISHED = 'unpublished',
 }

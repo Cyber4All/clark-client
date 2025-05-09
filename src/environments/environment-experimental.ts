@@ -6,6 +6,7 @@
 export const environment = {
   production: false,
   experimental: true,
+  environment: 'experimental',
   apiURL: 'http://localhost:3001',
   s3Bucket: 'neutrino-file-uploads',
   s3BucketRegion: 'us-east-2',
@@ -20,5 +21,5 @@ export enum LearningObjectStatus {
   UNDER_REVIEW = 'review',
   WAITING = 'waiting',
   DENIED = 'denied',
-  UNPUBLISHED = 'unpublished'
+  UNPUBLISHED = 'unpublished',
 }

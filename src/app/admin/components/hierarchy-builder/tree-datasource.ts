@@ -18,7 +18,7 @@ export interface LearningObjectNode {
 export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> {
   constructor(
     private treeControl: NestedTreeControl<LearningObjectNode>,
-    initialData: LearningObjectNode[]
+    initialData: LearningObjectNode[],
   ) {
     super();
     this.data = initialData;
@@ -32,7 +32,11 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
    */
   public add(node: LearningObjectNode, parent: LearningObjectNode) {
     // add dummy root so we only have to deal with LearningObjectNodes
-    const newTreeData = { name: 'Yeetus Maximus', length: 'nanomodule', children: this.data };
+    const newTreeData = {
+      name: 'Yeetus Maximus',
+      length: 'nanomodule',
+      children: this.data,
+    };
     this._add(node, parent, newTreeData);
     this.data = newTreeData.children;
   }
@@ -43,7 +47,11 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
    * @param node the node that is to be removed
    */
   public remove(node: LearningObjectNode) {
-    const newTreeData = { name: 'Yeetus Maximus', length: 'nanomodule', children: this.data };
+    const newTreeData = {
+      name: 'Yeetus Maximus',
+      length: 'nanomodule',
+      children: this.data,
+    };
     this._remove(node, newTreeData);
     this.data = newTreeData.children;
   }
@@ -56,7 +64,11 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
    * @param tree the tree that the parent is apart of
    * @returns updated tree with new node
    */
-  protected _add(newNode: LearningObjectNode, parent: LearningObjectNode, tree: LearningObjectNode) {
+  protected _add(
+    newNode: LearningObjectNode,
+    parent: LearningObjectNode,
+    tree: LearningObjectNode,
+  ) {
     if (tree === parent) {
       /* eslint-disable  @typescript-eslint/no-non-null-assertion */
       tree.children = [...tree.children!, newNode];
@@ -76,7 +88,10 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
    * @param tree the tree that the node is in
    * @returns
    */
-  protected _remove(node: LearningObjectNode, tree: LearningObjectNode): boolean {
+  protected _remove(
+    node: LearningObjectNode,
+    tree: LearningObjectNode,
+  ): boolean {
     if (!tree.children) {
       return false;
     }
@@ -84,7 +99,7 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
     if (i > -1) {
       tree.children = [
         ...tree.children.slice(0, i),
-        ...tree.children.slice(i + 1)
+        ...tree.children.slice(i + 1),
       ];
       this.treeControl.collapse(node);
       return true;
@@ -95,7 +110,10 @@ export class TreeDataSource extends MatTreeNestedDataSource<LearningObjectNode> 
   /**
    * Determines how a sub tree needs to be updated depending on if a node was added or taken away
    */
-  protected update(tree: LearningObjectNode, predicate: (n: LearningObjectNode) => boolean) {
+  protected update(
+    tree: LearningObjectNode,
+    predicate: (n: LearningObjectNode) => boolean,
+  ) {
     let updatedTree: LearningObjectNode, updatedIndex: number;
 
     /* eslint-disable  @typescript-eslint/no-non-null-assertion */

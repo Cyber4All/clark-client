@@ -19,6 +19,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { Topic } from '@entity';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
+import { CoralogixRum } from '@coralogix/browser';
 
 @Component({
   selector: 'clark-admin-filter-search',
