@@ -42,11 +42,15 @@ export class AdminComponent implements OnInit, OnDestroy {
     // hide CLARK navbar
     this.navbarService.hide();
 
-    if (!!(await this.utilityServicce.getDowntime()).message) {
-      // the message banner is down, adjust UI to account for it
-      setTimeout(() => {
-        this.topAdjustment = document.querySelector('clark-message .wrapper').getBoundingClientRect().height;
-      });
+    try {
+      if (!!(await this.utilityServicce.getDowntime()).message) {
+        // the message banner is down, adjust UI to account for it
+        setTimeout(() => {
+          this.topAdjustment = document.querySelector('clark-message .wrapper').getBoundingClientRect().height;
+        });
+      }
+    } catch (err) {
+      console.error(err);
     }
 
     // set the can scroll value to determine whether or not we add 30px of padding to the bottom of the content wrapper

@@ -1,4 +1,4 @@
-<div class="learning-object-builder-wrapper" [@builderTransition]="getState(o)">
+<div class="learning-object-builder-wrapper" [@builderTransition]="routeState">
   <!-- The ngIf directive on onion-builder-navbar forces the :enter event to fire for router animations and should NOT be removed -->
   <onion-builder-navbar *ngIf="true" [adminMode]="adminMode"></onion-builder-navbar>
   <router-outlet #o="outlet"></router-outlet>

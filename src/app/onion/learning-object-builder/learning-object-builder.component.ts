@@ -1,5 +1,5 @@
 import { takeUntil } from 'rxjs/operators';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { NavbarService } from '../../core/client-module/navbar.service';
 import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -90,7 +90,7 @@ export const builderTransitions = trigger('builderTransition', [
   // these are provided here so that they'll be destroyed when navigating away
   providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator]
 })
-export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
+export class LearningObjectBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   // fires when the component is destroyed
   destroyed$: Subject<void> = new Subject();
 
@@ -107,6 +107,8 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
 
   historySnapshot: HistorySnapshot;
 
+  public routeState: string;
+
   // eslint-disable-next-line max-len
   constructor(
     private store: BuilderStore,
@@ -118,7 +120,13 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
     public noteService: ToastrOvenService,
     private authService: AuthService,
     private history: HistoryService,
+    private cdRef: ChangeDetectorRef
   ) { }
+  ngAfterViewInit(): void {
+    // throw new Error('Method not implemented.');
+    this.routeState = this.route.snapshot.firstChild?.data?.['state'] ?? 'default';
+    this.cdRef.detectChanges();
+  }
 
   ngOnInit() {
     this.historySnapshot = this.history.snapshot();
@@ -298,10 +306,6 @@ export class LearningObjectBuilderComponent implements OnInit, OnDestroy {
       !this.validator.saveable ||
       (this.validator.submissionMode && !this.validator.submittable)
     );
-  }
-
-  getState(outlet: any) {
-    return outlet.activatedRouteData.state;
   }
 
   /**

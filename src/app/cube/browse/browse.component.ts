@@ -1,6 +1,11 @@
-
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { Component, HostListener, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnDestroy,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { COPY } from './browse.copy';
@@ -33,7 +38,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     collection: '',
     topics: [],
     fileTypes: [],
-    status: [LearningObject.Status.RELEASED]
+    status: [LearningObject.Status.RELEASED],
   };
 
   tooltipText = {
@@ -41,7 +46,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     micromodule: 'a Learning Object between 1 and 4 hours in length',
     module: 'a Learning Object between 4 and 10 hours in length',
     unit: 'a Learning Object over 10 hours in length',
-    course: 'a Learning Object 15 weeks in length'
+    course: 'a Learning Object 15 weeks in length',
   };
 
   loading = true;
@@ -88,22 +93,21 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>()
-      .pipe(
-        debounceTime(650),
-        takeUntil(this.unsubscribe)
-      )
+      .pipe(debounceTime(650), takeUntil(this.unsubscribe))
       .subscribe(() => {
         this.performSearch();
       });
 
     // whenever the queryParams change, map them to the query object and perform the search
-    this.route.queryParams.pipe(takeUntil(this.unsubscribe)).subscribe(async params => {
-      // makes query based and sends request to fetch learning objects
-      this.makeQuery(params);
-      // with a text search and no sortType is provided, no sort is applied, otherwise apply the default sort
-      this.sortText = params.text && !params.sortType ? '' : this.sortText;
-      this.fetchLearningObjects(this.query);
-    });
+    this.route.queryParams
+      .pipe(takeUntil(this.unsubscribe))
+      .subscribe(async (params) => {
+        // makes query based and sends request to fetch learning objects
+        this.makeQuery(params);
+        // with a text search and no sortType is provided, no sort is applied, otherwise apply the default sort
+        this.sortText = params.text && !params.sortType ? '' : this.sortText;
+        this.fetchLearningObjects(this.query);
+      });
   }
 
   get isMobile(): boolean {
@@ -182,9 +186,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   get sortString() {
     return this.query.orderBy
       ? this.query.orderBy.replace(/_/g, '') +
-      ' (' +
-      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-      ')'
+          ' (' +
+          (this.query.sortType > 0 ? 'Asc' : 'Desc') +
+          ')'
       : '';
   }
 
@@ -214,7 +218,16 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     // correctly interface with sort and search
     this.filters = filters;
     this.filters.removed = [];
-    ['collection', 'length', 'topics', 'tags', 'fileTypes', 'level', 'guidelines', 'standardOutcomes'].forEach(category => {
+    [
+      'collection',
+      'length',
+      'topics',
+      'tags',
+      'fileTypes',
+      'level',
+      'guidelines',
+      'standardOutcomes',
+    ].forEach((category) => {
       if (!this.filters[category]) {
         this.filters.removed.push(category);
       }
@@ -244,7 +257,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     } else {
       if (this.filters && Object.keys(this.filters).length > 0) {
         // Remove the removed filter categories from the query object
-        (this.filters.removed as string[]).forEach(category => delete this.query[category]);
+        (this.filters.removed as string[]).forEach(
+          (category) => delete this.query[category],
+        );
         delete this.filters.removed;
 
         // Append the filters without the removed option (not used in search) and resets filters
@@ -259,11 +274,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       this.shouldResetPage = true;
 
       this.router.navigate(['browse'], {
-        queryParams: this.removeObjFalsy(this.query)
+        queryParams: this.removeObjFalsy(this.query),
       });
     }
   }
-
 
   toggleSortMenu(state: boolean) {
     this.sortMenuDown = state;
@@ -284,8 +298,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       }
       const sort = val.charAt(0);
       const dir = val.charAt(1);
-      this.query.orderBy =
-        sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+      this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
       this.query.sortType =
         dir === 'd' ? SortType.Descending : SortType.Ascending;
 
@@ -301,7 +314,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.sortText = '';
     this.performSearch();
   }
-
 
   /**
    * Takes an object of parameters and attempts to map them to the query objcet
@@ -328,7 +340,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         } else {
           this.query[key] = val;
         }
-
       }
     }
   }
@@ -339,10 +350,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     // Trim leading and trailing whitespace
     query.text = query.text ? query.text.trim() : '';
     try {
-      const {
-        learningObjects,
-        total
-      } = await this.searchLearningObjectService.getLearningObjects(query);
+      const { learningObjects, total } =
+        await this.searchLearningObjectService.getLearningObjects(query);
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);
@@ -379,5 +388,21 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   trackByIndex(index, item) {
     return index;
+  }
+
+  /** Returns true if any of the filter fields in the query are not empty */
+  public anyFiltersSelected(): boolean {
+    const q = this.query;
+    return !!(
+      (
+        (q.collection && q.collection !== '') ||
+        q.length?.length ||
+        q.topics?.length ||
+        q.level?.length ||
+        q.guidelines?.length ||
+        q.standardOutcomes?.length ||
+        q.fileTypes?.length
+      )
+    );
   }
 }
