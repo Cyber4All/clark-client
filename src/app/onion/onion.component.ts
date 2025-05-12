@@ -58,7 +58,6 @@ export class OnionComponent implements AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
-    // throw new Error('Method not implemented.');
     this.routeState = this.route.snapshot.firstChild?.data?.['state'] ?? 'default';
     this.cdRef.detectChanges();
   }

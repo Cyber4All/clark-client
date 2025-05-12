@@ -123,7 +123,6 @@ export class LearningObjectBuilderComponent implements OnInit, AfterViewInit, On
     private cdRef: ChangeDetectorRef
   ) { }
   ngAfterViewInit(): void {
-    // throw new Error('Method not implemented.');
     this.routeState = this.route.snapshot.firstChild?.data?.['state'] ?? 'default';
     this.cdRef.detectChanges();
   }
