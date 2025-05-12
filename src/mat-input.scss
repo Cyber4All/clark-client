@@ -1,15 +1,7 @@
 @use '@angular/material' as mat;
-// @import '~@angular/material/theming';
 @use "vars" as *;
 @include mat.core();
 
-// $clark-map: (
-//   100: #BADCFF,
-//   500: #1190ff,
-//   700: #1C70DD,
-//   err: $error-red,
-//   contrast: ()
-// );
 $clark-map: (
   50: #e3f2fd,
   100: #BADCFF,
