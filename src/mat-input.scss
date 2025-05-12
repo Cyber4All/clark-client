@@ -30,7 +30,6 @@ $clark-map: (
 
 $clark-primary: mat.define-palette($clark-map, 700);
 $clark-accent: mat.define-palette($clark-map, 700);
-// $clark-warn: mat.define-palette($clark-map, err);
 $clark-warn: mat.define-palette(mat.$red-palette);
 
 
