@@ -40,7 +40,7 @@
     "ng-click-outside": "^9.0.1",
     "ng2-charts": "^2.3.0",
     "ngx-cookie": "^5.0.2",
-    "ngx-cookie-service": "^14.0.1",
+    "ngx-cookie-service": "^15.0.0",
     "ngx-simple-text-editor": "^1.4.1",
     "ngx-virtual-scroller": "^4.0.3",
     "raven-js": "^3.22.3",
