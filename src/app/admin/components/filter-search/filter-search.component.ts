@@ -307,7 +307,7 @@ export class FilterSearchComponent implements OnInit {
    * @param filter {string} the filter to be toggled
    */
   toggleCollectionFilter(filter: string) {
-    if (filter.toLowerCase() === 'all') {
+    if (filter?.toLowerCase() === 'all') {
       this.clearCollectionFilters();
       this.toggleCollectionMenu(undefined);
       return;
