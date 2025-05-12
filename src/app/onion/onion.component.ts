@@ -47,7 +47,7 @@ export const onionTransitions = trigger('onionTransitions', [
 export class OnionComponent implements AfterViewInit {
   activeRoute: string;
   activeContentSwitcher = 'contribute';
-  public routeState: string; 
+  public routeState: string;
 
   constructor(
     public authService: AuthService,
