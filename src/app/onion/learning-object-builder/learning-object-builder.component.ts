@@ -96,7 +96,7 @@ export class LearningObjectBuilderComponent implements OnInit, AfterViewInit, On
 
   serviceInteraction: boolean;
   showServiceInteraction: boolean;
-  removeServiceIndicator: NodeJS.Timer;
+  removeServiceIndicator: NodeJS.Timeout;
 
   errorMessage: string;
 

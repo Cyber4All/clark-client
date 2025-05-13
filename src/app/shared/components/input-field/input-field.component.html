@@ -3,7 +3,6 @@
     <input
         matInput
         type="{{hide ? 'password' : 'text'}}" 
-        placeholder="{{  phold  }}"
         [value]="value"
         (input)="changed($event.target.value)"
         (blur)="touched()"
@@ -26,5 +25,6 @@
             authValidation.getInputErrorMessage(control, confirmType)
         }}
     </mat-error>
+    <mat-label>{{  phold }}</mat-label>
 </mat-form-field>
 
