@@ -25,7 +25,7 @@ export class IndicatorComponent implements OnChanges, AfterViewInit {
 
   // state
   initialized = false;
-  animatingTimeout: NodeJS.Timer;
+  animatingTimeout: NodeJS.Timeout;
 
   constructor() { }
 

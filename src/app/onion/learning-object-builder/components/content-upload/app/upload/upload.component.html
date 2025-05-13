@@ -60,7 +60,7 @@
           <st-editor
             [(ngModel)]="notes"
             [config]="config"
-            (keyup)="updateNotes($event)"
+            (keyup)="updateNotes(notes)"
             [formControl]="notesText"
           ></st-editor>
         </div>

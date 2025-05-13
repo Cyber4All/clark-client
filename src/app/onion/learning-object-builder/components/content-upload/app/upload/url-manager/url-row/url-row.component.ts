@@ -53,7 +53,7 @@ export class UrlRowComponent implements OnInit {
    */
   updateTitle() {
     if (this.titleText !== '' && this.urlLink !== '') {
-      if (this.urlLink.includes('https://') || this.urlLink.includes('http://')) {
+      if (this.urlLink?.includes('https://') || this.urlLink?.includes('http://')) {
         this.updateUrl.emit({ index: this.index, title: this.titleText, url: this.urlLink, addNew: true, focusMe: false});
       } else {
         this.updateUrl.emit({index: this.index, title: this.titleText, url: this.urlLink, addNew: false, focusMe: false});
