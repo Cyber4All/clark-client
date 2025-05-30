@@ -344,13 +344,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     return attribution;
   }
 
-  /**
-   * Opens the relevancy builder
-   */
-  mapAndTagObject() {
-    return this.editorialService.navigateToRelevancyBuilder(this.learningObject);
-  }
-
   private capitalizeName(name) {
     return name.replace(/\b(\w)/g, s => s.toUpperCase());
   }
