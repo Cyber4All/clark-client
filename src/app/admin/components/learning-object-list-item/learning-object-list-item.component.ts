@@ -202,8 +202,6 @@ export class LearningObjectListItemComponent implements OnChanges {
       this.router.navigate([`/users/${this.learningObject.author.username}`]);
     } else if (url === 'details') {
       this.router.navigate([`/details/${this.learningObject.author.username}/${this.learningObject.cuid}/${this.learningObject.version}`]);
-    } else if (url === 'relevancy') {
-      this.editorialService.navigateToRelevancyBuilder(this.learningObject);
     } else if (url === 'revision builder') {
       this.editorialService.navigateToEditor(this.learningObject, { version: this.learningObject.version + 1 });
     }

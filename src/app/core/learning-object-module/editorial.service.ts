@@ -85,15 +85,6 @@ export class EditorialService {
   }
 
   /**
-   * Navigates to the relevancy builder.
-   *
-   * @param learningObject Learning Object
-   */
-  navigateToRelevancyBuilder(learningObject: LearningObject) {
-    this.router.navigate([`/onion/relevancy-builder/${learningObject.cuid}`]);
-  }
-
-  /**
    * Checks if an editor is NOT permitted to create a revision or make edits.
    * @param learningObject Learning Object
    * @param revisedLearningObjects Revised Learning Object
