@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { OnionRoutingModule } from './onion.routing';
 import { LearningObjectBuilderModule } from './learning-object-builder/learning-object-builder.module';
 
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // Other
 import { OnionCoreModule } from './core/core.module';
@@ -39,12 +39,12 @@ import { EmailBannerComponent } from './components/email-banner/email-banner.com
     ModalModule,
     LearningObjectBuilderModule,
     OnionRoutingModule,
-    VirtualScrollerModule,
+    ScrollingModule,
     DashboardModule,
     SidePanelContentModule,
   ],
   exports: [
-    VirtualScrollerModule,
+    ScrollingModule,
   ]
 })
 export class OnionModule { }

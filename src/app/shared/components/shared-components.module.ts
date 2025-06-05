@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // CLARK Modules
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
@@ -29,7 +30,6 @@ import { MatInputModule } from '@angular/material/input';
 import {
   HighlightedLearningObjectComponent
 } from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { AuthorCardComponent } from 'app/shared/components/author-card/author-card.component';
 import { CollectionsDropdownComponent } from './collections-dropdown/collections-dropdown.component';
 @NgModule({
@@ -40,8 +40,8 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     ReactiveFormsModule,
     RouterModule,
     MatInputModule,
+    ScrollingModule,
     // third-party modules
-    VirtualScrollerModule,
     // CLARK modules
     SharedDirectivesModule,
     SharedPipesModule,
@@ -89,4 +89,4 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     AuthorCardComponent
   ]
 })
-export class SharedComponents {}
+export class SharedComponents { }

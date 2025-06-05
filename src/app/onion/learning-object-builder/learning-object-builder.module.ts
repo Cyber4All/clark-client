@@ -4,15 +4,15 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // third-party
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 
 // non-angular modules
-import {BuilderRoutingModule} from './learning-object-builder.routing';
-import {SharedModule} from 'app/shared/shared.module';
-import {ContentUploadModule} from './components/content-upload/app/content-upload.module';
+import { BuilderRoutingModule } from './learning-object-builder.routing';
+import { SharedModule } from 'app/shared/shared.module';
+import { ContentUploadModule } from './components/content-upload/app/content-upload.module';
 // components
 import { LearningObjectBuilderComponent } from './learning-object-builder.component';
 import { OutcomeComponent } from './components/outcome/outcome.component';
@@ -29,8 +29,8 @@ import { LearningObjectDescriptionComponent } from './components/description.com
 import { UserDropdownComponent } from './components/user-dropdown/user-dropdown.component';
 import { ContributorPillComponent } from './components/contributor-pill/contributor-pill.component';
 import { ScaffoldComponent } from './components/scaffold/scaffold.component';
-import {OnionSharedModule} from '../shared/onion-shared.module';
-import {EditorActionPanelModule} from './components/editor-action-panel/editor-action-panel.module';
+import { OnionSharedModule } from '../shared/onion-shared.module';
+import { EditorActionPanelModule } from './components/editor-action-panel/editor-action-panel.module';
 import { AddChildComponent } from './components/scaffold/add-child/add-child.component';
 import { MaterialNotesComponent } from './components/material-notes/material-notes.component';
 /*
@@ -51,7 +51,7 @@ import { MaterialNotesComponent } from './components/material-notes/material-not
     OnionSharedModule,
     EditorActionPanelModule,
     OnionSharedModule,
-    VirtualScrollerModule,
+    ScrollingModule,
     NgxSimpleTextEditorModule
   ],
   declarations: [
@@ -74,4 +74,4 @@ import { MaterialNotesComponent } from './components/material-notes/material-not
     MaterialNotesComponent,
   ],
 })
-export class LearningObjectBuilderModule {}
+export class LearningObjectBuilderModule { }
