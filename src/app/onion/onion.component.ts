@@ -1,5 +1,5 @@
 import { ModalService, ModalListElement, Position } from '../shared/modules/modals/modal.module';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../core/auth-module/auth.service';
 import { trigger, transition, style, animate, animateChild, query, group } from '@angular/animations';
@@ -44,16 +44,23 @@ export const onionTransitions = trigger('onionTransitions', [
   styleUrls: ['./onion.component.scss'],
   animations: [ onionTransitions ]
 })
-export class OnionComponent {
+export class OnionComponent implements AfterViewInit {
   activeRoute: string;
   activeContentSwitcher = 'contribute';
+  public routeState: string;
 
   constructor(
     public authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
     public modalService: ModalService,
+    private cdRef: ChangeDetectorRef
   ) { }
+
+  ngAfterViewInit(): void {
+    this.routeState = this.route.snapshot.firstChild?.data?.['state'] ?? 'default';
+    this.cdRef.detectChanges();
+  }
 
   /**
    * Click events on the user section of the topbar, displays modal
@@ -113,9 +120,5 @@ export class OnionComponent {
    */
   scroll(event) {
     this.modalService.close('context');
-  }
-
-  getState(outlet: any) {
-    return outlet.activatedRouteData.state;
   }
 }

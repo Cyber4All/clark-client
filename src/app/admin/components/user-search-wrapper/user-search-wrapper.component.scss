@@ -1,4 +1,4 @@
-@import 'vars.scss';
+@import '_vars.scss';
 $light-blue-gradient: linear-gradient(
   45deg,
   saturate(darken($light-blue, 10), 10),
