@@ -14,7 +14,7 @@ import { ErrorBannerComponent } from './components/error-banner/error-banner.com
 import { RecaptchaDirective } from './register/components/recaptcha/recaptcha.directive';
 import { RegistrationProgressComponent } from './register/components/registration-progress/registration-progress.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    VirtualScrollerModule,
+    ScrollingModule,
   ]
 })
 export class AuthModule { }

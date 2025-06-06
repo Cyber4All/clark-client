@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
@@ -8,7 +8,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 @Injectable({
   providedIn: 'root'
 })
-export class RouteBackwardsCompatGuard implements CanActivate {
+export class RouteBackwardsCompatGuard  {
 
   constructor(private router: Router, private http: HttpClient, private toaster: ToastrOvenService) {}
 
