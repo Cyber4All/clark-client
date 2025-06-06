@@ -89,7 +89,7 @@ export class AdminUserCardComponent {
   }
 
   async canAddEvaluator() {
-    const roles = await this.accessGroupsService.getUserAccessGroups(this.user.username);
+    const roles = await this.accessGroupsService.getUserAccessGroups(this.user.userId);
     this.showAddEvaluatorButton = roles.length > 0;
   }
 }
