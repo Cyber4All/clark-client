@@ -42,3 +42,10 @@ $clark-theme: mat.define-light-theme((
 ));
 
 @include mat.all-component-themes($clark-theme);
+
+// for the positioning of the mat input underlining in login forms
+.mdc-line-ripple::before,
+.mdc-line-ripple::after {
+  left: 16px !important;
+  width: calc(100% - 32px) !important;
+}
