@@ -31,7 +31,7 @@ export const UTILITY_ROUTES = {
    * @returns downtime information and/or banner message
    */
   GET_DOWNTIME() {
-    return `${environment.apiURL}/downtime?service=clark`;
+    return `${environment.downtimeUrl}/downtime?service=clark`;
   },
   /**
    * Request to search organizations on CARD
