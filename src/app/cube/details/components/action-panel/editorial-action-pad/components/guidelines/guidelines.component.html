@@ -1,0 +1,27 @@
+<h1>Learning Outcomes</h1>
+<div class="two-column-container">
+    <!-- Left Column: Checklist -->
+    <div class="right-column">
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let outcome of outcomes" (opened)="setOpenOutcome(outcome)">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ outcome.verb | titlecase }} {{ outcome.text }}
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        
+            <mat-chip-list>
+                <mat-chip *ngFor="let mapping of outcome.mappings" color="primary" selected>
+                    {{ mapping.frameworkName }} - {{ mapping.guidelineName }}
+                </mat-chip>
+            </mat-chip-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+    <div class="left-column">
+      <h3>Options</h3>
+      <mat-checkbox *ngFor="let option of alignableGuidelines" [(ngModel)]="option.checked">
+        {{ option.guidelineName }}
+      </mat-checkbox>
+    </div>
+</div>

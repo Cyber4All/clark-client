@@ -6,6 +6,10 @@ import { TaggingBuilderComponent } from './tagging-builder/tagging-builder.compo
 import { TopicsComponent } from './components/topics/topics.component';
 import { TagsComponent } from './components/tags/tags.component';
 import { FormsModule } from '@angular/forms';
+import { GuidelinesComponent } from './components/guidelines/guidelines.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -13,11 +17,15 @@ import { FormsModule } from '@angular/forms';
     TaggingBuilderComponent,
     TopicsComponent,
     TagsComponent,
+    GuidelinesComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    MatExpansionModule,
+    MatChipsModule,
+    MatCheckboxModule,
   ],
   exports: [ EditorialActionPadComponent ],
 })

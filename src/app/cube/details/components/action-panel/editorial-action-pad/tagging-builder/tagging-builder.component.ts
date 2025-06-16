@@ -3,6 +3,7 @@ import { LearningObject } from '@entity';
 import { TaggingService } from '../services/tagging.service';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { AlignmentService } from '../services/alignment.service';
 
 @Component({
   selector: 'clark-tagging-builder',
@@ -14,7 +15,7 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
   @Input() learningObject: LearningObject;
   @Output() close: EventEmitter<void> = new EventEmitter();
 
-  currentTab: 'topics' | 'tags' = 'topics';
+  currentTab: 'topics' | 'tags' | 'guidelines' = 'topics';
   underlineLeft = '0px';
   underlineWidth = '300px';
 
@@ -25,13 +26,16 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     private cdr: ChangeDetectorRef,
     private taggingService: TaggingService,
     private topicService: TopicsService,
-    private tagsService: TagsService
+    private tagsService: TagsService,
+    private alignmentService: AlignmentService
   ) { }
 
   async ngOnInit() {
     this.loading = true;
     const topics = await this.topicService.getTopics();
     this.taggingService.setSourceArray('topics', topics);
+    // Set the outcomes for the guidelines
+    this.alignmentService.setOutcomes(this.learningObject.outcomes);
 
     // Set selectedTopics if there is already some topics set
     if (this.learningObject.topics && this.learningObject.topics.length) {
@@ -67,7 +71,7 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
    * Note: This can be expanded if we need in the future
    * @param tab
    */
-  switchTab(tab: 'topics' | 'tags') {
+  switchTab(tab: 'topics' | 'tags' | 'guidelines') {
     this.currentTab = tab;
     this.updateUnderline();
   }
@@ -116,6 +120,9 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     if(tagIds.length > 0) {
       await this.tagsService.updateObjectTags(this.learningObject.cuid, tagIds);
     }
+
+    // Check each outcomes mappings to see if the length is different, if it is send a request to the service
+
 
     this.close.emit();
   }

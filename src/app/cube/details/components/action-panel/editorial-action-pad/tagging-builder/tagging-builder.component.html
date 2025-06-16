@@ -12,6 +12,12 @@
       (click)="switchTab('tags')">
       Tags
     </button>
+    <button 
+      class="tab" 
+      [class.active]="currentTab === 'guidelines'" 
+      (click)="switchTab('guidelines')">
+      Guidelines
+    </button>
     <div class="underline" [ngStyle]="{ left: underlineLeft, width: underlineWidth }"></div>
   </div>
   <div *ngIf="!loading">
@@ -22,6 +28,9 @@
     
       <ng-container *ngIf="currentTab === 'tags'">
         <clark-tagging></clark-tagging>
+      </ng-container>
+      <ng-container *ngIf="currentTab === 'guidelines'">
+        <clark-guidelines></clark-guidelines>
       </ng-container>
     </div>
     <div class="buttons">
