@@ -17,7 +17,7 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
   oldOutcomes: LearningOutcome[];
   @Output() close: EventEmitter<void> = new EventEmitter();
 
-  currentTab: 'topics' | 'tags' | 'guidelines' = 'topics';
+  currentTab: 'topics' | 'tags' | 'alignment' = 'topics';
   underlineLeft = '0px';
   underlineWidth = '300px';
 
@@ -41,8 +41,8 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     this.alignmentService.setOutcomes(this.learningObject.outcomes);
     // Type these
     this.oldOutcomes = this.learningObject.outcomes.map(outcome => {
- return new LearningOutcome(outcome);
-});
+      return new LearningOutcome(outcome);
+    });
 
     // Set selectedTopics if there is already some topics set
     if (this.learningObject.topics && this.learningObject.topics.length) {
@@ -78,7 +78,7 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
    * Note: This can be expanded if we need in the future
    * @param tab
    */
-  switchTab(tab: 'topics' | 'tags' | 'guidelines') {
+  switchTab(tab: 'topics' | 'tags' | 'alignment') {
     this.currentTab = tab;
     this.updateUnderline();
   }
@@ -91,20 +91,19 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     // Select all tabs
     const tabs = this.elRef.nativeElement.querySelectorAll('.tab');
 
-    // Find the currently active tab using `currentTab`
-    const activeTab: any = Array.from(tabs).find(
-      (tab: HTMLElement) => tab.textContent.trim().toLowerCase() === this.currentTab
+    const tabsArray: HTMLElement[] = Array.from(tabs) as HTMLElement[];
+
+    const activeTab = tabsArray.find(
+      (tab) => tab.textContent?.trim().toLowerCase() === this.currentTab.toLowerCase()
     );
 
-    if (activeTab) {
+    if (activeTab?.parentElement) {
       const tabRect = activeTab.getBoundingClientRect();
       const parentRect = activeTab.parentElement.getBoundingClientRect();
 
-      if(tabRect.x > 0 && parentRect.x > 0) {
         // Calculate the underline position and width based on the active tab
         this.underlineLeft = `${tabRect.left - parentRect.left}px`;
         this.underlineWidth = `${tabRect.width}px`;
-      }
 
       this.cdr.detectChanges();
     }

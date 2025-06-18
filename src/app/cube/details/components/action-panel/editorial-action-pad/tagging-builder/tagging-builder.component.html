@@ -14,8 +14,8 @@
     </button>
     <button 
       class="tab" 
-      [class.active]="currentTab === 'guidelines'" 
-      (click)="switchTab('guidelines')">
+      [class.active]="currentTab === 'alignment'" 
+      (click)="switchTab('alignment')">
       Alignment
     </button>
     <div class="underline" [ngStyle]="{ left: underlineLeft, width: underlineWidth }"></div>
@@ -29,7 +29,7 @@
       <ng-container *ngIf="currentTab === 'tags'">
         <clark-tagging></clark-tagging>
       </ng-container>
-      <ng-container *ngIf="currentTab === 'guidelines'">
+      <ng-container *ngIf="currentTab === 'alignment'">
         <clark-guidelines></clark-guidelines>
       </ng-container>
     </div>
