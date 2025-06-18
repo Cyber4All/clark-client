@@ -1,9 +1,10 @@
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { LearningObject } from '@entity';
+import { LearningObject, LearningOutcome } from '@entity';
 import { TaggingService } from '../services/tagging.service';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 import { AlignmentService } from '../services/alignment.service';
+import { BundlingService } from '../../../../../../core/learning-object-module/bundling/bundling.service';
 
 @Component({
   selector: 'clark-tagging-builder',
@@ -13,6 +14,7 @@ import { AlignmentService } from '../services/alignment.service';
 export class TaggingBuilderComponent implements OnInit, AfterViewInit {
 
   @Input() learningObject: LearningObject;
+  oldOutcomes: LearningOutcome[];
   @Output() close: EventEmitter<void> = new EventEmitter();
 
   currentTab: 'topics' | 'tags' | 'guidelines' = 'topics';
@@ -27,7 +29,8 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     private taggingService: TaggingService,
     private topicService: TopicsService,
     private tagsService: TagsService,
-    private alignmentService: AlignmentService
+    private alignmentService: AlignmentService,
+    private bundlingService: BundlingService
   ) { }
 
   async ngOnInit() {
@@ -36,6 +39,10 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     this.taggingService.setSourceArray('topics', topics);
     // Set the outcomes for the guidelines
     this.alignmentService.setOutcomes(this.learningObject.outcomes);
+    // Type these
+    this.oldOutcomes = this.learningObject.outcomes.map(outcome => {
+ return new LearningOutcome(outcome);
+});
 
     // Set selectedTopics if there is already some topics set
     if (this.learningObject.topics && this.learningObject.topics.length) {
@@ -121,8 +128,9 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
       await this.tagsService.updateObjectTags(this.learningObject.cuid, tagIds);
     }
 
-    // Check each outcomes mappings to see if the length is different, if it is send a request to the service
-
+    // Save the outcomes which updates the README and then rebundle that dude
+    await this.alignmentService.saveOutcomeMappings(this.oldOutcomes, this.learningObject.id);
+    await this.bundlingService.bundleLearningObject(this.learningObject.id);
 
     this.close.emit();
   }

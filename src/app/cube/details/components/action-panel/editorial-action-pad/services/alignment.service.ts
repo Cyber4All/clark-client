@@ -3,11 +3,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { SearchItem } from '../../../../../../../entity/standard-guidelines/search-index';
 import { LearningOutcome } from '@entity';
 import { selectedGuidelines } from './guidelines_data';
+import { RelevancyService } from '../../../../../../core/learning-object-module/relevancy/relevancy.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlignmentService {
+
+  constructor(
+    private relevancyService: RelevancyService
+  ) { }
 
   // The available guidelines to align to
   private guidelines = new BehaviorSubject<SearchItem []>([]);
@@ -43,17 +48,33 @@ export class AlignmentService {
     this.outcomes.next(loOutcomes);
   }
 
-  addMappingToOutcome(mapping: SearchItem, outcomeId: string) {
+  async saveOutcomeMappings(oldOutcomes: LearningOutcome[], learningObjectId: string) {
+    // See what outcomes have been updated
+    const updatedOutcomes: LearningOutcome[] = this.diffOutcomeArrays(oldOutcomes, this.outcomes.value, 'id');
 
+    // Now just save them with the API
+    for (const outcome of updatedOutcomes) {
+      // Parse the array of full guidelines to just the ids
+      const outcomeMappingIds = outcome.mappings.map(mapping => mapping.id);
+      console.log(outcomeMappingIds);
+      await this.relevancyService.updateLearningOutcomeMappings(learningObjectId, outcome.id, outcomeMappingIds);
+    }
   }
 
-  removeMappingFromOutcome(mapping: SearchItem, outcomeId: string) {
 
+
+  diffOutcomeArrays(oldArr, newArr, key): LearningOutcome[] {
+    const oldMap = new Map(oldArr.map(item => [item[key], item]));
+    const newMap = new Map(newArr.map(item => [item[key], item]));
+
+    const updated = [...newMap.entries()]
+      .filter(([id, newItem]) => {
+        const oldItem = oldMap.get(id);
+        return oldItem && JSON.stringify(oldItem) !== JSON.stringify(newItem);
+      })
+      .map(([, item]) => item);
+
+    return updated as LearningOutcome[];
   }
 
-  saveOutcomeMappings(oldOutcomes: LearningOutcome[]) {
-
-  }
-
-  constructor() { }
 }
