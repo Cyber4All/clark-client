@@ -43,10 +43,10 @@ export class FileService {
    */
   async previewLearningObjectFile(url: string, name: string): Promise<string> {
     return this.http.get(url, {
-        withCredentials: true,
-        responseType: 'blob',
-        observe: 'response'
-      })
+      withCredentials: true,
+      responseType: 'blob',
+      observe: 'response'
+    })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((response: any) => {
@@ -58,7 +58,7 @@ export class FileService {
         // Trigger a download using an anchor element
         const a = document.createElement('a');
         a.href = blobUrl;
-        a.download = name; // Use the extracted filename
+        a.download = blob.fileName
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
@@ -67,7 +67,7 @@ export class FileService {
         // Revoke the blob URL to free memory
         window.URL.revokeObjectURL(blobUrl);
         return '';
-    });
+      });
   }
 
   /**
@@ -133,10 +133,10 @@ export class FileService {
     objectId,
     files
   }: {
-      objectId: string;
-      files: FileUploadMeta[];
-    }): Promise<string[]> {
-      const route = FILE_METADATA_ROUTES.ADD_LEARNING_OBJECT_FILE_METADATA(objectId);
+    objectId: string;
+    files: FileUploadMeta[];
+  }): Promise<string[]> {
+    const route = FILE_METADATA_ROUTES.ADD_LEARNING_OBJECT_FILE_METADATA(objectId);
     const MAX_PER_REQUEST = 100;
     const responses$: Promise<string[]>[] = [];
     const completed$: Subject<boolean> = new Subject<boolean>();
@@ -233,12 +233,12 @@ export class FileService {
     completed$: Subject<boolean>,
     responses$: Promise<string[]>[]
   ): Promise<string[]> {
-      completed$.next(true);
-      completed$.unsubscribe();
-      const fileIdsArrays = await Promise.all(responses$);
-      const fileIds = flattenDeep(fileIdsArrays);
-      return fileIds;
-    }
+    completed$.next(true);
+    completed$.unsubscribe();
+    const fileIdsArrays = await Promise.all(responses$);
+    const fileIds = flattenDeep(fileIdsArrays);
+    return fileIds;
+  }
 
   /**
    * Handles downloading a file by opening the stream url in a new window
@@ -256,7 +256,7 @@ export class FileService {
           withCredentials: true,
           responseType: 'blob',
           observe: 'response'
-         }
+        }
       )
       .pipe(
         catchError(this.handleError)
@@ -280,7 +280,7 @@ export class FileService {
         // Revoke the blob URL to free memory
         window.URL.revokeObjectURL(blobUrl);
         return '';
-      } );
+      });
   }
 
   private handleError(error: HttpErrorResponse) {
