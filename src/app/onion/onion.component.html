@@ -2,7 +2,7 @@
 <clark-dialogmenu [content]="modalService.dialogMenuContent"></clark-dialogmenu>
 <div class="outer-wrapper" *ngIf="authService.status">
   <div class="content">
-    <div [@onionTransitions]="getState(o)" class="outlet sub-content">
+    <div [@onionTransitions]="routeState" class="outlet sub-content">
       <router-outlet #o="outlet"></router-outlet>
     </div>
   </div>
