@@ -45,6 +45,11 @@ export class AlignmentService {
    * Set the outcomes for the learning object being mapped
    */
   setOutcomes(loOutcomes: LearningOutcome[]): void {
+    loOutcomes.map(outcome => {
+      outcome.mappings.map(mapping => {
+        mapping.id = mapping.guidelineId;
+      });
+    });
     this.outcomes.next(loOutcomes);
   }
 
