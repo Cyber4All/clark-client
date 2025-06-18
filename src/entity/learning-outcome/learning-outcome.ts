@@ -99,6 +99,10 @@ export class LearningOutcome {
   get mappings(): Guideline[] {
     return this._mappings;
   }
+
+  set mappings(mappings) {
+    this._mappings = mappings;
+  }
   /**
    * Maps a Guideline to this learning outcome.
    *
