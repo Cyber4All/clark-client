@@ -56,7 +56,6 @@ export class AlignmentService {
     for (const outcome of updatedOutcomes) {
       // Parse the array of full guidelines to just the ids
       const outcomeMappingIds = outcome.mappings.map(mapping => mapping.id);
-      console.log(outcomeMappingIds);
       await this.relevancyService.updateLearningOutcomeMappings(learningObjectId, outcome.id, outcomeMappingIds);
     }
   }
