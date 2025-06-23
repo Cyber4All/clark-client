@@ -10,7 +10,6 @@ import { environment } from '@env/environment';
 
 export interface LibraryItem { _id: string, savedBy: string, savedOn: string, learningObject: LearningObject }
 
-const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
   providedIn: 'root'
 })
@@ -152,7 +151,7 @@ export class LibraryService {
    * @returns void - blob stream is downloaded to user's machine
    */
   async downloadBundle(url: string): Promise<void> {
-    return this.http.get(
+    return this.http.get<{ url: string, fileName: string }>(
       url, {
       responseType: 'json',
       observe: 'response',
@@ -166,19 +165,33 @@ export class LibraryService {
         })
       )
       .toPromise()
-      .then((response: HttpResponse<{url: string}>) => {
+      .then((response: HttpResponse<{ url: string, fileName: string }>) => {
         /**
-         * We get the pre-signed download URL from the response body, check if it's empty,
+         * We get the pre-signed download URL and the fileName from the response body, check if the download URL is empty,
          * then open the download URL in a new tab and begin downloading the bundle from S3.
          */
-        const { url } = response.body;
+        const { url, fileName } = response.body;
+        console.log('Step 2: Extracted fileName:', fileName);
         if (!url) {
           // Ideally we should NEVER reach this null case, or else something has gone
           // really wrong with S3 or clark-service, as we would 404 when an object does not exist.
           throw this.handleError(new HttpErrorResponse({ error: 'No URL for content download', status: 500 }));
         }
 
-        window.open(url);
+        return this.http.get(url, { responseType: 'blob' }).toPromise()
+          .then(fileBlob => {
+            const blob = window.URL.createObjectURL(fileBlob);
+
+            const a = document.createElement('a');
+            a.href = blob;
+            a.download = fileName;  //name file from response
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            window.URL.revokeObjectURL(blob);
+          })
       });
   }
 
@@ -191,32 +204,6 @@ export class LibraryService {
    */
   has(learningObjectId: string): boolean {
     return this.libraryItems.filter((libraryItem: LibraryItem) => libraryItem.learningObject.id === learningObjectId).length > 0;
-  }
-
-  /**
-   * Method to extract the bundle name from the content disposition header
-   * @param contentDisposition content disposition header
-   * @attribute filename standard attribute for content disposition header
-   * @returns name of the bundle zip file
-   */
-  private getBundleName(contentDisposition: string): string {
-    // If no content disposition header, return default name
-    if (!contentDisposition) {
-      return DEFAULT_BUNDLE_NAME;
-    }
-
-    // Split the content disposition header by semicolon
-    const split = contentDisposition.split(';');
-    for (const part of split) {
-      const [key, value] = part.trim().split('=');
-      // Match only the filename key
-      if (key === 'filename') {
-        return value.replace(/"/g, '').trim();
-      }
-    }
-
-    // Return default bundle name if no filename key found
-    return DEFAULT_BUNDLE_NAME;
   }
 
   private handleError(error: HttpErrorResponse) {
