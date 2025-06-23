@@ -171,7 +171,6 @@ export class LibraryService {
          * then open the download URL in a new tab and begin downloading the bundle from S3.
          */
         const { url, fileName } = response.body;
-        console.log('Step 2: Extracted fileName:', fileName);
         if (!url) {
           // Ideally we should NEVER reach this null case, or else something has gone
           // really wrong with S3 or clark-service, as we would 404 when an object does not exist.
@@ -191,7 +190,7 @@ export class LibraryService {
             document.body.removeChild(a);
 
             window.URL.revokeObjectURL(blob);
-          })
+          });
       });
   }
 
