@@ -252,7 +252,7 @@ export class FileService {
       .get(
         FILE_MANAGER_ROUTES.DOWNLOAD_FILE(loId, file._id),
         {
-          headers: this.headers,
+          // headers: this.headers,
           withCredentials: true,
           responseType: 'blob',
           observe: 'response'
