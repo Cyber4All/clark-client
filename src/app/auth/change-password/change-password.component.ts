@@ -46,7 +46,7 @@ export class ChangePasswordComponent implements OnInit {
         this.done = true;
       }, error => {
 
-        if (error.message.includes('User is not verified')) {
+        if (error.includes('User is not verified')) {
           this.errorMessage = 'Email address must be verified before password can be changed, please contact us at info@secured.team';
         } else {
           this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
