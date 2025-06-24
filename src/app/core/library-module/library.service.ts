@@ -189,7 +189,7 @@ export class LibraryService {
             const a = document.createElement('a');
             a.href = blob;
             a.download = fileName;  //name file from response
-            console.log("Name of zip that is downloaded: ", a.download);
+            console.log('Name of zip that is downloaded: ', a.download);
             a.style.display = 'none';
             document.body.appendChild(a);
             a.click();
