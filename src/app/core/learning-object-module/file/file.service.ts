@@ -58,7 +58,7 @@ export class FileService {
         // Trigger a download using an anchor element
         const a = document.createElement('a');
         a.href = blobUrl;
-        a.download = blob.fileName;
+        a.download = name; //use extracted filename
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
@@ -271,7 +271,7 @@ export class FileService {
         // Trigger a download using an anchor element
         const a = document.createElement('a');
         a.href = blobUrl;
-        a.download = file.name; // Use the extracted filename
+        a.download = file.name; //use extracted file name
         a.style.display = 'none';
         document.body.appendChild(a);
         a.click();
