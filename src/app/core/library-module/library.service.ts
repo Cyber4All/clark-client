@@ -161,7 +161,6 @@ export class LibraryService {
       .pipe(
         timeout(30000), // 30 seconds timeout
         catchError(error => {
-          console.log('Error caught in first pipe:', error);
           throw this.handleError(error);
         })
       )
@@ -178,7 +177,6 @@ export class LibraryService {
           throw this.handleError(new HttpErrorResponse({ error: 'No URL for content download', status: 500 }));
         }
         window.open(url);
-
       });
   }
 
