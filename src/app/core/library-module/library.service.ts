@@ -151,8 +151,7 @@ export class LibraryService {
    * @returns void - blob stream is downloaded to user's machine
    */
   async downloadBundle(url: string): Promise<void> {
-    console.log('Starting downloadBundle with URL:', url);
-    return this.http.get<{ url: string, fileName: string }>(
+    return this.http.get<{ url: string }>(
       url, {
       responseType: 'json',
       observe: 'response',
@@ -162,42 +161,22 @@ export class LibraryService {
       .pipe(
         timeout(30000), // 30 seconds timeout
         catchError(error => {
-          console.log('Error caught in first pipe:', error);
           throw this.handleError(error);
         })
       )
       .toPromise()
-      .then((response: HttpResponse<{ url: string, fileName: string }>) => {
+      .then((response: HttpResponse<{ url: string }>) => {
         /**
-         * We get the pre-signed download URL and the fileName from the response body, check if the download URL is empty,
+         * We get the pre-signed download URL from the response body, check if the download URL is empty,
          * then open the download URL in a new tab and begin downloading the bundle from S3.
          */
-        const { url, fileName } = response.body;
-        console.log(`Downloading bundle from URL: ${url} with file name: ${fileName}`);
+        const { url } = response.body;
         if (!url) {
           // Ideally we should NEVER reach this null case, or else something has gone
           // really wrong with S3 or clark-service, as we would 404 when an object does not exist.
           throw this.handleError(new HttpErrorResponse({ error: 'No URL for content download', status: 500 }));
         }
-
-        return this.http.get(url, { responseType: 'blob' }).toPromise()
-          .then(fileBlob => {
-            console.log('File Blob received:', fileBlob);
-            console.log('File Blob type:', fileBlob.type);
-            console.log('File Blob size:', fileBlob.size, 'bytes');
-            const blob = window.URL.createObjectURL(fileBlob);
-
-            const a = document.createElement('a');
-            a.href = blob;
-            a.download = fileName;  //name file from response
-            console.log('Name of zip that is downloaded: ', a.download);
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            window.URL.revokeObjectURL(blob);
-          });
+        window.open(url);
       });
   }
 
