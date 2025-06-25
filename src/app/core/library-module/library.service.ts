@@ -151,6 +151,7 @@ export class LibraryService {
    * @returns void - blob stream is downloaded to user's machine
    */
   async downloadBundle(url: string): Promise<void> {
+    console.log('Starting downloadBundle with URL:', url);
     return this.http.get<{ url: string, fileName: string }>(
       url, {
       responseType: 'json',
