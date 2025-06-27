@@ -10,7 +10,6 @@ import { environment } from '@env/environment';
 
 export interface LibraryItem { _id: string, savedBy: string, savedOn: string, learningObject: LearningObject }
 
-const DEFAULT_BUNDLE_NAME = 'CLARK_LEARNING_OBJECT.zip';
 @Injectable({
   providedIn: 'root'
 })
@@ -166,7 +165,7 @@ export class LibraryService {
         })
       )
       .toPromise()
-      .then((response: HttpResponse<{url: string}>) => {
+      .then((response: HttpResponse<{ url: string }>) => {
         /**
          * We get the pre-signed download URL from the response body, check if it's empty,
          * then open the download URL in a new tab and begin downloading the bundle from S3.
@@ -191,32 +190,6 @@ export class LibraryService {
    */
   has(learningObjectId: string): boolean {
     return this.libraryItems.filter((libraryItem: LibraryItem) => libraryItem.learningObject.id === learningObjectId).length > 0;
-  }
-
-  /**
-   * Method to extract the bundle name from the content disposition header
-   * @param contentDisposition content disposition header
-   * @attribute filename standard attribute for content disposition header
-   * @returns name of the bundle zip file
-   */
-  private getBundleName(contentDisposition: string): string {
-    // If no content disposition header, return default name
-    if (!contentDisposition) {
-      return DEFAULT_BUNDLE_NAME;
-    }
-
-    // Split the content disposition header by semicolon
-    const split = contentDisposition.split(';');
-    for (const part of split) {
-      const [key, value] = part.trim().split('=');
-      // Match only the filename key
-      if (key === 'filename') {
-        return value.replace(/"/g, '').trim();
-      }
-    }
-
-    // Return default bundle name if no filename key found
-    return DEFAULT_BUNDLE_NAME;
   }
 
   private handleError(error: HttpErrorResponse) {
