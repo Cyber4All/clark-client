@@ -151,7 +151,7 @@ export class LibraryService {
    * @returns void - blob stream is downloaded to user's machine
    */
   async downloadBundle(url: string): Promise<void> {
-    return this.http.get<{ url: string }>(
+    return this.http.get(
       url, {
       responseType: 'json',
       observe: 'response',
@@ -176,7 +176,7 @@ export class LibraryService {
           // really wrong with S3 or clark-service, as we would 404 when an object does not exist.
           throw this.handleError(new HttpErrorResponse({ error: 'No URL for content download', status: 500 }));
         }
-        
+
         window.open(url);
       });
   }
