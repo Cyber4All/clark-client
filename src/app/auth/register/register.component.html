@@ -44,6 +44,9 @@
                         (onBlur)="closeDropdown()"
                         class="org-dropdown_list"
                         >
+                        <p class="organization-message">
+                            If you don't see your organization please register under <b>Other</b> and reach out to us to have your organization added to our list.
+                        </p>
                         <ng-container
                         *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"
                         ></ng-container>

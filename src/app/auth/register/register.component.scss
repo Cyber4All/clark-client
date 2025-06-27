@@ -93,4 +93,9 @@
         box-sizing: border-box;
         display: block;
       }
+
+      .organization-message {
+        font-size: $smaller;
+        padding: 15px;
+      }
 }
