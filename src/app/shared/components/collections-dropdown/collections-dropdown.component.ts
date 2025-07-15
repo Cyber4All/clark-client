@@ -34,6 +34,12 @@ export class CollectionsDropdownComponent implements OnInit {
     .getCollections()
     .then((collections: Collection[]) => {
       this.collections = collections;
+      // TODO: Find a better way to incorporate future tags if we create more 'tag pages',
+      // this implementation is here for now since we only have one, WITH Cyber, which will
+      // appear in the same drop down as the collection pages
+      if(!this.collections.some(c => c.abvName === "withcyber")){
+        this.collections.push({name: "WITH Cyber", hasLogo: true, abvName: "withcyber"})
+      }
       this.loading=false;
     })
     .catch(e => {
