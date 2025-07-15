@@ -14,13 +14,13 @@ export class HeaderWithCyberComponent {
 
   navigateToBrowse() {
     const params = {
-      tags: ["6842ffa2a606cc25d400f99f"],
+      tags: ['6842ffa2a606cc25d400f99f'],
       currPage: 1,
       limit: 10,
-      orderBy: "date",
+      orderBy: 'date',
       sortType: -1,
-      status: "released"
-    }
+      status: 'released'
+    };
     this.router.navigate(['/browse'], { queryParams: params });
   }
 }
