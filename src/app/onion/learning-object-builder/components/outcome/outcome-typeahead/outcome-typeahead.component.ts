@@ -144,7 +144,7 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.bloom) {
       const entries = Object.entries(taxonomy.taxons);
       const match = entries.find(([_, taxon]) => taxon.verbs.includes(verb.toLowerCase()));
-      
+
       if (match) {
         this.bloom = match[0];
       }
