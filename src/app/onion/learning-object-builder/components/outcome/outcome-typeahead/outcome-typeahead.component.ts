@@ -141,21 +141,32 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
    * @return {boolean} true if verb is found, false otherwise
    */
   isGoodVerb(verb: string, noEmit?: boolean): boolean {
+    if (!this.bloom) {
+      const entries = Object.entries(taxonomy.taxons);
+      const match = entries.find(([_, taxon]) => taxon.verbs.includes(verb.toLowerCase()));
+
+      if (match) {
+        this.bloom = match[0];
+      }
+    }
+
     const levelsArray = Array.from(levels.values());
     for (let i = 0, l = levelsArray.length; i < l; i++) {
-      // for this level, grab it's verbs and check if the current verb is in that list
-      if (taxonomy.taxons[levelsArray[i]].verbs.includes(verb.toLowerCase())) {
-        this.bloom = levelsArray[i];
-        if (!noEmit) {
-          this.selectedCategory.emit(this.bloom);
+      if (levelsArray[i] === this.bloom) {
+        if (taxonomy.taxons[levelsArray[i]].verbs.includes(verb.toLowerCase())) {
+          this.bloom = levelsArray[i];
+          if (!noEmit) {
+            this.selectedCategory.emit(this.bloom);
+          }
+          return true;
         }
-        return true;
       }
     }
 
     this.bloom = undefined;
     return false;
   }
+
 
   /**
    * Takes currently selected verb and returns formatted version
