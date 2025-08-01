@@ -36,6 +36,7 @@ export interface Query {
   tags?: string[]
   username?: string;
   admin?: string;
+  noGuideline?: string;
 }
 
 export interface MappingQuery extends Query {

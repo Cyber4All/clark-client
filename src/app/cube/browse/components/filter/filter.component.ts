@@ -8,6 +8,7 @@ import { FilterSectionInfo } from '../filter-section/filter-section.component';
 import { Query } from '../../../../interfaces/query';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Component({
   selector: 'clark-filter',
@@ -27,6 +28,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   materialFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
   frameworkFilter: FilterSectionInfo;
+  noGuidelineFilter: FilterSectionInfo;
   guidelineFilter: string[] = [];
   tagTypes: { name: string, value: string }[] = [];
 
@@ -42,7 +44,8 @@ export class FilterComponent implements OnInit, OnDestroy {
     private topicsService: TopicsService,
     private tagsService: TagsService,
     private guidelineService: GuidelineService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private authService: AuthService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -54,6 +57,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     await this.getTagTypes();
     this.getMaterialFilters();
     this.getLevelFilters();
+    this.getNoGuidelinesFilter();
     await this.getFrameworkFilters();
     this.parseSelected();
 
@@ -82,6 +86,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
       this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
       this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
+      this.parseCategorySelected(this.selected.noGuideline, this.noGuidelineFilter.filters);
       this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
     }
   }
@@ -127,6 +132,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.clearFilterCategory(this.materialFilter.filters);
     this.clearFilterCategory(this.topicFilter.filters);
     this.clearFilterCategory(this.tagFilter.filters);
+    this.clearFilterCategory(this.noGuidelineFilter.filters);
     this.clearFilterCategory(this.frameworkFilter.filters);
     this.guidelineFilter = [];
 
@@ -158,6 +164,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.checkFilter('topics', this.topicFilter.filters, query);
     this.checkFilter('tags', this.tagFilter.filters, query);
     this.checkFilter('guidelines', this.frameworkFilter.filters, query);
+    this.checkFilter('noguidelines', this.noGuidelineFilter.filters, query);
     if (this.guidelineFilter && this.guidelineFilter.length > 0) {
       query['standardOutcomes'] = this.guidelineFilter;
     }
@@ -339,6 +346,15 @@ export class FilterComponent implements OnInit, OnDestroy {
     };
   }
 
+  getNoGuidelinesFilter() {
+    this.noGuidelineFilter = {
+      section: 'No Guidelines',
+      filters: [
+        { name: 'No Guidelines', value: 'yep', active: false }
+      ]
+    };
+  }
+
   /**
    * Closes the advanced search popup
    */
@@ -356,6 +372,10 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.guidelineFilter = guidelineIds;
     this.closeAdvancedSearch();
     this.registerChange();
+  }
+
+  isAdminOrEditor(): boolean {
+    return this.authService.isAdminOrEditor();
   }
 
   ngOnDestroy() {

@@ -19,6 +19,13 @@
 
 <div>
   <br>
+  <p>Admin/Editor Filters</p>
+  <clark-filter-section [info]="noGuidelineFilter"
+      (change)="registerChange()"></clark-filter-section>
+</div>
+
+<div>
+  <br>
   <p>FILTER BY TAG <a href="https://forms.gle/j8jp5Qqvm3yxwPei8" target="_blank"class="beta" tip="Click to learn more about tagging in CLARK and provide feedback. This will open in a new tab.">[Beta]</a></p>
   <!-- Dynamic tag type filter sections -->
   <clark-filter-section *ngFor="let tagType of tagTypes" [info]="getFilteredTags(tagType)" (change)="registerChange()"></clark-filter-section>
