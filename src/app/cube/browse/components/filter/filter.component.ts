@@ -86,7 +86,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
       this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
       this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
-      this.parseCategorySelected(this.selected.noGuideline, this.noGuidelineFilter.filters);
+      this.parseCategorySelected(this.selected.noguidelines, this.noGuidelineFilter.filters);
       this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
     }
   }
@@ -346,11 +346,14 @@ export class FilterComponent implements OnInit, OnDestroy {
     };
   }
 
+  /**
+   * Gets the no guidelines filter 🤪
+   */
   getNoGuidelinesFilter() {
     this.noGuidelineFilter = {
       section: 'No Guidelines',
       filters: [
-        { name: 'No Guidelines', value: 'yep', active: false }
+        { name: 'No Guidelines', value: 'true', active: false }
       ]
     };
   }

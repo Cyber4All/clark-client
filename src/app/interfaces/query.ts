@@ -19,6 +19,7 @@ export interface Query {
   length?: string[] | string;
   level?: string[];
   guidelines?: string[];
+  noguidelines?: string;
   orderBy?: OrderBy;
   sortType?: SortType;
   text?: string;
@@ -36,7 +37,6 @@ export interface Query {
   tags?: string[]
   username?: string;
   admin?: string;
-  noGuideline?: string;
 }
 
 export interface MappingQuery extends Query {

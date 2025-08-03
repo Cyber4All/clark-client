@@ -30,6 +30,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     currPage: 1,
     limit: 10,
     length: [],
+    noguidelines: '',
     guidelines: [],
     level: [],
     standardOutcomes: [],
@@ -186,9 +187,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   get sortString() {
     return this.query.orderBy
       ? this.query.orderBy.replace(/_/g, '') +
-          ' (' +
-          (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-          ')'
+      ' (' +
+      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
+      ')'
       : '';
   }
 
@@ -226,7 +227,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       'fileTypes',
       'level',
       'guidelines',
-      'standardOutcomes',
+      'noguidelines',
+      'comes',
     ].forEach((category) => {
       if (!this.filters[category]) {
         this.filters.removed.push(category);
@@ -400,6 +402,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         q.topics?.length ||
         q.level?.length ||
         q.guidelines?.length ||
+        q.noguidelines ||
         q.standardOutcomes?.length ||
         q.fileTypes?.length
       )
