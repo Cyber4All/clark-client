@@ -1,74 +1,44 @@
 <div>
   <!-- Collection Filters -->
-  <clark-filter-section
-    [info]="collectionFilter"
-    (change)="registerChange()"
-  ></clark-filter-section>
+  <clark-filter-section [info]="collectionFilter" (change)="registerChange()"></clark-filter-section>
 
   <!-- Length Filters -->
-  <clark-filter-section
-    [info]="lengthFilter"
-    (change)="registerChange()"
-  ></clark-filter-section>
+  <clark-filter-section [info]="lengthFilter" (change)="registerChange()"></clark-filter-section>
 
   <!-- Topics Filters -->
-  <clark-filter-section
-    [info]="topicFilter"
-    (change)="registerChange()"
-  ></clark-filter-section>
+  <clark-filter-section [info]="topicFilter" (change)="registerChange()"></clark-filter-section>
 
   <!-- Level Filters -->
-  <clark-filter-section
-    [info]="levelFilter"
-    (change)="registerChange()"
-  ></clark-filter-section>
+  <clark-filter-section [info]="levelFilter" (change)="registerChange()"></clark-filter-section>
 
   <!-- Guidelines Filters -->
   <clark-filter-section [info]="frameworkFilter" (change)="registerChange()">
-    <a (click)="openAdvancedSearch()"
-      >Advanced
-      <span *ngIf="guidelineFilter.length > 0"
-        >({{ guidelineFilter.length }} Selected)</span
-      ></a
-    >
+    <a (click)="openAdvancedSearch()">Advanced
+      <span *ngIf="guidelineFilter.length > 0">({{ guidelineFilter.length }} Selected)</span></a>
   </clark-filter-section>
 </div>
 
 <div *ngIf="isAdminOrEditor()">
   <br />
   <p>Admin/Editor Filters</p>
-  <clark-filter-section
-    [info]="noGuidelineFilter"
-    (change)="registerChange()"
-  ></clark-filter-section>
+  <clark-filter-section [info]="noGuidelineFilter" (change)="registerChange()"></clark-filter-section>
 </div>
 
 <div>
   <br />
   <p>
     FILTER BY TAG
-    <a
-      href="https://forms.gle/j8jp5Qqvm3yxwPei8"
-      target="_blank"
-      class="beta"
-      tip="Click to learn more about tagging in CLARK and provide feedback. This will open in a new tab."
-      >[Beta]</a
-    >
+    <a href="https://forms.gle/j8jp5Qqvm3yxwPei8" target="_blank" class="beta"
+      tip="Click to learn more about tagging in CLARK and provide feedback. This will open in a new tab.">[Beta]</a>
   </p>
   <!-- Dynamic tag type filter sections -->
-  <clark-filter-section
-    *ngFor="let tagType of tagTypes"
-    [info]="getFilteredTags(tagType)"
-    (change)="registerChange()"
-  ></clark-filter-section>
+  <clark-filter-section *ngFor="let tagType of tagTypes" [info]="getFilteredTags(tagType)"
+    (change)="registerChange()"></clark-filter-section>
 </div>
 
 <clark-popup *ngIf="showAdvancedSearch" (closed)="closeAdvancedSearch()">
   <div class="modal-container center" #popupInner>
-    <clark-guideline-filter
-      [selectedGuidelines]="guidelineFilter.slice()"
-      (close)="closeAdvancedSearch()"
-      (changed)="filterGuidelines($event)"
-    ></clark-guideline-filter>
+    <clark-guideline-filter [selectedGuidelines]="guidelineFilter.slice()" (close)="closeAdvancedSearch()"
+      (changed)="filterGuidelines($event)"></clark-guideline-filter>
   </div>
 </clark-popup>
