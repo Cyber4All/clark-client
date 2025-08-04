@@ -86,7 +86,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
       this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
       this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
-      this.parseCategorySelected(this.selected.noguidelines, this.noGuidelineFilter.filters);
+      this.parseCategorySelected(this.selected.noGuidelines, this.noGuidelineFilter.filters);
       this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
     }
   }
@@ -164,7 +164,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.checkFilter('topics', this.topicFilter.filters, query);
     this.checkFilter('tags', this.tagFilter.filters, query);
     this.checkFilter('guidelines', this.frameworkFilter.filters, query);
-    this.checkFilter('noguidelines', this.noGuidelineFilter.filters, query);
+    this.checkFilter('noGuidelines', this.noGuidelineFilter.filters, query);
     if (this.guidelineFilter && this.guidelineFilter.length > 0) {
       query['standardOutcomes'] = this.guidelineFilter;
     }

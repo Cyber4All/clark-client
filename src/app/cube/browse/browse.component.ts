@@ -30,7 +30,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     currPage: 1,
     limit: 10,
     length: [],
-    noguidelines: '',
+    noGuidelines: '',
     guidelines: [],
     level: [],
     standardOutcomes: [],
@@ -227,7 +227,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       'fileTypes',
       'level',
       'guidelines',
-      'noguidelines',
+      'noGuidelines',
       'comes',
     ].forEach((category) => {
       if (!this.filters[category]) {
@@ -402,7 +402,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         q.topics?.length ||
         q.level?.length ||
         q.guidelines?.length ||
-        q.noguidelines ||
+        q.noGuidelines ||
         q.standardOutcomes?.length ||
         q.fileTypes?.length
       )
