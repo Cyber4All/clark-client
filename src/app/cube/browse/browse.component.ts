@@ -227,8 +227,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       'fileTypes',
       'level',
       'guidelines',
+      'standardOutcomes',
       'noGuidelines',
-      'comes',
     ].forEach((category) => {
       if (!this.filters[category]) {
         this.filters.removed.push(category);
