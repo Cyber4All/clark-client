@@ -45,20 +45,16 @@ export class LearningObjectsComponent implements OnInit {
    * @returns A comma separated string of learning object levels
    */
   displayFeaturedObjectLevels() {
-    if (this.featuredObject?.levels.length === 1) {
-      return this.featuredObject.levels[0];
-    }
+  const levels = this.featuredObject?.levels;
 
-    let levels = '';
-    this.featuredObject.levels.forEach((level, index, array) => {
-      if (index === array.length - 1) {
-        levels += ' and ' + level;
-      } else {
-        levels += level + ', ';
-      }
-    });
-    return levels;
-  }
+  if (!levels || levels.length === 0) return '';
+  if (levels.length === 1) return levels[0];
+  if (levels.length === 2) return `${levels[0]} and ${levels[1]}`;
+
+  // For 3 or more items
+  return levels.slice(0, -1).join(', ') + ', and ' + levels[levels.length - 1];
+}
+
 
   /**
    * Displays the user's Gravatar image using their email
