@@ -4,69 +4,119 @@
   </div>
   <div main>
     <div *ngIf="learningObject; else loadingTemplate" class="content-wrapper">
-      <form>
-        <div class="title">
-          {{copy.TITLE}}
+      <form class="modern-form">
+        <div class="page-header">
+          <h1 class="page-title">
+            {{copy.TITLE}}
+          </h1>
+          <p class="page-subtitle">Provide essential information about your learning object</p>
         </div>
-        <clark-info-page-metadata [error]="validator.get('name') || undefined">
-          <div title>{{copy.NAME}}</div>
-          <div directions>{{copy.NAMEPLACEHOLDER}}</div>
-          <div data>
-            <input attr.aria-label="{{copy.NAME}} {{copy.NAMEPLACEHOLDER}}" class="name-field" autocomplete="off" type="text" name="name" placeholder="Learning Object Name" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" id="form"/>
-          </div>
-        </clark-info-page-metadata>
-        <hr />
-        <clark-info-page-metadata [error]="validator.get('contributors') || undefined">
-          <div id="contributor-title" title>Who else worked on this?</div>
-          <div id="contributor-directions" directions>You can find users by their name, username, or email address. <b>Make sure to include yourself as a contributor if you participated in the development of the materials for this Learning Object.</b></div>
-          <div data>
-            <clark-user-dropdown [contributors]="learningObject.contributors" (addAuthor)="toggleContributor($event)" (removeAuthor)="toggleContributor($event)"></clark-user-dropdown>
-            <div *ngIf="learningObject.contributors?.length" class="contributors-list">
-              <span>
-                <i class="far fa-user-alt"></i>
-              </span>
-              <clark-contributor-pill class="contributors-list__pill" *ngFor="let c of learningObject.contributors" [user]="c" (removeContributor)="toggleContributor(c)"></clark-contributor-pill>
-            </div>
-          </div>
-        </clark-info-page-metadata>
-        <div class="attribution-preview"><b>Note: </b><i>Submitted Collection Name</i> will be replaced with the collection name you submit to. So if you submit to NSA NCCP, 'NSA NCCP' will be shown instead of 'Submitted Collection Name'.</div>
-        <div class="attribution-preview bottom"><b>Attribution preview: </b><i>{{ learningObject.name ? learningObject.name : 'Learning Object Name' }}</i> by <i>{{ getContributorAttribution() }}</i>, <i>{{ learningObject.collection ? learningObject.collection : 'Submitted Collection Name' }}</i> is licensed under CC BY-NC-SA 4.0.</div>
-        <hr>
-        <clark-info-page-metadata>
-          <div title>{{copy.LENGTH}}</div>
-          <div directions>{{copy.CHOOSE}}</div>
-          <div data>
-            <div class="select-wrapper">
-              <select name="type" attr.aria-label="{{copy.LENGTH}} {{copy.CHOOSE}}" (ngModelChange)="mutateLearningObject({ length: $event })" [ngModel]="learningObject.length" [ngModelOptions]="{standalone: true}">
-                <option value="nanomodule">{{ copy.NANO }}</option>
-                <option value="micromodule">{{ copy.MICRO }}</option>
-                <option value="module">{{ copy.MOD }}</option>
-                <option value="unit">{{ copy.UNIT }}</option>
-                <option value="course">{{ copy.COURSE }}</option>
-              </select>
-            </div>
-          </div>
-        </clark-info-page-metadata>
-        <hr>
-        <clark-info-page-metadata [error]="validator.get('levels')" [warning]="!validator.submissionMode">
-          <div title>{{copy.LEVELS}}</div>
-          <div directions>{{copy.SELECT}}</div>
-          <div data>
-            <div class="levels" attr.aria-label="{{copy.LEVELS}} {{copy.SELECT}}">
-              <div *ngFor="let level of academicLevels" class="pill" attr.aria-label="{{ level }} Selected: {{ selectedLevels.includes(level)}}" [ngClass]="{'selected': selectedLevels.includes(level)}" (activate)="toggleLevel(level)">
-                {{ level }}
+        <div class="form-section">
+          <clark-info-page-metadata [error]="validator.get('name') || undefined">
+            <div title>{{copy.NAME}}</div>
+            <div directions>{{copy.NAMEPLACEHOLDER}}</div>
+            <div data>
+              <div class="input-container">
+                <input attr.aria-label="{{copy.NAME}} {{copy.NAMEPLACEHOLDER}}" class="modern-input name-field" autocomplete="off" type="text" name="name" placeholder="Enter a descriptive name for your learning object" (input)="mutateLearningObject({ name: $event.currentTarget.value })" [value]="learningObject.name" id="form"/>
+                <div class="input-icon">
+                  <i class="far fa-edit"></i>
+                </div>
               </div>
             </div>
+          </clark-info-page-metadata>
+        </div>
+        <div class="section-divider"></div>
+        <div class="form-section">
+          <clark-info-page-metadata [error]="validator.get('contributors') || undefined">
+            <div id="contributor-title" title>Who else worked on this?</div>
+            <div id="contributor-directions" directions>You can find users by their name, username, or email address. <strong>Make sure to include yourself as a contributor if you participated in the development of the materials for this Learning Object.</strong></div>
+            <div data>
+              <div class="contributor-section">
+                <clark-user-dropdown [contributors]="learningObject.contributors" (addAuthor)="toggleContributor($event)" (removeAuthor)="toggleContributor($event)"></clark-user-dropdown>
+                <div *ngIf="learningObject.contributors?.length" class="contributors-list">
+                  <div class="contributors-header">
+                    <i class="far fa-users"></i>
+                    <span class="contributors-count">{{learningObject.contributors.length}} Contributor{{learningObject.contributors.length !== 1 ? 's' : ''}}</span>
+                  </div>
+                  <div class="contributors-pills">
+                    <clark-contributor-pill class="contributors-list__pill" *ngFor="let c of learningObject.contributors" [user]="c" (removeContributor)="toggleContributor(c)"></clark-contributor-pill>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </clark-info-page-metadata>
+        </div>
+        <div class="attribution-card">
+          <div class="attribution-info">
+            <i class="far fa-info-circle"></i>
+            <span><strong>Note:</strong> <em>Submitted Collection Name</em> will be replaced with the collection name you submit to. So if you submit to NSA NCCP, 'NSA NCCP' will be shown instead of 'Submitted Collection Name'.</span>
           </div>
-        </clark-info-page-metadata>
-        <hr>
-        <clark-info-page-metadata [error]="descriptionTouched || validator.submissionMode ? validator.get('description') : undefined" [warning]="!validator.submissionMode">
-          <div title>{{copy.QUESTION}}</div>
-          <div directions>{{copy.TIP}}</div>
-          <div data attr.aria-label="{{copy.QUESTION}} {{copy.TIP}}">
-            <onion-learning-object-description [learningObject]="learningObject" (textOutput)="mutateLearningObject({description: $event});" (touched)="descriptionTouched = true; cd.detectChanges()"></onion-learning-object-description>
+          <div class="attribution-preview">
+            <div class="preview-header">
+              <i class="far fa-eye"></i>
+              <span>Attribution Preview</span>
+            </div>
+            <div class="preview-content">
+              <em>{{ learningObject.name ? learningObject.name : 'Learning Object Name' }}</em> by <em>{{ getContributorAttribution() }}</em>, <em>{{ learningObject.collection ? learningObject.collection : 'Submitted Collection Name' }}</em> is licensed under CC BY-NC-SA 4.0.
+            </div>
           </div>
-        </clark-info-page-metadata>
+        </div>
+        <div class="section-divider"></div>
+        <div class="form-section">
+          <clark-info-page-metadata>
+            <div title>{{copy.LENGTH}}</div>
+            <div directions>{{copy.CHOOSE}}</div>
+            <div data>
+              <div class="length-selector">
+                <div class="length-grid">
+                  <div class="length-option"
+                       *ngFor="let option of lengthOptions"
+                       [class.selected]="learningObject.length === option.value"
+                       (click)="mutateLearningObject({ length: option.value })">
+                    <div class="length-icon">
+                      <i [class]="option.icon"></i>
+                    </div>
+                    <div class="length-label">{{ option.label }}</div>
+                    <div class="length-description">{{ option.description }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </clark-info-page-metadata>
+        </div>
+        <div class="section-divider"></div>
+        <div class="form-section">
+          <clark-info-page-metadata [error]="validator.get('levels')" [warning]="!validator.submissionMode">
+            <div title>{{copy.LEVELS}}</div>
+            <div directions>{{copy.SELECT}}</div>
+            <div data>
+              <div class="levels-container" attr.aria-label="{{copy.LEVELS}} {{copy.SELECT}}">
+                <div class="levels-grid">
+                  <div *ngFor="let level of academicLevels"
+                       class="level-pill"
+                       attr.aria-label="{{ level }} Selected: {{ selectedLevels.includes(level)}}"
+                       [class.selected]="selectedLevels.includes(level)"
+                       (click)="toggleLevel(level)">
+                    <span class="level-text">{{ level }}</span>
+                    <i *ngIf="selectedLevels.includes(level)" class="fas fa-check level-check"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </clark-info-page-metadata>
+        </div>
+        <div class="section-divider"></div>
+        <div class="form-section">
+          <clark-info-page-metadata [error]="descriptionTouched || validator.submissionMode ? validator.get('description') : undefined" [warning]="!validator.submissionMode">
+            <div title>{{copy.QUESTION}}</div>
+            <div directions>{{copy.TIP}}</div>
+            <div data attr.aria-label="{{copy.QUESTION}} {{copy.TIP}}">
+              <div class="description-container">
+                <onion-learning-object-description [learningObject]="learningObject" (textOutput)="mutateLearningObject({description: $event});" (touched)="descriptionTouched = true; cd.detectChanges()"></onion-learning-object-description>
+              </div>
+            </div>
+          </clark-info-page-metadata>
+        </div>
       </form>
     </div>
     <clark-skip-link title="Go to edit Learning Object name" skipLocation="form"></clark-skip-link>

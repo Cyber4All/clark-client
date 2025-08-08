@@ -1,68 +1,108 @@
 <div class="inner">
   <div class="manage-materials">
-    <div class="tabs">
-      <ul id="materials-title">
-        <li id="form" [ngClass]="{ active: slide === 1 }" (activate)="changeSlide(1)">
-          Files and Folders
-        </li>
-        <li [ngClass]="{ active: slide === 2 }" (activate)="changeSlide(2)">
-          URLs
-        </li>
-        <li [ngClass]="{ active: slide === 3 }" (activate)="changeSlide(3)">
-          Notes
-        </li>
-      </ul>
+    <div class="modern-tabs">
+      <div class="tab-list">
+        <button
+          id="form"
+          class="tab-button"
+          [class.active]="slide === 1"
+          (click)="changeSlide(1)"
+          type="button">
+          <div class="tab-content">
+            <i class="far fa-folder-open"></i>
+            <span class="tab-label">Files & Folders</span>
+            <span class="tab-description">Upload and organize your content</span>
+          </div>
+        </button>
+        <button
+          class="tab-button"
+          [class.active]="slide === 2"
+          (click)="changeSlide(2)"
+          type="button">
+          <div class="tab-content">
+            <i class="far fa-link"></i>
+            <span class="tab-label">URLs</span>
+            <span class="tab-description">Add external resources</span>
+          </div>
+        </button>
+        <button
+          class="tab-button"
+          [class.active]="slide === 3"
+          (click)="changeSlide(3)"
+          type="button">
+          <div class="tab-content">
+            <i class="far fa-sticky-note"></i>
+            <span class="tab-label">Notes</span>
+            <span class="tab-description">Provide additional context</span>
+          </div>
+        </button>
+      </div>
     </div>
     <div class="materials-slides">
       <div
         [@fadeIn]
         *ngIf="slide === 1"
-        class="slide slide1"
+        class="slide slide1 files-slide"
         (dragenter)="dragenter($event)"
         (dragover)="dragover($event)"
         (drop)="handleDrop($event)"
       >
         <div *ngIf="solutionUpload" class="solutions-warning" aria-live="assertive">
-          Note: While the upload of solution files are not prohibited, they
-          won't be included during a Learning Object's download.
+          <div class="warning-content">
+            <i class="fas fa-info-circle"></i>
+            <div class="warning-text">
+              <strong>Solution Files Notice:</strong> While uploading solution files is allowed, they won't be included when learners download this Learning Object.
+            </div>
+          </div>
         </div>
-        <onion-file-manager
-          *ngIf="!retrieving; else loadingTemplate"
-          [confirmDeletion]="confirmDeletion$"
-          [files$]="files$"
-          [deletionSuccessful$]="filesDeleted"
-          [folderMeta$]="folderMeta$"
-          (openFilePicker)="openFilePicker($event)"
-          (fileDeleted)="
-            handleDeleteGenerator = handleDeletion($event);
-            handleDeleteGenerator.next()
-          "
-          (fileEdited)="handleEdit($event)"
-          (path)="openPath = $event"
-          (solutionUpload)="handleSolution($event)"
-          (downloadClicked)="handleFileDownload($event)"
-          (packageableToggled)="packageableToggled.emit($event)"
-        ></onion-file-manager>
-      </div>
-      <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
-        <clark-url-manager
-          [urls]="(learningObject$ | async)?.materials?.urls"
-          (add)="addURL()"
-          (update)="updateUrl($event)"
-          (remove)="removeURL($event)"
-        ></clark-url-manager>
-      </div>
-      <div [@fadeIn] *ngIf="slide === 3" class="slide slide3">
-        <div class="topbar">
-          <div class="slide-title">Notes</div>
+        <div class="file-manager-container">
+          <onion-file-manager
+            *ngIf="!retrieving; else loadingTemplate"
+            [confirmDeletion]="confirmDeletion$"
+            [files$]="files$"
+            [deletionSuccessful$]="filesDeleted"
+            [folderMeta$]="folderMeta$"
+            (openFilePicker)="openFilePicker($event)"
+            (fileDeleted)="
+              handleDeleteGenerator = handleDeletion($event);
+              handleDeleteGenerator.next()
+            "
+            (fileEdited)="handleEdit($event)"
+            (path)="openPath = $event"
+            (solutionUpload)="handleSolution($event)"
+            (downloadClicked)="handleFileDownload($event)"
+            (packageableToggled)="packageableToggled.emit($event)"
+          ></onion-file-manager>
         </div>
-        <div class="notes">
-          <st-editor
-            [(ngModel)]="notes"
-            [config]="config"
-            (keyup)="updateNotes(notes)"
-            [formControl]="notesText"
-          ></st-editor>
+      </div>
+      <div [@fadeIn] *ngIf="slide === 2" class="slide slide2 urls-slide">
+        <div class="slide-content">
+          <div class="slide-header">
+            <h3>External Resources</h3>
+            <p>Add links to external websites, videos, documents, and other online resources that complement your learning materials.</p>
+          </div>
+          <clark-url-manager
+            [urls]="(learningObject$ | async)?.materials?.urls"
+            (add)="addURL()"
+            (update)="updateUrl($event)"
+            (remove)="removeURL($event)"
+          ></clark-url-manager>
+        </div>
+      </div>
+      <div [@fadeIn] *ngIf="slide === 3" class="slide slide3 notes-slide">
+        <div class="slide-content">
+          <div class="slide-header">
+            <h3>Material Notes</h3>
+            <p>Provide additional context, instructions, or documentation about your learning materials. These notes will help learners understand how to use the materials effectively.</p>
+          </div>
+          <div class="notes-editor-container">
+            <st-editor
+              [(ngModel)]="notes"
+              [config]="config"
+              (keyup)="updateNotes(notes)"
+              [formControl]="notesText"
+            ></st-editor>
+          </div>
         </div>
       </div>
     </div>
@@ -77,21 +117,29 @@
   <clark-teleporter *ngIf="dragAndDropSupported">
     <div
       #teleporterPayload
-      class="uploader"
+      class="modern-uploader"
       [ngClass]="{ dragging: showDragMenu, dropped: dropped }"
       (dragenter)="dragenter($event)"
       (dragover)="dragover($event)"
       (drop)="handleDrop($event)"
       (dragLeave)="toggleDrag(false)"
     >
-      <div class="uploader-content">
-        <div class="uploader-icon">
-          <i class="far fa-arrow-up"></i>
-        </div>
-        <div class="uploader-text">
-          <div>Drop files and folders here</div>
-          to add them to
-          {{ !openPath ? 'your learning object' : "'" + openPath + "'" }}!
+      <div class="uploader-overlay">
+        <div class="uploader-content">
+          <div class="uploader-icon">
+            <i class="fas fa-cloud-upload-alt"></i>
+          </div>
+          <div class="uploader-text">
+            <h3>Drop files here to upload</h3>
+            <p>Release to add files to {{ !openPath ? 'your learning object' : "'" + openPath + "'" }}</p>
+          </div>
+          <div class="uploader-animation">
+            <div class="upload-circles">
+              <div class="circle"></div>
+              <div class="circle"></div>
+              <div class="circle"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

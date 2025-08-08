@@ -3,25 +3,53 @@
     <clark-scaffold *ngIf="learningObject" [learningObject]= "learningObject"></clark-scaffold>
   </div>
   <div main class="main">
-    <div class="top">
-      <div class="title">{{iterableOutcomes?.length}} Learning Outcome<span *ngIf = "iterableOutcomes?.length !== 1">s</span></div>
+    <div class="outcomes-header">
+      <div class="header-content">
+        <div class="title-section">
+          <h1 class="page-title">Learning Outcomes</h1>
+          <p class="page-subtitle">Define what learners will be able to accomplish</p>
+        </div>
+        <div class="outcomes-counter">
+          <div class="counter-badge">
+            <i class="far fa-bullseye"></i>
+            <span class="counter-number">{{iterableOutcomes?.length}}</span>
+            <span class="counter-label">Outcome{{iterableOutcomes?.length !== 1 ? 's' : ''}}</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
-      <clark-outcome *ngFor="let o of iterableOutcomes"
-        [outcome]="o"
-        [totalOutcomes]="iterableOutcomes.length"
-        [active]="activeOutcome === o.id"
-        (textChanged)="mutateOutcome(o.id, { text: $event })"
-        (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
-        (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
-        (deleted)="deleteOutcome(o.id)"
-        (unmap)="toggleStandardOutcome($event)"
-        (activate)="setActiveOutcome(o.id)"
-      >
-      </clark-outcome>
-    </ng-container>
-    <div class="add-button btn-group to-right">
-      <button id="form" class="button good" [ngClass]="{'disabled': !saveable}" aria-label="Add New Outcome" (activate)="newOutcome()">Add Outcome<i class="fas fa-plus"></i></button>
+    <div class="outcomes-container">
+      <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
+        <div class="outcomes-list">
+          <clark-outcome *ngFor="let o of iterableOutcomes; let i = index"
+            [outcome]="o"
+            [totalOutcomes]="iterableOutcomes.length"
+            [active]="activeOutcome === o.id"
+            [class.first-outcome]="i === 0"
+            [class.last-outcome]="i === iterableOutcomes.length - 1"
+            (textChanged)="mutateOutcome(o.id, { text: $event })"
+            (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
+            (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
+            (deleted)="deleteOutcome(o.id)"
+            (unmap)="toggleStandardOutcome($event)"
+            (activate)="setActiveOutcome(o.id)"
+          >
+          </clark-outcome>
+        </div>
+      </ng-container>
+    </div>
+    <div class="add-outcome-section">
+      <button id="form" class="add-outcome-button" [class.disabled]="!saveable" aria-label="Add New Outcome" (click)="newOutcome()">
+        <div class="button-content">
+          <div class="icon-wrapper">
+            <i class="fas fa-plus"></i>
+          </div>
+          <div class="button-text">
+            <span class="primary-text">Add Learning Outcome</span>
+            <span class="secondary-text">Create a new outcome for learners</span>
+          </div>
+        </div>
+      </button>
     </div>
   </div>
   <div *ngIf="outcomes.size" right>
@@ -34,13 +62,31 @@
 </clark-column-wrapper>
 
 <ng-template #noOutcomesTemplate>
-  <div class="no-outcomes">
-    <i class="far fa-box-open"></i>
-    <div class="no-outcomes__title">No outcomes yet!</div>
-    <!-- TODO someone rewrite this pls -->
-    <div class="no-outcomes__description">Learning Outcomes are a collection of statements that describe different actions a user should be able to accomplish after experiencing the materials in the Learning Object.</div>
-    <div *ngIf="validator.submissionMode" class="no-outcomes__error">
-      A learning object must have outcomes to submit
+  <div class="no-outcomes-state">
+    <div class="illustration">
+      <div class="icon-stack">
+        <i class="far fa-bullseye primary-icon"></i>
+        <i class="fas fa-plus plus-icon"></i>
+      </div>
+    </div>
+    <div class="content">
+      <h2 class="no-outcomes__title">Ready to define your learning outcomes?</h2>
+      <p class="no-outcomes__description">
+        Learning outcomes describe what learners will be able to accomplish after completing this learning object.
+        They help set clear expectations and guide the learning experience.
+      </p>
+      <div class="outcome-examples">
+        <h3>Examples of good learning outcomes:</h3>
+        <ul class="examples-list">
+          <li>"Students will be able to <strong>analyze</strong> network security vulnerabilities"</li>
+          <li>"Learners will be able to <strong>create</strong> secure authentication systems"</li>
+          <li>"Users will be able to <strong>evaluate</strong> encryption protocols"</li>
+        </ul>
+      </div>
+      <div *ngIf="validator.submissionMode" class="no-outcomes__error">
+        <i class="fas fa-exclamation-triangle"></i>
+        Learning objects must have at least one outcome before submission
+      </div>
     </div>
   </div>
 </ng-template>

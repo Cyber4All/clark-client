@@ -1,33 +1,158 @@
 @import '_vars.scss';
 
 .contributor-pill {
+  display: inline-flex;
+  align-items: center;
+  background: white;
+  border: 2px solid $light-blue;
+  border-radius: 25px;
+  padding: 8px 16px;
+  margin: 4px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   position: relative;
-  color: $light-blue;
-  text-decoration: underline;
-}
+  overflow: hidden;
 
-.contributor-pill__dropdown-option {
-  color: $error-red;
-  font-size: $small;
-  cursor: pointer;
-  text-align: center;
-  border: none;
-  display: inline-block;
-
-  .svg-inline--fa,
-  .icon {
-    color: $error-red;
-    margin-right: 3px;
-    margin-left: 3px;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba($light-blue, 0.1), transparent);
+    transition: left 0.5s;
   }
 
-  &:hover, &:focus {
-    color: white;
-    background: $error-red;
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba($light-blue, 0.25);
 
-    .svg-inline--fa,
-    .icon {
-      color: white;
+    &::before {
+      left: 100%;
+    }
+  }
+
+  .contributor-pill__name {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: $light-blue;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex: 1;
+    min-width: 0; // Allow text to truncate if needed
+
+    .contributor-pill__dropdown-option {
+      background: rgba($error-red, 0.1);
+      color: $error-red;
+      border: 1px solid rgba($error-red, 0.3);
+      border-radius: 50%;
+      padding: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+
+      .svg-inline--fa,
+      .icon {
+        color: $error-red;
+        margin: 0;
+        font-size: 0.8rem;
+      }
+
+      &:hover,
+      &:focus {
+        background: $error-red;
+        border-color: $error-red;
+        transform: scale(1.1);
+
+        .svg-inline--fa,
+        .icon {
+          color: white;
+        }
+      }
+
+      &:focus {
+        outline: 2px solid rgba($error-red, 0.3);
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+// Animation for when contributor pill is added
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.contributor-pill {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .contributor-pill {
+    padding: 6px 12px;
+    margin: 3px;
+    
+    .contributor-pill__name {
+      font-size: 0.85rem;
+      gap: 6px;
+      
+      .contributor-pill__dropdown-option {
+        width: 20px;
+        height: 20px;
+        padding: 4px;
+        
+        .svg-inline--fa,
+        .icon {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .contributor-pill {
+    border-width: 3px;
+    border-color: $light-blue;
+    
+    .contributor-pill__name .contributor-pill__dropdown-option {
+      border-width: 2px;
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .contributor-pill {
+    animation: none;
+    transition: box-shadow 0.2s ease;
+    
+    &:hover {
+      transform: none;
+    }
+    
+    &::before {
+      display: none;
+    }
+    
+    .contributor-pill__name .contributor-pill__dropdown-option:hover {
+      transform: none;
     }
   }
 }

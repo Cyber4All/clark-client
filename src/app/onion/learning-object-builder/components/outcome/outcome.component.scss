@@ -1,7 +1,7 @@
 @import '_vars.scss';
 
 .outcome-component {
-  padding: 30px 25px;
+  padding: 32px 28px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -9,52 +9,95 @@
   align-items: center;
   width: 100%;
   position: relative;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   background: white;
-  border-top: 1px solid $light-grey;
+  border-top: 1px solid #e2e8f0;
   box-shadow: none;
   cursor: pointer;
-
-  &:after {
+  
+  &::before {
     content: '';
     position: absolute;
     top: 0;
-    bottom: 0;
     left: -6px;
-    background: $light-blue;
+    bottom: 0;
+    background: linear-gradient(135deg, $light-blue 0%, lighten($light-blue, 15%) 100%);
     width: 5px;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 3px 3px 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($light-blue, 0.03) 0%, rgba($light-blue, 0.01) 100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  &:hover:not(.active) {
+    transform: translateX(4px);
+    background: #fafbfc;
+    
+    &::after {
+      opacity: 1;
+    }
   }
 
   &.active {
-    background: #f8f9fd;
-    box-shadow: 0 0 16px 2px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #f8faff 0%, #f0f7ff 100%);
+    box-shadow: 
+      0 8px 25px -5px rgba($light-blue, 0.2),
+      0 4px 10px -2px rgba(0, 0, 0, 0.05);
     z-index: 2;
     cursor: default;
+    border-top-color: rgba($light-blue, 0.3);
+    border-bottom-color: rgba($light-blue, 0.3);
 
-    &:after {
+    &::before {
       left: 0;
+      width: 6px;
+      box-shadow: 0 0 12px rgba($light-blue, 0.4);
+    }
+
+    &::after {
       opacity: 1;
     }
   }
 
   .outcome-header {
     width: 100%;
-    font-size: $normal;
+    font-size: 1.1rem;
     color: $darker-grey;
     font-weight: 600;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, $light-blue, transparent);
+    }
 
     .outcome-header__left {
       text-overflow: ellipsis;
       white-space: nowrap;
-      flex-grow: 0;
+      flex-grow: 1;
       overflow: hidden;
+      padding-right: 16px;
     }
 
     .outcome-header__right {
@@ -66,86 +109,178 @@
   .outcome-delete {
     cursor: pointer;
     color: $error-red;
-    padding: 3px;
-    border-radius: 2px;
+    padding: 8px;
+    border-radius: 8px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     transition: all 0.2s ease;
-    display: inline;
-    font-weight: normal;
+    background: rgba($error-red, 0.05);
+    border: 1px solid rgba($error-red, 0.2);
+    
+    &:hover {
+      background: rgba($error-red, 0.1);
+      border-color: rgba($error-red, 0.4);
+      transform: scale(1.05);
+    }
 
-    span {
-      margin-right: 7px;
+    i {
+      font-size: 1rem;
     }
   }
 
   .level-select {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 15px;
+    grid-gap: 16px;
     width: 100%;
+    margin-bottom: 32px;
 
     .level {
       background: white;
-      padding: 25px 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 12px 2px rgba(0, 0, 0, 0.04);
+      padding: 20px 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       text-align: center;
       font-weight: 500;
-      font-size: $small;
+      font-size: 0.9rem;
       color: $dark-grey;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       cursor: pointer;
-      border: 3px solid white;
+      border: 2px solid transparent;
       text-transform: capitalize;
+      position: relative;
+      overflow: hidden;
 
-      .svg-inline--fa,
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba($light-blue, 0.1), transparent);
+        transition: left 0.5s;
+      }
+
       .icon {
-        font-size: 40px;
+        margin-bottom: 12px;
+        
+        i {
+          font-size: 2.5rem;
+          color: $medium-grey;
+          transition: all 0.3s ease;
+        }
+      }
+
+      .level-text {
+        font-weight: 600;
+        line-height: 1.3;
       }
 
       &:hover:not(.active) {
-        transform: scale(1.03);
-        color: $dark-grey;
+        transform: translateY(-4px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+        color: $darker-grey;
+        
+        .icon i {
+          color: $light-blue;
+          transform: scale(1.1);
+        }
+
+        &::before {
+          left: 100%;
+        }
       }
 
       &.active {
         color: $light-blue;
         border-color: $light-blue;
+        background: linear-gradient(135deg, rgba($light-blue, 0.1) 0%, rgba($light-blue, 0.05) 100%);
+        box-shadow: 
+          0 4px 15px rgba($light-blue, 0.25),
+          0 0 0 1px rgba($light-blue, 0.1);
+        
+        .icon i {
+          color: $light-blue;
+          transform: scale(1.15);
+        }
       }
     }
   }
 
   .outcome-text {
-    margin-top: 60px;
-    height: 41px;
+    margin-top: 20px;
+    min-height: 41px;
+    width: 100%;
   }
 
   .outcome-component__outcome-error,
   .outcome-component__no-save {
-    margin-top: 10px;
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .outcome-component__outcome-error {
+    background: rgba($error-red, 0.1);
+    border: 1px solid rgba($error-red, 0.3);
     color: $error-red;
 
+    &::before {
+      content: '\f071';
+      font-family: 'Font Awesome 5 Pro';
+      font-weight: 900;
+      margin-right: 10px;
+    }
+
     &.outcome-error--warning {
-      color: orange;
+      background: rgba(#ff8a00, 0.1);
+      border-color: rgba(#ff8a00, 0.3);
+      color: #e67e00;
+
+      &::before {
+        content: '\f12a';
+      }
     }
   }
 
   .outcome-component__no-save {
-    color: orange;
+    background: rgba(#ff8a00, 0.1);
+    border: 1px solid rgba(#ff8a00, 0.3);
+    color: #e67e00;
+
+    &::before {
+      content: '\f12a';
+      font-family: 'Font Awesome 5 Pro';
+      font-weight: 900;
+      margin-right: 10px;
+    }
   }
 
   .outcome-mappings {
     width: 100%;
-    margin-top: 30px;
+    margin-top: 24px;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
 
     .outcome-header {
-      margin-bottom: 10px;
+      color: $light-blue;
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      
+      &::after {
+        display: none;
+      }
     }
 
     .pills {
@@ -153,23 +288,104 @@
       flex-direction: row;
       justify-content: flex-start;
       flex-wrap: wrap;
+      gap: 12px;
 
       .pill {
         color: $light-blue;
-        border: 1px solid $light-blue;
-        padding: 3px 5px;
-        border-radius: 2px;
-        margin-right: 10px;
-        margin-bottom: 10px;
+        background: white;
+        border: 2px solid $light-blue;
+        padding: 8px 12px;
+        border-radius: 20px;
         flex-shrink: 0;
         box-sizing: border-box;
-        font-size: $small;
+        font-size: 0.85rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        transition: all 0.2s ease;
 
-        .svg-inline--fa,
-        .icon {
+        &:hover {
+          background: rgba($light-blue, 0.1);
+          transform: translateY(-1px);
+        }
+
+        span {
           margin-left: 8px;
           cursor: pointer;
+          color: $error-red;
+          font-weight: bold;
+          padding: 2px 4px;
+          border-radius: 50%;
+          transition: all 0.2s ease;
+
+          &:hover {
+            background: rgba($error-red, 0.1);
+            transform: scale(1.2);
+          }
+
+          i {
+            font-size: 0.8rem;
+          }
         }
+      }
+    }
+  }
+}
+
+// Animation for when outcome is added
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.outcome-component {
+  animation: slideInFromLeft 0.4s ease-out;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .outcome-component {
+    padding: 24px 20px;
+    
+    .level-select {
+      grid-template-columns: 1fr;
+      grid-gap: 12px;
+      
+      .level {
+        padding: 16px;
+        
+        .icon i {
+          font-size: 2rem;
+        }
+      }
+    }
+    
+    .outcome-header {
+      font-size: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      
+      .outcome-header__left {
+        padding-right: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .outcome-component {
+    .outcome-mappings .pills {
+      flex-direction: column;
+      
+      .pill {
+        justify-content: space-between;
       }
     }
   }

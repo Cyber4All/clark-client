@@ -21,6 +21,39 @@ export class InfoPageComponent implements OnInit, OnDestroy {
   selectedLevels: string[] = [];
   academicLevels = Object.values(LearningObject.Level);
 
+  lengthOptions = [
+    {
+      value: 'nanomodule',
+      label: 'Nanomodule',
+      description: '1-2 hours',
+      icon: 'far fa-circle'
+    },
+    {
+      value: 'micromodule',
+      label: 'Micromodule',
+      description: '2-4 hours',
+      icon: 'far fa-dot-circle'
+    },
+    {
+      value: 'module',
+      label: 'Module',
+      description: '4-10 hours',
+      icon: 'far fa-square'
+    },
+    {
+      value: 'unit',
+      label: 'Unit',
+      description: '10-40 hours',
+      icon: 'far fa-clipboard'
+    },
+    {
+      value: 'course',
+      label: 'Course',
+      description: '40+ hours',
+      icon: 'far fa-graduation-cap'
+    }
+  ];
+
   descriptionTouched: boolean;
   descriptionDirty: boolean;
 

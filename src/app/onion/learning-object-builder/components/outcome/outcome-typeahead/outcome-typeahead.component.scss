@@ -1,8 +1,8 @@
 @import '_vars.scss';
 
 .typeahead {
-  width: 500px;
-  font-family: 'Arial', sans-serif;
+  width: 100%;
+  font-family: inherit;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -15,87 +15,192 @@
     align-items: center;
     justify-content: flex-start;
     width: 100%;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+
+    &:focus-within {
+      border-color: $light-blue;
+      box-shadow: 0 0 0 3px rgba($light-blue, 0.1);
+    }
   }
 
   input {
     appearance: none;
     border: 0;
     width: 100%;
-    padding: 8px 0 6px;
-    border-bottom: 2px solid $light-blue;
+    padding: 16px 20px;
     outline: 0;
-    font-size: $normal;
+    font-size: 1rem;
     margin: 0;
-    margin-left: -1px;
     flex-grow: 2;
     background: transparent;
-    color: $dark-grey;
+    color: $darker-grey;
+    font-family: inherit;
 
     &.withVerb {
-      padding-left: 0.3em;
+      padding-left: 12px;
+      border-left: 1px solid rgba($light-blue, 0.2);
     }
 
     &.bad {
-      border-bottom-color: $error-red;
+      background: rgba($error-red, 0.05);
+    }
+
+    &::placeholder {
+      color: $medium-grey;
+      font-style: italic;
     }
   }
 
   .verb {
-    background: $light-blue-gradient;
+    background: linear-gradient(135deg, $light-blue 0%, lighten($light-blue, 10%) 100%);
     color: white;
-    padding: 8px 12px;
-    font-size: $normal;
-    top: 0;
-    left: -8px;
-    bottom: 0;
+    padding: 16px 20px;
+    font-size: 1rem;
+    font-weight: 600;
     display: inline-flex;
     align-items: center;
-    border-radius: 4px 4px 0 0;
+    border-radius: 0;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
 
     &:not(.bad) {
       cursor: pointer;
+
+      &:hover {
+        background: linear-gradient(135deg, lighten($light-blue, 5%) 0%, lighten($light-blue, 15%) 100%);
+      }
     }
 
-    .svg-inline--fa {
-      font-size: $smaller;
-      margin-left: 10px;
+    .svg-inline--fa,
+    .icon {
+      font-size: 0.8rem;
+      margin-left: 8px;
+      transition: transform 0.2s ease;
     }
 
     &.bad {
-      background: $error-red;
+      background: linear-gradient(135deg, $error-red 0%, lighten($error-red, 10%) 100%);
+    }
+
+    &:hover:not(.bad) .svg-inline--fa,
+    &:hover:not(.bad) .icon {
+      transform: rotate(180deg);
     }
   }
 
   .menu {
-    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     position: absolute;
-    top: 45px;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
     background: white;
-    max-height: 300px;
+    max-height: 250px;
     overflow-y: auto;
-    min-width: 250px;
+    border-radius: 12px;
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    z-index: 20;
+    
     ul {
       margin: 0;
-      padding: 0;
+      padding: 8px 0;
 
       li {
         margin: 0;
-        padding: 12px 16px;
+        padding: 12px 20px;
         list-style-type: none;
         cursor: pointer;
+        transition: all 0.2s ease;
+        color: $dark-grey;
+        position: relative;
 
         &.selected {
           color: $light-blue;
-        }
+          background: rgba($light-blue, 0.1);
+          font-weight: 600;
 
-        &:not(:last-child) {
-          border-bottom: 1px solid $light-grey;
+          &::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: $light-blue;
+          }
         }
 
         &:hover {
           color: white;
           background: $light-blue;
         }
+
+        &:first-child {
+          border-radius: 12px 12px 0 0;
+        }
+
+        &:last-child {
+          border-radius: 0 0 12px 12px;
+        }
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .typeahead {
+    .input {
+      border-radius: 8px;
+    }
+
+    input {
+      padding: 14px 16px;
+      font-size: 0.95rem;
+
+      &.withVerb {
+        padding-left: 10px;
+      }
+    }
+
+    .verb {
+      padding: 14px 16px;
+      font-size: 0.95rem;
+    }
+
+    .menu {
+      border-radius: 8px;
+      
+      ul li {
+        padding: 10px 16px;
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .typeahead {
+    .input {
+      flex-direction: column;
+      align-items: stretch;
+      border-radius: 8px;
+    }
+
+    .verb {
+      border-radius: 8px 8px 0 0;
+      border-bottom: 1px solid rgba(white, 0.2);
+    }
+
+    input {
+      &.withVerb {
+        padding-left: 20px;
+        border-left: none;
+        border-top: 1px solid rgba($light-blue, 0.2);
       }
     }
   }

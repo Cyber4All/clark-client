@@ -1,83 +1,92 @@
-<div class="builder-navbar-wrapper">
-    <clark-skip-link title="Skip Builder Form" skipLocation="form"></clark-skip-link> 
+<div class="modern-builder-navbar">
+    <clark-skip-link title="Skip Builder Form" skipLocation="form"></clark-skip-link>
     <clark-skip-link title="Skip to Children" skipLocation="children"></clark-skip-link>
     <clark-skip-link title="Skip to Submit for Review" skipLocation="submit"></clark-skip-link>
-  <div
-    class="top"
-    [ngStyle]="{
-      'margin-top': revisedVersion ? '10px' : '0px',
-      'margin-bottom': revisedVersion ? '20px' : '30px'
-    }"
-  >
+
+  <div class="navbar-header" [class.has-revision]="revisedVersion">
     <div
       *ngIf="revisedVersion && !adminMode"
       aria-live="assertive"
-      class="revising-notification"
+      class="revision-banner"
     >
-      Currently Revising: {{ learningObject?.name }}
+      <div class="revision-content">
+        <i class="fas fa-edit"></i>
+        <span>Currently Revising: <strong>{{ learningObject?.name }}</strong></span>
+      </div>
     </div>
-    <div class="top__left" *ngIf="!adminMode">
-      <a (activate)="triggerExitProcess()"><i class="far fa-arrow-left"></i> Back</a>
+    <div class="navbar-actions-left">
+      <button class="action-button back-button" *ngIf="!adminMode" (click)="triggerExitProcess()">
+        <i class="far fa-arrow-left"></i>
+        <span>Back to Dashboard</span>
+      </button>
+      <button class="action-button bundle-button" *ngIf="adminMode" (click)="triggerExitProcess(false)">
+        <i class="far fa-file-archive"></i>
+        <span>Bundle</span>
+      </button>
     </div>
-    <div class="top__left" *ngIf="adminMode">
-      <a (activate)="triggerExitProcess(false)"><i class="far fa-file-archive"></i> Bundle</a>
-    </div>
-    <div class="top__right">
+    <div class="navbar-actions-right">
       <div
         *ngIf="
           !['unreleased', 'rejected'].includes(learningObject?.status) &&
           learningObject?.collection
         "
-        class="top__collection"
+        class="collection-badge"
         tip="This learning object has been submitted to the {{
           collection?.name
         }} collection."
         tipPosition="bottom"
       >
-        <span>{{ collection.name }}</span>
-        <div
-          *ngIf="collection.hasLogo; else genericCollectionLogoTemplate"
-          class="collection__image"
-          [style.background-image]="
-            'url(assets/images/collections/' +
-            learningObject?.collection +
-            '.png)'
-          "
-        ></div>
+        <div class="collection-info">
+          <span class="collection-label">Collection:</span>
+          <span class="collection-name">{{ collection.name }}</span>
+        </div>
+        <div class="collection-logo">
+          <div
+            *ngIf="collection.hasLogo; else genericCollectionLogoTemplate"
+            class="logo-image"
+            [style.background-image]="
+              'url(assets/images/collections/' +
+              learningObject?.collection +
+              '.png)'
+            "
+          ></div>
+        </div>
       </div>
-      <clark-lo-status-indicator
-        [status]="learningObject?.status"
-        [states]="states"
-      ></clark-lo-status-indicator>
-      <ng-container
-        *ngIf="!adminMode; else adminModeTemplate "
-      >
+      <div class="status-container">
+        <clark-lo-status-indicator
+          [status]="learningObject?.status"
+          [states]="states"
+        ></clark-lo-status-indicator>
+      </div>
+      <ng-container *ngIf="!adminMode; else adminModeTemplate">
         <button
           id="submit"
-          class="button"
+          class="submit-button"
           *ngIf="['unreleased'].includes(learningObject?.status)"
-          [ngClass]="{
-            good: !submissionError,
-            bad: validator.submissionMode && submissionError,
-            disabled: !auth.user.emailVerified
-          }"
-          (activate)="auth.user.emailVerified && triggerSubmit()"
+          [class.success]="!submissionError"
+          [class.error]="validator.submissionMode && submissionError"
+          [class.disabled]="!auth.user.emailVerified"
+          (click)="auth.user.emailVerified && triggerSubmit()"
         >
-          <div
-            *ngIf="validator.submissionMode && submissionError"
-            class="button__cancel"
-            tip="Cancel Submission"
-            tipPosition="bottom"
-            (activate)="$event.stopPropagation(); validator.submissionMode = false"
-          >
-            <i class="far fa-times"></i>
+          <div class="button-content">
+            <div
+              *ngIf="validator.submissionMode && submissionError"
+              class="cancel-overlay"
+              tip="Cancel Submission"
+              tipPosition="bottom"
+              (click)="$event.stopPropagation(); validator.submissionMode = false"
+            >
+              <i class="far fa-times"></i>
+            </div>
+            <span class="button-text">
+              {{
+                validator.submissionMode && submissionError
+                  ? 'Try Again'
+                  : 'Submit for review'
+              }}
+            </span>
+            <i class="far fa-arrow-right button-icon"></i>
           </div>
-          {{
-            validator.submissionMode && submissionError
-              ? 'Try Again'
-              : 'Submit for review'
-          }}
-          <i class="far fa-arrow-right"></i>
         </button>
       </ng-container>
       <ng-template #adminModeTemplate>
@@ -87,52 +96,57 @@
       </ng-template>
     </div>
   </div>
-  <div class="builder-navbar-wrapper__bottom">
-    <div class="builder-navbar-wrapper__bottom-left-menu">
-      <!-- update routerLinkActive with class used to show that link is active -->
-      <ul>
-        <li>
-          <ng-container
-            id="firstTab"
-            aria-label="Basic Information Link"
-            [ngTemplateOutlet]="navItemTemplate"
-            [ngTemplateOutletContext]="{
-              disabled: false,
-              link: 'info',
-              text: 'Basic Information'
-            }"
-          ></ng-container>
-        </li>
-        <li>
-          <ng-container
-            aria-label="Learning Outcomes Link"
-            [ngTemplateOutlet]="navItemTemplate"
-            [ngTemplateOutletContext]="{
-              disabled: !canRoute('outcomes'),
-              link: 'outcomes',
-              text: 'Learning Outcomes'
-            }"
-          ></ng-container>
-        </li>
-        <li>
-          <ng-container
-            aria-label="Materials Link"
-            [ngTemplateOutlet]="navItemTemplate"
-            [ngTemplateOutletContext]="{
-              disabled: !canRoute('materials'),
-              link: 'materials',
-              text: 'Materials'
-            }"
-          ></ng-container>
-        </li>
-      </ul>
-      <div class="builder-navbar-wrapper__saving-indicator">
-        <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator"
-          >Saving changes . . .
-        </span>
-        <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator"
-          >All changes saved</span
-        >
+
+  <div class="navbar-bottom">
+    <div class="navigation-tabs">
+      <div class="tab-list">
+        <ng-container
+          id="firstTab"
+          aria-label="Basic Information Link"
+          [ngTemplateOutlet]="modernNavItemTemplate"
+          [ngTemplateOutletContext]="{
+            disabled: false,
+            link: 'info',
+            text: 'Basic Information',
+            icon: 'far fa-info-circle',
+            description: 'Name, description, and basic details'
+          }"
+        ></ng-container>
+
+        <ng-container
+          aria-label="Learning Outcomes Link"
+          [ngTemplateOutlet]="modernNavItemTemplate"
+          [ngTemplateOutletContext]="{
+            disabled: !canRoute('outcomes'),
+            link: 'outcomes',
+            text: 'Learning Outcomes',
+            icon: 'far fa-bullseye',
+            description: 'Define learning objectives'
+          }"
+        ></ng-container>
+
+        <ng-container
+          aria-label="Materials Link"
+          [ngTemplateOutlet]="modernNavItemTemplate"
+          [ngTemplateOutletContext]="{
+            disabled: !canRoute('materials'),
+            link: 'materials',
+            text: 'Materials',
+            icon: 'far fa-folder-open',
+            description: 'Upload files and resources'
+          }"
+        ></ng-container>
+      </div>
+
+      <div class="saving-indicator">
+        <div class="indicator-content" [class.saving]="isSaving">
+          <div class="indicator-icon">
+            <i [class]="isSaving ? 'fas fa-sync fa-spin' : 'fas fa-check'"></i>
+          </div>
+          <span class="indicator-text">
+            {{ isSaving ? 'Saving changes...' : 'All changes saved' }}
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -146,6 +160,55 @@
   (close)="showSubmission = false"
 ></clark-submit>
 
+<ng-template
+  #modernNavItemTemplate
+  let-link="link"
+  let-disabled="disabled"
+  let-text="text"
+  let-icon="icon"
+  let-description="description"
+>
+  <button
+    *ngIf="!disabled"
+    class="nav-tab"
+    [class.new]="isNewRoute(link)"
+    [class.active]="router.url.includes(link)"
+    [routerLink]="link"
+    routerLinkActive="active"
+    (click)="triggerRouteClick(link)"
+  >
+    <div class="tab-content">
+      <div class="tab-icon">
+        <i [class]="icon"></i>
+      </div>
+      <div class="tab-text">
+        <span class="tab-title">{{ text }}</span>
+        <span class="tab-description">{{ description }}</span>
+      </div>
+    </div>
+  </button>
+
+  <button
+    *ngIf="disabled"
+    class="nav-tab disabled"
+    aria-label="Please give this learning object a name before adding outcomes or uploading materials"
+    tip="Please give this learning object a name before adding outcomes or uploading materials"
+    tipPosition="top"
+    disabled
+  >
+    <div class="tab-content">
+      <div class="tab-icon">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="tab-text">
+        <span class="tab-title">{{ text }}</span>
+        <span class="tab-description">{{ description }}</span>
+      </div>
+    </div>
+  </button>
+</ng-template>
+
+<!-- Legacy template for backward compatibility -->
 <ng-template
   #navItemTemplate
   let-link="link"

@@ -1,24 +1,199 @@
 @import '_vars.scss';
 
+.materials-page-container {
+  .page-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 0 0 32px 0;
+    border: 1px solid rgba(226, 232, 240, 0.6);
 
-.notes-header {
-    display: flex;
-    padding-top: 18px;
-    padding-left: 20px;
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $darker-grey;
+      margin: 0 0 8px 0;
+      background: linear-gradient(135deg, $light-blue 0%, lighten($light-blue, 15%) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-    .icon {
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: $dark-grey;
+      margin: 0;
+      opacity: 0.8;
+    }
+  }
+
+  .upload-wrapper {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border-color: rgba($light-blue, 0.3);
+    }
+  }
+}
+
+.materials-sidebar {
+  .sidebar-section {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(226, 232, 240, 0.5);
+
+    .section-header {
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .icon {
         color: $light-blue;
-        font-size: $large;
-        align-items: left;
-        justify-content: left;
+        font-size: 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: rgba($light-blue, 0.1);
+        border-radius: 8px;
+      }
+
+      .title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: $darker-grey;
+        margin: 0;
+      }
     }
 
-    .title {
-        text-align: left;
-        font-size: $large;
-        font-weight: 600;
-        margin: 0 30px 15px 10px;
-        align-items: left;
-        justify-content: left;
+    .notes-container {
+      padding: 20px;
+
+      .note-list {
+        .note {
+          margin-bottom: 16px;
+          
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      .no-notes-state {
+        text-align: center;
+        padding: 32px 16px;
+        color: $medium-grey;
+
+        i {
+          font-size: 2.5rem;
+          margin-bottom: 16px;
+          color: $light-blue;
+          opacity: 0.7;
+        }
+
+        p {
+          margin: 0;
+          font-size: 0.95rem;
+          line-height: 1.5;
+        }
+      }
     }
+  }
+}
+
+// Legacy support - keeping original styles for notes header
+.notes-header {
+  display: flex;
+  padding-top: 18px;
+  padding-left: 20px;
+
+  .icon {
+    color: $light-blue;
+    font-size: $large;
+    align-items: left;
+    justify-content: left;
+  }
+
+  .title {
+    text-align: left;
+    font-size: $large;
+    font-weight: 600;
+    margin: 0 30px 15px 10px;
+    align-items: left;
+    justify-content: left;
+  }
+}
+
+// Animation
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.materials-page-container {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.materials-sidebar .sidebar-section {
+  animation: fadeInUp 0.5s ease-out 0.1s both;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .materials-page-container .page-header {
+    padding: 24px 20px;
+    
+    .page-title {
+      font-size: 1.75rem;
+    }
+    
+    .page-subtitle {
+      font-size: 1rem;
+    }
+  }
+  
+  .materials-sidebar .sidebar-section {
+    .section-header {
+      padding: 16px 20px;
+      
+      .title {
+        font-size: 1rem;
+      }
+    }
+    
+    .notes-container {
+      padding: 16px;
+      
+      .no-notes-state {
+        padding: 24px 12px;
+        
+        i {
+          font-size: 2rem;
+          margin-bottom: 12px;
+        }
+        
+        p {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
 }

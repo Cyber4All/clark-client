@@ -1,32 +1,127 @@
 @import '_vars.scss';
 
-// style for the reusable container that houses the metadata
 .metadata-container {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   height: 100%;
-  padding: 30px 20px 40px;
+  padding: 32px 28px;
+  position: relative;
+
+  .title {
+    color: $light-blue;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    
+    &::before {
+      content: '';
+      width: 4px;
+      height: 20px;
+      background: linear-gradient(135deg, $light-blue, lighten($light-blue, 15%));
+      border-radius: 2px;
+      margin-right: 12px;
+    }
+  }
+
+  .directions {
+    color: $dark-grey;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    padding-left: 16px;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, $light-blue, transparent);
+      border-radius: 1px;
+    }
+
+    strong {
+      color: $darker-grey;
+      font-weight: 600;
+    }
+
+    b {
+      color: $darker-grey;
+      font-weight: 600;
+    }
+  }
+
+  .metadata-container__error {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba($error-red, 0.1);
+    border: 1px solid rgba($error-red, 0.3);
+    border-radius: 8px;
+    color: $error-red;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    animation: slideInFromBottom 0.3s ease-out;
+
+    &::before {
+      content: '\f071';
+      font-family: 'Font Awesome 5 Pro';
+      font-weight: 900;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    &.metadata-container__error--warning {
+      background: rgba(#ff8a00, 0.1);
+      border-color: rgba(#ff8a00, 0.3);
+      color: #e67e00;
+
+      &::before {
+        content: '\f12a';
+      }
+    }
+  }
 }
 
-// Style for all titles within the resuable containers
-.title {
-  color: $light-blue;
-  font-size: $large;
-  font-weight: 600;
-}
-// Style for all directions within the resuable containers
-.directions {
-  color: $dark-grey;
-  font-size: $normal;
-  margin-bottom: 20px;
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.metadata-container__error {
-  margin-top: 10px;
-  color: $error-red;
+// Enhanced focus states
+.metadata-container:focus-within {
+  .title {
+    color: darken($light-blue, 10%);
+  }
+  
+  .directions::before {
+    background: linear-gradient(180deg, darken($light-blue, 10%), rgba(darken($light-blue, 10%), 0.3));
+  }
 }
 
-.metadata-container__error--warning {
-  color: orange;
+// Responsive design
+@media (max-width: 768px) {
+  .metadata-container {
+    padding: 24px 20px;
+    
+    .title {
+      font-size: 1.1rem;
+    }
+    
+    .directions {
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+  }
 }

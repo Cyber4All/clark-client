@@ -1,4 +1,294 @@
+@import '_vars.scss';
 
+// Modern responsive column layout
+$left-column-width: 300px;
+$middle-column-min: 700px;
+$right-column-width: 320px;
+$gap-size: 24px;
+
+.builder-template-columns {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  
+  .columns {
+    display: grid;
+    grid-template-columns: $left-column-width minmax($middle-column-min, 1fr) $right-column-width;
+    grid-gap: $gap-size;
+    margin: 0 auto;
+    max-width: 1600px;
+    padding: 0 $gap-size;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - #{$gap-size * 2});
+    top: 200px; // Account for modern navbar height
+    min-height: calc(100vh - 200px);
+    
+    // Responsive grid adjustments
+    &.no-left {
+      grid-template-columns: minmax($middle-column-min, 1fr) $right-column-width;
+    }
+
+    &.no-right {
+      grid-template-columns: $left-column-width minmax($middle-column-min, 1fr);
+    }
+
+    &.no-left.no-right {
+      grid-template-columns: minmax($middle-column-min, 1fr) !important;
+    }
+
+    .content {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      box-sizing: border-box;
+      padding: 0;
+      border: 1px solid rgba(226, 232, 240, 0.5);
+      transition: all 0.3s ease;
+      overflow: hidden;
+      
+      &:hover {
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-color: rgba($light-blue, 0.3);
+      }
+    }
+
+    .column {
+      margin-bottom: 24px;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      
+      &.main-column {
+        margin-top: 0;
+        min-height: 600px;
+      }
+
+      &.left-column {
+        margin-top: 0;
+      }
+
+      &.right-column {
+        margin-top: 0;
+      }
+    }
+
+    .scroll-wrapper {
+      overflow: auto;
+      transform: translateY(0);
+      padding: 0;
+      scrollbar-width: thin;
+      scrollbar-color: rgba($light-blue, 0.3) transparent;
+      
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        background: rgba($light-blue, 0.3);
+        border-radius: 3px;
+        
+        &:hover {
+          background: rgba($light-blue, 0.5);
+        }
+      }
+
+      &.scroll-wrapper--left {
+        padding: 0;
+      }
+
+      &.scroll-wrapper--right {
+        padding: 0;
+      }
+    }
+  }
+}
+
+// Enhanced responsive breakpoints
+@media (max-width: 1400px) {
+  .builder-template-columns .columns {
+    grid-template-columns: 280px minmax(650px, 1fr) 300px;
+    
+    &.no-left {
+      grid-template-columns: minmax(650px, 1fr) 300px;
+    }
+
+    &.no-right {
+      grid-template-columns: 280px minmax(650px, 1fr);
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .builder-template-columns .columns {
+    grid-template-columns: 260px minmax(600px, 1fr) 280px;
+    grid-gap: 20px;
+    padding: 0 20px;
+    
+    &.no-left {
+      grid-template-columns: minmax(600px, 1fr) 280px;
+    }
+
+    &.no-right {
+      grid-template-columns: 260px minmax(600px, 1fr);
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .builder-template-columns .columns {
+    grid-template-columns: 1fr;
+    grid-gap: 16px;
+    padding: 0 16px;
+    top: 180px; // Adjust for responsive navbar
+    
+    &.no-left,
+    &.no-right,
+    &.no-left.no-right {
+      grid-template-columns: 1fr !important;
+    }
+    
+    .column {
+      &.left-column {
+        order: 1;
+      }
+      
+      &.main-column {
+        order: 2;
+      }
+      
+      &.right-column {
+        order: 3;
+      }
+    }
+    
+    .content {
+      border-radius: 12px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .builder-template-columns {
+    .columns {
+      grid-gap: 12px;
+      padding: 0 12px;
+      top: 160px; // Further adjust for mobile navbar
+      
+      .content {
+        border-radius: 8px;
+      }
+      
+      .column {
+        margin-bottom: 16px;
+        
+        &.main-column {
+          min-height: 400px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .builder-template-columns {
+    background: #f8fafc; // Simplified background for mobile
+    
+    .columns {
+      grid-gap: 8px;
+      padding: 0 8px;
+      top: 140px;
+      
+      .column {
+        margin-bottom: 12px;
+      }
+    }
+  }
+}
+
+// Loading states and animations
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.builder-template-columns .columns .content {
+  animation: fadeInScale 0.4s ease-out;
+}
+
+// Enhanced focus states for accessibility
+.builder-template-columns .columns .content:focus-within {
+  outline: none;
+  border-color: $light-blue;
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    0 0 0 3px rgba($light-blue, 0.1);
+}
+
+// Print styles
+@media print {
+  .builder-template-columns {
+    background: white;
+    
+    .columns {
+      position: static;
+      transform: none;
+      grid-template-columns: 1fr !important;
+      grid-gap: 12px;
+      padding: 0;
+      top: auto;
+      left: auto;
+      width: 100%;
+      max-width: none;
+      
+      .content {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+
+// High contrast mode support
+@media (prefers-contrast: high) {
+  .builder-template-columns .columns .content {
+    border: 2px solid #000;
+    box-shadow: none;
+    
+    &:hover,
+    &:focus-within {
+      border-color: #0066cc;
+      box-shadow: 0 0 0 2px #0066cc;
+    }
+  }
+}
+
+// Reduced motion support
+@media (prefers-reduced-motion: reduce) {
+  .builder-template-columns .columns .content {
+    animation: none;
+    transition: none;
+  }
+  
+  .builder-template-columns .columns .scroll-wrapper {
+    transform: none;
+  }
+}
+
+// Legacy compatibility styles
 $left-column: 280px;
 $middle-column: minmax(675px, 100vw);
 $right-column: minmax(290px, 340px);
@@ -19,7 +309,6 @@ $right-column: minmax(290px, 340px);
     grid-template-columns: $left-column $middle-column;
   }
 
-  // scss-lint:disable MergeableSelector
   &.no-left.no-right {
     grid-template-columns: $middle-column !important;
   }

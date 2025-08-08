@@ -2,25 +2,208 @@
 
 .url-wrap {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
 
   .title-field,
   .url-field {
-    float: left;
-    width: 99%;
+    width: 100%;
+    position: relative;
+
+    input {
+      width: 100%;
+      padding: 12px 16px;
+      appearance: none;
+      outline: 0;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: all 0.3s ease;
+      background: #fafafa;
+      color: $darker-grey;
+      margin: 0;
+      box-sizing: border-box;
+
+      &:focus {
+        border-color: $light-blue;
+        background: white;
+        box-shadow: 0 0 0 3px rgba($light-blue, 0.1);
+      }
+
+      &:hover:not(:focus) {
+        border-color: rgba($light-blue, 0.5);
+        background: white;
+      }
+
+      &::placeholder {
+        color: $medium-grey;
+        font-style: italic;
+      }
+
+      &:invalid {
+        border-color: rgba($error-red, 0.5);
+        background: rgba($error-red, 0.05);
+      }
+
+      &:valid {
+        border-color: rgba($success-green, 0.5);
+      }
+    }
+
+    // Error message styling
+    div[style*="color:red"] {
+      margin-top: 8px;
+      padding: 8px 12px;
+      background: rgba($error-red, 0.1);
+      border: 1px solid rgba($error-red, 0.3);
+      border-radius: 6px;
+      color: $error-red !important;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+
+      &::before {
+        content: '\f071';
+        font-family: 'Font Awesome 5 Pro';
+        font-weight: 900;
+        margin-right: 8px;
+        font-size: 0.9rem;
+      }
+
+      &[hidden] {
+        display: none !important;
+      }
+    }
   }
 
-  input {
-    padding: 10px;
-    appearance: none;
-    outline: 0;
-    border: 1px solid $medium-grey;
-    border-radius: 2px;
-    width: 90%;
-    margin: 8px;
+  .title-field {
+    input {
+      &::placeholder {
+        content: "Enter a descriptive title for this URL";
+      }
+    }
+  }
 
-    &:focus {
-      border-color: $light-blue;
+  .url-field {
+    input {
+      &::placeholder {
+        content: "https://example.com";
+      }
+
+      &[type="text"][pattern*="https"] {
+        padding-left: 40px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23718096"><path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1L13.5 2.5L16.17 5.17C15.24 5.06 14.32 5 13.4 5H10.6C4.8 5 0 9.8 0 15.5S4.8 26 10.6 26H13.4C19.2 26 24 21.2 24 15.5C24 13.85 23.67 12.28 23.08 10.85L21 9ZM9 16L11 18L15 14L17 16L11 22L7 18L9 16Z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: 12px center;
+        background-size: 16px;
+      }
+    }
+  }
+}
+
+// Focus states for better accessibility
+.url-wrap .title-field input:focus,
+.url-wrap .url-field input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+// Animation for form validation feedback
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.url-wrap .title-field input:invalid:not(:focus),
+.url-wrap .url-field input:invalid:not(:focus) {
+  animation: shake 0.5s ease-in-out;
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .url-wrap {
+    padding: 12px;
+    gap: 10px;
+
+    .title-field input,
+    .url-field input {
+      padding: 10px 14px;
+      font-size: 0.9rem;
+    }
+
+    .url-field input[type="text"][pattern*="https"] {
+      padding-left: 36px;
+      background-size: 14px;
+      background-position: 10px center;
+    }
+
+    .title-field div[style*="color:red"],
+    .url-field div[style*="color:red"] {
+      margin-top: 6px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .url-wrap {
+    padding: 8px;
+    gap: 8px;
+
+    .title-field input,
+    .url-field input {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      border-radius: 6px;
+    }
+
+    .url-field input[type="text"][pattern*="https"] {
+      padding-left: 32px;
+      background-size: 12px;
+      background-position: 8px center;
+    }
+  }
+}
+
+// High contrast mode
+@media (prefers-contrast: high) {
+  .url-wrap {
+    .title-field input,
+    .url-field input {
+      border-width: 3px;
+      
+      &:focus {
+        border-color: #0066cc;
+        box-shadow: 0 0 0 2px #0066cc;
+      }
+      
+      &:invalid {
+        border-color: #cc0000;
+      }
+      
+      &:valid {
+        border-color: #006600;
+      }
+    }
+  }
+}
+
+// Reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .url-wrap {
+    .title-field input,
+    .url-field input {
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    
+    .title-field input:invalid:not(:focus),
+    .url-field input:invalid:not(:focus) {
+      animation: none;
     }
   }
 }

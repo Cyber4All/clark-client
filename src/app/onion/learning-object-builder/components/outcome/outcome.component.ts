@@ -62,6 +62,8 @@ export class OutcomeComponent implements OnInit {
   textChanged: EventEmitter<string> = new EventEmitter();
   @Output()
   deleted: EventEmitter<void> = new EventEmitter();
+  @Output()
+  activate: EventEmitter<void> = new EventEmitter();
 
   constructor(
     public validator: LearningObjectValidator,

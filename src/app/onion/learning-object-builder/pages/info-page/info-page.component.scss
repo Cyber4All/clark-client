@@ -1,5 +1,334 @@
 @import '_vars.scss';
 
+.modern-form {
+  .page-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 0 0 32px 0;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: $darker-grey;
+      margin: 0 0 8px 0;
+      background: linear-gradient(135deg, $light-blue 0%, lighten($light-blue, 15%) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: $dark-grey;
+      margin: 0;
+      opacity: 0.8;
+    }
+  }
+
+  .form-section {
+    background: white;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(226, 232, 240, 0.5);
+
+    &:hover {
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border-color: rgba($light-blue, 0.3);
+    }
+  }
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, $light-grey 50%, transparent 100%);
+    margin: 32px 0;
+  }
+}
+
+// Modern input styling
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .modern-input {
+    width: 100%;
+    padding: 16px 20px 16px 52px;
+    font-size: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background: #fafafa;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    font-family: inherit;
+
+    &:focus {
+      border-color: $light-blue;
+      background: white;
+      box-shadow: 0 0 0 3px rgba($light-blue, 0.1);
+      transform: translateY(-1px);
+    }
+
+    &::placeholder {
+      color: $medium-grey;
+      font-style: italic;
+    }
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 18px;
+    color: $medium-grey;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+    pointer-events: none;
+  }
+
+  &:focus-within .input-icon {
+    color: $light-blue;
+  }
+}
+
+// Contributors section styling
+.contributor-section {
+  .contributors-list {
+    margin-top: 24px;
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+
+    .contributors-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 16px;
+      color: $light-blue;
+      font-weight: 600;
+
+      i {
+        margin-right: 12px;
+        font-size: 1.1rem;
+      }
+
+      .contributors-count {
+        background: linear-gradient(135deg, $light-blue, lighten($light-blue, 15%));
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        margin-left: 12px;
+      }
+    }
+
+    .contributors-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+  }
+}
+
+// Attribution card styling
+.attribution-card {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 16px;
+  padding: 24px;
+  margin: 32px 0;
+  border: 1px solid rgba($light-blue, 0.2);
+
+  .attribution-info {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: rgba(white, 0.7);
+    border-radius: 10px;
+    border-left: 4px solid $light-blue;
+
+    i {
+      color: $light-blue;
+      margin-right: 12px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    span {
+      font-size: 0.95rem;
+      color: $dark-grey;
+      line-height: 1.5;
+    }
+  }
+
+  .attribution-preview {
+    .preview-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      color: $light-blue;
+      font-weight: 600;
+      font-size: 1rem;
+
+      i {
+        margin-right: 10px;
+      }
+    }
+
+    .preview-content {
+      background: white;
+      padding: 16px;
+      border-radius: 10px;
+      border: 1px solid rgba($light-blue, 0.2);
+      font-style: italic;
+      color: $darker-grey;
+      line-height: 1.6;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Length selector styling
+.length-selector {
+  .length-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .length-option {
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba($light-blue, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    &:hover {
+      border-color: $light-blue;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($light-blue, 0.15);
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &.selected {
+      border-color: $light-blue;
+      background: linear-gradient(135deg, rgba($light-blue, 0.1) 0%, rgba($light-blue, 0.05) 100%);
+      box-shadow: 0 0 0 3px rgba($light-blue, 0.1);
+    }
+
+    .length-icon {
+      font-size: 2rem;
+      color: $light-blue;
+      margin-bottom: 12px;
+    }
+
+    .length-label {
+      font-weight: 600;
+      color: $darker-grey;
+      margin-bottom: 8px;
+      font-size: 1.1rem;
+    }
+
+    .length-description {
+      color: $medium-grey;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Levels container styling
+.levels-container {
+  .levels-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .level-pill {
+    display: flex;
+    align-items: center;
+    background: white;
+    color: $light-blue;
+    border: 2px solid $light-blue;
+    border-radius: 25px;
+    padding: 10px 18px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+
+    .level-text {
+      margin-right: 8px;
+    }
+
+    .level-check {
+      font-size: 0.8rem;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.2s ease;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($light-blue, 0.25);
+    }
+
+    &.selected {
+      background: $light-blue;
+      color: white;
+      box-shadow: 0 2px 8px rgba($light-blue, 0.3);
+
+      .level-check {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}
+
+// Description container styling
+.description-container {
+  background: #fafafa;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 4px;
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    border-color: $light-blue;
+    background: white;
+    box-shadow: 0 0 0 3px rgba($light-blue, 0.1);
+  }
+}
+
+// Legacy support - keeping original classes but with improved styling
 .title {
   font-size: $large;
   font-weight: 600;
@@ -8,14 +337,12 @@
   padding-top: 20px;
 }
 
-// This is a line to separate the different areas in the basic information section
 hr {
   border: 0;
   border-bottom: 1px solid $light-grey;
   margin: 0;
 }
 
-// This is styling for the input field for the learning object name
 input {
   padding: 7px;
   padding-left: 0;
@@ -30,7 +357,6 @@ input {
   display: inline-flex;
 }
 
-// This is styling for the academic levels list
 .levels {
   display: flex;
   flex-direction: row;
@@ -86,4 +412,41 @@ input {
   &.bottom {
     padding-bottom: 40px;
   }
+}
+
+// Loading template
+.loading-template {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: $medium-grey;
+  
+  i {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+    color: $light-blue;
+  }
+  
+  span {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+// Animation classes
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-section {
+  animation: fadeInUp 0.5s ease-out;
 }

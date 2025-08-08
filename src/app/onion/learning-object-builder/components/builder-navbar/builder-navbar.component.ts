@@ -44,7 +44,7 @@ export class BuilderNavbarComponent implements OnDestroy {
   @Input() adminMode = false;
 
   constructor(
-    private router: Router,
+    public router: Router,
     private activatedRoute: ActivatedRoute,
     private auth: AuthService,
     private toasterService: ToastrOvenService,
