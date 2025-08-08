@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 
 /* eslint-disable @typescript-eslint/naming-convention */
-// Google Analytics
-let gtag: Function;
+declare global {
+  interface Window {
+    gtag: Function;
+  }
+}
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +18,14 @@ export class GoogleTagService {
    * Send the browse_learning_objects event to Google Analytics
    */
    triggerGoogleTagEvent(event: string, category: string, label: string) {
-    gtag('event', event, {
-      event_category: category,
-      event_label: label,
-    });
+    // Check if gtag is available before calling it
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', event, {
+        event_category: category,
+        event_label: label,
+      });
+    } else {
+      console.warn('Google Analytics gtag function is not available');
+    }
   }
 }

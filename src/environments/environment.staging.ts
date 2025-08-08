@@ -9,6 +9,7 @@ export const environment = {
   cognitoAdminIdentityPoolId: 'us-east-1:a265148e-7418-4a40-aee2-78f5ae7cbf43',
   cardUrl: 'https://clark-gateway.clark.center',
   downtimeUrl: 'https://oyrmr4e2d5nwt3l33ifk4ezgcq0mhnax.lambda-url.us-east-1.on.aws',
+  enableChatbot: true, // Feature flag for chatbot
 };
 
 export enum LearningObjectStatus {

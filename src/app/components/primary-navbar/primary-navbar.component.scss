@@ -1,142 +1,332 @@
 @import '_vars.scss';
+
 .desktop-navbar {
-    max-height: 92px;
     background: white;
-    color: $dark-grey;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
     position: relative;
-    z-index: 4;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(223, 223, 223, 0.3);
 
     .nav-wrapper {
-        margin: 0px;
-        z-index: 4;
         display: flex;
-        flex-direction: row;
+        align-items: center;
         justify-content: space-between;
-        
-        a{
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        height: 80px;
+        position: relative;
+
+        .logo-section {
             text-decoration: none;
-        
+            flex-shrink: 0;
+
             .logo {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
                 cursor: pointer;
-                position: relative;
-                left: 0;
-                padding: 20px;
-                padding-top: 30px;
-                
+
                 &-image {
                     background-image: url('../../../assets/images/logo.png');
-                    width: 40px;
+                    width: 36px;
+                    height: 36px;
                     background-size: contain;
                     background-repeat: no-repeat;
                     flex-shrink: 0;
-                    height: 100%;
-                    padding: 20px;
                 }
-                
+
                 &-link {
-                    font-size: $larger;
+                    font-size: 1.5rem;
                     font-weight: 700;
-                    padding-right: 15px;
-                    position: relative;
-                    margin-left: 10px;
-                    color: $homepage-gray;
+                    color: $darker-grey;
+                    letter-spacing: -0.02em;
                 }
             }
         }
 
-        .mid-bar {
+        .main-nav {
             display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-self: center;
-            flex-grow: 1;
             align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            flex: 1;
+            margin: 0 2rem;
 
-            .search-bar{
-                flex-grow: 1;
-                max-width: 700px;
-                justify-content: center;
-            }
-            //tabled for refactor
-            // .level-picker {
-            //     cursor: pointer;
-            //     border: solid $secondary-white 1px;
-            //     height: 32px;
-            //     width: 151px;
-            //     background-color: $primary-white;
-            //     padding: 10px 10px 0px 10px;
-            //     border-radius: 6px 0px 0px 6px;
-            // }
-            
-            .search-button {
-                button {
-                    cursor: pointer;
-                    color: white;
-                    border-radius: 0px 6px 6px 0px;
-                    border: none;
-                    width: 50px;
-                    height: 44px;
-                    background: $homepage-light-blue;
-                }
-            }
-        }
-        
-        .right {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            padding: 20px 18px;
-            gap: 10px;
-            
-            .contribute-button {
-                cursor: pointer;
-                color: $dark-grey;
-                background-color: $primary-white;
-                border: solid $secondary-white 1px;
-                height: 45px;
-                border-radius: 4px;
-                padding: 0 18px;
-                margin-right: 2vw;
-            }
-            
-            .logged-in{
+            .nav-item {
                 display: flex;
-                flex-direction: row;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+                cursor: pointer;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                font-weight: 500;
+                color: $dark-grey;
                 position: relative;
-                
-                
-                .profile-picture {
-                    width: 50px;
-                    height: 50px;
-                    background-size: cover;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    border-radius: 50%;
-                    box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
+
+                .nav-text {
+                    font-size: 0.95rem;
                 }
-                
-                .username {
-                    cursor: pointer;
-                    display: flex;
-                    flex-direction: row;
-                    padding: 15px 5px;
-                    overflow:visible;
-                    .arrow {
-                        margin-left: 10px;
+
+                i {
+                    font-size: 0.75rem;
+                    color: $medium-grey;
+                    transition: all 0.3s ease;
+                }
+
+                &:hover {
+                    background: rgba(55, 110, 214, 0.08);
+                    color: $homepage-light-blue;
+
+                    i {
+                        color: $homepage-light-blue;
                     }
                 }
             }
-            
-            .logged-out {
+        }
+
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+            margin-left: auto;
+
+            .contribute-btn {
                 display: flex;
-                flex-direction: row;
-                justify-content: space-evenly;
-                padding: 15px;
-                
-                .login-button {
-                    margin-right: 23px;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.25rem;
+                background: $homepage-light-blue;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-weight: 500;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                text-decoration: none;
+
+                i {
+                    font-size: 0.85rem;
+                }
+
+                &:hover {
+                    background: darken($homepage-light-blue, 5%);
+                    transform: translateY(-1px);
+                }
+            }
+
+            .user-section {
+                position: relative;
+
+                .logged-in {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    cursor: pointer;
+                    padding: 0.5rem;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        background: rgba(55, 110, 214, 0.05);
+
+                        .profile-picture {
+                            border-color: rgba(55, 110, 214, 0.3);
+                            transform: scale(1.05);
+                        }
+
+                        .username {
+                            color: $homepage-light-blue;
+
+                            i {
+                                color: $homepage-light-blue;
+                            }
+                        }
+                    }
+
+                    .profile-picture {
+                        width: 40px;
+                        height: 40px;
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        border-radius: 50%;
+                        border: 2px solid rgba(55, 110, 214, 0.1);
+                        flex-shrink: 0;
+                        transition: all 0.3s ease;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    }
+
+                    .username {
+                        display: flex;
+                        align-items: center;
+                        gap: 0.5rem;
+                        font-weight: 500;
+                        color: $dark-grey;
+                        transition: all 0.3s ease;
+
+                        i {
+                            font-size: 0.75rem;
+                            color: $medium-grey;
+                            transition: all 0.3s ease;
+                        }
+                    }
+                }
+
+                .logged-out {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+
+                    .login-btn {
+                        padding: 0.6rem 1.25rem;
+                        color: $homepage-light-blue;
+                        font-weight: 500;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            background: rgba(55, 110, 214, 0.08);
+                        }
+                    }
+
+                    .register-btn {
+                        padding: 0.6rem 1.25rem;
+                        background: $homepage-light-blue;
+                        color: white;
+                        font-weight: 500;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        transition: all 0.3s ease;
+
+                        &:hover {
+                            background: darken($homepage-light-blue, 5%);
+                            transform: translateY(-1px);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Modern dropdown styles
+    ::ng-deep .nav-dropdown .context-menu {
+        position: absolute;
+        top: 100%;
+        margin-top: 0.75rem;
+        background: white;
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 12px 50px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+        min-width: 300px;
+        z-index: 1101;
+
+        ul {
+            padding: 0.5rem;
+            margin: 0;
+            list-style: none;
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.75rem 1rem;
+                margin: 0.25rem 0;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                color: $dark-grey;
+                font-size: 0.9rem;
+
+                i {
+                    width: 16px;
+                    color: $medium-grey;
+                    flex-shrink: 0;
+                }
+
+                .title {
+                    font-weight: 500;
+                    color: $darker-grey;
+                }
+
+                .desc {
+                    font-size: 0.8rem;
+                    color: $medium-grey;
+                    margin-top: 0.25rem;
+                }
+
+                div {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                &:hover {
+                    background: rgba(55, 110, 214, 0.08);
                     color: $homepage-light-blue;
-                    font-weight: 400;
+
+                    i {
+                        color: $homepage-light-blue;
+                    }
+
+                    .title {
+                        color: $homepage-light-blue;
+                    }
+                }
+            }
+
+            &.topics-list li {
+                font-weight: 500;
+            }
+        }
+    }
+
+    // User dropdown styles
+    ::ng-deep .context-popup {
+        ul {
+            padding: 0.5rem;
+            margin: 0;
+            list-style: none;
+
+            li {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                padding: 0.75rem 1rem;
+                margin: 0.25rem 0;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                color: $dark-grey;
+                font-size: 0.9rem;
+
+                i {
+                    width: 16px;
+                    color: $medium-grey;
+                    flex-shrink: 0;
+                }
+
+                .notifications {
+                    background: $homepage-light-blue;
+                    color: white;
+                    font-size: 0.75rem;
+                    padding: 0.25rem 0.5rem;
+                    border-radius: 10px;
+                    margin-left: auto;
+                }
+
+                &:hover {
+                    background: rgba(55, 110, 214, 0.08);
+                    color: $homepage-light-blue;
+
+                    i {
+                        color: $homepage-light-blue;
+                    }
                 }
             }
         }
@@ -366,12 +556,68 @@ li {
     padding: 0 20px;
 }
 
-@media (min-width: 2000px) {
-    .desktop-navbar {
-        display: flex;
-        justify-content: space-around;
-        .nav-wrapper{
-            width: 2000px;
+// Responsive styles for the modern navbar
+@media (max-width: 1200px) {
+    .desktop-navbar .nav-wrapper {
+        gap: 1.5rem;
+
+        .main-nav {
+            gap: 1.5rem;
         }
+
+        .search-section {
+            max-width: 400px;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .desktop-navbar .nav-wrapper {
+        padding: 0 1.5rem;
+        gap: 1rem;
+
+        .main-nav {
+            gap: 1rem;
+
+            .nav-item {
+                padding: 0.6rem 0.8rem;
+
+                .nav-text {
+                    font-size: 0.9rem;
+                }
+            }
+        }
+
+        .search-section {
+            max-width: 300px;
+        }
+
+        .right-section {
+            gap: 0.75rem;
+
+            .contribute-btn {
+                span {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .desktop-navbar .nav-wrapper {
+        .main-nav {
+            display: none;
+        }
+
+        .search-section {
+            display: none;
+        }
+    }
+}
+
+@media (min-width: 2000px) {
+    .desktop-navbar .nav-wrapper {
+        max-width: 1600px;
     }
 }

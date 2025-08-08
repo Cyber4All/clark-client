@@ -1,0 +1,81 @@
+<div class="showcase-wrapper">
+    <div class="showcase-header">
+        <div class="header-content">
+            <h2 class="section-title">
+                Explore Our <span class="gradient-text">Featured Curriculum</span>
+            </h2>
+            <p class="section-description">
+                Discover high-quality cybersecurity learning objects created by educators for educators. 
+                All materials are peer-reviewed and ready to use in your classroom.
+            </p>
+        </div>
+        <a class="view-all-btn" [routerLink]="'/browse'">
+            <span>View All Curriculum</span>
+            <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="showcase-grid" *ngIf="learningObjects && learningObjects.length > 0; else loadingTemplate">
+        <clark-learning-object-component 
+            *ngFor="let learningObject of learningObjects" 
+            [learningObject]="learningObject" 
+            learningObjectCard
+            [loading]="loading"
+            class="showcase-card">
+        </clark-learning-object-component>
+    </div>
+
+    <ng-template #loadingTemplate>
+        <div class="showcase-grid">
+            <div class="loading-card" *ngFor="let i of [1,2,3,4]">
+                <div class="loading-shimmer">
+                    <div class="loading-image"></div>
+                    <div class="loading-content">
+                        <div class="loading-title"></div>
+                        <div class="loading-text"></div>
+                        <div class="loading-text"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <div class="showcase-stats">
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number">{{ totalLearningObjects | number }}+</div>
+                <div class="stat-label">Learning Objects</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number">{{ totalEducators | number }}+</div>
+                <div class="stat-label">Educators</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="fas fa-university"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number">{{ totalInstitutions | number }}+</div>
+                <div class="stat-label">Institutions</div>
+            </div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-icon">
+                <i class="fas fa-download"></i>
+            </div>
+            <div class="stat-content">
+                <div class="stat-number">{{ totalDownloads | number }}+</div>
+                <div class="stat-label">Downloads</div>
+            </div>
+        </div>
+    </div>
+</div>

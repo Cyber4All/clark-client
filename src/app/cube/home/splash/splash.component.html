@@ -1,25 +1,105 @@
-<div class="wrapper">
-    <div class="first">
-        <h1>
-            Teach Cyber Today... <br />
-            Secure Tomorrow
+<div class="hero-wrapper">
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Free Cybersecurity Education</span>
+        </div>
+
+        <h1 class="hero-title">
+            Teach Cyber Today, <br />
+            <span class="gradient-text">Secure Tomorrow</span>
         </h1>
-        <p>
-            CLARK is the largest platform that provides <strong>FREE</strong> cybersecurity curriculum. It is home to high-value, high-impact 
-            cyber curriculum created by top educators and reviewed for relevance and quality. Whether you’re looking to teach something new tomorrow, 
-            align with curriculum guidelines and standards, or refine your current course, CLARK has free resources ready for you to use!
+
+        <p class="hero-description">
+            CLARK is the largest platform providing <strong>free cybersecurity curriculum</strong>.
+            Discover high-value, educator-created content that's been rigorously reviewed for quality and relevance.
         </p>
-        <button id="pageContent" (click)="this.googleTagService.triggerGoogleTagEvent('browse_learning_objects', 'homepageRedirect', 'splashBrowse')" [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
-        <button id="pageContent" class="card" [tip]="'You will be redirected to the CAE Resource Directory'" (click)="utilityService.openCard()">BROWSE {{ resourceCount | number }}+ RESOURCES</button>
+
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-number">{{ numReleasedObjects | number }}+</div>
+                <div class="stat-label">Learning Objects</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <div class="stat-number">{{ resourceCount | number }}+</div>
+                <div class="stat-label">External Resources</div>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Free Access</div>
+            </div>
+        </div>
+
+        <div class="hero-actions">
+            <button
+                id="pageContent"
+                class="primary-btn"
+                (click)="this.googleTagService.triggerGoogleTagEvent('browse_learning_objects', 'homepageRedirect', 'splashBrowse')"
+                [routerLink]="'/browse'"
+            >
+                <i class="fas fa-search"></i>
+                <span>Browse Curriculum</span>
+            </button>
+
+            <button
+                id="pageContent"
+                class="secondary-btn"
+                [tip]="'You will be redirected to the CAE Resource Directory'"
+                (click)="utilityService.openCard()"
+            >
+                <i class="fas fa-external-link-alt"></i>
+                <span>Explore Resources</span>
+            </button>
+        </div>
+
+        <div class="hero-features">
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Educator Reviewed</span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Industry Standards</span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Always Updated</span>
+            </div>
+        </div>
     </div>
-    <div class="second">
-        <iframe 
-        src="https://www.youtube.com/embed/wXlZZjq0lDo" 
-        title="What is CLARK?" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-        >
-        </iframe>
+
+    <div class="hero-visual">
+        <div class="visual-grid">
+            <div class="grid-item security">
+                <i class="fas fa-shield-alt"></i>
+                <span>Security</span>
+            </div>
+            <div class="grid-item education">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Education</span>
+            </div>
+            <div class="grid-item resources">
+                <i class="fas fa-book-open"></i>
+                <span>Resources</span>
+            </div>
+            <div class="grid-item community">
+                <i class="fas fa-users"></i>
+                <span>Community</span>
+            </div>
+        </div>
+
+        <div class="floating-elements">
+            <div class="floating-icon icon-1">
+                <i class="fas fa-lock"></i>
+            </div>
+            <div class="floating-icon icon-2">
+                <i class="fas fa-code"></i>
+            </div>
+            <div class="floating-icon icon-3">
+                <i class="fas fa-network-wired"></i>
+            </div>
+        </div>
     </div>
 </div>

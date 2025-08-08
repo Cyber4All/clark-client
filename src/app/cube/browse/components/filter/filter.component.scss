@@ -1,5 +1,102 @@
 @import '_vars.scss';
 
+.modern-filters {
+  .filter-group {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid rgba(223, 223, 223, 0.3);
+    padding-bottom: 1.5rem;
+
+    &:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .filter-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: $darker-grey;
+      margin: 0 0 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &.collapsible {
+        cursor: pointer;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $homepage-light-blue;
+        }
+
+        i {
+          font-size: 0.875rem;
+          color: $medium-grey;
+          transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        &:hover i {
+          color: $homepage-light-blue;
+        }
+      }
+    }
+
+    .collapsible-content {
+      animation: slideDown 0.3s ease-out;
+      overflow: hidden;
+    }
+
+    .advanced-filter {
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .sub-filter-title {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: $dark-grey;
+        margin: 0 0 0.75rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .beta-badge {
+          background: rgba(55, 110, 214, 0.1);
+          color: $homepage-light-blue;
+          font-size: 0.7rem;
+          font-weight: 600;
+          padding: 0.2rem 0.5rem;
+          border-radius: 12px;
+          border: 1px solid rgba(55, 110, 214, 0.2);
+        }
+      }
+    }
+  }
+
+  // Override default filter section styles for better spacing
+  ::ng-deep clark-filter-section {
+    .filter-section {
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      display: none; // Hide section titles since we have our own
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 500px;
+    opacity: 1;
+  }
+}
+
 .beta {
     color: $light-blue;
 }

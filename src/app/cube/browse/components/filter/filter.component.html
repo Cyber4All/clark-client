@@ -1,39 +1,70 @@
-<div>
-  <!-- Collection Filters -->
-  <clark-filter-section [info]="collectionFilter" (change)="registerChange()"></clark-filter-section>
+<div class="modern-filters">
+  <!-- Quick Filters -->
+  <div class="filter-group">
+    <h3 class="filter-title">Duration</h3>
+    <clark-filter-section [info]="lengthFilter" (change)="registerChange()"></clark-filter-section>
+  </div>
 
-  <!-- Length Filters -->
-  <clark-filter-section [info]="lengthFilter" (change)="registerChange()"></clark-filter-section>
+  <!-- Collection Filters (Collapsed by default) -->
+  <div class="filter-group">
+    <h3 class="filter-title collapsible" (click)="toggleCollectionFilters()">
+      Collections
+      <i class="fas" [ngClass]="showCollectionFilters ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+    </h3>
+    <div *ngIf="showCollectionFilters" class="collapsible-content">
+      <clark-filter-section [info]="collectionFilter" (change)="registerChange()"></clark-filter-section>
+    </div>
+  </div>
 
-  <!-- Topics Filters -->
-  <clark-filter-section [info]="topicFilter" (change)="registerChange()"></clark-filter-section>
+  <!-- Topics Filters (Collapsed by default) -->
+  <div class="filter-group">
+    <h3 class="filter-title collapsible" (click)="toggleTopicFilters()">
+      Topics
+      <i class="fas" [ngClass]="showTopicFilters ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+    </h3>
+    <div *ngIf="showTopicFilters" class="collapsible-content">
+      <clark-filter-section [info]="topicFilter" (change)="registerChange()"></clark-filter-section>
+    </div>
+  </div>
 
-  <!-- Level Filters -->
-  <clark-filter-section [info]="levelFilter" (change)="registerChange()"></clark-filter-section>
+  <!-- Academic Level -->
+  <div class="filter-group">
+    <h3 class="filter-title">Academic Level</h3>
+    <clark-filter-section [info]="levelFilter" (change)="registerChange()"></clark-filter-section>
+  </div>
 
-  <!-- Guidelines Filters -->
-  <clark-filter-section [info]="frameworkFilter" (change)="registerChange()">
-    <a (click)="openAdvancedSearch()">Advanced
-      <span *ngIf="guidelineFilter.length > 0">({{ guidelineFilter.length }} Selected)</span></a>
-  </clark-filter-section>
-</div>
+  <!-- Advanced Filters (Collapsed by default) -->
+  <div class="filter-group">
+    <h3 class="filter-title collapsible" (click)="toggleAdvancedFilters()">
+      Advanced Filters
+      <i class="fas" [ngClass]="showAdvancedFilters ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+    </h3>
+    <div *ngIf="showAdvancedFilters" class="collapsible-content">
+      <!-- Guidelines Filters -->
+      <div class="advanced-filter">
+        <clark-filter-section [info]="frameworkFilter" (change)="registerChange()">
+          <a (click)="openAdvancedSearch()">Advanced Guidelines
+            <span *ngIf="guidelineFilter.length > 0">({{ guidelineFilter.length }} Selected)</span></a>
+        </clark-filter-section>
+      </div>
 
-<div *ngIf="isAdminOrEditor()">
-  <br />
-  <p>Admin/Editor Filters</p>
-  <clark-filter-section [info]="noGuidelineFilter" (change)="registerChange()"></clark-filter-section>
-</div>
+      <!-- Tags Filters -->
+      <div class="advanced-filter">
+        <h4 class="sub-filter-title">
+          Filter by Tags
+          <span class="beta-badge">Beta</span>
+        </h4>
+        <clark-filter-section *ngFor="let tagType of tagTypes" [info]="getFilteredTags(tagType)"
+          (change)="registerChange()"></clark-filter-section>
+      </div>
 
-<div>
-  <br />
-  <p>
-    FILTER BY TAG
-    <a href="https://forms.gle/j8jp5Qqvm3yxwPei8" target="_blank" class="beta"
-      tip="Click to learn more about tagging in CLARK and provide feedback. This will open in a new tab.">[Beta]</a>
-  </p>
-  <!-- Dynamic tag type filter sections -->
-  <clark-filter-section *ngFor="let tagType of tagTypes" [info]="getFilteredTags(tagType)"
-    (change)="registerChange()"></clark-filter-section>
+      <!-- Admin/Editor Filters -->
+      <div *ngIf="isAdminOrEditor()" class="advanced-filter">
+        <h4 class="sub-filter-title">Admin/Editor</h4>
+        <clark-filter-section [info]="noGuidelineFilter" (change)="registerChange()"></clark-filter-section>
+      </div>
+    </div>
+  </div>
 </div>
 
 <clark-popup *ngIf="showAdvancedSearch" (closed)="closeAdvancedSearch()">

@@ -70,9 +70,20 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
       this.onResize();
     });
 
-    const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
-    this.averageRating = ratings.avgValue;
-    this.reviewsCount = ratings.ratings?.length;
+    try {
+      const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
+      if (ratings) {
+        this.averageRating = ratings.avgValue;
+        this.reviewsCount = ratings.ratings?.length;
+      } else {
+        this.averageRating = 0;
+        this.reviewsCount = 0;
+      }
+    } catch (error) {
+      console.warn('Error fetching ratings for learning object:', error);
+      this.averageRating = 0;
+      this.reviewsCount = 0;
+    }
 
     this.cd.detectChanges();
   }
@@ -145,7 +156,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
    * @returns string unformated or title cased
    */
   organizationFormat(organization: string) {
-    return titleCase(organization);
+    return organization ? titleCase(organization) : '';
   }
 
   onResize() {
@@ -170,6 +181,16 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     if (window.screen.width <= 750 && this.collection.length > 12) {
       this.collection = this.collection.substring(0, 12) + '...';
     }
+  }
+
+  /**
+   * Get tags to display, limiting to 6 tags for better UI
+   */
+  getDisplayTags(): string[] {
+    if (!this.learningObject.tags || this.learningObject.tags.length === 0) {
+      return [];
+    }
+    return this.learningObject.tags.slice(0, 6);
   }
 
   ngOnDestroy() {

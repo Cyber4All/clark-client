@@ -16,6 +16,7 @@ import { ClickOutsideModule } from 'ng-click-outside';
 import { SharedModule } from '../../shared/shared.module';
 import { FeaturedComponent } from './featured/featured.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
+import { ModernLearningCardComponent } from './modern-learning-card/modern-learning-card.component';
 
 @NgModule({
   imports: [
@@ -30,11 +31,13 @@ import { LearningObjectListingComponent } from './learning-object/learning-objec
     FooterComponent,
     FeaturedComponent,
     LearningObjectListingComponent,
+    ModernLearningCardComponent,
   ],
   declarations: [
     FooterComponent,
     FeaturedComponent,
     LearningObjectListingComponent,
+    ModernLearningCardComponent,
   ],
   providers: [ProfileResovler]
 })

@@ -1,0 +1,97 @@
+<!-- Chatbot Toggle Button -->
+<div class="chatbot-toggle" 
+     [class.minimized]="!isChatOpen" 
+     (click)="toggleChat()"
+     *ngIf="!isChatOpen">
+  <div class="toggle-icon">
+    <i class="fas fa-comments"></i>
+  </div>
+  <div class="toggle-pulse"></div>
+</div>
+
+<!-- Chatbot Window -->
+<div class="chatbot-overlay" 
+     [class.visible]="isChatOpen"
+     (click)="closeChatOnOverlay($event)">
+  <div class="chatbot-window" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="chatbot-header">
+      <div class="header-content">
+        <div class="clark-avatar">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="header-info">
+          <h3>CLARK Assistant</h3>
+          <span class="status">Online • Ready to help</span>
+        </div>
+      </div>
+      <button class="close-btn" (click)="toggleChat()" aria-label="Close chat">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="chatbot-messages" #messagesContainer>
+      <div class="message bot-message" *ngFor="let message of messages">
+        <div class="message-avatar" *ngIf="message.sender === 'bot'">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="message-content" [class.user-content]="message.sender === 'user'">
+          <div class="message-bubble" [class.user-bubble]="message.sender === 'user'">
+            <p [innerHTML]="message.text"></p>
+            <span class="message-time">{{ message.timestamp | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing indicator -->
+      <div class="message bot-message" *ngIf="isTyping">
+        <div class="message-avatar">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div class="message-content">
+          <div class="message-bubble typing-indicator">
+            <div class="typing-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions" *ngIf="messages.length <= 1">
+      <button class="quick-action-btn" 
+              *ngFor="let action of quickActions"
+              (click)="sendQuickAction(action)">
+        <i [class]="action.icon"></i>
+        <span>{{ action.text }}</span>
+      </button>
+    </div>
+
+    <!-- Input Area -->
+    <div class="chatbot-input">
+      <div class="input-wrapper">
+        <input 
+          type="text" 
+          placeholder="Ask CLARK anything..."
+          [(ngModel)]="currentMessage"
+          (keyup.enter)="sendMessage()"
+          #messageInput
+          class="message-input">
+        <button 
+          class="send-btn" 
+          (click)="sendMessage()"
+          [disabled]="!currentMessage.trim()"
+          aria-label="Send message">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+      <div class="input-footer">
+        <span class="disclaimer">CLARK Assistant can help with platform questions and cybersecurity resources.</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -21,12 +21,13 @@
         </div>
     </div>
   </clark-popup>
-  <clark-cookies 
-    [@banner] 
-    *ngIf="displayCookieBanner()" 
+  <clark-cookies
+    [@banner]
+    *ngIf="displayCookieBanner()"
     (showCookieBanner)="showCookieBanner($event)"
     (cookieAgreement)="setCookieAgreement($event)"
   ></clark-cookies>
+  <clark-chatbot *ngIf="isChatbotEnabled"></clark-chatbot>
 </ng-template>
 
 <clark-popup *ngIf="displayNewslettereBanner()" (closed)="showSubscriptionBanner(false)">

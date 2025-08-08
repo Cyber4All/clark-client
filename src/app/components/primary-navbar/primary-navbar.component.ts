@@ -1,7 +1,8 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ChangeDetectorRef } from '@angular/core';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { NavbarDropdownService } from 'app/core/client-module/navBarDropdown.service';
+import { UtilityService } from 'app/core/utility-module/utility.service';
 import { Router, NavigationStart, Event as NavigationEvent } from '@angular/router';
 import { Topic } from '../../../entity';
 import { NotificationService } from 'app/core/notification-module/notification.service';
@@ -17,6 +18,10 @@ export class PrimaryNavbarComponent implements OnInit {
 
   showNav: boolean;
   userDropdown: boolean;
+  browseDropdown: boolean;
+  collectionsDropdown: boolean;
+  topicDropdown: boolean;
+  resourcesDropdown: boolean;
   isLoggedIn: boolean;
   isDesktop: boolean;
   isMSearch: boolean;
@@ -41,6 +46,8 @@ export class PrimaryNavbarComponent implements OnInit {
     private userService: UserService,
     private notificationService: NotificationService,
     private router: Router,
+    public utilityService: UtilityService,
+    private cd: ChangeDetectorRef,
   ) {
     if (!this.auth.user) {
       this.router.events
@@ -63,6 +70,10 @@ export class PrimaryNavbarComponent implements OnInit {
     this.isDesktop = window.innerWidth >= this.resizeThreshold;
     this.auth.isLoggedIn.subscribe(val => {
       this.isLoggedIn = val;
+      // Force change detection when login state changes
+      if (this.cd) {
+        this.cd.detectChanges();
+      }
     });
     this.dropdowns.isMHamburger.subscribe(val => {
       this.isMHamburger = val;
@@ -92,6 +103,18 @@ export class PrimaryNavbarComponent implements OnInit {
         }
         return 0;
       });
+    });
+    this.dropdowns.browseDropdown.subscribe(val => {
+      this.browseDropdown = val;
+    });
+    this.dropdowns.collectionsDropdown.subscribe(val => {
+      this.collectionsDropdown = val;
+    });
+    this.dropdowns.topicDropdown.subscribe(val => {
+      this.topicDropdown = val;
+    });
+    this.dropdowns.resourcesDropdown.subscribe(val => {
+      this.resourcesDropdown = val;
     });
     this.externalResources = this.dropdowns.externalResources;
     this.dropdowns.setNavbarStatus();

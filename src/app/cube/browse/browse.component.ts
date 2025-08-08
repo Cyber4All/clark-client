@@ -1,18 +1,20 @@
-import { takeUntil, debounceTime } from 'rxjs/operators';
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   HostListener,
   OnDestroy,
-  AfterViewInit,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { COPY } from './browse.copy';
-import { Observable, Subject } from 'rxjs';
-import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { NavbarService } from 'app/core/client-module/navbar.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { TopicsService } from '../../core/learning-object-module/topics/topics.service';
+import { OrderBy, Query, SortType } from '../../interfaces/query';
+import { COPY } from './browse.copy';
 
 @Component({
   selector: 'cube-browse',
@@ -28,7 +30,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   query: Query = {
     text: '',
     currPage: 1,
-    limit: 10,
+    limit: 30,
     length: [],
     noGuidelines: '',
     guidelines: [],
@@ -70,8 +72,40 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   shouldResetPage = false;
 
   sortMenuDown: boolean;
+  sortMenuOpen = false;
   showClearSort: boolean;
   sortText = 'Newest';
+
+  // New properties for modern design
+  searchQuery = '';
+  viewMode: 'grid' | 'list' = 'grid';
+  showAdvancedFilters = false;
+  currentSort = 'newest';
+
+  // Quick filter options
+  quickLengthFilters = [
+    { name: '< 1 Hour', value: 'nanomodule', icon: 'fas fa-clock' },
+    { name: '1-4 Hours', value: 'micromodule', icon: 'fas fa-hourglass-half' },
+    { name: '4-10 Hours', value: 'module', icon: 'fas fa-hourglass' },
+    { name: '10+ Hours', value: 'unit', icon: 'fas fa-hourglass-end' }
+  ];
+
+  quickLevelFilters = [
+    { name: 'Beginner', value: 'undergraduate' },
+    { name: 'Intermediate', value: 'graduate' },
+    { name: 'Advanced', value: 'postgraduate' }
+  ];
+
+  collections: any[] = [];
+  topTopics: any[] = [];
+
+  sortOptions = [
+    { label: 'Newest First', value: 'newest', icon: 'fas fa-calendar-plus' },
+    { label: 'Most Downloaded', value: 'downloads', icon: 'fas fa-download' },
+    { label: 'Highest Rated', value: 'rating', icon: 'fas fa-star' },
+    { label: 'Alphabetical', value: 'alphabetical', icon: 'fas fa-sort-alpha-down' },
+    { label: 'Shortest First', value: 'duration', icon: 'fas fa-clock' }
+  ];
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -86,12 +120,17 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private navService: NavbarService,
     private searchService: SearchService,
+    private collectionService: CollectionService,
+    private topicsService: TopicsService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
   }
 
   ngAfterViewInit() {
+    // Initialize modern browse page
+    this.initializeModernBrowse();
+
     // used by the performSearch function (when delay is true) to add a debounce effect
     this.searchDelaySubject = new Subject<void>()
       .pipe(debounceTime(650), takeUntil(this.unsubscribe))
@@ -107,8 +146,15 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.makeQuery(params);
         // with a text search and no sortType is provided, no sort is applied, otherwise apply the default sort
         this.sortText = params.text && !params.sortType ? '' : this.sortText;
+        this.searchQuery = this.query.text || '';
         this.fetchLearningObjects(this.query);
       });
+  }
+
+  private async initializeModernBrowse() {
+    // Load collections and topics dynamically
+    await this.loadCollections();
+    await this.loadTopics();
   }
 
   get isMobile(): boolean {
@@ -281,28 +327,31 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  toggleSortMenu(state: boolean) {
-    this.sortMenuDown = state;
-    this.cd.detectChanges();
-  }
 
   toggleSort(val) {
     if (val !== null) {
       this.showClearSort = true;
       if (val === 'da') {
         this.sortText = 'Oldest';
+        this.query.orderBy = OrderBy.Date;
+        this.query.sortType = SortType.Ascending;
       } else if (val === 'dd') {
         this.sortText = 'Newest';
+        this.query.orderBy = OrderBy.Date;
+        this.query.sortType = SortType.Descending;
       } else if (val === 'na') {
-        this.sortText = 'Name (Asc)';
-      } else if (val === 'nd') {
-        this.sortText = 'Name (Desc)';
+        this.sortText = 'Alphabetical';
+        this.query.orderBy = OrderBy.Name;
+        this.query.sortType = SortType.Ascending;
+      } else if (val === 'md') {
+        this.sortText = 'Most Downloaded';
+        this.query.orderBy = 'downloads' as OrderBy;
+        this.query.sortType = SortType.Descending;
+      } else if (val === 'hr') {
+        this.sortText = 'Highest Rated';
+        this.query.orderBy = 'rating' as OrderBy;
+        this.query.sortType = SortType.Descending;
       }
-      const sort = val.charAt(0);
-      const dir = val.charAt(1);
-      this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-      this.query.sortType =
-        dir === 'd' ? SortType.Descending : SortType.Ascending;
 
       this.performSearch();
     }
@@ -407,5 +456,275 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         q.fileTypes?.length
       )
     );
+  }
+
+  // New methods for modern browse page
+  onSearchInput(event: any) {
+    this.searchQuery = event.target.value;
+    this.query.text = this.searchQuery;
+    this.performSearch(true); // Debounced search
+  }
+
+  clearSearchInput() {
+    this.searchQuery = '';
+    this.query.text = '';
+    this.performSearch();
+  }
+
+  setViewMode(mode: 'grid' | 'list') {
+    this.viewMode = mode;
+    this.cd.detectChanges();
+  }
+
+  toggleAdvancedFilters() {
+    this.showAdvancedFilters = !this.showAdvancedFilters;
+    this.cd.detectChanges();
+  }
+
+  toggleSortMenu() {
+    this.sortMenuOpen = !this.sortMenuOpen;
+    this.cd.detectChanges();
+  }
+
+  selectSort(option: any) {
+    this.currentSort = option.value;
+    this.sortText = option.label;
+    this.sortMenuOpen = false;
+
+    // Apply sort logic
+    switch (option.value) {
+      case 'newest':
+        this.query.orderBy = OrderBy.Date;
+        this.query.sortType = SortType.Descending;
+        break;
+      case 'downloads':
+        this.query.orderBy = 'downloads' as OrderBy;
+        this.query.sortType = SortType.Descending;
+        break;
+      case 'rating':
+        this.query.orderBy = 'rating' as OrderBy;
+        this.query.sortType = SortType.Descending;
+        break;
+      case 'alphabetical':
+        this.query.orderBy = OrderBy.Name;
+        this.query.sortType = SortType.Ascending;
+        break;
+      case 'duration':
+        this.query.orderBy = 'length' as OrderBy;
+        this.query.sortType = SortType.Ascending;
+        break;
+    }
+
+    this.performSearch();
+  }
+
+  getSortDisplayName(): string {
+    return this.sortOptions.find(opt => opt.value === this.currentSort)?.label || 'Newest First';
+  }
+
+  // Filter methods
+  isLengthSelected(length: string): boolean {
+    if (!this.query.length) {
+return false;
+}
+    if (typeof this.query.length === 'string') {
+      return this.query.length === length;
+    }
+    return this.query.length.includes(length);
+  }
+
+  toggleLengthFilter(length: string) {
+    if (!this.query.length) {
+      this.query.length = [];
+    }
+
+    // Ensure length is an array
+    if (typeof this.query.length === 'string') {
+      this.query.length = [this.query.length];
+    }
+
+    const index = this.query.length.indexOf(length);
+    if (index > -1) {
+      this.query.length.splice(index, 1);
+    } else {
+      this.query.length.push(length);
+    }
+    this.performSearch();
+  }
+
+  isLevelSelected(level: string): boolean {
+    return this.query.level?.includes(level) || false;
+  }
+
+  toggleLevelFilter(level: string) {
+    if (!this.query.level) {
+this.query.level = [];
+}
+    const index = this.query.level.indexOf(level);
+    if (index > -1) {
+      this.query.level.splice(index, 1);
+    } else {
+      this.query.level.push(level);
+    }
+    this.performSearch();
+  }
+
+  isCollectionSelected(collection: string): boolean {
+    return this.query.collection === collection;
+  }
+
+  toggleCollectionFilter(collection: string) {
+    this.query.collection = this.query.collection === collection ? '' : collection;
+    this.performSearch();
+  }
+
+  isTopicSelected(topic: string): boolean {
+    return this.query.topics?.includes(topic) || false;
+  }
+
+  toggleTopicFilter(topic: string) {
+    if (!this.query.topics) {
+this.query.topics = [];
+}
+    const index = this.query.topics.indexOf(topic);
+    if (index > -1) {
+      this.query.topics.splice(index, 1);
+    } else {
+      this.query.topics.push(topic);
+    }
+    this.performSearch();
+  }
+
+  hasActiveFilters(): boolean {
+    return this.anyFiltersSelected() || !!this.query.text;
+  }
+
+  getActiveFiltersCount(): number {
+    let count = 0;
+    if (this.query.length?.length) {
+count += this.query.length.length;
+}
+    if (this.query.level?.length) {
+count += this.query.level.length;
+}
+    if (this.query.collection) {
+count += 1;
+}
+    if (this.query.topics?.length) {
+count += this.query.topics.length;
+}
+    return count;
+  }
+
+  getActiveFilterTags(): any[] {
+    const tags: any[] = [];
+
+    if (this.query.length) {
+      this.query.forEach(length => {
+        const filter = this.quickLengthFilters.find(f => f.value === length);
+        if (filter) {
+tags.push({ type: 'length', value: length, label: filter.name });
+}
+      });
+    }
+
+    if (this.query.level) {
+      this.query.level.forEach(level => {
+        const filter = this.quickLevelFilters.find(f => f.value === level);
+        if (filter) {
+tags.push({ type: 'level', value: level, label: filter.name });
+}
+      });
+    }
+
+    if (this.query.collection) {
+      tags.push({ type: 'collection', value: this.query.collection, label: this.query.collection });
+    }
+
+    return tags;
+  }
+
+  removeFilter(filter: any) {
+    switch (filter.type) {
+      case 'length':
+        this.toggleLengthFilter(filter.value);
+        break;
+      case 'level':
+        this.toggleLevelFilter(filter.value);
+        break;
+      case 'collection':
+        this.query.collection = '';
+        this.performSearch();
+        break;
+    }
+  }
+
+  resetFilters() {
+    this.query = {
+      ...this.query,
+      text: '',
+      length: [],
+      level: [],
+      collection: '',
+      topics: [],
+      currPage: 1
+    };
+    this.searchQuery = '';
+    this.performSearch();
+  }
+
+  getStartIndex(): number {
+    return ((this.query.currPage - 1) * this.query.limit) + 1;
+  }
+
+  getEndIndex(): number {
+    return Math.min(this.query.currPage * this.query.limit, this.totalLearningObjects);
+  }
+
+  navigateToDetails(learningObject: any) {
+    this.router.navigate(['/details', learningObject.author.username, learningObject.cuid, learningObject.version]);
+  }
+
+  private async loadCollections() {
+    try {
+      const collections = await this.collectionService.getCollections();
+      this.collections = collections.map(collection => ({
+        name: collection.name,
+        value: collection.abvName || collection.name.toLowerCase().replace(/\s+/g, '_')
+      })).sort((a, b) => a.name.localeCompare(b.name));
+    } catch (error) {
+      console.warn('Failed to load collections:', error);
+      // Fallback to default collections
+      this.collections = [
+        { name: 'Security Injections', value: 'security_injections' },
+        { name: 'Intro to Cyber', value: 'intro_to_cyber' },
+        { name: 'CLARK Collection', value: 'clark' },
+        { name: 'Secure Coding', value: 'secure_coding_community' },
+        { name: 'NCyTE', value: 'ncyte' }
+      ];
+    }
+  }
+
+  private async loadTopics() {
+    try {
+      const topics = await this.topicsService.getTopics();
+      this.topTopics = topics.map(topic => ({
+        name: topic.name,
+        value: topic._id || topic.name.toLowerCase().replace(/\s+/g, '-')
+      })).sort((a, b) => a.name.localeCompare(b.name));
+    } catch (error) {
+      console.warn('Failed to load topics:', error);
+      // Fallback to default topics
+      this.topTopics = [
+        { name: 'Web Security', value: 'web-security' },
+        { name: 'Cryptography', value: 'cryptography' },
+        { name: 'Network Security', value: 'network-security' },
+        { name: 'Secure Programming', value: 'secure-programming' },
+        { name: 'Risk Assessment', value: 'risk-assessment' },
+        { name: 'Digital Forensics', value: 'digital-forensics' },
+        { name: 'Ethics', value: 'ethics' },
+        { name: 'Privacy', value: 'privacy' }
+      ];
+    }
   }
 }

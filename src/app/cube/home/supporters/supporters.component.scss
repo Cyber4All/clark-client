@@ -1,0 +1,273 @@
+@import '_vars.scss';
+
+.supporters-wrapper {
+    padding: 6rem 2rem;
+    background: linear-gradient(135deg, rgba(55, 110, 214, 0.02) 0%, rgba(248, 248, 248, 0.6) 100%);
+
+    .supporters-content {
+        max-width: 1200px;
+        margin: 0 auto;
+
+        .supporters-header {
+            text-align: center;
+            margin-bottom: 4rem;
+
+            .section-title {
+                font-size: 2.5rem;
+                font-weight: 700;
+                line-height: 1.2;
+                margin: 0 0 1.5rem 0;
+                color: $darker-grey;
+                letter-spacing: -0.02em;
+            }
+
+            .section-description {
+                font-size: 1.125rem;
+                line-height: 1.6;
+                color: $homepage-text;
+                margin: 0;
+                max-width: 600px;
+                margin: 0 auto;
+            }
+        }
+
+        .supporters-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-bottom: 4rem;
+
+            .supporter-card {
+                background: white;
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+
+                &:hover {
+                    transform: translateY(-8px);
+                    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+
+                    .supporter-logo img {
+                        transform: scale(1.05);
+                    }
+                }
+
+                .supporter-link {
+                    display: block;
+                    text-decoration: none;
+                    color: inherit;
+                    padding: 2rem;
+                    height: 100%;
+                    min-height: 280px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    text-align: center;
+                }
+
+                .supporter-logo {
+                    width: 100%;
+                    height: 120px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-bottom: 2rem;
+                    padding: 1rem;
+                    background: rgba(248, 248, 248, 0.5);
+                    border-radius: 12px;
+
+                    img {
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                        transition: transform 0.3s ease;
+                        filter: brightness(1) contrast(1);
+                    }
+
+                    .ncyte-logo {
+                        max-height: 80px;
+                    }
+
+                    .csusb-logo {
+                        max-height: 90px;
+                    }
+
+                    .towson-logo {
+                        max-height: 80px;
+                    }
+
+                    .gula-logo {
+                        max-height: 70px;
+                    }
+                }
+
+                .supporter-info {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+
+                    h3 {
+                        font-size: 1.375rem;
+                        font-weight: 600;
+                        color: $darker-grey;
+                        margin: 0 0 0.75rem 0;
+                        line-height: 1.3;
+                    }
+
+                    p {
+                        font-size: 1rem;
+                        color: $medium-grey;
+                        margin: 0;
+                        line-height: 1.5;
+                    }
+                }
+
+                // Add blue brand color on hover for all cards
+                &:hover {
+                    border-top: 4px solid $homepage-light-blue;
+                }
+            }
+        }
+
+        .supporters-cta {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+
+            &::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(90deg, $homepage-light-blue, $light-blue);
+            }
+
+            .cta-content {
+                max-width: 500px;
+                margin: 0 auto;
+
+                h3 {
+                    font-size: 1.75rem;
+                    font-weight: 600;
+                    color: $darker-grey;
+                    margin: 0 0 1rem 0;
+                }
+
+                p {
+                    font-size: 1.125rem;
+                    color: $homepage-text;
+                    line-height: 1.6;
+                    margin: 0 0 2rem 0;
+                }
+
+                .cta-button {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    padding: 1rem 2rem;
+                    background: $homepage-light-blue;
+                    color: white;
+                    border-radius: 12px;
+                    text-decoration: none;
+                    font-weight: 600;
+                    font-size: 1rem;
+                    transition: all 0.3s ease;
+
+                    i {
+                        font-size: 1rem;
+                    }
+
+                    &:hover {
+                        background: darken($homepage-light-blue, 5%);
+                        transform: translateY(-2px);
+                        box-shadow: 0 8px 30px rgba(55, 110, 214, 0.3);
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Responsive styles
+@media (max-width: 1024px) {
+    .supporters-wrapper {
+        padding: 4rem 1.5rem;
+
+        .supporters-content {
+            .supporters-header .section-title {
+                font-size: 2rem;
+            }
+
+            .supporters-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+
+                .supporter-card .supporter-link {
+                    padding: 1.5rem;
+                    min-height: 240px;
+                }
+            }
+
+            .supporters-cta {
+                padding: 2rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .supporters-wrapper {
+        padding: 3rem 1rem;
+
+        .supporters-content {
+            .supporters-header {
+                margin-bottom: 3rem;
+
+                .section-title {
+                    font-size: 1.75rem;
+                }
+
+                .section-description {
+                    font-size: 1rem;
+                }
+            }
+
+            .supporters-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+
+                .supporter-card .supporter-link {
+                    min-height: 200px;
+                }
+            }
+
+            .supporters-cta {
+                padding: 1.5rem;
+
+                .cta-content {
+                    h3 {
+                        font-size: 1.5rem;
+                    }
+
+                    p {
+                        font-size: 1rem;
+                    }
+
+                    .cta-button {
+                        width: 100%;
+                        justify-content: center;
+                    }
+                }
+            }
+        }
+    }
+}

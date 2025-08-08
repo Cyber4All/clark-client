@@ -1,72 +1,95 @@
-<footer *ngIf="!hideFooter">
-  <div class="footer-info">
-    <section class="links">
-      <div>
-        <h3>Platform</h3>
-        <a [routerLink]="['/system/accessibility-statement']" aria-label="Accessbility Statement link" target="_blank" rel="noopener noreferrer">{{ copy.ACCESSIBILITY }}</a>
-        <a aria-label="Clickable Privacy Notice link" href="https://secured.team/privacy-policy/" target="_blank">{{ copy.PRIVACY }}</a>
-        <!-- <a aria-label="Clickable Roadmap link" href="https://securedteam.notion.site/361b86788dc2493e95c990d77594e6ed?v=7bfe3912023b41f28739e4976d6f9861" target="_blank" rel="noopener noreferrer">{{ copy.ROADMAP }}</a> -->
-        <a [routerLink]="['/system/termsofservice']" aria-label="Clickable Terms of Service link" target="_blank" rel="noopener noreferrer">{{ copy.TERMS }}</a>
-        <a aria-label="Clickable Usage Statistics link" [routerLink]="['/system/usage']" target="_blank" rel="noopener noreferrer">{{ copy.USAGE }}</a>
-      </div>
-      <div>
-        <h3>Help</h3>
-        <a [routerLink]="['/about-us']" aria-label="About Us Page link" rel="noopener noreferrer"> About Us </a>
-        <a aria-label="Clickable Ask for Help link" href="mailto:info@secured.team?subject=CLARK Help">{{ copy.HELP }}</a>
-        <a [routerLink]="['/editorial-process']" aria-label="Editorial Process" rel="noopener noreferrer">Editorial Process</a>
-        <a [routerLink]="['/contribute-page']" aria-label="Contribute Page" rel="noopener noreferrer"> Resources for Contributors </a>
-        <a aria-label="Clickable Troubleshooting link" href="http://help.clark.center" target="_blank" rel="noopener noreferrer">Troubleshooting</a>
-        <!-- <a aria-label="Clickable Tutorial link" href="http://about.clark.center/tutorial" target="_blank" rel="noopener noreferrer">{{ copy.TUTORIAL }}</a> -->
-      </div>
-      <div>
-        <h3>General Information</h3>
-        <a aria-label= "Clickable About Us link" href="http://clark.center/about" >{{copy.ABOUT}}</a>
-        <a aria-label="Clickable Blog link" href="https://blogs.clark.center/" target="_blank">{{copy.BLOG}}</a>
-        <a aria-label="Clickable Meet the Team link" href="http://secured.team/team" target="_blank" rel="noopener noreferrer">{{ copy.TEAM }}</a>
-        <a [routerLink]="['/press']" aria-label="Press and Media link">{{ copy.PRESS }}</a>
-        <a aria-label="Newsletter Subscription modal" (activate)="toggleNewsletterBanner()">{{ copy.SUBSCRIBE }}</a>
-
-      </div>
-    </section>
-    <section class="grants">
-      <div class="images">
-        <div class="logo-wrapper">
-          <a href="https://www.towson.edu/" target="_blank">
-            <img src="assets/images/towson_logo.png" alt="Towson University Logo">
+<footer *ngIf="!hideFooter" class="modern-footer">
+  <div class="footer-container">
+    <!-- Main Footer Content -->
+    <div class="footer-main">
+      <!-- Brand Section -->
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <span class="brand-icon"></span>
+          <span class="brand-name">CLARK</span>
+        </div>
+        <p class="brand-description">
+          The largest platform providing free cybersecurity curriculum for educators worldwide.
+        </p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/clark_secured/" aria-label="CLARK Instagram" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://twitter.com/theclarkcyber" aria-label="CLARK Twitter" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="https://linkedin.com/company/theclarkcyber" aria-label="CLARK LinkedIn" target="_blank" rel="noopener noreferrer">
+            <i class="fab fa-linkedin"></i>
           </a>
         </div>
       </div>
-    </section>
-  </div>
-  <div class="grants">
-    <div class="images bottom">
-      <div class="logo-wrapper">
-        <a href="https://www.ncyte.net/" target="_blank">
-          <img class="ncyte" alt="NCyTE Center Logo" src="assets/images/collections/white_ncyte_logo.png" />
-        </a>
+
+      <!-- Links Sections -->
+      <div class="footer-links">
+        <div class="links-column">
+          <h3>Platform</h3>
+          <ul>
+            <li><a [routerLink]="['/system/accessibility-statement']" target="_blank" rel="noopener noreferrer">{{ copy.ACCESSIBILITY }}</a></li>
+            <li><a href="https://secured.team/privacy-policy/" target="_blank" rel="noopener noreferrer">{{ copy.PRIVACY }}</a></li>
+            <li><a [routerLink]="['/system/termsofservice']" target="_blank" rel="noopener noreferrer">{{ copy.TERMS }}</a></li>
+            <li><a [routerLink]="['/system/usage']" target="_blank" rel="noopener noreferrer">{{ copy.USAGE }}</a></li>
+          </ul>
+        </div>
+
+        <div class="links-column">
+          <h3>Support</h3>
+          <ul>
+            <li><a [routerLink]="['/about-us']" rel="noopener noreferrer">About Us</a></li>
+            <li><a href="mailto:info@secured.team?subject=CLARK Help">{{ copy.HELP }}</a></li>
+            <li><a [routerLink]="['/editorial-process']" rel="noopener noreferrer">Editorial Process</a></li>
+            <li><a href="http://help.clark.center" target="_blank" rel="noopener noreferrer">Troubleshooting</a></li>
+          </ul>
+        </div>
+
+        <div class="links-column">
+          <h3>Community</h3>
+          <ul>
+            <li><a href="https://blogs.clark.center/" target="_blank" rel="noopener noreferrer">{{copy.BLOG}}</a></li>
+            <li><a href="http://secured.team/team" target="_blank" rel="noopener noreferrer">{{ copy.TEAM }}</a></li>
+            <li><a [routerLink]="['/press']">{{ copy.PRESS }}</a></li>
+            <li><a [routerLink]="['/contribute-page']" rel="noopener noreferrer">Contributors</a></li>
+          </ul>
+        </div>
+
+        <div class="links-column">
+          <h3>Stay Connected</h3>
+          <ul>
+            <li><a (activate)="toggleNewsletterBanner()">{{ copy.SUBSCRIBE }}</a></li>
+            <li><a href="http://clark.center/about" target="_blank" rel="noopener noreferrer">{{copy.ABOUT}}</a></li>
+          </ul>
+        </div>
       </div>
-      <div class="logo-wrapper">
-        <a href="https://www.csusb.edu/" target="_blank" aria-label="CSUSB home page">
-          <img src="assets/images/CSUSB.png" class="csusb" alt="CSUSB Logo">
-        </a>
-      </div>
-      <div class="logo-wrapper">
-        <a href="https://www.gula.tech/" target="_blank" aria-label="GULA Tech">
-          <img src="assets/images/gula_logo.png" class="gula" alt="GULA Tech">
-        </a>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom">
+      <div class="bottom-content">
+        <div class="copyright">
+          <p>{{ copy.SUPPORTEDBY }}</p>
+        </div>
+        <div class="partners">
+          <span class="partners-label">Proudly supported by:</span>
+          <div class="partner-logos">
+            <a href="https://www.ncyte.net/" target="_blank" rel="noopener noreferrer" class="partner-link">
+              <img src="assets/images/collections/white_ncyte_logo.png" alt="NCyTE Center" class="partner-logo ncyte">
+            </a>
+            <a href="https://www.csusb.edu/" target="_blank" rel="noopener noreferrer" class="partner-link">
+              <img src="assets/images/CSUSB.png" alt="California State University San Bernardino" class="partner-logo csusb">
+            </a>
+            <a href="https://www.towson.edu/" target="_blank" rel="noopener noreferrer" class="partner-link">
+              <img src="assets/images/towson_logo.png" alt="Towson University" class="partner-logo towson">
+            </a>
+            <a href="https://www.gula.tech/" target="_blank" rel="noopener noreferrer" class="partner-link">
+              <img src="assets/images/gula_logo.png" alt="Gula Tech Adventures" class="partner-logo gula">
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="share-icons">
-    <a href="https://www.instagram.com/clark_secured/" class="button icon-only instagram" id="instagram" aria-label="Go to CLARK Instagram page">
-      <i class="fab fa-instagram"></i>
-    </a>
-    <a href="https://twitter.com/theclarkcyber" class="button icon-only twitter" id="twitter" aria-label="Go to CLARK Twitter page">
-      <i class="fab fa-twitter"></i>
-    </a>
-    <a href="https://linkedin.com/company/theclarkcyber" class="button icon-only linkedin" id="linkedin" aria-label="Go to CLARK LinkedIn page">
-      <i class="fab fa-linkedin"></i>
-    </a>
-  </div>
-  <p>{{ copy.SUPPORTEDBY }}</p>
 </footer>

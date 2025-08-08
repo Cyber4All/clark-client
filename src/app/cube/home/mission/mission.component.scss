@@ -1,80 +1,128 @@
 @import '_vars.scss';
 
 .wrapper {
-    display: flex;
-    flex-direction: column;
-    padding: 10px 60px;
+    padding: 8rem 2rem;
+    background: linear-gradient(135deg, rgba(55, 110, 214, 0.02) 0%, rgba(248, 248, 248, 0.5) 100%);
 
     .first {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        padding: 0px 240px 100px;
+        max-width: 800px;
+        margin: 0 auto 6rem auto;
 
-        h1{
-            padding-bottom: 35px;
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: $darker-grey;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: $homepage-text;
+            max-width: 600px;
+            margin: 0;
         }
     }
 
     .second {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        margin-left: 50px;
-        padding-bottom: 250px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
 
         .clark-quality {
-            margin-right: 50px;
-            width: 30%;
-
-            h2 {
-                margin: 10px 0 auto;
-            }
-            span {
-                position: relative;
-                left: -10px;
-                .fa-stack-2x {
-                    color: $box-background;
-                }
-    
-                .fa-stack-1x {
-                    color: $homepage-light-blue;
-                }
-            }
-            
-        }
-    }
-}
-
-p {
-    font-weight: 400;
-    font-size: 18px;
-    color: #454545; 
-}
-
-@media screen and (max-width: 950px) {
-    .wrapper{
-        padding: 10px 30px;
-        .first {
-            padding: 0px 0px 60px;
-        }
-        .second {
+            display: flex;
             flex-direction: column;
             align-items: center;
-            margin-left: 0;
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
 
-            .clark-quality {
-                margin: 0px 0px 60px;
-                text-align: center;
-                width: 75%;
-                max-width: 360px;
+            &:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            }
 
-                span {
-                    left: 0px;
+            span {
+                margin-bottom: 1.5rem;
+
+                .fa-stack {
+                    font-size: 2rem;
                 }
+
+                .fa-stack-2x {
+                    color: $box-background;
+                    font-size: 2.5rem;
+                }
+
+                .fa-stack-1x {
+                    color: $homepage-light-blue;
+                    font-size: 1.5rem;
+                }
+            }
+
+            h2 {
+                font-size: 1.5rem;
+                font-weight: 600;
+                color: $darker-grey;
+                margin: 0 0 1rem 0;
+                line-height: 1.3;
+            }
+
+            p {
+                font-size: 1rem;
+                line-height: 1.6;
+                color: $homepage-text;
+                margin: 0;
             }
         }
     }
-    
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper {
+        padding: 5rem 1rem;
+
+        .first {
+            margin-bottom: 4rem;
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+        }
+
+        .second {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+
+            .clark-quality {
+                padding: 1.5rem;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .wrapper {
+        padding: 4rem 1rem;
+
+        .first {
+            h1 {
+                font-size: 1.75rem;
+            }
+        }
+    }
 }

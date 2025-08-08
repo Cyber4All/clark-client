@@ -2,37 +2,70 @@
 <html lang="en">
 
 <head>
+  <!-- Global Fetch Error Handling -->
+  <script>
+    (function() {
+      // Store original fetch
+      var originalFetch = window.fetch;
+
+      // Override fetch with error handling
+      window.fetch = function() {
+        return originalFetch.apply(this, arguments)
+          .catch(function(error) {
+            // Silently handle analytics/tracking failures
+            if (error.message === 'Failed to fetch') {
+              console.warn('Network request failed (likely analytics/tracking service):', arguments[0]);
+              return Promise.reject(error);
+            }
+            return Promise.reject(error);
+          });
+      };
+    })();
+  </script>
+
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;
+    j.onerror=function(){console.warn('Google Tag Manager failed to load');};
+    f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-K4SF65J');</script>
     <!-- End Google Tag Manager -->
   <!-- Google Analytics Scripts -->
   <script>
-    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
-    ga('create', 'UA-120134925-1', 'auto');
+    try {
+      window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+      ga('create', 'UA-120134925-1', 'auto');
 
-    // Plugins in use.
-    ga('require', 'outboundLinkTracker');
-    ga('require', 'urlChangeTracker');
-    // ...
+      // Plugins in use.
+      ga('require', 'outboundLinkTracker');
+      ga('require', 'urlChangeTracker');
+      // ...
 
-    ga('send', 'pageview');
+      ga('send', 'pageview');
+    } catch(e) {
+      console.warn('Google Analytics initialization failed:', e);
+    }
   </script>
 
   <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPF9CKLGYL"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPF9CKLGYL"
+          onerror="console.warn('Google gtag script failed to load');"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-SPF9CKLGYL');
+    try {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-SPF9CKLGYL');
+    } catch(e) {
+      console.warn('Google gtag configuration failed:', e);
+    }
   </script>
-  <script async src="https://www.google-analytics.com/analytics.js"></script>
-  <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"></script>
+  <script async src="https://www.google-analytics.com/analytics.js"
+          onerror="console.warn('Google Analytics script failed to load');"></script>
+  <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"
+          onerror="console.warn('Autotrack script failed to load');"></script>
   <!-- END Google Analytics Scripts -->
   <meta charset="utf-8">
   <title>CLARK | Cybersecurity Library</title>
@@ -53,7 +86,8 @@
   <script>
   </script>
   <!-- Font Awesome 5 Pro -->
-  <script src="https://kit.fontawesome.com/791c37424b.js" crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/791c37424b.js" crossorigin="anonymous"
+          onerror="console.warn('Font Awesome script failed to load');"></script>
   <!-- <script type="text/javascript">!function (d) { var s = d.createElement('script'); s.src = 'https://widget.indemand.ly/launcher.js'; s.onload = function () { new Indemandly({ "domain": "clark" }); }; var c = d.getElementsByTagName('script')[0]; c.parentNode.insertBefore(s, c); }(document)</script> -->
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -66,23 +100,31 @@
   <!-- End Google Tag Manager (noscript) -->
   <!-- Load the Facebook SDK -->
   <script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId            : '232270740891436',
-        autoLogAppEvents : true,
-        xfbml            : true,
-        version          : 'v3.0'
-      });
-    };
+    try {
+      window.fbAsyncInit = function() {
+        try {
+          FB.init({
+            appId            : '232270740891436',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v3.0'
+          });
+        } catch(e) {
+          console.warn('Facebook SDK initialization failed:', e);
+        }
+      };
 
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-
+      (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk.js";
+          js.onerror = function() { console.warn('Facebook SDK script failed to load'); };
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    } catch(e) {
+      console.warn('Facebook SDK setup failed:', e);
+    }
   </script>
   <clark-root></clark-root>
 </body>
