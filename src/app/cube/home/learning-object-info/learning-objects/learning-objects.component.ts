@@ -45,15 +45,18 @@ export class LearningObjectsComponent implements OnInit {
    * @returns A comma separated string of learning object levels
    */
   displayFeaturedObjectLevels() {
-  const levels = this.featuredObject?.levels;
+    const levels = this.featuredObject?.levels;
 
-  if (!levels || levels.length === 0) return '';
-  if (levels.length === 1) return levels[0];
-  if (levels.length === 2) return `${levels[0]} and ${levels[1]}`;
+    if (levels.length === 1){
+      return levels[0];
+    }
+    if (levels.length === 2){
+      return `${levels[0]} and ${levels[1]}`;
+    }
 
-  // For 3 or more items
-  return levels.slice(0, -1).join(', ') + ', and ' + levels[levels.length - 1];
-}
+    // For 3 or more items
+    return levels.slice(0, -1).join(', ') + ', and ' + levels[levels.length - 1];
+  }
 
 
   /**
