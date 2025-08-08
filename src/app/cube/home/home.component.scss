@@ -1,0 +1,48 @@
+@import '_vars.scss';
+
+// Global home page styles for better flow and consistency
+:host {
+    display: block;
+    min-height: 100vh;
+}
+
+// Ensure smooth transitions between sections
+clark-splash,
+clark-help,
+clark-mission,
+clark-learning-object-info {
+    display: block;
+}
+
+// Add subtle visual separation between sections
+clark-help {
+    position: relative;
+    
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, $homepage-orange, $homepage-purple, $homepage-green);
+        border-radius: 2px;
+        opacity: 0.3;
+    }
+}
+
+clark-learning-object-info {
+    background: rgba(248, 248, 248, 0.2);
+}
+
+// Ensure proper text rendering
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// Smooth scroll behavior
+html {
+    scroll-behavior: smooth;
+}

@@ -32,6 +32,7 @@ import {
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { AuthorCardComponent } from 'app/shared/components/author-card/author-card.component';
 import { CollectionsDropdownComponent } from './collections-dropdown/collections-dropdown.component';
+import { ChatbotComponent } from './chatbot/chatbot.component';
 @NgModule({
   imports: [
     // angular modules
@@ -67,6 +68,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     InputFieldComponent,
     AuthorCardComponent,
     CollectionsDropdownComponent,
+    ChatbotComponent,
   ],
   exports: [
     // components
@@ -86,7 +88,8 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     CookiePopupComponent,
     AddEvaluatorComponent,
     InputFieldComponent,
-    AuthorCardComponent
+    AuthorCardComponent,
+    ChatbotComponent
   ]
 })
 export class SharedComponents {}

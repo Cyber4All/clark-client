@@ -1,13 +1,19 @@
-<div class="wrapper">
-    <h1>What can we help you with today?</h1>
-
-    <div @helpCard class="grid" *ngIf="selectedTemplate === -1">
-        <clark-help-card class="card" *ngFor="let option of helpOptions" [option]="option" (activate)="selectTemplate(option.value)"></clark-help-card>
+<div class="modern-help-wrapper">
+    <div class="help-header">
+        <h1>What can we <span class="gradient-text">help you</span> with today?</h1>
+        <p class="help-description">
+            Whether you're new to cybersecurity education or looking to expand your curriculum,
+            we have resources tailored to your needs.
+        </p>
     </div>
-    
-    <clark-help-back-btn 
+
+    <div @helpCard class="help-grid" *ngIf="selectedTemplate === -1">
+        <clark-help-card class="help-card" *ngFor="let option of helpOptions" [option]="option" (activate)="selectTemplate(option.value)"></clark-help-card>
+    </div>
+
+    <clark-help-back-btn
         @helpBackButton
-        *ngIf="selectedTemplate === 0 || selectedTemplate === 1" 
+        *ngIf="selectedTemplate === 0 || selectedTemplate === 1"
         [option]="helpOptions[selectedTemplate]"
         (activate)="selectTemplate(-1); handleFrameworkClicked();"
         ></clark-help-back-btn>

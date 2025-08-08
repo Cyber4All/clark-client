@@ -149,4 +149,37 @@ export class NavbarDropdownService {
     public linkOut(link: string): void {
         window.open(link);
     }
+
+    // Hover-based dropdown methods
+    public openBrowseDropdown(): void {
+        this.browseDropdown.next(true);
+    }
+
+    public closeBrowseDropdown(): void {
+        this.browseDropdown.next(false);
+    }
+
+    public openCollectionDropdown(): void {
+        this.collectionsDropdown.next(true);
+    }
+
+    public closeCollectionDropdown(): void {
+        this.collectionsDropdown.next(false);
+    }
+
+    public openTopicDropdown(): void {
+        this.topicDropdown.next(true);
+    }
+
+    public closeTopicDropdown(): void {
+        this.topicDropdown.next(false);
+    }
+
+    public openResourcesDropdown(): void {
+        this.resourcesDropdown.next(true);
+    }
+
+    public closeResourcesDropdown(): void {
+        this.resourcesDropdown.next(false);
+    }
 }

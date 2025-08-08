@@ -39,6 +39,11 @@ export class FilterComponent implements OnInit, OnDestroy {
   // Advanced search
   showAdvancedSearch = false;
 
+  // Collapsible filter sections
+  showCollectionFilters = false;
+  showTopicFilters = false;
+  showAdvancedFilters = false;
+
   constructor(
     private collectionService: CollectionService,
     private topicsService: TopicsService,
@@ -282,21 +287,34 @@ export class FilterComponent implements OnInit, OnDestroy {
    * Gets the tag filters
    */
   async getTagFilters() {
-    const tags = (await this.tagsService.getTags());
-    this.tagFilter = {
-      section: 'Tags',
-      filters: tags.map((tag) => ({
-        name: tag.name,
-        tagType: tag.type,
-        value: tag._id,
-        active: false,
-      })),
-    };
+    try {
+      const tags = (await this.tagsService.getTags());
+      this.tagFilter = {
+        section: 'Tags',
+        filters: tags.map((tag) => ({
+          name: tag.name,
+          tagType: tag.type,
+          value: tag._id,
+          active: false,
+        })),
+      };
+    } catch (error) {
+      console.warn('Error loading tag filters:', error);
+      this.tagFilter = {
+        section: 'Tags',
+        filters: [],
+      };
+    }
   }
 
   async getTagTypes() {
-    const tagTypes = await this.tagsService.getTagTypes();
-    this.tagTypes = tagTypes.types;
+    try {
+      const tagTypes = await this.tagsService.getTagTypes();
+      this.tagTypes = tagTypes.types;
+    } catch (error) {
+      console.warn('Error loading tag types:', error);
+      this.tagTypes = [];
+    }
   }
 
   /**
@@ -379,6 +397,30 @@ export class FilterComponent implements OnInit, OnDestroy {
 
   isAdminOrEditor(): boolean {
     return this.authService.isAdminOrEditor();
+  }
+
+  /**
+   * Toggle collection filters visibility
+   */
+  toggleCollectionFilters() {
+    this.showCollectionFilters = !this.showCollectionFilters;
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Toggle topic filters visibility
+   */
+  toggleTopicFilters() {
+    this.showTopicFilters = !this.showTopicFilters;
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Toggle advanced filters visibility
+   */
+  toggleAdvancedFilters() {
+    this.showAdvancedFilters = !this.showAdvancedFilters;
+    this.cd.detectChanges();
   }
 
   ngOnDestroy() {

@@ -40,7 +40,12 @@ export class TagsComponent implements OnInit, OnDestroy {
       this.selectedTags = selected;
     });
 
-    this.types = await this.tagsService.getTypes();
+    try {
+      this.types = await this.tagsService.getTypes();
+    } catch (error) {
+      console.warn('Error loading tag types:', error);
+      this.types = [];
+    }
     this.types.forEach((type: any) => {
       this.selectedTypes[type.value] = false;
     });
@@ -53,15 +58,25 @@ export class TagsComponent implements OnInit, OnDestroy {
   }
 
   async search(): Promise<void> {
-    const tags = await this.tagsService.getTags({ text: this.query});
-    this.taggingService.setSourceArray('tags', tags);
+    try {
+      const tags = await this.tagsService.getTags({ text: this.query});
+      this.taggingService.setSourceArray('tags', tags);
+    } catch (error) {
+      console.warn('Error searching tags:', error);
+      this.taggingService.setSourceArray('tags', []);
+    }
   }
 
   async filter(val: string): Promise<void> {
     this.selectedTypes[val] = !this.selectedTypes[val];
     const keys = Object.keys(this.selectedTypes).filter(key => this.selectedTypes[key] === true);
-    const tags = await this.tagsService.getTags({ text: this.query, type: keys });
-    this.taggingService.setSourceArray('tags', tags);
+    try {
+      const tags = await this.tagsService.getTags({ text: this.query, type: keys });
+      this.taggingService.setSourceArray('tags', tags);
+    } catch (error) {
+      console.warn('Error filtering tags:', error);
+      this.taggingService.setSourceArray('tags', []);
+    }
     this.cdr.detectChanges();
   }
 

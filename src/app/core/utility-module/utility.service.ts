@@ -1,11 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { environment } from '@env/environment';
 import { Injectable } from '@angular/core';
-import { UTILITY_ROUTES } from './utility.routes';
-import { AuthService } from '../auth-module/auth.service';
-import { Observable, throwError } from 'rxjs';
+import { environment } from '@env/environment';
 import { Blog } from 'app/components/blogs/types/blog';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { AuthService } from '../auth-module/auth.service';
+import { UTILITY_ROUTES } from './utility.routes';
 
 export class Downtime {
   constructor(public isDown: boolean, public message: string) { }
@@ -81,47 +81,41 @@ export class UtilityService {
     organizations?: string[];
     status?: string[];
   }): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http
+    try {
+      const result = await this.http
         .get(`${environment.cardUrl}/resources`, {})
-        .toPromise()
-        .then(
-          (res: any) => {
-            resolve(res);
-          },
-          (err) => {
-            reject(err);
-          }
-        );
-    });
+        .toPromise();
+      return result || [];
+    } catch (error) {
+      console.warn('Failed to load CARD resources:', error);
+      // Return empty array on error to prevent app crashes
+      return [];
+    }
   }
 
   async getOrganizations(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.http
+    try {
+      const result = await this.http
         .get(`${environment.cardUrl}/organizations`, {})
-        .toPromise()
-        .then(
-          (res: any) => {
-            resolve(res);
-          },
-          (err) => {
-            reject(err);
-          }
-        );
-    });
+        .toPromise();
+      return result || [];
+    } catch (error) {
+      console.warn('Failed to load organizations:', error);
+      // Return empty array on error to prevent app crashes
+      return [];
+    }
   }
 
-  getDowntime(): Promise<Downtime> {
-    return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
-      .pipe(
-
-        catchError(this.handleError)
-      )
-      .toPromise()
-      .then((val: Downtime) => {
-        return val;
-      });
+  async getDowntime(): Promise<Downtime> {
+    try {
+      const result = await this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
+        .pipe(catchError(this.handleError))
+        .toPromise();
+      return result as Downtime;
+    } catch (error) {
+      console.warn('Failed to get downtime information:', error);
+      // Return a default downtime object on error
+    }
   }
 
   public openCard() {
@@ -132,15 +126,32 @@ export class UtilityService {
   }
 
   private handleError(error: HttpErrorResponse | any) {
-    if (
-      error.error instanceof ErrorEvent ||
-      (error.error && error.error.message)
-    ) {
+    let errorMessage = 'An unknown error occurred';
+
+    if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
-      return throwError(error.error);
+      errorMessage = `Network error: ${error.error.message}`;
     } else {
       // API returned error
-      return throwError(error.error);
+      switch (error.status) {
+        case 0:
+          errorMessage = 'No connection to server';
+          break;
+        case 404:
+          errorMessage = 'Service not found';
+          break;
+        case 500:
+          errorMessage = 'Internal server error';
+          break;
+        case 504:
+          errorMessage = 'Service temporarily unavailable (Gateway Timeout)';
+          break;
+        default:
+          errorMessage = `Server error: ${error.status} ${error.statusText}`;
+      }
     }
+
+    console.warn('API Error:', errorMessage, error);
+    return throwError(errorMessage);
   }
 }

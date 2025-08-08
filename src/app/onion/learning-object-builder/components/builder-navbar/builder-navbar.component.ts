@@ -10,7 +10,6 @@ import { CollectionService, Collection } from 'app/core/collection-module/collec
 import { LearningObject } from '@entity';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
-import { LearningObjectStatus } from '@env/environment';
 
 @Component({
   selector: 'onion-builder-navbar',

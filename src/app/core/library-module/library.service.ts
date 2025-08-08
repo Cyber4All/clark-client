@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 import { catchError, timeout } from 'rxjs/operators';
@@ -6,7 +6,6 @@ import { LearningObject } from '../../../entity/learning-object/learning-object'
 import { ToastrOvenService } from '../../shared/modules/toaster/notification.service';
 import { AuthService } from '../auth-module/auth.service';
 import { LIBRARY_ROUTES } from './library.routes';
-import { environment } from '@env/environment';
 
 export interface LibraryItem { _id: string, savedBy: string, savedOn: string, learningObject: LearningObject }
 
@@ -15,7 +14,6 @@ export interface LibraryItem { _id: string, savedBy: string, savedOn: string, le
 })
 export class LibraryService {
   private user;
-  private headers = new HttpHeaders();
   public libraryItems: Array<LibraryItem> = [];
 
   // Observable boolean to toggle download spinner in components
@@ -35,14 +33,11 @@ export class LibraryService {
   }
 
   /**
-   * Method to update the user object and headers with the latest user information
+   * Method to update the user object with the latest user information
    */
   updateUser() {
     // get new user from auth service
     this.user = this.auth.user || undefined;
-
-    // reset headers with new users auth token
-    this.headers = new HttpHeaders();
   }
 
   /**
@@ -69,18 +64,19 @@ export class LibraryService {
       version: opts.version ? opts.version.toString() : '0'
     });
 
-    return await this.http
-      .get(LIBRARY_ROUTES.GET_USERS_LIBRARY(this.user.username, query), {
-        withCredentials: true,
-        headers: this.headers,
-      })
-      .pipe(
-        catchError((error) => this.handleError(error))
-      )
-      .toPromise()
-      .then((val: any) => {
+    try {
+      const result = await this.http
+        .get<{ userLibraryItems: any[], lastPage: number }>(LIBRARY_ROUTES.GET_USERS_LIBRARY(this.user.username, query), {
+          withCredentials: true
+        })
+        .pipe(
+          catchError((error) => this.handleError(error))
+        )
+        .toPromise();
+
+      if (result) {
         // preserves carts from cartsdb
-        this.libraryItems = val.userLibraryItems
+        this.libraryItems = result.userLibraryItems
           .map((libraryItem) => {
             const learningObject = new LearningObject(libraryItem.learningObject);
             learningObject.id = libraryItem.learningObject?._id;
@@ -92,57 +88,76 @@ export class LibraryService {
               learningObject
             };
           });
-        return { libraryItems: this.libraryItems, lastPage: val.lastPage };
-      });
+        return { libraryItems: this.libraryItems, lastPage: result.lastPage };
+      }
+
+      return { libraryItems: [], lastPage: 0 };
+    } catch (error) {
+      console.warn('Failed to load library:', error);
+      return { libraryItems: [], lastPage: 0 };
+    }
   }
 
   async addToLibrary(
     cuid: string, version: number
   ): Promise<any> {
     if (!this.user) {
-      return;
+      return null;
     }
-    return await this.http
-      .post(
-        LIBRARY_ROUTES.ADD_LEARNING_OBJECT_TO_LIBRARY(
-          this.user.username
-        ),
-        {
-          cuid,
-          version
-        },
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(
-        catchError((error) => {
-          // Check if the error is a 409 conflict error
-          if (error.status === 409) {
-            // Log the error or handle it as needed
-            console.log('Conflict error (409) occurred, but proceeding without throwing.');
-            // Return an observable that completes without emitting, effectively "skipping" the error
-            return of(null);
-          }
-          // For other errors, re-throw them or handle them as needed
-          return throwError(error);
-        })
-      )
-      .toPromise();
+
+    try {
+      const result = await this.http
+        .post(
+          LIBRARY_ROUTES.ADD_LEARNING_OBJECT_TO_LIBRARY(
+            this.user.username
+          ),
+          {
+            cuid,
+            version
+          },
+          { withCredentials: true }
+        )
+        .pipe(
+          catchError((error) => {
+            // Check if the error is a 409 conflict error
+            if (error.status === 409) {
+              // Log the error or handle it as needed
+              console.log('Conflict error (409) occurred, but proceeding without throwing.');
+              // Return an observable that completes without emitting, effectively "skipping" the error
+              return of(null);
+            }
+            // For other errors, re-throw them or handle them as needed
+            return throwError(error);
+          })
+        )
+        .toPromise();
+
+      return result;
+    } catch (error) {
+      console.warn('Failed to add to library:', error);
+      return null;
+    }
   }
 
-  removeFromLibrary(libraryItemId: string): Promise<void> {
+  async removeFromLibrary(libraryItemId: string): Promise<void> {
     if (!this.user) {
       return;
     }
-    this.http
-      .delete(
-        LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
-          this.user.username,
-          libraryItemId
-        ),
-        { headers: this.headers, withCredentials: true }
-      )
-      .pipe(catchError((error) => this.handleError(error)))
-      .toPromise();
+
+    try {
+      await this.http
+        .delete(
+          LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
+            this.user.username,
+            libraryItemId
+          ),
+          { withCredentials: true }
+        )
+        .pipe(catchError((error) => this.handleError(error)))
+        .toPromise();
+    } catch (error) {
+      console.warn('Failed to remove from library:', error);
+    }
   }
 
   /**
@@ -155,7 +170,6 @@ export class LibraryService {
       url, {
       responseType: 'json',
       observe: 'response',
-      headers: this.headers,
       withCredentials: true,
     })
       .pipe(
@@ -210,4 +224,3 @@ export class LibraryService {
     }
   }
 }
-

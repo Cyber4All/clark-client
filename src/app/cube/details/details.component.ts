@@ -640,15 +640,21 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * If the service does not return any ratings, the UI resets to default rating values.
    */
   private async getLearningObjectRatings() {
-      const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
+      try {
+        const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
 
-      if (!ratings) {
+        if (!ratings) {
+          this.resetRatings();
+          return;
+        }
+
+        this.ratings = ratings.ratings || [];
+        this.averageRatingValue = ratings.avgValue || 0;
+      } catch (error) {
+        console.warn('Error fetching ratings for learning object:', error);
         this.resetRatings();
         return;
       }
-
-      this.ratings = ratings.ratings;
-      this.averageRatingValue = ratings.avgValue;
 
       const u = this.auth.username;
       if (this.ratings && this.ratings.length) {
@@ -656,7 +662,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
           if (u === this.ratings[i].user.username) {
             // this is the user's rating
             // we deep copy this to prevent direct modification from component subtree
-            this.userRating = Object.assign({}, ratings[i]);
+            this.userRating = Object.assign({}, this.ratings[i]);
             // See if the user can add new rating or will have the option to edit their current rating
             if (this.userRating) {
               this.canAddNewRating = false;

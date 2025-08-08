@@ -28,32 +28,45 @@ export class GuidelineService {
   async getGuidelines(
     filter?: GuidelinesFilter,
   ): Promise<{ total: number; results: SearchItemDocument[] }> {
-    let query = '';
-    if (filter) {
-      query = querystring.stringify(this.formatFilter(filter));
+    try {
+      let query = '';
+      if (filter) {
+        query = querystring.stringify(this.formatFilter(filter));
+      }
+      // CLARK-SERVICE-FIX: SUPPORT SEARCH QUERY
+      const res = await this.http
+        .get<{ total: number; results: SearchItemDocument[]; }>(
+          STANDARD_GUIDELINES_ROUTES.SEARCH_GUIDELINES(query))
+        .pipe(catchError(this.handleError))
+        .toPromise();
+      return res || { total: 0, results: [] };
+    } catch (error) {
+      console.warn('Failed to load guidelines:', error);
+      // Return empty result on error to prevent app crashes
+      return { total: 0, results: [] };
     }
-    // CLARK-SERVICE-FIX: SUPPORT SEARCH QUERY
-    const res = await this.http
-      .get<{ total: number; results: SearchItemDocument[]; }>(
-        STANDARD_GUIDELINES_ROUTES.SEARCH_GUIDELINES(query))
-      .pipe(catchError(this.handleError))
-      .toPromise();
-    return res;
   }
 
   // CLARK-SERVICE-FIX: SUPPORT SEARCH QUERY
   async getFrameworks(filter?: GuidelinesFilter): Promise<FrameworkDocument[]> {
-    return this.http
-      .get<{ total: number; results: FrameworkDocument[] }>(
-        STANDARD_GUIDELINES_ROUTES.SEARCH_FRAMEWORKS(filter),
-      )
-      .pipe(
-        catchError(this.handleError),
-        map((res) => {
-          return res.results;
-        }),
-      )
-      .toPromise();
+    try {
+      const result = await this.http
+        .get<{ total: number; results: FrameworkDocument[] }>(
+          STANDARD_GUIDELINES_ROUTES.SEARCH_FRAMEWORKS(filter),
+        )
+        .pipe(
+          catchError(this.handleError),
+          map((res) => {
+            return res.results;
+          }),
+        )
+        .toPromise();
+      return result || [];
+    } catch (error) {
+      console.warn('Failed to load frameworks:', error);
+      // Return empty array on error to prevent app crashes
+      return [];
+    }
   }
 
   private formatFilter(filter: GuidelinesFilter) {
@@ -74,12 +87,32 @@ export class GuidelineService {
   }
 
   private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred';
+
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
-      return throwError(error.error.message);
+      errorMessage = `Network error: ${error.error.message}`;
     } else {
       // API returned error
-      return throwError(error);
+      switch (error.status) {
+        case 0:
+          errorMessage = 'No connection to server';
+          break;
+        case 404:
+          errorMessage = 'Service not found';
+          break;
+        case 500:
+          errorMessage = 'Internal server error';
+          break;
+        case 504:
+          errorMessage = 'Service temporarily unavailable (Gateway Timeout)';
+          break;
+        default:
+          errorMessage = `Server error: ${error.status} ${error.statusText}`;
+      }
     }
+
+    console.warn('API Error:', errorMessage, error);
+    return throwError(errorMessage);
   }
 }

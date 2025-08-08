@@ -20,6 +20,8 @@ import { RouterModule } from '@angular/router';
 import { HelpBackBtnComponent } from './help/components/help-back-btn/help-back-btn.component';
 import { FormsModule } from '@angular/forms';
 import { BlogsComponent } from 'app/components/blogs/blogs.component';
+import { CurriculumShowcaseComponent } from './curriculum-showcase/curriculum-showcase.component';
+import { SupportersComponent } from './supporters/supporters.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +40,9 @@ import { BlogsComponent } from 'app/components/blogs/blogs.component';
     StickyMenuComponent,
     HelpCardComponent,
     HelpBackBtnComponent,
-    BlogsComponent
+    BlogsComponent,
+    CurriculumShowcaseComponent,
+    SupportersComponent
   ],
   imports: [
     CommonModule,

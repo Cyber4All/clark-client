@@ -1,57 +1,116 @@
 <ng-template #desktop>
     <div class="desktop-navbar" *ngIf="showNav">
         <div class="nav-wrapper">
-            <a [routerLink]="['/home']">    
+            <!-- Logo Section -->
+            <a [routerLink]="['/home']" class="logo-section">
                 <div class="logo">
                     <span class="logo-image"></span>
                     <span id="clark-logo" class="logo-link">CLARK</span>
                 </div>
             </a>
-            <div class="mid-bar">
-                <div class="search-bar">
-                    <clark-search></clark-search>
+
+            <!-- Main Navigation -->
+            <nav class="main-nav">
+                <!-- Collections Menu -->
+                <div class="nav-item" #collectionsAnchor (mouseenter)="dropdowns.openCollectionDropdown()" (mouseleave)="dropdowns.closeCollectionDropdown()" tabindex="0">
+                    <span class="nav-text">Collections</span>
                 </div>
-            </div>
-            <div class="right">
-                <button class="contribute-button" *ngIf="isLoggedIn" [routerLink]="['/onion', '/dashboard']">
-                    <div>
-                        CONTRIBUTE
-                    </div>
+
+                <!-- Topics Menu -->
+                <div class="nav-item" #topicsAnchor (mouseenter)="dropdowns.openTopicDropdown()" (mouseleave)="dropdowns.closeTopicDropdown()" tabindex="0">
+                    <span class="nav-text">Topics</span>
+                </div>
+
+                <!-- Resources Menu -->
+                <div class="nav-item" #resourcesAnchor (mouseenter)="dropdowns.openResourcesDropdown()" (mouseleave)="dropdowns.closeResourcesDropdown()" tabindex="0">
+                    <span class="nav-text">Resources</span>
+                </div>
+            </nav>
+
+
+            <!-- Right Section -->
+            <div class="right-section">
+                <button class="contribute-btn" *ngIf="isLoggedIn" [routerLink]="['/onion', '/dashboard']">
+                    <i class="fas fa-plus"></i>
+                    <span>Contribute</span>
                 </button>
-                <div #userDropdownAnchor>
-                    <div class="logged-in" *ngIf="isLoggedIn">
-                        <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
-                        <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.headerName | titlecase }}</span>
-                            <span class="arrow" *ngIf="!userDropdown">
-                                <i class="fas fa-chevron-down"></i>
-                            </span>
-                            <span class="arrow" *ngIf="userDropdown">
-                                <i class="fas fa-chevron-up"></i>
-                            </span>
+
+                <div #userDropdownAnchor class="user-section">
+                    <div class="logged-in" *ngIf="isLoggedIn" (click)="dropdowns.toggleUserDropdown()">
+                        <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(40) + ')'}"></div>
+                        <div class="username">
+                            <span>{{ this.auth.headerName | titlecase }}</span>
+                            <i class="fas" [ngClass]="userDropdown ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                         </div>
                     </div>
-                    
+
                     <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor" (close)="dropdowns.closeAll()">
                         <div #contextMenu class="context-popup">
                             <ul>
-                                <li tabindex="0" *ngIf="auth.hasCuratorAccess()" [routerLink]="['admin']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                                <li tabindex="0" [routerLink]="['library']" (activate)="dropdowns.toggleUserDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="notificationService.userNotifications?.notifications?.length > 0" class="notifications"> {{ notificationService.userNotifications?.lastPage }}</span></li>
-                                <li tabindex="0" [routerLink]="['onion', 'dashboard']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-columns"></i>Dashboard</li>
-                                <li tabindex="0" [routerLink]="['users', auth.user?.username]" id="clark-user-dropdown" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-user"></i>Profile</li>
-                                <li tabindex="0" [routerLink]="['auth', 'forgot-password']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
-                                <li tabindex="0" (activate)="auth.logout(); dropdowns.toggleUserDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
+                                <li tabindex="0" *ngIf="auth.hasCuratorAccess()" [routerLink]="['admin']" (activate)="dropdowns.toggleUserDropdown()">
+                                    <i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard
+                                </li>
+                                <li tabindex="0" [routerLink]="['library']" (activate)="dropdowns.toggleUserDropdown()">
+                                    <i class="fas fa-books"></i>Library
+                                    <span *ngIf="notificationService.userNotifications?.notifications?.length > 0" class="notifications">
+                                        {{ notificationService.userNotifications?.lastPage }}
+                                    </span>
+                                </li>
+                                <li tabindex="0" [routerLink]="['onion', 'dashboard']" (activate)="dropdowns.toggleUserDropdown()">
+                                    <i class="far fa-columns"></i>Dashboard
+                                </li>
+                                <li tabindex="0" [routerLink]="['users', auth.user?.username]" id="clark-user-dropdown" (activate)="dropdowns.toggleUserDropdown()">
+                                    <i class="far fa-user"></i>Profile
+                                </li>
+                                <li tabindex="0" [routerLink]="['auth', 'forgot-password']" (activate)="dropdowns.toggleUserDropdown()">
+                                    <i class="far fa-unlock-alt"></i>Change Password
+                                </li>
+                                <li tabindex="0" (activate)="auth.logout(); dropdowns.toggleUserDropdown()">
+                                    <i class="far fa-sign-out"></i>Sign Out
+                                </li>
                             </ul>
                         </div>
                     </clark-context-menu>
-                    
+
                     <div class="logged-out" *ngIf="!isLoggedIn">
-                        <a class="login-button" id="clark-sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">Sign In</a>
-                        <a class="register-button" [routerLink]="['auth', 'register']" [queryParams]="{redirectUrl: redirectUrl}">Register</a>
+                        <a class="login-btn" id="clark-sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">
+                            Sign In
+                        </a>
+                        <a class="register-btn" [routerLink]="['auth', 'register']" [queryParams]="{redirectUrl: redirectUrl}">
+                            Register
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Dropdown Menus -->
+
+        <clark-context-menu class="nav-dropdown" *ngIf="topicDropdown" [anchor]="topicsAnchor" (close)="dropdowns.closeAll()">
+            <div #contextMenu>
+                <ul class="topics-list">
+                    <li *ngFor="let t of topics" (click)="dropdowns.setTopic(t._id)">
+                        <i class="fas fa-tag"></i>
+                        <span>{{ t.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </clark-context-menu>
+
+        <clark-context-menu class="nav-dropdown" *ngIf="resourcesDropdown" [anchor]="resourcesAnchor" (close)="dropdowns.closeAll()">
+            <div #contextMenu>
+                <ul>
+                    <li *ngFor="let r of externalResources" (click)="dropdowns.linkOut(r.link)">
+                        <i class="fas fa-link"></i>
+                        <span>{{ r.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </clark-context-menu>
     </div>
+
+    <!-- Collections Dropdown (Special Component) -->
+    <clark-collections-dropdown *ngIf="collectionsDropdown" (close)="dropdowns.closeAll()"></clark-collections-dropdown>
 </ng-template>
 
 <!-- mobile view template -->

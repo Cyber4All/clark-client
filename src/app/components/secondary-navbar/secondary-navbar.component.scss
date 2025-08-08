@@ -1,13 +1,7 @@
 @import "_vars.scss";
 
 .secondary-navbar {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    background-color: $primary-white;
-    padding: 12px 0 12px 40px;
-    border: solid 1px $secondary-white;
-    z-index: 4;
+    display: none; // Hidden since functionality moved to primary navbar
 
     .item {
         cursor: pointer;

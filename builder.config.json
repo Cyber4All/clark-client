@@ -1,0 +1,6 @@
+{
+  "command": "npm run start",
+  "serverUrl": "http://localhost:4200",
+  "authenticateProxy": false,
+  "commitMode": "commits"
+}

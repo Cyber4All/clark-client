@@ -214,7 +214,7 @@ export class RatingService {
       )
       .toPromise()
       .then((learningObjectRatings: LearningObjectRatings) => {
-        if (learningObjectRatings.ratings) {
+        if (learningObjectRatings && learningObjectRatings.ratings) {
           const ratings = learningObjectRatings.ratings.map((rating: Rating) => {
             // Map the _id to id
             const mappedRating = ({ ...rating, id: rating._id});
@@ -222,8 +222,14 @@ export class RatingService {
 
             return mappedRating;
           });
-          return { avgValue: learningObjectRatings.avgValue, ratings };
+          return { avgValue: learningObjectRatings.avgValue || 0, ratings };
         }
+        // Return default object if no ratings found
+        return { avgValue: 0, ratings: [] };
+      })
+      .catch(error => {
+        console.warn('Error fetching learning object ratings:', error);
+        return { avgValue: 0, ratings: [] };
       });
   }
 

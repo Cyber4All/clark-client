@@ -57,13 +57,18 @@ export class SplashComponent implements OnInit, AfterViewInit {
     });
 
     // Get all the tags on the system, this only requires 1 network request
-    const tags = await this.tagsService.getTags();
-    // Get the full tags to pass into the pills component
-    this.fullTags = tags.filter((tag: Tag) => {
-      if(this.learningObject.tags.includes(tag._id)) {
-        return tag;
-      }
-    });
+    try {
+      const tags = await this.tagsService.getTags();
+      // Get the full tags to pass into the pills component
+      this.fullTags = tags.filter((tag: Tag) => {
+        if(this.learningObject.tags.includes(tag._id)) {
+          return tag;
+        }
+      });
+    } catch (error) {
+      console.warn('Error loading tags for learning object:', error);
+      this.fullTags = [];
+    }
   }
 
   showSidePanel() {

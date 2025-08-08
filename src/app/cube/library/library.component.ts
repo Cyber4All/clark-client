@@ -131,9 +131,16 @@ export class LibraryComponent implements OnInit, OnDestroy {
       this.lastPageNumber = getLibraryResponse.lastPage;
 
       this.libraryItems.map(async (libraryItem: LibraryItem) => {
-        const ratings = await this.getRatings(libraryItem.learningObject);
-        if (ratings) {
-          libraryItem['avgRating'] = ratings.avgValue;
+        try {
+          const ratings = await this.getRatings(libraryItem.learningObject);
+          if (ratings && ratings.avgValue !== undefined) {
+            libraryItem['avgRating'] = ratings.avgValue;
+          } else {
+            libraryItem['avgRating'] = 0;
+          }
+        } catch (error) {
+          console.warn('Error fetching ratings for library item:', error);
+          libraryItem['avgRating'] = 0;
         }
       });
       this.loading = false;

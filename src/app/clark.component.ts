@@ -63,6 +63,10 @@ export class ClarkComponent implements OnInit {
 
   downtime: Downtime = new Downtime(false, '');
 
+  get isChatbotEnabled(): boolean {
+    return environment.enableChatbot;
+  }
+
   @HostListener('window:click', ['$event'])
   @HostListener('window:keyup', ['$event'])
   handleOutlines(event) {

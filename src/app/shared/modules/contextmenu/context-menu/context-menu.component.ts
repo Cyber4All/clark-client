@@ -160,15 +160,22 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
     this.viewer.destroy();
 
     // focus the anchor element (the element that triggered the context menu) for accessibility
-    this.anchor.focus();
+    if (this.anchor) {
+      this.anchor.focus();
+    }
 
     // remove the dummy node from the DOM since we don't need it anymore
-    document.getElementById('contextMenuDummyInput').remove();
+    const dummyInput = document.getElementById('contextMenuDummyInput');
+    if (dummyInput) {
+      dummyInput.remove();
+    }
 
-    setTimeout(() => {
-      // wait 1 second and remove the lastFocusedElement attribute from the anchor element
-      this.anchor.removeAttribute('lastFocusedElement');
-    }, 1000);
+    if (this.anchor) {
+      setTimeout(() => {
+        // wait 1 second and remove the lastFocusedElement attribute from the anchor element
+        this.anchor.removeAttribute('lastFocusedElement');
+      }, 1000);
+    }
   }
 
   /**

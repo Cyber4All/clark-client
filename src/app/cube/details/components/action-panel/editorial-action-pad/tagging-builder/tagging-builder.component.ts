@@ -53,14 +53,19 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
       this.taggingService.setSelectedArray('topics', matchingTopics);
     }
 
-    const tags = await this.tagsService.getTags();
-    this.taggingService.setSourceArray('tags', tags);
+    try {
+      const tags = await this.tagsService.getTags();
+      this.taggingService.setSourceArray('tags', tags);
 
-    if(this.learningObject.tags && this.learningObject.tags.length) {
-      const matchingTags = tags.filter((tag) => {
-        return this.learningObject.tags.includes(tag._id);
-      });
-      this.taggingService.setSelectedArray('tags', matchingTags);
+      if(this.learningObject.tags && this.learningObject.tags.length) {
+        const matchingTags = tags.filter((tag) => {
+          return this.learningObject.tags.includes(tag._id);
+        });
+        this.taggingService.setSelectedArray('tags', matchingTags);
+      }
+    } catch (error) {
+      console.warn('Error loading tags for tagging builder:', error);
+      this.taggingService.setSourceArray('tags', []);
     }
     this.loading = false;
     this.switchTab('topics');

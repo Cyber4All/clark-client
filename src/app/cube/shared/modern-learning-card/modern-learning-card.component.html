@@ -1,0 +1,68 @@
+<div class="modern-card">
+  <!-- Card Header with Collection Badge -->
+  <div class="card-header">
+    <div class="collection-badge" [attr.data-collection]="learningObject.collection">
+      {{ getCollectionName() }}
+    </div>
+    <div class="duration-badge" [attr.data-length]="learningObject.length">
+      <i [class]="getDurationIcon()"></i>
+      {{ getDurationText() }}
+    </div>
+  </div>
+
+  <!-- Card Content -->
+  <div class="card-content">
+    <!-- Title -->
+    <h3 class="card-title" [title]="learningObject.name">
+      {{ learningObject.name }}
+    </h3>
+
+    <!-- Author Info -->
+    <div class="author-info">
+      <div class="author-details">
+        <span class="author-name">{{ learningObject.contributors[0]?.name | titlecase }}</span>
+        <span class="organization" *ngIf="learningObject.contributors[0]?.organization">
+          at {{ organizationFormat(learningObject.contributors[0]?.organization) }}
+        </span>
+      </div>
+      <div class="updated-date">
+        Updated {{ learningObject.date | date: 'MMM yyyy' }}
+      </div>
+    </div>
+
+    <!-- Rating -->
+    <div class="rating-section" *ngIf="averageRating > 0">
+      <clark-rating-stars [rating]="averageRating" [reviewsCount]="reviewsCount"></clark-rating-stars>
+    </div>
+
+    <!-- Tags -->
+    <div class="tags-section" *ngIf="learningObject.tags && learningObject.tags.length > 0">
+      <div class="tag" *ngFor="let tag of getDisplayTags()">
+        {{ tag }}
+      </div>
+    </div>
+
+    <!-- Description Fallback -->
+    <div class="description" *ngIf="!learningObject.tags || learningObject.tags.length === 0">
+      {{ getDescription() }}
+    </div>
+  </div>
+
+  <!-- Card Footer -->
+  <div class="card-footer">
+    <div class="learning-level">
+      <i class="fas fa-graduation-cap"></i>
+      {{ getLevelDisplay() }}
+    </div>
+    
+    <div class="card-actions">
+      <button class="action-btn" *ngIf="canDownload" (click)="download($event)">
+        <i class="fas fa-download"></i>
+      </button>
+      <button class="action-btn bookmark-btn" (click)="toggleBookmark($event)">
+        <i class="far fa-bookmark"></i>
+      </button>
+    </div>
+  </div>
+
+</div>

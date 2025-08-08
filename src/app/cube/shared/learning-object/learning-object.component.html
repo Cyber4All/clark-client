@@ -97,7 +97,12 @@
       </span>
       <div class="date">Updated {{ learningObject.date | date: 'mediumDate' }}</div>
     </div>
-    <div class="goals" *ngIf="this.learningObject.description" [innerHtml]="goals()"></div>
+    <div class="tags-container" *ngIf="learningObject.tags && learningObject.tags.length > 0">
+      <div class="tag" *ngFor="let tag of getDisplayTags()" [title]="tag">
+        {{ tag }}
+      </div>
+    </div>
+    <div class="goals" *ngIf="!learningObject.tags || learningObject.tags.length === 0" [innerHtml]="goals()"></div>
     </div>
   </div>
 </a>
