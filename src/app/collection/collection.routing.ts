@@ -9,6 +9,7 @@ import { SecurityInjectionsComponent } from './pages/security-injections/securit
 import { NcyteDashboardGuard } from '../core/client-module/ncyte-dashboard.guard';
 import { CyberskillsDashboardComponent } from './pages/cyberskills-dashboard/cyberskills-dashboard.component';
 import { CyberSkillsGuard } from '../core/client-module/cyber-skills.guard';
+import { TagWithCyberComponent } from './pages/tags/tag-with-cyber/tag-with-cyber.component';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const collection_routes: Routes = [
@@ -51,6 +52,10 @@ const collection_routes: Routes = [
     {
         path: 'secinj',
         component: SecurityInjectionsComponent
+    },
+    {
+        path: 'withcyber',
+        component: TagWithCyberComponent
     },
     {
         path: '**',
