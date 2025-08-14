@@ -1,5 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { TAGS_ROUTES } from 'app/core/learning-object-module/tags/tags.routes';
+
+type TagsResponse = {
+  tags: { _id: string }[];
+  total: number;
+};
 
 @Component({
   selector: 'clark-with-cyber-header',
@@ -8,19 +14,25 @@ import { Router } from '@angular/router';
 })
 export class HeaderWithCyberComponent {
 
-  @Input() tag: string;
+  @Input() collectionAbv: string;
   isUserAuthorized = false;
   constructor(private router: Router) {}
 
-  navigateToBrowse() {
-    const params = {
-      tags: ['6842ffa2a606cc25d400f99f'],
-      currPage: 1,
-      limit: 10,
-      orderBy: 'date',
-      sortType: -1,
-      status: 'released'
-    };
-    this.router.navigate(['/browse'], { queryParams: params });
+  async navigateToBrowse() {
+    const tag = await this.getCorrectTag();
+    this.router.navigate(['/browse'], { queryParams : {currPage: 1, tags: tag} });
   }
+ async getCorrectTag() {
+  const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: "WITHCyber" });
+  console.log("url: ",url);
+  const res = await fetch(url, { method: "GET" });
+  const data: TagsResponse = await res.json();
+ 
+  const tagid =  data.tags?.[0]?._id ?? null;
+  console.log("tagID: ",tagid);
+  return tagid; 
 }
+   
+}
+
+
