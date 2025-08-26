@@ -54,8 +54,8 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
     // get tag, return no LOs if no tag
     const tagId = await this.getCorrectTag();
     if (!tagId) {
-return [];
-}
+      return [];
+    }
     // for now we are just fetching the most recent 5 LOs for the featured section of the collection page
     const queryParams = new URLSearchParams({ tags: tagId, orderBy: 'date', sortType: '-1',  limit: '5' }).toString();
     const url = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryParams);
