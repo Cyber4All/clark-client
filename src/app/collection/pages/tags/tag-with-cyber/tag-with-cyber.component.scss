@@ -1,93 +1,39 @@
-@import "_vars.scss";
+@import '_vars.scss';
 
-.fullscreen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 19;
+.card-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1375px;
+  align-items: stretch;
+  margin: auto;
+  // this margin offsets each individual card's top margin
+  margin-top: -24px;
 
-    .collections-dropdown {
-        position: absolute;
-        z-index: 20;
-        top: 195px;
-        padding: 0 0 40px 20px;
-        margin-left: 100px;
-        margin-right: 20px;
-        background-color: white;
-        box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
+  clark-learning-object-component {
+    margin-top: 24px;
 
-        .collection-grid {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            width: auto;
-            max-width: 1000px;
-            gap: 20px;
-            max-height: 500px;
-            overflow: auto;
-
-            .loading {
-                height: 250px;
-                width: 500px;
-
-                .collections-loading {
-                    text-align: center;
-                    color: $dark-grey;
-                    padding-top: 75px;
-                    display: inline-flex;
-                    justify-content: center;
-                    flex-direction: column;
-                    align-items: center;
-                    width: 100%;
-                    box-sizing: border-box;
-                    font-size: $large;
-
-                    .svg-inline--fa {
-                        display: block;
-                        color: $light-blue;
-                        font-size: 30px;
-                        margin-bottom: 10px;
-                    }
-                }
-            }
-
-            .item {
-                ::ng-deep .collection-card {
-                    padding: 40px;
-                    height: 200px;
-                    width: 225px;
-
-                    .card__name {
-                        height: 20px;
-                        font-size: $small;
-                        color: black;
-
-                        &.long {
-                            font-size: x-small;
-                        }
-                        &.small {
-                            padding: 0px;
-                            margin-top: 0px;
-                        }
-                    }
-
-                    .card__image {
-                        height: 86px;
-                        max-width: 190px;
-
-                        &.long {
-                            height: 55px;
-                        }
-                        &.small {
-                            height: 150px;
-                            width: 150px;
-                        }
-                    }
-                }
-            }
-        }
+    &.card {
+      width: 250px;
+      margin-right: 12px;
+      margin-left: 12px;
     }
+  }
+}
+
+.no-objects {
+  font-size: $large;
+  text-align: center;
+  color: $dark-grey;
+}
+
+
+.header {
+    margin-bottom: 40px;
+    font-size: $largest;
+    font-weight: 600;
+    color: black;
+    text-align: center;
 }

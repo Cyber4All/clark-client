@@ -33,5 +33,9 @@ export const METRIC_ROUTES = {
    */
   GET_LEARNING_OBJECT_STATS() {
     return `${environment.apiURL}/learning-objects/stats`;
+  },
+
+  GET_TAG_METRICS(tagId?: string) {
+    return `${environment.apiURL}/tags/${tagId}/metrics`;
   }
 };

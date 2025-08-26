@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TAGS_ROUTES } from 'app/core/learning-object-module/tags/tags.routes';
 
-type TagsResponse = {
+interface TagsResponse {
   tags: { _id: string }[];
   total: number;
-};
+}
 
 @Component({
   selector: 'clark-with-cyber-header',
@@ -23,16 +23,16 @@ export class HeaderWithCyberComponent {
     this.router.navigate(['/browse'], { queryParams : {currPage: 1, tags: tag} });
   }
  async getCorrectTag() {
-  const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: "WITHCyber" });
-  console.log("url: ",url);
-  const res = await fetch(url, { method: "GET" });
+  const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: 'WITHCyber' });
+  console.log('url: ',url);
+  const res = await fetch(url, { method: 'GET' });
   const data: TagsResponse = await res.json();
- 
+
   const tagid =  data.tags?.[0]?._id ?? null;
-  console.log("tagID: ",tagid);
-  return tagid; 
+  console.log('tagID: ',tagid);
+  return tagid;
 }
-   
+
 }
 
 

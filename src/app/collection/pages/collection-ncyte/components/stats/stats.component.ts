@@ -2,10 +2,16 @@ import { Component, Input, OnInit } from '@angular/core';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { PieChart } from 'app/cube/usage-stats/types/chart';
+import { TAGS_ROUTES } from 'app/core/learning-object-module/tags/tags.routes';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
 let CHART_HOVERED = false;
+
+interface TagsResponse {
+  tags: { _id: string }[];
+  total: number;
+}
 @Component({
   selector: 'clark-dashboard-stats',
   templateUrl: './stats.component.html',
@@ -15,6 +21,7 @@ export class StatsComponent implements OnInit {
 
   @Input() collectionName: string;
   @Input() displayCharts: boolean;
+  tagId: string;
   name: string;
 
   objDownload: number;
@@ -36,6 +43,12 @@ export class StatsComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
+
+  if (this.collectionName === 'withcyber') {
+    this.tagId = await this.getWITHCyberTagId();
+    await this.getStatsForWITHCyber();
+    return;
+  }
     switch (this.collectionName) {
       case 'xpcyber':
         this.name = 'XP Cyber';
@@ -60,6 +73,7 @@ export class StatsComponent implements OnInit {
     });
     await this.buildLengthDistributionChart(stats);
     await this.buildTopDownloads(stats);
+
   }
 
   /**
@@ -131,8 +145,30 @@ export class StatsComponent implements OnInit {
   handleChartNotHovered() {
     CHART_HOVERED = false;
   }
+
+   async getStatsForWITHCyber() {
+    if (this.collectionName !== 'withcyber') {
+return;
+}
+    if (!this.tagId) {
+return;
 }
 
+    const tagMetrics = await this.metricService.getTagMetrics(this.tagId);
+    this.objReleased = tagMetrics.releasedLearningObjects;
+    this.objDownload = tagMetrics.downloads;
+    this.authorCollection = tagMetrics.authors.length;
+  }
+
+  async getWITHCyberTagId() {
+      const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: 'WITHCyber' });
+      const res = await fetch(url, { method: 'GET' });
+      const data: TagsResponse = await res.json();
+      const tag =  data.tags?.[0]?._id ?? null;
+      console.log('Tag ID: ', tag);
+      return tag;
+    }
+}
 
   /**
    * Renders percentages on pie slices
@@ -175,3 +211,5 @@ export class StatsComponent implements OnInit {
       });
     }
   }
+
+

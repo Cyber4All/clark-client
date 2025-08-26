@@ -10,20 +10,21 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-type TagsResponse = {
+
+interface TagsResponse {
   tags: { _id: string }[];
   total: number;
-};
+}
 @Component({
   selector: 'clark-tag-with-cyber',
   templateUrl: './tag-with-cyber.component.html',
   styleUrls: ['./tag-with-cyber.component.scss']
 })
 export class TagWithCyberComponent implements OnInit, OnDestroy {
-
   abvCollection = 'withcyber';
   collection: Collection;
   learningObjects: LearningObject[];
+  tagId: string;
 
   constructor(
     private navbarService: NavbarService,
@@ -41,7 +42,8 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle('CLARK | ' + this.collection.name);
 
-    
+    this.tagId = await this.getCorrectTag();
+
   }
 
   ngOnDestroy(): void {
@@ -49,29 +51,27 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
   }
 
   async getFeaturedLearningObjects(){
-    const response = await this.http
-          .get(SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(`tags=${await this.getCorrectTag()}&sortType=-1`))
-          .pipe(catchError(this.handleError))
-          .toPromise();
-        return response as LearningObject[];
-  }
-  async getCorrectTag() {
-    const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: "WITHCyber" });
-    const res = await fetch(url, { method: "GET" });
-    const data: TagsResponse = await res.json();
-   
-    const tagid =  data.tags?.[0]?._id ?? null;
-    console.log("tagID: ",tagid);
-    return tagid; 
+    // get tag, return no LOs if no tag
+    const tagId = await this.getCorrectTag();
+    if (!tagId) {
+return [];
+}
+    // for now we are just fetching the most recent 5 LOs for the featured section of the collection page
+    const queryParams = new URLSearchParams({ tags: tagId, orderBy: 'date', sortType: '-1',  limit: '5' }).toString();
+    const url = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryParams);
+    const res = await fetch(url, { method: 'GET' });
+    const payload: { objects?: LearningObject[]; learningObjects?: LearningObject[]; total?: number } = await res.json();
+    const list = payload.objects ?? payload.learningObjects ?? [];
+    const top5 = list.slice(0, 5);
+    return top5;
   }
 
-   private handleError(error: HttpErrorResponse) {
-      if (error.error instanceof ErrorEvent) {
-        // Client-side or network returned error
-        return throwError(error.error.message);
-      } else {
-        // API returned error
-        return throwError(error);
-      }
-    }
+  async getCorrectTag() {
+    const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: 'WITHCyber' });
+    const res = await fetch(url, { method: 'GET' });
+    const data: TagsResponse = await res.json();
+    const tag =  data.tags?.[0]?._id ?? null;
+    console.log('Tag ID: ', tag);
+    return tag;
+  }
 }

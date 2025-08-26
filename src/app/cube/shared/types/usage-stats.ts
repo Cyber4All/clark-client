@@ -51,3 +51,9 @@ export interface UsageStats {
   outcomes: LearningOutcomeStats['outcomes'];
   users: UserMetrics;
 }
+
+export interface TagMetrics{
+  releasedLearningObjects: number;
+  downloads: number;
+  authors: string[];
+}
