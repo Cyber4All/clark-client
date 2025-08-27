@@ -57,3 +57,7 @@ export interface TagMetrics{
   downloads: number;
   authors: string[];
 }
+
+export interface GetTagByNameResponse {
+  tags: { _id: string }[];
+}

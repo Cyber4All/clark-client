@@ -5,16 +5,8 @@ import { FeaturedObjectsService } from 'app/core/feature-module/featured.service
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { Title } from '@angular/platform-browser';
 import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
-import { TAGS_ROUTES } from 'app/core/learning-object-module/tags/tags.routes';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 
-
-interface TagsResponse {
-  tags: { _id: string }[];
-  total: number;
-}
 @Component({
   selector: 'clark-tag-with-cyber',
   templateUrl: './tag-with-cyber.component.html',
@@ -31,7 +23,8 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
     private collectionService: CollectionService,
     private titleService: Title,
     private featureService: FeaturedObjectsService,
-    private http: HttpClient) { }
+    private tagsService: TagsService
+  ) {}
 
   async ngOnInit() {
     this.navbarService.show();
@@ -42,7 +35,7 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
 
     this.titleService.setTitle('CLARK | ' + this.collection.name);
 
-    this.tagId = await this.getCorrectTag();
+    this.tagId = await this.tagsService.getTagIdByName('WITHcyber');
 
   }
 
@@ -52,7 +45,7 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
 
   async getFeaturedLearningObjects(){
     // get tag, return no LOs if no tag
-    const tagId = await this.getCorrectTag();
+    const tagId = await this.tagsService.getTagIdByName('WITHcyber');
     if (!tagId) {
       return [];
     }
@@ -64,14 +57,5 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
     const list = payload.objects ?? payload.learningObjects ?? [];
     const top5 = list.slice(0, 5);
     return top5;
-  }
-
-  async getCorrectTag() {
-    const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: 'WITHCyber' });
-    const res = await fetch(url, { method: 'GET' });
-    const data: TagsResponse = await res.json();
-    const tag =  data.tags?.[0]?._id ?? null;
-    console.log('Tag ID: ', tag);
-    return tag;
   }
 }

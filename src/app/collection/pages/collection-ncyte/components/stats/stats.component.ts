@@ -3,6 +3,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { PieChart } from 'app/cube/usage-stats/types/chart';
 import { TAGS_ROUTES } from 'app/core/learning-object-module/tags/tags.routes';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -40,6 +41,7 @@ export class StatsComponent implements OnInit {
   constructor(
     private metricService: MetricService,
     private learningObjectService: LearningObjectService,
+    private tagsService: TagsService
   ) { }
 
   async ngOnInit() {
@@ -161,13 +163,8 @@ return;
   }
 
   async getWITHCyberTagId() {
-      const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: 'WITHCyber' });
-      const res = await fetch(url, { method: 'GET' });
-      const data: TagsResponse = await res.json();
-      const tag =  data.tags?.[0]?._id ?? null;
-      console.log('Tag ID: ', tag);
-      return tag;
-    }
+      return await this.tagsService.getTagIdByName('WITHcyber');
+  }
 }
 
   /**

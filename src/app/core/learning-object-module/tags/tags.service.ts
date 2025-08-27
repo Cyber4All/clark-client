@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { throwError } from 'rxjs';
 import { TAGS_ROUTES } from './tags.routes';
 import { TagType } from 'entity/tag/tag';
+import { GetTagByNameResponse } from 'app/cube/shared/types/usage-stats';
 
 @Injectable({
   providedIn: 'root'
@@ -115,6 +116,15 @@ export class TagsService {
       }>(TAGS_ROUTES.GET_ALL_TAG_TYPES())
       .pipe(catchError(this.handleError))
       .toPromise();
+  }
+
+  public async getTagIdByName(tagName: string): Promise<string> {
+     const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: tagName });
+        const res = await fetch(url, { method: 'GET' });
+        const data: GetTagByNameResponse = await res.json();
+        const tag =  data.tags?.[0]?._id ?? null;
+        console.log('Tag ID: ', tag);
+        return tag;
   }
 
 
