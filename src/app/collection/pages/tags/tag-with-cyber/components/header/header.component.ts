@@ -1,12 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { TAGS_ROUTES } from 'app/core/learning-object-module/tags/tags.routes';
-
-interface TagsResponse {
-  tags: { _id: string }[];
-  total: number;
-}
-
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 @Component({
   selector: 'clark-with-cyber-header',
   templateUrl: './header.component.html',
@@ -16,23 +10,13 @@ export class HeaderWithCyberComponent {
 
   @Input() collectionAbv: string;
   isUserAuthorized = false;
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private tagsService: TagsService
+  ) {}
 
   async navigateToBrowse() {
-    const tag = await this.getCorrectTag();
+    const tag = await this.tagsService.getTagIdByName('WITHcyber');
     this.router.navigate(['/browse'], { queryParams : {currPage: 1, tags: tag} });
   }
- async getCorrectTag() {
-  const url =  TAGS_ROUTES.GET_ALL_TAGS({ text: 'WITHCyber' });
-  console.log('url: ',url);
-  const res = await fetch(url, { method: 'GET' });
-  const data: TagsResponse = await res.json();
-
-  const tagid =  data.tags?.[0]?._id ?? null;
-  console.log('tagID: ',tagid);
-  return tagid;
 }
-
-}
-
-

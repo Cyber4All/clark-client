@@ -67,7 +67,6 @@ export class StatsComponent implements OnInit {
     });
     await this.buildLengthDistributionChart(stats);
     await this.buildTopDownloads(stats);
-
   }
 
   /**
