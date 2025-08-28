@@ -49,7 +49,7 @@ export class StatsComponent implements OnInit {
       case 'cyberskills2work':
         this.name = 'CyberSkills2Work';
         break;
-      case "withcyber":
+      case 'withcyber':
         this.tagId = await this.getTagIdByName('WITHcyber');
         await this.getStatsForTag(this.tagId);
         return;
