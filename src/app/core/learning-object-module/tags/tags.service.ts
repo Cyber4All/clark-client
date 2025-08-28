@@ -123,7 +123,6 @@ export class TagsService {
         const res = await fetch(url, { method: 'GET' });
         const data: GetTagByNameResponse = await res.json();
         const tag =  data.tags?.[0]?._id ?? null;
-        console.log('Tag ID: ', tag);
         return tag;
   }
 
