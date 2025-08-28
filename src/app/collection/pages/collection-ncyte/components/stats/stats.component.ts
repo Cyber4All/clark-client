@@ -140,7 +140,9 @@ export class StatsComponent implements OnInit {
   }
 
    async getStatsForTag(tag: string) {
-      if (!tag) return;
+      if (!tag) {
+        return;
+      }
       const tagMetrics = await this.metricService.getTagMetrics(tag);
       this.objReleased = tagMetrics.releasedLearningObjects;
       this.objDownload = tagMetrics.downloads;
