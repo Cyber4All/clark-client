@@ -12,7 +12,7 @@ export const environment = {
   cognitoRegion: 'us-east-1',
   cognitoIdentityPoolId: '',
   cognitoAdminIdentityPoolId: '',
-  cardUrl: '',
+  cardUrl: ''
 };
 
 export enum LearningObjectStatus {

@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
 import {
   HttpClient,
-  HttpHeaders,
   HttpErrorResponse,
+  HttpHeaders,
 } from '@angular/common/http';
-import { environment } from '@env/environment';
-import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
+import { Injectable } from '@angular/core';
 import { User } from '@entity';
+import { environment } from '@env/environment';
+import { CookieService } from 'ngx-cookie-service';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { EncryptionService } from './encryption.service';
+import { CoralogixRumService } from '../services/coralogix-rum.service';
 import { AUTH_ROUTES } from './auth.routes';
+import { EncryptionService } from './encryption.service';
 
 export enum DOWNLOAD_STATUS {
   CAN_DOWNLOAD = 0,
@@ -57,9 +58,10 @@ export class AuthService {
   private openIdToken: OpenIdToken;
 
   constructor(
-    private http: HttpClient,
-    private cookies: CookieService,
-    private encryptionService: EncryptionService
+    private readonly http: HttpClient,
+    private readonly cookies: CookieService,
+    private readonly encryptionService: EncryptionService,
+    private readonly rumService: CoralogixRumService
   ) {
     if (this.cookies.get('presence')) {
       this.validateToken();
@@ -73,6 +75,7 @@ export class AuthService {
    * Logged in status to true
    * Access group of logged in user
    * Access token in local storage
+   * RUM user context
    *
    * @private
    * @param {AuthUser} user [User data for the logged in user]
@@ -94,6 +97,9 @@ export class AuthService {
       TOKEN_STORAGE_KEY,
       JSON.stringify({ bearer: tokens.bearer, openId: tokens.openId })
     );
+
+    // Set user context for RUM tracking
+    this.setRumUserContext();
   }
 
   /**
@@ -133,6 +139,7 @@ export class AuthService {
    * Logged in status is set to false
    * The user's access group is set to vistor
    * All tokens are cleared from local storage
+   * Clear RUM user context
    *
    * @private
    * @memberof AuthService
@@ -149,6 +156,9 @@ export class AuthService {
     localStorage.removeItem(TOKEN_STORAGE_KEY);
     document.cookie =
       'presence=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+    // Clear RUM user context on logout
+    this.clearRumUserContext();
   }
 
   private clearAuthHeaders() {
@@ -310,6 +320,9 @@ export class AuthService {
       this.user = response;
       this.assignUserToGroup();
       this.changeStatus(true);
+
+      // Set user context for RUM tracking after successful validation
+      this.setRumUserContext();
     } catch (error) {
       this.endSession();
       throw error;
@@ -577,5 +590,69 @@ export class AuthService {
       // API returned error
       return throwError(error.error);
     }
+  }
+
+  /**
+   * Set user context for RUM tracking when user logs in
+   *
+   * @private
+   * @memberof AuthService
+   */
+  private setRumUserContext(): void {
+    if (!this.user) {
+      return;
+    }
+
+    this.rumService.setUserContext({
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      user_id: this.user.userId || this.user.username,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      user_name: this.user.name || `${this.user.username}`,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      user_email: this.user.email,
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      user_metadata: {
+        username: this.user.username,
+        accessGroups: this.user.accessGroups,
+        authGroup: AUTH_GROUP[this.group.value],
+        organization: this.user.organization
+      }
+    });
+
+    // Set additional labels for user role tracking
+    this.rumService.setLabels({
+      userRole: AUTH_GROUP[this.group.value],
+      hasReviewerAccess: this.hasReviewerAccess(),
+      hasCuratorAccess: this.hasCuratorAccess(),
+      hasEditorAccess: this.hasEditorAccess(),
+      isAdminOrEditor: this.isAdminOrEditor()
+    });
+  }
+
+  /**
+   * Clear user context for RUM tracking when user logs out
+   *
+   * @private
+   * @memberof AuthService
+   */
+  private clearRumUserContext(): void {
+    // Set anonymous user context
+    this.rumService.setUserContext({
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      user_id: 'anonymous',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      user_name: 'Anonymous User',
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      user_email: 'anonymous@clark.center'
+    });
+
+    // Clear role-based labels
+    this.rumService.setLabels({
+      userRole: 'VISITOR',
+      hasReviewerAccess: false,
+      hasCuratorAccess: false,
+      hasEditorAccess: false,
+      isAdminOrEditor: false
+    });
   }
 }
