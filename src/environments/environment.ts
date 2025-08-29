@@ -12,7 +12,7 @@ export const environment = {
   cognitoIdentityPoolId: '',
   cognitoAdminIdentityPoolId: '',
   cardUrl: 'http://localhost:3000',
-  downtimeUrl: '',
+  downtimeUrl: ''
 };
 
 export enum LearningObjectStatus {

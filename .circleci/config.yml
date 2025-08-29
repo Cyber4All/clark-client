@@ -15,6 +15,17 @@ jobs:
           node-version: '18.19.0'
       - run: npm install
       - run: npm run lint
+      - run: npm run build
+
+  build-production:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - node/install:
+          node-version: '18.19.0'
+      - run: npm install
+      - run: npm install -g @coralogix/rum-cli
       - run: npm run build:prod
 
 workflows:
@@ -24,28 +35,33 @@ workflows:
 
   deploy-staging:
     when:
-        equal: [main, <<pipeline.git.branch>>]
+      equal: [main, <<pipeline.git.branch>>]
     jobs:
       - cyber4all/s3:
           context:
             - aws_staging
             - Slack
-          bucket: "clark-client-staging"
+          bucket: 'clark-client-staging'
           distribution_id: STAGING_CLOUDFRONT_ID
           script: build:staging
-      
 
   deploy-prod:
     when:
-        equal: [releases, <<pipeline.git.branch>>]
+      equal: [releases, <<pipeline.git.branch>>]
     jobs:
       - cyber4all/release:
           context: [Github]
           tag: $(jq -r '.version' package.json)
-      
-      - cyber4all/s3:
-          context: 
+
+      - build-production:
+          context:
             - AWS
             - Slack
-          bucket: "clark.center"
-    
+
+      - cyber4all/s3:
+          context:
+            - AWS
+            - Slack
+          bucket: 'clark.center'
+          requires:
+            - build-production
