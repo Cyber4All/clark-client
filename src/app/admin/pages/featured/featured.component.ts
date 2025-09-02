@@ -158,8 +158,6 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     this.query.collection = filters.collection;
     this.query.start = filters.start;
     this.query.end = filters.end;
-    // this.query.startNextCheck = filters.startNextCheck;
-    // this.query.endNextCheck = filters.endNextCheck;
     this.learningObjects = [];
 
     this.getLearningObjects();
