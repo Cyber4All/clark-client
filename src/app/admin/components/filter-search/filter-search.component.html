@@ -2,12 +2,12 @@
   <div class="filter__container">
     <div class="btn-group to-right">
       <ng-container *ngIf="adminOrEditor">
-        <button
+        <!-- <button            TEMPORARILY DISABLING RELEVANCY DATE FILTER
           class="button neutral filters-button"
           (activate)="toggleRelevancyMenu(true)"
         >
         <span *ngIf="!startNextCheck">Filter By Relevancy Check Dates</span>
-        </button>
+        </button> -->
         <button
           class="button neutral filters-button"
           (activate)="toggleDateSearchMenu(true)"
@@ -114,7 +114,7 @@
         </clark-context-menu>
       </ng-container>
       <a
-        *ngIf="filters.size || selectedCollection || filterTopics.size"
+        *ngIf="filters.size || selectedCollection || filterTopics.size || dateSearchStart || dateSearchEnd"
         (activate)="clearAllFilters()"
         class="filters-clear"
         >Clear filters</a
@@ -126,6 +126,10 @@
 <clark-popup *ngIf="dateSearchMenuDown" (closed)="toggleDateSearchMenu(false)">
   <div class="modal-container" #popupInner>
     <div class="modal-title">Search by Date Range</div>
+    <div>
+      <br/>
+      <p *ngIf="dateError" class="error-notice">End date must be after start date</p>
+    </div>
     <div class="modal__inner">
       <mat-form-field class="input">
         <input matInput [matDatepicker]="startPicker" placeholder="Choose a start date" [(ngModel)]="dateSearchStart">
@@ -150,7 +154,7 @@
   </div>
 </clark-popup>
 
-<clark-popup *ngIf="relevancyMenuDown" (closed)="toggleRelevancyMenu(false)">
+<!-- <clark-popup *ngIf="relevancyMenuDown" (closed)="toggleRelevancyMenu(false)">
   <div class="modal-container" #popupInner>
     <div class="modal-title">Filter Learning Objects by Next Check Date</div>
     <div class="modal__inner">
@@ -175,4 +179,4 @@
       </div>
     </div>
   </div>
-</clark-popup>
+</clark-popup> -->

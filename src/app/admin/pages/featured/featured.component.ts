@@ -50,11 +50,11 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   listViewHeightOffset: number;
   // Query for retrieve
   query: Query = {
-    collection: undefined,
+    collection: '',
     status: [LearningObject.Status.RELEASED],
     limit: 5,
     currPage: 1,
-    text: '',
+    text: ''
   };
   lastPage: number;
   destroyed$: Subject<void> = new Subject();
@@ -109,10 +109,30 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
   async getLearningObjects() {
+    this.validateQuery();
     this.searchService.getLearningObjects(this.query).then((objects) => {
       this.learningObjects = objects.learningObjects;
       this.lastPage = Math.ceil(objects.total / 5);
     });
+  }
+
+  validateQuery(){
+    this.query.status = [LearningObject.Status.RELEASED];
+    if(!this.query.collection){
+      this.query.collection = "";
+    }
+    if(!this.query.start){
+      delete this.query.start;
+    }
+    if(!this.query.end){
+      delete this.query.end;
+    }
+    if(!this.query.startNextCheck){
+      delete this.query.startNextCheck;
+    }
+    if(!this.query.endNextCheck){
+      delete this.query.endNextCheck;
+    }
   }
 
   /**
@@ -133,13 +153,25 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     this.getLearningObjects();
   }
 
+  getFilteredLearningObjects(filters: any) {
+    this.query.topics = filters.topic;
+    this.query.collection = filters.collection;
+    this.query.start = filters.start;
+    this.query.end = filters.end;
+    // this.query.startNextCheck = filters.startNextCheck;
+    // this.query.endNextCheck = filters.endNextCheck;
+    this.learningObjects = [];
+
+    this.getLearningObjects();
+  }
+
   /**
    * Clear the filters of both collection and status and reset the Learning Objects query
    *
    * @memberof LearningObjectsComponent
    */
   clearCollectionFilters() {
-    this.query = { collection: undefined, currPage: 1 };
+    this.query = { collection: '', currPage: 1 };
     this.learningObjects = [];
 
     this.getLearningObjects();
