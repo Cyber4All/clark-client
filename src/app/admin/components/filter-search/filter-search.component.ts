@@ -178,7 +178,7 @@ export class FilterSearchComponent implements OnInit {
       this.collectionFilter.emit('');
       return;
     }
-    this.collectionFilter.emit(this.selectedCollection.abvName)
+    this.collectionFilter.emit(this.selectedCollection.abvName);
   }
 
   /**

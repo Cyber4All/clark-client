@@ -119,7 +119,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   validateQuery(){
     this.query.status = [LearningObject.Status.RELEASED];
     if(!this.query.collection){
-      this.query.collection = "";
+      this.query.collection = '';
     }
     if(!this.query.start){
       delete this.query.start;
