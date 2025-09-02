@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Collection, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection-module/collections.service';
-import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { NavbarService } from 'app/core/client-module/navbar.service';
-import { Title } from '@angular/platform-browser';
-import { SEARCH_ROUTES } from 'app/core/learning-object-module/search/search.routes';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { OrderBy } from 'app/interfaces/query';
+
 
 @Component({
   selector: 'clark-tag-with-cyber',
@@ -21,9 +21,8 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
   constructor(
     private navbarService: NavbarService,
     private collectionService: CollectionService,
-    private titleService: Title,
-    private featureService: FeaturedObjectsService,
-    private tagsService: TagsService
+    private tagsService: TagsService,
+    private searchService: SearchService
   ) {}
 
   async ngOnInit() {
@@ -32,8 +31,6 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
     this.collection = await this.collectionService.getCollection(this.abvCollection);
 
     this.learningObjects = await this.getFeaturedLearningObjects();
-
-    this.titleService.setTitle('CLARK | ' + this.collection.name);
 
     this.tagId = await this.tagsService.getTagIdByName('WITHcyber');
 
@@ -50,12 +47,9 @@ export class TagWithCyberComponent implements OnInit, OnDestroy {
       return [];
     }
     // for now we are just fetching the most recent 5 LOs for the featured section of the collection page
-    const queryParams = new URLSearchParams({ tags: tagId, orderBy: 'date', sortType: '-1',  limit: '5' }).toString();
-    const url = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryParams);
-    const res = await fetch(url, { method: 'GET' });
-    const payload: { objects?: LearningObject[]; learningObjects?: LearningObject[]; total?: number } = await res.json();
-    const list = payload.objects ?? payload.learningObjects ?? [];
-    const top5 = list.slice(0, 5);
-    return top5;
+    const queryParams = { tags: [tagId], orderBy: OrderBy.Date, sortType: -1,  limit: 5 };
+    const response = await this.searchService.getLearningObjects(queryParams);
+    const list = response.learningObjects ?? [];
+    return list;
   }
 }
