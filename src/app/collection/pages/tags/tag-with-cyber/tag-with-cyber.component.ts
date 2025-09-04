@@ -14,21 +14,17 @@ import { OrderBy } from 'app/interfaces/query';
 })
 export class TagWithCyberComponent implements OnInit, OnDestroy {
   abvCollection = 'withcyber';
-  collection: Collection;
   learningObjects: LearningObject[];
   tagId: string;
 
   constructor(
     private navbarService: NavbarService,
-    private collectionService: CollectionService,
     private tagsService: TagsService,
     private searchService: SearchService
   ) {}
 
   async ngOnInit() {
     this.navbarService.show();
-
-    this.collection = await this.collectionService.getCollection(this.abvCollection);
 
     this.learningObjects = await this.getFeaturedLearningObjects();
 
