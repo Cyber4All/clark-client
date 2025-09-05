@@ -46,6 +46,7 @@ export class FeaturedObjectsService {
    * Gets 5 featured full learning objects and saves it in the _featuredObjects subject
    */
   async getFeaturedObjects() {
+    console.log("Wondering if I'm ever in here");
     // Grabs featured Learning Objects from the Featured Database
     const objects = await this.http
       .get(FEATURED_ROUTES.GET_FEATURED_OBJECTS())
@@ -64,8 +65,11 @@ export class FeaturedObjectsService {
           this.filterOutFeaturedObjects();
           this._mutationError$.next(true);
         }
+        console.log("Featured Objects:");
+        console.log(featuredObjects);
         return featuredObjects;
       });
+      console.log("past THAT return statement");
 
     const promisedObjectsArray = objects.map(
       async (learningObject: LearningObject) => {
@@ -102,6 +106,7 @@ export class FeaturedObjectsService {
     );
     // Save the array into the _featuredObjects subject to be observed
     this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
+    this.setSubmitError();
   }
 
   filterOutFeaturedObjects() {
@@ -111,13 +116,18 @@ export class FeaturedObjectsService {
     });
   }
 
-  setFeatured(objects: LearningObject[]) {
-    this.featuredStore.featured = objects;
-    this.filterOutFeaturedObjects();
+  setSubmitError(){
     if (this.featuredStore.featured.length === 5) {
       this._submitError$.next(false);
       this._mutationError$.next(true);
     }
+  }
+
+  setFeatured(objects: LearningObject[]) {
+    this.featuredStore.featured = objects;
+    this.filterOutFeaturedObjects();
+    console.log("HOW OFTEN DO WE CHECK HERE")
+    this.setSubmitError();
     this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
@@ -136,13 +146,22 @@ export class FeaturedObjectsService {
   }
 
   async saveFeaturedObjects() {
+    console.log("I am in the featured service");
+    console.log( {learningObjects: this.featuredStore.featured})
+    console.log( this.featuredStore.featured[0].cuid)
+    const arr = [];
+    this.featuredStore.featured.forEach((obj)=> {
+      arr.push({cuid: obj.cuid, version: obj.version, featuredCollection: obj.collection})
+    })
     if (this.featuredStore.featured.length !== 5) {
+      console.log("Lenth is not 5");
       this._submitError$.next(true);
     } else {
       return this.http
         .patch(
           FEATURED_ROUTES.UPDATE_FEATURED_OBJECTS(),
-          this.featuredStore.featured,
+          // { learningObjects: this.featuredStore.featured},
+          { learningObjects: arr },
           { headers: this.headers, withCredentials: true },
         )
         .toPromise();
