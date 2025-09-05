@@ -466,7 +466,7 @@ export class FilterSearchComponent implements OnInit {
       if (this.dateSearchEnd) {
         label += ` To ${this.dateSearchEnd.toLocaleDateString()}`;
       }
-      return label; 
+      return label;
     }
   }
 
