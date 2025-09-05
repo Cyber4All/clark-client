@@ -12,7 +12,7 @@
     "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
     "build:prod": "npm run rum:install && ng build clark --configuration=production && npm run rum:upload-production",
     "rum:install": "npm list -g @coralogix/rum-cli || npm install -g @coralogix/rum-cli",
-    "rum:upload-production": "coralogix-rum-cli upload-source-maps -k \"cxtp_c7LgtyyyBwdnHVWUapJJESO9vWkNuu\" -a \"clark-production\" -e \"US1\" -v \"6.10.4\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
+    "rum:upload-production": "coralogix-rum-cli upload-source-maps -k \"$CORALOGIX_SOURCE_MAP_KEY\" -a \"clark-production\" -e \"US1\" -v \"6.10.4\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
     "lint": "npx ng lint clark",
     "lint:fix": "npx ng lint clark --fix",
     "prettier": "prettier --check .",
