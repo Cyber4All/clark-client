@@ -10,7 +10,7 @@
     "build": "ng build clark",
     "build:staging": "ng build clark --configuration=staging",
     "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
-    "build:prod": "npm run rum:install && ng build clark --configuration=production && npm run rum:upload-production",
+    "build:production": "npm run rum:install && ng build clark --configuration=production && npm run rum:upload-production",
     "rum:install": "npm list -g @coralogix/rum-cli || npm install -g @coralogix/rum-cli",
     "rum:upload-staging": "coralogix-rum-cli upload-source-maps -k \"$CORALOGIX_SOURCE_MAP_KEY\" -a \"clark-staging\" -e \"US1\" -v \"$npm_package_version\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
     "rum:upload-production": "coralogix-rum-cli upload-source-maps -k \"$CORALOGIX_SOURCE_MAP_KEY\" -a \"clark-production\" -e \"US1\" -v \"$npm_package_version\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
