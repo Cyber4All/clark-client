@@ -173,7 +173,7 @@ export class FilterSearchComponent implements OnInit {
     this._selectedCollection = this.collections.filter(
       (x) => x.abvName === abvName,
     )[0];
-    if(abvName === '') {
+    if(!abvName) {
       this._selectedCollection = undefined;
       this.collectionFilter.emit('');
       return;
@@ -452,6 +452,19 @@ export class FilterSearchComponent implements OnInit {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     );
+  }
+
+  getDatesFilterLabel(): string {
+    if (this.dateSearchStart || this.dateSearchEnd) {
+      let label = '';
+      if (this.dateSearchStart) {
+        label += ` From ${this.dateSearchStart.toLocaleDateString()}`;
+      }
+      if (this.dateSearchEnd) {
+        label += ` To ${this.dateSearchEnd.toLocaleDateString()}`;
+      }
+      return label; 
+    }
   }
 
   /**

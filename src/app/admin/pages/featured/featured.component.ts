@@ -117,7 +117,6 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
   validateQuery(){
-    this.query.status = [LearningObject.Status.RELEASED];
     if(!this.query.collection){
       this.query.collection = '';
     }
@@ -164,12 +163,14 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Clear the filters of both collection and status and reset the Learning Objects query
+   * Clears all filters and resets the Learning Objects query
    *
    * @memberof LearningObjectsComponent
    */
-  clearCollectionFilters() {
-    this.query = { collection: '', currPage: 1 };
+  clearFilters() {
+    this.query.collection = '';
+    this.query.currPage = 1;
+    this.query.topics = [];
     this.learningObjects = [];
 
     this.getLearningObjects();

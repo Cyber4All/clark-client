@@ -13,7 +13,8 @@
           (activate)="toggleDateSearchMenu(true)"
         >
           <div [ngClass]="{ 'indicator': dateSearchStart || dateSearchEnd }"></div>
-          <span>Search by Date Range</span>
+          <span *ngIf="dateSearchStart || dateSearchEnd; else elseBlock">{{ getDatesFilterLabel() }}</span>
+          <ng-template #elseBlock>Search By Date Range</ng-template>
         </button>
         <button
           #toggleTopicMenuElement
