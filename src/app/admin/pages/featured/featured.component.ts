@@ -142,13 +142,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
    */
   getCollectionFilteredLearningObjects(collection: string) {
     this.activeCollection = collection;
-    this.query = {
-      collection,
-      currPage: 1,
-      status: [LearningObject.Status.RELEASED],
-    };
     this.learningObjects = [];
-
     this.getLearningObjects();
   }
 
@@ -157,6 +151,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     this.query.collection = filters.collection;
     this.query.start = filters.start;
     this.query.end = filters.end;
+    this.query.currPage = filters.currPage;
     this.learningObjects = [];
 
     this.getLearningObjects();

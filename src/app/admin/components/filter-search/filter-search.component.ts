@@ -361,6 +361,7 @@ export class FilterSearchComponent implements OnInit {
         : '',
       start: this.dateSearchStart,
       end: this.dateSearchEnd,
+      currPage: 1
     };
     this.filterQuery.emit(filters);
   }
