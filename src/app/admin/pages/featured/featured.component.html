@@ -28,8 +28,8 @@
     ></clark-admin-search-bar>
     <clark-admin-filter-search
         filter-options
-        (collectionFilter)="getCollectionFilteredLearningObjects($event)"
-        (clearAll)="clearCollectionFilters()"
+        (clearAll)="clearFilters()"
+        (filterQuery)="getFilteredLearningObjects($event)"
         [adminOrEditor]="true"
         [showStatus]="false"
     ></clark-admin-filter-search>

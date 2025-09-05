@@ -245,6 +245,14 @@
   }
 }
 
+.error-notice {
+    text-align: center;
+    background: $error-red;
+    border-radius: 3px;
+    color: white;
+    padding: 5px;
+}
+
 #contextMenu {
   max-height: 350px;
   overflow-y: auto;
