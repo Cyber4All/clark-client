@@ -605,7 +605,7 @@ export class AuthService {
 
     this.rumService.setUserContext({
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      user_id: this.user.userId || this.user.username,
+      user_id: this.user.userId ? this.user.userId : 'unknown',
       // eslint-disable-next-line @typescript-eslint/naming-convention
       user_name: this.user.name || `${this.user.username}`,
       // eslint-disable-next-line @typescript-eslint/naming-convention
