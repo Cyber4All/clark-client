@@ -9,8 +9,7 @@ const { version: appVersion } = require('../../../../package.json');
     providedIn: 'root'
 })
 export class CoralogixRumService {
-    private readonly publicKey = 'cxtp_pbDbZsDUdNr5Wu3GWX6emisZyfKkV9';
-    private readonly sourceMappingKey = 'cxtp_c7LgtyyyBwdnHVWUapJJESO9vWkNuu';
+    private readonly sourceMappingKey = environment.sourceMappingKey;
     private isInitialized = false;
 
     constructor() { }
