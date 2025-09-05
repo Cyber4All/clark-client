@@ -4,6 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 export const environment = {
   production: false,
+  environment: 'development',
   experimental: false,
   apiURL: 'http://localhost:3000',
   s3Bucket: 'clark-dev-file-uploads',
@@ -12,7 +13,8 @@ export const environment = {
   cognitoIdentityPoolId: '',
   cognitoAdminIdentityPoolId: '',
   cardUrl: 'http://localhost:3000',
-  downtimeUrl: ''
+  downtimeUrl: '',
+  publicKey: '',
 };
 
 export enum LearningObjectStatus {

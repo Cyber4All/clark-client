@@ -580,16 +580,9 @@ export class AuthService {
   }
 
   private handleError(error: HttpErrorResponse | any) {
-    if (
-      error.error instanceof ErrorEvent ||
-      (error.error && error.error.message)
-    ) {
-      // Client-side or network returned error
-      return throwError(error.error);
-    } else {
-      // API returned error
-      return throwError(error.error);
-    }
+    // Normalize to the inner error payload when present, otherwise use the error itself
+    const payload = error?.error ?? error;
+    return throwError(payload);
   }
 
   /**

@@ -5,6 +5,7 @@
 
 export const environment = {
   production: false,
+  environment: 'experimental',
   experimental: true,
   apiURL: 'http://localhost:3001',
   s3Bucket: 'neutrino-file-uploads',
@@ -12,7 +13,8 @@ export const environment = {
   cognitoRegion: 'us-east-1',
   cognitoIdentityPoolId: '',
   cognitoAdminIdentityPoolId: '',
-  cardUrl: ''
+  cardUrl: '',
+  publicKey: '',
 };
 
 export enum LearningObjectStatus {

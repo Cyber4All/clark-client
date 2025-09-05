@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { CoralogixRum } from '@coralogix/browser';
+import { CoralogixBrowserSdkConfig, CoralogixRum, UserContextConfig } from '@coralogix/browser';
 import { environment } from '@env/environment';
 
 // Application display name and Version information
-const { version: appVersion } = require('../../../../package.json');
+const { version } = require('../../../../package.json');
 
 @Injectable({
     providedIn: 'root'
 })
 export class CoralogixRumService {
-    private readonly sourceMappingKey = environment.sourceMappingKey;
     private isInitialized = false;
 
     constructor() { }
@@ -29,13 +28,12 @@ export class CoralogixRumService {
         }
 
         try {
-            const rumConfig = {
+            const rumConfig: CoralogixBrowserSdkConfig = {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
-                public_key: this.publicKey,
-                application: 'clark-production',
-                subsystem: 'frontend',
-                version: appVersion,
-                coralogixDomain: 'US1' as const
+                public_key: environment.publicKey,
+                application: `clark-${environment.environment}`,
+                version,
+                coralogixDomain: 'US1' as const,
             };
 
             console.log('Initializing Coralogix RUM for production');
@@ -45,9 +43,8 @@ export class CoralogixRumService {
 
             // Set additional labels for production tracking
             CoralogixRum.setLabels({
-                applicationName: 'clark-production',
-                environment: 'production',
-                deploymentType: 'production'
+                applicationName: `clark-${environment.environment}`,
+                environment: environment.environment,
             });
 
             this.isInitialized = true;
@@ -60,16 +57,7 @@ export class CoralogixRumService {
     /**
      * Set user context for RUM tracking
      */
-    setUserContext(userContext: {
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        user_id: string;
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        user_name: string;
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        user_email: string;
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        user_metadata?: Record<string, any>;
-    }): void {
+    setUserContext(userContext: UserContextConfig): void {
         if (!this.isInitialized) {
             return;
         }
