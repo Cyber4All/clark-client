@@ -454,6 +454,9 @@ export class FilterSearchComponent implements OnInit {
     );
   }
 
+  /*
+    * Gets a label for the date search filter based off selected dates
+  */
   getDatesFilterLabel(): string {
     if (this.dateSearchStart || this.dateSearchEnd) {
       let label = '';
