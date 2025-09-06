@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { SearchItem } from '../../../../../../../entity/standard-guidelines/search-index';
+import { SearchItemDocument } from '../../../../../../../entity/standard-guidelines/search-index';
 import { LearningOutcome } from '@entity';
 import { selectedGuidelines } from './guidelines_data';
 import { RelevancyService } from '../../../../../../core/learning-object-module/relevancy/relevancy.service';
+import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,12 @@ export class AlignmentService {
   ) { }
 
   // The available guidelines to align to
-  private guidelines = new BehaviorSubject<SearchItem []>([]);
+  private guidelines = new BehaviorSubject<SearchItemDocument[]>([]);
 
   // The outcomes for the learning object at hand
-  private outcomes = new BehaviorSubject<LearningOutcome []>([]);
+  private outcomes = new BehaviorSubject<LearningOutcome[]>([]);
 
-  guidelines$: Observable<SearchItem[]> = this.guidelines.asObservable();
+  guidelines$: Observable<SearchItemDocument[]> = this.guidelines.asObservable();
   outcomes$: Observable<LearningOutcome[]> = this.outcomes.asObservable();
 
   /**
@@ -38,7 +39,7 @@ export class AlignmentService {
     // For right now since we're focusing on the core KSATs for
     // DCWF we are going to just put those in for now. This can be swapped out later
     // with a call to the api.
-    this.guidelines.next(selectedGuidelines as SearchItem[]);
+    this.guidelines.next(selectedGuidelines as SearchItemDocument[]);
   }
 
   /**

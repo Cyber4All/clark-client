@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input } from '@angular/core';
 import { AlignmentService } from '../../services/alignment.service';
-import { SearchItem, SearchItemDocument } from 'entity/standard-guidelines/search-index';
+import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { LearningOutcome } from '@entity';
+import { LearningOutcome, LearningObject } from '@entity';
 
 interface SelectionDocument extends SearchItemDocument {
   checked: boolean;
@@ -17,9 +17,10 @@ interface SelectionDocument extends SearchItemDocument {
 })
 export class GuidelinesComponent implements OnInit, OnDestroy {
 
+  @Input() learningObject: LearningObject;
   alignableGuidelines: SelectionDocument[];
 
-  outcomes: LearningOutcome [];
+  outcomes: LearningOutcome[];
   openOutcome: LearningOutcome;
 
   private destroy$ = new Subject<void>();
@@ -43,7 +44,7 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
   }
 
   setOpenOutcome(outcome: LearningOutcome) {
-    if(outcome.id) {
+    if (outcome.id) {
       this.openOutcome = outcome;
       const outcomeMappings = outcome.mappings.map(mapping => mapping.guidelineName);
       this.alignableGuidelines.forEach(item => {
@@ -58,7 +59,7 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
     } else {
       // We closed an outcome without opening a new one so remove the selected mappings
       this.alignableGuidelines.forEach(item => {
-          item.checked = false;
+        item.checked = false;
         return item;
       });
     }
