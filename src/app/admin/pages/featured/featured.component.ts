@@ -206,8 +206,6 @@ export class FeaturedComponent implements OnInit, OnDestroy {
         );
       }
     }
-    console.log("DROPPING")
-    console.log(this.featuredObjects)
     this.featureService.setFeatured(this.featuredObjects);
     this.getLearningObjects();
   }
