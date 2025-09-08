@@ -1,7 +1,18 @@
 <clark-admin-content-wrapper>
     <div #list2 class="el"></div>
     <div page-title>Featured Learning Objects</div>
-    <button filter-options [ngClass]="{'disabled': submitError }" class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
+    <div filter-options class="featured-actions">
+      <div class="slideshow-toggle">
+        <label for="homepage-slideshow" class="slideshow-toggle__label">Homepage Slideshow</label>
+        <clark-toggle-switch
+          [identity]="'homepage-slideshow'"
+          [aria]="'Homepage slideshow'"
+          [state]="slideshowEnabled"
+          (toggled)="onSlideshowToggled($event)"
+        ></clark-toggle-switch>
+      </div>
+      <button [ngClass]="{'disabled': submitError }" class="button good" (activate)="saveFeatured()">Save<i class="far fa-save"></i></button>
+    </div>
 </clark-admin-content-wrapper>
 <div *ngIf="submitError" class="error-notice">Featured Learning Objects must contain 5 Learning Objects</div>
 <div

@@ -41,4 +41,14 @@ export const UTILITY_ROUTES = {
   SEARCH_ORGANIZATIONS(queryString: string) {
     return `${environment.cardUrl}/organizations?type=&verified=verified&mine=&sort=&text=${queryString}`;
   }
+  ,
+  /**
+   * Homepage slideshow setting (placeholder routes; set real API later)
+   */
+  GET_HOMEPAGE_SLIDESHOW_ENABLED() {
+    return `${environment.cardUrl}/slideshow`;
+  },
+  SET_HOMEPAGE_SLIDESHOW_ENABLED() {
+    return `${environment.cardUrl}/slideshow`;
+  }
 };

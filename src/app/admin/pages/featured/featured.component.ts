@@ -17,6 +17,8 @@ import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { SlideshowStateService } from 'app/core/feature-module/slideshow-state.service';
+import { UtilityService } from 'app/core/utility-module/utility.service';
 
 @Component({
   selector: 'clark-featured',
@@ -59,10 +61,16 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   lastPage: number;
   destroyed$: Subject<void> = new Subject();
 
+  // Homepage slideshow state
+  slideshowEnabled = false;
+  private slideshowSub?: any;
+
   constructor(
     private featureService: FeaturedObjectsService,
     private searchService: SearchService,
     private toaster: ToastrOvenService,
+    private slideshowState: SlideshowStateService,
+    private utilityService: UtilityService,
   ) {}
 
   async ngOnInit() {
@@ -86,6 +94,19 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     });
 
     this.getLearningObjects();
+
+    this.slideshowSub = this.slideshowState.enabled$.subscribe((enabled) => {
+      this.slideshowEnabled = enabled === true;
+    });
+
+    try {
+      const enabled = await this.utilityService.getHomepageSlideshowEnabled();
+      this.slideshowEnabled = enabled;
+      this.slideshowState.setEnabled(enabled);
+    } catch (e) {
+      // ignore; fallback to local state
+    }
+
     // listen for input events from the search component and perform the search action
     this.userSearchInput$
       .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
@@ -215,5 +236,18 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
+    if (this.slideshowSub && typeof this.slideshowSub.unsubscribe === 'function') {
+      this.slideshowSub.unsubscribe();
+      this.slideshowSub = undefined;
+    }
+  }
+
+  async onSlideshowToggled(state: boolean) {
+    this.slideshowState.setEnabled(state);
+    try {
+      await this.utilityService.setHomepageSlideshowEnabled(state);
+    } catch (e) {
+      this.toaster.error('Error', 'Failed to save slideshow setting');
+    }
   }
 }

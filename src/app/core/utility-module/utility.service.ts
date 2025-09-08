@@ -112,6 +112,33 @@ export class UtilityService {
     });
   }
 
+  async getHomepageSlideshowEnabled(): Promise<boolean> {
+    try {
+      const res: any = await this.http
+        .get(UTILITY_ROUTES.GET_HOMEPAGE_SLIDESHOW_ENABLED(), { withCredentials: true })
+        .toPromise();
+      if (typeof res === 'boolean') {
+        return res;
+      }
+      if (res && typeof res.enabled === 'boolean') {
+        return res.enabled;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async setHomepageSlideshowEnabled(enabled: boolean): Promise<void> {
+    try {
+      await this.http
+        .patch(UTILITY_ROUTES.SET_HOMEPAGE_SLIDESHOW_ENABLED(), { enabled }, { withCredentials: true })
+        .toPromise();
+    } catch (e) {
+      // swallow for now; caller may notify user
+    }
+  }
+
   getDowntime(): Promise<Downtime> {
     return this.http.get(UTILITY_ROUTES.GET_DOWNTIME(), { withCredentials: true })
       .pipe(
