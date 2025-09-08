@@ -40,6 +40,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     topics: [],
     fileTypes: [],
     status: [LearningObject.Status.RELEASED],
+    tags: []
   };
 
   tooltipText = {

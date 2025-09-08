@@ -173,7 +173,7 @@ export class FilterSearchComponent implements OnInit {
     this._selectedCollection = this.collections.filter(
       (x) => x.abvName === abvName,
     )[0];
-    if(abvName === '') {
+    if(!abvName) {
       this._selectedCollection = undefined;
       this.collectionFilter.emit('');
       return;
@@ -361,6 +361,7 @@ export class FilterSearchComponent implements OnInit {
         : '',
       start: this.dateSearchStart,
       end: this.dateSearchEnd,
+      currPage: 1
     };
     this.filterQuery.emit(filters);
   }
@@ -452,6 +453,22 @@ export class FilterSearchComponent implements OnInit {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     );
+  }
+
+  /*
+    * Gets a label for the date search filter based off selected dates
+  */
+  getDatesFilterLabel(): string {
+    if (this.dateSearchStart || this.dateSearchEnd) {
+      let label = '';
+      if (this.dateSearchStart) {
+        label += ` From ${this.dateSearchStart.toLocaleDateString()}`;
+      }
+      if (this.dateSearchEnd) {
+        label += ` To ${this.dateSearchEnd.toLocaleDateString()}`;
+      }
+      return label;
+    }
   }
 
   /**

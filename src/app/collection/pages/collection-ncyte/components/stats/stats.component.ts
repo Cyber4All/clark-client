@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { PieChart } from 'app/cube/usage-stats/types/chart';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -15,6 +16,7 @@ export class StatsComponent implements OnInit {
 
   @Input() collectionName: string;
   @Input() displayCharts: boolean;
+  tagId: string;
   name: string;
 
   objDownload: number;
@@ -33,6 +35,7 @@ export class StatsComponent implements OnInit {
   constructor(
     private metricService: MetricService,
     private learningObjectService: LearningObjectService,
+    private tagsService: TagsService
   ) { }
 
   async ngOnInit() {
@@ -46,6 +49,10 @@ export class StatsComponent implements OnInit {
       case 'cyberskills2work':
         this.name = 'CyberSkills2Work';
         break;
+      case 'withcyber':
+        this.tagId = await this.getTagIdByName('WITHcyber');
+        await this.getStatsForTag(this.tagId);
+        return;
     }
     let stats = {};
 
@@ -131,8 +138,21 @@ export class StatsComponent implements OnInit {
   handleChartNotHovered() {
     CHART_HOVERED = false;
   }
-}
 
+   async getStatsForTag(tag: string) {
+      if (!tag) {
+        return;
+      }
+      const tagMetrics = await this.metricService.getTagMetrics(tag);
+      this.objReleased = tagMetrics.releasedLearningObjects;
+      this.objDownload = tagMetrics.downloads;
+      this.authorCollection = tagMetrics.authors.length;
+  }
+
+    async getTagIdByName(name: string) {
+        return await this.tagsService.getTagIdByName(name);
+    }
+}
 
   /**
    * Renders percentages on pie slices
@@ -175,3 +195,5 @@ export class StatsComponent implements OnInit {
       });
     }
   }
+
+

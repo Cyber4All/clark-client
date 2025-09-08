@@ -43,6 +43,9 @@ import { DetailsModule } from '../cube/details/details.module';
 import { LibraryModule } from '../cube/library/library.module';
 import { CyberskillsCardComponent } from './pages/cyberskills-dashboard/components/cyberskills-card/cyberskills-card.component';
 import { CsvGenModalComponent } from './pages/cyberskills-dashboard/components/csv-gen-modal/csv-gen-modal.component';
+import { TagWithCyberComponent } from './pages/tags/tag-with-cyber/tag-with-cyber.component';
+import { HeaderWithCyberComponent } from './pages/tags/tag-with-cyber/components/header/header.component';
+import { AboutWithCyberComponent } from './pages/tags/tag-with-cyber/components/about/about.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +71,10 @@ import { CsvGenModalComponent } from './pages/cyberskills-dashboard/components/c
     CyberskillsDashboardComponent,
     CyberskillsCardComponent,
     CsvGenModalComponent,
-    CyberskillsFiltersComponent
+    CyberskillsFiltersComponent,
+    TagWithCyberComponent,
+    HeaderWithCyberComponent,
+    AboutWithCyberComponent
   ],
   schemas: [
     NO_ERRORS_SCHEMA,

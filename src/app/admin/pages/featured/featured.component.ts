@@ -117,7 +117,6 @@ export class FeaturedComponent implements OnInit, OnDestroy {
   }
 
   validateQuery(){
-    this.query.status = [LearningObject.Status.RELEASED];
     if(!this.query.collection){
       this.query.collection = '';
     }
@@ -143,13 +142,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
    */
   getCollectionFilteredLearningObjects(collection: string) {
     this.activeCollection = collection;
-    this.query = {
-      collection,
-      currPage: 1,
-      status: [LearningObject.Status.RELEASED],
-    };
     this.learningObjects = [];
-
     this.getLearningObjects();
   }
 
@@ -158,18 +151,21 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     this.query.collection = filters.collection;
     this.query.start = filters.start;
     this.query.end = filters.end;
+    this.query.currPage = filters.currPage;
     this.learningObjects = [];
 
     this.getLearningObjects();
   }
 
   /**
-   * Clear the filters of both collection and status and reset the Learning Objects query
+   * Clears all filters and resets the Learning Objects query
    *
    * @memberof LearningObjectsComponent
    */
-  clearCollectionFilters() {
-    this.query = { collection: '', currPage: 1 };
+  clearFilters() {
+    this.query.collection = '';
+    this.query.currPage = 1;
+    this.query.topics = [];
     this.learningObjects = [];
 
     this.getLearningObjects();

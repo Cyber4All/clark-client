@@ -8,6 +8,7 @@ import {
   LearningObjectMetrics,
   LearningObjectStats,
   UserMetrics,
+  TagMetrics
 } from 'app/cube/shared/types/usage-stats';
 
 @Injectable({
@@ -72,6 +73,14 @@ export class MetricService {
       accounts: userMetrics.users,
       organizations: userMetrics.organizations,
     };
+  }
+
+  async getTagMetrics(tagId?: string): Promise<TagMetrics> {
+    const tagMetrics: TagMetrics = await this.http
+      .get<TagMetrics>(METRIC_ROUTES.GET_TAG_METRICS(tagId))
+      .pipe(catchError(this.handleError))
+      .toPromise();
+    return tagMetrics as TagMetrics;
   }
 
   private handleError(error: HttpErrorResponse | any) {
