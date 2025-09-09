@@ -141,9 +141,9 @@ export class FeaturedObjectsService {
   }
 
   async saveFeaturedObjects() {
-    const arr = [];
+    const featuredDto = [];
     this.featuredStore.featured.forEach((obj)=> {
-      arr.push({cuid: obj.cuid, version: obj.version, featuredCollection: obj.collection});
+      featuredDto.push({cuid: obj.cuid, version: obj.version, featuredCollection: obj.collection});
     });
     if (this.featuredStore.featured.length !== 5) {
       this._submitError$.next(true);
@@ -151,8 +151,7 @@ export class FeaturedObjectsService {
       return this.http
         .patch(
           FEATURED_ROUTES.UPDATE_FEATURED_OBJECTS(),
-          // { learningObjects: this.featuredStore.featured},
-          { learningObjects: arr },
+          { learningObjects: featuredDto },
           { headers: this.headers, withCredentials: true },
         )
         .toPromise();
