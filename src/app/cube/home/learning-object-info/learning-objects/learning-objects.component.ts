@@ -75,7 +75,7 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
         this.featuredObject = this.featuredObjects[0];
         this.stopAutoSlide();
       }
-    
+
   }
 
   /**

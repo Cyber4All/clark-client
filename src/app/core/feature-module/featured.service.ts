@@ -143,8 +143,8 @@ export class FeaturedObjectsService {
   async saveFeaturedObjects() {
     const arr = [];
     this.featuredStore.featured.forEach((obj)=> {
-      arr.push({cuid: obj.cuid, version: obj.version, featuredCollection: obj.collection})
-    })
+      arr.push({cuid: obj.cuid, version: obj.version, featuredCollection: obj.collection});
+    });
     if (this.featuredStore.featured.length !== 5) {
       this._submitError$.next(true);
     } else {
