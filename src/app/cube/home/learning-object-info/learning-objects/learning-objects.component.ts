@@ -7,7 +7,6 @@ import { GoogleTagService } from '../../google-tag.service';
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { interval, Subscription } from 'rxjs';
-import { SlideshowStateService } from 'app/core/feature-module/slideshow-state.service';
 
 
 @Component({
@@ -40,7 +39,6 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
     private metricService: MetricService,
     public googleTagService: GoogleTagService,
     private searchService: SearchService,
-    private slideshowState: SlideshowStateService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -68,11 +66,6 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.slideshowStateSub = this.slideshowState.enabled$.subscribe((enabled) => {
-      this.slideshowEnabled = enabled === true;
-      if (!this.featuredObjects.length) {
-        return;
-      }
       if (this.slideshowEnabled) {
         this.currentIndex = Math.min(1, this.featuredObjects.length - 1);
         this.featuredObject = this.featuredObjects[this.currentIndex];
@@ -82,7 +75,7 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
         this.featuredObject = this.featuredObjects[0];
         this.stopAutoSlide();
       }
-    });
+    
   }
 
   /**

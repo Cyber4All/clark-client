@@ -9,8 +9,8 @@
     </div>
 
     <div class="featured-object">
-        <button *ngIf="slideshowEnabled && featuredObjects?.length > 1" type="button" class="slider-arrow slider-arrow--left" (click)="prev()" aria-label="Previous featured learning object">&#10094;</button>
-        <button *ngIf="slideshowEnabled && featuredObjects?.length > 1" type="button" class="slider-arrow slider-arrow--right" (click)="next()" aria-label="Next featured learning object">&#10095;</button>
+        <button type="button" class="slider-arrow slider-arrow--left" (click)="prev()" aria-label="Previous featured learning object">&#10094;</button>
+        <button type="button" class="slider-arrow slider-arrow--right" (click)="next()" aria-label="Next featured learning object">&#10095;</button>
 
         <div class="slide-content" [@fadeSlide]="currentIndex">
             <div class="featured-text">

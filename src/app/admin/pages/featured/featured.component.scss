@@ -146,30 +146,3 @@
     color: white;
     padding: 5px;
   }
-
-  .featured-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .slideshow-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-right: 24px; // shift left to avoid overlap with Save
-
-    .slideshow-toggle__label {
-      font-size: $small;
-      color: $dark-grey;
-    }
-
-    // Ensure the toggle participates in normal flow here
-    clark-toggle-switch {
-      position: relative;
-      z-index: 0;
-      .switch { position: static; }
-    }
-  }
