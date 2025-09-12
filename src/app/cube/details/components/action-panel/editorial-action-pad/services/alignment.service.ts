@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SearchItemDocument } from '../../../../../../../entity/standard-guidelines/search-index';
 import { LearningOutcome } from '@entity';
-import { selectedGuidelines } from './guidelines_data';
 import { RelevancyService } from '../../../../../../core/learning-object-module/relevancy/relevancy.service';
-import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +10,7 @@ import { GuidelineService } from 'app/core/standard-guidelines-module/standard-g
 export class AlignmentService {
 
   constructor(
-    private relevancyService: RelevancyService
+    private relevancyService: RelevancyService,
   ) { }
 
   // The available guidelines to align to
@@ -35,11 +33,8 @@ export class AlignmentService {
   /**
    * Initialize the guidelines array
    */
-  setGuidelinesArray(): void {
-    // For right now since we're focusing on the core KSATs for
-    // DCWF we are going to just put those in for now. This can be swapped out later
-    // with a call to the api.
-    this.guidelines.next(selectedGuidelines as SearchItemDocument[]);
+  setGuidelinesArray(suggestedGuidelines: SearchItemDocument[]): void {
+    this.guidelines.next(suggestedGuidelines);
   }
 
   /**

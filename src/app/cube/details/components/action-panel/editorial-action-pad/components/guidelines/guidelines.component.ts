@@ -4,6 +4,9 @@ import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { LearningOutcome, LearningObject } from '@entity';
+import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
+import { stripHtmlTags } from 'app/shared/functions/StripHTML';
+import { selectedGuidelines } from './guidelines_data';
 
 interface SelectionDocument extends SearchItemDocument {
   checked: boolean;
@@ -27,19 +30,38 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
 
   constructor(
     private alignmentService: AlignmentService,
+    private guidelineService: GuidelineService,
     private ref: ChangeDetectorRef
   ) { }
 
-  ngOnInit(): void {
-    this.alignmentService.setGuidelinesArray();
+  async ngOnInit(): Promise<void> {
+
+    const learningObjectData = [
+      this.learningObject.name,
+      this.learningObject.description,
+      // Combine outcomes text
+      ...(this.learningObject.outcomes?.map(o => o.text) || [])
+    ].join(' ');
+    const filter = {
+      text: stripHtmlTags(learningObjectData),
+    };
+    // Get a list of suggested guidelines based on the learning object data
+    const result = await this.guidelineService.getGuidelines(filter);
+    if (result.results.length === 0) {
+      // Use the hard coded 8 core KSATs when there are no results
+      this.alignmentService.setGuidelinesArray(selectedGuidelines as SearchItemDocument[]);
+    }
+    this.alignmentService.setGuidelinesArray(result.results);
 
     // Subscribe to the source arrays
     this.alignmentService.guidelines$.pipe(takeUntil(this.destroy$)).subscribe((items: any) => {
       this.alignableGuidelines = items;
+      this.ref.markForCheck();
     });
 
     this.alignmentService.outcomes$.pipe(takeUntil(this.destroy$)).subscribe((items: any) => {
       this.outcomes = items;
+      this.ref.markForCheck();
     });
   }
 
@@ -63,6 +85,10 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
         return item;
       });
     }
+  }
+
+  onToggleMapping(event) {
+    this.addMapping({ ...event.standardOutcome });
   }
 
   addMapping(mappingToAdd: any) {
