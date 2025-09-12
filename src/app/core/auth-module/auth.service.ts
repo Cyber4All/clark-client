@@ -600,7 +600,7 @@ export class AuthService {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       user_id: this.user.userId ?? 'unknown',
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      user_name: this.user.name || `${this.user.username}`,
+      user_name: this.user.name || this.user.username,
       // eslint-disable-next-line @typescript-eslint/naming-convention
       user_email: this.user.email,
       // eslint-disable-next-line @typescript-eslint/naming-convention
