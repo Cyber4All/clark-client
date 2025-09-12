@@ -1,45 +1,34 @@
-
 <div class="tabs">
-    <button 
-      class="tab" 
-      [class.active]="currentTab === 'topics'" 
-      (click)="switchTab('topics')">
-      Topics
-    </button>
-    <button 
-      class="tab" 
-      [class.active]="currentTab === 'tags'" 
-      (click)="switchTab('tags')">
-      Tags
-    </button>
-    <button 
-      class="tab" 
-      [class.active]="currentTab === 'alignment'" 
-      (click)="switchTab('alignment')">
-      Alignment
-    </button>
-    <div class="underline" [ngStyle]="{ left: underlineLeft, width: underlineWidth }"></div>
+  <button class="tab" [class.active]="currentTab === 'topics'" (click)="switchTab('topics')">
+    Topics
+  </button>
+  <button class="tab" [class.active]="currentTab === 'tags'" (click)="switchTab('tags')">
+    Tags
+  </button>
+  <button class="tab" [class.active]="currentTab === 'alignment'" (click)="switchTab('alignment')">
+    Alignment
+  </button>
+  <div class="underline" [ngStyle]="{ left: underlineLeft, width: underlineWidth }"></div>
+</div>
+<div *ngIf="!loading">
+  <div class="tab-content">
+    <ng-container *ngIf="currentTab === 'topics'">
+      <clark-topic-tagging></clark-topic-tagging>
+    </ng-container>
+
+    <ng-container *ngIf="currentTab === 'tags'">
+      <clark-tagging></clark-tagging>
+    </ng-container>
+    <ng-container *ngIf="currentTab === 'alignment'">
+      <clark-guidelines [learningObject]="learningObject"></clark-guidelines>
+    </ng-container>
   </div>
-  <div *ngIf="!loading">
-    <div class="tab-content">
-      <ng-container *ngIf="currentTab === 'topics'">
-          <clark-topic-tagging></clark-topic-tagging>
-      </ng-container>
-    
-      <ng-container *ngIf="currentTab === 'tags'">
-        <clark-tagging></clark-tagging>
-      </ng-container>
-      <ng-container *ngIf="currentTab === 'alignment'">
-        <clark-guidelines></clark-guidelines>
-      </ng-container>
+  <div class="buttons">
+    <div class="button neutral" (click)="cancel()">
+      Cancel
     </div>
-    <div class="buttons">
-      <div class="button neutral" (click)="cancel()">
-        Cancel
-      </div>
-      <div class="button good" (click)="save()">
-        Save
-      </div>
+    <div class="button good" (click)="save()">
+      Save
     </div>
   </div>
-  
+</div>
