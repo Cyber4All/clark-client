@@ -2,9 +2,9 @@ version: 2.1
 
 orbs:
   cyber4all: cyber4all/orb@2.1.9
-  node: circleci/node@6.3.0
+  aws-cli: circleci/aws-cli@5.4.1
+  node: circleci/node@7.1.1
 
-# This is a solution for the outdated version of angular we are using
 jobs:
   install-node-lint-build:
     docker:
@@ -13,39 +13,91 @@ jobs:
       - checkout
       - node/install:
           node-version: '18.19.0'
-      - run: npm install
-      - run: npm run lint
-      - run: npm run build:prod
+      - node/install-packages
+      - node/run:
+          npm-run: lint
+      - node/run:
+          npm-run: build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+
+  deploy:
+    parameters:
+      bucket:
+        type: string
+      distribution_id:
+        type: env_var_name
+      environment:
+        type: string
+        enum: [staging, production]
+      region:
+        type: string
+        default: us-east-1
+        enum: [us-east-1, us-east-2]
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install:
+          node-version: '18.19.0'
+      - run: npm install -g @coralogix/rum-cli
+      - aws-cli/setup:
+          region: <<parameters.region>>
+          role_arn: $S3_OIDC_ROLE
+      - aws-s3/sync:
+          from: ./dist
+          to: s3://<<parameters.bucket>>
+      - run: aws cloudfront create-invalidation --distribution-id $<<parameters.distribution_id>> --paths '/*'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
 
 workflows:
-  continuous-integration:
+  continuous-deployment:
     jobs:
       - install-node-lint-build
 
-  deploy-staging:
-    when:
-        equal: [main, <<pipeline.git.branch>>]
-    jobs:
-      - cyber4all/s3:
+      - deploy:
+          name: deploy-staging
+          requires:
+            - install-node-lint-build
           context:
             - aws_staging
             - Slack
-          bucket: "clark-client-staging"
+          bucket: 'clark-client-staging'
           distribution_id: STAGING_CLOUDFRONT_ID
-          script: build:staging
-      
+          environment: staging
+          filters:
+            branches:
+              only:
+                - main
 
-  deploy-prod:
-    when:
-        equal: [releases, <<pipeline.git.branch>>]
-    jobs:
       - cyber4all/release:
           context: [Github]
           tag: $(jq -r '.version' package.json)
-      
-      - cyber4all/s3:
-          context: 
+          filters:
+            branches:
+              only:
+                - releases
+
+      - deploy:
+          name: deploy-production
+          requires:
+            - cyber4all/release
+            - install-node-lint-build
+          context:
             - AWS
             - Slack
-          bucket: "clark.center"
-    
+          bucket: 'clark.center'
+          distribution_id: CLOUDFRONT_ID
+          environment: production
+          filters:
+            branches:
+              only:
+                - release
