@@ -1,7 +1,6 @@
 <div>
-    <div class="two-column-container">
-        <!-- Left Column: Checklist -->
-        <div class="right-column">
+    <div class="single-column-container">
+        <div class="component-column">
             <h3>Learning Outcomes</h3>
             <mat-accordion>
                 <mat-expansion-panel *ngFor="let outcome of outcomes" (opened)="setOpenOutcome(outcome)"
@@ -11,7 +10,6 @@
                             {{ outcome.verb | titlecase }} {{ outcome.text }}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-
                     <mat-chip-list>
                         <mat-chip *ngFor="let mapping of outcome.mappings" color="primary">
                             <span [tip]="mapping.guidelineDescription">{{ mapping.frameworkName }} - {{
@@ -21,19 +19,20 @@
                 </mat-expansion-panel>
             </mat-accordion>
         </div>
-        <div class="left-column">
-            <h3>Suggested KSATs</h3>
-            <div class="scrollable-checkbox-list">
+        <div class="component-column">
+            <h3>Suggested DCWF KSATs</h3>
+            <div>
                 <mat-checkbox *ngFor="let option of alignableGuidelines" [(ngModel)]="option.checked"
                     (change)="addMapping(option)">
                     <span [tip]="option.guidelineDescription">DCWF - {{ option.guidelineName }}</span>
                 </mat-checkbox>
             </div>
         </div>
+        <div class="component-column">
+            <h3>Search Guidelines</h3>
+            <div>
+                <clark-standard-outcomes (toggleMapping)="onToggleMapping($event)"></clark-standard-outcomes>
+            </div>
+        </div>
     </div>
-
-    <div>
-        <clark-standard-outcomes (toggleMapping)="onToggleMapping($event)"></clark-standard-outcomes>
-    </div>
-
 </div>
