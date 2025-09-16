@@ -51,8 +51,11 @@
 </clark-popup>
 
 <clark-popup *ngIf="openTagModal" (closed)="closeTaggingModal()">
-  <div #popupInner style=" width: 1000px; margin-top: 10px">
-    <clark-tagging-builder [learningObject]="learningObject" (close)="closeTaggingModal()"></clark-tagging-builder>
+  <div #popupInner style="width: 60vw; margin-top: 10px">
+    <clark-tagging-builder
+      [learningObject]="learningObject"
+      (close)="closeTaggingModal()"
+    ></clark-tagging-builder>
   </div>
 </clark-popup>
 

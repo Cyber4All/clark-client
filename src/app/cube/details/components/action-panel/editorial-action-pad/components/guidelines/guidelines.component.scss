@@ -25,22 +25,20 @@ mat-checkbox {
 }
 
 mat-chip-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  padding: 0.5em 1em;
-  border-radius: 1em;
-  background: #e0e0e0;
-  margin: 0.25em 0;
-  max-width: 100%;
-  white-space: normal;
-  word-break: break-word;
-  height: auto;
-}
+  button[matChipRemove] {
+    border: none;
+    padding: 0 4px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    margin-right: 0.25em;
+  }
 
-mat-chip-row span {
-  flex: 1 1 auto;
-  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  padding: 0.5em 0 0.5em 0;
+  max-width: 100%;
+  height: auto;
 }
 
 mat-expansion-panel-header {
@@ -50,4 +48,14 @@ mat-expansion-panel-header {
 
 mat-expansion-panel {
   margin-bottom: 0.5em;
+}
+
+/*
+https://stackoverflow.com/questions/47024236/what-to-use-in-place-of-ng-deep
+I like Simon_Weaver's answer to the question of whether to use ng-deep or not
+
+angular chips' text are set to not wrap and I want it to wrap
+*/
+:host ::ng-deep .mdc-evolution-chip__text-label {
+  white-space: normal;
 }

@@ -1,43 +1,55 @@
 <div>
-    <div class="single-column-container">
-        <div class="component-column">
-            <h3>Learning Outcomes</h3>
-            <mat-accordion>
-                <mat-expansion-panel *ngFor="let outcome of outcomes" (opened)="setOpenOutcome(outcome)"
-                    (closed)="setOpenOutcome({})">
-                    <mat-expansion-panel-header>
-                        <mat-panel-title>
-                            {{ outcome.verb | titlecase }} {{ outcome.text }}
-                        </mat-panel-title>
-                    </mat-expansion-panel-header>
-                    <mat-chip-set>
-                        <mat-chip-row *ngFor="let mapping of outcome.mappings" color="primary" removable="true"
-                            (removed)="removeMapping(mapping, outcome)">
-                            <button matChipRemove aria-label="Remove mapping"
-                                style="border:none;padding:0 4px;cursor:pointer;font-size:16px;line-height:1;">
-                                ×
-                            </button>
-                            <span [tip]="mapping.guidelineDescription">{{ mapping.guidelineName }}</span>
-                        </mat-chip-row>
-                    </mat-chip-set>
-                </mat-expansion-panel>
-            </mat-accordion>
-        </div>
-        <div class="component-column">
-            <h3>Suggested DCWF KSATs</h3>
-            <div>
-                <mat-checkbox *ngFor="let option of alignableGuidelines" [(ngModel)]="option.checked"
-                    (change)="addMapping(option)">
-                    <span [tip]="option.guidelineDescription">{{option.frameworkName}}: {{ option.guidelineName
-                        }}</span>
-                </mat-checkbox>
-            </div>
-        </div>
-        <div class="component-column">
-            <h3>Search Guidelines</h3>
-            <div>
-                <clark-standard-outcomes (toggleMapping)="onToggleMapping($event)"></clark-standard-outcomes>
-            </div>
-        </div>
+  <div class="single-column-container">
+    <div class="component-column">
+      <h3>Learning Outcomes</h3>
+      <mat-accordion>
+        <mat-expansion-panel
+          *ngFor="let outcome of outcomes"
+          (opened)="setOpenOutcome(outcome)"
+          (closed)="setOpenOutcome({})"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ outcome.verb | titlecase }} {{ outcome.text }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-chip-set>
+            <mat-chip-row
+              *ngFor="let mapping of outcome.mappings"
+              color="primary"
+              removable="true"
+              (removed)="removeMapping(mapping, outcome)"
+            >
+              <button matChipRemove aria-label="Remove mapping">×</button>
+              <span [tip]="mapping.guidelineDescription">{{
+                mapping.guidelineName
+              }}</span>
+            </mat-chip-row>
+          </mat-chip-set>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
+    <div class="component-column">
+      <h3>Suggested Guidelines</h3>
+      <div>
+        <mat-checkbox
+          *ngFor="let option of alignableGuidelines"
+          [(ngModel)]="option.checked"
+          (change)="addMapping(option)"
+        >
+          <span [tip]="option.guidelineDescription"
+            >{{ option.frameworkName }}: {{ option.guidelineName }}</span
+          >
+        </mat-checkbox>
+      </div>
+    </div>
+    <div class="component-column">
+      <h3>Search Guidelines</h3>
+      <div>
+        <clark-standard-outcomes
+          (toggleMapping)="onToggleMapping($event)"
+        ></clark-standard-outcomes>
+      </div>
+    </div>
+  </div>
 </div>
