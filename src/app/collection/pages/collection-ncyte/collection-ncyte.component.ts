@@ -4,6 +4,8 @@ import { CollectionService } from 'app/core/collection-module/collections.servic
 import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { NavbarService } from '../../../core/client-module/navbar.service';
 import { Title } from '@angular/platform-browser';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { OrderBy } from 'app/interfaces/query';
 
 @Component({
   selector: 'clark-collection-ncyte',
@@ -20,14 +22,15 @@ export class CollectionNcyteComponent implements OnInit, OnDestroy {
     private navbarService: NavbarService,
     private collectionService: CollectionService,
     private titleService: Title,
-    private featureService: FeaturedObjectsService) { }
+    private featureService: FeaturedObjectsService,
+    private searchService: SearchService) { }
 
   async ngOnInit() {
     this.navbarService.show();
 
     this.collection = await this.collectionService.getCollection(this.abvCollection);
 
-    this.learningObjects = await this.featureService.getCollectionFeatured(this.abvCollection);
+    this.learningObjects = await this.getFeaturedLearningObjects();
 
     this.titleService.setTitle('CLARK | ' + this.collection.name);
   }
@@ -35,4 +38,13 @@ export class CollectionNcyteComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.navbarService.hide();
   }
+
+  async getFeaturedLearningObjects(){
+      // for now we are just fetching the most recent 5 LOs for the featured section of the collection page
+      const queryParams = { collection: this.abvCollection, orderBy: OrderBy.Date, sortType: -1,  limit: 5 };
+      const response = await this.searchService.getLearningObjects(queryParams);
+      const list = response.learningObjects ?? [];
+      console.log(list);
+      return list;
+    }
 }
