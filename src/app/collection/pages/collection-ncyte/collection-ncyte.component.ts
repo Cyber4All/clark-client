@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Collection, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection-module/collections.service';
-import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { NavbarService } from '../../../core/client-module/navbar.service';
 import { Title } from '@angular/platform-browser';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
@@ -22,7 +21,6 @@ export class CollectionNcyteComponent implements OnInit, OnDestroy {
     private navbarService: NavbarService,
     private collectionService: CollectionService,
     private titleService: Title,
-    private featureService: FeaturedObjectsService,
     private searchService: SearchService) { }
 
   async ngOnInit() {
@@ -42,7 +40,9 @@ export class CollectionNcyteComponent implements OnInit, OnDestroy {
   async getFeaturedLearningObjects(){
       const queryParams = { collection: this.abvCollection, orderBy: OrderBy.Date, sortType: -1,  limit: 5 };
       const response = await this.searchService.getLearningObjects(queryParams);
+      console.log(response);
       const list = response.learningObjects ?? [];
+      console.log(list);
       return list;
     }
 }
