@@ -1,27 +1,53 @@
 .single-column-container {
   display: flex;
   flex-direction: row;
-  gap: 24px;
-  padding: 20px;
-  height: 75%;
+  gap: 2vw;
+  padding: 2vw;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .component-column {
-  padding-right: 8px;
+  max-height: 70vh;
+  padding-right: 1vw;
   flex-grow: 1;
   flex-shrink: 1;
   flex-basis: 0;
   overflow-y: auto;
-  height: 100%;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 mat-checkbox {
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 0.5em;
 }
 
-mat-chip {
-  margin: 4px;
+mat-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: 1em;
+  background: #e0e0e0;
+  margin: 0.25em 0;
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
+  height: auto;
+}
+
+mat-chip-row span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+mat-expansion-panel-header {
+  margin: 0.5em;
+  height: 100%;
+}
+
+mat-expansion-panel {
+  margin-bottom: 0.5em;
 }

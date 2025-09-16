@@ -1,28 +1,52 @@
-<button *ngIf="canCreateRevision" class="button neutral" (activate)="openCreateRevisionModal()"
-  aria-label="Create a Revision">
+<button
+  *ngIf="canCreateRevision"
+  class="button neutral"
+  (activate)="openCreateRevisionModal()"
+  aria-label="Create a Revision"
+>
   Create a Revision
 </button>
 
-<button *ngIf="canMakeEdits" class="button neutral" (activate)="editLearningObject()" aria-label="Edit Learning Object">
-  {{revisedLearningObject ? 'Edit Revision' : 'Edit Submission'}}
+<button
+  *ngIf="canMakeEdits"
+  class="button neutral"
+  (activate)="editLearningObject()"
+  aria-label="Edit Learning Object"
+>
+  {{ revisedLearningObject ? 'Edit Revision' : 'Edit Submission' }}
 </button>
 
-<button *ngIf="canMapAndTag" class="button neutral" (activate)="openTaggingModal()">Tag Learning Object
+<button
+  *ngIf="canMapAndTag"
+  class="button neutral"
+  (activate)="openTaggingModal()"
+>
+  Tag Learning Object
 </button>
 
-<button *ngIf="canCreateRelevancyStory" class="button neutral" (click)="openCreateRelevancyStoryModal()"
-  aria-label="Create Relevancy Story">
+<button
+  *ngIf="canCreateRelevancyStory"
+  class="button neutral"
+  (click)="openCreateRelevancyStoryModal()"
+  aria-label="Create Relevancy Story"
+>
   Create Relevancy Story
 </button>
 
-<button *ngIf="isNotPermitted" class="button neutral disabled" aria-label="Released Learning Objects cannot be Revised">
+<button
+  *ngIf="isNotPermitted"
+  class="button neutral disabled"
+  aria-label="Released Learning Objects cannot be Revised"
+>
   Edits and Revisions not Permitted
 </button>
 
 <clark-popup *ngIf="openRevisionModal" (closed)="closeRevisionModal()">
-  <div #popupInner style="width: 600px;">
-    <clark-revision-notice-popup (createRevision)="createRevision()"
-      (close)="closeRevisionModal()"></clark-revision-notice-popup>
+  <div #popupInner style="width: 600px">
+    <clark-revision-notice-popup
+      (createRevision)="createRevision()"
+      (close)="closeRevisionModal()"
+    ></clark-revision-notice-popup>
   </div>
 </clark-popup>
 
@@ -32,9 +56,14 @@
   </div>
 </clark-popup>
 
-<clark-popup *ngIf="openRelevancyStoryModal" (closed)="closeCreateRelevancyModal()">
-  <div #popupInner style="max-width: 600px;">
-    <clark-create-relevancy-popup (createStory)="createRelevancyStory($event)"
-      (closeModal)="closeRelevancyStoryConfirmationModal()"></clark-create-relevancy-popup>
+<clark-popup
+  *ngIf="openRelevancyStoryModal"
+  (closed)="closeCreateRelevancyModal()"
+>
+  <div #popupInner style="max-width: 600px">
+    <clark-create-relevancy-popup
+      (createStory)="createRelevancyStory($event)"
+      (closeModal)="closeRelevancyStoryConfirmationModal()"
+    ></clark-create-relevancy-popup>
   </div>
 </clark-popup>

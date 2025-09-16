@@ -10,12 +10,16 @@
                             {{ outcome.verb | titlecase }} {{ outcome.text }}
                         </mat-panel-title>
                     </mat-expansion-panel-header>
-                    <mat-chip-list>
-                        <mat-chip *ngFor="let mapping of outcome.mappings" color="primary">
-                            <span [tip]="mapping.guidelineDescription">{{ mapping.frameworkName }} - {{
-                                mapping.guidelineName }}</span>
-                        </mat-chip>
-                    </mat-chip-list>
+                    <mat-chip-set>
+                        <mat-chip-row *ngFor="let mapping of outcome.mappings" color="primary" removable="true"
+                            (removed)="removeMapping(mapping, outcome)">
+                            <button matChipRemove aria-label="Remove mapping"
+                                style="border:none;padding:0 4px;cursor:pointer;font-size:16px;line-height:1;">
+                                ×
+                            </button>
+                            <span [tip]="mapping.guidelineDescription">{{ mapping.guidelineName }}</span>
+                        </mat-chip-row>
+                    </mat-chip-set>
                 </mat-expansion-panel>
             </mat-accordion>
         </div>
@@ -24,7 +28,8 @@
             <div>
                 <mat-checkbox *ngFor="let option of alignableGuidelines" [(ngModel)]="option.checked"
                     (change)="addMapping(option)">
-                    <span [tip]="option.guidelineDescription">DCWF - {{ option.guidelineName }}</span>
+                    <span [tip]="option.guidelineDescription">{{option.frameworkName}}: {{ option.guidelineName
+                        }}</span>
                 </mat-checkbox>
             </div>
         </div>

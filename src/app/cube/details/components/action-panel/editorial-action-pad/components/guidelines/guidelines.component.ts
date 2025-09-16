@@ -91,6 +91,16 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
     this.addMapping({ ...event.standardOutcome });
   }
 
+  removeMapping(mappingToRemove: any, outcome: LearningOutcome) {
+    const index = outcome.mappings.findIndex(m => m.id === mappingToRemove.id);
+    if (index > -1) {
+      outcome.mappings.splice(index, 1);
+      const updatedOutcomes = this.outcomes.map(o => o.id === outcome.id ? outcome : o);
+      this.alignmentService.setOutcomes(updatedOutcomes);
+      this.ref.markForCheck();
+    }
+  }
+
   addMapping(mappingToAdd: any) {
     const updatedOutcome = this.openOutcome;
     const currentMappings = this.openOutcome.mappings.map(map => map.id);
