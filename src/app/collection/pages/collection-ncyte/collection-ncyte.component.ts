@@ -40,7 +40,6 @@ export class CollectionNcyteComponent implements OnInit, OnDestroy {
   }
 
   async getFeaturedLearningObjects(){
-      // for now we are just fetching the most recent 5 LOs for the featured section of the collection page
       const queryParams = { collection: this.abvCollection, orderBy: OrderBy.Date, sortType: -1,  limit: 5 };
       const response = await this.searchService.getLearningObjects(queryParams);
       const list = response.learningObjects ?? [];
