@@ -40,9 +40,7 @@ export class CollectionNcyteComponent implements OnInit, OnDestroy {
   async getFeaturedLearningObjects(){
       const queryParams = { collection: this.abvCollection, orderBy: OrderBy.Date, sortType: -1,  limit: 5 };
       const response = await this.searchService.getLearningObjects(queryParams);
-      console.log(response);
       const list = response.learningObjects ?? [];
-      console.log(list);
       return list;
     }
 }
