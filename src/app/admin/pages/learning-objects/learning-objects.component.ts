@@ -375,11 +375,19 @@ export class LearningObjectsComponent
     value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
   }
 
-  handleFilterQuery(filters: { status: string[], topic: string[], collection: string }) {
+  handleFilterQuery(filters: { status: string[], topic: string[], collection: string, start: Date, end: Date }) {
 
-    const query = { status: filters.status, topics: filters.topic, collection: filters.collection, currPage: 1 };
+    const query = {
+      status: filters.status,
+      topics: filters.topic,
+      collection: filters.collection,
+      currPage: 1,
+      start: filters.start ? filters.start : "",
+      end: filters.end ? filters.end : ""
+    };
+
     if(this.query.collection && query.collection.length === 0) {
-      query.collection = this.query.collection;
+      this.query.collection = query.collection;
     }
     this.query = query;
     this.learningObjects = [];
