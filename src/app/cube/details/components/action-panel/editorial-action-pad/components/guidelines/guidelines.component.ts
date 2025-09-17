@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  Input,
+} from '@angular/core';
 import { AlignmentService } from '../../services/alignment.service';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 import { takeUntil } from 'rxjs/operators';
@@ -19,7 +26,6 @@ interface SelectionDocument extends SearchItemDocument {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GuidelinesComponent implements OnInit, OnDestroy {
-
   @Input() learningObject: LearningObject;
   alignableGuidelines: SelectionDocument[];
 
@@ -31,16 +37,15 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
   constructor(
     private alignmentService: AlignmentService,
     private guidelineService: GuidelineService,
-    private ref: ChangeDetectorRef
-  ) { }
+    private ref: ChangeDetectorRef,
+  ) {}
 
   async ngOnInit(): Promise<void> {
-
     const learningObjectData = [
       this.learningObject.name,
       this.learningObject.description,
       // Combine outcomes text
-      ...(this.learningObject.outcomes?.map(o => o.text) || [])
+      ...(this.learningObject.outcomes?.map((o) => o.text) || []),
     ].join(' ');
     const filter = {
       text: stripHtmlTags(learningObjectData),
@@ -49,27 +54,36 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
     const result = await this.guidelineService.getGuidelines(filter);
     if (result.results.length === 0) {
       // Use the hard coded 8 core KSATs when there are no results
-      this.alignmentService.setGuidelinesArray(selectedGuidelines as SearchItemDocument[]);
+      this.alignmentService.setGuidelinesArray(
+        selectedGuidelines as SearchItemDocument[],
+      );
+    } else {
+      this.alignmentService.setGuidelinesArray(result.results);
     }
-    this.alignmentService.setGuidelinesArray(result.results);
 
     // Subscribe to the source arrays
-    this.alignmentService.guidelines$.pipe(takeUntil(this.destroy$)).subscribe((items: any) => {
-      this.alignableGuidelines = items;
-      this.ref.markForCheck();
-    });
+    this.alignmentService.guidelines$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((items: any) => {
+        this.alignableGuidelines = items;
+        this.ref.markForCheck();
+      });
 
-    this.alignmentService.outcomes$.pipe(takeUntil(this.destroy$)).subscribe((items: any) => {
-      this.outcomes = items;
-      this.ref.markForCheck();
-    });
+    this.alignmentService.outcomes$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((items: any) => {
+        this.outcomes = items;
+        this.ref.markForCheck();
+      });
   }
 
   setOpenOutcome(outcome: LearningOutcome) {
     if (outcome.id) {
       this.openOutcome = outcome;
-      const outcomeMappings = outcome.mappings.map(mapping => mapping.guidelineName);
-      this.alignableGuidelines.forEach(item => {
+      const outcomeMappings = outcome.mappings.map(
+        (mapping) => mapping.guidelineName,
+      );
+      this.alignableGuidelines.forEach((item) => {
         // If the guideline is already mapping check that sucker off
         if (outcomeMappings.includes(item.guidelineName)) {
           item.checked = true;
@@ -80,7 +94,7 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
       });
     } else {
       // We closed an outcome without opening a new one so remove the selected mappings
-      this.alignableGuidelines.forEach(item => {
+      this.alignableGuidelines.forEach((item) => {
         item.checked = false;
         return item;
       });
@@ -92,10 +106,14 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
   }
 
   removeMapping(mappingToRemove: any, outcome: LearningOutcome) {
-    const index = outcome.mappings.findIndex(m => m.id === mappingToRemove.id);
+    const index = outcome.mappings.findIndex(
+      (m) => m.id === mappingToRemove.id,
+    );
     if (index > -1) {
       outcome.mappings.splice(index, 1);
-      const updatedOutcomes = this.outcomes.map(o => o.id === outcome.id ? outcome : o);
+      const updatedOutcomes = this.outcomes.map((o) =>
+        o.id === outcome.id ? outcome : o,
+      );
       this.alignmentService.setOutcomes(updatedOutcomes);
       this.ref.markForCheck();
     }
@@ -103,7 +121,7 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
 
   addMapping(mappingToAdd: any) {
     const updatedOutcome = this.openOutcome;
-    const currentMappings = this.openOutcome.mappings.map(map => map.id);
+    const currentMappings = this.openOutcome.mappings.map((map) => map.id);
 
     mappingToAdd.id = mappingToAdd.guidelineId;
     const index = currentMappings.indexOf(mappingToAdd.id);
@@ -115,7 +133,9 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
       updatedOutcome.mappings.push(mappingToAdd);
     }
 
-    outcomes = this.outcomes.map(outcome => outcome.id === this.openOutcome.id ? updatedOutcome : outcome);
+    outcomes = this.outcomes.map((outcome) =>
+      outcome.id === this.openOutcome.id ? updatedOutcome : outcome,
+    );
     this.alignmentService.setOutcomes(outcomes);
     this.ref.markForCheck();
   }
