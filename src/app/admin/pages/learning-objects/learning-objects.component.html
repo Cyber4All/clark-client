@@ -27,7 +27,7 @@
             <div>Author</div>
             <div>Length</div>
             <div>Date
-              <button class="sort" (activate)="sortByDate()">
+              <button *ngIf="!this.query.text" class="sort" (activate)="sortByDate()">
                 <span *ngIf="!_query.sortType else sortArrows">
                   <i style="font-size: 18px;" class="far fa-sort"></i>
                 </span>

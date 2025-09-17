@@ -148,10 +148,8 @@ export class LearningObjectsComponent
             orderBy: OrderBy.Date,
           };
         } else {
-          this.query = {
-            sortType: undefined,
-            orderBy: undefined,
-          };
+          delete this.query.sortType;
+          delete this.query.orderBy;
         }
         this.learningObjects = [];
 
@@ -286,8 +284,8 @@ export class LearningObjectsComponent
         orderBy: OrderBy.Date,
       };
     }
-
     this.learningObjects = [];
+    this.allResultsReceived = false;
 
     this.getLearningObjects();
   }
