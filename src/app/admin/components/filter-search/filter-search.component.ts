@@ -32,7 +32,7 @@ export class FilterSearchComponent implements OnInit {
   filtersModified$: Subject<void> = new Subject();
   filters: Set<string> = new Set();
   filterTopics: Set<string> = new Set();
-  statuses = Object.values(LearningObject.Status).filter(status => status !== "rejected");
+  statuses = Object.values(LearningObject.Status).filter(status => status !== 'rejected');
   dateError = false;
 
   private _selectedCollection: Collection;

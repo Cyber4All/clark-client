@@ -382,8 +382,8 @@ export class LearningObjectsComponent
       topics: filters.topic,
       collection: filters.collection,
       currPage: 1,
-      start: filters.start ? filters.start : "",
-      end: filters.end ? filters.end : ""
+      start: filters.start ? filters.start : '',
+      end: filters.end ? filters.end : ''
     };
 
     if(this.query.collection && query.collection.length === 0) {
