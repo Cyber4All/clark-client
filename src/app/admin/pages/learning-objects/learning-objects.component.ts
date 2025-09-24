@@ -389,6 +389,8 @@ export class LearningObjectsComponent
     status: string[];
     topic: string[];
     collection: string;
+    start: Date;
+    end: Date;
   }) {
     const query = {
       status: filters.status,
