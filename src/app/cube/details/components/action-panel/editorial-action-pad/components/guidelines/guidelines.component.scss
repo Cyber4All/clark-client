@@ -1,25 +1,61 @@
-.two-column-container {
-    display: flex;
-    gap: 12px;
-    padding: 10px;
+.single-column-container {
+  display: flex;
+  flex-direction: row;
+  gap: 2vw;
+  padding: 2vw;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.component-column {
+  max-height: 70vh;
+  padding-right: 1vw;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+mat-checkbox {
+  display: block;
+  margin-bottom: 0.5em;
+}
+
+mat-chip-row {
+  button[matChipRemove] {
+    border: none;
+    padding: 0 4px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    margin-right: 0.25em;
   }
-  
-  .left-column {
-    flex: 0 0 25%;
-    max-width: 25%;
-  }
-  
-  .right-column {
-    flex: 0 0 75%;
-    max-width: 75%;
-  }
-  
-  mat-checkbox {
-    display: block;
-    margin-bottom: 8px;
-  }
-  
-  mat-chip {
-    margin: 4px;
-  }
-  
+
+  display: flex;
+  align-items: flex-start;
+  padding: 0.5em 0 0.5em 0;
+  max-width: 100%;
+  height: auto;
+}
+
+mat-expansion-panel-header {
+  margin: 0.5em;
+  height: 100%;
+}
+
+mat-expansion-panel {
+  margin-bottom: 0.5em;
+}
+
+/*
+https://stackoverflow.com/questions/47024236/what-to-use-in-place-of-ng-deep
+I like Simon_Weaver's answer to the question of whether to use ng-deep or not
+
+angular chips' text are set to not wrap and I want it to wrap
+*/
+:host ::ng-deep .mdc-evolution-chip__text-label {
+  white-space: normal;
+}
