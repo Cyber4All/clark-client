@@ -40,7 +40,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     topics: [],
     fileTypes: [],
     status: [LearningObject.Status.RELEASED],
-    tags: []
+    tags: [],
   };
 
   tooltipText = {
@@ -188,9 +188,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   get sortString() {
     return this.query.orderBy
       ? this.query.orderBy.replace(/_/g, '') +
-      ' (' +
-      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-      ')'
+          ' (' +
+          (this.query.sortType > 0 ? 'Asc' : 'Desc') +
+          ')'
       : '';
   }
 
@@ -326,12 +326,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   makeQuery(params: Record<string, string>) {
     const paramKeys = Object.keys(params);
 
-    // no sort applied for text search
-    if (paramKeys.includes('text')) {
-      this.query.orderBy = undefined;
-      this.query.sortType = undefined;
-    }
-
     // iterate params object
     for (let i = 0, l = paramKeys.length; i < l; i++) {
       const key = paramKeys[i];
@@ -397,16 +391,14 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   public anyFiltersSelected(): boolean {
     const q = this.query;
     return !!(
-      (
-        (q.collection && q.collection !== '') ||
-        q.length?.length ||
-        q.topics?.length ||
-        q.level?.length ||
-        q.guidelines?.length ||
-        q.noGuidelines ||
-        q.standardOutcomes?.length ||
-        q.fileTypes?.length
-      )
+      (q.collection && q.collection !== '') ||
+      q.length?.length ||
+      q.topics?.length ||
+      q.level?.length ||
+      q.guidelines?.length ||
+      q.noGuidelines ||
+      q.standardOutcomes?.length ||
+      q.fileTypes?.length
     );
   }
 }

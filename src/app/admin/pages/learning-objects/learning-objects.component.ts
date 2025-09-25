@@ -30,6 +30,7 @@ export class LearningObjectsComponent
 
   learningObjects: LearningObject[] = [];
   searchBarPlaceholder = 'Learning Objects';
+  searchValue = '';
   lastPage: number;
 
   activeLearningObject;
@@ -46,7 +47,7 @@ export class LearningObjectsComponent
     orderBy: OrderBy.Date,
     text: '',
     collection: '',
-    admin: 'true'
+    admin: 'true',
   };
 
   displayStatusModal = false;
@@ -128,6 +129,7 @@ export class LearningObjectsComponent
     // query by anything if it's passed in
     // reset page to 1 since we can't scroll backwards
     this.route.queryParams.subscribe((params) => {
+      this.searchValue = params.text || '';
       this.query = {
         ...params,
         currPage:
@@ -141,6 +143,7 @@ export class LearningObjectsComponent
     this.userSearchInput$
       .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
       .subscribe(async (searchTerm) => {
+        this.searchValue = searchTerm;
         this.query = { currPage: 1, text: searchTerm };
         if (!searchTerm || searchTerm.length <= 0) {
           this.query = {
@@ -148,10 +151,8 @@ export class LearningObjectsComponent
             orderBy: OrderBy.Date,
           };
         } else {
-          this.query = {
-            sortType: undefined,
-            orderBy: undefined,
-          };
+          delete this.query.sortType;
+          delete this.query.orderBy;
         }
         this.learningObjects = [];
 
@@ -223,15 +224,20 @@ export class LearningObjectsComponent
         await this.searchLearningObjectService
           .getUsersLearningObjects(this.query.username, {
             ...this.query,
-            })
-          .then((response: {learningObjects: LearningObject[], total: number}) => {
-            this.learningObjects = response.learningObjects;
-
-            if (this.learningObjects.length === response.total) {
-              this.allResultsReceived = true;
-            }
-            this.lastPage = Math.ceil(response.total / 20);
           })
+          .then(
+            (response: {
+              learningObjects: LearningObject[];
+              total: number;
+            }) => {
+              this.learningObjects = response.learningObjects;
+
+              if (this.learningObjects.length === response.total) {
+                this.allResultsReceived = true;
+              }
+              this.lastPage = Math.ceil(response.total / 20);
+            },
+          )
           .catch((error) => {
             console.error(error);
             this.toaster.error(
@@ -279,15 +285,18 @@ export class LearningObjectsComponent
         orderBy: OrderBy.Date,
       };
     } else if (this.query.sortType.toString() === '-1') {
-      this.query.sortType = SortType.Ascending;
+      this.query = {
+        ...this.query,
+        sortType: SortType.Ascending,
+      };
     } else if (this.query.sortType.toString() === '1') {
       this.query = {
+        ...this.query,
         sortType: SortType.Descending,
-        orderBy: OrderBy.Date,
       };
     }
-
     this.learningObjects = [];
+    this.allResultsReceived = false;
 
     this.getLearningObjects();
   }
@@ -316,7 +325,7 @@ export class LearningObjectsComponent
    *
    * @param dates The start and end dates for the date search filter
    */
-  getDateFilteredLearningObjects(dates: {start: Date, end: Date}) {
+  getDateFilteredLearningObjects(dates: { start: Date; end: Date }) {
     this.query = {
       start: dates.start,
       end: dates.end,
@@ -375,11 +384,25 @@ export class LearningObjectsComponent
     value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
   }
 
-  handleFilterQuery(filters: { status: string[], topic: string[], collection: string }) {
 
-    const query = { status: filters.status, topics: filters.topic, collection: filters.collection, currPage: 1 };
+  handleFilterQuery(filters: {
+    status: string[];
+    topic: string[];
+    collection: string;
+    start: Date;
+    end: Date;
+  }) {
+    const query = {
+      status: filters.status,
+      topics: filters.topic,
+      collection: filters.collection,
+      currPage: 1,
+      start: filters.start ? filters.start : '',
+      end: filters.end ? filters.end : ''
+    };
+
     if(this.query.collection && query.collection.length === 0) {
-      query.collection = this.query.collection;
+      this.query.collection = query.collection;
     }
     this.query = query;
     this.learningObjects = [];
@@ -387,11 +410,11 @@ export class LearningObjectsComponent
     this.getLearningObjects();
   }
 
-    /**
-     * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
-     *
-     * @param l Learning Object to be selected
-     */
+  /**
+   * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
+   *
+   * @param l Learning Object to be selected
+   */
   selectLearningObject(l: LearningObject) {
     this.selected.set(l.id, l);
     this.selectedLearningObjects.push(l);

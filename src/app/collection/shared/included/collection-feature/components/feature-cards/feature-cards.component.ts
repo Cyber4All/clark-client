@@ -13,6 +13,9 @@ export class FeatureCardsComponent implements OnInit {
   @Input()learningObject: any;
   @Input()primaryColor: string;
 
+  collectionName: string;
+  displayDescription: string;
+
   hslVal;
   parents;
   children;
@@ -34,7 +37,7 @@ export class FeatureCardsComponent implements OnInit {
     this.setHierarchy();
     this.setDescription();
 
-    this.learningObject.collection = await (await this.collectionService.getCollection(this.collection)).name;
+    this.collectionName = await (await this.collectionService.getCollection(this.collection)).name;
     this.loading = false;
   }
 
@@ -46,7 +49,7 @@ export class FeatureCardsComponent implements OnInit {
   }
 
   setDescription() {
-    this.learningObject.description =
+    this.displayDescription =
       this.learningObject.description.slice(0, 220) + (this.learningObject.description.length > 220 ? ' ...' : '');
   }
 

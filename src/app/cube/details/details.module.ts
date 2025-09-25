@@ -16,7 +16,7 @@ import { TabMenuComponent } from './components/materials/components/tab-menu/tab
 import { SharedModules } from 'app/shared/modules/shared-modules.module';
 import { NotesComponent } from './components/materials/components/notes/notes.component';
 import { UrlsComponent } from './components/materials/components/urls/urls.component';
-import { LearningObjectRatingsComponent} from './components/learning-object-ratings/learning-object-ratings.component';
+import { LearningObjectRatingsComponent } from './components/learning-object-ratings/learning-object-ratings.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { NewRatingResponseComponent } from './components/new-rating-response/new-rating-response.component';
 import { ReportRatingComponent } from './components/report-rating/report-rating.component';
@@ -39,12 +39,12 @@ import { TagPillComponent } from './components/tag-pill/tag-pill.component';
       {
         path: ':username/:cuid',
         component: DetailsComponent,
-        canActivate:[ RouteBackwardsCompatGuard ]
+        canActivate: [RouteBackwardsCompatGuard]
       },
       {
         path: ':username/:cuid/:version',
         component: DetailsComponent,
-        canActivate: [ RouteBackwardsCompatGuard ]
+        canActivate: [RouteBackwardsCompatGuard]
       }
     ]),
     SharedPipesModule,
@@ -84,4 +84,4 @@ import { TagPillComponent } from './components/tag-pill/tag-pill.component';
   ],
   providers: []
 })
-export class DetailsModule {}
+export class DetailsModule { }
