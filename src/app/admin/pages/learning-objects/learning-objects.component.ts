@@ -150,6 +150,9 @@ export class LearningObjectsComponent
             sortType: SortType.Descending,
             orderBy: OrderBy.Date,
           };
+        } else {
+          delete this.query.sortType;
+          delete this.query.orderBy;
         }
         this.learningObjects = [];
 
@@ -292,6 +295,9 @@ export class LearningObjectsComponent
         sortType: SortType.Descending,
       };
     }
+    this.learningObjects = [];
+    this.allResultsReceived = false;
+
     this.getLearningObjects();
   }
 
@@ -378,19 +384,25 @@ export class LearningObjectsComponent
     value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
   }
 
+
   handleFilterQuery(filters: {
     status: string[];
     topic: string[];
     collection: string;
+    start: Date;
+    end: Date;
   }) {
     const query = {
       status: filters.status,
       topics: filters.topic,
       collection: filters.collection,
       currPage: 1,
+      start: filters.start ? filters.start : '',
+      end: filters.end ? filters.end : ''
     };
-    if (this.query.collection && query.collection.length === 0) {
-      query.collection = this.query.collection;
+
+    if(this.query.collection && query.collection.length === 0) {
+      this.query.collection = query.collection;
     }
     this.query = query;
     this.learningObjects = [];
