@@ -40,7 +40,7 @@ export class TagPillComponent implements OnInit {
         this.iconClass = 'far fa-user';
         break;
       case 'modality':
-        this.iconClass = 'far fa-chalkboard-user';
+        this.iconClass = 'far fa-chalkboard-teacher';
         break;
       case 'materials':
         this.iconClass = 'far fa-book';
