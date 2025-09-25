@@ -10,6 +10,8 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
 
   @Input() learningObject: any;
 
+  displayDescription: string;
+
   outcomes;
   loading = true;
   updatedLearningObject;
@@ -51,7 +53,7 @@ export class FeatureCardsFiveotwoComponent implements OnInit {
  * truncates description and adds elipse
  */
   setDescription() {
-    this.learningObject.description =
+    this.displayDescription =
       this.learningObject.description.slice(0, 220) + (this.learningObject.description.length > 220 ? ' ...' : '');
   }
 }

@@ -158,64 +158,6 @@ export class FeaturedObjectsService {
     }
   }
 
-  /**
-   * Fetches Array of Learning Objects that are not currently featured
-   *
-   * @returns {Promise<LearningObject[]>}
-   * @memberof LearningObjectService
-   */
-  getNotFeaturedLearningObjects(
-    query?: Query,
-  ): Promise<{ learningObjects: LearningObject[]; total: number }> {
-    let route = '';
-    if (query) {
-      const queryClone = Object.assign({}, query);
-      const queryString = querystring.stringify(queryClone);
-      route =
-        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryString);
-    } else {
-      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS();
-    }
-
-    return this.http
-      .get(route)
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((response: any) => {
-        return { learningObjects: response.objects, total: response.total };
-      });
-  }
-
-  /** COLLECTION FEATURED ROUTES */
-  /**
-   * Get the featured learning objects for a collection
-   *
-   * @param collection
-   * @returns [LearningObject]
-   */
-  async getCollectionFeatured(collectionAbvName: string) {
-    const response = await this.http
-      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName))
-      .pipe(catchError(this.handleError))
-      .toPromise();
-    return response as LearningObject[];
-  }
-
-  /**
-   * Get the featured learning objects for a collection with a limit
-   *
-   * @param collection
-   * @param limit
-   * @returns [LearningObject]
-   */
-  async getCollectionFeaturedWithLimit(collectionAbvName: string, limit: number) {
-    const response = await this.http
-      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName, limit))
-      .pipe(catchError(this.handleError))
-      .toPromise();
-    return response as LearningObject[];
-  }
-
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // Client-side or network returned error
