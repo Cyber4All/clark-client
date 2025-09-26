@@ -16,6 +16,7 @@ import { AuthService } from '../../../core/auth-module/auth.service';
 import { CollectionService } from '../../../core/collection-module/collections.service';
 import { titleCase } from 'title-case';
 import { RatingService } from 'app/core/rating-module/rating.service';
+import { MetricService } from 'app/core/metric-module/metric.service';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -41,12 +42,14 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   averageRating: number;
   reviewsCount: number;
   starColor = 'gold';
+  downloadsCount = 0;
 
   constructor(
     private hostEl: ElementRef,
     private renderer: Renderer2,
     private library: LibraryService,
     private ratingService: RatingService,
+    private metricService: MetricService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
@@ -73,6 +76,13 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
     this.averageRating = ratings.avgValue;
     this.reviewsCount = ratings.ratings?.length;
+
+    try {
+      const metrics = await this.metricService.getLearningObjectMetrics(this.learningObject.cuid);
+      this.downloadsCount = metrics?.downloads ?? 0;
+    } catch (e) {
+      this.downloadsCount = 0;
+    }
 
     this.cd.detectChanges();
   }

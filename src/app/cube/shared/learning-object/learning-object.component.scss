@@ -253,6 +253,25 @@ a {
     .rating-stars-container {
       margin-top: 8px;
       margin-bottom: 8px;
+
+      .downloads-indicator {
+        display: inline-flex;
+        align-items: center;
+        color: $dark-grey;
+        font-size: $small;
+
+        i, svg, .svg-inline--fa {
+          margin-right: 5px;
+        }
+
+        .downloads-count {
+          margin-left: 0;
+        }
+
+        &.has-icon .downloads-count {
+          margin-left: 2px;
+        }
+      }
     }
 
     .content__topbar {
