@@ -85,7 +85,7 @@
       </div>
 
       <div class='rating-stars-container'>
-        <div *ngIf="downloadsCount >= 10" class="downloads-indicator" tabindex="0" attr.aria-label="{{ downloadsCount }} download{{ downloadsCount !== 1 ? 's' : '' }}">
+        <div *ngIf="downloadsCount >= TRENDING_THRESHOLD" class="downloads-indicator" tabindex="0" attr.aria-label="{{ downloadsCount }} download{{ downloadsCount !== 1 ? 's' : '' }}">
           <i class="far fa-download" aria-hidden="true"></i>
           <span class="downloads-count">{{ downloadsCount | number }}</span>
         </div>
