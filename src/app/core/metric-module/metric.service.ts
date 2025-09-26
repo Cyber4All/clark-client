@@ -47,10 +47,22 @@ export class MetricService {
    * @returns metrics for one learning object or all released learning objects
    */
   // TODO: This isn't being referenced anywhere and may not be needed
-  async getLearningObjectMetrics(cuid?: string) {
+  async getLearningObjectMetrics(cuid?: string, start?: string, end?: string) {
+    let route = METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS(cuid);
+    const params: string[] = [];
+    if (start) {
+params.push(`start=${encodeURIComponent(start)}`);
+}
+    if (end) {
+params.push(`end=${encodeURIComponent(end)}`);
+}
+    if (params.length) {
+      route += (route.includes('?') ? '&' : '?') + params.join('&');
+    }
+
     return this.http
       .get<LearningObjectMetrics>(
-        METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS(cuid),
+        route,
       )
       .pipe(catchError(this.handleError))
       .toPromise();

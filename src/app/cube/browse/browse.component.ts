@@ -291,37 +291,24 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     if (val !== null) {
       this.showClearSort = true;
 
-      if (val === 'trending') {
-        this.sortText = 'Trending';
-        // set date range to last 30 days
-        const end = new Date();
-        const start = new Date();
-        start.setDate(end.getDate() - 30);
-        // Convert to ISO strings so the backend can parse
-        this.query.start = start.toISOString();
-        this.query.end = end.toISOString();
-        this.query.orderBy = OrderBy.Downloads;
-        this.query.sortType = SortType.Descending;
-      } else {
-        if (val === 'da') {
-          this.sortText = 'Oldest';
-        } else if (val === 'dd') {
-          this.sortText = 'Newest';
-        } else if (val === 'na') {
-          this.sortText = 'Name (Asc)';
-        } else if (val === 'nd') {
-          this.sortText = 'Name (Desc)';
-        }
-        const sort = val.charAt(0);
-        const dir = val.charAt(1);
-        this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
-        this.query.sortType =
-          dir === 'd' ? SortType.Descending : SortType.Ascending;
-
-        // remove date filters if previously set
-        delete this.query.start;
-        delete this.query.end;
+      if (val === 'da') {
+        this.sortText = 'Oldest';
+      } else if (val === 'dd') {
+        this.sortText = 'Newest';
+      } else if (val === 'na') {
+        this.sortText = 'Name (Asc)';
+      } else if (val === 'nd') {
+        this.sortText = 'Name (Desc)';
       }
+      const sort = val.charAt(0);
+      const dir = val.charAt(1);
+      this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+      this.query.sortType =
+        dir === 'd' ? SortType.Descending : SortType.Ascending;
+
+      // remove date filters if previously set
+      delete this.query.start;
+      delete this.query.end;
 
       this.performSearch();
     }

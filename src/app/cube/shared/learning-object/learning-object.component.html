@@ -5,7 +5,7 @@
     learningObject.version
   ]"
   attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{ learningObject.author.name }}, last updated on {{ learningObject.date | date:'longDate' }}">
-  <div class="learning-object" id="learning-object">
+  <div class="learning-object" id="learning-object" [ngClass]="{ 'trending': isTrending }">
     <div class="image">
       <img *ngIf="pictureLocation !== 'generic'; else genericLogoTemplate" class="logo" src="{{ pictureLocation }}"
         alt="{{ collection }} logo">
@@ -48,6 +48,9 @@
       </div>
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
+        <span *ngIf="isTrending" class="trending-badge" title="Trending">
+          <i class="fas fa-fire" aria-hidden="true"></i>
+        </span>
         <form *ngIf="downloadService">
           <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn"
             (activate)="download($event)" attr.aria-label="Download button for {{ learningObject.name }}">
