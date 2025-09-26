@@ -29,6 +29,13 @@ a {
       }
 
       .learning-object-content {
+
+      /* Trending highlight */
+      .learning-object.trending {
+        border-left: 4px solid $orange;
+        box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+      }
+
         flex: 1;
 
         .details {
@@ -253,6 +260,25 @@ a {
     .rating-stars-container {
       margin-top: 8px;
       margin-bottom: 8px;
+
+      .downloads-indicator {
+        display: inline-flex;
+        align-items: center;
+        color: $dark-grey;
+        font-size: $small;
+
+        i, svg, .svg-inline--fa {
+          margin-right: 5px;
+        }
+
+        .downloads-count {
+          margin-left: 0;
+        }
+
+        &.has-icon .downloads-count {
+          margin-left: 2px;
+        }
+      }
     }
 
     .content__topbar {
@@ -383,6 +409,21 @@ a {
     transition: all .15s ease-out;
   }
 } 
+
+/* Trending styles */
+.learning-object.trending {
+  border-left: 4px solid $orange;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.learning-object .learning-object-content .title .trending-badge {
+  color: $orange;
+  margin-left: 8px;
+  margin-right: 12px;
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+}
 
 @keyframes loading {
   0% {

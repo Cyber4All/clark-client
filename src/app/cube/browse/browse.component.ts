@@ -290,6 +290,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   toggleSort(val) {
     if (val !== null) {
       this.showClearSort = true;
+
       if (val === 'da') {
         this.sortText = 'Oldest';
       } else if (val === 'dd') {
@@ -305,6 +306,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       this.query.sortType =
         dir === 'd' ? SortType.Descending : SortType.Ascending;
 
+      // remove date filters if previously set
+      delete this.query.start;
+      delete this.query.end;
+
       this.performSearch();
     }
   }
@@ -314,6 +319,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     event.stopPropagation();
     delete this.query.orderBy;
     delete this.query.sortType;
+    delete this.query.start;
+    delete this.query.end;
     this.sortText = '';
     this.performSearch();
   }
