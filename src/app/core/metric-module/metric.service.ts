@@ -51,10 +51,10 @@ export class MetricService {
     let route = METRIC_ROUTES.GET_LEARNING_OBJECT_METRICS(cuid);
     const params: string[] = [];
     if (start) {
-params.push(`start=${encodeURIComponent(start)}`);
+      params.push(`start=${encodeURIComponent(start)}`);
 }
     if (end) {
-params.push(`end=${encodeURIComponent(end)}`);
+      params.push(`end=${encodeURIComponent(end)}`);
 }
     if (params.length) {
       route += (route.includes('?') ? '&' : '?') + params.join('&');
