@@ -36,7 +36,6 @@ export class LearningObjectsComponent implements OnInit, OnDestroy {
 
   constructor(private featureService: FeaturedObjectsService,
     private userService: UserService,
-    private metricService: MetricService,
     public googleTagService: GoogleTagService,
     private searchService: SearchService,
   ) { }
