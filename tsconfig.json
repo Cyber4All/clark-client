@@ -12,24 +12,19 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "target": "es2020",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"],
     "baseUrl": "src",
     "paths": {
       "app/*": ["app/*"],
-      "@env/*": [ "environments/*" ],
+      "@env/*": ["environments/*"],
       "@entity": ["entity/index"],
       "core-js/es6/reflect": ["../node_modules/core-js/es/reflect"]
     },
-    "types": [ "jest", "node" ],
-    "allowJs": true,
+    "types": ["jest", "node"],
+    "allowJs": true
   },
-  "exclude": [
-    "*.copy.ts"
-  ]
+  "exclude": ["*.copy.ts"]
 }
