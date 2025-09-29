@@ -45,7 +45,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   downloadsCount = 0;
   recentDownloads = 0;
   isTrending = false;
-  private TRENDING_THRESHOLD = 10; // downloads in last 30 days to be considered trending
+  TRENDING_THRESHOLD = 10; // downloads in last 30 days to be considered trending
 
   constructor(
     private hostEl: ElementRef,
