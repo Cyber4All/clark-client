@@ -48,7 +48,7 @@
       </div>
       <div class="title">
         {{ truncateText(learningObject.name, 45) }}
-        <span *ngIf="isTrending" class="trending-badge" title="Trending">
+        <span *ngIf="isTrending" class="trending-badge" title="Trending" [tip]="'This Learning Object is trending'" tipPosition="left">
           <i class="fas fa-fire" aria-hidden="true"></i>
         </span>
         <form *ngIf="downloadService">
@@ -85,6 +85,7 @@
       </div>
 
       <div class='rating-stars-container'>
+        <clark-rating-stars *ngIf="averageRating > 0" [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>&nbsp;
         <div *ngIf="downloadsCount >= TRENDING_THRESHOLD" class="downloads-indicator" tabindex="0" attr.aria-label="{{ downloadsCount }} download{{ downloadsCount !== 1 ? 's' : '' }}">
           <i class="far fa-download" aria-hidden="true"></i>
           <span class="downloads-count">{{ downloadsCount | number }}</span>
