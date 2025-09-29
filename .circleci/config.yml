@@ -15,7 +15,7 @@ jobs:
           node-version: '18.19.0'
       - run: npm install
       - run: npm run lint
-      - run: npm run build:prod
+      - run: npm run build:production
 
 workflows:
   continuous-integration:
