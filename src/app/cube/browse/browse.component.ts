@@ -34,7 +34,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     guidelines: [],
     level: [],
     standardOutcomes: [],
-    orderBy: OrderBy.Date,
+    orderBy: '',
     sortType: -1,
     collection: '',
     topics: [],
@@ -72,7 +72,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   sortMenuDown: boolean;
   showClearSort: boolean;
-  sortText = 'Newest';
+  sortText = '';
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -86,7 +86,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private cd: ChangeDetectorRef,
     private navService: NavbarService,
-    private searchService: SearchService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -180,17 +179,15 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.query.text = '';
     this.query.standardOutcomes = [];
     this.query.currPage = 1;
-    this.query.sortType = -1;
-    this.query.orderBy = OrderBy.Date;
     this.router.navigate(['browse'], { queryParams: {} });
   }
 
   get sortString() {
     return this.query.orderBy
       ? this.query.orderBy.replace(/_/g, '') +
-          ' (' +
-          (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-          ')'
+      ' (' +
+      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
+      ')'
       : '';
   }
 
