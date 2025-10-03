@@ -3,6 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { environment } from '@env/environment';
 import { ClarkModule } from 'app/clark.module';
+import { CoralogixRumService } from './app/core/services/coralogix-rum.service';
 
 // Application display name and Version information
 const { version: appVersion, name: appName, displayName: appDisplayName } = require('../package.json');
@@ -17,6 +18,7 @@ const userVersion = localStorage.getItem(VERSION_STORE);
 (() => {
   // Set current version of the application
   localStorage.setItem(VERSION_STORE, appVersion);
+
   // Check the version of the application the user last ran; If mismatch clear cache via hard reload
   userVersion !== appVersion ? location.reload() :
     console.log(`${appDisplayName} running version: ${appVersion} - Up to date.`);
@@ -24,16 +26,15 @@ const userVersion = localStorage.getItem(VERSION_STORE);
 
 // Initialize Coralogix RUM and bootstrap application if version matches
 if (userVersion === appVersion) {
-  import('./app/core/services/coralogix-rum.service').then(({ CoralogixRumService }) => {
+  try {
     const rumService = new CoralogixRumService();
     rumService.init();
-    // Bootstrap the Angular application after RUM is initialized
-    platformBrowserDynamic().bootstrapModule(ClarkModule);
-  }).catch(error => {
+  } catch (error) {
     console.error('Failed to initialize RUM service:', error);
-    // Even if RUM fails, still bootstrap the application
-    platformBrowserDynamic().bootstrapModule(ClarkModule);
-  });
+  }
+
+  // Bootstrap the application regardless of RUM initialization
+  platformBrowserDynamic().bootstrapModule(ClarkModule);
 } else {
   console.log('Waiting for update...');
 }

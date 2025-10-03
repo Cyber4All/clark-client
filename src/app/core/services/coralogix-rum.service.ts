@@ -22,8 +22,8 @@ export class CoralogixRumService {
         }
 
         // Only initialize RUM in production environment
-        if (!environment.production) {
-            console.log('Coralogix RUM skipped - not in production environment');
+        if (!['production', 'staging'].includes(environment.environment)) {
+            console.log('Coralogix RUM skipped - not in production/staging environment');
             return;
         }
 
@@ -36,7 +36,7 @@ export class CoralogixRumService {
                 coralogixDomain: 'US1' as const,
             };
 
-            console.log('Initializing Coralogix RUM for production');
+            console.log('Initializing Coralogix RUM...');
             console.log('RUM Configuration:', rumConfig);
 
             CoralogixRum.init(rumConfig);
