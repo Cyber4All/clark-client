@@ -2,9 +2,9 @@ version: 2.1
 
 orbs:
   cyber4all: cyber4all/orb@2.1.9
-  aws-cli: circleci/aws-cli@5.4.1
-  node: circleci/node@7.1.1
+  node: circleci/node@6.3.0
 
+# This is a solution for the outdated version of angular we are using
 jobs:
   install-node-lint-build:
     docker:
@@ -13,91 +13,77 @@ jobs:
       - checkout
       - node/install:
           node-version: '18.19.0'
-      - node/install-packages
-      - node/run:
-          npm-run: lint
-      - node/run:
-          npm-run: build
-      - persist_to_workspace:
-          root: .
-          paths:
-            - dist
+      - run: npm install
+      - run: npm run lint
+      - run: npm run build:production
 
-  deploy:
+  upload-source-maps:
     parameters:
-      bucket:
-        type: string
-      distribution_id:
-        type: env_var_name
       environment:
         type: string
-        enum: [staging, production]
-      region:
-        type: string
-        default: us-east-1
-        enum: [us-east-1, us-east-2]
+        description: 'The environment to build and upload source maps for (staging or production)'
     docker:
       - image: cimg/base:stable
     steps:
-      - attach_workspace:
-          at: .
+      - checkout
       - node/install:
           node-version: '18.19.0'
-      - run: npm install -g @coralogix/rum-cli
-      - aws-cli/setup:
-          region: <<parameters.region>>
-          role_arn: $S3_OIDC_ROLE
-      - aws-s3/sync:
-          from: ./dist
-          to: s3://<<parameters.bucket>>
-      - run: aws cloudfront create-invalidation --distribution-id $<<parameters.distribution_id>> --paths '/*'
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          event: pass
-          template: success_tagged_deploy_1
+      - run: npm install
+      - run:
+          name: Build for << parameters.environment >>
+          command: npm run build:<< parameters.environment >>
+      - run:
+          name: Upload source maps to Coralogix
+          command: |
+            PACKAGE_VERSION=$(jq -r '.version' package.json)
+            if [ "<< parameters.environment >>" = "staging" ]; then
+              COMMIT_HASH=$(git rev-parse --short HEAD)
+              export RUM_VERSION="${PACKAGE_VERSION}-${COMMIT_HASH}"
+            else
+              export RUM_VERSION=${PACKAGE_VERSION}
+            fi
+            npm run rum:upload-<< parameters.environment >>
 
 workflows:
-  continuous-deployment:
+  continuous-integration:
     jobs:
       - install-node-lint-build
 
-      - deploy:
-          name: deploy-staging
+  deploy-staging:
+    when:
+      equal: [main, <<pipeline.git.branch>>]
+    jobs:
+      - upload-source-maps:
+          name: upload-source-maps-staging
+          environment: staging
+      - cyber4all/s3:
           requires:
-            - install-node-lint-build
+            - upload-source-maps-staging
           context:
             - aws_staging
             - Slack
           bucket: 'clark-client-staging'
           distribution_id: STAGING_CLOUDFRONT_ID
-          environment: staging
-          filters:
-            branches:
-              only:
-                - main
+          script: build:staging
 
+  deploy-prod:
+    when:
+      equal: [releases, <<pipeline.git.branch>>]
+    jobs:
       - cyber4all/release:
           context: [Github]
           tag: $(jq -r '.version' package.json)
-          filters:
-            branches:
-              only:
-                - releases
 
-      - deploy:
-          name: deploy-production
+      - upload-source-maps:
           requires:
             - cyber4all/release
-            - install-node-lint-build
+          name: upload-source-maps-production
+          environment: production
+
+      - cyber4all/s3:
+          requires:
+            - upload-source-maps-production
           context:
             - AWS
             - Slack
           bucket: 'clark.center'
-          distribution_id: CLOUDFRONT_ID
-          environment: production
-          filters:
-            branches:
-              only:
-                - release
