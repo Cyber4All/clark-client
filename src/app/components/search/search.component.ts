@@ -108,6 +108,8 @@ export class SearchComponent implements OnInit, OnDestroy {
           ...this.route.snapshot.queryParams,
           text,
           currPage: 1,
+          // Disable any other sorting
+          orderBy: ''
         },
       });
     }

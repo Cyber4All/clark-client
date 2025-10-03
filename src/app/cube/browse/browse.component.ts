@@ -34,7 +34,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     guidelines: [],
     level: [],
     standardOutcomes: [],
-    orderBy: '',
+    // Showcase newest learning object
+    orderBy: OrderBy.Date,
     sortType: -1,
     collection: '',
     topics: [],
@@ -105,8 +106,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       .subscribe(async (params) => {
         // makes query based and sends request to fetch learning objects
         this.makeQuery(params);
-        // with a text search and no sortType is provided, no sort is applied, otherwise apply the default sort
-        this.sortText = params.text && !params.sortType ? '' : this.sortText;
+        // When searching, visually show that any pre-existing sorting is disabled
+        this.sortText = params.text && params.orderBy === '' ? '' : this.sortText;
         this.fetchLearningObjects(this.query);
       });
   }
@@ -179,6 +180,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.query.text = '';
     this.query.standardOutcomes = [];
     this.query.currPage = 1;
+    this.query.orderBy = OrderBy.Date;
     this.router.navigate(['browse'], { queryParams: {} });
   }
 
