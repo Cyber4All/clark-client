@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
 import { CoralogixBrowserSdkConfig, CoralogixRum, UserContextConfig } from '@coralogix/browser';
 import { environment } from '@env/environment';
+import { COMMIT_HASH } from '../../../commit-hash';
 
 // Application display name and Version information
 const { version } = require('../../../../package.json');
+
+// For staging, we'll use version + commit hash, otherwise use the package version
+const getRumVersion = (): string => {
+    if (environment.environment === 'staging') {
+        return `${version}-${COMMIT_HASH}`;
+    }
+    return version;
+};
 
 @Injectable({
     providedIn: 'root'
@@ -28,11 +37,12 @@ export class CoralogixRumService {
         }
 
         try {
+            const rumVersion = getRumVersion();
             const rumConfig: CoralogixBrowserSdkConfig = {
                 // eslint-disable-next-line @typescript-eslint/naming-convention
                 public_key: environment.publicKey,
                 application: `clark-${environment.environment}`,
-                version,
+                version: rumVersion,
                 coralogixDomain: 'US1' as const,
             };
 

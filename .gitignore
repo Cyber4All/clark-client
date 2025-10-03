@@ -44,3 +44,6 @@ Thumbs.db
 .vscode/settings.json
 .vscode/launch.json
 .dccache
+
+# Auto-generated files
+src/commit-hash.ts
