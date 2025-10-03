@@ -34,6 +34,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     guidelines: [],
     level: [],
     standardOutcomes: [],
+    // Showcase newest learning object
     orderBy: OrderBy.Date,
     sortType: -1,
     collection: '',
@@ -72,7 +73,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   sortMenuDown: boolean;
   showClearSort: boolean;
-  sortText = 'Newest';
+  sortText = '';
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -86,7 +87,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private cd: ChangeDetectorRef,
     private navService: NavbarService,
-    private searchService: SearchService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -106,8 +106,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       .subscribe(async (params) => {
         // makes query based and sends request to fetch learning objects
         this.makeQuery(params);
-        // with a text search and no sortType is provided, no sort is applied, otherwise apply the default sort
-        this.sortText = params.text && !params.sortType ? '' : this.sortText;
+        // When searching, visually show that any pre-existing sorting is disabled
+        this.sortText = params.text && params.orderBy === '' ? '' : this.sortText;
         this.fetchLearningObjects(this.query);
       });
   }
@@ -180,7 +180,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.query.text = '';
     this.query.standardOutcomes = [];
     this.query.currPage = 1;
-    this.query.sortType = -1;
     this.query.orderBy = OrderBy.Date;
     this.router.navigate(['browse'], { queryParams: {} });
   }
@@ -188,9 +187,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   get sortString() {
     return this.query.orderBy
       ? this.query.orderBy.replace(/_/g, '') +
-          ' (' +
-          (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-          ')'
+      ' (' +
+      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
+      ')'
       : '';
   }
 

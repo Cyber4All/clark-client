@@ -20,7 +20,7 @@ export interface Query {
   level?: string[];
   guidelines?: string[];
   noGuidelines?: string;
-  orderBy?: OrderBy;
+  orderBy?: OrderBy | string;
   sortType?: SortType;
   text?: string;
   standardOutcomes?:
