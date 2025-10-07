@@ -73,7 +73,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   sortMenuDown: boolean;
   showClearSort: boolean;
-  sortText = '';
+  sortText = 'Newest';
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -330,21 +330,58 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    * @param {*} params the object returned from subscribing to the routers queryParams observable
    */
   makeQuery(params: Record<string, string>) {
-    const paramKeys = Object.keys(params);
 
-    // iterate params object
-    for (let i = 0, l = paramKeys.length; i < l; i++) {
-      const key = paramKeys[i];
-      if (Object.keys(this.query).includes(key)) {
-        const val = params[key];
-        // this parameter is a query param, add it to the query object
-        if (key === 'currPage') {
-          this.query.currPage = parseInt(val, 10);
-        } else {
-          this.query[key] = val;
-        }
-      }
+    function parseIntOrDefault(val: any, fallback: number): number {
+      const num = typeof val === 'string' ? parseInt(val, 10) : Number(val);
+      return isNaN(num) ? fallback : num;
     }
+
+    function toStringArray(val: any): string[] {
+      if (Array.isArray(val)) {
+        return val.map(String);
+      }
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return [];
+    }
+
+    function toString(val: any, fallback: string = ''): string {
+      return typeof val === 'string' ? val : fallback;
+    }
+
+    // If standardOutcomes can be an array of strings or array of objects
+    function parseStandardOutcomes(val: any): Query['standardOutcomes'] {
+      if (Array.isArray(val)) {
+        return val;
+      }
+      if (typeof val === 'string' && val.length > 0) {
+        return [val];
+      }
+      return [];
+    }
+
+    // Rebuild the query from scratch and then apply modifications from params
+    // This prevents any pre-existing queries from sticking around
+    this.query = {
+      text: toString(params.text),
+      currPage: parseIntOrDefault(params.currPage, 1),
+      limit: parseIntOrDefault(params.limit, 10),
+      length: toStringArray(params.length),
+      level: toStringArray(params.level),
+      guidelines: toStringArray(params.guidelines),
+      noGuidelines: toString(params.noGuidelines),
+      orderBy: toString(params.orderBy, OrderBy.Date),
+      sortType: (Number(params.sortType) === SortType.Ascending || Number(params.SortType) === SortType.Descending)
+        ? Number(params.SortType)
+        : SortType.Descending,
+      standardOutcomes: parseStandardOutcomes(params.standardOutcomes),
+      collection: toString(params.collection),
+      status: toStringArray(params.status),
+      fileTypes: toStringArray(params.fileTypes),
+      topics: toStringArray(params.topics),
+      tags: toStringArray(params.tags),
+    };
   }
 
   async fetchLearningObjects(query: Query) {
@@ -352,6 +389,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.learningObjects = [];
     // Trim leading and trailing whitespace
     query.text = query.text ? query.text.trim() : '';
+    console.log("bruh", query)
     try {
       const { learningObjects, total } =
         await this.searchLearningObjectService.getLearningObjects(query);
