@@ -331,6 +331,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    */
   makeQuery(params: Record<string, string>) {
 
+    // Helper functions to provide fall back values on erroneous query params
     function parseIntOrDefault(val: any, fallback: number): number {
       const num = typeof val === 'string' ? parseInt(val, 10) : Number(val);
       return isNaN(num) ? fallback : num;
@@ -350,21 +351,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       return typeof val === 'string' ? val : fallback;
     }
 
-    // If standardOutcomes can be an array of strings or array of objects
-    function parseStandardOutcomes(val: any): Query['standardOutcomes'] {
-      if (Array.isArray(val)) {
-        return val;
-      }
-      if (typeof val === 'string' && val.length > 0) {
-        return [val];
-      }
-      return [];
-    }
-
     // Rebuild the query from scratch and then apply modifications from params
     // This prevents any pre-existing queries from sticking around
     this.query = {
-      text: toString(params.text),
+      text: params.text,
       currPage: parseIntOrDefault(params.currPage, 1),
       limit: parseIntOrDefault(params.limit, 10),
       length: toStringArray(params.length),
@@ -372,13 +362,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       guidelines: toStringArray(params.guidelines),
       noGuidelines: toString(params.noGuidelines),
       orderBy: toString(params.orderBy, OrderBy.Date),
-      sortType: (Number(params.sortType) === SortType.Ascending || Number(params.SortType) === SortType.Descending)
-        ? Number(params.SortType)
+      sortType: (Number(params.sortType) === SortType.Ascending || Number(params.sortType) === SortType.Descending)
+        ? Number(params.sortType)
         : SortType.Descending,
-      standardOutcomes: parseStandardOutcomes(params.standardOutcomes),
-      collection: toString(params.collection),
-      status: toStringArray(params.status),
-      fileTypes: toStringArray(params.fileTypes),
+      collection: params.collection || '',
       topics: toStringArray(params.topics),
       tags: toStringArray(params.tags),
     };
