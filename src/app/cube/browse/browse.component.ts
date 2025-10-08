@@ -73,7 +73,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   sortMenuDown: boolean;
   showClearSort: boolean;
-  sortText = '';
+  sortText = 'Newest';
 
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
@@ -330,21 +330,45 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    * @param {*} params the object returned from subscribing to the routers queryParams observable
    */
   makeQuery(params: Record<string, string>) {
-    const paramKeys = Object.keys(params);
 
-    // iterate params object
-    for (let i = 0, l = paramKeys.length; i < l; i++) {
-      const key = paramKeys[i];
-      if (Object.keys(this.query).includes(key)) {
-        const val = params[key];
-        // this parameter is a query param, add it to the query object
-        if (key === 'currPage') {
-          this.query.currPage = parseInt(val, 10);
-        } else {
-          this.query[key] = val;
-        }
-      }
+    // Helper functions to provide fall back values on erroneous query params
+    function parseIntOrDefault(val: any, fallback: number): number {
+      const num = typeof val === 'string' ? parseInt(val, 10) : Number(val);
+      return isNaN(num) ? fallback : num;
     }
+
+    function toStringArray(val: any): string[] {
+      if (Array.isArray(val)) {
+        return val.map(String);
+      }
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return [];
+    }
+
+    function toString(val: any, fallback: string = ''): string {
+      return typeof val === 'string' ? val : fallback;
+    }
+
+    // Rebuild the query from scratch and then apply modifications from params
+    // This prevents any pre-existing queries from sticking around
+    this.query = {
+      text: params.text,
+      currPage: parseIntOrDefault(params.currPage, 1),
+      limit: parseIntOrDefault(params.limit, 10),
+      length: toStringArray(params.length),
+      level: toStringArray(params.level),
+      guidelines: toStringArray(params.guidelines),
+      noGuidelines: toString(params.noGuidelines),
+      orderBy: toString(params.orderBy, OrderBy.Date),
+      sortType: (Number(params.sortType) === SortType.Ascending || Number(params.sortType) === SortType.Descending)
+        ? Number(params.sortType)
+        : SortType.Descending,
+      collection: params.collection || '',
+      topics: toStringArray(params.topics),
+      tags: toStringArray(params.tags),
+    };
   }
 
   async fetchLearningObjects(query: Query) {
