@@ -361,14 +361,16 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       level: toStringArray(params.level),
       guidelines: toStringArray(params.guidelines),
       noGuidelines: toString(params.noGuidelines),
+      standardOutcomes: [],
       orderBy: toString(params.orderBy, OrderBy.Date),
       sortType: (Number(params.sortType) === SortType.Ascending || Number(params.sortType) === SortType.Descending)
         ? Number(params.sortType)
         : SortType.Descending,
       collection: params.collection || '',
-      topics: toStringArray(params.topics),
-      tags: toStringArray(params.tags),
+      topics: toStringArray(params.topics) || [],
+      fileTypes: [],
       status: [LearningObject.Status.RELEASED],
+      tags: toStringArray(params.tags),
     };
   }
 
