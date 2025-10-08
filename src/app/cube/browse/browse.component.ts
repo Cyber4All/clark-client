@@ -368,6 +368,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       collection: params.collection || '',
       topics: toStringArray(params.topics),
       tags: toStringArray(params.tags),
+      status: [LearningObject.Status.RELEASED],
     };
   }
 
