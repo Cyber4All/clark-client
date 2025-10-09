@@ -78,7 +78,7 @@ workflows:
           requires:
             - cyber4all/release
           name: upload-source-maps-production
-          environment: production
+          environment: prod
 
       - cyber4all/s3:
           requires:
