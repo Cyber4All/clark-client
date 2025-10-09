@@ -15,7 +15,7 @@ jobs:
           node-version: '18.19.0'
       - run: npm install
       - run: npm run lint
-      - run: npm run build:production
+      - run: npm run build:prod
 
   upload-source-maps:
     parameters:
