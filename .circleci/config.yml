@@ -15,7 +15,34 @@ jobs:
           node-version: '18.19.0'
       - run: npm install
       - run: npm run lint
-      - run: npm run build:prod
+      - run: npm run build:production
+
+  upload-source-maps:
+    parameters:
+      environment:
+        type: string
+        description: 'The environment to build and upload source maps for (staging or production)'
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - node/install:
+          node-version: '18.19.0'
+      - run: npm install
+      - run:
+          name: Build for << parameters.environment >>
+          command: npm run build:<< parameters.environment >>
+      - run:
+          name: Upload source maps to Coralogix
+          command: |
+            PACKAGE_VERSION=$(jq -r '.version' package.json)
+            if [ "<< parameters.environment >>" = "staging" ]; then
+              COMMIT_HASH=$(git rev-parse --short HEAD)
+              export RUM_VERSION="${PACKAGE_VERSION}-${COMMIT_HASH}"
+            else
+              export RUM_VERSION=${PACKAGE_VERSION}
+            fi
+            npm run rum:upload-<< parameters.environment >>
 
 workflows:
   continuous-integration:
@@ -24,28 +51,39 @@ workflows:
 
   deploy-staging:
     when:
-        equal: [main, <<pipeline.git.branch>>]
+      equal: [main, <<pipeline.git.branch>>]
     jobs:
+      - upload-source-maps:
+          name: upload-source-maps-staging
+          environment: staging
       - cyber4all/s3:
+          requires:
+            - upload-source-maps-staging
           context:
             - aws_staging
             - Slack
-          bucket: "clark-client-staging"
+          bucket: 'clark-client-staging'
           distribution_id: STAGING_CLOUDFRONT_ID
           script: build:staging
-      
 
   deploy-prod:
     when:
-        equal: [releases, <<pipeline.git.branch>>]
+      equal: [releases, <<pipeline.git.branch>>]
     jobs:
       - cyber4all/release:
           context: [Github]
           tag: $(jq -r '.version' package.json)
-      
+
+      - upload-source-maps:
+          requires:
+            - cyber4all/release
+          name: upload-source-maps-production
+          environment: production
+
       - cyber4all/s3:
-          context: 
+          requires:
+            - upload-source-maps-production
+          context:
             - AWS
             - Slack
-          bucket: "clark.center"
-    
+          bucket: 'clark.center'

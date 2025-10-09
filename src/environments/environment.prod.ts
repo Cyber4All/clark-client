@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  environment: 'production',
   experimental: false,
   apiURL: 'https://clark-gateway.clark.center',
   s3Bucket: 'clark-prod-file-uploads',
@@ -9,6 +10,7 @@ export const environment = {
   cognitoAdminIdentityPoolId: 'us-east-1:6691336e-11a1-48db-9774-5f5a2c8dc270',
   cardUrl: 'https://clark-gateway.clark.center',
   downtimeUrl: 'https://oyrmr4e2d5nwt3l33ifk4ezgcq0mhnax.lambda-url.us-east-1.on.aws',
+  publicKey: 'cxtp_pbDbZsDUdNr5Wu3GWX6emisZyfKkV9'
 };
 
 export enum LearningObjectStatus {
