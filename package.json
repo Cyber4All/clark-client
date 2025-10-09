@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "6.11.3",
+  "version": "6.11.4",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -13,7 +13,7 @@
     "build:prod": "npm run prebuild && ng build clark --configuration=production && npm run rum:upload-production",
     "rum:install": "npm list -g @coralogix/rum-cli || npm install -g @coralogix/rum-cli",
     "rum:upload-staging": "npm run rum:install && coralogix-rum-cli upload-source-maps -k \"$CORALOGIX_SOURCE_MAP_KEY\" -a \"clark-staging\" -e \"US1\" -v \"${RUM_VERSION:-$npm_package_version}\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
-    "rum:upload-production": "npm run rum:install && coralogix-rum-cli upload-source-maps -k \"$CORALOGIX_SOURCE_MAP_KEY\" -a \"clark-production\" -e \"US1\" -v \"${RUM_VERSION:-$npm_package_version}\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
+    "rum:upload-prod": "npm run rum:install && coralogix-rum-cli upload-source-maps -k \"$CORALOGIX_SOURCE_MAP_KEY\" -a \"clark-production\" -e \"US1\" -v \"${RUM_VERSION:-$npm_package_version}\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
     "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
     "lint": "npx ng lint clark",
     "lint:fix": "npx ng lint clark --fix",
