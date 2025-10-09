@@ -86,7 +86,7 @@
               "browserTarget": "clark:build:experimental"
             },
             "production": {
-              "browserTarget": "clark:build:production"
+              "browserTarget": "clark:build:prod"
             },
             "staging": {
               "browserTarget": "clark:build:staging"
