@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "6.11.0",
+  "version": "6.11.1",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -10,7 +10,7 @@
     "prebuild": "echo \"export const COMMIT_HASH = '$(git rev-parse --short HEAD)';\" > src/commit-hash.ts",
     "build": "npm run prebuild && ng build clark",
     "build:staging": "npm run prebuild && ng build clark --configuration=staging",
-    "build:production": "npm run prebuild && ng build clark --configuration=production && npm run rum:upload-production",
+    "build:prod": "npm run prebuild && ng build clark --configuration=production && npm run rum:upload-production",
     "rum:install": "npm list -g @coralogix/rum-cli || npm install -g @coralogix/rum-cli",
     "rum:upload-staging": "npm run rum:install && coralogix-rum-cli upload-source-maps -k \"$CORALOGIX_SOURCE_MAP_KEY\" -a \"clark-staging\" -e \"US1\" -v \"${RUM_VERSION:-$npm_package_version}\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
     "rum:upload-production": "npm run rum:install && coralogix-rum-cli upload-source-maps -k \"$CORALOGIX_SOURCE_MAP_KEY\" -a \"clark-production\" -e \"US1\" -v \"${RUM_VERSION:-$npm_package_version}\" -f \"./dist/\" || echo \"RUM upload failed, continuing...\"",
