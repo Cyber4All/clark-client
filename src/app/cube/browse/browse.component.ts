@@ -108,7 +108,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.makeQuery(params);
         // When searching, visually show that any pre-existing sorting is disabled
         this.sortText =
-          this.query.text && this.query.orderBy === 'none' ? '' : this.sortText;
+          this.query.text && this.query.orderBy === OrderBy.None ? '' : this.sortText;
         await this.fetchLearningObjects(this.query);
       });
   }
