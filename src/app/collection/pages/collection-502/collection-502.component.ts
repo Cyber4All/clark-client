@@ -41,22 +41,6 @@ export class Collection502Component implements OnInit {
         this.currentTheme = mode ? 'dark' : 'light';
       })
     );
-
-    // const toggleSwitch = document.querySelector('mat-slide-toggle input[type="checkbox"]');
-
-    // const switchTheme = (e: Event) => {
-    //   this.collectionService.changeStatus502((e.target as HTMLInputElement).checked);
-    //   console.log('Toggle theme')
-    // };
-
-    // toggleSwitch!.addEventListener('change', switchTheme);
-
-    this.collectionService.darkMode502.subscribe(mode => {
-      this.currentTheme = mode ? 'dark' : 'light';
-    });
-    if (this.currentTheme === 'dark') {
-      document!.getElementById('mat-slide-toggle-1-input')!.click();
-    };
   }
 
   onThemeToggle(checked: boolean){

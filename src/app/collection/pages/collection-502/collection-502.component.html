@@ -3,7 +3,7 @@
 
 
         <div class="theme-switch-wrapper">
-          <mat-slide-toggle class="toggle" [checked]="currentTheme" (change)="onThemeToggle($event.checked)">
+          <mat-slide-toggle class="toggle" [checked]="currentTheme === 'dark'" (change)="onThemeToggle($event.checked)">
             {{currentTheme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}}
           </mat-slide-toggle>
           <mat-icon class="icon">{{currentTheme === 'light' ? 'bedtime' : 'sunny'}}</mat-icon>
