@@ -378,9 +378,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.learningObjects = [];
     // Trim leading and trailing whitespace
     query.text = query.text ? query.text.trim() : '';
+
     try {
       const { learningObjects, total } =
-        await this.searchLearningObjectService.getLearningObjects(query);
+        await this.searchLearningObjectService.getLearningObjects(this.removeObjFalsy(query));
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);
@@ -395,20 +396,14 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    * Deep copy and strip all falsy values (and empty arrays) from an object
    */
   private removeObjFalsy(obj: any): any {
-    const keys = Object.keys(obj);
-    // deep copy object to prevent direct modification of passed object
-    const output = Object.assign({}, obj);
-
-    for (let i = 0, l = keys.length; i < l; i++) {
-      if (
-        !output[keys[i]] ||
-        (Array.isArray(output[keys[i]]) && output[keys[i]].length === 0)
-      ) {
-        delete output[keys[i]];
+    return Object.keys(obj).reduce((acc, key) => {
+      // Checks if the value is truthy
+      if (obj[key]) {
+        acc[key] = obj[key];
       }
-    }
-
-    return output;
+      return acc;
+      // Initialize with an empty object
+    }, {});
   }
 
   ngOnDestroy() {
