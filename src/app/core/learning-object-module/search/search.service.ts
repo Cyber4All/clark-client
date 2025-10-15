@@ -24,7 +24,7 @@ export class SearchService {
    * @returns {Promise<LearningObject[]>}
    * @memberof LearningObjectService
    */
-  getLearningObjects(
+  async getLearningObjects(
     query?: Query,
   ): Promise<{ learningObjects: LearningObject[]; total: number }> {
     let route = '';
