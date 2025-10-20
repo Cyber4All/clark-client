@@ -102,6 +102,7 @@ export class FeaturedObjectsService {
     );
     // Save the array into the _featuredObjects subject to be observed
     this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
+    this.setSubmitError();
   }
 
   filterOutFeaturedObjects() {
@@ -111,13 +112,17 @@ export class FeaturedObjectsService {
     });
   }
 
-  setFeatured(objects: LearningObject[]) {
-    this.featuredStore.featured = objects;
-    this.filterOutFeaturedObjects();
+  setSubmitError(){
     if (this.featuredStore.featured.length === 5) {
       this._submitError$.next(false);
       this._mutationError$.next(true);
     }
+  }
+
+  setFeatured(objects: LearningObject[]) {
+    this.featuredStore.featured = objects;
+    this.filterOutFeaturedObjects();
+    this.setSubmitError();
     this._featuredObjects$.next(Object.assign({}, this.featuredStore).featured);
   }
 
@@ -136,75 +141,21 @@ export class FeaturedObjectsService {
   }
 
   async saveFeaturedObjects() {
+    const featuredDto = [];
+    this.featuredStore.featured.forEach((obj)=> {
+      featuredDto.push({cuid: obj.cuid, version: obj.version, featuredCollection: obj.collection});
+    });
     if (this.featuredStore.featured.length !== 5) {
       this._submitError$.next(true);
     } else {
       return this.http
         .patch(
           FEATURED_ROUTES.UPDATE_FEATURED_OBJECTS(),
-          this.featuredStore.featured,
+          { learningObjects: featuredDto },
           { headers: this.headers, withCredentials: true },
         )
         .toPromise();
     }
-  }
-
-  /**
-   * Fetches Array of Learning Objects that are not currently featured
-   *
-   * @returns {Promise<LearningObject[]>}
-   * @memberof LearningObjectService
-   */
-  getNotFeaturedLearningObjects(
-    query?: Query,
-  ): Promise<{ learningObjects: LearningObject[]; total: number }> {
-    let route = '';
-    if (query) {
-      const queryClone = Object.assign({}, query);
-      const queryString = querystring.stringify(queryClone);
-      route =
-        SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS(queryString);
-    } else {
-      route = SEARCH_ROUTES.SEARCH_LEARNING_OBJECTS();
-    }
-
-    return this.http
-      .get(route)
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((response: any) => {
-        return { learningObjects: response.objects, total: response.total };
-      });
-  }
-
-  /** COLLECTION FEATURED ROUTES */
-  /**
-   * Get the featured learning objects for a collection
-   *
-   * @param collection
-   * @returns [LearningObject]
-   */
-  async getCollectionFeatured(collectionAbvName: string) {
-    const response = await this.http
-      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName))
-      .pipe(catchError(this.handleError))
-      .toPromise();
-    return response as LearningObject[];
-  }
-
-  /**
-   * Get the featured learning objects for a collection with a limit
-   *
-   * @param collection
-   * @param limit
-   * @returns [LearningObject]
-   */
-  async getCollectionFeaturedWithLimit(collectionAbvName: string, limit: number) {
-    const response = await this.http
-      .get(FEATURED_ROUTES.GET_COLLECTION_FEATURED_OBJECTS(collectionAbvName, limit))
-      .pipe(catchError(this.handleError))
-      .toPromise();
-    return response as LearningObject[];
   }
 
   private handleError(error: HttpErrorResponse) {

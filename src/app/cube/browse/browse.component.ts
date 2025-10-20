@@ -30,15 +30,18 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     currPage: 1,
     limit: 10,
     length: [],
+    noGuidelines: '',
     guidelines: [],
     level: [],
     standardOutcomes: [],
+    // Showcase newest learning object
     orderBy: OrderBy.Date,
     sortType: -1,
     collection: '',
     topics: [],
     fileTypes: [],
     status: [LearningObject.Status.RELEASED],
+    tags: [],
   };
 
   tooltipText = {
@@ -84,7 +87,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private cd: ChangeDetectorRef,
     private navService: NavbarService,
-    private searchService: SearchService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -104,8 +106,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       .subscribe(async (params) => {
         // makes query based and sends request to fetch learning objects
         this.makeQuery(params);
-        // with a text search and no sortType is provided, no sort is applied, otherwise apply the default sort
-        this.sortText = params.text && !params.sortType ? '' : this.sortText;
+        // When searching, visually show that any pre-existing sorting is disabled
+        this.sortText = params.text && params.orderBy === '' ? '' : this.sortText;
         this.fetchLearningObjects(this.query);
       });
   }
@@ -178,7 +180,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.query.text = '';
     this.query.standardOutcomes = [];
     this.query.currPage = 1;
-    this.query.sortType = -1;
     this.query.orderBy = OrderBy.Date;
     this.router.navigate(['browse'], { queryParams: {} });
   }
@@ -186,9 +187,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   get sortString() {
     return this.query.orderBy
       ? this.query.orderBy.replace(/_/g, '') +
-          ' (' +
-          (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-          ')'
+      ' (' +
+      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
+      ')'
       : '';
   }
 
@@ -227,6 +228,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       'level',
       'guidelines',
       'standardOutcomes',
+      'noGuidelines',
     ].forEach((category) => {
       if (!this.filters[category]) {
         this.filters.removed.push(category);
@@ -287,6 +289,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   toggleSort(val) {
     if (val !== null) {
       this.showClearSort = true;
+
       if (val === 'da') {
         this.sortText = 'Oldest';
       } else if (val === 'dd') {
@@ -302,6 +305,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       this.query.sortType =
         dir === 'd' ? SortType.Descending : SortType.Ascending;
 
+      // remove date filters if previously set
+      delete this.query.start;
+      delete this.query.end;
+
       this.performSearch();
     }
   }
@@ -311,6 +318,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     event.stopPropagation();
     delete this.query.orderBy;
     delete this.query.sortType;
+    delete this.query.start;
+    delete this.query.end;
     this.sortText = '';
     this.performSearch();
   }
@@ -321,27 +330,48 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    * @param {*} params the object returned from subscribing to the routers queryParams observable
    */
   makeQuery(params: Record<string, string>) {
-    const paramKeys = Object.keys(params);
 
-    // no sort applied for text search
-    if (paramKeys.includes('text')) {
-      this.query.orderBy = undefined;
-      this.query.sortType = undefined;
+    // Helper functions to provide fall back values on erroneous query params
+    function parseIntOrDefault(val: any, fallback: number): number {
+      const num = typeof val === 'string' ? parseInt(val, 10) : Number(val);
+      return isNaN(num) ? fallback : num;
     }
 
-    // iterate params object
-    for (let i = 0, l = paramKeys.length; i < l; i++) {
-      const key = paramKeys[i];
-      if (Object.keys(this.query).includes(key)) {
-        const val = params[key];
-        // this parameter is a query param, add it to the query object
-        if (key === 'currPage') {
-          this.query.currPage = parseInt(val, 10);
-        } else {
-          this.query[key] = val;
-        }
+    function toStringArray(val: any): string[] {
+      if (Array.isArray(val)) {
+        return val.map(String);
       }
+      if (typeof val === 'string') {
+        return [val];
+      }
+      return [];
     }
+
+    function toString(val: any, fallback: string = ''): string {
+      return typeof val === 'string' ? val : fallback;
+    }
+
+    // Rebuild the query from scratch and then apply modifications from params
+    // This prevents any pre-existing queries from sticking around
+    this.query = {
+      text: params.text,
+      currPage: parseIntOrDefault(params.currPage, 1),
+      limit: parseIntOrDefault(params.limit, 10),
+      length: toStringArray(params.length),
+      level: toStringArray(params.level),
+      guidelines: toStringArray(params.guidelines),
+      noGuidelines: toString(params.noGuidelines),
+      standardOutcomes: [],
+      orderBy: toString(params.orderBy, OrderBy.Date),
+      sortType: (Number(params.sortType) === SortType.Ascending || Number(params.sortType) === SortType.Descending)
+        ? Number(params.sortType)
+        : SortType.Descending,
+      collection: params.collection || '',
+      topics: toStringArray(params.topics) || [],
+      fileTypes: [],
+      status: [LearningObject.Status.RELEASED],
+      tags: toStringArray(params.tags),
+    };
   }
 
   async fetchLearningObjects(query: Query) {
@@ -394,15 +424,14 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   public anyFiltersSelected(): boolean {
     const q = this.query;
     return !!(
-      (
-        (q.collection && q.collection !== '') ||
-        q.length?.length ||
-        q.topics?.length ||
-        q.level?.length ||
-        q.guidelines?.length ||
-        q.standardOutcomes?.length ||
-        q.fileTypes?.length
-      )
+      (q.collection && q.collection !== '') ||
+      q.length?.length ||
+      q.topics?.length ||
+      q.level?.length ||
+      q.guidelines?.length ||
+      q.noGuidelines ||
+      q.standardOutcomes?.length ||
+      q.fileTypes?.length
     );
   }
 }

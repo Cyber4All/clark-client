@@ -1,21 +1,22 @@
 import {
-  Component,
-  Input,
-  OnInit,
-  OnChanges,
-  SimpleChanges,
-  ElementRef,
-  Renderer2,
-  ChangeDetectorRef,
   ChangeDetectionStrategy,
-  OnDestroy
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+  SimpleChanges
 } from '@angular/core';
-import { LibraryService } from '../../../core/library-module/library.service';
 import { LearningObject } from '@entity';
+import { MetricService } from 'app/core/metric-module/metric.service';
+import { RatingService } from 'app/core/rating-module/rating.service';
+import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { CollectionService } from '../../../core/collection-module/collections.service';
-import { titleCase } from 'title-case';
-import { RatingService } from 'app/core/rating-module/rating.service';
+import { LibraryService } from '../../../core/library-module/library.service';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -41,12 +42,17 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   averageRating: number;
   reviewsCount: number;
   starColor = 'gold';
+  downloadsCount = 0;
+  recentDownloads = 0;
+  isTrending = false;
+  TRENDING_THRESHOLD = 5; // downloads in last 30 days to be considered trending
 
   constructor(
     private hostEl: ElementRef,
     private renderer: Renderer2,
     private library: LibraryService,
     private ratingService: RatingService,
+    private metricService: MetricService,
     public auth: AuthService,
     private collectionService: CollectionService,
     private cd: ChangeDetectorRef
@@ -73,6 +79,34 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
     this.averageRating = ratings.avgValue;
     this.reviewsCount = ratings.ratings?.length;
+
+    try {
+      const metrics = await this.metricService.getLearningObjectMetrics(this.learningObject.cuid);
+      this.downloadsCount = metrics?.downloads ?? 0;
+    } catch (e) {
+      this.downloadsCount = 0;
+    }
+
+    // Attempt to fetch downloads for the last 30 days to determine trending
+    try {
+      const end = new Date();
+      const start = new Date();
+      start.setDate(end.getDate() - 30);
+      const recentMetrics = await this.metricService.getLearningObjectMetrics(
+        this.learningObject.cuid,
+        start.toISOString(),
+        end.toISOString()
+      );
+      // The API should ideally return downloads for the period; fallback to 0 if not available
+      this.recentDownloads = recentMetrics?.downloads ?? 0;
+      // Only mark trending if object was updated/published within the last 30 days
+      const updatedDate = new Date(this.learningObject.date);
+      const wasUpdatedRecently = updatedDate >= start;
+      this.isTrending = wasUpdatedRecently && this.recentDownloads >= this.TRENDING_THRESHOLD;
+    } catch (e) {
+      this.recentDownloads = 0;
+      this.isTrending = false;
+    }
 
     this.cd.detectChanges();
   }
@@ -163,7 +197,7 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
         '/assets/images/collections/' +
         this.learningObject.collection +
         '.png';
-    } else{
+    } else {
       this.pictureLocation = 'generic';
     }
     this.cd.detectChanges();

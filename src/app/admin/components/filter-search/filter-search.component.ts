@@ -32,7 +32,8 @@ export class FilterSearchComponent implements OnInit {
   filtersModified$: Subject<void> = new Subject();
   filters: Set<string> = new Set();
   filterTopics: Set<string> = new Set();
-  statuses = Object.values(LearningObject.Status);
+  statuses = Object.values(LearningObject.Status).filter(status => status !== 'rejected');
+  dateError = false;
 
   private _selectedCollection: Collection;
 
@@ -45,6 +46,8 @@ export class FilterSearchComponent implements OnInit {
     status: string[];
     topic: string[];
     collection: string;
+    start: Date;
+    end: Date;
   }>();
   @Output() relevancyCheck = new EventEmitter<{ start: string; end: string }>();
   @Output() dateSearchFilter = new EventEmitter<{
@@ -170,6 +173,12 @@ export class FilterSearchComponent implements OnInit {
     this._selectedCollection = this.collections.filter(
       (x) => x.abvName === abvName,
     )[0];
+    if(!abvName) {
+      this._selectedCollection = undefined;
+      this.collectionFilter.emit('');
+      return;
+    }
+    this.collectionFilter.emit(this.selectedCollection.abvName);
   }
 
   /**
@@ -229,6 +238,7 @@ export class FilterSearchComponent implements OnInit {
    * @param value
    */
   toggleDateSearchMenu(value?: boolean) {
+    this.dateError = false;
     this.dateSearchMenuDown = value;
   }
 
@@ -252,10 +262,12 @@ export class FilterSearchComponent implements OnInit {
    * Sets the date search filters
    */
   setDateSearch() {
-    this.dateSearchFilter.emit({
-      start: this.dateSearchStart ? this.dateSearchStart.toISOString() : '',
-      end: this.dateSearchEnd ? this.dateSearchEnd.toISOString() : '',
-    });
+    this.dateError = false;
+    if(this.dateSearchEnd < this.dateSearchStart){
+      this.dateError = true;
+      return;
+    }
+    this.filter();
     this.toggleDateSearchMenu(false);
   }
 
@@ -275,7 +287,7 @@ export class FilterSearchComponent implements OnInit {
   clearDateSearch() {
     this.dateSearchStart = undefined;
     this.dateSearchEnd = undefined;
-    this.dateSearchFilter.emit({ start: '', end: '' });
+    this.filter();
     this.toggleDateSearchMenu(false);
   }
 
@@ -347,6 +359,9 @@ export class FilterSearchComponent implements OnInit {
       collection: this.selectedCollection
         ? this.selectedCollection.abvName
         : '',
+      start: this.dateSearchStart,
+      end: this.dateSearchEnd,
+      currPage: 1
     };
     this.filterQuery.emit(filters);
   }
@@ -365,7 +380,7 @@ export class FilterSearchComponent implements OnInit {
    * @memberof FilterSearchComponent
    */
   clearCollectionFilters() {
-    this.setSelectedCollection(undefined);
+    this.setSelectedCollection('');
     this.filter();
   }
 
@@ -389,8 +404,9 @@ export class FilterSearchComponent implements OnInit {
    * @memberof FilterSearchComponent
    */
   clearAllFilters() {
-    this.setSelectedCollection(undefined);
+    this.setSelectedCollection('');
     this.clearRelevancyDateFilters();
+    this.clearDateSearch();
     this.filters.clear();
     this.filterTopics.clear();
     this.clearAll.emit();
@@ -437,6 +453,22 @@ export class FilterSearchComponent implements OnInit {
       date.getMonth() === today.getMonth() &&
       date.getFullYear() === today.getFullYear()
     );
+  }
+
+  /*
+    * Gets a label for the date search filter based off selected dates
+  */
+  getDatesFilterLabel(): string {
+    if (this.dateSearchStart || this.dateSearchEnd) {
+      let label = '';
+      if (this.dateSearchStart) {
+        label += ` From ${this.dateSearchStart.toLocaleDateString()}`;
+      }
+      if (this.dateSearchEnd) {
+        label += ` To ${this.dateSearchEnd.toLocaleDateString()}`;
+      }
+      return label;
+    }
   }
 
   /**

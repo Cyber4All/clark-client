@@ -17,7 +17,7 @@
         <div class="info__top">
             <div class="info__collection">
                 <div class="collection__pill" [style.backgroundColor]="primaryColor">
-                    <p>{{ learningObject?.collection }}</p>
+                    <p>{{ collectionName }}</p>
                 </div>
             </div>
             <div class="info__hierarchy">
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="info__desc">
-            <div [innerHtml]="learningObject.description"></div>
+            <div [innerHtml]="displayDescription"></div>
         </div>
     </div>
 </div>

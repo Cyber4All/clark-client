@@ -19,12 +19,13 @@ export interface Query {
   length?: string[] | string;
   level?: string[];
   guidelines?: string[];
-  orderBy?: OrderBy;
+  noGuidelines?: string;
+  orderBy?: OrderBy | string;
   sortType?: SortType;
   text?: string;
   standardOutcomes?:
-    | string[]
-    | { id: string; name: string; date: string; outcome: string }[];
+  | string[]
+  | { id: string; name: string; date: string; outcome: string }[];
   collection?: string;
   status?: string[];
   fileTypes?: string[];
@@ -40,8 +41,8 @@ export interface Query {
 
 export interface MappingQuery extends Query {
   standardOutcomes?:
-    | string[]
-    | { id: string; name: string; date: string; outcome: string }[];
+  | string[]
+  | { id: string; name: string; date: string; outcome: string }[];
 }
 
 export interface FilterQuery extends Query {
@@ -49,7 +50,7 @@ export interface FilterQuery extends Query {
   level?: string[];
 }
 
-export interface UserQuery extends querystring.ParsedUrlQueryInput{
+export interface UserQuery extends querystring.ParsedUrlQueryInput {
   accessGroups?: string[],
   sortType?: string,
   page?: number,

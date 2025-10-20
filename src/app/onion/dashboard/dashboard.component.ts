@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }, 1100);
     // retrieve released learning objects
     setTimeout(async () => {
-      await this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED });
+      await this.getReleasedLearningObjects({ status: LearningObject.Status.RELEASED, limit: 1000 });
       this.loading = false;
     }, 1100);
 

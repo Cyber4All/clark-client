@@ -1,0 +1,18 @@
+@import '../../../../../collection-globals.scss';
+.wrapper {
+    background-color: white !important;
+    padding: 50px;
+
+    .inner {
+        max-width: 1200px;
+        text-align: center;
+        margin: auto;
+    }
+
+    .header {
+        color: black;
+        padding-bottom: 15px;
+        font-size: $largest;
+        font-weight: 600;
+    }
+}

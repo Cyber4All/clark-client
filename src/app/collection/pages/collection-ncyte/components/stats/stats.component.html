@@ -11,7 +11,7 @@
                     Released  Learning Object<span *ngIf="objReleased !== 1">s</span>
                 </p>
             </div>
-            <div class="stat">
+            <div class="stat" *ngIf="collectionName !== 'withcyber'">
                 <div class="stat__icon review">
                     <i class="far fa-cube"></i>
                 </div>
@@ -36,7 +36,12 @@
                 </div>
                 <div class="num">{{ authorCollection }}</div>
                 <p>
-                    Collection Author<span *ngIf="authorCollection !== 1">s</span>
+                    <ng-container *ngIf="collectionName === 'withcyber'; else collectionAuthors">
+                        Tag Authors
+                    </ng-container>
+                    <ng-template #collectionAuthors>
+                        Collection Author<span *ngIf="authorCollection !== 1">s</span>
+                    </ng-template>
                 </p>
             </div>
         </div>

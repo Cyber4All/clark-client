@@ -73,5 +73,8 @@ import { MaterialNotesComponent } from './components/material-notes/material-not
     AddChildComponent,
     MaterialNotesComponent,
   ],
+  exports: [
+    StandardOutcomesComponent
+  ]
 })
 export class LearningObjectBuilderModule { }

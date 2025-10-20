@@ -3,7 +3,7 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
-  OnDestroy
+  OnDestroy,
 } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -14,7 +14,7 @@ import { NavbarService } from 'app/core/client-module/navbar.service';
 @Component({
   selector: 'clark-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   copy = COPY;
@@ -37,33 +37,36 @@ export class SearchComponent implements OnInit, OnDestroy {
   closeMappingsDropdown: Subject<any> = new Subject();
   focusMappingsDropdown: Subject<any> = new Subject();
   blurMappingsDropdown: Subject<any> = new Subject();
-  descriptionText = (this.selected === 1) ?
-    'Search for learning objects by organization, user, or keyword/phrase.' :
-    'Search for learning objects by mapped guidelines';
+  descriptionText =
+    this.selected === 1
+      ? 'Search for learning objects by organization, user, or keyword/phrase.'
+      : 'Search for learning objects by mapped guidelines';
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private navService: NavbarService
-  ) { }
+    private navService: NavbarService,
+  ) {}
 
   ngOnInit() {
     // force search bar to reflect current search on browse page when navigating by url query parameters
-    this.router.events.pipe(
-      filter(x => x instanceof NavigationEnd),
-      takeUntil(this.destroyed$)
-    ).subscribe((x: NavigationEnd) => {
-      const textParam = this.route.snapshot.queryParamMap.get('text');
+    this.router.events
+      .pipe(
+        filter((x) => x instanceof NavigationEnd),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe((x: NavigationEnd) => {
+        const textParam = this.route.snapshot.queryParamMap.get('text');
 
-      // if we're on the browse page, check query params for new text paran and repopulate
-      if (x.url.match(/\/browse.*/)) {
-        if (textParam) {
-          this.searchValue = textParam;
-        } else {
-          this.searchValue = '';
+        // if we're on the browse page, check query params for new text paran and repopulate
+        if (x.url.match(/\/browse.*/)) {
+          if (textParam) {
+            this.searchValue = textParam;
+          } else {
+            this.searchValue = '';
+          }
         }
-      }
-    });
+      });
 
     this.navService.query.subscribe((change: boolean) => {
       if (change) {
@@ -75,7 +78,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   togglePlaceholder() {
     if (this.searchValue.length === 0) {
-      (document.getElementById('clark-search-input') as HTMLInputElement).placeholder = 'Search...';
+      (
+        document.getElementById('clark-search-input') as HTMLInputElement
+      ).placeholder = 'Search...';
     }
   }
 
@@ -88,7 +93,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     searchbar.value = searchbar.value.trim();
     const errorMessage = document.getElementById('search-alert');
     const text = searchbar.value;
-    if(text.length < 3) {
+    if (text.length < 3) {
       errorMessage.style.display = 'block';
       setTimeout(() => {
         errorMessage.style.display = 'none'; // Hide after 3 seconds
@@ -96,7 +101,17 @@ export class SearchComponent implements OnInit, OnDestroy {
       return;
     } else if (text.length) {
       searchbar.blur();
-      this.router.navigate(['/browse'], { queryParams: { text, currPage: 1 } });
+
+      this.router.navigate(['/browse'], {
+        queryParams: {
+          // Keep the current filters and sorts but start at 1 when searching by text
+          ...this.route.snapshot.queryParams,
+          text,
+          currPage: 1,
+          // Disable any other sorting
+          orderBy: ''
+        },
+      });
     }
   }
 
@@ -104,5 +119,4 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
   }
-
 }
