@@ -5,7 +5,7 @@ import { LearningObjectStatusIndicatorComponent } from './status-indicator/statu
 import { SubmitComponent } from './submit/submit.component';
 import { EditChangelogComponent } from './edit-changelog/edit-changelog.component';
 import { FormsModule } from '@angular/forms';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 
 @NgModule({
@@ -18,7 +18,7 @@ import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
     CommonModule,
     SharedModule,
     FormsModule,
-    VirtualScrollerModule,
+    ScrollingModule,
     NgxSimpleTextEditorModule
   ],
   exports: [
