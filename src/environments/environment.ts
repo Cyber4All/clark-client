@@ -14,7 +14,7 @@ export const environment = {
   cognitoAdminIdentityPoolId: '',
   cardUrl: 'http://localhost:3000',
   downtimeUrl: '',
-  publicKey: '',
+  publicKey: 'cxtp_pbDbZsDUdNr5Wu3GWX6emisZyfKkV9',
 };
 
 export enum LearningObjectStatus {
