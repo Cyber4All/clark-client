@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run prebuild && ng serve",
     "start:prod": "ng serve --configuration=production",
     "prebuild": "echo \"export const COMMIT_HASH = '$(git rev-parse --short HEAD)';\" > src/commit-hash.ts",
     "build": "npm run prebuild && ng build clark",

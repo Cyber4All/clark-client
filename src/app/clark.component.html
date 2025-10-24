@@ -33,9 +33,12 @@
   <div class="modal-container" #popupInner>
     <clark-subscription
       (showAgreementBanner)="showSubscriptionBanner($event)"
-    ></clark-subscription>  
+    ></clark-subscription>
   </div>
 </clark-popup>
+
+<clark-chatbot-launcher></clark-chatbot-launcher>
+<clark-chatbot-window></clark-chatbot-window>
 
 <ng-template #loadingTemplate>
   Loading...
