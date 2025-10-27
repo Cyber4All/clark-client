@@ -4,9 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // third-party
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 
 // non-angular modules
@@ -51,7 +51,7 @@ import { MaterialNotesComponent } from './components/material-notes/material-not
     OnionSharedModule,
     EditorActionPanelModule,
     OnionSharedModule,
-    VirtualScrollerModule,
+    ScrollingModule,
     NgxSimpleTextEditorModule
   ],
   declarations: [
