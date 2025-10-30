@@ -1,10 +1,10 @@
-import { takeUntil, debounceTime } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   HostListener,
   OnDestroy,
-  AfterViewInit,
-  ChangeDetectorRef,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
@@ -34,7 +34,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     guidelines: [],
     level: [],
     standardOutcomes: [],
-    // Showcase newest learning object
+    // Showcase the newest learning object
     orderBy: OrderBy.Date,
     sortType: -1,
     collection: '',
@@ -104,11 +104,12 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.route.queryParams
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(async (params) => {
-        // makes query based and sends request to fetch learning objects
+        // mutates the query to an acceptable format and sends request to fetch learning objects
         this.makeQuery(params);
         // When searching, visually show that any pre-existing sorting is disabled
-        this.sortText = params.text && params.orderBy === '' ? '' : this.sortText;
-        this.fetchLearningObjects(this.query);
+        this.sortText =
+          this.query.text && this.query.orderBy === OrderBy.None ? '' : this.sortText;
+        await this.fetchLearningObjects(this.query);
       });
   }
 
@@ -181,6 +182,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.query.standardOutcomes = [];
     this.query.currPage = 1;
     this.query.orderBy = OrderBy.Date;
+    this.sortText = 'Newest';
     this.router.navigate(['browse'], { queryParams: {} });
   }
 
@@ -330,7 +332,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    * @param {*} params the object returned from subscribing to the routers queryParams observable
    */
   makeQuery(params: Record<string, string>) {
-
     // Helper functions to provide fall back values on erroneous query params
     function parseIntOrDefault(val: any, fallback: number): number {
       const num = typeof val === 'string' ? parseInt(val, 10) : Number(val);
@@ -362,10 +363,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       guidelines: toStringArray(params.guidelines),
       noGuidelines: toString(params.noGuidelines),
       standardOutcomes: [],
-      orderBy: toString(params.orderBy, OrderBy.Date),
-      sortType: (Number(params.sortType) === SortType.Ascending || Number(params.sortType) === SortType.Descending)
-        ? Number(params.sortType)
-        : SortType.Descending,
+      orderBy: params.orderBy ? params.orderBy : OrderBy.Date,
+      sortType: params.sortType ? Number(params.sortType) : -1,
       collection: params.collection || '',
       topics: toStringArray(params.topics) || [],
       fileTypes: [],
@@ -379,9 +378,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.learningObjects = [];
     // Trim leading and trailing whitespace
     query.text = query.text ? query.text.trim() : '';
+
     try {
       const { learningObjects, total } =
-        await this.searchLearningObjectService.getLearningObjects(query);
+        await this.searchLearningObjectService.getLearningObjects(this.removeObjFalsy(query));
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);
@@ -396,20 +396,14 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    * Deep copy and strip all falsy values (and empty arrays) from an object
    */
   private removeObjFalsy(obj: any): any {
-    const keys = Object.keys(obj);
-    // deep copy object to prevent direct modification of passed object
-    const output = Object.assign({}, obj);
-
-    for (let i = 0, l = keys.length; i < l; i++) {
-      if (
-        !output[keys[i]] ||
-        (Array.isArray(output[keys[i]]) && output[keys[i]].length === 0)
-      ) {
-        delete output[keys[i]];
+    return Object.keys(obj).reduce((acc, key) => {
+      // Checks if the value is truthy
+      if (obj[key]) {
+        acc[key] = obj[key];
       }
-    }
-
-    return output;
+      return acc;
+      // Initialize with an empty object
+    }, {});
   }
 
   ngOnDestroy() {

@@ -31,7 +31,7 @@ export class CoralogixRumService {
         }
 
         // Only initialize RUM in production environment
-        if (!['production', 'staging'].includes(environment.environment)) {
+        if (!['production', 'staging', 'development'].includes(environment.environment)) {
             console.log('Coralogix RUM skipped - not in production/staging environment');
             return;
         }
@@ -68,9 +68,9 @@ export class CoralogixRumService {
      * Set user context for RUM tracking
      */
     setUserContext(userContext: UserContextConfig): void {
-        if (!this.isInitialized) {
-            return;
-        }
+        // if (!this.isInitialized) {
+        //     return;
+        // }
 
         try {
             CoralogixRum.setUserContext(userContext);
@@ -83,9 +83,9 @@ export class CoralogixRumService {
      * Set custom labels for RUM tracking
      */
     setLabels(labels: Record<string, string | number | boolean>): void {
-        if (!this.isInitialized) {
-            return;
-        }
+        // if (!this.isInitialized) {
+        //     return;
+        // }
 
         try {
             CoralogixRum.setLabels(labels);
@@ -98,9 +98,9 @@ export class CoralogixRumService {
      * Track custom events
      */
     trackEvent(eventName: string, properties?: Record<string, any>): void {
-        if (!this.isInitialized) {
-            return;
-        }
+        // if (!this.isInitialized) {
+        //     return;
+        // }
 
         try {
             // If the CoralogixRum has a custom event method, use it
