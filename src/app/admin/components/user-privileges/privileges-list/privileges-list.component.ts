@@ -1,6 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { first } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { privilegesListAnimations } from './privileges-list.component.animations';
 
 @Component({
@@ -15,8 +13,7 @@ export class PrivilegesListComponent implements OnInit {
 
   @Output() delete: EventEmitter<number> = new EventEmitter();
 
-  deleteMode: number;
-  deleteConfirmation$: Subject<boolean> = new Subject();
+  // deletion is immediate from the UI; no confirmation mode required
 
   constructor() {}
 
@@ -28,14 +25,11 @@ export class PrivilegesListComponent implements OnInit {
    * @param {number} index
    * @memberof PrivilegesListComponent
    */
-  async remove(index: number) {
-    this.deleteMode = index;
-    const confirmation = await this.deleteConfirmation$.pipe(first()).toPromise();
-
-    if (confirmation) {
-      this.delete.emit(index);
-    }
-    this.deleteMode = undefined;
+  /**
+   * Emit delete event for the given index immediately (no confirmation UI)
+   */
+  remove(index: number) {
+    this.delete.emit(index);
   }
 
   /**

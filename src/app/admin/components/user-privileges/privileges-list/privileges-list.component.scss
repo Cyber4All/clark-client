@@ -14,46 +14,7 @@
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   transform-origin: center top;
   
-  .privilege__delete-confirm {
-    background: rgba(255, 255, 255, 0.9);
-    color: $dark-grey;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: flex-start;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    padding: 0 10px;
-    z-index: 1;
-
-    .micro-button {
-      color: white;
-      border-radius: 3px;
-      padding: 6px 10px;
-      background: $error-red;
-      margin-left: 10px;
-      cursor: pointer;
-      transition: opacity 0.2s ease;
-      border: 1px solid $error-red;
-
-      &:hover {
-        opacity: 0.8;
-      }
-
-      &:nth-child(2) {
-        background: transparent;
-        color: $dark-grey;
-        border-color: $dark-grey;
-      }
-    }
-
-    .micro-link {
-      text-decoration: underline;
-    }
-  }
+  // confirmation UI removed: delete action is immediate from the list
 }
 
 
@@ -67,9 +28,7 @@
   transition: filter 0.2s 0.2s ease;
   will-change: filter;
 
-  &.privilege__inner--blur {
-    filter: blur(3px);
-  }
+  /* blur class removed with confirmation UI */
 
   .privilege__left {
     display: flex;
@@ -98,10 +57,17 @@
   .privilege__delete {
     color: $error-red;
     cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s ease;
 
     .svg-inline--fa,
     .icon {
       margin-left: 2px;
     }
   }
+}
+
+/* show delete button when hovering privilege row */
+.privileges__privilege:hover .privilege__delete {
+  opacity: 1;
 }

@@ -182,15 +182,21 @@ export class UserPrivilegesComponent implements OnInit {
    * @memberof UserPrivilegesComponent
    */
   async remove(index: number) {
-    const [_, collection] = this.privileges[index];
+    const [role, collection] = this.privileges[index];
+
     this.accessGroupService.removeAccessGroupFromUser(
       this.user.username,
-      this.selectedRole,
+      role,
       collection
     )
     .then(() => {
       this.privileges.splice(index, 1);
-      delete this.collections[collection];
+      if (collection) {
+        delete this.collections[collection];
+      }
+      try {
+        this.toaster.success('Success!', 'Privilege removed.');
+      } catch (e) {}
     })
     .catch(error => {
         this.toaster.error('Error!', 'There was an error removing a privilege. Please try again later.');
