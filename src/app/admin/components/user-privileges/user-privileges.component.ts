@@ -40,7 +40,7 @@ export class UserPrivilegesComponent implements OnInit {
    * @memberof UserPrivilegesComponent
    */
   private getUserRoles() {
-    this.accessGroupService.getUserAccessGroups(this.user.username)
+    this.accessGroupService.getUserAccessGroups(this.user.userId)
       .then(roles => {
         this.privileges = roles.map(x => x.split('@'));
         this.getCollections();
@@ -154,19 +154,24 @@ export class UserPrivilegesComponent implements OnInit {
         this.user.username,
         AccessGroups.MAPPER
       )
+      .then(() => {
+        try {
+          this.toaster.success('Success!', 'User promoted to Mapper.');
+        } catch (e) {}
+
+        this.advance();
+
+        setTimeout(() => {
+
+          this.privileges.push([this.selectedRole, '']);
+          this.getCollections();
+
+          this.selectedCollection = undefined;
+          this.selectedRole = undefined;
+        }, 400);
+      })
       .catch(error => {
-        if (error.status === 201) {
-          this.advance();
-
-          setTimeout(() => {
-
-            this.privileges.push([this.selectedRole, '']);
-            this.getCollections();
-
-            this.selectedCollection = undefined;
-            this.selectedRole = undefined;
-          }, 400);
-        }
+        this.toaster.error('Error!', 'There was an error promoting the user. Please try again later.');
       });
   }
 
