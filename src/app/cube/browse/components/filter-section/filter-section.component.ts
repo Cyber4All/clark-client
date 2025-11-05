@@ -113,6 +113,5 @@ export interface FilterSectionInfo {
     // Tag usage only
     tagType?: string[];
     description?: string;
-    icon?: string;
   }[];
 }

@@ -258,36 +258,31 @@ export class FilterComponent implements OnInit, OnDestroy {
           name: 'Nanomodule',
           value: 'nanomodule',
           active: false,
-          description: '(< 1 hour)',
-          icon: 'fas fa-clock'
+          description: '(< 1 hour)'
         },
         {
           name: 'Micromodule',
           value: 'micromodule',
           active: false,
-          description: '(1-4 hours)',
-          icon: 'fas fa-hourglass-start'
+          description: '(1-4 hours)'
         },
         {
           name: 'Module',
           value: 'module',
           active: false,
-          description: '(4-10 hours)',
-          icon: 'fas fa-hourglass-half'
+          description: '(4-10 hours)'
         },
         {
           name: 'Unit',
           value: 'unit',
           active: false,
-          description: '(Over 10 hours)',
-          icon: 'fas fa-hourglass-end'
+          description: '(Over 10 hours)'
         },
         {
           name: 'Course',
           value: 'course',
           active: false,
-          description: '(15 weeks)',
-          icon: 'fas fa-calendar-alt'
+          description: '(15 weeks)'
         },
       ],
     };
