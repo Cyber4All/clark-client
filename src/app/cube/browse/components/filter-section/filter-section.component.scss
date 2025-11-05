@@ -2,12 +2,14 @@
 
 .header {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 
-  &.clickable { cursor: pointer; }
-
-  p { margin: 5px 0; }
+  p {
+    margin: 5px 0;
+  }
 }
 
 hr {
@@ -18,59 +20,30 @@ hr {
 
 .filter-wrapper {
   padding: 10px 0;
-  width: 100%;
 
   .filter {
     font-size: $small;
-    line-height: normal;
-    margin: 0;
-    padding: 0;
+    display: inline;
+    flex-wrap: nowrap;
 
     &.filter-checkbox {
-      display: block;
-    }
-  }
+      display: flex;
+      flex-direction: row;
 
-  .checkbox-grid {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) 140px;
-    column-gap: 8px;
-    row-gap: 0;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-
-    clark-checkbox {
-      margin: 0;
-    }
-
-    .label {
-      justify-self: start;
-      text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .meta {
-      justify-self: end;
-      width: 140px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      column-gap: 6px;
-      align-items: center;
-      text-align: right;
-
-      .description {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-size: inherit;
-        line-height: 1.1;
+      clark-checkbox {
+        @include vert-center;
+        margin-right: 10px;
       }
+    }
 
-      i {
-        line-height: 1;
+    .checkbox-grid {
+      display: inline-grid;
+      grid-template-columns: auto auto;
+      align-items: start !important;
+
+      clark-checkbox {
+        align-self: start;
+        margin-top: 2px;
       }
     }
   }

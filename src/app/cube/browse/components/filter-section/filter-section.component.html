@@ -26,14 +26,7 @@
           (checkboxChecked)="selectOption(f.value)"
           (checkboxUnchecked)="deselectOption(f.value)">
         </clark-checkbox>
-
-        <span class="label">{{ f.name }}</span>
-
-        <!-- meta stays as-is; Level rows just won’t render description/icon -->
-        <span class="meta">
-          <span *ngIf="f.description" class="description">{{ f.description }}</span>
-          <i *ngIf="f.icon" class="{{ f.icon }}"></i>
-        </span>
+        <span class="label">{{ f.name }}&nbsp;&nbsp;{{f.description}}</span>    
       </span>
     </div>
 
