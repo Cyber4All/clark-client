@@ -5,18 +5,39 @@ import { ChangeDetectorRef, Component, OnInit, Input, Output, EventEmitter, DoCh
   styleUrls: ['./filter-section.component.scss']
 })
 export class FilterSectionComponent implements OnInit, DoCheck {
-  @Input() info: FilterSectionInfo;
+  private _info?: FilterSectionInfo;
+
+  @Input() set info(value: FilterSectionInfo | undefined) {
+    this._info = value;
+
+    // default is collapsed = true unless this is the Length or Level section
+    this.collapsed = !this.isLockedSection(value);
+
+    // If any filter is already active, force open
+    if (value?.filters?.some(f => f.active)) {
+      this.collapsed = false;
+    }
+
+    // If this is Length or Level, lock open
+    if (this.isLockedSection(value)) {
+      this.collapsed = false;
+    }
+
+    this.cd.detectChanges();
+  }
+  get info(): FilterSectionInfo | undefined {
+    return this._info;
+  }
+
   @Output() change = new EventEmitter();
 
-  collapsed: boolean;
+  collapsed = true;
 
   constructor(
     private cd: ChangeDetectorRef,
   ) { }
 
-  ngOnInit() {
-    this.collapsed = true;
-  }
+  ngOnInit() { }
 
   ngDoCheck() {
     if (this.info !== undefined) {
@@ -34,6 +55,10 @@ export class FilterSectionComponent implements OnInit, DoCheck {
    * @param collapsed The boolean to set the collapsed value to
    */
   toggleCollapsed(collapsed: boolean) {
+    if (this.isLockedSection(this.info)) {
+      this.collapsed = false;   // ignore attempts to collapse
+      return;
+    }
     this.collapsed = collapsed;
     this.cd.detectChanges();
   }
@@ -71,6 +96,11 @@ export class FilterSectionComponent implements OnInit, DoCheck {
       this.cd.detectChanges();
     }
   }
+
+  private isLockedSection(v?: FilterSectionInfo) {
+    const s = v?.section?.trim().toLowerCase();
+    return s === 'length' || s === 'level';
+  }
 }
 
 export interface FilterSectionInfo {
@@ -82,5 +112,7 @@ export interface FilterSectionInfo {
     tip?: string;
     // Tag usage only
     tagType?: string[];
+    description?: string;
+    icon?: string;
   }[];
 }
