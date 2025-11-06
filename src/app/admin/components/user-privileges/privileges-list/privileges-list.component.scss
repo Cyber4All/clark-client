@@ -6,6 +6,48 @@
     margin-bottom: 10px;
   }
 }
+.privilege__delete-confirm {
+  background: rgba(255, 255, 255, 0.95);
+  color: $dark-grey;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: flex-start;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 0 10px;
+  z-index: 50; /* ensure overlay sits above inner content */
+  pointer-events: auto;
+
+    .micro-button {
+      color: white;
+      border-radius: 3px;
+      padding: 6px 10px;
+      background: $error-red;
+      margin-left: 10px;
+      cursor: pointer;
+      transition: opacity 0.2s ease;
+      border: 1px solid $error-red;
+      display: inline-block;
+
+      &:hover {
+        opacity: 0.8;
+      }
+
+      &:nth-child(2) {
+        background: transparent;
+        color: $dark-grey;
+        border-color: $dark-grey;
+      }
+    }
+
+    .micro-link {
+      text-decoration: underline;
+    }
+}
 
 .privileges__privilege {
   border-radius: 3px;
@@ -28,7 +70,10 @@
   transition: filter 0.2s 0.2s ease;
   will-change: filter;
 
-  /* blur class removed with confirmation UI */
+  &.privilege__inner--blur {
+    filter: blur(3px);
+    pointer-events: none; /* ensure overlay receives clicks when shown */
+  }
 
   .privilege__left {
     display: flex;

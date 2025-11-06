@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { privilegesListAnimations } from './privileges-list.component.animations';
+import { Subject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-privileges-list',
@@ -12,6 +14,9 @@ export class PrivilegesListComponent implements OnInit {
   @Input() collections: { [index: string]: string } = {};
 
   @Output() delete: EventEmitter<number> = new EventEmitter();
+  
+  deleteMode: number;
+  deleteConfirmation$: Subject<boolean> = new Subject();
 
   // deletion is immediate from the UI; no confirmation mode required
 
@@ -25,13 +30,17 @@ export class PrivilegesListComponent implements OnInit {
    * @param {number} index
    * @memberof PrivilegesListComponent
    */
-  /**
-   * Emit delete event for the given index immediately (no confirmation UI)
-   */
-  remove(index: number) {
-    this.delete.emit(index);
-  }
+  
+  async remove(index: number) {
+    this.deleteMode = index;
+    const confirmation = await this.deleteConfirmation$.pipe(first()).toPromise();
 
+    if (confirmation) {
+      this.delete.emit(index);
+    }
+    this.deleteMode = undefined;
+  }
+  
   /**
    * Instructs the ngFor how to track changes to the list of privileges
    *
