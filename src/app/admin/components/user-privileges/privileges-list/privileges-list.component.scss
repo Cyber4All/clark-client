@@ -19,7 +19,7 @@
   right: 0;
   left: 0;
   padding: 0 10px;
-  z-index: 50; /* ensure overlay sits above inner content */
+  z-index: 50;
   pointer-events: auto;
 
     .micro-button {
@@ -55,8 +55,6 @@
   overflow: hidden;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   transform-origin: center top;
-  
-  // confirmation UI removed: delete action is immediate from the list
 }
 
 
@@ -72,7 +70,7 @@
 
   &.privilege__inner--blur {
     filter: blur(3px);
-    pointer-events: none; /* ensure overlay receives clicks when shown */
+    pointer-events: none; 
   }
 
   .privilege__left {
@@ -112,7 +110,6 @@
   }
 }
 
-/* show delete button when hovering privilege row */
 .privileges__privilege:hover .privilege__delete {
   opacity: 1;
 }

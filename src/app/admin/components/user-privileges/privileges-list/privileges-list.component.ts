@@ -14,11 +14,9 @@ export class PrivilegesListComponent implements OnInit {
   @Input() collections: { [index: string]: string } = {};
 
   @Output() delete: EventEmitter<number> = new EventEmitter();
-  
+
   deleteMode: number;
   deleteConfirmation$: Subject<boolean> = new Subject();
-
-  // deletion is immediate from the UI; no confirmation mode required
 
   constructor() {}
 
@@ -30,7 +28,7 @@ export class PrivilegesListComponent implements OnInit {
    * @param {number} index
    * @memberof PrivilegesListComponent
    */
-  
+
   async remove(index: number) {
     this.deleteMode = index;
     const confirmation = await this.deleteConfirmation$.pipe(first()).toPromise();
@@ -40,7 +38,7 @@ export class PrivilegesListComponent implements OnInit {
     }
     this.deleteMode = undefined;
   }
-  
+
   /**
    * Instructs the ngFor how to track changes to the list of privileges
    *

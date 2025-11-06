@@ -1,6 +1,5 @@
 <div  [@privilege]="privileges?.length" class="privileges__list">
   <div *ngFor="let p of privileges; let i = index; trackBy: trackBy" class="privileges__privilege">
-    <!-- confirmation overlay (shown when deleteMode === i) -->
   <div [@deleteConfirm]="3" *ngIf="deleteMode === i" class="privilege__delete-confirm">
     <div (activate)="deleteConfirmation$.next(true)" class="micro-button">Delete</div>
     <div (activate)="deleteConfirmation$.next(false)" class="micro-button">Cancel</div>
