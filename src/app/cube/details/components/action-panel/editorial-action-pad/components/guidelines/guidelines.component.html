@@ -3,23 +3,16 @@
     <div class="component-column">
       <h3>Learning Outcomes</h3>
       <mat-accordion>
-        <mat-expansion-panel
-          *ngFor="let outcome of outcomes"
-          (opened)="setOpenOutcome(outcome)"
-          (closed)="setOpenOutcome({})"
-        >
+        <mat-expansion-panel *ngFor="let outcome of outcomes" (opened)="setOpenOutcome(outcome)"
+          (closed)="setOpenOutcome(null)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{ outcome.verb | titlecase }} {{ outcome.text }}
             </mat-panel-title>
           </mat-expansion-panel-header>
           <mat-chip-set>
-            <mat-chip-row
-              *ngFor="let mapping of outcome.mappings"
-              color="primary"
-              removable="true"
-              (removed)="removeMapping(mapping, outcome)"
-            >
+            <mat-chip-row *ngFor="let mapping of outcome.mappings" color="primary" removable="true"
+              (removed)="removeMapping(mapping, outcome)">
               <button matChipRemove aria-label="Remove mapping">×</button>
               <span [tip]="mapping.guidelineDescription">{{
                 mapping.guidelineName
@@ -32,14 +25,9 @@
     <div class="component-column">
       <h3>Suggested Guidelines</h3>
       <div>
-        <mat-checkbox
-          *ngFor="let option of alignableGuidelines"
-          [(ngModel)]="option.checked"
-          (change)="addMapping(option)"
-        >
-          <span [tip]="option.guidelineDescription"
-            >{{ option.frameworkName }}: {{ option.guidelineName }}</span
-          >
+        <mat-checkbox *ngFor="let option of alignableGuidelines" [(ngModel)]="option.checked"
+          [disabled]="!openOutcome?.id" (change)="addMapping(option)">
+          <span [tip]="option.guidelineDescription">{{ option.frameworkName }}: {{ option.guidelineName }}</span>
         </mat-checkbox>
       </div>
     </div>
