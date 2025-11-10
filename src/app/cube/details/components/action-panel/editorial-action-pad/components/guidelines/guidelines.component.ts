@@ -31,7 +31,8 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
 
   outcomes: LearningOutcome[];
   openOutcome: LearningOutcome;
-
+  // Keep track of opened material expansion panels
+  panelStates: boolean[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -77,7 +78,8 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
       });
   }
 
-  setOpenOutcome(outcome: LearningOutcome) {
+  setOpenOutcome(outcome: LearningOutcome, index: number) {
+    this.panelStates[index] = true;
     if (outcome) {
       this.openOutcome = outcome;
       const outcomeMappings = outcome.mappings.map(
@@ -95,6 +97,15 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
         item.checked = false;
       });
       this.ref.markForCheck();
+    }
+  }
+
+  clearOpenOutcome(index: number) {
+    // If a panel is unselected, it unsets that state
+    this.panelStates[index] = false;
+    // Checks if there are no panels expanded
+    if (!this.panelStates.some(state => state)) {
+      this.openOutcome = null;
     }
   }
 
