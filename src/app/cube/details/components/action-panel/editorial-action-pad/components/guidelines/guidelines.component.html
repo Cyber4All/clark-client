@@ -4,8 +4,8 @@
       <h3>Learning Outcomes</h3>
       <mat-accordion>
         <mat-expansion-panel *ngFor="let outcome of outcomes; let i = index" (opened)="setOpenOutcome(outcome, i)"
-          (closed)="clearOpenOutcome(i)">
-          <mat-expansion-panel-header>
+          [expanded]="openPanelIndex === i" [hideToggle]="openPanelIndex === i">
+          <mat-expansion-panel-header [ngClass]="openPanelIndex === i ? 'disable-ptr' : ''">
             <mat-panel-title>
               {{ outcome.verb | titlecase }}
             </mat-panel-title>
