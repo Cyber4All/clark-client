@@ -37,8 +37,8 @@
     <div class="component-column">
       <h3>Search Guidelines</h3>
       <div>
-        <clark-standard-outcomes [activeOutcome]="openOutcome" [levels]="learningObject.levels"
-          (toggleMapping)="onToggleMapping($event)" [disabled]="!openOutcome?.id"></clark-standard-outcomes>
+        <clark-standard-outcomes [activeOutcome]="openOutcome" [levels]="[]" (toggleMapping)="onToggleMapping($event)"
+          [disabled]="!openOutcome?.id"></clark-standard-outcomes>
       </div>
     </div>
   </div>
