@@ -119,6 +119,18 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
     this.toggleMapping.emit({ standardOutcome: guideline, value: value });
   }
 
+  get resultsLabel(): string {
+    if (this.disabled) {
+      return 'Select an outcome';
+    }
+
+    if (this.searchStringValue !== '') {
+      return `${this.searchResults.length} Results for ${this.searchStringValue}`;
+    }
+
+    return `${this.suggestions.length} suggestions`;
+  }
+
   performSearch() {
     if (!this.searchStringValue || this.searchStringValue === '') {
       // string was empty, clear results
