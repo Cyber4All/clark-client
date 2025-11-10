@@ -4,9 +4,8 @@
     <input type="search" placeholder="Search curricular guidelines..." [(ngModel)]="searchStringValue" (ngModelChange)="searchString$.next($event)" id="search" aria-label="Search for curricular guidelines"/>
     <i class="far fa-search"></i>
   </div>
-  <div class="title-bar">
-    {{ searchStringValue !== '' ? searchResults.length : suggestions.length }}
-    {{ searchStringValue !== '' ? 'Results for ' + searchStringValue : 'suggestions' }}
+  <div class="title-bar" [ngClass]="{ 'disabled': disabled }">
+    {{ resultsLabel }}
   </div>
   <div class="results">
     <ng-container [ngTemplateOutlet]="listTemplate" [ngTemplateOutletContext]="{ items: searchStringValue !== '' ? searchResults : suggestions }"></ng-container>

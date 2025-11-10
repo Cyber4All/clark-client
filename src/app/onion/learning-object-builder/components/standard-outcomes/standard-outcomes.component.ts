@@ -29,6 +29,8 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   activeOutcome: string;
   @Input()
   levels: string;
+  @Input()
+  disabled = false;
 
   @Output()
   toggleMapping: EventEmitter<{

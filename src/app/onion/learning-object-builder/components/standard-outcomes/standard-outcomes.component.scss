@@ -46,7 +46,13 @@
      right: 0;
      margin-top: 8px;
      box-sizing: border-box;
+
+    &.disabled {
+      background: #e0e0e0;
+      color: #888;
+    }
   }
+
 
   .results {
     margin-top: 35px;
