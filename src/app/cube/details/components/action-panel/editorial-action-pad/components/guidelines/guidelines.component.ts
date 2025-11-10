@@ -32,10 +32,9 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
   outcomes: LearningOutcome[];
   openOutcome: LearningOutcome;
   // Keep track of opened material expansion panels
-  panelStates: boolean[] = [];
 
   // First outcome is expanded by default
-  openPanelIndex = 0;
+  openPanelIndex: number = 0;
   private destroy$ = new Subject<void>();
 
   constructor(
