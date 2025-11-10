@@ -7,9 +7,12 @@
           (closed)="clearOpenOutcome(i)">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              {{ outcome.verb | titlecase }} {{ outcome.text }}
+              {{ outcome.verb | titlecase }}
             </mat-panel-title>
           </mat-expansion-panel-header>
+          <mat-panel-description>
+            {{ outcome.text }}
+          </mat-panel-description>
           <mat-chip-set>
             <mat-chip-row *ngFor="let mapping of outcome.mappings" color="primary" removable="true"
               (removed)="removeMapping(mapping, outcome)">

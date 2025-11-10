@@ -41,15 +41,6 @@ mat-chip-row {
   height: auto;
 }
 
-mat-expansion-panel-header {
-  margin: 0.5em;
-  height: 100%;
-}
-
-mat-expansion-panel {
-  margin-bottom: 0.5em;
-}
-
 /*
 https://stackoverflow.com/questions/47024236/what-to-use-in-place-of-ng-deep
 I like Simon_Weaver's answer to the question of whether to use ng-deep or not
