@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { first } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { privilegesListAnimations } from './privileges-list.component.animations';
+import { Subject } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'clark-privileges-list',
@@ -28,6 +28,7 @@ export class PrivilegesListComponent implements OnInit {
    * @param {number} index
    * @memberof PrivilegesListComponent
    */
+
   async remove(index: number) {
     this.deleteMode = index;
     const confirmation = await this.deleteConfirmation$.pipe(first()).toPromise();
