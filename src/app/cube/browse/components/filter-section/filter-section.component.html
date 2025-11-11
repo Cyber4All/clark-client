@@ -1,19 +1,39 @@
 <div *ngIf="info">
-    <div class="header" (activate)="toggleCollapsed(!collapsed)">
-        <p>{{ info.section }}</p>
-        <span *ngIf="collapsed"><i class="fas fa-angle-down"></i></span>
-        <span *ngIf="!collapsed"><i class="fas fa-angle-up"></i></span>
+  <div
+    class="header"
+    [class.clickable]="!isLockedSection(info)"
+    (click)="!isLockedSection(info) && toggleCollapsed(!collapsed)"
+    (keyup.enter)="!isLockedSection(info) && toggleCollapsed(!collapsed)"
+    tabindex="0"
+    role="button"
+    [attr.aria-expanded]="!collapsed"
+    [attr.aria-controls]="(info.section | lowercase) + '-panel'"
+  >
+    <p>{{ info.section }}</p>
+
+    <span *ngIf="!isLockedSection(info)">
+      <span *ngIf="collapsed"><i class="fas fa-angle-down"></i></span>
+      <span *ngIf="!collapsed"><i class="fas fa-angle-up"></i></span>
+    </span>
+  </div>
+
+  <div class="filter-wrapper" *ngIf="!collapsed" [id]="(info.section | lowercase) + '-panel'">
+    <div class="filter filter-checkbox" *ngFor="let f of info.filters">
+      <span class="checkbox-grid" [tip]="f.tip || ''" [tipDisabled]="!f.tip" tipPosition="right">
+        <clark-checkbox
+          attr.aria-label="{{ f.name }}"
+          [value]="f.active"
+          (checkboxChecked)="selectOption(f.value)"
+          (checkboxUnchecked)="deselectOption(f.value)">
+        </clark-checkbox>
+        <span class="label">{{ f.name }}&nbsp;&nbsp;{{f.description}}</span>    
+      </span>
     </div>
-    <div class="filter-wrapper" *ngIf="!collapsed">
-        <div class="filter filter-checkbox" id="filter-checkbox" *ngFor="let f of info.filters" >
-            <span class="checkbox-grid" [tip]="f.tip ? f.tip : ''" [tipDisabled]="!f.tip" tipPosition="right">
-                <clark-checkbox attr.aria-label="{{ f.name }}" [value]="f.active" (checkboxChecked)="selectOption(f.value)" (checkboxUnchecked)="deselectOption(f.value)"></clark-checkbox>
-                <span>{{ f.name }}</span>
-            </span>
-        </div>
-        <div class="optional">
-            <ng-content></ng-content>
-        </div>
+
+    <div class="optional">
+      <ng-content></ng-content>
     </div>
-    <hr />
+  </div>
+
+  <hr />
 </div>
