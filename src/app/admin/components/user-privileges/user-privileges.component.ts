@@ -40,7 +40,7 @@ export class UserPrivilegesComponent implements OnInit {
    * @memberof UserPrivilegesComponent
    */
   private getUserRoles() {
-    this.accessGroupService.getUserAccessGroups(this.user.username)
+    this.accessGroupService.getUserAccessGroups(this.user.userId)
       .then(roles => {
         this.privileges = roles.map(x => x.split('@'));
         this.getCollections();
@@ -154,19 +154,24 @@ export class UserPrivilegesComponent implements OnInit {
         this.user.username,
         AccessGroups.MAPPER
       )
+      .then(() => {
+        try {
+          this.toaster.success('Success!', 'User promoted to Mapper.');
+        } catch (e) {}
+
+        this.advance();
+
+        setTimeout(() => {
+
+          this.privileges.push([this.selectedRole, '']);
+          this.getCollections();
+
+          this.selectedCollection = undefined;
+          this.selectedRole = undefined;
+        }, 400);
+      })
       .catch(error => {
-        if (error.status === 201) {
-          this.advance();
-
-          setTimeout(() => {
-
-            this.privileges.push([this.selectedRole, '']);
-            this.getCollections();
-
-            this.selectedCollection = undefined;
-            this.selectedRole = undefined;
-          }, 400);
-        }
+        this.toaster.error('Error!', 'There was an error promoting the user. Please try again later.');
       });
   }
 
@@ -177,15 +182,21 @@ export class UserPrivilegesComponent implements OnInit {
    * @memberof UserPrivilegesComponent
    */
   async remove(index: number) {
-    const [_, collection] = this.privileges[index];
+    const [role, collection] = this.privileges[index];
+
     this.accessGroupService.removeAccessGroupFromUser(
       this.user.username,
-      this.selectedRole,
+      role,
       collection
     )
     .then(() => {
       this.privileges.splice(index, 1);
-      delete this.collections[collection];
+      if (collection) {
+        delete this.collections[collection];
+      }
+      try {
+        this.toaster.success('Success!', 'Privilege removed.');
+      } catch (e) {}
     })
     .catch(error => {
         this.toaster.error('Error!', 'There was an error removing a privilege. Please try again later.');
