@@ -31,7 +31,10 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
 
   outcomes: LearningOutcome[];
   openOutcome: LearningOutcome;
+  // Keep track of opened material expansion panels
 
+  // First outcome is expanded by default
+  openPanelIndex = 0;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -77,27 +80,25 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
       });
   }
 
-  setOpenOutcome(outcome: LearningOutcome) {
-    if (outcome.id) {
+  setOpenOutcome(outcome: LearningOutcome, index: number) {
+    this.openPanelIndex = index;
+    if (outcome) {
       this.openOutcome = outcome;
       const outcomeMappings = outcome.mappings.map(
         (mapping) => mapping.guidelineName,
       );
       this.alignableGuidelines.forEach((item) => {
         // If the guideline is already mapping check that sucker off
-        if (outcomeMappings.includes(item.guidelineName)) {
-          item.checked = true;
-        } else {
-          item.checked = false;
-        }
-        return item;
+        item.checked = outcomeMappings.includes(item.guidelineName);
+        this.ref.markForCheck();
       });
     } else {
+      this.openOutcome = null;
       // We closed an outcome without opening a new one so remove the selected mappings
       this.alignableGuidelines.forEach((item) => {
         item.checked = false;
-        return item;
       });
+      this.ref.markForCheck();
     }
   }
 
