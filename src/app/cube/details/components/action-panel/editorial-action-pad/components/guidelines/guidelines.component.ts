@@ -34,14 +34,14 @@ export class GuidelinesComponent implements OnInit, OnDestroy {
   // Keep track of opened material expansion panels
 
   // First outcome is expanded by default
-  openPanelIndex: number = 0;
+  openPanelIndex = 0;
   private destroy$ = new Subject<void>();
 
   constructor(
     private alignmentService: AlignmentService,
     private guidelineService: GuidelineService,
     private ref: ChangeDetectorRef,
-  ) { }
+  ) {}
 
   async ngOnInit(): Promise<void> {
     const learningObjectData = [
