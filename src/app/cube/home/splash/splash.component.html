@@ -1,25 +1,114 @@
 <div class="wrapper">
-    <div class="first">
-        <h1>
-            Teach Cyber Today... <br />
-            Secure Tomorrow
-        </h1>
-        <p>
-            CLARK is the largest platform that provides <strong>FREE</strong> cybersecurity curriculum. It is home to high-value, high-impact 
-            cyber curriculum created by top educators and reviewed for relevance and quality. Whether you’re looking to teach something new tomorrow, 
-            align with curriculum guidelines and standards, or refine your current course, CLARK has free resources ready for you to use!
-        </p>
-        <button id="pageContent" (click)="this.googleTagService.triggerGoogleTagEvent('browse_learning_objects', 'homepageRedirect', 'splashBrowse')" [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
-        <button id="pageContent" class="card" [tip]="'You will be redirected to the CAE Resource Directory'" (click)="utilityService.openCard()">BROWSE {{ resourceCount | number }}+ RESOURCES</button>
+  <div class="first">
+    <div class="badge-container">
+      <span class="blue-badge">
+        <i class="fas fa-shield-alt"></i>
+        Free Cybersecurity Education
+      </span>
     </div>
-    <div class="second">
-        <iframe 
-        src="https://www.youtube.com/embed/wXlZZjq0lDo" 
-        title="What is CLARK?" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-        >
-        </iframe>
+
+    <h1>
+      Teach Cyber Today... <br />
+      <span class="highlight">Secure Tomorrow</span>
+    </h1>
+
+    <p>
+      CLARK is the largest platform that provides
+      <strong>FREE</strong> cybersecurity curriculum. Discover high-value,
+      educator-created content that's been rigorously reviewed for quality and
+      relevance.
+    </p>
+
+    <div class="stats-container">
+      <div class="stat-item">
+        <div class="stat-number">{{ numReleasedObjects | number }}+</div>
+        <div class="stat-label">Learning Objects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">+</div>
+        <div class="stat-label">External Resources</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Free Access</div>
+      </div>
     </div>
+
+    <div class="buttons-container">
+      <button
+        type="button"
+        class="primary-btn"
+        (click)="
+          this.googleTagService.triggerGoogleTagEvent(
+            'browse_learning_objects',
+            'homepageRedirect',
+            'splashBrowse'
+          )
+        "
+        [routerLink]="'/browse'"
+      >
+        <i class="fas fa-search"></i>
+        BROWSE CURRICULUM
+      </button>
+      <button
+        type="button"
+        class="secondary-btn"
+        [tip]="'You will be redirected to the CAE Resource Directory'"
+        (click)="utilityService.openCard()"
+      >
+        <i class="fas fa-external-link-alt"></i>
+        EXPLORE RESOURCES
+      </button>
+    </div>
+
+    <div class="badges-container">
+      <div class="trust-badge">
+        <i class="fas fa-check-circle"></i>
+        <span>Educator Reviewed</span>
+      </div>
+      <div class="trust-badge">
+        <i class="fas fa-check-circle"></i>
+        <span>Industry Standards</span>
+      </div>
+      <div class="trust-badge">
+        <i class="fas fa-check-circle"></i>
+        <span>Always Updated</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="second">
+    <div class="icons-container">
+      <!-- Main 2x2 Grid -->
+      <div class="icons-2x2-grid">
+        <div class="icon-grid-item icon-grid-1">
+          <i class="fas fa-shield-alt"></i>
+          <span class="icon-label">Security</span>
+        </div>
+        <div class="icon-grid-item icon-grid-2">
+          <i class="fas fa-graduation-cap"></i>
+          <span class="icon-label">Education</span>
+        </div>
+        <div class="icon-grid-item icon-grid-3">
+          <i class="fas fa-book"></i>
+          <span class="icon-label">Resources</span>
+        </div>
+        <div class="icon-grid-item icon-grid-4">
+          <i class="fas fa-users"></i>
+          <span class="icon-label">Community</span>
+        </div>
+      </div>
+
+      <!-- Floating Circular Icons -->
+      <div class="floating-icon floating-1">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div class="floating-icon floating-2">
+        <i class="fas fa-code"></i>
+      </div>
+      <div class="floating-icon floating-3">
+        <i class="fas fa-sitemap"></i>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,16 +1,15 @@
-import { Component, OnDestroy, Input } from '@angular/core';
-import { BuilderStore } from '../../builder-store.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { LearningObjectValidator } from '../../validators/learning-object.validator';
-import { filter, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
+import { Component, Input, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
-import { LearningObjectStatus } from '@env/environment';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
+import { BuilderStore } from '../../builder-store.service';
+import { LearningObjectValidator } from '../../validators/learning-object.validator';
 
 @Component({
   selector: 'onion-builder-navbar',
