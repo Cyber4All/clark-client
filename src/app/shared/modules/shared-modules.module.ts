@@ -18,6 +18,7 @@ import { PopupTemplatesModule } from './popup-templates/popup-templates.module';
 import { SharedComponents } from '../components/shared-components.module';
 import { SidePanelModule } from './side-panel/side-panel.module';
 import { ToasterModule } from './toaster/toaster.module';
+import { ChatbotModule } from './chatbot/chatbot.module';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import { ToasterModule } from './toaster/toaster.module';
     SharedComponents,
     SidePanelModule,
     TeleporterModule,
-    ToasterModule
+    ToasterModule,
+    ChatbotModule
   ],
   exports: [
     // CLARK modules
@@ -50,7 +52,8 @@ import { ToasterModule } from './toaster/toaster.module';
     PopupTemplatesModule,
     SidePanelModule,
     TeleporterModule,
-    ToasterModule
+    ToasterModule,
+    ChatbotModule
   ]
 })
 export class SharedModules {}
