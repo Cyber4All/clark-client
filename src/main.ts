@@ -23,4 +23,8 @@ const userVersion = localStorage.getItem(VERSION_STORE);
     console.log(`${appDisplayName} running version: ${appVersion} - Up to date.`);
 })();
 
-platformBrowserDynamic().bootstrapModule(ClarkModule);
+if (userVersion === appVersion) {
+  platformBrowserDynamic().bootstrapModule(ClarkModule);
+} else {
+  console.log('Waiting for update...');
+}
