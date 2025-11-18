@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CoralogixBrowserSdkConfig, CoralogixRum, UserContextConfig } from '@coralogix/browser';
+import { CoralogixBrowserSdkConfig, CoralogixRum, CoralogixRumLabels, UserContextConfig } from '@coralogix/browser';
 import { environment } from '@env/environment';
 import { COMMIT_HASH } from '../../../commit-hash';
 
@@ -68,9 +68,9 @@ export class CoralogixRumService {
      * Set user context for RUM tracking
      */
     setUserContext(userContext: UserContextConfig): void {
-        // if (!this.isInitialized) {
-        //     return;
-        // }
+        if (!this.isInitialized) {
+            return;
+        }
 
         try {
             CoralogixRum.setUserContext(userContext);
@@ -83,9 +83,9 @@ export class CoralogixRumService {
      * Set custom labels for RUM tracking
      */
     setLabels(labels: Record<string, string | number | boolean>): void {
-        // if (!this.isInitialized) {
-        //     return;
-        // }
+        if (!this.isInitialized) {
+            return;
+        }
 
         try {
             CoralogixRum.setLabels(labels);
@@ -98,9 +98,9 @@ export class CoralogixRumService {
      * Track custom events
      */
     trackEvent(eventName: string, properties?: Record<string, any>): void {
-        // if (!this.isInitialized) {
-        //     return;
-        // }
+        if (!this.isInitialized) {
+            return;
+        }
 
         try {
             // If the CoralogixRum has a custom event method, use it
@@ -119,5 +119,18 @@ export class CoralogixRumService {
      */
     get initialized(): boolean {
         return this.isInitialized;
+    }
+
+    // Logging values
+    get sessionId(): string {
+        return CoralogixRum.getSessionId();
+    }
+
+    get userContext() {
+        return CoralogixRum.getUserContext();
+    }
+
+    get labels() {
+        return CoralogixRum.getLabels();
     }
 }
