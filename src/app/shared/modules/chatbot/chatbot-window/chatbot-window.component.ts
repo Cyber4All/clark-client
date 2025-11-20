@@ -1,7 +1,5 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { ChatbotService } from '../chatbot.service';
+import { Component, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Subscription } from 'rxjs';
 
 interface Message {
   id: string;
@@ -41,10 +39,10 @@ interface Message {
     ])
   ]
 })
-export class ChatbotWindowComponent implements OnInit, OnDestroy {
+export class ChatbotWindowComponent {
   @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
+  @Output() chatbotClosed = new EventEmitter<void>();
 
-  isOpen = false;
   messages: Message[] = [
     {
       id: '1',
@@ -54,47 +52,54 @@ export class ChatbotWindowComponent implements OnInit, OnDestroy {
     }
   ];
   inputMessage = '';
-  private subscription: Subscription = new Subscription();
+  private isMouseOver = false;
 
-  private preventScrollHandler = (e: WheelEvent | TouchEvent) => {
-    const target = e.target as HTMLElement;
-
-    // Check if the event is coming from inside the messages container
-    const messagesContainer = target.closest('.chatbot-messages');
-    if (messagesContainer) {
-      // Allow natural scrolling within the messages container
-      return;
-    }
-
-    // Check if the event is from inside the chatbot window but not the messages container
-    const chatbotWindow = target.closest('.chatbot-window');
-    if (chatbotWindow) {
-      // Prevent scrolling for the header, input, and other parts
-      e.preventDefault();
-      return;
-    }
-
-    // Allow scrolling outside the chatbot completely
-  };
-
-  constructor(private chatbotService: ChatbotService) { }
-
-  ngOnInit(): void {
-    this.subscription.add(
-      this.chatbotService.isOpen$.subscribe(isOpen => {
-        this.isOpen = isOpen;
-      })
-    );
+  @HostListener('mouseenter')
+  onMouseEnter(): void {
+    this.isMouseOver = true;
   }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-    document.removeEventListener('wheel', this.preventScrollHandler);
-    document.removeEventListener('touchmove', this.preventScrollHandler);
+  @HostListener('mouseleave')
+  onMouseLeave(): void {
+    this.isMouseOver = false;
+  }
+
+  @HostListener('wheel', ['$event'])
+  onWheel(event: WheelEvent): void {
+    if (!this.isMouseOver) return;
+
+    const target = event.target as HTMLElement;
+    const messagesContainer = target.closest('.chatbot-messages');
+    
+    if (messagesContainer) {
+      return; // Allow scrolling in messages
+    }
+
+    const chatbotWindow = target.closest('.chatbot-window');
+    if (chatbotWindow) {
+      event.preventDefault(); // Prevent scrolling in other areas
+    }
+  }
+
+  @HostListener('touchmove', ['$event'])
+  onTouchMove(event: TouchEvent): void {
+    if (!this.isMouseOver) return;
+
+    const target = event.target as HTMLElement;
+    const messagesContainer = target.closest('.chatbot-messages');
+    
+    if (messagesContainer) {
+      return; // Allow scrolling in messages
+    }
+
+    const chatbotWindow = target.closest('.chatbot-window');
+    if (chatbotWindow) {
+      event.preventDefault(); // Prevent scrolling in other areas
+    }
   }
 
   closeChatbot(): void {
-    this.chatbotService.closeChatbot();
+    this.chatbotClosed.emit();
   }
 
   sendMessage(): void {
@@ -140,15 +145,5 @@ export class ChatbotWindowComponent implements OnInit, OnDestroy {
       event.preventDefault();
       this.sendMessage();
     }
-  }
-
-  onMouseEnter(): void {
-    document.addEventListener('wheel', this.preventScrollHandler, { passive: false });
-    document.addEventListener('touchmove', this.preventScrollHandler, { passive: false });
-  }
-
-  onMouseLeave(): void {
-    document.removeEventListener('wheel', this.preventScrollHandler);
-    document.removeEventListener('touchmove', this.preventScrollHandler);
   }
 }
