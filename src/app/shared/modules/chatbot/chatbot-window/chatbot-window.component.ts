@@ -10,7 +10,7 @@ interface Message {
 
 @Component({
   selector: 'clark-chatbot-window',
-  templateUrl: './chatbot-window-window.component.html',
+  templateUrl: './chatbot-window.component.html',
   styleUrls: ['./chatbot-window.component.scss'],
   animations: [
     trigger('windowSlideIn', [
