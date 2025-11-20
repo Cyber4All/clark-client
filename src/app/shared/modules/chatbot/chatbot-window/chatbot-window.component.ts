@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ChatbotService } from '../chatbot.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Subscription } from 'rxjs';
 
 interface Message {
   id: string;
@@ -40,7 +41,9 @@ interface Message {
     ])
   ]
 })
-export class ChatbotWindowComponent implements OnInit {
+export class ChatbotWindowComponent implements OnInit, OnDestroy {
+  @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
+
   isOpen = false;
   messages: Message[] = [
     {
@@ -51,6 +54,7 @@ export class ChatbotWindowComponent implements OnInit {
     }
   ];
   inputMessage = '';
+  private subscription: Subscription = new Subscription();
 
   private preventScrollHandler = (e: WheelEvent | TouchEvent) => {
     const target = e.target as HTMLElement;
@@ -76,9 +80,17 @@ export class ChatbotWindowComponent implements OnInit {
   constructor(private chatbotService: ChatbotService) { }
 
   ngOnInit(): void {
-    this.chatbotService.isOpen$.subscribe(isOpen => {
-      this.isOpen = isOpen;
-    });
+    this.subscription.add(
+      this.chatbotService.isOpen$.subscribe(isOpen => {
+        this.isOpen = isOpen;
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    document.removeEventListener('wheel', this.preventScrollHandler);
+    document.removeEventListener('touchmove', this.preventScrollHandler);
   }
 
   closeChatbot(): void {
@@ -117,9 +129,8 @@ export class ChatbotWindowComponent implements OnInit {
 
   private scrollToBottom(): void {
     setTimeout(() => {
-      const messagesContainer = document.querySelector('.chatbot-messages');
-      if (messagesContainer) {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      if (this.messagesContainer) {
+        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
       }
     }, 0);
   }

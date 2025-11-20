@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { ChatbotService } from '../chatbot.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clark-chatbot-launcher',
@@ -33,16 +34,23 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class ChatbotLauncherComponent implements OnInit {
+export class ChatbotLauncherComponent implements OnInit, OnDestroy {
   showTooltip = false;
   isChatbotOpen = false;
+  private subscription: Subscription = new Subscription();
 
   constructor(private chatbotService: ChatbotService) { }
 
   ngOnInit(): void {
-    this.chatbotService.isOpen$.subscribe(isOpen => {
-      this.isChatbotOpen = isOpen;
-    });
+    this.subscription.add(
+      this.chatbotService.isOpen$.subscribe(isOpen => {
+        this.isChatbotOpen = isOpen;
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   openChatbot(): void {
