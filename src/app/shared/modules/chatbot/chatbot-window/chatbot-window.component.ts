@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 interface Message {
@@ -52,55 +52,6 @@ export class ChatbotWindowComponent {
     }
   ];
   inputMessage = '';
-  private isMouseOver = false;
-
-  @HostListener('mouseenter')
-  onMouseEnter(): void {
-    this.isMouseOver = true;
-  }
-
-  @HostListener('mouseleave')
-  onMouseLeave(): void {
-    this.isMouseOver = false;
-  }
-
-  @HostListener('wheel', ['$event'])
-  onWheel(event: WheelEvent): void {
-    if (!this.isMouseOver) {
-return;
-}
-
-    const target = event.target as HTMLElement;
-    const messagesContainer = target.closest('.chatbot-messages');
-
-    if (messagesContainer) {
-      return; // Allow scrolling in messages
-    }
-
-    const chatbotWindow = target.closest('.chatbot-window');
-    if (chatbotWindow) {
-      event.preventDefault(); // Prevent scrolling in other areas
-    }
-  }
-
-  @HostListener('touchmove', ['$event'])
-  onTouchMove(event: TouchEvent): void {
-    if (!this.isMouseOver) {
-return;
-}
-
-    const target = event.target as HTMLElement;
-    const messagesContainer = target.closest('.chatbot-messages');
-
-    if (messagesContainer) {
-      return; // Allow scrolling in messages
-    }
-
-    const chatbotWindow = target.closest('.chatbot-window');
-    if (chatbotWindow) {
-      event.preventDefault(); // Prevent scrolling in other areas
-    }
-  }
 
   closeChatbot(): void {
     this.chatbotClosed.emit();
