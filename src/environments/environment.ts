@@ -11,5 +11,12 @@ export const environment = {
   cardUrl: 'http://localhost:3000',
   downtimeUrl: '',
   publicKey: 'cxtp_pbDbZsDUdNr5Wu3GWX6emisZyfKkV9',
-  builderApiKey: '00e574225545498cbd1ab98e37ac81bb',
 };
+
+export enum LearningObjectStatus {
+  PUBLISHED = 'published',
+  UNDER_REVIEW = 'review',
+  WAITING = 'waiting',
+  DENIED = 'denied',
+  UNPUBLISHED = 'unpublished'
+}
