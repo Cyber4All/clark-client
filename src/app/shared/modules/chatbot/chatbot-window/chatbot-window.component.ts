@@ -66,11 +66,13 @@ export class ChatbotWindowComponent {
 
   @HostListener('wheel', ['$event'])
   onWheel(event: WheelEvent): void {
-    if (!this.isMouseOver) return;
+    if (!this.isMouseOver) {
+return;
+}
 
     const target = event.target as HTMLElement;
     const messagesContainer = target.closest('.chatbot-messages');
-    
+
     if (messagesContainer) {
       return; // Allow scrolling in messages
     }
@@ -83,11 +85,13 @@ export class ChatbotWindowComponent {
 
   @HostListener('touchmove', ['$event'])
   onTouchMove(event: TouchEvent): void {
-    if (!this.isMouseOver) return;
+    if (!this.isMouseOver) {
+return;
+}
 
     const target = event.target as HTMLElement;
     const messagesContainer = target.closest('.chatbot-messages');
-    
+
     if (messagesContainer) {
       return; // Allow scrolling in messages
     }
@@ -117,6 +121,9 @@ export class ChatbotWindowComponent {
     this.messages.push(userMessage);
     this.inputMessage = '';
 
+    // Scroll after user message is added
+    this.scrollToBottom();
+
     // Simulate bot response
     setTimeout(() => {
       const botMessage: Message = {
@@ -128,8 +135,6 @@ export class ChatbotWindowComponent {
       this.messages.push(botMessage);
       this.scrollToBottom();
     }, 500);
-
-    this.scrollToBottom();
   }
 
   private scrollToBottom(): void {

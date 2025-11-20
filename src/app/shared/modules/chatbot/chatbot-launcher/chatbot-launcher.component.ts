@@ -34,7 +34,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class ChatbotLauncherComponent {
   @Output() chatbotOpened = new EventEmitter<void>();
-  
+
   showTooltip = false;
 
   openChatbot(): void {
