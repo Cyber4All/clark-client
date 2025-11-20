@@ -1,0 +1,9 @@
+<clark-chatbot-launcher 
+  *ngIf="!isChatbotOpen"
+  (chatbotOpened)="openChatbot()"
+></clark-chatbot-launcher>
+
+<clark-chatbot-window 
+  *ngIf="isChatbotOpen"
+  (chatbotClosed)="closeChatbot()"
+></clark-chatbot-window>
