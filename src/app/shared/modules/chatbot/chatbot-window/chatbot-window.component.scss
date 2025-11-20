@@ -4,10 +4,10 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 20%;
-  height: 50%;
-  min-width: 320px;
-  max-width: 420px;
+  width: 23%;
+  height: 57.5%;
+  min-width: 368px;
+  max-width: 483px;
   background: white;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -124,10 +124,10 @@
 
 .message-content {
   max-width: 80%;
-  padding: 14px 16px;
+  padding: 10px 12px;
   border-radius: 16px;
   font-size: $small;
-  line-height: 1.6;
+  line-height: 1.4;
   word-wrap: break-word;
   font-family: 'Source Sans Pro', sans-serif;
 
