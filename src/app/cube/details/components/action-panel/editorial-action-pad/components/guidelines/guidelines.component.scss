@@ -50,3 +50,7 @@ angular chips' text are set to not wrap and I want it to wrap
 :host ::ng-deep .mdc-evolution-chip__text-label {
   white-space: normal;
 }
+
+.disable-ptr {
+  pointer-events: none;
+}

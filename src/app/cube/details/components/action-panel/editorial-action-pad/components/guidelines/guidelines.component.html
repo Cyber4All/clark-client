@@ -4,8 +4,8 @@
       <h3>Learning Outcomes</h3>
       <mat-accordion>
         <mat-expansion-panel *ngFor="let outcome of outcomes; let i = index" (opened)="setOpenOutcome(outcome, i)"
-          (closed)="clearOpenOutcome(i)">
-          <mat-expansion-panel-header>
+          [expanded]="openPanelIndex === i" [hideToggle]="openPanelIndex === i">
+          <mat-expansion-panel-header [ngClass]="openPanelIndex === i ? 'disable-ptr' : ''">
             <mat-panel-title>
               {{ outcome.verb | titlecase }}
             </mat-panel-title>
@@ -37,8 +37,8 @@
     <div class="component-column">
       <h3>Search Guidelines</h3>
       <div>
-        <clark-standard-outcomes [activeOutcome]="openOutcome" [levels]="learningObject.levels"
-          (toggleMapping)="onToggleMapping($event)" [disabled]="!openOutcome?.id"></clark-standard-outcomes>
+        <clark-standard-outcomes [activeOutcome]="openOutcome" [levels]="[]"
+          (toggleMapping)="onToggleMapping($event)"></clark-standard-outcomes>
       </div>
     </div>
   </div>

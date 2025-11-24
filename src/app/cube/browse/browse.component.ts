@@ -296,17 +296,18 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.sortText = 'Oldest';
       } else if (val === 'dd') {
         this.sortText = 'Newest';
-      } else if (val === 'na') {
-        this.sortText = 'Name (Asc)';
-      } else if (val === 'nd') {
-        this.sortText = 'Name (Desc)';
+      } else if (val === 'w') {
+        this.sortText = 'Downloads ';
       }
       const sort = val.charAt(0);
       const dir = val.charAt(1);
-      this.query.orderBy = sort.charAt(0) === 'n' ? OrderBy.Name : OrderBy.Date;
+      this.query.orderBy = sort.charAt(0) === 'w' ? OrderBy.Downloads : OrderBy.Date;
+      if (sort.charAt(0) === 'd') {
       this.query.sortType =
         dir === 'd' ? SortType.Descending : SortType.Ascending;
-
+      } else {
+        this.query.sortType = SortType.Descending;
+      }
       // remove date filters if previously set
       delete this.query.start;
       delete this.query.end;

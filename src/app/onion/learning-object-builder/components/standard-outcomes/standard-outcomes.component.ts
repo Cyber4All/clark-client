@@ -29,8 +29,6 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   activeOutcome: string;
   @Input()
   levels: string;
-  @Input()
-  disabled = false;
 
   @Output()
   toggleMapping: EventEmitter<{
@@ -117,18 +115,6 @@ export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   toggleStandardOutcome(guideline: any, value: boolean) {
     guideline = new Guideline(guideline);
     this.toggleMapping.emit({ standardOutcome: guideline, value: value });
-  }
-
-  get resultsLabel(): string {
-    if (this.disabled) {
-      return 'Select an outcome';
-    }
-
-    if (this.searchStringValue !== '') {
-      return `${this.searchResults.length} Results for ${this.searchStringValue}`;
-    }
-
-    return `${this.suggestions.length} suggestions`;
   }
 
   performSearch() {
