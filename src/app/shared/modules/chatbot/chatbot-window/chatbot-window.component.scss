@@ -4,10 +4,9 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 23%;
+  width: 30%;
   height: 57.5%;
   min-width: 368px;
-  max-width: 483px;
   background: $wrapper-background;
   border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
@@ -40,6 +39,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
+
+  em {
+    font-size: small;
+  }
 }
 
 .chatbot-title {
@@ -51,8 +54,8 @@
 }
 
 .chatbot-header-logo {
-  width: 60px;
-  height: 60px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
   margin: 0;
   margin-left: -8px;
@@ -93,16 +96,16 @@
   gap: 14px;
   background: $secondary-white-background;
   overscroll-behavior: contain;
-  
+
   &::-webkit-scrollbar {
     width: 6px;
   }
-  
+
   &::-webkit-scrollbar-track {
     background: rgba($light-blue, 0.04);
     border-radius: 10px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba($light-blue, 0.2);
     border-radius: 10px;
@@ -130,6 +133,13 @@
   line-height: 1.4;
   word-wrap: break-word;
   font-family: 'Source Sans Pro', sans-serif;
+
+  markdown,
+  markdown p {
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block;
+  }
 
   .message-user & {
     background: $light-blue;
@@ -178,11 +188,11 @@
   &::placeholder {
     color: rgba($dark-grey, 0.5);
   }
-  
+
   &::-webkit-scrollbar {
     width: 4px;
   }
-  
+
   &::-webkit-scrollbar-thumb {
     background: rgba($light-blue, 0.2);
     border-radius: 10px;
