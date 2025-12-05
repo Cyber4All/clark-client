@@ -7,8 +7,8 @@
 
 <ng-container *ngIf="children && children?.length > 0">
   <div class="children-list">
-    <virtual-scroller #scroll [style.height]="'400px'" [items]="children"> 
-      <div *ngFor="let c of scroll.viewPortItems; let i= index" class="child-box">
+    <cdk-virtual-scroll-viewport #scroll [style.height]="'500px'">
+      <div *cdkVirtualFor="let c of scroll.viewPortItems; let i= index" class="child-box">
         <div class = "info">
           <div class = "top-row">
             <div class = "child-title">{{c.name}}</div>
@@ -22,11 +22,11 @@
          <i class="fas fa-plus"></i>
         </button>
       </div>
-    </virtual-scroller>
+    </cdk-virtual-scroll-viewport>
   </div>
 </ng-container>
 <clark-skip-link title="Return to Search for Children" skipLocation="childrenSearch"></clark-skip-link>
-<clark-skip-link title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 
+<clark-skip-link title="Skip to Builder Form" skipLocation="form"></clark-skip-link>
 
 <ng-template [ngIf]="!children">
   <div class="loading-template">

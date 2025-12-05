@@ -1,6 +1,6 @@
 <div class="user-dropdown">
   <div class="input-container">
-    <i class="fas fa-search"></i> 
+    <i class="fas fa-search"></i>
     <input type="text" aria-label="Find users by their name, username, or email address." class="user-dropdown__search-input" placeholder="Search for authors" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
   </div>
   <ul *ngIf="showDropdown" class="user-dropdown__list">
@@ -21,22 +21,22 @@
 
   <ng-template #resultsTemplate>
     <ng-container *ngIf="searchResults && searchResults.length; else noResultsTemplate">
-      <virtual-scroller #searchResultsScroller [items]="searchResults">
-        <li class="user-dropdown__list-item" *ngFor="let user of searchResultsScroller.viewPortItems" (activate)="toggleAuthor(user)">
-         
+      <cdk-virtual-scroll-viewport #searchResultsScroller>
+        <li class="user-dropdown__list-item" *cdkVirtualFor="let user of searchResultsScroller.viewPortItems" (activate)="toggleAuthor(user)">
+
           <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + userService.getGravatarImage(user.email, 200) + ')'}"></span>
           {{ user.username }} - {{ user.name | titlecase }} from {{ organizationFormat(user.organization) }}
         </li>
-      </virtual-scroller>
+      </cdk-virtual-scroll-viewport>
     </ng-container>
   </ng-template>
-  
+
   <ng-template #loadingTemplate>
     <span class="user-dropdown__message">
       <i class="far fa-spinner-third fa-spin"></i>
     </span>
   </ng-template>
-  
+
   <ng-template #noResultsTemplate>
     <span class="user-dropdown__message">
       No results!

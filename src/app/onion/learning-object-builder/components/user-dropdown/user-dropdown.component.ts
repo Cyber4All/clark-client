@@ -1,4 +1,14 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter, Input, IterableDiffers, IterableDiffer, DoCheck } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Output,
+  EventEmitter,
+  Input,
+  IterableDiffers,
+  IterableDiffer,
+  DoCheck,
+} from '@angular/core';
 import { UserService } from 'app/core/user-module/user.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { User } from '@entity';
@@ -111,8 +121,9 @@ export class UserDropdownComponent implements OnInit, DoCheck, OnDestroy {
   /**
    * Toggles an author's selected status
    *
-   * @param {string} id the id of the author to toggle
    * @memberof UserDropdownComponent
+   * @param user
+   * Add or remove from the list of selected authors
    */
   toggleAuthor(user: User) {
     const authorFoundIndex: number = this.selectedAuthors.indexOf(user.username);

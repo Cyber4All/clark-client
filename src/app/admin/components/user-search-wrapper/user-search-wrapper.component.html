@@ -8,7 +8,7 @@
       <i class="far fa-users prompt__icon"></i>
       <div class="prompt__text">
           Your search results will <br> appear here
-      </div> 
+      </div>
     </div>
     <div *ngIf="loading" class="container__prompt__loading" >
         <div class="loading-template">
@@ -18,8 +18,8 @@
       </div>
     <ul class="user-dropdown__list">
       <div *ngIf="searchResults.length > 0 && !loading">
-        <virtual-scroller #searchResultsScroller [items]="searchResults">
-          <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems; let i = index" (activate)="toggleAuthor(user)">
+        <cdk-virtual-scroll-viewport #searchResultsScroller [itemSize]="100">
+          <li class="user-dropdown__list-item" *cdkVirtualFor="let user of searchResults; let i = index" (activate)="toggleAuthor(user)">
             <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': users.includes(u.username)}">
               <span (activate)="selectUser(i)" *ngIf="!users.includes(u.username)"><i class="fas fa-plus"></i></span>
               <span *ngIf="users.includes(u.username)"><i class="fas fa-times"></i></span>
@@ -27,7 +27,7 @@
             <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
             {{ u.username }} - {{ u.name | titlecase }} from {{ organizationFormat(u.organization) }}
           </li>
-        </virtual-scroller>
+        </cdk-virtual-scroll-viewport>
       </div>
     </ul>
   </div>

@@ -38,7 +38,6 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatSelectModule } from '@angular/material/select';
 import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarchy-object/hierarchy-object.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { from } from 'rxjs';
 @NgModule({
   declarations: [
     AdminComponent,

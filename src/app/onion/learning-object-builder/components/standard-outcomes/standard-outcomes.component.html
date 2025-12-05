@@ -21,13 +21,13 @@
 <clark-skip-link title="Skip to Submit for Review" skipLocation="submit"></clark-skip-link>
 
 <ng-template #listTemplate let-items="items">
-  <virtual-scroller #scroll [style.height]="'400px'" [items]="items" [enableUnequalChildrenSizes]="true">
+  <cdk-virtual-scroll-viewport #scroll [style.height]="'400px'" [itemSize]="items">
     <ng-container *ngIf="!loading; else loadingTemplate">
-      <div *ngFor="let i of scroll.viewPortItems">
+      <div *cdkVirtualFor="let i of items">
         <clark-outcomes-list-item [guideline]="i" [selected]="selectedOutcomeIDs.includes(i.guidelineId)" (toggleMap)="toggleStandardOutcome(i, $event)"></clark-outcomes-list-item>
       </div>
     </ng-container>
-  </virtual-scroller>
+  </cdk-virtual-scroll-viewport>
 </ng-template>
 
 <ng-template #loadingTemplate>
