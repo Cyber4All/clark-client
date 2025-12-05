@@ -642,6 +642,7 @@ export class AuthService {
 
     // Clear role-based labels
     this.rumService.setLabels({
+      ...this.rumService.labels,
       userRole: 'VISITOR',
       hasReviewerAccess: false,
       hasCuratorAccess: false,
