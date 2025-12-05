@@ -1,7 +1,0 @@
-/Users/luis/Code/development-environment/clark-client/.devenv/flake.json
-/Users/luis/Code/development-environment/clark-client/.devenv.flake.nix
-/Users/luis/Code/development-environment/clark-client/.env
-/Users/luis/Code/development-environment/clark-client/devenv.local.nix
-/Users/luis/Code/development-environment/clark-client/devenv.lock
-/Users/luis/Code/development-environment/clark-client/devenv.nix
-/Users/luis/Code/development-environment/clark-client/devenv.yaml
