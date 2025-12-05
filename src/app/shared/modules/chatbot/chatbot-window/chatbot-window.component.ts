@@ -1,11 +1,12 @@
+import { ChatbotService } from './../../../../core/chat-module/chatbot.service';
 import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
-interface Message {
-  id: string;
-  text: string;
+export interface Message {
+  message: string;
   sender: 'user' | 'bot';
   timestamp: Date;
+  sessionId: string;
 }
 
 @Component({
@@ -43,49 +44,72 @@ export class ChatbotWindowComponent {
   @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
   @Output() chatbotClosed = new EventEmitter<void>();
 
-  messages: Message[] = [
-    {
-      id: '1',
-      text: 'Hello! I\'m CLARK AI. How can I help you today?',
-      sender: 'bot',
-      timestamp: new Date()
-    }
-  ];
+  messages: Message[] = [];
   inputMessage = '';
+  sessionId = '';
 
+  constructor(private readonly chatbotService: ChatbotService) {
+    const sessionId = sessionStorage.getItem('sessionID');
+    const sessionMessages = sessionStorage.getItem('chatMessages');
+    this.sessionId = sessionId ?? '';
+    this.messages = sessionMessages ? JSON.parse(sessionMessages) : [
+      {
+        message: 'Hello! I\'m CLARK AI. How can I help you today?',
+        sender: 'bot',
+        timestamp: new Date(),
+        sessionId: ''
+      }
+    ];
+  }
   closeChatbot(): void {
     this.chatbotClosed.emit();
   }
 
-  sendMessage(): void {
+  async sendMessage(): Promise<void> {
     if (this.inputMessage.trim() === '') {
       return;
     }
-
     // Add user message
     const userMessage: Message = {
-      id: Date.now().toString(),
-      text: this.inputMessage,
+      message: this.inputMessage,
+      timestamp: new Date(),
       sender: 'user',
-      timestamp: new Date()
+      sessionId: this.sessionId
     };
     this.messages.push(userMessage);
-    this.inputMessage = '';
-
     // Scroll after user message is added
     this.scrollToBottom();
+    this.inputMessage = '';
 
-    // Simulate bot response
-    setTimeout(() => {
+    try {
+      // Send to backend
+      const response = await this.chatbotService.sendPrompt(userMessage) as { message: string; sessionId: string };
+      this.sessionId = response.sessionId;
       const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        text: 'Thanks for your message! This is a mock chatbot interface. The real functionality will be implemented in the service layer.',
+        message: response.message,
+        timestamp: new Date(),
         sender: 'bot',
-        timestamp: new Date()
+        sessionId: this.sessionId
       };
       this.messages.push(botMessage);
+      this.updateSessionStorage();
       this.scrollToBottom();
-    }, 500);
+    } catch (error) {
+      const errorMessage: Message = {
+        message: 'Sorry, something went wrong. Please try again.',
+        timestamp: new Date(),
+        sender: 'bot',
+        sessionId: this.sessionId
+      };
+      this.messages.push(errorMessage);
+      this.updateSessionStorage();
+      this.scrollToBottom();
+    }
+  }
+
+  private updateSessionStorage(): void {
+    sessionStorage.setItem('sessionID', this.sessionId);
+    sessionStorage.setItem('chatMessages', JSON.stringify(this.messages));
   }
 
   private scrollToBottom(): void {
