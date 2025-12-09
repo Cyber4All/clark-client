@@ -48,12 +48,10 @@ export class InfoPageComponent implements OnInit, OnDestroy {
         }
       });
 
-    // Per-keystroke learning object name availability checks
     this.nameChanges$
       .pipe(
-        // avoid unnecessary calls when the value hasn't actually changed
+        // makes it so that it doesnt check a name unless it has changed
         distinctUntilChanged(),
-        // cancel previous in-flight check when a new keystroke comes in
         switchMap(name => this.checkNameAvailability(name)),
         takeUntil(this.destroyed$)
       )

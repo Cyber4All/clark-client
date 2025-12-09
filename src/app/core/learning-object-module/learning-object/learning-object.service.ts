@@ -484,7 +484,7 @@ export class LearningObjectService {
 
   /**
    * Checks if a learning object name is available (not a duplicate)
-   * 
+   *
    * @param {string} name - The name to check
    * @returns {Promise<boolean>} - true if name is available, false if duplicate exists
    * @memberof LearningObjectService
