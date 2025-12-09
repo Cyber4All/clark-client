@@ -85,7 +85,7 @@ export const LEARNING_OBJECT_ROUTES = {
      * @returns Promise<boolean> - true if name is available, false if duplicate exists
      */
     CHECK_NAME_AVAILABILITY(name: string) {
-        return `${environment.apiURL}/learning-objects/validate-name?name=${encodeURIComponent(name)}`;
+        return `${environment.apiURL}/learning-objects/name/check/${encodeURIComponent(name)}`;
     },
 
     /**

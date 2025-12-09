@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
 import {
   BuilderStore,
   BUILDER_ACTIONS as actions
 } from '../../builder-store.service';
 import { LearningObject, User } from '@entity';
 import { COPY } from './info-page.copy';
-import { Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 @Component({
@@ -26,6 +26,9 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
   destroyed$: Subject<void> = new Subject();
 
+  // Emits raw name values from the input for per-keystroke checks
+  private nameChanges$: Subject<string> = new Subject();
+
   constructor(
     private store: BuilderStore,
     public validator: LearningObjectValidator,
@@ -44,6 +47,17 @@ export class InfoPageComponent implements OnInit, OnDestroy {
           this.selectedLevels = payload.levels || [];
         }
       });
+
+    // Per-keystroke learning object name availability checks
+    this.nameChanges$
+      .pipe(
+        // avoid unnecessary calls when the value hasn't actually changed
+        distinctUntilChanged(),
+        // cancel previous in-flight check when a new keystroke comes in
+        switchMap(name => this.checkNameAvailability(name)),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe();
   }
 
 
@@ -54,6 +68,39 @@ export class InfoPageComponent implements OnInit, OnDestroy {
       this.descriptionDirty = false;
     }
     this.store.execute(actions.MUTATE_OBJECT, data);
+  }
+
+  onNameInput(value: string) {
+    this.mutateLearningObject({ name: value });
+    this.nameChanges$.next(value);
+  }
+
+  private checkNameAvailability(name: string): Observable<void> {
+    const trimmedName = (name || '').trim();
+
+    return new Observable<void>(observer => {
+      this.learningObjectService
+        .checkNameAvailability(trimmedName)
+        .then(available => {
+          const duplicateErrorText =
+            'A learning object with this name already exists! The title should be unique within your learning objects.';
+          const currentError = this.validator.errors.saveErrors.get('name');
+
+          if (!available) {
+            this.validator.errors.saveErrors.set('name', duplicateErrorText);
+          } else if (currentError === duplicateErrorText) {
+            this.validator.errors.saveErrors.delete('name');
+          }
+
+          this.cd.markForCheck();
+          observer.next();
+          observer.complete();
+        })
+        .catch(() => {
+          observer.next();
+          observer.complete();
+        });
+    });
   }
 
   toggleContributor(user: User) {

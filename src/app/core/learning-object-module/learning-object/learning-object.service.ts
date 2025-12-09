@@ -492,7 +492,7 @@ export class LearningObjectService {
   async checkNameAvailability(name: string): Promise<boolean> {
     const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(name);
     return this.http
-      .get<{ available: boolean }>(route, {
+      .get<{ validName: boolean }>(route, {
         headers: this.headers,
         withCredentials: true
       })
@@ -500,7 +500,7 @@ export class LearningObjectService {
         catchError(this.handleError)
       )
       .toPromise()
-      .then(response => response.available);
+      .then(response => response.validName);
   }
 
   /**
