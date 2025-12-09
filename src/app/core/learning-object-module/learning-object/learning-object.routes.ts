@@ -78,6 +78,17 @@ export const LEARNING_OBJECT_ROUTES = {
     },
 
     /**
+     * Request to check if a learning object name is available
+     * @method GET
+     * @auth required
+     * @param name - The name to check
+     * @returns Promise<boolean> - true if name is available, false if duplicate exists
+     */
+    CHECK_NAME_AVAILABILITY(name: string) {
+        return `${environment.apiURL}/learning-objects/validate-name?name=${encodeURIComponent(name)}`;
+    },
+
+    /**
      * Request to update the collection of a learning object
      * @method PATCH
      * @auth required
