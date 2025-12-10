@@ -23,14 +23,8 @@
       </div>
     </ng-container>
     <div class="details-metrics">
-      <div tabindex="0">
-        <i class="far fa-save"></i>
-        <span #savesRef>{{ learningObject?.metrics.saves }}</span> save{{ (learningObject?.metrics.saves) !== 1 ? 's' : '' }}
-      </div>
-      <div tabindex="0">
         <i class="far fa-download"></i>
-        <span>{{ learningObject?.metrics.downloads }}</span> download{{ (learningObject?.metrics.downloads) !== 1 ? 's' : '' }}
-      </div>
+        <span>{{ learningObject?.metrics.downloads }}</span>&nbsp;download{{ (learningObject?.metrics.downloads) !== 1 ? 's' : '' }}
     </div>
     <div class="cc-attribution">
       <div class="cc-attribution__text-content">
@@ -113,10 +107,4 @@
 
     </div>
   </clark-context-menu>
-  <button *ngIf="learningObject?.status === 'released' && !userIsAuthor" [ngClass]="{'disabled': !auth.user || disableLibraryButtons, 'saved': saved}" class="button neutral" id="save-to-library" (activate)="addToLibrary()" attr.aria-label="{{ saved ? 'This Learning Object is Saved to your library!' : 'Clickable Save to Library button' }}">
-    {{ saved ? 'Saved to your library!' : 'Save to Library' }}
-    <span *ngIf="addingToLibrary">
-      <i class="fal fa-spinner-third fa-spin"></i>
-    </span>
-  </button>
 </ng-template>
