@@ -216,4 +216,8 @@ export class ClarkComponent implements OnInit {
         });
       });
   }
+
+  isAdminOrEditor(): boolean {
+    return this.authService.isAdminOrEditor();
+  }
 }
