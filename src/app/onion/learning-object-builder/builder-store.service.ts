@@ -989,22 +989,7 @@ export class BuilderStore {
       })
       .catch(e => {
         this.serviceInteraction$.next(false);
-        if (e.status === 409) {
-          // tried to save an object with a name that already exists
-          this.validator.errors.saveErrors.set(
-            'name',
-            'A learning object with this name already exists! The title should be unique within your learning objects.'
-          );
-          this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
-        } else if (e.status === 400) {
-          this.validator.errors.saveErrors.set(
-            'name',
-            e.error.message
-          );
-          this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
-        } else {
-          this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
-        }
+        this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
       });
   }
 
@@ -1023,22 +1008,7 @@ export class BuilderStore {
         this.serviceInteraction$.next(false);
       })
       .catch(e => {
-        if (e.status === 409) {
-          // tried to save an object with a name that already exists
-          this.validator.errors.saveErrors.set(
-            'name',
-            'A learning object with this name already exists! The title should be unique within your learning objects.'
-          );
-          this.handleServiceError(e, BUILDER_ERRORS.DUPLICATE_OBJECT_NAME);
-        } else if (e.status === 400) {
-          this.validator.errors.saveErrors.set(
-            'name',
-            JSON.parse(e.error).message
-          );
-          this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
-        } else {
-          this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
-        }
+        this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
       });
   }
 
