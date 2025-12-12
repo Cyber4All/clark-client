@@ -1,11 +1,11 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "6.11.7",
+  "version": "6.12.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "npm run prebuild && ng serve",
     "start:prod": "ng serve --configuration=production",
     "prebuild": "echo \"export const COMMIT_HASH = '$(git rev-parse --short HEAD)';\" > src/commit-hash.ts",
     "build": "npm run prebuild && ng build clark",
@@ -47,6 +47,7 @@
     "ng2-charts": "^2.3.0",
     "ngx-cookie": "^5.0.2",
     "ngx-cookie-service": "^15.0.0",
+    "ngx-markdown": "^15.1.2",
     "ngx-simple-text-editor": "^1.4.1",
     "ngx-virtual-scroller": "^4.0.3",
     "raven-js": "^3.22.3",
