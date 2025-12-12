@@ -1,0 +1,14 @@
+<div class="chatbot-launcher-container">
+  <div class="tooltip-container" *ngIf="showTooltip" [@tooltipAppear]>
+    Try out CLARK AI!
+  </div>
+  <button
+    class="chatbot-icon-button"
+    (click)="openChatbot()"
+    (mouseenter)="onMouseEnter()"
+    (mouseleave)="onMouseLeave()"
+    aria-label="Open CLARK AI chatbot"
+  >
+    <i class="fas fa-comment-alt chatbot-icon"></i>
+  </button>
+</div>

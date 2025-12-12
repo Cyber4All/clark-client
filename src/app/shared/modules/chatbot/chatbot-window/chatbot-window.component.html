@@ -1,0 +1,42 @@
+<div class="chatbot-window" [@windowSlideIn]>
+  <div class="chatbot-header">
+    <div class="chatbot-header-content">
+      <div class="chatbot-header-left">
+        <img src="assets/images/logo.png" alt="CLARK AI" class="chatbot-header-logo" />
+        <h2 class="chatbot-title">CLARK AI </h2>
+        <em>beta</em>
+      </div>
+      <button class="close-button" (click)="closeChatbot()" aria-label="Close chatbot">
+        <span class="close-icon">&times;</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="chatbot-messages" #messagesContainer>
+    <div *ngFor="let message of messages" class="message" [class.message-user]="message.sender === 'user'"
+      [class.message-bot]="message.sender === 'bot'">
+      <div class="message-content">
+        <markdown ngPreserveWhitespaces>
+          {{ message.message }}
+        </markdown>
+      </div>
+    </div>
+
+    <div *ngIf="loading" class="message message-bot">
+      <div class="message-content">
+        <span class="loading-dots">
+          <span>.</span><span>.</span><span>.</span>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chatbot-input-container">
+    <textarea class="chatbot-input" [(ngModel)]="inputMessage" (keydown)="onKeyDown($event)"
+      placeholder="Type your message..." rows="1" aria-label="Message input"></textarea>
+    <button class="send-button" (click)="sendMessage()" [disabled]="inputMessage.trim() === ''"
+      aria-label="Send message">
+      <span class="send-icon">→</span>
+    </button>
+  </div>
+</div>
