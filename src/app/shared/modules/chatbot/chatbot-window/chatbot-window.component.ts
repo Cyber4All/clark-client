@@ -47,6 +47,7 @@ export class ChatbotWindowComponent {
   messages: Message[] = [];
   inputMessage = '';
   sessionId = '';
+  loading = false;
 
   constructor(private readonly chatbotService: ChatbotService) {
     const sessionId = sessionStorage.getItem('sessionID');
@@ -80,6 +81,7 @@ export class ChatbotWindowComponent {
     // Scroll after user message is added
     this.scrollToBottom();
     this.inputMessage = '';
+    this.loading = true;
 
     try {
       // Send to backend
@@ -101,9 +103,12 @@ export class ChatbotWindowComponent {
         sender: 'bot',
         sessionId: this.sessionId
       };
+      console.log(error);
       this.messages.push(errorMessage);
       this.updateSessionStorage();
       this.scrollToBottom();
+    } finally {
+      this.loading = false;
     }
   }
 

@@ -1,5 +1,25 @@
 @import 'src/_vars.scss';
 
+// Load animation for response
+.loading-dots {
+  display: inline-block;
+  font-size: 1.5em;
+  letter-spacing: 0.2em;
+  animation: blink 1s infinite steps(3, start);
+}
+
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}
+
 .chatbot-window {
   position: fixed;
   bottom: 20px;

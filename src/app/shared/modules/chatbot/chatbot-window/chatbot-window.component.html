@@ -21,6 +21,14 @@
         </markdown>
       </div>
     </div>
+
+    <div *ngIf="loading" class="message message-bot">
+      <div class="message-content">
+        <span class="loading-dots">
+          <span>.</span><span>.</span><span>.</span>
+        </span>
+      </div>
+    </div>
   </div>
 
   <div class="chatbot-input-container">
