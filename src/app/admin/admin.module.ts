@@ -38,7 +38,8 @@ import { MatTreeModule } from '@angular/material/tree';
 import { MatSelectModule } from '@angular/material/select';
 import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarchy-object/hierarchy-object.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { from } from 'rxjs';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
+
 @NgModule({
   declarations: [
     AdminComponent,
@@ -82,6 +83,7 @@ import { from } from 'rxjs';
     MatTreeModule,
     MatSelectModule,
     ReactiveFormsModule,
+    VirtualScrollerModule,
   ],
 })
-export class AdminModule { }
+export class AdminModule {}

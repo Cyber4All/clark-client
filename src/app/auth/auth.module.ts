@@ -12,9 +12,12 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
 import { RecaptchaDirective } from './register/components/recaptcha/recaptcha.directive';
-import { RegistrationProgressComponent } from './register/components/registration-progress/registration-progress.component';
+import {
+  RegistrationProgressComponent
+} from './register/components/registration-progress/registration-progress.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     ReactiveFormsModule,
     SharedModule,
     ScrollingModule,
-  ]
+    VirtualScrollerModule,
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}
