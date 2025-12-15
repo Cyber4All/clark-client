@@ -47,3 +47,14 @@ Thumbs.db
 
 # Auto-generated files
 src/commit-hash.ts
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
