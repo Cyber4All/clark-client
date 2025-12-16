@@ -1,6 +1,6 @@
-import { ChatbotService } from './../../../../core/chat-module/chatbot.service';
-import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
+import { ChatbotService } from 'app/core/chat-module/chatbot.service';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 export interface Message {
   message: string;
@@ -18,31 +18,33 @@ export interface Message {
       transition(':enter', [
         style({
           opacity: 0,
-          transform: 'translateY(20px)'
+          transform: 'translateY(20px)',
         }),
         animate(
           '300ms ease-out',
           style({
             opacity: 1,
-            transform: 'translateY(0)'
-          })
-        )
+            transform: 'translateY(0)',
+          }),
+        ),
       ]),
       transition(':leave', [
         animate(
           '300ms ease-out',
           style({
             opacity: 0,
-            transform: 'translateY(20px)'
-          })
-        )
-      ])
-    ])
-  ]
+            transform: 'translateY(20px)',
+          }),
+        ),
+      ]),
+    ]),
+  ],
 })
 export class ChatbotWindowComponent {
-  @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('messagesContainer')
+  messagesContainer!: ElementRef<HTMLDivElement>;
   @Output() chatbotClosed = new EventEmitter<void>();
+  @Output() chatbotMinimized = new EventEmitter<void>();
 
   messages: Message[] = [];
   inputMessage = '';
@@ -53,17 +55,26 @@ export class ChatbotWindowComponent {
     const sessionId = sessionStorage.getItem('sessionID');
     const sessionMessages = sessionStorage.getItem('chatMessages');
     this.sessionId = sessionId ?? '';
-    this.messages = sessionMessages ? JSON.parse(sessionMessages) : [
-      {
-        message: 'Hello! I\'m CLARK AI. How can I help you today?',
-        sender: 'bot',
-        timestamp: new Date(),
-        sessionId: ''
-      }
-    ];
+    this.messages = sessionMessages
+      ? JSON.parse(sessionMessages)
+      : [
+          {
+            message: 'Hello! I\'m CLARK AI. How can I help you today?',
+            sender: 'bot',
+            timestamp: new Date(),
+            sessionId: '',
+          },
+        ];
   }
   closeChatbot(): void {
+    // Starts over a new conversation
     this.chatbotClosed.emit();
+    sessionStorage.removeItem('sessionID');
+    sessionStorage.removeItem('chatMessages');
+  }
+
+  minimizeChatbot(): void {
+    this.chatbotMinimized.emit();
   }
 
   async sendMessage(): Promise<void> {
@@ -75,7 +86,7 @@ export class ChatbotWindowComponent {
       message: this.inputMessage,
       timestamp: new Date(),
       sender: 'user',
-      sessionId: this.sessionId
+      sessionId: this.sessionId,
     };
     this.messages.push(userMessage);
     // Scroll after user message is added
@@ -85,13 +96,16 @@ export class ChatbotWindowComponent {
 
     try {
       // Send to backend
-      const response = await this.chatbotService.sendPrompt(userMessage) as { message: string; sessionId: string };
+      const response = (await this.chatbotService.sendPrompt(userMessage)) as {
+        message: string;
+        sessionId: string;
+      };
       this.sessionId = response.sessionId;
       const botMessage: Message = {
         message: response.message,
         timestamp: new Date(),
         sender: 'bot',
-        sessionId: this.sessionId
+        sessionId: this.sessionId,
       };
       this.messages.push(botMessage);
       this.updateSessionStorage();
@@ -101,7 +115,7 @@ export class ChatbotWindowComponent {
         message: 'Sorry, something went wrong. Please try again.',
         timestamp: new Date(),
         sender: 'bot',
-        sessionId: this.sessionId
+        sessionId: this.sessionId,
       };
       console.log(error);
       this.messages.push(errorMessage);
@@ -120,7 +134,8 @@ export class ChatbotWindowComponent {
   private scrollToBottom(): void {
     setTimeout(() => {
       if (this.messagesContainer) {
-        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+        this.messagesContainer.nativeElement.scrollTop =
+          this.messagesContainer.nativeElement.scrollHeight;
       }
     }, 0);
   }
