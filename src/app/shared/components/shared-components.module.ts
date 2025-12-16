@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // CLARK Modules
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
@@ -42,7 +41,6 @@ import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
     ReactiveFormsModule,
     RouterModule,
     MatInputModule,
-    ScrollingModule,
     // third-party modules
     // CLARK modules
     SharedDirectivesModule,
@@ -93,4 +91,4 @@ import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
     AuthorCardComponent,
   ],
 })
-export class SharedComponents {}
+export class SharedComponents { }

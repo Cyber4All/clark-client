@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 
 // third-party
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
@@ -52,7 +51,6 @@ import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
     OnionSharedModule,
     EditorActionPanelModule,
     OnionSharedModule,
-    ScrollingModule,
     NgxSimpleTextEditorModule,
     VirtualScrollerModule,
     VirtualScrollerModule,
@@ -78,4 +76,4 @@ import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
   ],
   exports: [StandardOutcomesComponent],
 })
-export class LearningObjectBuilderModule {}
+export class LearningObjectBuilderModule { }

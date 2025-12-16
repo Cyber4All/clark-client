@@ -16,7 +16,6 @@ import {
   RegistrationProgressComponent
 } from './register/components/registration-progress/registration-progress.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 @NgModule({
@@ -39,8 +38,7 @@ import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    ScrollingModule,
     VirtualScrollerModule,
   ],
 })
-export class AuthModule {}
+export class AuthModule { }

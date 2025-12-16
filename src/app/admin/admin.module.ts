@@ -37,7 +37,6 @@ import { HierarchyBuilderComponent } from './components/hierarchy-builder/hierar
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSelectModule } from '@angular/material/select';
 import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarchy-object/hierarchy-object.component';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 @NgModule({
@@ -73,7 +72,6 @@ import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
     AdminRoutingModule,
     FormsModule,
     SharedModule,
-    ScrollingModule,
     DragDropModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -86,4 +84,4 @@ import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
     VirtualScrollerModule,
   ],
 })
-export class AdminModule {}
+export class AdminModule { }
