@@ -50,7 +50,7 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
     this.nameChanges$
       .pipe(
-        // makes it so that it doesnt check a name unless it has changed
+        // Makes it so that it doesn't check a name unless it has changed
         distinctUntilChanged(),
         switchMap(name => this.checkNameAvailability(name)),
         takeUntil(this.destroyed$)
