@@ -1,5 +1,5 @@
 import { ChatbotService } from './../../../../core/chat-module/chatbot.service';
-import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 export interface Message {
@@ -40,7 +40,7 @@ export interface Message {
     ])
   ]
 })
-export class ChatbotWindowComponent {
+export class ChatbotWindowComponent implements AfterViewInit {
   @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
   @Output() chatbotClosed = new EventEmitter<void>();
 
@@ -62,6 +62,11 @@ export class ChatbotWindowComponent {
       }
     ];
   }
+
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
   closeChatbot(): void {
     this.chatbotClosed.emit();
   }
