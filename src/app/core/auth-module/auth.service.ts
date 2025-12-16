@@ -614,6 +614,7 @@ export class AuthService {
 
     // Set additional labels for user role tracking
     this.rumService.setLabels({
+      ...this.rumService.labels,
       userRole: AUTH_GROUP[this.group.value],
       hasReviewerAccess: this.hasReviewerAccess(),
       hasCuratorAccess: this.hasCuratorAccess(),
@@ -641,6 +642,7 @@ export class AuthService {
 
     // Clear role-based labels
     this.rumService.setLabels({
+      ...this.rumService.labels,
       userRole: 'VISITOR',
       hasReviewerAccess: false,
       hasCuratorAccess: false,

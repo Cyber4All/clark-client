@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CoralogixBrowserSdkConfig, CoralogixRum, UserContextConfig } from '@coralogix/browser';
+import { CoralogixBrowserSdkConfig, CoralogixRum, CoralogixRumLabels, UserContextConfig } from '@coralogix/browser';
 import { environment } from '@env/environment';
 import { COMMIT_HASH } from '../../../commit-hash';
 
@@ -31,7 +31,7 @@ export class CoralogixRumService {
         }
 
         // Only initialize RUM in production environment
-        if (!['production', 'staging'].includes(environment.environment)) {
+        if (!['production', 'staging', 'development'].includes(environment.environment)) {
             console.log('Coralogix RUM skipped - not in production/staging environment');
             return;
         }
@@ -119,5 +119,18 @@ export class CoralogixRumService {
      */
     get initialized(): boolean {
         return this.isInitialized;
+    }
+
+    // Logging values
+    get sessionId(): string {
+        return CoralogixRum.getSessionId();
+    }
+
+    get userContext() {
+        return CoralogixRum.getUserContext();
+    }
+
+    get labels() {
+        return CoralogixRum.getLabels();
     }
 }

@@ -5,6 +5,7 @@ import { Query } from '../../../interfaces/query';
 import { CollectionService } from '../../../core/collection-module/collections.service';
 import { Title } from '@angular/platform-browser';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clark-502-collection-index',
@@ -21,13 +22,13 @@ export class Collection502Component implements OnInit {
     collection: '502_project'
   };
   currentTheme = 'dark';
+  private sub = new Subscription();
 
   constructor(
     private navbarService: NavbarService,
     private searchLearningObjectService: SearchService,
     private collectionService: CollectionService,
     private titleService: Title,
-    private searchService: SearchService,
   ) { }
 
   async ngOnInit() {
@@ -35,20 +36,15 @@ export class Collection502Component implements OnInit {
     await this.fetchLearningObjects(this.query);
     this.titleService.setTitle('CLARK | The 502 Project');
 
-    const toggleSwitch = document.querySelector('mat-slide-toggle input[type="checkbox"]');
+    this.sub.add(
+      this.collectionService.darkMode502.subscribe(mode => {
+        this.currentTheme = mode ? 'dark' : 'light';
+      })
+    );
+  }
 
-    const switchTheme = (e: Event) => {
-      this.collectionService.changeStatus502((e.target as HTMLInputElement).checked);
-    };
-
-    toggleSwitch!.addEventListener('change', switchTheme);
-
-    this.collectionService.darkMode502.subscribe(mode => {
-      this.currentTheme = mode ? 'dark' : 'light';
-    });
-    if (this.currentTheme === 'dark') {
-      document!.getElementById('mat-slide-toggle-1-input')!.click();
-    };
+  onThemeToggle(checked: boolean){
+    this.collectionService.changeStatus502(checked);
   }
 
   async fetchLearningObjects(query: Query) {
@@ -64,5 +60,9 @@ export class Collection502Component implements OnInit {
     } catch (e) {
       console.log(`Error: ${e}`);
     }
+  }
+
+  ngOnDestroy() {
+    this.sub.unsubscribe();
   }
 }

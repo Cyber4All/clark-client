@@ -46,7 +46,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private navService: NavbarService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     // force search bar to reflect current search on browse page when navigating by url query parameters
@@ -102,15 +102,17 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else if (text.length) {
       searchbar.blur();
 
+      const params = {
+        // Keep the current filters and sorts but start at 1 when searching by text
+        // Disable any other sorting
+        ...this.route.snapshot.queryParams,
+        text,
+        currPage: 1,
+        orderBy: 'none'
+      };
+
       this.router.navigate(['/browse'], {
-        queryParams: {
-          // Keep the current filters and sorts but start at 1 when searching by text
-          ...this.route.snapshot.queryParams,
-          text,
-          currPage: 1,
-          // Disable any other sorting
-          orderBy: ''
-        },
+        queryParams: params
       });
     }
   }

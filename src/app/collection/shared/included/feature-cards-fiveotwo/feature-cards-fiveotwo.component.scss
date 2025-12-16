@@ -29,6 +29,9 @@
     border-radius: 5px;
     margin: 10px;
     background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     a:visited {
         color: var(--secondary-text);
     }
@@ -39,6 +42,7 @@
         text-align: left;
         border-radius: 5px 5px 0px 0px;
         margin: 0;
+        flex: 0 0 auto;
 
         .card__top {
             display: flex;
@@ -152,6 +156,10 @@
 
     .card__info {
         padding: 10px;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden;
+        padding: 10px;
 
         .info__desc {
             text-align: left;
@@ -159,7 +167,10 @@
             color: var(--secondary-text);
             min-height: 110px;
             margin-bottom: 5px;
+            height: 100%;
+            overflow: hidden;
         }
+        
     }
 }
 

@@ -4,7 +4,8 @@ export enum OrderBy {
   Name = 'name',
   Date = 'date',
   Downloads = 'downloads',
-  Rating = 'rating'
+  Rating = 'rating',
+  None = 'none'
 }
 
 export enum SortType {

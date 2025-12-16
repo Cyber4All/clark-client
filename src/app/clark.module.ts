@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { TitleCasePipe } from '@angular/common';
 
@@ -26,6 +26,7 @@ import { SecondaryNavbarComponent } from './components/secondary-navbar/secondar
 import { RedirectComponent } from './redirect/redirect.component';
 import { SafeHtmlPipe } from './components/safe-html.pipe';
 import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor';
+import { CoralogixRumService } from './core/services/coralogix-rum.service';
 
 @NgModule({
   imports: [
@@ -57,7 +58,13 @@ import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor
     TitleCasePipe,
     Title,
     { provide: UrlSerializer, useClass: CustomUrlSerializer },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (rumService: CoralogixRumService) => () => rumService.init(),
+      deps: [CoralogixRumService],
+      multi: true
+    },
   ]
 })
 export class ClarkModule { }

@@ -49,11 +49,8 @@
                 <li [ngClass]="{selected: sortText === 'Oldest'}" class="list-item" (activate)="toggleSort('da')">
                   Date (Oldest first)
                 </li>
-                <li [ngClass]="{selected: sortText === 'Name (Desc)'}" class="list-item" (activate)="toggleSort('nd')">
-                  Name (desc)
-                </li>
-                <li [ngClass]="{selected: sortText === 'Name (Asc)'}" class="list-item" (activate)="toggleSort('na')">
-                  Name (asc)
+                <li [ngClass]="{selected: sortText === 'Downloads'}" class="list-item" (activate)="toggleSort('w')">
+                  Downloads
                 </li>
               </ul>
             </div>

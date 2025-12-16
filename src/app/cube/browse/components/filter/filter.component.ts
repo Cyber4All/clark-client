@@ -254,11 +254,36 @@ export class FilterComponent implements OnInit, OnDestroy {
     this.lengthFilter = {
       section: 'Length',
       filters: [
-        { name: 'Nanomodule', value: 'nanomodule', active: false, tip: 'A learning object up to 1 hour in length' },
-        { name: 'Micromodule', value: 'micromodule', active: false, tip: 'A learning object between to 1 and 4 hours in length' },
-        { name: 'Module', value: 'module', active: false, tip: 'A learning object between 4 and 10 hours in length' },
-        { name: 'Unit', value: 'unit', active: false, tip: 'A learning object over 10 hours in length' },
-        { name: 'Course', value: 'course', active: false, tip: 'A learning object 15 weeks in length' },
+        {
+          name: 'Nanomodule',
+          value: 'nanomodule',
+          active: false,
+          description: '(< 1 hour)'
+        },
+        {
+          name: 'Micromodule',
+          value: 'micromodule',
+          active: false,
+          description: '(1-4 hours)'
+        },
+        {
+          name: 'Module',
+          value: 'module',
+          active: false,
+          description: '(4-10 hours)'
+        },
+        {
+          name: 'Unit',
+          value: 'unit',
+          active: false,
+          description: '(Over 10 hours)'
+        },
+        {
+          name: 'Course',
+          value: 'course',
+          active: false,
+          description: '(15 weeks)'
+        },
       ],
     };
   }
