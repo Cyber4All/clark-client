@@ -1,6 +1,5 @@
-import { environment } from 'environments/environment';
 // Core
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -19,6 +18,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
 // Other
 // TODO: is ng-click-outside being used?
@@ -43,7 +43,9 @@ import { LibraryModule } from './library/library.module';
 import { AboutClarkComponent } from './content-pages/about-us/about-us.component';
 import { ContributePageComponent } from './content-pages/contribute-page/contribute-page.component';
 import { EditorialProcessComponent } from './content-pages/editorial-process/editorial-process.component';
-import { ProfileLearningObjectsComponent } from './user-profile/components/profile-learning-objects/profile-learning-objects.component';
+import {
+  ProfileLearningObjectsComponent
+} from './user-profile/components/profile-learning-objects/profile-learning-objects.component';
 import { ProfileHeaderComponent } from './user-profile/components/profile-header/profile-header.component';
 import { EditProfileComponent } from './user-profile/components/edit-profile/edit-profile.component';
 import { HomeModule } from './home/home.module';
@@ -92,6 +94,7 @@ import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/ph
     ClickOutsideModule,
     MatExpansionModule,
     MatTabsModule,
+    VirtualScrollerModule,
 
     // Local module imports
     CubeCoreModule,

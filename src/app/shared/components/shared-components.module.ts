@@ -3,7 +3,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 // CLARK Modules
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
 import { SharedPipesModule } from '../pipes/shared-pipes.module';
@@ -26,12 +27,13 @@ import { AddEvaluatorComponent } from './add-evaluator/add-evaluator.component';
 import { UserDropdownComponent } from './add-evaluator/components/user-dropdown/user-dropdown.component';
 import { InputFieldComponent } from './input-field/input-field.component';
 import { MatInputModule } from '@angular/material/input';
-import {
-  HighlightedLearningObjectComponent
-} from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
+
+// eslint-disable-next-line max-len
+import { HighlightedLearningObjectComponent } from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { AuthorCardComponent } from 'app/shared/components/author-card/author-card.component';
 import { CollectionsDropdownComponent } from './collections-dropdown/collections-dropdown.component';
+
 @NgModule({
   imports: [
     // angular modules
@@ -45,6 +47,8 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     // CLARK modules
     SharedDirectivesModule,
     SharedPipesModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   declarations: [
     // components
@@ -86,7 +90,9 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     CookiePopupComponent,
     AddEvaluatorComponent,
     InputFieldComponent,
-    AuthorCardComponent
-  ]
+    AuthorCardComponent,
+    MatTooltipModule,
+    MatIconModule,
+  ],
 })
 export class SharedComponents {}
