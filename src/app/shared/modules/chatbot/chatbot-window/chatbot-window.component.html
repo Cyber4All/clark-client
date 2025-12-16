@@ -6,9 +6,14 @@
         <h2 class="chatbot-title">CLARK AI </h2>
         <em>beta</em>
       </div>
-      <button class="close-button" (click)="closeChatbot()" aria-label="Close chatbot">
-        <span class="close-icon">&times;</span>
-      </button>
+      <div class="chatbot-header-buttons">
+        <span (click)="minimizeChatbot()" matTooltip="Minimize chat" matTooltipPosition="above" >
+          <i class="fal fa-window-minimize"></i>
+        </span>
+        <span (click)="closeChatbot()" matTooltip="Close and clear chat" matTooltipPosition="above">
+          <i class="fal fa-window-close"></i>
+        </span>
+      </div>
     </div>
   </div>
 
