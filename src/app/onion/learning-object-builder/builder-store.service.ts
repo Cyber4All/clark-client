@@ -997,7 +997,7 @@ export class BuilderStore {
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
           this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
-        }     
+        }
       });
   }
 
@@ -1018,8 +1018,8 @@ export class BuilderStore {
       .catch(e => {
         if (e.status === 400) {
           const body = typeof e.error === 'string' ? JSON.parse(e.error) : e.error;
-          const errorMsg = body?.message?.[0]?.message?.[0] ?? ''
-            
+          const errorMsg = body?.message?.[0]?.message?.[0] ?? '';
+
           this.validator.errors.saveErrors.set('name', errorMsg);
           this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
         } else {
