@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CoralogixBrowserSdkConfig, CoralogixRum, CoralogixRumLabels, UserContextConfig } from '@coralogix/browser';
+import { CoralogixBrowserSdkConfig, CoralogixLogSeverity, CoralogixRum, UserContextConfig } from '@coralogix/browser';
 import { environment } from '@env/environment';
 import { COMMIT_HASH } from '../../../commit-hash';
 
@@ -111,6 +111,36 @@ export class CoralogixRumService {
             });
         } catch (error) {
             console.error('Failed to track event:', error);
+        }
+    }
+
+    /**
+     * Send a custom measurement to Coralogix RUM
+     */
+    sendCustomMeasurement(measurementName: string, value: number): void {
+        if (!this.isInitialized) {
+            return;
+        }
+
+        try {
+            CoralogixRum.sendCustomMeasurement(measurementName, value);
+        } catch (error) {
+            console.error('Failed to send custom measurement:', error);
+        }
+    }
+
+    /**
+     * Send a custom log event to Coralogix RUM
+     */
+    sendLog(message: string, severity?: CoralogixLogSeverity, additionalData?: Record<string, any>): void {
+        if (!this.isInitialized) {
+            return;
+        }
+
+        try {
+            CoralogixRum.log(severity || CoralogixLogSeverity.Info, message, additionalData);
+        } catch (error) {
+            console.error('Failed to send log:', error);
         }
     }
 
