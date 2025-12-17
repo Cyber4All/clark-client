@@ -989,7 +989,15 @@ export class BuilderStore {
       })
       .catch(e => {
         this.serviceInteraction$.next(false);
-        this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
+        if (e.status === 400) {
+          this.validator.errors.saveErrors.set(
+            'name',
+            e.error.message
+          );
+          this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
+        } else {
+          this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
+        }     
       });
   }
 
@@ -1008,7 +1016,15 @@ export class BuilderStore {
         this.serviceInteraction$.next(false);
       })
       .catch(e => {
-        this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
+        if (e.status === 400) {
+          const body = typeof e.error === 'string' ? JSON.parse(e.error) : e.error;
+          const errorMsg = body?.message?.[0]?.message?.[0] ?? ''
+            
+          this.validator.errors.saveErrors.set('name', errorMsg);
+          this.handleServiceError(e, BUILDER_ERRORS.SPECIAL_CHARACTER_NAME);
+        } else {
+          this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
+        }
       });
   }
 

@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
-import { distinctUntilChanged, switchMap, takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, switchMap, takeUntil, map, catchError } from 'rxjs/operators';
 import {
   BuilderStore,
   BUILDER_ACTIONS as actions
 } from '../../builder-store.service';
 import { LearningObject, User } from '@entity';
 import { COPY } from './info-page.copy';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, from } from 'rxjs';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 @Component({
@@ -75,30 +75,23 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
   private checkNameAvailability(name: string): Observable<void> {
     const trimmedName = (name || '').trim();
+    const duplicateErrorText =
+      'A learning object with this name already exists! The title should be unique within your learning objects.';
 
-    return new Observable<void>(observer => {
-      this.learningObjectService
-        .checkNameAvailability(trimmedName)
-        .then(available => {
-          const duplicateErrorText =
-            'A learning object with this name already exists! The title should be unique within your learning objects.';
-          const currentError = this.validator.errors.saveErrors.get('name');
+    return from(this.learningObjectService.checkNameAvailability(trimmedName)).pipe(
+      map(available => {
+        const currentError = this.validator.errors.saveErrors.get('name');
 
-          if (!available) {
-            this.validator.errors.saveErrors.set('name', duplicateErrorText);
-          } else if (currentError === duplicateErrorText) {
-            this.validator.errors.saveErrors.delete('name');
-          }
+        if (!available) {
+          this.validator.errors.saveErrors.set('name', duplicateErrorText);
+        } else if (currentError === duplicateErrorText) {
+          this.validator.errors.saveErrors.delete('name');
+        }
 
-          this.cd.markForCheck();
-          observer.next();
-          observer.complete();
-        })
-        .catch(() => {
-          observer.next();
-          observer.complete();
-        });
-    });
+        this.cd.markForCheck();
+      }),
+      catchError(() => of(void 0))
+    );
   }
 
   toggleContributor(user: User) {
