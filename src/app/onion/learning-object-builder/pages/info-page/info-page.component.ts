@@ -84,7 +84,8 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
         if (!available) {
           this.validator.errors.saveErrors.set('name', duplicateErrorText);
-        } else if (currentError === duplicateErrorText) {
+        } else {
+          // When the name is available, clear any existing name error to avoid stale duplicate errors.
           this.validator.errors.saveErrors.delete('name');
         }
 
