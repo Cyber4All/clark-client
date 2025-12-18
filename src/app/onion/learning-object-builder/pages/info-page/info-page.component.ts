@@ -78,14 +78,16 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     const duplicateErrorText =
       'A learning object with this name already exists! The title should be unique within your learning objects.';
 
+    // If the name is empty, skip the check and return early
+    if (!trimmedName) {
+      return of(void 0);
+    }
+
     return from(this.learningObjectService.checkNameAvailability(trimmedName)).pipe(
       map(available => {
-        const currentError = this.validator.errors.saveErrors.get('name');
-
         if (!available) {
           this.validator.errors.saveErrors.set('name', duplicateErrorText);
         } else {
-          // When the name is available, clear any existing name error to avoid stale duplicate errors.
           this.validator.errors.saveErrors.delete('name');
         }
 
