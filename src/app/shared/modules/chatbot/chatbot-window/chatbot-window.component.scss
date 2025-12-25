@@ -72,11 +72,10 @@
   .chatbot-header-buttons {
     gap: 10px;
 
-    svg {
-
+    i {
       cursor: pointer;
       pointer-events: auto;
-      padding: 1px 3px;
+      padding: 4px;
       border-radius: 3px;
       transition: background 0.2s, color 0.2s;
       width: 15px;
