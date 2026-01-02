@@ -212,7 +212,7 @@ export class ChatbotWindowComponent {
       };
 
       // Send custom measurement for tracking average rating
-      this.coralogixService.sendCustomMeasurement('CLARK AI Beta Rating', this.selectedRating);
+      this.coralogixService.sendCustomMeasurement('clark_ai.beta.rating', this.selectedRating);
 
       // Send custom log event with feedback data - corrected parameter order
       this.coralogixService.sendLog(
