@@ -32,6 +32,16 @@
   }
 }
 
+// Fade in animation
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .chatbot-window {
   position: fixed;
   bottom: 20px;
@@ -84,13 +94,14 @@
   .chatbot-header-buttons {
     gap: 10px;
 
-    svg {
-
+    i {
       cursor: pointer;
       pointer-events: auto;
-      padding: 1px 3px;
+      padding: 4px;
       border-radius: 3px;
-      transition: background 0.2s, color 0.2s;
+      transition:
+        background 0.2s,
+        color 0.2s;
       width: 15px;
       height: 15px;
       color: $dark-grey;
@@ -284,6 +295,8 @@
   background: rgba(0, 0, 0, 0.4);
   border-radius: 20px;
   z-index: 100;
+  opacity: 0;
+  animation: fadeIn 300ms ease-out forwards;
 }
 
 .feedback-overlay {
@@ -294,6 +307,8 @@
   z-index: 101;
   width: 90%;
   max-width: 320px;
+  opacity: 0;
+  animation: fadeIn 300ms ease-out forwards;
 }
 
 .feedback-card {

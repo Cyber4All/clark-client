@@ -13,17 +13,27 @@
       <div class="chatbot-header-buttons">
         <span
           (click)="minimizeChatbot()"
+          role="button"
+          tabindex="0"
+          (click)="minimizeChatbot()"
+          (keydown.enter)="minimizeChatbot()"
+          (keydown.space)="minimizeChatbot()"
           matTooltip="Minimize chat"
           matTooltipPosition="above"
         >
-          <i class="fal fa-window-minimize"></i>
+          <i class="fa-solid fa-window-minimize"></i>
         </span>
         <span
           (click)="closeChatbot()"
+          role="button"
+          tabindex="0"
+          (click)="minimizeChatbot()"
+          (keydown.enter)="minimizeChatbot()"
+          (keydown.space)="minimizeChatbot()"
           matTooltip="Close and clear chat"
           matTooltipPosition="above"
         >
-          <i class="fal fa-window-close"></i>
+          <i class="fa-solid fa-xmark"></i>
         </span>
       </div>
     </div>
@@ -83,7 +93,6 @@
   <div
     *ngIf="showFeedbackOverlay"
     class="feedback-overlay"
-    [@feedbackOverlayEnter]
   >
     <div class="feedback-card">
       <h3 class="feedback-title">Rate your CLARK AI beta experience</h3>
