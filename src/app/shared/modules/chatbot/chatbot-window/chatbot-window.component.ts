@@ -205,26 +205,20 @@ export class ChatbotWindowComponent {
       // Prepare the feedback data
       const feedbackData = {
         rating: this.selectedRating,
-        message: this.feedbackMessage.substring(0, 1000), // Cap at 1000 chars
-        component: 'clark-chatbot-container',
-        messageCountAtPrompt: this.messages.length,
-        route: this.router.url,
-        timestamp: new Date().toISOString(),
+        component: 'clark-chatbot-window',
+        event: 'user_feedback',
+        product: 'clark_ai',
+        surface: 'chatbot_beta',
       };
 
-      // Send custom measurement for the rating
-      this.coralogixService.sendCustomMeasurement('clark_ai.beta.rating', this.selectedRating);
+      // Send custom measurement for tracking average rating
+      this.coralogixService.sendCustomMeasurement('CLARK AI Beta Rating', this.selectedRating);
 
-      // Send custom log event with feedback data
+      // Send custom log event with feedback data - corrected parameter order
       this.coralogixService.sendLog(
-        'CLARK_AI_BETA_FEEDBACK',
         CoralogixLogSeverity.Info,
-        {
-          ...feedbackData,
-          event: 'user_feedback',
-          product: 'clark_ai',
-          surface: 'chatbot_beta',
-        }
+        this.feedbackMessage,
+        feedbackData
       );
 
       // Mark feedback as submitted

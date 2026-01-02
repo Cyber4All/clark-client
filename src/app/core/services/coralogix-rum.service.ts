@@ -30,9 +30,8 @@ export class CoralogixRumService {
             return;
         }
 
-        // Only initialize RUM in production environment
         if (!['production', 'staging', 'development'].includes(environment.environment)) {
-            console.log('Coralogix RUM skipped - not in production/staging environment');
+            console.log('Coralogix RUM skipped - not in production/staging/development environment');
             return;
         }
 
@@ -46,9 +45,6 @@ export class CoralogixRumService {
                 coralogixDomain: 'US1' as const,
             };
 
-            console.log('Initializing Coralogix RUM...');
-            console.log('RUM Configuration:', rumConfig);
-
             CoralogixRum.init(rumConfig);
 
             // Set additional labels for production tracking
@@ -58,7 +54,7 @@ export class CoralogixRumService {
             });
 
             this.isInitialized = true;
-            console.log('Coralogix RUM initialized successfully for production');
+            console.log('Coralogix RUM initialized successfully');
         } catch (error) {
             console.error('Failed to initialize Coralogix RUM:', error);
         }
@@ -131,14 +127,18 @@ export class CoralogixRumService {
 
     /**
      * Send a custom log event to Coralogix RUM
+     * @param severity - Log severity level
+     * @param message - Log message (appears in cx_rum.log_context.message)
+     * @param context - Additional context data (appears in cx_rum.log_context.data)
      */
-    sendLog(message: string, severity?: CoralogixLogSeverity, additionalData?: Record<string, any>): void {
+    sendLog(severity: CoralogixLogSeverity, message: string, context?: Record<string, any>): void {
         if (!this.isInitialized) {
             return;
         }
 
         try {
-            CoralogixRum.log(severity || CoralogixLogSeverity.Info, message, additionalData);
+            console.log('Sending log to Coralogix RUM:', severity, message, context);
+            CoralogixRum.log(severity, message, context);
         } catch (error) {
             console.error('Failed to send log:', error);
         }
