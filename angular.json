@@ -79,24 +79,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "clark:build"
+            "buildTarget": "clark:build"
           },
           "configurations": {
             "experimental": {
-              "browserTarget": "clark:build:experimental"
+              "buildTarget": "clark:build:experimental"
             },
             "production": {
-              "browserTarget": "clark:build:prod"
+              "buildTarget": "clark:build:prod"
             },
             "staging": {
-              "browserTarget": "clark:build:staging"
+              "buildTarget": "clark:build:staging"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "clark:build"
+            "buildTarget": "clark:build"
           }
         },
         "test": {
