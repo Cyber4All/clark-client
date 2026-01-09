@@ -1,0 +1,70 @@
+<clark-popup *ngIf="display" (closed)="onClose()">
+  <div #popupInner class="modal-container">
+    <div class="modal-title">Edit Organization</div>
+    <form class="material-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="editForm.name" name="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Sector</mat-label>
+        <mat-select [(ngModel)]="editForm.sector" name="sector">
+          <mat-option *ngFor="let sector of sectorOptions" [value]="sector">
+            {{ sector | titlecase }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-group">
+        <label class="section-label">Levels:</label>
+        <div class="levels-checkboxes">
+          <mat-checkbox
+            *ngFor="let level of levelOptions"
+            [checked]="editForm.levels.includes(level)"
+            (change)="toggleLevel(level)"
+            class="level-checkbox"
+          >
+            {{ level | titlecase }}
+          </mat-checkbox>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Country</mat-label>
+        <input matInput [(ngModel)]="editForm.country" name="country" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>State</mat-label>
+        <input matInput [(ngModel)]="editForm.state" name="state" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Domains (comma-separated)</mat-label>
+        <textarea
+          matInput
+          [(ngModel)]="editForm.domains"
+          name="domains"
+          rows="3"
+        ></textarea>
+      </mat-form-field>
+
+      <div class="btn-group center">
+        <button
+          type="button"
+          mat-raised-button
+          color="primary"
+          (click)="onSave()"
+        >
+          <mat-icon>check</mat-icon>
+          Save
+        </button>
+        <button type="button" mat-raised-button (click)="onClose()">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</clark-popup>

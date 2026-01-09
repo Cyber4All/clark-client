@@ -1,0 +1,25 @@
+<clark-popup *ngIf="display" (closed)="onClose()">
+  <div #popupInner class="modal-container center">
+    <div class="modal-title">Are You Sure?</div>
+    <p class="confirmation-text">
+      You are about to delete
+      <strong>{{ organization?.name }}</strong> from the system. This action
+      cannot be undone.
+    </p>
+    <div class="btn-group center">
+      <button
+        type="button"
+        mat-raised-button
+        color="warn"
+        (click)="onConfirm()"
+      >
+        <mat-icon>delete</mat-icon>
+        Yes, Delete
+      </button>
+      <button type="button" mat-raised-button (click)="onClose()">
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+    </div>
+  </div>
+</clark-popup>

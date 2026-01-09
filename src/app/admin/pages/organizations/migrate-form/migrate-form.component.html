@@ -1,0 +1,111 @@
+<clark-popup *ngIf="display" (closed)="onClose()">
+  <div #popupInner class="modal-container center">
+    <div class="modal-title">Migrate Users</div>
+    <p class="confirmation-text">
+      Migrate all {{ userCount }} user(s) from
+      <strong>{{ sourceOrganization?.name }}</strong> to another organization.
+    </p>
+
+    <mat-form-field appearance="outline" class="full-width search-org-field">
+      <mat-label>Search Target Organization</mat-label>
+      <input
+        matInput
+        type="text"
+        placeholder="Type to search organizations..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange()"
+        name="orgSearch"
+      />
+      <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+
+    <div class="organization-list" *ngIf="filteredOrganizations.length > 0">
+      <div
+        *ngFor="let org of filteredOrganizations"
+        class="org-item"
+        [class.selected]="selectedOrgId === org._id"
+        (click)="selectOrganization(org._id)"
+      >
+        <div class="org-name">
+          {{ org.name }}
+          <i
+            *ngIf="org.isVerified"
+            class="fas fa-check-circle verified-icon"
+            title="Verified"
+          ></i>
+        </div>
+        <div class="org-details">
+          {{ org.sector | titlecase }}
+        </div>
+      </div>
+    </div>
+    <div
+      class="no-results"
+      *ngIf="searchTerm && filteredOrganizations.length === 0"
+    >
+      No organizations found matching "{{ searchTerm }}"
+    </div>
+
+    <div class="btn-group center">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="onContinue()"
+        [disabled]="!selectedOrgId"
+      >
+        <mat-icon>sync_alt</mat-icon>
+        Continue
+      </button>
+      <button type="button" mat-raised-button (click)="onClose()">
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+    </div>
+  </div>
+</clark-popup>
+
+<clark-popup *ngIf="displayConfirm" (closed)="onConfirmClose()">
+  <div #popupInner class="modal-container center">
+    <div class="modal-title">Confirm Migration</div>
+    <p class="confirmation-text">
+      Are you sure you want to migrate
+      <strong>{{ userCount }} user(s)</strong> from
+      <strong>{{ sourceOrganization?.name }}</strong> to
+      <strong>{{ targetOrganization?.name }}</strong
+      >?
+    </p>
+    <p class="warning-text">
+      This action cannot be undone. After migration, the source organization
+      will have 0 users.
+    </p>
+
+    <mat-progress-bar
+      mode="indeterminate"
+      *ngIf="isProcessing"
+      class="progress-bar"
+    ></mat-progress-bar>
+
+    <div class="btn-group center">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="onMigrateConfirm()"
+        [disabled]="isProcessing"
+      >
+        <mat-icon>check</mat-icon>
+        Yes, Migrate
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        (click)="onConfirmClose()"
+        [disabled]="isProcessing"
+      >
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+    </div>
+  </div>
+</clark-popup>

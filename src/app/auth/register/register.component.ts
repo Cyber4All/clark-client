@@ -1,17 +1,17 @@
-import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
+import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
+import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { MatchValidator } from 'app/shared/validators/MatchValidator';
-import { Organization } from 'entity/organization';
-import { OrganizationService } from 'app/core/utility-module/organization.service';
-import { Subject, interval } from 'rxjs';
-import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
 import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
 import { UserService } from 'app/core/user-module/user.service';
-import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
+import { OrganizationService } from 'app/core/utility-module/organization.service';
+import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import { Organization } from 'entity';
+import { Subject, interval } from 'rxjs';
+import { debounce, debounceTime, takeUntil } from 'rxjs/operators';
 
 const EMAIL_REGEX =
   // eslint-disable-next-line max-len

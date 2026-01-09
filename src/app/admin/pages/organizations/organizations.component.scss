@@ -1,0 +1,698 @@
+@import 'src/_vars.scss';
+
+.list {
+  max-width: 100%;
+  position: relative;
+  margin: auto;
+  box-sizing: border-box;
+  min-height: 500px;
+  overflow: hidden;
+}
+
+// Material Table Styles
+.organizations-table {
+  width: 100%;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+
+  // Header styling
+  .mat-header-cell {
+    font-size: $small;
+    color: $dark-grey;
+    font-weight: 600;
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+    padding: 12px 16px;
+  }
+
+  // Cell styling
+  .mat-cell {
+    padding: 15px 16px;
+    color: $dark-grey;
+    font-size: $normal;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  // Row hover effect
+  .organization-row {
+    transition: background-color 0.2s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #f9f9f9;
+    }
+  }
+
+  // Inline action icons
+  .action-icons {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .action-icon-button {
+    color: $dark-grey;
+    transition: color 0.2s;
+
+    &:hover:not(:disabled) {
+      color: $light-blue;
+    }
+
+    &.migrate:hover:not(:disabled) {
+      color: #ff9800;
+    }
+
+    &.delete:hover:not(:disabled) {
+      color: #f44336;
+    }
+
+    &:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  // Status icon (verified/unverified)
+  .status-icon {
+    transition: all 0.2s ease;
+
+    &.verified {
+      color: #4caf50;
+    }
+
+    &.unverified {
+      color: #f44336;
+    }
+  }
+
+  // Sector badge
+  .sector-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #e3f2fd;
+    color: #1565c0;
+    border-radius: 12px;
+    font-size: $smaller;
+    font-weight: 500;
+  }
+
+  // Levels list with Material chips
+  .levels-list {
+    mat-chip-list {
+      .mat-chip-list-wrapper {
+        margin: -2px;
+      }
+    }
+
+    mat-chip {
+      margin: 2px;
+      font-size: $smaller;
+
+      &.more-chip {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+// Search and Filter Row
+.search-filter-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+
+  .search-section {
+    flex: 1;
+    min-width: 300px;
+
+    .search-field {
+      width: 100%;
+
+      ::ng-deep {
+        .mat-form-field-wrapper {
+          padding-bottom: 0;
+        }
+
+        .mat-form-field-flex {
+          background: white;
+          border-radius: 5px;
+          box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.05);
+          transition: all 0.2s ease;
+          padding: 0 12px;
+          height: 44px;
+          align-items: center;
+        }
+
+        .mat-form-field-outline {
+          display: none;
+        }
+
+        .mat-form-field-infix {
+          border-top: 0;
+          padding: 6px 0;
+        }
+
+        input.mat-input-element {
+          font-size: $small;
+        }
+
+        .mat-form-field-prefix {
+          .search-icon {
+            color: $light-blue;
+            font-size: 18px;
+            margin-right: 8px;
+          }
+        }
+
+        &.mat-focused .mat-form-field-flex {
+          box-shadow: 0 0 16px 2px rgba(33, 150, 243, 0.1);
+        }
+      }
+    }
+  }
+
+  .inline-filters {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    .filter-field {
+      min-width: 140px;
+
+      ::ng-deep {
+        .mat-form-field-wrapper {
+          padding-bottom: 0;
+        }
+
+        .mat-form-field-flex {
+          background: white;
+          border-radius: 5px;
+          box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.05);
+          transition: all 0.2s ease;
+          padding: 0 12px;
+          height: 44px;
+          align-items: center;
+        }
+
+        .mat-form-field-outline {
+          display: none;
+        }
+
+        .mat-form-field-infix {
+          border-top: 0;
+          padding: 6px 0;
+        }
+
+        .mat-select-value {
+          font-size: $small;
+        }
+
+        .mat-select-arrow {
+          color: $light-blue;
+        }
+
+        &.mat-focused .mat-form-field-flex {
+          box-shadow: 0 0 16px 2px rgba(33, 150, 243, 0.1);
+        }
+      }
+    }
+  }
+}
+
+// Filter Controls
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  label {
+    font-size: $small;
+    font-weight: 500;
+    color: $dark-grey;
+    white-space: nowrap;
+    margin: 0;
+  }
+
+  .filter-select {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: $small;
+    color: $dark-grey;
+    background: white;
+    cursor: pointer;
+    min-width: 120px;
+    transition: border-color 0.2s;
+
+    &:focus {
+      outline: none;
+      border-color: $light-blue;
+    }
+
+    &:hover {
+      border-color: #999;
+    }
+  }
+}
+
+// Override Material sort header styles
+::ng-deep {
+  .mat-sort-header-arrow {
+    color: $dark-grey;
+  }
+
+  .mat-sort-header-button {
+    &:hover {
+      color: $light-blue;
+    }
+  }
+}
+
+.empty-template {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  color: $dark-grey;
+  font-size: $normal;
+}
+
+.empty-template__top {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  color: $dark-grey;
+  font-size: $larger;
+  margin-bottom: 10px;
+}
+
+.svg-inline--fa {
+  font-size: $largest;
+  margin-right: 10px;
+}
+
+.loadingOrFinished__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: $dark-grey;
+  font-size: $large;
+  padding: 40px;
+
+  .svg-inline--fa {
+    color: $light-blue;
+    font-size: $larger;
+    margin-bottom: 20px;
+  }
+}
+
+.modal-container {
+  padding: 30px;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+
+  &.center {
+    text-align: center;
+  }
+
+  .modal-title {
+    font-size: $larger;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: $dark-grey;
+  }
+
+  .confirmation-text {
+    font-size: $normal;
+    color: $dark-grey;
+    margin-bottom: 24px;
+    line-height: 1.5;
+
+    strong {
+      color: #d32f2f;
+      font-weight: 600;
+    }
+  }
+
+  // Material Form Styles
+  .material-form {
+    .full-width {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+
+    .section-label {
+      display: block;
+      font-weight: 500;
+      color: $dark-grey;
+      margin-bottom: 12px;
+      margin-top: 8px;
+      font-size: $normal;
+    }
+
+    .levels-checkboxes {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 16px;
+
+      .level-checkbox {
+        ::ng-deep .mat-checkbox-label {
+          font-size: $small;
+        }
+      }
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+
+    button {
+      min-width: 120px;
+    }
+  }
+
+  // Migrate modal organization list
+  .search-org-field {
+    margin-bottom: 16px;
+    width: 100%;
+  }
+
+  .organization-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 16px;
+
+    .org-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      &.selected {
+        background-color: rgba($light-blue, 0.1);
+        border-left: 3px solid $light-blue;
+      }
+
+      &.disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .org-name {
+        font-weight: 500;
+        color: $dark-grey;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .verified-icon {
+          color: #4caf50;
+          font-size: 14px;
+        }
+      }
+
+      .org-details {
+        font-size: $smaller;
+        color: #666;
+      }
+    }
+  }
+
+  .no-results {
+    padding: 24px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+  }
+
+  // Stepper styles for migrate modal
+  .migrate-modal {
+    max-width: 700px;
+    width: 100%;
+
+    ::ng-deep .mat-stepper-vertical {
+      margin-top: 16px;
+    }
+
+    ::ng-deep .mat-step-header {
+      padding: 16px 24px;
+
+      .mat-step-icon {
+        background-color: $light-blue;
+      }
+
+      .mat-step-icon-selected {
+        background-color: $light-blue;
+      }
+    }
+
+    .step-content {
+      padding: 24px 16px;
+    }
+
+    .stepper-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 16px;
+      border-top: 1px solid #e0e0e0;
+
+      button {
+        mat-icon {
+          font-size: 18px;
+          height: 18px;
+          width: 18px;
+        }
+
+        &[color='primary'] {
+          mat-icon {
+            margin-left: 4px;
+          }
+        }
+
+        &:not([color='primary']) {
+          mat-icon {
+            margin-right: 4px;
+          }
+        }
+      }
+    }
+
+    .confirm-text {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      color: $dark-grey;
+
+      strong {
+        color: $dark-grey;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .confirm-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .confirm-actions button mat-icon {
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+    margin-left: 4px;
+  }
+
+  // Migrate modal organization list
+  .search-org-field {
+    margin-bottom: 16px;
+    width: 100%;
+  }
+
+  .organization-list {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    margin-bottom: 16px;
+
+    .org-item {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+      cursor: pointer;
+      transition: all 0.2s;
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      &.selected {
+        background-color: rgba($light-blue, 0.1);
+        border-left: 3px solid $light-blue;
+      }
+
+      &.disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .org-name {
+        font-weight: 500;
+        color: $dark-grey;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .verified-icon {
+          color: #4caf50;
+          font-size: 14px;
+        }
+      }
+
+      .org-details {
+        font-size: $smaller;
+        color: #666;
+      }
+    }
+  }
+
+  .no-results {
+    padding: 24px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+  }
+
+  .certification-checkbox {
+    display: block;
+    margin-bottom: 16px;
+
+    ::ng-deep .mat-checkbox-label {
+      font-size: $small;
+      line-height: 1.5;
+      color: #666;
+    }
+
+    ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+      background-color: $light-blue;
+    }
+  }
+
+  .migration-progress {
+    margin: 16px 0;
+  }
+
+  .warning-text {
+    color: #ff9800;
+    font-size: $small;
+    margin-top: 12px;
+    padding: 12px;
+    background-color: rgba(255, 152, 0, 0.1);
+    border-radius: 4px;
+    border-left: 3px solid #ff9800;
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .organizations-table {
+    .mat-header-cell,
+    .mat-cell {
+      padding: 10px 8px;
+      font-size: $smaller;
+    }
+
+    .levels-list mat-chip {
+      font-size: 10px;
+    }
+  }
+
+  .search-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+
+    .search-section {
+      width: 100%;
+    }
+
+    .inline-filters {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 0;
+
+      .filter-select {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-container {
+    padding: 20px;
+    max-width: 90vw;
+
+    .material-form .levels-checkboxes {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .organizations-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+
+    .mat-header-cell,
+    .mat-cell {
+      padding: 8px 6px;
+    }
+  }
+}
