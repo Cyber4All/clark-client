@@ -38,4 +38,4 @@ import { LearningObjectListingComponent } from './learning-object/learning-objec
   ],
   providers: [ProfileResovler]
 })
-export class CubeSharedModule {}
+export class CubeSharedModule { }
