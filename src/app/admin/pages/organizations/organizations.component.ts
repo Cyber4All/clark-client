@@ -32,12 +32,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   organizations: Organization[] = [];
   dataSource: MatTableDataSource<Organization>;
-  displayedColumns: string[] = ['verified', 'name', 'users', 'sector', 'levels', 'actions'];
+  displayedColumns: string[] = ['verified', 'name', 'users', 'learningObjects', 'sector', 'levels', 'actions'];
   searchBarPlaceholder = 'Organizations';
   searchValue = '';
 
   // Map to store consistent user counts for each organization
   private userCountMap: Map<string, number> = new Map();
+  private learningObjectCountMap: Map<string, number> = new Map();
 
   // Filter options
   verifiedFilter: 'all' | 'verified' | 'unverified' = 'all';
@@ -47,6 +48,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   displayEditModal = false;
   displayDeleteModal = false;
   displayMigrateModal = false;
+  isCreateMode = false;
   displayMigrateConfirmModal = false;
   selectedOrganization: Organization | null = null;
   migrateTargetOrgId = '';
@@ -507,6 +509,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    * Open edit modal for organization
    */
   openEditModal(org: Organization): void {
+    this.isCreateMode = false;
     this.selectedOrganization = { ...org };
     this.editForm = {
       name: org.name,
@@ -528,6 +531,29 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     });
   }
 
+  openCreateModal(): void {
+    this.isCreateMode = true;
+    this.selectedOrganization = null;
+    this.editForm = {
+      name: '',
+      sector: 'academia',
+      levels: [],
+      country: '',
+      state: '',
+      domains: [],
+    };
+    this.newDomain = '';
+    this.editCertified = false;
+    this.displayEditModal = true;
+
+    // Reset stepper to first step
+    setTimeout(() => {
+      if (this.editStepper) {
+        this.editStepper.reset();
+      }
+    });
+  }
+
   /**
    * Close edit modal
    */
@@ -536,6 +562,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.selectedOrganization = null;
     this.newDomain = '';
     this.editCertified = false;
+    this.isCreateMode = false;
   }
 
   /**
@@ -564,35 +591,77 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   /**
-   * Save organization changes
+   * Check if organization name already exists
+   */
+  isNameDuplicate(): boolean {
+    if (!this.editForm.name || !this.isCreateMode) {
+      return false;
+    }
+    const normalizedName = this.editForm.name.toLowerCase().trim();
+    return this.organizations.some(
+      (org) => org.normalizedName === normalizedName
+    );
+  }
+
+  /**
+   * Save organization changes or create new organization
    */
   saveOrganization(): void {
-    if (!this.selectedOrganization) {
-      return;
-    }
+    if (this.isCreateMode) {
+      // Validate unique name
+      if (!this.editForm.name || this.isNameDuplicate()) {
+        this.toaster.error('Error', 'Organization name is required and must be unique.');
+        return;
+      }
 
-    const updatedOrg: Organization = {
-      ...this.selectedOrganization,
-      name: this.editForm.name,
-      normalizedName: this.editForm.name.toLowerCase().trim(),
-      sector: this.editForm.sector,
-      levels: this.editForm.levels,
-      country: this.editForm.country || undefined,
-      state: this.editForm.state || undefined,
-      domains: this.editForm.domains,
-      updatedAt: new Date(),
-    };
+      // Create new organization
+      const newOrg: Organization = {
+        _id: (this.organizations.length + 1).toString(),
+        name: this.editForm.name,
+        normalizedName: this.editForm.name.toLowerCase().trim(),
+        sector: this.editForm.sector,
+        levels: this.editForm.levels,
+        country: this.editForm.country || undefined,
+        state: this.editForm.state || undefined,
+        domains: this.editForm.domains,
+        isVerified: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
 
-    // Find and update in the organizations array
-    const index = this.organizations.findIndex(
-      (org) => org._id === updatedOrg._id
-    );
-    if (index !== -1) {
-      this.organizations[index] = updatedOrg;
+      this.organizations.push(newOrg);
       this.dataSource.data = this.organizations;
+      this.toaster.success('Success!', 'Organization created successfully.');
+    } else {
+      // Update existing organization
+      if (!this.selectedOrganization) {
+        return;
+      }
+
+      const updatedOrg: Organization = {
+        ...this.selectedOrganization,
+        name: this.editForm.name,
+        normalizedName: this.editForm.name.toLowerCase().trim(),
+        sector: this.editForm.sector,
+        levels: this.editForm.levels,
+        country: this.editForm.country || undefined,
+        state: this.editForm.state || undefined,
+        domains: this.editForm.domains,
+        updatedAt: new Date(),
+      };
+
+      // Find and update in the organizations array
+      const index = this.organizations.findIndex(
+        (org) => org._id === updatedOrg._id
+      );
+      if (index !== -1) {
+        this.organizations[index] = updatedOrg;
+        this.dataSource.data = this.organizations;
+      }
+
+      this.toaster.success('Success!', 'Organization updated successfully.');
     }
 
-    this.toaster.success('Success!', 'Organization updated successfully.');
     this.closeEditModal();
   }
 
@@ -649,6 +718,14 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       this.userCountMap.set(org._id, Math.floor(Math.random() * 500) + 1);
     }
     return this.userCountMap.get(org._id) || 0;
+  }
+
+  getLearningObjectCount(org: Organization): number {
+    // Mock data - in real implementation, this would come from backend
+    if (!this.learningObjectCountMap.has(org._id)) {
+      this.learningObjectCountMap.set(org._id, Math.floor(Math.random() * 1000) + 1);
+    }
+    return this.learningObjectCountMap.get(org._id) || 0;
   }
 
   /**

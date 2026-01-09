@@ -58,6 +58,19 @@
     </div>
   </div>
 
+  <!-- Create Button Row -->
+  <div class="button-row" search>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openCreateModal()"
+      class="create-org-button"
+    >
+      <mat-icon>add</mat-icon>
+      New Organization
+    </button>
+  </div>
+
   <div #list class="list" main>
     <div *ngIf="dataSource.data?.length; else emptyTemplate">
       <table
@@ -97,6 +110,16 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Users</th>
           <td mat-cell *matCellDef="let organization">
             {{ getUserCount(organization) }}
+          </td>
+        </ng-container>
+
+        <!-- Learning Objects Column -->
+        <ng-container matColumnDef="learningObjects">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            Learning Objects
+          </th>
+          <td mat-cell *matCellDef="let organization">
+            {{ getLearningObjectCount(organization) }}
           </td>
         </ng-container>
 
@@ -209,17 +232,36 @@
 
 <clark-popup *ngIf="displayEditModal" (closed)="closeEditModal()">
   <div #popupInner class="modal-container edit-modal">
-    <div class="modal-title">Edit Organization</div>
+    <div class="modal-title">
+      {{ isCreateMode ? 'Create Organization' : 'Edit Organization' }}
+    </div>
     <form class="material-form">
-      <mat-vertical-stepper [linear]="true" #editStepper>
+      <mat-vertical-stepper [linear]="!isCreateMode" #editStepper>
         <!-- Step 1: General Information -->
         <mat-step>
           <ng-template matStepLabel>General Information</ng-template>
           <div class="step-content">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Name</mat-label>
-              <input matInput [(ngModel)]="editForm.name" name="name" />
+              <input
+                matInput
+                [(ngModel)]="editForm.name"
+                name="name"
+                required
+                #nameInput="ngModel"
+              />
+              <mat-error
+                *ngIf="nameInput.invalid && nameInput.errors?.['required']"
+              >
+                Name is required
+              </mat-error>
             </mat-form-field>
+            <div
+              class="duplicate-error"
+              *ngIf="isCreateMode && editForm.name && isNameDuplicate()"
+            >
+              This organization name already exists
+            </div>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Sector</mat-label>
@@ -245,9 +287,6 @@
                   {{ formatLevelName(level) | titlecase }}
                 </mat-option>
               </mat-select>
-              <mat-hint *ngIf="editForm.sector !== 'academia'">
-                Levels are only available for Academia sector
-              </mat-hint>
             </mat-form-field>
 
             <div class="domains-section">
@@ -296,11 +335,25 @@
               <mat-label>Country</mat-label>
               <input matInput [(ngModel)]="editForm.country" name="country" />
             </mat-form-field>
+
+            <!-- Create button for create mode -->
+            <div class="confirm-actions" *ngIf="isCreateMode">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                [disabled]="!editForm.name || isNameDuplicate()"
+                (click)="saveOrganization()"
+              >
+                Create Organization
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
           </div>
         </mat-step>
 
-        <!-- Step 3: Confirmation -->
-        <mat-step>
+        <!-- Step 3: Confirmation (Edit Mode Only) -->
+        <mat-step *ngIf="!isCreateMode">
           <ng-template matStepLabel>Confirm Changes</ng-template>
           <div class="step-content">
             <p class="confirm-text">
