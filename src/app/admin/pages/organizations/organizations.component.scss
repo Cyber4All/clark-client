@@ -292,6 +292,28 @@
   text-align: center;
 }
 
+.edit-modal {
+  min-width: 700px;
+  max-width: 700px;
+  width: 700px;
+}
+
+.edit-modal ::ng-deep .mat-stepper-vertical {
+  margin-top: 16px;
+}
+
+.edit-modal ::ng-deep .mat-step-header {
+  padding: 16px 24px;
+}
+
+.edit-modal ::ng-deep .mat-step-icon {
+  background-color: $light-blue;
+}
+
+.edit-modal ::ng-deep .mat-step-icon-selected {
+  background-color: $light-blue;
+}
+
 .modal-title {
   font-size: $larger;
   font-weight: 600;
@@ -320,6 +342,45 @@
   margin-bottom: 16px;
 }
 
+.form-section {
+  margin-bottom: 32px;
+}
+
+.section-header {
+  font-size: 18px;
+  font-weight: 600;
+  color: $dark-grey;
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.subsection-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: $dark-grey;
+  margin: 12px 0 8px 0;
+}
+
+.domains-section {
+  margin-top: 16px;
+}
+
+.domains-section .mat-mdc-form-field {
+  margin-bottom: 0px !important;
+}
+
+.stepper-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 0;
+}
+
+.stepper-actions button {
+  min-width: 120px;
+}
+
 .section-label {
   display: block;
   font-weight: 500;
@@ -338,6 +399,22 @@
 
 .level-checkbox ::ng-deep .mat-checkbox-label {
   font-size: $small;
+}
+
+.domain-list {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.domain-list mat-chip {
+  margin: 4px;
+}
+
+.no-domains {
+  color: #999;
+  font-size: $small;
+  font-style: italic;
+  margin: 0;
 }
 
 .btn-group {
@@ -380,7 +457,7 @@
 }
 
 .step-content {
-  padding: 24px 16px;
+  padding: 16px 16px 8px 16px;
 }
 
 .search-org-field {

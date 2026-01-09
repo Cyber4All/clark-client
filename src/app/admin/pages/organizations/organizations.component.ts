@@ -28,6 +28,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('stepper') stepper: MatStepper;
+  @ViewChild('editStepper') editStepper: MatStepper;
 
   organizations: Organization[] = [];
   dataSource: MatTableDataSource<Organization>;
@@ -53,6 +54,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   filteredTargetOrganizations: Organization[] = [];
   isMigrating = false;
   migrateCertified = false;
+  editCertified = false;
 
   loading = false;
   userSearchInput$: Subject<string> = new Subject();
@@ -85,8 +87,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     levels: [] as OrganizationLevel[],
     country: '',
     state: '',
-    domains: '', // comma-separated
+    domains: [] as string[],
   };
+
+  newDomain = '';
 
   constructor(
     private toaster: ToastrOvenService,
@@ -510,9 +514,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       levels: [...org.levels],
       country: org.country || '',
       state: org.state || '',
-      domains: org.domains.join(', '),
+      domains: [...org.domains],
     };
+    this.newDomain = '';
+    this.editCertified = false;
     this.displayEditModal = true;
+
+    // Reset stepper to first step
+    setTimeout(() => {
+      if (this.editStepper) {
+        this.editStepper.reset();
+      }
+    });
   }
 
   /**
@@ -521,6 +534,33 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   closeEditModal(): void {
     this.displayEditModal = false;
     this.selectedOrganization = null;
+    this.newDomain = '';
+    this.editCertified = false;
+  }
+
+  /**
+   * Add domain to the list
+   */
+  addDomain(): void {
+    const domain = this.newDomain.trim();
+    if (domain && !this.editForm.domains.includes(domain)) {
+      this.editForm.domains.push(domain);
+      this.newDomain = '';
+    }
+  }
+
+  /**
+   * Remove domain from the list
+   */
+  removeDomain(index: number): void {
+    this.editForm.domains.splice(index, 1);
+  }
+
+  /**
+   * Format level name for display (replace underscores with spaces)
+   */
+  formatLevelName(level: string): string {
+    return level.replace(/_/g, ' ');
   }
 
   /**
@@ -531,11 +571,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return;
     }
 
-    const domainsList = this.editForm.domains
-      .split(',')
-      .map((d: string) => d.trim())
-      .filter((d: string) => d.length > 0);
-
     const updatedOrg: Organization = {
       ...this.selectedOrganization,
       name: this.editForm.name,
@@ -544,7 +579,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       levels: this.editForm.levels,
       country: this.editForm.country || undefined,
       state: this.editForm.state || undefined,
-      domains: domainsList,
+      domains: this.editForm.domains,
       updatedAt: new Date(),
     };
 
