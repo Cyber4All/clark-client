@@ -1,32 +1,44 @@
-import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+  EventEmitter,
+} from '@angular/core';
 
 @Component({
   selector: 'clark-new-rating',
   templateUrl: './new-rating.component.html',
-  styleUrls: ['./new-rating.component.scss']
+  styleUrls: ['./new-rating.component.scss'],
 })
 export class NewRatingComponent implements OnInit, OnChanges {
   @Input() count = 5;
-  @Input() rating: {value: number, comment: string, id: string};
+  @Input() rating: { value: number; comment: string; id: string };
   @Input() editing = false;
-  @Output() setRating: EventEmitter<{value: number, comment: string, id?: string, editing?: boolean}> = new EventEmitter();
+  @Output() setRating: EventEmitter<{
+    value: number;
+    comment: string;
+    id?: string;
+    editing?: boolean;
+  }> = new EventEmitter();
   @Output() cancelRating: EventEmitter<void> = new EventEmitter();
   iterableCount: Array<any>;
 
-  tips = [
-    'Poor',
-    'Needs Work',
-    'Average',
-    'Good',
-    'Excellent'
-  ];
+  tips = ['Poor', 'Needs Work', 'Average', 'Good', 'Excellent'];
 
   activeHover = -1;
   activePanel = 0;
 
   oldRating: number;
 
-  constructor() { }
+  constructor() {}
+
+  get isSubmitDisabled(): boolean {
+    const comment = this.rating?.comment?.trim() || '';
+    return comment === '' || comment.length > 512;
+  }
 
   ngOnInit() {
     this.iterableCount = Array(this.count).fill(0);
@@ -68,7 +80,7 @@ export class NewRatingComponent implements OnInit, OnChanges {
   }
 
   submitRating() {
-    this.setRating.emit({...this.rating, editing: this.editing});
+    this.setRating.emit({ ...this.rating, editing: this.editing });
   }
 
   cancel() {
@@ -76,6 +88,9 @@ export class NewRatingComponent implements OnInit, OnChanges {
   }
 
   starShouldShow(i: number): boolean {
-    return (this.activeHover !== -1 && i <= this.activeHover) || (this.activeHover === -1 && this.rating && i < this.rating.value);
+    return (
+      (this.activeHover !== -1 && i <= this.activeHover) ||
+      (this.activeHover === -1 && this.rating && i < this.rating.value)
+    );
   }
 }
