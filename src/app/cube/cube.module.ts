@@ -50,6 +50,7 @@ import { ProfileHeaderComponent } from './user-profile/components/profile-header
 import { EditProfileComponent } from './user-profile/components/edit-profile/edit-profile.component';
 import { HomeModule } from './home/home.module';
 import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/philosophy.component';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 
 /**
@@ -82,10 +83,7 @@ import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/ph
     EditProfileComponent,
     AboutPhilosophyComponent,
   ],
-  schemas: [
-    NO_ERRORS_SCHEMA,
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
+  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     // Angular imports
     FormsModule,
@@ -109,7 +107,8 @@ import { AboutPhilosophyComponent } from './content-pages/about-us/philosophy/ph
     MatExpansionModule,
     MatListModule,
     MatExpansionModule,
-    HomeModule
+    HomeModule,
+    VirtualScrollerModule,
   ],
 })
-export class CubeModule { }
+export class CubeModule {}

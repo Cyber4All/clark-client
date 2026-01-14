@@ -3,8 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
+
 // CLARK Modules
 import { SharedDirectivesModule } from '../directives/shared-directives.module';
 import { SharedPipesModule } from '../pipes/shared-pipes.module';
@@ -27,12 +26,12 @@ import { AddEvaluatorComponent } from './add-evaluator/add-evaluator.component';
 import { UserDropdownComponent } from './add-evaluator/components/user-dropdown/user-dropdown.component';
 import { InputFieldComponent } from './input-field/input-field.component';
 import { MatInputModule } from '@angular/material/input';
-
 // eslint-disable-next-line max-len
 import { HighlightedLearningObjectComponent } from './add-evaluator/components/highlighted-learning-object/highlighted-learning-object.component';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { AuthorCardComponent } from 'app/shared/components/author-card/author-card.component';
 import { CollectionsDropdownComponent } from './collections-dropdown/collections-dropdown.component';
+import { MatIconModule } from '@angular/material/icon';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 @NgModule({
   imports: [
@@ -43,12 +42,11 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     RouterModule,
     MatInputModule,
     // third-party modules
-    VirtualScrollerModule,
     // CLARK modules
     SharedDirectivesModule,
     SharedPipesModule,
     MatIconModule,
-    MatTooltipModule,
+    VirtualScrollerModule,
   ],
   declarations: [
     // components
@@ -91,8 +89,6 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     AddEvaluatorComponent,
     InputFieldComponent,
     AuthorCardComponent,
-    MatTooltipModule,
-    MatIconModule,
   ],
 })
-export class SharedComponents {}
+export class SharedComponents { }

@@ -12,9 +12,11 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorBannerComponent } from './components/error-banner/error-banner.component';
 import { RecaptchaDirective } from './register/components/recaptcha/recaptcha.directive';
-import { RegistrationProgressComponent } from './register/components/registration-progress/registration-progress.component';
+import {
+  RegistrationProgressComponent
+} from './register/components/registration-progress/registration-progress.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,6 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     ReactiveFormsModule,
     SharedModule,
     VirtualScrollerModule,
-  ]
+  ],
 })
 export class AuthModule { }
