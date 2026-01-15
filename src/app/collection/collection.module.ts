@@ -1,4 +1,8 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatRadioModule } from '@angular/material/radio';
@@ -7,7 +11,6 @@ import { GenericPageComponent } from './pages/generic-page/generic-page.componen
 import { SecurityInjectionsComponent } from './pages/security-injections/security-injections.component';
 import { XPCyberModule } from './pages/xp-cyber/xp-cyber.module';
 import { CollectionsRoutingModule } from './collection.routing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
 import { Collection502Component } from './pages/collection-502/collection-502.component';
 import { IncludedModule } from './shared/included/included.module';
@@ -25,13 +28,12 @@ import { HeaderInfo502Component } from './pages/collection-502/components/header
 import { CuratorCardComponent } from './pages/collection-502/components/curators/components/curator-card/curator-card.component';
 import { TitleComponent } from './pages/collection-502/components/title/title.component';
 import { FeaturedComponent } from './pages/collection-502/components/featured/featured.component';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatIconModule } from '@angular/material/icon';
 import { NcyteDashboardComponent } from './pages/collection-ncyte/dashboard/dashboard.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SecurityInjectionsHeaderComponent } from './pages/security-injections/components/header/header.component';
 import { MatCardModule } from '@angular/material/card';
@@ -74,12 +76,9 @@ import { AboutWithCyberComponent } from './pages/tags/tag-with-cyber/components/
     CyberskillsFiltersComponent,
     TagWithCyberComponent,
     HeaderWithCyberComponent,
-    AboutWithCyberComponent
+    AboutWithCyberComponent,
   ],
-  schemas: [
-    NO_ERRORS_SCHEMA,
-    CUSTOM_ELEMENTS_SCHEMA
-  ],
+  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     IncludedModule,
@@ -89,7 +88,6 @@ import { AboutWithCyberComponent } from './pages/tags/tag-with-cyber/components/
     SharedModule,
     CubeSharedModule,
     MatSlideToggleModule,
-    MatIconModule,
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,

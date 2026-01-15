@@ -4,12 +4,11 @@ import { TitleCasePipe } from '@angular/common';
 
 import { UrlSerializer } from '@angular/router';
 import { CustomUrlSerializer } from './core/learning-object-module/custom-url-serliazer';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
@@ -26,6 +25,7 @@ import { RedirectComponent } from './redirect/redirect.component';
 import { SafeHtmlPipe } from './components/safe-html.pipe';
 import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor';
 import { CoralogixRumService } from './core/services/coralogix-rum.service';
+import { ChatbotModule } from 'app/shared/modules/chatbot/chatbot.module';
 
 @NgModule({
   imports: [
@@ -34,7 +34,8 @@ import { CoralogixRumService } from './core/services/coralogix-rum.service';
     SharedModule,
     BrowserAnimationsModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ChatbotModule,
   ],
   declarations: [
     ClarkComponent,
@@ -49,20 +50,24 @@ import { CoralogixRumService } from './core/services/coralogix-rum.service';
     PrimaryNavbarComponent,
     SecondaryNavbarComponent,
     RedirectComponent,
-    SafeHtmlPipe
+    SafeHtmlPipe,
   ],
   bootstrap: [ClarkComponent],
   providers: [
     TitleCasePipe,
     Title,
     { provide: UrlSerializer, useClass: CustomUrlSerializer },
-    { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpConfigInterceptor,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: (rumService: CoralogixRumService) => () => rumService.init(),
       deps: [CoralogixRumService],
-      multi: true
+      multi: true,
     },
-  ]
+  ],
 })
-export class ClarkModule { }
+export class ClarkModule {}

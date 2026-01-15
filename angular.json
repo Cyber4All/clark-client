@@ -23,6 +23,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/legacy-prebuilt-themes/legacy-pink-bluegrey.css",
+              "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/globals.scss",
               "src/mat-input.scss"
             ],

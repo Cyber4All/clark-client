@@ -1,7 +1,7 @@
 <ng-template #desktop>
     <div class="desktop-navbar" *ngIf="showNav">
         <div class="nav-wrapper">
-            <a [routerLink]="['/home']">    
+            <a [routerLink]="['/home']">
                 <div class="logo">
                     <span class="logo-image"></span>
                     <span id="clark-logo" class="logo-link">CLARK</span>
@@ -20,8 +20,10 @@
                 </button>
                 <div #userDropdownAnchor>
                     <div class="logged-in" *ngIf="isLoggedIn">
-                        <div class="profile-picture" id="profile" [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
-                        <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span style="margin-left: 2px">{{ this.auth.headerName | titlecase }}</span>
+                        <div class="profile-picture" id="profile"
+                            [ngStyle]="{'background-image': 'url(' + gravatarImage(50) + ')'}"></div>
+                        <div class="username" (click)="dropdowns.toggleUserDropdown()">Hi, <span
+                                style="margin-left: 2px">{{ this.auth.headerName | titlecase }}</span>
                             <span class="arrow" *ngIf="!userDropdown">
                                 <i class="fas fa-chevron-down"></i>
                             </span>
@@ -30,23 +32,38 @@
                             </span>
                         </div>
                     </div>
-                    
-                    <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor" (close)="dropdowns.closeAll()">
+
+                    <clark-context-menu *ngIf="userDropdown" [anchor]="userDropdownAnchor"
+                        (close)="dropdowns.closeAll()">
                         <div #contextMenu class="context-popup">
                             <ul>
-                                <li tabindex="0" *ngIf="auth.hasCuratorAccess()" [routerLink]="['admin']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
-                                <li tabindex="0" [routerLink]="['library']" (activate)="dropdowns.toggleUserDropdown()"><i class="fas fa-books"></i>Library<span *ngIf="notificationService.userNotifications?.notifications?.length > 0" class="notifications"> {{ notificationService.userNotifications?.lastPage }}</span></li>
-                                <li tabindex="0" [routerLink]="['onion', 'dashboard']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-columns"></i>Dashboard</li>
-                                <li tabindex="0" [routerLink]="['users', auth.user?.username]" id="clark-user-dropdown" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-user"></i>Profile</li>
-                                <li tabindex="0" [routerLink]="['auth', 'forgot-password']" (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-unlock-alt"></i>Change Password</li>
-                                <li tabindex="0" (activate)="auth.logout(); dropdowns.toggleUserDropdown()"><i class="far fa-sign-out"></i>Sign Out</li>
+                                <li tabindex="0" *ngIf="auth.hasCuratorAccess()" [routerLink]="['admin']"
+                                    (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-tools"></i> {{
+                                    auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
+                                <li tabindex="0" [routerLink]="['library']" (activate)="dropdowns.toggleUserDropdown()">
+                                    <i class="fas fa-books"></i>Library<span
+                                        *ngIf="notificationService.userNotifications?.notifications?.length > 0"
+                                        class="notifications"> {{ notificationService.userNotifications?.lastPage
+                                        }}</span></li>
+                                <li tabindex="0" [routerLink]="['onion', 'dashboard']"
+                                    (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-columns"></i>Dashboard
+                                </li>
+                                <li tabindex="0" [routerLink]="['users', auth.user?.username]" id="clark-user-dropdown"
+                                    (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-user"></i>Profile</li>
+                                <li tabindex="0" [routerLink]="['auth', 'forgot-password']"
+                                    (activate)="dropdowns.toggleUserDropdown()"><i class="far fa-unlock-alt"></i>Change
+                                    Password</li>
+                                <li tabindex="0" (activate)="auth.logout(); dropdowns.toggleUserDropdown()"><i
+                                        class="far fa-sign-out"></i>Sign Out</li>
                             </ul>
                         </div>
                     </clark-context-menu>
-                    
+
                     <div class="logged-out" *ngIf="!isLoggedIn">
-                        <a class="login-button" id="clark-sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">Sign In</a>
-                        <a class="register-button" [routerLink]="['auth', 'register']" [queryParams]="{redirectUrl: redirectUrl}">Register</a>
+                        <a class="login-button" id="clark-sign-in" [routerLink]="['auth', 'login']"
+                            [queryParams]="{redirectUrl: redirectUrl}">Sign In</a>
+                        <a class="register-button" [routerLink]="['auth', 'register']"
+                            [queryParams]="{redirectUrl: redirectUrl}">Register</a>
                     </div>
                 </div>
             </div>
@@ -60,10 +77,10 @@
         <div class="mobile-logo">
             <span class="mobile-logo-image"></span>
             <span id="clark-logo" class="mobile-logo-link" [routerLink]="['home']">CLARK</span>
-        </div> 
+        </div>
         <div class="mobile-right">
             <div class="icon-wrapper" (click)="dropdowns.toggleMobileSearch()">
-                <i class="search fas fa-search"></i>
+                <i class="search fa-solid fa-magnifying-glass"></i>
             </div>
             <div class="icon-wrapper" (click)="dropdowns.toggleMobileHamburger()">
                 <i class="hamburger fas fa-bars"></i>
@@ -81,18 +98,17 @@
     </center>
 
     <!-- blue underlay for hamburger slideout -->
-    <div class="slideout-underlay" 
-        *ngIf="!isDesktop" 
-        [ngClass]="{'active': isMHamburger || isMSearch, 'underNav': isMSearch && !isMHamburger}" 
-        (click)="dropdowns.closeMobileMenus()"
-    ></div>
+    <div class="slideout-underlay" *ngIf="!isDesktop"
+        [ngClass]="{'active': isMHamburger || isMSearch, 'underNav': isMSearch && !isMHamburger}"
+        (click)="dropdowns.closeMobileMenus()"></div>
 
     <!-- hamburger slideout -->
     <div class="slideout" *ngIf="!isDesktop" [ngClass]="{'active': isMHamburger}">
         <div class="slideout-section">
             <div class="user" *ngIf="isLoggedIn">
                 <div class="info side-padding-20">
-                    <div class="profile-picture" id="profile clark-user-dropdown" [ngStyle]="{'background-image': 'url(' + gravatarImage(70) + ')'}"></div>
+                    <div class="profile-picture" id="profile clark-user-dropdown"
+                        [ngStyle]="{'background-image': 'url(' + gravatarImage(70) + ')'}"></div>
                     <div class="username">Hi, {{ this.auth.headerName | titlecase }}!
                         <div>
                             <a [routerLink]="['/users', auth.username]">View Your Profile</a>
@@ -104,7 +120,8 @@
                 <div class="side-padding-20">
                     <ul class="menu-items">
                         <li [routerLink]="['library']">Your Library</li>
-                        <li [routerLink]="['admin']" *ngIf="auth.hasCuratorAccess()">{{ auth.hasEditorAccess() ? 'Admin' : 'Curator' }} Dashboard</li>
+                        <li [routerLink]="['admin']" *ngIf="auth.hasCuratorAccess()">{{ auth.hasEditorAccess() ? 'Admin'
+                            : 'Curator' }} Dashboard</li>
                         <li (click)="auth.logout()">Sign Out</li>
                     </ul>
                 </div>
@@ -112,8 +129,10 @@
             <div class="logged-out side-padding-20" *ngIf="!isLoggedIn">
                 <div class="greeting">Hi there!</div>
                 <div class="auth-buttons">
-                    <button id="clark-sign-in" class="button sign-in" [routerLink]="['auth', 'login']" [queryParams]="{redirectUrl: redirectUrl}">Sign In</button>
-                    <button class="button register" [routerLink]="['auth', 'register']" [queryParams]="{redirectUrl: redirectUrl}">Register</button>
+                    <button id="clark-sign-in" class="button sign-in" [routerLink]="['auth', 'login']"
+                        [queryParams]="{redirectUrl: redirectUrl}">Sign In</button>
+                    <button class="button register" [routerLink]="['auth', 'register']"
+                        [queryParams]="{redirectUrl: redirectUrl}">Register</button>
                 </div>
             </div>
             <hr>
@@ -151,9 +170,12 @@
 
 <div>
     <clark-skip-link *ngIf="showNav" title="Skip directly to site content" skipLocation="pageContent"></clark-skip-link>
-    <clark-skip-link *ngIf="!isLoggedIn && showNav" title="Skip directly to Login" skipLocation="clark-sign-in"></clark-skip-link>
-    <clark-skip-link *ngIf="isLoggedIn && showNav" title="Skip directly to your User Profile" skipLocation="clark-user-dropdown"></clark-skip-link>
-    <clark-skip-link *ngIf="showNav" title="Skip directly to Search for Learning Objects" skipLocation="clark-search-input"></clark-skip-link>
+    <clark-skip-link *ngIf="!isLoggedIn && showNav" title="Skip directly to Login"
+        skipLocation="clark-sign-in"></clark-skip-link>
+    <clark-skip-link *ngIf="isLoggedIn && showNav" title="Skip directly to your User Profile"
+        skipLocation="clark-user-dropdown"></clark-skip-link>
+    <clark-skip-link *ngIf="showNav" title="Skip directly to Search for Learning Objects"
+        skipLocation="clark-search-input"></clark-skip-link>
     <ng-container *ngTemplateOutlet="isDesktop ? desktop : mobile"></ng-container>
 </div>
 
@@ -167,7 +189,7 @@
                         <i class="fas fa-chevron-up"></i>
                     </span></center>
                 </div> -->
-                <!-- <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
+<!-- <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
                     <div #contextMenu class="context-popup">
                         <ul>
                             <li 

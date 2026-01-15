@@ -1,30 +1,36 @@
 <div class="reviewer-search__container">
   <div class="container__user-dropdown">
     <div class="user-dropdown__search">
-      <i class="fas fa-search search__icon"></i>
-      <input type="text" attr.aria-label="Search for users to add to the {{ collection.name }} collection as a reviewer." class="search__input" placeholder="Search Users" [(ngModel)]="query" (input)="userSearchInput$.next($event.currentTarget.value)">
+      <i class="fa-solid fa-magnifying-glass search__icon"></i>
+      <input type="text"
+        attr.aria-label="Search for users to add to the {{ collection.name }} collection as a reviewer."
+        class="search__input" placeholder="Search Users" [(ngModel)]="query"
+        (input)="userSearchInput$.next($event.currentTarget.value)">
     </div>
     <div *ngIf="searchResults.length === 0 && !loading" class="container__prompt"><br>
       <i class="far fa-users prompt__icon"></i>
       <div class="prompt__text">
-          Your search results will <br> appear here
-      </div> 
-    </div>
-    <div *ngIf="loading" class="container__prompt__loading" >
-        <div class="loading-template">
-            <i class="far fa-spinner-third fa-spin"></i>
-            Loading Reviewers...
-          </div>
+        Your search results will <br> appear here
       </div>
+    </div>
+    <div *ngIf="loading" class="container__prompt__loading">
+      <div class="loading-template">
+        <i class="far fa-spinner-third fa-spin"></i>
+        Loading Reviewers...
+      </div>
+    </div>
     <ul class="user-dropdown__list">
       <div *ngIf="searchResults.length > 0 && !loading">
         <virtual-scroller #searchResultsScroller [items]="searchResults">
-          <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems; let i = index" (activate)="toggleAuthor(user)">
-            <span class="user-dropdown__action" [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': users.includes(u.username)}">
+          <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems; let i = index"
+            (activate)="toggleAuthor(user)">
+            <span class="user-dropdown__action"
+              [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': users.includes(u.username)}">
               <span (activate)="selectUser(i)" *ngIf="!users.includes(u.username)"><i class="fas fa-plus"></i></span>
               <span *ngIf="users.includes(u.username)"><i class="fas fa-times"></i></span>
             </span>
-            <span class="user-dropdown__navbar-gravatar" [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
+            <span class="user-dropdown__navbar-gravatar"
+              [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
             {{ u.username }} - {{ u.name | titlecase }} from {{ organizationFormat(u.organization) }}
           </li>
         </virtual-scroller>
