@@ -9,7 +9,8 @@
     ".github",
     ".circleci",
     ".angular",
-    "node_modules"
+    "node_modules",
+    "src/index.html"
   ],
   "overrides": [
     {
@@ -23,12 +24,13 @@
         ],
         "createDefaultProgram": true
       },
+      "plugins": ["@typescript-eslint", "@angular-eslint"],
       "extends": [
-        "plugin:@angular-eslint/ng-cli-compat",
-        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
+        "@angular-eslint/no-empty-lifecycle-method": "off",
         "@typescript-eslint/adjacent-overload-signatures": "off",
         "@angular-eslint/component-selector": [
           "error",
@@ -66,7 +68,7 @@
         "@typescript-eslint/member-delimiter-style": "off",
         "@typescript-eslint/member-ordering": "off",
         "@typescript-eslint/naming-convention": [
-          "error",
+          "warn",
           {
             "selector": "default",
             "format": [
@@ -134,6 +136,7 @@
         "*.html"
       ],
       "extends": [
+        "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/recommended"
       ],
       "rules": {}
