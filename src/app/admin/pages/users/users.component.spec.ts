@@ -8,7 +8,7 @@ import { UserService } from 'app/core/user-module/user.service';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 
@@ -32,16 +32,17 @@ describe('UsersComponent', () => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [UsersComponent],
-    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
+    teardown: { destroyAfterEach: false },
+    imports: [RouterTestingModule, CookieModule.forRoot()],
     providers: [
         AuthService,
         ToastrOvenService,
         CollectionService,
         UserService,
         { provide: Router, userValue: routerStub },
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
-    ],
-    teardown: { destroyAfterEach: false }
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        provideHttpClient(withInterceptorsFromDi())
+    ]
 })
     .compileComponents();
   }));

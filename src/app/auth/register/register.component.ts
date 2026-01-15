@@ -98,18 +98,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     isRegisterPageInvalid: true
   };
 
-  infoFormGroup: UntypedFormGroup = new UntypedFormGroup({
-    firstname: this.authValidation.getInputFormControl('required'),
-    lastname: this.authValidation.getInputFormControl('required'),
-    email: this.authValidation.getInputFormControl('email'),
-    organization: this.authValidation.getInputFormControl('required'),
-  });
-  accountFormGroup: UntypedFormGroup = new UntypedFormGroup({
-    username: this.authValidation.getInputFormControl('username'),
-    password: this.authValidation.getInputFormControl('password'),
-    confirmPassword: this.authValidation.getInputFormControl('required'),
-    captcha: new UntypedFormControl()
-  }, MatchValidator.mustMatch('password', 'confirmPassword'));
+  infoFormGroup: UntypedFormGroup;
+  accountFormGroup: UntypedFormGroup;
 
   emailInUse = false;
   usernameInUse = false;
@@ -133,6 +123,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private cookieAgreement: CookieAgreementService,
     private route: ActivatedRoute,
   ) {
+    this.infoFormGroup = new UntypedFormGroup({
+      firstname: this.authValidation.getInputFormControl('required'),
+      lastname: this.authValidation.getInputFormControl('required'),
+      email: this.authValidation.getInputFormControl('email'),
+      organization: this.authValidation.getInputFormControl('required'),
+    });
+    this.accountFormGroup = new UntypedFormGroup({
+      username: this.authValidation.getInputFormControl('username'),
+      password: this.authValidation.getInputFormControl('password'),
+      confirmPassword: this.authValidation.getInputFormControl('required'),
+      captcha: new UntypedFormControl()
+    }, MatchValidator.mustMatch('password', 'confirmPassword'));
+
     this.route.parent.data.subscribe(() => {
       if (this.route.snapshot.queryParams.redirectUrl) {
         this.redirectUrl = decodeURIComponent(this.route.snapshot.queryParams.redirectUrl);

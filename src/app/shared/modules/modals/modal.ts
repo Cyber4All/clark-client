@@ -13,13 +13,15 @@ export abstract class ModalDirective implements AfterViewChecked, DoCheck, OnDes
     public show: boolean;
 
     @Input() content: any = {};
-    @Output() action: EventEmitter<string> = this.modalService.action;
+    @Output() action: EventEmitter<string> = new EventEmitter<string>();
 
     protected justCreated = true;
     protected firstLoad = true;
     protected preventClose = false;
 
-    constructor(protected modalService: ModalService) { }
+    constructor(protected modalService: ModalService) {
+        this.action = this.modalService.action;
+    }
 
     ngDoCheck(): void {
         this.name = this.content.name;

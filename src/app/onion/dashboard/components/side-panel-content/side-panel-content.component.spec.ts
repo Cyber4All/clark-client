@@ -4,7 +4,7 @@ import { SidePanelContentComponent } from './side-panel-content.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RatingService } from 'app/core/rating-module/rating.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { CookieModule } from 'ngx-cookie';
 import { LearningObject } from '@entity';
@@ -18,12 +18,13 @@ describe('SidePanelContentComponent', () => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [SidePanelContentComponent],
-    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot(), NoopAnimationsModule],
+    teardown: { destroyAfterEach: false },
+    imports: [RouterTestingModule, CookieModule.forRoot(), NoopAnimationsModule],
     providers: [
         RatingService,
-        AuthService
-    ],
-    teardown: { destroyAfterEach: false }
+        AuthService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
 })
     .compileComponents();
   }));

@@ -3,7 +3,7 @@ import { AdminComponent } from './admin.component';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { ActivatedRoute, Router, NavigationEnd, Scroll } from '@angular/router';
@@ -32,18 +32,19 @@ describe('AdminComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [AdminComponent],
-      imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
-      providers: [
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    declarations: [AdminComponent],
+    teardown: { destroyAfterEach: false },
+    imports: [RouterTestingModule, CookieModule.forRoot()],
+    providers: [
         AuthService,
         ToastrOvenService,
         CollectionService,
         { provide: Router, useValue: routerStub },
         { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-      ],
-      teardown: { destroyAfterEach: false }
-    }).compileComponents();
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
+}).compileComponents();
 
   }));
 

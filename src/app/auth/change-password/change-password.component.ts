@@ -25,14 +25,15 @@ export class ChangePasswordComponent implements OnInit {
   otaCode: string;
   done = false;
 
-  passwords: UntypedFormGroup = new UntypedFormGroup({
-    'password': this.authValidationService.getInputFormControl('password'),
-    'confirmPassword': this.authValidationService.getInputFormControl('password')
-  }, { validators: MatchValidator.mustMatch('password', 'confirmPassword') });
+  passwords: UntypedFormGroup;
 
   constructor(private authValidationService: AuthValidationService,
     private authService: AuthService,
     private activatedRoute: ActivatedRoute) {
+    this.passwords = new UntypedFormGroup({
+      'password': this.authValidationService.getInputFormControl('password'),
+      'confirmPassword': this.authValidationService.getInputFormControl('password')
+    }, { validators: MatchValidator.mustMatch('password', 'confirmPassword') });
   }
 
   ngOnInit(): void {

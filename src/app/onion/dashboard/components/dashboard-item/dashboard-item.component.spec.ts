@@ -5,7 +5,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContextMenuModule } from 'app/shared/modules/contextmenu/contextmenu.module';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { LearningObject, User } from '@entity';
@@ -20,17 +20,15 @@ describe('DashboardItemComponent', () => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [DashboardItemComponent, TipDirective],
-    imports: [
-        RouterTestingModule,
+    teardown: { destroyAfterEach: false },
+    imports: [RouterTestingModule,
         ContextMenuModule.forRoot(),
-        HttpClientModule,
-        CookieModule.forRoot()
-    ],
+        CookieModule.forRoot()],
     providers: [
         { provide: AuthService, useValue: { user: new User() } },
-        CollectionService
-    ],
-    teardown: { destroyAfterEach: false }
+        CollectionService,
+        provideHttpClient(withInterceptorsFromDi())
+    ]
 })
     .compileComponents();
   }));

@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "downlevelIteration": true,
     "importHelpers": true,
     "module": "es2020",
     "outDir": "./dist/out-tsc",
@@ -11,9 +10,8 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "target": "es2020",
+    "target": "ES2022",
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2018", "dom"],
     "baseUrl": "src",
