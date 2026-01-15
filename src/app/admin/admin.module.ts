@@ -15,7 +15,6 @@ import { AdminUserCardComponent } from './components/user-card/user-card.compone
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
 import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { ChangeAuthorComponent } from './components/change-author/change-author.component';
 // eslint-disable-next-line max-len
 import { ChangeAuthorUserDropdownComponent } from './components/change-author/components/change-author-user-dropdown/change-author-user-dropdown.component';
@@ -38,6 +37,8 @@ import { HierarchyBuilderComponent } from './components/hierarchy-builder/hierar
 import { MatTreeModule } from '@angular/material/tree';
 import { MatSelectModule } from '@angular/material/select';
 import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarchy-object/hierarchy-object.component';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
+
 @NgModule({
   declarations: [
     AdminComponent,
@@ -71,7 +72,6 @@ import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarc
     AdminRoutingModule,
     FormsModule,
     SharedModule,
-    VirtualScrollerModule,
     DragDropModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -81,6 +81,7 @@ import { HierarchyObjectComponent } from './components/hierarchy-builder/hierarc
     MatTreeModule,
     MatSelectModule,
     ReactiveFormsModule,
+    VirtualScrollerModule,
   ],
 })
 export class AdminModule { }
