@@ -1,12 +1,10 @@
 // angular modules
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
 // third-party
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 
 // non-angular modules
@@ -33,6 +31,8 @@ import { OnionSharedModule } from '../shared/onion-shared.module';
 import { EditorActionPanelModule } from './components/editor-action-panel/editor-action-panel.module';
 import { AddChildComponent } from './components/scaffold/add-child/add-child.component';
 import { MaterialNotesComponent } from './components/material-notes/material-notes.component';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
+
 /*
   NOTE: BuilderStore and validator services aren't provided here, they're provided in the learning-object-builder.component file.
   This is because those services should be singletons across the builder, but cease to exist when the builder is
@@ -51,8 +51,9 @@ import { MaterialNotesComponent } from './components/material-notes/material-not
     OnionSharedModule,
     EditorActionPanelModule,
     OnionSharedModule,
+    NgxSimpleTextEditorModule,
     VirtualScrollerModule,
-    NgxSimpleTextEditorModule
+    VirtualScrollerModule,
   ],
   declarations: [
     LearningObjectBuilderComponent,
@@ -73,8 +74,6 @@ import { MaterialNotesComponent } from './components/material-notes/material-not
     AddChildComponent,
     MaterialNotesComponent,
   ],
-  exports: [
-    StandardOutcomesComponent
-  ]
+  exports: [StandardOutcomesComponent],
 })
 export class LearningObjectBuilderModule { }

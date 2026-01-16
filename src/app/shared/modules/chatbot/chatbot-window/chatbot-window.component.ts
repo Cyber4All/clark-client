@@ -81,6 +81,11 @@ export class ChatbotWindowComponent {
         },
       ];
   }
+
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
   closeChatbot(): void {
     // Starts over a new conversation
     this.chatbotClosed.emit();

@@ -12,7 +12,6 @@ import { SharedModule } from './shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 import { CookiesComponent } from './components/cookies/cookies.component';
 import { MessageComponent } from './components/message/message.component';
 import { SearchComponent } from './components/search/search.component';
@@ -34,7 +33,6 @@ import { ChatbotModule } from 'app/shared/modules/chatbot/chatbot.module';
     ClarkRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
-    ScrollingModule,
     FormsModule,
     HttpClientModule,
     ChatbotModule,
