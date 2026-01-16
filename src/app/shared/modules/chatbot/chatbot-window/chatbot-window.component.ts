@@ -162,10 +162,21 @@ export class ChatbotWindowComponent {
     }, 0);
   }
 
-  private maybePromptForFeedback(): void {
-    // Check if feedback has already been prompted or submitted this session
-    const alreadyPrompted = sessionStorage.getItem('clark_ai_feedback_prompted') === 'true';
-    const alreadySubmitted = sessionStorage.getItem('clark_ai_feedback_submitted') === 'true';
+  /**
+   * Will open the feedback prompt if the message count threshold is met
+   * @param force can be used to force the opening of the feedback window
+   * @returns 
+   */
+  maybePromptForFeedback(force: boolean = false): void {
+    if (force) {
+      this.showFeedbackOverlay = true;
+      localStorage.setItem('clark_ai_feedback_prompted', 'true');
+      return;
+    }
+
+    // Check if feedback has already been prompted or submitted
+    const alreadyPrompted = localStorage.getItem('clark_ai_feedback_prompted') === 'true';
+    const alreadySubmitted = localStorage.getItem('clark_ai_feedback_submitted') === 'true';
 
     if (alreadyPrompted || alreadySubmitted) {
       return;
@@ -174,7 +185,7 @@ export class ChatbotWindowComponent {
     // Check if messages count meets the threshold
     if (this.messages.length >= this.feedbackPromptAfterMessageCount) {
       this.showFeedbackOverlay = true;
-      sessionStorage.setItem('clark_ai_feedback_prompted', 'true');
+      localStorage.setItem('clark_ai_feedback_prompted', 'true');
     }
   }
 
@@ -227,7 +238,7 @@ export class ChatbotWindowComponent {
       );
 
       // Mark feedback as submitted
-      sessionStorage.setItem('clark_ai_feedback_submitted', 'true');
+      localStorage.setItem('clark_ai_feedback_submitted', 'true');
 
       // Close the overlay
       this.showFeedbackOverlay = false;

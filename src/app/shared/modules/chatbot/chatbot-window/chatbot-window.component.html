@@ -12,6 +12,15 @@
       </div>
       <div class="chatbot-header-buttons">
         <span
+          (click)="maybePromptForFeedback(true)"
+          role="button"
+          tabindex="0"
+          matTooltip="Give feedback"
+          matTooltipPosition="above"
+        >
+          <i class="fa-solid fa-comments"></i>
+        </span>
+        <span
           (click)="minimizeChatbot()"
           role="button"
           tabindex="0"
@@ -90,10 +99,7 @@
 
   <!-- Feedback Overlay -->
   <div *ngIf="showFeedbackOverlay" class="feedback-overlay-scrim"></div>
-  <div
-    *ngIf="showFeedbackOverlay"
-    class="feedback-overlay"
-  >
+  <div *ngIf="showFeedbackOverlay" class="feedback-overlay">
     <div class="feedback-card">
       <h3 class="feedback-title">Rate your CLARK AI beta experience</h3>
 

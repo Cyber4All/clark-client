@@ -92,7 +92,7 @@
   }
 
   .chatbot-header-buttons {
-    gap: 10px;
+    gap: 15px;
 
     i {
       cursor: pointer;
@@ -100,15 +100,18 @@
       padding: 4px;
       border-radius: 3px;
       transition:
-        background 0.2s,
-        color 0.2s;
+        color 0.2s,
+        transform 0.2s;
       width: 15px;
       height: 15px;
       color: $dark-grey;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &:hover {
-        background: $light-blue;
-        color: $wrapper-background;
+        color: $light-blue;
+        transform: scale(1.15);
       }
     }
   }
