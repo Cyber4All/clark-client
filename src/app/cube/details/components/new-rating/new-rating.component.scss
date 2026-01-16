@@ -82,6 +82,17 @@
       }
     }
 
+    .character-count {
+      font-size: $small;
+      text-align: right;
+      margin-bottom: 10px;
+      color: $medium-grey;
+    }
+
+    .over-limit {
+      color: $error-red;
+    }
+
     .btn-group {
       margin-top: 20px;
       margin-bottom: 5px;
