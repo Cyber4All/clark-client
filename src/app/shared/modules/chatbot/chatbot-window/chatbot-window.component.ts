@@ -81,6 +81,11 @@ export class ChatbotWindowComponent {
         },
       ];
   }
+
+  ngAfterViewInit(): void {
+    this.scrollToBottom();
+  }
+
   newChatSession(): void {
     // Starts over a new conversation
     sessionStorage.removeItem('sessionID');

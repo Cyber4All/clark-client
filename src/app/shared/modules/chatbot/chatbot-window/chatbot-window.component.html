@@ -12,6 +12,15 @@
       </div>
       <div class="chatbot-header-buttons">
         <span
+          (click)="maybePromptForFeedback(true)"
+          role="button"
+          tabindex="0"
+          matTooltip="Give feedback"
+          matTooltipPosition="above"
+        >
+          <i class="fa-solid fa-comments"></i>
+        </span>
+        <span
           (click)="minimizeChatbot()"
           role="button"
           tabindex="0"
@@ -37,7 +46,11 @@
     </div>
   </div>
 
-  <div class="chatbot-messages" #messagesContainer>
+  <div
+    class="chatbot-messages"
+    #messagesContainer
+    [class.feedback-overlay-active]="showFeedbackOverlay"
+  >
     <div
       *ngFor="let message of messages"
       class="message"
@@ -60,7 +73,10 @@
     </div>
   </div>
 
-  <div class="chatbot-input-container">
+  <div
+    class="chatbot-input-container"
+    [class.feedback-overlay-active]="showFeedbackOverlay"
+  >
     <textarea
       class="chatbot-input"
       [(ngModel)]="inputMessage"
@@ -77,5 +93,71 @@
     >
       <span class="send-icon">→</span>
     </button>
+  </div>
+
+  <!-- Feedback Overlay -->
+  <div *ngIf="showFeedbackOverlay" class="feedback-overlay-scrim"></div>
+  <div *ngIf="showFeedbackOverlay" class="feedback-overlay">
+    <div class="feedback-card">
+      <h3 class="feedback-title">Rate your CLARK AI beta experience</h3>
+
+      <!-- Star Rating -->
+      <div
+        class="feedback-stars"
+        role="group"
+        aria-label="Rate your experience from 1 to 5 stars"
+      >
+        <button
+          *ngFor="let star of [1, 2, 3, 4, 5]"
+          class="feedback-star"
+          [class.star-selected]="getStarState(star) === 'selected'"
+          [class.star-hover]="getStarState(star) === 'hover'"
+          (click)="setRating(star)"
+          (mouseenter)="setHover(star)"
+          (mouseleave)="clearHover()"
+          (keydown)="onFeedbackKeyDown($event, star)"
+          [attr.aria-label]="star + ' ' + (star === 1 ? 'star' : 'stars')"
+          [attr.aria-pressed]="selectedRating === star"
+          tabindex="0"
+        >
+          <i [class]="'fas fa-star'"></i>
+        </button>
+      </div>
+
+      <!-- Optional Message -->
+      <div class="feedback-message-group">
+        <textarea
+          class="feedback-textarea"
+          [(ngModel)]="feedbackMessage"
+          (keydown)="onKeyDownFeedbackTextarea($event)"
+          placeholder="Tell us more (optional)"
+          aria-label="Optional feedback message"
+          maxlength="1000"
+        ></textarea>
+        <span class="feedback-char-count"
+          >{{ feedbackMessage.length }}/1000</span
+        >
+      </div>
+
+      <!-- Actions -->
+      <div class="feedback-actions">
+        <button
+          class="feedback-submit-btn"
+          (click)="submitFeedback()"
+          [disabled]="selectedRating === null || feedbackSubmitting"
+          aria-label="Submit feedback"
+        >
+          Submit
+        </button>
+        <button
+          class="feedback-dismiss-btn"
+          (click)="dismissFeedback()"
+          [disabled]="feedbackSubmitting"
+          aria-label="Dismiss feedback"
+        >
+          Not now
+        </button>
+      </div>
+    </div>
   </div>
 </div>
