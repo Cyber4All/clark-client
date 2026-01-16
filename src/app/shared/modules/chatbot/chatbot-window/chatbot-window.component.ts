@@ -165,7 +165,7 @@ export class ChatbotWindowComponent {
   /**
    * Will open the feedback prompt if the message count threshold is met
    * @param force can be used to force the opening of the feedback window
-   * @returns 
+   * @returns
    */
   maybePromptForFeedback(force: boolean = false): void {
     if (force) {
