@@ -5,20 +5,15 @@ import { ChatbotLauncherComponent } from './chatbot-launcher/chatbot-launcher.co
 import { ChatbotWindowComponent } from './chatbot-window/chatbot-window.component';
 import { ChatbotContainerComponent } from './chatbot-container/chatbot-container.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
   declarations: [
     ChatbotLauncherComponent,
     ChatbotWindowComponent,
-    ChatbotContainerComponent
+    ChatbotContainerComponent,
   ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MarkdownModule.forRoot()
-  ],
-  exports: [
-    ChatbotContainerComponent
-  ]
+  imports: [CommonModule, FormsModule, MarkdownModule.forRoot(), SharedModule],
+  exports: [ChatbotContainerComponent],
 })
-export class ChatbotModule { }
+export class ChatbotModule {}

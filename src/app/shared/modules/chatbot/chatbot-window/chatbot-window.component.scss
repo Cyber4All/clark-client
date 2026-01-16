@@ -9,7 +9,6 @@
 }
 
 @keyframes blink {
-
   0%,
   100% {
     opacity: 1;
@@ -17,6 +16,29 @@
 
   50% {
     opacity: 0.3;
+  }
+}
+
+// Star fill animation
+@keyframes starFill {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Fade in animation
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }
 
@@ -50,18 +72,48 @@
 
 .chatbot-header-content {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-}
 
-.chatbot-header-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  .chatbot-header-left,
+  .chatbot-header-buttons {
+    display: flex;
+    align-items: center;
+  }
 
-  em {
-    font-size: small;
+  .chatbot-header-left {
+    gap: 8px;
+
+    em {
+      font-size: small;
+    }
+  }
+
+  .chatbot-header-buttons {
+    gap: 15px;
+
+    i {
+      cursor: pointer;
+      pointer-events: auto;
+      padding: 4px;
+      border-radius: 3px;
+      transition:
+        color 0.2s,
+        transform 0.2s;
+      width: 15px;
+      height: 15px;
+      color: $dark-grey;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &:hover {
+        color: $light-blue;
+        transform: scale(1.15);
+      }
+    }
   }
 }
 
@@ -79,32 +131,6 @@
   object-fit: contain;
   margin: 0;
   margin-left: -8px;
-}
-
-.close-button {
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba($light-blue, 0.1);
-  color: $dark-grey;
-  cursor: pointer;
-  font-size: 20px;
-  padding: 0;
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.25s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.9);
-    color: $light-blue;
-  }
-}
-
-.close-icon {
-  line-height: 1;
-  font-weight: 300;
 }
 
 .chatbot-messages {
@@ -250,6 +276,206 @@
   line-height: 1;
 }
 
+// Feedback Overlay Styles
+.chatbot-messages.feedback-overlay-active {
+  filter: blur(2px);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.chatbot-input-container.feedback-overlay-active {
+  filter: blur(2px);
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.feedback-overlay-scrim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  z-index: 100;
+  opacity: 0;
+  animation: fadeIn 300ms ease-out forwards;
+}
+
+.feedback-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 101;
+  width: 90%;
+  max-width: 320px;
+  opacity: 0;
+  animation: fadeIn 300ms ease-out forwards;
+}
+
+.feedback-card {
+  background: $wrapper-background;
+  border-radius: 12px;
+  padding: 24px 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feedback-title {
+  font-size: $larger;
+  font-weight: 700;
+  color: $dark-grey;
+  margin: 0;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.feedback-stars {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  align-items: center;
+}
+
+.feedback-star {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 28px;
+  color: $medium-grey;
+  transition: all 0.2s ease;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    transform: scale(1.15);
+  }
+
+  &:focus {
+    outline: 2px solid $light-blue;
+    outline-offset: 2px;
+  }
+
+  &.star-hover,
+  &.star-selected {
+    color: $light-blue;
+  }
+
+  &.star-selected {
+    animation: starFill 0.3s ease-out;
+  }
+}
+
+.feedback-message-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.feedback-textarea {
+  border: 1.5px solid rgba($light-blue, 0.15);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: $small;
+  font-family: 'Source Sans Pro', sans-serif;
+  color: $dark-grey;
+  resize: vertical;
+  min-height: 80px;
+  max-height: 120px;
+  transition: all 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: $light-blue;
+    box-shadow: 0 0 0 3px rgba($light-blue, 0.1);
+  }
+
+  &::placeholder {
+    color: rgba($dark-grey, 0.5);
+  }
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($light-blue, 0.2);
+    border-radius: 4px;
+  }
+}
+
+.feedback-char-count {
+  font-size: $smaller;
+  color: $medium-grey;
+  text-align: right;
+}
+
+.feedback-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.feedback-submit-btn {
+  background: $light-blue;
+  color: $wrapper-background;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: $small;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba($light-blue, 0.3);
+
+  &:hover:not(:disabled) {
+    background: darken($light-blue, 5%);
+    box-shadow: 0 4px 12px rgba($light-blue, 0.4);
+  }
+
+  &:focus {
+    outline: 2px solid $light-blue;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.feedback-dismiss-btn {
+  background: transparent;
+  color: $dark-grey;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: $small;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    color: $light-blue;
+    background: rgba($light-blue, 0.05);
+  }
+
+  &:focus {
+    outline: 2px solid $light-blue;
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
 @media (max-width: 1440px) {
   .chatbot-window {
     width: 22%;
@@ -377,5 +603,23 @@
     height: 38px;
     font-size: 16px;
     border-radius: 9px;
+  }
+
+  .feedback-overlay {
+    width: 95%;
+    max-width: 280px;
+  }
+
+  .feedback-card {
+    padding: 20px 16px;
+    gap: 16px;
+  }
+
+  .feedback-star {
+    font-size: 24px;
+  }
+
+  .feedback-title {
+    font-size: $large;
   }
 }
