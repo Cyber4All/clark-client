@@ -122,6 +122,11 @@ export class StatsComponent implements OnInit {
 
     const options: ChartOptions<'doughnut'> = {
       responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+        },
+      },
     };
 
     this.lengthDistributionChart = {

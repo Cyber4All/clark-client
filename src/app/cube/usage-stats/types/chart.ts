@@ -89,7 +89,7 @@ interface ChartElementOptions {
 export interface Chart {
   title: string;
   data: any;
-  labels: Array<number | string>;
+  labels?: Array<number | string>;
   colors?: ChartElementOptions[];
   type: ChartType;
   options?: ChartOptions;
@@ -100,7 +100,10 @@ export interface Chart {
 
 export interface PieChart extends Chart {
   type: 'pie' | 'doughnut';
-  data: any;
+  data: {
+    labels: string[];
+    datasets: { data: number[]; backgroundColor: string[] }[];
+  };
 }
 
 interface DoughnutChartOptions extends ChartOptions {
