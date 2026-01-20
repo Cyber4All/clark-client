@@ -220,4 +220,8 @@ export class ClarkComponent implements OnInit {
   isAdminOrEditor(): boolean {
     return this.authService.isAdminOrEditor();
   }
+
+  shouldShowChatbot(): boolean {
+    return this.isAdminOrEditor() && !this.router.url.includes('/onion');
+  }
 }
