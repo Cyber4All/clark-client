@@ -84,7 +84,7 @@ export class UsageStatsComponent implements OnInit {
     private learningObjectService: LearningObjectService,
     private utilityService: UtilityService,
     private outcomeService: OutcomeService,
-  ) {}
+  ) { }
 
   async ngOnInit() {
     // this.buildOrganizationBreakdownChart();
@@ -310,7 +310,7 @@ export class UsageStatsComponent implements OnInit {
     //     this.lengthDistributionChart.data[i] +
     //     ', ';
     // }
-    // this.lengthDistributionReady = true;
+    this.lengthDistributionReady = true;
   }
   /**
    * Constructs chart for Outcome bloom distribution
@@ -369,7 +369,7 @@ export class UsageStatsComponent implements OnInit {
     //     this.outcomeDistributionChart.data[i] +
     //     ', ';
     // }
-    // this.outcomeDistributionReady = true;
+    this.outcomeDistributionReady = true;
   }
 
   /**
