@@ -58,19 +58,28 @@ export class ChatbotWindowComponent {
     this.messages = sessionMessages
       ? JSON.parse(sessionMessages)
       : [
-          {
-            message: 'Hello! I\'m CLARK AI. How can I help you today?',
-            sender: 'bot',
-            timestamp: new Date(),
-            sessionId: '',
-          },
-        ];
+        {
+          message: 'Hello! I\'m CLARK AI. How can I help you today?',
+          sender: 'bot',
+          timestamp: new Date(),
+          sessionId: '',
+        },
+      ];
   }
-  closeChatbot(): void {
+  newChatSession(): void {
     // Starts over a new conversation
-    this.chatbotClosed.emit();
     sessionStorage.removeItem('sessionID');
     sessionStorage.removeItem('chatMessages');
+    this.sessionId = '';
+    this.messages = [
+      {
+        message: 'Hello! I\'m CLARK AI. How can I help you today?',
+        sender: 'bot',
+        timestamp: new Date(),
+        sessionId: '',
+      },
+    ];
+    this.updateSessionStorage();
   }
 
   minimizeChatbot(): void {
