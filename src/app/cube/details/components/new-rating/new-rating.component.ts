@@ -37,7 +37,7 @@ export class NewRatingComponent implements OnInit, OnChanges {
 
   get isSubmitDisabled(): boolean {
     const comment = this.rating?.comment?.trim() || '';
-    return comment === '' || comment.length > 512;
+    return comment === '' || (this.rating?.comment?.length ?? 0) > 512;
   }
 
   ngOnInit() {
