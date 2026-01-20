@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ChatbotLauncherComponent } from './chatbot-launcher/chatbot-launcher.component';
 import { ChatbotWindowComponent } from './chatbot-window/chatbot-window.component';
 import { ChatbotContainerComponent } from './chatbot-container/chatbot-container.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { MarkdownModule } from 'ngx-markdown';
 import { SharedModule } from 'app/shared/shared.module';
 
@@ -14,7 +13,7 @@ import { SharedModule } from 'app/shared/shared.module';
     ChatbotWindowComponent,
     ChatbotContainerComponent,
   ],
-  imports: [CommonModule, FormsModule, MarkdownModule.forRoot(), SharedModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MarkdownModule.forRoot(), SharedModule],
   exports: [ChatbotContainerComponent],
 })
 export class ChatbotModule { }
