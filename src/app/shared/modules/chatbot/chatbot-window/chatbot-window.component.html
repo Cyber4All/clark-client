@@ -2,28 +2,48 @@
   <div class="chatbot-header">
     <div class="chatbot-header-content">
       <div class="chatbot-header-left">
-        <img src="assets/images/logo.png" alt="CLARK AI" class="chatbot-header-logo" />
-        <h2 class="chatbot-title">CLARK AI </h2>
+        <img
+          src="assets/images/logo.png"
+          alt="CLARK AI"
+          class="chatbot-header-logo"
+        />
+        <h2 class="chatbot-title">CLARK AI</h2>
         <em>beta</em>
       </div>
       <div class="chatbot-header-buttons">
-        <span (click)="minimizeChatbot()" role="button" tabindex="0" (click)="minimizeChatbot()"
-          (keydown.enter)="minimizeChatbot()" (keydown.space)="minimizeChatbot()" matTooltip="Minimize chat"
-          matTooltipPosition="above">
+        <span
+          (click)="minimizeChatbot()"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="minimizeChatbot()"
+          (keydown.space)="minimizeChatbot()"
+          matTooltip="Minimize chat window"
+          matTooltipPosition="above"
+        >
           <i class="fa-solid fa-window-minimize"></i>
         </span>
-        <span (click)="closeChatbot()" role="button" tabindex="0" (click)="minimizeChatbot()"
-          (keydown.enter)="minimizeChatbot()" (keydown.space)="minimizeChatbot()" matTooltip="Close and clear chat"
-          matTooltipPosition="above">
-          <i class="fa-solid fa-xmark"></i>
+        <span
+          (click)="newChatSession()"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="newChatSession()"
+          (keydown.space)="newChatSession()"
+          matTooltip="Start a new chat"
+          matTooltipPosition="above"
+        >
+          <i class="fa-solid fa-plus"></i>
         </span>
       </div>
     </div>
   </div>
 
   <div class="chatbot-messages" #messagesContainer>
-    <div *ngFor="let message of messages" class="message" [class.message-user]="message.sender === 'user'"
-      [class.message-bot]="message.sender === 'bot'">
+    <div
+      *ngFor="let message of messages"
+      class="message"
+      [class.message-user]="message.sender === 'user'"
+      [class.message-bot]="message.sender === 'bot'"
+    >
       <div class="message-content">
         <markdown ngPreserveWhitespaces>
           {{ message.message }}
@@ -41,10 +61,20 @@
   </div>
 
   <div class="chatbot-input-container">
-    <textarea class="chatbot-input" [(ngModel)]="inputMessage" (keydown)="onKeyDown($event)"
-      placeholder="Type your message..." rows="1" aria-label="Message input"></textarea>
-    <button class="send-button" (click)="sendMessage()" [disabled]="inputMessage.trim() === ''"
-      aria-label="Send message">
+    <textarea
+      class="chatbot-input"
+      [(ngModel)]="inputMessage"
+      (keydown)="onKeyDown($event)"
+      placeholder="Type your message..."
+      rows="1"
+      aria-label="Message input"
+    ></textarea>
+    <button
+      class="send-button"
+      (click)="sendMessage()"
+      [disabled]="inputMessage.trim() === ''"
+      aria-label="Send message"
+    >
       <span class="send-icon">→</span>
     </button>
   </div>
