@@ -26,6 +26,7 @@ export enum AUTH_GROUP {
   CURATOR,
   EDITOR,
   ADMIN,
+  SUPERUSER
 }
 
 export interface Tokens {
@@ -207,6 +208,10 @@ export class AuthService {
       this.group.value === AUTH_GROUP.ADMIN ||
       this.group.value === AUTH_GROUP.EDITOR
     );
+  }
+
+  public isSuperUser(): boolean {
+    return this.group.value === AUTH_GROUP.SUPERUSER;
   }
 
   /**
@@ -573,6 +578,9 @@ export class AuthService {
       return;
     } else if (groups.includes('reviewer')) {
       this.group.next(AUTH_GROUP.REVIEWER);
+      return;
+    } else if (groups.includes('superuser')) {
+      this.group.next(AUTH_GROUP.SUPERUSER);
       return;
     } else {
       this.group.next(AUTH_GROUP.USER);

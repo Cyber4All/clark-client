@@ -221,7 +221,11 @@ export class ClarkComponent implements OnInit {
     return this.authService.isAdminOrEditor();
   }
 
+  isSuperUser(): boolean {
+    return this.authService.isSuperUser();
+  }
+
   shouldShowChatbot(): boolean {
-    return this.isAdminOrEditor() && !this.router.url.includes('/onion');
+    return (this.isSuperUser() || this.isAdminOrEditor()) && !this.router.url.includes('/onion');
   }
 }
