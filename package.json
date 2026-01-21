@@ -48,7 +48,6 @@
     "ng-click-outside": "^9.0.1",
     "ng2-charts": "^4.1.1",
     "ngx-cookie": "^5.0.2",
-    "ngx-virtual-scroller": "^4.0.3",
     "ngx-cookie-service": "^16.1.0",
     "ngx-markdown": "^16.0.0",
     "ngx-simple-text-editor": "^4.0.3",
