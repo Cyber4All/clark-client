@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'clark-chatbot-container',
@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class ChatbotContainerComponent {
   chatbotState: 'closed' | 'open' | 'minimized' = 'closed';
+  @Input() isCookieBannerVisible = false;
 
   openChatbot(): void {
     this.chatbotState = 'open';

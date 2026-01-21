@@ -24,25 +24,23 @@
           (click)="minimizeChatbot()"
           role="button"
           tabindex="0"
-          (click)="minimizeChatbot()"
           (keydown.enter)="minimizeChatbot()"
           (keydown.space)="minimizeChatbot()"
-          matTooltip="Minimize chat"
+          matTooltip="Minimize chat window"
           matTooltipPosition="above"
         >
           <i class="fa-solid fa-window-minimize"></i>
         </span>
         <span
-          (click)="closeChatbot()"
+          (click)="newChatSession()"
           role="button"
           tabindex="0"
-          (click)="minimizeChatbot()"
-          (keydown.enter)="minimizeChatbot()"
-          (keydown.space)="minimizeChatbot()"
-          matTooltip="Close and clear chat"
+          (keydown.enter)="newChatSession()"
+          (keydown.space)="newChatSession()"
+          matTooltip="Start a new chat"
           matTooltipPosition="above"
         >
-          <i class="fa-solid fa-xmark"></i>
+          <i class="fa-solid fa-plus"></i>
         </span>
       </div>
     </div>

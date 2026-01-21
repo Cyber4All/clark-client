@@ -16,4 +16,4 @@ import { SharedModule } from 'app/shared/shared.module';
   imports: [CommonModule, FormsModule, MarkdownModule.forRoot(), SharedModule],
   exports: [ChatbotContainerComponent],
 })
-export class ChatbotModule {}
+export class ChatbotModule { }
