@@ -7,7 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class ChatbotContainerComponent {
   chatbotState: 'closed' | 'open' | 'minimized' = 'closed';
-  @Input() isCookieBannerVisible: boolean = false;
+  @Input() isCookieBannerVisible = false;
 
   openChatbot(): void {
     this.chatbotState = 'open';

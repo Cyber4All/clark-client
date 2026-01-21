@@ -33,7 +33,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
   ]
 })
 export class ChatbotLauncherComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() isCookieBannerVisible: boolean = false;
+  @Input() isCookieBannerVisible = false;
   @Output() chatbotOpened = new EventEmitter<void>();
 
   showTooltip = false;
