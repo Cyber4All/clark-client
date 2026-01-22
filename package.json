@@ -97,7 +97,7 @@
     "singleQuote": true
   },
   "engines": {
-    "node": ">=v16.13.2 <17",
+    "node": ">=v16.13.2",
     "npm": ">=8"
   }
 }
