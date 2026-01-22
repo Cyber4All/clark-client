@@ -4,6 +4,15 @@ orbs:
   cyber4all: cyber4all/orb@2.1.13
   node: circleci/node@6.3.0
 
+jobs:
+  lint:
+    docker:
+      - image: cimg/node:18.19.0
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run lint
+
   upload-source-maps:
     parameters:
       environment:
@@ -30,15 +39,6 @@ orbs:
               export RUM_VERSION=${PACKAGE_VERSION}
             fi
             npm run rum:upload-<< parameters.environment >>
-
-jobs:
-  lint:
-    docker:
-      - image: cimg/node:18.19.0
-    steps:
-      - checkout
-      - run: npm ci
-      - run: npm run lint
 
   build:
     docker:
