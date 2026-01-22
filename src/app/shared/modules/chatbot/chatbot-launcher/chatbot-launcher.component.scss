@@ -2,9 +2,10 @@
 
 .chatbot-launcher-container {
   position: fixed;
-  bottom: 20px;
+  bottom: calc(20px + var(--chatbot-bottom-offset, 0px));
   right: 20px;
   z-index: 100;
+  transition: bottom 0.3s ease;
 }
 
 .tooltip-container {

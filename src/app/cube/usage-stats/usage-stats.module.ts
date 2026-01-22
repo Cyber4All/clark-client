@@ -20,7 +20,7 @@ import { TopDownloadsComponent } from './top-downloads/top-downloads.component';
     DistributionChartComponent,
     HeatMapComponent,
     CounterBlockComponent,
-    TopDownloadsComponent
+    TopDownloadsComponent,
   ],
   providers: []
 })
