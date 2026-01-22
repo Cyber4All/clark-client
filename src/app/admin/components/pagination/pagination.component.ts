@@ -66,16 +66,16 @@ export class PaginationComponent implements OnInit {
     if (rightSideCount === 0 && this.currentPageNumber > 4) {
       leftSideCount = 4;
     } else if (rightSideCount === 1 && this.currentPageNumber >= 4) {
- leftSideCount = 3;
-}
+      leftSideCount = 3;
+    }
 
     // If there are less page numbers to show on
     // the left side, show more on the right side
     if (leftSideCount === 0 && this.lastPageNumber >= 5) {
       rightSideCount = 4;
     } else if (leftSideCount === 1 && this.lastPageNumber >= 5) {
- rightSideCount = 3;
-}
+      rightSideCount = 3;
+    }
 
     return { leftSideCount, rightSideCount };
   }
