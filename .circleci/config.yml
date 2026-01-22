@@ -37,11 +37,17 @@ workflows:
       - node/run:
           name: lint
           npm-run: lint
+          executor:
+            name: node/default
+            tag: "18.19.0"
 
       # Tests building the project with production settings
       - node/run:
           name: build
           npm-run: build:prod
+          executor:
+            name: node/default
+            tag: "18.19.0"
 
   deploy-staging:
     when:
