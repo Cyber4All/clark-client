@@ -54,12 +54,6 @@ workflows:
       - lint
       - build
 
-      # Tests building the project with production settings
-      - node/run:
-          name: build
-          node-version: "18.19.0"
-          npm-run: build:prod
-
   deploy-staging:
     when:
       equal: [main, <<pipeline.git.branch>>]
