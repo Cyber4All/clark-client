@@ -34,7 +34,14 @@ orbs:
 workflows:
   continuous-integration:
     jobs:
-      - install-node-lint-build
+      - node/run:
+          name: lint
+          npm-run: lint
+
+      # Tests building the project with production settings
+      - node/run:
+          name: build
+          npm-run: build:prod
 
   deploy-staging:
     when:
