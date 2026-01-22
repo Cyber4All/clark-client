@@ -31,13 +31,28 @@ orbs:
             fi
             npm run rum:upload-<< parameters.environment >>
 
+jobs:
+  lint:
+    docker:
+      - image: cimg/node:18.19.0
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run lint
+
+  build:
+    docker:
+      - image: cimg/node:18.19.0
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run build:prod
+
 workflows:
   continuous-integration:
     jobs:
-      - node/run:
-          name: lint
-          node-version: "18.19.0"
-          npm-run: lint
+      - lint
+      - build
 
       # Tests building the project with production settings
       - node/run:
