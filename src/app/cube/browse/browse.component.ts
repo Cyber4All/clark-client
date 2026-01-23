@@ -32,7 +32,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   query: Query = {
     text: '',
     currPage: 1,
-    limit: 20,
+    limit: 15,
     length: [],
     noGuidelines: '',
     guidelines: [],
@@ -319,6 +319,15 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Handle backdrop click to close modal
+   */
+  onBackdropClick(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.closeFilters();
+    }
+  }
+
+  /**
    * Prevent/allow body scroll when modal is open
    */
   private updateBodyScroll() {
@@ -326,15 +335,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       this.renderer.setStyle(document.body, 'overflow', 'hidden');
     } else {
       this.renderer.removeStyle(document.body, 'overflow');
-    }
-  }
-
-  /**
-   * Handle backdrop click to close modal
-   */
-  onBackdropClick(event: MouseEvent) {
-    if (event.target === event.currentTarget) {
-      this.closeFilters();
     }
   }
 
@@ -377,6 +377,21 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   clearAllFilters(sendFilters: boolean = true) {
+    // Reset query object to default state
+    this.query = {
+      ...this.query,
+      length: [],
+      level: [],
+      topics: [],
+      guidelines: [],
+      noGuidelines: '',
+      collection: '',
+      tags: [],
+      fileTypes: [],
+      standardOutcomes: []
+    };
+
+    // Clear filter objects in the filter component
     this.filterClearSubject$.next();
 
     if (sendFilters) {
@@ -474,7 +489,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.query = {
       text: params.text,
       currPage: parseIntOrDefault(params.currPage, 1),
-      limit: parseIntOrDefault(params.limit, 20),
+      limit: parseIntOrDefault(params.limit, 15),
       length: toStringArray(params.length),
       level: toStringArray(params.level),
       guidelines: toStringArray(params.guidelines),
@@ -533,10 +548,12 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     return index;
   }
 
-  /** Returns true if any of the filter fields in the query are not empty */
+  /** Returns true if any of the filter fields in the query are not empty or if any filters are active in the modal */
   public anyFiltersSelected(): boolean {
     const q = this.query;
-    return !!(
+
+    // Check query object for applied filters
+    const queryFiltersActive = !!(
       (q.collection && q.collection !== '') ||
       q.length?.length ||
       q.topics?.length ||
@@ -547,6 +564,15 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       q.fileTypes?.length ||
       q.tags?.length
     );
+
+    // Also check if any filters are selected in the modal (but not yet applied)
+    const modalFiltersActive =
+      this.getTopicsCount() > 0 ||
+      this.getLevelsCount() > 0 ||
+      this.getDurationCount() > 0 ||
+      this.getMaterialsCount() > 0;
+
+    return queryFiltersActive || modalFiltersActive;
   }
 
   /**
