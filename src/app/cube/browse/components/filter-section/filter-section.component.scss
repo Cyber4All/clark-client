@@ -6,29 +6,55 @@
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  padding: 8px 0;
+  margin-bottom: 8px;
 
   p {
-    margin: 5px 0;
+    margin: 0;
+    flex: 1;
+    font-weight: 600;
+    color: $darker-grey;
+    font-size: $normal;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    margin-left: 12px;
+
+    i {
+      color: $dark-grey;
+      font-size: $smaller;
+    }
+  }
+
+  &.clickable {
+    &:hover {
+      p {
+        color: $darker-grey;
+      }
+    }
   }
 }
 
-hr {
-  height: 1px;
-  background-color: $light-grey;
-  border: none;
-}
-
 .filter-wrapper {
-  padding: 10px 0;
+  padding: 0;
 
   .filter {
-    font-size: $small;
+    font-size: $normal;
     display: inline;
     flex-wrap: nowrap;
 
     &.filter-checkbox {
       display: flex;
       flex-direction: row;
+      margin-bottom: 8px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
 
       clark-checkbox {
         @include vert-center;
@@ -38,12 +64,21 @@ hr {
 
     .checkbox-grid {
       display: inline-grid;
-      grid-template-columns: auto auto;
-      align-items: start !important;
+      grid-template-columns: auto 1fr;
+      gap: 8px 12px;
+      align-items: center;
+      width: 100%;
 
       clark-checkbox {
-        align-self: start;
-        margin-top: 2px;
+        align-self: center;
+      }
+
+      .label {
+        font-size: $normal;
+        line-height: 1.5;
+        color: $dark-grey;
+        font-weight: normal;
+        align-self: center;
       }
     }
   }

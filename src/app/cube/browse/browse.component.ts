@@ -1,18 +1,22 @@
-import { debounceTime, takeUntil } from 'rxjs/operators';
 import {
   AfterViewInit,
   ChangeDetectorRef,
   Component,
   HostListener,
   OnDestroy,
+  Renderer2,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
-import { COPY } from './browse.copy';
-import { Observable, Subject } from 'rxjs';
-import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { OrderBy, Query, SortType } from '../../interfaces/query';
+import { COPY } from './browse.copy';
+import { FilterSectionInfo } from './components/filter-section/filter-section.component';
+import { FilterComponent } from './components/filter/filter.component';
 
 @Component({
   selector: 'cube-browse',
@@ -21,7 +25,7 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
 })
 export class BrowseComponent implements AfterViewInit, OnDestroy {
   copy = COPY;
-  learningObjects: LearningObject[];
+  learningObjects: LearningObject[] = [];
   totalLearningObjects = 0;
   outcomeSources: any[];
 
@@ -75,6 +79,16 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   showClearSort: boolean;
   sortText = 'Newest';
 
+  // Filter dropdown management
+  activeFilterDropdown: string | null = null;
+  activeFilterAnchor: HTMLElement | null = null;
+  topicFilter: FilterSectionInfo;
+  levelFilter: FilterSectionInfo;
+  durationFilter: FilterSectionInfo;
+  materialsFilter: FilterSectionInfo;
+
+  @ViewChild(FilterComponent) filterComponent: FilterComponent;
+
   @HostListener('window:resize', ['$event'])
   handelResize(event) {
     this.windowWidth = event.target.innerWidth;
@@ -87,6 +101,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private cd: ChangeDetectorRef,
     private navService: NavbarService,
+    private renderer: Renderer2,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -110,7 +125,98 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.sortText =
           this.query.text && this.query.orderBy === OrderBy.None ? '' : this.sortText;
         await this.fetchLearningObjects(this.query);
+        // Initialize filter dropdowns after filter component is initialized
+        this.initializeFilterDropdowns();
       });
+  }
+
+  /**
+   * Initialize filter dropdown data from the filter component
+   */
+  private initializeFilterDropdowns() {
+    // Wait for filter component to be ready (with retries)
+    let attempts = 0;
+    const maxAttempts = 30; // Increased for materials filter which may load slower
+    const checkInterval = setInterval(() => {
+      attempts++;
+      if (this.filterComponent && this.filterComponent.topicFilter) {
+        this.topicFilter = this.filterComponent.topicFilter;
+        this.levelFilter = this.filterComponent.levelFilter;
+        this.durationFilter = this.filterComponent.lengthFilter;
+
+        // Try to get materials filter (tag-based)
+        const materialsTagFilter = this.filterComponent.getMaterialsTagFilter();
+        if (materialsTagFilter && materialsTagFilter.filters && materialsTagFilter.filters.length > 0) {
+          this.materialsFilter = materialsTagFilter;
+          console.log('Materials filter initialized with', materialsTagFilter.filters.length, 'options');
+        } else if (attempts === maxAttempts) {
+          // Log if materials filter never loaded
+          console.warn('Materials filter not available after max attempts');
+        }
+
+        this.cd.detectChanges();
+
+        // Only clear interval if we have the basic filters
+        if (this.topicFilter && this.levelFilter && this.durationFilter) {
+          clearInterval(checkInterval);
+        }
+      } else if (attempts >= maxAttempts) {
+        clearInterval(checkInterval);
+      }
+    }, 100);
+  }
+
+  /**
+   * Toggle a filter dropdown
+   */
+  toggleFilterDropdown(filterName: string | null, event?: Event) {
+    // If closing, close immediately
+    if (this.activeFilterDropdown === filterName) {
+      this.activeFilterDropdown = null;
+      this.activeFilterAnchor = null;
+      this.cd.detectChanges();
+      return;
+    }
+
+    // Get the anchor element from the event
+    const anchor = event?.currentTarget as HTMLElement;
+
+    // If opening, defer to next tick to ensure element ref is available
+    this.activeFilterDropdown = null; // Close any open dropdown first
+    this.activeFilterAnchor = null;
+    this.cd.detectChanges();
+
+    setTimeout(() => {
+      this.activeFilterDropdown = filterName;
+      this.activeFilterAnchor = anchor;
+      this.cd.detectChanges();
+    }, 0);
+  }
+
+  /**
+   * Toggle a filter option in a dropdown
+   */
+  toggleFilterOption(filterType: string, option: any) {
+    // Toggle the option's active state
+    option.active = !option.active;
+
+    // Update the main filter component's state to keep everything in sync
+    if (this.filterComponent) {
+      this.filterComponent.sendFilterChanges();
+    }
+
+    // Perform the search with the updated filters
+    this.performSearch(true);
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Handle changes from filter dropdowns
+   */
+  handleFilterChange() {
+    this.performSearch(true);
+    this.activeFilterDropdown = null;
+    this.cd.detectChanges();
   }
 
   get isMobile(): boolean {
@@ -197,11 +303,32 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   toggleFilters() {
     this.filtersDownMobile = !this.filtersDownMobile;
+    this.updateBodyScroll();
     this.cd.detectChanges();
   }
 
   closeFilters() {
     this.toggleFilters();
+  }
+
+  /**
+   * Prevent/allow body scroll when modal is open
+   */
+  private updateBodyScroll() {
+    if (this.filtersDownMobile) {
+      this.renderer.setStyle(document.body, 'overflow', 'hidden');
+    } else {
+      this.renderer.removeStyle(document.body, 'overflow');
+    }
+  }
+
+  /**
+   * Handle backdrop click to close modal
+   */
+  onBackdropClick(event: MouseEvent) {
+    if (event.target === event.currentTarget) {
+      this.closeFilters();
+    }
   }
 
   /**
@@ -303,8 +430,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       const dir = val.charAt(1);
       this.query.orderBy = sort.charAt(0) === 'w' ? OrderBy.Downloads : OrderBy.Date;
       if (sort.charAt(0) === 'd') {
-      this.query.sortType =
-        dir === 'd' ? SortType.Descending : SortType.Ascending;
+        this.query.sortType =
+          dir === 'd' ? SortType.Descending : SortType.Ascending;
       } else {
         this.query.sortType = SortType.Descending;
       }
@@ -409,6 +536,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.unsubscribe.next();
+    // Clean up body scroll if modal was open
+    this.renderer.removeStyle(document.body, 'overflow');
   }
 
   trackByIndex(index, item) {

@@ -1,14 +1,14 @@
-import { ChangeDetectorRef, Component, OnInit, Output, EventEmitter, OnDestroy, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { LearningObject } from '@entity';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { CollectionService } from 'app/core/collection-module/collections.service';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { FilterSectionInfo } from '../filter-section/filter-section.component';
 import { Query } from '../../../../interfaces/query';
-import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
-import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
+import { FilterSectionInfo } from '../filter-section/filter-section.component';
 
 @Component({
   selector: 'clark-filter',
@@ -80,14 +80,14 @@ export class FilterComponent implements OnInit, OnDestroy {
    */
   private parseSelected() {
     if (this.selected) {
-      this.parseCategorySelected(this.selected.length, this.lengthFilter.filters);
-      this.parseCategorySelected(this.selected.level, this.levelFilter.filters);
-      this.parseCategorySelected(this.selected.topics, this.topicFilter.filters);
-      this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
-      this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
-      this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
-      this.parseCategorySelected(this.selected.noGuidelines, this.noGuidelineFilter.filters);
-      this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
+      if (this.lengthFilter?.filters) this.parseCategorySelected(this.selected.length, this.lengthFilter.filters);
+      if (this.levelFilter?.filters) this.parseCategorySelected(this.selected.level, this.levelFilter.filters);
+      if (this.topicFilter?.filters) this.parseCategorySelected(this.selected.topics, this.topicFilter.filters);
+      if (this.tagFilter?.filters) this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
+      if (this.materialFilter?.filters) this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
+      if (this.frameworkFilter?.filters) this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
+      if (this.noGuidelineFilter?.filters) this.parseCategorySelected(this.selected.noGuidelines, this.noGuidelineFilter.filters);
+      if (this.collectionFilter?.filters) this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
     }
   }
 
@@ -126,14 +126,14 @@ export class FilterComponent implements OnInit, OnDestroy {
    */
   clearFilters() {
     // Clear each category filter
-    this.clearFilterCategory(this.collectionFilter.filters);
-    this.clearFilterCategory(this.lengthFilter.filters);
-    this.clearFilterCategory(this.levelFilter.filters);
-    this.clearFilterCategory(this.materialFilter.filters);
-    this.clearFilterCategory(this.topicFilter.filters);
-    this.clearFilterCategory(this.tagFilter.filters);
-    this.clearFilterCategory(this.noGuidelineFilter.filters);
-    this.clearFilterCategory(this.frameworkFilter.filters);
+    if (this.collectionFilter?.filters) this.clearFilterCategory(this.collectionFilter.filters);
+    if (this.lengthFilter?.filters) this.clearFilterCategory(this.lengthFilter.filters);
+    if (this.levelFilter?.filters) this.clearFilterCategory(this.levelFilter.filters);
+    if (this.materialFilter?.filters) this.clearFilterCategory(this.materialFilter.filters);
+    if (this.topicFilter?.filters) this.clearFilterCategory(this.topicFilter.filters);
+    if (this.tagFilter?.filters) this.clearFilterCategory(this.tagFilter.filters);
+    if (this.noGuidelineFilter?.filters) this.clearFilterCategory(this.noGuidelineFilter.filters);
+    if (this.frameworkFilter?.filters) this.clearFilterCategory(this.frameworkFilter.filters);
     this.guidelineFilter = [];
 
     // Detect changes and resend the filter object
@@ -157,14 +157,14 @@ export class FilterComponent implements OnInit, OnDestroy {
     const query = {};
 
     // Creates the query
-    this.checkFilter('collection', this.collectionFilter.filters, query);
-    this.checkFilter('length', this.lengthFilter.filters, query);
-    this.checkFilter('level', this.levelFilter.filters, query);
-    this.checkFilter('fileTypes', this.materialFilter.filters, query);
-    this.checkFilter('topics', this.topicFilter.filters, query);
-    this.checkFilter('tags', this.tagFilter.filters, query);
-    this.checkFilter('guidelines', this.frameworkFilter.filters, query);
-    this.checkFilter('noGuidelines', this.noGuidelineFilter.filters, query);
+    if (this.collectionFilter?.filters) this.checkFilter('collection', this.collectionFilter.filters, query);
+    if (this.lengthFilter?.filters) this.checkFilter('length', this.lengthFilter.filters, query);
+    if (this.levelFilter?.filters) this.checkFilter('level', this.levelFilter.filters, query);
+    if (this.materialFilter?.filters) this.checkFilter('fileTypes', this.materialFilter.filters, query);
+    if (this.topicFilter?.filters) this.checkFilter('topics', this.topicFilter.filters, query);
+    if (this.tagFilter?.filters) this.checkFilter('tags', this.tagFilter.filters, query);
+    if (this.frameworkFilter?.filters) this.checkFilter('guidelines', this.frameworkFilter.filters, query);
+    if (this.noGuidelineFilter?.filters) this.checkFilter('noGuidelines', this.noGuidelineFilter.filters, query);
     if (this.guidelineFilter && this.guidelineFilter.length > 0) {
       query['standardOutcomes'] = this.guidelineFilter;
     }
@@ -195,6 +195,53 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Toggle a topic selection when rendered as pills/chips.
+   * Keeps the existing filter state logic intact by mutating `topicFilter.filters[].active`
+   * and then using the existing debounced `registerChange()` pipeline.
+   */
+  toggleTopicFilter(topic: { active: boolean; name: string; value: string }) {
+    topic.active = !topic.active;
+    this.cd.detectChanges();
+    this.registerChange();
+  }
+
+  /**
+   * Toggle a material selection when rendered as pills/chips.
+   * Keeps the existing filter state logic intact by mutating tag filter active state
+   * and then using the existing debounced `registerChange()` pipeline.
+   */
+  toggleMaterialFilter(material: { active: boolean; name: string; value: string }) {
+    material.active = !material.active;
+    this.cd.detectChanges();
+    this.registerChange();
+  }
+
+  /**
+   * Get Materials filter from tags (specifically "material" tag type)
+   */
+  getMaterialsTagFilter(): FilterSectionInfo | undefined {
+    // Return undefined if tagFilter is not initialized yet
+    if (!this.tagFilter?.filters) {
+      return undefined;
+    }
+
+    // Get tags of type 'material'
+    const materialTags = this.tagFilter.filters.filter((t) =>
+      t.tagType?.includes('material'),
+    );
+
+    // If no material tags, return undefined
+    if (materialTags.length < 1) {
+      return undefined;
+    }
+
+    return {
+      section: 'Materials',
+      filters: materialTags
+    };
+  }
+
+  /**
    * Get a list of tags based on a provided tag type.
    * @param {string} providedType The type of tag you want to filter by
    *
@@ -202,6 +249,11 @@ export class FilterComponent implements OnInit, OnDestroy {
    * @returns An object named after the providedType with a list of tags filtered by that providedType
    */
   getFilteredTags(providedType: { name: string, value: string }): { section?: string; filters?: any[] } {
+    // Return undefined if tagFilter is not initialized yet
+    if (!this.tagFilter?.filters) {
+      return undefined;
+    }
+
     // Get the tags that are of type `providedType`.
     // i.e. if you want tags with type 'code', this will only return
     //      the tags that include the tag type 'code'.
@@ -230,7 +282,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   async getCollectionFilters() {
     const collections = await this.collectionService.getCollections();
     this.collectionFilter = {
-      section: 'Collection',
+      section: 'Collections',
       filters: collections.map(collection => ({
         name: collection.name,
         value: collection.abvName,
@@ -252,7 +304,7 @@ export class FilterComponent implements OnInit, OnDestroy {
    */
   getLengthFilters() {
     this.lengthFilter = {
-      section: 'Length',
+      section: 'Duration',
       filters: [
         {
           name: 'Nanomodule',
@@ -294,7 +346,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   async getTopicFilters() {
     const topics = await this.topicsService.getTopics();
     this.topicFilter = {
-      section: 'Topic',
+      section: 'Topics',
       filters: topics.map((topic) => ({
         name: topic.name,
         value: topic._id,
@@ -343,7 +395,7 @@ export class FilterComponent implements OnInit, OnDestroy {
    */
   getLevelFilters() {
     this.levelFilter = {
-      section: 'Level',
+      section: 'Levels',
       filters: Object.values(LearningObject.Level).map(level => ({
         name: level.replace(
           /\w\S*/g, ((txt) => {
@@ -362,7 +414,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   async getFrameworkFilters() {
     const frameworks = await this.guidelineService.getFrameworks({ limit: 100, page: 1 });
     this.frameworkFilter = {
-      section: 'Guidelines',
+      section: 'Frameworks',
       filters: frameworks.map(framework => ({
         name: framework.name,
         value: framework.name,
