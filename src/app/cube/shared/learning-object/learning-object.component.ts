@@ -74,6 +74,14 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
         this.renderer.removeClass(this.hostEl.nativeElement, 'loading');
       }
     }
+
+    // When learningObject changes, reset and recalculate all derived properties
+    if (changes.learningObject && !changes.learningObject.firstChange) {
+      this.isDCWFAligned = false;
+      this.tagNames = [];
+      this.checkDCWFAlignment();
+      this.resolveTagNames();
+    }
   }
 
   async ngOnInit() {
