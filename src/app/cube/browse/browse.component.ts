@@ -5,7 +5,7 @@ import {
   HostListener,
   OnDestroy,
   Renderer2,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
@@ -32,7 +32,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   query: Query = {
     text: '',
     currPage: 1,
-    limit: 10,
+    limit: 20,
     length: [],
     noGuidelines: '',
     guidelines: [],
@@ -76,7 +76,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   shouldResetPage = false;
 
   sortMenuDown: boolean;
-  showClearSort: boolean;
   sortText = 'Newest';
 
   // Filter dropdown management
@@ -186,10 +185,17 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
-    // Close dropdown when clicking outside
     const target = event.target as HTMLElement;
+
+    // Close filter dropdowns when clicking outside
     if (this.activeFilterDropdown && !target.closest('.filter-dropdown-container') && !target.closest('.filter-dropdown-btn')) {
       this.activeFilterDropdown = null;
+      this.cd.detectChanges();
+    }
+
+    // Close sort dropdown when clicking outside
+    if (this.sortMenuDown && !target.closest('.sort-dropdown-container')) {
+      this.sortMenuDown = false;
       this.cd.detectChanges();
     }
   }
@@ -418,22 +424,13 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   toggleSort(val) {
     if (val !== null) {
-      this.showClearSort = true;
-
-      if (val === 'da') {
-        this.sortText = 'Oldest';
-      } else if (val === 'dd') {
+      if (val === 'dd') {
         this.sortText = 'Newest';
+        this.query.orderBy = OrderBy.Date;
+        this.query.sortType = SortType.Descending;
       } else if (val === 'w') {
-        this.sortText = 'Downloads ';
-      }
-      const sort = val.charAt(0);
-      const dir = val.charAt(1);
-      this.query.orderBy = sort.charAt(0) === 'w' ? OrderBy.Downloads : OrderBy.Date;
-      if (sort.charAt(0) === 'd') {
-        this.query.sortType =
-          dir === 'd' ? SortType.Descending : SortType.Ascending;
-      } else {
+        this.sortText = 'Most Downloaded';
+        this.query.orderBy = OrderBy.Downloads;
         this.query.sortType = SortType.Descending;
       }
       // remove date filters if previously set
@@ -442,17 +439,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
       this.performSearch();
     }
-  }
 
-  clearSort(event) {
-    this.showClearSort = false;
-    event.stopPropagation();
-    delete this.query.orderBy;
-    delete this.query.sortType;
-    delete this.query.start;
-    delete this.query.end;
-    this.sortText = '';
-    this.performSearch();
+    this.toggleSortMenu(false);
   }
 
   /**
@@ -486,7 +474,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.query = {
       text: params.text,
       currPage: parseIntOrDefault(params.currPage, 1),
-      limit: parseIntOrDefault(params.limit, 10),
+      limit: parseIntOrDefault(params.limit, 20),
       length: toStringArray(params.length),
       level: toStringArray(params.level),
       guidelines: toStringArray(params.guidelines),

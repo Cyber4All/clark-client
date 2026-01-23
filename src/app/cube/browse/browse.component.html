@@ -112,32 +112,26 @@
 
       <!-- Sort and search options -->
       <div class="filter-bar-actions">
-        <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria"
-          tipPosition="bottom" (activate)="clearSort($event)" class="clear-sort-btn"><i class="far fa-times"></i></button>
         <a class="search-card-link" id="search-CARD" href="https://caeresource.clark.center/browse?q={{ query?.text }}"
           target=_blank *ngIf="query?.text?.length > 0">Search for non-curricular resources</a>
-        <button #sortMenuButtonElement aria-label="Sort Search Results" class="sort-btn"
-          (activate)="toggleSortMenu(true)">Sort By: {{ sortText }}<i class="far fa-angle-down"></i></button>
+        <div class="sort-dropdown-container">
+          <button aria-label="Sort Search Results" class="sort-btn"
+            [ngClass]="{active: sortMenuDown}"
+            (click)="toggleSortMenu(!sortMenuDown)">Sort By: {{ sortText }}<i class="far fa-angle-down"></i></button>
+          
+          <div *ngIf="sortMenuDown" class="sort-dropdown-menu" (click)="$event.stopPropagation()">
+            <ul>
+              <li [ngClass]="{selected: sortText === 'Newest'}" (click)="toggleSort('dd')">
+                Newest
+              </li>
+              <li [ngClass]="{selected: sortText === 'Most Downloaded'}" (click)="toggleSort('w')">
+                Most Downloaded
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Sort Context Menu -->
-    <clark-context-menu *ngIf="sortMenuDown" [anchor]="sortMenuButtonElement"
-      [offset]="{ top: 10, left: 0, right: 0 }" (close)="toggleSortMenu(false)">
-      <div class="sort-menu">
-        <ul>
-          <li [ngClass]="{selected: sortText === 'Newest'}" class="list-item" (activate)="toggleSort('dd')">
-            Date (Newest first)
-          </li>
-          <li [ngClass]="{selected: sortText === 'Oldest'}" class="list-item" (activate)="toggleSort('da')">
-            Date (Oldest first)
-          </li>
-          <li [ngClass]="{selected: sortText === 'Downloads'}" class="list-item" (activate)="toggleSort('w')">
-            Downloads
-          </li>
-        </ul>
-      </div>
-    </clark-context-menu>
   </div>
 
   <!-- Full filter modal for mobile/all filters -->
