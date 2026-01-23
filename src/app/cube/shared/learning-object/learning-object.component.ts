@@ -11,8 +11,10 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { LearningObject } from '@entity';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { RatingService } from 'app/core/rating-module/rating.service';
+import { Tag } from 'entity/tag/tag';
 import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { CollectionService } from '../../../core/collection-module/collections.service';
@@ -48,6 +50,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   TRENDING_THRESHOLD = 5; // downloads in last 30 days to be considered trending
 
   isDCWFAligned = false;
+  tagNames: string[] = [];
+  private static allTags: Tag[] = [];
+  private static tagsPromise: Promise<Tag[]> | null = null;
 
   constructor(
     private hostEl: ElementRef,
@@ -57,7 +62,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     private metricService: MetricService,
     public auth: AuthService,
     private collectionService: CollectionService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private tagsService: TagsService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -80,6 +86,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
 
     // Check for DCWF framework alignment
     this.checkDCWFAlignment();
+
+    // Resolve tag IDs to tag names
+    await this.resolveTagNames();
 
     const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
     this.averageRating = ratings.avgValue;
@@ -212,17 +221,60 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   }
 
   /**
-   * Check if the learning object has DCWF framework mappings in any of its outcomes
+   * Check if the learning object has DCWF framework mappings in its guidelines
    */
   checkDCWFAlignment() {
-    if (this.learningObject?.outcomes && this.learningObject.outcomes.length > 0) {
-      this.isDCWFAligned = this.learningObject.outcomes.some(outcome =>
-        outcome.mappings && outcome.mappings.some(mapping =>
-          mapping.frameworkName &&
-          (mapping.frameworkName.toLowerCase().includes('dcwf') ||
-            mapping.frameworkName.toLowerCase().includes('dod cyber workforce'))
-        )
+    if (this.learningObject?.guidelines && this.learningObject.guidelines.length > 0) {
+      this.isDCWFAligned = this.learningObject.guidelines.some(guideline =>
+        guideline.source &&
+        (guideline.source.toLowerCase().includes('dcwf') ||
+          guideline.source.toLowerCase().includes('dod cyber workforce') ||
+          guideline.frameworkName?.toLowerCase().includes('dcwf') ||
+          guideline.frameworkName?.toLowerCase().includes('dod cyber workforce'))
       );
+    }
+  }
+
+  /**
+   * Resolve tag IDs to tag names for display
+   */
+  async resolveTagNames() {
+    if (!this.learningObject?.tags || this.learningObject.tags.length === 0) {
+      this.tagNames = [];
+      return;
+    }
+
+    try {
+      const firstTag = this.learningObject.tags[0];
+
+      // Check if tags are already objects with a name property
+      if (firstTag && typeof firstTag === 'object') {
+        const tagObj = firstTag as any;
+        if ('name' in tagObj) {
+          // Tags are already full objects
+          this.tagNames = this.learningObject.tags.map((tag: any) => tag.name);
+          return;
+        }
+      }
+
+      // Fetch all tags if not already loaded, using a shared promise to avoid multiple fetches
+      if (LearningObjectListingComponent.allTags.length === 0) {
+        if (!LearningObjectListingComponent.tagsPromise) {
+          LearningObjectListingComponent.tagsPromise = this.tagsService.getTags();
+        }
+        LearningObjectListingComponent.allTags = await LearningObjectListingComponent.tagsPromise;
+      }
+
+      // Create a map for quick lookup
+      const tagMap = new Map(LearningObjectListingComponent.allTags.map(tag => [tag._id, tag.name]));
+
+      // Resolve tag IDs to names
+      this.tagNames = this.learningObject.tags
+        .map((tagId: string) => tagMap.get(tagId))
+        .filter(name => name !== undefined) as string[];
+    } catch (e) {
+      console.error('Error resolving tag names:', e);
+      this.tagNames = [];
     }
   }
 
