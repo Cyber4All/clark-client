@@ -16,49 +16,29 @@ a {
 
       .image {
         width: 100%;
+        min-width: 100%;
+        max-width: 100%;
         height: 150px;
-        padding: 10px 0px;
+        min-height: 150px;
+        flex: 0 0 150px;
+        padding: 15px;
+        overflow: hidden;
+        box-sizing: border-box;
+        
         .logo{
-          max-height: 60px;
+          max-height: 90px;
+          max-width: 100%;
+          width: auto;
+          height: auto;
           object-fit: contain;
-        }
-
-        .card-collection {
-          font-size: $normal;
         }
       }
 
       .learning-object-content {
-
-      /* Trending highlight */
-      .learning-object.trending {
-        border-left: 4px solid $orange;
-        box-shadow: 0 1px 0 rgba(0,0,0,0.04);
-      }
-
         flex: 1;
+        display: flex;
+        flex-direction: column;
 
-        .details {
-          margin-bottom: 10px;
-
-          .author {
-            overflow-x: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-          }
-        }
-        .length {
-          display: none;
-        }
-        .time {
-          display: none;
-        }
-        .length_tall{
-          display: inline;
-        }
-        .time_tall{
-          display: inline;
-        }
         .download-btn{
           display: none;
 
@@ -66,8 +46,9 @@ a {
             color: $light-blue;
           }
         }
-        .download-btn-card {
-          display: inline;
+
+        .pills {
+          margin-top: auto;
         }
       }
     }
@@ -89,33 +70,23 @@ a {
       font-size: $small !important;
     }
 
-    .goals {
-      display: none;
-    }
-
     .image {
       width: 100px !important;
       min-height: 100%;
       max-height: 100% !important;
-      padding: 10px 0px;
+      padding: 10px;
 
       .logo{
-        max-height: 60px;
+        max-height: 70px;
         object-fit: contain;
       }
 
-      .card-collection {
-        font-size: $smaller !important;
+      .framework-badge {
+        font-size: 9px;
+        padding: 2px 6px;
+        top: 4px;
+        right: 4px;
       }
-    }
-    .length_tall {
-      display: none;
-    }
-    .time_tall {
-      display: none;
-    }
-    .download-btn-card {
-      display: none;
     }
   }
 }
@@ -171,21 +142,15 @@ a {
 
 :host.card {
   .image {
-    max-height: 120px;
-    padding: 10px 0px;
-  }
-
-  .goals {
-    white-space: normal !important;
+    height: 150px;
+    min-height: 150px;
+    max-height: 150px;
+    padding: 15px;
+    overflow: hidden;
   }
 
   .learning-object-content{
     width: auto !important;
-  }
-
-  .download-btn-card {
-    padding: 0 5px;
-    margin-right: -5px;
   }
 }
 
@@ -209,33 +174,48 @@ a {
   .image {
     background: $primary-white;
     width: 175px;
-    flex: 0 0 1;
+    min-width: 175px;
+    max-width: 175px;
+    flex: 0 0 175px;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex-grow: 0;
-    flex-shrink: 0;
     align-items: center;
-    padding: 10px 0px;
+    padding: 15px;
+    overflow: hidden;
+    box-sizing: border-box;
 
     ::ng-deep canvas {
       opacity: 0.4;
+      max-width: 100%;
+      max-height: 100%;
     }
 
     .logo{
-      max-height: 60px;
-      max-width: 135px;
+      max-height: 80px;
+      max-width: 145px;
       object-fit: contain;
-      margin-bottom: 15px;
+      width: auto;
+      height: auto;
     }
 
-    .card-collection {
-      color: $darker-grey;
-      font-size: $normal;
-      text-align: center;
-      padding: 5px;
-      z-index: 2;
+    .framework-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: $smaller;
+      font-weight: 600;
+      text-transform: uppercase;
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+      
+      &.dcwf-badge {
+        background: $light-blue;
+        color: white;
+      }
     }
 
     &:after {
@@ -256,10 +236,13 @@ a {
     min-width: 0;
     position: relative;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 
     .rating-stars-container {
-      margin-top: 8px;
-      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
 
       .downloads-indicator {
         display: inline-flex;
@@ -281,20 +264,15 @@ a {
       }
     }
 
-    .content__topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
     .title {
       font-size: $normal;
       color: $darker-grey;
-      padding-bottom: 8px;
+      font-weight: 600;
+      padding-bottom: 10px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      line-height: 1.4;
 
       .download-btn {
         border: 0;
@@ -312,52 +290,10 @@ a {
       }
     }
 
-    .length_tall {
-      background: $homepage-light-blue;
-      padding: 2px 5px;
-      margin-bottom: 8px;
-      margin-right: 15px;
-      border-radius: 3px;
-      display: inline-block;
-      position: relative;
-      color: white;
-      font-size: $smaller;
-      font-weight: 400;
-      display: none;
-    }
-
-    .time_tall {
-      background: $primary-white;
-      padding: 2px 5px;
-      margin-bottom: 8px;
-      border-radius: 3px;
-      border: 1px solid $secondary-white;
-      display: inline-block;
-      position: relative;
-      color: $darker-grey;
-      font-size: $smaller;
-      font-weight: 400;
-      display: none;
-
-      svg {
-        padding-right: 5px;
-      }
-    }
-
-    .download-btn-card {
-      border: 0;
-      background: rgba(0, 0, 0, 0);
-      transition: all 0.2s ease;
-      -webkit-transform: translateZ(0);
-      outline: 0;
-      color: $medium-grey;
-      display: none;
-      font-size: 16px;
-
-      &:hover {
-        transform: scale(1.1);
-        color: $blue-accent;
-      }
+    .date {
+      font-size: $small;
+      color: $dark-grey;
+      margin-bottom: 6px;
     }
 
     .length {
@@ -390,17 +326,33 @@ a {
     .details {
       font-size: $small;
       color: $dark-grey;
-      margin-top: 8px;
+      margin-bottom: 10px;
+
+      .author {
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .organization {
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+        display: block;
+        color: $medium-grey;
+        font-size: $smaller;
+      }
     }
 
-    .goals {
-      font-size: $small;
-      color: $dark-grey;
-      margin-top: 8px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      min-width: 0;
-      overflow: hidden;
+    .rating-stars-container {
+      margin-bottom: 10px;
+    }
+
+    .pills {
+      margin-top: auto;
+      padding-top: 8px;
     }
   }
   &:hover{

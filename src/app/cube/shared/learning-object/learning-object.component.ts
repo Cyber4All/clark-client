@@ -47,6 +47,8 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   isTrending = false;
   TRENDING_THRESHOLD = 5; // downloads in last 30 days to be considered trending
 
+  isDCWFAligned = false;
+
   constructor(
     private hostEl: ElementRef,
     private renderer: Renderer2,
@@ -75,6 +77,9 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
       );
       this.onResize();
     });
+
+    // Check for DCWF framework alignment
+    this.checkDCWFAlignment();
 
     const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
     this.averageRating = ratings.avgValue;
@@ -203,6 +208,21 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     this.cd.detectChanges();
     if (window.screen.width <= 750 && this.collection.length > 12) {
       this.collection = this.collection.substring(0, 12) + '...';
+    }
+  }
+
+  /**
+   * Check if the learning object has DCWF framework mappings in any of its outcomes
+   */
+  checkDCWFAlignment() {
+    if (this.learningObject?.outcomes && this.learningObject.outcomes.length > 0) {
+      this.isDCWFAligned = this.learningObject.outcomes.some(outcome =>
+        outcome.mappings && outcome.mappings.some(mapping =>
+          mapping.frameworkName &&
+          (mapping.frameworkName.toLowerCase().includes('dcwf') ||
+            mapping.frameworkName.toLowerCase().includes('dod cyber workforce'))
+        )
+      );
     }
   }
 
