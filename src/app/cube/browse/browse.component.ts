@@ -548,4 +548,44 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       q.tags?.length
     );
   }
+
+  /**
+   * Get the count of selected topics
+   */
+  getTopicsCount(): number {
+    if (this.topicFilter?.filters) {
+      return this.topicFilter.filters.filter(f => f.active).length;
+    }
+    return this.query.topics?.length || 0;
+  }
+
+  /**
+   * Get the count of selected levels
+   */
+  getLevelsCount(): number {
+    if (this.levelFilter?.filters) {
+      return this.levelFilter.filters.filter(f => f.active).length;
+    }
+    return this.query.level?.length || 0;
+  }
+
+  /**
+   * Get the count of selected duration options
+   */
+  getDurationCount(): number {
+    if (this.durationFilter?.filters) {
+      return this.durationFilter.filters.filter(f => f.active).length;
+    }
+    return this.query.length?.length || 0;
+  }
+
+  /**
+   * Get the count of selected material tags
+   */
+  getMaterialsCount(): number {
+    if (this.materialsFilter?.filters) {
+      return this.materialsFilter.filters.filter(f => f.active).length;
+    }
+    return this.query.tags?.length || 0;
+  }
 }

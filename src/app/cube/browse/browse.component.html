@@ -25,7 +25,7 @@
       <div class="filter-dropdown-container">
         <button #topicButton aria-label="Filter by topics" class="filter-dropdown-btn"
           (click)="toggleFilterDropdown('topic', $event)" [ngClass]="{'active': activeFilterDropdown === 'topic'}">
-          <span class="filter-label">Topics</span>
+          <span class="filter-label">Topics<span *ngIf="getTopicsCount() > 0"> ({{ getTopicsCount() }})</span></span>
           <i class="far fa-chevron-down"></i>
         </button>
         <div *ngIf="activeFilterDropdown === 'topic'" class="filter-dropdown-menu">
@@ -46,7 +46,7 @@
       <div class="filter-dropdown-container">
         <button #levelButton aria-label="Filter by levels" class="filter-dropdown-btn"
           (click)="toggleFilterDropdown('level', $event)" [ngClass]="{'active': activeFilterDropdown === 'level'}">
-          <span class="filter-label">Levels</span>
+          <span class="filter-label">Levels<span *ngIf="getLevelsCount() > 0"> ({{ getLevelsCount() }})</span></span>
           <i class="far fa-chevron-down"></i>
         </button>
         <div *ngIf="activeFilterDropdown === 'level'" class="filter-dropdown-menu">
@@ -67,7 +67,7 @@
       <div class="filter-dropdown-container">
         <button #durationButton aria-label="Filter by duration" class="filter-dropdown-btn"
           (click)="toggleFilterDropdown('duration', $event)" [ngClass]="{'active': activeFilterDropdown === 'duration'}">
-          <span class="filter-label">Duration</span>
+          <span class="filter-label">Duration<span *ngIf="getDurationCount() > 0"> ({{ getDurationCount() }})</span></span>
           <i class="far fa-chevron-down"></i>
         </button>
         <div *ngIf="activeFilterDropdown === 'duration'" class="filter-dropdown-menu">
@@ -88,7 +88,7 @@
       <div class="filter-dropdown-container">
         <button #materialsButton aria-label="Filter by materials" class="filter-dropdown-btn"
           (click)="toggleFilterDropdown('materials', $event)" [ngClass]="{'active': activeFilterDropdown === 'materials'}">
-          <span class="filter-label">Materials</span>
+          <span class="filter-label">Materials<span *ngIf="getMaterialsCount() > 0"> ({{ getMaterialsCount() }})</span></span>
           <i class="far fa-chevron-down"></i>
         </button>
         <div *ngIf="activeFilterDropdown === 'materials' && materialsFilter?.filters?.length" class="filter-dropdown-menu">

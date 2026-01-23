@@ -9,7 +9,7 @@
     [attr.aria-expanded]="!collapsed"
     [attr.aria-controls]="(info.section | lowercase) + '-panel'"
   >
-    <p>{{ info.section }}</p>
+    <p>{{ info.section }}<span *ngIf="getActiveCount() > 0" class="filter-count"> ({{ getActiveCount() }})</span></p>
 
     <span *ngIf="!isLockedSection(info)">
       <span *ngIf="collapsed"><i class="fas fa-angle-down"></i></span>

@@ -11,10 +11,18 @@
 
   p {
     margin: 0;
-    flex: 1;
+    flex: 0 0 auto;
     font-weight: 600;
     color: $darker-grey;
     font-size: $normal;
+
+    .filter-count {
+      display: inline;
+      font-weight: 400;
+      color: $dark-grey;
+      font-size: $normal;
+      margin-left: 0;
+    }
   }
 
   span {

@@ -89,6 +89,16 @@ export class FilterSectionComponent implements OnInit, DoCheck {
     const s = v?.section?.trim().toLowerCase();
     return s === 'length' || s === 'level';
   }
+
+  /**
+   * Get the count of active (selected) filters in this section
+   */
+  getActiveCount(): number {
+    if (!this.info?.filters) {
+      return 0;
+    }
+    return this.info.filters.filter(f => f.active).length;
+  }
 }
 
 export interface FilterSectionInfo {
