@@ -556,7 +556,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       q.guidelines?.length ||
       q.noGuidelines ||
       q.standardOutcomes?.length ||
-      q.fileTypes?.length
+      q.fileTypes?.length ||
+      q.tags?.length
     );
   }
 }
