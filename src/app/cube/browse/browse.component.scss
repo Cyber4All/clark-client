@@ -96,6 +96,11 @@
     font-weight: 500;
   }
 
+  .filter-dropdown-container {
+    position: relative;
+    display: inline-block;
+  }
+
   .filter-bar-actions {
     display: flex;
     gap: 10px;
@@ -127,10 +132,18 @@
 
 // Filter dropdown menus
 .filter-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  background: white;
+  border: 1px solid $light-grey;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 0;
   min-width: 220px;
   max-height: 400px;
   overflow-y: auto;
+  z-index: 1000;
 
   .filter-options-list {
     list-style: none;

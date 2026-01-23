@@ -22,14 +22,13 @@
       </button>
 
       <!-- Topics dropdown -->
-      <button aria-label="Filter by topics" class="filter-dropdown-btn"
-        (activate)="toggleFilterDropdown('topic', $event)" [ngClass]="{'active': activeFilterDropdown === 'topic'}">
-        <span class="filter-label">Topics</span>
-        <i class="far fa-chevron-down"></i>
-      </button>
-      <clark-context-menu *ngIf="activeFilterDropdown === 'topic' && activeFilterAnchor" [anchor]="activeFilterAnchor"
-        [offset]="{ top: 10, left: 0 }" (close)="toggleFilterDropdown(null)">
-        <div #contextMenu class="filter-dropdown-menu">
+      <div class="filter-dropdown-container">
+        <button #topicButton aria-label="Filter by topics" class="filter-dropdown-btn"
+          (click)="toggleFilterDropdown('topic', $event)" [ngClass]="{'active': activeFilterDropdown === 'topic'}">
+          <span class="filter-label">Topics</span>
+          <i class="far fa-chevron-down"></i>
+        </button>
+        <div *ngIf="activeFilterDropdown === 'topic'" class="filter-dropdown-menu">
           <ul class="filter-options-list">
             <li *ngFor="let option of topicFilter?.filters" class="filter-option">
               <label class="filter-checkbox-label">
@@ -41,17 +40,16 @@
             </li>
           </ul>
         </div>
-      </clark-context-menu>
+      </div>
 
       <!-- Levels dropdown -->
-      <button aria-label="Filter by levels" class="filter-dropdown-btn"
-        (activate)="toggleFilterDropdown('level', $event)" [ngClass]="{'active': activeFilterDropdown === 'level'}">
-        <span class="filter-label">Levels</span>
-        <i class="far fa-chevron-down"></i>
-      </button>
-      <clark-context-menu *ngIf="activeFilterDropdown === 'level' && activeFilterAnchor" [anchor]="activeFilterAnchor"
-        [offset]="{ top: 10, left: 0 }" (close)="toggleFilterDropdown(null)">
-        <div #contextMenu class="filter-dropdown-menu">
+      <div class="filter-dropdown-container">
+        <button #levelButton aria-label="Filter by levels" class="filter-dropdown-btn"
+          (click)="toggleFilterDropdown('level', $event)" [ngClass]="{'active': activeFilterDropdown === 'level'}">
+          <span class="filter-label">Levels</span>
+          <i class="far fa-chevron-down"></i>
+        </button>
+        <div *ngIf="activeFilterDropdown === 'level'" class="filter-dropdown-menu">
           <ul class="filter-options-list">
             <li *ngFor="let option of levelFilter?.filters" class="filter-option">
               <label class="filter-checkbox-label">
@@ -63,17 +61,16 @@
             </li>
           </ul>
         </div>
-      </clark-context-menu>
+      </div>
 
       <!-- Duration dropdown -->
-      <button aria-label="Filter by duration" class="filter-dropdown-btn"
-        (activate)="toggleFilterDropdown('duration', $event)" [ngClass]="{'active': activeFilterDropdown === 'duration'}">
-        <span class="filter-label">Duration</span>
-        <i class="far fa-chevron-down"></i>
-      </button>
-      <clark-context-menu *ngIf="activeFilterDropdown === 'duration' && activeFilterAnchor" [anchor]="activeFilterAnchor"
-        [offset]="{ top: 10, left: 0 }" (close)="toggleFilterDropdown(null)">
-        <div #contextMenu class="filter-dropdown-menu">
+      <div class="filter-dropdown-container">
+        <button #durationButton aria-label="Filter by duration" class="filter-dropdown-btn"
+          (click)="toggleFilterDropdown('duration', $event)" [ngClass]="{'active': activeFilterDropdown === 'duration'}">
+          <span class="filter-label">Duration</span>
+          <i class="far fa-chevron-down"></i>
+        </button>
+        <div *ngIf="activeFilterDropdown === 'duration'" class="filter-dropdown-menu">
           <ul class="filter-options-list">
             <li *ngFor="let option of durationFilter?.filters" class="filter-option">
               <label class="filter-checkbox-label">
@@ -85,17 +82,16 @@
             </li>
           </ul>
         </div>
-      </clark-context-menu>
+      </div>
 
       <!-- Materials dropdown -->
-      <button aria-label="Filter by materials" class="filter-dropdown-btn"
-        (activate)="toggleFilterDropdown('materials', $event)" [ngClass]="{'active': activeFilterDropdown === 'materials'}">
-        <span class="filter-label">Materials</span>
-        <i class="far fa-chevron-down"></i>
-      </button>
-      <clark-context-menu *ngIf="activeFilterDropdown === 'materials' && activeFilterAnchor && materialsFilter?.filters?.length" [anchor]="activeFilterAnchor"
-        [offset]="{ top: 10, left: 0 }" (close)="toggleFilterDropdown(null)">
-        <div #contextMenu class="filter-dropdown-menu">
+      <div class="filter-dropdown-container">
+        <button #materialsButton aria-label="Filter by materials" class="filter-dropdown-btn"
+          (click)="toggleFilterDropdown('materials', $event)" [ngClass]="{'active': activeFilterDropdown === 'materials'}">
+          <span class="filter-label">Materials</span>
+          <i class="far fa-chevron-down"></i>
+        </button>
+        <div *ngIf="activeFilterDropdown === 'materials' && materialsFilter?.filters?.length" class="filter-dropdown-menu">
           <ul class="filter-options-list">
             <li *ngFor="let option of materialsFilter.filters" class="filter-option">
               <label class="filter-checkbox-label">
@@ -107,7 +103,7 @@
             </li>
           </ul>
         </div>
-      </clark-context-menu>
+      </div>
 
       <!-- Sort and search options -->
       <div class="filter-bar-actions">

@@ -81,7 +81,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   // Filter dropdown management
   activeFilterDropdown: string | null = null;
-  activeFilterAnchor: HTMLElement | null = null;
   topicFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
   durationFilter: FilterSectionInfo;
@@ -170,27 +169,29 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    * Toggle a filter dropdown
    */
   toggleFilterDropdown(filterName: string | null, event?: Event) {
-    // If closing, close immediately
-    if (this.activeFilterDropdown === filterName) {
-      this.activeFilterDropdown = null;
-      this.activeFilterAnchor = null;
-      this.cd.detectChanges();
-      return;
+    if (event) {
+      event.stopPropagation();
     }
 
-    // Get the anchor element from the event
-    const anchor = event?.currentTarget as HTMLElement;
-
-    // If opening, defer to next tick to ensure element ref is available
-    this.activeFilterDropdown = null; // Close any open dropdown first
-    this.activeFilterAnchor = null;
-    this.cd.detectChanges();
-
-    setTimeout(() => {
+    if (this.activeFilterDropdown === filterName) {
+      // Close if clicking the same button
+      this.activeFilterDropdown = null;
+    } else {
+      // Open the requested dropdown
       this.activeFilterDropdown = filterName;
-      this.activeFilterAnchor = anchor;
+    }
+
+    this.cd.detectChanges();
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    // Close dropdown when clicking outside
+    const target = event.target as HTMLElement;
+    if (this.activeFilterDropdown && !target.closest('.filter-dropdown-container') && !target.closest('.filter-dropdown-btn')) {
+      this.activeFilterDropdown = null;
       this.cd.detectChanges();
-    }, 0);
+    }
   }
 
   /**
