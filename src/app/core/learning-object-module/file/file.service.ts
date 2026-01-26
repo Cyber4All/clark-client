@@ -1,6 +1,10 @@
 import { Injectable, Input } from '@angular/core';
 import { FILE_MANAGER_ROUTES, FILE_METADATA_ROUTES } from './file.routes';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject, throwError } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
@@ -8,7 +12,7 @@ import { FileUploadMeta } from 'app/onion/learning-object-builder/components/con
 import { LearningObject } from '@entity';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileService {
   private headers = new HttpHeaders();
@@ -17,19 +21,25 @@ export class FileService {
   learningObject$: Observable<LearningObject> =
     new Observable<LearningObject>();
 
-  constructor(
-    private http: HttpClient,
-  ) {
-  }
+  constructor(private http: HttpClient) { }
 
   // TODO: Upload should be moved from the file mnager to this file
 
-  async deleteLearningObjectFileMetadata(learningObjectId: string, fileId: string): Promise<void> {
+  async deleteLearningObjectFileMetadata(
+    learningObjectId: string,
+    fileId: string,
+  ): Promise<void> {
     this.http
-      .delete(FILE_METADATA_ROUTES.DELETE_LEARNING_OBJECT_FILE_METADATA(learningObjectId, fileId), {
-        headers: this.headers,
-        withCredentials: true,
-      })
+      .delete(
+        FILE_METADATA_ROUTES.DELETE_LEARNING_OBJECT_FILE_METADATA(
+          learningObjectId,
+          fileId,
+        ),
+        {
+          headers: this.headers,
+          withCredentials: true,
+        },
+      )
       .pipe(catchError(this.handleError))
       .toPromise();
   }
@@ -37,16 +47,46 @@ export class FileService {
   /**
    * Makes a request to the previewUrl with authorization headers to get the file
    * and returns the blob url of the file that can be opened in a new tab
+   * For recognized Office documents, opens them in Office Online Viewer instead
    *
    * @param url the previewUrl of the material on the learning object
+   * @param name the intended file name (extracts extension)
    * @returns the blob url of the file
    */
   async previewLearningObjectFile(url: string, name: string): Promise<string> {
-    return this.http.get(url, {
-      withCredentials: true,
-      responseType: 'blob',
-      observe: 'response'
-    })
+    // Possible office files
+    const officeExtensions = [
+      // Word
+      '.docx',
+      '.doc',
+      // Powerpoint
+      '.pptx',
+      '.ppt',
+      '.ppsx',
+      '.pps',
+      // Excel
+      '.xlsx',
+      '.xls',
+    ];
+    const lastDot = name.lastIndexOf('.');
+    let ext = '';
+    if (lastDot !== -1 && lastDot < name.length - 1) {
+      ext = name.substring(lastDot).toLowerCase();
+    }
+    if (officeExtensions.includes(ext)) {
+      const encodedUrl = encodeURIComponent(url);
+      const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
+      console.log('Office Online Viewer URL:', officeViewerUrl);
+      window.open(officeViewerUrl, '_blank');
+      return Promise.resolve('');
+    }
+    // Default/fallback: download as before
+    return this.http
+      .get(url, {
+        withCredentials: true,
+        responseType: 'blob',
+        observe: 'response',
+      })
       .pipe(catchError(this.handleError))
       .toPromise()
       .then((response: any) => {
@@ -83,40 +123,36 @@ export class FileService {
   updateFileDescription(
     objectId: string,
     fileId: string,
-    description: string
+    description: string,
   ): Promise<any> {
     const route = FILE_METADATA_ROUTES.UPDATE_LEARNING_OBJECT_FILE_METADATA(
       objectId,
-      fileId
+      fileId,
     );
     return this.http
       .patch(
         route,
         { description },
-        { headers: this.headers, withCredentials: true, responseType: 'text' }
+        { headers: this.headers, withCredentials: true, responseType: 'text' },
       )
-      .pipe(
-
-        catchError(this.handleError)
-      )
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
   // Updates the README of a learning object
   async updateReadme(id: string): Promise<any> {
-    return await this.http.patch(
-      FILE_MANAGER_ROUTES.UPDATE_README(id),
-      {},
-      {
-        headers: this.headers,
-        withCredentials: true,
-        responseType: 'text'
-      }
-    )
-      .pipe(
-
-        catchError(this.handleError)
-      ).toPromise();
+    return await this.http
+      .patch(
+        FILE_MANAGER_ROUTES.UPDATE_README(id),
+        {},
+        {
+          headers: this.headers,
+          withCredentials: true,
+          responseType: 'text',
+        },
+      )
+      .pipe(catchError(this.handleError))
+      .toPromise();
   }
 
   /**
@@ -131,12 +167,13 @@ export class FileService {
    */
   addFileMeta({
     objectId,
-    files
+    files,
   }: {
     objectId: string;
     files: FileUploadMeta[];
   }): Promise<string[]> {
-    const route = FILE_METADATA_ROUTES.ADD_LEARNING_OBJECT_FILE_METADATA(objectId);
+    const route =
+      FILE_METADATA_ROUTES.ADD_LEARNING_OBJECT_FILE_METADATA(objectId);
     const MAX_PER_REQUEST = 100;
     const responses$: Promise<string[]>[] = [];
     const completed$: Subject<boolean> = new Subject<boolean>();
@@ -167,24 +204,17 @@ export class FileService {
    * @returns A promise
    */
   // TODO: Move to bundling service
-  toggleBundle(
-    learningObjectId: string,
-    fileIDs: string[],
-    state: boolean
-  ) {
+  toggleBundle(learningObjectId: string, fileIDs: string[], state: boolean) {
     return this.http
       .patch(
         FILE_MANAGER_ROUTES.UPDATE_BUNDLE(learningObjectId),
         {
           fileIDs: fileIDs,
-          packagable: state
+          packagable: state,
         },
-        { headers: this.headers, withCredentials: true }
+        { headers: this.headers, withCredentials: true },
       )
-      .pipe(
-
-        catchError(this.handleError)
-      )
+      .pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -202,18 +232,18 @@ export class FileService {
     route: string,
     batch: FileUploadMeta[],
     responses$: Promise<string[]>[],
-    sendNextBatch$: Subject<void>
+    sendNextBatch$: Subject<void>,
   ) {
     const response$ = this.http
-      .post(route,
+      .post(
+        route,
         { fileMeta: batch },
         {
           headers: this.headers,
-          withCredentials: true
-        })
-      .pipe(
-        catchError(this.handleError)
+          withCredentials: true,
+        },
       )
+      .pipe(catchError(this.handleError))
       .toPromise()
       .then((res: { fileMetaId: string[] }) => res.fileMetaId);
     responses$.push(response$);
@@ -231,7 +261,7 @@ export class FileService {
    */
   private async handleFileMetaRequestQueueCompletion(
     completed$: Subject<boolean>,
-    responses$: Promise<string[]>[]
+    responses$: Promise<string[]>[],
   ): Promise<string[]> {
     completed$.next(true);
     completed$.unsubscribe();
@@ -246,21 +276,19 @@ export class FileService {
    * @param {LearningObject.Material.File} file [The file to be downloaded]
    * @memberof UploadComponent
    */
-  handleFileDownload(file: LearningObject.Material.File, learningObject: LearningObject) {
+  handleFileDownload(
+    file: LearningObject.Material.File,
+    learningObject: LearningObject,
+  ) {
     const loId = learningObject.id;
     return this.http
-      .get(
-        FILE_MANAGER_ROUTES.DOWNLOAD_FILE(loId, file._id),
-        {
-          headers: this.headers,
-          withCredentials: true,
-          responseType: 'blob',
-          observe: 'response'
-        }
-      )
-      .pipe(
-        catchError(this.handleError)
-      )
+      .get(FILE_MANAGER_ROUTES.DOWNLOAD_FILE(loId, file._id), {
+        headers: this.headers,
+        withCredentials: true,
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .pipe(catchError(this.handleError))
       .toPromise()
       .then((response: any) => {
         // Extract the blob from the response
@@ -309,6 +337,6 @@ function flattenDeep(arr1: any[]): any[] {
   return arr1.reduce(
     (acc, val) =>
       Array.isArray(val) ? acc.concat(flattenDeep(val)) : acc.concat(val),
-    []
+    [],
   );
 }
