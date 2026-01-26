@@ -17,13 +17,89 @@ import { LearningObject } from '@entity';
 export class FileService {
   private headers = new HttpHeaders();
 
+  /**
+   * Supported Microsoft Office extensions for preview
+   */
+  private static officeExtensions = [
+    '.docx',
+    '.doc',
+    '.pptx',
+    '.ppt',
+    '.ppsx',
+    '.pps',
+    '.potx',
+    '.pot',
+    '.xlsx',
+    '.xls',
+  ];
+
   @Input()
   learningObject$: Observable<LearningObject> =
     new Observable<LearningObject>();
 
   constructor(private http: HttpClient) { }
 
-  // TODO: Upload should be moved from the file mnager to this file
+  /**
+   * Helper: returns true if filename is a supported Microsoft Office file
+   */
+  static isOfficeFile(filename: string): boolean {
+    const lastDot = filename.lastIndexOf('.');
+    let ext = '';
+    if (lastDot !== -1 && lastDot < filename.length - 1) {
+      ext = filename.substring(lastDot).toLowerCase();
+    }
+    return FileService.officeExtensions.includes(ext);
+  }
+
+  /**
+   * Download the learning object file (for any type).
+   * @param url public/authorized file URL
+   * @param name file name to use for download
+   */
+  async downloadLearningObjectFile(url: string, name: string): Promise<string> {
+    return this.http
+      .get(url, {
+        withCredentials: true,
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .pipe(catchError(this.handleError))
+      .toPromise()
+      .then((response: any) => {
+        // Extract the blob from the response
+        const blob = response.body;
+        // Create a URL for the blob
+        const blobUrl = window.URL.createObjectURL(blob);
+        // Trigger a download using an anchor element
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = name;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        // Revoke the blob URL to free memory
+        window.URL.revokeObjectURL(blobUrl);
+        return '';
+      });
+  }
+
+  /**
+   * Preview the file in Office Online Viewer if it is a supported Office file.
+   * @param url file URL
+   * @param name file name (to check extension)
+   */
+  async previewLearningObjectFile(url: string, name: string): Promise<string> {
+    if (FileService.isOfficeFile(name)) {
+      const encodedUrl = encodeURIComponent(url);
+      const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
+      window.open(officeViewerUrl, '_blank');
+      return Promise.resolve('');
+    } else {
+      // Not an office file; do nothing for now but return Promise.resolve('')
+      return Promise.resolve('');
+    }
+  }
 
   async deleteLearningObjectFileMetadata(
     learningObjectId: string,
@@ -44,82 +120,6 @@ export class FileService {
       .toPromise();
   }
 
-  /**
-   * Makes a request to the previewUrl with authorization headers to get the file
-   * and returns the blob url of the file that can be opened in a new tab
-   * For recognized Office documents, opens them in Office Online Viewer instead
-   *
-   * @param url the previewUrl of the material on the learning object
-   * @param name the intended file name (extracts extension)
-   * @returns the blob url of the file
-   */
-  async previewLearningObjectFile(url: string, name: string): Promise<string> {
-    // Possible office files
-    const officeExtensions = [
-      // Word
-      '.docx',
-      '.doc',
-      // Powerpoint
-      '.pptx',
-      '.ppt',
-      '.ppsx',
-      '.pps',
-      // Excel
-      '.xlsx',
-      '.xls',
-    ];
-    const lastDot = name.lastIndexOf('.');
-    let ext = '';
-    if (lastDot !== -1 && lastDot < name.length - 1) {
-      ext = name.substring(lastDot).toLowerCase();
-    }
-    if (officeExtensions.includes(ext)) {
-      const encodedUrl = encodeURIComponent(url);
-      const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
-      console.log('Office Online Viewer URL:', officeViewerUrl);
-      window.open(officeViewerUrl, '_blank');
-      return Promise.resolve('');
-    }
-    // Default/fallback: download as before
-    return this.http
-      .get(url, {
-        withCredentials: true,
-        responseType: 'blob',
-        observe: 'response',
-      })
-      .pipe(catchError(this.handleError))
-      .toPromise()
-      .then((response: any) => {
-        // Extract the blob from the response
-        const blob = response.body;
-        // Create a URL for the blob
-        const blobUrl = window.URL.createObjectURL(blob);
-
-        // Trigger a download using an anchor element
-        const a = document.createElement('a');
-        a.href = blobUrl;
-        a.download = name; //use extracted filename
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-
-        // Revoke the blob URL to free memory
-        window.URL.revokeObjectURL(blobUrl);
-        return '';
-      });
-  }
-
-  /**
-   * Makes request to update file description
-   *
-   * @param {string} authorUsername
-   * @param {string} objectId
-   * @param {string} fileId
-   * @param {string} description
-   * @returns {Promise<any>}
-   * @memberof LearningObjectService
-   */
   updateFileDescription(
     objectId: string,
     fileId: string,
@@ -295,7 +295,6 @@ export class FileService {
         const blob = response.body;
         // Create a URL for the blob
         const blobUrl = window.URL.createObjectURL(blob);
-
         // Trigger a download using an anchor element
         const a = document.createElement('a');
         a.href = blobUrl;
