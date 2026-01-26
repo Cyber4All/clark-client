@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LearningObject } from '../../../../entity/learning-object/learning-object';
 import { NavbarService } from '../../../core/client-module/navbar.service';
 import { Query } from '../../../interfaces/query';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './collection-502.component.html',
   styleUrls: ['./collection-502.component.scss']
 })
-export class Collection502Component implements OnInit {
+export class Collection502Component implements OnInit, OnDestroy {
 
   learningObjects: LearningObject[];
   guidelineNames: [];

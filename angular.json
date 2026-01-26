@@ -16,13 +16,10 @@
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/env.js"
-            ],
+            "assets": ["src/assets", "src/favicon.ico", "src/env.js"],
             "styles": [
-              "./node_modules/@angular/material/legacy-prebuilt-themes/legacy-pink-bluegrey.css",
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/globals.scss",
               "src/mat-input.scss"
             ],
@@ -79,24 +76,24 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "clark:build"
+            "buildTarget": "clark:build"
           },
           "configurations": {
             "experimental": {
-              "browserTarget": "clark:build:experimental"
+              "buildTarget": "clark:build:experimental"
             },
             "production": {
-              "browserTarget": "clark:build:prod"
+              "buildTarget": "clark:build:prod"
             },
             "staging": {
-              "browserTarget": "clark:build:staging"
+              "buildTarget": "clark:build:staging"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "clark:build"
+            "buildTarget": "clark:build"
           }
         },
         "test": {
@@ -108,23 +105,16 @@
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
             "styles": [
-              "./node_modules/@angular/material/legacy-prebuilt-themes/legacy-pink-bluegrey.css",
+              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/globals.scss"
             ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/env.js"
-            ]
+            "assets": ["src/assets", "src/favicon.ico", "src/env.js"]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
@@ -144,12 +134,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:eslint",
           "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -164,14 +150,8 @@
           "options": {
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/env.js"
-            ],
-            "styles": [
-              "src/globals.scss"
-            ],
+            "assets": ["src/assets", "src/favicon.ico", "src/env.js"],
+            "styles": ["src/globals.scss"],
             "scripts": [],
             "outputPath": "dist",
             "vendorChunk": true,
