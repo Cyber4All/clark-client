@@ -22,11 +22,11 @@ export enum DOWNLOAD_STATUS {
 export enum AUTH_GROUP {
   VISITOR,
   USER,
+  SUPERUSER,
   REVIEWER,
   CURATOR,
   EDITOR,
-  ADMIN,
-  SUPERUSER
+  ADMIN
 }
 
 export interface Tokens {
