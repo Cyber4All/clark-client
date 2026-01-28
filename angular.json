@@ -157,7 +157,6 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "tsConfig": "src/tsconfig.app.json",
-<<<<<<< HEAD
             "polyfills": [
               "@angular/localize/init",
               "src/polyfills.ts"
@@ -170,11 +169,6 @@
             "styles": [
               "src/globals.scss"
             ],
-=======
-            "polyfills": "src/polyfills.ts",
-            "assets": ["src/assets", "src/favicon.ico", "src/env.js"],
-            "styles": ["src/globals.scss"],
->>>>>>> d4be32b767144e912818ae057e0cf7bf36d020e5
             "scripts": [],
             "outputPath": {
               "base": "dist"
