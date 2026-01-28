@@ -21,16 +21,16 @@
 
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 25px;
+  grid-template-columns: 4fr 1fr 0.5fr 25px;
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
   justify-self: center;
-  background: transparent!important;
+  background: transparent !important;
   margin-bottom: 1.5rem;
 
   &.bundle {
-    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+    grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
   }
 }
 
@@ -108,7 +108,6 @@ input {
   padding: 5px 10px;
 }
 
-
 @media screen and (max-width: 600px) {
   .grid-row {
     display: block;
@@ -123,7 +122,6 @@ input {
 
     &.description {
       padding-left: 25px;
-
     }
     .svg-inline--fa {
       margin-right: 3px;
