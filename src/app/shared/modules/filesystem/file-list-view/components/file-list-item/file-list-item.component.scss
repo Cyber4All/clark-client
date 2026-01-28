@@ -12,16 +12,16 @@
 }
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 2fr 1fr 1fr 25px;
+  grid-template-columns: 4fr 1fr 0.5fr 25px;
   grid-column-gap: 20px;
   align-items: center;
   width: 100%;
   justify-self: center;
-  background: transparent!important;
+  background: transparent !important;
   margin-bottom: 1.5rem;
 
   &.bundle {
-    grid-template-columns: 2fr 2fr 1.5fr 1fr 1fr 25px;
+    grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
   }
 }
 
@@ -94,7 +94,6 @@
   }
 }
 
-
 .external-link-icon {
   color: $light-blue;
   font-size: 10px;
@@ -104,6 +103,38 @@
 input {
   width: 100%;
   padding: 5px 10px;
+}
+
+// File action buttons (download and preview)
+.file-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  align-items: center;
+
+  button {
+    // Icon sizing for mat-icon-button
+    i {
+      font-size: 18px;
+    }
+
+    // Hover state with theme blue
+    &:hover:not([disabled]) {
+      background-color: $light-blue;
+      color: white;
+      transition: background-color 0.2s ease;
+
+      i {
+        color: white;
+      }
+    }
+
+    // Disabled state
+    &[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -124,10 +155,15 @@ input {
 
     &.description {
       padding-left: 25px;
-
     }
     .svg-inline--fa {
       margin-right: 3px;
     }
+  }
+
+  // Maintain button layout on mobile
+  .file-actions {
+    padding-left: 25px;
+    margin-top: 8px;
   }
 }

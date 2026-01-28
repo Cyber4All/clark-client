@@ -1,8 +1,4 @@
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '@entity';
 import { environment } from '@env/environment';
@@ -22,11 +18,11 @@ export enum DOWNLOAD_STATUS {
 export enum AUTH_GROUP {
   VISITOR,
   USER,
+  SUPERUSER,
   REVIEWER,
   CURATOR,
   EDITOR,
-  ADMIN,
-  SUPERUSER
+  ADMIN
 }
 
 export interface Tokens {

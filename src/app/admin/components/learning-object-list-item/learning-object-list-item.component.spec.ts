@@ -4,7 +4,7 @@ import { LearningObjectListItemComponent } from './learning-object-list-item.com
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContextMenuModule } from 'app/shared/modules/contextmenu/contextmenu.module';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { User, LearningObject } from '@entity';
@@ -20,19 +20,17 @@ describe('DashboardItemComponent', () => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [LearningObjectListItemComponent],
-    imports: [
-        RouterTestingModule,
+    teardown: { destroyAfterEach: false },
+    imports: [RouterTestingModule,
         ContextMenuModule.forRoot(),
-        HttpClientModule,
         CookieModule.forRoot(),
-        SharedDirectivesModule
-    ],
+        SharedDirectivesModule],
     providers: [
         { provide: AuthService, useValue: { user: new User() } },
         CollectionService,
         { provide: UnreleaseService, useClass: {} },
-    ],
-    teardown: { destroyAfterEach: false }
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
 })
     .compileComponents();
   }));

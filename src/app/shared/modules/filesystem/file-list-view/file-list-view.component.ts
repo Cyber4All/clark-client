@@ -61,7 +61,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     private fileService: FileService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subToDirChange();
@@ -77,7 +77,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
   private subToDirChange() {
     this.node$.pipe(takeUntil(this.killSub$)).subscribe((node) => {
-      this.directoryListing = [ ...node.getFolders(), ...node.getFiles()];
+      this.directoryListing = [...node.getFolders(), ...node.getFiles()];
     });
   }
 
@@ -199,8 +199,8 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    *
    * @returns boolean value if the user is valid
    */
-   checkAccessGroups(): boolean {
-    if(this.accessGroups && this.accessGroups.length > 0) {
+  checkAccessGroups(): boolean {
+    if (this.accessGroups && this.accessGroups.length > 0) {
       return this.inBuilder && (this.accessGroups.includes('admin') || this.accessGroups.includes('editor'));
     }
     return false;

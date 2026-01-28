@@ -1,5 +1,5 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoralogixLogSeverity } from '@coralogix/browser';
 import { ChatbotService } from 'app/core/chat-module/chatbot.service';
@@ -43,7 +43,7 @@ export interface Message {
     ]),
   ],
 })
-export class ChatbotWindowComponent {
+export class ChatbotWindowComponent implements AfterViewInit {
   @ViewChild('messagesContainer')
   messagesContainer!: ElementRef<HTMLDivElement>;
   @Input() feedbackPromptAfterMessageCount = 8;

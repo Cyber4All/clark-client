@@ -3,7 +3,7 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LearningObjectsComponent } from './learning-objects.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { CookieModule } from 'ngx-cookie';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
@@ -27,14 +27,15 @@ describe('LearningObjectsComponent', () => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [LearningObjectsComponent],
-    imports: [RouterTestingModule, HttpClientModule, CookieModule.forRoot()],
+    teardown: { destroyAfterEach: false },
+    imports: [RouterTestingModule, CookieModule.forRoot()],
     providers: [
         ToastrOvenService,
         AuthService,
         CollectionService,
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub }
-    ],
-    teardown: { destroyAfterEach: false }
+        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+        provideHttpClient(withInterceptorsFromDi())
+    ]
 })
     .compileComponents();
   }));

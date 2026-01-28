@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LearningObject, User } from '@entity';
 import { UserQuery } from 'app/interfaces/query';
-import * as md5 from 'md5';
+import md5 from 'md5';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { AuthService } from '../auth-module/auth.service';
