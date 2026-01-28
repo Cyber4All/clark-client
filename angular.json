@@ -16,6 +16,7 @@
             },
             "index": "src/index.html",
             "tsConfig": "src/tsconfig.app.json",
+<<<<<<< HEAD
             "polyfills": [
               "@angular/localize/init",
               "src/polyfills.ts"
@@ -25,8 +26,13 @@
               "src/favicon.ico",
               "src/env.js"
             ],
+=======
+            "polyfills": "src/polyfills.ts",
+            "assets": ["src/assets", "src/favicon.ico", "src/env.js"],
+>>>>>>> d4be32b767144e912818ae057e0cf7bf36d020e5
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+              "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
               "src/globals.scss",
               "src/mat-input.scss"
             ],
@@ -115,20 +121,13 @@
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
               "src/globals.scss"
             ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/env.js"
-            ]
+            "assets": ["src/assets", "src/favicon.ico", "src/env.js"]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
@@ -148,12 +147,8 @@
         "lint": {
           "builder": "@angular-devkit/build-angular:eslint",
           "options": {
-            "tsConfig": [
-              "e2e/tsconfig.e2e.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -167,6 +162,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "tsConfig": "src/tsconfig.app.json",
+<<<<<<< HEAD
             "polyfills": [
               "@angular/localize/init",
               "src/polyfills.ts"
@@ -179,6 +175,11 @@
             "styles": [
               "src/globals.scss"
             ],
+=======
+            "polyfills": "src/polyfills.ts",
+            "assets": ["src/assets", "src/favicon.ico", "src/env.js"],
+            "styles": ["src/globals.scss"],
+>>>>>>> d4be32b767144e912818ae057e0cf7bf36d020e5
             "scripts": [],
             "outputPath": {
               "base": "dist"

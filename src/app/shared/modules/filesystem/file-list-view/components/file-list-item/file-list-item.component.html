@@ -1,43 +1,62 @@
-<div 
+<div
   class="grid-row wrapper"
-  [ngClass]="{'bundle': checkAccessGroups()}"
-  role="link" tabindex="0" 
-  attr.aria-labelledby="file-name file-description file-updated file-size">
+  [ngClass]="{ bundle: checkAccessGroups() }"
+  role="link"
+  tabindex="0"
+>
   <div
     (activate)="handleClick($event)"
     class="text-contained inline-flex"
     [ngClass]="{ 'hover-react': previewUrl }"
-
     tipPosition="top"
     id="file-name"
   >
-    <i class="fas {{ icon }} icon"></i>
+    <i [ngClass]="['fas', icon, 'icon']"></i>
     {{ file?.name }}
-    <span class="external-link-icon" *ngIf="previewUrl"
-      ><i class="far fa-external-link"></i
-    ></span>
   </div>
-  <div tabindex="0" class="text-contained description" id="file-description" attr.aria-label="{{ file?.description }}">
-    <span title="{{ file?.description }}">{{ file?.description }}</span>
-  </div>
-  <div class="text-contained timestamp" id="file-updated" attr.aria-label="Last updated {{ timestampAge }}">
-    {{ timestampAge }}
-  </div>
-  <div class="text-contained filesize" id="file-size" attr.aria-label="{{ file?.size }}">
+  <div class="text-contained filesize" id="file-size">
     {{ file?.size | fileSize }}
+  </div>
+  <div class="file-actions">
+    <!-- Download Button -->
+    <button
+      mat-icon-button
+      [matTooltip]="
+        previewUrl
+          ? 'Download'
+          : 'Click &quot;Download Now&quot; to view this file on your machine'
+      "
+      (click)="onDownload()"
+      [disabled]="!previewUrl"
+    >
+      <i class="fas fa-download"></i>
+    </button>
+
+    <!-- Preview Button -->
+    <button
+      mat-icon-button
+      [disabled]="!isOfficeFile() || !previewUrl"
+      [matTooltip]="
+        isOfficeFile()
+          ? 'Preview'
+          : 'Preview unavailable. Click &quot;Download Now&quot; to view this file on your machine'
+      "
+      (click)="onPreview()"
+    >
+      <i class="fas fa-eye"></i>
+    </button>
   </div>
   <div class="toggleBundle" *ngIf="checkAccessGroups()">
     <clark-toggle-switch
-      [state]="file.packageable" 
+      [state]="file.packageable"
       (toggled)="handleToggle($event)"
-      ></clark-toggle-switch>
+    ></clark-toggle-switch>
   </div>
   <a
     tabindex="0"
     *ngIf="showOptionButton"
     class="meatballs"
     (activate)="handleMeatballClick($event)"
-    attr.aria-label="Clickable Option Menu for {{ file?.name }}"
   >
     <div></div>
   </a>

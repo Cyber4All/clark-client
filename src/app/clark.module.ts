@@ -9,7 +9,6 @@ import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@a
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UnsupportedComponent } from './unsupported.component';
 import { NotFoundComponent } from './not-found.component';
@@ -26,6 +25,7 @@ import { RedirectComponent } from './redirect/redirect.component';
 import { SafeHtmlPipe } from './components/safe-html.pipe';
 import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor';
 import { CoralogixRumService } from './core/services/coralogix-rum.service';
+import { ChatbotModule } from 'app/shared/modules/chatbot/chatbot.module';
 
 @NgModule({ declarations: [
         ClarkComponent,

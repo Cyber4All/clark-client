@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
-import {
-  UsageStats,
-  LearningObjectStats,
-  UserMetrics,
-} from '../shared/types/usage-stats';
+import { LearningObjectStats, UsageStats, UserMetrics } from '../shared/types/usage-stats';
 import { CounterStat } from './counter-block/counter-block.component';
 import { PieChart } from './types';
 import { LearningObject } from '../../../entity/learning-object/learning-object';
@@ -88,10 +84,10 @@ export class UsageStatsComponent implements OnInit {
     private learningObjectService: LearningObjectService,
     private utilityService: UtilityService,
     private outcomeService: OutcomeService,
-  ) {}
+  ) { }
 
   async ngOnInit() {
-    this.buildOrganizationBreakdownChart();
+    // this.buildOrganizationBreakdownChart();
     this.buildCounterStats();
     this.metricService.getLearningObjectStats().then((stats) => {
       this.usageStats.objects.review = stats.review;
@@ -126,7 +122,6 @@ export class UsageStatsComponent implements OnInit {
         apply_and_analyze: stats.outcomes.apply_and_analyze,
         evaluate_and_synthesize: stats.outcomes.evaluate_and_synthesize,
       };
-
       this.buildOutcomeDistributionChart();
     });
 
@@ -186,7 +181,7 @@ export class UsageStatsComponent implements OnInit {
 
   /**
    * Constructs chart for Organization Breakdown distribution
-   * FIXME: Data is currently hardcoded in this chart and should be eventually pulled from backend.
+   * HACK: Data is currently hardcoded in this chart and should be eventually pulled from backend.
    *
    * @private
    * @memberof UsageStatsComponent
@@ -195,41 +190,42 @@ export class UsageStatsComponent implements OnInit {
     this.organizationBreakdownChart = {
       title: 'Users By Organization',
       type: 'doughnut',
-      labels: [
-        'Universities',
-        'Community Colleges',
-        'K-12 (Schools)',
-        'Companies',
-        'Government',
-      ],
-      data: [498, 100, 159, 17, 117],
+      data: {
+        labels: [
+          'Universities',
+          'Community Colleges',
+          'K-12 (Schools)',
+          'Companies',
+          'Government',
+        ],
+        datasets: [
+          {
+            data: [498, 100, 159, 17, 117],
+            backgroundColor: [
+              '#3b788b',
+              '#3b8b80',
+              '#3b8b6c',
+              '#236b2d',
+              '#1e4b25',
+            ],
+          },
+        ],
+      },
       legend: true,
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        legend: {
-          position: 'bottom',
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
         },
         hover: {
           onHover: () => {
             CHART_HOVERED = true;
           },
         },
-        animation: {
-          onComplete: generatePieSliceLabels,
-        },
       },
-      colors: [
-        {
-          backgroundColor: [
-            '#3b788b',
-            '#3b8b80',
-            '#3b8b6c',
-            '#236b2d',
-            '#1e4b25',
-          ],
-        },
-      ],
     };
     /**
      * This for loop is creating the aria-label for the chart. It is creating a string from the labels and data points
@@ -263,61 +259,57 @@ export class UsageStatsComponent implements OnInit {
     this.lengthDistributionChart = {
       title: 'Learning Objects By Length',
       type: 'doughnut',
-      labels: ['Nanomodule', 'Micromodule', 'Module', 'Unit', 'Course'],
-      data: [
-        this.usageStats.objects.lengths.nanomodule,
-        this.usageStats.objects.lengths.micromodule,
-        this.usageStats.objects.lengths.module,
-        this.usageStats.objects.lengths.unit,
-        this.usageStats.objects.lengths.course,
-      ],
+      data: {
+        labels: ['Nanomodule', 'Micromodule', 'Module', 'Unit', 'Course'],
+        datasets: [
+          {
+            data: [
+              this.usageStats.objects.lengths.nanomodule,
+              this.usageStats.objects.lengths.micromodule,
+              this.usageStats.objects.lengths.module,
+              this.usageStats.objects.lengths.unit,
+              this.usageStats.objects.lengths.course,
+            ],
+            backgroundColor: [
+              '#3b788b',
+              '#3b8b80',
+              '#3b8b6c',
+              '#236b2d',
+              '#1e4b25',
+            ],
+          },
+        ],
+      },
       legend: true,
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        legend: {
-          position: 'bottom',
-        },
-        hover: {
-          onHover: () => {
-            CHART_HOVERED = true;
+        plugins: {
+          legend: {
+            position: 'bottom',
           },
         },
-        animation: {
-          onComplete: generatePieSliceLabels,
-        },
       },
-      colors: [
-        {
-          backgroundColor: [
-            '#3b788b',
-            '#3b8b80',
-            '#3b8b6c',
-            '#236b2d',
-            '#1e4b25',
-          ],
-        },
-      ],
     };
     /**
      * This for loop is creating the aria-label for the chart. It is creating a string from the labels and data points
      * in the lengthDistributionChart object. The string would look like
      * 'Nanomodule 200, Micromodule 304, Module 404, Unit 426, Course 4000'
      */
-    this.lengthBreakdownChartAria =
-      this.lengthDistributionChart.labels[0] +
-      ' ' +
-      this.lengthDistributionChart.data[0] +
-      ', ';
-    let i: number;
-    for (i = 1; i < this.lengthDistributionChart.labels.length; i++) {
-      this.lengthBreakdownChartAria =
-        this.lengthBreakdownChartAria +
-        this.lengthDistributionChart.labels[i] +
-        ' ' +
-        this.lengthDistributionChart.data[i] +
-        ', ';
-    }
+    // this.lengthBreakdownChartAria =
+    //   this.lengthDistributionChart.labels[0] +
+    //   ' ' +
+    //   this.lengthDistributionChart.data[0] +
+    //   ', ';
+    // let i: number;
+    // for (i = 1; i < this.lengthDistributionChart.labels.length; i++) {
+    //   this.lengthBreakdownChartAria =
+    //     this.lengthBreakdownChartAria +
+    //     this.lengthDistributionChart.labels[i] +
+    //     ' ' +
+    //     this.lengthDistributionChart.data[i] +
+    //     ', ';
+    // }
     this.lengthDistributionReady = true;
   }
   /**
@@ -330,60 +322,53 @@ export class UsageStatsComponent implements OnInit {
     this.outcomeDistributionChart = {
       title: 'Outcomes By Bloom',
       type: 'pie',
-
-      labels: [
-        'Apply and Analyze',
-        'Remember and Understand',
-        'Evaluate and Synthesize',
-      ],
-      data: [
-        this.usageStats.outcomes.apply_and_analyze,
-        this.usageStats.outcomes.remember_and_understand,
-        this.usageStats.outcomes.evaluate_and_synthesize,
-      ],
-      legend: true,
+      data: {
+        labels: [
+          'Apply and Analyze',
+          'Remember and Understand',
+          'Evaluate and Synthesize',
+        ],
+        datasets: [
+          {
+            data: [
+              this.usageStats.outcomes.apply_and_analyze,
+              this.usageStats.outcomes.remember_and_understand,
+              this.usageStats.outcomes.evaluate_and_synthesize,
+            ],
+            backgroundColor: ['#5ec9da', '#f5a623', '#bd5eda'],
+          },
+        ],
+      },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        legend: {
-          position: 'bottom',
-        },
-        hover: {
-          onHover: () => {
-            CHART_HOVERED = true;
+        plugins: {
+          legend: {
+            position: 'bottom',
           },
         },
-        // @ts-ignore
-        animation: {
-          onComplete: generatePieSliceLabels,
-        },
       },
-      colors: [
-        {
-          backgroundColor: ['#5ec9da', '#f5a623', '#bd5eda'],
-        },
-      ],
     };
 
-    /**
-     * This for loop is creating the aria-label for the chart. It is creating a string from the labels and data points
-     * in the outcomeDistributionChart object. The string would look like
-     * 'Apply and Analyze 200, Remember and Understand 304, Evaluate and Synthesize 404'
-     */
-    this.outcomeDistributionChartAria =
-      this.outcomeDistributionChart.labels[0] +
-      ' ' +
-      this.outcomeDistributionChart.data[0] +
-      ', ';
-    let i: number;
-    for (i = 1; i < this.outcomeDistributionChart.labels.length; i++) {
-      this.outcomeDistributionChartAria =
-        this.outcomeDistributionChartAria +
-        this.outcomeDistributionChart.labels[i] +
-        ' ' +
-        this.outcomeDistributionChart.data[i] +
-        ', ';
-    }
+    // /**
+    //  * This for loop is creating the aria-label for the chart. It is creating a string from the labels and data points
+    //  * in the outcomeDistributionChart object. The string would look like
+    //  * 'Apply and Analyze 200, Remember and Understand 304, Evaluate and Synthesize 404'
+    //  */
+    // this.outcomeDistributionChartAria =
+    //   this.outcomeDistributionChart.labels[0] +
+    //   ' ' +
+    //   this.outcomeDistributionChart.data[0] +
+    //   ', ';
+    // let i: number;
+    // for (i = 1; i < this.outcomeDistributionChart.labels.length; i++) {
+    //   this.outcomeDistributionChartAria =
+    //     this.outcomeDistributionChartAria +
+    //     this.outcomeDistributionChart.labels[i] +
+    //     ' ' +
+    //     this.outcomeDistributionChart.data[i] +
+    //     ', ';
+    // }
     this.outcomeDistributionReady = true;
   }
 

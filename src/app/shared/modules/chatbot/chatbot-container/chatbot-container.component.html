@@ -1,9 +1,6 @@
-<clark-chatbot-launcher 
-  *ngIf="!isChatbotOpen"
-  (chatbotOpened)="openChatbot()"
-></clark-chatbot-launcher>
+<clark-chatbot-launcher *ngIf="chatbotState === 'closed' || chatbotState === 'minimized'"
+  [isCookieBannerVisible]="isCookieBannerVisible"
+  (chatbotOpened)="openChatbot()"></clark-chatbot-launcher>
 
-<clark-chatbot-window 
-  *ngIf="isChatbotOpen"
-  (chatbotClosed)="closeChatbot()"
-></clark-chatbot-window>
+<clark-chatbot-window *ngIf="chatbotState === 'open'" (chatbotClosed)="closeChatbot()"
+  (chatbotMinimized)="minimizeChatbot()"></clark-chatbot-window>

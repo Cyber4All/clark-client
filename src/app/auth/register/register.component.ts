@@ -1,6 +1,6 @@
 import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
@@ -264,6 +264,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             }
           })
           .catch((err) => {
+            this.errorMsg = 'Email must be an email';
             this.authValidation.showError();
           });
 
