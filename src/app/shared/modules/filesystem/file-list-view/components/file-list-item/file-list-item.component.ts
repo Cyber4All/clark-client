@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
 import { getIcon } from 'app/shared/modules/filesystem/file-icons';
-import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
 
@@ -19,13 +18,8 @@ export class FileListItemComponent implements OnInit {
   @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
 
   icon = '';
-  timestampAge = '';
   previewUrl = '';
   accessGroups: string[];
-
-  // Flattened for template
-  fileName = '';
-  fileSizeStr = '';
 
   constructor(
     private auth: AuthService,
@@ -34,10 +28,8 @@ export class FileListItemComponent implements OnInit {
 
   ngOnInit() {
     this.icon = getIcon(this.file.extension);
-    this.timestampAge = TimeFunctions.getTimestampAge(+this.file.date);
     this.previewUrl = this.file.previewUrl;
     this.accessGroups = this.auth.accessGroups;
-    this.fileName = this.file?.name || '';
   }
 
   /**
