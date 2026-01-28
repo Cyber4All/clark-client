@@ -12,18 +12,92 @@
     </div>
     
 
-    <!-- #ngFor is the loop set up to display the hierarchy tag and object name until all elements in the array in the .ts file have been used -->
-    <div *ngFor="let object of hierarchy">
-      <div [attr.class]="'wrapper ' + object.length"> 
-        <div class="inner">
-          <div [attr.class]="'length ' + object.length">
-            {{ object?.length | titlecase }}
-          </div>
-          <div class="learningobject-name">
-            <p> {{object?.name}} </p>
-          </div>
+    <div class="hierarchy">
+      <div class="hierarchy__card">
+        <div class="course" [tip]="getHierarchyTooltip('course')">
+          <span class="badge badge--course">
+            <span class="badge__icon" aria-hidden="true">📖</span>
+            Course
+          </span>
+          <h2 class="course__title">Intro to Cybersecurity</h2>
+        </div>
+
+        <div class="modules">
+          <section class="micro has-nano">
+            <header class="micro__header" [tip]="getHierarchyTooltip('micromodule')">
+              <span class="badge badge--micro">
+                <span class="badge__icon" aria-hidden="true">◻︎</span>
+                Micromodule
+              </span>
+              <h3 class="micro__title">Cyber Foundations</h3>
+            </header>
+
+            <div class="nano">
+              <div class="nano__row" [tip]="getHierarchyTooltip('nanomodule')">
+                <span class="badge badge--nano">
+                  <span class="badge__icon" aria-hidden="true">📄</span>
+                  Nanomodule
+                </span>
+                <span class="nano__dash" aria-hidden="true"></span>
+                <div class="nano__text">Cybersecurity Case Studies</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="micro has-nano">
+            <header class="micro__header" [tip]="getHierarchyTooltip('micromodule')">
+              <span class="badge badge--micro">
+                <span class="badge__icon" aria-hidden="true">◻︎</span>
+                Micromodule
+              </span>
+              <h3 class="micro__title">Cyber War</h3>
+            </header>
+
+            <div class="nano">
+              <div class="nano__row" [tip]="getHierarchyTooltip('nanomodule')">
+                <span class="badge badge--nano">
+                  <span class="badge__icon" aria-hidden="true">📄</span>
+                  Nanomodule
+                </span>
+                <span class="nano__dash" aria-hidden="true"></span>
+                <div class="nano__text">Cyberwarfare Exercise</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="micro has-nano">
+            <header class="micro__header" [tip]="getHierarchyTooltip('micromodule')">
+              <span class="badge badge--micro">
+                <span class="badge__icon" aria-hidden="true">◻︎</span>
+                Micromodule
+              </span>
+              <h3 class="micro__title">Network Security</h3>
+            </header>
+
+            <div class="nano">
+              <div class="nano__row" [tip]="getHierarchyTooltip('nanomodule')">
+                <span class="badge badge--nano">
+                  <span class="badge__icon" aria-hidden="true">📄</span>
+                  Nanomodule
+                </span>
+                <span class="nano__dash" aria-hidden="true"></span>
+                <div class="nano__text">Network Security Lab</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="micro">
+            <header class="micro__header" [tip]="getHierarchyTooltip('micromodule')">
+              <span class="badge badge--micro">
+                <span class="badge__icon" aria-hidden="true">◻︎</span>
+                Micromodule
+              </span>
+              <h3 class="micro__title">Secure Software</h3>
+            </header>
+          </section>
         </div>
       </div>
-    </div>  
+    </div>
+
   </div>
 </div>

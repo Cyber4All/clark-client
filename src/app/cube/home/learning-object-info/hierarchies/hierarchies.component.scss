@@ -20,97 +20,233 @@
     }
   }
 }
+// ---------- Theme ----------
+$bg: #ffffff;
+$card-border: #e8e8e8;
+$shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
 
-p {
-  color: $homepage-text;
+$micro-bg: #eef6fa;
+$micro-border: #dbe8ef;
+
+$line: #ddcfc4; // warm light line like screenshot
+$line-w: 2px;
+
+$course: #0b3a57;
+$micro: #4a6286;
+$nano: #a45b57;
+
+$text: #1f2a33;
+$muted: #66737f;
+
+// sizing
+$radius-lg: 6px;
+$radius-md: 5px;
+
+$gutter: 46px; // left space for connector spine
+
+// ---------- Layout ----------
+.hierarchy {
+  background: #f6f6f6;
+  padding: 28px 0;
+
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: $text;
 }
 
-h1 {
-  margin-top: 0;
-}
+.hierarchy__card {
+  width: min(1080px, calc(100% - 32px));
+  margin: 0 auto;
+  background: $bg;
+  border: 1px solid $card-border;
+  border-radius: $radius-lg;
+  box-shadow: $shadow;
+  padding: 18px 18px 22px 18px;
 
-//Use a flex-box with the wrapper acting as the outer-layer block and the inside is the learningobect-name and hierarchy/length tags
-.wrapper {
-  //Wrapper Outer Parent
-  display: inline-block;
-  margin-top: 1%;
+  position: relative;
 
-  &.nanomodule {
-    margin-left: 14%;
-  }
-
-  &.micromodule {
-    margin-left: 10%;
-  }
-
-  &.module {
-    margin-left: 7%;
-  }
-
-  &.unit {
-    margin-left: 4%;
-  }
-
-  &.course {
-    margin-left: 2%;
+  // main vertical spine (course -> micromodules)
+  &::before {
+    content: "";
+    position: absolute;
+    left: 22px;
+    top: 58px;   // starts near course badge
+    bottom: 26px;
+    width: 0;
+    border-left: $line-w solid $line;
+    opacity: 0.85;
   }
 }
 
-.inner {
-  //Wrapper Inner Parent
+// ---------- Badges ----------
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 14px;
+  line-height: 1;
+  padding: 7px 12px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.1px;
+
+  box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset;
+
+  .badge__icon {
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    font-size: 14px;
+    opacity: 0.95;
+  }
+}
+
+.badge--course { background: $course; }
+.badge--micro  { background: $micro; }
+.badge--nano   { background: $nano; }
+
+// ---------- Course row ----------
+.course {
   display: flex;
-  flex-direction: row;
-}
-
-.learningobject-name {
-  //Wrapper child 1
-  display: inline-block;
+  align-items: center;
+  gap: 14px;
+  padding-left: 6px;
   position: relative;
-  margin-left: 10px;
-  margin-top: -15px;
+
+  // small elbow from spine into course badge
+  &::before {
+    content: "";
+    position: absolute;
+    left: 22px;
+    top: 16px;
+    width: 18px;
+    border-top: $line-w solid $line;
+    transform: translateX(-18px);
+    opacity: 0.85;
+  }
+
+  .course__title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2a2a2a;
+  }
 }
 
-.length {
-  //Wrapper child 2
-  color: white;
-  font-size: $small;
-  display: inline-block;
+.modules {
+  margin-top: 14px;
+}
+
+// ---------- Micromodule cards ----------
+.micro {
   position: relative;
-  padding: 2px 6px;
-  border-radius: 2px;
-  height: fit-content;
-  padding: 5px 10px;
+  margin-top: 14px;
 
+  background: $micro-bg;
+  border: 1px solid $micro-border;
+  border-radius: $radius-lg;
 
-  &.nanomodule {
-    background: $nanomodule-color;
+  padding: 14px 16px 16px 16px;
+
+  // create room for connector branch
+  margin-left: $gutter;
+
+  // elbow from spine into this micro panel
+  &::before {
+    content: "";
+    position: absolute;
+    left: -#{$gutter};
+    top: 24px; // aligns with badge row
+    width: $gutter;
+    border-top: $line-w solid $line;
+    opacity: 0.85;
   }
 
-  &.micromodule {
-    background: $micromodule-color;
+  // thin vertical on the left edge of micro panel (like screenshot)
+  &::after {
+    content: "";
+    position: absolute;
+    left: -16px;
+    top: 16px;
+    bottom: 16px;
+    width: 0;
+    border-left: $line-w solid rgba($line, 0.55);
   }
 
-  &.module {
-    background: $module-color;
+  .micro__header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
   }
 
-  &.unit {
-    background: $unit-color;
-  }
-
-  &.course {
-    background: $course-color;
+  .micro__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #123b55;
   }
 }
 
-@media (max-width: 950px) {
-  .hierarchy-container {
-    .vertical-container {
-      margin-right: 0;
+// ---------- Nanomodule row ----------
+.nano {
+  margin-top: 12px;
+  position: relative;
+  padding-left: 32px;
 
-      .main-text {
-        text-align: center;
-      }
-    }
+  // vertical drop from micro header down to nano row
+  &::before {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: -10px;
+    height: 22px;
+    width: 0;
+    border-left: $line-w solid $line;
+    opacity: 0.85;
   }
+
+  // horizontal run into nano badge
+  &::after {
+    content: "";
+    position: absolute;
+    left: 10px;
+    top: 18px;
+    width: 22px;
+    border-top: $line-w solid $line;
+    opacity: 0.85;
+  }
+}
+
+.nano__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  background: #fff;
+  border: 1px solid #e7e7e7;
+  border-radius: $radius-md;
+
+  padding: 12px 14px;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+
+  .nano__text {
+    font-size: 18px;
+    color: #2a2a2a;
+    font-weight: 500;
+  }
+
+  .nano__dash {
+    flex: 0 0 28px;
+    height: 0;
+    border-top: $line-w solid rgba($line, 0.75);
+    margin-top: 2px;
+  }
+}
+
+// micro without nano: reduce bottom padding slightly for visual match
+.micro:not(.has-nano) {
+  padding-bottom: 14px;
 }
