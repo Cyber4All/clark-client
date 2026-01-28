@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, Input, Output, EventEmitter, DoCheck } from '@angular/core';
+import { ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'clark-filter-section',
   templateUrl: './filter-section.component.html',
@@ -10,18 +10,8 @@ export class FilterSectionComponent implements OnInit, DoCheck {
   @Input() set info(value: FilterSectionInfo | undefined) {
     this._info = value;
 
-    // default is collapsed = true unless this is the Length or Level section
-    this.collapsed = !this.isLockedSection(value);
-
-    // If any filter is already active, force open
-    if (value?.filters?.some(f => f.active)) {
-      this.collapsed = false;
-    }
-
-    // If this is Length or Level, lock open
-    if (this.isLockedSection(value)) {
-      this.collapsed = false;
-    }
+    // Default: all sections are open (expanded)
+    this.collapsed = false;
 
     this.cd.detectChanges();
   }
@@ -31,7 +21,7 @@ export class FilterSectionComponent implements OnInit, DoCheck {
 
   @Output() change = new EventEmitter();
 
-  collapsed = true;
+  collapsed = false;
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -55,10 +45,6 @@ export class FilterSectionComponent implements OnInit, DoCheck {
    * @param collapsed The boolean to set the collapsed value to
    */
   toggleCollapsed(collapsed: boolean) {
-    if (this.isLockedSection(this.info)) {
-      this.collapsed = false;   // ignore attempts to collapse
-      return;
-    }
     this.collapsed = collapsed;
     this.cd.detectChanges();
   }
@@ -72,6 +58,7 @@ export class FilterSectionComponent implements OnInit, DoCheck {
    * @param value The value that was selected
    */
   selectOption(value: string) {
+    if (!this.info) return;
     const index = this.info.filters.findIndex(filter => filter.value === value);
     if (index >= 0) {
       this.info.filters[index].active = true;
@@ -89,6 +76,7 @@ export class FilterSectionComponent implements OnInit, DoCheck {
    * @param value The value that was deselected
    */
   deselectOption(value: string) {
+    if (!this.info) return;
     const index = this.info.filters.findIndex(filter => filter.value === value);
     if (index >= 0) {
       this.info.filters[index].active = false;
@@ -100,6 +88,16 @@ export class FilterSectionComponent implements OnInit, DoCheck {
   private isLockedSection(v?: FilterSectionInfo) {
     const s = v?.section?.trim().toLowerCase();
     return s === 'length' || s === 'level';
+  }
+
+  /**
+   * Get the count of active (selected) filters in this section
+   */
+  getActiveCount(): number {
+    if (!this.info?.filters) {
+      return 0;
+    }
+    return this.info.filters.filter(f => f.active).length;
   }
 }
 

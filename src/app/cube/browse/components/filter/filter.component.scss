@@ -3,3 +3,44 @@
 .beta {
     color: $light-blue;
 }
+
+// Topic pills/chips (used in the All Filters modal via `clark-filter`)
+// The pills are rendered inside the filter-section's optional content area
+.topic-pills-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin-top: 4px;
+}
+
+.topic-pill {
+  border: 1px solid $light-grey;
+  background: white;
+  color: $dark-grey;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: $normal;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  line-height: 1.4;
+  user-select: none;
+  font-weight: normal;
+
+  &:hover {
+    border-color: $dark-grey;
+    background: $primary-white;
+  }
+
+  &.active {
+    border-color: $light-blue;
+    color: $light-blue;
+    background: rgba(28, 112, 221, 0.1);
+    font-weight: 600;
+  }
+
+  &:focus {
+    outline: 2px solid $light-blue;
+    outline-offset: 2px;
+  }
+}
