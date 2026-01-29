@@ -22,12 +22,14 @@
     <button
       mat-icon-button
       [matTooltip]="
-        previewUrl
-          ? 'Download'
-          : 'Click &quot;Download Now&quot; to view this file on your machine'
+        isLoggedIn
+          ? previewUrl
+            ? 'Download'
+            : 'Click &quot;Download Now&quot; to view this file on your machine'
+          : 'Login to download'
       "
       (click)="onDownload()"
-      [disabled]="!previewUrl"
+      [disabled]="!previewUrl || !isLoggedIn"
     >
       <i class="fas fa-download"></i>
     </button>
@@ -35,11 +37,13 @@
     <!-- Preview Button -->
     <button
       mat-icon-button
-      [disabled]="!isOfficeFile() || !previewUrl"
+      [disabled]="!isOfficeFile || !previewUrl || !isLoggedIn"
       [matTooltip]="
-        isOfficeFile()
-          ? 'Preview'
-          : 'Preview unavailable. Click &quot;Download Now&quot; to view this file on your machine'
+        isLoggedIn
+          ? previewUrl && isOfficeFile
+            ? 'Preview'
+            : 'Preview unavailable. Click &quot;Download Now&quot; to view this file on your machine'
+          : 'Login to preview'
       "
       (click)="onPreview()"
     >
