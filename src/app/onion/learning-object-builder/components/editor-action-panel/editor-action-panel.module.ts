@@ -6,13 +6,21 @@ import {ChangeStatusModalComponent} from './change-status-modal/change-status-mo
 import {OnionSharedModule} from '../../../shared/onion-shared.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-@NgModule({ declarations: [
+@NgModule({
+    declarations: [
         EditorActionPanelComponent,
         ChangeStatusModalComponent,
     ],
     exports: [
         EditorActionPanelComponent,
-    ], imports: [CommonModule,
+    ],
+    imports: [
+        CommonModule,
         SharedModule,
-        OnionSharedModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        OnionSharedModule
+    ], 
+    providers: [
+        provideHttpClient(withInterceptorsFromDi())
+    ]
+    })
 export class EditorActionPanelModule { }

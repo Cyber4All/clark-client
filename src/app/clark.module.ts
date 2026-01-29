@@ -27,7 +27,8 @@ import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor
 import { CoralogixRumService } from './core/services/coralogix-rum.service';
 import { ChatbotModule } from 'app/shared/modules/chatbot/chatbot.module';
 
-@NgModule({ declarations: [
+@NgModule({
+  declarations: [
         ClarkComponent,
         UnsupportedComponent,
         NotFoundComponent,
@@ -41,22 +42,36 @@ import { ChatbotModule } from 'app/shared/modules/chatbot/chatbot.module';
         SecondaryNavbarComponent,
         RedirectComponent,
         SafeHtmlPipe
-    ],
-    bootstrap: [ClarkComponent], imports: [BrowserModule,
-        ClarkRoutingModule,
-        SharedModule,
-        BrowserAnimationsModule,
-        FormsModule], providers: [
-        TitleCasePipe,
-        Title,
-        { provide: UrlSerializer, useClass: CustomUrlSerializer },
-        { provide: HTTP_INTERCEPTORS, useClass: HttpConfigInterceptor, multi: true },
-        {
-            provide: APP_INITIALIZER,
-            useFactory: (rumService: CoralogixRumService) => () => rumService.init(),
-            deps: [CoralogixRumService],
-            multi: true
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
+  ],
+  bootstrap: [
+    ClarkComponent
+  ],
+  imports: [
+    BrowserModule,
+    ClarkRoutingModule,
+    SharedModule,
+    BrowserAnimationsModule,
+    FormsModule
+  ],
+  providers: [
+    TitleCasePipe,
+    Title,
+    { 
+      provide: UrlSerializer,
+      useClass: CustomUrlSerializer
+    },
+    { 
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpConfigInterceptor,
+      multi: true
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (rumService: CoralogixRumService) => () => rumService.init(),
+      deps: [CoralogixRumService],
+      multi: true
+    },
+      provideHttpClient(withInterceptorsFromDi()),
+  ] 
+})
 export class ClarkModule { }
