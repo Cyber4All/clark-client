@@ -83,7 +83,11 @@ export class FileListItemComponent implements OnInit {
     return false;
   }
 
-  isOfficeFile(): boolean {
+  get isLoggedIn(): boolean {
+    return this.auth.isLoggedIn.value;
+  }
+
+  get isOfficeFile(): boolean {
     return this.file && FileService.isOfficeFile(this.file.name);
   }
 
