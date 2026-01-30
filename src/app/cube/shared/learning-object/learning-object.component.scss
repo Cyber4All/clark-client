@@ -2,173 +2,16 @@
 
 a {
   text-decoration: none;
-}
-//Styles for Cards
-@media (min-width: 751px) {
-  :host.card {
-    min-height: 350px;
-    height: auto;
-
-    .learning-object {
-      height: 100%;
-      flex-direction: column;
-      align-items: stretch;
-
-      .image {
-        width: 100%;
-        min-width: 100%;
-        max-width: 100%;
-        height: 150px;
-        min-height: 150px;
-        flex: 0 0 150px;
-        padding: 15px;
-        overflow: hidden;
-        box-sizing: border-box;
-
-        .logo {
-          max-height: 90px;
-          max-width: 100%;
-          width: auto;
-          height: auto;
-          object-fit: contain;
-        }
-      }
-
-      .learning-object-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-
-        .download-btn {
-          size: 6px;
-          &:focus,
-          &:hover {
-            color: $light-blue;
-          }
-        }
-
-        .pills {
-          display: flex;
-          gap: 10px;
-          flex-wrap: wrap;
-          margin-bottom: 10px;
-        }
-
-        .tags-container {
-          margin-top: auto;
-
-          .tag-pill {
-            font-size: $smaller;
-            padding: 2px 6px;
-          }
-        }
-      }
-    }
-  }
+  color: inherit;
 }
 
-// Styles for mobile
-@media (max-width: 750px) {
-  :host {
-    &.card {
-      width: 100% !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-    }
-  }
-
-  .learning-object {
-    .title {
-      font-size: $small !important;
-    }
-
-    .image {
-      width: 100px !important;
-      min-height: 100%;
-      max-height: 100% !important;
-      padding: 10px;
-
-      .logo {
-        max-height: 70px;
-        object-fit: contain;
-      }
-
-      .framework-badge {
-        font-size: 9px;
-        padding: 2px 6px;
-        top: 4px;
-        right: 4px;
-        gap: 3px;
-
-        &.dcwf-badge i {
-          font-size: 10px;
-        }
-      }
-    }
-  }
+:host {
+  display: block;
 }
 
-:host.loading {
-  // loading styles
-  $color: $light-grey;
-  pointer-events: none;
-  overflow: hidden;
-
-  .image {
-    background: $color !important;
-  }
-
-  .card-collection {
-    visibility: hidden;
-  }
-
-  .learning-object-content {
-    width: 100%;
-
-    & > * {
-      color: transparent !important;
-      background: $color !important;
-      margin-bottom: 20px;
-      height: 15px;
-      max-width: 500px;
-      width: 100% !important;
-    }
-  }
-
-  .learning-object {
-    overflow: hidden;
-
-    &:after {
-      content: '';
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0),
-        white,
-        rgba(255, 255, 255, 0)
-      );
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      max-width: 200px;
-      width: 70%;
-      animation: loading 2s linear forwards infinite;
-    }
-  }
-}
-
-:host.card {
-  .image {
-    height: 150px;
-    min-height: 150px;
-    max-height: 150px;
-    padding: 15px;
-    overflow: hidden;
-  }
-
-  .learning-object-content {
-    width: auto !important;
-  }
-}
+/* ---------------------------------------------
+  Base (LIST view by default)
+---------------------------------------------- */
 
 .learning-object {
   background: white;
@@ -196,7 +39,7 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    padding: 0;
     overflow: hidden;
     box-sizing: border-box;
 
@@ -206,12 +49,23 @@ a {
       max-height: 100%;
     }
 
+    /* LIST view image behavior: small, centered, "logo tile" */
     .logo {
       max-height: 80px;
       max-width: 145px;
       object-fit: contain;
       width: auto;
       height: auto;
+      display: block;
+    }
+
+    /* If you add class="logo" to the generic component */
+    clark-generic-collection-logo.logo {
+      max-height: 80px;
+      max-width: 145px;
+      width: auto;
+      height: auto;
+      display: block;
     }
 
     .framework-badge {
@@ -249,6 +103,7 @@ a {
       bottom: 0;
       opacity: 0.05;
       mask: $cube-pattern repeat;
+      pointer-events: none;
     }
   }
 
@@ -260,10 +115,20 @@ a {
     display: flex;
     flex-direction: column;
 
+    .download-btn {
+      size: 6px;
+
+      &:focus,
+      &:hover {
+        color: $light-blue;
+      }
+    }
+
     .rating-stars-container {
       display: flex;
       align-items: center;
       gap: 8px;
+      margin-bottom: 10px;
 
       .downloads-indicator {
         display: inline-flex;
@@ -315,6 +180,7 @@ a {
       font-size: $smaller;
       font-weight: 500;
     }
+
     .time {
       background: $primary-white;
       padding: 2px 5px;
@@ -354,10 +220,6 @@ a {
       }
     }
 
-    .rating-stars-container {
-      margin-bottom: 10px;
-    }
-
     .pills {
       display: flex;
       gap: 6px;
@@ -384,6 +246,7 @@ a {
       }
     }
   }
+
   &:hover {
     box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.25);
     transform: scale(1.01);
@@ -393,7 +256,7 @@ a {
 
 /* Trending styles */
 .learning-object.trending {
-  border-left: 4px solid $orange;
+  border-bottom: 4px solid $orange;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
@@ -404,6 +267,230 @@ a {
   display: inline-flex;
   align-items: center;
   font-size: 14px;
+}
+
+/* ---------------------------------------------
+  CARD / GRID view overrides (:host.card)
+---------------------------------------------- */
+
+@media (min-width: 751px) {
+  :host.card {
+    min-height: 350px;
+    height: auto;
+
+    .learning-object {
+      height: 100%;
+      flex-direction: column;
+      align-items: stretch;
+
+      .image {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        height: 180px;
+        min-height: 180px;
+        max-height: 180px;
+        flex: 0 0 180px;
+        padding: 0;
+
+        /* CARD view image behavior: full-bleed hero */
+        .logo {
+          width: 100%;
+          height: 100%;
+          max-width: none;
+          max-height: none;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+        }
+
+        /* If generic logo gets class="logo" */
+        clark-generic-collection-logo.logo {
+          width: 100%;
+          height: 100%;
+          max-width: none;
+          max-height: none;
+          display: block;
+        }
+      }
+
+      .learning-object-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+
+        .pills {
+          gap: 10px;
+          margin-bottom: 10px;
+        }
+
+        .tags-container {
+          margin-top: auto;
+
+          .tag-pill {
+            font-size: $smaller;
+            padding: 2px 6px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ---------------------------------------------
+  Mobile
+---------------------------------------------- */
+
+@media (max-width: 750px) {
+  :host {
+    &.card {
+      width: 100% !important;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+
+  .learning-object {
+    .learning-object-content {
+      .title {
+        font-size: $small !important;
+      }
+    }
+  }
+
+  /* Mobile LIST view: keep compact logo tile */
+  :host:not(.card) {
+    .learning-object {
+      .image {
+        width: 100px;
+        min-width: 100px;
+        flex: 0 0 100px;
+        padding: 10px;
+
+        .logo {
+          max-height: 70px;
+          max-width: 100%;
+          object-fit: contain;
+        }
+
+        clark-generic-collection-logo.logo {
+          max-height: 70px;
+          max-width: 100%;
+          display: block;
+        }
+
+        .framework-badge {
+          font-size: 9px;
+          padding: 2px 6px;
+          top: 4px;
+          right: 4px;
+          gap: 3px;
+
+          &.dcwf-badge i {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  /* Mobile CARD view: still hero-style image */
+  :host.card {
+    .learning-object {
+      flex-direction: column;
+
+      .image {
+        width: 100%;
+        min-width: 100%;
+        flex: 0 0 160px;
+        height: 160px;
+        min-height: 160px;
+        max-height: 160px;
+        padding: 0;
+
+        .logo {
+          width: 100%;
+          height: 100%;
+          max-width: none;
+          max-height: none;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+        }
+
+        clark-generic-collection-logo.logo {
+          width: 100%;
+          height: 100%;
+          max-width: none;
+          max-height: none;
+          display: block;
+        }
+
+        .framework-badge {
+          font-size: 9px;
+          padding: 2px 6px;
+          top: 6px;
+          right: 6px;
+          gap: 3px;
+
+          &.dcwf-badge i {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* ---------------------------------------------
+  Loading state
+---------------------------------------------- */
+
+:host.loading {
+  $color: $light-grey;
+  pointer-events: none;
+  overflow: hidden;
+
+  .image {
+    background: $color !important;
+  }
+
+  .card-collection {
+    visibility: hidden;
+  }
+
+  .learning-object-content {
+    width: 100%;
+
+    & > * {
+      color: transparent !important;
+      background: $color !important;
+      margin-bottom: 20px;
+      height: 15px;
+      max-width: 500px;
+      width: 100% !important;
+    }
+  }
+
+  .learning-object {
+    overflow: hidden;
+
+    &:after {
+      content: '';
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0),
+        white,
+        rgba(255, 255, 255, 0)
+      );
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      max-width: 200px;
+      width: 70%;
+      animation: loading 2s linear forwards infinite;
+    }
+  }
 }
 
 @keyframes loading {

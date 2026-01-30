@@ -12,14 +12,16 @@
   <div
     class="learning-object"
     id="learning-object"
-    [ngClass]="{ trending: false }"
+    [ngClass]="{ trending: isTrending }"
   >
     <div class="image">
       <img
         *ngIf="imagePath !== 'generic'; else genericLogoTemplate"
         class="logo"
         src="{{ imagePath }}"
-        alt="{{ imagePath !== 'generic' ? tags[0] + ' logo' : 'Generic logo' }}"
+        alt="{{
+          imagePath !== 'generic' ? topics[0] + ' logo' : 'Generic logo'
+        }}"
       />
       <div *ngIf="isDCWFAligned" class="framework-badge dcwf-badge">
         <i class="fas fa-shield-alt"></i>
@@ -56,7 +58,7 @@
       <div class="title">
         {{ truncateText(learningObject.name, 80) }}
         <span
-          *ngIf="false"
+          *ngIf="isTrending"
           class="trending-badge"
           title="Trending"
           [tip]="'This Learning Object is trending'"

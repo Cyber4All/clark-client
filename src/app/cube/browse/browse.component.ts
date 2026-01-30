@@ -544,9 +544,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.renderer.removeStyle(document.body, 'overflow');
   }
 
-  trackByIndex(index, item) {
-    return index;
+  trackByLearningObject(_index: number, item: any) {
+    return item ? `${item.cuid}-${item.version}` : _index;
   }
+
 
   /** Returns true if any of the filter fields in the query are not empty or if any filters are active in the modal */
   public anyFiltersSelected(): boolean {
