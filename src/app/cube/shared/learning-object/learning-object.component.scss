@@ -3,7 +3,7 @@
 a {
   text-decoration: none;
 }
-//Styles for Cards 
+//Styles for Cards
 @media (min-width: 751px) {
   :host.card {
     min-height: 350px;
@@ -24,8 +24,8 @@ a {
         padding: 15px;
         overflow: hidden;
         box-sizing: border-box;
-        
-        .logo{
+
+        .logo {
           max-height: 90px;
           max-width: 100%;
           width: auto;
@@ -39,10 +39,10 @@ a {
         display: flex;
         flex-direction: column;
 
-        .download-btn{
-          display: none;
-
-          &:focus, &:hover {
+        .download-btn {
+          size: 6px;
+          &:focus,
+          &:hover {
             color: $light-blue;
           }
         }
@@ -88,7 +88,7 @@ a {
       max-height: 100% !important;
       padding: 10px;
 
-      .logo{
+      .logo {
         max-height: 70px;
         object-fit: contain;
       }
@@ -107,7 +107,6 @@ a {
     }
   }
 }
-
 
 :host.loading {
   // loading styles
@@ -166,7 +165,7 @@ a {
     overflow: hidden;
   }
 
-  .learning-object-content{
+  .learning-object-content {
     width: auto !important;
   }
 }
@@ -186,13 +185,11 @@ a {
   justify-content: flex-start;
   overflow: hidden;
   box-shadow: none;
-  transition: all .15s ease-in;
+  transition: all 0.15s ease-in;
 
   .image {
     background: $primary-white;
-    width: 175px;
     min-width: 175px;
-    max-width: 175px;
     flex: 0 0 175px;
     position: relative;
     display: flex;
@@ -209,7 +206,7 @@ a {
       max-height: 100%;
     }
 
-    .logo{
+    .logo {
       max-height: 80px;
       max-width: 145px;
       object-fit: contain;
@@ -231,7 +228,7 @@ a {
       display: flex;
       align-items: center;
       gap: 4px;
-      
+
       &.dcwf-badge {
         background: #25215f;
         color: white;
@@ -274,7 +271,9 @@ a {
         color: $dark-grey;
         font-size: $small;
 
-        i, svg, .svg-inline--fa {
+        i,
+        svg,
+        .svg-inline--fa {
           margin-right: 5px;
         }
 
@@ -297,21 +296,6 @@ a {
       flex-direction: row;
       justify-content: space-between;
       line-height: 1.4;
-
-      .download-btn {
-        border: 0;
-        background: rgba(0, 0, 0, 0);
-        transition: all 0.2s ease;
-        -webkit-transform: translateZ(0);
-        outline: 0;
-        color: $medium-grey;
-        font-size: 16px;
-
-        &:hover, &:focus {
-          transform: scale(1.1);
-          color: $blue-accent;
-        }
-      }
     }
 
     .date {
@@ -400,17 +384,17 @@ a {
       }
     }
   }
-  &:hover{
+  &:hover {
     box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.25);
     transform: scale(1.01);
-    transition: all .15s ease-out;
+    transition: all 0.15s ease-out;
   }
-} 
+}
 
 /* Trending styles */
 .learning-object.trending {
   border-left: 4px solid $orange;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .learning-object .learning-object-content .title .trending-badge {

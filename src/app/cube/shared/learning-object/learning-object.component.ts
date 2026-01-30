@@ -14,11 +14,9 @@ import { LearningObject } from '@entity';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { RatingService } from 'app/core/rating-module/rating.service';
-import { Tag } from 'entity/tag/tag';
 import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
-import { CollectionService } from '../../../core/collection-module/collections.service';
-import { LibraryService } from '../../../core/library-module/library.service';
+import { TopicsService } from '../../../core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -30,40 +28,37 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   @Input() learningObject: LearningObject;
   @Input() loading: boolean;
 
-  collections = new Map<string, string>();
-  collection = '';
-  pictureLocation: string;
-  link: string;
+  // Card image
+  imagePath: string;
 
-  canDownload = false;
-  showDownloadModal = false;
-
-  // FIXME this removes the download icons while issues with the Library service are resolved
-  downloadService = false;
-
+  // Rating properties
   averageRating: number;
   reviewsCount: number;
-  starColor = 'gold';
-  downloadsCount = 0;
-  recentDownloads = 0;
-  isTrending = false;
-  TRENDING_THRESHOLD = 5; // downloads in last 30 days to be considered trending
 
+  // Metric properties
+  downloadsCount = 0;
+  isTrending = false;
   isDCWFAligned = false;
-  tagNames: string[] = [];
-  private static allTags: Tag[] = [];
-  private static tagsPromise: Promise<Tag[]> | null = null;
+
+  // Metadata properties
+  tags: string[] = [];
+  topics: string[] = [];
+
+  // Optimized static storage for tags and topics to avoid redundant fetches
+  private static topicsMap = new Map<string, string>();
+  private static tagsMap = new Map<string, string>();
+
+  static readonly TRENDING_THRESHOLD = 10; // downloads in last 30 days to be considered trending
 
   constructor(
     private hostEl: ElementRef,
     private renderer: Renderer2,
-    private library: LibraryService,
     private ratingService: RatingService,
     private metricService: MetricService,
     public auth: AuthService,
-    private collectionService: CollectionService,
     private cd: ChangeDetectorRef,
-    private tagsService: TagsService
+    private tagsService: TagsService,
+    private topicsService: TopicsService
   ) { }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -78,108 +73,63 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     // When learningObject changes, reset and recalculate all derived properties
     if (changes.learningObject && !changes.learningObject.firstChange) {
       this.isDCWFAligned = false;
-      this.tagNames = [];
+      this.tags = [];
+      this.topics = [];
+
       this.checkDCWFAlignment();
       this.resolveTagNames();
+      this.resolveTopicNames();
     }
   }
 
   async ngOnInit() {
-    this.collectionService.getCollections().then(collections => {
-      this.collections = new Map(
-        collections.map(c => [c.abvName, c.name] as [string, string])
-      );
-      this.onResize();
-    });
+    // Resolve topics and tags
+    await this.resolveTopicNames();
+    await this.resolveTagNames();
 
     // Check for DCWF framework alignment
     this.checkDCWFAlignment();
 
-    // Resolve tag IDs to tag names
-    await this.resolveTagNames();
+    this.setImage();
 
+    // Fetch ratings and metrics
     const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
     this.averageRating = ratings.avgValue;
     this.reviewsCount = ratings.ratings?.length;
 
-    try {
-      const metrics = await this.metricService.getLearningObjectMetrics(this.learningObject.cuid);
-      this.downloadsCount = metrics?.downloads ?? 0;
-    } catch (e) {
-      this.downloadsCount = 0;
-    }
+    const metrics = await this.metricService.getLearningObjectMetrics(this.learningObject.cuid);
+    this.downloadsCount = metrics?.downloads ?? 0;
 
-    // Attempt to fetch downloads for the last 30 days to determine trending
-    try {
-      const end = new Date();
-      const start = new Date();
-      start.setDate(end.getDate() - 30);
-      const recentMetrics = await this.metricService.getLearningObjectMetrics(
-        this.learningObject.cuid,
-        start.toISOString(),
-        end.toISOString()
-      );
-      // The API should ideally return downloads for the period; fallback to 0 if not available
-      this.recentDownloads = recentMetrics?.downloads ?? 0;
-      // Only mark trending if object was updated/published within the last 30 days
-      const updatedDate = new Date(this.learningObject.date);
-      const wasUpdatedRecently = updatedDate >= start;
-      this.isTrending = wasUpdatedRecently && this.recentDownloads >= this.TRENDING_THRESHOLD;
-    } catch (e) {
-      this.recentDownloads = 0;
-      this.isTrending = false;
-    }
+    // Determine trending status
+    await this.resolveTrending();
 
     this.cd.detectChanges();
   }
 
-  goals() {
-    const punc = ['.', '!', '?'];
-    const descriptionString = this.learningObject.description;
-    const final = this.truncateText(
-      descriptionString.charAt(0).toUpperCase() +
-      descriptionString.substring(1),
-      150
-    );
-
-    if (punc.includes(final.charAt(final.length - 1))) {
-      return final;
-    } else {
-      return final + '.';
-    }
-  }
-
-  // truncates and appends an ellipsis to block of text based on maximum number of characters
+  /* Truncate text without cutting off words in the middle */
   truncateText(text: string, max: number = 150, margin: number = 10): string {
-    // remove any HTML characters from text
-    text = this.stripHtml(text);
+    // Remove HTML and trim whitespace
+    text = this.stripHtml(text).trim();
 
-    // check to see if we need to truncate, IE is the text shorter than max + margin
-    if (text.length <= max + margin) {
-      return text.trim();
+    // Truncate the text to the maximum length
+    let truncatedText = text.substring(0, max);
+
+    // Early return if text is already within limits
+    if (text.length <= max) {
+      return text;
     }
 
-    // ok now we know we need to truncate text
-    let outcome = text.substring(0, max);
-    const spaceAfter = text.substring(max).indexOf(' ') + outcome.length; // first space before the truncation index
-    const spaceBefore = outcome.lastIndexOf(' '); // first space after the truncation index
-    const punc = ['.', '!', '?'];
+    // Index of first space after and before the truncation index
+    const spaceAfter = text.substring(max).indexOf(' ') + truncatedText.length;
+    const spaceBefore = truncatedText.lastIndexOf(' ');
 
-    // if we've truncated such that the last char is a space or a natural punctuation, just return
-    if (punc.includes(outcome.charAt(outcome.length - 1))) {
-      outcome = outcome.trim();
-    } else if (outcome.charAt(outcome.length - 1) === ' ') {
-      outcome = outcome.substring(0, outcome.length - 1).trim() + '...';
+    // If we are in the middle of a word, attempt to finish the word before adding an ellpises
+    if (spaceAfter - truncatedText.length <= margin) {
+      return text.substring(0, spaceAfter + 1).trim() + '...';
     }
 
-    // otherwise we're in the middle of a word and should attempt to finsih the word before adding an ellpises
-    if (spaceAfter - outcome.length <= margin) {
-      outcome = text.substring(0, spaceAfter + 1).trim();
-    } else {
-      outcome = text.substring(0, spaceBefore + 1).trim();
-    }
-
-    return outcome.trim() + '...';
+    // Otherwise, truncate at the last space before the limit
+    return text.substring(0, spaceBefore + 1).trim() + '...';
   }
 
   stripHtml(str: string): string {
@@ -204,28 +154,11 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
     return titleCase(organization);
   }
 
-  onResize() {
-    this.collection = this.collections.get(this.learningObject.collection);
-    if (
-      this.learningObject.collection !== 'intro_to_cyber' &&
-      this.learningObject.collection !== 'secure_coding_community' &&
-      this.learningObject.collection !== 'plan c' &&
-      this.learningObject.collection !== 'max_power' &&
-      this.learningObject.collection !== 'Drafts' &&
-      this.learningObject.collection !== 'nccp' &&
-      this.learningObject.collection !== ''
-    ) {
-      this.pictureLocation =
-        '/assets/images/collections/' +
-        this.learningObject.collection +
-        '.png';
-    } else {
-      this.pictureLocation = 'generic';
-    }
+  setImage() {
+    const imageTopic = this.topics?.[0];
+    this.imagePath = imageTopic ? `/assets/images/topics/${imageTopic}.png` : 'generic';
+    console.log('Image path set to:', this.imagePath);
     this.cd.detectChanges();
-    if (window.screen.width <= 750 && this.collection.length > 12) {
-      this.collection = this.collection.substring(0, 12) + '...';
-    }
   }
 
   /**
@@ -234,56 +167,69 @@ export class LearningObjectListingComponent implements OnInit, OnChanges, OnDest
   checkDCWFAlignment() {
     if (this.learningObject?.guidelines && this.learningObject.guidelines.length > 0) {
       this.isDCWFAligned = this.learningObject.guidelines.some(guideline =>
-        guideline.source &&
-        (guideline.source.toLowerCase().includes('dcwf') ||
-          guideline.source.toLowerCase().includes('dod cyber workforce') ||
-          guideline.frameworkName?.toLowerCase().includes('dcwf') ||
-          guideline.frameworkName?.toLowerCase().includes('dod cyber workforce'))
+        guideline.source?.toLowerCase().includes('dod cyber workforce') ||
+        guideline.frameworkName?.toLowerCase().includes('dod cyber workforce'));
+    }
+  }
+
+  async resolveTrending() {
+    // Attempt to fetch downloads for the last 30 days to determine trending
+    const end = new Date();
+    const start = new Date(end.getDate() - 30);
+    const recentMetrics = await this.metricService.getLearningObjectMetrics(
+      this.learningObject.cuid,
+      start.toISOString(),
+      end.toISOString()
+    );
+    const recentDownloads = recentMetrics?.downloads ?? 0;
+
+    // Mark as trend if the object has at least TRENDING_THRESHOLD downloads in the last 30 days
+    this.isTrending = recentDownloads >= LearningObjectListingComponent.TRENDING_THRESHOLD;
+  }
+
+  async resolveTopicNames(): Promise<void> {
+    // If the learning object does not have topics, clear and return early
+    if (!this.learningObject?.topics || this.learningObject.topics.length === 0) {
+      this.topics = [];
+      return;
+    }
+
+    // Generate topics map if not already done
+    if (LearningObjectListingComponent.topicsMap.size === 0) {
+      const topics = await this.topicsService.getTopics()
+      LearningObjectListingComponent.topicsMap = new Map<string, string>(
+        topics.map(topic => [topic._id, topic.name])
       );
     }
+
+    // Resolve topic IDs to names
+    this.topics = this.learningObject.topics.map((topicId: string) => {
+      return LearningObjectListingComponent.topicsMap.get(topicId);
+    });
   }
 
   /**
    * Resolve tag IDs to tag names for display
    */
   async resolveTagNames() {
+    // If there are no tags, clear and return early
     if (!this.learningObject?.tags || this.learningObject.tags.length === 0) {
-      this.tagNames = [];
+      this.tags = [];
       return;
     }
 
-    try {
-      const firstTag = this.learningObject.tags[0];
-
-      // Check if tags are already objects with a name property
-      if (firstTag && typeof firstTag === 'object') {
-        const tagObj = firstTag as any;
-        if ('name' in tagObj) {
-          // Tags are already full objects
-          this.tagNames = this.learningObject.tags.map((tag: any) => tag.name);
-          return;
-        }
-      }
-
-      // Fetch all tags if not already loaded, using a shared promise to avoid multiple fetches
-      if (LearningObjectListingComponent.allTags.length === 0) {
-        if (!LearningObjectListingComponent.tagsPromise) {
-          LearningObjectListingComponent.tagsPromise = this.tagsService.getTags();
-        }
-        LearningObjectListingComponent.allTags = await LearningObjectListingComponent.tagsPromise;
-      }
-
-      // Create a map for quick lookup
-      const tagMap = new Map(LearningObjectListingComponent.allTags.map(tag => [tag._id, tag.name]));
-
-      // Resolve tag IDs to names
-      this.tagNames = this.learningObject.tags
-        .map((tagId: string) => tagMap.get(tagId))
-        .filter(name => name !== undefined) as string[];
-    } catch (e) {
-      console.error('Error resolving tag names:', e);
-      this.tagNames = [];
+    // Fetch all tags if not already loaded, using a shared promise to avoid multiple fetches
+    if (LearningObjectListingComponent.tagsMap.size === 0) {
+      const tags = await this.tagsService.getTags();
+      LearningObjectListingComponent.tagsMap = new Map<string, string>(
+        tags.map(tag => [tag._id, tag.name])
+      );
     }
+
+    // Resolve tag IDs to names
+    this.tags = this.learningObject.tags.map((tagId: string) =>
+      LearningObjectListingComponent.tagsMap.get(tagId)
+    );
   }
 
   ngOnDestroy() {

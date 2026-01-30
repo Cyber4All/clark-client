@@ -1,18 +1,30 @@
-<a [routerLink]="[
+<a
+  [routerLink]="[
     '/details',
     learningObject.author.username,
     learningObject.cuid,
-    learningObject.version
+    learningObject.version,
   ]"
-  attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{ learningObject.author.name }}, last updated on {{ learningObject.date | date:'longDate' }}">
-  <div class="learning-object" id="learning-object" [ngClass]="{ 'trending': isTrending }">
+  attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{
+    learningObject.author.name
+  }}, last updated on {{ learningObject.date | date: 'longDate' }}"
+>
+  <div
+    class="learning-object"
+    id="learning-object"
+    [ngClass]="{ trending: false }"
+  >
     <div class="image">
-      <img *ngIf="pictureLocation !== 'generic'; else genericLogoTemplate" class="logo" src="{{ pictureLocation }}"
-        alt="{{ collection }} logo">
-        <div *ngIf="isDCWFAligned" class="framework-badge dcwf-badge">
-          <i class="fas fa-shield-alt"></i>
-          DCWF Aligned
-        </div>
+      <img
+        *ngIf="imagePath !== 'generic'; else genericLogoTemplate"
+        class="logo"
+        src="{{ imagePath }}"
+        alt="{{ imagePath !== 'generic' ? tags[0] + ' logo' : 'Generic logo' }}"
+      />
+      <div *ngIf="isDCWFAligned" class="framework-badge dcwf-badge">
+        <i class="fas fa-shield-alt"></i>
+        DCWF Aligned
+      </div>
     </div>
     <div class="learning-object-content">
       <div class="pills">
@@ -43,26 +55,28 @@
 
       <div class="title">
         {{ truncateText(learningObject.name, 80) }}
-        <span *ngIf="isTrending" class="trending-badge" title="Trending" [tip]="'This Learning Object is trending'" tipPosition="left">
+        <span
+          *ngIf="false"
+          class="trending-badge"
+          title="Trending"
+          [tip]="'This Learning Object is trending'"
+          tipPosition="left"
+        >
           <i class="fas fa-fire" aria-hidden="true"></i>
         </span>
-        <form *ngIf="downloadService">
-          <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn"
-            (activate)="download($event)" attr.aria-label="Download button for {{ learningObject.name }}">
-            <i class="fas fa-download"></i>
-          </button>
-        </form>
       </div>
 
-      <div class="date">Updated {{ learningObject.date | date: 'mediumDate' }}</div>
+      <div class="date">
+        Updated {{ learningObject.date | date: 'mediumDate' }}
+      </div>
 
       <div class="details">
         <div class="author">
           {{ learningObject.contributors[0]?.name | titlecase }}
           {{
-          learningObject.contributors?.length - 1
-          ? 'and ' + (learningObject.contributors.length - 1) + ' more'
-          : ''
+            learningObject.contributors?.length - 1
+              ? 'and ' + (learningObject.contributors.length - 1) + ' more'
+              : ''
           }}
         </div>
         <div class="organization">
@@ -70,26 +84,32 @@
         </div>
       </div>
 
-      <div class='rating-stars-container'>
-        <clark-rating-stars *ngIf="averageRating > 0" [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
-        <div *ngIf="downloadsCount >= TRENDING_THRESHOLD" class="downloads-indicator" tabindex="0" attr.aria-label="{{ downloadsCount }} download{{ downloadsCount !== 1 ? 's' : '' }}">
+      <div class="rating-stars-container">
+        <clark-rating-stars
+          *ngIf="averageRating > 0"
+          [color]="'gold'"
+          [rating]="averageRating"
+          [reviewsCount]="reviewsCount"
+        ></clark-rating-stars>
+        <div
+          *ngIf="downloadsCount >= 5"
+          class="downloads-indicator"
+          tabindex="0"
+          attr.aria-label="{{ downloadsCount }} download{{
+            downloadsCount !== 1 ? 's' : ''
+          }}"
+        >
           <i class="far fa-download" aria-hidden="true"></i>
           <span class="downloads-count">{{ downloadsCount | number }}</span>
         </div>
       </div>
 
-      <div *ngIf="tagNames && tagNames.length > 0" class="tags-container">
-        <span *ngFor="let tagName of tagNames" class="tag-pill">{{ tagName }}</span>
+      <div *ngIf="tags && tags.length > 0" class="tags-container">
+        <span *ngFor="let tagName of tags" class="tag-pill">{{ tagName }}</span>
       </div>
     </div>
   </div>
 </a>
-
-<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
-  <div style="max-width: 600px;" #popupInner>
-    <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
-  </div>
-</clark-popup>
 
 <ng-template #genericLogoTemplate>
   <clark-generic-collection-logo></clark-generic-collection-logo>
