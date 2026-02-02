@@ -20,6 +20,7 @@
     }
   }
 }
+
 // ---------- Theme ----------
 $bg: #ffffff;
 $card-border: #e8e8e8;
@@ -249,4 +250,150 @@ $gutter: 46px; // left space for connector spine
 // micro without nano: reduce bottom padding slightly for visual match
 .micro:not(.has-nano) {
   padding-bottom: 14px;
+}
+
+// mobile view adjustments below
+.hierarchy-container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.hierarchy,
+.hierarchy__card {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+// Predictable sizing so pseudo-elements don't push width
+.hierarchy-container *,
+.hierarchy-container *::before,
+.hierarchy-container *::after {
+  box-sizing: border-box;
+}
+
+// Tablet tweaks
+@media (max-width: 900px) {
+  .hierarchy__card {
+    width: calc(100% - 24px);
+    padding: 16px;
+  }
+
+  .course {
+    align-items: flex-start;
+    gap: 12px;
+
+    .course__title {
+      font-size: 20px;
+      line-height: 1.2;
+    }
+  }
+
+  .micro {
+    margin-left: 28px; // reduce gutter effect
+  }
+}
+
+// Mobile layout: clean stacked cards
+@media (max-width: 640px) {
+  .hierarchy-container {
+    margin-bottom: 80px; // 400px is huge on mobile
+  }
+
+  .hierarchy-container .vertical-container {
+    margin-right: 0; // prevent sideways scroll
+  }
+
+  .hierarchy {
+    padding: 16px 0;
+  }
+
+  .hierarchy__card {
+    width: calc(100% - 20px);
+    margin: 0 auto;
+    padding: 14px;
+  }
+
+  // Remove connector lines that assume desktop spacing 
+  .hierarchy__card::before,
+  .course::before,
+  .micro::before,
+  .micro::after,
+  .nano::before,
+  .nano::after {
+    content: none !important;
+    display: none !important;
+  }
+
+  // Course stacks vertically
+  .course {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-left: 0;
+
+    .course__title {
+      font-size: 18px;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+  }
+
+  // Micro becomes a full-width card
+  .micro {
+    margin-left: 0;
+    margin-top: 12px;
+    padding: 12px;
+
+    .micro__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .micro__title {
+      font-size: 18px;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+  }
+
+  // Nano section removes indentation and wraps
+  .nano {
+    padding-left: 0;
+    margin-top: 10px;
+  }
+
+  .nano__row {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    max-width: 100%;
+
+    // Important: avoid long text forcing horizontal overflow
+    .nano__text {
+      flex: 1 1 180px;
+      min-width: 0;
+      font-size: 16px;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .nano__dash {
+      display: none;
+    }
+  }
+
+  // Badges slightly smaller to fit comfortably
+  .badge {
+    font-size: 13px;
+    padding: 6px 10px;
+    gap: 6px;
+
+    .badge__icon {
+      width: 16px;
+      height: 16px;
+      font-size: 13px;
+    }
+  }
 }
