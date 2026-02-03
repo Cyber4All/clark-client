@@ -29,7 +29,7 @@ $shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
 $micro-bg: #eef6fa;
 $micro-border: #dbe8ef;
 
-$line: #ddcfc4; // warm light line like screenshot
+$line: #ddcfc4;
 $line-w: 2px;
 
 $course: #0b3a57;
@@ -37,19 +37,17 @@ $micro: #4a6286;
 $nano: #a45b57;
 
 $text: #1f2a33;
-$muted: #66737f;
 
 // sizing
 $radius-lg: 6px;
 $radius-md: 5px;
 
-$gutter: 46px; // left space for connector spine
+$gutter: 46px;
 
 // ---------- Layout ----------
 .hierarchy {
   background: #f6f6f6;
   padding: 28px 0;
-
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   color: $text;
 }
@@ -62,7 +60,6 @@ $gutter: 46px; // left space for connector spine
   border-radius: $radius-lg;
   box-shadow: $shadow;
   padding: 18px 18px 22px 18px;
-
   position: relative;
 
   // main vertical spine (course -> micromodules)
@@ -70,7 +67,7 @@ $gutter: 46px; // left space for connector spine
     content: "";
     position: absolute;
     left: 22px;
-    top: 58px;   // starts near course badge
+    top: 58px;
     bottom: 26px;
     width: 0;
     border-left: $line-w solid $line;
@@ -116,18 +113,6 @@ $gutter: 46px; // left space for connector spine
   padding-left: 6px;
   position: relative;
 
-  // small elbow from spine into course badge
-  &::before {
-    content: "";
-    position: absolute;
-    left: 22px;
-    top: 16px;
-    width: 18px;
-    border-top: $line-w solid $line;
-    transform: translateX(-18px);
-    opacity: 0.85;
-  }
-
   .course__title {
     margin: 0;
     font-size: 22px;
@@ -150,30 +135,17 @@ $gutter: 46px; // left space for connector spine
   border-radius: $radius-lg;
 
   padding: 14px 16px 16px 16px;
-
-  // create room for connector branch
   margin-left: $gutter;
 
   // elbow from spine into this micro panel
   &::before {
     content: "";
     position: absolute;
-    left: -#{$gutter};
-    top: 24px; // aligns with badge row
-    width: $gutter;
+    left: calc(-#{$gutter} + 5px);
+    top: 24px;
+    width: calc(#{$gutter} - 6px);
     border-top: $line-w solid $line;
     opacity: 0.85;
-  }
-
-  // thin vertical on the left edge of micro panel (like screenshot)
-  &::after {
-    content: "";
-    position: absolute;
-    left: -16px;
-    top: 16px;
-    bottom: 16px;
-    width: 0;
-    border-left: $line-w solid rgba($line, 0.55);
   }
 
   .micro__header {
@@ -196,7 +168,6 @@ $gutter: 46px; // left space for connector spine
   position: relative;
   padding-left: 32px;
 
-  // vertical drop from micro header down to nano row
   &::before {
     content: "";
     position: absolute;
@@ -208,7 +179,6 @@ $gutter: 46px; // left space for connector spine
     opacity: 0.85;
   }
 
-  // horizontal run into nano badge
   &::after {
     content: "";
     position: absolute;
@@ -230,7 +200,6 @@ $gutter: 46px; // left space for connector spine
   border-radius: $radius-md;
 
   padding: 12px 14px;
-
   box-shadow: 0 3px 10px rgba(0,0,0,0.06);
 
   .nano__text {
@@ -247,12 +216,33 @@ $gutter: 46px; // left space for connector spine
   }
 }
 
-// micro without nano: reduce bottom padding slightly for visual match
+// micro without nano: reduce bottom padding slightly
 .micro:not(.has-nano) {
   padding-bottom: 14px;
 }
 
-// mobile view adjustments below
+/* =======================================================================
+   DESKTOP: L-connector tuning (your adjusted values)
+   ======================================================================= */
+
+@media (min-width: 641px) {
+  .nano::before {
+    left: 10px;
+    top: -12px;
+    height: 30px;
+  }
+
+  .nano::after {
+    left: 10px;
+    top: 18px;
+    width: 22px;
+  }
+}
+
+/* =======================================================================
+   OVERFLOW FIXES (prevents horizontal scroll)
+   ======================================================================= */
+
 .hierarchy-container {
   max-width: 100%;
   overflow-x: hidden;
@@ -264,14 +254,13 @@ $gutter: 46px; // left space for connector spine
   overflow-x: hidden;
 }
 
-// Predictable sizing so pseudo-elements don't push width
 .hierarchy-container *,
 .hierarchy-container *::before,
 .hierarchy-container *::after {
   box-sizing: border-box;
 }
 
-// Tablet tweaks
+/* Tablet tweaks */
 @media (max-width: 900px) {
   .hierarchy__card {
     width: calc(100% - 24px);
@@ -289,18 +278,19 @@ $gutter: 46px; // left space for connector spine
   }
 
   .micro {
-    margin-left: 28px; // reduce gutter effect
+    margin-left: 28px;
   }
 }
 
-// Mobile layout: clean stacked cards
+/* Mobile layout: stacked cards */
 @media (max-width: 640px) {
   .hierarchy-container {
-    margin-bottom: 80px; // 400px is huge on mobile
+    margin-bottom: 80px;
   }
 
   .hierarchy-container .vertical-container {
-    margin-right: 0; // prevent sideways scroll
+    margin-right: 0;
+    padding-right: 0;
   }
 
   .hierarchy {
@@ -313,18 +303,15 @@ $gutter: 46px; // left space for connector spine
     padding: 14px;
   }
 
-  // Remove connector lines that assume desktop spacing 
+  /* Remove connectors on mobile */
   .hierarchy__card::before,
-  .course::before,
   .micro::before,
-  .micro::after,
   .nano::before,
   .nano::after {
     content: none !important;
     display: none !important;
   }
 
-  // Course stacks vertically
   .course {
     flex-direction: column;
     align-items: flex-start;
@@ -338,7 +325,6 @@ $gutter: 46px; // left space for connector spine
     }
   }
 
-  // Micro becomes a full-width card
   .micro {
     margin-left: 0;
     margin-top: 12px;
@@ -357,7 +343,6 @@ $gutter: 46px; // left space for connector spine
     }
   }
 
-  // Nano section removes indentation and wraps
   .nano {
     padding-left: 0;
     margin-top: 10px;
@@ -370,7 +355,6 @@ $gutter: 46px; // left space for connector spine
     padding: 10px 12px;
     max-width: 100%;
 
-    // Important: avoid long text forcing horizontal overflow
     .nano__text {
       flex: 1 1 180px;
       min-width: 0;
@@ -384,7 +368,6 @@ $gutter: 46px; // left space for connector spine
     }
   }
 
-  // Badges slightly smaller to fit comfortably
   .badge {
     font-size: 13px;
     padding: 6px 10px;
