@@ -686,8 +686,12 @@ export class LearningObject {
       this._averageRating = object.averageRating;
     }
 
-    if (object.name !== undefined) {
-      this.name = object.name;
+    if (typeof object.name === 'string') {
+      const trimmed = object.name.trim();
+      if (trimmed.length) {
+        this.name = trimmed;     // uses validation
+      }
+      // else: don't set name at all (leave default)
     }
 
     if (object.description) {
