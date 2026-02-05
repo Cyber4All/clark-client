@@ -1,10 +1,9 @@
 <div *ngIf="preview">
   <div class="wrapper">
-    <div class="grid-row header" [ngClass]="{'bundle': checkAccessGroups()}">
+    <div class="grid-row header" [ngClass]="{ bundle: checkAccessGroups() }">
       <div>Name</div>
-      <div>Description</div>
-      <div>Date</div>
       <div>Size</div>
+      <div>Action</div>
       <div class="toggle" *ngIf="checkAccessGroups()">
         <p>Bundle</p>
         <div class="icon" [tip]="toggleToolTip" [tipDisabled]="false">

@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
 import { getIcon } from 'app/shared/modules/filesystem/file-icons';
-import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
 import { AuthService } from 'app/core/auth-module/auth.service';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'clark-file-list-item',
   templateUrl: 'file-list-item.component.html',
-  styleUrls: ['file-list-item.component.scss']
+  styleUrls: ['file-list-item.component.scss'],
 })
 export class FileListItemComponent implements OnInit {
   @Input() file: LearningObject.Material.File;
@@ -18,15 +18,16 @@ export class FileListItemComponent implements OnInit {
   @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
 
   icon = '';
-  timestampAge = '';
   previewUrl = '';
   accessGroups: string[];
 
-  constructor(private auth: AuthService) {}
+  constructor(
+    private auth: AuthService,
+    private fileService: FileService,
+  ) { }
 
   ngOnInit() {
     this.icon = getIcon(this.file.extension);
-    this.timestampAge = TimeFunctions.getTimestampAge(+this.file.date);
     this.previewUrl = this.file.previewUrl;
     this.accessGroups = this.auth.accessGroups;
   }
@@ -72,9 +73,35 @@ export class FileListItemComponent implements OnInit {
    * @returns boolean value if the user is valid
    */
   checkAccessGroups(): boolean {
-    if(this.accessGroups && this.accessGroups.length > 0) {
-      return this.inBuilder && (this.accessGroups.includes('admin') || this.accessGroups.includes('editor'));
+    if (this.accessGroups && this.accessGroups.length > 0) {
+      return (
+        this.inBuilder &&
+        (this.accessGroups.includes('admin') ||
+          this.accessGroups.includes('editor'))
+      );
     }
     return false;
+  }
+
+  get isLoggedIn(): boolean {
+    return this.auth.isLoggedIn.value;
+  }
+
+  get isOfficeFile(): boolean {
+    return this.file && FileService.isOfficeFile(this.file.name);
+  }
+
+  async onDownload() {
+    const url = this.auth.isLoggedIn.value ? this.file.previewUrl : '';
+    if (url) {
+      await this.fileService.downloadLearningObjectFile(url, this.file.name);
+    }
+  }
+
+  async onPreview() {
+    const url = this.auth.isLoggedIn.value ? this.file.previewUrl : '';
+    if (url) {
+      await this.fileService.previewLearningObjectFile(url, this.file.name);
+    }
   }
 }

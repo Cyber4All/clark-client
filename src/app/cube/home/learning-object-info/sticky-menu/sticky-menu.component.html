@@ -18,12 +18,6 @@
             (activate)="changeSelection(LearningObjectInfoState.HIERARCHIES)">
             <i class="icon fal fa-folder-tree"></i> Hierarchies
         </div>
-        <div class="content"
-            [ngClass]="{'choosen': isHighlighted.collections, 'greyout': !isHighlighted.collections && !isOtherChoiceSelected() }"
-            (click)="this.googleTagService.triggerGoogleTagEvent('sticky_collections', 'homepageRedirect', 'stickyMenu')"
-            (activate)="changeSelection(LearningObjectInfoState.COLLECTIONS)">
-            <i class="icon fal fa-users"></i> Collections
-        </div>
 
     </div>
 
@@ -33,7 +27,6 @@
             <span *ngIf="currentComponentInView === 'learningObject'"><i class="icon fal fa-cubes"></i> Learning Objects</span>
             <span *ngIf="currentComponentInView === 'learningOutcomes'"><i class="icon fal fa-graduation-cap"></i>Learning Outcomes</span>
             <span *ngIf="currentComponentInView === 'hierarchies'"><i class="icon fal fa-folder-tree"></i> Hierarchies</span>
-            <span *ngIf="currentComponentInView === 'collections'"><i class="icon fal fa-users"></i> Collections</span>
             <span class="arrow" *ngIf="!mobileDropdown">
                 <i class="fas fa-angle-down"></i>
             </span>
