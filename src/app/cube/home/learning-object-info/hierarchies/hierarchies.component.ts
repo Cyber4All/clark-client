@@ -11,18 +11,7 @@ export class HierarchiesComponent implements OnInit {
 
   constructor() { }
 
-  hierarchy = [];
-  //Below uses a sample hierarchy from the Intro to Cybersecurity course
-  ngOnInit(): void {
-    this.hierarchy.push({name: 'Intro to Cybersecurity', length: 'course'});
-    this.hierarchy.push({name: 'Cyber Foundations', length: 'micromodule'});
-    this.hierarchy.push({name: 'Cybersecurity Case Studies', length: 'nanomodule'});
-    this.hierarchy.push({name: 'Cyber War', length: 'micromodule'});
-    this.hierarchy.push({name: 'Cyberwarfare Exercise', length: 'nanomodule'});
-    this.hierarchy.push({name: 'Network Security', length: 'micromodule'});
-    this.hierarchy.push({name: 'Network Security Lab', length: 'nanomodule'});
-    this.hierarchy.push({name: 'Secure Software', length: 'micromodule'});
-  }
+  ngOnInit(): void {}
 
   getHierarchyTooltip(hierarchyLevel: string): string {
     const tooltipMap = {
