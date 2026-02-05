@@ -32,7 +32,7 @@ export class StickyMenuComponent implements OnInit {
     learningObjects: true, // LearningObjects starts highlighted
     learningOutcomes: false,
     hierarchies: false,
-    collections: false,
+    // collections: false,
   };
   isMobileView = false;
   responsiveThreshold = 825;
@@ -95,7 +95,7 @@ export class StickyMenuComponent implements OnInit {
     this.isHighlighted.learningObjects = LEARNING_OBJECT_INFO_STATES.LEARNING_OBJECT === selection;
     this.isHighlighted.learningOutcomes = LEARNING_OBJECT_INFO_STATES.LEARNING_OUTCOMES === selection;
     this.isHighlighted.hierarchies = LEARNING_OBJECT_INFO_STATES.HIERARCHIES === selection;
-    this.isHighlighted.collections = LEARNING_OBJECT_INFO_STATES.COLLECTIONS === selection;
+    // this.isHighlighted.collections = LEARNING_OBJECT_INFO_STATES.COLLECTIONS === selection;
   }
 
   /**

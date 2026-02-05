@@ -23,4 +23,15 @@ export class HierarchiesComponent implements OnInit {
     this.hierarchy.push({name: 'Network Security Lab', length: 'nanomodule'});
     this.hierarchy.push({name: 'Secure Software', length: 'micromodule'});
   }
+
+  getHierarchyTooltip(hierarchyLevel: string): string {
+    const tooltipMap = {
+      'course': '15 weeks',
+      'unit': 'Over 10 Hours',
+      'module': '4 - 10 Hours',
+      'micromodule': '1 - 4 Hours',
+      'nanomodule': 'Less than 1 Hour'
+    };
+    return tooltipMap[hierarchyLevel] || '';
+  }
 }
