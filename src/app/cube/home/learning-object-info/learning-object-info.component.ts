@@ -4,7 +4,6 @@ export enum LEARNING_OBJECT_INFO_STATES {
   LEARNING_OBJECT = 'learningObject',
   LEARNING_OUTCOMES = 'learningOutcomes',
   HIERARCHIES = 'hierarchies',
-  // COLLECTIONS = 'collections'
 };
 
 @Component({
@@ -28,9 +27,6 @@ export class LearningObjectInfoComponent implements OnInit {
 
   @ViewChild('hierarchies')
   private hierarchiesDiv: ElementRef<HTMLDivElement>;
-
-  // @ViewChild('collections')
-  // private collctionDiv: ElementRef<HTMLDivElement>;
 
   /**
    * Updates currentComponent when a div is on the screen
@@ -58,13 +54,6 @@ export class LearningObjectInfoComponent implements OnInit {
         return;
       }
     }
-    // if (this.collctionDiv) {
-    //   const rect = this.collctionDiv.nativeElement.getBoundingClientRect();
-    //   if (this.isAtTopOfScreen(rect)) {
-    //     this.currentComponent = LEARNING_OBJECT_INFO_STATES.COLLECTIONS;
-    //     return;
-    //   }
-    // }
   }
 
   /**
