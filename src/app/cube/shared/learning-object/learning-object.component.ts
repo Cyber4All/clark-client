@@ -3,6 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   HostBinding,
+  HostListener,
   Input,
   OnDestroy
 } from '@angular/core';
@@ -53,6 +54,17 @@ export class LearningObjectListingComponent implements OnDestroy {
   // Card image
   // -----------------------------
   imagePath: string = 'generic';
+
+  // -----------------------------
+  // Mobile detection
+  // -----------------------------
+  isMobile: boolean = typeof window !== 'undefined' && window.innerWidth <= 750;
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobile = typeof window !== 'undefined' && window.innerWidth <= 750;
+    this.cd.markForCheck();
+  }
 
   // -----------------------------
   // Rating properties

@@ -108,7 +108,7 @@ a {
   }
 
   .learning-object-content {
-    padding: 10px 20px 15px 20px;
+    padding: 10px 15px;
     min-width: 0;
     position: relative;
     width: 100%;
@@ -130,6 +130,24 @@ a {
       align-items: center;
       gap: 8px;
       margin-bottom: 10px;
+
+      .mobile-rating {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: $small;
+        color: $gold;
+
+        .rating-value {
+          font-weight: 600;
+          color: $darker-grey;
+        }
+
+        .review-count {
+          color: $medium-grey;
+          font-size: $smaller;
+        }
+      }
 
       .downloads-indicator {
         display: inline-flex;
@@ -397,6 +415,16 @@ a {
       .title {
         font-size: $small !important;
       }
+
+      .pills {
+        .length {
+          display: none;
+        }
+      }
+
+      .tags-container {
+        display: none;
+      }
     }
   }
 
@@ -440,6 +468,8 @@ a {
   :host.card {
     .learning-object {
       flex-direction: column;
+      height: 390px; // Fixed height for consistent card heights in grid
+      max-height: 390px;
 
       .image {
         width: 100%;
@@ -477,6 +507,38 @@ a {
 
           &.dcwf-badge i {
             font-size: 10px;
+          }
+        }
+      }
+
+      .learning-object-content {
+        .title {
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          line-height: 1.4;
+          max-height: calc(1.4em * 3);
+        }
+
+        .details {
+          .author {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+          }
+
+          .organization {
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
           }
         }
       }

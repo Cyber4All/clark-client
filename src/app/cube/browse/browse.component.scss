@@ -32,10 +32,23 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap;
 
     .loading {
       display: inline-block;
       margin-left: 10px;
+    }
+  }
+}
+
+@media (max-width: 750px) {
+  .page-header {
+    padding: 12px 0;
+    margin-bottom: 0;
+
+    .results-title {
+      font-size: $small;
+      gap: 6px;
     }
   }
 }
@@ -667,6 +680,12 @@
 
 @media (max-width: 1200px) {
   .results-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .results-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -678,32 +697,48 @@
 
   .filter-bar {
     gap: 8px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 
     .filter-btn,
-    .filter-dropdown-btn,
     .sort-btn {
       padding: 6px 10px;
       font-size: $smaller;
+      flex-shrink: 0;
+    }
+
+    .filter-dropdown-btn {
+      display: none;
+    }
+
+    .clear-filters-link {
+      display: none;
     }
 
     .filter-bar-actions {
-      width: 100%;
-      margin-left: 0;
-      margin-top: 10px;
+      margin-left: auto;
+      flex-shrink: 0;
 
       .search-card-link {
         display: none;
       }
 
       .sort-btn {
-        flex: 1;
+        padding: 6px 10px;
+        font-size: $smaller;
+        flex: none;
       }
     }
   }
 
   .results-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+
+    clark-learning-object-component {
+      min-height: 200px;
+    }
   }
 
   // Keep modal left-aligned (not right or bottom-sheet) on mobile too

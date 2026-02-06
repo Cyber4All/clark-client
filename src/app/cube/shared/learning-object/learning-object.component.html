@@ -51,7 +51,7 @@
       </div>
 
       <div class="title">
-        {{ truncateText(learningObject.name, 90) }}
+        {{ truncateText(learningObject.name, isMobile ? 45 : 80) }}
       </div>
 
       <div class="date">
@@ -61,11 +61,7 @@
       <div class="details">
         <div class="author">
           {{ learningObject.contributors[0]?.name | titlecase }}
-          {{
-            learningObject.contributors?.length - 1
-              ? 'and ' + (learningObject.contributors.length - 1) + ' more'
-              : ''
-          }}
+          {{ learningObject.contributors?.length > 1 ? ' et al.' : '' }}
         </div>
         <div class="organization">
           {{ organizationFormat(learningObject.contributors[0]?.organization) }}
@@ -73,12 +69,21 @@
       </div>
 
       <div class="rating-stars-container">
+        <!-- Desktop: Full rating stars -->
         <clark-rating-stars
-          *ngIf="averageRating > 0"
+          *ngIf="averageRating > 0 && !isMobile"
           [color]="'gold'"
           [rating]="averageRating"
           [reviewsCount]="reviewsCount"
         ></clark-rating-stars>
+        <!-- Mobile: Simplified single star with rating -->
+        <div *ngIf="averageRating > 0 && isMobile" class="mobile-rating">
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <span class="rating-value">{{
+            averageRating | number: '1.1-1'
+          }}</span>
+          <span class="review-count">({{ reviewsCount }})</span>
+        </div>
         <div
           *ngIf="downloadsCount >= 5"
           class="downloads-indicator"
