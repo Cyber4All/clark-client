@@ -7,12 +7,12 @@ import {
   OnDestroy
 } from '@angular/core';
 import { LearningObject } from '@entity';
-import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
-import { MetricService } from 'app/core/metric-module/metric.service';
-import { RatingService } from 'app/core/rating-module/rating.service';
 import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
+import { TagsService } from '../../../core/learning-object-module/tags/tags.service';
 import { TopicsService } from '../../../core/learning-object-module/topics/topics.service';
+import { MetricService } from '../../../core/metric-module/metric.service';
+import { RatingService } from '../../../core/rating-module/rating.service';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -184,8 +184,22 @@ export class LearningObjectListingComponent implements OnDestroy {
     return str.replace(/<[\/]*[0-z\s'"=]+>/gi, ' ');
   }
 
-  get date() {
-    return this._learningObject?.date ? new Date(this._learningObject.date) : null;
+  get humanReadableLength() {
+    const learningObjectLength = this._learningObject?.length;
+    switch (learningObjectLength) {
+      case 'nanomodule':
+        return 'UP TO ONE HOUR';
+      case 'micromodule':
+        return '1 - 4 HOURS';
+      case 'module':
+        return '4 - 10 HOURS';
+      case 'unit':
+        return 'OVER 10 HOURS';
+      case 'course':
+        return '15 WEEKS';
+      default:
+        return '';
+    }
   }
 
   organizationFormat(organization: string) {
@@ -197,8 +211,6 @@ export class LearningObjectListingComponent implements OnDestroy {
   // -----------------------------
   private setImageFromTopics() {
     let firstTopic = this.topics?.[0];
-
-    console.log('First topic:', firstTopic);
 
     // If the topic is AI/Machine Learning, use AI_Machine Learning.png as the image
     if (firstTopic === 'AI/Machine Learning') {
