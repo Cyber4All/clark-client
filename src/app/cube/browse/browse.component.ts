@@ -146,7 +146,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         const materialsTagFilter = this.filterComponent.getMaterialsTagFilter();
         if (materialsTagFilter && materialsTagFilter.filters && materialsTagFilter.filters.length > 0) {
           this.materialsFilter = materialsTagFilter;
-          console.log('Materials filter initialized with', materialsTagFilter.filters.length, 'options');
         } else if (attempts === maxAttempts) {
           // Log if materials filter never loaded
           console.warn('Materials filter not available after max attempts');

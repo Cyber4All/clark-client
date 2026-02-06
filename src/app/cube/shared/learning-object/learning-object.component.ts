@@ -210,14 +210,15 @@ export class LearningObjectListingComponent implements OnDestroy {
   // Derived state
   // -----------------------------
   private setImageFromTopics() {
-    let firstTopic = this.topics?.[0];
+    // If no topics, use generic
+    let firstTopic = this.topics?.[0] ?? 'generic';
 
     // If the topic is AI/Machine Learning, use AI_Machine Learning.png as the image
     if (firstTopic === 'AI/Machine Learning') {
       firstTopic = 'AI Machine Learning';
     }
 
-    this.imagePath = firstTopic ? `/assets/images/topics/${firstTopic}.png` : 'generic';
+    this.imagePath = `/assets/images/topics/${firstTopic}.png`;
   }
 
   private checkDCWFAlignment(lo: LearningObject): boolean {
