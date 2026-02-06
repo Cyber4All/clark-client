@@ -614,4 +614,19 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     }
     return this.query.tags?.length || 0;
   }
+
+  /**
+   * Get the list of active topic names (for filtering learning object images)
+   * Returns an array of topic names that match the active filters
+   */
+  getActiveTopics(): string[] {
+    if (!this.topicFilter?.filters) {
+      return [];
+    }
+    
+    // Get the names of all active topics
+    return this.topicFilter.filters
+      .filter(f => f.active)
+      .map(f => f.name);
+  }
 }

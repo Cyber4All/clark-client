@@ -304,6 +304,7 @@
         *ngFor="let l of learningObjects; trackBy: trackByLearningObject"
         [learningObject]="l"
         [loading]="loading"
+        [allowedTopics]="getActiveTopics()"
         learningObjectCard
       ></clark-learning-object-component>
     </div>

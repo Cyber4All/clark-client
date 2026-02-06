@@ -46,6 +46,9 @@ export class LearningObjectListingComponent implements OnDestroy {
     this.cd.markForCheck();
   }
 
+  // Topic filter from browse page (used to select matching topic image)
+  @Input() allowedTopics: string[] = [];
+
   // -----------------------------
   // Card image
   // -----------------------------
@@ -212,6 +215,19 @@ export class LearningObjectListingComponent implements OnDestroy {
   private setImageFromTopics() {
     // If no topics, use generic
     let firstTopic = this.topics?.[0] ?? 'generic';
+
+    // If there are allowed topics (from browse filtering), prefer a topic that matches the filter
+    if (this.allowedTopics?.length > 0 && this.topics?.length > 0) {
+      // Find the first topic in the learning object that matches any of the allowed topics
+      const matchingTopic = this.topics.find(topic =>
+        this.allowedTopics.includes(topic)
+      );
+
+      // Use the matching topic if found, otherwise fall back to the first topic
+      if (matchingTopic) {
+        firstTopic = matchingTopic;
+      }
+    }
 
     // If the topic is AI/Machine Learning, use AI_Machine Learning.png as the image
     if (firstTopic === 'AI/Machine Learning') {
