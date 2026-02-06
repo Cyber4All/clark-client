@@ -16,7 +16,6 @@
   >
     <div class="image">
       <img
-        *ngIf="imagePath !== 'generic'; else genericLogoTemplate"
         class="logo"
         src="{{ imagePath }}"
         alt="{{
@@ -103,7 +102,3 @@
     </div>
   </div>
 </a>
-
-<ng-template #genericLogoTemplate>
-  <clark-generic-collection-logo></clark-generic-collection-logo>
-</ng-template>
