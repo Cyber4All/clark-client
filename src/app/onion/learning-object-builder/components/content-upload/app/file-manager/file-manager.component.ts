@@ -45,7 +45,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
   @Output()
   path: EventEmitter<string> = new EventEmitter<string>();
   @Output()
-  packageableToggled: EventEmitter <{
+  packageableToggled: EventEmitter<{
     state: boolean,
     item: DirectoryNode | LearningObject.Material.File
   }> = new EventEmitter();
@@ -73,7 +73,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
     this.directoryTree
   );
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.files$.pipe(takeUntil(this.componentDestroyed$)).subscribe((files) => {
@@ -170,7 +170,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
 
     this.fileEdited.emit(edit);
 
-    this.toggleEditDescription(false);
   }
 
   /**
@@ -265,14 +264,6 @@ export class FileManagerComponent implements OnInit, OnDestroy {
    */
   emitPath(path: string) {
     this.path.emit(path);
-  }
-
-  toggleEditDescription(value: boolean): void {
-    this.editDescription = value;
-
-    if (!value) {
-      this.menuItem = undefined;
-    }
   }
 
   ngOnDestroy() {
