@@ -19,7 +19,7 @@ export class CyberskillsDashboardComponent implements OnInit {
     end: new UntypedFormControl(null),
   });
 
-  name = this.authValidationService.getInputFormControl('text');
+  name: UntypedFormControl;
   learningObjects: any = [];
 
   filterQuery: FilterQuery = {};
@@ -34,7 +34,9 @@ export class CyberskillsDashboardComponent implements OnInit {
     private ratingService: RatingService,
     private learningObjectService: SearchService,
     private metricsService: MetricService,
-  ) {}
+  ) {
+    this.name = this.authValidationService.getInputFormControl('text');
+  }
 
   async ngOnInit(): Promise<void> {
     this.toaster.init(this.view);

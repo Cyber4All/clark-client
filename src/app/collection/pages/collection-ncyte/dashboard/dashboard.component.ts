@@ -14,14 +14,16 @@ export class NcyteDashboardComponent implements OnInit {
     start: new UntypedFormControl(null),
     end: new UntypedFormControl(null),
   });
-  name = this.authValidationService.getInputFormControl('text');
+  name: UntypedFormControl;
 
   constructor(
     private toaster: ToastrOvenService,
     private view: ViewContainerRef,
     private authValidationService: AuthValidationService,
     private reportService: ReportService,
-  ) { }
+  ) {
+    this.name = this.authValidationService.getInputFormControl('text');
+  }
 
   ngOnInit(): void {
     this.toaster.init(this.view);
