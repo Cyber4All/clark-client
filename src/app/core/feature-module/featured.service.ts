@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LearningObject } from '@entity';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpHeaders,
-} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { FEATURED_ROUTES } from './featured.routes';
 import { catchError } from 'rxjs/operators';
 import { throwError, BehaviorSubject } from 'rxjs';

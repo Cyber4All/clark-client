@@ -85,11 +85,12 @@
 .meatballs {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   cursor: pointer;
   height: 30px;
   outline: 0;
+  gap: 2px;
 
   & > div,
   &:before,

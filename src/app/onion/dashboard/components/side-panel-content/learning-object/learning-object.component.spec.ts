@@ -4,7 +4,7 @@ import { LearningObjectComponent } from './learning-object.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CollectionPipe } from 'app/shared/pipes/collection.pipe';
 import { CollectionService } from 'app/core/collection-module/collections.service';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { LearningObject } from '@entity';
 
 describe('LearningObjectComponent', () => {
@@ -15,13 +15,12 @@ describe('LearningObjectComponent', () => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [LearningObjectComponent, CollectionPipe],
-    imports: [
-        HttpClientModule
-    ],
+    teardown: { destroyAfterEach: false },
+    imports: [],
     providers: [
         CollectionService,
-    ],
-    teardown: { destroyAfterEach: false }
+        provideHttpClient(withInterceptorsFromDi()),
+    ]
 })
     .compileComponents();
   }));

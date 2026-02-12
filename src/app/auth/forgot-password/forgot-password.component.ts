@@ -41,10 +41,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   showDone: Boolean = false;
   submitButton: String = 'disabled';
 
-  emails: UntypedFormGroup = new UntypedFormGroup({
-    'email': this.authValidationService.getInputFormControl('email'),
-    'confirmEmail': this.authValidationService.getInputFormControl('required')
-  }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });;
+  emails: UntypedFormGroup;
 
   emailInUse = true;
   emailErrorMsg = '';
@@ -53,7 +50,12 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private authValidationService: AuthValidationService,
     private authService: AuthService
-  ) { }
+  ) {
+    this.emails = new UntypedFormGroup({
+      'email': this.authValidationService.getInputFormControl('email'),
+      'confirmEmail': this.authValidationService.getInputFormControl('required')
+    }, { validators: MatchValidator.mustMatch('email', 'confirmEmail') });
+  }
 
   ngOnInit(): void {
     this.authValidationService.getErrorState().subscribe(err => this.showError = err);
