@@ -2,10 +2,10 @@
  * Provide abstract representations for learning objects.
  */
 
-import { User } from '../user/user';
-import { LearningOutcome } from '../learning-outcome/learning-outcome';
-import { LEARNING_OBJECT_ERRORS } from './error-messages';
 import { EntityError } from '../errors/entity-error';
+import { LearningOutcome } from '../learning-outcome/learning-outcome';
+import { User } from '../user/user';
+import { LEARNING_OBJECT_ERRORS } from './error-messages';
 
 const MIN_NAME_LENGTH = 3;
 const MAX_NAME_LENGTH = 170;
@@ -150,7 +150,7 @@ export class LearningObject {
     return this._guidelines;
   }
 
-  set guidelines(guidelines: any){
+  set guidelines(guidelines: any) {
     this._guidelines = guidelines;
   }
   /**
@@ -539,7 +539,7 @@ export class LearningObject {
    * @returns
    */
   addGuideline(guideline: any) {
-    return this._guidelines.push(guideline) -1;
+    return this._guidelines.push(guideline) - 1;
   }
 
   /**
@@ -594,10 +594,10 @@ export class LearningObject {
     // when adding contributors, the original contributor id field can come back from the service as id or _id
     // this matches it to userId attribute in either case
     if (contributor) {
-      if(contributor.id) {
+      if (contributor.id) {
         contributor.userId = contributor.id;
       }
-      if(contributor._id){
+      if (contributor._id) {
         contributor.userId = contributor._id;
       }
       const addingUser =
@@ -686,8 +686,12 @@ export class LearningObject {
       this._averageRating = object.averageRating;
     }
 
-    if (object.name !== undefined) {
-      this.name = object.name;
+    if (typeof object.name === 'string') {
+      const trimmed = object.name.trim();
+      if (trimmed.length) {
+        this.name = trimmed;     // uses validation
+      }
+      // else: don't set name at all (leave default)
     }
 
     if (object.description) {

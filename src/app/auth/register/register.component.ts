@@ -1,6 +1,6 @@
 import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
@@ -98,18 +98,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     isRegisterPageInvalid: true
   };
 
-  infoFormGroup: UntypedFormGroup = new UntypedFormGroup({
-    firstname: this.authValidation.getInputFormControl('required'),
-    lastname: this.authValidation.getInputFormControl('required'),
-    email: this.authValidation.getInputFormControl('email'),
-    organization: this.authValidation.getInputFormControl('required'),
-  });
-  accountFormGroup: UntypedFormGroup = new UntypedFormGroup({
-    username: this.authValidation.getInputFormControl('username'),
-    password: this.authValidation.getInputFormControl('password'),
-    confirmPassword: this.authValidation.getInputFormControl('required'),
-    captcha: new UntypedFormControl()
-  }, MatchValidator.mustMatch('password', 'confirmPassword'));
+  infoFormGroup: UntypedFormGroup;
+  accountFormGroup: UntypedFormGroup;
 
   emailInUse = false;
   usernameInUse = false;
@@ -133,6 +123,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private cookieAgreement: CookieAgreementService,
     private route: ActivatedRoute,
   ) {
+    this.infoFormGroup = new UntypedFormGroup({
+      firstname: this.authValidation.getInputFormControl('required'),
+      lastname: this.authValidation.getInputFormControl('required'),
+      email: this.authValidation.getInputFormControl('email'),
+      organization: this.authValidation.getInputFormControl('required'),
+    });
+    this.accountFormGroup = new UntypedFormGroup({
+      username: this.authValidation.getInputFormControl('username'),
+      password: this.authValidation.getInputFormControl('password'),
+      confirmPassword: this.authValidation.getInputFormControl('required'),
+      captcha: new UntypedFormControl()
+    }, MatchValidator.mustMatch('password', 'confirmPassword'));
+
     this.route.parent.data.subscribe(() => {
       if (this.route.snapshot.queryParams.redirectUrl) {
         this.redirectUrl = decodeURIComponent(this.route.snapshot.queryParams.redirectUrl);
@@ -261,6 +264,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             }
           })
           .catch((err) => {
+            this.errorMsg = 'Email must be an email';
             this.authValidation.showError();
           });
 

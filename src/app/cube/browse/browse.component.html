@@ -1,77 +1,340 @@
 <div class="container">
-  <div class="browse-columns" id="pageContent" tabindex="0">
-    <clark-skip-link title="Skip Directly to Learning Objects" skipLocation="results"></clark-skip-link>
-    <div *ngIf="filters" class="sidebar-wrapper" [ngClass]="{'active': filtersDownMobile}">
-      <div class="column-title">
+  <clark-skip-link
+    title="Skip Directly to Learning Objects"
+    skipLocation="results"
+  ></clark-skip-link>
+
+  <!-- Page header with search context -->
+  <div class="page-header">
+    <span tabindex="0" id="results" class="results-title"
+      >{{ copy.RESULTS }} ({{
+        this.totalLearningObjects ? this.totalLearningObjects : '0'
+      }})
+      <a
+        class="clear-search"
+        id="clear-search"
+        (activate)="clearSearch()"
+        *ngIf="
+          query?.text !== '' ||
+          (query?.standardOutcomes && query?.standardOutcomes.length > 0)
+        "
+        >{{ copy.CLEARSEARCH }}
+      </a>
+      <span class="loading" *ngIf="loading"
+        ><i class="far fa-spinner-third fa-spin"></i
+      ></span>
+    </span>
+  </div>
+
+  <!-- Sticky filter bar -->
+  <div class="filter-bar-wrapper">
+    <div class="filter-bar">
+      <!-- All Filters button -->
+      <button
+        #allFiltersButtonElement
+        aria-label="Open all filters"
+        class="filter-btn all-filters-btn"
+        (activate)="toggleFilters()"
+      >
         {{ copy.FILTERS }}
-        <div class="filters-clear-all" id="filters-clear-all" *ngIf="anyFiltersSelected()"
-          (activate)="clearAllFilters()">
-          {{ copy.CLEARFILTERS }}
+        <i class="far fa-sliders-h"></i>
+      </button>
+
+      <!-- Topics dropdown -->
+      <div class="filter-dropdown-container">
+        <button
+          #topicButton
+          aria-label="Filter by topics"
+          class="filter-dropdown-btn"
+          (click)="toggleFilterDropdown('topic', $event)"
+          [ngClass]="{ active: activeFilterDropdown === 'topic' }"
+        >
+          <span class="filter-label"
+            >Topics<span *ngIf="getTopicsCount() > 0">
+              ({{ getTopicsCount() }})</span
+            ></span
+          >
+          <i class="far fa-chevron-down"></i>
+        </button>
+        <div
+          *ngIf="activeFilterDropdown === 'topic'"
+          class="filter-dropdown-menu"
+        >
+          <ul class="filter-options-list">
+            <li
+              *ngFor="let option of topicFilter?.filters"
+              class="filter-option"
+            >
+              <label class="filter-checkbox-label">
+                <input
+                  type="checkbox"
+                  [checked]="option.active"
+                  (change)="toggleFilterOption('topic', option)"
+                />
+                <span class="filter-option-name">{{ option.name }}</span>
+              </label>
+            </li>
+          </ul>
         </div>
       </div>
 
-      <clark-filter *ngIf="!isMobile || (isMobile && filtersDownMobile)" [display]="'vertical'" [selected]="query"
-        [clear]="filterClearSubject$.asObservable()" (changed)="filter($event)"></clark-filter>
-
-      <div class="btn-group to-right">
-        <button (activate)="applyFilters(); toggleFilters();" class="button good">Apply</button>
-        <button (activate)="closeFilters();" class="button neutral">Cancel</button>
-      </div>
-    </div>
-    <div *ngIf="learningObjects" class="content" id="pageContent" tabindex="0">
-      <div class="column-title" id="column-title">
-        <span tabindex="0" id="results">{{ copy.RESULTS }} ({{ this.totalLearningObjects ? this.totalLearningObjects :
-          '0' }})
-          <a class="clear-search" id="clear-search" (activate)="clearSearch()"
-            *ngIf="query?.text !== '' || (query?.standardOutcomes && query?.standardOutcomes.length > 0)">{{
-            copy.CLEARSEARCH }} </a>
-          <span class="loading" *ngIf="loading"><i class="far fa-spinner-third fa-spin"></i></span>
-        </span>
-        <div class="results-options" id="results-options">
-          <button *ngIf="isMobile" #filterMenuButtonElement aria-label="Filter search results" class="button sort"
-            (activate)="toggleFilters()">{{ copy.FILTERS }} <i class="far fa-sliders-h"></i></button>
-          <button *ngIf="showClearSort" aria-label="Clear sort selection" tip="Clear sorting criteria"
-            tipPosition="bottom" (activate)="clearSort($event)" class="clear"><i class="far fa-times"></i></button>
-          <a class="search-CARD" id="search-CARD" href="https://caeresource.clark.center/browse?q={{ query?.text }}"
-            target=_blank *ngIf="query?.text?.length > 0">Search for non-curricular resources</a>
-          <button #sortMenuButtonElement aria-label="Sort Search Results" class="button sort"
-            (activate)="toggleSortMenu(true)">Sort By: {{ sortText }}<i class="far fa-angle-down"></i></button>
+      <!-- Levels dropdown -->
+      <div class="filter-dropdown-container">
+        <button
+          #levelButton
+          aria-label="Filter by levels"
+          class="filter-dropdown-btn"
+          (click)="toggleFilterDropdown('level', $event)"
+          [ngClass]="{ active: activeFilterDropdown === 'level' }"
+        >
+          <span class="filter-label"
+            >Levels<span *ngIf="getLevelsCount() > 0">
+              ({{ getLevelsCount() }})</span
+            ></span
+          >
+          <i class="far fa-chevron-down"></i>
+        </button>
+        <div
+          *ngIf="activeFilterDropdown === 'level'"
+          class="filter-dropdown-menu"
+        >
+          <ul class="filter-options-list">
+            <li
+              *ngFor="let option of levelFilter?.filters"
+              class="filter-option"
+            >
+              <label class="filter-checkbox-label">
+                <input
+                  type="checkbox"
+                  [checked]="option.active"
+                  (change)="toggleFilterOption('level', option)"
+                />
+                <span class="filter-option-name">{{ option.name }}</span>
+              </label>
+            </li>
+          </ul>
         </div>
-        <!-- Filter Context Menu -->
-        <ng-container>
-          <clark-context-menu *ngIf="sortMenuDown" [anchor]="sortMenuButtonElement"
-            [offset]="{ top: 10, left: 5, right: 0 }" (close)="toggleSortMenu(false)">
-            <div #contextMenu class="sort-menu">
-              <ul>
-                <li [ngClass]="{selected: sortText === 'Newest'}" class="list-item" (activate)="toggleSort('dd')">
-                  Date (Newest first)
-                </li>
-                <li [ngClass]="{selected: sortText === 'Oldest'}" class="list-item" (activate)="toggleSort('da')">
-                  Date (Oldest first)
-                </li>
-                <li [ngClass]="{selected: sortText === 'Downloads'}" class="list-item" (activate)="toggleSort('w')">
-                  Downloads
-                </li>
-              </ul>
-            </div>
-          </clark-context-menu>
-        </ng-container>
       </div>
-      <h3 *ngIf="!learningObjects || learningObjects.length === 0">{{ copy.NORESULTS }}</h3>
-      <clark-learning-object-component *ngFor="let l of learningObjects" [learningObject]="l"
-        [loading]="loading"></clark-learning-object-component>
+
+      <!-- Duration dropdown -->
+      <div class="filter-dropdown-container">
+        <button
+          #durationButton
+          aria-label="Filter by duration"
+          class="filter-dropdown-btn"
+          (click)="toggleFilterDropdown('duration', $event)"
+          [ngClass]="{ active: activeFilterDropdown === 'duration' }"
+        >
+          <span class="filter-label"
+            >Duration<span *ngIf="getDurationCount() > 0">
+              ({{ getDurationCount() }})</span
+            ></span
+          >
+          <i class="far fa-chevron-down"></i>
+        </button>
+        <div
+          *ngIf="activeFilterDropdown === 'duration'"
+          class="filter-dropdown-menu"
+        >
+          <ul class="filter-options-list">
+            <li
+              *ngFor="let option of durationFilter?.filters"
+              class="filter-option"
+            >
+              <label class="filter-checkbox-label">
+                <input
+                  type="checkbox"
+                  [checked]="option.active"
+                  (change)="toggleFilterOption('duration', option)"
+                />
+                <span class="filter-option-name">{{
+                  option.description || option.name
+                }}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Materials dropdown -->
+      <div class="filter-dropdown-container">
+        <button
+          #materialsButton
+          aria-label="Filter by materials"
+          class="filter-dropdown-btn"
+          (click)="toggleFilterDropdown('materials', $event)"
+          [ngClass]="{ active: activeFilterDropdown === 'materials' }"
+        >
+          <span class="filter-label"
+            >Materials<span *ngIf="getMaterialsCount() > 0">
+              ({{ getMaterialsCount() }})</span
+            ></span
+          >
+          <i class="far fa-chevron-down"></i>
+        </button>
+        <div
+          *ngIf="
+            activeFilterDropdown === 'materials' &&
+            materialsFilter?.filters?.length
+          "
+          class="filter-dropdown-menu"
+        >
+          <ul class="filter-options-list">
+            <li
+              *ngFor="let option of materialsFilter.filters"
+              class="filter-option"
+            >
+              <label class="filter-checkbox-label">
+                <input
+                  type="checkbox"
+                  [checked]="option.active"
+                  (change)="toggleFilterOption('materials', option)"
+                />
+                <span class="filter-option-name">{{ option.name }}</span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Clear Filters Link -->
+      <button
+        *ngIf="anyFiltersSelected()"
+        class="clear-filters-link"
+        (click)="clearAllFilters()"
+      >
+        Clear Filters
+      </button>
+
+      <!-- Sort and search options -->
+      <div class="filter-bar-actions">
+        <a
+          class="search-card-link"
+          id="search-CARD"
+          href="https://caeresource.clark.center/browse?q={{ query?.text }}"
+          target="_blank"
+          *ngIf="query?.text?.length > 0"
+          >Search for non-curricular resources</a
+        >
+        <div class="sort-dropdown-container">
+          <button
+            aria-label="Sort Search Results"
+            class="sort-btn"
+            [ngClass]="{ active: sortMenuDown }"
+            (click)="toggleSortMenu(!sortMenuDown)"
+          >
+            Sort By: {{ sortText }}<i class="far fa-angle-down"></i>
+          </button>
+
+          <div
+            *ngIf="sortMenuDown"
+            class="sort-dropdown-menu"
+            (click)="$event.stopPropagation()"
+          >
+            <ul>
+              <li
+                [ngClass]="{ selected: sortText === 'Newest' }"
+                (click)="toggleSort('dd')"
+              >
+                Newest
+              </li>
+              <li
+                [ngClass]="{ selected: sortText === 'Most Downloaded' }"
+                (click)="toggleSort('w')"
+              >
+                Most Downloaded
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- Full filter modal for mobile/all filters -->
+  <div
+    *ngIf="filters"
+    class="filter-modal-wrapper"
+    [ngClass]="{ active: filtersDownMobile }"
+    (click)="onBackdropClick($event)"
+    trapFocus
+  >
+    <div class="filter-modal" (click)="$event.stopPropagation()">
+      <!-- Modal Header -->
+      <div class="filter-modal-header">
+        <h2 class="filter-modal-title">Filter</h2>
+      </div>
+
+      <!-- Modal Body (Scrollable) -->
+      <div class="filter-modal-body">
+        <clark-filter
+          [display]="'vertical'"
+          [selected]="query"
+          [clear]="filterClearSubject$.asObservable()"
+          (changed)="filter($event)"
+        ></clark-filter>
+      </div>
+
+      <!-- Modal Footer (Sticky) -->
+      <div class="filter-modal-footer">
+        <button
+          (activate)="clearAllFilters(true)"
+          class="filter-footer-btn secondary-btn"
+        >
+          Clear All
+        </button>
+        <button
+          (activate)="applyFilters(); toggleFilters()"
+          class="filter-footer-btn primary-btn"
+        >
+          <span class="button-text">Show Results</span>
+          <span class="result-count">({{ totalLearningObjects }})</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results grid -->
+  <div class="results-container" id="pageContent" tabindex="0">
+    <h3 *ngIf="learningObjects.length === 0 && !loading" class="no-results">
+      {{ copy.NORESULTS }}
+    </h3>
+    <div class="results-grid" *ngIf="learningObjects.length > 0 || loading">
+      <clark-learning-object-component
+        *ngFor="let l of learningObjects; trackBy: trackByLearningObject"
+        [learningObject]="l"
+        [loading]="loading"
+        [allowedTopics]="getActiveTopics()"
+        learningObjectCard
+      ></clark-learning-object-component>
+    </div>
+  </div>
+
+  <!-- Pagination -->
   <div *ngIf="learningObjects.length" class="paginationCtrl">
     <ul>
-      <li (activate)="prevPage()" [ngClass]="{'gone': query.currPage <= 1}"><i class="far fa-chevron-left"
-          aria-label="Previous page of results"></i> Back </li>
-      <li *ngFor="let p of pages" [ngClass]="{'active': query.currPage === p}" (activate)="goToPage(p)"
-        attr.aria-label="Page {{ p }} of results">
+      <li (activate)="prevPage()" [ngClass]="{ gone: query.currPage <= 1 }">
+        <i
+          class="far fa-chevron-left"
+          aria-label="Previous page of results"
+        ></i>
+        Back
+      </li>
+      <li
+        *ngFor="let p of pages"
+        [ngClass]="{ active: query.currPage === p }"
+        (activate)="goToPage(p)"
+        attr.aria-label="Page {{ p }} of results"
+      >
         {{ p }}
       </li>
-      <li (activate)="nextPage()" [ngClass]="{'gone': query.currPage >= pageCount}"> Next <i
-          class="far fa-chevron-right" aria-label="Next page of results"></i></li>
+      <li
+        (activate)="nextPage()"
+        [ngClass]="{ gone: query.currPage >= pageCount }"
+      >
+        Next
+        <i class="far fa-chevron-right" aria-label="Next page of results"></i>
+      </li>
     </ul>
   </div>
 </div>

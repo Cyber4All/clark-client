@@ -1,21 +1,17 @@
 version: 2.1
 
 orbs:
-  cyber4all: cyber4all/orb@2.1.9
+  cyber4all: cyber4all/orb@2.1.13
   node: circleci/node@6.3.0
 
-# This is a solution for the outdated version of angular we are using
 jobs:
-  install-node-lint-build:
+  lint:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/node:18.19.0
     steps:
       - checkout
-      - node/install:
-          node-version: '18.19.0'
-      - run: npm install
+      - run: npm ci
       - run: npm run lint
-      - run: npm run build:prod
 
   upload-source-maps:
     parameters:
@@ -44,10 +40,19 @@ jobs:
             fi
             npm run rum:upload-<< parameters.environment >>
 
+  build:
+    docker:
+      - image: cimg/node:18.19.0
+    steps:
+      - checkout
+      - run: npm ci
+      - run: npm run build:prod
+
 workflows:
   continuous-integration:
     jobs:
-      - install-node-lint-build
+      - lint
+      - build
 
   deploy-staging:
     when:
@@ -63,6 +68,7 @@ workflows:
             - aws_staging
             - Slack
           bucket: 'clark-client-staging'
+          source: './dist/browser'
           distribution_id: STAGING_CLOUDFRONT_ID
           script: build:staging
 
@@ -87,3 +93,4 @@ workflows:
             - AWS
             - Slack
           bucket: 'clark.center'
+          source: './dist/browser'

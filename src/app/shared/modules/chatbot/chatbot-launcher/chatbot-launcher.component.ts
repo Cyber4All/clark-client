@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
@@ -32,10 +32,53 @@ import { trigger, transition, style, animate } from '@angular/animations';
     ])
   ]
 })
-export class ChatbotLauncherComponent {
+export class ChatbotLauncherComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() isCookieBannerVisible = false;
   @Output() chatbotOpened = new EventEmitter<void>();
 
   showTooltip = false;
+  bannerHeight = 0;
+  private resizeObserver: ResizeObserver;
+
+  ngOnInit(): void {
+    this.observeBannerHeight();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['isCookieBannerVisible']) {
+      // When banner visibility changes, update height
+      this.updateBannerHeight();
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+    }
+  }
+
+  private observeBannerHeight(): void {
+    const bannerElement = document.querySelector('clark-cookies');
+
+    if (bannerElement) {
+      this.resizeObserver = new ResizeObserver(() => {
+        this.updateBannerHeight();
+      });
+
+      this.resizeObserver.observe(bannerElement);
+      this.updateBannerHeight();
+    }
+  }
+
+  private updateBannerHeight(): void {
+    const bannerElement = document.querySelector('clark-cookies');
+
+    if (bannerElement && this.isCookieBannerVisible) {
+      this.bannerHeight = (bannerElement as HTMLElement).offsetHeight + 20;
+    } else {
+      this.bannerHeight = 0;
+    }
+  }
 
   openChatbot(): void {
     this.chatbotOpened.emit();

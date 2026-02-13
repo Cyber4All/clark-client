@@ -12,7 +12,6 @@ import { HelpCardComponent } from './help/components/help-card/help-card.compone
 import { LearningObjectsComponent } from './learning-object-info/learning-objects/learning-objects.component';
 import { LearningOutcomesComponent } from './learning-object-info/learning-outcomes/learning-outcomes.component';
 import { HierarchiesComponent } from './learning-object-info/hierarchies/hierarchies.component';
-import { CollectionsComponent } from './learning-object-info/collections/collections.component';
 import { StickyMenuComponent } from './learning-object-info/sticky-menu/sticky-menu.component';
 import { CubeSharedModule } from '../shared/cube-shared.module';
 import { SharedModule } from 'app/shared/shared.module';
@@ -34,7 +33,6 @@ import { BlogsComponent } from 'app/components/blogs/blogs.component';
     LearningObjectsComponent,
     LearningOutcomesComponent,
     HierarchiesComponent,
-    CollectionsComponent,
     StickyMenuComponent,
     HelpCardComponent,
     HelpBackBtnComponent,

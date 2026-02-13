@@ -46,6 +46,11 @@ interface ChartOptions {
   legend?: ChartLegendOptions;
   hover?: ChartHoverOptions;
   animation?: ChartAnimationOptions;
+  plugins?: {
+    legend?: ChartLegendOptions;
+    datalabels?: any;
+    [key: string]: any;
+  };
 }
 interface CartesianPoint {
   x: number;
@@ -83,18 +88,22 @@ interface ChartElementOptions {
 }
 export interface Chart {
   title: string;
-  data: Array<ChartData | number>;
-  labels: Array<number | string>;
+  data: any;
+  labels?: Array<number | string>;
   colors?: ChartElementOptions[];
   type: ChartType;
   options?: ChartOptions;
   legend?: boolean;
   filters?: ChartFilter[];
+  plugins?: any[];
 }
 
 export interface PieChart extends Chart {
   type: 'pie' | 'doughnut';
-  data: number[];
+  data: {
+    labels: string[];
+    datasets: { data: number[]; backgroundColor: string[] }[];
+  };
 }
 
 interface DoughnutChartOptions extends ChartOptions {

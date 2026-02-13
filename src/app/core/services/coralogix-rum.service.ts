@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CoralogixBrowserSdkConfig, CoralogixRum, CoralogixRumLabels, UserContextConfig } from '@coralogix/browser';
+import { CoralogixBrowserSdkConfig, CoralogixLogSeverity, CoralogixRum, UserContextConfig } from '@coralogix/browser';
 import { environment } from '@env/environment';
 import { COMMIT_HASH } from '../../../commit-hash';
 
@@ -30,9 +30,8 @@ export class CoralogixRumService {
             return;
         }
 
-        // Only initialize RUM in production and staging environment
-        if (!['production', 'staging'].includes(environment.environment)) {
-            console.log('Coralogix RUM skipped - not in production/staging environment');
+        if (!['production', 'staging', 'development'].includes(environment.environment)) {
+            console.log('Coralogix RUM skipped - not in production/staging/development environment');
             return;
         }
 
@@ -46,9 +45,6 @@ export class CoralogixRumService {
                 coralogixDomain: 'US1' as const,
             };
 
-            console.log('Initializing Coralogix RUM...');
-            console.log('RUM Configuration:', rumConfig);
-
             CoralogixRum.init(rumConfig);
 
             // Set additional labels for production tracking
@@ -58,7 +54,7 @@ export class CoralogixRumService {
             });
 
             this.isInitialized = true;
-            console.log('Coralogix RUM initialized successfully for production');
+            console.log('Coralogix RUM initialized successfully');
         } catch (error) {
             console.error('Failed to initialize Coralogix RUM:', error);
         }
@@ -111,6 +107,40 @@ export class CoralogixRumService {
             });
         } catch (error) {
             console.error('Failed to track event:', error);
+        }
+    }
+
+    /**
+     * Send a custom measurement to Coralogix RUM
+     */
+    sendCustomMeasurement(measurementName: string, value: number): void {
+        if (!this.isInitialized) {
+            return;
+        }
+
+        try {
+            CoralogixRum.sendCustomMeasurement(measurementName, value);
+        } catch (error) {
+            console.error('Failed to send custom measurement:', error);
+        }
+    }
+
+    /**
+     * Send a custom log event to Coralogix RUM
+     * @param severity - Log severity level
+     * @param message - Log message (appears in cx_rum.log_context.message)
+     * @param context - Additional context data (appears in cx_rum.log_context.data)
+     */
+    sendLog(severity: CoralogixLogSeverity, message: string, context?: Record<string, any>): void {
+        if (!this.isInitialized) {
+            return;
+        }
+
+        try {
+            console.log('Sending log to Coralogix RUM:', severity, message, context);
+            CoralogixRum.log(severity, message, context);
+        } catch (error) {
+            console.error('Failed to send log:', error);
         }
     }
 

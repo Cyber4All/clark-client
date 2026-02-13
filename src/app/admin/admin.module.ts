@@ -85,7 +85,6 @@ import { FeaturedComponent } from './pages/featured/featured.component';
     AdminRoutingModule,
     FormsModule,
     SharedModule,
-    VirtualScrollerModule,
     DragDropModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -106,6 +105,7 @@ import { FeaturedComponent } from './pages/featured/featured.component';
     MatStepperModule,
     MatSelectModule,
     ReactiveFormsModule,
+    VirtualScrollerModule,
   ],
 })
 export class AdminModule { }
