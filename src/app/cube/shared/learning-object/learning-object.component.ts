@@ -53,7 +53,7 @@ export class LearningObjectListingComponent implements OnDestroy {
   // -----------------------------
   // Card image
   // -----------------------------
-  imagePath: string = 'generic';
+  imagePath: string = `/assets/images/topics/generic.png`;
 
   // -----------------------------
   // Mobile detection
@@ -122,7 +122,7 @@ export class LearningObjectListingComponent implements OnDestroy {
   // Refresh pipeline (single source of truth)
   // -----------------------------
   private resetViewModel() {
-    this.imagePath = 'generic';
+    this.imagePath = `/assets/images/topics/generic.png`;
     this.averageRating = 0;
     this.reviewsCount = 0;
     this.downloadsCount = 0;
@@ -151,6 +151,7 @@ export class LearningObjectListingComponent implements OnDestroy {
 
     // Image depends on topics
     this.setImageFromTopics();
+    this.cd.markForCheck();
 
     // Fetch ratings + total downloads + recent downloads (in parallel)
     const [ratings, totalMetrics, recentDownloads] = await Promise.all([
