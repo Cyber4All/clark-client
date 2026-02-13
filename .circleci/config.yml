@@ -68,6 +68,7 @@ workflows:
             - aws_staging
             - Slack
           bucket: 'clark-client-staging'
+          source: './dist/browser'
           distribution_id: STAGING_CLOUDFRONT_ID
           script: build:staging
 
@@ -92,3 +93,4 @@ workflows:
             - AWS
             - Slack
           bucket: 'clark.center'
+          source: './dist/browser'

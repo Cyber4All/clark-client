@@ -2,21 +2,18 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ElementRef,
+  HostBinding,
+  HostListener,
   Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Renderer2,
-  SimpleChanges
+  OnDestroy
 } from '@angular/core';
 import { LearningObject } from '@entity';
-import { MetricService } from 'app/core/metric-module/metric.service';
-import { RatingService } from 'app/core/rating-module/rating.service';
 import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
-import { CollectionService } from '../../../core/collection-module/collections.service';
-import { LibraryService } from '../../../core/library-module/library.service';
+import { TagsService } from '../../../core/learning-object-module/tags/tags.service';
+import { TopicsService } from '../../../core/learning-object-module/topics/topics.service';
+import { MetricService } from '../../../core/metric-module/metric.service';
+import { RatingService } from '../../../core/rating-module/rating.service';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -24,189 +21,313 @@ import { LibraryService } from '../../../core/library-module/library.service';
   styleUrls: ['./learning-object.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LearningObjectListingComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() learningObject: LearningObject;
-  @Input() loading: boolean;
+export class LearningObjectListingComponent implements OnDestroy {
+  // -----------------------------
+  // Host bindings
+  // -----------------------------
+  @HostBinding('class.loading') private isLoadingClass = false;
 
-  collections = new Map<string, string>();
-  collection = '';
-  pictureLocation: string;
-  link: string;
+  // -----------------------------
+  // Inputs (setters trigger refresh)
+  // -----------------------------
+  private _learningObject: LearningObject | null = null;
 
-  canDownload = false;
-  showDownloadModal = false;
+  @Input()
+  set learningObject(value: LearningObject) {
+    this._learningObject = value;
+    void this.refresh();
+  }
+  get learningObject(): LearningObject {
+    return this._learningObject!;
+  }
 
-  // FIXME this removes the download icons while issues with the Library service are resolved
-  downloadService = false;
+  @Input()
+  set loading(value: boolean) {
+    this.isLoadingClass = !!value;
+    this.cd.markForCheck();
+  }
 
-  averageRating: number;
-  reviewsCount: number;
-  starColor = 'gold';
+  // Topic filter from browse page (used to select matching topic image)
+  @Input() allowedTopics: string[] = [];
+
+  // -----------------------------
+  // Card image
+  // -----------------------------
+  imagePath: string = 'generic';
+
+  // -----------------------------
+  // Mobile detection
+  // -----------------------------
+  isMobile: boolean = typeof window !== 'undefined' && window.innerWidth <= 750;
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.isMobile = typeof window !== 'undefined' && window.innerWidth <= 750;
+    this.cd.markForCheck();
+  }
+
+  // -----------------------------
+  // Rating properties
+  // -----------------------------
+  averageRating = 0;
+  reviewsCount = 0;
+
+  // -----------------------------
+  // Metric properties
+  // -----------------------------
   downloadsCount = 0;
-  recentDownloads = 0;
   isTrending = false;
-  TRENDING_THRESHOLD = 5; // downloads in last 30 days to be considered trending
+  isDCWFAligned = false;
+
+  // -----------------------------
+  // Metadata properties
+  // -----------------------------
+  tags: string[] = [];
+  topics: string[] = [];
+
+  static readonly TRENDING_THRESHOLD = 10; // downloads in last 30 days
+
+  // -----------------------------
+  // Shared caches to avoid redundant fetches
+  // -----------------------------
+  private static topicsMap = new Map<string, string>();
+  private static tagsMap = new Map<string, string>();
+
+  // Shared "in-flight" promises (prevents multiple simultaneous fetches across cards)
+  private static topicsReady?: Promise<void>;
+  private static tagsReady?: Promise<void>;
+
+  // -----------------------------
+  // Async safety
+  // -----------------------------
+  private refreshToken = 0;
+  private destroyed = false;
 
   constructor(
-    private hostEl: ElementRef,
-    private renderer: Renderer2,
-    private library: LibraryService,
     private ratingService: RatingService,
     private metricService: MetricService,
     public auth: AuthService,
-    private collectionService: CollectionService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private tagsService: TagsService,
+    private topicsService: TopicsService
   ) { }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes.loading) {
-      if (changes.loading.currentValue) {
-        this.renderer.addClass(this.hostEl.nativeElement, 'loading');
-      } else {
-        this.renderer.removeClass(this.hostEl.nativeElement, 'loading');
-      }
-    }
+  ngOnDestroy() {
+    this.destroyed = true;
+    this.refreshToken++; // invalidate any in-flight refresh
+    this.cd.detach();
   }
 
-  async ngOnInit() {
-    this.collectionService.getCollections().then(collections => {
-      this.collections = new Map(
-        collections.map(c => [c.abvName, c.name] as [string, string])
-      );
-      this.onResize();
-    });
+  // -----------------------------
+  // Refresh pipeline (single source of truth)
+  // -----------------------------
+  private resetViewModel() {
+    this.imagePath = 'generic';
+    this.averageRating = 0;
+    this.reviewsCount = 0;
+    this.downloadsCount = 0;
+    this.isTrending = false;
+    this.isDCWFAligned = false;
+    this.tags = [];
+    this.topics = [];
+  }
 
-    const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
-    this.averageRating = ratings.avgValue;
-    this.reviewsCount = ratings.ratings?.length;
+  private async refresh(): Promise<void> {
+    const lo = this._learningObject;
+    if (!lo || this.destroyed) return;
 
-    try {
-      const metrics = await this.metricService.getLearningObjectMetrics(this.learningObject.cuid);
-      this.downloadsCount = metrics?.downloads ?? 0;
-    } catch (e) {
-      this.downloadsCount = 0;
-    }
+    const token = ++this.refreshToken;
 
-    // Attempt to fetch downloads for the last 30 days to determine trending
-    try {
-      const end = new Date();
-      const start = new Date();
-      start.setDate(end.getDate() - 30);
-      const recentMetrics = await this.metricService.getLearningObjectMetrics(
-        this.learningObject.cuid,
-        start.toISOString(),
-        end.toISOString()
-      );
-      // The API should ideally return downloads for the period; fallback to 0 if not available
-      this.recentDownloads = recentMetrics?.downloads ?? 0;
-      // Only mark trending if object was updated/published within the last 30 days
-      const updatedDate = new Date(this.learningObject.date);
-      const wasUpdatedRecently = updatedDate >= start;
-      this.isTrending = wasUpdatedRecently && this.recentDownloads >= this.TRENDING_THRESHOLD;
-    } catch (e) {
-      this.recentDownloads = 0;
-      this.isTrending = false;
-    }
+    // Prevent sticky UI by clearing immediately
+    this.resetViewModel();
+    this.cd.markForCheck();
+
+    // Resolve sync derived info early
+    this.isDCWFAligned = this.checkDCWFAlignment(lo);
+
+    // Resolve tags/topics (cached, minimal fetch)
+    await Promise.all([this.resolveTopicNames(lo), this.resolveTagNames(lo)]);
+    if (this.destroyed || token !== this.refreshToken) return;
+
+    // Image depends on topics
+    this.setImageFromTopics();
+
+    // Fetch ratings + total downloads + recent downloads (in parallel)
+    const [ratings, totalMetrics, recentDownloads] = await Promise.all([
+      this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
+      this.metricService.getLearningObjectMetrics(lo.cuid),
+      this.getRecentDownloads(lo.cuid, 30)
+    ]);
+    if (this.destroyed || token !== this.refreshToken) return;
+
+    this.averageRating = ratings?.avgValue ?? 0;
+    this.reviewsCount = ratings?.ratings?.length ?? 0;
+    this.downloadsCount = totalMetrics?.downloads ?? 0;
+
+    this.isTrending =
+      (recentDownloads ?? 0) >= LearningObjectListingComponent.TRENDING_THRESHOLD;
 
     this.cd.detectChanges();
   }
 
-  goals() {
-    const punc = ['.', '!', '?'];
-    const descriptionString = this.learningObject.description;
-    const final = this.truncateText(
-      descriptionString.charAt(0).toUpperCase() +
-      descriptionString.substring(1),
-      150
-    );
-
-    if (punc.includes(final.charAt(final.length - 1))) {
-      return final;
-    } else {
-      return final + '.';
-    }
-  }
-
-  // truncates and appends an ellipsis to block of text based on maximum number of characters
+  // -----------------------------
+  // Helpers used by template
+  // -----------------------------
   truncateText(text: string, max: number = 150, margin: number = 10): string {
-    // remove any HTML characters from text
-    text = this.stripHtml(text);
+    if (!text) return '';
 
-    // check to see if we need to truncate, IE is the text shorter than max + margin
-    if (text.length <= max + margin) {
-      return text.trim();
+    const cleaned = this.stripHtml(text).trim();
+    if (cleaned.length <= max) return cleaned;
+
+    const truncated = cleaned.substring(0, max);
+    const spaceAfter = cleaned.substring(max).indexOf(' ') + truncated.length;
+    const spaceBefore = truncated.lastIndexOf(' ');
+
+    // If mid-word but close to finishing the word, include it
+    if (spaceAfter - truncated.length <= margin) {
+      return cleaned.substring(0, spaceAfter + 1).trim() + '...';
     }
 
-    // ok now we know we need to truncate text
-    let outcome = text.substring(0, max);
-    const spaceAfter = text.substring(max).indexOf(' ') + outcome.length; // first space before the truncation index
-    const spaceBefore = outcome.lastIndexOf(' '); // first space after the truncation index
-    const punc = ['.', '!', '?'];
-
-    // if we've truncated such that the last char is a space or a natural punctuation, just return
-    if (punc.includes(outcome.charAt(outcome.length - 1))) {
-      outcome = outcome.trim();
-    } else if (outcome.charAt(outcome.length - 1) === ' ') {
-      outcome = outcome.substring(0, outcome.length - 1).trim() + '...';
-    }
-
-    // otherwise we're in the middle of a word and should attempt to finsih the word before adding an ellpises
-    if (spaceAfter - outcome.length <= margin) {
-      outcome = text.substring(0, spaceAfter + 1).trim();
-    } else {
-      outcome = text.substring(0, spaceBefore + 1).trim();
-    }
-
-    return outcome.trim() + '...';
+    // Otherwise truncate at last whole word
+    return cleaned.substring(0, spaceBefore + 1).trim() + '...';
   }
 
   stripHtml(str: string): string {
-    // The top regex is used for matching tags such as <br />
-    // The bottom regex will catch tags such as </p>
-    str = str.replace(/<[0-z\s\'\"=]*[\/]+>/gi, ' ');
-    return str.replace(/<[\/]*[0-z\s\'\"=]+>/gi, ' ');
+    if (!str) return '';
+    // Matches tags such as <br /> and </p>
+    str = str.replace(/<[0-z\s'"=]*[\/]+>/gi, ' ');
+    return str.replace(/<[\/]*[0-z\s'"=]+>/gi, ' ');
   }
 
-  get date() {
-    // eslint-disable-next-line radix
-    return new Date(this.learningObject.date);
+  get humanReadableLength() {
+    const learningObjectLength = this._learningObject?.length;
+    switch (learningObjectLength) {
+      case 'nanomodule':
+        return 'UP TO ONE HOUR';
+      case 'micromodule':
+        return '1 - 4 HOURS';
+      case 'module':
+        return '4 - 10 HOURS';
+      case 'unit':
+        return 'OVER 10 HOURS';
+      case 'course':
+        return '15 WEEKS';
+      default:
+        return '';
+    }
   }
 
-  /**
-   * Function to conditionally set the title case of an organization
-   *
-   * @param organization string of the users affiliated organization
-   * @returns string unformated or title cased
-   */
   organizationFormat(organization: string) {
-    return titleCase(organization);
+    return organization ? titleCase(organization) : '';
   }
 
-  onResize() {
-    this.collection = this.collections.get(this.learningObject.collection);
-    if (
-      this.learningObject.collection !== 'intro_to_cyber' &&
-      this.learningObject.collection !== 'secure_coding_community' &&
-      this.learningObject.collection !== 'plan c' &&
-      this.learningObject.collection !== 'max_power' &&
-      this.learningObject.collection !== 'Drafts' &&
-      this.learningObject.collection !== 'nccp' &&
-      this.learningObject.collection !== ''
-    ) {
-      this.pictureLocation =
-        '/assets/images/collections/' +
-        this.learningObject.collection +
-        '.png';
-    } else {
-      this.pictureLocation = 'generic';
+  // -----------------------------
+  // Derived state
+  // -----------------------------
+  private setImageFromTopics() {
+    // If no topics, use generic
+    let firstTopic = this.topics?.[0] ?? 'generic';
+
+    // If there are allowed topics (from browse filtering), prefer a topic that matches the filter
+    if (this.allowedTopics?.length > 0 && this.topics?.length > 0) {
+      // Find the first topic in the learning object that matches any of the allowed topics
+      const matchingTopic = this.topics.find(topic =>
+        this.allowedTopics.includes(topic)
+      );
+
+      // Use the matching topic if found, otherwise fall back to the first topic
+      if (matchingTopic) {
+        firstTopic = matchingTopic;
+      }
     }
-    this.cd.detectChanges();
-    if (window.screen.width <= 750 && this.collection.length > 12) {
-      this.collection = this.collection.substring(0, 12) + '...';
+
+    // If the topic is AI/Machine Learning, use AI_Machine Learning.png as the image
+    if (firstTopic === 'AI/Machine Learning') {
+      firstTopic = 'AI Machine Learning';
     }
+
+    this.imagePath = `/assets/images/topics/${firstTopic}.png`;
   }
 
-  ngOnDestroy() {
-    this.cd.detach();
+  private checkDCWFAlignment(lo: LearningObject): boolean {
+    if (!lo?.guidelines?.length) return false;
+
+    return lo.guidelines.some(guideline =>
+      guideline.source?.toLowerCase().includes('dod cyber workforce') ||
+      guideline.frameworkName?.toLowerCase().includes('dod cyber workforce')
+    );
+  }
+
+  private async getRecentDownloads(cuid: string, days: number): Promise<number> {
+    const end = new Date();
+    const start = new Date(end);
+    start.setDate(end.getDate() - days);
+
+    const recentMetrics = await this.metricService.getLearningObjectMetrics(
+      cuid,
+      start.toISOString(),
+      end.toISOString()
+    );
+
+    return recentMetrics?.downloads ?? 0;
+  }
+
+  // -----------------------------
+  // Topic/Tag resolution (cached)
+  // -----------------------------
+  private async ensureTopicsCache(): Promise<void> {
+    if (LearningObjectListingComponent.topicsMap.size > 0) return;
+
+    if (!LearningObjectListingComponent.topicsReady) {
+      LearningObjectListingComponent.topicsReady = (async () => {
+        const topics = await this.topicsService.getTopics();
+        LearningObjectListingComponent.topicsMap = new Map<string, string>(
+          topics.map(t => [t._id, t.name])
+        );
+      })();
+    }
+
+    await LearningObjectListingComponent.topicsReady;
+  }
+
+  private async ensureTagsCache(): Promise<void> {
+    if (LearningObjectListingComponent.tagsMap.size > 0) return;
+
+    if (!LearningObjectListingComponent.tagsReady) {
+      LearningObjectListingComponent.tagsReady = (async () => {
+        const tags = await this.tagsService.getTags();
+        LearningObjectListingComponent.tagsMap = new Map<string, string>(
+          tags.map(t => [t._id, t.name])
+        );
+      })();
+    }
+
+    await LearningObjectListingComponent.tagsReady;
+  }
+
+  private async resolveTopicNames(lo: LearningObject): Promise<void> {
+    if (!lo?.topics?.length) {
+      this.topics = [];
+      return;
+    }
+
+    await this.ensureTopicsCache();
+
+    this.topics = lo.topics
+      .map((id: string) => LearningObjectListingComponent.topicsMap.get(id))
+      .filter((t): t is string => !!t);
+  }
+
+  private async resolveTagNames(lo: LearningObject): Promise<void> {
+    if (!lo?.tags?.length) {
+      this.tags = [];
+      return;
+    }
+
+    await this.ensureTagsCache();
+
+    this.tags = lo.tags
+      .map((id: string) => LearningObjectListingComponent.tagsMap.get(id))
+      .filter((t): t is string => !!t);
   }
 }
