@@ -1,120 +1,104 @@
-<a [routerLink]="[
+<a
+  [routerLink]="[
     '/details',
     learningObject.author.username,
     learningObject.cuid,
-    learningObject.version
+    learningObject.version,
   ]"
-  attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{ learningObject.author.name }}, last updated on {{ learningObject.date | date:'longDate' }}">
-  <div class="learning-object" id="learning-object" [ngClass]="{ 'trending': isTrending }">
+  attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{
+    learningObject.author.name
+  }}, last updated on {{ learningObject.date | date: 'longDate' }}"
+>
+  <div
+    class="learning-object"
+    id="learning-object"
+    [ngClass]="{ trending: isTrending }"
+  >
     <div class="image">
-      <img *ngIf="pictureLocation !== 'generic'; else genericLogoTemplate" class="logo" src="{{ pictureLocation }}"
-        alt="{{ collection }} logo">
-      <div class="card-collection">{{ collection }}</div>
+      <img
+        class="logo"
+        src="{{ imagePath }}"
+        alt="{{
+          imagePath !== 'generic' ? topics[0] + ' logo' : 'Generic logo'
+        }}"
+      />
+      <div *ngIf="isDCWFAligned" class="framework-badge dcwf-badge">
+        <i class="fas fa-shield-alt"></i>
+        DCWF Aligned
+      </div>
     </div>
     <div class="learning-object-content">
-      <div class="content__topbar">
-        <div class="pills_tall">
-          <!-- outer div here is a wrapper element to make sure the download button stays position to the right in the event the object has no collection -->
-          <div class="length_tall">
+      <div class="pills">
+        <div class="pills-left">
+          <div class="length">
             {{ learningObject.length.toUpperCase() }}
           </div>
-          <div *ngIf="learningObject.length === 'nanomodule'" class="time_tall">
+          <div *ngIf="learningObject.length" class="time">
             <i class="far fa-clock"></i>
-            UP TO ONE HOUR
-          </div>
-          <div *ngIf="learningObject.length === 'micromodule'" class="time_tall">
-            <i class="far fa-clock"></i>
-            1 - 4 HOURS
-          </div>
-          <div *ngIf="learningObject.length === 'module'" class="time_tall">
-            <i class="far fa-clock"></i>
-            4 - 10 HOURS
-          </div>
-          <div *ngIf="learningObject.length === 'unit'" class="time_tall">
-            <i class="far fa-clock"></i>
-            OVER 10 HOURS
-          </div>
-          <div *ngIf="learningObject.length === 'course'" class="time_tall">
-            <i class="far fa-clock"></i>
-            15 WEEKS
+            {{ humanReadableLength }}
           </div>
         </div>
-        <form *ngIf="downloadService">
-          <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn-card"
-            (activate)="download($event)" attr.aria-label="Download button for {{ learningObject.name }}">
-            <i class="fas fa-download"></i>
-          </button>
-        </form>
-      </div>
-      <div class="title">
-        {{ truncateText(learningObject.name, 45) }}
-        <span *ngIf="isTrending" class="trending-badge" title="Trending" [tip]="'This Learning Object is trending'" tipPosition="left">
+        <span
+          *ngIf="isTrending"
+          class="trending-badge"
+          title="Trending"
+          [tip]="'This Learning Object is trending'"
+          tipPosition="left"
+        >
           <i class="fas fa-fire" aria-hidden="true"></i>
         </span>
-        <form *ngIf="downloadService">
-          <button *ngIf="!loading && (auth.isLoggedIn | async) && canDownload" class="download-btn"
-            (activate)="download($event)" attr.aria-label="Download button for {{ learningObject.name }}">
-            <i class="fas fa-download"></i>
-          </button>
-        </form>
       </div>
-      <div class="pills">
-        <div class="length">
-          {{ learningObject.length.toUpperCase() }}
+
+      <div class="title">
+        {{ truncateText(learningObject.name, isMobile ? 45 : 80) }}
+      </div>
+
+      <div class="date">
+        Updated {{ learningObject.date | date: 'mediumDate' }}
+      </div>
+
+      <div class="details">
+        <div class="author">
+          {{ learningObject.contributors[0]?.name | titlecase }}
+          {{ learningObject.contributors?.length > 1 ? ' et al.' : '' }}
         </div>
-        <div *ngIf="learningObject.length === 'nanomodule'" class="time">
-          <i class="far fa-clock"></i>
-          UP TO ONE HOUR
-        </div>
-        <div *ngIf="learningObject.length === 'micromodule'" class="time">
-          <i class="far fa-clock"></i>
-          1 - 4 HOURS
-        </div>
-        <div *ngIf="learningObject.length === 'module'" class="time">
-          <i class="far fa-clock"></i>
-          4 - 10 HOURS
-        </div>
-        <div *ngIf="learningObject.length === 'unit'" class="time">
-          <i class="far fa-clock"></i>
-          OVER 10 HOURS
-        </div>
-        <div *ngIf="learningObject.length === 'course'" class="time">
-          <i class="far fa-clock"></i>
-          15 WEEKS
+        <div class="organization">
+          {{ organizationFormat(learningObject.contributors[0]?.organization) }}
         </div>
       </div>
 
-      <div class='rating-stars-container'>
-        <clark-rating-stars *ngIf="averageRating > 0" [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>&nbsp;
-        <div *ngIf="downloadsCount >= TRENDING_THRESHOLD" class="downloads-indicator" tabindex="0" attr.aria-label="{{ downloadsCount }} download{{ downloadsCount !== 1 ? 's' : '' }}">
+      <div class="rating-stars-container">
+        <!-- Desktop: Full rating stars -->
+        <clark-rating-stars
+          *ngIf="averageRating > 0 && !isMobile"
+          [color]="'gold'"
+          [rating]="averageRating"
+          [reviewsCount]="reviewsCount"
+        ></clark-rating-stars>
+        <!-- Mobile: Simplified single star with rating -->
+        <div *ngIf="averageRating > 0 && isMobile" class="mobile-rating">
+          <i class="fas fa-star" aria-hidden="true"></i>
+          <span class="rating-value">{{
+            averageRating | number: '1.1-1'
+          }}</span>
+          <span class="review-count">({{ reviewsCount }})</span>
+        </div>
+        <div
+          *ngIf="downloadsCount >= 5"
+          class="downloads-indicator"
+          tabindex="0"
+          attr.aria-label="{{ downloadsCount }} download{{
+            downloadsCount !== 1 ? 's' : ''
+          }}"
+        >
           <i class="far fa-download" aria-hidden="true"></i>
           <span class="downloads-count">{{ downloadsCount | number }}</span>
         </div>
       </div>
 
-    <div class="details">
-      <span class="author">
-        {{ learningObject.contributors[0]?.name | titlecase }} at
-        {{ organizationFormat(learningObject.contributors[0]?.organization) }}
-        {{
-        learningObject.contributors?.length - 1
-        ? 'and ' + (learningObject.contributors.length - 1) + ' more'
-        : ''
-        }}
-      </span>
-      <div class="date">Updated {{ learningObject.date | date: 'mediumDate' }}</div>
-    </div>
-    <div class="goals" *ngIf="this.learningObject.description" [innerHtml]="goals()"></div>
+      <div *ngIf="tags && tags.length > 0" class="tags-container">
+        <span *ngFor="let tagName of tags" class="tag-pill">{{ tagName }}</span>
+      </div>
     </div>
   </div>
 </a>
-
-<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
-  <div style="max-width: 600px;" #popupInner>
-    <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
-  </div>
-</clark-popup>
-
-<ng-template #genericLogoTemplate>
-  <clark-generic-collection-logo></clark-generic-collection-logo>
-</ng-template>

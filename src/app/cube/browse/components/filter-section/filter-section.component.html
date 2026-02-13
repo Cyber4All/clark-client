@@ -9,7 +9,7 @@
     [attr.aria-expanded]="!collapsed"
     [attr.aria-controls]="(info.section | lowercase) + '-panel'"
   >
-    <p>{{ info.section }}</p>
+    <p>{{ info.section }}<span *ngIf="getActiveCount() > 0" class="filter-count"> ({{ getActiveCount() }})</span></p>
 
     <span *ngIf="!isLockedSection(info)">
       <span *ngIf="collapsed"><i class="fas fa-angle-down"></i></span>
@@ -18,22 +18,23 @@
   </div>
 
   <div class="filter-wrapper" *ngIf="!collapsed" [id]="(info.section | lowercase) + '-panel'">
-    <div class="filter filter-checkbox" *ngFor="let f of info.filters">
-      <span class="checkbox-grid" [tip]="f.tip || ''" [tipDisabled]="!f.tip" tipPosition="right">
-        <clark-checkbox
-          attr.aria-label="{{ f.name }}"
-          [value]="f.active"
-          (checkboxChecked)="selectOption(f.value)"
-          (checkboxUnchecked)="deselectOption(f.value)">
-        </clark-checkbox>
-        <span class="label">{{ f.name }}&nbsp;&nbsp;{{f.description}}</span>    
-      </span>
-    </div>
+    <!-- Show checkboxes only if section is not Topics (Topics uses pills via ng-content) -->
+    <ng-container *ngIf="info.section !== 'Topics'">
+      <div class="filter filter-checkbox" *ngFor="let f of info.filters">
+        <span class="checkbox-grid" [tip]="f.tip || ''" [tipDisabled]="!f.tip" tipPosition="right">
+          <clark-checkbox
+            attr.aria-label="{{ f.name }}"
+            [value]="f.active"
+            (checkboxChecked)="selectOption(f.value)"
+            (checkboxUnchecked)="deselectOption(f.value)">
+          </clark-checkbox>
+          <span class="label">{{ f.name }}&nbsp;&nbsp;{{f.description}}</span>    
+        </span>
+      </div>
+    </ng-container>
 
     <div class="optional">
       <ng-content></ng-content>
     </div>
   </div>
-
-  <hr />
 </div>
