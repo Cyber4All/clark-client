@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { retry } from 'rxjs/internal/operators/retry';
-import { Organization } from '../../../entity/organization';
+import { Organization } from '../../../entity';
 import { UTILITY_ROUTES } from './utility.routes';
 
 @Injectable({

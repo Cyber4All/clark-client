@@ -1,22 +1,22 @@
 import {
   Component,
+  EventEmitter,
+  Input,
   OnChanges,
   OnInit,
-  EventEmitter,
-  Output,
-  Input
+  Output
 } from '@angular/core';
-import { UntypedFormControl, Validators, UntypedFormGroup } from '@angular/forms';
-import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
+import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
+import { AuthService } from 'app/core/auth-module/auth.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Organization } from '../../../../../entity/organization';
+import { Organization } from '../../../../../entity';
 import { OrganizationService } from '../../../../core/utility-module/organization.service';
-import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 
 @Component({
   selector: 'clark-edit-profile',
