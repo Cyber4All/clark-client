@@ -41,9 +41,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   private learningObjectCountMap: Map<string, number> = new Map();
 
   // Filter options
-  verifiedFilter: 'all' | 'verified' | 'unverified' = 'all';
-  sectorFilter: OrganizationSector | 'all' = 'all';
-  levelFilter: OrganizationLevel | 'all' = 'all';
+  selectedVerifiedFilters: Array<'verified' | 'unverified'> = [];
+  selectedSectorFilters: OrganizationSector[] = [];
+  selectedLevelFilters: OrganizationLevel[] = [];
 
   displayEditModal = false;
   displayDeleteModal = false;
@@ -118,18 +118,20 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         data.domains.some((d) => d.toLowerCase().includes(searchStr));
 
       // Verified filter
+      const verifiedFilters: Array<'verified' | 'unverified'> = filterObj.verified || [];
       const matchesVerified =
-        filterObj.verified === 'all' ||
-        (filterObj.verified === 'verified' && data.isVerified) ||
-        (filterObj.verified === 'unverified' && !data.isVerified);
+        verifiedFilters.length === 0 ||
+        (data.isVerified && verifiedFilters.includes('verified')) ||
+        (!data.isVerified && verifiedFilters.includes('unverified'));
 
       // Sector filter
-      const matchesSector =
-        filterObj.sector === 'all' || data.sector === filterObj.sector;
+      const sectorFilters: OrganizationSector[] = filterObj.sector || [];
+      const matchesSector = sectorFilters.length === 0 || sectorFilters.includes(data.sector);
 
       // Level filter
+      const levelFilters: OrganizationLevel[] = filterObj.level || [];
       const matchesLevel =
-        filterObj.level === 'all' || data.levels.includes(filterObj.level);
+        levelFilters.length === 0 || data.levels.some((level) => levelFilters.includes(level));
 
       return matchesSearch && matchesVerified && matchesSector && matchesLevel;
     };
@@ -453,9 +455,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
     const filterValue = {
       search: this.searchValue.trim().toLowerCase(),
-      verified: this.verifiedFilter,
-      sector: this.sectorFilter,
-      level: this.levelFilter,
+      verified: this.selectedVerifiedFilters,
+      sector: this.selectedSectorFilters,
+      level: this.selectedLevelFilters,
     };
     this.dataSource.filter = JSON.stringify(filterValue);
 
@@ -465,28 +467,67 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
-  /**
-   * Update verified filter
-   */
-  onVerifiedFilterChange(value: 'all' | 'verified' | 'unverified'): void {
-    this.verifiedFilter = value;
+  hasActiveFilters(): boolean {
+    return (
+      this.selectedVerifiedFilters.length > 0 ||
+      this.selectedSectorFilters.length > 0 ||
+      this.selectedLevelFilters.length > 0
+    );
+  }
+
+  clearAllFilters(): void {
+    this.selectedVerifiedFilters = [];
+    this.selectedSectorFilters = [];
+    this.selectedLevelFilters = [];
     this.applyFilter();
   }
 
-  /**
-   * Update sector filter
-   */
-  onSectorFilterChange(value: OrganizationSector | 'all'): void {
-    this.sectorFilter = value;
+  toggleVerifiedFilter(value: 'verified' | 'unverified'): void {
+    if (this.selectedVerifiedFilters.includes(value)) {
+      this.selectedVerifiedFilters = this.selectedVerifiedFilters.filter((filter) => filter !== value);
+    } else {
+      this.selectedVerifiedFilters = [...this.selectedVerifiedFilters, value];
+    }
     this.applyFilter();
   }
 
-  /**
-   * Update level filter
-   */
-  onLevelFilterChange(value: OrganizationLevel | 'all'): void {
-    this.levelFilter = value;
+  toggleSectorFilter(value: OrganizationSector): void {
+    if (this.selectedSectorFilters.includes(value)) {
+      this.selectedSectorFilters = this.selectedSectorFilters.filter((filter) => filter !== value);
+    } else {
+      this.selectedSectorFilters = [...this.selectedSectorFilters, value];
+    }
     this.applyFilter();
+  }
+
+  toggleLevelFilter(value: OrganizationLevel): void {
+    if (this.selectedLevelFilters.includes(value)) {
+      this.selectedLevelFilters = this.selectedLevelFilters.filter((filter) => filter !== value);
+    } else {
+      this.selectedLevelFilters = [...this.selectedLevelFilters, value];
+    }
+    this.applyFilter();
+  }
+
+  getVerifiedFilterLabel(): string {
+    if (this.selectedVerifiedFilters.length === 0) {
+      return 'Verified';
+    }
+    return `Verified (${this.selectedVerifiedFilters.length})`;
+  }
+
+  getSectorFilterLabel(): string {
+    if (this.selectedSectorFilters.length === 0) {
+      return 'Sector';
+    }
+    return `Sector (${this.selectedSectorFilters.length})`;
+  }
+
+  getLevelFilterLabel(): string {
+    if (this.selectedLevelFilters.length === 0) {
+      return 'Level';
+    }
+    return `Level (${this.selectedLevelFilters.length})`;
   }
 
   /**
@@ -726,6 +767,38 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       this.learningObjectCountMap.set(org._id, Math.floor(Math.random() * 1000) + 1);
     }
     return this.learningObjectCountMap.get(org._id) || 0;
+  }
+
+  getFilteredOrganizations(): Organization[] {
+    if (!this.dataSource) {
+      return this.organizations;
+    }
+    return this.dataSource.filteredData;
+  }
+
+  getOverviewTotalOrganizations(): number {
+    return this.organizations.length;
+  }
+
+  getOverviewVerifiedCount(): number {
+    return this.organizations.filter((org) => org.isVerified).length;
+  }
+
+  getOverviewUnverifiedCount(): number {
+    return this.organizations.filter((org) => !org.isVerified).length;
+  }
+
+  getOverviewOtherUserTotal(): number {
+    return this.organizations
+      .filter((organization) => organization.sector === 'other')
+      .reduce((total, organization) => total + this.getUserCount(organization), 0);
+  }
+
+  getDeleteDisabledTooltip(organization: Organization): string {
+    if (this.getUserCount(organization) > 0) {
+      return 'Organizations must have 0 users before they can be deleted.';
+    }
+    return '';
   }
 
   /**

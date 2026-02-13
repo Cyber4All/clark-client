@@ -1,216 +1,278 @@
 <clark-admin-content-wrapper>
-  <div page-title>Organizations</div>
-
-  <!-- Search and Filter Controls -->
-  <div class="search-filter-row" search>
-    <div class="search-section">
-      <mat-form-field appearance="outline" class="search-field">
-        <mat-label>Search</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Search Organizations"
-          (keyup)="applyFilter($event)"
-          #input
-        />
-        <mat-icon matPrefix class="search-icon">search</mat-icon>
-      </mat-form-field>
+  <div page-title>
+    <div class="title-stack">
+      <div>Organizations</div>
+      <span class="title-subtext">Review and manage organization verification status</span>
     </div>
+  </div>
 
+  <div class="overview-row" search>
+    <div class="overview-card">
+      <div class="overview-card__label">Total</div>
+      <div class="overview-card__value">{{ getOverviewTotalOrganizations() }}</div>
+    </div>
+    <div class="overview-card">
+      <div class="overview-card__label">Verified</div>
+      <div class="overview-card__value">{{ getOverviewVerifiedCount() }}</div>
+    </div>
+    <div class="overview-card">
+      <div class="overview-card__label">Unverified</div>
+      <div class="overview-card__value">{{ getOverviewUnverifiedCount() }}</div>
+    </div>
+    <div class="overview-card">
+      <div class="overview-card__label">Users in "Other"</div>
+      <div class="overview-card__value">{{ getOverviewOtherUserTotal() }}</div>
+    </div>
+  </div>
+
+  <div class="filters-toolbar" search>
     <div class="inline-filters">
-      <mat-form-field appearance="outline" class="filter-field">
-        <mat-label>Verified</mat-label>
-        <mat-select
-          [(ngModel)]="verifiedFilter"
-          (selectionChange)="onVerifiedFilterChange(verifiedFilter)"
-        >
-          <mat-option value="all">All</mat-option>
-          <mat-option value="verified">Verified</mat-option>
-          <mat-option value="unverified">Unverified</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <label class="search-control" aria-label="Search organizations">
+        <mat-icon class="search-icon">search</mat-icon>
+        <input
+          type="text"
+          placeholder="Search organizations"
+          (keyup)="applyFilter($event)"
+        />
+      </label>
 
-      <mat-form-field appearance="outline" class="filter-field">
-        <mat-label>Sector</mat-label>
-        <mat-select
-          [(ngModel)]="sectorFilter"
-          (selectionChange)="onSectorFilterChange(sectorFilter)"
-        >
-          <mat-option value="all">All</mat-option>
-          <mat-option *ngFor="let sector of sectorOptions" [value]="sector">
-            {{ sector | titlecase }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="filter-field">
-        <mat-label>Level</mat-label>
-        <mat-select
-          [(ngModel)]="levelFilter"
-          (selectionChange)="onLevelFilterChange(levelFilter)"
-        >
-          <mat-option value="all">All</mat-option>
-          <mat-option *ngFor="let level of levelOptions" [value]="level">
-            {{ level | titlecase }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </div>
-
-  <!-- Create Button Row -->
-  <div class="button-row" search>
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="openCreateModal()"
-      class="create-org-button"
-    >
-      <mat-icon>add</mat-icon>
-      New Organization
-    </button>
-  </div>
-
-  <div #list class="list" main>
-    <div *ngIf="dataSource.data?.length; else emptyTemplate">
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        matSort
-        class="organizations-table"
+      <button
+        class="filter-dropdown-btn"
+        [ngClass]="{ active: selectedVerifiedFilters.length > 0 }"
+        [matMenuTriggerFor]="verifiedMenu"
       >
-        <!-- Verified Column -->
-        <ng-container matColumnDef="verified">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Verified</th>
-          <td mat-cell *matCellDef="let organization">
-            <i
-              class="status-icon"
-              [ngClass]="
-                organization.isVerified
-                  ? 'fas fa-check-circle verified'
-                  : 'fas fa-times-circle unverified'
-              "
-              [attr.aria-label]="
-                organization.isVerified ? 'Verified' : 'Unverified'
-              "
-            ></i>
-          </td>
-        </ng-container>
+        {{ getVerifiedFilterLabel() }} <i class="far fa-chevron-down"></i>
+      </button>
 
-        <!-- Name Column -->
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-          <td mat-cell *matCellDef="let organization">
-            {{ organization.name }}
-          </td>
-        </ng-container>
+      <button
+        class="filter-dropdown-btn"
+        [ngClass]="{ active: selectedSectorFilters.length > 0 }"
+        [matMenuTriggerFor]="sectorMenu"
+      >
+        {{ getSectorFilterLabel() }} <i class="far fa-chevron-down"></i>
+      </button>
 
-        <!-- Users Column -->
-        <ng-container matColumnDef="users">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Users</th>
-          <td mat-cell *matCellDef="let organization">
-            {{ getUserCount(organization) }}
-          </td>
-        </ng-container>
+      <button
+        class="filter-dropdown-btn"
+        [ngClass]="{ active: selectedLevelFilters.length > 0 }"
+        [matMenuTriggerFor]="levelMenu"
+      >
+        {{ getLevelFilterLabel() }} <i class="far fa-chevron-down"></i>
+      </button>
 
-        <!-- Learning Objects Column -->
-        <ng-container matColumnDef="learningObjects">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            Learning Objects
-          </th>
-          <td mat-cell *matCellDef="let organization">
-            {{ getLearningObjectCount(organization) }}
-          </td>
-        </ng-container>
+      <button
+        *ngIf="hasActiveFilters()"
+        class="clear-filters-link"
+        (click)="clearAllFilters()"
+      >
+        Clear Filters
+      </button>
+    </div>
 
-        <!-- Sector Column -->
-        <ng-container matColumnDef="sector">
-          <th mat-header-cell *matHeaderCellDef>Sector</th>
-          <td mat-cell *matCellDef="let organization">
-            <span class="sector-badge">{{
-              organization.sector | titlecase
-            }}</span>
-          </td>
-        </ng-container>
-
-        <!-- Levels Column -->
-        <ng-container matColumnDef="levels">
-          <th mat-header-cell *matHeaderCellDef>Levels</th>
-          <td mat-cell *matCellDef="let organization">
-            <div class="levels-list">
-              <mat-chip-list>
-                <mat-chip
-                  *ngFor="let level of getVisibleLevels(organization.levels)"
-                >
-                  {{ level | titlecase }}
-                </mat-chip>
-                <mat-chip
-                  *ngIf="getRemainingLevelsCount(organization.levels) > 0"
-                  class="more-chip"
-                >
-                  +{{ getRemainingLevelsCount(organization.levels) }}
-                </mat-chip>
-              </mat-chip-list>
-            </div>
-          </td>
-        </ng-container>
-
-        <!-- Actions Column -->
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td
-            mat-cell
-            *matCellDef="let organization"
-            (click)="$event.stopPropagation()"
-          >
-            <div class="action-icons">
-              <button
-                mat-icon-button
-                (click)="openEditModal(organization)"
-                class="action-icon-button"
-                title="Edit"
-              >
-                <mat-icon>edit</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="openMigrateModal(organization)"
-                class="action-icon-button migrate"
-                title="Migrate Users"
-                [disabled]="getUserCount(organization) === 0"
-              >
-                <mat-icon>sync_alt</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="openDeleteModal(organization)"
-                class="action-icon-button delete"
-                title="Delete"
-                [disabled]="getUserCount(organization) > 0"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns"
-          class="organization-row"
-          (click)="openEditModal(row)"
-        ></tr>
-      </table>
-
+    <div class="toolbar-pager">
       <mat-paginator
+        class="organizations-paginator"
         [pageSizeOptions]="[10, 25, 50, 100]"
         showFirstLastButtons
         aria-label="Select page of organizations"
       >
       </mat-paginator>
     </div>
+
+    <div class="toolbar-actions">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="openCreateModal()"
+        class="create-org-button"
+      >
+        <mat-icon>add</mat-icon>
+        New Organization
+      </button>
+    </div>
   </div>
+
+  <div #list class="list" main>
+    <div *ngIf="dataSource.data?.length; else emptyTemplate">
+      <div class="table-shell">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          class="organizations-table"
+        >
+          <ng-container matColumnDef="verified">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Verified</th>
+            <td mat-cell *matCellDef="let organization">
+              <mat-icon
+                class="verified-status-icon"
+                [ngClass]="organization.isVerified ? 'verified' : 'unverified'"
+                [attr.aria-label]="
+                  organization.isVerified ? 'Verified' : 'Unverified'
+                "
+              >
+                {{ organization.isVerified ? 'check_circle' : 'cancel' }}
+              </mat-icon>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let organization">
+              <div class="org-name-cell">{{ organization.name }}</div>
+              <div class="org-domain" *ngIf="organization.domains?.length > 0">
+                {{ organization.domains[0] }}
+                <span *ngIf="organization.domains.length > 1">
+                  +{{ organization.domains.length - 1 }}
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="users">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Users</th>
+            <td mat-cell *matCellDef="let organization">
+              <span class="count-value">{{ getUserCount(organization) }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="learningObjects">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Learning Objects
+            </th>
+            <td mat-cell *matCellDef="let organization">
+              <span class="count-value">{{ getLearningObjectCount(organization) }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="sector">
+            <th mat-header-cell *matHeaderCellDef>Sector</th>
+            <td mat-cell *matCellDef="let organization">
+              <span class="sector-badge" [ngClass]="'sector-' + organization.sector">
+                {{ organization.sector | titlecase }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="levels">
+            <th mat-header-cell *matHeaderCellDef>Levels</th>
+            <td mat-cell *matCellDef="let organization">
+              <div class="levels-list">
+                <span
+                  class="level-pill"
+                  *ngFor="let level of getVisibleLevels(organization.levels)"
+                >
+                  {{ formatLevelName(level) | titlecase }}
+                </span>
+                <span
+                  *ngIf="getRemainingLevelsCount(organization.levels) > 0"
+                  class="level-pill level-pill--more"
+                >
+                  +{{ getRemainingLevelsCount(organization.levels) }}
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              (click)="$event.stopPropagation()"
+            >
+              <div class="action-icons">
+                <button
+                  mat-icon-button
+                  (click)="openEditModal(organization)"
+                  class="action-icon-button"
+                  title="Edit"
+                >
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button
+                  mat-icon-button
+                  (click)="openMigrateModal(organization)"
+                  class="action-icon-button migrate"
+                  title="Migrate Users"
+                  [disabled]="getUserCount(organization) === 0"
+                >
+                  <mat-icon>sync_alt</mat-icon>
+                </button>
+                <span
+                  [matTooltip]="getDeleteDisabledTooltip(organization)"
+                  [matTooltipDisabled]="getUserCount(organization) === 0"
+                >
+                  <button
+                    mat-icon-button
+                    (click)="openDeleteModal(organization)"
+                    class="action-icon-button delete"
+                    title="Delete"
+                    [disabled]="getUserCount(organization) > 0"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="organization-row"
+            (click)="openEditModal(row)"
+          ></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <mat-menu #verifiedMenu="matMenu" class="filter-menu">
+    <div class="filter-menu-content" (click)="$event.stopPropagation()">
+      <mat-checkbox
+        class="filter-menu-checkbox"
+        [checked]="selectedVerifiedFilters.includes('verified')"
+        (change)="toggleVerifiedFilter('verified')"
+      >
+        Verified
+      </mat-checkbox>
+      <mat-checkbox
+        class="filter-menu-checkbox"
+        [checked]="selectedVerifiedFilters.includes('unverified')"
+        (change)="toggleVerifiedFilter('unverified')"
+      >
+        Unverified
+      </mat-checkbox>
+    </div>
+  </mat-menu>
+
+  <mat-menu #sectorMenu="matMenu" class="filter-menu">
+    <div class="filter-menu-content" (click)="$event.stopPropagation()">
+      <mat-checkbox
+        class="filter-menu-checkbox"
+      *ngFor="let sector of sectorOptions"
+        [checked]="selectedSectorFilters.includes(sector)"
+        (change)="toggleSectorFilter(sector)"
+      >
+        {{ sector | titlecase }}
+      </mat-checkbox>
+    </div>
+  </mat-menu>
+
+  <mat-menu #levelMenu="matMenu" class="filter-menu">
+    <div class="filter-menu-content" (click)="$event.stopPropagation()">
+      <mat-checkbox
+        class="filter-menu-checkbox"
+      *ngFor="let level of levelOptions"
+        [checked]="selectedLevelFilters.includes(level)"
+        (change)="toggleLevelFilter(level)"
+      >
+        {{ formatLevelName(level) | titlecase }}
+      </mat-checkbox>
+    </div>
+  </mat-menu>
 
   <ng-template #emptyTemplate>
     <div class="empty-template" *ngIf="!loading; else loadingTemplate">

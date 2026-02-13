@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 import { FilterSearchComponent } from 'app/admin/components/filter-search/filter-search.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 import { AdminComponent } from './admin.component';
 import { AdminRoutingModule } from './admin.routing';
 import { ChangeAuthorComponent } from './components/change-author/change-author.component';
