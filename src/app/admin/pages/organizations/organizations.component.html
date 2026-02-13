@@ -37,6 +37,7 @@
       </label>
 
       <button
+        *ngIf="!isPhoneTableView"
         class="filter-dropdown-btn"
         [ngClass]="{ active: selectedVerifiedFilters.length > 0 }"
         [matMenuTriggerFor]="verifiedMenu"
@@ -45,6 +46,7 @@
       </button>
 
       <button
+        *ngIf="!isPhoneTableView"
         class="filter-dropdown-btn"
         [ngClass]="{ active: selectedSectorFilters.length > 0 }"
         [matMenuTriggerFor]="sectorMenu"
@@ -53,6 +55,7 @@
       </button>
 
       <button
+        *ngIf="!isPhoneTableView"
         class="filter-dropdown-btn"
         [ngClass]="{ active: selectedLevelFilters.length > 0 }"
         [matMenuTriggerFor]="levelMenu"
@@ -61,7 +64,7 @@
       </button>
 
       <button
-        *ngIf="hasActiveFilters()"
+        *ngIf="!isPhoneTableView && hasActiveFilters()"
         class="clear-filters-link"
         (click)="clearAllFilters()"
       >
@@ -71,6 +74,7 @@
 
     <div class="toolbar-pager">
       <mat-paginator
+        *ngIf="!isMobileTableView"
         class="organizations-paginator"
         [pageSizeOptions]="[10, 25, 50, 100]"
         showFirstLastButtons
@@ -79,7 +83,7 @@
       </mat-paginator>
     </div>
 
-    <div class="toolbar-actions">
+    <div class="toolbar-actions" *ngIf="!isPhoneTableView">
       <button
         mat-raised-button
         color="primary"
@@ -182,37 +186,50 @@
               (click)="$event.stopPropagation()"
             >
               <div class="action-icons">
-                <button
-                  mat-icon-button
-                  (click)="openEditModal(organization)"
-                  class="action-icon-button"
-                  title="Edit"
-                >
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button
-                  mat-icon-button
-                  (click)="openMigrateModal(organization)"
-                  class="action-icon-button migrate"
-                  title="Migrate Users"
-                  [disabled]="getUserCount(organization) === 0"
-                >
-                  <mat-icon>sync_alt</mat-icon>
-                </button>
-                <span
-                  [matTooltip]="getDeleteDisabledTooltip(organization)"
-                  [matTooltipDisabled]="getUserCount(organization) === 0"
-                >
+                <ng-container *ngIf="!isMobileTableView; else mobileActions">
                   <button
                     mat-icon-button
-                    (click)="openDeleteModal(organization)"
-                    class="action-icon-button delete"
-                    title="Delete"
-                    [disabled]="getUserCount(organization) > 0"
+                    (click)="openEditModal(organization)"
+                    class="action-icon-button"
+                    title="Edit"
                   >
-                    <mat-icon>delete</mat-icon>
+                    <mat-icon>edit</mat-icon>
                   </button>
-                </span>
+                  <button
+                    mat-icon-button
+                    (click)="openMigrateModal(organization)"
+                    class="action-icon-button migrate"
+                    title="Migrate Users"
+                    [disabled]="getUserCount(organization) === 0"
+                  >
+                    <mat-icon>sync_alt</mat-icon>
+                  </button>
+                  <span
+                    [matTooltip]="getDeleteDisabledTooltip(organization)"
+                    [matTooltipDisabled]="getUserCount(organization) === 0"
+                  >
+                    <button
+                      mat-icon-button
+                      (click)="openDeleteModal(organization)"
+                      class="action-icon-button delete"
+                      title="Delete"
+                      [disabled]="getUserCount(organization) > 0"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </span>
+                </ng-container>
+                <ng-template #mobileActions>
+                  <button
+                    mat-icon-button
+                    class="action-icon-button action-meatball"
+                    [matMenuTriggerFor]="rowActionMenu"
+                    [matMenuTriggerData]="{ organization: organization }"
+                    title="Actions"
+                  >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </ng-template>
               </div>
             </td>
           </ng-container>
@@ -226,8 +243,42 @@
           ></tr>
         </table>
       </div>
+      <div class="table-toolbar table-toolbar--bottom" *ngIf="isMobileTableView">
+        <mat-paginator
+          class="organizations-paginator"
+          [pageSizeOptions]="[10, 25, 50, 100]"
+          showFirstLastButtons
+          aria-label="Select page of organizations"
+        >
+        </mat-paginator>
+      </div>
     </div>
   </div>
+
+  <mat-menu #rowActionMenu="matMenu" class="filter-menu row-action-menu">
+    <ng-template matMenuContent let-organization="organization">
+      <button mat-menu-item (click)="openEditModal(organization)">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button
+        mat-menu-item
+        (click)="openMigrateModal(organization)"
+        [disabled]="getUserCount(organization) === 0"
+      >
+        <mat-icon>sync_alt</mat-icon>
+        <span>Migrate Users</span>
+      </button>
+      <button
+        mat-menu-item
+        (click)="openDeleteModal(organization)"
+        [disabled]="getUserCount(organization) > 0"
+      >
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
+    </ng-template>
+  </mat-menu>
 
   <mat-menu #verifiedMenu="matMenu" class="filter-menu">
     <div class="filter-menu-content" (click)="$event.stopPropagation()">

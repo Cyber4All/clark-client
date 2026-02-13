@@ -33,6 +33,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   organizations: Organization[] = [];
   dataSource: MatTableDataSource<Organization>;
   displayedColumns: string[] = ['verified', 'name', 'users', 'learningObjects', 'sector', 'levels', 'actions'];
+  isMobileTableView = false;
+  isPhoneTableView = false;
   searchBarPlaceholder = 'Organizations';
   searchValue = '';
 
@@ -70,6 +72,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
+  @HostListener('window:resize')
+  onResize() {
+    this.updateViewportMode();
+  }
+
   sectorOptions: OrganizationSector[] = ['academia', 'government', 'industry', 'other'];
   levelOptions: OrganizationLevel[] = [
     'elementary',
@@ -101,6 +108,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   ) { }
 
   ngOnInit(): void {
+    this.updateViewportMode();
     this.initializeMockData();
     this.dataSource = new MatTableDataSource(this.organizations);
 
@@ -162,6 +170,19 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           return (data as any)[sortHeaderId];
       }
     };
+  }
+
+  updateViewportMode(): void {
+    this.isPhoneTableView = window.innerWidth <= 600;
+    this.isMobileTableView = window.innerWidth <= 900;
+    if (this.isPhoneTableView) {
+      this.displayedColumns = ['verified', 'name', 'actions'];
+      return;
+    }
+
+    this.displayedColumns = this.isMobileTableView
+      ? ['verified', 'name', 'users', 'learningObjects', 'sector', 'actions']
+      : ['verified', 'name', 'users', 'learningObjects', 'sector', 'levels', 'actions'];
   }
 
   /**
