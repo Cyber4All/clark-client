@@ -5,29 +5,23 @@ import { takeUntil } from 'rxjs/operators';
 import { LearningObject } from '@entity';
 import { noPreview, notLoggedIn } from './file-preview.copy';
 
-const EMPTY_URL = '';
-
 @Component({
   selector: 'clark-file-preview',
   templateUrl: './file-preview.component.html',
-  styleUrls: ['./file-preview.component.scss']
+  styleUrls: ['./file-preview.component.scss'],
 })
 export class FilePreviewComponent implements OnInit, OnDestroy {
   @Input() file: LearningObject.Material.File;
 
   private isDestroyed$ = new Subject<void>();
   loggedin: boolean;
-  previewUrl = EMPTY_URL;
   message = '';
 
-  constructor(
-    public auth: AuthService,
-  ) {}
+  constructor(public auth: AuthService) {}
 
   ngOnInit() {
-    this.previewUrl = this.file.downloadURL;
     this.copy();
-    this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe(val => {
+    this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe((val) => {
       this.loggedin = val;
       this.copy();
     });
@@ -39,10 +33,10 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Sets the previewUrl to its url string rather than leaving it as an empty string
+   * Checks if the file has a downloadURL available for preview/download
    */
   get hasPreviewLink() {
-    return this.previewUrl !== EMPTY_URL && this.previewUrl !== null && this.previewUrl !== undefined;
+    return this.file.downloadURL && this.file.downloadURL.trim() !== '';
   }
 
   /**

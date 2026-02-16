@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { catchError, take, takeUntil } from 'rxjs/operators';
+import { catchError, takeUntil } from 'rxjs/operators';
 import { Observable, Subject, throwError } from 'rxjs';
 import { FileUploadMeta } from 'app/onion/learning-object-builder/components/content-upload/app/services/typings';
 import { LearningObject } from '@entity';
@@ -16,22 +16,6 @@ import { LearningObject } from '@entity';
 export class FileService {
   private headers = new HttpHeaders();
 
-  /**
-   * Supported Microsoft Office extensions for preview
-   */
-  private static officeExtensions = [
-    '.docx',
-    '.doc',
-    '.pptx',
-    '.ppt',
-    '.ppsx',
-    '.pps',
-    '.potx',
-    '.pot',
-    '.xlsx',
-    '.xls',
-  ];
-
   @Input()
   learningObject$: Observable<LearningObject> =
     new Observable<LearningObject>();
@@ -39,15 +23,43 @@ export class FileService {
   constructor(private http: HttpClient) { }
 
   /**
+   * Helper: extracts the file extension from a filename (including the dot)
+   * @param filename - The filename to extract extension from
+   * @returns The file extension in lowercase, or empty string if no extension
+   */
+  private static getFileExtension(filename: string): string {
+    const lastDot = filename.lastIndexOf('.');
+    if (lastDot !== -1 && lastDot < filename.length - 1) {
+      return filename.substring(lastDot).toLowerCase();
+    }
+    return '';
+  }
+
+  /**
    * Helper: returns true if filename is a supported Microsoft Office file
    */
   static isOfficeFile(filename: string): boolean {
-    const lastDot = filename.lastIndexOf('.');
-    let ext = '';
-    if (lastDot !== -1 && lastDot < filename.length - 1) {
-      ext = filename.substring(lastDot).toLowerCase();
-    }
-    return FileService.officeExtensions.includes(ext);
+    const officeExtensions = [
+      '.docx',
+      '.doc',
+      '.pptx',
+      '.ppt',
+      '.ppsx',
+      '.pps',
+      '.potx',
+      '.pot',
+      '.xlsx',
+      '.xls',
+    ];
+    return officeExtensions.includes(this.getFileExtension(filename));
+  }
+
+  /**
+   * Helper: returns true if filename can be previewed
+   * Currently supports Microsoft Office files, extensible for future file types
+   */
+  static canPreview(filename: string): boolean {
+    return this.isOfficeFile(filename);
   }
 
   /**
@@ -84,18 +96,23 @@ export class FileService {
   }
 
   /**
-   * Preview the file in Office Online Viewer if it is a supported Office file.
+   * Preview the file if it can be previewed.
    * @param url file URL
    * @param name file name (to check extension)
    */
   async previewLearningObjectFile(url: string, name: string): Promise<string> {
-    if (FileService.isOfficeFile(name)) {
-      const encodedUrl = encodeURIComponent(url);
-      const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
-      window.open(officeViewerUrl, '_blank');
+    if (FileService.canPreview(name)) {
+      // Currently only handles Office files, extensible for other file types
+
+      // Microsoft Office files
+      if (FileService.isOfficeFile(name)) {
+        const encodedUrl = encodeURIComponent(url);
+        const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
+        window.open(officeViewerUrl, '_blank');
+      }
       return Promise.resolve('');
     } else {
-      // Not an office file; do nothing for now but return Promise.resolve('')
+      // Not a previewable file; do nothing for now but return Promise.resolve('')
       return Promise.resolve('');
     }
   }
