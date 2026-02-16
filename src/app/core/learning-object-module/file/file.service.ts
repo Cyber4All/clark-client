@@ -7,7 +7,6 @@ import {
 } from '@angular/common/http';
 import { catchError, take, takeUntil } from 'rxjs/operators';
 import { Observable, Subject, throwError } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { FileUploadMeta } from 'app/onion/learning-object-builder/components/content-upload/app/services/typings';
 import { LearningObject } from '@entity';
 

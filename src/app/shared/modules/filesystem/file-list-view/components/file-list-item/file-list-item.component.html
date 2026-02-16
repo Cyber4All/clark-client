@@ -7,7 +7,7 @@
   <div
     (activate)="handleClick($event)"
     class="text-contained inline-flex"
-    [ngClass]="{ 'hover-react': previewUrl }"
+    [ngClass]="{ 'hover-react': downloadURL }"
     tipPosition="top"
     id="file-name"
   >
@@ -23,13 +23,13 @@
       mat-icon-button
       [matTooltip]="
         isLoggedIn
-          ? previewUrl
+          ? downloadURL
             ? 'Download'
             : 'Click &quot;Download Now&quot; to view this file on your machine'
           : 'Login to download'
       "
       (click)="onDownload()"
-      [disabled]="!previewUrl || !isLoggedIn"
+      [disabled]="!downloadURL || !isLoggedIn"
     >
       <i class="fas fa-download"></i>
     </button>
@@ -37,10 +37,10 @@
     <!-- Preview Button -->
     <button
       mat-icon-button
-      [disabled]="!isOfficeFile || !previewUrl || !isLoggedIn"
+      [disabled]="!isOfficeFile || !downloadURL || !isLoggedIn"
       [matTooltip]="
         isLoggedIn
-          ? previewUrl && isOfficeFile
+          ? downloadURL && isOfficeFile
             ? 'Preview'
             : 'Preview unavailable. Click &quot;Download Now&quot; to view this file on your machine'
           : 'Login to preview'

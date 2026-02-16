@@ -25,7 +25,7 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.previewUrl = this.file.previewUrl;
+    this.previewUrl = this.file.downloadURL;
     this.copy();
     this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe(val => {
       this.loggedin = val;

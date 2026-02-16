@@ -18,7 +18,7 @@ export class FileListItemComponent implements OnInit {
   @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
 
   icon = '';
-  previewUrl = '';
+  downloadURL = '';
   accessGroups: string[];
 
   constructor(
@@ -28,7 +28,7 @@ export class FileListItemComponent implements OnInit {
 
   ngOnInit() {
     this.icon = getIcon(this.file.extension);
-    this.previewUrl = this.file.previewUrl;
+    this.downloadURL = this.file.downloadURL;
     this.accessGroups = this.auth.accessGroups;
   }
 
@@ -92,14 +92,14 @@ export class FileListItemComponent implements OnInit {
   }
 
   async onDownload() {
-    const url = this.auth.isLoggedIn.value ? this.file.previewUrl : '';
+    const url = this.auth.isLoggedIn.value ? this.file.downloadURL : '';
     if (url) {
       await this.fileService.downloadLearningObjectFile(url, this.file.name);
     }
   }
 
   async onPreview() {
-    const url = this.auth.isLoggedIn.value ? this.file.previewUrl : '';
+    const url = this.auth.isLoggedIn.value ? this.file.downloadURL : '';
     if (url) {
       await this.fileService.previewLearningObjectFile(url, this.file.name);
     }
