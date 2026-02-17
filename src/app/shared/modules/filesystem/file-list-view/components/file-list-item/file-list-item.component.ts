@@ -89,10 +89,6 @@ export class FileListItemComponent implements OnInit {
     return this.file && FileService.canPreview(this.file.name);
   }
 
-  get isOfficeFile(): boolean {
-    return this.file && FileService.isOfficeFile(this.file.name);
-  }
-
   async onDownload() {
     const url = this.auth.isLoggedIn.value ? this.file.downloadURL : '';
     if (url) {
