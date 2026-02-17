@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LearningObject } from '@entity';
 import { noPreview, notLoggedIn } from './file-preview.copy';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'clark-file-preview',
@@ -33,22 +34,15 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Checks if the file has a downloadURL available for preview/download
-   */
-  get hasPreviewLink() {
-    return this.file.downloadURL && this.file.downloadURL.trim() !== '';
-  }
-
-  /**
    * Returns a response based on the value of the preview link on a specified file
    * and whether a user is logged in or not while attempting to preview.
    */
   copy() {
     this.message = '';
-    if (!this.hasPreviewLink) {
-      this.message = noPreview;
-    } else if (!this.loggedin) {
+    if (!this.loggedin) {
       this.message = notLoggedIn;
+    } else if (!FileService.canPreview(this.file.name)) {
+      this.message = noPreview;
     }
   }
 }
