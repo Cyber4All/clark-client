@@ -33,3 +33,46 @@
     padding-bottom: 30px;
   }
 }
+
+.admin__meatball {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 20;
+}
+
+.admin__meatball-button {
+  background: white;
+  border: 1px solid $light-grey;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin__meatball-button .mat-icon {
+  margin: 0;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  font-size: 20px;
+}
+
+::ng-deep .admin-nav-menu .mat-mdc-menu-panel {
+  border-radius: 12px;
+  border: 1px solid #d9e1ec;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 1024px) {
+  .admin {
+    grid-template-columns: 1fr;
+  }
+
+  .admin__main-content {
+    padding: 24px 20px 0;
+  }
+}

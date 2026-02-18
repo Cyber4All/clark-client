@@ -1,23 +1,18 @@
-import { User } from './user/user';
+import { Collection } from './collection/collection';
+import { Guideline } from './guideline/guideline';
 import { LearningObject } from './learning-object/learning-object';
 import { SubmittableLearningObject } from './learning-object/submittable-learning-object';
-import { Guideline } from './guideline/guideline';
 import { LearningOutcome } from './learning-outcome/learning-outcome';
 import { SubmittableLearningOutcome } from './learning-outcome/submittable-learning-outcome';
-import { Collection } from './collection/collection';
-import { Topic } from './topic/topic';
+import { Organization, OrganizationLevel, OrganizationSector } from './organization/organization';
 import { Tag } from './tag/tag';
+import { Topic } from './topic/topic';
+import { User } from './user/user';
 
 
 // Exports All Interfaces
 export {
-  User,
-  LearningObject,
-  SubmittableLearningObject,
-  LearningOutcome,
-  SubmittableLearningOutcome,
-  Guideline,
-  Collection,
-  Topic,
-  Tag
+  // eslint-disable-next-line max-len
+  Collection, Guideline, LearningObject, LearningOutcome, Organization, OrganizationLevel, OrganizationSector, SubmittableLearningObject, SubmittableLearningOutcome, Tag, Topic, User
 };
+
