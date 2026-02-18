@@ -51,7 +51,8 @@ import { ChatbotModule } from 'app/shared/modules/chatbot/chatbot.module';
     ClarkRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
-    FormsModule
+    FormsModule,
+    ChatbotModule
   ],
   providers: [
     TitleCasePipe,
