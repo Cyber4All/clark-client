@@ -3,46 +3,33 @@
  */
 
 import { z } from 'zod';
+import { ORGANIZATION_SECTORS, ORGANIZATION_LEVELS } from './organization.types';
 
 /**
- * Organization sector union
+ * Organization sector schema (references shared const array)
  */
-export const OrganizationSectorSchema = z.enum([
-  'academia',
-  'government',
-  'industry',
-  'other',
-]);
+export const OrganizationSectorSchema = z.enum(ORGANIZATION_SECTORS);
 
 /**
- * Organization level union
+ * Organization level schema (references shared const array)
  */
-export const OrganizationLevelSchema = z.enum([
-  'elementary',
-  'middle',
-  'high',
-  'community_college',
-  'undergraduate',
-  'graduate',
-  'post_graduate',
-  'training',
-]);
+export const OrganizationLevelSchema = z.enum(ORGANIZATION_LEVELS);
 
 /**
  * Organization entity schema
  */
 export const OrganizationSchema = z.object({
-  _id: z.string(),
-  name: z.string(),
-  normalizedName: z.string(),
-  sector: OrganizationSectorSchema,
-  levels: z.array(OrganizationLevelSchema),
-  country: z.string().optional(),
-  state: z.string().optional(),
-  domains: z.array(z.string()),
-  isVerified: z.boolean(),
-  createdAt: z.string(),
-  updatedAt: z.string(),
+    _id: z.string(),
+    name: z.string(),
+    normalizedName: z.string(),
+    sector: OrganizationSectorSchema,
+    levels: z.array(OrganizationLevelSchema),
+    country: z.string().optional(),
+    state: z.string().optional(),
+    domains: z.array(z.string()),
+    isVerified: z.boolean(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
 });
 
 /**
@@ -55,13 +42,13 @@ export const OrganizationArraySchema = z.array(OrganizationSchema);
  */
 
 export const SuggestDomainResponseSchema = z.object({
-  organization: OrganizationSchema.nullable(),
+    organization: OrganizationSchema.nullable(),
 });
 
 export const CreateOrganizationResponseSchema = z.object({
-  organization: OrganizationSchema,
+    organization: OrganizationSchema,
 });
 
 export const UpdateOrganizationResponseSchema = z.object({
-  organization: OrganizationSchema,
+    organization: OrganizationSchema,
 });
