@@ -86,8 +86,6 @@ export class LearningObjectListingComponent implements OnDestroy {
   topics: string[] = [];
 
   static readonly TRENDING_THRESHOLD = 10; // downloads in last 30 days
-  // private static topicsReady?: Promise<void>;
-  // private static tagsReady?: Promise<void>;
 
   // -----------------------------
   // Async safety
@@ -137,7 +135,7 @@ export class LearningObjectListingComponent implements OnDestroy {
     // Resolve sync derived info early
     this.isDCWFAligned = this.checkDCWFAlignment(lo);
 
-    // Resolve topic/tag names using pre-fetched mappings (no async wait needed)
+    // Resolve topic/tag names using pre-fetched mappings
     await this.resolveTopicNames(lo);
     await this.resolveTagNames(lo);
     if (this.destroyed || token !== this.refreshToken) return;
@@ -266,18 +264,17 @@ export class LearningObjectListingComponent implements OnDestroy {
     return recentMetrics?.downloads ?? 0;
   }
 
-  // -----------------------------
-  // Topic/Tag name resolution (uses pre-fetched mappings from browse component)
-  // -----------------------------
+  // resolving topic names from topics service using the topic ids in the learning object
   private async resolveTopicNames(lo: LearningObject): Promise<void> {
     if (!lo?.topics?.length) {
       this.topics = [];
       return;
     }
     this.topics =  await Promise.all(lo.topics.map((id: string) => this.topicsService.getFromTopicsMap(id)));
-    // await LearningObjectListingComponent.topicsReady
+    
   }
 
+  // resolving tag names from tags service using the tag ids in the learning object
   private async resolveTagNames(lo: LearningObject): Promise<void> {
     if (!lo?.tags?.length) {
       this.tags = [];
