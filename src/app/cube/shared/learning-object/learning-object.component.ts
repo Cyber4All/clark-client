@@ -10,10 +10,10 @@ import {
 import { LearningObject } from '@entity';
 import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
-import { TagsService } from '../../../core/learning-object-module/tags/tags.service';
-import { TopicsService } from '../../../core/learning-object-module/topics/topics.service';
 import { MetricService } from '../../../core/metric-module/metric.service';
 import { RatingService } from '../../../core/rating-module/rating.service';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -86,16 +86,8 @@ export class LearningObjectListingComponent implements OnDestroy {
   topics: string[] = [];
 
   static readonly TRENDING_THRESHOLD = 10; // downloads in last 30 days
-
-  // -----------------------------
-  // Shared caches to avoid redundant fetches
-  // -----------------------------
-  private static topicsMap = new Map<string, string>();
-  private static tagsMap = new Map<string, string>();
-
-  // Shared "in-flight" promises (prevents multiple simultaneous fetches across cards)
-  private static topicsReady?: Promise<void>;
-  private static tagsReady?: Promise<void>;
+  // private static topicsReady?: Promise<void>;
+  // private static tagsReady?: Promise<void>;
 
   // -----------------------------
   // Async safety
@@ -106,10 +98,10 @@ export class LearningObjectListingComponent implements OnDestroy {
   constructor(
     private ratingService: RatingService,
     private metricService: MetricService,
-    public auth: AuthService,
-    private cd: ChangeDetectorRef,
     private tagsService: TagsService,
-    private topicsService: TopicsService
+    private topicsService: TopicsService,
+    public auth: AuthService,
+    private cd: ChangeDetectorRef
   ) { }
 
   ngOnDestroy() {
@@ -134,7 +126,7 @@ export class LearningObjectListingComponent implements OnDestroy {
 
   private async refresh(): Promise<void> {
     const lo = this._learningObject;
-    if (!lo || this.destroyed) return;
+    if (!lo.cuid || this.destroyed) return;
 
     const token = ++this.refreshToken;
 
@@ -145,8 +137,9 @@ export class LearningObjectListingComponent implements OnDestroy {
     // Resolve sync derived info early
     this.isDCWFAligned = this.checkDCWFAlignment(lo);
 
-    // Resolve tags/topics (cached, minimal fetch)
-    await Promise.all([this.resolveTopicNames(lo), this.resolveTagNames(lo)]);
+    // Resolve topic/tag names using pre-fetched mappings (no async wait needed)
+    await this.resolveTopicNames(lo);
+    await this.resolveTagNames(lo);
     if (this.destroyed || token !== this.refreshToken) return;
 
     // Image depends on topics
@@ -274,49 +267,15 @@ export class LearningObjectListingComponent implements OnDestroy {
   }
 
   // -----------------------------
-  // Topic/Tag resolution (cached)
+  // Topic/Tag name resolution (uses pre-fetched mappings from browse component)
   // -----------------------------
-  private async ensureTopicsCache(): Promise<void> {
-    if (LearningObjectListingComponent.topicsMap.size > 0) return;
-
-    if (!LearningObjectListingComponent.topicsReady) {
-      LearningObjectListingComponent.topicsReady = (async () => {
-        const topics = await this.topicsService.getTopics();
-        LearningObjectListingComponent.topicsMap = new Map<string, string>(
-          topics.map(t => [t._id, t.name])
-        );
-      })();
-    }
-
-    await LearningObjectListingComponent.topicsReady;
-  }
-
-  private async ensureTagsCache(): Promise<void> {
-    if (LearningObjectListingComponent.tagsMap.size > 0) return;
-
-    if (!LearningObjectListingComponent.tagsReady) {
-      LearningObjectListingComponent.tagsReady = (async () => {
-        const tags = await this.tagsService.getTags();
-        LearningObjectListingComponent.tagsMap = new Map<string, string>(
-          tags.map(t => [t._id, t.name])
-        );
-      })();
-    }
-
-    await LearningObjectListingComponent.tagsReady;
-  }
-
   private async resolveTopicNames(lo: LearningObject): Promise<void> {
     if (!lo?.topics?.length) {
       this.topics = [];
       return;
     }
-
-    await this.ensureTopicsCache();
-
-    this.topics = lo.topics
-      .map((id: string) => LearningObjectListingComponent.topicsMap.get(id))
-      .filter((t): t is string => !!t);
+    this.topics =  await Promise.all(lo.topics.map((id: string) => this.topicsService.getFromTopicsMap(id)));
+    // await LearningObjectListingComponent.topicsReady
   }
 
   private async resolveTagNames(lo: LearningObject): Promise<void> {
@@ -324,11 +283,6 @@ export class LearningObjectListingComponent implements OnDestroy {
       this.tags = [];
       return;
     }
-
-    await this.ensureTagsCache();
-
-    this.tags = lo.tags
-      .map((id: string) => LearningObjectListingComponent.tagsMap.get(id))
-      .filter((t): t is string => !!t);
+    this.tags = await Promise.all(lo.tags.map((id: string) => this.tagsService.getFromTagsMap(id)));
   }
 }

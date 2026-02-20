@@ -12,8 +12,24 @@ import { GetTagByNameResponse } from 'app/cube/shared/types/usage-stats';
 })
 export class TagsService {
   private headers = new HttpHeaders();
+  private tagsMap: Map<string, string> = new Map();
 
   constructor(private http: HttpClient) {
+  }
+
+  async getFromTagsMap(tagId?: string) {
+    if (this.tagsMap.size === 0) {
+      const tags = await this.getTags(); // grabs all tags
+      if (tags) {
+        tags.forEach(tag => {
+          this.tagsMap.set(tag._id, tag.name);
+        });
+      } 
+    }
+
+    // return this.tagsMap;
+    return tagId ? this.tagsMap.get(tagId) : "";
+    
   }
 
   /**
