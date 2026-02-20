@@ -101,6 +101,15 @@ private _id: string;
     }
   }
 
+  /**
+   * TODO(SC-38733): Remove legacy organization string fallback once
+   * LearningObject author/contributors consistently provide organizationId.
+   */
+  _organization: string;
+  get organization(): string {
+    return this._organization;
+  }
+
   _bio: string;
   /**
    * @property {string} bio a user's bio
@@ -138,6 +147,7 @@ private _id: string;
     this._email = user?.email || '';
     this._emailVerified = user?.emailVerified || false;
     this._organizationId = user?.organizationId || '';
+    this._organization = user?.organization || '';
     this._bio = user?.bio || '';
     this._createdAt = user?.createdAt || Date.now().toString();
   }

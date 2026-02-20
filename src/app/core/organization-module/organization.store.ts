@@ -50,13 +50,13 @@ export class OrganizationStore {
      * `organizationNameFromUser$` usages back to `organizationName$`.
      */
     organizationNameFromUser$(
-        user: { organizationId?: string | null; organization?: string | null } | null | undefined
+        user: { organizationId?: string | null; organization?: string | null; _organization?: string | null } | null | undefined
     ): Observable<string> {
         const organizationId = user?.organizationId;
         if (organizationId) {
             return this.organizationName$(organizationId);
         }
-        return of(this.formatOrgName(user?.organization));
+        return of(this.formatOrgName(user?.organization ?? user?._organization));
     }
 
     refresh(id: string): void {

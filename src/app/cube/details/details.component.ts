@@ -325,8 +325,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   setLearningObjectAuthors() {
+    if (this.learningObject?.author) {
+      this.authors.push(this.learningObject.author);
+    }
     this.learningObject.contributors.forEach(contributor => {
-      this.authors.push(contributor);
+      if (!this.authors.find(author => author.username === contributor.username)) {
+        this.authors.push(contributor);
+      }
     });
   }
 
