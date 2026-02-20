@@ -6,22 +6,28 @@ import { ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnInit, Out
 })
 export class FilterSectionComponent implements OnInit, DoCheck {
   private _info?: FilterSectionInfo;
+  private _collapsed = false;
 
   @Input() set info(value: FilterSectionInfo | undefined) {
     this._info = value;
 
     // Default: all sections are open (expanded)
-    this.collapsed = false;
-
-    this.cd.detectChanges();
   }
   get info(): FilterSectionInfo | undefined {
     return this._info;
   }
 
+  @Input() set collapsed(value: boolean) {
+    this._collapsed = value;
+    this.cd.detectChanges();
+  }
+  get collapsed(): boolean {
+    return this._collapsed;
+  }
+
   @Output() change = new EventEmitter();
 
-  collapsed = false;
+  // collapsed = false;
 
   constructor(
     private cd: ChangeDetectorRef,

@@ -15,18 +15,24 @@
   <clark-filter-section [info]="levelFilter" (change)="registerChange()"></clark-filter-section>
 
   <!-- Materials Filters (from Tags) -->
-  <clark-filter-section [info]="getMaterialsTagFilter()" (change)="registerChange()"></clark-filter-section>
+  <clark-filter-section [info]="getMaterialsTagFilter()" [collapsed]="false" (change)="registerChange()"></clark-filter-section>
+
+  <clark-filter-section [info]="getMiscTagFilter()" [collapsed]="false"(change)="registerChange()"></clark-filter-section>
+
+  <clark-filter-section [info]="getCodeTagFilter()" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
+
+  <clark-filter-section [info]="getTechTagFilter()" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
 
   <!-- Duration Filters (formerly Length) -->
-  <clark-filter-section [info]="lengthFilter" (change)="registerChange()"></clark-filter-section>
+  <clark-filter-section [info]="lengthFilter" [collapsed]="false"(change)="registerChange()"></clark-filter-section>
 
   <!-- Collections Filters -->
-  <clark-filter-section [info]="collectionFilter" (change)="registerChange()"></clark-filter-section>
+  <clark-filter-section [info]="collectionFilter" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
 
   <!-- Frameworks Filters (formerly Guidelines) -->
-  <clark-filter-section [info]="frameworkFilter" (change)="registerChange()">
-    <a (click)="openAdvancedSearch()">Advanced
-      <span *ngIf="guidelineFilter.length > 0">({{ guidelineFilter.length }} Selected)</span></a>
+  <clark-filter-section [info]="frameworkFilter" [collapsed]="false" (change)="registerChange()">
+    <!-- <a (click)="openAdvancedSearch()">Advanced Search                                                  **Temporarily disabling this advanced search until its fully implemented**
+      <span *ngIf="guidelineFilter.length > 0">({{ guidelineFilter.length }} Selected)</span></a>  -->  
   </clark-filter-section>
 </div>
 
