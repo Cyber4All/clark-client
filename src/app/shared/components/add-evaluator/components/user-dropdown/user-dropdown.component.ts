@@ -10,6 +10,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { LearningObject, User } from '@entity';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
 import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -39,6 +40,7 @@ export class UserDropdownComponent implements OnInit, OnDestroy {
   constructor(
     private userService: UserService,
     private differs: IterableDiffers,
+    public orgStore: OrganizationStore,
     private cd: ChangeDetectorRef,
   ) {
     this.differ = this.differs.find([]).create(null);

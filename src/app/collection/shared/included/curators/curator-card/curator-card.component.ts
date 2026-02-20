@@ -2,7 +2,7 @@ import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { User } from '@entity';
 import { UserService } from 'app/core/user-module/user.service';
 import { Users } from 'aws-sdk/clients/workmail';
-import { titleCase } from 'title-case';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
 
 @Component({
   selector: 'clark-curator-card',
@@ -16,7 +16,7 @@ export class CuratorCardComponent implements OnInit {
   profileImg: string | undefined;
   mobile: boolean;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, public orgStore: OrganizationStore) { }
 
   ngOnInit(): void {
     this.profileImg = this.userService.getGravatarImage(this.curator.email, 100);
@@ -25,20 +25,6 @@ export class CuratorCardComponent implements OnInit {
       this.mobile = true;
     } else {
       this.mobile = false;
-    }
-  }
-
-  /**
-   * Function to conditionally set the title case of an organization
-   *
-   * @param organization string of the users affiliated organization
-   * @returns string unformated or title cased
-   */
-  organizationFormat(organization: string) {
-    if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
-      return organization;
-    } else {
-      return titleCase(organization);
     }
   }
 

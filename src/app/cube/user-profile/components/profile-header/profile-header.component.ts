@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
 import { UserService } from 'app/core/user-module/user.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -41,6 +42,7 @@ export class ProfileHeaderComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    public orgStore: OrganizationStore,
   ) {}
 
   async ngOnInit() {
