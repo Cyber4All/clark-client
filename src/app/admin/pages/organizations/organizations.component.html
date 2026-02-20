@@ -8,6 +8,10 @@
     </div>
   </div>
 
+  <!-- TODO: Extract as reusable component - clark-admin-overview-cards or clark-stats-card-grid
+       This pattern of overview/statistics cards is used across multiple admin pages.
+       Consider creating a generic component that accepts an array of stat objects with
+       label, value, and optional icon/color. -->
   <div class="overview-row" search>
     <div class="overview-card">
       <div class="overview-card__label">Total</div>
@@ -31,8 +35,17 @@
     </div>
   </div>
 
+  <!-- TODO: Extract as reusable component - clark-admin-filter-toolbar
+       This toolbar pattern with search, filter dropdowns, pagination, and actions
+       is common across admin pages. Should be a configurable component that accepts:
+       - Search placeholder and handler
+       - Array of filter config objects
+       - Action buttons config
+       - Pagination config -->
   <div class="filters-toolbar" search>
     <div class="inline-filters">
+      <!-- TODO: Extract as reusable component - clark-search-input
+           Simple search input with icon that can be used across the app. -->
       <label class="search-control" aria-label="Search organizations">
         <mat-icon class="search-icon">search</mat-icon>
         <input
@@ -42,6 +55,9 @@
         />
       </label>
 
+      <!-- TODO: Extract as reusable component - clark-filter-dropdown-button
+           Reusable filter button with active state, badge count, and menu trigger.
+           Should accept label, active state, count, and menu template reference. -->
       <button
         *ngIf="!isPhoneTableView"
         class="filter-dropdown-btn"
@@ -128,6 +144,9 @@
         >
           <ng-container matColumnDef="verified">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Verified</th>
+            <!-- TODO: Extract as reusable component - clark-status-icon or clark-verification-badge
+                 Reusable status indicator that shows verified/unverified or success/error states.
+                 Should accept status type, custom labels, and color schemes. -->
             <td mat-cell *matCellDef="let organization">
               <mat-icon
                 class="verified-status-icon"
@@ -172,6 +191,9 @@
             </td>
           </ng-container>
 
+          <!-- TODO: Extract as reusable component - clark-badge or clark-category-badge
+               Generic badge component for displaying categories, statuses, or tags.
+               Should accept text, color scheme/variant, and size options. -->
           <ng-container matColumnDef="sector">
             <th mat-header-cell *matHeaderCellDef>Sector</th>
             <td mat-cell *matCellDef="let organization">
@@ -184,6 +206,9 @@
             </td>
           </ng-container>
 
+          <!-- TODO: Extract as reusable component - clark-pill-list or clark-tag-group
+               Reusable component for displaying a list of pills/tags with overflow count.
+               Should accept items array, max visible count, formatter function, and styling. -->
           <ng-container matColumnDef="levels">
             <th mat-header-cell *matHeaderCellDef>Levels</th>
             <td mat-cell *matCellDef="let organization">
@@ -204,6 +229,10 @@
             </td>
           </ng-container>
 
+          <!-- TODO: Extract as reusable component - clark-table-actions or clark-action-button-group
+               Reusable action buttons component for table rows with responsive mobile dropdown.
+               Should accept array of action configs with icon, label, handler, disabled state,
+               and tooltip. Automatically switches to mobile menu on small screens. -->
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td
@@ -358,6 +387,10 @@
     </div>
   </mat-menu>
 
+  <!-- TODO: Extract as reusable components - clark-empty-state and clark-loading-state
+       These are common patterns used across the app for empty and loading states.
+       clark-empty-state should accept icon, title, message, and optional action button.
+       clark-loading-state should accept custom message and spinner options. -->
   <ng-template #emptyTemplate>
     <div class="empty-template" *ngIf="!loading; else loadingTemplate">
       <div class="empty-template__top">

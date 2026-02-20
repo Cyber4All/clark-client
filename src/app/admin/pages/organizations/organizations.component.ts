@@ -62,6 +62,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
 
+  // TODO: Extract as reusable service - AdminFilterService or TableFilterService
+  // This multi-filter pattern (search + checkboxes) with custom filter predicates
+  // is common across admin pages. Create a service that manages filter state,
+  // builds filter objects, and provides filter predicate generators.
   @HostListener('window:keyup', ['$event'])
   handleKeyUp(event: KeyboardEvent) {
     if (event.code === 'Escape') {
@@ -89,6 +93,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.dataSource = new MatTableDataSource<Organization>([]);
     this.loadOrganizations();
 
+    // TODO: Extract as reusable utility - TableFilterPredicateBuilder
+    // This pattern of building custom filter predicates for MatTableDataSource
+    // can be extracted into a utility class or service that generates predicates
+    // based on filter configuration objects.
     // Custom filter predicate for searching and filtering
     this.dataSource.filterPredicate = (data: Organization, filter: string) => {
       // Parse filter object
@@ -121,6 +129,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return matchesSearch && matchesVerified && matchesSector && matchesLevel;
     };
 
+    // TODO: Extract as reusable pattern - SearchInputManager or DebouncedSearchService
+    // This debounced search pattern is used across many pages. Create a reusable
+    // service or helper that manages search input observables with configurable
+    // debounce times.
     // Listen for search input
     this.userSearchInput$
       .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
@@ -149,6 +161,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     };
   }
 
+  // TODO: Extract as reusable utility - ResponsiveTableManager or ViewportBreakpointService
+  // This pattern of adjusting table columns based on viewport size is common.
+  // Create a service that manages breakpoint detection and column visibility
+  // configuration for responsive tables.
   updateViewportMode(): void {
     this.isPhoneTableView = window.innerWidth <= 600;
     this.isMobileTableView = window.innerWidth <= 900;
@@ -186,6 +202,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   /**
    * Apply search filter to table
+   * TODO: Extract applyFilter() logic into reusable FilterManager
+   * This method pattern is repeated across admin pages. Should be part of
+   * a shared filter management service that handles filter state serialization
+   * and MatTableDataSource updates.
    */
   applyFilter(event?: Event): void {
     if (event) {
