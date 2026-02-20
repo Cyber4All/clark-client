@@ -388,144 +388,21 @@
 ></clark-organization-edit-modal>
 
 <!-- Delete Confirmation Modal -->
-<clark-popup *ngIf="displayDeleteModal" (closed)="closeDeleteModal()">
-  <div #popupInner class="modal-container center">
-    <div class="modal-title">Are You Sure?</div>
-    <p class="confirmation-text">
-      You are about to delete
-      <strong>{{ selectedOrganization?.name }}</strong> from the system. This
-      action cannot be undone.
-    </p>
-    <div class="btn-group center">
-      <button
-        type="button"
-        mat-raised-button
-        color="warn"
-        (click)="deleteOrganization()"
-      >
-        <mat-icon>delete</mat-icon>
-        Yes, Delete
-      </button>
-      <button type="button" mat-raised-button (click)="closeDeleteModal()">
-        <mat-icon>close</mat-icon>
-        Cancel
-      </button>
-    </div>
-  </div>
-</clark-popup>
+<clark-organization-delete-modal
+  [isVisible]="displayDeleteModal"
+  [organization]="selectedOrganization"
+  (closed)="closeDeleteModal()"
+  (confirm)="deleteOrganization()"
+></clark-organization-delete-modal>
 
-<clark-popup *ngIf="displayMigrateModal" (closed)="closeMigrateModal()">
-  <div #popupInner class="modal-container migrate-modal">
-    <div class="modal-title">Migrate Users</div>
-    <p class="confirmation-text">
-      Migrate all {{ getUserCount(selectedOrganization) }} user(s) from
-      <strong>{{ selectedOrganization?.name }}</strong> to a verified
-      organization.
-    </p>
-
-    <mat-progress-bar
-      *ngIf="isMigrating"
-      mode="indeterminate"
-      class="migration-progress"
-    ></mat-progress-bar>
-
-    <mat-vertical-stepper [linear]="true" #stepper>
-      <!-- Step 1: Select Target Organization -->
-      <mat-step [completed]="!!migrateTargetOrgId">
-        <ng-template matStepLabel>Select Target Organization</ng-template>
-        <div class="step-content">
-          <mat-form-field
-            appearance="outline"
-            class="full-width search-org-field"
-          >
-            <mat-label>Search Verified Organizations</mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="Type to search verified organizations..."
-              [(ngModel)]="migrateSearchTerm"
-              (ngModelChange)="filterTargetOrganizations()"
-              name="orgSearch"
-              [disabled]="isMigrating"
-            />
-            <mat-icon matPrefix>search</mat-icon>
-          </mat-form-field>
-
-          <div
-            class="organization-list"
-            *ngIf="filteredTargetOrganizations.length > 0"
-          >
-            <div
-              *ngFor="let org of filteredTargetOrganizations"
-              class="org-item"
-              [class.selected]="migrateTargetOrgId === org._id"
-              [class.disabled]="isMigrating"
-              (click)="!isMigrating && selectTargetOrganization(org._id)"
-            >
-              <div class="org-name">
-                {{ org.name }}
-                <i
-                  class="fas fa-check-circle verified-icon"
-                  title="Verified"
-                ></i>
-              </div>
-              <div class="org-details">
-                {{ org.sector | titlecase }} • {{ getUserCount(org) }} users
-              </div>
-            </div>
-          </div>
-          <div
-            class="no-results"
-            *ngIf="
-              migrateSearchTerm && filteredTargetOrganizations.length === 0
-            "
-          >
-            No verified organizations found matching "{{ migrateSearchTerm }}"
-          </div>
-          <div
-            class="no-results"
-            *ngIf="
-              !migrateSearchTerm && filteredTargetOrganizations.length === 0
-            "
-          >
-            No verified organizations available for migration
-          </div>
-        </div>
-      </mat-step>
-
-      <!-- Step 2: Confirm Migration -->
-      <mat-step>
-        <ng-template matStepLabel>Confirm Migration</ng-template>
-        <div class="step-content">
-          <p class="confirm-text">
-            Migrate
-            <strong>{{ getUserCount(selectedOrganization) }} user(s)</strong>
-            from <strong>{{ selectedOrganization?.name }}</strong> to
-            <strong>{{ getSelectedTargetOrganization()?.name }}</strong
-            >?
-          </p>
-
-          <mat-checkbox
-            [(ngModel)]="migrateCertified"
-            class="certification-checkbox"
-            [disabled]="isMigrating"
-          >
-            I confirm this action is correct
-          </mat-checkbox>
-
-          <div class="confirm-actions">
-            <button
-              mat-raised-button
-              color="primary"
-              (click)="migrateUsers()"
-              [disabled]="!migrateCertified || isMigrating"
-            >
-              Migrate
-              <mat-icon>check</mat-icon>
-            </button>
-          </div>
-        </div>
-      </mat-step>
-    </mat-vertical-stepper>
-  </div>
-</clark-popup>
+<!-- Migrate Users Modal -->
+<clark-organization-migrate-modal
+  [isVisible]="displayMigrateModal"
+  [sourceOrganization]="selectedOrganization"
+  [sourceUserCount]="selectedOrganization ? getUserCount(selectedOrganization) : 0"
+  [availableTargetOrganizations]="getAvailableTargetOrganizations()"
+  [isMigrating]="isMigrating"
+  [getUserCount]="getUserCount.bind(this)"
+  (closed)="closeMigrateModal()"
+  (migrate)="onMigrateUsers($event)"
+></clark-organization-migrate-modal>

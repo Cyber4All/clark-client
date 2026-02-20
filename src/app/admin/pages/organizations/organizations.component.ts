@@ -56,11 +56,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   displayMigrateModal = false;
   isCreateMode = false;
   selectedOrganization: Organization | null = null;
-  migrateTargetOrgId = '';
-  migrateSearchTerm = '';
-  filteredTargetOrganizations: Organization[] = [];
   isMigrating = false;
-  migrateCertified = false;
 
   loading = false;
   userSearchInput$: Subject<string> = new Subject();
@@ -456,9 +452,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    */
   openMigrateModal(org: Organization): void {
     this.selectedOrganization = org;
-    this.migrateTargetOrgId = '';
-    this.migrateSearchTerm = '';
-    this.filteredTargetOrganizations = this.getAvailableTargetOrganizations();
     this.displayMigrateModal = true;
   }
 
@@ -468,71 +461,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   closeMigrateModal(): void {
     this.displayMigrateModal = false;
     this.selectedOrganization = null;
-    this.migrateTargetOrgId = '';
-    this.migrateSearchTerm = '';
-    this.filteredTargetOrganizations = [];
-    this.migrateCertified = false;
-  }
-
-
-
-  /**
-   * Filter target organizations based on search term
-   */
-  filterTargetOrganizations(): void {
-    const allOrgs = this.getAvailableTargetOrganizations();
-    if (!this.migrateSearchTerm.trim()) {
-      this.filteredTargetOrganizations = allOrgs;
-      return;
-    }
-    const searchLower = this.migrateSearchTerm.toLowerCase();
-    this.filteredTargetOrganizations = allOrgs.filter((org) =>
-      org.name.toLowerCase().includes(searchLower) ||
-      org.normalizedName.includes(searchLower) ||
-      org.sector.toLowerCase().includes(searchLower)
-    );
   }
 
   /**
-   * Handle search term change from migrate form
-   */
-  onMigrateSearchChange(searchTerm: string): void {
-    this.migrateSearchTerm = searchTerm;
-    this.filterTargetOrganizations();
-  }
-
-  /**
-   * Select target organization for migration and advance to confirmation step
-   */
-  selectTargetOrganization(orgId: string): void {
-    this.migrateTargetOrgId = orgId;
-    // Auto-advance to confirmation step
-    setTimeout(() => {
-      if (this.stepper) {
-        this.stepper.next();
-      }
-    }, 100);
-  }
-
-  /**
-   * Get selected target organization
-   */
-  getSelectedTargetOrganization(): Organization | undefined {
-    return this.dataSource.data.find((org) => org._id === this.migrateTargetOrgId);
-  }
-
-  /**
-   * Show confirmation step in stepper
-   */
-  confirmMigration(): void {
-    if (!this.migrateTargetOrgId) {
-      return;
-    }
-    // Don't close modal, just proceed to next step in stepper
-  }
-
-  /**
-   * Get available organizations to migrate users to (excluding current org, only verified)
+   * Get available organizations for migration
    */
   getAvailableTargetOrganizations(): Organization[] {
     if (!this.selectedOrganization) {
@@ -545,19 +477,17 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   /**
-   * Migrate users from source to target organization
+   * Handle migration confirmation
    */
-  migrateUsers(): void {
-    if (!this.selectedOrganization || !this.migrateTargetOrgId) {
+  onMigrateUsers(targetOrgId: string): void {
+    if (!this.selectedOrganization) {
       return;
     }
 
     this.isMigrating = true;
 
     const sourceOrg = this.selectedOrganization;
-    const targetOrg = this.dataSource.data.find(
-      (org) => org._id === this.migrateTargetOrgId
-    );
+    const targetOrg = this.dataSource.data.find((org) => org._id === targetOrgId);
 
     if (!targetOrg) {
       this.isMigrating = false;
@@ -569,12 +499,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
     // Simulate API call with delay
     setTimeout(() => {
-      // Mock implementation: Transfer user count from source to target
       const targetCurrentCount = this.getUserCount(targetOrg);
       this.userCountMap.set(targetOrg._id, targetCurrentCount + userCount);
       this.userCountMap.set(sourceOrg._id, 0);
-
-      // Force table refresh by creating new array reference
       this.dataSource.data = [...this.dataSource.data];
 
       this.isMigrating = false;
@@ -582,9 +509,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         'Success!',
         `Migrated ${userCount} user(s) from ${sourceOrg.name} to ${targetOrg.name}.`
       );
-      this.migrateCertified = false;
       this.closeMigrateModal();
-    }, 1500); // 1.5 second delay to show progress bar
+    }, 1500);
   }
 
   ngOnDestroy(): void {
