@@ -19,6 +19,6 @@ export interface Organization {
   state?: string;
   domains: string[];
   isVerified: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt: string;
 }
