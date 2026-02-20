@@ -12,7 +12,13 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
-import { Organization, OrganizationLevel, OrganizationSector } from 'app/core/organization-module/organization.types';
+import {
+  Organization,
+  OrganizationLevel,
+  OrganizationSector,
+  ORGANIZATION_SECTORS,
+  ORGANIZATION_LEVELS,
+} from 'app/core/organization-module/organization.types';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
@@ -24,14 +30,14 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
   styleUrls: ['./organizations.component.scss'],
 })
 export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('list') listElement: ElementRef<HTMLElement>;
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild('stepper') stepper: MatStepper;
-  @ViewChild('editStepper') editStepper: MatStepper;
+  @ViewChild('list') listElement!: ElementRef<HTMLElement>;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('stepper') stepper!: MatStepper;
+  @ViewChild('editStepper') editStepper!: MatStepper;
 
   organizations: Organization[] = [];
-  dataSource: MatTableDataSource<Organization>;
+  dataSource!: MatTableDataSource<Organization>;
   displayedColumns: string[] = ['verified', 'name', 'users', 'learningObjects', 'sector', 'levels', 'actions'];
   isMobileTableView = false;
   isPhoneTableView = false;
@@ -39,8 +45,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   searchValue = '';
 
   // Map to store consistent user counts for each organization
-  private userCountMap: Map<string, number> = new Map();
-  private learningObjectCountMap: Map<string, number> = new Map();
+  private readonly userCountMap: Map<string, number> = new Map();
+  private readonly learningObjectCountMap: Map<string, number> = new Map();
 
   // Filter options
   selectedVerifiedFilters: Array<'verified' | 'unverified'> = [];
@@ -77,17 +83,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.updateViewportMode();
   }
 
-  sectorOptions: OrganizationSector[] = ['academia', 'government', 'industry', 'other'];
-  levelOptions: OrganizationLevel[] = [
-    'elementary',
-    'middle',
-    'high',
-    'community_college',
-    'undergraduate',
-    'graduate',
-    'post_graduate',
-    'training',
-  ];
+  sectorOptions: OrganizationSector[] = [...ORGANIZATION_SECTORS];
+  levelOptions: OrganizationLevel[] = [...ORGANIZATION_LEVELS];
 
   // Modal form fields
   editForm = {
@@ -102,9 +99,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   newDomain = '';
 
   constructor(
-    private toaster: ToastrOvenService,
-    private cd: ChangeDetectorRef,
-    private authService: AuthService,
+    private readonly toaster: ToastrOvenService,
+    private readonly cd: ChangeDetectorRef,
+    private readonly authService: AuthService,
   ) { }
 
   ngOnInit(): void {
@@ -200,8 +197,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'MA',
         domains: ['mit.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-01'),
-        updatedAt: new Date('2024-01-01'),
+        createdAt: '2024-01-01T00:00:00.000Z',
+        updatedAt: '2024-01-01T00:00:00.000Z',
       },
       {
         _id: '2',
@@ -213,8 +210,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CA',
         domains: ['stanford.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-02'),
-        updatedAt: new Date('2024-01-02'),
+        createdAt: '2024-01-02T00:00:00.000Z',
+        updatedAt: '2024-01-02T00:00:00.000Z',
       },
       {
         _id: '3',
@@ -226,8 +223,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'MA',
         domains: ['harvard.edu', 'mail.harvard.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-03'),
-        updatedAt: new Date('2024-01-03'),
+        createdAt: '2024-01-03T00:00:00.000Z',
+        updatedAt: '2024-01-03T00:00:00.000Z',
       },
       {
         _id: '4',
@@ -239,8 +236,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'MD',
         domains: ['nsa.gov'],
         isVerified: true,
-        createdAt: new Date('2024-01-04'),
-        updatedAt: new Date('2024-01-04'),
+        createdAt: '2024-01-04T00:00:00.000Z',
+        updatedAt: '2024-01-04T00:00:00.000Z',
       },
       {
         _id: '5',
@@ -252,8 +249,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'DC',
         domains: ['defense.gov', 'mil'],
         isVerified: true,
-        createdAt: new Date('2024-01-05'),
-        updatedAt: new Date('2024-01-05'),
+        createdAt: '2024-01-05T00:00:00.000Z',
+        updatedAt: '2024-01-05T00:00:00.000Z',
       },
       {
         _id: '6',
@@ -265,8 +262,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CA',
         domains: ['google.com', 'googlemail.com'],
         isVerified: true,
-        createdAt: new Date('2024-01-06'),
-        updatedAt: new Date('2024-01-06'),
+        createdAt: '2024-01-06T00:00:00.000Z',
+        updatedAt: '2024-01-06T00:00:00.000Z',
       },
       {
         _id: '7',
@@ -278,8 +275,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'WA',
         domains: ['microsoft.com'],
         isVerified: true,
-        createdAt: new Date('2024-01-07'),
-        updatedAt: new Date('2024-01-07'),
+        createdAt: '2024-01-07T00:00:00.000Z',
+        updatedAt: '2024-01-07T00:00:00.000Z',
       },
       {
         _id: '8',
@@ -291,8 +288,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CA',
         domains: ['apple.com'],
         isVerified: false,
-        createdAt: new Date('2024-01-08'),
-        updatedAt: new Date('2024-01-08'),
+        createdAt: '2024-01-08T00:00:00.000Z',
+        updatedAt: '2024-01-08T00:00:00.000Z',
       },
       {
         _id: '8a',
@@ -304,8 +301,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CA',
         domains: ['universityofcalifornia.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-08'),
-        updatedAt: new Date('2024-01-08'),
+        createdAt: '2024-01-08T00:00:00.000Z',
+        updatedAt: '2024-01-08T00:00:00.000Z',
       },
       {
         _id: '9',
@@ -317,8 +314,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CA',
         domains: ['berkeley.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-09'),
-        updatedAt: new Date('2024-01-09'),
+        createdAt: '2024-01-09T00:00:00.000Z',
+        updatedAt: '2024-01-09T00:00:00.000Z',
       },
       {
         _id: '10',
@@ -330,8 +327,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'PA',
         domains: ['cmu.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-10'),
-        updatedAt: new Date('2024-01-10'),
+        createdAt: '2024-01-10T00:00:00.000Z',
+        updatedAt: '2024-01-10T00:00:00.000Z',
       },
       {
         _id: '11',
@@ -343,8 +340,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'NJ',
         domains: ['princeton.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-11'),
-        updatedAt: new Date('2024-01-11'),
+        createdAt: '2024-01-11T00:00:00.000Z',
+        updatedAt: '2024-01-11T00:00:00.000Z',
       },
       {
         _id: '12',
@@ -356,8 +353,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CT',
         domains: ['yale.edu'],
         isVerified: false,
-        createdAt: new Date('2024-01-12'),
-        updatedAt: new Date('2024-01-12'),
+        createdAt: '2024-01-12T00:00:00.000Z',
+        updatedAt: '2024-01-12T00:00:00.000Z',
       },
       {
         _id: '13',
@@ -369,8 +366,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CA',
         domains: ['cisco.com'],
         isVerified: true,
-        createdAt: new Date('2024-01-13'),
-        updatedAt: new Date('2024-01-13'),
+        createdAt: '2024-01-13T00:00:00.000Z',
+        updatedAt: '2024-01-13T00:00:00.000Z',
       },
       {
         _id: '14',
@@ -382,8 +379,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'NY',
         domains: ['ibm.com'],
         isVerified: true,
-        createdAt: new Date('2024-01-14'),
-        updatedAt: new Date('2024-01-14'),
+        createdAt: '2024-01-14T00:00:00.000Z',
+        updatedAt: '2024-01-14T00:00:00.000Z',
       },
       {
         _id: '15',
@@ -395,8 +392,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'DC',
         domains: ['cisa.gov'],
         isVerified: true,
-        createdAt: new Date('2024-01-15'),
-        updatedAt: new Date('2024-01-15'),
+        createdAt: '2024-01-15T00:00:00.000Z',
+        updatedAt: '2024-01-15T00:00:00.000Z',
       },
       {
         _id: '16',
@@ -408,8 +405,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CA',
         domains: ['ucla.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-16'),
-        updatedAt: new Date('2024-01-16'),
+        createdAt: '2024-01-16T00:00:00.000Z',
+        updatedAt: '2024-01-16T00:00:00.000Z',
       },
       {
         _id: '17',
@@ -421,8 +418,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'MD',
         domains: ['jhu.edu'],
         isVerified: false,
-        createdAt: new Date('2024-01-17'),
-        updatedAt: new Date('2024-01-17'),
+        createdAt: '2024-01-17T00:00:00.000Z',
+        updatedAt: '2024-01-17T00:00:00.000Z',
       },
       {
         _id: '18',
@@ -434,8 +431,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'CA',
         domains: ['ccsf.edu'],
         isVerified: true,
-        createdAt: new Date('2024-01-18'),
-        updatedAt: new Date('2024-01-18'),
+        createdAt: '2024-01-18T00:00:00.000Z',
+        updatedAt: '2024-01-18T00:00:00.000Z',
       },
       {
         _id: '19',
@@ -447,8 +444,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: 'NC',
         domains: ['comptia.org'],
         isVerified: true,
-        createdAt: new Date('2024-01-19'),
-        updatedAt: new Date('2024-01-19'),
+        createdAt: '2024-01-19T00:00:00.000Z',
+        updatedAt: '2024-01-19T00:00:00.000Z',
       },
       {
         _id: '20',
@@ -457,11 +454,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         sector: 'academia',
         levels: ['undergraduate', 'graduate', 'post_graduate'],
         country: 'United Kingdom',
-        state: null,
+        state: undefined,
         domains: ['ox.ac.uk'],
         isVerified: false,
-        createdAt: new Date('2024-01-20'),
-        updatedAt: new Date('2024-01-20'),
+        createdAt: '2024-01-20T00:00:00.000Z',
+        updatedAt: '2024-01-20T00:00:00.000Z',
       },
     ];
   }
@@ -649,6 +646,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    * Format level name for display (replace underscores with spaces)
    */
   formatLevelName(level: string): string {
+    // eslint-disable-next-line prefer-regex-literals
     return level.replace(/_/g, ' ');
   }
 
@@ -687,8 +685,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         state: this.editForm.state || undefined,
         domains: this.editForm.domains,
         isVerified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       this.organizations.push(newOrg);
@@ -709,7 +707,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         country: this.editForm.country || undefined,
         state: this.editForm.state || undefined,
         domains: this.editForm.domains,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       };
 
       // Find and update in the organizations array
@@ -761,8 +759,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return;
     }
 
+    const selectedOrgId = this.selectedOrganization._id;
     this.organizations = this.organizations.filter(
-      (org) => org._id !== this.selectedOrganization._id
+      (org) => org._id !== selectedOrgId
     );
     this.dataSource.data = this.organizations;
 
@@ -928,8 +927,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     if (!this.selectedOrganization) {
       return [];
     }
+    const selectedOrgId = this.selectedOrganization._id;
     return this.organizations
-      .filter((org) => org._id !== this.selectedOrganization._id && org.isVerified)
+      .filter((org) => org._id !== selectedOrgId && org.isVerified)
       .sort((a, b) => a.name.localeCompare(b.name));
   }
 
