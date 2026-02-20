@@ -59,7 +59,6 @@ export class FeaturedComponent implements OnInit {
       this.loading = false;
       this.cd.detectChanges();
     } catch (e) {
-      console.log("caught error");
       console.log(e);
       this.loading = false;
       this.cd.detectChanges();
