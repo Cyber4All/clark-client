@@ -19,6 +19,7 @@ import {
   ORGANIZATION_SECTORS,
   ORGANIZATION_LEVELS,
 } from 'app/core/organization-module/organization.types';
+import { OrganizationService } from 'app/core/organization-module/organization.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
@@ -102,11 +103,12 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     private readonly toaster: ToastrOvenService,
     private readonly cd: ChangeDetectorRef,
     private readonly authService: AuthService,
+    private readonly organizationService: OrganizationService,
   ) { }
 
   ngOnInit(): void {
     this.updateViewportMode();
-    this.initializeMockData();
+    this.loadOrganizations();
     this.dataSource = new MatTableDataSource(this.organizations);
 
     // Custom filter predicate for searching and filtering
@@ -183,7 +185,36 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   /**
+   * Load organizations from API
+   */
+  private loadOrganizations(): void {
+    this.loading = true;
+    this.organizationService.searchOrganizations({})
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe({
+        next: (organizations) => {
+          this.organizations = organizations;
+          if (this.dataSource) {
+            this.dataSource.data = this.organizations;
+          }
+          this.loading = false;
+        },
+        error: (error) => {
+          console.error('Error loading organizations:', error);
+          this.toaster.error('Error', 'Failed to load organizations.');
+          this.loading = false;
+          // Fall back to empty array
+          this.organizations = [];
+          if (this.dataSource) {
+            this.dataSource.data = this.organizations;
+          }
+        }
+      });
+  }
+
+  /**
    * Initialize with mock organizations data
+   * @deprecated Use loadOrganizations() instead
    */
   private initializeMockData(): void {
     this.organizations = [
@@ -674,55 +705,71 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         return;
       }
 
-      // Create new organization
-      const newOrg: Organization = {
-        _id: (this.organizations.length + 1).toString(),
+      // Create new organization via API
+      this.loading = true;
+      this.organizationService.createOrganization({
         name: this.editForm.name,
-        normalizedName: this.editForm.name.toLowerCase().trim(),
         sector: this.editForm.sector,
         levels: this.editForm.levels,
         country: this.editForm.country || undefined,
         state: this.editForm.state || undefined,
-        domains: this.editForm.domains,
-        isVerified: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-
-      this.organizations.push(newOrg);
-      this.dataSource.data = this.organizations;
-      this.toaster.success('Success!', 'Organization created successfully.');
+      })
+        .pipe(takeUntil(this.componentDestroyed$))
+        .subscribe({
+          next: (response) => {
+            this.organizations.push(response.organization);
+            this.dataSource.data = this.organizations;
+            this.toaster.success('Success!', 'Organization created successfully.');
+            this.loading = false;
+            this.closeEditModal();
+            // Clear cache to ensure fresh data on next search
+            this.organizationService.clearCache();
+          },
+          error: (error) => {
+            console.error('Error creating organization:', error);
+            this.toaster.error('Error', 'Failed to create organization.');
+            this.loading = false;
+          }
+        });
     } else {
-      // Update existing organization
+      // Update existing organization via API
       if (!this.selectedOrganization) {
         return;
       }
 
-      const updatedOrg: Organization = {
-        ...this.selectedOrganization,
+      this.loading = true;
+      this.organizationService.updateOrganization(this.selectedOrganization._id, {
         name: this.editForm.name,
-        normalizedName: this.editForm.name.toLowerCase().trim(),
         sector: this.editForm.sector,
         levels: this.editForm.levels,
         country: this.editForm.country || undefined,
         state: this.editForm.state || undefined,
         domains: this.editForm.domains,
-        updatedAt: new Date().toISOString(),
-      };
-
-      // Find and update in the organizations array
-      const index = this.organizations.findIndex(
-        (org) => org._id === updatedOrg._id
-      );
-      if (index !== -1) {
-        this.organizations[index] = updatedOrg;
-        this.dataSource.data = this.organizations;
-      }
-
-      this.toaster.success('Success!', 'Organization updated successfully.');
+      })
+        .pipe(takeUntil(this.componentDestroyed$))
+        .subscribe({
+          next: (response) => {
+            // Find and update in the organizations array
+            const index = this.organizations.findIndex(
+              (org) => org._id === response.organization._id
+            );
+            if (index !== -1) {
+              this.organizations[index] = response.organization;
+              this.dataSource.data = this.organizations;
+            }
+            this.toaster.success('Success!', 'Organization updated successfully.');
+            this.loading = false;
+            this.closeEditModal();
+            // Clear cache to ensure fresh data on next search
+            this.organizationService.clearCache();
+          },
+          error: (error) => {
+            console.error('Error updating organization:', error);
+            this.toaster.error('Error', 'Failed to update organization.');
+            this.loading = false;
+          }
+        });
     }
-
-    this.closeEditModal();
   }
 
   /**
