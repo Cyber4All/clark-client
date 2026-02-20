@@ -5,13 +5,16 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 import {
     CreateOrganizationResponseSchema,
+    GetOrganizationByIdResponseSchema,
     OrganizationArraySchema,
+    SearchOrganizationsResponseSchema,
     SuggestDomainResponseSchema,
     UpdateOrganizationResponseSchema,
 } from './organization.schemas';
 import {
     CreateOrganizationRequest,
     CreateOrganizationResponse,
+    GetOrganizationByIdResponse,
     Organization,
     SearchOrganizationsRequest,
     SuggestDomainResponse,
@@ -97,9 +100,14 @@ export class OrganizationService {
 
         // Make request with validation and caching
         const request$ = this.http
-            .get<Organization[]>(this.organizationsPath(), { params })
+            .get<Organization[] | { organizations: Organization[] }>(this.organizationsPath(), { params })
             .pipe(
-                map(data => OrganizationArraySchema.parse(data)),
+                map((data): Organization[] => {
+                    if (Array.isArray(data)) {
+                        return OrganizationArraySchema.parse(data);
+                    }
+                    return SearchOrganizationsResponseSchema.parse(data).organizations;
+                }),
                 catchError(error => {
                     // Evict cache on error
                     this.searchCache.delete(cacheKey);
@@ -135,9 +143,9 @@ export class OrganizationService {
 
         // Make request with validation and caching
         const request$ = this.http
-            .get<SuggestDomainResponse>(this.suggestPath(), { params })
+            .get(this.suggestPath(), { params })
             .pipe(
-                map(data => SuggestDomainResponseSchema.parse(data)),
+                map((data): SuggestDomainResponse => SuggestDomainResponseSchema.parse(data)),
                 catchError(error => {
                     // Evict cache on error
                     this.suggestCache.delete(cacheKey);
@@ -179,6 +187,21 @@ export class OrganizationService {
             .patch<UpdateOrganizationResponse>(this.updatePath(id), request)
             .pipe(
                 map(data => UpdateOrganizationResponseSchema.parse(data)),
+                catchError(error => throwError(() => error))
+            );
+    }
+
+    /**
+     * Retrieve a single organization by ID
+     *
+     * @param id Organization ID
+     * @returns Observable of organization
+     */
+    getOrganizationById(id: string): Observable<Organization> {
+        return this.http
+            .get<GetOrganizationByIdResponse>(this.updatePath(id))
+            .pipe(
+                map((data): Organization => GetOrganizationByIdResponseSchema.parse(data).organization),
                 catchError(error => throwError(() => error))
             );
     }

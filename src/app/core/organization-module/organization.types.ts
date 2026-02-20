@@ -50,7 +50,6 @@ export interface Organization {
 /**
  * Request interfaces (what client sends to API)
  */
-
 export interface SearchOrganizationsRequest {
     text?: string;
     sector?: OrganizationSector;
@@ -84,7 +83,7 @@ export interface UpdateOrganizationRequest {
  */
 
 export interface SuggestDomainResponse {
-    organization: Organization | null;
+    organization?: Organization | null;
 }
 
 export interface CreateOrganizationResponse {
@@ -92,5 +91,9 @@ export interface CreateOrganizationResponse {
 }
 
 export interface UpdateOrganizationResponse {
+    organization: Organization;
+}
+
+export interface GetOrganizationByIdResponse {
     organization: Organization;
 }

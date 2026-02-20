@@ -46,7 +46,7 @@
 <ng-template #resultsTemplate>
   <ng-container *ngIf="searchResults && searchResults.length; else noResultsTemplate">
     <virtual-scroller #scroll [bufferAmount]="5" [enableUnequalChildrenSizes]="true" [items]="searchResults">
-      <li class="org-dropdown_list-item" *ngFor="let org of searchResults" (click)="selectOrg(org)">
+      <li class="org-dropdown_list-item" *ngFor="let org of scroll.viewPortItems" (click)="selectOrg(org)">
         {{ org.name }}
       </li>
       <div class="other-box" (click)="selectOrg()">
