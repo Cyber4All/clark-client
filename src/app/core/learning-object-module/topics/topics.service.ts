@@ -10,8 +10,22 @@ import { TOPICS_ROUTES } from './topics.routes';
 })
 export class TopicsService {
   private headers = new HttpHeaders();
+  private topicsMap: Map<string, string> = new Map();
 
   constructor(private http: HttpClient) {
+  }
+
+  async getFromTopicsMap(topicId?: string) {
+    if (this.topicsMap.size === 0) {
+      const topics = await this.getTopics(); // grabs all tags
+      if (topics) {
+        topics.forEach(topic => {
+          this.topicsMap.set(topic._id, topic.name);
+        });
+      } 
+    }
+
+    return topicId ? this.topicsMap.get(topicId) : "";    
   }
 
   /**
