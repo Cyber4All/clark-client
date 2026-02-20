@@ -5,6 +5,8 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, shareReplay } from 'rxjs/operators';
 import {
     CreateOrganizationResponseSchema,
+    GetOrganizationByIdResponseSchema,
+    OrganizationSchema,
     OrganizationArraySchema,
     SuggestDomainResponseSchema,
     UpdateOrganizationResponseSchema,
@@ -12,6 +14,7 @@ import {
 import {
     CreateOrganizationRequest,
     CreateOrganizationResponse,
+    GetOrganizationByIdResponse,
     Organization,
     SearchOrganizationsRequest,
     SuggestDomainResponse,
@@ -135,9 +138,9 @@ export class OrganizationService {
 
         // Make request with validation and caching
         const request$ = this.http
-            .get<SuggestDomainResponse>(this.suggestPath(), { params })
+            .get(this.suggestPath(), { params })
             .pipe(
-                map(data => SuggestDomainResponseSchema.parse(data)),
+                map((data): SuggestDomainResponse => SuggestDomainResponseSchema.parse(data)),
                 catchError(error => {
                     // Evict cache on error
                     this.suggestCache.delete(cacheKey);
@@ -184,6 +187,26 @@ export class OrganizationService {
     }
 
     /**
+     * Retrieve a single organization by ID
+     *
+     * @param id Organization ID
+     * @returns Observable of organization
+     */
+    getOrganizationById(id: string): Observable<Organization> {
+        return this.http
+            .get<Organization | GetOrganizationByIdResponse>(this.updatePath(id))
+            .pipe(
+                map((data): Organization => {
+                    if (this.isGetOrganizationByIdResponse(data)) {
+                        return OrganizationSchema.parse(data.organization);
+                    }
+                    return OrganizationSchema.parse(data);
+                }),
+                catchError(error => throwError(() => error))
+            );
+    }
+
+    /**
      * Clear all caches (useful after create/update operations)
      */
     clearCache(): void {
@@ -217,5 +240,11 @@ export class OrganizationService {
             return normalized;
         }
         return normalized.substring(atIndex);
+    }
+
+    private isGetOrganizationByIdResponse(
+        data: Organization | GetOrganizationByIdResponse
+    ): data is GetOrganizationByIdResponse {
+        return GetOrganizationByIdResponseSchema.safeParse(data).success;
     }
 }

@@ -20,13 +20,13 @@
     <div class="overview-card">
       <div class="overview-card__label">Verified</div>
       <div class="overview-card__value">
-        {{ dataSource.filteredData.filter(o => o.isVerified).length }}
+        {{ getVerifiedCount() }}
       </div>
     </div>
     <div class="overview-card">
       <div class="overview-card__label">Unverified</div>
       <div class="overview-card__value">
-        {{ dataSource.filteredData.filter(o => !o.isVerified).length }}
+        {{ getUnverifiedCount() }}
       </div>
     </div>
     <div class="overview-card">

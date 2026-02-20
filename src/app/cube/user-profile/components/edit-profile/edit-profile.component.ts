@@ -15,7 +15,7 @@ import { UserService } from 'app/core/user-module/user.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Organization } from '../../../../../entity';
+import { Organization } from 'app/core/organization-module/organization.types';
 import { OrganizationService } from '../../../../core/utility-module/organization.service';
 
 @Component({

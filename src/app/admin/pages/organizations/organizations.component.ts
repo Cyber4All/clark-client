@@ -71,6 +71,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     if (event.code === 'Escape') {
       this.displayEditModal = false;
       this.displayDeleteModal = false;
+      this.displayMigrateModal = false;
     }
   }
 
@@ -457,6 +458,14 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     return this.dataSource.data
       .filter((org) => org.sector === 'other')
       .reduce((total, org) => total + this.getUserCount(org), 0);
+  }
+
+  getVerifiedCount(): number {
+    return this.dataSource.filteredData.filter((org) => org.isVerified).length;
+  }
+
+  getUnverifiedCount(): number {
+    return this.dataSource.filteredData.filter((org) => !org.isVerified).length;
   }
 
   /**

@@ -42,7 +42,7 @@ export const OrganizationArraySchema = z.array(OrganizationSchema);
  */
 
 export const SuggestDomainResponseSchema = z.object({
-    organization: OrganizationSchema.nullable(),
+    organization: z.union([OrganizationSchema, z.null()]),
 });
 
 export const CreateOrganizationResponseSchema = z.object({
@@ -50,5 +50,9 @@ export const CreateOrganizationResponseSchema = z.object({
 });
 
 export const UpdateOrganizationResponseSchema = z.object({
+    organization: OrganizationSchema,
+});
+
+export const GetOrganizationByIdResponseSchema = z.object({
     organization: OrganizationSchema,
 });
