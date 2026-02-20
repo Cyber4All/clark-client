@@ -1,14 +1,12 @@
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { environment } from '@env/environment';
+import { CookieService } from 'ngx-cookie-service';
+import { Observable } from 'rxjs';
 
 /**
  * HTTP interceptor that adds authentication and credentials to API requests
- * FIXED: Properly sets withCredentials as request option (not header)
- * and uses a clean allowlist for public endpoints
  */
 @Injectable({
   providedIn: 'root'
@@ -24,7 +22,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     `${environment.cardUrl}/resources`,
   ];
 
-  constructor(private readonly cookie: CookieService) {}
+  constructor(private readonly cookie: CookieService) { }
 
   intercept(
     request: HttpRequest<any>,
@@ -32,7 +30,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     // Check if this is an API request
     const isApiRequest = this.isApiRequest(request.url);
-    
+
     if (!isApiRequest) {
       // Not an API request, pass through unchanged
       return next.handle(request);
@@ -40,10 +38,10 @@ export class HttpConfigInterceptor implements HttpInterceptor {
 
     // Read token fresh for each request
     const token = this.cookie.get('presence');
-    
+
     // Check if this is a public endpoint
     const isPublicEndpoint = this.isPublicEndpoint(request.url);
-    
+
     // Clone request with withCredentials (MUST be set as option, not header)
     let updatedRequest = request.clone({
       withCredentials: true,
