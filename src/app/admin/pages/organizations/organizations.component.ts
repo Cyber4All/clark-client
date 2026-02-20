@@ -22,6 +22,7 @@ import {
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { OrganizationFormData } from './organization-edit-modal/organization-edit-modal.component';
 
 @Component({
   selector: 'clark-organizations',
@@ -33,7 +34,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('stepper') stepper!: MatStepper;
-  @ViewChild('editStepper') editStepper!: MatStepper;
 
   dataSource!: MatTableDataSource<Organization>;
   displayedColumns: string[] = ['verified', 'name', 'users', 'learningObjects', 'sector', 'levels', 'actions'];
@@ -55,14 +55,12 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   displayDeleteModal = false;
   displayMigrateModal = false;
   isCreateMode = false;
-  displayMigrateConfirmModal = false;
   selectedOrganization: Organization | null = null;
   migrateTargetOrgId = '';
   migrateSearchTerm = '';
   filteredTargetOrganizations: Organization[] = [];
   isMigrating = false;
   migrateCertified = false;
-  editCertified = false;
 
   loading = false;
   userSearchInput$: Subject<string> = new Subject();
@@ -81,20 +79,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.updateViewportMode();
   }
 
-  sectorOptions: OrganizationSector[] = [...ORGANIZATION_SECTORS];
-  levelOptions: OrganizationLevel[] = [...ORGANIZATION_LEVELS];
-
-  // Modal form fields
-  editForm = {
-    name: '',
-    sector: 'academia' as OrganizationSector,
-    levels: [] as OrganizationLevel[],
-    country: '',
-    state: '',
-    domains: [] as string[],
-  };
-
-  newDomain = '';
+  readonly sectorOptions: OrganizationSector[] = [...ORGANIZATION_SECTORS];
+  readonly levelOptions: OrganizationLevel[] = [...ORGANIZATION_LEVELS];
 
   constructor(
     private readonly toaster: ToastrOvenService,
@@ -266,27 +252,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.applyFilter();
   }
 
-  getVerifiedFilterLabel(): string {
-    if (this.selectedVerifiedFilters.length === 0) {
-      return 'Verified';
-    }
-    return `Verified (${this.selectedVerifiedFilters.length})`;
-  }
-
-  getSectorFilterLabel(): string {
-    if (this.selectedSectorFilters.length === 0) {
-      return 'Sector';
-    }
-    return `Sector (${this.selectedSectorFilters.length})`;
-  }
-
-  getLevelFilterLabel(): string {
-    if (this.selectedLevelFilters.length === 0) {
-      return 'Level';
-    }
-    return `Level (${this.selectedLevelFilters.length})`;
-  }
-
   /**
    * Handle filter query from clark-admin-filter-search component
    */
@@ -309,47 +274,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   openEditModal(org: Organization): void {
     this.isCreateMode = false;
     this.selectedOrganization = { ...org };
-    this.editForm = {
-      name: org.name,
-      sector: org.sector,
-      levels: [...org.levels],
-      country: org.country || '',
-      state: org.state || '',
-      domains: [...org.domains],
-    };
-    this.newDomain = '';
-    this.editCertified = false;
     this.displayEditModal = true;
-
-    // Reset stepper to first step
-    setTimeout(() => {
-      if (this.editStepper) {
-        this.editStepper.reset();
-      }
-    });
   }
 
   openCreateModal(): void {
     this.isCreateMode = true;
     this.selectedOrganization = null;
-    this.editForm = {
-      name: '',
-      sector: 'academia',
-      levels: [],
-      country: '',
-      state: '',
-      domains: [],
-    };
-    this.newDomain = '';
-    this.editCertified = false;
     this.displayEditModal = true;
-
-    // Reset stepper to first step
-    setTimeout(() => {
-      if (this.editStepper) {
-        this.editStepper.reset();
-      }
-    });
   }
 
   /**
@@ -358,126 +289,89 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   closeEditModal(): void {
     this.displayEditModal = false;
     this.selectedOrganization = null;
-    this.newDomain = '';
-    this.editCertified = false;
     this.isCreateMode = false;
   }
 
   /**
-   * Add domain to the list
+   * Get existing organization names for duplicate check
    */
-  addDomain(): void {
-    const domain = this.newDomain.trim();
-    if (domain && !this.editForm.domains.includes(domain)) {
-      this.editForm.domains.push(domain);
-      this.newDomain = '';
-    }
+  getExistingNames(): string[] {
+    return this.dataSource.data.map(org => org.normalizedName);
   }
 
   /**
-   * Remove domain from the list
+   * Handle save from edit modal
    */
-  removeDomain(index: number): void {
-    this.editForm.domains.splice(index, 1);
-  }
-
-  /**
-   * Format level name for display (replace underscores with spaces)
-   */
-  formatLevelName(level: string): string {
-    // eslint-disable-next-line prefer-regex-literals
-    return level.replace(/_/g, ' ');
-  }
-
-  /**
-   * Check if organization name already exists
-   */
-  isNameDuplicate(): boolean {
-    if (!this.editForm.name || !this.isCreateMode) {
-      return false;
-    }
-    const normalizedName = this.editForm.name.toLowerCase().trim();
-    return this.dataSource.data.some(
-      (org) => org.normalizedName === normalizedName
-    );
-  }
-
-  /**
-   * Save organization changes or create new organization
-   */
-  saveOrganization(): void {
+  onSaveOrganization(formData: OrganizationFormData): void {
     if (this.isCreateMode) {
-      // Validate unique name
-      if (!this.editForm.name || this.isNameDuplicate()) {
-        this.toaster.error('Error', 'Organization name is required and must be unique.');
-        return;
-      }
-
-      // Create new organization via API
-      this.loading = true;
-      this.organizationService.createOrganization({
-        name: this.editForm.name,
-        sector: this.editForm.sector,
-        levels: this.editForm.levels,
-        country: this.editForm.country || undefined,
-        state: this.editForm.state || undefined,
-      })
-        .pipe(takeUntil(this.componentDestroyed$))
-        .subscribe({
-          next: (response) => {
-            this.dataSource.data = [...this.dataSource.data, response.organization];
-            this.toaster.success('Success!', 'Organization created successfully.');
-            this.loading = false;
-            this.closeEditModal();
-            // Clear cache to ensure fresh data on next search
-            this.organizationService.clearCache();
-          },
-          error: (error) => {
-            console.error('Error creating organization:', error);
-            this.toaster.error('Error', 'Failed to create organization.');
-            this.loading = false;
-          }
-        });
+      this.createOrganization(formData);
     } else {
-      // Update existing organization via API
-      if (!this.selectedOrganization) {
-        return;
-      }
-
-      this.loading = true;
-      this.organizationService.updateOrganization(this.selectedOrganization._id, {
-        name: this.editForm.name,
-        sector: this.editForm.sector,
-        levels: this.editForm.levels,
-        country: this.editForm.country || undefined,
-        state: this.editForm.state || undefined,
-        domains: this.editForm.domains,
-      })
-        .pipe(takeUntil(this.componentDestroyed$))
-        .subscribe({
-          next: (response) => {
-            // Find and update in the dataSource
-            const index = this.dataSource.data.findIndex(
-              (org) => org._id === response.organization._id
-            );
-            if (index !== -1) {
-              const updatedData = [...this.dataSource.data];
-              updatedData[index] = response.organization;
-              this.dataSource.data = updatedData;
-            }
-            this.toaster.success('Success!', 'Organization updated successfully.');
-            this.loading = false;
-            this.closeEditModal();
-            // Clear cache to ensure fresh data on next search
-            this.organizationService.clearCache();
-          },
-          error: (error) => {
-            console.error('Error updating organization:', error);
-            this.toaster.error('Error', 'Failed to update organization.');
-            this.loading = false;
-          }
-        });
+      this.updateOrganization(formData);
     }
+  }
+
+  private createOrganization(formData: OrganizationFormData): void {
+    this.loading = true;
+    this.organizationService.createOrganization({
+      name: formData.name,
+      sector: formData.sector,
+      levels: formData.levels,
+      country: formData.country || undefined,
+      state: formData.state || undefined,
+    })
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe({
+        next: (response) => {
+          this.dataSource.data = [...this.dataSource.data, response.organization];
+          this.toaster.success('Success!', 'Organization created successfully.');
+          this.loading = false;
+          this.closeEditModal();
+          this.organizationService.clearCache();
+        },
+        error: (error) => {
+          console.error('Error creating organization:', error);
+          this.toaster.error('Error', 'Failed to create organization.');
+          this.loading = false;
+        }
+      });
+  }
+
+  private updateOrganization(formData: OrganizationFormData): void {
+    if (!this.selectedOrganization) {
+      return;
+    }
+
+    this.loading = true;
+    this.organizationService.updateOrganization(this.selectedOrganization._id, {
+      name: formData.name,
+      sector: formData.sector,
+      levels: formData.levels,
+      country: formData.country || undefined,
+      state: formData.state || undefined,
+      domains: formData.domains,
+    })
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe({
+        next: (response) => {
+          const index = this.dataSource.data.findIndex(
+            (org) => org._id === response.organization._id
+          );
+          if (index !== -1) {
+            const updatedData = [...this.dataSource.data];
+            updatedData[index] = response.organization;
+            this.dataSource.data = updatedData;
+          }
+          this.toaster.success('Success!', 'Organization updated successfully.');
+          this.loading = false;
+          this.closeEditModal();
+          this.organizationService.clearCache();
+        },
+        error: (error) => {
+          console.error('Error updating organization:', error);
+          this.toaster.error('Error', 'Failed to update organization.');
+          this.loading = false;
+        }
+      });
   }
 
   /**
@@ -543,50 +437,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     return this.learningObjectCountMap.get(org._id) || 0;
   }
 
-  getFilteredOrganizations(): Organization[] {
-    if (!this.dataSource) {
-      return [];
-    }
-    return this.dataSource.filteredData;
-  }
-
-  getOverviewTotalOrganizations(): number {
-    return this.dataSource.data.length;
-  }
-
-  getOverviewVerifiedCount(): number {
-    return this.dataSource.data.filter((org) => org.isVerified).length;
-  }
-
-  getOverviewUnverifiedCount(): number {
-    return this.dataSource.data.filter((org) => !org.isVerified).length;
-  }
-
-  getOverviewOtherUserTotal(): number {
+  getTotalOtherUsers(): number {
     return this.dataSource.data
-      .filter((organization) => organization.sector === 'other')
-      .reduce((total, organization) => total + this.getUserCount(organization), 0);
-  }
-
-  getDeleteDisabledTooltip(organization: Organization): string {
-    if (this.getUserCount(organization) > 0) {
-      return 'Organizations must have 0 users before they can be deleted.';
-    }
-    return '';
+      .filter((org) => org.sector === 'other')
+      .reduce((total, org) => total + this.getUserCount(org), 0);
   }
 
   /**
-   * Get visible levels (max 3) and remaining count
+   * Format level name for display (replace underscores with spaces)
    */
-  getVisibleLevels(levels: OrganizationLevel[]): OrganizationLevel[] {
-    return levels.slice(0, 3);
-  }
-
-  /**
-   * Get count of remaining levels after the first 3
-   */
-  getRemainingLevelsCount(levels: OrganizationLevel[]): number {
-    return Math.max(0, levels.length - 3);
+  formatLevelName(level: string): string {
+    // eslint-disable-next-line prefer-regex-literals
+    return level.replace(/_/g, ' ');
   }
 
   /**
@@ -612,12 +474,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.migrateCertified = false;
   }
 
-  /**
-   * Close migrate confirmation modal
-   */
-  closeMigrateConfirmModal(): void {
-    this.displayMigrateConfirmModal = false;
-  }
+
 
   /**
    * Filter target organizations based on search term

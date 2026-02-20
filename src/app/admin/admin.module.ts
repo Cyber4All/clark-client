@@ -16,6 +16,7 @@ import { PrivilegesListComponent } from './components/user-privileges/privileges
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
 import { UserSearchWrapperComponent } from './components/user-search-wrapper/user-search-wrapper.component';
 import { LearningObjectsComponent } from './pages/learning-objects/learning-objects.component';
+import { OrganizationEditModalComponent } from './pages/organizations/organization-edit-modal/organization-edit-modal.component';
 import { OrganizationsComponent } from './pages/organizations/organizations.component';
 import { UsersComponent } from './pages/users/users.component';
 // eslint-disable-next-line max-len
@@ -58,6 +59,7 @@ import { FeaturedComponent } from './pages/featured/featured.component';
     LearningObjectsComponent,
     UsersComponent,
     OrganizationsComponent,
+    OrganizationEditModalComponent,
     SearchBarComponent,
     ContentWrapperComponent,
     FilterSearchComponent,

@@ -2,26 +2,32 @@
   <div page-title>
     <div class="title-stack">
       <div>Organizations</div>
-      <span class="title-subtext">Review and manage organization verification status</span>
+      <span class="title-subtext"
+        >Review and manage organization verification status</span
+      >
     </div>
   </div>
 
   <div class="overview-row" search>
     <div class="overview-card">
       <div class="overview-card__label">Total</div>
-      <div class="overview-card__value">{{ getOverviewTotalOrganizations() }}</div>
+      <div class="overview-card__value">{{ dataSource.data.length }}</div>
     </div>
     <div class="overview-card">
       <div class="overview-card__label">Verified</div>
-      <div class="overview-card__value">{{ getOverviewVerifiedCount() }}</div>
+      <div class="overview-card__value">
+        {{ dataSource.filteredData.filter(o => o.isVerified).length }}
+      </div>
     </div>
     <div class="overview-card">
       <div class="overview-card__label">Unverified</div>
-      <div class="overview-card__value">{{ getOverviewUnverifiedCount() }}</div>
+      <div class="overview-card__value">
+        {{ dataSource.filteredData.filter(o => !o.isVerified).length }}
+      </div>
     </div>
     <div class="overview-card">
       <div class="overview-card__label">Users in "Other"</div>
-      <div class="overview-card__value">{{ getOverviewOtherUserTotal() }}</div>
+      <div class="overview-card__value">{{ getTotalOtherUsers() }}</div>
     </div>
   </div>
 
@@ -42,7 +48,12 @@
         [ngClass]="{ active: selectedVerifiedFilters.length > 0 }"
         [matMenuTriggerFor]="verifiedMenu"
       >
-        {{ getVerifiedFilterLabel() }} <i class="far fa-chevron-down"></i>
+        {{
+          selectedVerifiedFilters.length === 0
+            ? 'Verified'
+            : 'Verified (' + selectedVerifiedFilters.length + ')'
+        }}
+        <i class="far fa-chevron-down"></i>
       </button>
 
       <button
@@ -51,7 +62,12 @@
         [ngClass]="{ active: selectedSectorFilters.length > 0 }"
         [matMenuTriggerFor]="sectorMenu"
       >
-        {{ getSectorFilterLabel() }} <i class="far fa-chevron-down"></i>
+        {{
+          selectedSectorFilters.length === 0
+            ? 'Sector'
+            : 'Sector (' + selectedSectorFilters.length + ')'
+        }}
+        <i class="far fa-chevron-down"></i>
       </button>
 
       <button
@@ -60,7 +76,12 @@
         [ngClass]="{ active: selectedLevelFilters.length > 0 }"
         [matMenuTriggerFor]="levelMenu"
       >
-        {{ getLevelFilterLabel() }} <i class="far fa-chevron-down"></i>
+        {{
+          selectedLevelFilters.length === 0
+            ? 'Level'
+            : 'Level (' + selectedLevelFilters.length + ')'
+        }}
+        <i class="far fa-chevron-down"></i>
       </button>
 
       <button
@@ -145,14 +166,19 @@
               Learning Objects
             </th>
             <td mat-cell *matCellDef="let organization">
-              <span class="count-value">{{ getLearningObjectCount(organization) }}</span>
+              <span class="count-value">{{
+                getLearningObjectCount(organization)
+              }}</span>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="sector">
             <th mat-header-cell *matHeaderCellDef>Sector</th>
             <td mat-cell *matCellDef="let organization">
-              <span class="sector-badge" [ngClass]="'sector-' + organization.sector">
+              <span
+                class="sector-badge"
+                [ngClass]="'sector-' + organization.sector"
+              >
                 {{ organization.sector | titlecase }}
               </span>
             </td>
@@ -164,15 +190,15 @@
               <div class="levels-list">
                 <span
                   class="level-pill"
-                  *ngFor="let level of getVisibleLevels(organization.levels)"
+                  *ngFor="let level of organization.levels.slice(0, 3)"
                 >
                   {{ formatLevelName(level) | titlecase }}
                 </span>
                 <span
-                  *ngIf="getRemainingLevelsCount(organization.levels) > 0"
+                  *ngIf="organization.levels.length > 3"
                   class="level-pill level-pill--more"
                 >
-                  +{{ getRemainingLevelsCount(organization.levels) }}
+                  +{{ organization.levels.length - 3 }}
                 </span>
               </div>
             </td>
@@ -205,7 +231,11 @@
                     <mat-icon>sync_alt</mat-icon>
                   </button>
                   <span
-                    [matTooltip]="getDeleteDisabledTooltip(organization)"
+                    [matTooltip]="
+                      getUserCount(organization) > 0
+                        ? 'Organizations must have 0 users before they can be deleted.'
+                        : ''
+                    "
                     [matTooltipDisabled]="getUserCount(organization) === 0"
                   >
                     <button
@@ -243,7 +273,10 @@
           ></tr>
         </table>
       </div>
-      <div class="table-toolbar table-toolbar--bottom" *ngIf="isMobileTableView">
+      <div
+        class="table-toolbar table-toolbar--bottom"
+        *ngIf="isMobileTableView"
+      >
         <mat-paginator
           class="organizations-paginator"
           [pageSizeOptions]="[10, 25, 50, 100]"
@@ -303,7 +336,7 @@
     <div class="filter-menu-content" (click)="$event.stopPropagation()">
       <mat-checkbox
         class="filter-menu-checkbox"
-      *ngFor="let sector of sectorOptions"
+        *ngFor="let sector of sectorOptions"
         [checked]="selectedSectorFilters.includes(sector)"
         (change)="toggleSectorFilter(sector)"
       >
@@ -316,7 +349,7 @@
     <div class="filter-menu-content" (click)="$event.stopPropagation()">
       <mat-checkbox
         class="filter-menu-checkbox"
-      *ngFor="let level of levelOptions"
+        *ngFor="let level of levelOptions"
         [checked]="selectedLevelFilters.includes(level)"
         (change)="toggleLevelFilter(level)"
       >
@@ -343,164 +376,18 @@
   </ng-template>
 </clark-admin-content-wrapper>
 
-<clark-popup *ngIf="displayEditModal" (closed)="closeEditModal()">
-  <div #popupInner class="modal-container edit-modal">
-    <div class="modal-title">
-      {{ isCreateMode ? 'Create Organization' : 'Edit Organization' }}
-    </div>
-    <form class="material-form">
-      <mat-vertical-stepper [linear]="!isCreateMode" #editStepper>
-        <!-- Step 1: General Information -->
-        <mat-step>
-          <ng-template matStepLabel>General Information</ng-template>
-          <div class="step-content">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Name</mat-label>
-              <input
-                matInput
-                [(ngModel)]="editForm.name"
-                name="name"
-                required
-                #nameInput="ngModel"
-              />
-              <mat-error
-                *ngIf="nameInput.invalid && nameInput.errors?.['required']"
-              >
-                Name is required
-              </mat-error>
-            </mat-form-field>
-            <div
-              class="duplicate-error"
-              *ngIf="isCreateMode && editForm.name && isNameDuplicate()"
-            >
-              This organization name already exists
-            </div>
+<!-- Organization Edit Modal -->
+<clark-organization-edit-modal
+  [isVisible]="displayEditModal"
+  [isCreateMode]="isCreateMode"
+  [organization]="selectedOrganization"
+  [userCount]="selectedOrganization ? getUserCount(selectedOrganization) : 0"
+  [existingNames]="getExistingNames()"
+  (closed)="closeEditModal()"
+  (save)="onSaveOrganization($event)"
+></clark-organization-edit-modal>
 
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Sector</mat-label>
-              <mat-select [(ngModel)]="editForm.sector" name="sector">
-                <mat-option
-                  *ngFor="let sector of sectorOptions"
-                  [value]="sector"
-                >
-                  {{ sector | titlecase }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Levels</mat-label>
-              <mat-select
-                [(ngModel)]="editForm.levels"
-                name="levels"
-                multiple
-                [disabled]="editForm.sector !== 'academia'"
-              >
-                <mat-option *ngFor="let level of levelOptions" [value]="level">
-                  {{ formatLevelName(level) | titlecase }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-
-            <div class="domains-section">
-              <h4 class="subsection-header">Domains</h4>
-
-              <mat-form-field appearance="outline" class="full-width">
-                <mat-label>Add Domain</mat-label>
-                <input
-                  matInput
-                  [(ngModel)]="newDomain"
-                  name="newDomain"
-                  placeholder="e.g., example.edu"
-                  (keyup.enter)="addDomain()"
-                />
-              </mat-form-field>
-
-              <div class="domain-list" *ngIf="editForm.domains.length > 0">
-                <mat-chip-list>
-                  <mat-chip
-                    *ngFor="let domain of editForm.domains; let i = index"
-                    [removable]="true"
-                    (removed)="removeDomain(i)"
-                  >
-                    {{ domain }}
-                    <mat-icon matChipRemove>cancel</mat-icon>
-                  </mat-chip>
-                </mat-chip-list>
-              </div>
-              <p class="no-domains" *ngIf="editForm.domains.length === 0">
-                No domains added yet
-              </p>
-            </div>
-          </div>
-        </mat-step>
-
-        <!-- Step 2: Geographic Information -->
-        <mat-step>
-          <ng-template matStepLabel>Geographic Information</ng-template>
-          <div class="step-content">
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>State</mat-label>
-              <input matInput [(ngModel)]="editForm.state" name="state" />
-            </mat-form-field>
-
-            <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Country</mat-label>
-              <input matInput [(ngModel)]="editForm.country" name="country" />
-            </mat-form-field>
-
-            <!-- Create button for create mode -->
-            <div class="confirm-actions" *ngIf="isCreateMode">
-              <button
-                type="button"
-                mat-raised-button
-                color="primary"
-                [disabled]="!editForm.name || isNameDuplicate()"
-                (click)="saveOrganization()"
-              >
-                Create Organization
-                <mat-icon>add</mat-icon>
-              </button>
-            </div>
-          </div>
-        </mat-step>
-
-        <!-- Step 3: Confirmation (Edit Mode Only) -->
-        <mat-step *ngIf="!isCreateMode">
-          <ng-template matStepLabel>Confirm Changes</ng-template>
-          <div class="step-content">
-            <p class="confirm-text">
-              Are you sure you want to save these changes? This will affect
-              <strong>{{ getUserCount(selectedOrganization) }} user(s)</strong>.
-            </p>
-
-            <mat-checkbox
-              [(ngModel)]="editCertified"
-              name="editCertified"
-              class="certification-checkbox"
-            >
-              I confirm this action is correct
-            </mat-checkbox>
-
-            <div class="confirm-actions">
-              <button
-                type="button"
-                mat-raised-button
-                color="primary"
-                [disabled]="!editCertified"
-                (click)="saveOrganization()"
-              >
-                Save Changes
-                <mat-icon>check</mat-icon>
-              </button>
-            </div>
-          </div>
-        </mat-step>
-      </mat-vertical-stepper>
-    </form>
-  </div>
-</clark-popup>
-
+<!-- Delete Confirmation Modal -->
 <clark-popup *ngIf="displayDeleteModal" (closed)="closeDeleteModal()">
   <div #popupInner class="modal-container center">
     <div class="modal-title">Are You Sure?</div>
