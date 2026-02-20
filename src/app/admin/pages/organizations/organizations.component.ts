@@ -1,26 +1,24 @@
 import {
   AfterViewInit,
-  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
   OnDestroy,
   OnInit,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
+import { OrganizationService } from 'app/core/organization-module/organization.service';
 import {
   Organization,
+  ORGANIZATION_LEVELS,
+  ORGANIZATION_SECTORS,
   OrganizationLevel,
   OrganizationSector,
-  ORGANIZATION_SECTORS,
-  ORGANIZATION_LEVELS,
 } from 'app/core/organization-module/organization.types';
-import { OrganizationService } from 'app/core/organization-module/organization.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -37,7 +35,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild('editStepper') editStepper!: MatStepper;
 
-  organizations: Organization[] = [];
   dataSource!: MatTableDataSource<Organization>;
   displayedColumns: string[] = ['verified', 'name', 'users', 'learningObjects', 'sector', 'levels', 'actions'];
   isMobileTableView = false;
@@ -101,15 +98,14 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   constructor(
     private readonly toaster: ToastrOvenService,
-    private readonly cd: ChangeDetectorRef,
-    private readonly authService: AuthService,
     private readonly organizationService: OrganizationService,
   ) { }
 
   ngOnInit(): void {
     this.updateViewportMode();
+    // Initialize dataSource with empty array
+    this.dataSource = new MatTableDataSource<Organization>([]);
     this.loadOrganizations();
-    this.dataSource = new MatTableDataSource(this.organizations);
 
     // Custom filter predicate for searching and filtering
     this.dataSource.filterPredicate = (data: Organization, filter: string) => {
@@ -193,10 +189,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (organizations) => {
-          this.organizations = organizations;
-          if (this.dataSource) {
-            this.dataSource.data = this.organizations;
-          }
+          this.dataSource.data = organizations;
           this.loading = false;
         },
         error: (error) => {
@@ -204,294 +197,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.toaster.error('Error', 'Failed to load organizations.');
           this.loading = false;
           // Fall back to empty array
-          this.organizations = [];
-          if (this.dataSource) {
-            this.dataSource.data = this.organizations;
-          }
+          this.dataSource.data = [];
         }
       });
-  }
-
-  /**
-   * Initialize with mock organizations data
-   * @deprecated Use loadOrganizations() instead
-   */
-  private initializeMockData(): void {
-    this.organizations = [
-      {
-        _id: '1',
-        name: 'MIT',
-        normalizedName: 'mit',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate'],
-        country: 'United States',
-        state: 'MA',
-        domains: ['mit.edu'],
-        isVerified: true,
-        createdAt: '2024-01-01T00:00:00.000Z',
-        updatedAt: '2024-01-01T00:00:00.000Z',
-      },
-      {
-        _id: '2',
-        name: 'Stanford University',
-        normalizedName: 'stanford university',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate', 'post_graduate'],
-        country: 'United States',
-        state: 'CA',
-        domains: ['stanford.edu'],
-        isVerified: true,
-        createdAt: '2024-01-02T00:00:00.000Z',
-        updatedAt: '2024-01-02T00:00:00.000Z',
-      },
-      {
-        _id: '3',
-        name: 'Harvard University',
-        normalizedName: 'harvard university',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate'],
-        country: 'United States',
-        state: 'MA',
-        domains: ['harvard.edu', 'mail.harvard.edu'],
-        isVerified: true,
-        createdAt: '2024-01-03T00:00:00.000Z',
-        updatedAt: '2024-01-03T00:00:00.000Z',
-      },
-      {
-        _id: '4',
-        name: 'National Security Agency',
-        normalizedName: 'national security agency',
-        sector: 'government',
-        levels: ['training'],
-        country: 'United States',
-        state: 'MD',
-        domains: ['nsa.gov'],
-        isVerified: true,
-        createdAt: '2024-01-04T00:00:00.000Z',
-        updatedAt: '2024-01-04T00:00:00.000Z',
-      },
-      {
-        _id: '5',
-        name: 'Department of Defense',
-        normalizedName: 'department of defense',
-        sector: 'government',
-        levels: ['training'],
-        country: 'United States',
-        state: 'DC',
-        domains: ['defense.gov', 'mil'],
-        isVerified: true,
-        createdAt: '2024-01-05T00:00:00.000Z',
-        updatedAt: '2024-01-05T00:00:00.000Z',
-      },
-      {
-        _id: '6',
-        name: 'Google',
-        normalizedName: 'google',
-        sector: 'industry',
-        levels: ['training'],
-        country: 'United States',
-        state: 'CA',
-        domains: ['google.com', 'googlemail.com'],
-        isVerified: true,
-        createdAt: '2024-01-06T00:00:00.000Z',
-        updatedAt: '2024-01-06T00:00:00.000Z',
-      },
-      {
-        _id: '7',
-        name: 'Microsoft',
-        normalizedName: 'microsoft',
-        sector: 'industry',
-        levels: ['training'],
-        country: 'United States',
-        state: 'WA',
-        domains: ['microsoft.com'],
-        isVerified: true,
-        createdAt: '2024-01-07T00:00:00.000Z',
-        updatedAt: '2024-01-07T00:00:00.000Z',
-      },
-      {
-        _id: '8',
-        name: 'Apple Inc',
-        normalizedName: 'apple inc',
-        sector: 'industry',
-        levels: ['training'],
-        country: 'United States',
-        state: 'CA',
-        domains: ['apple.com'],
-        isVerified: false,
-        createdAt: '2024-01-08T00:00:00.000Z',
-        updatedAt: '2024-01-08T00:00:00.000Z',
-      },
-      {
-        _id: '8a',
-        name: 'University of California System',
-        normalizedName: 'university of california system',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate', 'post_graduate', 'training'],
-        country: 'United States',
-        state: 'CA',
-        domains: ['universityofcalifornia.edu'],
-        isVerified: true,
-        createdAt: '2024-01-08T00:00:00.000Z',
-        updatedAt: '2024-01-08T00:00:00.000Z',
-      },
-      {
-        _id: '9',
-        name: 'UC Berkeley',
-        normalizedName: 'uc berkeley',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate'],
-        country: 'United States',
-        state: 'CA',
-        domains: ['berkeley.edu'],
-        isVerified: true,
-        createdAt: '2024-01-09T00:00:00.000Z',
-        updatedAt: '2024-01-09T00:00:00.000Z',
-      },
-      {
-        _id: '10',
-        name: 'Carnegie Mellon University',
-        normalizedName: 'carnegie mellon university',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate'],
-        country: 'United States',
-        state: 'PA',
-        domains: ['cmu.edu'],
-        isVerified: true,
-        createdAt: '2024-01-10T00:00:00.000Z',
-        updatedAt: '2024-01-10T00:00:00.000Z',
-      },
-      {
-        _id: '11',
-        name: 'Princeton University',
-        normalizedName: 'princeton university',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate'],
-        country: 'United States',
-        state: 'NJ',
-        domains: ['princeton.edu'],
-        isVerified: true,
-        createdAt: '2024-01-11T00:00:00.000Z',
-        updatedAt: '2024-01-11T00:00:00.000Z',
-      },
-      {
-        _id: '12',
-        name: 'Yale University',
-        normalizedName: 'yale university',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate'],
-        country: 'United States',
-        state: 'CT',
-        domains: ['yale.edu'],
-        isVerified: false,
-        createdAt: '2024-01-12T00:00:00.000Z',
-        updatedAt: '2024-01-12T00:00:00.000Z',
-      },
-      {
-        _id: '13',
-        name: 'Cisco Systems',
-        normalizedName: 'cisco systems',
-        sector: 'industry',
-        levels: ['training'],
-        country: 'United States',
-        state: 'CA',
-        domains: ['cisco.com'],
-        isVerified: true,
-        createdAt: '2024-01-13T00:00:00.000Z',
-        updatedAt: '2024-01-13T00:00:00.000Z',
-      },
-      {
-        _id: '14',
-        name: 'IBM',
-        normalizedName: 'ibm',
-        sector: 'industry',
-        levels: ['training'],
-        country: 'United States',
-        state: 'NY',
-        domains: ['ibm.com'],
-        isVerified: true,
-        createdAt: '2024-01-14T00:00:00.000Z',
-        updatedAt: '2024-01-14T00:00:00.000Z',
-      },
-      {
-        _id: '15',
-        name: 'Cybersecurity and Infrastructure Security Agency',
-        normalizedName: 'cybersecurity and infrastructure security agency',
-        sector: 'government',
-        levels: ['training', 'undergraduate'],
-        country: 'United States',
-        state: 'DC',
-        domains: ['cisa.gov'],
-        isVerified: true,
-        createdAt: '2024-01-15T00:00:00.000Z',
-        updatedAt: '2024-01-15T00:00:00.000Z',
-      },
-      {
-        _id: '16',
-        name: 'UCLA',
-        normalizedName: 'ucla',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate'],
-        country: 'United States',
-        state: 'CA',
-        domains: ['ucla.edu'],
-        isVerified: true,
-        createdAt: '2024-01-16T00:00:00.000Z',
-        updatedAt: '2024-01-16T00:00:00.000Z',
-      },
-      {
-        _id: '17',
-        name: 'Johns Hopkins University',
-        normalizedName: 'johns hopkins university',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate', 'post_graduate'],
-        country: 'United States',
-        state: 'MD',
-        domains: ['jhu.edu'],
-        isVerified: false,
-        createdAt: '2024-01-17T00:00:00.000Z',
-        updatedAt: '2024-01-17T00:00:00.000Z',
-      },
-      {
-        _id: '18',
-        name: 'Community College of San Francisco',
-        normalizedName: 'community college of san francisco',
-        sector: 'academia',
-        levels: ['community_college'],
-        country: 'United States',
-        state: 'CA',
-        domains: ['ccsf.edu'],
-        isVerified: true,
-        createdAt: '2024-01-18T00:00:00.000Z',
-        updatedAt: '2024-01-18T00:00:00.000Z',
-      },
-      {
-        _id: '19',
-        name: 'CompTIA',
-        normalizedName: 'comptia',
-        sector: 'industry',
-        levels: ['training'],
-        country: 'United States',
-        state: 'NC',
-        domains: ['comptia.org'],
-        isVerified: true,
-        createdAt: '2024-01-19T00:00:00.000Z',
-        updatedAt: '2024-01-19T00:00:00.000Z',
-      },
-      {
-        _id: '20',
-        name: 'Oxford University',
-        normalizedName: 'oxford university',
-        sector: 'academia',
-        levels: ['undergraduate', 'graduate', 'post_graduate'],
-        country: 'United Kingdom',
-        state: undefined,
-        domains: ['ox.ac.uk'],
-        isVerified: false,
-        createdAt: '2024-01-20T00:00:00.000Z',
-        updatedAt: '2024-01-20T00:00:00.000Z',
-      },
-    ];
   }
 
   /**
@@ -689,7 +397,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return false;
     }
     const normalizedName = this.editForm.name.toLowerCase().trim();
-    return this.organizations.some(
+    return this.dataSource.data.some(
       (org) => org.normalizedName === normalizedName
     );
   }
@@ -717,8 +425,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         .pipe(takeUntil(this.componentDestroyed$))
         .subscribe({
           next: (response) => {
-            this.organizations.push(response.organization);
-            this.dataSource.data = this.organizations;
+            this.dataSource.data = [...this.dataSource.data, response.organization];
             this.toaster.success('Success!', 'Organization created successfully.');
             this.loading = false;
             this.closeEditModal();
@@ -749,13 +456,14 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         .pipe(takeUntil(this.componentDestroyed$))
         .subscribe({
           next: (response) => {
-            // Find and update in the organizations array
-            const index = this.organizations.findIndex(
+            // Find and update in the dataSource
+            const index = this.dataSource.data.findIndex(
               (org) => org._id === response.organization._id
             );
             if (index !== -1) {
-              this.organizations[index] = response.organization;
-              this.dataSource.data = this.organizations;
+              const updatedData = [...this.dataSource.data];
+              updatedData[index] = response.organization;
+              this.dataSource.data = updatedData;
             }
             this.toaster.success('Success!', 'Organization updated successfully.');
             this.loading = false;
@@ -807,10 +515,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     const selectedOrgId = this.selectedOrganization._id;
-    this.organizations = this.organizations.filter(
+    this.dataSource.data = this.dataSource.data.filter(
       (org) => org._id !== selectedOrgId
     );
-    this.dataSource.data = this.organizations;
 
     this.toaster.success('Success!', 'Organization deleted successfully.');
     this.closeDeleteModal();
@@ -838,25 +545,25 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   getFilteredOrganizations(): Organization[] {
     if (!this.dataSource) {
-      return this.organizations;
+      return [];
     }
     return this.dataSource.filteredData;
   }
 
   getOverviewTotalOrganizations(): number {
-    return this.organizations.length;
+    return this.dataSource.data.length;
   }
 
   getOverviewVerifiedCount(): number {
-    return this.organizations.filter((org) => org.isVerified).length;
+    return this.dataSource.data.filter((org) => org.isVerified).length;
   }
 
   getOverviewUnverifiedCount(): number {
-    return this.organizations.filter((org) => !org.isVerified).length;
+    return this.dataSource.data.filter((org) => !org.isVerified).length;
   }
 
   getOverviewOtherUserTotal(): number {
-    return this.organizations
+    return this.dataSource.data
       .filter((organization) => organization.sector === 'other')
       .reduce((total, organization) => total + this.getUserCount(organization), 0);
   }
@@ -954,7 +661,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    * Get selected target organization
    */
   getSelectedTargetOrganization(): Organization | undefined {
-    return this.organizations.find((org) => org._id === this.migrateTargetOrgId);
+    return this.dataSource.data.find((org) => org._id === this.migrateTargetOrgId);
   }
 
   /**
@@ -975,7 +682,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return [];
     }
     const selectedOrgId = this.selectedOrganization._id;
-    return this.organizations
+    return this.dataSource.data
       .filter((org) => org._id !== selectedOrgId && org.isVerified)
       .sort((a, b) => a.name.localeCompare(b.name));
   }
@@ -991,7 +698,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.isMigrating = true;
 
     const sourceOrg = this.selectedOrganization;
-    const targetOrg = this.organizations.find(
+    const targetOrg = this.dataSource.data.find(
       (org) => org._id === this.migrateTargetOrgId
     );
 
@@ -1010,8 +717,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       this.userCountMap.set(targetOrg._id, targetCurrentCount + userCount);
       this.userCountMap.set(sourceOrg._id, 0);
 
-      // Force table refresh
-      this.dataSource.data = [...this.organizations];
+      // Force table refresh by creating new array reference
+      this.dataSource.data = [...this.dataSource.data];
 
       this.isMigrating = false;
       this.toaster.success(
