@@ -57,8 +57,6 @@ export class FeaturedComponent implements OnInit {
         this.query
       )).learningObjects;
       this.loading = false;
-      console.log("got learning objects again");
-      console.log(this.learningObjects);
       this.cd.detectChanges();
     } catch (e) {
       console.log("caught error");
