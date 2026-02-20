@@ -46,15 +46,42 @@ describe('OrganizationService', () => {
     request.flush({ organization });
   });
 
-  it('gets organization by id when API returns organization directly', (done) => {
+  it('applies defaults for missing createdAt/updatedAt', (done) => {
     service.getOrganizationById('org-1').subscribe((result) => {
       expect(result._id).toBe('org-1');
       expect(result.name).toBe('Towson University');
+      expect(result.createdAt).toBe('');
+      expect(result.updatedAt).toBe('');
       done();
     });
 
     const request = httpMock.expectOne(`${environment.apiURL}/organizations/org-1`);
     expect(request.request.method).toBe('GET');
-    request.flush(organization);
+    request.flush({
+      organization: {
+        ...organization,
+        createdAt: undefined,
+        updatedAt: undefined,
+      }
+    });
+  });
+
+  it('searches organizations from wrapped search response', (done) => {
+    service.searchOrganizations({ text: 'texas' }).subscribe((results) => {
+      expect(results.length).toBe(1);
+      expect(results[0].name).toBe('Towson University');
+      done();
+    });
+
+    const request = httpMock.expectOne((req) =>
+      req.url === `${environment.apiURL}/organizations` && req.params.get('text') === 'texas'
+    );
+    expect(request.request.method).toBe('GET');
+    request.flush({
+      organizations: [organization],
+      total: 1,
+      page: 1,
+      limit: 10,
+    });
   });
 });

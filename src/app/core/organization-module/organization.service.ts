@@ -6,8 +6,8 @@ import { catchError, map, shareReplay } from 'rxjs/operators';
 import {
     CreateOrganizationResponseSchema,
     GetOrganizationByIdResponseSchema,
-    OrganizationSchema,
     OrganizationArraySchema,
+    SearchOrganizationsResponseSchema,
     SuggestDomainResponseSchema,
     UpdateOrganizationResponseSchema,
 } from './organization.schemas';
@@ -100,9 +100,14 @@ export class OrganizationService {
 
         // Make request with validation and caching
         const request$ = this.http
-            .get<Organization[]>(this.organizationsPath(), { params })
+            .get<Organization[] | { organizations: Organization[] }>(this.organizationsPath(), { params })
             .pipe(
-                map(data => OrganizationArraySchema.parse(data)),
+                map((data): Organization[] => {
+                    if (Array.isArray(data)) {
+                        return OrganizationArraySchema.parse(data);
+                    }
+                    return SearchOrganizationsResponseSchema.parse(data).organizations;
+                }),
                 catchError(error => {
                     // Evict cache on error
                     this.searchCache.delete(cacheKey);
@@ -194,14 +199,9 @@ export class OrganizationService {
      */
     getOrganizationById(id: string): Observable<Organization> {
         return this.http
-            .get<Organization | GetOrganizationByIdResponse>(this.updatePath(id))
+            .get<GetOrganizationByIdResponse>(this.updatePath(id))
             .pipe(
-                map((data): Organization => {
-                    if (this.isGetOrganizationByIdResponse(data)) {
-                        return OrganizationSchema.parse(data.organization);
-                    }
-                    return OrganizationSchema.parse(data);
-                }),
+                map((data): Organization => GetOrganizationByIdResponseSchema.parse(data).organization),
                 catchError(error => throwError(() => error))
             );
     }
@@ -240,11 +240,5 @@ export class OrganizationService {
             return normalized;
         }
         return normalized.substring(atIndex);
-    }
-
-    private isGetOrganizationByIdResponse(
-        data: Organization | GetOrganizationByIdResponse
-    ): data is GetOrganizationByIdResponse {
-        return GetOrganizationByIdResponseSchema.safeParse(data).success;
     }
 }

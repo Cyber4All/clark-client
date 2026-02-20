@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
 import { UserService } from 'app/core/user-module/user.service';
 import { BehaviorSubject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'clark-profile-header',
@@ -23,6 +24,7 @@ export class ProfileHeaderComponent implements OnInit {
   private _user = new BehaviorSubject<any>({});
   @Input() set user(user: any) {
     this._user.next(user);
+    this.organizationName$ = this.orgStore.organizationName$(user?.organizationId);
   }
   get user() {
     return this._user.value;
@@ -39,6 +41,7 @@ export class ProfileHeaderComponent implements OnInit {
   downloadedObjects: number;
   firstName = '';
   lastName = '';
+  organizationName$: Observable<string> = of('');
 
   constructor(
     private userService: UserService,

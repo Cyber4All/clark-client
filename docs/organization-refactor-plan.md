@@ -727,6 +727,7 @@ export class AuthService {
 - `OrganizationStore` error handling evicts failed IDs from cache and returns `null` without console logging to avoid UI noise.
 - `ng build` in local environment hangs after `❯ Building...`; TypeScript compile check (`npx tsc -p src/tsconfig.app.json --noEmit`) passes.
 - Local Jest execution fails before running tests due environment issue: `TypeError: configSet.processWithEsbuild is not a function`.
+- Follow-up fix: removed temporary loose schema strategy; service now uses strict endpoint contracts (`GET /organizations/:id` => `{ organization }`, search => `Organization[]`) with `OrganizationSchema` defaults for missing timestamps.
 
 ---
 
