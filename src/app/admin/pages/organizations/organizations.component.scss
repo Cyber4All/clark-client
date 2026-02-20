@@ -446,146 +446,6 @@
   margin-bottom: 20px;
 }
 
-.modal-container {
-  padding: 28px;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-.modal-container.center {
-  text-align: center;
-}
-
-.edit-modal,
-.migrate-modal {
-  min-width: 700px;
-  max-width: 700px;
-  width: 700px;
-}
-
-.modal-title {
-  font-size: $larger;
-  font-weight: 700;
-  margin-bottom: 18px;
-  color: $darker-grey;
-}
-
-.confirmation-text,
-.confirm-text {
-  font-size: $normal;
-  color: $dark-grey;
-  line-height: 1.55;
-}
-
-.step-content {
-  padding: 12px 12px 4px;
-}
-
-.material-form .full-width,
-.search-org-field {
-  width: 100%;
-  margin-bottom: 14px;
-}
-
-.duplicate-error {
-  color: $error-red;
-  font-size: $smaller;
-  margin: -8px 0 12px 4px;
-}
-
-.subsection-header {
-  font-size: $small;
-  font-weight: 700;
-  color: $dark-grey;
-  margin: 12px 0 8px;
-}
-
-.domain-list {
-  margin-top: 4px;
-}
-
-.domain-list mat-chip {
-  margin-right: 8px;
-  margin-bottom: 8px;
-}
-
-.no-domains,
-.no-results {
-  color: $medium-grey;
-  font-size: $small;
-  font-style: italic;
-}
-
-.certification-checkbox {
-  display: block;
-  margin: 14px 0;
-}
-
-.btn-group,
-.confirm-actions {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.migration-progress {
-  margin: 14px 0;
-}
-
-.organization-list {
-  max-height: 300px;
-  overflow-y: auto;
-  border: 1px solid #d7e1ef;
-  border-radius: 8px;
-  margin-bottom: 16px;
-}
-
-.org-item {
-  padding: 12px 14px;
-  border-bottom: 1px solid #edf1f7;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.org-item:last-child {
-  border-bottom: none;
-}
-
-.org-item:hover {
-  background: #f7faff;
-}
-
-.org-item.selected {
-  background: rgba(28, 112, 221, 0.1);
-  border-left: 3px solid $light-blue;
-}
-
-.org-item.disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.org-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: $darker-grey;
-  margin-bottom: 3px;
-}
-
-.verified-icon {
-  color: $success-green;
-  font-size: 13px;
-}
-
-.org-details {
-  font-size: $smaller;
-  color: $medium-grey;
-}
-
 @media (max-width: 1100px) {
   .overview-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -639,7 +499,7 @@
   .search-control {
     width: 220px;
   }
-  
+
   .toolbar-pager {
     flex: 0 0 auto;
     margin-left: 0;
@@ -652,13 +512,6 @@
 
   .create-org-button {
     white-space: nowrap;
-  }
-
-  .edit-modal,
-  .migrate-modal {
-    min-width: 94vw;
-    width: 94vw;
-    max-width: 94vw;
   }
 
   .table-toolbar--bottom {
