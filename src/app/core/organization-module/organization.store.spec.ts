@@ -96,4 +96,12 @@ describe('OrganizationStore', () => {
       });
     });
   });
+
+  it('uses legacy organization string when organizationId is missing (SC-38733 temporary fallback)', (done) => {
+    store.organizationNameFromUser$({ organization: 'towson university' }).subscribe((name) => {
+      expect(name).toBe('Towson University');
+      expect(orgService.getOrganizationById).not.toHaveBeenCalled();
+      done();
+    });
+  });
 });

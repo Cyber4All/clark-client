@@ -56,7 +56,7 @@
   </div>
   <div class="change-author-content">
     <div class="content-header padding-extra">Are you sure you want to change this learning object's author?</div>
-    <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{ orgStore.organizationName$(highlightedLearningObject.author.organizationId) | async }}) to {{selectedAuthor._name | titlecase}} ({{ orgStore.organizationName$(selectedAuthor.organizationId) | async }}). </div>
+    <div class="description sm padding-indent">Change the learning object author of "{{highlightedLearningObject.name | titlecase}}" from {{highlightedLearningObject.author.name | titlecase}} ({{ orgStore.organizationNameFromUser$(highlightedLearningObject.author) | async }}) to {{selectedAuthor._name | titlecase}} ({{ orgStore.organizationNameFromUser$(selectedAuthor) | async }}). </div>
     <div class="description sm padding-indent">Please Check to ensure that the new author is the correct user that you would like to change authorship of. Any revisions of the learning object will also have their authorship changed. Note that 
       changing the author will add the previous author onto the list of contributors for the object.</div>
   </div>
@@ -75,4 +75,3 @@
 
   </div>
 </ng-template>
-

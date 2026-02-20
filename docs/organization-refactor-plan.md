@@ -728,6 +728,7 @@ export class AuthService {
 - `ng build` in local environment hangs after `❯ Building...`; TypeScript compile check (`npx tsc -p src/tsconfig.app.json --noEmit`) passes.
 - Local Jest execution fails before running tests due environment issue: `TypeError: configSet.processWithEsbuild is not a function`.
 - Follow-up fix: removed temporary loose schema strategy; service now uses strict endpoint contracts (`GET /organizations/:id` => `{ organization }`, search => `Organization[]`) with `OrganizationSchema` defaults for missing timestamps.
+- Temporary compatibility (SC-38733): added `OrganizationStore.organizationNameFromUser$()` fallback to use legacy `organization` string when `organizationId` is missing in Learning Object author/contributors payloads. Includes TODO to remove after backend contract fix.
 
 ---
 

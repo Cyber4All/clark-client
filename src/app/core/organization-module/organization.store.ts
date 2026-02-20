@@ -44,6 +44,20 @@ export class OrganizationStore {
         );
     }
 
+    /**
+     * TODO(SC-38733): Remove `organization` string fallback once LearningObject author/contributors
+     * payloads consistently provide `organizationId`.
+     */
+    organizationNameFromUser$(
+        user: { organizationId?: string | null; organization?: string | null } | null | undefined
+    ): Observable<string> {
+        const organizationId = user?.organizationId;
+        if (organizationId) {
+            return this.organizationName$(organizationId);
+        }
+        return of(this.formatOrgName(user?.organization));
+    }
+
     refresh(id: string): void {
         this.cache.delete(id);
     }

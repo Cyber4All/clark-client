@@ -64,7 +64,7 @@
         </div>
         <div class="organization">
           {{
-            orgStore.organizationName$(learningObject.contributors[0]?.organizationId)
+            orgStore.organizationNameFromUser$(learningObject.contributors[0])
               | async
           }}
         </div>

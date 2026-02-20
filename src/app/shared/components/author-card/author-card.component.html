@@ -9,7 +9,7 @@
         {{ author?.name | titlecase }}
       </h4>
       <p class='grid__profile-icon-container__author-organization'>
-        {{ orgStore.organizationName$(author?.organizationId) | async }}
+        {{ orgStore.organizationNameFromUser$(author) | async }}
       </p>
     </div>
   </div>
