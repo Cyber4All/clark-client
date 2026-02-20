@@ -198,7 +198,7 @@ export class OrganizationService {
     const normalized = {
       text: request.text?.trim() || undefined,
       sector: request.sector || undefined,
-      levels: request.levels?.slice().sort().join(',') || undefined,
+      levels: request.levels?.slice().sort((a, b) => a.localeCompare(b)).join(',') || undefined,
       isVerified: request.isVerified,
       domain: request.domain || undefined,
       page: request.page,
