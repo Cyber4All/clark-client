@@ -46,7 +46,8 @@ export class OrganizationStore {
 
     /**
      * TODO(SC-38733): Remove `organization` string fallback once LearningObject author/contributors
-     * payloads consistently provide `organizationId`.
+     * payloads consistently provide `organizationId`, and switch all
+     * `organizationNameFromUser$` usages back to `organizationName$`.
      */
     organizationNameFromUser$(
         user: { organizationId?: string | null; organization?: string | null } | null | undefined
