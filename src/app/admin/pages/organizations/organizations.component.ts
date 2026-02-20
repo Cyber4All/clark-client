@@ -16,12 +16,14 @@ import {
   Organization,
   ORGANIZATION_LEVELS,
   ORGANIZATION_SECTORS,
+  ORGANIZATION_VERIFICATION_STATUS,
   OrganizationLevel,
+  SearchOrganizationsResponse,
   OrganizationSector,
 } from 'app/core/organization-module/organization.types';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { Subject, forkJoin, of } from 'rxjs';
+import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import { OrganizationFormData } from './organization-edit-modal/organization-edit-modal.component';
 
 @Component({
@@ -41,10 +43,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   isPhoneTableView = false;
   searchBarPlaceholder = 'Organizations';
   searchValue = '';
-
-  // Map to store consistent user counts for each organization
-  private readonly userCountMap: Map<string, number> = new Map();
-  private readonly learningObjectCountMap: Map<string, number> = new Map();
 
   // Filter options
   selectedVerifiedFilters: Array<'verified' | 'unverified'> = [];
@@ -184,7 +182,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    */
   private loadOrganizations(): void {
     this.loading = true;
-    this.organizationService.searchOrganizations({})
+    this.fetchAllOrganizations()
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (organizations) => {
@@ -199,6 +197,39 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.dataSource.data = [];
         }
       });
+  }
+
+  private fetchAllOrganizations() {
+    const statuses = [
+      ORGANIZATION_VERIFICATION_STATUS.VERIFIED,
+      ORGANIZATION_VERIFICATION_STATUS.UNVERIFIED,
+    ];
+    const pageSize = 100;
+    return this.organizationService.searchOrganizationsResponse({ page: 1, limit: pageSize, status: statuses }).pipe(
+      switchMap((firstPage: SearchOrganizationsResponse) => {
+        const firstOrganizations = firstPage.organizations || [];
+        const limit = firstPage.limit || pageSize;
+        const total = firstPage.total ?? firstOrganizations.length;
+        const totalPages = limit > 0 ? Math.ceil(total / limit) : 1;
+
+        if (totalPages <= 1) {
+          return of(firstOrganizations);
+        }
+
+        const pageRequests: Array<ReturnType<OrganizationService['searchOrganizationsResponse']>> = [];
+        for (let page = 2; page <= totalPages; page++) {
+          pageRequests.push(this.organizationService.searchOrganizationsResponse({ page, limit, status: statuses }));
+        }
+
+        return forkJoin(pageRequests).pipe(
+          map((responses: SearchOrganizationsResponse[]) => {
+            const allOrganizations = [...firstOrganizations];
+            responses.forEach((response) => allOrganizations.push(...response.organizations));
+            return allOrganizations;
+          })
+        );
+      })
+    );
   }
 
   /**
@@ -435,23 +466,21 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   /**
-   * Get user count for organization (mock)
+   * Get user count for organization from API-provided count fields (if present)
    */
   getUserCount(org: Organization): number {
-    // Mock data - in real implementation, this would come from backend
-    // Use consistent values from map
-    if (!this.userCountMap.has(org._id)) {
-      this.userCountMap.set(org._id, Math.floor(Math.random() * 500) + 1);
-    }
-    return this.userCountMap.get(org._id) || 0;
+    // TODO: Replace fallback count fields with dedicated backend aggregation for users per organization.
+    return this.getCountValue(org, ['userCount', 'usersCount', 'totalUsers', 'usersTotal']);
   }
 
   getLearningObjectCount(org: Organization): number {
-    // Mock data - in real implementation, this would come from backend
-    if (!this.learningObjectCountMap.has(org._id)) {
-      this.learningObjectCountMap.set(org._id, Math.floor(Math.random() * 1000) + 1);
-    }
-    return this.learningObjectCountMap.get(org._id) || 0;
+    // TODO: Replace fallback count fields with dedicated backend aggregation for learning objects per organization.
+    return this.getCountValue(org, [
+      'learningObjectCount',
+      'learningObjectsCount',
+      'totalLearningObjects',
+      'learningObjectsTotal',
+    ]);
   }
 
   getTotalOtherUsers(): number {
@@ -461,11 +490,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   getVerifiedCount(): number {
-    return this.dataSource.filteredData.filter((org) => org.isVerified).length;
+    return this.dataSource.data.filter((org) => org.isVerified).length;
   }
 
   getUnverifiedCount(): number {
-    return this.dataSource.filteredData.filter((org) => !org.isVerified).length;
+    return this.dataSource.data.filter((org) => !org.isVerified).length;
   }
 
   /**
@@ -474,6 +503,17 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   formatLevelName(level: string): string {
     // eslint-disable-next-line prefer-regex-literals
     return level.replace(/_/g, ' ');
+  }
+
+  private getCountValue(org: Organization, keys: string[]): number {
+    const record = org as unknown as Record<string, unknown>;
+    for (const key of keys) {
+      const value = record[key];
+      if (typeof value === 'number' && Number.isFinite(value) && value >= 0) {
+        return value;
+      }
+    }
+    return 0;
   }
 
   /**
@@ -528,17 +568,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
     // Simulate API call with delay
     setTimeout(() => {
-      const targetCurrentCount = this.getUserCount(targetOrg);
-      this.userCountMap.set(targetOrg._id, targetCurrentCount + userCount);
-      this.userCountMap.set(sourceOrg._id, 0);
-      this.dataSource.data = [...this.dataSource.data];
-
       this.isMigrating = false;
       this.toaster.success(
         'Success!',
         `Migrated ${userCount} user(s) from ${sourceOrg.name} to ${targetOrg.name}.`
       );
       this.closeMigrateModal();
+      this.loadOrganizations();
     }, 1500);
   }
 

@@ -729,6 +729,10 @@ export class AuthService {
 - Local Jest execution fails before running tests due environment issue: `TypeError: configSet.processWithEsbuild is not a function`.
 - Follow-up fix: removed temporary loose schema strategy; service now uses strict endpoint contracts (`GET /organizations/:id` => `{ organization }`, search => `Organization[]`) with `OrganizationSchema` defaults for missing timestamps.
 - Temporary compatibility (SC-38733): added `OrganizationStore.organizationNameFromUser$()` fallback to use legacy `organization` string when `organizationId` is missing in Learning Object author/contributors payloads. Includes TODO to remove after backend contract fix.
+- Validation follow-up: Admin Organizations now loads all pages via `searchOrganizationsResponse({ page, limit })` before rendering table/filter stats so overview totals are not constrained by backend page size.
+- Validation follow-up: Admin Organizations fetches with `status=verified,unverified` so default page load includes both verification states in one query.
+- API contract update: Organization search filtering moved from `isVerified` boolean to `status` query (`verified`/`unverified`); `/organizations` search now carries bearer auth (when present) so backend can include unverified results for admins.
+- Validation follow-up: removed random/mock user/learning-object counts from Admin Organizations; UI now only shows backend-provided count fields (falls back to `0` when not present).
 
 ---
 

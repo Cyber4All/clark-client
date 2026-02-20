@@ -16,6 +16,7 @@ import {
     CreateOrganizationResponse,
     GetOrganizationByIdResponse,
     Organization,
+    SearchOrganizationsResponse,
     SearchOrganizationsRequest,
     SuggestDomainResponse,
     UpdateOrganizationRequest,
@@ -38,7 +39,7 @@ export class OrganizationService {
     /**
      * Cache for searchOrganizations requests keyed by stringified normalized request
      */
-    private readonly searchCache = new Map<string, Observable<Organization[]>>();
+    private readonly searchCache = new Map<string, Observable<SearchOrganizationsResponse>>();
 
     constructor(private readonly http: HttpClient) { }
 
@@ -64,6 +65,10 @@ export class OrganizationService {
      * @returns Observable of organization array
      */
     searchOrganizations(request: SearchOrganizationsRequest = {}): Observable<Organization[]> {
+        return this.searchOrganizationsResponse(request).pipe(map((response) => response.organizations));
+    }
+
+    searchOrganizationsResponse(request: SearchOrganizationsRequest = {}): Observable<SearchOrganizationsResponse> {
         // Normalize request for cache key
         const cacheKey = this.normalizeSearchRequest(request);
 
@@ -85,8 +90,11 @@ export class OrganizationService {
             // CSV format for levels
             params = params.set('levels', request.levels.join(','));
         }
-        if (request.isVerified !== undefined) {
-            params = params.set('isVerified', String(request.isVerified));
+        if (request.status) {
+            const statusValue = Array.isArray(request.status)
+                ? request.status.join(',')
+                : request.status;
+            params = params.set('status', statusValue);
         }
         if (request.domain) {
             params = params.set('domain', request.domain);
@@ -100,13 +108,22 @@ export class OrganizationService {
 
         // Make request with validation and caching
         const request$ = this.http
-            .get<Organization[] | { organizations: Organization[] }>(this.organizationsPath(), { params })
+            .get<SearchOrganizationsResponse | Organization[]>(this.organizationsPath(), {
+                params,
+                withCredentials: true,
+            })
             .pipe(
-                map((data): Organization[] => {
+                map((data): SearchOrganizationsResponse => {
                     if (Array.isArray(data)) {
-                        return OrganizationArraySchema.parse(data);
+                        const organizations = OrganizationArraySchema.parse(data);
+                        return {
+                            organizations,
+                            total: organizations.length,
+                            page: 1,
+                            limit: organizations.length,
+                        };
                     }
-                    return SearchOrganizationsResponseSchema.parse(data).organizations;
+                    return SearchOrganizationsResponseSchema.parse(data);
                 }),
                 catchError(error => {
                     // Evict cache on error
@@ -222,7 +239,9 @@ export class OrganizationService {
             text: request.text?.trim() || undefined,
             sector: request.sector || undefined,
             levels: request.levels?.slice().sort((a, b) => a.localeCompare(b)).join(',') || undefined,
-            isVerified: request.isVerified,
+            status: Array.isArray(request.status)
+                ? request.status.slice().sort((a, b) => a.localeCompare(b)).join(',')
+                : request.status,
             domain: request.domain || undefined,
             page: request.page,
             limit: request.limit,

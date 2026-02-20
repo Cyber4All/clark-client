@@ -18,7 +18,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
    */
   private readonly publicEndpoints = [
     `${environment.apiURL}/organizations/suggest`,
-    `${environment.apiURL}/organizations`, // search endpoint
     `${environment.cardUrl}/resources`,
   ];
 
