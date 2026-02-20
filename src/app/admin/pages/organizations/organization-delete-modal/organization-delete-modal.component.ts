@@ -2,22 +2,22 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Organization } from 'app/core/organization-module/organization.types';
 
 @Component({
-  selector: 'clark-organization-delete-modal',
-  templateUrl: './organization-delete-modal.component.html',
-  styleUrls: ['./organization-delete-modal.component.scss'],
+    selector: 'clark-organization-delete-modal',
+    templateUrl: './organization-delete-modal.component.html',
+    styleUrls: ['./organization-delete-modal.component.scss'],
 })
 export class OrganizationDeleteModalComponent {
-  @Input() isVisible = false;
-  @Input() organization: Organization | null = null;
-  
-  @Output() closed = new EventEmitter<void>();
-  @Output() confirm = new EventEmitter<void>();
+    @Input() isVisible = false;
+    @Input() organization: Organization | null = null;
 
-  onClose(): void {
-    this.closed.emit();
-  }
+    @Output() closed = new EventEmitter<void>();
+    @Output() confirm = new EventEmitter<void>();
 
-  onConfirm(): void {
-    this.confirm.emit();
-  }
+    onClose(): void {
+        this.closed.emit();
+    }
+
+    onConfirm(): void {
+        this.confirm.emit();
+    }
 }

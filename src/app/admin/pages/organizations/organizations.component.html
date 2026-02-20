@@ -399,7 +399,9 @@
 <clark-organization-migrate-modal
   [isVisible]="displayMigrateModal"
   [sourceOrganization]="selectedOrganization"
-  [sourceUserCount]="selectedOrganization ? getUserCount(selectedOrganization) : 0"
+  [sourceUserCount]="
+    selectedOrganization ? getUserCount(selectedOrganization) : 0
+  "
   [availableTargetOrganizations]="getAvailableTargetOrganizations()"
   [isMigrating]="isMigrating"
   [getUserCount]="getUserCount.bind(this)"
