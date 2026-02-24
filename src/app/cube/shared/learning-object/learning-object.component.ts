@@ -12,8 +12,8 @@ import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { MetricService } from '../../../core/metric-module/metric.service';
 import { RatingService } from '../../../core/rating-module/rating.service';
-import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
-import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
+import { TagsService } from '../../../core/learning-object-module/tags/tags.service';
+import { TopicsService } from '../../../core/learning-object-module/topics/topics.service';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -271,7 +271,6 @@ export class LearningObjectListingComponent implements OnDestroy {
       return;
     }
     this.topics =  await Promise.all(lo.topics.map((id: string) => this.topicsService.getFromTopicsMap(id)));
-    
   }
 
   // resolving tag names from tags service using the tag ids in the learning object

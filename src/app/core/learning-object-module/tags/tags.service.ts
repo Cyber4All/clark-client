@@ -13,23 +13,29 @@ import { GetTagByNameResponse } from 'app/cube/shared/types/usage-stats';
 export class TagsService {
   private headers = new HttpHeaders();
   private tagsMap: Map<string, string> = new Map();
+  private initiatized: boolean;
 
   constructor(private http: HttpClient) {
+    this.initiatized = false;
+  }
+
+  async initializeMap() {
+    if(this.initiatized) {
+      return;
+    }
+
+    const tags = await this.getTags(); // grabs all tags
+    if (tags) {
+      tags.forEach(tag => {
+        this.tagsMap.set(tag._id, tag.name);
+      });
+    }
+    this.initiatized = true;
   }
 
   async getFromTagsMap(tagId?: string) {
-    if (this.tagsMap.size === 0) {
-      const tags = await this.getTags(); // grabs all tags
-      if (tags) {
-        tags.forEach(tag => {
-          this.tagsMap.set(tag._id, tag.name);
-        });
-      } 
-    }
-
-    // return this.tagsMap;
+    await this.initializeMap();
     return tagId ? this.tagsMap.get(tagId) : "";
-    
   }
 
   /**
@@ -42,7 +48,7 @@ export class TagsService {
       type: query?.type,
       text: query?.text,
       sort: 1,
-      limit: 40
+      limit: 50
     };
     return await new Promise((resolve, reject) => {
       this.http

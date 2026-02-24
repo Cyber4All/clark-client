@@ -28,9 +28,6 @@ export class FeaturedComponent implements OnInit {
 
   constructor(
     private searchLearningObjectService: SearchService,
-    private featureService: FeaturedObjectsService,
-    private topicsService: TopicsService,
-    private tagsService: TagsService,
     private cd: ChangeDetectorRef
   ) {
     this.learningObjects = Array.from({ length: 5 }, () => new LearningObject()); // placeholder array for loading state
@@ -44,9 +41,8 @@ export class FeaturedComponent implements OnInit {
       this.collectionName = collection;
       this.query.collection = collection;
 
-      this.fetchLearningObjects(); // don't await mappings
+      this.fetchLearningObjects();
     });
-    
   }
 
   async fetchLearningObjects() {
@@ -59,7 +55,6 @@ export class FeaturedComponent implements OnInit {
       this.loading = false;
       this.cd.detectChanges();
     } catch (e) {
-      console.log(e);
       this.loading = false;
       this.cd.detectChanges();
     }

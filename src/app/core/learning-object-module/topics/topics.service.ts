@@ -11,20 +11,28 @@ import { TOPICS_ROUTES } from './topics.routes';
 export class TopicsService {
   private headers = new HttpHeaders();
   private topicsMap: Map<string, string> = new Map();
+  private initialized: boolean
 
   constructor(private http: HttpClient) {
+    this.initialized = false;
+  }
+
+  async initializeMap() {
+    if(this.initialized) {
+      return;
+    }
+
+    const topics = await this.getTopics(); // grabs all topics
+    if (topics) {
+      topics.forEach(topic => {
+        this.topicsMap.set(topic._id, topic.name);
+      });
+    } 
+    this.initialized = true;
   }
 
   async getFromTopicsMap(topicId?: string) {
-    if (this.topicsMap.size === 0) {
-      const topics = await this.getTopics(); // grabs all tags
-      if (topics) {
-        topics.forEach(topic => {
-          this.topicsMap.set(topic._id, topic.name);
-        });
-      } 
-    }
-
+    await this.initializeMap();
     return topicId ? this.topicsMap.get(topicId) : "";    
   }
 
