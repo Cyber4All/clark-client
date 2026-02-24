@@ -242,7 +242,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Get Modality filter from tags (specifically "modality" tag type)
+   * Get Modality, Info, Lang, and Quality filter from tags
    */
   getMiscTagFilter(): FilterSectionInfo | undefined {
     // Return undefined if tagFilter is not initialized yet
@@ -250,7 +250,6 @@ export class FilterComponent implements OnInit, OnDestroy {
       return undefined;
     }
 
-    // Get tags of type 'modality'
     const miscTags = this.tagFilter.filters.filter((t) =>
       t.tagType?.includes('info'),
     );

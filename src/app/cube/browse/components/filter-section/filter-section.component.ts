@@ -27,8 +27,6 @@ export class FilterSectionComponent implements OnInit, DoCheck {
 
   @Output() change = new EventEmitter();
 
-  // collapsed = false;
-
   constructor(
     private cd: ChangeDetectorRef,
   ) { }
