@@ -225,27 +225,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
    *
    * @param event
    */
-  submitLearningObjectToCollection(event: LearningObject) {
+  // TODO: revisit this code and make sure the logic is sound with resubmissions, temporarily removed resubmission logic 
+  // to render the submission form component for both new submissions and resubmissions
+  submitLearningObjectToCollection(event: LearningObject) { 
     // If the object is unreleased, submit it, else resubmit it (because minor/major changes were asked for)
-    if (LearningObject.Status.UNRELEASED === event.status) {
+    // if (LearningObject.Status.UNRELEASED === event.status) {
       this.currentlySubmittingObject = event;
       this.submitToCollection = true;
-    } else {
-      this.submissionService.submitLearningObject({
-        learningObjectId: event.id,
-        collectionName: event.collection,
-      })
-        .then(() => {
-          this.notificationService.success('Done!', 'Learning Object Resubmitted for Review!');
-          event.status = LearningObject.Status.WAITING;
-        })
-        .catch(e => {
-          this.notificationService.error(
-            'Error!',
-            `There was an issue resubmitting the learning object, please try again later...`,
-          );
-        });
-    }
+    // } else {
+    //   this.submitToCollection = true;
+    //   this.submissionService.submitLearningObject({
+    //     learningObjectId: event.id,
+    //     collectionName: event.collection,
+    //   })
+    //     .then(() => {
+    //       this.notificationService.success('Done!', 'Learning Object Resubmitted for Review!');
+    //       event.status = LearningObject.Status.WAITING;
+    //     })
+    //     .catch(e => {
+    //       this.notificationService.error(
+    //         'Error!',
+    //         `There was an issue resubmitting the learning object, please try again later...`,
+    //       );
+    //     });
+    // }
   }
 
   /**
