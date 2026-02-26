@@ -483,6 +483,27 @@ export class LearningObjectService {
   }
 
   /**
+   * Checks if a learning object name is available (not a duplicate)
+   *
+   * @param {string} name - The name to check
+   * @returns {Promise<boolean>} - true if name is available, false if duplicate exists
+   * @memberof LearningObjectService
+   */
+  async checkNameAvailability(name: string): Promise<boolean> {
+    const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(name);
+    return this.http
+      .get<{ validName: boolean }>(route, {
+        headers: this.headers,
+        withCredentials: true
+      })
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then(response => response.validName);
+  }
+
+  /**
    * Method to delete multiple learning objects
    *
    * @param learningObjectIds Array of learning object ids to delete
