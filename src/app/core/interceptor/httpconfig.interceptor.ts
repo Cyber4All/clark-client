@@ -12,15 +12,6 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class HttpConfigInterceptor implements HttpInterceptor {
-  /**
-   * Public endpoints that don't require authentication
-   * Based on path prefixes (not full URLs with query strings)
-   */
-  private readonly publicEndpoints = [
-    `${environment.apiURL}/organizations/suggest`,
-    `${environment.cardUrl}/resources`,
-  ];
-
   constructor(private readonly cookie: CookieService) { }
 
   intercept(
@@ -39,14 +30,14 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     const token = this.cookie.get('presence');
 
     // Check if this is a public endpoint
-    const isPublicEndpoint = this.isPublicEndpoint(request.url);
+    const isPublicEndpoint = this.isPublicEndpoint(request);
 
     // Clone request with withCredentials (MUST be set as option, not header)
     let updatedRequest = request.clone({
       withCredentials: true,
     });
 
-    // Add Authorization header only for non-public endpoints when token exists
+    // Add Authorization header only for non-public endpoints when token exists.
     if (!isPublicEndpoint && token) {
       updatedRequest = updatedRequest.clone({
         setHeaders: {
@@ -66,10 +57,43 @@ export class HttpConfigInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Check if URL matches a public endpoint (no auth required)
-   * Uses path prefix matching (not full URL with query strings)
+   * Check if URL matches a public endpoint (no auth required).
+   * Uses method + path matching to avoid unintentionally allowing
+   * authenticated routes like /organizations/:id.
    */
-  private isPublicEndpoint(url: string): boolean {
-    return this.publicEndpoints.some(endpoint => url.startsWith(endpoint));
+  private isPublicEndpoint(request: HttpRequest<any>): boolean {
+    const path = this.getPathname(request.url);
+    const method = request.method.toUpperCase();
+
+    if (request.url.startsWith(environment.apiURL) && method === 'GET') {
+      return path === '/organizations/suggest';
+    }
+
+    if (request.url.startsWith(environment.cardUrl) && method === 'GET') {
+      return path.startsWith('/resources');
+    }
+
+    return false;
   }
+
+  /**
+   * Extract pathname from URL without query params.
+   */
+  private getPathname(url: string): string {
+    try {
+      return new URL(url).pathname;
+    } catch {
+      const withoutQuery = url.split('?')[0];
+      const apiIndex = withoutQuery.indexOf(environment.apiURL);
+      if (apiIndex === 0) {
+        return withoutQuery.slice(environment.apiURL.length) || '/';
+      }
+      const cardIndex = withoutQuery.indexOf(environment.cardUrl);
+      if (cardIndex === 0) {
+        return withoutQuery.slice(environment.cardUrl.length) || '/';
+      }
+      return withoutQuery;
+    }
+  }
+
 }

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Organization } from '../organization-module/organization.types';
 import { Observable } from 'rxjs';
+import { Organization } from '../organization-module/organization.types';
 import { UTILITY_ROUTES } from './utility.routes';
 
 @Injectable({

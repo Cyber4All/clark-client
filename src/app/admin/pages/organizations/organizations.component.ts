@@ -18,11 +18,11 @@ import {
   ORGANIZATION_SECTORS,
   ORGANIZATION_VERIFICATION_STATUS,
   OrganizationLevel,
-  SearchOrganizationsResponse,
   OrganizationSector,
+  SearchOrganizationsResponse,
 } from 'app/core/organization-module/organization.types';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Subject, forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subject } from 'rxjs';
 import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import { OrganizationFormData } from './organization-edit-modal/organization-edit-modal.component';
 
@@ -44,6 +44,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   searchBarPlaceholder = 'Organizations';
   searchValue = '';
 
+  // Map to store consistent mock counts for each organization
+  private readonly userCountMap: Map<string, number> = new Map();
+  private readonly learningObjectCountMap: Map<string, number> = new Map();
+
   // Filter options
   selectedVerifiedFilters: Array<'verified' | 'unverified'> = [];
   selectedSectorFilters: OrganizationSector[] = [];
@@ -57,6 +61,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   isMigrating = false;
 
   loading = false;
+  filteredVerifiedCount = 0;
+  filteredUnverifiedCount = 0;
   userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
 
@@ -80,6 +86,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   readonly sectorOptions: OrganizationSector[] = [...ORGANIZATION_SECTORS];
   readonly levelOptions: OrganizationLevel[] = [...ORGANIZATION_LEVELS];
+  // TODO(clark-api): Enable organization delete actions when backend delete API is implemented.
+  readonly deleteNotSupportedTooltip =
+    'Delete is not supported by API. Please reach out to developers.';
 
   constructor(
     private readonly toaster: ToastrOvenService,
@@ -90,6 +99,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.updateViewportMode();
     // Initialize dataSource with empty array
     this.dataSource = new MatTableDataSource<Organization>([]);
+    this.refreshOverviewCounts();
     this.loadOrganizations();
 
     // TODO: Extract as reusable utility - TableFilterPredicateBuilder
@@ -187,6 +197,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe({
         next: (organizations) => {
           this.dataSource.data = organizations;
+          this.refreshOverviewCounts();
           this.loading = false;
         },
         error: (error) => {
@@ -195,6 +206,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.loading = false;
           // Fall back to empty array
           this.dataSource.data = [];
+          this.refreshOverviewCounts();
         }
       });
   }
@@ -251,6 +263,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       level: this.selectedLevelFilters,
     };
     this.dataSource.filter = JSON.stringify(filterValue);
+    this.refreshOverviewCounts();
 
     // Reset to first page when filtering
     if (this.dataSource.paginator) {
@@ -360,6 +373,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private createOrganization(formData: OrganizationFormData): void {
     this.loading = true;
+    // TODO(clark-api): Support `domains` on organization create endpoint and include `formData.domains` here.
+    // The create modal currently collects domains, but backend create API does not support persisting them yet.
     this.organizationService.createOrganization({
       name: formData.name,
       sector: formData.sector,
@@ -371,6 +386,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe({
         next: (response) => {
           this.dataSource.data = [...this.dataSource.data, response.organization];
+          this.refreshOverviewCounts();
           this.toaster.success('Success!', 'Organization created successfully.');
           this.loading = false;
           this.closeEditModal();
@@ -408,6 +424,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
             const updatedData = [...this.dataSource.data];
             updatedData[index] = response.organization;
             this.dataSource.data = updatedData;
+            this.refreshOverviewCounts();
           }
           this.toaster.success('Success!', 'Organization updated successfully.');
           this.loading = false;
@@ -460,6 +477,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.dataSource.data = this.dataSource.data.filter(
       (org) => org._id !== selectedOrgId
     );
+    this.refreshOverviewCounts();
 
     this.toaster.success('Success!', 'Organization deleted successfully.');
     this.closeDeleteModal();
@@ -469,18 +487,22 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    * Get user count for organization from API-provided count fields (if present)
    */
   getUserCount(org: Organization): number {
-    // TODO: Replace fallback count fields with dedicated backend aggregation for users per organization.
-    return this.getCountValue(org, ['userCount', 'usersCount', 'totalUsers', 'usersTotal']);
+    // TODO(clark-api): Replace mock count with real `/users` query when `organizationId` filter is supported.
+    // Mock data - in real implementation, this would come from backend
+    // Use consistent values from map
+    if (!this.userCountMap.has(org._id)) {
+      this.userCountMap.set(org._id, Math.floor(Math.random() * 500) + 1);
+    }
+    return this.userCountMap.get(org._id) || 0;
   }
 
   getLearningObjectCount(org: Organization): number {
-    // TODO: Replace fallback count fields with dedicated backend aggregation for learning objects per organization.
-    return this.getCountValue(org, [
-      'learningObjectCount',
-      'learningObjectsCount',
-      'totalLearningObjects',
-      'learningObjectsTotal',
-    ]);
+    // TODO(clark-api): Replace mock count with backend-provided organization learning object metrics.
+    // Mock data - in real implementation, this would come from backend
+    if (!this.learningObjectCountMap.has(org._id)) {
+      this.learningObjectCountMap.set(org._id, Math.floor(Math.random() * 1000) + 1);
+    }
+    return this.learningObjectCountMap.get(org._id) || 0;
   }
 
   getTotalOtherUsers(): number {
@@ -489,12 +511,16 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .reduce((total, org) => total + this.getUserCount(org), 0);
   }
 
-  getVerifiedCount(): number {
-    return this.dataSource.data.filter((org) => org.isVerified).length;
-  }
-
-  getUnverifiedCount(): number {
-    return this.dataSource.data.filter((org) => !org.isVerified).length;
+  private refreshOverviewCounts(): void {
+    const organizations = this.dataSource.filteredData;
+    let verified = 0;
+    for (const org of organizations) {
+      if (org.isVerified) {
+        verified++;
+      }
+    }
+    this.filteredVerifiedCount = verified;
+    this.filteredUnverifiedCount = organizations.length - verified;
   }
 
   /**
@@ -553,29 +579,21 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return;
     }
 
-    this.isMigrating = true;
-
     const sourceOrg = this.selectedOrganization;
     const targetOrg = this.dataSource.data.find((org) => org._id === targetOrgId);
 
     if (!targetOrg) {
-      this.isMigrating = false;
       this.toaster.error('Error', 'Target organization not found.');
       return;
     }
 
-    const userCount = this.getUserCount(sourceOrg);
-
-    // Simulate API call with delay
-    setTimeout(() => {
-      this.isMigrating = false;
-      this.toaster.success(
-        'Success!',
-        `Migrated ${userCount} user(s) from ${sourceOrg.name} to ${targetOrg.name}.`
-      );
-      this.closeMigrateModal();
-      this.loadOrganizations();
-    }, 1500);
+    // TODO: Replace this placeholder with an OrganizationService migration API call when backend support exists.
+    // Current API does not support bulk migration without issuing hundreds of per-user requests.
+    this.toaster.warning(
+      'Not supported yet',
+      `Migration from ${sourceOrg.name} to ${targetOrg.name} is not currently supported by the API. Please contact developers.`
+    );
+    this.closeMigrateModal();
   }
 
   ngOnDestroy(): void {

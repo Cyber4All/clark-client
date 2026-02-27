@@ -1,15 +1,15 @@
 import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
-import { UserService } from 'app/core/user-module/user.service';
 import { OrganizationService } from 'app/core/organization-module/organization.service';
-import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Organization } from 'app/core/organization-module/organization.types';
+import { UserService } from 'app/core/user-module/user.service';
+import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Subject, interval } from 'rxjs';
 import { debounce, debounceTime, take, takeUntil } from 'rxjs/operators';
 

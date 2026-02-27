@@ -12,13 +12,13 @@ import { Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 import { AuthService } from 'app/core/auth-module/auth.service';
+import { OrganizationService } from 'app/core/organization-module/organization.service';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
+import { Organization } from 'app/core/organization-module/organization.types';
 import { UserService } from 'app/core/user-module/user.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
-import { Organization } from 'app/core/organization-module/organization.types';
-import { OrganizationService } from 'app/core/organization-module/organization.service';
-import { OrganizationStore } from 'app/core/organization-module/organization.store';
 
 @Component({
   selector: 'clark-edit-profile',
