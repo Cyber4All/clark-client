@@ -135,6 +135,8 @@ export class OrganizationEditModalComponent implements OnChanges {
     }
 
     private isValidDomain(domain: string): boolean {
+        // Validates a hostname-style domain: total length <= 253, labels are alphanumeric/hyphen
+        // (no leading/trailing hyphen), at least one dot, and a 2-63 letter TLD.
         const domainPattern = /^(?=.{1,253}$)(?!-)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
         return domainPattern.test(domain);
     }
