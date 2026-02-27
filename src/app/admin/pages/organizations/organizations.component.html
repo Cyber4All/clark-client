@@ -260,19 +260,13 @@
                     <mat-icon>sync_alt</mat-icon>
                   </button>
                   <span
-                    [matTooltip]="
-                      getUserCount(organization) > 0
-                        ? 'Organizations must have 0 users before they can be deleted.'
-                        : ''
-                    "
-                    [matTooltipDisabled]="getUserCount(organization) === 0"
+                    [matTooltip]="deleteNotSupportedTooltip"
                   >
                     <button
                       mat-icon-button
-                      (click)="openDeleteModal(organization)"
                       class="action-icon-button delete"
                       title="Delete"
-                      [disabled]="getUserCount(organization) > 0"
+                      [disabled]="true"
                     >
                       <mat-icon>delete</mat-icon>
                     </button>
@@ -331,14 +325,12 @@
         <mat-icon>sync_alt</mat-icon>
         <span>Migrate Users</span>
       </button>
-      <button
-        mat-menu-item
-        (click)="openDeleteModal(organization)"
-        [disabled]="getUserCount(organization) > 0"
-      >
-        <mat-icon>delete</mat-icon>
-        <span>Delete</span>
-      </button>
+      <span [matTooltip]="deleteNotSupportedTooltip">
+        <button mat-menu-item [disabled]="true">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </span>
     </ng-template>
   </mat-menu>
 
