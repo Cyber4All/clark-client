@@ -23,12 +23,19 @@ export const ORGANIZATION_LEVELS = [
     'training',
 ] as const;
 
+export const ORGANIZATION_VERIFICATION_STATUS = {
+    VERIFIED: 'verified',
+    UNVERIFIED: 'unverified',
+} as const;
+
 /**
  * Types derived from const arrays
  */
 export type OrganizationSector = typeof ORGANIZATION_SECTORS[number];
 
 export type OrganizationLevel = typeof ORGANIZATION_LEVELS[number];
+export type OrganizationVerificationStatus =
+    typeof ORGANIZATION_VERIFICATION_STATUS[keyof typeof ORGANIZATION_VERIFICATION_STATUS];
 
 /**
  * Organization entity (as received from API)
@@ -50,12 +57,11 @@ export interface Organization {
 /**
  * Request interfaces (what client sends to API)
  */
-
 export interface SearchOrganizationsRequest {
     text?: string;
     sector?: OrganizationSector;
     levels?: OrganizationLevel[]; // encoded as CSV in query param
-    isVerified?: boolean;
+    status?: OrganizationVerificationStatus | OrganizationVerificationStatus[];
     domain?: string;
     page?: number;
     limit?: number;
@@ -84,7 +90,7 @@ export interface UpdateOrganizationRequest {
  */
 
 export interface SuggestDomainResponse {
-    organization: Organization | null;
+    organization?: Organization | null;
 }
 
 export interface CreateOrganizationResponse {
@@ -93,4 +99,15 @@ export interface CreateOrganizationResponse {
 
 export interface UpdateOrganizationResponse {
     organization: Organization;
+}
+
+export interface GetOrganizationByIdResponse {
+    organization: Organization;
+}
+
+export interface SearchOrganizationsResponse {
+    organizations: Organization[];
+    total?: number;
+    page?: number;
+    limit?: number;
 }

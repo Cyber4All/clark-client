@@ -63,7 +63,10 @@
           {{ learningObject.contributors?.length > 1 ? ' et al.' : '' }}
         </div>
         <div class="organization">
-          {{ organizationFormat(learningObject.contributors[0]?.organization) }}
+          {{
+            orgStore.organizationNameFromUser$(learningObject.contributors[0])
+              | async
+          }}
         </div>
       </div>
 

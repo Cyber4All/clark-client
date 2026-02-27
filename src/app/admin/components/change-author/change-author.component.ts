@@ -7,9 +7,9 @@ import { of } from 'rxjs';
 import { ChangeAuthorshipService } from 'app/core/learning-object-module/change-authorship/change-authorship.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { UserService } from '../../../core/user-module/user.service';
-import { titleCase } from 'title-case';
 import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
 
 @Component({
   selector: 'clark-change-author',
@@ -36,6 +36,7 @@ export class ChangeAuthorComponent implements OnInit {
     private learningObjectService: LearningObjectService,
     public toaster: ToastrOvenService,
     private userService: UserService,
+    public orgStore: OrganizationStore,
   ) { }
 
 
@@ -64,20 +65,6 @@ export class ChangeAuthorComponent implements OnInit {
       this.consentGiven = true;
     } else {
       this.consentGiven = false;
-    }
-  }
-
-  /**
-   * Function to conditionally set the title case of an organization
-   *
-   * @param organization string of the users affiliated organization
-   * @returns string unformated or title cased
-   */
-  organizationFormat(organization: string) {
-    if (organization.charAt(1) === organization.charAt(1).toUpperCase()) {
-      return organization;
-    } else {
-      return titleCase(organization);
     }
   }
 

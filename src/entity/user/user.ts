@@ -88,19 +88,6 @@ private _id: string;
     }
   }
 
-  _organization: string;
-  /**
-   * @property {string} organization a user's associate organization
-   */
-  get organization(): string {
-    return this._organization;
-  }
-  set organization(organization: string) {
-    if (organization && organization.trim()) {
-      this._organization = organization;
-    }
-  }
-
   _organizationId: string;
   /**
    * @property {string} organizationId a user's associated organization ID (ObjectId)
@@ -112,6 +99,15 @@ private _id: string;
     if (organizationId && organizationId.trim()) {
       this._organizationId = organizationId;
     }
+  }
+
+  /**
+   * TODO(SC-38733): Remove legacy organization string fallback once
+   * LearningObject author/contributors consistently provide organizationId.
+   */
+  _organization: string;
+  get organization(): string {
+    return this._organization;
   }
 
   _bio: string;
@@ -150,8 +146,8 @@ private _id: string;
     this._name = user?.name || '';
     this._email = user?.email || '';
     this._emailVerified = user?.emailVerified || false;
-    this._organization = user?.organization || '';
     this._organizationId = user?.organizationId || '';
+    this._organization = user?.organization || '';
     this._bio = user?.bio || '';
     this._createdAt = user?.createdAt || Date.now().toString();
   }
@@ -169,7 +165,6 @@ private _id: string;
       name: this.name,
       email: this.email,
       emailVerified: this.emailVerified,
-      organization: this.organization,
       organizationId: this.organizationId,
       bio: this.bio,
       createdAt: this.createdAt,

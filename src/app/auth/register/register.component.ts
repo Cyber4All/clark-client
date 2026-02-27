@@ -1,17 +1,17 @@
 import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
+import { OrganizationService } from 'app/core/organization-module/organization.service';
 import { Organization } from 'app/core/organization-module/organization.types';
 import { UserService } from 'app/core/user-module/user.service';
-import { OrganizationService } from 'app/core/utility-module/organization.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { Subject, interval } from 'rxjs';
-import { debounce, debounceTime, takeUntil } from 'rxjs/operators';
+import { debounce, debounceTime, take, takeUntil } from 'rxjs/operators';
 
 const EMAIL_REGEX =
   // eslint-disable-next-line max-len
@@ -153,13 +153,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.validateEmail();
     this.validateUsername();
     this.organizationInput$.pipe(debounceTime(650))
-      .subscribe(async (value: string) => {
-        this.searchResults = (await this.orgService.searchOrgs(value.trim()));
-        this.loading = false;
+      .subscribe((value: string) => {
+        this.orgService.searchOrganizations({ text: value.trim() }).pipe(take(1)).subscribe((results) => {
+          this.searchResults = results;
+          this.loading = false;
+        });
       });
     this.organizationInput$
       .subscribe((value: string) => {
         if (value && value !== '') {
+          this.selectedOrg = '';
           this.showDropdown = true;
           this.loading = true;
         } else {
@@ -177,7 +180,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       firstname: this.regInfo.firstname.trim(),
       lastname: this.regInfo.lastname.trim(),
       email: this.regInfo.email.trim(),
-      organization: this.regInfo.organization.trim(),
+      organizationId: this.selectedOrg,
       password: this.regInfo.password
     })
       .then(() => {

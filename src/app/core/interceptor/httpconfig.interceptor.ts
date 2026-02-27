@@ -37,7 +37,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
       withCredentials: true,
     });
 
-    // Add Authorization header only for non-public endpoints when token exists
+    // Add Authorization header only for non-public endpoints when token exists.
     if (!isPublicEndpoint && token) {
       updatedRequest = updatedRequest.clone({
         setHeaders: {
@@ -66,7 +66,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     const method = request.method.toUpperCase();
 
     if (request.url.startsWith(environment.apiURL) && method === 'GET') {
-      return path === '/organizations' || path === '/organizations/suggest';
+      return path === '/organizations/suggest';
     }
 
     if (request.url.startsWith(environment.cardUrl) && method === 'GET') {
@@ -95,4 +95,5 @@ export class HttpConfigInterceptor implements HttpInterceptor {
       return withoutQuery;
     }
   }
+
 }

@@ -16,12 +16,14 @@ import {
   Organization,
   ORGANIZATION_LEVELS,
   ORGANIZATION_SECTORS,
+  ORGANIZATION_VERIFICATION_STATUS,
   OrganizationLevel,
   OrganizationSector,
+  SearchOrganizationsResponse,
 } from 'app/core/organization-module/organization.types';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { forkJoin, of, Subject } from 'rxjs';
+import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import { OrganizationFormData } from './organization-edit-modal/organization-edit-modal.component';
 
 @Component({
@@ -41,8 +43,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   isPhoneTableView = false;
   searchBarPlaceholder = 'Organizations';
   searchValue = '';
+  private readonly organizationsPageSize = 1000;
 
-  // Map to store consistent user counts for each organization
+  // Map to store consistent mock counts for each organization
   private readonly userCountMap: Map<string, number> = new Map();
   private readonly learningObjectCountMap: Map<string, number> = new Map();
 
@@ -61,6 +64,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   loading = false;
   filteredVerifiedCount = 0;
   filteredUnverifiedCount = 0;
+  existingNames: string[] = [];
   userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
 
@@ -73,6 +77,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     if (event.code === 'Escape') {
       this.displayEditModal = false;
       this.displayDeleteModal = false;
+      this.displayMigrateModal = false;
     }
   }
 
@@ -86,6 +91,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   // TODO(clark-api): Enable organization delete actions when backend delete API is implemented.
   readonly deleteNotSupportedTooltip =
     'Delete is not supported by API. Please reach out to developers.';
+  // TODO(clark-api): Enable organization migration actions when backend migration API is implemented.
+  readonly migrateNotSupportedTooltip =
+    'Migrate is not supported by API. Please reach out to developers.';
 
   constructor(
     private readonly toaster: ToastrOvenService,
@@ -189,11 +197,12 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    */
   private loadOrganizations(): void {
     this.loading = true;
-    this.organizationService.searchOrganizations({})
+    this.fetchAllOrganizations()
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (organizations) => {
           this.dataSource.data = organizations;
+          this.refreshExistingNames();
           this.refreshOverviewCounts();
           this.loading = false;
         },
@@ -203,9 +212,48 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.loading = false;
           // Fall back to empty array
           this.dataSource.data = [];
+          this.refreshExistingNames();
           this.refreshOverviewCounts();
         }
       });
+  }
+
+  private fetchAllOrganizations() {
+    const statuses = [
+      ORGANIZATION_VERIFICATION_STATUS.VERIFIED,
+      ORGANIZATION_VERIFICATION_STATUS.UNVERIFIED,
+    ];
+
+    return this.organizationService
+      .searchOrganizationsResponse({ page: 1, limit: this.organizationsPageSize, status: statuses })
+      .pipe(
+        switchMap((firstPage: SearchOrganizationsResponse) => {
+          const firstOrganizations = firstPage.organizations || [];
+          const limit = firstPage.limit || this.organizationsPageSize;
+          const total = firstPage.total ?? firstOrganizations.length;
+          const totalPages = limit > 0 ? Math.ceil(total / limit) : 1;
+
+          if (totalPages <= 1) {
+            return of(firstOrganizations);
+          }
+
+          const pageRequests: Array<ReturnType<OrganizationService['searchOrganizationsResponse']>> = [];
+          for (let page = 2; page <= totalPages; page++) {
+            pageRequests.push(this.organizationService.searchOrganizationsResponse({ page, limit, status: statuses }));
+          }
+
+          return forkJoin(pageRequests).pipe(
+            map((responses: SearchOrganizationsResponse[]) => {
+              const orgById = new Map<string, Organization>();
+              firstOrganizations.forEach((org) => orgById.set(org._id, org));
+              responses.forEach((response) => {
+                response.organizations.forEach((org) => orgById.set(org._id, org));
+              });
+              return Array.from(orgById.values());
+            })
+          );
+        })
+      );
   }
 
   /**
@@ -317,11 +365,17 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.isCreateMode = false;
   }
 
-  /**
-   * Get existing organization names for duplicate check
-   */
-  getExistingNames(): string[] {
-    return this.dataSource.data.map(org => org.normalizedName);
+  private refreshExistingNames(): void {
+    this.existingNames = this.dataSource.data
+      .filter((org): org is Organization => !!org && typeof org === 'object')
+      .map((org) => {
+        const normalizedName = org.normalizedName?.toLowerCase().trim();
+        if (normalizedName) {
+          return normalizedName;
+        }
+        return org.name?.toLowerCase().trim() || '';
+      })
+      .filter((name) => !!name);
   }
 
   /**
@@ -350,6 +404,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe({
         next: (response) => {
           this.dataSource.data = [...this.dataSource.data, response.organization];
+          this.refreshExistingNames();
           this.refreshOverviewCounts();
           this.toaster.success('Success!', 'Organization created successfully.');
           this.loading = false;
@@ -388,6 +443,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
             const updatedData = [...this.dataSource.data];
             updatedData[index] = response.organization;
             this.dataSource.data = updatedData;
+            this.refreshExistingNames();
             this.refreshOverviewCounts();
           }
           this.toaster.success('Success!', 'Organization updated successfully.');
@@ -441,6 +497,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.dataSource.data = this.dataSource.data.filter(
       (org) => org._id !== selectedOrgId
     );
+    this.refreshExistingNames();
     this.refreshOverviewCounts();
 
     this.toaster.success('Success!', 'Organization deleted successfully.');
@@ -448,7 +505,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   /**
-   * Get user count for organization (mock)
+   * Get user count for organization from API-provided count fields (if present)
    */
   getUserCount(org: Organization): number {
     // TODO(clark-api): Replace mock count with real `/users` query when `organizationId` filter is supported.
@@ -493,6 +550,17 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   formatLevelName(level: string): string {
     // eslint-disable-next-line prefer-regex-literals
     return level.replace(/_/g, ' ');
+  }
+
+  private getCountValue(org: Organization, keys: string[]): number {
+    const record = org as unknown as Record<string, unknown>;
+    for (const key of keys) {
+      const value = record[key];
+      if (typeof value === 'number' && Number.isFinite(value) && value >= 0) {
+        return value;
+      }
+    }
+    return 0;
   }
 
   /**

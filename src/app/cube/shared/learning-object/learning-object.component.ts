@@ -8,12 +8,12 @@ import {
   OnDestroy
 } from '@angular/core';
 import { LearningObject } from '@entity';
-import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { TagsService } from '../../../core/learning-object-module/tags/tags.service';
 import { TopicsService } from '../../../core/learning-object-module/topics/topics.service';
 import { MetricService } from '../../../core/metric-module/metric.service';
 import { RatingService } from '../../../core/rating-module/rating.service';
+import { OrganizationStore } from '../../../core/organization-module/organization.store';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -107,6 +107,7 @@ export class LearningObjectListingComponent implements OnDestroy {
     private ratingService: RatingService,
     private metricService: MetricService,
     public auth: AuthService,
+    public orgStore: OrganizationStore,
     private cd: ChangeDetectorRef,
     private tagsService: TagsService,
     private topicsService: TopicsService
@@ -215,10 +216,6 @@ export class LearningObjectListingComponent implements OnDestroy {
       default:
         return '';
     }
-  }
-
-  organizationFormat(organization: string) {
-    return organization ? titleCase(organization) : '';
   }
 
   // -----------------------------

@@ -81,9 +81,10 @@ export class UtilityService {
     organizations?: string[];
     status?: string[];
   }): Promise<any> {
+    const cardApiBase = this.getCardApiBase();
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${environment.cardUrl}/resources`, {})
+        .get(`${cardApiBase}/resources`, {})
         .toPromise()
         .then(
           (res: any) => {
@@ -97,9 +98,10 @@ export class UtilityService {
   }
 
   async getOrganizations(): Promise<any> {
+    const cardApiBase = this.getCardApiBase();
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${environment.cardUrl}/organizations`, {})
+        .get(`${cardApiBase}/organizations`, {})
         .toPromise()
         .then(
           (res: any) => {
@@ -142,5 +144,13 @@ export class UtilityService {
       // API returned error
       return throwError(error.error);
     }
+  }
+
+  private getCardApiBase(): string {
+    const cardApiBase = environment.cardUrl?.trim();
+    if (!cardApiBase) {
+      throw new Error('CARD API URL is not configured for this environment.');
+    }
+    return cardApiBase;
   }
 }

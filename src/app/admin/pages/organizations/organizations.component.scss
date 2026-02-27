@@ -325,6 +325,21 @@
   opacity: 0.35;
 }
 
+.disabled-action-tooltip {
+  display: inline-flex;
+  align-items: center;
+  cursor: not-allowed;
+}
+
+.disabled-action-tooltip .action-icon-button:disabled,
+.disabled-action-tooltip .mat-mdc-menu-item:disabled {
+  pointer-events: none;
+}
+
+.disabled-action-tooltip--menu {
+  display: block;
+}
+
 .action-meatball {
   color: $dark-grey;
   width: 34px;

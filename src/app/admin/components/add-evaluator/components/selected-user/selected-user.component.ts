@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
 import { User } from '@entity';
 import { UserService } from 'app/core/user-module/user.service';
 
@@ -11,7 +12,7 @@ export class SelectedUserComponent implements OnInit {
 
   @Input() user: User;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, public orgStore: OrganizationStore) {}
 
   ngOnInit(): void {}
 
