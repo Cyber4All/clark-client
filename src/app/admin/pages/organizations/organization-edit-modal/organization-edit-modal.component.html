@@ -67,8 +67,10 @@
                   [(ngModel)]="newDomain"
                   name="newDomain"
                   placeholder="e.g., example.edu"
+                  (ngModelChange)="onDomainInputChange()"
                   (keyup.enter)="addDomain()"
                 />
+                <mat-error *ngIf="domainError">{{ domainError }}</mat-error>
               </mat-form-field>
 
               <div class="domain-list" *ngIf="form.domains.length > 0">

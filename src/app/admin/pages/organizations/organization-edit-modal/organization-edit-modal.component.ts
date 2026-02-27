@@ -44,6 +44,7 @@ export class OrganizationEditModalComponent implements OnChanges {
     };
 
     newDomain = '';
+    domainError = '';
     certified = false;
     sectorOptions: OrganizationSector[] = [...ORGANIZATION_SECTORS];
     levelOptions: OrganizationLevel[] = [...ORGANIZATION_LEVELS];
@@ -70,6 +71,7 @@ export class OrganizationEditModalComponent implements OnChanges {
                 };
             }
             this.newDomain = '';
+            this.domainError = '';
             this.certified = false;
 
             // Reset stepper
@@ -90,15 +92,33 @@ export class OrganizationEditModalComponent implements OnChanges {
     }
 
     addDomain(): void {
-        const domain = this.newDomain.trim();
-        if (domain && !this.form.domains.includes(domain)) {
-            this.form.domains.push(domain);
-            this.newDomain = '';
+        const domain = this.newDomain.trim().toLowerCase();
+        if (!domain) {
+            return;
         }
+
+        if (!this.isValidDomain(domain)) {
+            this.domainError = 'Please enter a valid domain (e.g., example.edu).';
+            return;
+        }
+
+        const alreadyAdded = this.form.domains.some((existing) => existing.toLowerCase() === domain);
+        if (alreadyAdded) {
+            this.domainError = 'This domain has already been added.';
+            return;
+        }
+
+        this.form.domains.push(domain);
+        this.newDomain = '';
+        this.domainError = '';
     }
 
     removeDomain(index: number): void {
         this.form.domains.splice(index, 1);
+    }
+
+    onDomainInputChange(): void {
+        this.domainError = '';
     }
 
     isNameDuplicate(): boolean {
@@ -112,5 +132,10 @@ export class OrganizationEditModalComponent implements OnChanges {
     formatLevelName(level: string): string {
         // eslint-disable-next-line prefer-regex-literals
         return level.replace(/_/g, ' ');
+    }
+
+    private isValidDomain(domain: string): boolean {
+        const domainPattern = /^(?=.{1,253}$)(?!-)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
+        return domainPattern.test(domain);
     }
 }
