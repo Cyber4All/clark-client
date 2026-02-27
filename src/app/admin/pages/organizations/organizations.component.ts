@@ -16,6 +16,7 @@ import {
   Organization,
   ORGANIZATION_LEVELS,
   ORGANIZATION_SECTORS,
+  ORGANIZATION_VERIFICATION_STATUS,
   OrganizationLevel,
   OrganizationSector,
   SearchOrganizationsResponse,
@@ -218,8 +219,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   private fetchAllOrganizations() {
+    const statuses = [
+      ORGANIZATION_VERIFICATION_STATUS.VERIFIED,
+      ORGANIZATION_VERIFICATION_STATUS.UNVERIFIED,
+    ];
+
     return this.organizationService
-      .searchOrganizationsResponse({ page: 1, limit: this.organizationsPageSize })
+      .searchOrganizationsResponse({ page: 1, limit: this.organizationsPageSize, status: statuses })
       .pipe(
         switchMap((firstPage: SearchOrganizationsResponse) => {
           const firstOrganizations = firstPage.organizations || [];
@@ -233,7 +239,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
           const pageRequests: Array<ReturnType<OrganizationService['searchOrganizationsResponse']>> = [];
           for (let page = 2; page <= totalPages; page++) {
-            pageRequests.push(this.organizationService.searchOrganizationsResponse({ page, limit }));
+            pageRequests.push(this.organizationService.searchOrganizationsResponse({ page, limit, status: statuses }));
           }
 
           return forkJoin(pageRequests).pipe(
