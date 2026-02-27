@@ -16,14 +16,12 @@ import {
   Organization,
   ORGANIZATION_LEVELS,
   ORGANIZATION_SECTORS,
-  ORGANIZATION_VERIFICATION_STATUS,
   OrganizationLevel,
   OrganizationSector,
-  SearchOrganizationsResponse,
 } from 'app/core/organization-module/organization.types';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { forkJoin, of, Subject } from 'rxjs';
-import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { OrganizationFormData } from './organization-edit-modal/organization-edit-modal.component';
 
 @Component({
@@ -195,7 +193,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    */
   private loadOrganizations(): void {
     this.loading = true;
-    this.fetchAllOrganizations()
+    this.organizationService.searchOrganizations({})
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (organizations) => {
@@ -212,39 +210,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.refreshOverviewCounts();
         }
       });
-  }
-
-  private fetchAllOrganizations() {
-    const statuses = [
-      ORGANIZATION_VERIFICATION_STATUS.VERIFIED,
-      ORGANIZATION_VERIFICATION_STATUS.UNVERIFIED,
-    ];
-    const pageSize = 100;
-    return this.organizationService.searchOrganizationsResponse({ page: 1, limit: pageSize, status: statuses }).pipe(
-      switchMap((firstPage: SearchOrganizationsResponse) => {
-        const firstOrganizations = firstPage.organizations || [];
-        const limit = firstPage.limit || pageSize;
-        const total = firstPage.total ?? firstOrganizations.length;
-        const totalPages = limit > 0 ? Math.ceil(total / limit) : 1;
-
-        if (totalPages <= 1) {
-          return of(firstOrganizations);
-        }
-
-        const pageRequests: Array<ReturnType<OrganizationService['searchOrganizationsResponse']>> = [];
-        for (let page = 2; page <= totalPages; page++) {
-          pageRequests.push(this.organizationService.searchOrganizationsResponse({ page, limit, status: statuses }));
-        }
-
-        return forkJoin(pageRequests).pipe(
-          map((responses: SearchOrganizationsResponse[]) => {
-            const allOrganizations = [...firstOrganizations];
-            responses.forEach((response) => allOrganizations.push(...response.organizations));
-            return allOrganizations;
-          })
-        );
-      })
-    );
   }
 
   /**
