@@ -9,7 +9,7 @@
                 <p>{{ curator.name | titlecase }}</p>
             </div>
             <div class="organization">
-                <p>{{ orgStore.organizationName$(curator.organizationId) | async }}</p>
+                <p>{{ orgStore.organizationNameFromUser$(curator) | async }}</p>
             </div>
         </div>
     </div>
