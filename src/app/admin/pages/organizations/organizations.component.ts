@@ -515,33 +515,21 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return;
     }
 
-    this.isMigrating = true;
-
     const sourceOrg = this.selectedOrganization;
     const targetOrg = this.dataSource.data.find((org) => org._id === targetOrgId);
 
     if (!targetOrg) {
-      this.isMigrating = false;
       this.toaster.error('Error', 'Target organization not found.');
       return;
     }
 
-    const userCount = this.getUserCount(sourceOrg);
-
-    // Simulate API call with delay
-    setTimeout(() => {
-      const targetCurrentCount = this.getUserCount(targetOrg);
-      this.userCountMap.set(targetOrg._id, targetCurrentCount + userCount);
-      this.userCountMap.set(sourceOrg._id, 0);
-      this.dataSource.data = [...this.dataSource.data];
-
-      this.isMigrating = false;
-      this.toaster.success(
-        'Success!',
-        `Migrated ${userCount} user(s) from ${sourceOrg.name} to ${targetOrg.name}.`
-      );
-      this.closeMigrateModal();
-    }, 1500);
+    // TODO: Replace this placeholder with an OrganizationService migration API call when backend support exists.
+    // Current API does not support bulk migration without issuing hundreds of per-user requests.
+    this.toaster.info(
+      'Not supported yet',
+      `Migration from ${sourceOrg.name} to ${targetOrg.name} is not currently supported by the API. Please contact developers.`
+    );
+    this.closeMigrateModal();
   }
 
   ngOnDestroy(): void {
