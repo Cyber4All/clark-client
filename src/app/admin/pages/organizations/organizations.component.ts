@@ -331,6 +331,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private createOrganization(formData: OrganizationFormData): void {
     this.loading = true;
+    // TODO(clark-api): Support `domains` on organization create endpoint and include `formData.domains` here.
+    // The create modal currently collects domains, but backend create API does not support persisting them yet.
     this.organizationService.createOrganization({
       name: formData.name,
       sector: formData.sector,
