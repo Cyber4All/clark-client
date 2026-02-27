@@ -89,6 +89,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   // TODO(clark-api): Enable organization delete actions when backend delete API is implemented.
   readonly deleteNotSupportedTooltip =
     'Delete is not supported by API. Please reach out to developers.';
+  // TODO(clark-api): Enable organization migration actions when backend migration API is implemented.
+  readonly migrateNotSupportedTooltip =
+    'Migrate is not supported by API. Please reach out to developers.';
 
   constructor(
     private readonly toaster: ToastrOvenService,
