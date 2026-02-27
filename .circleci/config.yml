@@ -90,6 +90,9 @@ jobs:
             mkdir -p reports
             semgrep scan --config auto --json --output reports/semgrep-sast.json .
             semgrep scan --config auto --junit-xml --output reports/semgrep-sast.junit.xml .
+      - run:
+          name: Gate on CRITICAL Semgrep findings
+          command: semgrep scan --config auto --severity CRITICAL --error --quiet .
       - store_artifacts:
           path: reports/semgrep-sast.json
       - store_test_results:
@@ -113,6 +116,9 @@ jobs:
       - run:
           name: Generate CycloneDX SBOM
           command: trivy fs --format cyclonedx --output reports/sbom.cdx.json .
+      - run:
+          name: Gate on CRITICAL Trivy findings
+          command: trivy fs --scanners vuln --severity CRITICAL --exit-code 1 --no-progress .
       - save_cache:
           key: trivy-db-v1
           paths:
