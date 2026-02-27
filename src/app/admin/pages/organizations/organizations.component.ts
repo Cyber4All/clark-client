@@ -542,7 +542,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
     // TODO: Replace this placeholder with an OrganizationService migration API call when backend support exists.
     // Current API does not support bulk migration without issuing hundreds of per-user requests.
-    this.toaster.info(
+    this.toaster.warning(
       'Not supported yet',
       `Migration from ${sourceOrg.name} to ${targetOrg.name} is not currently supported by the API. Please contact developers.`
     );
