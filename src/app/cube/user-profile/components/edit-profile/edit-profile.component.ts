@@ -161,6 +161,8 @@ export class EditProfileComponent implements OnChanges, OnInit, OnDestroy {
     if (edits.organizationId !== this.user.organizationId) {
       // Current backend validator still expects legacy `organization` field
       // in update payload checks, so send both during transition.
+      // TODO(clark-api): Remove legacy `organization` from user update payload once backend
+      // accepts `organizationId` as a valid update field for profile edits.
       changedFields.organization = edits.organization;
       changedFields.organizationId = edits.organizationId;
     }
