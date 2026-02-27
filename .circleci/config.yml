@@ -91,8 +91,8 @@ jobs:
             semgrep scan --config auto --json --output reports/semgrep-sast.json .
             semgrep scan --config auto --junit-xml --output reports/semgrep-sast.junit.xml .
       - run:
-          name: Gate on CRITICAL Semgrep findings
-          command: semgrep scan --config auto --severity CRITICAL --error --quiet .
+          name: Gate on ERROR Semgrep findings
+          command: semgrep scan --config auto --severity ERROR --error --quiet .
       - store_artifacts:
           path: reports/semgrep-sast.json
       - store_test_results:
