@@ -101,6 +101,19 @@ private _id: string;
     }
   }
 
+  _organizationId: string;
+  /**
+   * @property {string} organizationId a user's associated organization ID (ObjectId)
+   */
+  get organizationId(): string {
+    return this._organizationId;
+  }
+  set organizationId(organizationId: string) {
+    if (organizationId && organizationId.trim()) {
+      this._organizationId = organizationId;
+    }
+  }
+
   _bio: string;
   /**
    * @property {string} bio a user's bio
@@ -138,6 +151,7 @@ private _id: string;
     this._email = user?.email || '';
     this._emailVerified = user?.emailVerified || false;
     this._organization = user?.organization || '';
+    this._organizationId = user?.organizationId || '';
     this._bio = user?.bio || '';
     this._createdAt = user?.createdAt || Date.now().toString();
   }
@@ -156,6 +170,7 @@ private _id: string;
       email: this.email,
       emailVerified: this.emailVerified,
       organization: this.organization,
+      organizationId: this.organizationId,
       bio: this.bio,
       createdAt: this.createdAt,
     };

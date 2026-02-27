@@ -1,0 +1,159 @@
+<clark-popup *ngIf="isVisible" (closed)="onClose()">
+  <div #popupInner class="modal-container edit-modal">
+    <div class="modal-title">
+      {{ isCreateMode ? 'Create Organization' : 'Edit Organization' }}
+    </div>
+    <form class="material-form">
+      <mat-vertical-stepper [linear]="!isCreateMode" #editStepper>
+        <!-- Step 1: General Information -->
+        <mat-step>
+          <ng-template matStepLabel>General Information</ng-template>
+          <div class="step-content">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Name</mat-label>
+              <input
+                matInput
+                [(ngModel)]="form.name"
+                name="name"
+                required
+                #nameInput="ngModel"
+              />
+              <mat-error
+                *ngIf="nameInput.invalid && nameInput.errors?.['required']"
+              >
+                Name is required
+              </mat-error>
+            </mat-form-field>
+            <div
+              class="duplicate-error"
+              *ngIf="isCreateMode && form.name && isNameDuplicate()"
+            >
+              This organization name already exists
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Sector</mat-label>
+              <mat-select [(ngModel)]="form.sector" name="sector">
+                <mat-option
+                  *ngFor="let sector of sectorOptions"
+                  [value]="sector"
+                >
+                  {{ sector | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Levels</mat-label>
+              <mat-select
+                [(ngModel)]="form.levels"
+                name="levels"
+                multiple
+                [disabled]="form.sector !== 'academia'"
+              >
+                <mat-option *ngFor="let level of levelOptions" [value]="level">
+                  {{ formatLevelName(level) | titlecase }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="domains-section">
+              <h4 class="subsection-header">Domains</h4>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Add Domain</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="newDomain"
+                  name="newDomain"
+                  placeholder="e.g., example.edu"
+                  (ngModelChange)="onDomainInputChange()"
+                  (keyup.enter)="addDomain()"
+                />
+                <mat-error *ngIf="domainError">{{ domainError }}</mat-error>
+              </mat-form-field>
+
+              <div class="domain-list" *ngIf="form.domains.length > 0">
+                <mat-chip-list>
+                  <mat-chip
+                    *ngFor="let domain of form.domains; let i = index"
+                    [removable]="true"
+                    (removed)="removeDomain(i)"
+                  >
+                    {{ domain }}
+                    <mat-icon matChipRemove>cancel</mat-icon>
+                  </mat-chip>
+                </mat-chip-list>
+              </div>
+              <p class="no-domains" *ngIf="form.domains.length === 0">
+                No domains added yet
+              </p>
+            </div>
+          </div>
+        </mat-step>
+
+        <!-- Step 2: Geographic Information -->
+        <mat-step>
+          <ng-template matStepLabel>Geographic Information</ng-template>
+          <div class="step-content">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>State</mat-label>
+              <input matInput [(ngModel)]="form.state" name="state" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Country</mat-label>
+              <input matInput [(ngModel)]="form.country" name="country" />
+            </mat-form-field>
+
+            <!-- Create button for create mode -->
+            <div class="confirm-actions" *ngIf="isCreateMode">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                [disabled]="!form.name || isNameDuplicate()"
+                (click)="onSave()"
+              >
+                Create Organization
+                <mat-icon>add</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-step>
+
+        <!-- Step 3: Confirmation (Edit Mode Only) -->
+        <mat-step *ngIf="!isCreateMode">
+          <ng-template matStepLabel>Confirm Changes</ng-template>
+          <div class="step-content">
+            <p class="confirm-text">
+              Are you sure you want to save these changes? This will affect
+              <strong>{{ userCount }} user(s)</strong>.
+            </p>
+
+            <mat-checkbox
+              [(ngModel)]="certified"
+              name="certified"
+              class="certification-checkbox"
+            >
+              I confirm this action is correct
+            </mat-checkbox>
+
+            <div class="confirm-actions">
+              <button
+                type="button"
+                mat-raised-button
+                color="primary"
+                [disabled]="!certified"
+                (click)="onSave()"
+              >
+                Save Changes
+                <mat-icon>check</mat-icon>
+              </button>
+            </div>
+          </div>
+        </mat-step>
+      </mat-vertical-stepper>
+    </form>
+  </div>
+</clark-popup>
