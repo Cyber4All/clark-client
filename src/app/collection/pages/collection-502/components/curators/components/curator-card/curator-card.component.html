@@ -6,5 +6,9 @@
         <img [src]="user.profilePic"/>
         <h1>{{ user.name }}</h1>
         <p>{{ user.email }}</p>
+        <p class="debug-info">orgId: {{ user.organizationId || 'missing' }}</p>
+        <p class="debug-info">org: {{ user.organization || user._organization || 'missing' }}</p>
+        <!-- DEBUG (optional): uncomment to inspect full payload in card -->
+        <!-- <pre class="debug-info">{{ user | json }}</pre> -->
     </div>
 </div>
