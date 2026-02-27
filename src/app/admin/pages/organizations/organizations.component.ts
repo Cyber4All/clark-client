@@ -59,6 +59,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   isMigrating = false;
 
   loading = false;
+  filteredVerifiedCount = 0;
+  filteredUnverifiedCount = 0;
   userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
 
@@ -94,6 +96,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.updateViewportMode();
     // Initialize dataSource with empty array
     this.dataSource = new MatTableDataSource<Organization>([]);
+    this.refreshOverviewCounts();
     this.loadOrganizations();
 
     // TODO: Extract as reusable utility - TableFilterPredicateBuilder
@@ -191,6 +194,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe({
         next: (organizations) => {
           this.dataSource.data = organizations;
+          this.refreshOverviewCounts();
           this.loading = false;
         },
         error: (error) => {
@@ -199,6 +203,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.loading = false;
           // Fall back to empty array
           this.dataSource.data = [];
+          this.refreshOverviewCounts();
         }
       });
   }
@@ -222,6 +227,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       level: this.selectedLevelFilters,
     };
     this.dataSource.filter = JSON.stringify(filterValue);
+    this.refreshOverviewCounts();
 
     // Reset to first page when filtering
     if (this.dataSource.paginator) {
@@ -344,6 +350,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe({
         next: (response) => {
           this.dataSource.data = [...this.dataSource.data, response.organization];
+          this.refreshOverviewCounts();
           this.toaster.success('Success!', 'Organization created successfully.');
           this.loading = false;
           this.closeEditModal();
@@ -381,6 +388,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
             const updatedData = [...this.dataSource.data];
             updatedData[index] = response.organization;
             this.dataSource.data = updatedData;
+            this.refreshOverviewCounts();
           }
           this.toaster.success('Success!', 'Organization updated successfully.');
           this.loading = false;
@@ -433,6 +441,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.dataSource.data = this.dataSource.data.filter(
       (org) => org._id !== selectedOrgId
     );
+    this.refreshOverviewCounts();
 
     this.toaster.success('Success!', 'Organization deleted successfully.');
     this.closeDeleteModal();
@@ -466,12 +475,16 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .reduce((total, org) => total + this.getUserCount(org), 0);
   }
 
-  getFilteredVerifiedCount(): number {
-    return this.dataSource.filteredData.filter((org) => org.isVerified).length;
-  }
-
-  getFilteredUnverifiedCount(): number {
-    return this.dataSource.filteredData.filter((org) => !org.isVerified).length;
+  private refreshOverviewCounts(): void {
+    const organizations = this.dataSource.filteredData;
+    let verified = 0;
+    for (const org of organizations) {
+      if (org.isVerified) {
+        verified++;
+      }
+    }
+    this.filteredVerifiedCount = verified;
+    this.filteredUnverifiedCount = organizations.length - verified;
   }
 
   /**
