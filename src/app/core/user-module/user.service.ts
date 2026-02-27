@@ -23,6 +23,8 @@ export class UserService {
    * @memberof UserService
    */
   searchUsers(query: UserQuery): Promise<User[]> {
+    // TODO(clark-api): Support `organizationId` filter on GET /users so admin organization pages
+    // can fetch real per-organization user counts without client-side mock data.
     return this.http
       .get(USER_ROUTES.SEARCH_USERS(query), {
         withCredentials: true,

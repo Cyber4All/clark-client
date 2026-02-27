@@ -440,6 +440,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    * Get user count for organization (mock)
    */
   getUserCount(org: Organization): number {
+    // TODO(clark-api): Replace mock count with real `/users` query when `organizationId` filter is supported.
     // Mock data - in real implementation, this would come from backend
     // Use consistent values from map
     if (!this.userCountMap.has(org._id)) {
@@ -449,6 +450,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   getLearningObjectCount(org: Organization): number {
+    // TODO(clark-api): Replace mock count with backend-provided organization learning object metrics.
     // Mock data - in real implementation, this would come from backend
     if (!this.learningObjectCountMap.has(org._id)) {
       this.learningObjectCountMap.set(org._id, Math.floor(Math.random() * 1000) + 1);
