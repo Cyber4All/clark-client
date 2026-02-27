@@ -1,13 +1,20 @@
-<section class='urls'>
+<section class="urls">
   <div class="top-wrapper" *ngIf="urls.length > 0">
-    <p>Links ({{urls.length}})</p>
+    <p>Links ({{ urls.length }})</p>
   </div>
   <div class="urls__list">
-    <a *ngFor='let url of urls' [attr.aria-label]="url.title" href='{{ url.url }}' class='urls__link-item'>
-      <i class="fas fa-link link-icon"></i> {{url.title}}
+    <a
+      *ngFor="let url of urls"
+      [attr.aria-label]="url.title"
+      href="{{ url.url }}"
+      class="urls__link-item"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <i class="fas fa-link link-icon"></i> {{ url.title }}
     </a>
   </div>
-  <p *ngIf='!urls.length' tab-index='0'>
+  <p *ngIf="!urls.length" tab-index="0">
     This Learning Object does not have any links
   </p>
 </section>
