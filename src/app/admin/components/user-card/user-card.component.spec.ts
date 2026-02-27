@@ -3,7 +3,6 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminUserCardComponent } from './user-card.component';
 import { UserService } from 'app/core/user-module/user.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { CookieModule } from 'ngx-cookie';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { User } from '@entity';
 
@@ -13,15 +12,14 @@ describe('UserCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [AdminUserCardComponent],
-    teardown: { destroyAfterEach: false },
-    imports: [CookieModule.forRoot()],
-    providers: [
+      declarations: [AdminUserCardComponent],
+      teardown: { destroyAfterEach: false },
+      providers: [
         AuthService,
         UserService,
         provideHttpClient(withInterceptorsFromDi())
-    ]
-})
+      ]
+    })
     .compileComponents();
   }));
 
