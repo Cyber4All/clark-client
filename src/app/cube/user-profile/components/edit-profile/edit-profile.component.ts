@@ -135,6 +135,7 @@ export class EditProfileComponent implements OnChanges, OnInit, OnDestroy {
       username: this.user.username,
       name: this.userService.combineName(this.editInfo.firstname, this.editInfo.lastname, true),
       email: this.editInfo.email.trim(),
+      organization: this.editInfo.organization.trim(),
       organizationId: this.selectedOrg,
       bio: this.editInfo.bio.trim(),
     };
@@ -158,6 +159,9 @@ export class EditProfileComponent implements OnChanges, OnInit, OnDestroy {
       changedFields.email = edits.email;
     }
     if (edits.organizationId !== this.user.organizationId) {
+      // Current backend validator still expects legacy `organization` field
+      // in update payload checks, so send both during transition.
+      changedFields.organization = edits.organization;
       changedFields.organizationId = edits.organizationId;
     }
     if (edits.bio !== this.user.bio) {
