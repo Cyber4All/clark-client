@@ -360,7 +360,16 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    * Get existing organization names for duplicate check
    */
   getExistingNames(): string[] {
-    return this.dataSource.data.map(org => org.normalizedName);
+    return this.dataSource.data
+      .filter((org): org is Organization => !!org && typeof org === 'object')
+      .map((org) => {
+        const normalizedName = org.normalizedName?.toLowerCase().trim();
+        if (normalizedName) {
+          return normalizedName;
+        }
+        return org.name?.toLowerCase().trim() || '';
+      })
+      .filter((name) => !!name);
   }
 
   /**
