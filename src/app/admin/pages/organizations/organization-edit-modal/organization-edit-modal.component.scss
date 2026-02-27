@@ -3,39 +3,51 @@
   &.edit-modal {
     width: 100%;
     max-width: 600px;
+    padding: 28px;
+    max-height: 80vh;
+    overflow-y: auto;
   }
+}
+
+.modal-title {
+  margin-bottom: 18px;
+}
+
+.material-form .full-width {
+  width: 100%;
+  margin-bottom: 14px;
 }
 
 .duplicate-error {
   color: #f44336;
   font-size: 0.875rem;
-  margin-top: -16px;
-  margin-bottom: 16px;
+  margin: -8px 0 12px 4px;
 }
 
 .domains-section {
-  margin-top: 16px;
+  margin-top: 12px;
 
   .subsection-header {
-    margin: 0 0 12px 0;
-    font-size: 1rem;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.87);
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: rgba(0, 0, 0, 0.72);
   }
 
   .domain-list {
-    margin-top: 8px;
+    margin-top: 4px;
   }
 
   .no-domains {
     color: rgba(0, 0, 0, 0.54);
     font-size: 0.875rem;
     margin: 8px 0;
+    font-style: italic;
   }
 }
 
 .step-content {
-  padding: 16px 0;
+  padding: 12px 12px 4px;
 }
 
 .confirm-actions {
