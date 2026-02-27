@@ -7,7 +7,7 @@ orbs:
 jobs:
   lint:
     docker:
-      - image: cimg/node:20.11.1
+      - image: cimg/node:22.13.1
     steps:
       - checkout
       - run: npm ci
@@ -23,7 +23,7 @@ jobs:
     steps:
       - checkout
       - node/install:
-          node-version: '20.11.1'
+          node-version: '22.13.1'
       - run: npm install
       - run:
           name: Build for << parameters.environment >>
@@ -42,7 +42,7 @@ jobs:
 
   build:
     docker:
-      - image: cimg/node:20.11.1
+      - image: cimg/node:22.13.1
     steps:
       - checkout
       - run: npm ci
