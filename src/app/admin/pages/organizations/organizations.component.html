@@ -414,7 +414,7 @@
   [isCreateMode]="isCreateMode"
   [organization]="selectedOrganization"
   [userCount]="selectedOrganization ? getUserCount(selectedOrganization) : 0"
-  [existingNames]="getExistingNames()"
+  [existingNames]="existingNames"
   (closed)="closeEditModal()"
   (save)="onSaveOrganization($event)"
 ></clark-organization-edit-modal>

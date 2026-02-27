@@ -61,6 +61,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   loading = false;
   filteredVerifiedCount = 0;
   filteredUnverifiedCount = 0;
+  existingNames: string[] = [];
   userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
 
@@ -198,6 +199,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe({
         next: (organizations) => {
           this.dataSource.data = organizations;
+          this.refreshExistingNames();
           this.refreshOverviewCounts();
           this.loading = false;
         },
@@ -207,6 +209,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.loading = false;
           // Fall back to empty array
           this.dataSource.data = [];
+          this.refreshExistingNames();
           this.refreshOverviewCounts();
         }
       });
@@ -321,11 +324,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.isCreateMode = false;
   }
 
-  /**
-   * Get existing organization names for duplicate check
-   */
-  getExistingNames(): string[] {
-    return this.dataSource.data
+  private refreshExistingNames(): void {
+    this.existingNames = this.dataSource.data
       .filter((org): org is Organization => !!org && typeof org === 'object')
       .map((org) => {
         const normalizedName = org.normalizedName?.toLowerCase().trim();
@@ -363,6 +363,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe({
         next: (response) => {
           this.dataSource.data = [...this.dataSource.data, response.organization];
+          this.refreshExistingNames();
           this.refreshOverviewCounts();
           this.toaster.success('Success!', 'Organization created successfully.');
           this.loading = false;
@@ -401,6 +402,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
             const updatedData = [...this.dataSource.data];
             updatedData[index] = response.organization;
             this.dataSource.data = updatedData;
+            this.refreshExistingNames();
             this.refreshOverviewCounts();
           }
           this.toaster.success('Success!', 'Organization updated successfully.');
@@ -454,6 +456,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.dataSource.data = this.dataSource.data.filter(
       (org) => org._id !== selectedOrgId
     );
+    this.refreshExistingNames();
     this.refreshOverviewCounts();
 
     this.toaster.success('Success!', 'Organization deleted successfully.');
