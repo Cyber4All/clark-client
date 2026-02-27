@@ -73,8 +73,11 @@ jobs:
           command: |
             mkdir -p reports
             semgrep scan --config auto --json --output reports/semgrep-sast.json .
+            semgrep scan --config auto --junit-xml --output reports/semgrep-sast.junit.xml .
       - store_artifacts:
           path: reports/semgrep-sast.json
+      - store_test_results:
+          path: reports/semgrep-sast.junit.xml
 
   trivy-sca-sbom:
     docker:
@@ -87,6 +90,7 @@ jobs:
           command: |
             mkdir -p reports
             trivy fs --scanners vuln --format json --output reports/trivy-sca.json .
+            trivy fs --scanners vuln --format template --template "@/contrib/junit.tpl" --output reports/trivy-sca.junit.xml .
       - run:
           name: Generate CycloneDX SBOM
           command: trivy fs --format cyclonedx --output reports/sbom.cdx.json .
@@ -94,6 +98,8 @@ jobs:
           path: reports/trivy-sca.json
       - store_artifacts:
           path: reports/sbom.cdx.json
+      - store_test_results:
+          path: reports/trivy-sca.junit.xml
 
   deploy-s3:
     parameters:
@@ -101,17 +107,40 @@ jobs:
         type: string
       distribution_id:
         type: env_var_name
+      environment_name:
+        type: string
+      component_name:
+        type: string
+        default: clark-client
     docker:
       - image: cimg/aws:2025.01
     steps:
       - attach_workspace:
           at: .
       - run:
+          name: Plan deployment marker
+          command: |
+            TARGET_VERSION="$(node -p "require('./package.json').version")-${CIRCLE_SHA1:0:7}"
+            DEPLOY_NAME="deploy-<< parameters.environment_name >>-<< parameters.component_name >>"
+            echo "export DEPLOY_NAME=${DEPLOY_NAME}" >> "$BASH_ENV"
+            circleci run release plan "$DEPLOY_NAME" \
+              --environment-name="<< parameters.environment_name >>" \
+              --component-name="<< parameters.component_name >>" \
+              --target-version="${TARGET_VERSION}"
+      - run:
           name: Sync build output to S3
           command: aws s3 sync ./dist/browser s3://<< parameters.bucket >> --delete
       - run:
           name: Invalidate CloudFront
           command: aws cloudfront create-invalidation --distribution-id "$<< parameters.distribution_id >>" --paths "/*"
+      - run:
+          name: Mark deployment success
+          when: on_success
+          command: circleci run release update "$DEPLOY_NAME" --status=SUCCESS
+      - run:
+          name: Mark deployment failure
+          when: on_fail
+          command: circleci run release update "$DEPLOY_NAME" --status=FAILED
       - slack/notify:
           event: fail
           template: basic_fail_1
@@ -132,6 +161,12 @@ workflows:
           filters:
             branches:
               ignore: [main, releases]
+      - semgrep-sast:
+          requires:
+            - build
+      - trivy-sca-sbom:
+          requires:
+            - build
 
   deploy-staging:
     when:
@@ -161,6 +196,7 @@ workflows:
             - Slack
           bucket: "clark-client-staging"
           distribution_id: STAGING_CLOUDFRONT_ID
+          environment_name: clark-staging
           requires:
             - upload-source-maps-staging
 
@@ -198,5 +234,6 @@ workflows:
             - Slack
           bucket: "clark.center"
           distribution_id: CLOUDFRONT_ID
+          environment_name: clark-production
           requires:
             - upload-source-maps-production
