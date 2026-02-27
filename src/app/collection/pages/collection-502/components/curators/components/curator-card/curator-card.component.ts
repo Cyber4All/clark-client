@@ -11,10 +11,7 @@ export class CuratorCardComponent implements OnInit {
   @Input() user: {
     'name': string,
     'email': string,
-    'profilePic': string,
-    'organizationId'?: string,
-    'organization'?: string,
-    '_organization'?: string,
+    'profilePic': string
   };
 
   constructor(
