@@ -6,10 +6,10 @@ import { AuthValidationService } from 'app/core/auth-module/auth-validation.serv
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
+import { Organization } from 'app/core/organization-module/organization.types';
 import { UserService } from 'app/core/user-module/user.service';
 import { OrganizationService } from 'app/core/utility-module/organization.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
-import { Organization } from 'entity';
 import { Subject, interval } from 'rxjs';
 import { debounce, debounceTime, takeUntil } from 'rxjs/operators';
 

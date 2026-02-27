@@ -459,6 +459,14 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .reduce((total, org) => total + this.getUserCount(org), 0);
   }
 
+  getFilteredVerifiedCount(): number {
+    return this.dataSource.filteredData.filter((org) => org.isVerified).length;
+  }
+
+  getFilteredUnverifiedCount(): number {
+    return this.dataSource.filteredData.filter((org) => !org.isVerified).length;
+  }
+
   /**
    * Format level name for display (replace underscores with spaces)
    */

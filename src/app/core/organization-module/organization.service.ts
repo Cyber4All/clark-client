@@ -137,7 +137,7 @@ export class OrganizationService {
         const request$ = this.http
             .get<SuggestDomainResponse>(this.suggestPath(), { params })
             .pipe(
-                map(data => SuggestDomainResponseSchema.parse(data)),
+                map(data => SuggestDomainResponseSchema.parse(data) as SuggestDomainResponse),
                 catchError(error => {
                     // Evict cache on error
                     this.suggestCache.delete(cacheKey);
