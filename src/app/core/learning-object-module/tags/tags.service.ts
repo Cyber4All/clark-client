@@ -39,6 +39,33 @@ export class TagsService {
   }
 
   /**
+   * This gets a single tag from the backend
+   */
+  async getTag(id: string): Promise<Tag> {
+    return await new Promise((resolve, reject) => {
+      this.http
+      .get<Tag>(TAGS_ROUTES.GET_TAG(id),
+        {
+          headers: this.headers,
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then(
+        (res: any) => {
+          resolve(res.tag);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
+  }
+
+  /**
    * This gets the list of object tags from the backend to display
    *
    * @returns A list of tags
