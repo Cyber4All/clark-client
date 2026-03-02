@@ -1,49 +1,49 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
+    "version": 1,
+      "newProjectRoot": "projects",
+        "projects": {
     "clark": {
       "root": "",
-      "sourceRoot": "src",
-      "projectType": "application",
-      "architect": {
+        "sourceRoot": "src",
+          "projectType": "application",
+            "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
-          "options": {
+            "options": {
             "outputPath": {
               "base": "dist"
             },
             "index": "src/index.html",
-            "tsConfig": "src/tsconfig.app.json",
-            "polyfills": [
-              "@angular/localize/init",
-              "src/polyfills.ts"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/env.js"
-            ],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-              "src/globals.scss",
-              "src/mat-input.scss"
-            ],
-            "extractLicenses": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true,
-            "allowedCommonJsDependencies": [
-              "@cyber4all/clark-taxonomy",
-              "aws-sdk",
-              "chart.js",
-              "md5",
-              "ng-click-outside",
-              "rxjs/internal/observable/of"
-            ],
-            "browser": "src/main.ts"
+              "tsConfig": "src/tsconfig.app.json",
+                "polyfills": ["@angular/localize/init", "src/polyfills.ts"],
+                  "assets": ["src/assets", "src/favicon.ico", "src/env.js"],
+                    "styles": [
+                      "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+                      "./node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+                      "src/globals.scss",
+                      "src/mat-input.scss",
+                      "./node_modules/prism-themes/themes/prism-one-light.min.css",
+                      "./node_modules/prismjs/plugins/line-numbers/prism-line-numbers.min.css"
+                    ],
+                      "scripts": [
+                        "./node_modules/prismjs/prism.js",
+                        "./node_modules/prismjs/components/prism-python.min.js",
+                        "./node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
+                      ],
+                        "extractLicenses": false,
+                          "sourceMap": true,
+                            "optimization": false,
+                              "namedChunks": true,
+                                "allowedCommonJsDependencies": [
+                                  "@cyber4all/clark-taxonomy",
+                                  "aws-sdk",
+                                  "chart.js",
+                                  "md5",
+                                  "ng-click-outside",
+                                  "rxjs/internal/observable/of"
+                                ],
+                                  "browser": "src/main.ts"
           },
           "configurations": {
             "experimental": {
@@ -64,23 +64,23 @@
             },
             "production": {
               "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ]
+                "outputHashing": "all",
+                  "sourceMap": false,
+                    "namedChunks": false,
+                      "extractLicenses": true,
+                        "fileReplacements": [
+                          {
+                            "replace": "src/environments/environment.ts",
+                            "with": "src/environments/environment.prod.ts"
+                          }
+                        ]
             }
           },
           "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
+            "options": {
             "buildTarget": "clark:build"
           },
           "configurations": {
@@ -97,31 +97,28 @@
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
+            "options": {
             "buildTarget": "clark:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
-          "options": {
+            "options": {
             "main": "src/test.ts",
-            "karmaConfig": "./karma.conf.js",
-            "polyfills": [
-              "@angular/localize/init",
-              "src/polyfills.ts"
-            ],
-            "tsConfig": "src/tsconfig.spec.json",
-            "scripts": [],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/globals.scss"
-            ],
-            "assets": ["src/assets", "src/favicon.ico", "src/env.js"]
+              "karmaConfig": "./karma.conf.js",
+                "polyfills": ["@angular/localize/init", "src/polyfills.ts"],
+                  "tsConfig": "src/tsconfig.spec.json",
+                    "scripts": [],
+                      "styles": [
+                        "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
+                        "src/globals.scss"
+                      ],
+                        "assets": ["src/assets", "src/favicon.ico", "src/env.js"]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
-          "options": {
+            "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
@@ -129,54 +126,45 @@
     },
     "clark-e2e": {
       "root": "",
-      "sourceRoot": "e2e",
-      "projectType": "application",
-      "architect": {
+        "sourceRoot": "e2e",
+          "projectType": "application",
+            "architect": {
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
+            "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "clark:serve"
+              "devServerTarget": "clark:serve"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:eslint",
-          "options": {
+            "options": {
             "tsConfig": ["e2e/tsconfig.e2e.json"],
-            "exclude": ["**/node_modules/**"]
+              "exclude": ["**/node_modules/**"]
           }
         }
       }
     },
     "storybook": {
       "root": "",
-      "sourceRoot": "src",
-      "projectType": "application",
-      "architect": {
+        "sourceRoot": "src",
+          "projectType": "application",
+            "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
-          "options": {
+            "options": {
             "tsConfig": "src/tsconfig.app.json",
-            "polyfills": [
-              "@angular/localize/init",
-              "src/polyfills.ts"
-            ],
-            "assets": [
-              "src/assets",
-              "src/favicon.ico",
-              "src/env.js"
-            ],
-            "styles": [
-              "src/globals.scss"
-            ],
-            "scripts": [],
-            "outputPath": {
+              "polyfills": ["@angular/localize/init", "src/polyfills.ts"],
+                "assets": ["src/assets", "src/favicon.ico", "src/env.js"],
+                  "styles": ["src/globals.scss"],
+                    "scripts": [],
+                      "outputPath": {
               "base": "dist"
             },
             "extractLicenses": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+              "sourceMap": true,
+                "optimization": false,
+                  "namedChunks": true
           },
           "defaultConfiguration": ""
         }
@@ -186,7 +174,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "clark",
-      "style": "scss"
+        "style": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "clark"
