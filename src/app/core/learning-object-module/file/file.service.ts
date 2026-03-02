@@ -9,6 +9,7 @@ import { catchError, takeUntil } from 'rxjs/operators';
 import { Observable, Subject, throwError } from 'rxjs';
 import { FileUploadMeta } from 'app/onion/learning-object-builder/components/content-upload/app/services/typings';
 import { LearningObject } from '@entity';
+import { SOURCE_CODE_EXTENSIONS } from './source.extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -35,26 +36,56 @@ export class FileService {
     return '';
   }
 
+
+
+  /**
+   * Helper: returns the language identifier for syntax highlighting based on file extension
+   * @param filename - The filename to get language for
+   * @returns The language identifier or empty string if not found
+   */
+  private static getLanguageFromExtension(filename: string): string {
+    const extension = this.getFileExtension(filename);
+    return SOURCE_CODE_EXTENSIONS[extension] || '';
+  }
+
   /**
    * Helper: returns a category for the file based on its extension.
    * @param filename - The filename to categorize
-   * @returns The category ('office', 'pdf', etc.) or an empty string.
+   * @returns The category ('office', 'pdf', 'code', etc.) or an empty string.
    */
-  private static getFileType(filename: string): { 'type': string, 'ext': string } {
+  private static getFileType(filename: string): {
+    type: string;
+    ext: string;
+    language?: string;
+  } {
     const extension = this.getFileExtension(filename);
 
     const typeExtensions: { [type: string]: string[] } = {
       office: [
-        '.docx', '.doc', '.pptx', '.ppt', '.ppsx',
-        '.pps', '.potx', '.pot', '.xlsx', '.xls',
+        '.docx',
+        '.doc',
+        '.pptx',
+        '.ppt',
+        '.ppsx',
+        '.pps',
+        '.potx',
+        '.pot',
+        '.xlsx',
+        '.xls',
       ],
       pdf: ['.pdf'],
     };
 
+    // Check for source code files first
+    const language = this.getLanguageFromExtension(filename);
+    if (language) {
+      return { type: 'code', ext: extension, language };
+    }
+
     // Returns an array like ['office', ['.docx', '.doc', ...], 'pdf', ['.pdf']] to be iterable
     // to do a reverse lookup of obtaining the matching type by extension
     const entry = Object.entries(typeExtensions).find(([_, exts]) =>
-      exts.includes(extension)
+      exts.includes(extension),
     );
     const type = entry ? entry[0] : '';
 
@@ -65,18 +96,29 @@ export class FileService {
    * Defines how to preview different file types.
    * Maps a file type identifier to a function that opens the preview.
    */
-  private static readonly PREVIEW_ACTIONS: { [key: string]: (url: string) => void } = {
-    // Use Microsoft's viewer
-    'office': (url: string) => {
-      const encodedUrl = encodeURIComponent(url);
-      const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
-      window.open(officeViewerUrl, '_blank');
-    },
-    // Open a new tab
-    'pdf': (url: string) => {
-      window.open(url, '_blank');
-    }
-  };
+  private static readonly PREVIEW_ACTIONS: {
+    [key: string]: (url: string, fileName?: string) => void;
+  } = {
+      // Use Microsoft's viewer
+      office: (url: string) => {
+        const encodedUrl = encodeURIComponent(url);
+        const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
+        window.open(officeViewerUrl, '_blank');
+      },
+      // Open a new tab
+      pdf: (url: string) => {
+        window.open(url, '_blank');
+      },
+      // Open code preview in new tab
+      code: (url: string, fileName: string) => {
+        const fileInfo = FileService.getFileType(fileName);
+        const language = fileInfo.language || 'text';
+        const encodedUrl = encodeURIComponent(url);
+        const encodedFileName = encodeURIComponent(fileName);
+        const previewUrl = `/preview/code?url=${encodedUrl}&language=${language}&filename=${encodedFileName}`;
+        window.open(previewUrl, '_blank');
+      },
+    };
 
   /**
    * Helper: returns true if filename can be previewed
@@ -123,12 +165,15 @@ export class FileService {
    * @param url file URL
    * @param fileName file name
    */
-  async previewLearningObjectFile(url: string, fileName: string): Promise<void> {
+  async previewLearningObjectFile(
+    url: string,
+    fileName: string,
+  ): Promise<void> {
     const fileType = FileService.getFileType(fileName).type;
     const previewAction = FileService.PREVIEW_ACTIONS[fileType];
 
     if (previewAction) {
-      previewAction(url);
+      previewAction(url, fileName);
     }
   }
 
