@@ -4,7 +4,11 @@ import { TitleCasePipe } from '@angular/common';
 
 import { UrlSerializer } from '@angular/router';
 import { CustomUrlSerializer } from './core/learning-object-module/custom-url-serliazer';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 
 import { ClarkComponent } from './clark.component';
 import { ClarkRoutingModule } from './clark.routing';
@@ -26,53 +30,55 @@ import { SafeHtmlPipe } from './components/safe-html.pipe';
 import { HttpConfigInterceptor } from './core/interceptor/httpconfig.interceptor';
 import { CoralogixRumService } from './core/services/coralogix-rum.service';
 import { ChatbotModule } from 'app/shared/modules/chatbot/chatbot.module';
+import { CodePreviewComponent } from './shared/modules/filesystem/code-preview/code-preview.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
-        ClarkComponent,
-        UnsupportedComponent,
-        NotFoundComponent,
-        CookiesComponent,
-        MessageComponent,
-        SearchComponent,
-        MaintenancePageComponent,
-        UnauthorizedComponent,
-        SubscriptionComponent,
-        PrimaryNavbarComponent,
-        SecondaryNavbarComponent,
-        RedirectComponent,
-        SafeHtmlPipe
+    ClarkComponent,
+    UnsupportedComponent,
+    NotFoundComponent,
+    CookiesComponent,
+    MessageComponent,
+    SearchComponent,
+    MaintenancePageComponent,
+    UnauthorizedComponent,
+    SubscriptionComponent,
+    PrimaryNavbarComponent,
+    SecondaryNavbarComponent,
+    RedirectComponent,
+    SafeHtmlPipe,
+    CodePreviewComponent,
   ],
-  bootstrap: [
-    ClarkComponent
-  ],
+  bootstrap: [ClarkComponent],
   imports: [
     BrowserModule,
     ClarkRoutingModule,
     SharedModule,
     BrowserAnimationsModule,
     FormsModule,
-    ChatbotModule
+    ChatbotModule,
+    MarkdownModule.forRoot(),
   ],
   providers: [
     TitleCasePipe,
     Title,
-    { 
+    {
       provide: UrlSerializer,
-      useClass: CustomUrlSerializer
+      useClass: CustomUrlSerializer,
     },
-    { 
+    {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpConfigInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: APP_INITIALIZER,
       useFactory: (rumService: CoralogixRumService) => () => rumService.init(),
       deps: [CoralogixRumService],
-      multi: true
+      multi: true,
     },
-      provideHttpClient(withInterceptorsFromDi()),
-  ] 
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
 })
-export class ClarkModule { }
+export class ClarkModule {}
