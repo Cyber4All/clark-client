@@ -40,21 +40,25 @@ export class FileService {
    * @param filename - The filename to categorize
    * @returns The category ('office', 'pdf', etc.) or an empty string.
    */
-  private static getFileType(filename: string): string {
+  private static getFileType(filename: string): { 'type': string, 'ext': string } {
     const extension = this.getFileExtension(filename);
-    const officeExtensions = [
-      '.docx', '.doc', '.pptx', '.ppt', '.ppsx',
-      '.pps', '.potx', '.pot', '.xlsx', '.xls',
-    ];
 
-    if (officeExtensions.includes(extension)) {
-      return 'office';
-    }
-    if (extension === '.pdf') {
-      return 'pdf';
-    }
+    const typeExtensions: { [type: string]: string[] } = {
+      office: [
+        '.docx', '.doc', '.pptx', '.ppt', '.ppsx',
+        '.pps', '.potx', '.pot', '.xlsx', '.xls',
+      ],
+      pdf: ['.pdf'],
+    };
 
-    return '';
+    // Returns an array like ['office', ['.docx', '.doc', ...], 'pdf', ['.pdf']] to be iterable
+    // to do a reverse lookup of obtaining the matching type by extension
+    const entry = Object.entries(typeExtensions).find(([_, exts]) =>
+      exts.includes(extension)
+    );
+    const type = entry ? entry[0] : '';
+
+    return { type, ext: extension };
   }
 
   /**
@@ -78,7 +82,7 @@ export class FileService {
    * Helper: returns true if filename can be previewed
    */
   static canPreview(filename: string): boolean {
-    return this.getFileType(filename) in this.PREVIEW_ACTIONS;
+    return this.getFileType(filename).type in this.PREVIEW_ACTIONS;
   }
 
   /**
@@ -117,10 +121,10 @@ export class FileService {
   /**
    * Preview the file if it can be previewed.
    * @param url file URL
-   * @param name file name (to check extension)
+   * @param fileName file name
    */
-  async previewLearningObjectFile(url: string, name: string): Promise<void> {
-    const fileType = FileService.getFileType(name);
+  async previewLearningObjectFile(url: string, fileName: string): Promise<void> {
+    const fileType = FileService.getFileType(fileName).type;
     const previewAction = FileService.PREVIEW_ACTIONS[fileType];
 
     if (previewAction) {
