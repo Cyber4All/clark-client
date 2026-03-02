@@ -36,30 +36,49 @@ export class FileService {
   }
 
   /**
-   * Helper: returns true if filename is a supported Microsoft Office file
+   * Helper: returns a category for the file based on its extension.
+   * @param filename - The filename to categorize
+   * @returns The category ('office', 'pdf', etc.) or an empty string.
    */
-  static isOfficeFile(filename: string): boolean {
+  private static getFileType(filename: string): string {
+    const extension = this.getFileExtension(filename);
     const officeExtensions = [
-      '.docx',
-      '.doc',
-      '.pptx',
-      '.ppt',
-      '.ppsx',
-      '.pps',
-      '.potx',
-      '.pot',
-      '.xlsx',
-      '.xls',
+      '.docx', '.doc', '.pptx', '.ppt', '.ppsx',
+      '.pps', '.potx', '.pot', '.xlsx', '.xls',
     ];
-    return officeExtensions.includes(this.getFileExtension(filename));
+
+    if (officeExtensions.includes(extension)) {
+      return 'office';
+    }
+    if (extension === '.pdf') {
+      return 'pdf';
+    }
+
+    return '';
   }
 
   /**
+   * Defines how to preview different file types.
+   * Maps a file type identifier to a function that opens the preview.
+   */
+  private static readonly PREVIEW_ACTIONS: { [key: string]: (url: string) => void } = {
+    // Use Microsoft's viewer
+    'office': (url: string) => {
+      const encodedUrl = encodeURIComponent(url);
+      const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
+      window.open(officeViewerUrl, '_blank');
+    },
+    // Open a new tab
+    'pdf': (url: string) => {
+      window.open(url, '_blank');
+    }
+  };
+
+  /**
    * Helper: returns true if filename can be previewed
-   * Currently supports Microsoft Office files, extensible for future file types
    */
   static canPreview(filename: string): boolean {
-    return this.isOfficeFile(filename);
+    return this.getFileType(filename) in this.PREVIEW_ACTIONS;
   }
 
   /**
@@ -100,20 +119,12 @@ export class FileService {
    * @param url file URL
    * @param name file name (to check extension)
    */
-  async previewLearningObjectFile(url: string, name: string): Promise<string> {
-    if (FileService.canPreview(name)) {
-      // Currently only handles Office files, extensible for other file types
+  async previewLearningObjectFile(url: string, name: string): Promise<void> {
+    const fileType = FileService.getFileType(name);
+    const previewAction = FileService.PREVIEW_ACTIONS[fileType];
 
-      // Microsoft Office files
-      if (FileService.isOfficeFile(name)) {
-        const encodedUrl = encodeURIComponent(url);
-        const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
-        window.open(officeViewerUrl, '_blank');
-      }
-      return Promise.resolve('');
-    } else {
-      // Not a previewable file; do nothing for now but return Promise.resolve('')
-      return Promise.resolve('');
+    if (previewAction) {
+      previewAction(url);
     }
   }
 
