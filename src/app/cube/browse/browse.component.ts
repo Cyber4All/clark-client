@@ -143,7 +143,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.durationFilter = this.filterComponent.lengthFilter;
 
         // Try to get materials filter (tag-based)
-        const materialsTagFilter = this.filterComponent.getMaterialsTagFilter();
+        const materialsTagFilter = this.filterComponent.getTagFilterByType('materials');
         if (materialsTagFilter && materialsTagFilter.filters && materialsTagFilter.filters.length > 0) {
           this.materialsFilter = materialsTagFilter;
         } else if (attempts === maxAttempts) {

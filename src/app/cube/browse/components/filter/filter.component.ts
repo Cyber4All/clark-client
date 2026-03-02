@@ -217,113 +217,76 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Get Materials filter from tags (specifically "material" tag type)
+   * Gets the tag filters based on the provided type as needed in the html template.
    */
-  getMaterialsTagFilter(): FilterSectionInfo | undefined {
+  getTagFilterByType(type: string): FilterSectionInfo | undefined {
     // Return undefined if tagFilter is not initialized yet
     if (!this.tagFilter?.filters) {
       return undefined;
     }
 
-    // Get tags of type 'material'
-    const materialTags = this.tagFilter.filters.filter((t) =>
-      t.tagType?.includes('material'),
-    );
+    switch (type) {
+      case 'misc':
+        const miscTypes = ['info', 'modality', 'lang', 'quality']; // grouping these as a single 'miscellaneous' filter section
+        const miscTags = [];
+        miscTypes.forEach((type) => {
+          miscTags.push(...this.tagFilter.filters.filter((t) =>
+            t.tagType?.includes(type),
+          ));
+        })
+        if(miscTags.length < 1) {
+          return undefined;
+        }
+        return {
+          section: 'Misc',
+          filters: miscTags
+        };
 
-    // If no material tags, return undefined
-    if (materialTags.length < 1) {
-      return undefined;
+      case 'code':
+        // Get tags of type 'code'
+        const codeTags = this.tagFilter.filters.filter((t) =>
+          t.tagType?.includes('code'),
+        );
+
+        // If no code tags, return undefined
+        if (codeTags.length < 1) {
+          return undefined;
+        }
+
+        return {
+          section: 'Code',
+          filters: codeTags
+        };
+
+      case 'tech':
+        const techTags = this.tagFilter.filters.filter((t) =>
+          t.tagType?.includes('tech'),
+        );
+
+        // If no tech tags, return undefined
+        if (techTags.length < 1) {
+          return undefined;
+        }
+
+        return {
+          section: 'Tech',
+          filters: techTags
+        };
+
+        case 'materials':
+          const materialTags = this.tagFilter.filters.filter((t) => 
+            t.tagType?.includes('material'),
+          );
+
+          if (materialTags.length < 1) {
+            return undefined;
+          }
+
+          return {
+            section: 'Materials',
+            filters: materialTags
+          };
     }
-
-    return {
-      section: 'Materials',
-      filters: materialTags
-    };
-  }
-
-  /**
-   * Get Modality, Info, Lang, and Quality filter from tags
-   */
-  getMiscTagFilter(): FilterSectionInfo | undefined {
-    // Return undefined if tagFilter is not initialized yet
-    if (!this.tagFilter?.filters) {
-      return undefined;
-    }
-
-    const miscTags = this.tagFilter.filters.filter((t) =>
-      t.tagType?.includes('info'),
-    );
-
-    const modalityTags = this.tagFilter.filters.filter((t) =>
-      t.tagType?.includes('modality'),
-    );
-
-    const languageTags = this.tagFilter.filters.filter((t) =>
-      t.tagType?.includes('lang'),
-    );
-
-    const qualityTags = this.tagFilter.filters.filter((t) =>
-      t.tagType?.includes('quality'),
-    );
-
-    if (modalityTags.length < 1 || miscTags.length < 1 || languageTags.length < 1 || qualityTags.length < 1) {
-      return undefined;
-    }
-
-    return {
-      section: 'Misc',
-      filters: [...modalityTags, ...miscTags, ...languageTags, ...qualityTags]
-    };
-  }
-
-  /**
-   * Get Code filter from tags (specifically "code" tag type)
-   */
-  getCodeTagFilter(): FilterSectionInfo | undefined {
-    // Return undefined if tagFilter is not initialized yet
-    if (!this.tagFilter?.filters) {
-      return undefined;
-    }
-
-    // Get tags of type 'code'
-    const codeTags = this.tagFilter.filters.filter((t) =>
-      t.tagType?.includes('code'),
-    );
-
-    // If no code tags, return undefined
-    if (codeTags.length < 1) {
-      return undefined;
-    }
-
-    return {
-      section: 'Code',
-      filters: codeTags
-    };
-  }
-
-  /**
-   * Get Tech filter from tags (specifically "tech" tag type)
-   */
-  getTechTagFilter(): FilterSectionInfo | undefined {
-    // Return undefined if tagFilter is not initialized yet
-    if (!this.tagFilter?.filters) {
-      return undefined;
-    }
-
-    // Get tags of type 'tech'
-    const techTags = this.tagFilter.filters.filter((t) =>
-      t.tagType?.includes('tech'),
-    );
-
-    // If no tech tags, return undefined
-    if (techTags.length < 1) {
-      return undefined;
-    }
-
-    return {
-      section: 'Tech',
-      filters: techTags
-    };
   }
 
   /**

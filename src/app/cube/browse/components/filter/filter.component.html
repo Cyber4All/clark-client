@@ -15,13 +15,13 @@
   <clark-filter-section [info]="levelFilter" (change)="registerChange()"></clark-filter-section>
 
   <!-- Materials Filters (from Tags) -->
-  <clark-filter-section [info]="getMaterialsTagFilter()" [collapsed]="false" (change)="registerChange()"></clark-filter-section>
+  <clark-filter-section [info]="getTagFilterByType('materials')" [collapsed]="false" (change)="registerChange()"></clark-filter-section>
 
-  <clark-filter-section [info]="getMiscTagFilter()" [collapsed]="false"(change)="registerChange()"></clark-filter-section>
+  <clark-filter-section [info]="getTagFilterByType('misc')" [collapsed]="false"(change)="registerChange()"></clark-filter-section>
 
-  <clark-filter-section [info]="getCodeTagFilter()" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
+  <clark-filter-section [info]="getTagFilterByType('code')" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
 
-  <clark-filter-section [info]="getTechTagFilter()" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
+  <clark-filter-section [info]="getTagFilterByType('tech')" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
 
   <!-- Duration Filters (formerly Length) -->
   <clark-filter-section [info]="lengthFilter" [collapsed]="false"(change)="registerChange()"></clark-filter-section>
