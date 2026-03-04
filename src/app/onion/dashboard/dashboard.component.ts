@@ -160,7 +160,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       text,
       ...filters
     }).then((response: { learningObjects: LearningObject[], total: number }) => {
-      this.workingLearningObjects = response.learningObjects;
+      this.workingLearningObjects = this.sortLearningObjectsByDateDesc(response.learningObjects);
     });
   }
 
@@ -176,7 +176,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ...filters,
         text
       }).then((response: {learningObjects: LearningObject[], total: number}) => {
-        this.releasedLearningObjects = response.learningObjects;
+        this.releasedLearningObjects = this.sortLearningObjectsByDateDesc(response.learningObjects);
       });
 
     this.checkQueryParams$.next();
@@ -410,5 +410,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
+  }
+
+  private sortLearningObjectsByDateDesc(objects: LearningObject[]): LearningObject[] {
+    return objects.sort((a, b) => b.date.localeCompare(a.date));
   }
 }
