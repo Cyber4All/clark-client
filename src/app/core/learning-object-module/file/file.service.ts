@@ -161,6 +161,20 @@ export class FileService {
   }
 
   /**
+   * Gets raw text content for a learning object file.
+   * @param url public/authorized file URL
+   */
+  async getLearningObjectFileContent(url: string): Promise<string> {
+    return this.http
+      .get(url, {
+        withCredentials: true,
+        responseType: 'text',
+      })
+      .pipe(catchError(this.handleError))
+      .toPromise();
+  }
+
+  /**
    * Preview the file if it can be previewed.
    * @param url file URL
    * @param fileName file name

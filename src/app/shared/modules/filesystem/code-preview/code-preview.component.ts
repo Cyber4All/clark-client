@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
   selector: 'clark-code-preview',
@@ -20,8 +18,8 @@ export class CodePreviewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private http: HttpClient,
-  ) { }
+    private fileService: FileService,
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -44,27 +42,16 @@ export class CodePreviewComponent implements OnInit {
     this.isLoading = true;
     this.hasError = false;
 
-    this.http
-      .get(url, {
-        withCredentials: true,
-        responseType: 'text',
+    this.fileService
+      .getLearningObjectFileContent(url)
+      .then((content: string) => {
+        this.fileContent = content;
+        this.markdownContent = this.buildMarkdownContent(content, this.language);
+        this.isLoading = false;
       })
-      .pipe(
-        catchError((error: HttpErrorResponse) => this.handleHttpError(error)),
-      )
-      .subscribe(
-        (content: string) => {
-          this.fileContent = content;
-          this.markdownContent = this.buildMarkdownContent(
-            content,
-            this.language,
-          );
-          this.isLoading = false;
-        },
-        (error) => {
-          this.handleError(error);
-        },
-      );
+      .catch((error) => {
+        this.handleError(this.formatError(error));
+      });
   }
 
   /**
@@ -75,27 +62,35 @@ export class CodePreviewComponent implements OnInit {
   }
 
   /**
-   * Handles HTTP errors
-   */
-  private handleHttpError(error: HttpErrorResponse) {
-    let errorMsg = 'Failed to load file';
-
-    if (error.error instanceof ErrorEvent) {
-      errorMsg = `Error: ${error.error.message}`;
-    } else {
-      errorMsg = `Error ${error.status}: ${error.message}`;
-    }
-
-    return throwError(errorMsg);
-  }
-
-  /**
    * Handles general errors
    */
   private handleError(message: string): void {
     this.hasError = true;
     this.errorMessage = message;
     this.isLoading = false;
+  }
+
+  private formatError(error: unknown): string {
+    if (error && typeof error === 'object') {
+      const httpError = error as { status?: number; statusText?: string; message?: string };
+      if (typeof httpError.status === 'number' && httpError.status > 0) {
+        const statusText = httpError.statusText ? ` ${httpError.statusText}` : '';
+        return `Could not load file (${httpError.status}${statusText}).`;
+      }
+    }
+
+    if (typeof error === 'string' && error) {
+      return error;
+    }
+
+    if (error && typeof error === 'object' && 'message' in error) {
+      const message = (error as { message?: string }).message;
+      if (message) {
+        return message;
+      }
+    }
+
+    return 'Could not load file.';
   }
 
   /**
