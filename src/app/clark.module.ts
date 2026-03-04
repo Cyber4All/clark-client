@@ -58,7 +58,7 @@ import { MarkdownModule } from 'ngx-markdown';
     BrowserAnimationsModule,
     FormsModule,
     ChatbotModule,
-    MarkdownModule.forRoot(),
+    MarkdownModule,
   ],
   providers: [
     TitleCasePipe,
@@ -81,4 +81,4 @@ import { MarkdownModule } from 'ngx-markdown';
     provideHttpClient(withInterceptorsFromDi()),
   ],
 })
-export class ClarkModule {}
+export class ClarkModule { }

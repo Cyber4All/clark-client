@@ -19,7 +19,7 @@ export class CodePreviewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private fileService: FileService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
@@ -28,7 +28,7 @@ export class CodePreviewComponent implements OnInit {
       this.fileName = params['filename'] || 'Unknown File';
 
       if (url) {
-        this.loadFileContent(decodeURIComponent(url));
+        this.loadFileContent(url);
       } else {
         this.handleError('No file URL provided');
       }

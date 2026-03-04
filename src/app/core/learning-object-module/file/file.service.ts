@@ -103,11 +103,11 @@ export class FileService {
       office: (url: string) => {
         const encodedUrl = encodeURIComponent(url);
         const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
-        window.open(officeViewerUrl, '_blank');
+        window.open(officeViewerUrl, '_blank', "noopener,noreferrer");
       },
       // Open a new tab
       pdf: (url: string) => {
-        window.open(url, '_blank');
+        window.open(url, '_blank', "noopener,noreferrer");
       },
       // Open code preview in new tab
       code: (url: string, fileName: string) => {
@@ -116,7 +116,7 @@ export class FileService {
         const encodedUrl = encodeURIComponent(url);
         const encodedFileName = encodeURIComponent(fileName);
         const previewUrl = `/preview/code?url=${encodedUrl}&language=${language}&filename=${encodedFileName}`;
-        window.open(previewUrl, '_blank');
+        window.open(previewUrl, '_blank', "noopener,noreferrer");
       },
     };
 
