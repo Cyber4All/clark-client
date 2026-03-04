@@ -12,8 +12,8 @@ import { titleCase } from 'title-case';
 import { AuthService } from '../../../core/auth-module/auth.service';
 import { MetricService } from '../../../core/metric-module/metric.service';
 import { RatingService } from '../../../core/rating-module/rating.service';
-import { TagsService } from '../../../core/learning-object-module/tags/tags.service';
-import { TopicsService } from '../../../core/learning-object-module/topics/topics.service';
+import { TagsStore } from 'app/core/learning-object-module/tags/tags.store';
+import { TopicsStore } from 'app/core/learning-object-module/topics/topics.store';
 
 @Component({
   selector: 'clark-learning-object-component',
@@ -96,8 +96,8 @@ export class LearningObjectListingComponent implements OnDestroy {
   constructor(
     private ratingService: RatingService,
     private metricService: MetricService,
-    private tagsService: TagsService,
-    private topicsService: TopicsService,
+    private tagsStore: TagsStore,
+    private topicsStore: TopicsStore,
     public auth: AuthService,
     private cd: ChangeDetectorRef
   ) { }
@@ -270,7 +270,17 @@ export class LearningObjectListingComponent implements OnDestroy {
       this.topics = [];
       return;
     }
-    this.topics =  await Promise.all(lo.topics.map((id: string) => this.topicsService.getFromTopicsMap(id)));
+    // this.topics =  await Promise.all(lo.topics.map((id: string) => this.topicsStore.topics$(id)));
+    lo.topics.forEach(async (id: string) => {
+      (await this.topicsStore.topics$(id)).subscribe(topic => {
+        if (topic) {
+          this.topics.push(topic.name);
+          // this.cd.markForCheck();
+          console.log("GOT TOPICS: ", topic.name)
+        }
+      });
+    });
+    console.log('Resolved topic names:', this.topics);
   }
 
   // resolving tag names from tags service using the tag ids in the learning object
@@ -279,6 +289,6 @@ export class LearningObjectListingComponent implements OnDestroy {
       this.tags = [];
       return;
     }
-    this.tags = await Promise.all(lo.tags.map((id: string) => this.tagsService.getFromTagsMap(id)));
+    this.tags = await Promise.all(lo.tags.map((id: string) => this.tagsStore.tag$(id).toPromise().then(tag => tag?.name ?? '')));
   }
 }
