@@ -8,31 +8,29 @@
     </div>
   </div>
 
-  <!-- TODO: Extract as reusable component - clark-admin-overview-cards or clark-stats-card-grid
-       This pattern of overview/statistics cards is used across multiple admin pages.
-       Consider creating a generic component that accepts an array of stat objects with
-       label, value, and optional icon/color. -->
+  <!-- TODO: Consider extracting the overview row/grid wrapper if this layout pattern
+       repeats in other admin pages. Individual stats card is now reusable via
+       clark-stats-card. -->
   <div class="overview-row" search>
-    <div class="overview-card">
-      <div class="overview-card__label">Total</div>
-      <div class="overview-card__value">{{ dataSource.data.length }}</div>
-    </div>
-    <div class="overview-card">
-      <div class="overview-card__label">Verified</div>
-      <div class="overview-card__value">
-        {{ filteredVerifiedCount }}
-      </div>
-    </div>
-    <div class="overview-card">
-      <div class="overview-card__label">Unverified</div>
-      <div class="overview-card__value">
-        {{ filteredUnverifiedCount }}
-      </div>
-    </div>
-    <div class="overview-card">
-      <div class="overview-card__label">Users in "Other"</div>
-      <div class="overview-card__value">{{ getTotalOtherUsers() }}</div>
-    </div>
+    <clark-stats-card
+      label="Total"
+      [value]="dataSource.data.length"
+    ></clark-stats-card>
+    <clark-stats-card
+      label="Verified"
+      [value]="filteredVerifiedCount"
+      textColor="#1f9d55"
+    ></clark-stats-card>
+    <clark-stats-card
+      label="Unverified"
+      [value]="filteredUnverifiedCount"
+      textColor="#d14343"
+    ></clark-stats-card>
+    <clark-stats-card
+      label="Users in &quot;Other&quot;"
+      [value]="getTotalOtherUsers()"
+      textColor="#7b6cf6"
+    ></clark-stats-card>
   </div>
 
   <!-- TODO: Extract as reusable component - clark-admin-filter-toolbar

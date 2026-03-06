@@ -23,6 +23,7 @@ import { InputFieldComponent } from './input-field/input-field.component';
 import { ProgressComponent } from './progress/progress.component';
 import { RatingStarsComponent } from './rating-stars/rating-stars.component';
 import { SkipLinkComponent } from './skip-link/skip-link.component';
+import { StatsCardComponent } from './stats-card/stats-card.component';
 import { TextEditorComponent } from './text-editor/text-editor.component';
 import { ToggleSwitchComponent } from './toggle-switch/toggle-switch.component';
 import { UserCardComponent } from './user-card/user-card.component';
@@ -63,6 +64,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     IndicatorComponent,
     ProgressComponent,
     RatingStarsComponent,
+    StatsCardComponent,
     TextEditorComponent,
     ToggleSwitchComponent,
     UserCardComponent,
@@ -86,6 +88,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     IndicatorComponent,
     ProgressComponent,
     RatingStarsComponent,
+    StatsCardComponent,
     TextEditorComponent,
     ToggleSwitchComponent,
     UserCardComponent,

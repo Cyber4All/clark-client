@@ -30,27 +30,6 @@
   margin: 12px 0 18px;
 }
 
-.overview-card {
-  background: #fff;
-  border: 1px solid #e1e5ec;
-  border-radius: 12px;
-  padding: 12px 14px;
-}
-
-.overview-card__label {
-  font-size: $smaller;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: $medium-grey;
-}
-
-.overview-card__value {
-  font-size: $large;
-  color: $darker-grey;
-  font-weight: 700;
-  margin-top: 4px;
-}
-
 .search-icon {
   color: $light-blue;
   margin-right: 6px;
