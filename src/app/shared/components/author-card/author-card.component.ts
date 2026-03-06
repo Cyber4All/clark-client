@@ -20,7 +20,7 @@ export class AuthorCardComponent implements OnInit {
     // Author objects coming from some Learning Object responses can be partial and omit
     // organization fields; rehydrating by username gives a consistent User payload with
     // organizationId so OrganizationStore lookups render reliably.
-    if (this.author?.username) {
+    if (this.author?.username && !this.author?.organizationId) {
       const fullUser = await this.userService.getUser(this.author.username);
       if (fullUser) {
         this.author = fullUser;

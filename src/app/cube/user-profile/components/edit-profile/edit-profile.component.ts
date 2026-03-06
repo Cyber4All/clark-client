@@ -118,7 +118,7 @@ export class EditProfileComponent implements OnChanges, OnInit, OnDestroy {
       organization: '',
       bio: this.user.bio || ''
     };
-    this.orgStore.organizationName$(this.user.organizationId).pipe(take(1)).subscribe((nameValue) => {
+    this.orgStore.organizationName$(this.user.organizationId).pipe(takeUntil(this.destroyed$)).subscribe((nameValue) => {
       this.editInfo.organization = nameValue;
       this.editFormGroup.get('organization')?.setValue(nameValue);
     });

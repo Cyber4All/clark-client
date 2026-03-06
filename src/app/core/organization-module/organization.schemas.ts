@@ -28,8 +28,8 @@ export const OrganizationSchema = z.object({
     state: z.string().optional(),
     domains: z.array(z.string()),
     isVerified: z.boolean(),
-    createdAt: z.string().default(''),
-    updatedAt: z.string().default(''),
+    createdAt: z.string().optional(),
+    updatedAt: z.string().optional(),
 });
 
 /**

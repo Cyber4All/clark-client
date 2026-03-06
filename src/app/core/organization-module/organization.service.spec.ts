@@ -46,12 +46,12 @@ describe('OrganizationService', () => {
     request.flush({ organization });
   });
 
-  it('applies defaults for missing createdAt/updatedAt', (done) => {
+  it('allows missing createdAt/updatedAt', (done) => {
     service.getOrganizationById('org-1').subscribe((result) => {
       expect(result._id).toBe('org-1');
       expect(result.name).toBe('Towson University');
-      expect(result.createdAt).toBe('');
-      expect(result.updatedAt).toBe('');
+      expect(result.createdAt).toBeUndefined();
+      expect(result.updatedAt).toBeUndefined();
       done();
     });
 

@@ -106,6 +106,10 @@ private _id: string;
    * LearningObject author/contributors consistently provide organizationId.
    */
   _organization: string;
+  /**
+   * Legacy read-only fallback for older payloads that still send `organization`
+   * instead of `organizationId`.
+   */
   get organization(): string {
     return this._organization;
   }

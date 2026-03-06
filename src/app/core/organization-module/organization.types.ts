@@ -50,8 +50,8 @@ export interface Organization {
     state?: string;
     domains: string[];
     isVerified: boolean;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }
 
 /**
