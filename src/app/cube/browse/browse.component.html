@@ -40,171 +40,46 @@
         <i class="far fa-sliders-h"></i>
       </button>
 
-      <!-- Topics dropdown -->
-      <div class="filter-dropdown-container">
-        <button
-          #topicButton
-          aria-label="Filter by topics"
-          class="filter-dropdown-btn"
-          (click)="toggleFilterDropdown('topic', $event)"
-          [ngClass]="{ active: activeFilterDropdown === 'topic' }"
-        >
-          <span class="filter-label"
-            >Topics<span *ngIf="getTopicsCount() > 0">
-              ({{ getTopicsCount() }})</span
-            ></span
-          >
-          <i class="far fa-chevron-down"></i>
-        </button>
-        <div
-          *ngIf="activeFilterDropdown === 'topic'"
-          class="filter-dropdown-menu"
-        >
-          <ul class="filter-options-list">
-            <li
-              *ngFor="let option of topicFilter?.filters"
-              class="filter-option"
-            >
-              <label class="filter-checkbox-label">
-                <input
-                  type="checkbox"
-                  [checked]="option.active"
-                  (change)="toggleFilterOption('topic', option)"
-                />
-                <span class="filter-option-name">{{ option.name }}</span>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <clark-dropdown-filter
+        name="Topics"
+        [isMultiSelect]="true"
+        [values]="topicDropdownOptions"
+        [selectedValues]="selectedTopicValues"
+        (selectedValuesChange)="onTopicFiltersChange($event)"
+      ></clark-dropdown-filter>
 
-      <!-- Levels dropdown -->
-      <div class="filter-dropdown-container">
-        <button
-          #levelButton
-          aria-label="Filter by levels"
-          class="filter-dropdown-btn"
-          (click)="toggleFilterDropdown('level', $event)"
-          [ngClass]="{ active: activeFilterDropdown === 'level' }"
-        >
-          <span class="filter-label"
-            >Levels<span *ngIf="getLevelsCount() > 0">
-              ({{ getLevelsCount() }})</span
-            ></span
-          >
-          <i class="far fa-chevron-down"></i>
-        </button>
-        <div
-          *ngIf="activeFilterDropdown === 'level'"
-          class="filter-dropdown-menu"
-        >
-          <ul class="filter-options-list">
-            <li
-              *ngFor="let option of levelFilter?.filters"
-              class="filter-option"
-            >
-              <label class="filter-checkbox-label">
-                <input
-                  type="checkbox"
-                  [checked]="option.active"
-                  (change)="toggleFilterOption('level', option)"
-                />
-                <span class="filter-option-name">{{ option.name }}</span>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <clark-dropdown-filter
+        name="Levels"
+        [isMultiSelect]="true"
+        [values]="levelDropdownOptions"
+        [selectedValues]="selectedLevelValues"
+        (selectedValuesChange)="onLevelFiltersChange($event)"
+      ></clark-dropdown-filter>
 
-      <!-- Duration dropdown -->
-      <div class="filter-dropdown-container">
-        <button
-          #durationButton
-          aria-label="Filter by duration"
-          class="filter-dropdown-btn"
-          (click)="toggleFilterDropdown('duration', $event)"
-          [ngClass]="{ active: activeFilterDropdown === 'duration' }"
-        >
-          <span class="filter-label"
-            >Duration<span *ngIf="getDurationCount() > 0">
-              ({{ getDurationCount() }})</span
-            ></span
-          >
-          <i class="far fa-chevron-down"></i>
-        </button>
-        <div
-          *ngIf="activeFilterDropdown === 'duration'"
-          class="filter-dropdown-menu"
-        >
-          <ul class="filter-options-list">
-            <li
-              *ngFor="let option of durationFilter?.filters"
-              class="filter-option"
-            >
-              <label class="filter-checkbox-label">
-                <input
-                  type="checkbox"
-                  [checked]="option.active"
-                  (change)="toggleFilterOption('duration', option)"
-                />
-                <span class="filter-option-name">{{
-                  option.description || option.name
-                }}</span>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <clark-dropdown-filter
+        name="Duration"
+        [isMultiSelect]="true"
+        [values]="durationDropdownOptions"
+        [selectedValues]="selectedDurationValues"
+        (selectedValuesChange)="onDurationFiltersChange($event)"
+      ></clark-dropdown-filter>
 
-      <!-- Materials dropdown -->
-      <div class="filter-dropdown-container">
-        <button
-          #materialsButton
-          aria-label="Filter by materials"
-          class="filter-dropdown-btn"
-          (click)="toggleFilterDropdown('materials', $event)"
-          [ngClass]="{ active: activeFilterDropdown === 'materials' }"
-        >
-          <span class="filter-label"
-            >Materials<span *ngIf="getMaterialsCount() > 0">
-              ({{ getMaterialsCount() }})</span
-            ></span
-          >
-          <i class="far fa-chevron-down"></i>
-        </button>
-        <div
-          *ngIf="
-            activeFilterDropdown === 'materials' &&
-            materialsFilter?.filters?.length
-          "
-          class="filter-dropdown-menu"
-        >
-          <ul class="filter-options-list">
-            <li
-              *ngFor="let option of materialsFilter.filters"
-              class="filter-option"
-            >
-              <label class="filter-checkbox-label">
-                <input
-                  type="checkbox"
-                  [checked]="option.active"
-                  (change)="toggleFilterOption('materials', option)"
-                />
-                <span class="filter-option-name">{{ option.name }}</span>
-              </label>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <clark-dropdown-filter
+        *ngIf="materialsDropdownOptions.length > 0"
+        name="Materials"
+        [isMultiSelect]="true"
+        [values]="materialsDropdownOptions"
+        [selectedValues]="selectedMaterialValues"
+        (selectedValuesChange)="onMaterialsFiltersChange($event)"
+      ></clark-dropdown-filter>
 
       <!-- Clear Filters Link -->
-      <button
+      <clark-clear-filters-button
         *ngIf="anyFiltersSelected()"
         class="clear-filters-link"
-        (click)="clearAllFilters()"
-      >
-        Clear Filters
-      </button>
+        label="Clear Filters"
+        (clear)="clearAllFilters()"
+      ></clark-clear-filters-button>
 
       <!-- Sort and search options -->
       <div class="filter-bar-actions">

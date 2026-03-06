@@ -1,0 +1,7 @@
+<mat-icon
+  class="verification-badge"
+  [ngClass]="verified ? 'verified' : 'unverified'"
+  [attr.aria-label]="verified ? 'Verified' : 'Unverified'"
+>
+  {{ verified ? 'check_circle' : 'cancel' }}
+</mat-icon>

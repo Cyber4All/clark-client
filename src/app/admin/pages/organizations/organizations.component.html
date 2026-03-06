@@ -8,31 +8,27 @@
     </div>
   </div>
 
-  <!-- TODO: Extract as reusable component - clark-admin-overview-cards or clark-stats-card-grid
-       This pattern of overview/statistics cards is used across multiple admin pages.
-       Consider creating a generic component that accepts an array of stat objects with
-       label, value, and optional icon/color. -->
   <div class="overview-row" search>
-    <div class="overview-card">
-      <div class="overview-card__label">Total</div>
-      <div class="overview-card__value">{{ dataSource.data.length }}</div>
-    </div>
-    <div class="overview-card">
-      <div class="overview-card__label">Verified</div>
-      <div class="overview-card__value">
-        {{ filteredVerifiedCount }}
-      </div>
-    </div>
-    <div class="overview-card">
-      <div class="overview-card__label">Unverified</div>
-      <div class="overview-card__value">
-        {{ filteredUnverifiedCount }}
-      </div>
-    </div>
-    <div class="overview-card">
-      <div class="overview-card__label">Users in "Other"</div>
-      <div class="overview-card__value">TBD</div>
-    </div>
+    <clark-stats-card
+      label="Total"
+      [value]="dataSource.data.length"
+    ></clark-stats-card>
+    <clark-stats-card
+      label="Verified"
+      [value]="filteredVerifiedCount"
+      textColor="#1f9d55"
+    ></clark-stats-card>
+    <clark-stats-card
+      label="Unverified"
+      [value]="filteredUnverifiedCount"
+      textColor="#d14343"
+    ></clark-stats-card>
+    <!-- TODO: Update the value for "Users in "Other"" -->
+    <clark-stats-card
+      label='Users in "Other"'
+      [value]="0"
+      textColor="#7b6cf6"
+    ></clark-stats-card>
   </div>
 
   <!-- TODO: Extract as reusable component - clark-admin-filter-toolbar
@@ -44,69 +40,46 @@
        - Pagination config -->
   <div class="filters-toolbar" search>
     <div class="inline-filters">
-      <!-- TODO: Extract as reusable component - clark-search-input
-           Simple search input with icon that can be used across the app. -->
-      <label class="search-control" aria-label="Search organizations">
-        <mat-icon class="search-icon">search</mat-icon>
-        <input
-          type="text"
-          placeholder="Search organizations"
-          (keyup)="applyFilter($event)"
-        />
-      </label>
+      <clark-search-input
+        placeholder="Search Organizations"
+        width="260px"
+        [value]="searchValue"
+        (userInput)="onSearchTermChange($event)"
+      ></clark-search-input>
 
-      <!-- TODO: Extract as reusable component - clark-filter-dropdown-button
-           Reusable filter button with active state, badge count, and menu trigger.
-           Should accept label, active state, count, and menu template reference. -->
-      <button
+      <clark-dropdown-filter
         *ngIf="!isPhoneTableView"
-        class="filter-dropdown-btn"
-        [ngClass]="{ active: selectedVerifiedFilters.length > 0 }"
-        [matMenuTriggerFor]="verifiedMenu"
-      >
-        {{
-          selectedVerifiedFilters.length === 0
-            ? "Verified"
-            : "Verified (" + selectedVerifiedFilters.length + ")"
-        }}
-        <i class="far fa-chevron-down"></i>
-      </button>
+        name="Verified"
+        [isMultiSelect]="true"
+        [values]="verifiedFilterOptions"
+        [selectedValues]="selectedVerifiedFilters"
+        (selectedValuesChange)="onVerifiedFiltersChange($event)"
+      ></clark-dropdown-filter>
 
-      <button
+      <clark-dropdown-filter
         *ngIf="!isPhoneTableView"
-        class="filter-dropdown-btn"
-        [ngClass]="{ active: selectedSectorFilters.length > 0 }"
-        [matMenuTriggerFor]="sectorMenu"
-      >
-        {{
-          selectedSectorFilters.length === 0
-            ? "Sector"
-            : "Sector (" + selectedSectorFilters.length + ")"
-        }}
-        <i class="far fa-chevron-down"></i>
-      </button>
+        name="Sector"
+        [isMultiSelect]="true"
+        [values]="sectorFilterOptions"
+        [selectedValues]="selectedSectorFilters"
+        (selectedValuesChange)="onSectorFiltersChange($event)"
+      ></clark-dropdown-filter>
 
-      <button
+      <clark-dropdown-filter
         *ngIf="!isPhoneTableView"
-        class="filter-dropdown-btn"
-        [ngClass]="{ active: selectedLevelFilters.length > 0 }"
-        [matMenuTriggerFor]="levelMenu"
-      >
-        {{
-          selectedLevelFilters.length === 0
-            ? "Level"
-            : "Level (" + selectedLevelFilters.length + ")"
-        }}
-        <i class="far fa-chevron-down"></i>
-      </button>
+        name="Level"
+        [isMultiSelect]="true"
+        [values]="levelFilterOptions"
+        [selectedValues]="selectedLevelFilters"
+        (selectedValuesChange)="onLevelFiltersChange($event)"
+      ></clark-dropdown-filter>
 
-      <button
+      <clark-clear-filters-button
         *ngIf="!isPhoneTableView && hasActiveFilters()"
         class="clear-filters-link"
-        (click)="clearAllFilters()"
+        (clear)="clearAllFilters()"
       >
-        Clear Filters
-      </button>
+      </clark-clear-filters-button>
     </div>
 
     <div class="toolbar-pager">
@@ -144,19 +117,10 @@
         >
           <ng-container matColumnDef="verified">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Verified</th>
-            <!-- TODO: Extract as reusable component - clark-status-icon or clark-verification-badge
-                 Reusable status indicator that shows verified/unverified or success/error states.
-                 Should accept status type, custom labels, and color schemes. -->
             <td mat-cell *matCellDef="let organization">
-              <mat-icon
-                class="verified-status-icon"
-                [ngClass]="organization.isVerified ? 'verified' : 'unverified'"
-                [attr.aria-label]="
-                  organization.isVerified ? 'Verified' : 'Unverified'
-                "
-              >
-                {{ organization.isVerified ? "check_circle" : "cancel" }}
-              </mat-icon>
+              <clark-verification-badge
+                [verified]="organization.isVerified"
+              ></clark-verification-badge>
             </td>
           </ng-container>
 
@@ -339,51 +303,6 @@
         </button>
       </span>
     </ng-template>
-  </mat-menu>
-
-  <mat-menu #verifiedMenu="matMenu" class="filter-menu">
-    <div class="filter-menu-content" (click)="$event.stopPropagation()">
-      <mat-checkbox
-        class="filter-menu-checkbox"
-        [checked]="selectedVerifiedFilters.includes('verified')"
-        (change)="toggleVerifiedFilter('verified')"
-      >
-        Verified
-      </mat-checkbox>
-      <mat-checkbox
-        class="filter-menu-checkbox"
-        [checked]="selectedVerifiedFilters.includes('unverified')"
-        (change)="toggleVerifiedFilter('unverified')"
-      >
-        Unverified
-      </mat-checkbox>
-    </div>
-  </mat-menu>
-
-  <mat-menu #sectorMenu="matMenu" class="filter-menu">
-    <div class="filter-menu-content" (click)="$event.stopPropagation()">
-      <mat-checkbox
-        class="filter-menu-checkbox"
-        *ngFor="let sector of sectorOptions"
-        [checked]="selectedSectorFilters.includes(sector)"
-        (change)="toggleSectorFilter(sector)"
-      >
-        {{ sector | titlecase }}
-      </mat-checkbox>
-    </div>
-  </mat-menu>
-
-  <mat-menu #levelMenu="matMenu" class="filter-menu">
-    <div class="filter-menu-content" (click)="$event.stopPropagation()">
-      <mat-checkbox
-        class="filter-menu-checkbox"
-        *ngFor="let level of levelOptions"
-        [checked]="selectedLevelFilters.includes(level)"
-        (change)="toggleLevelFilter(level)"
-      >
-        {{ formatLevelName(level) | titlecase }}
-      </mat-checkbox>
-    </div>
   </mat-menu>
 
   <!-- TODO: Extract as reusable components - clark-empty-state and clark-loading-state

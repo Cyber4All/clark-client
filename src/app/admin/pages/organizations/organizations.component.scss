@@ -30,32 +30,6 @@
   margin: 12px 0 18px;
 }
 
-.overview-card {
-  background: #fff;
-  border: 1px solid #e1e5ec;
-  border-radius: 12px;
-  padding: 12px 14px;
-}
-
-.overview-card__label {
-  font-size: $smaller;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: $medium-grey;
-}
-
-.overview-card__value {
-  font-size: $large;
-  color: $darker-grey;
-  font-weight: 700;
-  margin-top: 4px;
-}
-
-.search-icon {
-  color: $light-blue;
-  margin-right: 6px;
-}
-
 .filters-toolbar {
   display: flex;
   justify-content: flex-start;
@@ -70,65 +44,6 @@
   gap: 10px;
   flex-wrap: wrap;
   align-items: center;
-}
-
-.search-control {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 42px;
-  padding: 0 12px;
-  width: 260px;
-  max-width: 100%;
-  box-sizing: border-box;
-  border: 1px solid $light-grey;
-  border-radius: 8px;
-  background: #fff;
-}
-
-.search-control:focus-within {
-  border-color: $blue-accent;
-  background: rgba(70, 144, 255, 0.03);
-}
-
-.search-control input {
-  border: none;
-  outline: none;
-  width: 100%;
-  background: transparent;
-  font-size: $normal;
-  color: $darker-grey;
-}
-
-.search-control input::placeholder {
-  color: $medium-grey;
-}
-
-.filter-dropdown-btn {
-  border: 1px solid $light-grey;
-  background: white;
-  border-radius: 10px;
-  height: 42px;
-  padding: 0 12px;
-  font-size: $normal;
-  cursor: pointer;
-  color: $darker-grey;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-}
-
-.filter-dropdown-btn:hover {
-  border-color: $dark-grey;
-  background: $primary-white;
-}
-
-.filter-dropdown-btn.active {
-  border-color: $blue-accent;
-  color: $blue-accent;
-  background: rgba(70, 144, 255, 0.05);
 }
 
 .toolbar-actions {
@@ -220,22 +135,6 @@
 .count-value {
   font-weight: 400;
   color: $darker-grey;
-}
-
-.verified-status-icon {
-  display: inline-block;
-  margin: 0;
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-}
-
-.verified-status-icon.verified {
-  color: $success-green;
-}
-
-.verified-status-icon.unverified {
-  color: $error-red;
 }
 
 .sector-badge {
@@ -360,18 +259,8 @@
 }
 
 .clear-filters-link {
-  border: none;
-  background: transparent;
-  padding: 0 2px;
-  font-size: $small;
-  cursor: pointer;
-  color: $error-red;
-  text-decoration: underline;
-  transition: opacity 0.15s ease;
-}
-
-.clear-filters-link:hover {
-  opacity: 0.8;
+  display: inline-flex;
+  align-items: center;
 }
 
 .organizations-paginator ::ng-deep .mat-mdc-paginator-container {
@@ -398,24 +287,6 @@
   border: 1px solid #d9e1ec;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-}
-
-.filter-menu-content {
-  padding: 8px 10px;
-  min-width: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.filter-menu-checkbox {
-  font-size: $small;
-  border-radius: 8px;
-  padding: 4px 8px;
-}
-
-.filter-menu-checkbox:hover {
-  background: #f6f9ff;
 }
 
 .empty-template {
@@ -481,17 +352,8 @@
     padding-bottom: 0;
   }
 
-  .overview-card {
+  .overview-row clark-stats-card {
     min-width: 0;
-    padding: 10px 10px;
-  }
-
-  .overview-card__label {
-    font-size: 10px;
-  }
-
-  .overview-card__value {
-    font-size: $normal;
   }
 
   .filters-toolbar {
@@ -505,13 +367,13 @@
     flex: 0 0 auto;
   }
 
-  .filter-dropdown-btn,
-  .search-control {
+  clark-dropdown-filter,
+  clark-search-input {
     font-size: $small;
     flex: 0 0 auto;
   }
 
-  .search-control {
+  clark-search-input {
     width: 220px;
   }
 
@@ -550,18 +412,6 @@
     gap: 10px;
   }
 
-  .overview-card {
-    padding: 10px 12px;
-  }
-
-  .overview-card__label {
-    font-size: 10px;
-  }
-
-  .overview-card__value {
-    font-size: 18px;
-  }
-
   .filters-toolbar {
     flex-wrap: wrap;
     overflow: visible;
@@ -576,21 +426,20 @@
     gap: 8px;
   }
 
-  .search-control {
+  clark-search-input {
     width: 100%;
     min-width: 100%;
     flex: 1 1 100%;
   }
 
-  .filter-dropdown-btn {
-    height: 40px;
-    padding: 0 10px;
-    font-size: $small;
+  clark-dropdown-filter {
+    width: 100%;
+    flex: 1 1 100%;
   }
 
   .clear-filters-link {
     width: 100%;
-    text-align: left;
+    justify-content: flex-start;
     margin-top: 2px;
   }
 
@@ -610,12 +459,6 @@
   .organizations-table td.mat-mdc-cell {
     padding: 10px 8px;
     font-size: 12px;
-  }
-
-  .verified-status-icon {
-    font-size: 28px;
-    width: 28px;
-    height: 28px;
   }
 
   .org-name-cell {

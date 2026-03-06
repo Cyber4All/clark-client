@@ -21,11 +21,13 @@
 <clark-admin-content-wrapper>
     <div #list2 class="el"></div>
     <div page-title>Not Currently Featured Learning Objects</div>
-    <clark-admin-search-bar
+    <clark-search-input
+        class="featured-search"
         search
-        [placeholder]="searchBarPlaceholder"
+        [placeholder]="'Search ' + searchBarPlaceholder"
+        [fullWidth]="true"
         (userInput)="userSearchInput$.next($event)"
-    ></clark-admin-search-bar>
+    ></clark-search-input>
     <clark-admin-filter-search
         filter-options
         (clearAll)="clearFilters()"

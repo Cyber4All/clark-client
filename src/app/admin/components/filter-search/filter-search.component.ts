@@ -1,11 +1,9 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
   OnInit,
   Input,
   Output,
-  ViewChild,
 } from '@angular/core';
 
 import {
@@ -17,8 +15,9 @@ import { Subject } from 'rxjs';
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Topic } from '@entity';
-import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
+import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
 
 @Component({
   selector: 'clark-admin-filter-search',
@@ -32,12 +31,9 @@ export class FilterSearchComponent implements OnInit {
   filtersModified$: Subject<void> = new Subject();
   filters: Set<string> = new Set();
   filterTopics: Set<string> = new Set();
+  selectedCollections: Set<string> = new Set();
   statuses = Object.values(LearningObject.Status).filter(status => status !== 'rejected');
   dateError = false;
-
-  private _selectedCollection: Collection;
-
-  private _selectedTopic: Topic;
 
   @Input() adminOrEditor: boolean;
   @Input() showStatus: boolean;
@@ -55,12 +51,6 @@ export class FilterSearchComponent implements OnInit {
     end: string;
   }>();
   @Output() clearAll = new EventEmitter<void>();
-  @ViewChild('searchInput') searchInput: ElementRef;
-
-  filterMenuDown = false;
-  collectionMenuDown = false;
-  topicMenuDown = false;
-
   relevancyStart: Date;
   relevancyEnd: Date;
   dateSearchStart: Date;
@@ -81,11 +71,8 @@ export class FilterSearchComponent implements OnInit {
     this.findUserRestrictions();
     this.getTopics();
 
-    // add the 'all' option into the list of statuses
-    this.statuses.splice(0, 0);
-
     this.statuses = this.statuses.filter(
-      (s) => !['unreleased'].includes(s.toLowerCase()),
+      (s) => !['all', 'unreleased'].includes(s.toLowerCase()),
     );
     this.relevancyStart = new Date();
 
@@ -126,7 +113,6 @@ export class FilterSearchComponent implements OnInit {
       .getCollections()
       .then((collections) => {
         this.collections = Array.from(collections);
-        this.collections.push({ abvName: 'all', name: 'All', hasLogo: false });
 
         this.collections.sort((a, b) => {
           if (a.name < b.name) {
@@ -145,11 +131,7 @@ export class FilterSearchComponent implements OnInit {
 
   private getTopics(): void {
     this.topicsService.getTopics().then((topics) => {
-      this.topics = topics;
-      this.topics = [].concat(
-        [{ _id: 'all', name: 'All' }],
-        Array.from(topics),
-      );
+      this.topics = Array.from(topics);
     });
   }
 
@@ -162,65 +144,6 @@ export class FilterSearchComponent implements OnInit {
         this.isCollectionRestricted = true;
       }
     });
-  }
-
-  /**
-   * Set's the selected collection property to the full Collection object represented by the abbreviated name
-   *
-   * @param { string } abvName abbreviated name of the collection
-   */
-  setSelectedCollection(abvName: string) {
-    this._selectedCollection = this.collections.filter(
-      (x) => x.abvName === abvName,
-    )[0];
-    if(!abvName) {
-      this._selectedCollection = undefined;
-      this.collectionFilter.emit('');
-      return;
-    }
-    this.collectionFilter.emit(this.selectedCollection.abvName);
-  }
-
-  /**
-   * Return the currently selected collection
-   *
-   * @readonly
-   * @type {Collection}
-   * @memberof FilterSearchComponent
-   */
-  get selectedCollection(): Collection {
-    return this._selectedCollection;
-  }
-
-  get selectedTopic(): Topic {
-    return this._selectedTopic;
-  }
-
-  /**
-   * Hide or show the filter dropdown menu
-   *
-   * @param {boolean} [value] true if menu is open, false otherwise
-   */
-  toggleFilterMenu(value?: boolean) {
-    this.filterMenuDown = value;
-  }
-
-  /**
-   * Hide or show the collection filter dropdown menu
-   *
-   * @param {boolean} [value] true if menu is open, false otherwise
-   */
-  toggleCollectionMenu(value?: boolean) {
-    this.collectionMenuDown = value;
-  }
-
-  /**
-   * Hide or show the topic dropdown menu
-   *
-   * @param {boolean} [value] true if menu is open, false otherwise
-   */
-  toggleTopicMenu(value?: boolean) {
-    this.topicMenuDown = value;
   }
 
   /**
@@ -298,12 +221,6 @@ export class FilterSearchComponent implements OnInit {
    */
   toggleStatusFilter(filters: string[]) {
     for (const filter of filters) {
-      if (filter.toLowerCase() === 'all') {
-        this.clearStatusFilters();
-        this.toggleFilterMenu(undefined);
-        return;
-      }
-
       if (!this.filters.has(filter)) {
         this.filters.add(filter);
       } else {
@@ -319,29 +236,23 @@ export class FilterSearchComponent implements OnInit {
    * @param filter {string} the filter to be toggled
    */
   toggleCollectionFilter(filter: string) {
-    if (filter?.toLowerCase() === 'all') {
+    if (!filter) {
       this.clearCollectionFilters();
-      this.toggleCollectionMenu(undefined);
       return;
-    } else if (
-      this.selectedCollection &&
-      filter === this.selectedCollection.abvName
-    ) {
-      this.clearCollectionFilters();
-    } else {
-      this.setSelectedCollection(filter);
     }
+
+    this.selectedCollections = new Set(
+      filter
+        .split(',')
+        .map((value) => value.trim())
+        .filter((value) => value.length > 0),
+    );
+    this.collectionFilter.emit(Array.from(this.selectedCollections).join(','));
     this.filter();
   }
 
   toggleTopicFilter(filters?: { name?: string; _id: string }[]) {
     for (const filter of filters) {
-      if (filter.name.toLowerCase() === 'all') {
-        this.clearTopicFilters();
-        this.toggleTopicMenu(undefined);
-        return;
-      }
-
       if (this.filterTopics.has(filter._id)) {
         this.filterTopics.delete(filter._id);
       } else {
@@ -356,9 +267,7 @@ export class FilterSearchComponent implements OnInit {
     const filters = {
       status: Array.from(this.filters || []),
       topic: Array.from(this.filterTopics || []),
-      collection: this.selectedCollection
-        ? this.selectedCollection.abvName
-        : '',
+      collection: Array.from(this.selectedCollections || []).join(','),
       start: this.dateSearchStart,
       end: this.dateSearchEnd,
       currPage: 1
@@ -380,7 +289,8 @@ export class FilterSearchComponent implements OnInit {
    * @memberof FilterSearchComponent
    */
   clearCollectionFilters() {
-    this.setSelectedCollection('');
+    this.selectedCollections.clear();
+    this.collectionFilter.emit('');
     this.filter();
   }
 
@@ -404,7 +314,8 @@ export class FilterSearchComponent implements OnInit {
    * @memberof FilterSearchComponent
    */
   clearAllFilters() {
-    this.setSelectedCollection('');
+    this.selectedCollections.clear();
+    this.collectionFilter.emit('');
     this.clearRelevancyDateFilters();
     this.clearDateSearch();
     this.filters.clear();
@@ -476,5 +387,63 @@ export class FilterSearchComponent implements OnInit {
    */
   get filterSelected() {
     return this.relevancyEnd || !this.isToday(this.relevancyStart);
+  }
+
+  get statusFilterOptions(): DropdownFilterOption[] {
+    return this.statuses.map((status) => ({
+      label: this.toLabel(status),
+      value: status,
+    }));
+  }
+
+  get topicFilterOptions(): DropdownFilterOption[] {
+    return (this.topics || []).map((topic) => ({
+      label: this.toLabel(topic.name),
+      value: topic._id,
+    }));
+  }
+
+  get collectionFilterOptions(): DropdownFilterOption[] {
+    return (this.collections || []).map((collection) => ({
+      label: collection.name,
+      value: collection.abvName,
+    }));
+  }
+
+  get selectedStatusValues(): string[] {
+    return Array.from(this.filters || []);
+  }
+
+  get selectedTopicValues(): string[] {
+    return Array.from(this.filterTopics || []);
+  }
+
+  get selectedCollectionValues(): string[] {
+    return Array.from(this.selectedCollections || []);
+  }
+
+  onStatusFiltersChange(selectedValues: string[]): void {
+    this.filters = new Set(selectedValues);
+    this.filter();
+  }
+
+  onTopicFiltersChange(selectedValues: string[]): void {
+    this.filterTopics = new Set(selectedValues);
+    this.filter();
+  }
+
+  onCollectionFilterChange(selectedValues: string[]): void {
+    if (selectedValues.length === 0) {
+      this.clearCollectionFilters();
+      return;
+    }
+
+    this.selectedCollections = new Set(selectedValues);
+    this.collectionFilter.emit(Array.from(this.selectedCollections).join(','));
+    this.filter();
+  }
+
+  private toLabel(value: string): string {
+    return value.replace(/_/g, ' ').replace(/\b\w/g, (letter) => letter.toUpperCase());
   }
 }

@@ -1,0 +1,14 @@
+<label
+  class="search-input"
+  [class.search-input--full-width]="fullWidth"
+  [style.width]="fullWidth ? null : width"
+  [attr.aria-label]="ariaLabel || placeholder"
+>
+  <mat-icon class="search-input__icon">search</mat-icon>
+  <input
+    type="text"
+    [value]="currentValue"
+    [placeholder]="placeholder"
+    (input)="onInputChange($event)"
+  />
+</label>
