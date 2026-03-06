@@ -74,13 +74,12 @@
       ></clark-dropdown-filter>
 
       <!-- Clear Filters Link -->
-      <button
+      <clark-clear-filters-button
         *ngIf="anyFiltersSelected()"
         class="clear-filters-link"
-        (click)="clearAllFilters()"
-      >
-        Clear Filters
-      </button>
+        label="Clear Filters"
+        (clear)="clearAllFilters()"
+      ></clark-clear-filters-button>
 
       <!-- Sort and search options -->
       <div class="filter-bar-actions">

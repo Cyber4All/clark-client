@@ -111,21 +111,10 @@
   }
 
   .clear-filters-link {
-    border: none;
-    background: transparent;
-    padding: 0;
-    font-size: $normal;
-    cursor: pointer;
-    color: $error-red;
-    text-decoration: underline;
-    transition: opacity 0.15s ease;
-    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
     margin-left: 12px;
     align-self: center;
-
-    &:hover {
-      opacity: 0.8;
-    }
   }
 
   .filter-bar-actions {

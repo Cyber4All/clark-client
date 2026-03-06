@@ -9,7 +9,6 @@ import { AdminRoutingModule } from './admin.routing';
 import { ChangeAuthorComponent } from './components/change-author/change-author.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
@@ -64,7 +63,6 @@ import { FeaturedComponent } from './pages/featured/featured.component';
     OrganizationEditModalComponent,
     OrganizationDeleteModalComponent,
     OrganizationMigrateModalComponent,
-    SearchBarComponent,
     ContentWrapperComponent,
     FilterSearchComponent,
     UserSearchWrapperComponent,

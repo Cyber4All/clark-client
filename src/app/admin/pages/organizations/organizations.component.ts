@@ -246,6 +246,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
   }
 
+  onSearchTermChange(searchTerm: string): void {
+    this.searchValue = searchTerm;
+    this.applyFilter();
+  }
+
   hasActiveFilters(): boolean {
     return (
       this.selectedVerifiedFilters.length > 0 ||
