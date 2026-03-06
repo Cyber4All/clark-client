@@ -50,10 +50,10 @@ export class HttpConfigInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Check if URL is an API request (starts with apiURL or cardUrl)
+   * Check if URL is an API request (starts with apiURL)
    */
   private isApiRequest(url: string): boolean {
-    return url.startsWith(environment.apiURL) || url.startsWith(environment.cardUrl);
+    return url.startsWith(environment.apiURL);
   }
 
   /**
@@ -66,11 +66,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     const method = request.method.toUpperCase();
 
     if (request.url.startsWith(environment.apiURL) && method === 'GET') {
-      return path === '/organizations/suggest';
-    }
-
-    if (request.url.startsWith(environment.cardUrl) && method === 'GET') {
-      return path.startsWith('/resources');
+      return path === '/organizations/suggest' || path.startsWith('/resources');
     }
 
     return false;
@@ -87,10 +83,6 @@ export class HttpConfigInterceptor implements HttpInterceptor {
       const apiIndex = withoutQuery.indexOf(environment.apiURL);
       if (apiIndex === 0) {
         return withoutQuery.slice(environment.apiURL.length) || '/';
-      }
-      const cardIndex = withoutQuery.indexOf(environment.cardUrl);
-      if (cardIndex === 0) {
-        return withoutQuery.slice(environment.cardUrl.length) || '/';
       }
       return withoutQuery;
     }
