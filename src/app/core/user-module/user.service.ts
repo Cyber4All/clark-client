@@ -23,20 +23,29 @@ export class UserService {
    * @memberof UserService
    */
   searchUsers(query: UserQuery): Promise<User[]> {
-    // TODO(clark-api): Support `organizationId` filter on GET /users so admin organization pages
-    // can fetch real per-organization user counts without client-side mock data.
+    return this.searchUsersResponse(query).then((response) => response.users);
+  }
+
+  /**
+   * Performs a user search and returns users plus total count metadata.
+   */
+  searchUsersResponse(query: UserQuery): Promise<{ users: User[]; total: number }> {
     return this.http
       .get(USER_ROUTES.SEARCH_USERS(query), {
         withCredentials: true,
       })
       .pipe(catchError(this.handleError))
       .toPromise()
-      .then((res: {users: any[], total: number}) => {
-        return res.users.map((user) => {
+      .then((res: {users: any[]; total: number}) => {
+        const users = res.users.map((user) => {
           // this matches the _id attribute returned from the service to the client expected userId attribute
           user.userId = user._id;
           return new User(user);
         });
+        return {
+          users,
+          total: res.total || 0,
+        };
       });
   }
 

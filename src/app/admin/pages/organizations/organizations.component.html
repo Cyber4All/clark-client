@@ -23,10 +23,9 @@
       [value]="filteredUnverifiedCount"
       textColor="#d14343"
     ></clark-stats-card>
-    <!-- TODO: Update the value for "Users in "Other"" -->
     <clark-stats-card
       label='Users in "Other"'
-      [value]="0"
+      [value]="getTotalOtherUsers()"
       textColor="#7b6cf6"
     ></clark-stats-card>
   </div>
