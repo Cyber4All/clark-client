@@ -413,6 +413,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private sortLearningObjectsByDateDesc(objects: LearningObject[]): LearningObject[] {
-    return objects.sort((a, b) => b.date.localeCompare(a.date));
-  }
+    return objects.sort((a, b) => {
+      if (a.date < b.date) return 1; 
+      if (a.date > b.date) return -1; 
+      return 0;
+  });
+}
 }
