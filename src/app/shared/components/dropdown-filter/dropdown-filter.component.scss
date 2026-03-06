@@ -49,11 +49,13 @@
   min-width: 180px;
   width: max-content;
   max-width: min(320px, 90vw);
+  max-height: min(420px, calc(100vh - 120px));
+  overflow-y: auto;
   background: #fff;
   border: 1px solid #d9e1ec;
   border-radius: 10px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
+  overflow-x: hidden;
   padding: 8px 10px;
   display: flex;
   flex-direction: column;
@@ -138,5 +140,6 @@
   .dropdown-filter__menu {
     min-width: 100%;
     width: 100%;
+    max-height: min(340px, calc(100vh - 180px));
   }
 }

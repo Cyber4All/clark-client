@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -40,7 +41,10 @@ export class DropdownFilterComponent implements OnChanges {
   options: DropdownFilterOption[] = [];
   internalSelectedValues: string[] = [];
 
-  constructor(private readonly elementRef: ElementRef<HTMLElement>) {}
+  constructor(
+    private readonly elementRef: ElementRef<HTMLElement>,
+    private readonly cd: ChangeDetectorRef,
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.values) {
@@ -61,6 +65,7 @@ export class DropdownFilterComponent implements OnChanges {
     const target = event.target as Node | null;
     if (!target || !this.elementRef.nativeElement.contains(target)) {
       this.isOpen = false;
+      this.cd.detectChanges();
     }
   }
 
@@ -85,6 +90,7 @@ export class DropdownFilterComponent implements OnChanges {
     }
 
     this.isOpen = !this.isOpen;
+    this.cd.detectChanges();
   }
 
   isSelected(value: string): boolean {
@@ -111,6 +117,7 @@ export class DropdownFilterComponent implements OnChanges {
     }
 
     this.emitSelection();
+    this.cd.detectChanges();
   }
 
   trackByValue(_index: number, option: DropdownFilterOption): string {
