@@ -79,8 +79,7 @@ export class DropdownFilterComponent implements OnChanges {
     return `${this.name} (${selectedCount})`;
   }
 
-  toggleMenu(event: MouseEvent): void {
-    event.stopPropagation();
+  toggleMenu(): void {
     if (this.disabled) {
       return;
     }
@@ -114,17 +113,7 @@ export class DropdownFilterComponent implements OnChanges {
     this.emitSelection();
   }
 
-  clearSelection(event: MouseEvent): void {
-    event.stopPropagation();
-    if (this.internalSelectedValues.length === 0) {
-      return;
-    }
-
-    this.internalSelectedValues = [];
-    this.emitSelection();
-  }
-
-  trackByValue(index: number, option: DropdownFilterOption): string {
+  trackByValue(_index: number, option: DropdownFilterOption): string {
     return option.value;
   }
 
