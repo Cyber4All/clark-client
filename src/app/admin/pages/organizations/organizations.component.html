@@ -138,18 +138,20 @@
           </ng-container>
 
           <ng-container matColumnDef="users">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Users</th>
+            <th mat-header-cell *matHeaderCellDef>Users</th>
             <td mat-cell *matCellDef="let organization">
-              <span class="count-value">TBD</span>
+              <span class="count-value">{{ getUserCount(organization) }}</span>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="learningObjects">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <th mat-header-cell *matHeaderCellDef>
               Learning Objects
             </th>
             <td mat-cell *matCellDef="let organization">
-              <span class="count-value">TBD</span>
+              <span class="count-value">{{
+                getLearningObjectCount(organization)
+              }}</span>
             </td>
           </ng-container>
 
