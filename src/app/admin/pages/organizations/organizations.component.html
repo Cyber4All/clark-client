@@ -53,50 +53,32 @@
         />
       </label>
 
-      <!-- TODO: Extract as reusable component - clark-filter-dropdown-button
-           Reusable filter button with active state, badge count, and menu trigger.
-           Should accept label, active state, count, and menu template reference. -->
-      <button
+      <clark-dropdown-filter
         *ngIf="!isPhoneTableView"
-        class="filter-dropdown-btn"
-        [ngClass]="{ active: selectedVerifiedFilters.length > 0 }"
-        [matMenuTriggerFor]="verifiedMenu"
-      >
-        {{
-          selectedVerifiedFilters.length === 0
-            ? 'Verified'
-            : 'Verified (' + selectedVerifiedFilters.length + ')'
-        }}
-        <i class="far fa-chevron-down"></i>
-      </button>
+        name="Verified"
+        [isMultiSelect]="true"
+        [values]="verifiedFilterOptions"
+        [selectedValues]="selectedVerifiedFilters"
+        (selectedValuesChange)="onVerifiedFiltersChange($event)"
+      ></clark-dropdown-filter>
 
-      <button
+      <clark-dropdown-filter
         *ngIf="!isPhoneTableView"
-        class="filter-dropdown-btn"
-        [ngClass]="{ active: selectedSectorFilters.length > 0 }"
-        [matMenuTriggerFor]="sectorMenu"
-      >
-        {{
-          selectedSectorFilters.length === 0
-            ? 'Sector'
-            : 'Sector (' + selectedSectorFilters.length + ')'
-        }}
-        <i class="far fa-chevron-down"></i>
-      </button>
+        name="Sector"
+        [isMultiSelect]="true"
+        [values]="sectorFilterOptions"
+        [selectedValues]="selectedSectorFilters"
+        (selectedValuesChange)="onSectorFiltersChange($event)"
+      ></clark-dropdown-filter>
 
-      <button
+      <clark-dropdown-filter
         *ngIf="!isPhoneTableView"
-        class="filter-dropdown-btn"
-        [ngClass]="{ active: selectedLevelFilters.length > 0 }"
-        [matMenuTriggerFor]="levelMenu"
-      >
-        {{
-          selectedLevelFilters.length === 0
-            ? 'Level'
-            : 'Level (' + selectedLevelFilters.length + ')'
-        }}
-        <i class="far fa-chevron-down"></i>
-      </button>
+        name="Level"
+        [isMultiSelect]="true"
+        [values]="levelFilterOptions"
+        [selectedValues]="selectedLevelFilters"
+        (selectedValuesChange)="onLevelFiltersChange($event)"
+      ></clark-dropdown-filter>
 
       <button
         *ngIf="!isPhoneTableView && hasActiveFilters()"
@@ -330,51 +312,6 @@
         </button>
       </span>
     </ng-template>
-  </mat-menu>
-
-  <mat-menu #verifiedMenu="matMenu" class="filter-menu">
-    <div class="filter-menu-content" (click)="$event.stopPropagation()">
-      <mat-checkbox
-        class="filter-menu-checkbox"
-        [checked]="selectedVerifiedFilters.includes('verified')"
-        (change)="toggleVerifiedFilter('verified')"
-      >
-        Verified
-      </mat-checkbox>
-      <mat-checkbox
-        class="filter-menu-checkbox"
-        [checked]="selectedVerifiedFilters.includes('unverified')"
-        (change)="toggleVerifiedFilter('unverified')"
-      >
-        Unverified
-      </mat-checkbox>
-    </div>
-  </mat-menu>
-
-  <mat-menu #sectorMenu="matMenu" class="filter-menu">
-    <div class="filter-menu-content" (click)="$event.stopPropagation()">
-      <mat-checkbox
-        class="filter-menu-checkbox"
-        *ngFor="let sector of sectorOptions"
-        [checked]="selectedSectorFilters.includes(sector)"
-        (change)="toggleSectorFilter(sector)"
-      >
-        {{ sector | titlecase }}
-      </mat-checkbox>
-    </div>
-  </mat-menu>
-
-  <mat-menu #levelMenu="matMenu" class="filter-menu">
-    <div class="filter-menu-content" (click)="$event.stopPropagation()">
-      <mat-checkbox
-        class="filter-menu-checkbox"
-        *ngFor="let level of levelOptions"
-        [checked]="selectedLevelFilters.includes(level)"
-        (change)="toggleLevelFilter(level)"
-      >
-        {{ formatLevelName(level) | titlecase }}
-      </mat-checkbox>
-    </div>
   </mat-menu>
 
   <!-- TODO: Extract as reusable components - clark-empty-state and clark-loading-state

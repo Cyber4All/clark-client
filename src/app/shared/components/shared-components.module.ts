@@ -17,6 +17,7 @@ import { CheckBoxComponent } from './checkbox/checkbox.component';
 import { CollectionCardComponent } from './collection-card/collection-card.component';
 import { CollectionsGridComponent } from './collections-grid/collections-grid.component';
 import { CookiePopupComponent } from './cookie-popup/cookie-popup.component';
+import { DropdownFilterComponent } from './dropdown-filter/dropdown-filter.component';
 import { GenericCollectionLogoComponent } from './generic-collection-logo/generic-collection-logo.component';
 import { IndicatorComponent } from './indicator/indicator.component';
 import { InputFieldComponent } from './input-field/input-field.component';
@@ -60,6 +61,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     CheckBoxComponent,
     CollectionCardComponent,
     CollectionsGridComponent,
+    DropdownFilterComponent,
     GenericCollectionLogoComponent,
     IndicatorComponent,
     ProgressComponent,
@@ -84,6 +86,7 @@ import { CollectionsDropdownComponent } from './collections-dropdown/collections
     CollectionCardComponent,
     CollectionsDropdownComponent,
     CollectionsGridComponent,
+    DropdownFilterComponent,
     GenericCollectionLogoComponent,
     IndicatorComponent,
     ProgressComponent,

@@ -19,6 +19,7 @@ import {
   OrganizationLevel,
   OrganizationSector,
 } from 'app/core/organization-module/organization.types';
+import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -81,8 +82,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.updateViewportMode();
   }
 
-  readonly sectorOptions: OrganizationSector[] = [...ORGANIZATION_SECTORS];
-  readonly levelOptions: OrganizationLevel[] = [...ORGANIZATION_LEVELS];
+  readonly verifiedFilterOptions: DropdownFilterOption[] = [
+    { label: 'Verified', value: 'verified' },
+    { label: 'Unverified', value: 'unverified' },
+  ];
+  readonly sectorFilterOptions: DropdownFilterOption[] = ORGANIZATION_SECTORS.map((sector) => ({
+    label: this.toTitleCase(sector),
+    value: sector,
+  }));
+  readonly levelFilterOptions: DropdownFilterOption[] = ORGANIZATION_LEVELS.map((level) => ({
+    label: this.toTitleCase(this.formatLevelName(level)),
+    value: level,
+  }));
   // TODO(clark-api): Enable organization delete actions when backend delete API is implemented.
   readonly deleteNotSupportedTooltip =
     'Delete is not supported by API. Please reach out to developers.';
@@ -250,30 +261,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.applyFilter();
   }
 
-  toggleVerifiedFilter(value: 'verified' | 'unverified'): void {
-    if (this.selectedVerifiedFilters.includes(value)) {
-      this.selectedVerifiedFilters = this.selectedVerifiedFilters.filter((filter) => filter !== value);
-    } else {
-      this.selectedVerifiedFilters = [...this.selectedVerifiedFilters, value];
-    }
+  onVerifiedFiltersChange(selectedValues: string[]): void {
+    this.selectedVerifiedFilters = selectedValues as Array<'verified' | 'unverified'>;
     this.applyFilter();
   }
 
-  toggleSectorFilter(value: OrganizationSector): void {
-    if (this.selectedSectorFilters.includes(value)) {
-      this.selectedSectorFilters = this.selectedSectorFilters.filter((filter) => filter !== value);
-    } else {
-      this.selectedSectorFilters = [...this.selectedSectorFilters, value];
-    }
+  onSectorFiltersChange(selectedValues: string[]): void {
+    this.selectedSectorFilters = selectedValues as OrganizationSector[];
     this.applyFilter();
   }
 
-  toggleLevelFilter(value: OrganizationLevel): void {
-    if (this.selectedLevelFilters.includes(value)) {
-      this.selectedLevelFilters = this.selectedLevelFilters.filter((filter) => filter !== value);
-    } else {
-      this.selectedLevelFilters = [...this.selectedLevelFilters, value];
-    }
+  onLevelFiltersChange(selectedValues: string[]): void {
+    this.selectedLevelFilters = selectedValues as OrganizationLevel[];
     this.applyFilter();
   }
 
@@ -493,6 +492,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   formatLevelName(level: string): string {
     // eslint-disable-next-line prefer-regex-literals
     return level.replace(/_/g, ' ');
+  }
+
+  private toTitleCase(value: string): string {
+    return value.replace(/\b\w/g, (letter) => letter.toUpperCase());
   }
 
   /**

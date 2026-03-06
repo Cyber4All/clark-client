@@ -83,33 +83,6 @@
   color: $medium-grey;
 }
 
-.filter-dropdown-btn {
-  border: 1px solid $light-grey;
-  background: white;
-  border-radius: 10px;
-  height: 42px;
-  padding: 0 12px;
-  font-size: $normal;
-  cursor: pointer;
-  color: $darker-grey;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-}
-
-.filter-dropdown-btn:hover {
-  border-color: $dark-grey;
-  background: $primary-white;
-}
-
-.filter-dropdown-btn.active {
-  border-color: $blue-accent;
-  color: $blue-accent;
-  background: rgba(70, 144, 255, 0.05);
-}
-
 .toolbar-actions {
   display: flex;
   align-items: center;
@@ -364,24 +337,6 @@
   overflow: hidden;
 }
 
-.filter-menu-content {
-  padding: 8px 10px;
-  min-width: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.filter-menu-checkbox {
-  font-size: $small;
-  border-radius: 8px;
-  padding: 4px 8px;
-}
-
-.filter-menu-checkbox:hover {
-  background: #f6f9ff;
-}
-
 .empty-template {
   display: flex;
   flex-direction: column;
@@ -445,17 +400,8 @@
     padding-bottom: 0;
   }
 
-  .overview-card {
+  .overview-row clark-stats-card {
     min-width: 0;
-    padding: 10px 10px;
-  }
-
-  .overview-card__label {
-    font-size: 10px;
-  }
-
-  .overview-card__value {
-    font-size: $normal;
   }
 
   .filters-toolbar {
@@ -469,7 +415,7 @@
     flex: 0 0 auto;
   }
 
-  .filter-dropdown-btn,
+  clark-dropdown-filter,
   .search-control {
     font-size: $small;
     flex: 0 0 auto;
@@ -514,18 +460,6 @@
     gap: 10px;
   }
 
-  .overview-card {
-    padding: 10px 12px;
-  }
-
-  .overview-card__label {
-    font-size: 10px;
-  }
-
-  .overview-card__value {
-    font-size: 18px;
-  }
-
   .filters-toolbar {
     flex-wrap: wrap;
     overflow: visible;
@@ -546,10 +480,9 @@
     flex: 1 1 100%;
   }
 
-  .filter-dropdown-btn {
-    height: 40px;
-    padding: 0 10px;
-    font-size: $small;
+  clark-dropdown-filter {
+    width: 100%;
+    flex: 1 1 100%;
   }
 
   .clear-filters-link {
