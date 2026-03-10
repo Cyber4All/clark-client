@@ -412,6 +412,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.destroyed$.unsubscribe();
   }
 
+  /**
+   * TODO: Add a date query to SearchUserLearningObjectDTO in clark-service
+   * and modify the query aggregation builder to sort by date.
+   */
   private sortLearningObjectsByDate(objects: LearningObject[]): LearningObject[] {
     return objects.sort((a, b) => {
       if (a.date < b.date) return 1; 
