@@ -143,7 +143,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.durationFilter = this.filterComponent.lengthFilter;
 
         // Try to get materials filter (tag-based)
-        const materialsTagFilter = this.filterComponent.getMaterialsTagFilter();
+        const materialsTagFilter = this.filterComponent.getTagFilterByType('materials');
         if (materialsTagFilter && materialsTagFilter.filters && materialsTagFilter.filters.length > 0) {
           this.materialsFilter = materialsTagFilter;
         } else if (attempts === maxAttempts) {
@@ -492,7 +492,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       length: toStringArray(params.length),
       level: toStringArray(params.level),
       guidelines: toStringArray(params.guidelines),
-      noGuidelines: toString(params.noGuidelines),
+      noGuidelines: toString(params.noGuidelines?.[0]),
       standardOutcomes: [],
       orderBy: params.orderBy ? params.orderBy : OrderBy.Date,
       sortType: params.sortType ? Number(params.sortType) : -1,
