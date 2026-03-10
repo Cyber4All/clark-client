@@ -492,7 +492,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       length: toStringArray(params.length),
       level: toStringArray(params.level),
       guidelines: toStringArray(params.guidelines),
-      noGuidelines: toString(params.noGuidelines),
+      noGuidelines: toString(params.noGuidelines?.[0]),
       standardOutcomes: [],
       orderBy: params.orderBy ? params.orderBy : OrderBy.Date,
       sortType: params.sortType ? Number(params.sortType) : -1,
