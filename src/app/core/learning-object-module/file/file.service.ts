@@ -82,8 +82,8 @@ export class FileService {
       return { type: 'code', ext: extension, language };
     }
 
-    // Returns an array like ['office', ['.docx', '.doc', ...], 'pdf', ['.pdf']] to be iterable
-    // to do a reverse lookup of obtaining the matching type by extension
+    // Iterate over [type, exts] entries to do a reverse lookup and obtain
+    // the matching type for the given file extension
     const entry = Object.entries(typeExtensions).find(([_, exts]) =>
       exts.includes(extension),
     );
