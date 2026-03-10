@@ -19,7 +19,6 @@ export class FilterSectionComponent implements OnInit, DoCheck {
 
   @Input() set collapsed(value: boolean) {
     this._collapsed = value;
-    this.cd.detectChanges();
   }
   get collapsed(): boolean {
     return this._collapsed;
