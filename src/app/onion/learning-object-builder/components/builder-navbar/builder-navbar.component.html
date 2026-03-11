@@ -1,12 +1,21 @@
 <div class="builder-navbar-wrapper">
-    <clark-skip-link title="Skip Builder Form" skipLocation="form"></clark-skip-link> 
-    <clark-skip-link title="Skip to Children" skipLocation="children"></clark-skip-link>
-    <clark-skip-link title="Skip to Submit for Review" skipLocation="submit"></clark-skip-link>
+  <clark-skip-link
+    title="Skip Builder Form"
+    skipLocation="form"
+  ></clark-skip-link>
+  <clark-skip-link
+    title="Skip to Children"
+    skipLocation="children"
+  ></clark-skip-link>
+  <clark-skip-link
+    title="Skip to Submit for Review"
+    skipLocation="submit"
+  ></clark-skip-link>
   <div
     class="top"
     [ngStyle]="{
       'margin-top': revisedVersion ? '10px' : '0px',
-      'margin-bottom': revisedVersion ? '20px' : '30px'
+      'margin-bottom': revisedVersion ? '20px' : '30px',
     }"
   >
     <div
@@ -17,10 +26,14 @@
       Currently Revising: {{ learningObject?.name }}
     </div>
     <div class="top__left" *ngIf="!adminMode">
-      <a (activate)="triggerExitProcess()"><i class="far fa-arrow-left"></i> Back</a>
+      <a (activate)="triggerExitProcess()"
+        ><i class="far fa-arrow-left"></i> Save & Return
+      </a>
     </div>
     <div class="top__left" *ngIf="adminMode">
-      <a (activate)="triggerExitProcess(false)"><i class="far fa-file-archive"></i> Bundle</a>
+      <a (activate)="triggerExitProcess(false)"
+        ><i class="far fa-file-archive"></i> Bundle</a
+      >
     </div>
     <div class="top__right">
       <div
@@ -49,9 +62,7 @@
         [status]="learningObject?.status"
         [states]="states"
       ></clark-lo-status-indicator>
-      <ng-container
-        *ngIf="!adminMode; else adminModeTemplate "
-      >
+      <ng-container *ngIf="!adminMode; else adminModeTemplate">
         <button
           id="submit"
           class="button"
@@ -59,7 +70,7 @@
           [ngClass]="{
             good: !submissionError,
             bad: validator.submissionMode && submissionError,
-            disabled: !auth.user.emailVerified
+            disabled: !auth.user.emailVerified,
           }"
           (activate)="auth.user.emailVerified && triggerSubmit()"
         >
@@ -68,7 +79,9 @@
             class="button__cancel"
             tip="Cancel Submission"
             tipPosition="bottom"
-            (activate)="$event.stopPropagation(); validator.submissionMode = false"
+            (activate)="
+              $event.stopPropagation(); validator.submissionMode = false
+            "
           >
             <i class="far fa-times"></i>
           </div>
@@ -99,7 +112,7 @@
             [ngTemplateOutletContext]="{
               disabled: false,
               link: 'info',
-              text: 'Basic Information'
+              text: 'Basic Information',
             }"
           ></ng-container>
         </li>
@@ -110,7 +123,7 @@
             [ngTemplateOutletContext]="{
               disabled: !canRoute('outcomes'),
               link: 'outcomes',
-              text: 'Learning Outcomes'
+              text: 'Learning Outcomes',
             }"
           ></ng-container>
         </li>
@@ -121,7 +134,7 @@
             [ngTemplateOutletContext]="{
               disabled: !canRoute('materials'),
               link: 'materials',
-              text: 'Materials'
+              text: 'Materials',
             }"
           ></ng-container>
         </li>
