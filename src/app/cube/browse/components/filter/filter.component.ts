@@ -217,28 +217,76 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Get Materials filter from tags (specifically "material" tag type)
+   * Gets the tag filters based on the provided type as needed in the html template.
    */
-  getMaterialsTagFilter(): FilterSectionInfo | undefined {
+  getTagFilterByType(type: string): FilterSectionInfo | undefined {
     // Return undefined if tagFilter is not initialized yet
     if (!this.tagFilter?.filters) {
       return undefined;
     }
 
-    // Get tags of type 'material'
-    const materialTags = this.tagFilter.filters.filter((t) =>
-      t.tagType?.includes('material'),
-    );
+    switch (type) {
+      case 'misc':
+        const miscTypes = ['info', 'modality', 'lang', 'quality']; // grouping these as a single 'miscellaneous' filter section
+        const miscTags = [];
+        miscTypes.forEach((type) => {
+          miscTags.push(...this.tagFilter.filters.filter((t) =>
+            t.tagType?.includes(type),
+          ));
+        })
+        if(miscTags.length < 1) {
+          return undefined;
+        }
+        return {
+          section: 'Misc',
+          filters: miscTags
+        };
 
-    // If no material tags, return undefined
-    if (materialTags.length < 1) {
-      return undefined;
+      case 'code':
+        // Get tags of type 'code'
+        const codeTags = this.tagFilter.filters.filter((t) =>
+          t.tagType?.includes('code'),
+        );
+
+        // If no code tags, return undefined
+        if (codeTags.length < 1) {
+          return undefined;
+        }
+
+        return {
+          section: 'Code',
+          filters: codeTags
+        };
+
+      case 'tech':
+        const techTags = this.tagFilter.filters.filter((t) =>
+          t.tagType?.includes('tech'),
+        );
+
+        // If no tech tags, return undefined
+        if (techTags.length < 1) {
+          return undefined;
+        }
+
+        return {
+          section: 'Tech',
+          filters: techTags
+        };
+
+        case 'materials':
+          const materialTags = this.tagFilter.filters.filter((t) => 
+            t.tagType?.includes('material'),
+          );
+
+          if (materialTags.length < 1) {
+            return undefined;
+          }
+
+          return {
+            section: 'Materials',
+            filters: materialTags
+          };
     }
-
-    return {
-      section: 'Materials',
-      filters: materialTags
-    };
   }
 
   /**

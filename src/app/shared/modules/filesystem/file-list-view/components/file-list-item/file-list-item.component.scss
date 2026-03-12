@@ -39,14 +39,6 @@
   input {
     display: none;
   }
-
-  &.hover-react {
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 }
 
 .description {
