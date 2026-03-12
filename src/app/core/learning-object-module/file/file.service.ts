@@ -101,8 +101,7 @@ export class FileService {
   } = {
       // Use Microsoft's viewer
       office: (url: string) => {
-        const encodedUrl = encodeURIComponent(url);
-        const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
+        const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${url}`;
         window.open(officeViewerUrl, '_blank', "noopener,noreferrer");
       },
       // Open a new tab
@@ -187,6 +186,8 @@ export class FileService {
     const previewAction = FileService.PREVIEW_ACTIONS[fileType];
 
     if (previewAction) {
+      console.log("URL: ", url);
+      console.log("FileName: ", fileName);
       previewAction(url, fileName);
     }
   }
