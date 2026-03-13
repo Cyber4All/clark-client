@@ -9,13 +9,15 @@ import { AdminRoutingModule } from './admin.routing';
 import { ChangeAuthorComponent } from './components/change-author/change-author.component';
 import { ContentWrapperComponent } from './components/content-wrapper/content-wrapper.component';
 import { LearningObjectListItemComponent } from './components/learning-object-list-item/learning-object-list-item.component';
-import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdminUserCardComponent } from './components/user-card/user-card.component';
 import { PrivilegesListComponent } from './components/user-privileges/privileges-list/privileges-list.component';
 import { UserPrivilegesComponent } from './components/user-privileges/user-privileges.component';
 import { UserSearchWrapperComponent } from './components/user-search-wrapper/user-search-wrapper.component';
 import { LearningObjectsComponent } from './pages/learning-objects/learning-objects.component';
+import { OrganizationDeleteModalComponent } from './pages/organizations/organization-delete-modal/organization-delete-modal.component';
+import { OrganizationEditModalComponent } from './pages/organizations/organization-edit-modal/organization-edit-modal.component';
+import { OrganizationMigrateModalComponent } from './pages/organizations/organization-migrate-modal/organization-migrate-modal.component';
 import { OrganizationsComponent } from './pages/organizations/organizations.component';
 import { UsersComponent } from './pages/users/users.component';
 // eslint-disable-next-line max-len
@@ -58,7 +60,9 @@ import { FeaturedComponent } from './pages/featured/featured.component';
     LearningObjectsComponent,
     UsersComponent,
     OrganizationsComponent,
-    SearchBarComponent,
+    OrganizationEditModalComponent,
+    OrganizationDeleteModalComponent,
+    OrganizationMigrateModalComponent,
     ContentWrapperComponent,
     FilterSearchComponent,
     UserSearchWrapperComponent,

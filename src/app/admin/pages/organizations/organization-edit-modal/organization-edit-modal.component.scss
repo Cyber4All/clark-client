@@ -1,0 +1,64 @@
+// Organization edit modal styles (extracted from parent component)
+.modal-container {
+  &.edit-modal {
+    width: 100%;
+    max-width: 600px;
+  }
+}
+
+.duplicate-error {
+  color: #f44336;
+  font-size: 0.875rem;
+  margin-top: -16px;
+  margin-bottom: 16px;
+}
+
+.domains-section {
+  margin-top: 16px;
+
+  .subsection-header {
+    margin: 0 0 12px 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+  }
+
+  .domain-list {
+    margin-top: 8px;
+  }
+
+  .no-domains {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 0.875rem;
+    margin: 8px 0;
+  }
+}
+
+.step-content {
+  padding: 16px 0;
+}
+
+.confirm-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.confirm-text {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.certification-checkbox {
+  margin-bottom: 20px;
+}
+
+@media (max-width: 820px) {
+  .modal-container.edit-modal {
+    min-width: 94vw;
+    width: 94vw;
+    max-width: 94vw;
+  }
+}

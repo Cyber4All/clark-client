@@ -30,32 +30,6 @@
   margin: 12px 0 18px;
 }
 
-.overview-card {
-  background: #fff;
-  border: 1px solid #e1e5ec;
-  border-radius: 12px;
-  padding: 12px 14px;
-}
-
-.overview-card__label {
-  font-size: $smaller;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: $medium-grey;
-}
-
-.overview-card__value {
-  font-size: $large;
-  color: $darker-grey;
-  font-weight: 700;
-  margin-top: 4px;
-}
-
-.search-icon {
-  color: $light-blue;
-  margin-right: 6px;
-}
-
 .filters-toolbar {
   display: flex;
   justify-content: flex-start;
@@ -70,65 +44,6 @@
   gap: 10px;
   flex-wrap: wrap;
   align-items: center;
-}
-
-.search-control {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  height: 42px;
-  padding: 0 12px;
-  width: 260px;
-  max-width: 100%;
-  box-sizing: border-box;
-  border: 1px solid $light-grey;
-  border-radius: 8px;
-  background: #fff;
-}
-
-.search-control:focus-within {
-  border-color: $blue-accent;
-  background: rgba(70, 144, 255, 0.03);
-}
-
-.search-control input {
-  border: none;
-  outline: none;
-  width: 100%;
-  background: transparent;
-  font-size: $normal;
-  color: $darker-grey;
-}
-
-.search-control input::placeholder {
-  color: $medium-grey;
-}
-
-.filter-dropdown-btn {
-  border: 1px solid $light-grey;
-  background: white;
-  border-radius: 10px;
-  height: 42px;
-  padding: 0 12px;
-  font-size: $normal;
-  cursor: pointer;
-  color: $darker-grey;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-}
-
-.filter-dropdown-btn:hover {
-  border-color: $dark-grey;
-  background: $primary-white;
-}
-
-.filter-dropdown-btn.active {
-  border-color: $blue-accent;
-  color: $blue-accent;
-  background: rgba(70, 144, 255, 0.05);
 }
 
 .toolbar-actions {
@@ -220,22 +135,6 @@
 .count-value {
   font-weight: 400;
   color: $darker-grey;
-}
-
-.verified-status-icon {
-  display: inline-block;
-  margin: 0;
-  font-size: 32px;
-  width: 32px;
-  height: 32px;
-}
-
-.verified-status-icon.verified {
-  color: $success-green;
-}
-
-.verified-status-icon.unverified {
-  color: $error-red;
 }
 
 .sector-badge {
@@ -345,18 +244,8 @@
 }
 
 .clear-filters-link {
-  border: none;
-  background: transparent;
-  padding: 0 2px;
-  font-size: $small;
-  cursor: pointer;
-  color: $error-red;
-  text-decoration: underline;
-  transition: opacity 0.15s ease;
-}
-
-.clear-filters-link:hover {
-  opacity: 0.8;
+  display: inline-flex;
+  align-items: center;
 }
 
 .organizations-paginator ::ng-deep .mat-mdc-paginator-container {
@@ -383,24 +272,6 @@
   border: 1px solid #d9e1ec;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-}
-
-.filter-menu-content {
-  padding: 8px 10px;
-  min-width: 180px;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.filter-menu-checkbox {
-  font-size: $small;
-  border-radius: 8px;
-  padding: 4px 8px;
-}
-
-.filter-menu-checkbox:hover {
-  background: #f6f9ff;
 }
 
 .empty-template {
@@ -446,146 +317,6 @@
   margin-bottom: 20px;
 }
 
-.modal-container {
-  padding: 28px;
-  max-width: 600px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-.modal-container.center {
-  text-align: center;
-}
-
-.edit-modal,
-.migrate-modal {
-  min-width: 700px;
-  max-width: 700px;
-  width: 700px;
-}
-
-.modal-title {
-  font-size: $larger;
-  font-weight: 700;
-  margin-bottom: 18px;
-  color: $darker-grey;
-}
-
-.confirmation-text,
-.confirm-text {
-  font-size: $normal;
-  color: $dark-grey;
-  line-height: 1.55;
-}
-
-.step-content {
-  padding: 12px 12px 4px;
-}
-
-.material-form .full-width,
-.search-org-field {
-  width: 100%;
-  margin-bottom: 14px;
-}
-
-.duplicate-error {
-  color: $error-red;
-  font-size: $smaller;
-  margin: -8px 0 12px 4px;
-}
-
-.subsection-header {
-  font-size: $small;
-  font-weight: 700;
-  color: $dark-grey;
-  margin: 12px 0 8px;
-}
-
-.domain-list {
-  margin-top: 4px;
-}
-
-.domain-list mat-chip {
-  margin-right: 8px;
-  margin-bottom: 8px;
-}
-
-.no-domains,
-.no-results {
-  color: $medium-grey;
-  font-size: $small;
-  font-style: italic;
-}
-
-.certification-checkbox {
-  display: block;
-  margin: 14px 0;
-}
-
-.btn-group,
-.confirm-actions {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.migration-progress {
-  margin: 14px 0;
-}
-
-.organization-list {
-  max-height: 300px;
-  overflow-y: auto;
-  border: 1px solid #d7e1ef;
-  border-radius: 8px;
-  margin-bottom: 16px;
-}
-
-.org-item {
-  padding: 12px 14px;
-  border-bottom: 1px solid #edf1f7;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-}
-
-.org-item:last-child {
-  border-bottom: none;
-}
-
-.org-item:hover {
-  background: #f7faff;
-}
-
-.org-item.selected {
-  background: rgba(28, 112, 221, 0.1);
-  border-left: 3px solid $light-blue;
-}
-
-.org-item.disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.org-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 600;
-  color: $darker-grey;
-  margin-bottom: 3px;
-}
-
-.verified-icon {
-  color: $success-green;
-  font-size: 13px;
-}
-
-.org-details {
-  font-size: $smaller;
-  color: $medium-grey;
-}
-
 @media (max-width: 1100px) {
   .overview-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -606,17 +337,8 @@
     padding-bottom: 0;
   }
 
-  .overview-card {
+  .overview-row clark-stats-card {
     min-width: 0;
-    padding: 10px 10px;
-  }
-
-  .overview-card__label {
-    font-size: 10px;
-  }
-
-  .overview-card__value {
-    font-size: $normal;
   }
 
   .filters-toolbar {
@@ -630,16 +352,16 @@
     flex: 0 0 auto;
   }
 
-  .filter-dropdown-btn,
-  .search-control {
+  clark-dropdown-filter,
+  clark-search-input {
     font-size: $small;
     flex: 0 0 auto;
   }
 
-  .search-control {
+  clark-search-input {
     width: 220px;
   }
-  
+
   .toolbar-pager {
     flex: 0 0 auto;
     margin-left: 0;
@@ -652,13 +374,6 @@
 
   .create-org-button {
     white-space: nowrap;
-  }
-
-  .edit-modal,
-  .migrate-modal {
-    min-width: 94vw;
-    width: 94vw;
-    max-width: 94vw;
   }
 
   .table-toolbar--bottom {
@@ -682,18 +397,6 @@
     gap: 10px;
   }
 
-  .overview-card {
-    padding: 10px 12px;
-  }
-
-  .overview-card__label {
-    font-size: 10px;
-  }
-
-  .overview-card__value {
-    font-size: 18px;
-  }
-
   .filters-toolbar {
     flex-wrap: wrap;
     overflow: visible;
@@ -708,21 +411,20 @@
     gap: 8px;
   }
 
-  .search-control {
+  clark-search-input {
     width: 100%;
     min-width: 100%;
     flex: 1 1 100%;
   }
 
-  .filter-dropdown-btn {
-    height: 40px;
-    padding: 0 10px;
-    font-size: $small;
+  clark-dropdown-filter {
+    width: 100%;
+    flex: 1 1 100%;
   }
 
   .clear-filters-link {
     width: 100%;
-    text-align: left;
+    justify-content: flex-start;
     margin-top: 2px;
   }
 
@@ -742,12 +444,6 @@
   .organizations-table td.mat-mdc-cell {
     padding: 10px 8px;
     font-size: 12px;
-  }
-
-  .verified-status-icon {
-    font-size: 28px;
-    width: 28px;
-    height: 28px;
   }
 
   .org-name-cell {

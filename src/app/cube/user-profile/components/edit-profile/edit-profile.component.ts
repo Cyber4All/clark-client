@@ -11,11 +11,11 @@ import { Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 import { AuthService } from 'app/core/auth-module/auth.service';
+import { Organization } from 'app/core/organization-module/organization.types';
 import { UserService } from 'app/core/user-module/user.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { Organization } from '../../../../../entity';
 import { OrganizationService } from '../../../../core/utility-module/organization.service';
 
 @Component({
