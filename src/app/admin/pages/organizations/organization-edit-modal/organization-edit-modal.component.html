@@ -98,12 +98,22 @@
           <div class="step-content">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>State</mat-label>
-              <input matInput [(ngModel)]="form.state" name="state" />
+              <input
+                matInput
+                [(ngModel)]="form.state"
+                name="state"
+                placeholder="State"
+              />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Country</mat-label>
-              <input matInput [(ngModel)]="form.country" name="country" />
+              <input
+                matInput
+                [(ngModel)]="form.country"
+                name="country"
+                placeholder="Country"
+              />
             </mat-form-field>
 
             <!-- Create button for create mode -->

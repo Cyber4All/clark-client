@@ -28,8 +28,8 @@ export const OrganizationSchema = z.object({
     state: z.string().optional(),
     domains: z.array(z.string()),
     isVerified: z.boolean(),
-    createdAt: z.string(),
-    updatedAt: z.string(),
+    createdAt: z.string().optional(),
+    updatedAt: z.string().optional(),
 });
 
 /**
@@ -42,7 +42,7 @@ export const OrganizationArraySchema = z.array(OrganizationSchema);
  */
 
 export const SuggestDomainResponseSchema = z.object({
-    organization: OrganizationSchema.nullable(),
+    organization: z.union([OrganizationSchema, z.null()]),
 });
 
 export const CreateOrganizationResponseSchema = z.object({
@@ -51,4 +51,15 @@ export const CreateOrganizationResponseSchema = z.object({
 
 export const UpdateOrganizationResponseSchema = z.object({
     organization: OrganizationSchema,
+});
+
+export const GetOrganizationByIdResponseSchema = z.object({
+    organization: OrganizationSchema,
+});
+
+export const SearchOrganizationsResponseSchema = z.object({
+    organizations: OrganizationArraySchema,
+    total: z.number().optional(),
+    page: z.number().optional(),
+    limit: z.number().optional(),
 });

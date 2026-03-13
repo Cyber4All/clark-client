@@ -23,9 +23,10 @@
       [value]="filteredUnverifiedCount"
       textColor="#d14343"
     ></clark-stats-card>
+    <!-- TODO: Update the value for "Users in "Other"" -->
     <clark-stats-card
       label='Users in "Other"'
-      [value]="getTotalOtherUsers()"
+      [value]="0"
       textColor="#7b6cf6"
     ></clark-stats-card>
   </div>
@@ -139,7 +140,7 @@
           <ng-container matColumnDef="users">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Users</th>
             <td mat-cell *matCellDef="let organization">
-              <span class="count-value">{{ getUserCount(organization) }}</span>
+              <span class="count-value">TBD</span>
             </td>
           </ng-container>
 
@@ -148,9 +149,7 @@
               Learning Objects
             </th>
             <td mat-cell *matCellDef="let organization">
-              <span class="count-value">{{
-                getLearningObjectCount(organization)
-              }}</span>
+              <span class="count-value">TBD</span>
             </td>
           </ng-container>
 
@@ -213,16 +212,23 @@
                   >
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <button
-                    mat-icon-button
-                    (click)="openMigrateModal(organization)"
-                    class="action-icon-button migrate"
-                    title="Migrate Users"
-                    [disabled]="getUserCount(organization) === 0"
+                  <span
+                    class="disabled-action-tooltip"
+                    [matTooltip]="migrateNotSupportedTooltip"
                   >
-                    <mat-icon>sync_alt</mat-icon>
-                  </button>
-                  <span [matTooltip]="deleteNotSupportedTooltip">
+                    <button
+                      mat-icon-button
+                      class="action-icon-button migrate"
+                      title="Migrate Users"
+                      [disabled]="true"
+                    >
+                      <mat-icon>sync_alt</mat-icon>
+                    </button>
+                  </span>
+                  <span
+                    class="disabled-action-tooltip"
+                    [matTooltip]="deleteNotSupportedTooltip"
+                  >
                     <button
                       mat-icon-button
                       class="action-icon-button delete"
@@ -278,15 +284,19 @@
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
       </button>
-      <button
-        mat-menu-item
-        (click)="openMigrateModal(organization)"
-        [disabled]="getUserCount(organization) === 0"
+      <span
+        class="disabled-action-tooltip disabled-action-tooltip--menu"
+        [matTooltip]="migrateNotSupportedTooltip"
       >
-        <mat-icon>sync_alt</mat-icon>
-        <span>Migrate Users</span>
-      </button>
-      <span [matTooltip]="deleteNotSupportedTooltip">
+        <button mat-menu-item [disabled]="true">
+          <mat-icon>sync_alt</mat-icon>
+          <span>Migrate Users</span>
+        </button>
+      </span>
+      <span
+        class="disabled-action-tooltip disabled-action-tooltip--menu"
+        [matTooltip]="deleteNotSupportedTooltip"
+      >
         <button mat-menu-item [disabled]="true">
           <mat-icon>delete</mat-icon>
           <span>Delete</span>
@@ -323,7 +333,7 @@
   [isCreateMode]="isCreateMode"
   [organization]="selectedOrganization"
   [userCount]="selectedOrganization ? getUserCount(selectedOrganization) : 0"
-  [existingNames]="getExistingNames()"
+  [existingNames]="existingNames"
   (closed)="closeEditModal()"
   (save)="onSaveOrganization($event)"
 ></clark-organization-edit-modal>

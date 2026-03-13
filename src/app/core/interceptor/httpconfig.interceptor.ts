@@ -37,7 +37,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
       withCredentials: true,
     });
 
-    // Add Authorization header only for non-public endpoints when token exists
+    // Add Authorization header only for non-public endpoints when token exists.
     if (!isPublicEndpoint && token) {
       updatedRequest = updatedRequest.clone({
         setHeaders: {
@@ -50,10 +50,10 @@ export class HttpConfigInterceptor implements HttpInterceptor {
   }
 
   /**
-   * Check if URL is an API request (starts with apiURL or cardUrl)
+   * Check if URL is an API request (starts with apiURL)
    */
   private isApiRequest(url: string): boolean {
-    return url.startsWith(environment.apiURL) || url.startsWith(environment.cardUrl);
+    return url.startsWith(environment.apiURL);
   }
 
   /**
@@ -66,11 +66,7 @@ export class HttpConfigInterceptor implements HttpInterceptor {
     const method = request.method.toUpperCase();
 
     if (request.url.startsWith(environment.apiURL) && method === 'GET') {
-      return path === '/organizations' || path === '/organizations/suggest';
-    }
-
-    if (request.url.startsWith(environment.cardUrl) && method === 'GET') {
-      return path.startsWith('/resources');
+      return path === '/organizations/suggest' || path.startsWith('/resources');
     }
 
     return false;
@@ -88,11 +84,8 @@ export class HttpConfigInterceptor implements HttpInterceptor {
       if (apiIndex === 0) {
         return withoutQuery.slice(environment.apiURL.length) || '/';
       }
-      const cardIndex = withoutQuery.indexOf(environment.cardUrl);
-      if (cardIndex === 0) {
-        return withoutQuery.slice(environment.cardUrl.length) || '/';
-      }
       return withoutQuery;
     }
   }
+
 }

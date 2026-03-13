@@ -13,7 +13,7 @@
   </div>
   <div class="card__body">
     <div class="card__body__heading">{{ (user?.name.length > 15)? (user?.name | slice:0:15)+'..':(user?.name) }}</div>
-    <div class="card__body__organization">{{ (user?.organization.length > 20)? (user?.organization | slice:0:20)+'..':(user?.organization) }}</div>
+    <div class="card__body__organization">{{ orgStore.organizationName$(user?.organizationId) | async }}</div>
     <div class="card__body__username"><i class="far fa-user"></i> {{ user?.username }}</div>
   </div>
 </div>
