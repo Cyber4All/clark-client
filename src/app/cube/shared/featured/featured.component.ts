@@ -1,10 +1,12 @@
 import { LearningObject } from '@entity';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 
 @Component({
   selector: 'cube-featured',
@@ -26,27 +28,21 @@ export class FeaturedComponent implements OnInit {
 
   constructor(
     private searchLearningObjectService: SearchService,
-    private featureService: FeaturedObjectsService
+    private cd: ChangeDetectorRef
   ) {
-    this.learningObjects = this.learningObjects.fill(new LearningObject());
+    this.learningObjects = Array.from({ length: 5 }, () => new LearningObject()); // placeholder array for loading state
   }
 
-  ngOnInit() {
-    if (this.collection) {
-      this.loading = true;
-      this.collection.pipe(takeUntil(this.destroyed$)).subscribe({
-        next: collection => {
-          this.collectionName = collection;
-          this.query.collection = collection;
-          this.fetchLearningObjects();
-        }
-      });
-    } else {
-      this.featureService.getFeaturedObjects();
-      this.featureService.featuredObjects.subscribe(objects => {
-        this.learningObjects = objects;
-      });
-    }
+  async ngOnInit() {
+
+  this.collection
+    .pipe(takeUntil(this.destroyed$))
+    .subscribe(collection => {
+      this.collectionName = collection;
+      this.query.collection = collection;
+
+      this.fetchLearningObjects();
+    });
   }
 
   async fetchLearningObjects() {
@@ -57,8 +53,10 @@ export class FeaturedComponent implements OnInit {
         this.query
       )).learningObjects;
       this.loading = false;
+      this.cd.detectChanges();
     } catch (e) {
       this.loading = false;
+      this.cd.detectChanges();
     }
   }
 }
