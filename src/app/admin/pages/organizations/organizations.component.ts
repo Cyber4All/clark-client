@@ -11,6 +11,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatStepper } from '@angular/material/stepper';
 import { MatTableDataSource } from '@angular/material/table';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { OrganizationService } from 'app/core/organization-module/organization.service';
 import {
   Organization,
@@ -21,9 +22,10 @@ import {
   OrganizationSector,
   SearchOrganizationsResponse,
 } from 'app/core/organization-module/organization.types';
+import { UserService } from 'app/core/user-module/user.service';
 import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { forkJoin, of, Subject } from 'rxjs';
+import { forkJoin, merge, of, Subject } from 'rxjs';
 import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
 import { OrganizationFormData } from './organization-edit-modal/organization-edit-modal.component';
 
@@ -46,9 +48,12 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   searchValue = '';
   private readonly organizationsPageSize = 1000;
 
-  // Map to store consistent mock counts for each organization
+  // Maps for per-organization totals loaded from users and learning-objects search APIs.
   private readonly userCountMap: Map<string, number> = new Map();
   private readonly learningObjectCountMap: Map<string, number> = new Map();
+  // Monotonic request version to ignore stale async count responses from prior loads.
+  private countsLoadVersion = 0;
+  private tableControlsBound = false;
 
   // Filter options
   selectedVerifiedFilters: Array<'verified' | 'unverified'> = [];
@@ -65,9 +70,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   loading = false;
   filteredVerifiedCount = 0;
   filteredUnverifiedCount = 0;
+  totalOtherUsers = 0;
   existingNames: string[] = [];
   userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
+  private otherUsersCountLoadVersion = 0;
 
   // TODO: Extract as reusable service - AdminFilterService or TableFilterService
   // This multi-filter pattern (search + checkboxes) with custom filter predicates
@@ -109,6 +116,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   constructor(
     private readonly toaster: ToastrOvenService,
     private readonly organizationService: OrganizationService,
+    private readonly userService: UserService,
+    private readonly searchService: SearchService,
   ) { }
 
   ngOnInit(): void {
@@ -168,9 +177,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-
     // Custom sort accessor for special columns
     this.dataSource.sortingDataAccessor = (data: Organization, sortHeaderId: string) => {
       switch (sortHeaderId) {
@@ -184,6 +190,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           return (data as any)[sortHeaderId];
       }
     };
+    this.bindTableControlsIfReady();
   }
 
   // TODO: Extract as reusable utility - ResponsiveTableManager or ViewportBreakpointService
@@ -215,6 +222,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.dataSource.data = organizations;
           this.refreshExistingNames();
           this.refreshOverviewCounts();
+          this.loadTotalOtherUsers();
+          this.bindTableControlsIfReady();
+          this.loadVisibleOrganizationCounts();
           this.loading = false;
         },
         error: (error) => {
@@ -225,6 +235,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.dataSource.data = [];
           this.refreshExistingNames();
           this.refreshOverviewCounts();
+          this.totalOtherUsers = 0;
+          this.userCountMap.clear();
+          this.learningObjectCountMap.clear();
         }
       });
   }
@@ -287,6 +300,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     };
     this.dataSource.filter = JSON.stringify(filterValue);
     this.refreshOverviewCounts();
+    this.loadVisibleOrganizationCounts();
 
     // Reset to first page when filtering
     if (this.dataSource.paginator) {
@@ -408,8 +422,12 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       .subscribe({
         next: (response) => {
           this.dataSource.data = [...this.dataSource.data, response.organization];
+          this.userCountMap.set(response.organization._id, 0);
+          this.learningObjectCountMap.set(response.organization._id, 0);
           this.refreshExistingNames();
           this.refreshOverviewCounts();
+          this.loadTotalOtherUsers();
+          this.loadVisibleOrganizationCounts();
           this.toaster.success('Success!', 'Organization created successfully.');
           this.loading = false;
           this.closeEditModal();
@@ -449,6 +467,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
             this.dataSource.data = updatedData;
             this.refreshExistingNames();
             this.refreshOverviewCounts();
+            this.loadTotalOtherUsers();
+            this.loadVisibleOrganizationCounts();
           }
           this.toaster.success('Success!', 'Organization updated successfully.');
           this.loading = false;
@@ -501,8 +521,12 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.dataSource.data = this.dataSource.data.filter(
       (org) => org._id !== selectedOrgId
     );
+    this.userCountMap.delete(selectedOrgId);
+    this.learningObjectCountMap.delete(selectedOrgId);
     this.refreshExistingNames();
     this.refreshOverviewCounts();
+    this.loadTotalOtherUsers();
+    this.loadVisibleOrganizationCounts();
 
     this.toaster.success('Success!', 'Organization deleted successfully.');
     this.closeDeleteModal();
@@ -512,28 +536,15 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    * Get user count for organization from API-provided count fields (if present)
    */
   getUserCount(org: Organization): number {
-    // TODO(clark-api): Replace mock count with real `/users` query when `organizationId` filter is supported.
-    // Mock data - in real implementation, this would come from backend
-    // Use consistent values from map
-    if (!this.userCountMap.has(org._id)) {
-      this.userCountMap.set(org._id, Math.floor(Math.random() * 500) + 1);
-    }
     return this.userCountMap.get(org._id) || 0;
   }
 
   getLearningObjectCount(org: Organization): number {
-    // TODO(clark-api): Replace mock count with backend-provided organization learning object metrics.
-    // Mock data - in real implementation, this would come from backend
-    if (!this.learningObjectCountMap.has(org._id)) {
-      this.learningObjectCountMap.set(org._id, Math.floor(Math.random() * 1000) + 1);
-    }
     return this.learningObjectCountMap.get(org._id) || 0;
   }
 
   getTotalOtherUsers(): number {
-    return this.dataSource.data
-      .filter((org) => org.sector === 'other')
-      .reduce((total, org) => total + this.getUserCount(org), 0);
+    return this.totalOtherUsers;
   }
 
   private refreshOverviewCounts(): void {
@@ -556,19 +567,168 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     return level.replace(/_/g, ' ');
   }
 
-  private getCountValue(org: Organization, keys: string[]): number {
-    const record = org as unknown as Record<string, unknown>;
-    for (const key of keys) {
-      const value = record[key];
-      if (typeof value === 'number' && Number.isFinite(value) && value >= 0) {
-        return value;
-      }
-    }
-    return 0;
-  }
-
   private toTitleCase(value: string): string {
     return value.replace(/\b\w/g, (letter) => letter.toUpperCase());
+  }
+
+  private async loadTotalOtherUsers(): Promise<void> {
+    const currentVersion = ++this.otherUsersCountLoadVersion;
+
+    try {
+      const organizations = await this.organizationService.searchOrganizations({ text: 'Other' }).toPromise();
+      const otherOrganization = organizations.find(
+        (org) => (org.normalizedName || '').trim().toLowerCase() === 'other'
+      );
+
+      if (!otherOrganization?._id) {
+        if (currentVersion !== this.otherUsersCountLoadVersion) {
+          return;
+        }
+        this.totalOtherUsers = 0;
+        return;
+      }
+
+      const response = await this.userService.searchUsersResponse({
+        organizationId: [otherOrganization._id],
+        page: 1,
+        limit: 1,
+      });
+      if (currentVersion !== this.otherUsersCountLoadVersion) {
+        return;
+      }
+      this.totalOtherUsers = response.total || 0;
+    } catch (error) {
+      if (currentVersion !== this.otherUsersCountLoadVersion) {
+        return;
+      }
+      console.error('Failed to fetch total users in other-sector organizations', error);
+      this.totalOtherUsers = 0;
+    }
+  }
+
+  private async loadVisibleOrganizationCounts(): Promise<void> {
+    const visibleOrganizations = this.getVisibleOrganizations();
+    const visibleOrganizationIds = visibleOrganizations.map((org) => org._id);
+    const missingUserCountIds = visibleOrganizationIds.filter(
+      (organizationId) => !this.userCountMap.has(organizationId)
+    );
+    const missingLearningObjectCountIds = visibleOrganizationIds.filter(
+      (organizationId) => !this.learningObjectCountMap.has(organizationId)
+    );
+
+    if (missingUserCountIds.length === 0 && missingLearningObjectCountIds.length === 0) {
+      return;
+    }
+
+    // Capture a version for this run; any newer run increments the shared value.
+    const currentVersion = ++this.countsLoadVersion;
+
+    if (missingUserCountIds.length > 0) {
+      const userCountPairs = await this.fetchCountPairs(
+        missingUserCountIds,
+        (organizationId) => this.fetchUserCount(organizationId)
+      );
+      // If data reloaded while we were awaiting, discard stale results.
+      if (currentVersion !== this.countsLoadVersion) {
+        return;
+      }
+      userCountPairs.forEach(([organizationId, count]) => this.userCountMap.set(organizationId, count));
+    }
+
+    if (missingLearningObjectCountIds.length > 0) {
+      const learningObjectCountPairs = await this.fetchCountPairs(
+        missingLearningObjectCountIds,
+        (organizationId) => this.fetchLearningObjectCount(organizationId)
+      );
+      // Same stale-result guard for the second async phase.
+      if (currentVersion !== this.countsLoadVersion) {
+        return;
+      }
+      learningObjectCountPairs.forEach(([organizationId, count]) => {
+        this.learningObjectCountMap.set(organizationId, count);
+      });
+    }
+
+    this.refreshOverviewCounts();
+  }
+
+  private getVisibleOrganizations(): Organization[] {
+    let renderedData = this.dataSource.filteredData.slice();
+    if (this.sort && this.sort.active && this.sort.direction) {
+      renderedData = this.dataSource.sortData(renderedData, this.sort);
+    }
+
+    if (!this.paginator) {
+      return renderedData;
+    }
+
+    const pageSize = this.paginator.pageSize || renderedData.length;
+    const pageIndex = this.paginator.pageIndex || 0;
+    const startIndex = pageIndex * pageSize;
+    return renderedData.slice(startIndex, startIndex + pageSize);
+  }
+
+  private bindTableControlsIfReady(): void {
+    if (this.sort) {
+      this.dataSource.sort = this.sort;
+    }
+    if (this.paginator) {
+      this.dataSource.paginator = this.paginator;
+    }
+    if (this.tableControlsBound || !this.sort || !this.paginator) {
+      return;
+    }
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe(() => {
+        this.loadVisibleOrganizationCounts();
+      });
+    this.tableControlsBound = true;
+  }
+
+  private async fetchCountPairs(
+    organizationIds: string[],
+    fetcher: (organizationId: string) => Promise<number>,
+    chunkSize = 8
+  ): Promise<Array<[string, number]>> {
+    const pairs: Array<[string, number]> = [];
+    for (let i = 0; i < organizationIds.length; i += chunkSize) {
+      const chunk = organizationIds.slice(i, i + chunkSize);
+      const chunkCounts = await Promise.all(
+        chunk.map(async (organizationId) => [organizationId, await fetcher(organizationId)] as [string, number])
+      );
+      pairs.push(...chunkCounts);
+    }
+    return pairs;
+  }
+
+  private async fetchUserCount(organizationId: string): Promise<number> {
+    try {
+      const response = await this.userService.searchUsersResponse({
+        organizationId: [organizationId],
+        page: 1,
+        limit: 1,
+      });
+      return response.total || 0;
+    } catch (error) {
+      console.error('Failed to fetch user count for organization', organizationId, error);
+      return 0;
+    }
+  }
+
+  private async fetchLearningObjectCount(organizationId: string): Promise<number> {
+    try {
+      const response = await this.searchService.getLearningObjects({
+        organizationId: [organizationId],
+        currPage: 1,
+        limit: 1,
+      });
+      return response.total || 0;
+    } catch (error) {
+      console.error('Failed to fetch learning object count for organization', organizationId, error);
+      return 0;
+    }
   }
 
   /**
