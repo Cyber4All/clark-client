@@ -6,6 +6,8 @@ It is a single Angular 18 client-side SPA built with Angular CLI/application bui
 
 Coding agents working in this repository must follow the conventions in this file and, when required, create and maintain an ExecPlan using `PLANS.md` in the repository root.
 
+For any story-scale or multi-step work that requires an ExecPlan, implementation must not begin until the story-specific ExecPlan file exists under `plans/`.
+
 ## Purpose of this file
 
 This repository has legacy and modern patterns mixed together. The goal of this file is not to pretend the codebase is already fully standardized. The goal is to help agents:
@@ -57,6 +59,19 @@ An ExecPlan is usually not required for:
 - a small unit-test-only change
 
 When in doubt, create an ExecPlan.
+
+### Default behavior for agents
+
+For Shortcut stories, multi-file work, or any task likely to involve more than a narrow local edit, agents must treat ExecPlan creation as the default first implementation step.
+
+That means:
+
+- read `PLANS.md` before making code changes
+- create the story-specific ExecPlan file in `plans/`
+- record initial progress and current understanding in that file
+- only then begin implementation
+
+Tool-level or conversational planning alone is not sufficient when `PLANS.md` requires an ExecPlan file. The repo plan file is the source of truth and must be kept current as work proceeds.
 
 ## Where plans live
 
