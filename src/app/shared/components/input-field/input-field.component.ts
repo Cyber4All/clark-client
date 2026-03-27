@@ -25,6 +25,7 @@ export class InputFieldComponent implements OnInit, ControlValueAccessor {
   @Input() isPwrd: Boolean = false;
   // placeholder text, which becomes label
   @Input() phold: String = '';
+  @Input() placeholderText: String = '';
   // fControlType: 'email' | 'username' | 'password' | 'text' -
   // describes the type of validation needed for the field. default 'text'
   // no validation

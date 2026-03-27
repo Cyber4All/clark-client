@@ -31,37 +31,15 @@
                         [control]="infoFormGroup.get('email')"
                         [errorMsg]="fieldErrorMsg"
                     ></clark-input-field>
-
-                    <ng-container *ngIf="organizationSuggestionLoading; else organizationStateTemplate">
-                        <div class="organization-state organization-state--loading">
-                            <span class="organization-state__title">Looking up your organization</span>
-                            <span class="organization-state__body">We are checking whether your email domain matches an organization in CLARK.</span>
-                        </div>
-                    </ng-container>
-
-                    <ng-template #organizationStateTemplate>
-                        <ng-container *ngIf="suggestedOrganization && !showOrganizationSelector; else organizationSelectorTemplate">
-                            <div class="organization-state organization-state--suggested">
-                                <span class="organization-state__eyebrow">Organization selected from your email domain</span>
-                                <span class="organization-state__title">{{ suggestedOrganization.name }}</span>
-                                <button type="button" class="organization-state__action" (click)="changeOrganization()">
-                                    Change organization
-                                </button>
-                            </div>
-                        </ng-container>
-                    </ng-template>
-
-                    <ng-template #organizationSelectorTemplate>
-                        <clark-input-field
-                            *ngIf="shouldShowOrganizationSelector"
-                            [(ngModel)]="regInfo.organization"
-                            name="organization"
-                            #organization
-                            phold="Organization"
-                            [control]="infoFormGroup.get('organization')"
-                            (keyup)="keyup($event)"
-                        ></clark-input-field>
-                    </ng-template>
+                    <clark-input-field
+                        [(ngModel)]="regInfo.organization"
+                        name="organization"
+                        #organization
+                        phold="Organization"
+                        [placeholderText]="suggestedOrganization?.name || ''"
+                        [control]="infoFormGroup.get('organization')"
+                        (keyup)="keyup($event)"
+                    ></clark-input-field>
                     <ul
                         *ngIf="showDropdown"
                         (onBlur)="closeDropdown()"

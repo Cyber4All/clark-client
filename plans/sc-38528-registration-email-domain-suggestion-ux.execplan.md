@@ -9,6 +9,8 @@ This story is local to the registration flow but crosses several layers inside t
 - `src/app/auth/register/register.component.ts`
 - `src/app/auth/register/register.component.html`
 - `src/app/auth/register/register.component.scss`
+- `src/app/shared/components/input-field/input-field.component.ts`
+- `src/app/shared/components/input-field/input-field.component.html`
 - `src/app/core/organization-module/organization.service.ts`
 - registration tests and any related organization-service tests
 
@@ -30,6 +32,7 @@ The change is not a broad architectural refactor. It should stabilize the curren
 - [x] (2026-03-27 16:16Z) Added and updated focused specs for registration suggestion behavior and `OrganizationService.suggestDomain(...)`.
 - [x] (2026-03-27 16:16Z) Ran targeted lint on touched TS/HTML/spec files and confirmed the repo-wide spec TypeScript build no longer reports errors in the new registration and organization-service specs.
 - [ ] Capture final validation summary, residual risks, and commit the implementation changes.
+- [x] (2026-03-27 16:26Z) Simplified the UX so the organization input remains visible and the suggested organization appears only as placeholder/default selection, with no explicit suggestion panel or `Change organization` action.
 
 ## Surprises & Discoveries
 
@@ -37,6 +40,7 @@ The change is not a broad architectural refactor. It should stabilize the curren
 - The registration component is already a mixed legacy/newer area: reactive form controls are present, but the template also uses `ngModel` and component-local orchestration.
 - The existing organization search selector is embedded directly in the register component template, so the safest path is to reuse it as the fallback/manual path rather than extract shared UI in this story.
 - The UX can be simplified further than the original story text: explicit confirmation is not necessary if the suggestion is set as the default selected organization and the user can override it via `Change organization`.
+- The UX can be simplified even further: no explicit suggestion chrome is necessary if the organization field stays visible and the suggested org is communicated through the field placeholder while the selected organization ID is set behind the scenes.
 - I started modifying `register.component.ts` before creating this ExecPlan. That was process drift and should not have happened before the plan file existed.
 - The repo’s current Jest setup is broken for targeted runs with `TypeError: configSet.processWithEsbuild is not a function`, so validation for this story had to rely on lint plus a repo-wide spec TypeScript compile filtered to the touched spec files.
 
@@ -60,6 +64,10 @@ The change is not a broad architectural refactor. It should stabilize the curren
 
 - Decision: Auto-select the suggested organization by default instead of requiring an explicit `Confirm` action.
   Rationale: The user already has a natural opt-out through `Change organization`, so removing the extra confirmation step simplifies the registration flow while preserving control.
+  Date/Author: 2026-03-27 / User
+
+- Decision: Remove explicit suggestion UI such as a lookup panel or `Change organization` button, and instead keep the organization field visible with the suggested organization shown as placeholder text.
+  Rationale: The user wants a quieter registration UI where the default selection happens automatically and the ordinary organization field remains the only visible control.
   Date/Author: 2026-03-27 / User
 
 ## Outcomes & Retrospective
@@ -141,14 +149,15 @@ Target direction for touched code in this story:
    - If the API fails, also show the searchable selector by default.
 
 4. Implement user actions
-   - Suggested org default: populate the organization field display and selected org ID automatically.
-   - `Change organization`: clear the default suggestion selection and open the searchable selector.
+   - Suggested org default: set the selected org ID automatically and use the organization field placeholder to communicate the suggestion.
+   - Manual override: typing in the existing organization field should switch the flow back to searchable selection behavior.
    - Existing organization search result selection should continue to set `selectedOrg`.
 
 5. Update template and styling
-   - Add a suggestion panel/message near the organization field indicating the auto-selected organization.
+   - Keep the organization input visible at all times.
+   - Show the suggested organization through the field placeholder rather than additional UI chrome.
    - Keep current dropdown/search layout intact for fallback behavior.
-   - Ensure loading states are visible both for suggestion and for search.
+   - Add placeholder support to the shared input component if needed.
 
 6. Add tests
    - Update `register.component.spec.ts` to cover:
@@ -164,12 +173,12 @@ Target direction for touched code in this story:
 Acceptance criteria to prove:
 
 - Registration form calls `GET /organizations/suggest?email={email}` when email is entered.
-- If an org is suggested, the UI shows the org name as the default selected organization with a `Change organization` option.
+- If an org is suggested, the organization field communicates that org as the default selection without additional suggestion UI.
 - The suggested org is auto-selected without an extra confirmation step.
-- `Change organization` opens the searchable org selector using the existing functionality.
-- If no org is suggested, the searchable org selector appears by default.
-- Loading state is visible while the suggestion endpoint is in flight.
-- API failure falls back to the searchable org selector.
+- Typing a different organization continues into the searchable org selector using the existing functionality.
+- If no org is suggested, the flow falls back to the standard organization input and search behavior.
+- Suggestion loading is handled quietly without extra suggestion UI.
+- API failure falls back to the standard organization input and search behavior.
 
 Automated validation:
 
@@ -180,10 +189,10 @@ Automated validation:
 
 Manual validation:
 
-1. Enter a valid email with a suggestable domain and verify the suggested organization is auto-selected.
-2. Enter a valid email with a suggestable domain and choose `Change organization`, then search/select an org.
-3. Enter a valid email with a non-suggestable domain and confirm the searchable selector is shown.
-4. Simulate suggestion failure and confirm searchable selector fallback.
+1. Enter a valid email with a suggestable domain and verify the suggested organization is auto-selected and reflected quietly through the organization field.
+2. Enter a valid email with a suggestable domain, type a different organization, and search/select an org.
+3. Enter a valid email with a non-suggestable domain and confirm the standard organization input/search flow still works.
+4. Simulate suggestion failure and confirm the standard organization input/search flow still works.
 5. Verify the next-step button and step progression still behave correctly.
 
 ## Idempotence and Recovery

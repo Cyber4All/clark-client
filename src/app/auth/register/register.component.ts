@@ -112,7 +112,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   organizationInput$: Subject<string> = new Subject<string>();
   showDropdown = false;
-  showOrganizationSelector = false;
   suggestedOrganization: Organization | null = null;
   closeDropdown = () => {
     this.showDropdown = false;
@@ -123,13 +122,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   get loading(): boolean {
     return this.emailLoading || this.usernameLoading || this.organizationSearchLoading || this.organizationSuggestionLoading;
-  }
-
-  get shouldShowOrganizationSelector(): boolean {
-    return this.showOrganizationSelector
-      || !this.regInfo.email
-      || this.infoFormGroup.get('email')?.invalid
-      || this.emailInUse;
   }
 
   constructor(
@@ -145,7 +137,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       firstname: this.authValidation.getInputFormControl('required'),
       lastname: this.authValidation.getInputFormControl('required'),
       email: this.authValidation.getInputFormControl('email'),
-      organization: this.authValidation.getInputFormControl('required'),
+      organization: this.authValidation.getInputFormControl('text'),
     });
     this.accountFormGroup = new UntypedFormGroup({
       username: this.authValidation.getInputFormControl('username'),
@@ -185,11 +177,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
       });
     this.organizationInput$
       .subscribe((value: string) => {
-        if (this.showOrganizationSelector && value && value !== '') {
+        if (value && value !== '') {
           this.selectedOrg = '';
           this.showDropdown = true;
           this.organizationSearchLoading = true;
         } else {
+          this.selectedOrg = this.suggestedOrganization?._id ?? '';
           this.showDropdown = false;
           this.organizationSearchLoading = false;
         }
@@ -280,7 +273,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.resetOrganizationSelection();
 
         if (!value || value.trim() === '') {
-          this.showOrganizationSelector = false;
           return;
         }
 
@@ -433,25 +425,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.closeDropdown();
   }
 
-  changeOrganization() {
-    this.suggestedOrganization = null;
-    this.selectedOrg = '';
-    this.regInfo.organization = '';
-    this.infoFormGroup.get('organization')!.setValue('');
-    this.showOrganizationSelector = true;
-    this.showDropdown = false;
-  }
-
   /**
    * Registers typing events from the organization input
    *
    * @param event The typing event
    */
   keyup(event: any) {
-    if (!this.showOrganizationSelector) {
-      return;
-    }
-
     this.organizationInput$.next(event.target.value);
   }
 
@@ -472,9 +451,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.organizationSuggestionLoading = false;
           this.suggestedOrganization = response.organization ?? null;
           if (this.suggestedOrganization) {
-            this.selectOrg(this.suggestedOrganization);
+            this.selectedOrg = this.suggestedOrganization._id;
           }
-          this.showOrganizationSelector = !this.suggestedOrganization;
         },
         error: () => {
           if (this.latestSuggestionEmail !== email.trim().toLowerCase()) {
@@ -483,7 +461,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
           this.organizationSuggestionLoading = false;
           this.suggestedOrganization = null;
-          this.showOrganizationSelector = true;
         }
       });
   }
@@ -493,7 +470,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.organizationSuggestionLoading = false;
     this.organizationSearchLoading = false;
     this.suggestedOrganization = null;
-    this.showOrganizationSelector = false;
     this.searchResults = [];
     this.showDropdown = false;
     this.selectedOrg = '';

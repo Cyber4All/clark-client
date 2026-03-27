@@ -91,8 +91,7 @@ describe('RegisterComponent', () => {
 
     expect(component.suggestedOrganization).toEqual(suggestedOrganization);
     expect(component.selectedOrg).toBe('org-1');
-    expect(component.regInfo.organization).toBe('Towson University');
-    expect(component.showOrganizationSelector).toBe(false);
+    expect(component.regInfo.organization).toBe('');
   });
 
   it('shows the organization selector when no organization is suggested', () => {
@@ -102,7 +101,6 @@ describe('RegisterComponent', () => {
 
     expect(component.suggestedOrganization).toBeNull();
     expect(component.selectedOrg).toBe('');
-    expect(component.showOrganizationSelector).toBe(true);
   });
 
   it('falls back to the organization selector when suggestion lookup fails', () => {
@@ -112,18 +110,15 @@ describe('RegisterComponent', () => {
 
     expect(component.suggestedOrganization).toBeNull();
     expect(component.selectedOrg).toBe('');
-    expect(component.showOrganizationSelector).toBe(true);
     expect(component.organizationSuggestionLoading).toBe(false);
   });
 
-  it('opens the searchable selector when changing organization', () => {
+  it('restores the suggested organization id when the org input is cleared', () => {
     (component as any).loadOrganizationSuggestion('user@towson.edu');
 
-    component.changeOrganization();
+    component.organizationInput$.next('Tow');
+    component.organizationInput$.next('');
 
-    expect(component.suggestedOrganization).toBeNull();
-    expect(component.selectedOrg).toBe('');
-    expect(component.regInfo.organization).toBe('');
-    expect(component.showOrganizationSelector).toBe(true);
+    expect(component.selectedOrg).toBe('org-1');
   });
 });
