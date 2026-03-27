@@ -7,6 +7,7 @@ import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
 import { OrganizationService } from 'app/core/organization-module/organization.service';
+import { SuggestDomainResponse } from 'app/core/organization-module/organization.types';
 import { Organization } from 'app/core/organization-module/organization.types';
 import { UserService } from 'app/core/user-module/user.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
@@ -61,6 +62,7 @@ const EMAIL_REGEX =
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
+  private latestSuggestionEmail = '';
   ssoRedirect = AUTH_ROUTES.GOOGLE_SIGNUP();
 
   TEMPLATES = {
@@ -104,16 +106,24 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   emailInUse = false;
   usernameInUse = false;
-  loading = false;
+  emailLoading = false;
+  usernameLoading = false;
+  organizationSearchLoading = false;
+  organizationSuggestionLoading = false;
 
   organizationInput$: Subject<string> = new Subject<string>();
   showDropdown = false;
+  suggestedOrganization: Organization | null = null;
   closeDropdown = () => {
     this.showDropdown = false;
   };
   searchResults: Array<Organization> = [];
   selectedOrg = '';
   scrollerHeight = '100px';
+
+  get loading(): boolean {
+    return this.emailLoading || this.usernameLoading || this.organizationSearchLoading || this.organizationSuggestionLoading;
+  }
 
   constructor(
     public authValidation: AuthValidationService,
@@ -155,19 +165,29 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.validateUsername();
     this.organizationInput$.pipe(debounceTime(650))
       .subscribe((value: string) => {
-        this.orgService.searchOrganizations({ text: value.trim() }).pipe(take(1)).subscribe((results) => {
-          this.searchResults = results;
-          this.loading = false;
+        this.orgService.searchOrganizations({ text: value.trim() }).pipe(take(1)).subscribe({
+          next: (results) => {
+            this.searchResults = results;
+            this.organizationSearchLoading = false;
+          },
+          error: () => {
+            this.searchResults = [];
+            this.organizationSearchLoading = false;
+          }
         });
       });
     this.organizationInput$
       .subscribe((value: string) => {
         if (value && value !== '') {
           this.selectedOrg = '';
+          this.suggestedOrganization = null;
           this.showDropdown = true;
-          this.loading = true;
+          this.organizationSearchLoading = true;
         } else {
+          this.selectedOrg = this.suggestedOrganization?._id ?? '';
+          this.regInfo.organization = this.suggestedOrganization?.name ?? '';
           this.showDropdown = false;
+          this.organizationSearchLoading = false;
         }
       });
   }
@@ -214,13 +234,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .pipe(
         debounce(() => {
           // Greys out the Register button while communicating with backend
-          this.loading = true;
+          this.usernameLoading = true;
           return interval(600);
         }),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(async (value) => {
-        this.loading = false;
+        this.usernameLoading = false;
         await this.auth.usernameInUse(value)
           .catch((err) => {
             this.authValidation.showError();
@@ -247,13 +267,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.infoFormGroup.get('email').valueChanges
       .pipe(
         debounce(() => {
-          this.loading = true;
+          this.emailLoading = true;
           return interval(600);
         }),
         takeUntil(this.ngUnsubscribe)
       ).subscribe(async (value) => {
-        this.loading = false;
+        this.emailLoading = false;
+        this.resetOrganizationSelection();
+
+        if (!value || value.trim() === '') {
+          return;
+        }
+
         this.isEmailRegexValid(value);
+
+        if (this.infoFormGroup.get('email').hasError('invalidEmail')) {
+          return;
+        }
 
         await this.auth.emailInUse(value)
           .then((res: any) => {
@@ -265,12 +295,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
               });
             } else {
               this.fieldErrorMsg = '';
+              this.infoFormGroup.get('email').setErrors(null);
             }
           })
           .catch((err) => {
             this.errorMsg = 'Email must be an email';
             this.authValidation.showError();
           });
+
+        if (!this.emailInUse && !this.infoFormGroup.get('email').errors) {
+          this.loadOrganizationSuggestion(value);
+        }
 
       });
   }
@@ -400,6 +435,50 @@ export class RegisterComponent implements OnInit, OnDestroy {
    */
   keyup(event: any) {
     this.organizationInput$.next(event.target.value);
+  }
+
+  private loadOrganizationSuggestion(email: string) {
+    this.latestSuggestionEmail = email.trim().toLowerCase();
+    this.organizationSuggestionLoading = true;
+    this.suggestedOrganization = null;
+
+    this.orgService.suggestDomain(email.trim())
+      .pipe(take(1))
+      .subscribe({
+        next: (response: SuggestDomainResponse) => {
+          if (this.latestSuggestionEmail !== email.trim().toLowerCase()) {
+            return;
+          }
+
+          this.organizationSuggestionLoading = false;
+          this.suggestedOrganization = response.organization ?? null;
+          if (this.suggestedOrganization) {
+            this.regInfo.organization = this.suggestedOrganization.name;
+            this.selectedOrg = this.suggestedOrganization._id;
+            this.infoFormGroup.get('organization')!.setValue(this.suggestedOrganization.name);
+          }
+        },
+        error: () => {
+          if (this.latestSuggestionEmail !== email.trim().toLowerCase()) {
+            return;
+          }
+
+          this.organizationSuggestionLoading = false;
+          this.suggestedOrganization = null;
+        }
+      });
+  }
+
+  private resetOrganizationSelection() {
+    this.latestSuggestionEmail = '';
+    this.organizationSuggestionLoading = false;
+    this.organizationSearchLoading = false;
+    this.suggestedOrganization = null;
+    this.searchResults = [];
+    this.showDropdown = false;
+    this.selectedOrg = '';
+    this.regInfo.organization = '';
+    this.infoFormGroup.get('organization')!.setValue('');
   }
 
   ngOnDestroy(): void {
