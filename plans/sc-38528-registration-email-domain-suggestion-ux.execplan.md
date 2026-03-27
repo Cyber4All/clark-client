@@ -25,10 +25,11 @@ The change is not a broad architectural refactor. It should stabilize the curren
 - [x] (2026-03-27 16:06Z) Inspected the current registration flow in `src/app/auth/register/register.component.ts` and `src/app/auth/register/register.component.html`.
 - [x] (2026-03-27 16:06Z) Confirmed `OrganizationService.suggestDomain(email)` already exists in `src/app/core/organization-module/organization.service.ts`.
 - [x] (2026-03-27 16:06Z) Confirmed registration already contains searchable organization selection behavior that can be reused for fallback and manual override.
-- [ ] Finish the register component state changes for suggestion, fallback, and loading/error handling.
-- [ ] Update the registration template/styles to present the auto-selected suggested organization and a `Change organization` path.
-- [ ] Add or update tests for suggestion success, no-suggestion fallback, error fallback, and confirm/change behavior.
-- [ ] Run targeted validation and capture any remaining risks.
+- [x] (2026-03-27 16:16Z) Finished the register component state changes for suggestion lookup, auto-selection, manual change flow, and fallback behavior.
+- [x] (2026-03-27 16:16Z) Updated the registration template and styles to show the auto-selected suggested organization and the `Change organization` path.
+- [x] (2026-03-27 16:16Z) Added and updated focused specs for registration suggestion behavior and `OrganizationService.suggestDomain(...)`.
+- [x] (2026-03-27 16:16Z) Ran targeted lint on touched TS/HTML/spec files and confirmed the repo-wide spec TypeScript build no longer reports errors in the new registration and organization-service specs.
+- [ ] Capture final validation summary, residual risks, and commit the implementation changes.
 
 ## Surprises & Discoveries
 
@@ -37,6 +38,7 @@ The change is not a broad architectural refactor. It should stabilize the curren
 - The existing organization search selector is embedded directly in the register component template, so the safest path is to reuse it as the fallback/manual path rather than extract shared UI in this story.
 - The UX can be simplified further than the original story text: explicit confirmation is not necessary if the suggestion is set as the default selected organization and the user can override it via `Change organization`.
 - I started modifying `register.component.ts` before creating this ExecPlan. That was process drift and should not have happened before the plan file existed.
+- The repo’s current Jest setup is broken for targeted runs with `TypeError: configSet.processWithEsbuild is not a function`, so validation for this story had to rely on lint plus a repo-wide spec TypeScript compile filtered to the touched spec files.
 
 ## Decision Log
 
@@ -173,6 +175,8 @@ Automated validation:
 
 - updated `register.component.spec.ts`
 - relevant organization-service tests if changed
+- targeted lint on touched TS/HTML/spec files
+- repo-wide `src/tsconfig.spec.json` compile filtered to touched spec files
 
 Manual validation:
 

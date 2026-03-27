@@ -60,6 +60,52 @@
         cursor: pointer;
     }
 
+    .organization-state {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        padding: 16px;
+        margin: 8px 0 0;
+        background: white;
+        border: 1px solid color-gray(5);
+        border-radius: 6px;
+        box-sizing: border-box;
+    }
+
+    .organization-state--suggested {
+        border-color: $light-blue;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .organization-state__eyebrow {
+        font-size: $smaller;
+        color: color-gray(2);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .organization-state__title {
+        font-size: $bigger;
+        font-weight: 600;
+    }
+
+    .organization-state__body {
+        font-size: $smaller;
+        color: color-gray(2);
+    }
+
+    .organization-state__action {
+        width: auto;
+        margin: 0;
+        padding: 0;
+        color: $medium-blue;
+        text-align: left;
+        text-decoration: underline;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+    }
 
     .org-dropdown_list {
         list-style: none;
