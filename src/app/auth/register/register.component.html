@@ -58,6 +58,10 @@
                     </div>
                     <a [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}">Have an account? Log In!</a>
                 </ng-template>
+
+                <ng-template #orgTemplate [ngSwitchCase]="TEMPLATES.organization.temp">
+                    
+                </ng-template>
                 
                 <ng-template #accountTemplate [ngSwitchCase]="TEMPLATES.account.temp"  >
                     <clark-input-field 

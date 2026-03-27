@@ -65,9 +65,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   TEMPLATES = {
     info: { temp: 'info', index: 1 },
-    account: { temp: 'account', index: 2 },
-    submission: { temp: 'submission', index: 3 },
-    sso: { temp: 'sso', index: 3 }
+    organization: { temp: 'organization', index: 2 },
+    account: { temp: 'account', index: 3 },
+    submission: { temp: 'submission', index: 4 },
+    sso: { temp: 'sso', index: 5 }
   };
 
   currentTemp: String = 'info';
