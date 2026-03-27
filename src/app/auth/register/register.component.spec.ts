@@ -91,7 +91,8 @@ describe('RegisterComponent', () => {
 
     expect(component.suggestedOrganization).toEqual(suggestedOrganization);
     expect(component.selectedOrg).toBe('org-1');
-    expect(component.regInfo.organization).toBe('');
+    expect(component.regInfo.organization).toBe('Towson University');
+    expect(component.infoFormGroup.get('organization')?.value).toBe('Towson University');
   });
 
   it('shows the organization selector when no organization is suggested', () => {
@@ -113,12 +114,13 @@ describe('RegisterComponent', () => {
     expect(component.organizationSuggestionLoading).toBe(false);
   });
 
-  it('restores the suggested organization id when the org input is cleared', () => {
+  it('restores the suggested organization when the org input is cleared', () => {
     (component as any).loadOrganizationSuggestion('user@towson.edu');
 
     component.organizationInput$.next('Tow');
     component.organizationInput$.next('');
 
     expect(component.selectedOrg).toBe('org-1');
+    expect(component.regInfo.organization).toBe('Towson University');
   });
 });

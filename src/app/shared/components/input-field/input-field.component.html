@@ -4,7 +4,6 @@
         matInput
         type="{{hide ? 'password' : 'text'}}" 
         [value]="value"
-        [placeholder]="placeholderText"
         (input)="changed($event.target.value)"
         (blur)="touched()"
         [formControl]="control"

@@ -137,7 +137,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       firstname: this.authValidation.getInputFormControl('required'),
       lastname: this.authValidation.getInputFormControl('required'),
       email: this.authValidation.getInputFormControl('email'),
-      organization: this.authValidation.getInputFormControl('text'),
+      organization: this.authValidation.getInputFormControl('required'),
     });
     this.accountFormGroup = new UntypedFormGroup({
       username: this.authValidation.getInputFormControl('username'),
@@ -179,10 +179,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .subscribe((value: string) => {
         if (value && value !== '') {
           this.selectedOrg = '';
+          this.suggestedOrganization = null;
           this.showDropdown = true;
           this.organizationSearchLoading = true;
         } else {
           this.selectedOrg = this.suggestedOrganization?._id ?? '';
+          this.regInfo.organization = this.suggestedOrganization?.name ?? '';
           this.showDropdown = false;
           this.organizationSearchLoading = false;
         }
@@ -437,7 +439,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private loadOrganizationSuggestion(email: string) {
     this.latestSuggestionEmail = email.trim().toLowerCase();
     this.organizationSuggestionLoading = true;
-    this.showOrganizationSelector = false;
     this.suggestedOrganization = null;
 
     this.orgService.suggestDomain(email.trim())
@@ -451,7 +452,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.organizationSuggestionLoading = false;
           this.suggestedOrganization = response.organization ?? null;
           if (this.suggestedOrganization) {
+            this.regInfo.organization = this.suggestedOrganization.name;
             this.selectedOrg = this.suggestedOrganization._id;
+            this.infoFormGroup.get('organization')!.setValue(this.suggestedOrganization.name);
           }
         },
         error: () => {
