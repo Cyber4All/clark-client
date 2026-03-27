@@ -28,9 +28,9 @@ This plan keeps the implementation bounded to the touched auth area, strengthens
 - [x] 2026-03-27  Confirmed this work needs an ExecPlan because it spans a multi-step flow and is likely more than one implementation session.
 - [x] 2026-03-27  Confirmed Shortcut story ID `38529`.
 - [x] 2026-03-27  Confirmed product/API workflow for custom organizations: create an unverified organization through `OrganizationService.createOrganization(...)` when the user does not find an existing organization.
-- [ ] 2026-03-27  Implement organization-step UI and navigation in the registration flow.
-- [ ] 2026-03-27  Wire unverified-organization create flow and registration payload handoff.
-- [ ] 2026-03-27  Add or update focused tests and run validation.
+- [x] 2026-03-27  Implemented organization-step UI and conditional navigation in the registration flow.
+- [x] 2026-03-27  Wired unverified-organization create flow and registration payload handoff.
+- [x] 2026-03-27  Added focused specs and validated touched files with ESLint; Jest execution is currently blocked by repo-level test harness drift.
 
 ## Surprises & Discoveries
 
@@ -60,11 +60,11 @@ This plan keeps the implementation bounded to the touched auth area, strengthens
 - Decision: existing listed-organization registration should continue using the selected organization ID and should not create a new organization record.
   Reason: preserves current behavior and keeps the custom-organization path explicit.
 
-- Pending decision: whether organization metadata fields are shown only when the user selects `Other` or whether the tab is always shown but conditionally required.
-  Impact: determines whether the organization step is conditional or always visible.
+- Decision: organization metadata fields are only shown on the dedicated `Organization` step when the user chooses the manual-entry path from the info screen.
+  Reason: this matches the requested UX and keeps the default registration path shorter for users who select an existing organization.
 
-- Pending decision: whether `country` is also required in the new unverified-organization POST body or optional.
-  Impact: affects validation rules and acceptance criteria.
+- Decision: `country` remains optional in the unverified-organization create request.
+  Reason: this matches the confirmed API contract.
 
 ## Outcomes & Retrospective
 
@@ -97,8 +97,8 @@ Current registration interaction flow:
 Target interaction flow after this change:
 
 1. User completes personal info and organization search.
-2. If the user selects an existing organization, registration can proceed through the organization step with either prefilled read-only values or a minimal skip-through, depending on final UX.
-3. If the user selects `Other` or does not find their organization, the user advances to a dedicated `organization` step and enters organization details.
+2. If the user selects an existing organization, registration skips the organization step and continues directly to account creation.
+3. If the user does not find their organization, the user clicks the manual-entry link on the info screen and advances to a dedicated `organization` step to enter organization details.
 4. The client creates an unverified organization via `OrganizationService.createOrganization(...)`.
 5. The returned organization ID is used in the existing `AuthService.register(...)` call.
 6. User completes account creation.
@@ -137,7 +137,7 @@ Phase 2: Build the organization-step UI
 Phase 3: Wire the unverified-organization create flow
 
 - Preserve the existing listed-organization search path.
-- Detect the custom-organization path when the user does not select a listed organization and instead chooses `Other` or equivalent.
+- Detect the custom-organization path when the user chooses the manual-entry link from the info step.
 - Before `AuthService.register(...)`, call `OrganizationService.createOrganization(...)` with the new organization-step values.
 - Use the returned organization ID as the `organizationId` for registration.
 - Keep the component orchestration readable and avoid pushing route construction or payload-shape logic into the template.
@@ -157,9 +157,7 @@ Phase 4: Validate and tighten regressions
 ## Concrete Steps
 
 1. Inspect the exact `CreateOrganizationRequest` client type and confirm it matches the new backend POST body.
-2. Decide the trigger for the unverified-organization flow:
-   - selecting `Other`
-   - or failing to pick a listed result and continuing manually
+2. Use the manual-entry link on the info step as the trigger for the unverified-organization flow.
 3. Extend `RegisterComponent` state with:
    - sector options from `ORGANIZATION_SECTORS`
    - level options from `ORGANIZATION_LEVELS`
@@ -191,7 +189,7 @@ Functional acceptance:
 - Required validation prevents progression when mandatory organization fields are missing for the custom-organization path.
 - Existing organization search still works.
 - Selecting an existing organization does not create a new organization.
-- Selecting `Other` or equivalent creates an unverified organization through the organization service before user registration.
+- Choosing the manual-entry path creates an unverified organization through the organization service before user registration.
 - Successful registration still reaches submission and optional SSO.
 
 Automated validation:
