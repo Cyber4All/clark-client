@@ -1,5 +1,12 @@
-<div class="progress">
-    <p [ngClass]="{'active': index >= 1}">1. Info</p>
-    <p [ngClass]="{'active': index >= 2}">2. Account</p>
-    <p [ngClass]="{'active': index >= 3}">3. SSO</p>
+<div class="progress" [ngClass]="{'progress--organization': showOrganizationStep}">
+    <p [ngClass]="{'active': isStepActive('info')}">1. Info</p>
+    <ng-container *ngIf="showOrganizationStep; else standardFlow">
+        <p [ngClass]="{'active': isStepActive('organization')}">2. Organization</p>
+        <p [ngClass]="{'active': isStepActive('account')}">3. Account</p>
+        <p [ngClass]="{'active': isStepActive('sso')}">4. SSO</p>
+    </ng-container>
+    <ng-template #standardFlow>
+        <p [ngClass]="{'active': isStepActive('account')}">2. Account</p>
+        <p [ngClass]="{'active': isStepActive('sso')}">3. SSO</p>
+    </ng-template>
 </div>

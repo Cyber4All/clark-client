@@ -1,126 +1,171 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { fakeAsync, ComponentFixture, TestBed, tick, flushMicrotasks } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { ActivatedRoute } from '@angular/router';
-import { of, throwError } from 'rxjs';
-import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
-import { OrganizationService } from 'app/core/organization-module/organization.service';
-import { Organization } from 'app/core/organization-module/organization.types';
-import { UserService } from 'app/core/user-module/user.service';
+import { UntypedFormControl, Validators } from '@angular/forms';
+import { of } from 'rxjs';
 import { RegisterComponent } from './register.component';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
-  let fixture: ComponentFixture<RegisterComponent>;
-  let authService: any;
-  let organizationService: any;
-
-  const suggestedOrganization: Organization = {
-    _id: 'org-1',
-    name: 'Towson University',
-    normalizedName: 'towson university',
-    sector: 'academia',
-    levels: ['undergraduate'],
-    domains: ['towson.edu'],
-    isVerified: true,
-  };
-
-  beforeEach(async () => {
-    authService = jasmine.createSpyObj<AuthService>('AuthService', [
-      'register',
-      'usernameInUse',
-      'emailInUse'
-    ]);
-    organizationService = jasmine.createSpyObj<OrganizationService>('OrganizationService', [
-      'searchOrganizations',
-      'suggestDomain'
-    ]);
-
-    authService.usernameInUse.and.returnValue(Promise.resolve({ identifierInUse: false }));
-    authService.emailInUse.and.returnValue(Promise.resolve({ identifierInUse: false }));
-    authService.register.and.returnValue(Promise.resolve());
-    organizationService.searchOrganizations.and.returnValue(of([]));
-    organizationService.suggestDomain.and.returnValue(of({ organization: suggestedOrganization }));
-
-    await TestBed.configureTestingModule({
-      declarations: [RegisterComponent],
-      imports: [FormsModule, ReactiveFormsModule, NoopAnimationsModule],
-      providers: [
-        AuthValidationService,
-        { provide: AuthService, useValue: authService },
-        { provide: OrganizationService, useValue: organizationService },
-        { provide: UserService, useValue: {} },
-        { provide: CookieAgreementService, useValue: { getCookieAgreementVal: () => true, setShowCookieBanner: () => undefined } },
-        {
-          provide: ActivatedRoute,
-          useValue: {
-            snapshot: { queryParams: {} },
-            parent: { data: of({}) }
-          }
-        }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
-  });
+  let authValidation;
+  let auth;
+  let router;
+  let orgService;
+  let cookieAgreement;
+  let route;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegisterComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    authValidation = {
+      getInputFormControl: jest.fn((type: string) => new UntypedFormControl('', type ? Validators.required : null)),
+      getErrorState: jest.fn(() => of(false)),
+      showError: jest.fn(),
+    };
+
+    auth = {
+      register: jest.fn().mockResolvedValue({}),
+      usernameInUse: jest.fn().mockResolvedValue({ identifierInUse: false }),
+      emailInUse: jest.fn().mockResolvedValue({ identifierInUse: false }),
+    };
+
+    router = {
+      navigate: jest.fn(),
+    };
+
+    orgService = {
+      searchOrganizations: jest.fn(() => of([])),
+      suggestDomain: jest.fn(() => of({ organization: null })),
+      createOrganization: jest.fn(() => of({
+        organization: {
+          _id: 'created-org-id',
+          name: 'Manual Org',
+        }
+      })),
+      clearCache: jest.fn(),
+    };
+
+    cookieAgreement = {
+      getCookieAgreementVal: jest.fn(() => true),
+    };
+
+    route = {
+      parent: {
+        data: of({}),
+      },
+      snapshot: {
+        queryParams: {},
+      },
+    };
+
+    component = new RegisterComponent(
+      authValidation,
+      auth,
+      router,
+      orgService,
+      cookieAgreement,
+      route as any,
+    );
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should move from info to account for listed organizations', () => {
+    component.currentTemp = component.TEMPLATES.info.temp;
+    component.shouldCreateOrganization = false;
+
+    component.nextTemp();
+
+    expect(component.currentTemp).toBe(component.TEMPLATES.account.temp);
+    expect(component.currentIndex).toBe(component.TEMPLATES.account.index);
   });
 
-  it('calls suggestDomain after a valid email is entered', fakeAsync(() => {
-    component.infoFormGroup.get('email').setValue('user@towson.edu');
+  it('should move from info to organization when custom organization flow is enabled', () => {
+    component.currentTemp = component.TEMPLATES.info.temp;
+    component.shouldCreateOrganization = true;
 
-    tick(601);
-    flushMicrotasks();
+    component.nextTemp();
 
-    expect(authService.emailInUse).toHaveBeenCalledWith('user@towson.edu');
-    expect(organizationService.suggestDomain).toHaveBeenCalledWith('user@towson.edu');
-  }));
-
-  it('auto-selects the suggested organization when one is returned', () => {
-    (component as any).loadOrganizationSuggestion('user@towson.edu');
-
-    expect(component.suggestedOrganization).toEqual(suggestedOrganization);
-    expect(component.selectedOrg).toBe('org-1');
-    expect(component.regInfo.organization).toBe('Towson University');
-    expect(component.infoFormGroup.get('organization')?.value).toBe('Towson University');
+    expect(component.currentTemp).toBe(component.TEMPLATES.organization.temp);
+    expect(component.currentIndex).toBe(component.TEMPLATES.organization.index);
   });
 
-  it('shows the organization selector when no organization is suggested', () => {
-    organizationService.suggestDomain.and.returnValue(of({ organization: null }));
+  it('should go back from account to organization in the custom organization flow', () => {
+    component.currentTemp = component.TEMPLATES.account.temp;
+    component.shouldCreateOrganization = true;
 
-    (component as any).loadOrganizationSuggestion('user@unknown.example');
+    component.goBack();
 
-    expect(component.suggestedOrganization).toBeNull();
-    expect(component.selectedOrg).toBe('');
+    expect(component.currentTemp).toBe(component.TEMPLATES.organization.temp);
+    expect(component.currentIndex).toBe(component.TEMPLATES.organization.index);
   });
 
-  it('falls back to the organization selector when suggestion lookup fails', () => {
-    organizationService.suggestDomain.and.returnValue(throwError(() => new Error('lookup failed')));
+  it('should only allow manual organization entry after first name, last name, and email are valid', () => {
+    expect(component.canEnterCustomOrganizationFlow).toBe(false);
 
-    (component as any).loadOrganizationSuggestion('user@towson.edu');
+    component.infoFormGroup.patchValue({
+      firstname: 'Test',
+      lastname: 'User',
+      email: 'test@example.com',
+    });
 
-    expect(component.suggestedOrganization).toBeNull();
-    expect(component.selectedOrg).toBe('');
-    expect(component.organizationSuggestionLoading).toBe(false);
+    expect(component.canEnterCustomOrganizationFlow).toBe(true);
   });
 
-  it('restores the suggested organization when the org input is cleared', () => {
-    (component as any).loadOrganizationSuggestion('user@towson.edu');
+  it('should create an organization before registering a custom-organization user', async () => {
+    component.shouldCreateOrganization = true;
+    component.regInfo.firstname = 'Test';
+    component.regInfo.lastname = 'User';
+    component.regInfo.email = 'test@example.com';
+    component.regInfo.username = 'tester';
+    component.regInfo.password = 'secret';
+    component.organizationFormGroup.setValue({
+      name: 'Manual Org',
+      sector: 'academia',
+      levels: ['undergraduate', 'graduate'],
+      state: 'MD',
+      country: 'USA',
+    });
 
-    component.organizationInput$.next('Tow');
-    component.organizationInput$.next('');
+    await component.submit();
 
-    expect(component.selectedOrg).toBe('org-1');
-    expect(component.regInfo.organization).toBe('Towson University');
+    expect(orgService.createOrganization).toHaveBeenCalledWith({
+      name: 'Manual Org',
+      sector: 'academia',
+      levels: ['undergraduate', 'graduate'],
+      state: 'MD',
+      country: 'USA',
+    });
+    expect(auth.register).toHaveBeenCalledWith(expect.objectContaining({
+      organizationId: 'created-org-id',
+    }));
+  });
+
+  it('should send an empty levels array when no organization levels are selected', async () => {
+    component.shouldCreateOrganization = true;
+    component.regInfo.firstname = 'Test';
+    component.regInfo.lastname = 'User';
+    component.regInfo.email = 'test@example.com';
+    component.regInfo.username = 'tester';
+    component.regInfo.password = 'secret';
+    component.organizationFormGroup.setValue({
+      name: 'Manual Org',
+      sector: 'academia',
+      levels: [],
+      state: '',
+      country: '',
+    });
+
+    await component.submit();
+
+    expect(orgService.createOrganization).toHaveBeenCalledWith(expect.objectContaining({
+      levels: [],
+    }));
+  });
+
+  it('should return to listed-organization mode when an organization is selected', () => {
+    component.shouldCreateOrganization = true;
+
+    component.selectOrg({
+      _id: 'existing-org-id',
+      name: 'Existing Org',
+    } as any);
+
+    expect(component.shouldCreateOrganization).toBe(false);
+    expect(component.selectedOrg).toBe('existing-org-id');
+    expect(component.regInfo.organization).toBe('Existing Org');
   });
 });
