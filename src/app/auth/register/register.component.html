@@ -31,11 +31,11 @@
                         [control]="infoFormGroup.get('email')"
                         [errorMsg]="fieldErrorMsg"
                     ></clark-input-field>
-                    <clark-input-field 
-                        [(ngModel)]="regInfo.organization"  
-                        name="organization" 
-                        #organization 
-                        phold="Organization" 
+                    <clark-input-field
+                        [(ngModel)]="regInfo.organization"
+                        name="organization"
+                        #organization
+                        phold="Organization"
                         [control]="infoFormGroup.get('organization')"
                         (keyup)="keyup($event)"
                     ></clark-input-field>
@@ -48,7 +48,7 @@
                             If you don't see your organization please register under <b>Other</b> and reach out to us to have your organization added to our list.
                         </p>
                         <ng-container
-                        *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"
+                        *ngTemplateOutlet="organizationSearchLoading ? loadingTemplate : resultsTemplate"
                         ></ng-container>
                  </ul>
 

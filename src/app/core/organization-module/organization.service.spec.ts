@@ -84,4 +84,18 @@ describe('OrganizationService', () => {
       limit: 10,
     });
   });
+
+  it('suggests organization by email domain', (done) => {
+    service.suggestDomain('user@towson.edu').subscribe((result) => {
+      expect(result.organization?._id).toBe('org-1');
+      expect(result.organization?.name).toBe('Towson University');
+      done();
+    });
+
+    const request = httpMock.expectOne((req) =>
+      req.url === `${environment.apiURL}/organizations/suggest` && req.params.get('email') === 'user@towson.edu'
+    );
+    expect(request.request.method).toBe('GET');
+    request.flush({ organization });
+  });
 });
