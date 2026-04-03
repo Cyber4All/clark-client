@@ -5,6 +5,21 @@
     width: inherit;
     overflow-y: auto;
 
+    .content-box {
+        margin-top: 12px;
+
+        .errBanner {
+            left: 16px;
+            right: 16px;
+            top: 12px;
+            z-index: 2;
+        }
+
+        &.failed {
+            padding-top: 60px;
+        }
+    }
+
     &:before {
         content: '';
         background: linear-gradient(90deg, white, $light-blue, white);
@@ -89,10 +104,11 @@
     }
 
     .organization-levels {
-        margin-top: 18px;
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px;
+        padding: 0;
+        margin-top: 4px;
     }
 
     .organization-levels-hint {
@@ -103,29 +119,37 @@
     }
 
     .organization-level-pill {
-        align-items: center;
         border: 1px solid $light-grey;
+        background: white;
+        color: $dark-grey;
         border-radius: 999px;
         cursor: pointer;
-        display: flex;
-        font-size: $small;
-        gap: 8px;
+        display: block;
+        font-size: $normal;
+        line-height: 1.4;
         padding: 8px 12px;
-        transition: all 0.2s ease;
+        transition: all 0.15s ease;
+        user-select: none;
+        font-weight: normal;
+        width: auto;
+        margin: 0;
 
         &:hover {
-            border-color: $light-blue;
-        }
-
-        .organization-level-pill__input {
-            margin: 0;
+            border-color: $dark-grey;
+            background: $primary-white;
         }
     }
 
-    .organization-level-pill--selected {
-        background: rgba($light-blue, 0.1);
+    .organization-level-pill.active {
         border-color: $light-blue;
         color: $light-blue;
+        background: rgba(28, 112, 221, 0.1);
+        font-weight: 600;
+    }
+
+    .organization-level-pill:focus {
+        outline: 2px solid $light-blue;
+        outline-offset: 2px;
     }
 
     button {

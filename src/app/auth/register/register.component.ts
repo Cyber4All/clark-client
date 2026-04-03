@@ -244,8 +244,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
       });
       this.nextTemp();
     } catch (error) {
-      if (error.message !== 'Internal Server Error') {
-        this.errorMsg = error.message;
+      const parsedErrorMessage = this.getErrorMessage(error);
+      if (parsedErrorMessage && parsedErrorMessage !== 'Internal Server Error') {
+        this.errorMsg = parsedErrorMessage;
       }
       this.authValidation.showError();
     }
@@ -539,12 +540,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.nextTemp();
   }
 
-  toggleOrganizationLevel(level: OrganizationLevel, event: Event): void {
-    const checked = (event.target as HTMLInputElement).checked;
+  toggleOrganizationLevel(level: OrganizationLevel): void {
     const currentLevels: OrganizationLevel[] = this.organizationFormGroup.get('levels')!.value || [];
-    const nextLevels = checked
-      ? [...currentLevels, level]
-      : currentLevels.filter(existingLevel => existingLevel !== level);
+    const nextLevels = currentLevels.includes(level)
+      ? currentLevels.filter(existingLevel => existingLevel !== level)
+      : [...currentLevels, level];
 
     this.organizationFormGroup.get('levels')!.setValue(nextLevels);
     this.createdOrganizationId = '';
@@ -566,6 +566,54 @@ export class RegisterComponent implements OnInit, OnDestroy {
   onOrganizationDetailsChanged(): void {
     this.createdOrganizationId = '';
     this.selectedOrg = '';
+  }
+
+  private getErrorMessage(error: unknown): string | null {
+    if (!error) {
+      return null;
+    }
+
+    if (typeof error === 'string') {
+      return this.parseErrorString(error);
+    }
+
+    if (typeof error === 'object') {
+      const maybeError = error as {
+        message?: string;
+        error?: unknown;
+        errors?: Array<{ message?: string }>;
+      };
+
+      if (typeof maybeError.message === 'string' && maybeError.message.trim() !== '') {
+        return maybeError.message;
+      }
+
+      if (Array.isArray(maybeError.errors) && maybeError.errors.length > 0) {
+        const firstMessage = maybeError.errors.find(item => item?.message)?.message;
+        if (firstMessage) {
+          return firstMessage;
+        }
+      }
+
+      if (typeof maybeError.error === 'string') {
+        return this.parseErrorString(maybeError.error);
+      }
+
+      if (maybeError.error && typeof maybeError.error === 'object') {
+        return this.getErrorMessage(maybeError.error);
+      }
+    }
+
+    return null;
+  }
+
+  private parseErrorString(error: string): string {
+    try {
+      const parsedError = JSON.parse(error) as { message?: string };
+      return parsedError.message || error;
+    } catch {
+      return error;
+    }
   }
 
   private loadOrganizationSuggestion(email: string) {

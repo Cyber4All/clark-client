@@ -102,19 +102,15 @@
                     <div class="organization-levels">
                         <p class="organization-field-label">Education Levels</p>
                         <p class="organization-levels-hint">Select any that apply. If none apply, leave them unselected.</p>
-                        <label
+                        <button
+                            type="button"
                             class="organization-level-pill"
-                            [ngClass]="{'organization-level-pill--selected': isOrganizationLevelSelected(level)}"
+                            [ngClass]="{'active': isOrganizationLevelSelected(level)}"
                             *ngFor="let level of levelOptions"
+                            (click)="toggleOrganizationLevel(level)"
                         >
-                            <input
-                                class="organization-level-pill__input"
-                                type="checkbox"
-                                [checked]="isOrganizationLevelSelected(level)"
-                                (change)="toggleOrganizationLevel(level, $event)"
-                            />
                             <span>{{ formatOptionLabel(level) }}</span>
-                        </label>
+                        </button>
                     </div>
 
                     <div class="side-by-side">
