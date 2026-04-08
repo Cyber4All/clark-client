@@ -9,6 +9,7 @@ import { catchError, takeUntil } from 'rxjs/operators';
 import { Observable, Subject, throwError } from 'rxjs';
 import { FileUploadMeta } from 'app/onion/learning-object-builder/components/content-upload/app/services/typings';
 import { LearningObject } from '@entity';
+import { SOURCE_CODE_EXTENSIONS } from './source.extensions';
 
 @Injectable({
   providedIn: 'root',
@@ -35,31 +36,94 @@ export class FileService {
     return '';
   }
 
+
+
   /**
-   * Helper: returns true if filename is a supported Microsoft Office file
+   * Helper: returns the language identifier for syntax highlighting based on file extension
+   * @param filename - The filename to get language for
+   * @returns The language identifier or empty string if not found
    */
-  static isOfficeFile(filename: string): boolean {
-    const officeExtensions = [
-      '.docx',
-      '.doc',
-      '.pptx',
-      '.ppt',
-      '.ppsx',
-      '.pps',
-      '.potx',
-      '.pot',
-      '.xlsx',
-      '.xls',
-    ];
-    return officeExtensions.includes(this.getFileExtension(filename));
+  private static getLanguageFromExtension(filename: string): string {
+    const extension = this.getFileExtension(filename);
+    return SOURCE_CODE_EXTENSIONS[extension] || '';
   }
 
   /**
+   * Helper: returns a category for the file based on its extension.
+   * @param filename - The filename to categorize
+   * @returns The category ('office', 'pdf', 'code', etc.) or an empty string.
+   */
+  private static getFileType(filename: string): {
+    type: string;
+    ext: string;
+    language?: string;
+  } {
+    const extension = this.getFileExtension(filename);
+
+    const typeExtensions: { [type: string]: string[] } = {
+      office: [
+        '.docx',
+        '.doc',
+        '.pptx',
+        '.ppt',
+        '.ppsx',
+        '.pps',
+        '.potx',
+        '.pot',
+        '.xlsx',
+        '.xls',
+      ],
+      pdf: ['.pdf'],
+    };
+
+    // Check for source code files first
+    const language = this.getLanguageFromExtension(filename);
+    if (language) {
+      return { type: 'code', ext: extension, language };
+    }
+
+    // Iterate over [type, exts] entries to do a reverse lookup and obtain
+    // the matching type for the given file extension
+    const entry = Object.entries(typeExtensions).find(([_, exts]) =>
+      exts.includes(extension),
+    );
+    const type = entry ? entry[0] : '';
+
+    return { type, ext: extension };
+  }
+
+  /**
+   * Defines how to preview different file types.
+   * Maps a file type identifier to a function that opens the preview.
+   */
+  private static readonly PREVIEW_ACTIONS: {
+    [key: string]: (url: string, fileName?: string) => void;
+  } = {
+      // Use Microsoft's viewer
+      office: (url: string) => {
+        const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${url}`;
+        window.open(officeViewerUrl, '_blank', "noopener,noreferrer");
+      },
+      // Open a new tab
+      pdf: (url: string) => {
+        window.open(url, '_blank', "noopener,noreferrer");
+      },
+      // Open code preview in new tab
+      code: (url: string, fileName: string) => {
+        const fileInfo = FileService.getFileType(fileName);
+        const language = fileInfo.language || 'text';
+        const encodedUrl = encodeURIComponent(url);
+        const encodedFileName = encodeURIComponent(fileName);
+        const previewUrl = `/preview/code?url=${encodedUrl}&language=${language}&filename=${encodedFileName}`;
+        window.open(previewUrl, '_blank', "noopener,noreferrer");
+      },
+    };
+
+  /**
    * Helper: returns true if filename can be previewed
-   * Currently supports Microsoft Office files, extensible for future file types
    */
   static canPreview(filename: string): boolean {
-    return this.isOfficeFile(filename);
+    return this.getFileType(filename).type in this.PREVIEW_ACTIONS;
   }
 
   /**
@@ -96,24 +160,35 @@ export class FileService {
   }
 
   /**
+   * Gets raw text content for a learning object file.
+   * @param url public/authorized file URL
+   */
+  async getLearningObjectFileContent(url: string): Promise<string> {
+    return this.http
+      .get(url, {
+        withCredentials: true,
+        responseType: 'text',
+      })
+      .pipe(catchError(this.handleError))
+      .toPromise();
+  }
+
+  /**
    * Preview the file if it can be previewed.
    * @param url file URL
-   * @param name file name (to check extension)
+   * @param fileName file name
    */
-  async previewLearningObjectFile(url: string, name: string): Promise<string> {
-    if (FileService.canPreview(name)) {
-      // Currently only handles Office files, extensible for other file types
+  async previewLearningObjectFile(
+    url: string,
+    fileName: string,
+  ): Promise<void> {
+    const fileType = FileService.getFileType(fileName).type;
+    const previewAction = FileService.PREVIEW_ACTIONS[fileType];
 
-      // Microsoft Office files
-      if (FileService.isOfficeFile(name)) {
-        const encodedUrl = encodeURIComponent(url);
-        const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${encodedUrl}`;
-        window.open(officeViewerUrl, '_blank');
-      }
-      return Promise.resolve('');
-    } else {
-      // Not a previewable file; do nothing for now but return Promise.resolve('')
-      return Promise.resolve('');
+    if (previewAction) {
+      console.log("URL: ", url);
+      console.log("FileName: ", fileName);
+      previewAction(url, fileName);
     }
   }
 

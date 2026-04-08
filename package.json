@@ -1,7 +1,7 @@
 {
   "name": "clark",
   "displayName": "CLARK: Cybersecurity Labs and Resource Knowledge-base",
-  "version": "6.15.3",
+  "version": "6.15.7",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
@@ -51,6 +51,7 @@
     "ngx-cookie-service": "^18.0.0",
     "ngx-markdown": "^18.1.0",
     "ngx-simple-text-editor": "^4.0.3",
+    "prism-themes": "^1.9.0",
     "raven-js": "^3.22.3",
     "request-promise": "^4.2.5",
     "rxjs": "^6.5.4",

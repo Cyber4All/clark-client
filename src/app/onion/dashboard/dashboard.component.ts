@@ -160,7 +160,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       text,
       ...filters
     }).then((response: { learningObjects: LearningObject[], total: number }) => {
-      this.workingLearningObjects = response.learningObjects;
+      this.workingLearningObjects = this.sortLearningObjectsByDate(response.learningObjects);
     });
   }
 
@@ -176,7 +176,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         ...filters,
         text
       }).then((response: {learningObjects: LearningObject[], total: number}) => {
-        this.releasedLearningObjects = response.learningObjects;
+        this.releasedLearningObjects = this.sortLearningObjectsByDate(response.learningObjects);
       });
 
     this.checkQueryParams$.next();
@@ -411,4 +411,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.destroyed$.next();
     this.destroyed$.unsubscribe();
   }
+
+  /**
+   * TODO: Add a date query to SearchUserLearningObjectDTO in clark-service
+   * and modify the query aggregation builder to sort by date.
+   */
+  private sortLearningObjectsByDate(objects: LearningObject[]): LearningObject[] {
+    return objects.sort((a, b) => {
+      if (a.date < b.date) return 1; 
+      if (a.date > b.date) return -1; 
+      return 0;
+  });
+}
 }
