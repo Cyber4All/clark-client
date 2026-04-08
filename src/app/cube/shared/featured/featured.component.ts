@@ -3,10 +3,7 @@ import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { Query, OrderBy, SortType } from '../../../interfaces/query';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
-import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
-import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 
 @Component({
   selector: 'cube-featured',
