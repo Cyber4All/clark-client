@@ -270,17 +270,15 @@ export class LearningObjectListingComponent implements OnDestroy {
       this.topics = [];
       return;
     }
-    // this.topics =  await Promise.all(lo.topics.map((id: string) => this.topicsStore.topics$(id)));
-    lo.topics.forEach(async (id: string) => {
-      (await this.topicsStore.topics$(id)).subscribe(topic => {
-        if (topic) {
-          this.topics.push(topic.name);
-          // this.cd.markForCheck();
-          console.log("GOT TOPICS: ", topic.name)
-        }
-      });
-    });
-    console.log('Resolved topic names:', this.topics);
+
+    const topics = await Promise.all(
+      lo.topics.map(async (id: string) => {
+        const topic = await (await this.topicsStore.topics$(id)).toPromise();
+        return topic?.name;
+      })
+    );
+
+    this.topics = topics.filter(Boolean);
   }
 
   // resolving tag names from tags service using the tag ids in the learning object
@@ -289,6 +287,14 @@ export class LearningObjectListingComponent implements OnDestroy {
       this.tags = [];
       return;
     }
-    this.tags = await Promise.all(lo.tags.map((id: string) => this.tagsStore.tag$(id).toPromise().then(tag => tag?.name ?? '')));
+
+    const tags = await Promise.all(
+      lo.tags.map(async (id: string) => {
+        const tag = await (await this.tagsStore.tag$(id)).toPromise();
+        return tag?.name;
+      })
+    );
+
+    this.tags = tags.filter(Boolean);
   }
 }

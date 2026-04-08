@@ -56,7 +56,7 @@ export class TagsService {
       .toPromise()
       .then(
         (res: any) => {
-          resolve(res.tag);
+          resolve(res);
         },
         (err) => {
           reject(err);

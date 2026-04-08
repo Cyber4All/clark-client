@@ -17,17 +17,16 @@ export class TopicsStore {
         
     }
 
-    private async initializeMap() {
-        if(this.initialized) {
+    private async initializeMap(forceRefresh: boolean = false) {
+        if(this.initialized && !forceRefresh) {
             return;
         }
         if (this.initPromise) {
             return this.initPromise;
         }
         this.initPromise = (async () => {
-            console.log("Initializing topics map...");
             const topics = await this.topicsService.getTopics(); // grabs all topics
-            console.log("FETCHED TOPICS:", topics);
+            this.cache.clear();
             if (topics) {
                 topics.forEach(topic => {
                     this.cache.set(topic._id, topic.name);
@@ -40,21 +39,14 @@ export class TopicsStore {
         });
     }
 
-    async topics$(id: string | null | undefined): Promise<Observable<Topic>> {
-        console.log(`Fetching topic for id: ${id}`);
-        if(!id){
-            return of(null);
-        }
-
-        // Should only hit this block once since after the first call the cache will be populated with all topics
+    async topics$(id: string): Promise<Observable<Topic | null>> {
         if(!this.cache.has(id)) {
-            // If the topic is not in the cache, fetch all topics and populate the cache again, since we don't have
-            // an endpoint to fetch a single topic by id. This is not ideal, but it is necessary given the current API design.
             await this.initializeMap();
         }
 
-        // console.log(`Cache contents: ${JSON.stringify(Array.from(this.cache.entries()))}`);
-        console.log(`Returning topic for id ${id}: ${this.cache.get(id)}`);
+        if (!this.cache.has(id)) {
+            await this.initializeMap(true);
+        }
 
         return this.cache.get(id) ? of({ _id: id, name: this.cache.get(id)! }) : of(null);
     }
