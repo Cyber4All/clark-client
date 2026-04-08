@@ -9,19 +9,36 @@ import { Injectable } from "@angular/core";
 export class TagsStore {
 
     private readonly cache = new Map<string, Tag>();
+    private readonly pending = new Map<string, Promise<Tag | null>>();
     constructor(private readonly tagsService: TagsService){}
  
-    tag$(id: string | null | undefined): Observable<Tag | null> {
-        if(!id) {
-            return of(null);
-        }
-        
-        if(!this.cache.has(id)) {
-            const tag$ = this.tagsService.getTag(id).then((tag) => {
-                this.cache.set(id, tag);
-            });
+    async tag$(id: string): Promise<Observable<Tag | null>> {
+        if (this.cache.has(id)) {
+            return of(this.cache.get(id)!);
         }
 
-        return this.cache.get(id) ? of(this.cache.get(id)!) : of(null);
+        if (!this.pending.has(id)) {
+            this.pending.set(
+                id,
+                this.tagsService.getTag(id)
+                    .then((tag) => {
+                        if (tag) {
+                            this.cache.set(id, tag);
+                        }
+                        return tag ?? null;
+                    })
+                    .catch((e) => {
+                        console.error(`Failed to fetch tag ${id}:`, e); // temporary log then return null to avoid breaking LO component
+                        return null;
+                    })
+                    .finally(() => {
+                        this.pending.delete(id);
+                    })
+            );
+        }
+
+        const tag = await this.pending.get(id)!;
+
+        return tag ? of(tag) : of(null);
     }
 }
