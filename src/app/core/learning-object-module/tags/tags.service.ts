@@ -12,8 +12,34 @@ import { GetTagByNameResponse } from 'app/cube/shared/types/usage-stats';
 })
 export class TagsService {
   private headers = new HttpHeaders();
+  
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) {
+  /**
+   * This gets a single tag from the backend
+   */
+  async getTag(id: string): Promise<Tag> {
+    return await new Promise((resolve, reject) => {
+      this.http
+      .get<Tag>(TAGS_ROUTES.GET_TAG(id),
+        {
+          headers: this.headers,
+          withCredentials: true,
+        }
+      )
+      .pipe(
+        catchError(this.handleError)
+      )
+      .toPromise()
+      .then(
+        (res: any) => {
+          resolve(res);
+        },
+        (err) => {
+          reject(err);
+        }
+      );
+    });
   }
 
   /**
@@ -26,7 +52,7 @@ export class TagsService {
       type: query?.type,
       text: query?.text,
       sort: 1,
-      limit: 40
+      limit: 50
     };
     return await new Promise((resolve, reject) => {
       this.http
