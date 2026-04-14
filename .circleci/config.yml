@@ -10,6 +10,9 @@ jobs:
       - image: cimg/node:18.19.0
     steps:
       - checkout
+      - run: node -v
+      - run: npm -v
+      - run: cat package.json | head
       - run: npm ci
       - run: npm run lint
 
