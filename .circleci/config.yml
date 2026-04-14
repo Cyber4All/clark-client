@@ -7,7 +7,7 @@ orbs:
 jobs:
   lint:
     docker:
-      - image: cimg/node:18.19.0
+      - image: cimg/node:20.11.1
     steps:
       - checkout
       - run: node -v
