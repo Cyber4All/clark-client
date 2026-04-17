@@ -98,4 +98,15 @@ describe('OrganizationService', () => {
     expect(request.request.method).toBe('GET');
     request.flush({ organization });
   });
+
+  it('migrates organization users with a 204 no-content response', (done) => {
+    service.migrateOrganizationUsers('org-1', { organizationId: 'org-2' }).subscribe(() => {
+      done();
+    });
+
+    const request = httpMock.expectOne(`${environment.apiURL}/organizations/org-1/migrate`);
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual({ organizationId: 'org-2' });
+    request.flush(null, { status: 204, statusText: 'No Content' });
+  });
 });

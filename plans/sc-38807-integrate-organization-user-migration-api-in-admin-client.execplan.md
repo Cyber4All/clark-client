@@ -35,12 +35,12 @@ This story should move the touched code toward the repo’s target standards wit
 - [x] (2026-04-17 00:00Z) Inspected the current organizations admin page, migration modal, and `OrganizationService` to identify the real client integration points.
 - [x] (2026-04-17 00:00Z) Confirmed the UI already contains a disabled migration action and a placeholder `onMigrateUsers(...)` flow in `src/app/admin/pages/organizations/organizations.component.ts`.
 - [x] (2026-04-17 00:00Z) Created this ExecPlan file to guide the implementation.
-- [ ] Add the new migration request/response client contract to the organization domain layer.
-- [ ] Implement `OrganizationService` support for `POST /organizations/:organizationId/migrate`.
-- [ ] Enable the organizations-page migration actions and replace the placeholder toast flow with the real API call.
-- [ ] Handle loading, success, error, and post-migration refresh behavior in the organizations page and modal.
-- [ ] Add or repair focused tests that prove the client integration works.
-- [ ] Capture final validation results, residual risks, and follow-up work after implementation.
+- [x] (2026-04-17 00:26Z) Added the migration request contract to `src/app/core/organization-module/organization.types.ts`.
+- [x] (2026-04-17 00:26Z) Implemented `OrganizationService.migrateOrganizationUsers(...)` for `POST /organizations/:organizationId/migrate`, treating HTTP `204 No Content` as success.
+- [x] (2026-04-17 00:26Z) Enabled desktop and mobile migration actions in `src/app/admin/pages/organizations/organizations.component.html`.
+- [x] (2026-04-17 00:26Z) Replaced the placeholder organizations-page migration flow with the real API call, loading state handling, success toast, error toast, and count/cache refresh behavior.
+- [x] (2026-04-17 00:26Z) Replaced the stale organizations-page spec with focused migration-flow tests and extended the organization service spec for the `204` migration path.
+- [x] (2026-04-17 00:29Z) Ran focused lint successfully on touched files, confirmed Jest is still blocked by the repo’s existing `configSet.processWithEsbuild is not a function` setup issue, and confirmed the touched specs no longer add TypeScript errors within the repo-wide spec compile.
 
 ## Surprises & Discoveries
 
@@ -74,10 +74,11 @@ This story should move the touched code toward the repo’s target standards wit
 
 This section will be completed after implementation. It should capture:
 
-- whether the existing migration UX was sufficient without additional redesign
-- whether the organizations page remained stable after enabling the action
-- what test repairs were required because of stale specs or tooling drift
-- whether any follow-up cleanup should be tracked separately
+- the existing migration UX was sufficient without a redesign; the main work was enabling the existing modal and wiring it to the backend API contract.
+- the organizations page stayed within its current architecture, with migration orchestration remaining in `OrganizationsComponent` and HTTP access staying in `OrganizationService`.
+- user-count cache invalidation was necessary on success because the migration changes counts rather than organization records; without that, a successful `204` would have left stale visible counts in the table.
+- the organizations-page spec had to be replaced because it targeted an older component shape. Focused migration tests are now in place, but repo-wide Jest execution is still blocked by the existing `jest-preset-angular`/esbuild incompatibility.
+- broader cleanup of organizations-page technical debt, legacy `toPromise()` usage, and general spec-tooling drift remains out of scope for this story.
 
 ## Context and Orientation
 
