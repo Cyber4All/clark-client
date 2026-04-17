@@ -160,7 +160,7 @@ jobs:
               --target-version="${TARGET_VERSION}"       
       - aws-cli/setup:
           region: us-east-1
-          role_arn: $<<parameters.role_arn>>
+          role_arn: $S3_OIDC_ROLE
       - aws-s3/sync:
           from: ./dist/browser
           to: s3://<< parameters.bucket >>
