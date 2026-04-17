@@ -4,7 +4,6 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { ActivatedRoute, Router, NavigationEnd, Scroll } from '@angular/router';
 import { of } from 'rxjs';
@@ -35,7 +34,7 @@ describe('AdminComponent', () => {
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [AdminComponent],
     teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule, CookieModule.forRoot()],
+    imports: [RouterTestingModule],
     providers: [
         AuthService,
         ToastrOvenService,

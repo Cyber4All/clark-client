@@ -32,11 +32,10 @@ export class EditorialActionPadComponent implements OnInit {
     private editorialService: EditorialService,
   ) { }
 
-  async ngOnInit() {
-    // Check for the revisions
-    const revisionObject = await this.learningObjectServiceUri.getLearningObject(this.learningObject.cuid, this.learningObject.version + 1);
-    this.hasRevision = !!revisionObject;
-    this.revisedLearningObject = revisionObject;
+  ngOnInit() {
+    // Revision state is resolved in DetailsComponent and passed as inputs.
+    // Do not query by `version + 1` here; that causes noisy 404s and can mismatch
+    // version semantics across routes/endpoints.
   }
 
   // Determines if an editor can create a revision of a learning object

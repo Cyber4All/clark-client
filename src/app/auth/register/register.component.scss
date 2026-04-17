@@ -5,6 +5,21 @@
     width: inherit;
     overflow-y: auto;
 
+    .content-box {
+        margin-top: 12px;
+
+        .errBanner {
+            left: 16px;
+            right: 16px;
+            top: 12px;
+            z-index: 2;
+        }
+
+        &.failed {
+            padding-top: 60px;
+        }
+    }
+
     &:before {
         content: '';
         background: linear-gradient(90deg, white, $light-blue, white);
@@ -49,6 +64,94 @@
         margin-top: 10px;
     }
 
+    .organization-link {
+        all: unset;
+        color: blue;
+        cursor: pointer;
+        display: inline-block;
+        font-size: $small;
+        margin-top: 15px;
+        text-decoration: underline;
+
+        &.organization-link--disabled {
+            color: $medium-grey;
+            cursor: not-allowed;
+            opacity: 0.7;
+            text-decoration: none;
+        }
+    }
+
+    .organization-field-label {
+        color: $medium-grey;
+        display: block;
+        font-size: $smaller;
+        margin: 18px 0 8px;
+    }
+
+    .organization-field {
+        background: white;
+        border: 1px solid $light-grey;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: $small;
+        padding: 12px 14px;
+        width: 100%;
+
+        &:focus {
+            border-color: $light-blue;
+            outline: none;
+        }
+    }
+
+    .organization-levels {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 0;
+        margin-top: 4px;
+    }
+
+    .organization-levels-hint {
+        color: $medium-grey;
+        flex: 0 0 100%;
+        font-size: $smaller;
+        margin: 0 0 6px;
+    }
+
+    .organization-level-pill {
+        border: 1px solid $light-grey;
+        background: white;
+        color: $dark-grey;
+        border-radius: 999px;
+        cursor: pointer;
+        display: block;
+        font-size: $normal;
+        line-height: 1.4;
+        padding: 8px 12px;
+        transition: all 0.15s ease;
+        user-select: none;
+        font-weight: normal;
+        width: auto;
+        margin: 0;
+
+        &:hover {
+            border-color: $dark-grey;
+            background: $primary-white;
+        }
+    }
+
+    .organization-level-pill.active {
+        border-color: $light-blue;
+        color: $light-blue;
+        background: rgba(28, 112, 221, 0.1);
+        font-weight: 600;
+    }
+
+    .organization-level-pill:focus {
+        outline: 2px solid $light-blue;
+        outline-offset: 2px;
+    }
+
     button {
         display: block;
         width: 100%;
@@ -59,7 +162,6 @@
         all: unset;
         cursor: pointer;
     }
-
 
     .org-dropdown_list {
         list-style: none;
@@ -92,10 +194,5 @@
         width: 100%;
         box-sizing: border-box;
         display: block;
-      }
-
-      .organization-message {
-        font-size: $smaller;
-        padding: 15px;
       }
 }

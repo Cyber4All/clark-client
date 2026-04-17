@@ -6,7 +6,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RatingService } from 'app/core/rating-module/rating.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { CookieModule } from 'ngx-cookie';
 import { LearningObject } from '@entity';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -19,7 +18,7 @@ describe('SidePanelContentComponent', () => {
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [SidePanelContentComponent],
     teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule, CookieModule.forRoot(), NoopAnimationsModule],
+    imports: [RouterTestingModule, NoopAnimationsModule],
     providers: [
         RatingService,
         AuthService,

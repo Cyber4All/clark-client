@@ -1,0 +1,46 @@
+@import '_vars.scss';
+
+:host {
+  display: inline-block;
+}
+
+.search-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px solid $light-grey;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.search-input--full-width {
+  display: flex;
+  width: 100%;
+}
+
+.search-input:focus-within {
+  border-color: $blue-accent;
+  background: rgba(70, 144, 255, 0.03);
+}
+
+.search-input__icon {
+  color: $light-blue;
+  margin-right: 2px;
+}
+
+.search-input input {
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  font-size: $normal;
+  color: $darker-grey;
+}
+
+.search-input input::placeholder {
+  color: $medium-grey;
+}

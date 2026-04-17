@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { AdminComponent } from './admin.component';
+import { RouterModule, Routes } from '@angular/router';
 import { AdminGuard } from 'app/core/client-module/admin.guard';
+import { AdminComponent } from './admin.component';
+import { FeaturedComponent } from './pages/featured/featured.component';
 import { LearningObjectsComponent } from './pages/learning-objects/learning-objects.component';
 import { UsersComponent } from './pages/users/users.component';
-import { FeaturedComponent } from './pages/featured/featured.component';
+import { OrganizationsComponent } from './pages/organizations/organizations.component';
 
 /**
  * Contains all routes for the module, stored in a Routes array.
@@ -29,12 +30,13 @@ const admin_routes: Routes = [
         data: { canScroll: false, title: 'Collection Dashboard Featured Learning Objects' }
       },
       { path: 'users', component: UsersComponent, data: { title: 'Collection Dashboard Users' } },
+      { path: 'organizations', component: OrganizationsComponent, data: { title: 'Collection Dashboard Organizations' } },
       { path: '', redirectTo: 'learning-objects', pathMatch: 'full' }
     ],
   },
   { path: ':collection', redirectTo: '/admin/:collection/learning-objects', pathMatch: 'full' },
   {
-    path: ':collection', component: AdminComponent, canActivate: [AdminGuard],  children: [
+    path: ':collection', component: AdminComponent, canActivate: [AdminGuard], children: [
       {
         path: 'learning-objects', component: LearningObjectsComponent,
         data: { canScroll: false, title: 'Collection Dashboard Learning Objects' }

@@ -1,17 +1,24 @@
-import { trigger, transition, style, animate, query, stagger, keyframes } from '@angular/animations';
+import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { MatchValidator } from 'app/shared/validators/MatchValidator';
-import { Organization } from 'entity/organization';
-import { OrganizationService } from 'app/core/utility-module/organization.service';
-import { Subject, interval } from 'rxjs';
-import { takeUntil, debounce, debounceTime } from 'rxjs/operators';
-import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
-import { UserService } from 'app/core/user-module/user.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { CookieAgreementService } from 'app/core/auth-module/cookie-agreement.service';
+import { OrganizationService } from 'app/core/organization-module/organization.service';
+import {
+  CreateOrganizationResponse,
+  ORGANIZATION_LEVELS,
+  ORGANIZATION_SECTORS,
+  Organization,
+  OrganizationLevel,
+  OrganizationSector,
+  SuggestDomainResponse
+} from 'app/core/organization-module/organization.types';
+import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import { Subject, interval } from 'rxjs';
+import { debounce, debounceTime, take, takeUntil } from 'rxjs/operators';
 
 const EMAIL_REGEX =
   // eslint-disable-next-line max-len
@@ -61,16 +68,18 @@ const EMAIL_REGEX =
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
+  private latestSuggestionEmail = '';
   ssoRedirect = AUTH_ROUTES.GOOGLE_SIGNUP();
 
   TEMPLATES = {
     info: { temp: 'info', index: 1 },
-    account: { temp: 'account', index: 2 },
-    submission: { temp: 'submission', index: 3 },
-    sso: { temp: 'sso', index: 3 }
+    organization: { temp: 'organization', index: 2 },
+    account: { temp: 'account', index: 3 },
+    submission: { temp: 'submission', index: 4 },
+    sso: { temp: 'sso', index: 5 }
   };
 
-  currentTemp: String = 'info';
+  currentTemp = 'info';
   currentIndex = 1;
 
   registrationFailure: Boolean = false;
@@ -95,18 +104,30 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   buttonGuards = {
     isInfoPageInvalid: true,
+    isOrganizationPageInvalid: true,
     isRegisterPageInvalid: true
   };
 
   infoFormGroup: UntypedFormGroup;
+  organizationFormGroup: UntypedFormGroup;
   accountFormGroup: UntypedFormGroup;
 
   emailInUse = false;
   usernameInUse = false;
-  loading = false;
+  emailLoading = false;
+  usernameLoading = false;
+  organizationSearchLoading = false;
+  organizationSuggestionLoading = false;
+  organizationCreationLoading = false;
+  shouldCreateOrganization = false;
+  createdOrganizationId = '';
+
+  readonly sectorOptions = ORGANIZATION_SECTORS;
+  readonly levelOptions = ORGANIZATION_LEVELS;
 
   organizationInput$: Subject<string> = new Subject<string>();
   showDropdown = false;
+  suggestedOrganization: Organization | null = null;
   closeDropdown = () => {
     this.showDropdown = false;
   };
@@ -114,10 +135,24 @@ export class RegisterComponent implements OnInit, OnDestroy {
   selectedOrg = '';
   scrollerHeight = '100px';
 
+  get loading(): boolean {
+    return this.emailLoading
+      || this.usernameLoading
+      || this.organizationSearchLoading
+      || this.organizationSuggestionLoading
+      || this.organizationCreationLoading;
+  }
+
+  get canEnterCustomOrganizationFlow(): boolean {
+    return this.infoFormGroup.get('firstname')!.valid
+      && this.infoFormGroup.get('lastname')!.valid
+      && this.infoFormGroup.get('email')!.valid
+      && !this.loading;
+  }
+
   constructor(
     public authValidation: AuthValidationService,
     private auth: AuthService,
-    private userService: UserService,
     private router: Router,
     private orgService: OrganizationService,
     private cookieAgreement: CookieAgreementService,
@@ -128,6 +163,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
       lastname: this.authValidation.getInputFormControl('required'),
       email: this.authValidation.getInputFormControl('email'),
       organization: this.authValidation.getInputFormControl('required'),
+    });
+    this.organizationFormGroup = new UntypedFormGroup({
+      name: new UntypedFormControl('', Validators.required),
+      sector: new UntypedFormControl('', Validators.required),
+      levels: new UntypedFormControl([]),
+      state: new UntypedFormControl(''),
+      country: new UntypedFormControl(''),
     });
     this.accountFormGroup = new UntypedFormGroup({
       username: this.authValidation.getInputFormControl('username'),
@@ -149,21 +191,35 @@ export class RegisterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authValidation.getErrorState().subscribe(err => this.registrationFailure = err);
     this.toggleInfoNextButton();
+    this.toggleOrganizationNextButton();
     this.toggleRegisterButton();
     this.validateEmail();
     this.validateUsername();
     this.organizationInput$.pipe(debounceTime(650))
-      .subscribe(async (value: string) => {
-        this.searchResults = (await this.orgService.searchOrgs(value.trim()));
-        this.loading = false;
+      .subscribe((value: string) => {
+        this.orgService.searchOrganizations({ text: value.trim() }).pipe(take(1)).subscribe({
+          next: (results) => {
+            this.searchResults = results;
+            this.organizationSearchLoading = false;
+          },
+          error: () => {
+            this.searchResults = [];
+            this.organizationSearchLoading = false;
+          }
+        });
       });
     this.organizationInput$
       .subscribe((value: string) => {
         if (value && value !== '') {
+          this.selectedOrg = '';
+          this.suggestedOrganization = null;
           this.showDropdown = true;
-          this.loading = true;
+          this.organizationSearchLoading = true;
         } else {
+          this.selectedOrg = this.suggestedOrganization?._id ?? '';
+          this.regInfo.organization = this.suggestedOrganization?.name ?? '';
           this.showDropdown = false;
+          this.organizationSearchLoading = false;
         }
       });
   }
@@ -171,24 +227,29 @@ export class RegisterComponent implements OnInit, OnDestroy {
   /**
    * Register a user
    */
-  public submit(): void {
-    this.auth.register({
-      username: this.regInfo.username.trim(),
-      firstname: this.regInfo.firstname.trim(),
-      lastname: this.regInfo.lastname.trim(),
-      email: this.regInfo.email.trim(),
-      organization: this.regInfo.organization.trim(),
-      password: this.regInfo.password
-    })
-      .then(() => {
-        this.nextTemp();
-      },
-        error => {
-          if (error.message !== 'Internal Server Error') {
-            this.errorMsg = error.message;
-          }
-          this.authValidation.showError();
-        });
+  public async submit(): Promise<void> {
+    try {
+      if (this.shouldCreateOrganization && !this.createdOrganizationId) {
+        await this.createCustomOrganization();
+      }
+
+      await this.auth.register({
+        username: this.regInfo.username.trim(),
+        firstname: this.regInfo.firstname.trim(),
+        lastname: this.regInfo.lastname.trim(),
+        email: this.regInfo.email.trim(),
+        organization: this.regInfo.organization,
+        organizationId: this.selectedOrg,
+        password: this.regInfo.password
+      });
+      this.nextTemp();
+    } catch (error) {
+      const parsedErrorMessage = this.getErrorMessage(error);
+      if (parsedErrorMessage && parsedErrorMessage !== 'Internal Server Error') {
+        this.errorMsg = parsedErrorMessage;
+      }
+      this.authValidation.showError();
+    }
   }
 
   /**
@@ -210,13 +271,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
       .pipe(
         debounce(() => {
           // Greys out the Register button while communicating with backend
-          this.loading = true;
+          this.usernameLoading = true;
           return interval(600);
         }),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(async (value) => {
-        this.loading = false;
+        this.usernameLoading = false;
         await this.auth.usernameInUse(value)
           .catch((err) => {
             this.authValidation.showError();
@@ -243,13 +304,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.infoFormGroup.get('email').valueChanges
       .pipe(
         debounce(() => {
-          this.loading = true;
+          this.emailLoading = true;
           return interval(600);
         }),
         takeUntil(this.ngUnsubscribe)
       ).subscribe(async (value) => {
-        this.loading = false;
+        this.emailLoading = false;
+        this.resetOrganizationSelection();
+
+        if (!value || value.trim() === '') {
+          return;
+        }
+
         this.isEmailRegexValid(value);
+
+        if (this.infoFormGroup.get('email').hasError('invalidEmail')) {
+          return;
+        }
 
         await this.auth.emailInUse(value)
           .then((res: any) => {
@@ -261,12 +332,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
               });
             } else {
               this.fieldErrorMsg = '';
+              this.infoFormGroup.get('email').setErrors(null);
             }
           })
           .catch((err) => {
             this.errorMsg = 'Email must be an email';
             this.authValidation.showError();
           });
+
+        if (!this.emailInUse && !this.infoFormGroup.get('email').errors) {
+          this.loadOrganizationSuggestion(value);
+        }
 
       });
   }
@@ -302,6 +378,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Disables the organization next button when any form controls inside the organizationFormGroup
+   * are INVALID
+   */
+  private toggleOrganizationNextButton() {
+    this.organizationFormGroup.statusChanges
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((value) => {
+        this.buttonGuards.isOrganizationPageInvalid = value === 'INVALID';
+      });
+  }
+
+  /**
    * Disables the accountNext Button when any form controls inside the accountFormGroup
    * are INVALID
    */
@@ -322,6 +412,15 @@ export class RegisterComponent implements OnInit, OnDestroy {
   nextTemp(): void {
     switch (this.currentTemp) {
       case this.TEMPLATES.info.temp:
+        if (this.shouldCreateOrganization) {
+          this.currentTemp = this.TEMPLATES.organization.temp;
+          this.currentIndex = this.TEMPLATES.organization.index;
+        } else {
+          this.currentTemp = this.TEMPLATES.account.temp;
+          this.currentIndex = this.TEMPLATES.account.index;
+        }
+        break;
+      case this.TEMPLATES.organization.temp:
         this.currentTemp = this.TEMPLATES.account.temp;
         this.currentIndex = this.TEMPLATES.account.index;
         break;
@@ -342,7 +441,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
    */
   goBack(): void {
     this.fall = !this.fall;
-    if (this.currentTemp === this.TEMPLATES.account.temp) {
+    if (this.currentTemp === this.TEMPLATES.account.temp && this.shouldCreateOrganization) {
+      this.currentTemp = this.TEMPLATES.organization.temp;
+      this.currentIndex = this.TEMPLATES.organization.index;
+    } else if (this.currentTemp === this.TEMPLATES.account.temp) {
+      this.currentTemp = this.TEMPLATES.info.temp;
+      this.currentIndex = this.TEMPLATES.info.index;
+    } else if (this.currentTemp === this.TEMPLATES.organization.temp) {
       this.currentTemp = this.TEMPLATES.info.temp;
       this.currentIndex = this.TEMPLATES.info.index;
     }
@@ -376,16 +481,19 @@ export class RegisterComponent implements OnInit, OnDestroy {
    *
    * @param org The organization selected
    */
-  selectOrg(org?: Organization) {
-    if (org) {
-      this.regInfo.organization = org.name;
-      this.selectedOrg = org._id;
-      this.infoFormGroup.get('organization')!.setValue(org.name);
-    } else {
-      this.regInfo.organization = 'Other';
-      this.selectedOrg = '602ae2a038e2aaa1059f3c39';
-      this.infoFormGroup.get('organization')!.setValue('Other');
-    }
+  selectOrg(org: Organization) {
+    this.shouldCreateOrganization = false;
+    this.createdOrganizationId = '';
+    this.organizationFormGroup.reset({
+      name: '',
+      sector: '',
+      levels: [],
+      state: '',
+      country: '',
+    });
+    this.regInfo.organization = org.name;
+    this.selectedOrg = org._id;
+    this.infoFormGroup.get('organization')!.setValue(org.name);
     this.closeDropdown();
   }
 
@@ -395,7 +503,192 @@ export class RegisterComponent implements OnInit, OnDestroy {
    * @param event The typing event
    */
   keyup(event: any) {
+    this.shouldCreateOrganization = false;
+    this.createdOrganizationId = '';
     this.organizationInput$.next(event.target.value);
+  }
+
+  enterCustomOrganizationFlow(): void {
+    if (!this.canEnterCustomOrganizationFlow) {
+      this.infoFormGroup.get('firstname')!.markAsTouched();
+      this.infoFormGroup.get('lastname')!.markAsTouched();
+      this.infoFormGroup.get('email')!.markAsTouched();
+      return;
+    }
+
+    this.shouldCreateOrganization = true;
+    this.createdOrganizationId = '';
+    this.selectedOrg = '';
+    this.organizationFormGroup.patchValue({
+      name: this.regInfo.organization.trim(),
+      sector: this.organizationFormGroup.get('sector')!.value || '',
+      levels: this.organizationFormGroup.get('levels')!.value || [],
+      state: this.organizationFormGroup.get('state')!.value || '',
+      country: this.organizationFormGroup.get('country')!.value || '',
+    });
+    this.currentTemp = this.TEMPLATES.organization.temp;
+    this.currentIndex = this.TEMPLATES.organization.index;
+    this.slide = !this.slide;
+  }
+
+  continueFromOrganization(): void {
+    if (this.organizationFormGroup.invalid) {
+      this.organizationFormGroup.markAllAsTouched();
+      return;
+    }
+
+    this.nextTemp();
+  }
+
+  toggleOrganizationLevel(level: OrganizationLevel): void {
+    const currentLevels: OrganizationLevel[] = this.organizationFormGroup.get('levels')!.value || [];
+    const nextLevels = currentLevels.includes(level)
+      ? currentLevels.filter(existingLevel => existingLevel !== level)
+      : [...currentLevels, level];
+
+    this.organizationFormGroup.get('levels')!.setValue(nextLevels);
+    this.createdOrganizationId = '';
+    this.selectedOrg = '';
+  }
+
+  isOrganizationLevelSelected(level: OrganizationLevel): boolean {
+    const currentLevels: OrganizationLevel[] = this.organizationFormGroup.get('levels')!.value || [];
+    return currentLevels.includes(level);
+  }
+
+  formatOptionLabel(value: string): string {
+    return value
+      .split('_')
+      .map(segment => segment.charAt(0).toUpperCase() + segment.slice(1))
+      .join(' ');
+  }
+
+  onOrganizationDetailsChanged(): void {
+    this.createdOrganizationId = '';
+    this.selectedOrg = '';
+  }
+
+  private getErrorMessage(error: unknown): string | null {
+    if (!error) {
+      return null;
+    }
+
+    if (typeof error === 'string') {
+      return this.parseErrorString(error);
+    }
+
+    if (typeof error === 'object') {
+      const maybeError = error as {
+        message?: string;
+        error?: unknown;
+        errors?: Array<{ message?: string }>;
+      };
+
+      if (typeof maybeError.message === 'string' && maybeError.message.trim() !== '') {
+        return maybeError.message;
+      }
+
+      if (Array.isArray(maybeError.errors) && maybeError.errors.length > 0) {
+        const firstMessage = maybeError.errors.find(item => item?.message)?.message;
+        if (firstMessage) {
+          return firstMessage;
+        }
+      }
+
+      if (typeof maybeError.error === 'string') {
+        return this.parseErrorString(maybeError.error);
+      }
+
+      if (maybeError.error && typeof maybeError.error === 'object') {
+        return this.getErrorMessage(maybeError.error);
+      }
+    }
+
+    return null;
+  }
+
+  private parseErrorString(error: string): string {
+    try {
+      const parsedError = JSON.parse(error) as { message?: string };
+      return parsedError.message || error;
+    } catch {
+      return error;
+    }
+  }
+
+  private loadOrganizationSuggestion(email: string) {
+    this.latestSuggestionEmail = email.trim().toLowerCase();
+    this.organizationSuggestionLoading = true;
+    this.suggestedOrganization = null;
+
+    this.orgService.suggestDomain(email.trim())
+      .pipe(take(1))
+      .subscribe({
+        next: (response: SuggestDomainResponse) => {
+          if (this.latestSuggestionEmail !== email.trim().toLowerCase()) {
+            return;
+          }
+
+          this.organizationSuggestionLoading = false;
+          this.suggestedOrganization = response.organization ?? null;
+          if (this.suggestedOrganization) {
+            this.regInfo.organization = this.suggestedOrganization.name;
+            this.selectedOrg = this.suggestedOrganization._id;
+            this.infoFormGroup.get('organization')!.setValue(this.suggestedOrganization.name);
+          }
+        },
+        error: () => {
+          if (this.latestSuggestionEmail !== email.trim().toLowerCase()) {
+            return;
+          }
+
+          this.organizationSuggestionLoading = false;
+          this.suggestedOrganization = null;
+        }
+      });
+  }
+
+  private resetOrganizationSelection() {
+    this.latestSuggestionEmail = '';
+    this.organizationSuggestionLoading = false;
+    this.organizationSearchLoading = false;
+    this.suggestedOrganization = null;
+    this.searchResults = [];
+    this.showDropdown = false;
+    this.selectedOrg = '';
+    this.regInfo.organization = '';
+    this.infoFormGroup.get('organization')!.setValue('');
+    this.shouldCreateOrganization = false;
+    this.createdOrganizationId = '';
+    this.organizationFormGroup.reset({
+      name: '',
+      sector: '',
+      levels: [],
+      state: '',
+      country: '',
+    });
+  }
+
+  private async createCustomOrganization(): Promise<void> {
+    this.organizationCreationLoading = true;
+
+    try {
+      const response = await this.orgService.createOrganization({
+        name: this.organizationFormGroup.get('name')!.value.trim(),
+        sector: this.organizationFormGroup.get('sector')!.value as OrganizationSector,
+        levels: this.organizationFormGroup.get('levels')!.value as OrganizationLevel[],
+        state: this.organizationFormGroup.get('state')!.value?.trim() || undefined,
+        country: this.organizationFormGroup.get('country')!.value?.trim() || undefined,
+      })
+        .pipe(take(1))
+        .toPromise() as CreateOrganizationResponse;
+
+      this.createdOrganizationId = response.organization._id.toString();
+      this.selectedOrg = response.organization._id.toString();
+      this.orgService.clearCache();
+    } finally {
+      this.organizationCreationLoading = false;
+    }
   }
 
   ngOnDestroy(): void {

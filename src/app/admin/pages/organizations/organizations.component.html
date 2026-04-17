@@ -1,0 +1,362 @@
+<clark-admin-content-wrapper>
+  <div page-title>
+    <div class="title-stack">
+      <div>Organizations</div>
+      <span class="title-subtext"
+        >Review and manage organization verification status</span
+      >
+    </div>
+  </div>
+
+  <div class="overview-row" search>
+    <clark-stats-card
+      label="Total"
+      [value]="dataSource.data.length"
+    ></clark-stats-card>
+    <clark-stats-card
+      label="Verified"
+      [value]="filteredVerifiedCount"
+      textColor="#1f9d55"
+    ></clark-stats-card>
+    <clark-stats-card
+      label="Unverified"
+      [value]="filteredUnverifiedCount"
+      textColor="#d14343"
+    ></clark-stats-card>
+    <clark-stats-card
+      label='Users in "Other"'
+      [value]="getTotalOtherUsers()"
+      textColor="#7b6cf6"
+    ></clark-stats-card>
+  </div>
+
+  <!-- TODO: Extract as reusable component - clark-admin-filter-toolbar
+       This toolbar pattern with search, filter dropdowns, pagination, and actions
+       is common across admin pages. Should be a configurable component that accepts:
+       - Search placeholder and handler
+       - Array of filter config objects
+       - Action buttons config
+       - Pagination config -->
+  <div class="filters-toolbar" search>
+    <div class="inline-filters">
+      <clark-search-input
+        placeholder="Search Organizations"
+        width="260px"
+        [value]="searchValue"
+        (userInput)="onSearchTermChange($event)"
+      ></clark-search-input>
+
+      <clark-dropdown-filter
+        *ngIf="!isPhoneTableView"
+        name="Verified"
+        [isMultiSelect]="true"
+        [values]="verifiedFilterOptions"
+        [selectedValues]="selectedVerifiedFilters"
+        (selectedValuesChange)="onVerifiedFiltersChange($event)"
+      ></clark-dropdown-filter>
+
+      <clark-dropdown-filter
+        *ngIf="!isPhoneTableView"
+        name="Sector"
+        [isMultiSelect]="true"
+        [values]="sectorFilterOptions"
+        [selectedValues]="selectedSectorFilters"
+        (selectedValuesChange)="onSectorFiltersChange($event)"
+      ></clark-dropdown-filter>
+
+      <clark-dropdown-filter
+        *ngIf="!isPhoneTableView"
+        name="Level"
+        [isMultiSelect]="true"
+        [values]="levelFilterOptions"
+        [selectedValues]="selectedLevelFilters"
+        (selectedValuesChange)="onLevelFiltersChange($event)"
+      ></clark-dropdown-filter>
+
+      <clark-clear-filters-button
+        *ngIf="!isPhoneTableView && hasActiveFilters()"
+        class="clear-filters-link"
+        (clear)="clearAllFilters()"
+      >
+      </clark-clear-filters-button>
+    </div>
+
+    <div class="toolbar-pager">
+      <mat-paginator
+        *ngIf="!isMobileTableView"
+        class="organizations-paginator"
+        [pageSizeOptions]="[10, 25, 50, 100]"
+        showFirstLastButtons
+        aria-label="Select page of organizations"
+      >
+      </mat-paginator>
+    </div>
+
+    <div class="toolbar-actions" *ngIf="!isPhoneTableView">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="openCreateModal()"
+        class="create-org-button"
+      >
+        <mat-icon>add</mat-icon>
+        New Organization
+      </button>
+    </div>
+  </div>
+
+  <div #list class="list" main>
+    <div *ngIf="dataSource.data?.length; else emptyTemplate">
+      <div class="table-shell">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          matSort
+          class="organizations-table"
+        >
+          <ng-container matColumnDef="verified">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Verified</th>
+            <td mat-cell *matCellDef="let organization">
+              <clark-verification-badge
+                [verified]="organization.isVerified"
+              ></clark-verification-badge>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let organization">
+              <div class="org-name-cell">{{ organization.name }}</div>
+              <div class="org-domain" *ngIf="organization.domains?.length > 0">
+                {{ organization.domains[0] }}
+                <span *ngIf="organization.domains.length > 1">
+                  +{{ organization.domains.length - 1 }}
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="users">
+            <th mat-header-cell *matHeaderCellDef>Users</th>
+            <td mat-cell *matCellDef="let organization">
+              <span class="count-value">{{ getUserCount(organization) }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="learningObjects">
+            <th mat-header-cell *matHeaderCellDef>
+              Learning Objects
+            </th>
+            <td mat-cell *matCellDef="let organization">
+              <span class="count-value">{{
+                getLearningObjectCount(organization)
+              }}</span>
+            </td>
+          </ng-container>
+
+          <!-- TODO: Extract as reusable component - clark-badge or clark-category-badge
+               Generic badge component for displaying categories, statuses, or tags.
+               Should accept text, color scheme/variant, and size options. -->
+          <ng-container matColumnDef="sector">
+            <th mat-header-cell *matHeaderCellDef>Sector</th>
+            <td mat-cell *matCellDef="let organization">
+              <span
+                class="sector-badge"
+                [ngClass]="'sector-' + organization.sector"
+              >
+                {{ organization.sector | titlecase }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- TODO: Extract as reusable component - clark-pill-list or clark-tag-group
+               Reusable component for displaying a list of pills/tags with overflow count.
+               Should accept items array, max visible count, formatter function, and styling. -->
+          <ng-container matColumnDef="levels">
+            <th mat-header-cell *matHeaderCellDef>Levels</th>
+            <td mat-cell *matCellDef="let organization">
+              <div class="levels-list">
+                <span
+                  class="level-pill"
+                  *ngFor="let level of organization.levels.slice(0, 3)"
+                >
+                  {{ formatLevelName(level) | titlecase }}
+                </span>
+                <span
+                  *ngIf="organization.levels.length > 3"
+                  class="level-pill level-pill--more"
+                >
+                  +{{ organization.levels.length - 3 }}
+                </span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- TODO: Extract as reusable component - clark-table-actions or clark-action-button-group
+               Reusable action buttons component for table rows with responsive mobile dropdown.
+               Should accept array of action configs with icon, label, handler, disabled state,
+               and tooltip. Automatically switches to mobile menu on small screens. -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td
+              mat-cell
+              *matCellDef="let organization"
+              (click)="$event.stopPropagation()"
+            >
+              <div class="action-icons">
+                <ng-container *ngIf="!isMobileTableView; else mobileActions">
+                  <button
+                    mat-icon-button
+                    (click)="openEditModal(organization)"
+                    class="action-icon-button"
+                    title="Edit"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <span
+                    class="disabled-action-tooltip"
+                    [matTooltip]="migrateNotSupportedTooltip"
+                  >
+                    <button
+                      mat-icon-button
+                      class="action-icon-button migrate"
+                      title="Migrate Users"
+                      [disabled]="true"
+                    >
+                      <mat-icon>sync_alt</mat-icon>
+                    </button>
+                  </span>
+                  <span
+                    class="disabled-action-tooltip"
+                    [matTooltip]="deleteNotSupportedTooltip"
+                  >
+                    <button
+                      mat-icon-button
+                      class="action-icon-button delete"
+                      title="Delete"
+                      [disabled]="true"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </span>
+                </ng-container>
+                <ng-template #mobileActions>
+                  <button
+                    mat-icon-button
+                    class="action-icon-button action-meatball"
+                    [matMenuTriggerFor]="rowActionMenu"
+                    [matMenuTriggerData]="{ organization: organization }"
+                    title="Actions"
+                  >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </ng-template>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="organization-row"
+            (click)="openEditModal(row)"
+          ></tr>
+        </table>
+      </div>
+      <div
+        class="table-toolbar table-toolbar--bottom"
+        *ngIf="isMobileTableView"
+      >
+        <mat-paginator
+          class="organizations-paginator"
+          [pageSizeOptions]="[10, 25, 50, 100]"
+          showFirstLastButtons
+          aria-label="Select page of organizations"
+        >
+        </mat-paginator>
+      </div>
+    </div>
+  </div>
+
+  <mat-menu #rowActionMenu="matMenu" class="filter-menu row-action-menu">
+    <ng-template matMenuContent let-organization="organization">
+      <button mat-menu-item (click)="openEditModal(organization)">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <span
+        class="disabled-action-tooltip disabled-action-tooltip--menu"
+        [matTooltip]="migrateNotSupportedTooltip"
+      >
+        <button mat-menu-item [disabled]="true">
+          <mat-icon>sync_alt</mat-icon>
+          <span>Migrate Users</span>
+        </button>
+      </span>
+      <span
+        class="disabled-action-tooltip disabled-action-tooltip--menu"
+        [matTooltip]="deleteNotSupportedTooltip"
+      >
+        <button mat-menu-item [disabled]="true">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </span>
+    </ng-template>
+  </mat-menu>
+
+  <!-- TODO: Extract as reusable components - clark-empty-state and clark-loading-state
+       These are common patterns used across the app for empty and loading states.
+       clark-empty-state should accept icon, title, message, and optional action button.
+       clark-loading-state should accept custom message and spinner options. -->
+  <ng-template #emptyTemplate>
+    <div class="empty-template" *ngIf="!loading; else loadingTemplate">
+      <div class="empty-template__top">
+        <i class="fal fa-building"></i>
+        <div class="top-message">Nothing here!</div>
+      </div>
+      <div class="empty-text">Organizations will appear here</div>
+    </div>
+  </ng-template>
+
+  <ng-template #loadingTemplate>
+    <div class="loadingOrFinished__content">
+      <i class="fal fa-spinner-third fa-spin"></i>
+      Loading...
+    </div>
+  </ng-template>
+</clark-admin-content-wrapper>
+
+<!-- Organization Edit Modal -->
+<clark-organization-edit-modal
+  [isVisible]="displayEditModal"
+  [isCreateMode]="isCreateMode"
+  [organization]="selectedOrganization"
+  [userCount]="selectedOrganization ? getUserCount(selectedOrganization) : 0"
+  [existingNames]="existingNames"
+  (closed)="closeEditModal()"
+  (save)="onSaveOrganization($event)"
+></clark-organization-edit-modal>
+
+<!-- Delete Confirmation Modal -->
+<clark-organization-delete-modal
+  [isVisible]="displayDeleteModal"
+  [organization]="selectedOrganization"
+  (closed)="closeDeleteModal()"
+  (confirm)="deleteOrganization()"
+></clark-organization-delete-modal>
+
+<!-- Migrate Users Modal -->
+<clark-organization-migrate-modal
+  [isVisible]="displayMigrateModal"
+  [sourceOrganization]="selectedOrganization"
+  [sourceUserCount]="
+    selectedOrganization ? getUserCount(selectedOrganization) : 0
+  "
+  [availableTargetOrganizations]="getAvailableTargetOrganizations()"
+  [isMigrating]="isMigrating"
+  [getUserCount]="getUserCount.bind(this)"
+  (closed)="closeMigrateModal()"
+  (migrate)="onMigrateUsers($event)"
+></clark-organization-migrate-modal>

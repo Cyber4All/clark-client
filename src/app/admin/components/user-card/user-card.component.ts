@@ -3,6 +3,7 @@ import { User } from '@entity';
 import { UserService } from 'app/core/user-module/user.service';
 import { userCardAnimations } from './user-card.component.animations';
 import { AccessGroupService } from 'app/core/access-group-module/access-group.service';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
 
 @Component({
   selector: 'clark-admin-user-card',
@@ -29,6 +30,7 @@ export class AdminUserCardComponent {
   constructor(
     private accessGroupsService: AccessGroupService,
     private userService: UserService,
+    public orgStore: OrganizationStore,
     private cd: ChangeDetectorRef,
     ) {}
 

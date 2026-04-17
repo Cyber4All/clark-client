@@ -1,5 +1,9 @@
 <div class="wrapper">
-    <clark-registration-progress [index]="currentIndex" ></clark-registration-progress>
+    <clark-registration-progress
+        [index]="currentIndex"
+        [currentTemp]="currentTemp"
+        [showOrganizationStep]="shouldCreateOrganization"
+    ></clark-registration-progress>
     <div class="content-box" [ngClass]="{'failed': registrationFailure}">
         <clark-error-banner class="errBanner" [errorMessage]="errorMsg"></clark-error-banner>
         <img src="/assets/images/logo.png" alt="Clark Logo" />
@@ -31,11 +35,11 @@
                         [control]="infoFormGroup.get('email')"
                         [errorMsg]="fieldErrorMsg"
                     ></clark-input-field>
-                    <clark-input-field 
-                        [(ngModel)]="regInfo.organization"  
-                        name="organization" 
-                        #organization 
-                        phold="Organization" 
+                    <clark-input-field
+                        [(ngModel)]="regInfo.organization"
+                        name="organization"
+                        #organization
+                        phold="Organization"
                         [control]="infoFormGroup.get('organization')"
                         (keyup)="keyup($event)"
                     ></clark-input-field>
@@ -44,19 +48,101 @@
                         (onBlur)="closeDropdown()"
                         class="org-dropdown_list"
                         >
-                        <p class="organization-message">
-                            If you don't see your organization please register under <b>Other</b> and reach out to us to have your organization added to our list.
-                        </p>
                         <ng-container
-                        *ngTemplateOutlet="loading ? loadingTemplate : resultsTemplate"
+                        *ngTemplateOutlet="organizationSearchLoading ? loadingTemplate : resultsTemplate"
                         ></ng-container>
                  </ul>
+                    <button
+                        type="button"
+                        class="organization-link"
+                        [ngClass]="{'organization-link--disabled': !canEnterCustomOrganizationFlow}"
+                        [disabled]="!canEnterCustomOrganizationFlow"
+                        (click)="enterCustomOrganizationFlow()"
+                    >
+                        Organization not listed, enter my organization info
+                    </button>
 
                     <div class="side-by-side" >
                         <button type="button" class="white" (click)="navigateHome()">Cancel</button>
-                        <button type="button" (click)="nextTemp()" [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid || selectedOrg === '' || loading}" class="button good">Next</button>
+                        <button
+                            type="button"
+                            (click)="nextTemp()"
+                            [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid || (!shouldCreateOrganization && selectedOrg === '') || loading}"
+                            class="button good"
+                        >Next</button>
                     </div>
                     <a [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}">Have an account? Log In!</a>
+                </ng-template>
+
+                <ng-template #orgTemplate [ngSwitchCase]="TEMPLATES.organization.temp">
+                    <clark-input-field
+                        [ngModel]="organizationFormGroup.get('name').value"
+                        (ngModelChange)="organizationFormGroup.get('name').setValue($event); onOrganizationDetailsChanged()"
+                        [ngModelOptions]="{standalone: true}"
+                        phold="Organization Name"
+                        [control]="organizationFormGroup.get('name')"
+                    ></clark-input-field>
+
+                    <label class="organization-field-label" for="organization-sector">Sector</label>
+                    <select
+                        id="organization-sector"
+                        class="organization-field"
+                        [formControl]="organizationFormGroup.get('sector')"
+                        (change)="onOrganizationDetailsChanged()"
+                    >
+                        <option value="">Select a sector</option>
+                        <option *ngFor="let sector of sectorOptions" [value]="sector">
+                            {{ formatOptionLabel(sector) }}
+                        </option>
+                    </select>
+                    <mat-error *ngIf="organizationFormGroup.get('sector').touched && organizationFormGroup.get('sector').invalid">
+                        Sector is required
+                    </mat-error>
+
+                    <div class="organization-levels">
+                        <p class="organization-field-label">Education Levels</p>
+                        <p class="organization-levels-hint">Select any that apply. If none apply, leave them unselected.</p>
+                        <button
+                            type="button"
+                            class="organization-level-pill"
+                            [ngClass]="{'active': isOrganizationLevelSelected(level)}"
+                            *ngFor="let level of levelOptions"
+                            (click)="toggleOrganizationLevel(level)"
+                        >
+                            <span>{{ formatOptionLabel(level) }}</span>
+                        </button>
+                    </div>
+
+                    <div class="side-by-side">
+                        <div>
+                            <clark-input-field
+                                [ngModel]="organizationFormGroup.get('state').value"
+                                (ngModelChange)="organizationFormGroup.get('state').setValue($event); onOrganizationDetailsChanged()"
+                                [ngModelOptions]="{standalone: true}"
+                                phold="State"
+                                [control]="organizationFormGroup.get('state')"
+                            ></clark-input-field>
+                        </div>
+                        <div>
+                            <clark-input-field
+                                [ngModel]="organizationFormGroup.get('country').value"
+                                (ngModelChange)="organizationFormGroup.get('country').setValue($event); onOrganizationDetailsChanged()"
+                                [ngModelOptions]="{standalone: true}"
+                                phold="Country"
+                                [control]="organizationFormGroup.get('country')"
+                            ></clark-input-field>
+                        </div>
+                    </div>
+
+                    <div class="side-by-side">
+                        <button type="button" class="white" (click)="goBack()">Back</button>
+                        <button
+                            type="button"
+                            class="button good"
+                            [ngClass]="{'disabled': buttonGuards.isOrganizationPageInvalid || loading}"
+                            (click)="continueFromOrganization()"
+                        >Next</button>
+                    </div>
                 </ng-template>
                 
                 <ng-template #accountTemplate [ngSwitchCase]="TEMPLATES.account.temp"  >
@@ -157,21 +243,12 @@
             >
                 {{ org.name }}
             </li>
-            <div class="other-box" (click)="selectOrg()">
-                <li class="other-option">
-                Other
-                </li>
-            </div>
         </virtual-scroller>
     </ng-container>
   </ng-template>
 
   <ng-template #noResultsTemplate>
-    <div class="other-box">
-      <li class="other-option" (click)="selectOrg()">
-        Other
-      </li>
-    </div>
+    <span class="org-dropdown__message">No listed organizations found.</span>
   </ng-template>
 
   <ng-template #loadingTemplate>
