@@ -146,6 +146,16 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+      - run:
+          name: Plan deployment marker
+          command: |
+            TARGET_VERSION="$(node -p "require('./package.json').version")-${CIRCLE_SHA1:0:7}"
+            DEPLOY_NAME="deploy-<< parameters.environment_name >>-<< parameters.component_name >>"
+            echo "export DEPLOY_NAME=${DEPLOY_NAME}" >> "$BASH_ENV"
+            circleci run release plan "$DEPLOY_NAME" \
+              --environment-name="<< parameters.environment_name >>" \
+              --component-name="<< parameters.component_name >>" \
+              --target-version="${TARGET_VERSION}"       
       - aws-cli/setup:
           region: us-east-1
           role_arn: CIRCLECI_OIDC_ROLE
