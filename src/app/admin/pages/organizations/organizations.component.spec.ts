@@ -1,111 +1,99 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { OrganizationsComponent } from './organizations.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { of, Subject, throwError } from 'rxjs';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { OrganizationService } from 'app/core/organization-module/organization.service';
+import { Organization } from 'app/core/organization-module/organization.types';
+import { UserService } from 'app/core/user-module/user.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { FormsModule } from '@angular/forms';
-import { SharedModule } from 'app/shared/shared.module';
+import { OrganizationsComponent } from './organizations.component';
 
 describe('OrganizationsComponent', () => {
   let component: OrganizationsComponent;
-  let fixture: ComponentFixture<OrganizationsComponent>;
-  let toasterService: jasmine.SpyObj<ToastrOvenService>;
+  let toasterService: ToastrOvenService;
+  let organizationService: OrganizationService;
+  let userService: UserService;
+  let searchService: SearchService;
 
-  beforeEach(async () => {
-    const toasterSpy = jasmine.createSpyObj('ToastrOvenService', ['success', 'error']);
-
-    await TestBed.configureTestingModule({
-      declarations: [OrganizationsComponent],
-      imports: [FormsModule, SharedModule],
-      providers: [{ provide: ToastrOvenService, useValue: toasterSpy }],
-    }).compileComponents();
-
-    toasterService = TestBed.inject(ToastrOvenService) as jasmine.SpyObj<ToastrOvenService>;
-    fixture = TestBed.createComponent(OrganizationsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  const makeOrganization = (overrides: Partial<Organization> = {}): Organization => ({
+    _id: 'org-1',
+    name: 'Towson University',
+    normalizedName: 'towson university',
+    sector: 'academia',
+    levels: ['undergraduate'],
+    domains: ['towson.edu'],
+    isVerified: false,
+    ...overrides,
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  beforeEach(() => {
+    toasterService = jasmine.createSpyObj('ToastrOvenService', [
+      'success',
+      'error',
+      'warning',
+    ]) as ToastrOvenService;
+    organizationService = jasmine.createSpyObj('OrganizationService', [
+      'updateOrganization',
+      'clearCache',
+    ]) as OrganizationService;
+    userService = jasmine.createSpyObj('UserService', ['searchUsersResponse']) as UserService;
+    searchService = jasmine.createSpyObj('SearchService', ['getLearningObjects']) as SearchService;
+
+    component = new OrganizationsComponent(
+      toasterService,
+      organizationService,
+      userService,
+      searchService,
+    );
+    component.dataSource = new MatTableDataSource<Organization>([]);
+    component.componentDestroyed$ = new Subject<void>();
+    spyOn<any>(component, 'loadVisibleOrganizationCounts').and.returnValue(Promise.resolve());
   });
 
-  it('should initialize with 20 mock organizations', () => {
-    expect(component.organizations.length).toBe(20);
+  it('toggles an organization to verified via the patch route and updates the table row', () => {
+    const originalOrganization = makeOrganization();
+    const updatedOrganization = makeOrganization({ isVerified: true });
+    component.dataSource.data = [originalOrganization];
+    component.selectedOrganization = { ...originalOrganization };
+
+    (organizationService.updateOrganization as any).and.returnValue(
+      of({ organization: updatedOrganization })
+    );
+
+    component.toggleOrganizationVerification(originalOrganization);
+
+    expect(organizationService.updateOrganization).toHaveBeenCalledWith('org-1', {
+      isVerified: true,
+    });
+    expect(component.dataSource.data[0].isVerified).toBe(true);
+    expect(component.selectedOrganization?.isVerified).toBe(true);
+    expect(component.filteredVerifiedCount).toBe(1);
+    expect(component.filteredUnverifiedCount).toBe(0);
+    expect(organizationService.clearCache).toHaveBeenCalled();
+    expect(toasterService.success).toHaveBeenCalledWith(
+      'Success!',
+      'Organization verified successfully.'
+    );
+    expect(component.isVerificationTogglePending(updatedOrganization)).toBe(false);
   });
 
-  it('should filter organizations by name', () => {
-    component.onSearchInput('MIT');
-    expect(component.filteredOrganizations.length).toBeGreaterThan(0);
-    expect(component.filteredOrganizations[0].name).toContain('MIT');
-  });
+  it('shows an error and clears pending state when verification update fails', () => {
+    const organization = makeOrganization({ _id: 'org-2', isVerified: true });
+    component.dataSource.data = [organization];
 
-  it('should filter by verified status', () => {
-    component.verifiedFilter = true;
-    component.applyFiltersAndSearch();
-    expect(component.filteredOrganizations.every((org) => org.isVerified)).toBe(true);
-  });
+    (organizationService.updateOrganization as any).and.returnValue(
+      throwError(() => new Error('patch failed'))
+    );
 
-  it('should filter by sector', () => {
-    component.sectorFilter = 'academia';
-    component.applyFiltersAndSearch();
-    expect(component.filteredOrganizations.every((org) => org.sector === 'academia')).toBe(true);
-  });
+    component.toggleOrganizationVerification(organization);
 
-  it('should sort organizations by name', () => {
-    component.sortBy('name');
-    const names = component.filteredOrganizations.map((org) => org.name);
-    const sortedNames = [...names].sort();
-    expect(names).toEqual(sortedNames);
-  });
-
-  it('should toggle sort direction', () => {
-    component.sortBy('name');
-    const ascNames = component.filteredOrganizations.map((org) => org.name);
-    component.sortBy('name');
-    const descNames = component.filteredOrganizations.map((org) => org.name);
-    expect(ascNames).not.toEqual(descNames);
-  });
-
-  it('should clear all filters', () => {
-    component.verifiedFilter = true;
-    component.sectorFilter = 'academia';
-    component.searchValue = 'test';
-    component.clearFilters();
-    expect(component.verifiedFilter).toBeNull();
-    expect(component.sectorFilter).toBeNull();
-    expect(component.searchValue).toBe('');
-  });
-
-  it('should open edit modal with selected organization', () => {
-    const org = component.organizations[0];
-    component.openEditModal(org);
-    expect(component.displayEditModal).toBe(true);
-    expect(component.selectedOrganization).toEqual(org);
-    expect(component.editForm.name).toBe(org.name);
-  });
-
-  it('should save organization changes', () => {
-    const org = component.organizations[0];
-    component.openEditModal(org);
-    component.editForm.name = 'Updated Name';
-    component.saveOrganization();
-    expect(toasterService.success).toHaveBeenCalled();
-    expect(component.displayEditModal).toBe(false);
-  });
-
-  it('should delete organization', () => {
-    const initialCount = component.organizations.length;
-    const org = component.organizations[0];
-    component.selectedOrganization = org;
-    component.deleteOrganization();
-    expect(component.organizations.length).toBe(initialCount - 1);
-    expect(toasterService.success).toHaveBeenCalled();
-  });
-
-  it('should toggle level selection', () => {
-    component.editForm.levels = [];
-    component.toggleLevel('elementary');
-    expect(component.editForm.levels).toContain('elementary');
-    component.toggleLevel('elementary');
-    expect(component.editForm.levels).not.toContain('elementary');
+    expect(organizationService.updateOrganization).toHaveBeenCalledWith('org-2', {
+      isVerified: false,
+    });
+    expect(component.dataSource.data[0].isVerified).toBe(true);
+    expect(toasterService.error).toHaveBeenCalledWith(
+      'Error',
+      'Failed to update organization verification.'
+    );
+    expect(component.isVerificationTogglePending(organization)).toBe(false);
   });
 });

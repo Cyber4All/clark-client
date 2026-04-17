@@ -98,4 +98,22 @@ describe('OrganizationService', () => {
     expect(request.request.method).toBe('GET');
     request.flush({ organization });
   });
+
+  it('patches organization verification status', (done) => {
+    service.updateOrganization('org-1', { isVerified: false }).subscribe((result) => {
+      expect(result.organization._id).toBe('org-1');
+      expect(result.organization.isVerified).toBe(false);
+      done();
+    });
+
+    const request = httpMock.expectOne(`${environment.apiURL}/organizations/org-1`);
+    expect(request.request.method).toBe('PATCH');
+    expect(request.request.body).toEqual({ isVerified: false });
+    request.flush({
+      organization: {
+        ...organization,
+        isVerified: false,
+      }
+    });
+  });
 });
