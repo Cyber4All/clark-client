@@ -155,10 +155,13 @@ jobs:
             circleci run release plan "$DEPLOY_NAME" \
               --environment-name="<< parameters.environment_name >>" \
               --component-name="<< parameters.component_name >>" \
-              --target-version="${TARGET_VERSION}"
-      - run:
-          name: Sync build output to S3
-          command: aws s3 sync ./dist/browser s3://<< parameters.bucket >> --delete
+              --target-version="${TARGET_VERSION}"       
+      - aws-cli/setup:
+          region: us-east-1
+          role_arn: S3_OIDC_ROLE
+      - aws-s3/sync:
+          from: ./dist/browser
+          to: s3://<< parameters.bucket >>
       - run:
           name: Invalidate CloudFront
           command: aws cloudfront create-invalidation --distribution-id "$<< parameters.distribution_id >>" --paths "/*"
