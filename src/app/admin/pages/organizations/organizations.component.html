@@ -207,6 +207,20 @@
                 <ng-container *ngIf="!isMobileTableView; else mobileActions">
                   <button
                     mat-icon-button
+                    (click)="toggleOrganizationVerification(organization)"
+                    class="action-icon-button verify"
+                    [class.verify--verified]="organization.isVerified"
+                    [class.verify--unverified]="!organization.isVerified"
+                    [disabled]="isVerificationTogglePending(organization)"
+                    [title]="organization.isVerified ? 'Mark unverified' : 'Verify'"
+                    [attr.aria-label]="
+                      organization.isVerified ? 'Mark organization unverified' : 'Verify organization'
+                    "
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
                     (click)="openEditModal(organization)"
                     class="action-icon-button"
                     title="Edit"
@@ -281,6 +295,19 @@
 
   <mat-menu #rowActionMenu="matMenu" class="filter-menu row-action-menu">
     <ng-template matMenuContent let-organization="organization">
+      <button
+        mat-menu-item
+        (click)="toggleOrganizationVerification(organization)"
+        [disabled]="isVerificationTogglePending(organization)"
+      >
+        <mat-icon
+          [class.verify-menu-icon--verified]="organization.isVerified"
+          [class.verify-menu-icon--unverified]="!organization.isVerified"
+        >
+          check
+        </mat-icon>
+        <span>{{ organization.isVerified ? 'Mark Unverified' : 'Verify' }}</span>
+      </button>
       <button mat-menu-item (click)="openEditModal(organization)">
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
