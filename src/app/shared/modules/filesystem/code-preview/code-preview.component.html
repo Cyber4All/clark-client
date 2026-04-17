@@ -1,0 +1,32 @@
+<div class="code-preview-container">
+  <header class="code-preview-header">
+    <h1 class="file-name" [textContent]="fileName"></h1>
+    <button
+      class="copy-button"
+      (click)="copyToClipboard()"
+      [disabled]="isLoading || hasError"
+      title="Copy to clipboard"
+    >
+      <i class="fas fa-copy"></i>
+      <span>Copy</span>
+    </button>
+  </header>
+
+  <div class="loading-state" *ngIf="isLoading">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Loading file content...</p>
+  </div>
+
+  <div class="error-state" *ngIf="hasError">
+    <i class="fas fa-exclamation-triangle"></i>
+    <p [textContent]="errorMessage"></p>
+  </div>
+
+  <div class="code-content" *ngIf="!isLoading && !hasError">
+    <markdown
+      [data]="markdownContent"
+      ngPreserveWhitespaces
+      lineNumbers
+    ></markdown>
+  </div>
+</div>

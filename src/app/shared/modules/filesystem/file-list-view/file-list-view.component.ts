@@ -25,15 +25,14 @@ export class FileListViewComponent implements OnInit, OnDestroy {
   canManage = false;
   @Input()
   node$: BehaviorSubject<DirectoryNode> = new BehaviorSubject<DirectoryNode>(
-    null
+    null,
   );
   @Input() inBuilder = false;
   @Output()
   emitPath: EventEmitter<string> = new EventEmitter<string>();
   @Output()
-  emitDesc: EventEmitter<DescriptionUpdate> = new EventEmitter<
-    DescriptionUpdate
-  >();
+  emitDesc: EventEmitter<DescriptionUpdate> =
+    new EventEmitter<DescriptionUpdate>();
   @Output()
   emitContextOpen: EventEmitter<{
     event: MouseEvent;
@@ -60,8 +59,8 @@ export class FileListViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private auth: AuthService,
-    private fileService: FileService
-  ) { }
+    private fileService: FileService,
+  ) {}
 
   ngOnInit(): void {
     this.subToDirChange();
@@ -114,9 +113,9 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    * @memberof FileListViewComponent
    */
   async openFile(file: LearningObject.Material.File): Promise<void> {
-    const url = this.auth.isLoggedIn.value ? file.previewUrl : '';
+    const url = this.auth.isLoggedIn.value ? file.downloadURL : '';
     if (url) {
-      const previewUrl = await this.fileService.previewLearningObjectFile(url, file.name);
+      await this.fileService.previewLearningObjectFile(url, file.name);
       this.preview = true;
     } else {
       this.file = file;
@@ -133,7 +132,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
   handleMenuClicked(
     event: MouseEvent,
-    item: DirectoryNode | LearningObject.Material.File
+    item: DirectoryNode | LearningObject.Material.File,
   ) {
     event.stopPropagation();
     this.emitContextOpen.next({ event, item });
@@ -147,11 +146,11 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
   handleToggleClicked(
     state: boolean,
-    item: DirectoryNode | LearningObject.Material.File
+    item: DirectoryNode | LearningObject.Material.File,
   ) {
     this.emitBundle.emit({
       state: state,
-      item: item
+      item: item,
     });
   }
 
@@ -201,7 +200,11 @@ export class FileListViewComponent implements OnInit, OnDestroy {
    */
   checkAccessGroups(): boolean {
     if (this.accessGroups && this.accessGroups.length > 0) {
-      return this.inBuilder && (this.accessGroups.includes('admin') || this.accessGroups.includes('editor'));
+      return (
+        this.inBuilder &&
+        (this.accessGroups.includes('admin') ||
+          this.accessGroups.includes('editor'))
+      );
     }
     return false;
   }
