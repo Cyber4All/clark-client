@@ -409,7 +409,6 @@ export class AuthService {
     firstname: string,
     lastname: string,
     email: string,
-    organization: string,
     organizationId: string,
     password: string,
   }): Promise<User> {
