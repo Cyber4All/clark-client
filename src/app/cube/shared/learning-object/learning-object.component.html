@@ -59,12 +59,12 @@
 
       <div class="details">
         <div class="author">
-          {{ learningObject.contributors[0]?.name | titlecase }}
+          {{ learningObject.author?.name | titlecase }}
           {{ learningObject.contributors?.length > 1 ? ' et al.' : '' }}
         </div>
         <div class="organization">
           {{
-            orgStore.organizationNameFromUser$(learningObject.contributors[0])
+            orgStore.organizationNameFromUser$(learningObject.author)
               | async
           }}
         </div>
