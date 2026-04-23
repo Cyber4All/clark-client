@@ -238,7 +238,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         firstname: this.regInfo.firstname.trim(),
         lastname: this.regInfo.lastname.trim(),
         email: this.regInfo.email.trim(),
-        organization: this.regInfo.organization,
         organizationId: this.selectedOrg,
         password: this.regInfo.password
       });
