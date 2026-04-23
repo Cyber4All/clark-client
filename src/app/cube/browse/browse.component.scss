@@ -73,12 +73,13 @@
   flex-wrap: wrap;
 
   .filter-btn,
-  .filter-dropdown-btn,
   .sort-btn {
     border: 1px solid $light-grey;
     background: white;
     border-radius: 6px;
-    padding: 8px 12px;
+    height: 42px;
+    padding: 0 12px;
+    box-sizing: border-box;
     font-size: $normal;
     cursor: pointer;
     color: $darker-grey;
@@ -105,31 +106,15 @@
     }
   }
 
-  .filter-label {
-    font-weight: 500;
-  }
-
-  .filter-dropdown-container {
-    position: relative;
-    display: inline-block;
+  clark-dropdown-filter {
+    flex-shrink: 0;
   }
 
   .clear-filters-link {
-    border: none;
-    background: transparent;
-    padding: 0;
-    font-size: $normal;
-    cursor: pointer;
-    color: $error-red;
-    text-decoration: underline;
-    transition: opacity 0.15s ease;
-    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
     margin-left: 12px;
     align-self: center;
-
-    &:hover {
-      opacity: 0.8;
-    }
   }
 
   .filter-bar-actions {
@@ -158,65 +143,6 @@
       cursor: pointer;
       text-transform: none;
     }
-  }
-}
-
-// Filter dropdown menus
-.filter-dropdown-menu {
-  position: absolute;
-  top: calc(100% + 10px);
-  left: 0;
-  background: white;
-  border: 1px solid $light-grey;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  padding: 0;
-  min-width: 220px;
-  max-height: 400px;
-  overflow-y: auto;
-  z-index: 1000;
-
-  .filter-options-list {
-    list-style: none;
-    margin: 0;
-    padding: 8px 0;
-
-    .filter-option {
-      margin: 0;
-      padding: 0;
-
-      .filter-checkbox-label {
-        display: flex;
-        align-items: center;
-        padding: 10px 16px;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-        user-select: none;
-
-        &:hover {
-          background-color: rgba($light-blue, 0.08);
-        }
-
-        input[type="checkbox"] {
-          margin: 0;
-          margin-right: 12px;
-          cursor: pointer;
-          width: 18px;
-          height: 18px;
-          flex-shrink: 0;
-        }
-
-        .filter-option-name {
-          font-size: $normal;
-          color: $darker-grey;
-          line-height: 1.4;
-        }
-      }
-    }
-  }
-
-  ::ng-deep .filter-section {
-    padding-left: 0;
   }
 }
 
@@ -708,7 +634,7 @@
       flex-shrink: 0;
     }
 
-    .filter-dropdown-btn {
+    clark-dropdown-filter {
       display: none;
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { Subject } from 'rxjs';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
@@ -27,18 +27,20 @@ export class AdminComponent implements OnInit, OnDestroy {
   collectionsLoaded: boolean;
 
   topAdjustment: number;
+  isTabletView = false;
 
   constructor(
     private navbarService: NavbarService,
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
+    public authService: AuthService,
     private collectionService: CollectionService,
     public toaster: ToastrOvenService,
     private utilityServicce: UtilityService
   ) { }
 
   async ngOnInit() {
+    this.updateViewportMode();
     // hide CLARK navbar
     this.navbarService.hide();
 
@@ -131,5 +133,21 @@ export class AdminComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.navbarService.show();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.updateViewportMode();
+  }
+
+  updateViewportMode() {
+    this.isTabletView = window.innerWidth <= 1024;
+  }
+
+  getAdminBaseUrl(): string {
+    if (!this.editorMode && this.activeCollection) {
+      return `/admin/${this.activeCollection}`;
+    }
+    return '/admin';
   }
 }

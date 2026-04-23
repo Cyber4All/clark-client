@@ -31,7 +31,7 @@
             </span>
             <span class="user-dropdown__navbar-gravatar"
               [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
-            {{ u.username }} - {{ u.name | titlecase }} from {{ organizationFormat(u.organization) }}
+            {{ u.username }} - {{ u.name | titlecase }} from {{ orgStore.organizationName$(u.organizationId) | async }}
           </li>
         </virtual-scroller>
       </div>

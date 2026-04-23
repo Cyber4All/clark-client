@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ContextMenuModule } from 'app/shared/modules/contextmenu/contextmenu.module';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { LearningObject, User } from '@entity';
 import { DashboardLearningObject } from '../../../old-dashboard/old-dashboard.component';
@@ -22,8 +21,7 @@ describe('DashboardItemComponent', () => {
     declarations: [DashboardItemComponent, TipDirective],
     teardown: { destroyAfterEach: false },
     imports: [RouterTestingModule,
-        ContextMenuModule.forRoot(),
-        CookieModule.forRoot()],
+        ContextMenuModule.forRoot()],
     providers: [
         { provide: AuthService, useValue: { user: new User() } },
         CollectionService,

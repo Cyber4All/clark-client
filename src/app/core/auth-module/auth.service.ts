@@ -4,7 +4,8 @@ import { User } from '@entity';
 import { environment } from '@env/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, take } from 'rxjs/operators';
+import { OrganizationStore } from '../organization-module/organization.store';
 import { CoralogixRumService } from '../services/coralogix-rum.service';
 import { AUTH_ROUTES } from './auth.routes';
 import { EncryptionService } from './encryption.service';
@@ -58,7 +59,8 @@ export class AuthService {
     private readonly http: HttpClient,
     private readonly cookies: CookieService,
     private readonly encryptionService: EncryptionService,
-    private readonly rumService: CoralogixRumService
+    private readonly rumService: CoralogixRumService,
+    private readonly orgStore: OrganizationStore,
   ) {
     if (this.cookies.get('presence')) {
       this.validateToken();
@@ -407,7 +409,7 @@ export class AuthService {
     firstname: string,
     lastname: string,
     email: string,
-    organization: string,
+    organizationId: string,
     password: string,
   }): Promise<User> {
     try {
@@ -600,7 +602,7 @@ export class AuthService {
       return;
     }
 
-    this.rumService.setUserContext({
+    const baseUserContext = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       user_id: this.user.userId ?? 'unknown',
       // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -612,9 +614,27 @@ export class AuthService {
         username: this.user.username,
         accessGroups: this.user.accessGroups,
         authGroup: AUTH_GROUP[this.group.value],
-        organization: this.user.organization
+        organizationId: this.user.organizationId
       }
-    });
+    };
+
+    this.rumService.setUserContext(baseUserContext);
+
+    if (this.user.organizationId) {
+      this.orgStore.organizationName$(this.user.organizationId).pipe(take(1)).subscribe((organizationName) => {
+        if (!organizationName) {
+          return;
+        }
+        this.rumService.setUserContext({
+          ...baseUserContext,
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          user_metadata: {
+            ...baseUserContext.user_metadata,
+            organizationName
+          }
+        });
+      });
+    }
 
     // Set additional labels for user role tracking
     this.rumService.setLabels({
