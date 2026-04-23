@@ -131,10 +131,7 @@ export class UsageStatsComponent implements OnInit {
     });
 
     this.utilityService.getOrganizations().then((organizations) => {
-      console.log("Getting organizaiton data");
-      console.log("Organizations: " + organizations);
       this.usageStats.users.organizations = organizations.total;
-      console.log("Number of organizations: " + this.usageStats.users.organizations);
       this.buildCounterStats();
     });
   }
