@@ -205,6 +205,25 @@
   transition: all 0.15s ease;
 }
 
+.action-icon-button.verify--verified {
+  color: #1f9d55;
+}
+
+.action-icon-button.verify--verified:hover:not(:disabled) {
+  color: #177a41;
+  background: rgba(31, 157, 85, 0.12);
+}
+
+.action-icon-button.verify--unverified {
+  opacity: 0.35;
+}
+
+.action-icon-button.verify--unverified:hover:not(:disabled) {
+  color: #1f9d55;
+  opacity: 1;
+  background: rgba(31, 157, 85, 0.1);
+}
+
 .action-icon-button:hover:not(:disabled) {
   color: $light-blue;
   background: rgba(28, 112, 221, 0.08);
@@ -399,6 +418,14 @@
 
 ::ng-deep .row-action-menu .mat-mdc-menu-panel {
   min-width: 150px !important;
+}
+
+.verify-menu-icon--verified {
+  color: #1f9d55;
+}
+
+.verify-menu-icon--unverified {
+  opacity: 0.45;
 }
 
 @media (max-width: 600px) {

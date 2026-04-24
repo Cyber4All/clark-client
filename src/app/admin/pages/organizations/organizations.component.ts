@@ -75,6 +75,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   existingNames: string[] = [];
   userSearchInput$: Subject<string> = new Subject();
   componentDestroyed$: Subject<void> = new Subject();
+  readonly verifyingOrganizationIds = new Set<string>();
   private otherUsersCountLoadVersion = 0;
 
   // TODO: Extract as reusable service - AdminFilterService or TableFilterService
@@ -370,6 +371,48 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.isCreateMode = true;
     this.selectedOrganization = null;
     this.displayEditModal = true;
+  }
+
+  toggleOrganizationVerification(org: Organization): void {
+    if (!org?._id || this.verifyingOrganizationIds.has(org._id)) {
+      return;
+    }
+
+    const nextVerifiedState = !org.isVerified;
+    this.verifyingOrganizationIds.add(org._id);
+
+    this.organizationService.updateOrganization(org._id, { isVerified: nextVerifiedState })
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe({
+        next: (response) => {
+          const updatedOrganization = response.organization;
+          this.dataSource.data = this.dataSource.data.map((existingOrganization) =>
+            existingOrganization._id === updatedOrganization._id ? updatedOrganization : existingOrganization
+          );
+
+          if (this.selectedOrganization?._id === updatedOrganization._id) {
+            this.selectedOrganization = { ...updatedOrganization };
+          }
+
+          this.refreshOverviewCounts();
+          this.loadVisibleOrganizationCounts();
+          this.toaster.success(
+            'Success!',
+            `Organization ${updatedOrganization.isVerified ? 'verified' : 'marked unverified'} successfully.`
+          );
+          this.organizationService.clearCache();
+          this.verifyingOrganizationIds.delete(org._id);
+        },
+        error: (error) => {
+          console.error('Error updating organization verification:', error);
+          this.toaster.error('Error', 'Failed to update organization verification.');
+          this.verifyingOrganizationIds.delete(org._id);
+        }
+      });
+  }
+
+  isVerificationTogglePending(org: Organization): boolean {
+    return this.verifyingOrganizationIds.has(org._id);
   }
 
   /**

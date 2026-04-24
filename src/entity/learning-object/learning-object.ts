@@ -886,7 +886,7 @@ export namespace LearningObject {
       name: string;
       fileType: string;
       extension: string;
-      previewUrl?: string;
+      downloadURL?: string;
       date: string;
       fullPath?: string;
       size?: number;

@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatTableDataSource } from '@angular/material/table';
-import { of, throwError } from 'rxjs';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { OrganizationService } from 'app/core/organization-module/organization.service';
 import { Organization } from 'app/core/organization-module/organization.types';
 import { UserService } from 'app/core/user-module/user.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { of, throwError } from 'rxjs';
 import { OrganizationsComponent } from './organizations.component';
 
 describe('OrganizationsComponent', () => {
