@@ -7,6 +7,7 @@ import {
   OnInit,
   ViewChild
 } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatStepper } from '@angular/material/stepper';
@@ -26,7 +27,7 @@ import { UserService } from 'app/core/user-module/user.service';
 import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { forkJoin, merge, of, Subject } from 'rxjs';
-import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, finalize, map, switchMap, takeUntil } from 'rxjs/operators';
 import { OrganizationFormData } from './organization-edit-modal/organization-edit-modal.component';
 
 @Component({
@@ -110,9 +111,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   // TODO(clark-api): Enable organization delete actions when backend delete API is implemented.
   readonly deleteNotSupportedTooltip =
     'Delete is not supported by API. Please reach out to developers.';
-  // TODO(clark-api): Enable organization migration actions when backend migration API is implemented.
-  readonly migrateNotSupportedTooltip =
-    'Migrate is not supported by API. Please reach out to developers.';
 
   constructor(
     private readonly toaster: ToastrOvenService,
@@ -586,6 +584,28 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     return this.learningObjectCountMap.get(org._id) || 0;
   }
 
+  async loadUserCountForMigration(org: Organization): Promise<number> {
+    const cachedCount = this.userCountMap.get(org._id);
+    if (cachedCount !== undefined) {
+      return cachedCount;
+    }
+
+    const count = await this.fetchUserCount(org._id);
+    this.userCountMap.set(org._id, count);
+    return count;
+  }
+
+  async loadLearningObjectCountForMigration(org: Organization): Promise<number> {
+    const cachedCount = this.learningObjectCountMap.get(org._id);
+    if (cachedCount !== undefined) {
+      return cachedCount;
+    }
+
+    const count = await this.fetchLearningObjectCount(org._id);
+    this.learningObjectCountMap.set(org._id, count);
+    return count;
+  }
+
   getTotalOtherUsers(): number {
     return this.totalOtherUsers;
   }
@@ -819,13 +839,59 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       return;
     }
 
-    // TODO: Replace this placeholder with an OrganizationService migration API call when backend support exists.
-    // Current API does not support bulk migration without issuing hundreds of per-user requests.
-    this.toaster.warning(
-      'Not supported yet',
-      `Migration from ${sourceOrg.name} to ${targetOrg.name} is not currently supported by the API. Please contact developers.`
-    );
-    this.closeMigrateModal();
+    this.isMigrating = true;
+    this.organizationService
+      .migrateOrganizationUsers(sourceOrg._id, { organizationId: targetOrgId })
+      .pipe(
+        takeUntil(this.componentDestroyed$),
+        finalize(() => {
+          this.isMigrating = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.organizationService.clearCache();
+          this.userCountMap.clear();
+          this.learningObjectCountMap.clear();
+          this.loadOrganizations();
+          this.toaster.success(
+            'Success!',
+            `Migrated users from ${sourceOrg.name} to ${targetOrg.name}.`
+          );
+          this.closeMigrateModal();
+        },
+        error: (error: unknown) => {
+          console.error('Error migrating organization users:', error);
+          this.toaster.error('Migration failed', this.getMigrationErrorMessage(error));
+        }
+      });
+  }
+
+  private getMigrationErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const backendError = error.error;
+
+      if (typeof backendError === 'string' && backendError.trim()) {
+        return backendError;
+      }
+
+      if (backendError && typeof backendError === 'object') {
+        const message = (backendError as { message?: unknown }).message;
+        if (typeof message === 'string' && message.trim()) {
+          return message;
+        }
+      }
+
+      if (typeof error.message === 'string' && error.message.trim()) {
+        return error.message;
+      }
+    }
+
+    if (error instanceof Error && error.message.trim()) {
+      return error.message;
+    }
+
+    return 'There was an error migrating users. Please try again later.';
   }
 
   ngOnDestroy(): void {

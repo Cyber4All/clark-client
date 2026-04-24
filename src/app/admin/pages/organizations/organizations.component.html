@@ -227,19 +227,14 @@
                   >
                     <mat-icon>edit</mat-icon>
                   </button>
-                  <span
-                    class="disabled-action-tooltip"
-                    [matTooltip]="migrateNotSupportedTooltip"
+                  <button
+                    mat-icon-button
+                    (click)="openMigrateModal(organization)"
+                    class="action-icon-button migrate"
+                    title="Migrate Users"
                   >
-                    <button
-                      mat-icon-button
-                      class="action-icon-button migrate"
-                      title="Migrate Users"
-                      [disabled]="true"
-                    >
-                      <mat-icon>sync_alt</mat-icon>
-                    </button>
-                  </span>
+                    <mat-icon>sync_alt</mat-icon>
+                  </button>
                   <span
                     class="disabled-action-tooltip"
                     [matTooltip]="deleteNotSupportedTooltip"
@@ -312,15 +307,10 @@
         <mat-icon>edit</mat-icon>
         <span>Edit</span>
       </button>
-      <span
-        class="disabled-action-tooltip disabled-action-tooltip--menu"
-        [matTooltip]="migrateNotSupportedTooltip"
-      >
-        <button mat-menu-item [disabled]="true">
-          <mat-icon>sync_alt</mat-icon>
-          <span>Migrate Users</span>
-        </button>
-      </span>
+      <button mat-menu-item (click)="openMigrateModal(organization)">
+        <mat-icon>sync_alt</mat-icon>
+        <span>Migrate Users</span>
+      </button>
       <span
         class="disabled-action-tooltip disabled-action-tooltip--menu"
         [matTooltip]="deleteNotSupportedTooltip"
@@ -381,9 +371,14 @@
   [sourceUserCount]="
     selectedOrganization ? getUserCount(selectedOrganization) : 0
   "
+  [sourceLearningObjectCount]="
+    selectedOrganization ? getLearningObjectCount(selectedOrganization) : 0
+  "
   [availableTargetOrganizations]="getAvailableTargetOrganizations()"
   [isMigrating]="isMigrating"
   [getUserCount]="getUserCount.bind(this)"
+  [loadUserCount]="loadUserCountForMigration.bind(this)"
+  [loadLearningObjectCount]="loadLearningObjectCountForMigration.bind(this)"
   (closed)="closeMigrateModal()"
   (migrate)="onMigrateUsers($event)"
 ></clark-organization-migrate-modal>

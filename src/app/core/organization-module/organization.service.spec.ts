@@ -99,21 +99,14 @@ describe('OrganizationService', () => {
     request.flush({ organization });
   });
 
-  it('patches organization verification status', (done) => {
-    service.updateOrganization('org-1', { isVerified: false }).subscribe((result) => {
-      expect(result.organization._id).toBe('org-1');
-      expect(result.organization.isVerified).toBe(false);
+  it('migrates organization users with a 204 no-content response', (done) => {
+    service.migrateOrganizationUsers('org-1', { organizationId: 'org-2' }).subscribe(() => {
       done();
     });
 
-    const request = httpMock.expectOne(`${environment.apiURL}/organizations/org-1`);
-    expect(request.request.method).toBe('PATCH');
-    expect(request.request.body).toEqual({ isVerified: false });
-    request.flush({
-      organization: {
-        ...organization,
-        isVerified: false,
-      }
-    });
+    const request = httpMock.expectOne(`${environment.apiURL}/organizations/org-1/migrate`);
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual({ organizationId: 'org-2' });
+    request.flush(null, { status: 204, statusText: 'No Content' });
   });
 });

@@ -1,14 +1,18 @@
 // Migrate modal styles
 .modal-container {
   &.migrate-modal {
-    width: 100%;
-    max-width: 600px;
+    width: 780px;
+    max-width: 780px;
+    min-width: 780px;
+    min-height: 540px;
+    box-sizing: border-box;
   }
 }
 
 .confirmation-text {
-  margin: 20px 0;
+  margin: 20px 0 28px;
   font-size: 1rem;
+  line-height: 1.5;
   color: rgba(0, 0, 0, 0.87);
 }
 
@@ -16,24 +20,140 @@
   margin-bottom: 20px;
 }
 
+.migration-steps {
+  width: 100%;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+}
+
+.step-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.step-heading__number {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #1c70dd;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex: 0 0 auto;
+}
+
+.step-heading__label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.step-heading__back {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #1c70dd;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:disabled {
+    color: rgba(0, 0, 0, 0.38);
+    cursor: not-allowed;
+  }
+}
+
+.step-heading--confirm {
+  margin-top: 28px;
+}
+
 .step-content {
-  padding: 16px 0;
+  padding: 0;
+  width: 100%;
+  flex: 1 1 auto;
+}
+
+.search-shell {
+  position: relative;
+  width: 100%;
 }
 
 .search-org-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
   margin-bottom: 16px;
+  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  background: #fff;
+
+  &:focus-within {
+    border-color: #1c70dd;
+    background: rgba(28, 112, 221, 0.03);
+  }
+}
+
+.search-org-field__icon {
+  color: #1c70dd;
+}
+
+.search-org-field input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 0;
+}
+
+.search-org-field input::placeholder {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.organization-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
 }
 
 .organization-list {
-  max-height: 400px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  max-height: 320px;
   overflow-y: auto;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
+  overflow-x: hidden;
 }
 
 .org-item {
+  width: 100%;
+  display: block;
+  text-align: left;
+  list-style: none;
   padding: 16px;
+  box-sizing: border-box;
   cursor: pointer;
+  background: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.12);
   transition: background-color 0.2s;
 
@@ -54,6 +174,11 @@
     cursor: not-allowed;
     opacity: 0.6;
   }
+
+  &:focus-visible {
+    outline: 2px solid #3f51b5;
+    outline-offset: -2px;
+  }
 }
 
 .org-name {
@@ -62,39 +187,67 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 
   .verified-icon {
     color: #4caf50;
     font-size: 16px;
+    flex: 0 0 auto;
   }
 }
 
 .org-details {
   font-size: 0.875rem;
   color: rgba(0, 0, 0, 0.6);
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.no-results {
-  padding: 32px;
-  text-align: center;
+.organization-dropdown__message {
+  padding: 14px 16px;
+  text-align: left;
   color: rgba(0, 0, 0, 0.54);
   font-size: 0.875rem;
 }
 
+.organization-dropdown__message--error {
+  color: #d14343;
+}
+
+.confirmation-section {
+  margin-top: 28px;
+  padding-top: 8px;
+}
+
+.confirmation-section--disabled {
+  opacity: 0.55;
+}
+
 .confirm-text {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   font-size: 1rem;
+  line-height: 1.5;
   color: rgba(0, 0, 0, 0.87);
 }
 
+.confirm-warning {
+  margin: 0 0 16px;
+  color: rgba(0, 0, 0, 0.62);
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
 .certification-checkbox {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .confirm-actions {
-  margin-top: 24px;
+  margin-top: 16px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -103,5 +256,6 @@
     min-width: 94vw;
     width: 94vw;
     max-width: 94vw;
+    min-height: auto;
   }
 }
