@@ -52,15 +52,21 @@
                         *ngTemplateOutlet="organizationSearchLoading ? loadingTemplate : resultsTemplate"
                         ></ng-container>
                  </ul>
-                    <button
-                        type="button"
-                        class="organization-link"
-                        [ngClass]="{'organization-link--disabled': !canEnterCustomOrganizationFlow}"
-                        [disabled]="!canEnterCustomOrganizationFlow"
-                        (click)="enterCustomOrganizationFlow()"
+                    <span
+                        tip="Enter first name, last name, and email first"
+                        [tipDisabled]="canEnterCustomOrganizationFlow"
+                        tipPosition="top"
                     >
-                        Organization not listed, enter my organization info
-                    </button>
+                        <button
+                            type="button"
+                            class="organization-link"
+                            [ngClass]="{'organization-link--disabled': !canEnterCustomOrganizationFlow}"
+                            [disabled]="!canEnterCustomOrganizationFlow"
+                            (click)="enterCustomOrganizationFlow()"
+                        >
+                            Organization not listed, enter my organization info
+                        </button>
+                    </span>
 
                     <div class="side-by-side" >
                         <button type="button" class="white" (click)="navigateHome()">Cancel</button>
@@ -95,7 +101,7 @@
                             {{ formatOptionLabel(sector) }}
                         </option>
                     </select>
-                    <mat-error *ngIf="organizationFormGroup.get('sector').touched && organizationFormGroup.get('sector').invalid">
+                    <mat-error *ngIf="(organizationFormGroup.get('sector').touched || organizationContinueAttempted) && organizationFormGroup.get('sector').invalid">
                         Sector is required
                     </mat-error>
 
@@ -115,22 +121,37 @@
 
                     <div class="side-by-side">
                         <div>
-                            <clark-input-field
-                                [ngModel]="organizationFormGroup.get('state').value"
-                                (ngModelChange)="organizationFormGroup.get('state').setValue($event); onOrganizationDetailsChanged()"
-                                [ngModelOptions]="{standalone: true}"
-                                phold="State"
-                                [control]="organizationFormGroup.get('state')"
-                            ></clark-input-field>
+                            <label class="organization-field-label" for="organization-country">Country</label>
+                            <select
+                                id="organization-country"
+                                class="organization-field"
+                                [formControl]="organizationFormGroup.get('country')"
+                            >
+                                <option value="">Select a country</option>
+                                <option *ngFor="let country of countryOptions" [value]="country.value">
+                                    {{ country.label }}
+                                </option>
+                            </select>
+                            <mat-error *ngIf="(organizationFormGroup.get('country').touched || organizationContinueAttempted) && organizationFormGroup.get('country').invalid">
+                                Country is required
+                            </mat-error>
                         </div>
                         <div>
-                            <clark-input-field
-                                [ngModel]="organizationFormGroup.get('country').value"
-                                (ngModelChange)="organizationFormGroup.get('country').setValue($event); onOrganizationDetailsChanged()"
-                                [ngModelOptions]="{standalone: true}"
-                                phold="Country"
-                                [control]="organizationFormGroup.get('country')"
-                            ></clark-input-field>
+                            <label class="organization-field-label" for="organization-state">State</label>
+                            <select
+                                id="organization-state"
+                                class="organization-field"
+                                [formControl]="organizationFormGroup.get('state')"
+                                (change)="onOrganizationDetailsChanged()"
+                            >
+                                <option value="">Select a state</option>
+                                <option *ngFor="let state of usStateOptions" [value]="state.value">
+                                    {{ state.label }}
+                                </option>
+                            </select>
+                            <mat-error *ngIf="organizationFormGroup.get('state').enabled && (organizationFormGroup.get('state').touched || organizationContinueAttempted) && organizationFormGroup.get('state').invalid">
+                                State is required when country is United States
+                            </mat-error>
                         </div>
                     </div>
 
@@ -139,7 +160,10 @@
                         <button
                             type="button"
                             class="button good"
-                            [ngClass]="{'disabled': buttonGuards.isOrganizationPageInvalid || loading}"
+                            [ngClass]="{
+                                'disabled': loading,
+                                'organization-next--invalid': buttonGuards.isOrganizationPageInvalid && !loading
+                            }"
                             (click)="continueFromOrganization()"
                         >Next</button>
                     </div>

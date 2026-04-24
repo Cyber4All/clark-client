@@ -103,6 +103,10 @@
         }
     }
 
+    .organization-next--invalid {
+        opacity: 0.5;
+    }
+
     .organization-levels {
         display: flex;
         flex-wrap: wrap;
