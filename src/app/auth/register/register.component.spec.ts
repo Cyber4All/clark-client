@@ -61,6 +61,7 @@ describe('RegisterComponent', () => {
       cookieAgreement,
       route as any,
     );
+    component.ngOnInit();
   });
 
   it('should move from info to account for listed organizations', () => {
@@ -117,7 +118,7 @@ describe('RegisterComponent', () => {
       sector: 'academia',
       levels: ['undergraduate', 'graduate'],
       state: 'MD',
-      country: 'USA',
+      country: 'US',
     });
 
     await component.submit();
@@ -127,7 +128,7 @@ describe('RegisterComponent', () => {
       sector: 'academia',
       levels: ['undergraduate', 'graduate'],
       state: 'MD',
-      country: 'USA',
+      country: 'US',
     });
     expect(auth.register).toHaveBeenCalledWith(expect.objectContaining({
       organizationId: 'created-org-id',
@@ -146,7 +147,7 @@ describe('RegisterComponent', () => {
       sector: 'academia',
       levels: [],
       state: '',
-      country: '',
+      country: 'CA',
     });
 
     await component.submit();
@@ -154,6 +155,50 @@ describe('RegisterComponent', () => {
     expect(orgService.createOrganization).toHaveBeenCalledWith(expect.objectContaining({
       levels: [],
     }));
+  });
+
+  it('should require country on the custom organization form', () => {
+    component.organizationFormGroup.patchValue({
+      name: 'Manual Org',
+      sector: 'academia',
+      country: '',
+    });
+
+    component.continueFromOrganization();
+
+    expect(component.organizationContinueAttempted).toBe(true);
+    expect(component.organizationFormGroup.get('country')!.hasError('required')).toBe(true);
+    expect(component.organizationFormGroup.get('country')!.touched).toBe(true);
+  });
+
+  it('should require state only when country is US', () => {
+    component.organizationFormGroup.patchValue({
+      name: 'Manual Org',
+      sector: 'academia',
+      country: 'US',
+      state: '',
+    });
+
+    component.continueFromOrganization();
+
+    expect(component.organizationFormGroup.get('state')!.enabled).toBe(true);
+    expect(component.organizationFormGroup.get('state')!.hasError('required')).toBe(true);
+
+    component.organizationFormGroup.patchValue({
+      country: 'CA',
+    });
+
+    expect(component.organizationFormGroup.get('state')!.disabled).toBe(true);
+    expect(component.organizationFormGroup.get('state')!.value).toBe('');
+    expect(component.organizationFormGroup.get('state')!.errors).toBeNull();
+  });
+
+  it('should reset the organization continue attempt state when organization details change', () => {
+    component.organizationContinueAttempted = true;
+
+    component.onOrganizationDetailsChanged();
+
+    expect(component.organizationContinueAttempted).toBe(false);
   });
 
   it('should return to listed-organization mode when an organization is selected', () => {

@@ -131,7 +131,7 @@ export class UsageStatsComponent implements OnInit {
     });
 
     this.utilityService.getOrganizations().then((organizations) => {
-      this.usageStats.users.organizations = organizations.length;
+      this.usageStats.users.organizations = organizations.total;
       this.buildCounterStats();
     });
   }

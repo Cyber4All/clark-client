@@ -17,6 +17,10 @@ import {
   SuggestDomainResponse
 } from 'app/core/organization-module/organization.types';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import {
+  COUNTRY_OPTIONS,
+  US_STATE_OPTIONS
+} from './register-location-options';
 import { Subject, interval } from 'rxjs';
 import { debounce, debounceTime, take, takeUntil } from 'rxjs/operators';
 
@@ -108,6 +112,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     isRegisterPageInvalid: true
   };
 
+  organizationContinueAttempted = false;
+
   infoFormGroup: UntypedFormGroup;
   organizationFormGroup: UntypedFormGroup;
   accountFormGroup: UntypedFormGroup;
@@ -124,6 +130,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   readonly sectorOptions = ORGANIZATION_SECTORS;
   readonly levelOptions = ORGANIZATION_LEVELS;
+  readonly countryOptions = COUNTRY_OPTIONS;
+  readonly usStateOptions = US_STATE_OPTIONS;
 
   organizationInput$: Subject<string> = new Subject<string>();
   showDropdown = false;
@@ -168,8 +176,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
       name: new UntypedFormControl('', Validators.required),
       sector: new UntypedFormControl('', Validators.required),
       levels: new UntypedFormControl([]),
-      state: new UntypedFormControl(''),
-      country: new UntypedFormControl(''),
+      state: new UntypedFormControl({ value: '', disabled: true }),
+      country: new UntypedFormControl('', Validators.required),
     });
     this.accountFormGroup = new UntypedFormGroup({
       username: this.authValidation.getInputFormControl('username'),
@@ -193,6 +201,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.toggleInfoNextButton();
     this.toggleOrganizationNextButton();
     this.toggleRegisterButton();
+    this.watchOrganizationCountry();
     this.validateEmail();
     this.validateUsername();
     this.organizationInput$.pipe(debounceTime(650))
@@ -516,6 +525,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     this.shouldCreateOrganization = true;
+    this.organizationContinueAttempted = false;
     this.createdOrganizationId = '';
     this.selectedOrg = '';
     this.organizationFormGroup.patchValue({
@@ -531,6 +541,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   continueFromOrganization(): void {
+    this.organizationContinueAttempted = true;
+
     if (this.organizationFormGroup.invalid) {
       this.organizationFormGroup.markAllAsTouched();
       return;
@@ -563,8 +575,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   onOrganizationDetailsChanged(): void {
+    this.organizationContinueAttempted = false;
     this.createdOrganizationId = '';
     this.selectedOrg = '';
+  }
+
+  isUnitedStatesSelected(): boolean {
+    return this.organizationFormGroup.get('country')!.value === 'US';
   }
 
   private getErrorMessage(error: unknown): string | null {
@@ -666,6 +683,35 @@ export class RegisterComponent implements OnInit, OnDestroy {
       state: '',
       country: '',
     });
+  }
+
+  private watchOrganizationCountry(): void {
+    const countryControl = this.organizationFormGroup.get('country')!;
+    this.syncStateControlWithCountry(countryControl.value);
+
+    countryControl.valueChanges
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((countryCode: string) => {
+        this.syncStateControlWithCountry(countryCode);
+        this.onOrganizationDetailsChanged();
+      });
+  }
+
+  private syncStateControlWithCountry(countryCode: string): void {
+    const stateControl = this.organizationFormGroup.get('state')!;
+    const requiresState = countryCode === 'US';
+
+    if (requiresState) {
+      stateControl.enable({ emitEvent: false });
+      stateControl.setValidators(Validators.required);
+    } else {
+      stateControl.setValue('', { emitEvent: false });
+      stateControl.clearValidators();
+      stateControl.disable({ emitEvent: false });
+    }
+
+    stateControl.updateValueAndValidity();
+    this.organizationFormGroup.updateValueAndValidity();
   }
 
   private async createCustomOrganization(): Promise<void> {
