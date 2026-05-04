@@ -9,19 +9,16 @@ import { CounterBlockComponent } from './counter-block/counter-block.component';
 import { TopDownloadsComponent } from './top-downloads/top-downloads.component';
 
 @NgModule({
-  imports: [CommonModule, NgChartsModule, UsageStatsRoutingModule],
-  exports: [
-    UsageStatsComponent,
-    DistributionChartComponent,
-    TopDownloadsComponent
-  ],
-  declarations: [
-    UsageStatsComponent,
-    DistributionChartComponent,
-    HeatMapComponent,
-    CounterBlockComponent,
-    TopDownloadsComponent,
-  ],
-  providers: []
+    imports: [CommonModule, NgChartsModule, UsageStatsRoutingModule, UsageStatsComponent,
+        DistributionChartComponent,
+        HeatMapComponent,
+        CounterBlockComponent,
+        TopDownloadsComponent],
+    exports: [
+        UsageStatsComponent,
+        DistributionChartComponent,
+        TopDownloadsComponent
+    ],
+    providers: []
 })
 export class UsageStatsModule { }

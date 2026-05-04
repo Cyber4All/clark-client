@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, HostListener } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { ActivateDirective } from '../../../directives/activate.directive';
 
 /**
  * This component is simply a wrapper for any content projected into it (from the original ContextMenuComponent).
@@ -7,21 +8,23 @@ import { trigger, transition, style, animate } from '@angular/animations';
  * directly from it's controller component.
  */
 @Component({
-  selector: 'clark-context-menu-viewer',
-  template: `
+    selector: 'clark-context-menu-viewer',
+    template: `
     <div class="full-screen">
       <div (activate)="activateClose()" [@contextMenu] class="context-menu"><ng-content></ng-content></div>
     </div>
   `,
-  styleUrls: ['context-menu-viewer.component.scss'],
-  animations: [
-    trigger('contextMenu', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(0px) scale(1, 0' }),
-        animate('200ms ease', style({ opacity: 1, transform: 'translateY(0px) scale(1, 1)' }))
-      ]),
-    ])
-  ]
+    styleUrls: ['context-menu-viewer.component.scss'],
+    animations: [
+        trigger('contextMenu', [
+            transition(':enter', [
+                style({ opacity: 0, transform: 'translateY(0px) scale(1, 0' }),
+                animate('200ms ease', style({ opacity: 1, transform: 'translateY(0px) scale(1, 1)' }))
+            ]),
+        ])
+    ],
+    standalone: true,
+    imports: [ActivateDirective]
 })
 export class ContextMenuViewerComponent {
 

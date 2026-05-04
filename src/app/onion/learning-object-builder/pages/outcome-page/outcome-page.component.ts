@@ -12,10 +12,18 @@ import { LearningObjectValidator } from '../../validators/learning-object.valida
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObject } from '@entity';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { ColumnWrapperComponent } from '../../components/column-wrapper/column-wrapper.component';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ScaffoldComponent } from '../../components/scaffold/scaffold.component';
+import { OutcomeComponent } from '../../components/outcome/outcome.component';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { StandardOutcomesComponent } from '../../components/standard-outcomes/standard-outcomes.component';
 @Component({
-  selector: 'clark-outcome-page',
-  templateUrl: './outcome-page.component.html',
-  styleUrls: ['./outcome-page.component.scss']
+    selector: 'clark-outcome-page',
+    templateUrl: './outcome-page.component.html',
+    styleUrls: ['./outcome-page.component.scss'],
+    standalone: true,
+    imports: [ColumnWrapperComponent, NgIf, ScaffoldComponent, NgFor, OutcomeComponent, ActivateDirective, NgClass, StandardOutcomesComponent]
 })
 export class OutcomePageComponent implements OnInit, OnDestroy {
   private _outcomes: Map<string, LearningOutcome> = new Map();

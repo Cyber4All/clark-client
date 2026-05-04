@@ -4,13 +4,19 @@ import { UserService } from 'app/core/user-module/user.service';
 import { userCardAnimations } from './user-card.component.animations';
 import { AccessGroupService } from 'app/core/access-group-module/access-group.service';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
+import { NgIf, AsyncPipe, SlicePipe } from '@angular/common';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { PopupComponent } from '../../../shared/modules/popups/popup.component';
+import { AddEvaluatorComponent } from '../add-evaluator/add-evaluator.component';
 
 @Component({
-  selector: 'clark-admin-user-card',
-  templateUrl: './user-card.component.html',
-  styleUrls: ['./user-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: userCardAnimations
+    selector: 'clark-admin-user-card',
+    templateUrl: './user-card.component.html',
+    styleUrls: ['./user-card.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: userCardAnimations,
+    standalone: true,
+    imports: [NgIf, ActivateDirective, PopupComponent, AddEvaluatorComponent, AsyncPipe, SlicePipe]
 })
 export class AdminUserCardComponent {
   @Input() user: User;

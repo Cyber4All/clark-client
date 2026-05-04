@@ -1,8 +1,22 @@
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, APP_INITIALIZER, importProvidersFrom } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { environment } from '@env/environment';
-import { ClarkModule } from 'app/clark.module';
+
+import { TitleCasePipe } from '@angular/common';
+import { Title, BrowserModule, bootstrapApplication } from '@angular/platform-browser';
+import { UrlSerializer } from '@angular/router';
+import { CustomUrlSerializer } from './app/core/learning-object-module/custom-url-serliazer';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpConfigInterceptor } from './app/core/interceptor/httpconfig.interceptor';
+import { CoralogixRumService } from './app/core/services/coralogix-rum.service';
+import { ClarkRoutingModule } from './app/clark.routing';
+import { SharedModule } from './app/shared/shared.module';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { ChatbotModule } from 'app/shared/modules/chatbot/chatbot.module';
+import { MarkdownModule } from 'ngx-markdown';
+import { ClarkComponent } from './app/clark.component';
 
 // Application display name and Version information
 const { version: appVersion, name: appName, displayName: appDisplayName } = require('../package.json');
@@ -24,7 +38,30 @@ const userVersion = localStorage.getItem(VERSION_STORE);
 })();
 
 if (userVersion === appVersion) {
-  platformBrowserDynamic().bootstrapModule(ClarkModule);
+  bootstrapApplication(ClarkComponent, {
+    providers: [
+        importProvidersFrom(BrowserModule, ClarkRoutingModule, SharedModule, FormsModule, ChatbotModule, MarkdownModule),
+        TitleCasePipe,
+        Title,
+        {
+            provide: UrlSerializer,
+            useClass: CustomUrlSerializer,
+        },
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpConfigInterceptor,
+            multi: true,
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: (rumService: CoralogixRumService) => () => rumService.init(),
+            deps: [CoralogixRumService],
+            multi: true,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideAnimations(),
+    ]
+});
 } else {
   console.log('Waiting for update...');
 }

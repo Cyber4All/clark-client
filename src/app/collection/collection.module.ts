@@ -13,7 +13,7 @@ import { XPCyberModule } from './pages/xp-cyber/xp-cyber.module';
 import { CollectionsRoutingModule } from './collection.routing';
 import { CollectionNcyteComponent } from './pages/collection-ncyte/collection-ncyte.component';
 import { Collection502Component } from './pages/collection-502/collection-502.component';
-import { IncludedModule } from './shared/included/included.module';
+
 import { SharedModule } from '../shared/shared.module';
 import { HeaderComponent } from './pages/collection-ncyte/components/header/header.component';
 import { AboutComponent } from './pages/collection-ncyte/components/about/about.component';
@@ -50,7 +50,27 @@ import { HeaderWithCyberComponent } from './pages/tags/tag-with-cyber/components
 import { AboutWithCyberComponent } from './pages/tags/tag-with-cyber/components/about/about.component';
 
 @NgModule({
-  declarations: [
+    schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
+    imports: [
+    CommonModule,
+    CollectionsRoutingModule,
+    XPCyberModule,
+    RouterModule,
+    SharedModule,
+    CubeSharedModule,
+    MatSlideToggleModule,
+    MatRadioModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatExpansionModule,
+    UsageStatsModule,
+    DetailsModule,
+    LibraryModule,
     CollectionIndexComponent,
     GenericPageComponent,
     SecurityInjectionsComponent,
@@ -77,29 +97,6 @@ import { AboutWithCyberComponent } from './pages/tags/tag-with-cyber/components/
     TagWithCyberComponent,
     HeaderWithCyberComponent,
     AboutWithCyberComponent,
-  ],
-  schemas: [NO_ERRORS_SCHEMA, CUSTOM_ELEMENTS_SCHEMA],
-  imports: [
-    CommonModule,
-    IncludedModule,
-    CollectionsRoutingModule,
-    XPCyberModule,
-    RouterModule,
-    SharedModule,
-    CubeSharedModule,
-    MatSlideToggleModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatExpansionModule,
-    UsageStatsModule,
-    DetailsModule,
-    LibraryModule,
-  ],
+],
 })
 export class CollectionModule {}

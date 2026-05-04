@@ -2,11 +2,15 @@ import { Component, OnInit, Input } from '@angular/core';
 import { User } from '@entity';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
 import { UserService } from 'app/core/user-module/user.service';
+import { RouterLink } from '@angular/router';
+import { NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-author-card',
-  templateUrl: './author-card.component.html',
-  styleUrls: ['./author-card.component.scss']
+    selector: 'clark-author-card',
+    templateUrl: './author-card.component.html',
+    styleUrls: ['./author-card.component.scss'],
+    standalone: true,
+    imports: [RouterLink, NgClass, AsyncPipe, TitleCasePipe]
 })
 export class AuthorCardComponent implements OnInit {
 

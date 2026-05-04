@@ -5,11 +5,28 @@ import { User } from '@entity';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgTemplateOutlet, NgFor, NgClass, NgStyle, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-user-dropdown',
-  templateUrl: './user-dropdown.component.html',
-  styleUrls: ['./user-dropdown.component.scss'],
+    selector: 'clark-user-dropdown',
+    templateUrl: './user-dropdown.component.html',
+    styleUrls: ['./user-dropdown.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        NgIf,
+        NgTemplateOutlet,
+        VirtualScrollerModule,
+        NgFor,
+        ActivateDirective,
+        NgClass,
+        NgStyle,
+        AsyncPipe,
+        TitleCasePipe,
+    ],
 })
 export class UserDropdownComponent implements OnInit, DoCheck, OnDestroy {
   // array of usernames representing all selected users

@@ -8,7 +8,7 @@ describe('OutcomePageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [OutcomePageComponent],
+    imports: [OutcomePageComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

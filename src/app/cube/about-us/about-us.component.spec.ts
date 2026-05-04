@@ -8,7 +8,7 @@ describe('AboutUsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [AboutUsComponent],
+    imports: [AboutUsComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

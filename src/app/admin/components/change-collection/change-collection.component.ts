@@ -3,11 +3,16 @@ import { Collection, CollectionService } from 'app/core/collection-module/collec
 import { LearningObject } from '@entity';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { CollectionsGridComponent } from '../../../shared/components/collections-grid/collections-grid.component';
+import { NgClass } from '@angular/common';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-change-collection',
-  templateUrl: './change-collection.component.html',
-  styleUrls: ['./change-collection.component.scss']
+    selector: 'clark-change-collection',
+    templateUrl: './change-collection.component.html',
+    styleUrls: ['./change-collection.component.scss'],
+    standalone: true,
+    imports: [CollectionsGridComponent, NgClass, ActivateDirective]
 })
 export class ChangeCollectionComponent implements OnInit {
   collections: Collection[] = [];

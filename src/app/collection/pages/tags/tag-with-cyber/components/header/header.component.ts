@@ -1,10 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { ActivateDirective } from '../../../../../../shared/directives/activate.directive';
 @Component({
-  selector: 'clark-with-cyber-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'clark-with-cyber-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: true,
+    imports: [ActivateDirective]
 })
 export class HeaderWithCyberComponent {
 

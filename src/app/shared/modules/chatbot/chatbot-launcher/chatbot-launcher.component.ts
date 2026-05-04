@@ -1,36 +1,33 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'clark-chatbot-launcher',
-  templateUrl: './chatbot-launcher.component.html',
-  styleUrls: ['./chatbot-launcher.component.scss'],
-  animations: [
-    trigger('tooltipAppear', [
-      transition(':enter', [
-        style({
-          opacity: 0,
-          transform: 'translateY(10px)'
-        }),
-        animate(
-          '200ms ease-out',
-          style({
-            opacity: 1,
-            transform: 'translateY(0)'
-          })
-        )
-      ]),
-      transition(':leave', [
-        animate(
-          '200ms ease-out',
-          style({
-            opacity: 0,
-            transform: 'translateY(10px)'
-          })
-        )
-      ])
-    ])
-  ]
+    selector: 'clark-chatbot-launcher',
+    templateUrl: './chatbot-launcher.component.html',
+    styleUrls: ['./chatbot-launcher.component.scss'],
+    animations: [
+        trigger('tooltipAppear', [
+            transition(':enter', [
+                style({
+                    opacity: 0,
+                    transform: 'translateY(10px)'
+                }),
+                animate('200ms ease-out', style({
+                    opacity: 1,
+                    transform: 'translateY(0)'
+                }))
+            ]),
+            transition(':leave', [
+                animate('200ms ease-out', style({
+                    opacity: 0,
+                    transform: 'translateY(10px)'
+                }))
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [NgIf]
 })
 export class ChatbotLauncherComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isCookieBannerVisible = false;

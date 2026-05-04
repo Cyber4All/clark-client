@@ -8,8 +8,8 @@ describe('HierarchyBuilderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HierarchyBuilderComponent ]
-    })
+    imports: [HierarchyBuilderComponent]
+})
     .compileComponents();
   });
 

@@ -8,7 +8,7 @@ describe('PressComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [PressComponent],
+    imports: [PressComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

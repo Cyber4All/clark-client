@@ -2,11 +2,20 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { UserService } from 'app/core/user-module/user.service';
+import { NgIf, NgFor, NgClass, DatePipe } from '@angular/common';
+import { RatingStarsComponent } from '../../../../shared/components/rating-stars/rating-stars.component';
+import { RouterLink } from '@angular/router';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { NewRatingResponseComponent } from '../new-rating-response/new-rating-response.component';
+import { ReportRatingComponent } from '../report-rating/report-rating.component';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
 
 @Component({
-  selector: 'clark-learning-object-ratings',
-  templateUrl: './learning-object-ratings.component.html',
-  styleUrls: ['./learning-object-ratings.component.scss']
+    selector: 'clark-learning-object-ratings',
+    templateUrl: './learning-object-ratings.component.html',
+    styleUrls: ['./learning-object-ratings.component.scss'],
+    standalone: true,
+    imports: [NgIf, RatingStarsComponent, NgFor, RouterLink, ActivateDirective, NewRatingResponseComponent, NgClass, ReportRatingComponent, PopupComponent, DatePipe]
 })
 export class LearningObjectRatingsComponent implements OnInit {
 

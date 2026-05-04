@@ -4,7 +4,7 @@ import { LearningObject } from 'entity/learning-object/learning-object';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LearningObjectRatings, RatingService } from 'app/core/rating-module/rating.service';
 import { NotificationService } from 'app/core/notification-module/notification.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
@@ -12,36 +12,47 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
+import { NgIf, NgFor } from '@angular/common';
+import { HammertimeDirective } from '../../shared/directives/hammertime.directive';
+import { ActivateDirective } from '../../shared/directives/activate.directive';
+import { NotificationCardComponent } from './components/notification-card/notification-card.component';
+import { LibraryItemComponent } from './components/library-item/library-item.component';
+import { PaginationComponent } from './components/pagination/pagination.component';
+import { PopupComponent } from '../../shared/modules/popups/popup.component';
+import { DownloadNoticePopupComponent } from '../../shared/modules/popup-templates/download-notice-popup/download-notice-popup.component';
+import { ChangelogModalComponent } from '../../shared/modules/changelogs/changelog-modal/changelog-modal.component';
 
 @Component({
-  selector: 'clark-library',
-  templateUrl: './library.component.html',
-  styleUrls: ['./library.component.scss'],
-  animations: [
-    trigger('slider', [
-      transition(':increment', group([
-        query(':enter', [
-          style({
-            transform: 'translateX(100%)',
-            opacity: 0,
-            zIndex: 1,
-            'pointer-events': 'none',
-          }),
-          animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
-        ]),
-      ])),
-      transition(':decrement', group([
-        query(':enter', [
-          style({
-            transform: 'translateX(-100%)',
-            opacity: 1,
-            'pointer-events': 'none',
-          }),
-          animate('0.4s ease-out', style('*'))
-        ]),
-      ]))
-    ])
-  ]
+    selector: 'clark-library',
+    templateUrl: './library.component.html',
+    styleUrls: ['./library.component.scss'],
+    animations: [
+        trigger('slider', [
+            transition(':increment', group([
+                query(':enter', [
+                    style({
+                        transform: 'translateX(100%)',
+                        opacity: 0,
+                        zIndex: 1,
+                        'pointer-events': 'none',
+                    }),
+                    animate('0.4s ease-out', style({ transform: 'translateX(0)', opacity: 1 }))
+                ]),
+            ])),
+            transition(':decrement', group([
+                query(':enter', [
+                    style({
+                        transform: 'translateX(-100%)',
+                        opacity: 1,
+                        'pointer-events': 'none',
+                    }),
+                    animate('0.4s ease-out', style('*'))
+                ]),
+            ]))
+        ])
+    ],
+    standalone: true,
+    imports: [NgIf, HammertimeDirective, ActivateDirective, NgFor, NotificationCardComponent, LibraryItemComponent, PaginationComponent, RouterLink, PopupComponent, DownloadNoticePopupComponent, ChangelogModalComponent]
 })
 export class LibraryComponent implements OnInit, OnDestroy {
 

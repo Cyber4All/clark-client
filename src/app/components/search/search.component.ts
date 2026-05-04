@@ -10,11 +10,15 @@ import { Subject } from 'rxjs';
 import { COPY } from './search.copy';
 import { takeUntil, filter } from 'rxjs/operators';
 import { NavbarService } from 'app/core/client-module/navbar.service';
+import { FormsModule } from '@angular/forms';
+import { ActivateDirective } from '../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
+    selector: 'clark-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss'],
+    standalone: true,
+    imports: [FormsModule, ActivateDirective],
 })
 export class SearchComponent implements OnInit, OnDestroy {
   copy = COPY;

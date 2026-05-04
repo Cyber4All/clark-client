@@ -13,11 +13,11 @@ describe('FooterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+    imports: [FooterComponent],
     providers: [
         { provide: Router, useValue: mockRouter },
         UserService
     ],
-    declarations: [FooterComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

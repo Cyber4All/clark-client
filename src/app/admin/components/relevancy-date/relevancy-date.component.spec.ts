@@ -8,7 +8,7 @@ describe('RelevancyDateComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [RelevancyDateComponent],
+    imports: [RelevancyDateComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

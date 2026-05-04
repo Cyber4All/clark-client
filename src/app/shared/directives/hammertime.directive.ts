@@ -1,7 +1,8 @@
 import { Directive, HostListener, Output, EventEmitter } from '@angular/core';
 
 @Directive({
-  selector: '[hammertime]'
+    selector: '[hammertime]',
+    standalone: true
 })
 export class HammertimeDirective {
 

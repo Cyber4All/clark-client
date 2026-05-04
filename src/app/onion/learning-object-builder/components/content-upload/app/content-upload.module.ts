@@ -19,36 +19,33 @@ import { SharedModule } from '../../../../../shared/shared.module';
 import { UrlManagerComponent } from './upload/url-manager/url-manager.component';
 import { FileUploadStatusComponent } from './upload/file-upload-status/file-upload-status.component';
 import { UrlRowComponent } from './upload/url-manager/url-row/url-row.component';
-import { FileBrowserModule } from '../../../../../shared/modules/filesystem/file-browser.module';
+
 import { NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 
 @NgModule({
-  declarations: [
-    ContentUploadComponent,
-    UploadComponent,
-    FileManagerComponent,
-    UrlManagerComponent,
-    FileUploadStatusComponent,
-    UrlRowComponent
-  ],
-  imports: [
+    declarations: [ContentUploadComponent],
+    imports: [
     CommonModule,
     SharedModule,
-    FileBrowserModule,
     FormsModule,
     ReactiveFormsModule,
     routes,
-    NgxSimpleTextEditorModule
-  ],
-  exports: [
-    RouterModule,
+    NgxSimpleTextEditorModule,
     UploadComponent,
     FileManagerComponent,
-    FileUploadStatusComponent,
     UrlManagerComponent,
+    FileUploadStatusComponent,
     UrlRowComponent
-  ],
-  providers: [FileManagementService],
-  bootstrap: [ContentUploadComponent]
+],
+    exports: [
+        RouterModule,
+        UploadComponent,
+        FileManagerComponent,
+        FileUploadStatusComponent,
+        UrlManagerComponent,
+        UrlRowComponent
+    ],
+    providers: [FileManagementService],
+    bootstrap: [ContentUploadComponent]
 })
 export class ContentUploadModule { }

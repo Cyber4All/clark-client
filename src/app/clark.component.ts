@@ -1,4 +1,4 @@
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
+import { Router, NavigationEnd, ActivatedRoute, RouterOutlet } from '@angular/router';
 import {
   Component,
   OnInit,
@@ -18,41 +18,47 @@ import { CookieAgreementService } from './core/auth-module/cookie-agreement.serv
 import { SubscriptionAgreementService } from './core/utility-module/subscription-agreement.service';
 import { CookieService } from 'ngx-cookie-service';
 import { UtilityService } from './core/utility-module/utility.service';
+import { NgTemplateOutlet, NgIf } from '@angular/common';
+import { MessageComponent } from './components/message/message.component';
+import { PrimaryNavbarComponent } from './components/primary-navbar/primary-navbar.component';
+import { SecondaryNavbarComponent } from './components/secondary-navbar/secondary-navbar.component';
+import { PopupComponent } from './shared/modules/popups/popup.component';
+import { ActivateDirective } from './shared/directives/activate.directive';
+import { CookiesComponent } from './components/cookies/cookies.component';
+import { SubscriptionComponent } from './components/subscription/subscription.component';
+import { ChatbotContainerComponent } from './shared/modules/chatbot/chatbot-container/chatbot-container.component';
+import { MaintenancePageComponent } from './maintenance-page/maintenance-page.component';
 
 @Component({
-  selector: 'clark-root',
-  templateUrl: './clark.component.html',
-  styleUrls: ['./clark.component.scss'],
-  animations: [
-    trigger('banner', [
-      transition(':enter', [
-        style({
-          bottom: '-100px',
-          opacity: 0
-        }),
-        animate(
-          '300ms 1500ms ease-out',
-          style({
-            bottom: '0',
-            opacity: 1
-          })
-        )
-      ]),
-      transition(':leave', [
-        style({
-          bottom: '0',
-          opacity: 1
-        }),
-        animate(
-          '300ms ease-out',
-          style({
-            bottom: '-100px',
-            opacity: 0
-          })
-        )
-      ])
-    ])
-  ]
+    selector: 'clark-root',
+    templateUrl: './clark.component.html',
+    styleUrls: ['./clark.component.scss'],
+    animations: [
+        trigger('banner', [
+            transition(':enter', [
+                style({
+                    bottom: '-100px',
+                    opacity: 0
+                }),
+                animate('300ms 1500ms ease-out', style({
+                    bottom: '0',
+                    opacity: 1
+                }))
+            ]),
+            transition(':leave', [
+                style({
+                    bottom: '0',
+                    opacity: 1
+                }),
+                animate('300ms ease-out', style({
+                    bottom: '-100px',
+                    opacity: 0
+                }))
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [NgTemplateOutlet, MessageComponent, PrimaryNavbarComponent, SecondaryNavbarComponent, RouterOutlet, NgIf, PopupComponent, ActivateDirective, CookiesComponent, SubscriptionComponent, ChatbotContainerComponent, MaintenancePageComponent]
 })
 export class ClarkComponent implements OnInit {
   isSupportedBrowser: boolean;

@@ -1,10 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Mention } from 'app/core/client-module/press-coverage.service';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-media-item',
-  templateUrl: './media-item.component.html',
-  styleUrls: ['./media-item.component.scss']
+    selector: 'clark-media-item',
+    templateUrl: './media-item.component.html',
+    styleUrls: ['./media-item.component.scss'],
+    standalone: true,
+    imports: [ActivateDirective]
 })
 export class MediaItemComponent implements OnInit {
   @Input() mention: Mention;

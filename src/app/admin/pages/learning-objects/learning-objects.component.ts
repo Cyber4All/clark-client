@@ -18,10 +18,30 @@ import { AuthService } from '../../../core/auth-module/auth.service';
 import { Collection } from '../../../core/collection-module/collections.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
+import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
+import { FilterSearchComponent } from '../../components/filter-search/filter-search.component';
+import { NgIf, NgFor } from '@angular/common';
+import { CheckBoxComponent } from '../../../shared/components/checkbox/checkbox.component';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { LearningObjectListItemComponent } from '../../components/learning-object-list-item/learning-object-list-item.component';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 @Component({
-  selector: 'clark-learning-objects',
-  templateUrl: './learning-objects.component.html',
-  styleUrls: ['./learning-objects.component.scss'],
+    selector: 'clark-learning-objects',
+    templateUrl: './learning-objects.component.html',
+    styleUrls: ['./learning-objects.component.scss'],
+    standalone: true,
+    imports: [
+        ContentWrapperComponent,
+        SearchInputComponent,
+        FilterSearchComponent,
+        NgIf,
+        CheckBoxComponent,
+        ActivateDirective,
+        NgFor,
+        LearningObjectListItemComponent,
+        PaginationComponent,
+    ],
 })
 export class LearningObjectsComponent
   implements OnInit, OnDestroy, AfterViewInit {

@@ -27,15 +27,16 @@ declare global {
 }
 
 @Directive({
-  selector: '[ngRecaptcha]',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => RecaptchaDirective),
-      multi: true
-    },
-    UserService
-  ]
+    selector: '[ngRecaptcha]',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => RecaptchaDirective),
+            multi: true
+        },
+        UserService
+    ],
+    standalone: true
 })
 export class RecaptchaDirective
   implements OnInit, AfterViewInit, ControlValueAccessor {

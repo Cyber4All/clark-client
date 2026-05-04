@@ -1,23 +1,28 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { UntypedFormGroup, FormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import { NgClass, NgIf } from '@angular/common';
+import { ErrorBannerComponent } from '../components/error-banner/error-banner.component';
+import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
 
 @Component({
-  selector: 'clark-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss'],
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('1000ms')
-      ])
-    ])
-  ]
+    selector: 'clark-change-password',
+    templateUrl: './change-password.component.html',
+    styleUrls: ['./change-password.component.scss'],
+    animations: [
+        trigger('fadeIn', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('1000ms')
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [NgClass, ErrorBannerComponent, NgIf, FormsModule, InputFieldComponent, RouterLink]
 })
 export class ChangePasswordComponent implements OnInit {
   errorMessage: String;

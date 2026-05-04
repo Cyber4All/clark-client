@@ -6,12 +6,15 @@ import {
   EventEmitter
 } from '@angular/core';
 import { LearningObject } from '@entity';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
-  selector: 'clark-url-row',
-  templateUrl: './url-row.component.html',
-  styleUrls: ['./url-row.component.scss']
+    selector: 'clark-url-row',
+    templateUrl: './url-row.component.html',
+    styleUrls: ['./url-row.component.scss'],
+    standalone: true,
+    imports: [FormsModule]
 })
 
 export class UrlRowComponent implements OnInit {

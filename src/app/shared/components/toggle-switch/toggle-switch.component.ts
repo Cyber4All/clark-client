@@ -1,9 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { ActivateDirective } from '../../directives/activate.directive';
 
 @Component({
-  selector: 'clark-toggle-switch',
-  templateUrl: './toggle-switch.component.html',
-  styleUrls: ['./toggle-switch.component.scss']
+    selector: 'clark-toggle-switch',
+    templateUrl: './toggle-switch.component.html',
+    styleUrls: ['./toggle-switch.component.scss'],
+    standalone: true,
+    imports: [NgClass, ActivateDirective]
 })
 export class ToggleSwitchComponent implements OnInit {
   @Input() state: boolean;

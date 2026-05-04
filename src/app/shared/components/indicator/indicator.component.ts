@@ -1,13 +1,17 @@
 import {
   Component, Input, EventEmitter, Output, OnChanges, SimpleChanges, ViewChildren, ElementRef, ViewChild, AfterViewInit
 } from '@angular/core';
+import { NgFor, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../directives/activate.directive';
 
 const highlightWidth = 6;
 
 @Component({
-  selector: 'clark-indicator',
-  templateUrl: './indicator.component.html',
-  styleUrls: ['./indicator.component.scss']
+    selector: 'clark-indicator',
+    templateUrl: './indicator.component.html',
+    styleUrls: ['./indicator.component.scss'],
+    standalone: true,
+    imports: [NgFor, NgClass, ActivateDirective]
 })
 export class IndicatorComponent implements OnChanges, AfterViewInit {
 

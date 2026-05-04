@@ -14,11 +14,27 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgTemplateOutlet, NgStyle, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-change-author-user-dropdown',
-  templateUrl: './change-author-user-dropdown.component.html',
-  styleUrls: ['./change-author-user-dropdown.component.scss'],
+    selector: 'clark-change-author-user-dropdown',
+    templateUrl: './change-author-user-dropdown.component.html',
+    styleUrls: ['./change-author-user-dropdown.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        NgIf,
+        NgTemplateOutlet,
+        NgStyle,
+        VirtualScrollerModule,
+        NgFor,
+        ActivateDirective,
+        AsyncPipe,
+        TitleCasePipe,
+    ],
 })
 export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
   // array of usernames representing all selected users

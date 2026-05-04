@@ -8,7 +8,7 @@ describe('TopDownloadsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [TopDownloadsComponent],
+    imports: [TopDownloadsComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

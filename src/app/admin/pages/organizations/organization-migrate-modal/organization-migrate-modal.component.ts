@@ -1,11 +1,39 @@
 import { Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStepper, MatStep, MatStepLabel } from '@angular/material/stepper';
 import { Organization } from 'app/core/organization-module/organization.types';
+import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatFormField, MatLabel, MatPrefix } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
+import { MatIcon } from '@angular/material/icon';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'clark-organization-migrate-modal',
     templateUrl: './organization-migrate-modal.component.html',
     styleUrls: ['./organization-migrate-modal.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        PopupComponent,
+        MatProgressBar,
+        MatStepper,
+        MatStep,
+        MatStepLabel,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        FormsModule,
+        MatIcon,
+        MatPrefix,
+        NgFor,
+        MatCheckbox,
+        MatButton,
+        TitleCasePipe,
+    ],
 })
 export class OrganizationMigrateModalComponent implements OnChanges {
     @Input() isVisible = false;

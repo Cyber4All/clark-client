@@ -16,22 +16,20 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedModule,
-    RouterModule.forChild(routes)
-  ],
-  declarations: [
-    // root component
-    LibraryComponent,
-    NotificationCardComponent,
-    LibraryItemComponent,
-    PaginationComponent,
-  ],
-  exports: [
-    PaginationComponent,
-    RouterModule,
-    LibraryItemComponent
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        RouterModule.forChild(routes),
+        // root component
+        LibraryComponent,
+        NotificationCardComponent,
+        LibraryItemComponent,
+        PaginationComponent
+    ],
+    exports: [
+        PaginationComponent,
+        RouterModule,
+        LibraryItemComponent
+    ]
 })
 export class LibraryModule { }

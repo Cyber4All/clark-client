@@ -1,10 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-help-back-btn',
-  templateUrl: './help-back-btn.component.html',
-  styleUrls: ['./help-back-btn.component.scss']
+    selector: 'clark-help-back-btn',
+    templateUrl: './help-back-btn.component.html',
+    styleUrls: ['./help-back-btn.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf, ActivateDirective, AsyncPipe]
 })
 export class HelpBackBtnComponent implements OnInit {
 

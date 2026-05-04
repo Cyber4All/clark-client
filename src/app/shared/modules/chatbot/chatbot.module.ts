@@ -8,12 +8,9 @@ import { MarkdownModule } from 'ngx-markdown';
 import { SharedModule } from 'app/shared/shared.module';
 
 @NgModule({
-  declarations: [
-    ChatbotLauncherComponent,
-    ChatbotWindowComponent,
-    ChatbotContainerComponent,
-  ],
-  imports: [CommonModule, FormsModule, MarkdownModule.forRoot(), SharedModule],
-  exports: [ChatbotContainerComponent],
+    imports: [CommonModule, FormsModule, MarkdownModule.forRoot(), SharedModule, ChatbotLauncherComponent,
+        ChatbotWindowComponent,
+        ChatbotContainerComponent],
+    exports: [ChatbotContainerComponent],
 })
 export class ChatbotModule { }

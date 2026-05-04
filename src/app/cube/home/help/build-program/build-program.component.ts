@@ -6,58 +6,63 @@ import { GuidelineService } from 'app/core/standard-guidelines-module/standard-g
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'clark-build-program',
-  templateUrl: './build-program.component.html',
-  styleUrls: ['./build-program.component.scss'],
-  animations: [
-    trigger('frameworkView', [
-      transition(':enter', [
-        style({
-          transform: 'translateX(-100%)',
-          opacity: 0
-        }),
-        animate('400ms 0ms ease-out', style({
-          transform: 'translateX(0)',
-          opacity: 1
-        }))
-      ]),
-      transition(':leave', [
-        style({
-          position: 'absolute',
-          willChange: 'contents'
-        }),
-        animate('400ms 0ms ease-out', style({
-          willChange: 'contents',
-          transform: 'translateX(-100%)',
-        }))
-      ])
-    ]),
-    trigger('guidelineView', [
-      transition(':enter', [
-        style({
-          transform: 'translateX(100%)',
-          opacity: 0
-        }),
-        animate('400ms 0ms ease-out', style({
-          transform: 'translateX(0)',
-          opacity: 1
-        }))
-      ]),
-      transition(':leave', [
-        style({
-          position: 'absolute',
-          willChange: 'contents'
-        }),
-        animate('400ms 0ms ease-out', style({
-          willChange: 'contents',
-          transform: 'translateX(100%)',
-          opacity: 0
-        }))
-      ])
-    ])
-  ]
+    selector: 'clark-build-program',
+    templateUrl: './build-program.component.html',
+    styleUrls: ['./build-program.component.scss'],
+    animations: [
+        trigger('frameworkView', [
+            transition(':enter', [
+                style({
+                    transform: 'translateX(-100%)',
+                    opacity: 0
+                }),
+                animate('400ms 0ms ease-out', style({
+                    transform: 'translateX(0)',
+                    opacity: 1
+                }))
+            ]),
+            transition(':leave', [
+                style({
+                    position: 'absolute',
+                    willChange: 'contents'
+                }),
+                animate('400ms 0ms ease-out', style({
+                    willChange: 'contents',
+                    transform: 'translateX(-100%)',
+                }))
+            ])
+        ]),
+        trigger('guidelineView', [
+            transition(':enter', [
+                style({
+                    transform: 'translateX(100%)',
+                    opacity: 0
+                }),
+                animate('400ms 0ms ease-out', style({
+                    transform: 'translateX(0)',
+                    opacity: 1
+                }))
+            ]),
+            transition(':leave', [
+                style({
+                    position: 'absolute',
+                    willChange: 'contents'
+                }),
+                animate('400ms 0ms ease-out', style({
+                    willChange: 'contents',
+                    transform: 'translateX(100%)',
+                    opacity: 0
+                }))
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [NgIf, NgFor, ActivateDirective, FormsModule, NgClass]
 })
 export class BuildProgramComponent implements OnInit {
   frameworks: FrameworkDocument[];

@@ -12,29 +12,41 @@ import { SubmissionsService } from 'app/core/learning-object-module/submissions/
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { EditorialService } from 'app/core/learning-object-module/editorial.service';
+import { SplashComponent } from './components/splash/splash.component';
+import { NgIf, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../shared/directives/activate.directive';
+import { CarouselComponent } from '../../shared/components/carousel/carousel.component';
+import { ListComponent } from './components/list/list.component';
+import { PopupComponent } from '../../shared/modules/popups/popup.component';
+import { ChangelogModalComponent } from '../../shared/modules/changelogs/changelog-modal/changelog-modal.component';
+import { SidePanelContentComponent } from './components/side-panel-content/side-panel-content.component';
+import { PanelDirective } from '../../shared/modules/side-panel/panel.directive';
+import { SubmitComponent } from '../shared/submit/submit.component';
 
 @Component({
-  selector: 'clark-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  animations: [
-    trigger('dashboardList', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-20px)' }),
-        animate('200ms 400ms ease-out', style({ opacity: 1, transform: 'translateY(-0px)' })),
-      ]),
-    ]),
-    trigger('Loading', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateY(-20px)' }),
-        animate('400ms 500ms ease-out', style({ opacity: 1, transform: 'translateY(-0px)' })),
-      ]),
-      transition(':leave', [
-        style({ opacity: 1, transform: 'translateY(0px)' }),
-        animate('200ms ease-out', style({ opacity: 0, transform: 'translateY(20px)' })),
-      ])
-    ]),
-  ]
+    selector: 'clark-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    animations: [
+        trigger('dashboardList', [
+            transition(':enter', [
+                style({ opacity: 0, transform: 'translateY(-20px)' }),
+                animate('200ms 400ms ease-out', style({ opacity: 1, transform: 'translateY(-0px)' })),
+            ]),
+        ]),
+        trigger('Loading', [
+            transition(':enter', [
+                style({ opacity: 0, transform: 'translateY(-20px)' }),
+                animate('400ms 500ms ease-out', style({ opacity: 1, transform: 'translateY(-0px)' })),
+            ]),
+            transition(':leave', [
+                style({ opacity: 1, transform: 'translateY(0px)' }),
+                animate('200ms ease-out', style({ opacity: 0, transform: 'translateY(20px)' })),
+            ])
+        ]),
+    ],
+    standalone: true,
+    imports: [SplashComponent, NgIf, NgClass, ActivateDirective, CarouselComponent, ListComponent, PopupComponent, ChangelogModalComponent, SidePanelContentComponent, PanelDirective, SubmitComponent]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   lastLocation: NavigationEnd;

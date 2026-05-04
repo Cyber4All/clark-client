@@ -1,9 +1,18 @@
 import { Component, Input } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { ChatbotLauncherComponent } from '../chatbot-launcher/chatbot-launcher.component';
+import { ChatbotWindowComponent } from '../chatbot-window/chatbot-window.component';
 
 @Component({
-  selector: 'clark-chatbot-container',
-  templateUrl: './chatbot-container.component.html',
-  styleUrls: ['./chatbot-container.component.scss'],
+    selector: 'clark-chatbot-container',
+    templateUrl: './chatbot-container.component.html',
+    styleUrls: ['./chatbot-container.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        ChatbotLauncherComponent,
+        ChatbotWindowComponent,
+    ],
 })
 export class ChatbotContainerComponent {
   chatbotState: 'closed' | 'open' | 'minimized' = 'closed';

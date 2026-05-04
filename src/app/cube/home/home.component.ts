@@ -2,27 +2,33 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Blog } from 'app/components/blogs/types/blog';
 import { BlogsComponentService } from 'app/core/utility-module/blogs-component.service';
+import { SplashComponent } from './splash/splash.component';
+import { HelpComponent } from './help/help.component';
+import { MissionComponent } from './mission/mission.component';
+import { LearningObjectInfoComponent } from './learning-object-info/learning-object-info.component';
 
 @Component({
-  selector: 'clark-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  animations: [
-    trigger('blog', [
-      transition(':enter', [
-        style({
-          transform: 'translateY(-100%)'
-        }),
-        animate('300ms 1200ms ease-out', style({
-          transform: 'translateY(0%)'
-        }))
-      ]),
-      transition(':leave', [
-        style({ zIndex: 3 }),
-        animate('300ms ease-out', style({ transform: 'translate3d(0, -100%, 1px)', zIndex: 3 }))
-      ])
-    ])
-  ]
+    selector: 'clark-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    animations: [
+        trigger('blog', [
+            transition(':enter', [
+                style({
+                    transform: 'translateY(-100%)'
+                }),
+                animate('300ms 1200ms ease-out', style({
+                    transform: 'translateY(0%)'
+                }))
+            ]),
+            transition(':leave', [
+                style({ zIndex: 3 }),
+                animate('300ms ease-out', style({ transform: 'translate3d(0, -100%, 1px)', zIndex: 3 }))
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [SplashComponent, HelpComponent, MissionComponent, LearningObjectInfoComponent]
 })
 export class HomeComponent implements OnInit {
 

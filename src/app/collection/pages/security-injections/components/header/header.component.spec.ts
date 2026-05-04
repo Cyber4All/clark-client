@@ -8,7 +8,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [SecurityInjectionsHeaderComponent],
+    imports: [SecurityInjectionsHeaderComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

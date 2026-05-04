@@ -18,10 +18,9 @@ describe('DashboardItemComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [DashboardItemComponent, TipDirective],
     teardown: { destroyAfterEach: false },
     imports: [RouterTestingModule,
-        ContextMenuModule.forRoot()],
+        ContextMenuModule.forRoot(), DashboardItemComponent, TipDirective],
     providers: [
         { provide: AuthService, useValue: { user: new User() } },
         CollectionService,

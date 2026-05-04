@@ -20,10 +20,11 @@ import { Subject } from 'rxjs';
 import { PopupViewerComponent } from './popup-viewer/popup-viewer.component';
 
 @Component({
-  selector: 'clark-popup',
-  template: `
+    selector: 'clark-popup',
+    template: `
     <div class="clark-popup"></div>
-  `
+  `,
+    standalone: true
 })
 export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
   // grab the #popupInner element to be used as the popup body

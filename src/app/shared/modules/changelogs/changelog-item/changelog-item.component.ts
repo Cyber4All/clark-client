@@ -1,11 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { User } from '@entity';
 import { UserService } from 'app/core/user-module/user.service';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-changelog-item',
-  templateUrl: './changelog-item.component.html',
-  styleUrls: ['./changelog-item.component.scss']
+    selector: 'clark-changelog-item',
+    templateUrl: './changelog-item.component.html',
+    styleUrls: ['./changelog-item.component.scss'],
+    standalone: true,
+    imports: [TitleCasePipe]
 })
 export class ChangelogItemComponent implements OnInit {
   user: User;

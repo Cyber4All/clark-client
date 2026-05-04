@@ -1,22 +1,11 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
-import {
-  BOLD_BUTTON,
-  ITALIC_BUTTON,
-  LINK_INPUT,
-  ORDERED_LIST_BUTTON,
-  REDO_BUTTON,
-  REMOVE_FORMAT_BUTTON,
-  UNDERLINE_BUTTON,
-  UNDO_BUTTON,
-  UNORDERED_LIST_BUTTON,
-  SEPARATOR
-} from 'ngx-simple-text-editor';
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BOLD_BUTTON, ITALIC_BUTTON, LINK_INPUT, ORDERED_LIST_BUTTON, REDO_BUTTON, REMOVE_FORMAT_BUTTON, UNDERLINE_BUTTON, UNDO_BUTTON, UNORDERED_LIST_BUTTON, SEPARATOR, NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 import { skip } from 'rxjs/operators';
 
 @Component({
-  selector: 'onion-learning-object-description',
-  template: `
+    selector: 'onion-learning-object-description',
+    template: `
     <div class="description-wrapper">
       <!-- <div id="description-label" class="label">How woud you describe this learning object?
     <span tip="The description is a high level overview of the Learning Object that can be returned in search results">
@@ -32,8 +21,8 @@ import { skip } from 'rxjs/operators';
       </div>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
       textarea {
         padding: 10px 10px 0;
         resize: vertical;
@@ -44,7 +33,13 @@ import { skip } from 'rxjs/operators';
         width: 100%;
       }
     `,
-  ],
+    ],
+    standalone: true,
+    imports: [
+        NgxSimpleTextEditorModule,
+        FormsModule,
+        ReactiveFormsModule,
+    ],
 })
 export class LearningObjectDescriptionComponent implements OnInit {
   @Input() learningObject;

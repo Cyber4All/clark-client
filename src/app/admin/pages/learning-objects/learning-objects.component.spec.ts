@@ -25,9 +25,8 @@ describe('LearningObjectsComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [LearningObjectsComponent],
     teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule],
+    imports: [RouterTestingModule, LearningObjectsComponent],
     providers: [
         ToastrOvenService,
         AuthService,

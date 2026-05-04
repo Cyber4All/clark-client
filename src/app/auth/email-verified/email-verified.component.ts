@@ -1,20 +1,23 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from 'app/core/auth-module/auth.service';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'clark-email-verified',
-  templateUrl: './email-verified.component.html',
-  styleUrls: ['./email-verified.component.scss'],
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('1s', style({ opacity: 1 }))
-      ])
-    ])
-  ]
+    selector: 'clark-email-verified',
+    templateUrl: './email-verified.component.html',
+    styleUrls: ['./email-verified.component.scss'],
+    animations: [
+        trigger('fadeIn', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('1s', style({ opacity: 1 }))
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [NgIf, RouterLink]
 })
 export class EmailVerifiedComponent implements OnInit {
   iconSuccess: Boolean; // what icon to display

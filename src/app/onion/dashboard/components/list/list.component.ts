@@ -1,10 +1,19 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from '@entity';
+import { NgIf, NgFor } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/context-menu/context-menu.component';
+import { CheckBoxComponent } from '../../../../shared/components/checkbox/checkbox.component';
+import { DashboardItemComponent } from '../dashboard-item/dashboard-item.component';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
 
 @Component({
-  selector: 'clark-dashboard-list',
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+    selector: 'clark-dashboard-list',
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.scss'],
+    standalone: true,
+    imports: [NgIf, RouterLink, ActivateDirective, ContextMenuComponent, CheckBoxComponent, NgFor, DashboardItemComponent, PopupComponent]
 })
 export class ListComponent {
   @Input() showOptions: boolean;

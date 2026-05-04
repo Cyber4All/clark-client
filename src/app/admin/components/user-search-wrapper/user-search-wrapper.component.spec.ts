@@ -16,9 +16,8 @@ describe('UserSearchWrapperComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [UserSearchWrapperComponent],
     teardown: { destroyAfterEach: false },
-    imports: [FormsModule],
+    imports: [FormsModule, UserSearchWrapperComponent],
     providers: [AuthService, UserService, ToastrOvenService, provideHttpClient(withInterceptorsFromDi())]
 })
     .compileComponents();

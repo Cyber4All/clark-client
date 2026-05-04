@@ -16,8 +16,9 @@ import { TeleporterDestinationComponent } from './teleporter-destination/telepor
  * This component serves to take content through projection and render it at the document root instead of in it's nested position.
  */
 @Component({
-  selector: 'clark-teleporter',
-  template: ''
+    selector: 'clark-teleporter',
+    template: '',
+    standalone: true
 })
 export class TeleporterComponent implements AfterViewInit, OnDestroy {
   // grab the #teleporterPayload element to be used as the rendered body body

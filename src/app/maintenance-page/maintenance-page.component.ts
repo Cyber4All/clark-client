@@ -1,9 +1,12 @@
 import { Component, AfterViewInit, HostListener } from '@angular/core';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'clark-maintenance-page',
-  templateUrl: './maintenance-page.component.html',
-  styleUrls: ['./maintenance-page.component.scss']
+    selector: 'clark-maintenance-page',
+    templateUrl: './maintenance-page.component.html',
+    styleUrls: ['./maintenance-page.component.scss'],
+    standalone: true,
+    imports: [NgFor]
 })
 export class MaintenancePageComponent implements AfterViewInit {
 
