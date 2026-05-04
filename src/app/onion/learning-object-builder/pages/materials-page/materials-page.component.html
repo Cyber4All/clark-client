@@ -1,9 +1,10 @@
 <clark-column-wrapper>
   <div left>
-    <clark-scaffold
-      *ngIf="learningObject"
-      [learningObject]="learningObject"
-    ></clark-scaffold>
+    @if (learningObject) {
+      <clark-scaffold
+        [learningObject]="learningObject"
+      ></clark-scaffold>
+    }
   </div>
   <div main>
     <!-- upload content here -->
@@ -31,11 +32,13 @@
         <div class="far fa-sticky-note"></div>
       </div>
       <div class="title">
-          Notes on Materials
+        Notes on Materials
       </div>
     </div>
     <div class="note-list">
-      <clark-material-notes *ngFor="let n of notes" [note]="n" class="note"></clark-material-notes>
+      @for (n of notes; track n) {
+        <clark-material-notes [note]="n" class="note"></clark-material-notes>
+      }
     </div>
   </div>
 </clark-column-wrapper>

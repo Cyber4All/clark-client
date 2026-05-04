@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TitleComponent } from '../title/title.component';
-import { NgFor } from '@angular/common';
+
 import { CuratorCardComponent } from './components/curator-card/curator-card.component';
 
 @Component({
@@ -8,7 +8,7 @@ import { CuratorCardComponent } from './components/curator-card/curator-card.com
     templateUrl: './curators.component.html',
     styleUrls: ['./curators.component.scss'],
     standalone: true,
-    imports: [TitleComponent, NgFor, CuratorCardComponent]
+    imports: [TitleComponent, CuratorCardComponent]
 })
 export class Curators502Component implements OnInit {
 

@@ -6,7 +6,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { debounce, takeUntil } from 'rxjs/operators';
 import { Subject, interval } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ErrorBannerComponent } from '../components/error-banner/error-banner.component';
 import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
 
@@ -38,7 +38,7 @@ import { InputFieldComponent } from '../../shared/components/input-field/input-f
         ])
     ],
     standalone: true,
-    imports: [NgClass, ErrorBannerComponent, NgIf, FormsModule, InputFieldComponent]
+    imports: [NgClass, ErrorBannerComponent, FormsModule, InputFieldComponent]
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
   showError: Boolean = false;

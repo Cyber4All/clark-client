@@ -3,18 +3,21 @@
     (navigateBack)="navigateHome()"
     (searchText)="performSearch($event)"
   ></clark-dashboard-splash>
-  <div [@dashboardList] class="dashboard__lists" *ngIf="!loading; else loadingTemplate">
-    <div role="tablist" class="dashboard__tabs">
-      <button
-        class="tabs__item"
-        role="tab"
-        [attr.aria-selected]="!(activeIndex % 2)"
-        aria-controls="draft-objects-list-panel"
-        [ngClass]="{ 'tabs__item--active': !(activeIndex % 2) }"
-        (activate)="(activeIndex % 2) && toggle()"
-      >
-        Draft <span *ngIf="workingLearningObjects">({{ workingLearningObjects.length }})</span>
-    </button>
+  @if (!loading) {
+    <div [@dashboardList] class="dashboard__lists">
+      <div role="tablist" class="dashboard__tabs">
+        <button
+          class="tabs__item"
+          role="tab"
+          [attr.aria-selected]="!(activeIndex % 2)"
+          aria-controls="draft-objects-list-panel"
+          [ngClass]="{ 'tabs__item--active': !(activeIndex % 2) }"
+          (activate)="(activeIndex % 2) && toggle()"
+          >
+          Draft @if (workingLearningObjects) {
+          <span>({{ workingLearningObjects.length }})</span>
+        }
+      </button>
       <button
         class="tabs__item"
         role="tab"
@@ -22,42 +25,41 @@
         aria-controls="released-objects-list-panel"
         [ngClass]="{ 'tabs__item--active': activeIndex % 2 }"
         (activate)="!(activeIndex % 2) && toggle()"
-      >
-        Released <span *ngIf="releasedLearningObjects">({{ releasedLearningObjects.length }})</span>
+        >
+        Released @if (releasedLearningObjects) {
+        <span>({{ releasedLearningObjects.length }})</span>
+      }
     </button>
-    </div>
-    <clark-carousel [action$]="action$">
-      <ng-template>
-        <div id="draft-objects-list-panel" class="list__wrapper">
-          <clark-dashboard-list
-            title="Draft Learning Objects"
-            [showOptions]="true"
-            [learningObjects]="workingLearningObjects"
-            (applyFilters)="applyFilters($event)"
-            (cancelCollectionSubmission)="cancelSubmission($event)"
-            (openChangelog)="openViewAllChangelogsModal($event)"
-            (submitToCollection)="submitLearningObjectToCollection($event)"
-            (submitHierarchy)="submitHierarchy($event)"
-            (delete)="deleteObjects($event)"
-          ></clark-dashboard-list>
-        </div>
-      </ng-template>
-      <ng-template>
-        <div id="released-objects-list-panel" class="list__wrapper">
-          <clark-dashboard-list
-            title="Released Learning Objects"
-            [showOptions]="false"
-            [learningObjects]="releasedLearningObjects"
-            (openChangelog)="openViewAllChangelogsModal($event)"
-          ></clark-dashboard-list>
-        </div>
-      </ng-template>
-    </clark-carousel>
   </div>
+  <clark-carousel [action$]="action$">
+    <ng-template>
+      <div id="draft-objects-list-panel" class="list__wrapper">
+        <clark-dashboard-list
+          title="Draft Learning Objects"
+          [showOptions]="true"
+          [learningObjects]="workingLearningObjects"
+          (applyFilters)="applyFilters($event)"
+          (cancelCollectionSubmission)="cancelSubmission($event)"
+          (openChangelog)="openViewAllChangelogsModal($event)"
+          (submitToCollection)="submitLearningObjectToCollection($event)"
+          (submitHierarchy)="submitHierarchy($event)"
+          (delete)="deleteObjects($event)"
+        ></clark-dashboard-list>
+      </div>
+    </ng-template>
+    <ng-template>
+      <div id="released-objects-list-panel" class="list__wrapper">
+        <clark-dashboard-list
+          title="Released Learning Objects"
+          [showOptions]="false"
+          [learningObjects]="releasedLearningObjects"
+          (openChangelog)="openViewAllChangelogsModal($event)"
+        ></clark-dashboard-list>
+      </div>
+    </ng-template>
+  </clark-carousel>
 </div>
-
-<!--Loading Template-->
-<ng-template #loadingTemplate>
+} @else {
   <div [@Loading] class="loading-template">
     <div [@Loading] class="loading-template">
       <div class="loading-content">
@@ -66,22 +68,27 @@
       </div>
     </div>
   </div>
-</ng-template>
+}
+</div>
+
+<!--Loading Template-->
 
 <!-- View All Change Logs -->
-<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
-  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
-    <clark-changelog-modal
-      [learningObject] = "changelogLearningObject"
-      [changelogs] = "changelogs ? changelogs[0] : undefined"
-      [loading]="loadingChangelogs"
-    ></clark-changelog-modal>
-  </div>
-</clark-popup>
+@if (openChangelogModal) {
+  <clark-popup [floating]="true" (closed)="closeChangelogsModal()">
+    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+      <clark-changelog-modal
+        [learningObject] = "changelogLearningObject"
+        [changelogs] = "changelogs ? changelogs[0] : undefined"
+        [loading]="loadingChangelogs"
+      ></clark-changelog-modal>
+    </div>
+  </clark-popup>
+}
 
-  <!-- Side panel popout -->
+<!-- Side panel popout -->
+@if (focusedLearningObject) {
   <clark-side-panel-content
-    *ngIf="focusedLearningObject"
     panel
     [contentWidth]="450"
     [options]="{ padding: false }"
@@ -94,14 +101,18 @@
     (cancelRevisionSubmission)="cancelRevisionSubmission($event)"
     (deleteRevision)="deleteRevision($event)"
   ></clark-side-panel-content>
-  
-  <!--Delete Confirmation-->
-  <clark-submit *ngIf="submitToCollection" [learningObject]="currentlySubmittingObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event)"></clark-submit>
+}
 
-  <clark-submit 
-    *ngIf="submitEntireHierarchy" 
+<!--Delete Confirmation-->
+@if (submitToCollection) {
+  <clark-submit [learningObject]="currentlySubmittingObject" [visible]="true" (close)="submitToCollection = false; submitRevisionPromiseHandler($event)"></clark-submit>
+}
+
+@if (submitEntireHierarchy) {
+  <clark-submit
     [learningObject]="currentlySubmittingObject"
     [isHierarchySubmission]="true"
-    [visible]="true" 
+    [visible]="true"
     (close)="submitEntireHierarchy = false; submitRevisionPromiseHandler($event)"
   ></clark-submit>
+}

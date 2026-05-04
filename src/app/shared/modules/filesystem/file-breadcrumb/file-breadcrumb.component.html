@@ -3,11 +3,11 @@
     class="crumb"
     [ngClass]="{ link: paths?.length }"
     (activate)="jumpTo(0, true)"
-    >Files and Folders</button>
-  <ng-container *ngFor="let path of paths; let i = index">
+  >Files and Folders</button>
+  @for (path of paths; track path; let i = $index) {
     <span>
       <i class="far fa-chevron-right arrow"></i>
     </span>
     <button tabindex="0" class="crumb link" (activate)="jumpTo(i)">{{ path }}</button>
-  </ng-container>
+  }
 </div>

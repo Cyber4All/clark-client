@@ -4,7 +4,7 @@ import * as AWS from 'aws-sdk';
 import { writeFileSync } from 'fs';
 import { SplashComponent } from './components/splash/splash.component';
 import { AboutComponent } from './components/about/about.component';
-import { NgFor } from '@angular/common';
+
 import { MediaCardComponent } from './components/media-card/media-card.component';
 import { MediaItemComponent } from './components/media-item/media-item.component';
 
@@ -13,7 +13,7 @@ import { MediaItemComponent } from './components/media-item/media-item.component
     templateUrl: './press.component.html',
     styleUrls: ['./press.component.scss'],
     standalone: true,
-    imports: [SplashComponent, AboutComponent, NgFor, MediaCardComponent, MediaItemComponent]
+    imports: [SplashComponent, AboutComponent, MediaCardComponent, MediaItemComponent]
 })
 export class PressComponent implements OnInit {
 

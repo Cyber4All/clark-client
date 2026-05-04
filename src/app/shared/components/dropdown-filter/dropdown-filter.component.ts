@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { NgIf, NgFor } from '@angular/common';
+
 
 export interface DropdownFilterOption {
   label: string;
@@ -27,7 +27,7 @@ export interface DropdownFilterSelection {
     templateUrl: './dropdown-filter.component.html',
     styleUrls: ['./dropdown-filter.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor],
+    imports: [],
 })
 export class DropdownFilterComponent implements OnChanges {
   @Input() name = '';

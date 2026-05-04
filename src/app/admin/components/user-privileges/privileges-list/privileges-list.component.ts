@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { privilegesListAnimations } from './privileges-list.component.animations';
 import { Subject } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { NgFor, NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 
 @Component({
@@ -11,7 +11,7 @@ import { ActivateDirective } from '../../../../shared/directives/activate.direct
     styleUrls: ['./privileges-list.component.scss'],
     animations: privilegesListAnimations,
     standalone: true,
-    imports: [NgFor, NgIf, ActivateDirective, NgClass]
+    imports: [ActivateDirective, NgClass]
 })
 export class PrivilegesListComponent implements OnInit {
   @Input() privileges: string[][] = [];

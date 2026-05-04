@@ -2,7 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'clark-email-verified',
@@ -17,7 +17,7 @@ import { NgIf } from '@angular/common';
         ])
     ],
     standalone: true,
-    imports: [NgIf, RouterLink]
+    imports: [RouterLink]
 })
 export class EmailVerifiedComponent implements OnInit {
   iconSuccess: Boolean; // what icon to display

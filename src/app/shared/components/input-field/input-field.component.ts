@@ -3,7 +3,7 @@ import { ControlValueAccessor, UntypedFormControl, NG_VALUE_ACCESSOR, FormsModul
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { MatFormField, MatSuffix, MatError, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { NgIf } from '@angular/common';
+
 import { MatIcon } from '@angular/material/icon';
 /**
  * input field for authentication module using
@@ -22,7 +22,7 @@ import { MatIcon } from '@angular/material/icon';
         }
     ],
     standalone: true,
-    imports: [MatFormField, MatInput, FormsModule, ReactiveFormsModule, NgIf, MatIcon, MatSuffix, MatError, MatLabel]
+    imports: [MatFormField, MatInput, FormsModule, ReactiveFormsModule, MatIcon, MatSuffix, MatError, MatLabel]
 })
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
   // true if the field is for a password.

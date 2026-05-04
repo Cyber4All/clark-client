@@ -6,7 +6,7 @@ import { environment } from '@env/environment';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { GoogleTagService } from 'app/cube/home/google-tag.service';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ErrorBannerComponent } from '../components/error-banner/error-banner.component';
 import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
 
@@ -27,7 +27,7 @@ import { InputFieldComponent } from '../../shared/components/input-field/input-f
         ])
     ],
     standalone: true,
-    imports: [NgClass, ErrorBannerComponent, FormsModule, NgIf, InputFieldComponent, RouterLink]
+    imports: [NgClass, ErrorBannerComponent, FormsModule, InputFieldComponent, RouterLink]
 })
 export class LoginComponent implements OnInit {
 

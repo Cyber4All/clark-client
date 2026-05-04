@@ -7,34 +7,46 @@
         class="search__input" placeholder="Search Users" [(ngModel)]="query"
         (input)="userSearchInput$.next($event.currentTarget.value)">
     </div>
-    <div *ngIf="searchResults.length === 0 && !loading" class="container__prompt"><br>
-      <i class="far fa-users prompt__icon"></i>
-      <div class="prompt__text">
-        Your search results will <br> appear here
+    @if (searchResults.length === 0 && !loading) {
+      <div class="container__prompt"><br>
+        <i class="far fa-users prompt__icon"></i>
+        <div class="prompt__text">
+          Your search results will <br> appear here
+        </div>
       </div>
-    </div>
-    <div *ngIf="loading" class="container__prompt__loading">
-      <div class="loading-template">
-        <i class="far fa-spinner-third fa-spin"></i>
-        Loading Reviewers...
+    }
+    @if (loading) {
+      <div class="container__prompt__loading">
+        <div class="loading-template">
+          <i class="far fa-spinner-third fa-spin"></i>
+          Loading Reviewers...
+        </div>
       </div>
-    </div>
+    }
     <ul class="user-dropdown__list">
-      <div *ngIf="searchResults.length > 0 && !loading">
-        <virtual-scroller #searchResultsScroller [items]="searchResults">
-          <li class="user-dropdown__list-item" *ngFor="let u of searchResultsScroller.viewPortItems; let i = index"
-            (activate)="toggleAuthor(user)">
-            <span class="user-dropdown__action"
-              [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': users.includes(u.username)}">
-              <span (activate)="selectUser(i)" *ngIf="!users.includes(u.username)"><i class="fas fa-plus"></i></span>
-              <span *ngIf="users.includes(u.username)"><i class="fas fa-times"></i></span>
-            </span>
-            <span class="user-dropdown__navbar-gravatar"
-              [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
-            {{ u.username }} - {{ u.name | titlecase }} from {{ orgStore.organizationName$(u.organizationId) | async }}
-          </li>
-        </virtual-scroller>
-      </div>
+      @if (searchResults.length > 0 && !loading) {
+        <div>
+          <virtual-scroller #searchResultsScroller [items]="searchResults">
+            @for (u of searchResultsScroller.viewPortItems; track u; let i = $index) {
+              <li class="user-dropdown__list-item"
+                (activate)="toggleAuthor(user)">
+                <span class="user-dropdown__action"
+                  [ngClass]="{'user-dropdown__action--reversed user-dropdown__action--visible': users.includes(u.username)}">
+                  @if (!users.includes(u.username)) {
+                    <span (activate)="selectUser(i)"><i class="fas fa-plus"></i></span>
+                  }
+                  @if (users.includes(u.username)) {
+                    <span><i class="fas fa-times"></i></span>
+                  }
+                </span>
+                <span class="user-dropdown__navbar-gravatar"
+                [ngStyle]="{'background-image': 'url(' + user.getGravatarImage(u.email, 200) + ')'}"></span>
+                {{ u.username }} - {{ u.name | titlecase }} from {{ orgStore.organizationName$(u.organizationId) | async }}
+              </li>
+            }
+          </virtual-scroller>
+        </div>
+      }
     </ul>
   </div>
 </div>

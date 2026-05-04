@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from '@entity';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { UserService } from 'app/core/user-module/user.service';
-import { NgIf, NgFor, NgClass, DatePipe } from '@angular/common';
+import { NgClass, DatePipe } from '@angular/common';
 import { RatingStarsComponent } from '../../../../shared/components/rating-stars/rating-stars.component';
 import { RouterLink } from '@angular/router';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
@@ -15,7 +15,7 @@ import { PopupComponent } from '../../../../shared/modules/popups/popup.componen
     templateUrl: './learning-object-ratings.component.html',
     styleUrls: ['./learning-object-ratings.component.scss'],
     standalone: true,
-    imports: [NgIf, RatingStarsComponent, NgFor, RouterLink, ActivateDirective, NewRatingResponseComponent, NgClass, ReportRatingComponent, PopupComponent, DatePipe]
+    imports: [RatingStarsComponent, RouterLink, ActivateDirective, NewRatingResponseComponent, NgClass, ReportRatingComponent, PopupComponent, DatePipe]
 })
 export class LearningObjectRatingsComponent implements OnInit {
 

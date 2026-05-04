@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 
 @Component({
@@ -7,7 +7,7 @@ import { ActivateDirective } from '../../../../shared/directives/activate.direct
     templateUrl: './pagination.component.html',
     styleUrls: ['./pagination.component.scss'],
     standalone: true,
-    imports: [NgIf, ActivateDirective, NgFor, NgClass]
+    imports: [ActivateDirective, NgClass]
 })
 export class PaginationComponent implements OnInit {
 

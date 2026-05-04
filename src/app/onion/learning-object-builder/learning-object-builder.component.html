@@ -1,43 +1,45 @@
 <div class="learning-object-builder-wrapper" [@builderTransition]="routeState">
   <!-- The ngIf directive on onion-builder-navbar forces the :enter event to fire for router animations and should NOT be removed -->
-  <onion-builder-navbar *ngIf="true" [adminMode]="adminMode"></onion-builder-navbar>
+  @if (true) {
+    <onion-builder-navbar [adminMode]="adminMode"></onion-builder-navbar>
+  }
   <router-outlet #o="outlet"></router-outlet>
 </div>
 
 <!-- NOTE for unkown reasons this animation will break if it attempts to popup while the columns are animating on for the first time. Currently this is a non issue due to timing. -->
 <div [@serviceInteraction]="showServiceInteraction || errorState ? 'open' : 'closed'" class="service-indicator" [ngClass]="{'service-indicator--error': errorState}">
-  <ng-container *ngIf="!serviceInteraction || errorState; else loadingTemplate">
-    <ng-container *ngIf="!errorState; else errorStateTemplate">
+  @if (!serviceInteraction || errorState) {
+    @if (!errorState) {
       <span aria-live="polite">
         <i class="far fa-check"></i>
         Changes saved!
       </span>
-    </ng-container>
-  </ng-container>
+    } @else {
+      <span aria-live="assertive">
+        <i class="fas fa-info-circle"></i>
+        {{ errorMessage }}
+      </span>
+    }
+  } @else {
+    <span aria-live="polite">
+      <i class="fas fa-spinner-third fa-spin"></i>
+      Saving changes...
+    </span>
+  }
 </div>
 
-<ng-template #loadingTemplate>
-  <span aria-live="polite">
-    <i class="fas fa-spinner-third fa-spin"></i>
-    Saving changes...
-  </span>
-</ng-template>
 
-<ng-template #errorStateTemplate>
-  <span aria-live="assertive">
-    <i class="fas fa-info-circle"></i>
-    {{ errorMessage }}
-  </span>
-</ng-template>
 
 <!-- Service Error Popup -->
-<clark-popup *ngIf="showServiceFailureModal">
-  <div #popupInner class="popup-inner" aria-live="assertive">
-    <div class="modal-title">Network error</div>
-    <div class="modal-text">We are currently unable to save your work due to a network related issue. Please check back
+@if (showServiceFailureModal) {
+  <clark-popup>
+    <div #popupInner class="popup-inner" aria-live="assertive">
+      <div class="modal-title">Network error</div>
+      <div class="modal-text">We are currently unable to save your work due to a network related issue. Please check back
       later and try again.</div>
-    <div class="btn-group center">
-      <button class="button good" (activate)="exitBuilder()">Back to Dashboard</button>
+      <div class="btn-group center">
+        <button class="button good" (activate)="exitBuilder()">Back to Dashboard</button>
+      </div>
     </div>
-  </div>
-</clark-popup>
+  </clark-popup>
+}

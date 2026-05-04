@@ -1,7 +1,7 @@
 import {
   Component, Input, EventEmitter, Output, OnChanges, SimpleChanges, ViewChildren, ElementRef, ViewChild, AfterViewInit
 } from '@angular/core';
-import { NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../directives/activate.directive';
 
 const highlightWidth = 6;
@@ -11,7 +11,7 @@ const highlightWidth = 6;
     templateUrl: './indicator.component.html',
     styleUrls: ['./indicator.component.scss'],
     standalone: true,
-    imports: [NgFor, NgClass, ActivateDirective]
+    imports: [NgClass, ActivateDirective]
 })
 export class IndicatorComponent implements OnChanges, AfterViewInit {
 

@@ -5,7 +5,7 @@ import { UserService } from 'app/core/user-module/user.service';
 import { GoogleTagService } from '../../google-tag.service';
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
-import { NgIf, NgFor, SlicePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
+import { SlicePipe, DecimalPipe, TitleCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthorCardComponent } from '../../../../shared/components/author-card/author-card.component';
 
@@ -15,7 +15,7 @@ import { AuthorCardComponent } from '../../../../shared/components/author-card/a
     templateUrl: './learning-objects.component.html',
     styleUrls: ['./learning-objects.component.scss'],
     standalone: true,
-    imports: [NgIf, RouterLink, NgFor, AuthorCardComponent, SlicePipe, DecimalPipe, TitleCasePipe]
+    imports: [RouterLink, AuthorCardComponent, SlicePipe, DecimalPipe, TitleCasePipe]
 })
 export class LearningObjectsComponent implements OnInit {
   featuredObject: LearningObject; // the learning object to display

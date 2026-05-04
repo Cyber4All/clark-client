@@ -36,7 +36,7 @@ import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 import { BOLD_BUTTON, ITALIC_BUTTON, LINK_INPUT, ORDERED_LIST_BUTTON, REDO_BUTTON, REMOVE_FORMAT_BUTTON, UNDERLINE_BUTTON, UNDO_BUTTON, UNORDERED_LIST_BUTTON, SEPARATOR, NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
 import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { ActivateDirective } from '../../../../../../shared/directives/activate.directive';
 import { FileManagerComponent } from '../file-manager/file-manager.component';
 import { UrlManagerComponent } from './url-manager/url-manager.component';
@@ -99,19 +99,18 @@ const config = {
     ],
     standalone: true,
     imports: [
-        NgClass,
-        ActivateDirective,
-        NgIf,
-        FileManagerComponent,
-        UrlManagerComponent,
-        NgxSimpleTextEditorModule,
-        FormsModule,
-        ReactiveFormsModule,
-        FileUploadStatusComponent,
-        TeleporterComponent,
-        PopupComponent,
-        AsyncPipe,
-    ],
+    NgClass,
+    ActivateDirective,
+    FileManagerComponent,
+    UrlManagerComponent,
+    NgxSimpleTextEditorModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FileUploadStatusComponent,
+    TeleporterComponent,
+    PopupComponent,
+    AsyncPipe
+],
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   notesText = new UntypedFormControl('');

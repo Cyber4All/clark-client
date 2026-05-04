@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UtilityService } from 'app/core/utility-module/utility.service';
 import { Observable } from 'rxjs';
 import { Blog } from './types/blog';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'clark-blogs',
@@ -24,7 +24,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
         ])
     ],
     standalone: true,
-    imports: [NgIf, AsyncPipe]
+    imports: [AsyncPipe]
 })
 export class BlogsComponent implements OnInit {
   blogObservable: Observable<Blog[]>; // used for the template

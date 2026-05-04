@@ -7,7 +7,7 @@ import {
     OrganizationLevel,
     OrganizationSector,
 } from 'app/core/organization-module/organization.types';
-import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
@@ -34,26 +34,24 @@ export interface OrganizationFormData {
     styleUrls: ['./organization-edit-modal.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        PopupComponent,
-        FormsModule,
-        MatStepper,
-        MatStep,
-        MatStepLabel,
-        MatFormField,
-        MatLabel,
-        MatInput,
-        MatError,
-        MatSelect,
-        NgFor,
-        MatOption,
-        MatChip,
-        MatIcon,
-        MatChipRemove,
-        MatButton,
-        MatCheckbox,
-        TitleCasePipe,
-    ],
+    PopupComponent,
+    FormsModule,
+    MatStepper,
+    MatStep,
+    MatStepLabel,
+    MatFormField,
+    MatLabel,
+    MatInput,
+    MatError,
+    MatSelect,
+    MatOption,
+    MatChip,
+    MatIcon,
+    MatChipRemove,
+    MatButton,
+    MatCheckbox,
+    TitleCasePipe
+],
 })
 export class OrganizationEditModalComponent implements OnChanges {
     @Input() isVisible = false;

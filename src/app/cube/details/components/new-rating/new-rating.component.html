@@ -1,32 +1,34 @@
 <div
   class="new-rating"
   [ngClass]="{ rated: rating.value && activePanel === 1 }"
->
+  >
   <div
     class="stars-wrapper"
     [ngClass]="{ active: activeHover > -1 }"
     (mouseleave)="reset()"
-  >
+    >
     <div class="empty-stars stars">
-      <div
-        class="star"
-        *ngFor="let item of iterableCount; let i = index"
-        [tip]="tips[i]"
-        tipPosition="bottom"
-      >
-        <div (mouseover)="setHover(i)" (activate)="rate(i + 1)">
-          <i class="fal fa-star"></i>
+      @for (item of iterableCount; track item; let i = $index) {
+        <div
+          class="star"
+          [tip]="tips[i]"
+          tipPosition="bottom"
+          >
+          <div (mouseover)="setHover(i)" (activate)="rate(i + 1)">
+            <i class="fal fa-star"></i>
+          </div>
         </div>
-      </div>
+      }
     </div>
     <div class="full-stars stars">
-      <div
-        *ngFor="let item of iterableCount; let i = index"
-        class="star"
-        [ngClass]="{ show: starShouldShow(i) }"
-      >
-        <i class="fas fa-star"></i>
-      </div>
+      @for (item of iterableCount; track item; let i = $index) {
+        <div
+          class="star"
+          [ngClass]="{ show: starShouldShow(i) }"
+          >
+          <i class="fas fa-star"></i>
+        </div>
+      }
     </div>
   </div>
   <div class="comment-wrapper">
@@ -39,7 +41,7 @@
     <div
       class="character-count"
       [class.over-limit]="(rating.comment?.length || 0) > 512"
-    >
+      >
       {{ rating.comment?.length || 0 }}/512
     </div>
     <div class="btn-group center">
@@ -47,7 +49,7 @@
         class="button good"
         [disabled]="isSubmitDisabled"
         (activate)="submitRating()"
-      >
+        >
         Submit <i class="far fa-arrow-right"></i>
       </button>
       <button class="button neutral" (activate)="cancel()">

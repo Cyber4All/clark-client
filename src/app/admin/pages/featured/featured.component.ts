@@ -14,7 +14,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
-import { NgClass, NgIf, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
 import { DraggableLearningObjectComponent } from '../../components/draggable-learning-object/draggable-learning-object.component';
 import { LearningObjectCardDirective } from '../../../shared/directives/learning-object-card.directive';
@@ -29,21 +29,19 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
     styleUrls: ['./featured.component.scss'],
     standalone: true,
     imports: [
-        ContentWrapperComponent,
-        NgClass,
-        ActivateDirective,
-        NgIf,
-        CdkDropList,
-        NgFor,
-        CdkDrag,
-        DraggableLearningObjectComponent,
-        LearningObjectCardDirective,
-        SearchInputComponent,
-        FilterSearchComponent,
-        DraggableDashboardItemComponent,
-        CdkDragPreview,
-        PaginationComponent,
-    ],
+    ContentWrapperComponent,
+    NgClass,
+    ActivateDirective,
+    CdkDropList,
+    CdkDrag,
+    DraggableLearningObjectComponent,
+    LearningObjectCardDirective,
+    SearchInputComponent,
+    FilterSearchComponent,
+    DraggableDashboardItemComponent,
+    CdkDragPreview,
+    PaginationComponent
+],
 })
 export class FeaturedComponent implements OnInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;

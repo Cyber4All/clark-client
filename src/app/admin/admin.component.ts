@@ -7,7 +7,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { UtilityService } from 'app/core/utility-module/utility.service';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
@@ -19,7 +19,7 @@ import { MatIcon } from '@angular/material/icon';
     templateUrl: './admin.component.html',
     styleUrls: ['./admin.component.scss'],
     standalone: true,
-    imports: [NgIf, SidebarComponent, MatIconButton, MatMenuTrigger, MatIcon, NgClass, RouterOutlet, MatMenu, MatMenuItem, RouterLink]
+    imports: [SidebarComponent, MatIconButton, MatMenuTrigger, MatIcon, NgClass, RouterOutlet, MatMenu, MatMenuItem, RouterLink]
 })
 export class AdminComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();

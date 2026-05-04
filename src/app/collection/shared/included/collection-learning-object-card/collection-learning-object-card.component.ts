@@ -1,13 +1,13 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { NgClass, NgIf, DatePipe } from '@angular/common';
+import { NgClass, DatePipe } from '@angular/common';
 
 @Component({
     selector: 'clark-collection-learning-object-card',
     templateUrl: './collection-learning-object-card.component.html',
     styleUrls: ['./collection-learning-object-card.component.scss'],
     standalone: true,
-    imports: [RouterLink, NgClass, NgIf, DatePipe]
+    imports: [RouterLink, NgClass, DatePipe]
 })
 export class CollectionLearningObjectCardComponent implements OnInit {
   @Input() learnObj = new Input();

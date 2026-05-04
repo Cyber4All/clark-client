@@ -1,12 +1,12 @@
 import { Component, Input } from '@angular/core';
-import { NgFor, NgClass, NgIf, TitleCasePipe } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 
 @Component({
     selector: 'clark-academic-level-card',
     templateUrl: './academic-level-card.component.html',
     styleUrls: ['./academic-level-card.component.scss'],
     standalone: true,
-    imports: [NgFor, NgClass, NgIf, TitleCasePipe]
+    imports: [NgClass, TitleCasePipe]
 })
 
 export class AcademicLevelCardComponent {

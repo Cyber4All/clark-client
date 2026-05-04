@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
-import { NgIf } from '@angular/common';
+
 import { MarkdownComponent } from 'ngx-markdown';
 
 @Component({
@@ -9,7 +9,7 @@ import { MarkdownComponent } from 'ngx-markdown';
     templateUrl: './code-preview.component.html',
     styleUrls: ['./code-preview.component.scss'],
     standalone: true,
-    imports: [NgIf, MarkdownComponent],
+    imports: [MarkdownComponent],
 })
 export class CodePreviewComponent implements OnInit {
   fileName = '';

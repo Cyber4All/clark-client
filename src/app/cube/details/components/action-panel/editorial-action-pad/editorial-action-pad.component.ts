@@ -3,7 +3,7 @@ import { LearningObject } from '@entity';
 import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { EditorialService } from 'app/core/learning-object-module/editorial.service';
-import { NgIf } from '@angular/common';
+
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 import { PopupComponent } from '../../../../../shared/modules/popups/popup.component';
 import { RevisionNoticePopupComponent } from '../../../../../shared/modules/popup-templates/revision-notice-popup/revision-notice-popup.component';
@@ -20,7 +20,7 @@ import { CreateRelevancyPopupComponent } from '../../../../../shared/modules/pop
     templateUrl: './editorial-action-pad.component.html',
     styleUrls: ['./editorial-action-pad.component.scss'],
     standalone: true,
-    imports: [NgIf, ActivateDirective, PopupComponent, RevisionNoticePopupComponent, TaggingBuilderComponent, CreateRelevancyPopupComponent]
+    imports: [ActivateDirective, PopupComponent, RevisionNoticePopupComponent, TaggingBuilderComponent, CreateRelevancyPopupComponent]
 })
 export class EditorialActionPadComponent implements OnInit {
 

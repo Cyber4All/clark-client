@@ -6,10 +6,12 @@
 </div>
 <clark-change-status-modal [shouldShow]="isModalOpen" (closed)="isModalOpen = false" [learningObject]="learningObject"></clark-change-status-modal>
 
-<clark-context-menu *ngIf="isMenuOpen" [anchor]="adminBadgeElement" [offset]="{ top: 5, left: -10 }" (close)="isMenuOpen = false">
-  <div #contextMenu>
-    <ul (activate)="toggleContextMenu($event)">
-      <li (activate)="changeStatus()"><i class="far fa-pencil"></i>Change Status</li>
-    </ul>
-  </div>
-</clark-context-menu>
+@if (isMenuOpen) {
+  <clark-context-menu [anchor]="adminBadgeElement" [offset]="{ top: 5, left: -10 }" (close)="isMenuOpen = false">
+    <div #contextMenu>
+      <ul (activate)="toggleContextMenu($event)">
+        <li (activate)="changeStatus()"><i class="far fa-pencil"></i>Change Status</li>
+      </ul>
+    </div>
+  </clark-context-menu>
+}

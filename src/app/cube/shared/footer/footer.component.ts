@@ -6,7 +6,7 @@ import { COPY } from './footer.copy';
 import { environment } from '../../../../environments/environment';
 import { SubscriptionAgreementService } from '../../../core/utility-module/subscription-agreement.service';
 import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
-import { NgIf } from '@angular/common';
+
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
 
 @Component({
@@ -14,7 +14,7 @@ import { ActivateDirective } from '../../../shared/directives/activate.directive
     templateUrl: './footer.component.html',
     styleUrls: ['./footer.component.scss'],
     standalone: true,
-    imports: [NgIf, RouterLink, ActivateDirective]
+    imports: [RouterLink, ActivateDirective]
 })
 export class FooterComponent implements OnInit {
   copy = COPY;

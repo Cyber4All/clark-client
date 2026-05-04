@@ -18,7 +18,7 @@ import { CookieAgreementService } from './core/auth-module/cookie-agreement.serv
 import { SubscriptionAgreementService } from './core/utility-module/subscription-agreement.service';
 import { CookieService } from 'ngx-cookie-service';
 import { UtilityService } from './core/utility-module/utility.service';
-import { NgTemplateOutlet, NgIf } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { MessageComponent } from './components/message/message.component';
 import { PrimaryNavbarComponent } from './components/primary-navbar/primary-navbar.component';
 import { SecondaryNavbarComponent } from './components/secondary-navbar/secondary-navbar.component';
@@ -58,7 +58,7 @@ import { MaintenancePageComponent } from './maintenance-page/maintenance-page.co
         ])
     ],
     standalone: true,
-    imports: [NgTemplateOutlet, MessageComponent, PrimaryNavbarComponent, SecondaryNavbarComponent, RouterOutlet, NgIf, PopupComponent, ActivateDirective, CookiesComponent, SubscriptionComponent, ChatbotContainerComponent, MaintenancePageComponent]
+    imports: [NgTemplateOutlet, MessageComponent, PrimaryNavbarComponent, SecondaryNavbarComponent, RouterOutlet, PopupComponent, ActivateDirective, CookiesComponent, SubscriptionComponent, ChatbotContainerComponent, MaintenancePageComponent]
 })
 export class ClarkComponent implements OnInit {
   isSupportedBrowser: boolean;

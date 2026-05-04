@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { NgClass, NgIf, DecimalPipe } from '@angular/common';
+import { NgClass, DecimalPipe } from '@angular/common';
 
 export interface CounterStat {
   title: string;
@@ -12,7 +12,7 @@ export interface CounterStat {
     templateUrl: 'counter-block.component.html',
     styleUrls: ['counter-block.component.scss'],
     standalone: true,
-    imports: [NgClass, NgIf, DecimalPipe]
+    imports: [NgClass, DecimalPipe]
 })
 export class CounterBlockComponent implements OnInit {
   @Input() stat: CounterStat;

@@ -17,172 +17,186 @@
       'margin-top': revisedVersion ? '10px' : '0px',
       'margin-bottom': revisedVersion ? '20px' : '30px',
     }"
-  >
-    <div
-      *ngIf="revisedVersion && !adminMode"
-      aria-live="assertive"
-      class="revising-notification"
     >
-      Currently Revising: {{ learningObject?.name }}
-    </div>
-    <div class="top__left" *ngIf="!adminMode">
-      <a (activate)="triggerExitProcess()"
-        ><i class="far fa-arrow-left"></i> Save & Return
-      </a>
-    </div>
-    <div class="top__left" *ngIf="adminMode">
-      <a (activate)="triggerExitProcess(false)"
-        ><i class="far fa-file-archive"></i> Bundle</a
-      >
-    </div>
-    <div class="top__right">
+    @if (revisedVersion && !adminMode) {
       <div
-        *ngIf="
+        aria-live="assertive"
+        class="revising-notification"
+        >
+        Currently Revising: {{ learningObject?.name }}
+      </div>
+    }
+    @if (!adminMode) {
+      <div class="top__left">
+        <a (activate)="triggerExitProcess()"
+          ><i class="far fa-arrow-left"></i> Save & Return
+        </a>
+      </div>
+    }
+    @if (adminMode) {
+      <div class="top__left">
+        <a (activate)="triggerExitProcess(false)"
+          ><i class="far fa-file-archive"></i> Bundle</a
+          >
+        </div>
+      }
+      <div class="top__right">
+        @if (
           !['unreleased', 'rejected'].includes(learningObject?.status) &&
           learningObject?.collection
-        "
-        class="top__collection"
+          ) {
+          <div
+            class="top__collection"
         tip="This learning object has been submitted to the {{
           collection?.name
         }} collection."
-        tipPosition="bottom"
-      >
-        <span>{{ collection.name }}</span>
-        <div
-          *ngIf="collection.hasLogo; else genericCollectionLogoTemplate"
-          class="collection__image"
+            tipPosition="bottom"
+            >
+            <span>{{ collection.name }}</span>
+            @if (collection.hasLogo) {
+              <div
+                class="collection__image"
           [style.background-image]="
             'url(assets/images/collections/' +
             learningObject?.collection +
             '.png)'
           "
-        ></div>
-      </div>
-      <clark-lo-status-indicator
-        [status]="learningObject?.status"
-        [states]="states"
-      ></clark-lo-status-indicator>
-      <ng-container *ngIf="!adminMode; else adminModeTemplate">
-        <button
-          id="submit"
-          class="button"
-          *ngIf="['unreleased'].includes(learningObject?.status)"
+              ></div>
+            } @else {
+              <clark-generic-collection-logo size="small"></clark-generic-collection-logo>
+            }
+          </div>
+        }
+        <clark-lo-status-indicator
+          [status]="learningObject?.status"
+          [states]="states"
+        ></clark-lo-status-indicator>
+        @if (!adminMode) {
+          @if (['unreleased'].includes(learningObject?.status)) {
+            <button
+              id="submit"
+              class="button"
           [ngClass]="{
             good: !submissionError,
             bad: validator.submissionMode && submissionError,
             disabled: !auth.user.emailVerified,
           }"
-          (activate)="auth.user.emailVerified && triggerSubmit()"
-        >
-          <div
-            *ngIf="validator.submissionMode && submissionError"
-            class="button__cancel"
-            tip="Cancel Submission"
-            tipPosition="bottom"
+              (activate)="auth.user.emailVerified && triggerSubmit()"
+              >
+              @if (validator.submissionMode && submissionError) {
+                <div
+                  class="button__cancel"
+                  tip="Cancel Submission"
+                  tipPosition="bottom"
             (activate)="
               $event.stopPropagation(); validator.submissionMode = false
             "
-          >
-            <i class="far fa-times"></i>
-          </div>
-          {{
-            validator.submissionMode && submissionError
+                  >
+                  <i class="far fa-times"></i>
+                </div>
+              }
+              {{
+              validator.submissionMode && submissionError
               ? 'Try Again'
               : 'Submit for review'
-          }}
-          <i class="far fa-arrow-right"></i>
-        </button>
-      </ng-container>
-      <ng-template #adminModeTemplate>
-        <clark-editor-action-panel
-          [learningObject]="learningObject"
-        ></clark-editor-action-panel>
-      </ng-template>
+              }}
+              <i class="far fa-arrow-right"></i>
+            </button>
+          }
+        } @else {
+          <clark-editor-action-panel
+            [learningObject]="learningObject"
+          ></clark-editor-action-panel>
+        }
+      </div>
     </div>
-  </div>
-  <div class="builder-navbar-wrapper__bottom">
-    <div class="builder-navbar-wrapper__bottom-left-menu">
-      <!-- update routerLinkActive with class used to show that link is active -->
-      <ul>
-        <li>
-          <ng-container
-            id="firstTab"
-            aria-label="Basic Information Link"
-            [ngTemplateOutlet]="navItemTemplate"
+    <div class="builder-navbar-wrapper__bottom">
+      <div class="builder-navbar-wrapper__bottom-left-menu">
+        <!-- update routerLinkActive with class used to show that link is active -->
+        <ul>
+          <li>
+            <ng-container
+              id="firstTab"
+              aria-label="Basic Information Link"
+              [ngTemplateOutlet]="navItemTemplate"
             [ngTemplateOutletContext]="{
               disabled: false,
               link: 'info',
               text: 'Basic Information',
             }"
-          ></ng-container>
-        </li>
-        <li>
-          <ng-container
-            aria-label="Learning Outcomes Link"
-            [ngTemplateOutlet]="navItemTemplate"
+            ></ng-container>
+          </li>
+          <li>
+            <ng-container
+              aria-label="Learning Outcomes Link"
+              [ngTemplateOutlet]="navItemTemplate"
             [ngTemplateOutletContext]="{
               disabled: !canRoute('outcomes'),
               link: 'outcomes',
               text: 'Learning Outcomes',
             }"
-          ></ng-container>
-        </li>
-        <li>
-          <ng-container
-            aria-label="Materials Link"
-            [ngTemplateOutlet]="navItemTemplate"
+            ></ng-container>
+          </li>
+          <li>
+            <ng-container
+              aria-label="Materials Link"
+              [ngTemplateOutlet]="navItemTemplate"
             [ngTemplateOutletContext]="{
               disabled: !canRoute('materials'),
               link: 'materials',
               text: 'Materials',
             }"
-          ></ng-container>
-        </li>
-      </ul>
-      <div class="builder-navbar-wrapper__saving-indicator">
-        <span *ngIf="isSaving" class="builder-navbar-wrapper__saving-indicator"
-          >Saving changes . . .
-        </span>
-        <span *ngIf="!isSaving" class="builder-navbar-wrapper__saving-indicator"
-          >All changes saved</span
-        >
+            ></ng-container>
+          </li>
+        </ul>
+        <div class="builder-navbar-wrapper__saving-indicator">
+          @if (isSaving) {
+            <span class="builder-navbar-wrapper__saving-indicator"
+              >Saving changes . . .
+            </span>
+          }
+          @if (!isSaving) {
+            <span class="builder-navbar-wrapper__saving-indicator"
+              >All changes saved</span
+              >
+            }
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-<clark-submit
-  *ngIf="showSubmission"
-  [learningObject]="store.learningObject"
-  [learningOutcomes]="store.outcomes"
-  [visible]="true"
-  (close)="showSubmission = false"
-></clark-submit>
+    @if (showSubmission) {
+      <clark-submit
+        [learningObject]="store.learningObject"
+        [learningOutcomes]="store.outcomes"
+        [visible]="true"
+        (close)="showSubmission = false"
+      ></clark-submit>
+    }
 
-<ng-template
-  #navItemTemplate
-  let-link="link"
-  let-disabled="disabled"
-  let-text="text"
->
-  <a
-    *ngIf="!disabled"
-    [ngClass]="{ new: isNewRoute(link) }"
-    routerLink="{{ link }}"
-    routerLinkActive="active"
-    (activate)="triggerRouteClick(link)"
-    >{{ text }}</a
-  >
-  <a
-    aria-label="Please give this learning object a name before adding outcomes or uploading materials"
-    *ngIf="disabled"
-    class="disabled"
-    tip="Please give this learning object a name before adding outcomes or uploading materials"
-    tipPosition="top"
-    ><i class="fas fa-lock"></i>{{ text }}</a
-  >
-</ng-template>
+    <ng-template
+      #navItemTemplate
+      let-link="link"
+      let-disabled="disabled"
+      let-text="text"
+      >
+      @if (!disabled) {
+        <a
+          [ngClass]="{ new: isNewRoute(link) }"
+          routerLink="{{ link }}"
+          routerLinkActive="active"
+          (activate)="triggerRouteClick(link)"
+          >{{ text }}</a
+          >
+        }
+        @if (disabled) {
+          <a
+            aria-label="Please give this learning object a name before adding outcomes or uploading materials"
+            class="disabled"
+            tip="Please give this learning object a name before adding outcomes or uploading materials"
+            tipPosition="top"
+            ><i class="fas fa-lock"></i>{{ text }}</a
+            >
+          }
+        </ng-template>
 
-<ng-template #genericCollectionLogoTemplate>
-  <clark-generic-collection-logo size="small"></clark-generic-collection-logo>
-</ng-template>

@@ -10,7 +10,7 @@ import { UserService } from '../../../core/user-module/user.service';
 import { LEARNING_OBJECT_ROUTES } from 'app/core/learning-object-module/learning-object/learning-object.routes';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
-import { NgTemplateOutlet, NgClass, NgIf, AsyncPipe, SlicePipe, TitleCasePipe, DatePipe } from '@angular/common';
+import { NgTemplateOutlet, NgClass, AsyncPipe, SlicePipe, TitleCasePipe, DatePipe } from '@angular/common';
 import { TipDirective } from '../../../shared/directives/tip.directive';
 import { ChangeAuthorUserDropdownComponent } from './components/change-author-user-dropdown/change-author-user-dropdown.component';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
@@ -20,7 +20,7 @@ import { ActivateDirective } from '../../../shared/directives/activate.directive
     templateUrl: './change-author.component.html',
     styleUrls: ['./change-author.component.scss'],
     standalone: true,
-    imports: [NgTemplateOutlet, NgClass, TipDirective, NgIf, ChangeAuthorUserDropdownComponent, ActivateDirective, AsyncPipe, SlicePipe, TitleCasePipe, DatePipe]
+    imports: [NgTemplateOutlet, NgClass, TipDirective, ChangeAuthorUserDropdownComponent, ActivateDirective, AsyncPipe, SlicePipe, TitleCasePipe, DatePipe]
 })
 export class ChangeAuthorComponent implements OnInit {
 

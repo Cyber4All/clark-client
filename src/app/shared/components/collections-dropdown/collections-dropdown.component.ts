@@ -2,7 +2,7 @@ import { animate, sequence, style, transition, trigger } from '@angular/animatio
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CollectionService, Collection } from '../../../core/collection-module/collections.service';
 import { ToastrOvenService } from '../../modules/toaster/notification.service';
-import { NgIf, NgFor } from '@angular/common';
+
 import { CollectionCardComponent } from '../collection-card/collection-card.component';
 import { ActivateDirective } from '../../directives/activate.directive';
 
@@ -21,7 +21,7 @@ import { ActivateDirective } from '../../directives/activate.directive';
         ])
     ],
     standalone: true,
-    imports: [NgIf, NgFor, CollectionCardComponent, ActivateDirective]
+    imports: [CollectionCardComponent, ActivateDirective]
 })
 export class CollectionsDropdownComponent implements OnInit {
 

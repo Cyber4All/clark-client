@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
 import { LearningOutcome } from '@entity';
 import { trigger, transition, style, animate, query, animateChild, stagger } from '@angular/animations';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'clark-outcome',
@@ -28,7 +28,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
         ])
     ],
     standalone: true,
-    imports: [ActivateDirective, NgClass, NgFor, NgIf]
+    imports: [ActivateDirective, NgClass]
 })
 export class OutcomeComponent implements OnInit {
 

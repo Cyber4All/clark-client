@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { SuggestedOutcome } from '../standard-outcomes.component';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
 @Component({
@@ -8,7 +8,7 @@ import { ActivateDirective } from '../../../../../shared/directives/activate.dir
     templateUrl: './outcomes-list-item.component.html',
     styleUrls: ['./outcomes-list-item.component.scss'],
     standalone: true,
-    imports: [NgClass, ActivateDirective, NgIf]
+    imports: [NgClass, ActivateDirective]
 })
 export class OutcomesListItemComponent implements OnInit {
   @Input() guideline: SuggestedOutcome;

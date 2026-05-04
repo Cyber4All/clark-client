@@ -1,11 +1,15 @@
-<div *ngIf="topics.length > 0" class="pill-container">
-    <div *ngFor="let item of topics">
-      <button
-        [class.selected]="selectedTopics.includes(item)"
-        (click)="toggleTopics(item)"
-      >
-        {{ item.name }}
-      </button>
-    </div>
+@if (topics.length > 0) {
+  <div class="pill-container">
+    @for (item of topics; track item) {
+      <div>
+        <button
+          [class.selected]="selectedTopics.includes(item)"
+          (click)="toggleTopics(item)"
+          >
+          {{ item.name }}
+        </button>
+      </div>
+    }
   </div>
+}
 

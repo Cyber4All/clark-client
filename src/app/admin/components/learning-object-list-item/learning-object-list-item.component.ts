@@ -21,7 +21,7 @@ import {
 import { EditorialService } from 'app/core/learning-object-module/editorial.service';
 import { Router } from '@angular/router';
 import { CheckBoxComponent } from '../../../shared/components/checkbox/checkbox.component';
-import { NgClass, NgIf, TitleCasePipe, DatePipe } from '@angular/common';
+import { NgClass, TitleCasePipe, DatePipe } from '@angular/common';
 import { TipDirective } from '../../../shared/directives/tip.directive';
 import { MatBadge } from '@angular/material/badge';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
@@ -38,7 +38,7 @@ import { HierarchyBuilderComponent } from '../hierarchy-builder/hierarchy-builde
     styleUrls: ['./learning-object-list-item.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [CheckBoxComponent, NgClass, TipDirective, NgIf, MatBadge, ActivateDirective, ContextMenuComponent, PopupComponent, ChangeCollectionComponent, ChangeAuthorComponent, RelevancyDateComponent, HierarchyBuilderComponent, TitleCasePipe, DatePipe]
+    imports: [CheckBoxComponent, NgClass, TipDirective, MatBadge, ActivateDirective, ContextMenuComponent, PopupComponent, ChangeCollectionComponent, ChangeAuthorComponent, RelevancyDateComponent, HierarchyBuilderComponent, TitleCasePipe, DatePipe]
 })
 export class LearningObjectListItemComponent implements OnChanges {
   @Input()

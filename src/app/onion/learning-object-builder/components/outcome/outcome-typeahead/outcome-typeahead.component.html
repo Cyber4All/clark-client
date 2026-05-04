@@ -1,19 +1,27 @@
 <div class="typeahead">
   <div class="input">
-    <div #verbElement *ngIf="verb" class="verb" [ngClass]="{'bad': !goodVerb}" (activate)="goodVerb && toggleMenu(true, $event)">
-      {{ verb | titlecase }}
-      <span *ngIf="goodVerb">
-        <i class="fas fa-angle-down"></i>
-      </span>
-    </div>
+    @if (verb) {
+      <div #verbElement class="verb" [ngClass]="{'bad': !goodVerb}" (activate)="goodVerb && toggleMenu(true, $event)">
+        {{ verb | titlecase }}
+        @if (goodVerb) {
+          <span>
+            <i class="fas fa-angle-down"></i>
+          </span>
+        }
+      </div>
+    }
     <input [ngClass]="{'withVerb': verb, 'bad': verb && !goodVerb}" placeholder="Outcome text" type="text" (input)="input$.next($event)" [value]="text" />
   </div>
   <!--Verb Dropdown Menu-->
-  <div *ngIf="menu" class="menu" (activate)="$event.stopPropagation()">
-    <ul>
-      <li *ngFor="let v of verbsInSelectedCategory" (activate)="setVerb(v)" [ngClass]="{'selected': verb === v}">
-        {{ v | titlecase }}
-      </li>
-    </ul>
-  </div>
+  @if (menu) {
+    <div class="menu" (activate)="$event.stopPropagation()">
+      <ul>
+        @for (v of verbsInSelectedCategory; track v) {
+          <li (activate)="setVerb(v)" [ngClass]="{'selected': verb === v}">
+            {{ v | titlecase }}
+          </li>
+        }
+      </ul>
+    </div>
+  }
 </div>

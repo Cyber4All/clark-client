@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { NgIf, NgFor, LowerCasePipe, TitleCasePipe } from '@angular/common';
+import { LowerCasePipe, TitleCasePipe } from '@angular/common';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 import { FormsModule } from '@angular/forms';
 
@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
     templateUrl: './report-rating.component.html',
     styleUrls: ['./report-rating.component.scss'],
     standalone: true,
-    imports: [NgIf, ActivateDirective, NgFor, FormsModule, LowerCasePipe, TitleCasePipe]
+    imports: [ActivateDirective, FormsModule, LowerCasePipe, TitleCasePipe]
 })
 export class ReportRatingComponent implements OnInit {
   @Input() subject = 'rating';

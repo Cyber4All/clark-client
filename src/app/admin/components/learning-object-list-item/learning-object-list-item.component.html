@@ -3,14 +3,30 @@
     <clark-checkbox [value]="selected" (action)="toggleSelect($event)"></clark-checkbox>
     <div>
       <div tabindex="0" class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription" [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription" tipPosition="top">
-        <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
-        <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
-        <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
-        <span *ngIf="learningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
-        <span *ngIf="learningObject.status === 'released'" matBadge="R" matBadgeOverlap="false" [matBadgeHidden]="!learningObject.revision" matBadgeColor="warn" matBadgeSize="small"><i class="fas fa-eye"></i></span>
-        <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
-        <span *ngIf="learningObject.status === 'accepted_minor'"><i class="fas fa-check-double"></i></span>
-        <span *ngIf="learningObject.status === 'accepted_major'"><i class="fas fa-check"></i></span>
+        @if (learningObject.status === 'unreleased') {
+          <span><i class="fas fa-eye-slash"></i></span>
+        }
+        @if (learningObject.status === 'waiting') {
+          <span><i class="fas fa-hourglass"></i></span>
+        }
+        @if (learningObject.status === 'review') {
+          <span><i class="fas fa-sync"></i></span>
+        }
+        @if (learningObject.status === 'proofing') {
+          <span><i class="fas fa-shield"></i></span>
+        }
+        @if (learningObject.status === 'released') {
+          <span matBadge="R" matBadgeOverlap="false" [matBadgeHidden]="!learningObject.revision" matBadgeColor="warn" matBadgeSize="small"><i class="fas fa-eye"></i></span>
+        }
+        @if (learningObject.status === 'rejected') {
+          <span><i class="fas fa-ban"></i></span>
+        }
+        @if (learningObject.status === 'accepted_minor') {
+          <span><i class="fas fa-check-double"></i></span>
+        }
+        @if (learningObject.status === 'accepted_major') {
+          <span><i class="fas fa-check"></i></span>
+        }
       </div>
     </div>
     <div>
@@ -32,71 +48,105 @@
   </div>
 </div>
 
-<clark-context-menu *ngIf="meatballOpen" [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="toggleContextMenu()">
-  <div #contextMenu>
-    <ul (activate)="toggleContextMenu($event)">
-      <li *ngIf="learningObject.status !== 'released'" (click)="goToUrl('builder')"><i class="far fa-pencil"></i>Edit</li>
-      <li *ngIf="learningObject.revision && learningObject.revision?.status !== 'unreleased'" (click)="goToUrl('revision builder')"><i class="far fa-pencil"></i>Edit Revision</li>
-      <li (click)="toggleHierarchyBuilder(true)" *ngIf="learningObject.length !== 'nanomodule' && !hasChildren"><i class="fa-lg fal fa-chart-network"></i>Generate Hierarchy</li>
-      <li *ngIf="!hasParents && hasChildren && learningObject.status === 'proofing'" (click)="releaseHierarchy()"><i class="fa fa-level-down"></i>Release Hierarchy</li>
-      <li *ngIf="learningObject.revision?.status === 'unreleased'" (click)="toggleRevisionDelete(true)"><i class="far fa-trash-alt"></i>Delete Revision</li>
-      <li (click)="goToUrl('contact')"><i class="far fa-user"></i>View Author Contact</li>
-      <li (click)="goToUrl('details')"><i class="far fa-cube"></i>View details</li>
-      <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
-      <li *ngIf="hasParents === false" (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
-      <li *ngIf="learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleChangeCollectionModal(true)"><i class="fal fa-exchange"></i>Change Collection</li>
-      <li *ngIf="learningObject.status === 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))" (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
-      <li *ngIf="learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor') || auth.user.accessGroups.includes('mapper') )" (click)="goToUrl('relevancy')"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
-    </ul>
-  </div>
-</clark-context-menu>
-
-<clark-popup *ngIf="showReleasingHierarchyPopup" (closed)="toggleReleasingHierarchy(false)">
-  <div  class="modal-container center" #popupInner>
-    <h1>Releasing Hierarchy...</h1>
-  </div>
-</clark-popup>
-
-<clark-popup *ngIf="showChangeCollection" (closed)="toggleChangeCollectionModal(false)">
-  <div class="modal-container" #popupInner>
-    <clark-change-collection [object]="learningObject" (close)="toggleChangeCollectionModal(false)"></clark-change-collection>
-  </div>
-</clark-popup>
-
-<clark-popup *ngIf="showUnreleaseConfirm" (closed)="toggleUnreleaseConfirm(false)">
-  <div class="modal-container center" #popupInner>
-    <p>Are you sure you want to unrelease this learning object? This action will change the status to proofing.</p>
-    <div class="btn-group center">
-      <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
-      <button (click)="closeUnreleaseModal(false)" class="button good">No</button>
+@if (meatballOpen) {
+  <clark-context-menu [anchor]="meatballMenuElement" [offset]="{ top: 2, left: 10 }" (close)="toggleContextMenu()">
+    <div #contextMenu>
+      <ul (activate)="toggleContextMenu($event)">
+        @if (learningObject.status !== 'released') {
+          <li (click)="goToUrl('builder')"><i class="far fa-pencil"></i>Edit</li>
+        }
+        @if (learningObject.revision && learningObject.revision?.status !== 'unreleased') {
+          <li (click)="goToUrl('revision builder')"><i class="far fa-pencil"></i>Edit Revision</li>
+        }
+        @if (learningObject.length !== 'nanomodule' && !hasChildren) {
+          <li (click)="toggleHierarchyBuilder(true)"><i class="fa-lg fal fa-chart-network"></i>Generate Hierarchy</li>
+        }
+        @if (!hasParents && hasChildren && learningObject.status === 'proofing') {
+          <li (click)="releaseHierarchy()"><i class="fa fa-level-down"></i>Release Hierarchy</li>
+        }
+        @if (learningObject.revision?.status === 'unreleased') {
+          <li (click)="toggleRevisionDelete(true)"><i class="far fa-trash-alt"></i>Delete Revision</li>
+        }
+        <li (click)="goToUrl('contact')"><i class="far fa-user"></i>View Author Contact</li>
+        <li (click)="goToUrl('details')"><i class="far fa-cube"></i>View details</li>
+        <li (click)="toggleRelevancyDate(true)"><i class="fal fa-history"></i>Mark Next Check Date</li>
+        @if (hasParents === false) {
+          <li (click)="toggleChangeAuthorModal(true)"><i class="far fa-user"></i>Change Author</li>
+        }
+        @if (learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))) {
+          <li (click)="toggleChangeCollectionModal(true)"><i class="fal fa-exchange"></i>Change Collection</li>
+        }
+        @if (learningObject.status === 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor'))) {
+          <li (click)="toggleUnreleaseConfirm(true)"><i class="far fa-eye-slash"></i>Unrelease</li>
+        }
+        @if (learningObject.status !== 'released' && (auth.user.accessGroups.includes('admin') || auth.user.accessGroups.includes('editor') || auth.user.accessGroups.includes('mapper') )) {
+          <li (click)="goToUrl('relevancy')"><i class="far fa-puzzle-piece"></i>Map & Tag</li>
+        }
+      </ul>
     </div>
-  </div>
-</clark-popup>
+  </clark-context-menu>
+}
 
-<clark-popup *ngIf="showChangeAuthor" (closed)="toggleChangeAuthorModal(false)">
-  <div class="modal-container" #popupInner>
-    <clark-change-author (close)="toggleChangeAuthorModal(false)" [highlightedLearningObject]="learningObject" [statusDescription]="statusDescription"></clark-change-author>
-  </div>
-</clark-popup>
-
-<clark-popup *ngIf="showRelevancyDate" (closed)="toggleRelevancyDate(false)">
-  <div class="modal-container" #popupInner>
-    <clark-relevancy-date [learningObject]="learningObject" (close)="toggleRelevancyDate(false)"></clark-relevancy-date>
-  </div>
-</clark-popup>
-
-<clark-popup *ngIf="showDeleteRevisionConfirmation" (closed)="toggleRevisionDelete(false)">
-  <div class="modal-container center" #popupInner>
-    <p>Are you sure you want to delete the unreleased revision of this learning object?</p>
-    <div class="btn-group center">
-      <button (click)="deleteRevision()" class="button bad">Yes <i class="far fa-trash-alt"></i></button>
-      <button (click)="toggleRevisionDelete(false)" class="button neutral">Cancel</button>
+@if (showReleasingHierarchyPopup) {
+  <clark-popup (closed)="toggleReleasingHierarchy(false)">
+    <div  class="modal-container center" #popupInner>
+      <h1>Releasing Hierarchy...</h1>
     </div>
-  </div>
-</clark-popup>
+  </clark-popup>
+}
 
-<clark-popup *ngIf="showHierarchyBuilder" (closed)="toggleHierarchyBuilder(false)">
-  <div class="modal-container center" #popupInner style="max-height: 600px; height: 600px">
-    <clark-hierarchy-builder (close)="toggleHierarchyBuilder(false)" [parent]="learningObject"></clark-hierarchy-builder>
-  </div>
-</clark-popup>
+@if (showChangeCollection) {
+  <clark-popup (closed)="toggleChangeCollectionModal(false)">
+    <div class="modal-container" #popupInner>
+      <clark-change-collection [object]="learningObject" (close)="toggleChangeCollectionModal(false)"></clark-change-collection>
+    </div>
+  </clark-popup>
+}
+
+@if (showUnreleaseConfirm) {
+  <clark-popup (closed)="toggleUnreleaseConfirm(false)">
+    <div class="modal-container center" #popupInner>
+      <p>Are you sure you want to unrelease this learning object? This action will change the status to proofing.</p>
+      <div class="btn-group center">
+        <button (click)="closeUnreleaseModal(true)" class="button bad">Yes</button>
+        <button (click)="closeUnreleaseModal(false)" class="button good">No</button>
+      </div>
+    </div>
+  </clark-popup>
+}
+
+@if (showChangeAuthor) {
+  <clark-popup (closed)="toggleChangeAuthorModal(false)">
+    <div class="modal-container" #popupInner>
+      <clark-change-author (close)="toggleChangeAuthorModal(false)" [highlightedLearningObject]="learningObject" [statusDescription]="statusDescription"></clark-change-author>
+    </div>
+  </clark-popup>
+}
+
+@if (showRelevancyDate) {
+  <clark-popup (closed)="toggleRelevancyDate(false)">
+    <div class="modal-container" #popupInner>
+      <clark-relevancy-date [learningObject]="learningObject" (close)="toggleRelevancyDate(false)"></clark-relevancy-date>
+    </div>
+  </clark-popup>
+}
+
+@if (showDeleteRevisionConfirmation) {
+  <clark-popup (closed)="toggleRevisionDelete(false)">
+    <div class="modal-container center" #popupInner>
+      <p>Are you sure you want to delete the unreleased revision of this learning object?</p>
+      <div class="btn-group center">
+        <button (click)="deleteRevision()" class="button bad">Yes <i class="far fa-trash-alt"></i></button>
+        <button (click)="toggleRevisionDelete(false)" class="button neutral">Cancel</button>
+      </div>
+    </div>
+  </clark-popup>
+}
+
+@if (showHierarchyBuilder) {
+  <clark-popup (closed)="toggleHierarchyBuilder(false)">
+    <div class="modal-container center" #popupInner style="max-height: 600px; height: 600px">
+      <clark-hierarchy-builder (close)="toggleHierarchyBuilder(false)" [parent]="learningObject"></clark-hierarchy-builder>
+    </div>
+  </clark-popup>
+}

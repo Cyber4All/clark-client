@@ -3,7 +3,7 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GoogleTagService } from '../../google-tag.service';
 import { LEARNING_OBJECT_INFO_STATES } from '../learning-object-info.component';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/context-menu/context-menu.component';
 
@@ -30,7 +30,7 @@ import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/con
         ])
     ],
     standalone: true,
-    imports: [NgClass, ActivateDirective, NgIf, ContextMenuComponent]
+    imports: [NgClass, ActivateDirective, ContextMenuComponent]
 })
 export class StickyMenuComponent implements OnInit {
   isHighlighted = {

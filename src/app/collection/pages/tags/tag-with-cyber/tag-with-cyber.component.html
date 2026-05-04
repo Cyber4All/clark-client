@@ -2,14 +2,15 @@
   <clark-with-cyber-header></clark-with-cyber-header>
   <clark-with-cyber-about></clark-with-cyber-about>
   <div class="header">Featured Learning Objects</div>
-   <div class="card-container">
-    <clark-learning-object-component 
-      *ngFor="let learningObject of learningObjects" 
-      [learningObject]="learningObject" 
-      learningObjectCard
-      [loading]="false">
-    </clark-learning-object-component>
+  <div class="card-container">
+    @for (learningObject of learningObjects; track learningObject) {
+      <clark-learning-object-component
+        [learningObject]="learningObject"
+        learningObjectCard
+        [loading]="false">
+      </clark-learning-object-component>
+    }
   </div>
   <clark-dashboard-stats [collectionName]= "abvCollection" [displayCharts]="false"></clark-dashboard-stats>
-<div>
-<cube-footer></cube-footer>
+  <div>
+    <cube-footer></cube-footer>

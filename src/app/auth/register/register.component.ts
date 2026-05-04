@@ -24,7 +24,7 @@ import {
 import { Subject, interval } from 'rxjs';
 import { debounce, debounceTime, take, takeUntil } from 'rxjs/operators';
 import { RegistrationProgressComponent } from './components/registration-progress/registration-progress.component';
-import { NgClass, NgSwitch, NgSwitchCase, NgIf, NgTemplateOutlet, NgFor } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ErrorBannerComponent } from '../components/error-banner/error-banner.component';
 import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
 import { TipDirective } from '../../shared/directives/tip.directive';
@@ -70,7 +70,7 @@ const EMAIL_REGEX =
         ])
     ],
     standalone: true,
-    imports: [RegistrationProgressComponent, NgClass, ErrorBannerComponent, FormsModule, NgSwitch, NgSwitchCase, InputFieldComponent, NgIf, NgTemplateOutlet, TipDirective, RouterLink, ReactiveFormsModule, NgFor, MatError, AutofocusDirective, RecaptchaDirective, VirtualScrollerModule]
+    imports: [RegistrationProgressComponent, NgClass, ErrorBannerComponent, FormsModule, InputFieldComponent, NgTemplateOutlet, TipDirective, RouterLink, ReactiveFormsModule, MatError, AutofocusDirective, RecaptchaDirective, VirtualScrollerModule]
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();

@@ -15,7 +15,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
-import { NgIf, NgClass, NgTemplateOutlet, TitleCasePipe, DatePipe } from '@angular/common';
+import { NgClass, NgTemplateOutlet, TitleCasePipe, DatePipe } from '@angular/common';
 import { CheckBoxComponent } from '../../../../shared/components/checkbox/checkbox.component';
 import { TipDirective } from '../../../../shared/directives/tip.directive';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
@@ -29,7 +29,7 @@ import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/con
     styleUrls: ['./dashboard-item.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [NgIf, NgClass, CheckBoxComponent, TipDirective, ActivateDirective, RouterLink, NgTemplateOutlet, ContextMenuComponent, TitleCasePipe, DatePipe]
+    imports: [NgClass, CheckBoxComponent, TipDirective, ActivateDirective, RouterLink, NgTemplateOutlet, ContextMenuComponent, TitleCasePipe, DatePipe]
 })
 export class DashboardItemComponent implements OnInit, OnChanges {
   @Input()

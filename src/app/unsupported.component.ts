@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'clark-unsupported',
@@ -15,7 +15,7 @@ import { NgIf } from '@angular/common';
    }
    `],
     standalone: true,
-    imports: [NgIf]
+    imports: []
 })
 export class UnsupportedComponent {
   isSupported: boolean;

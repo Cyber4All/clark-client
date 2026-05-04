@@ -15,7 +15,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgTemplateOutlet, NgStyle, NgFor, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { NgTemplateOutlet, NgStyle, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
@@ -25,16 +25,14 @@ import { ActivateDirective } from '../../../../../shared/directives/activate.dir
     styleUrls: ['./change-author-user-dropdown.component.scss'],
     standalone: true,
     imports: [
-        FormsModule,
-        NgIf,
-        NgTemplateOutlet,
-        NgStyle,
-        VirtualScrollerModule,
-        NgFor,
-        ActivateDirective,
-        AsyncPipe,
-        TitleCasePipe,
-    ],
+    FormsModule,
+    NgTemplateOutlet,
+    NgStyle,
+    VirtualScrollerModule,
+    ActivateDirective,
+    AsyncPipe,
+    TitleCasePipe
+],
 })
 export class ChangeAuthorUserDropdownComponent implements OnInit, OnDestroy {
   // array of usernames representing all selected users

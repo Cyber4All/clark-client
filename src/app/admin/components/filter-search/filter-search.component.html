@@ -1,112 +1,120 @@
 <div class="filter">
   <div class="filter__container">
     <div class="btn-group to-right">
-      <ng-container *ngIf="adminOrEditor">
+      @if (adminOrEditor) {
         <!-- <button            TEMPORARILY DISABLING RELEVANCY DATE FILTER
-          class="button neutral filters-button"
-          (activate)="toggleRelevancyMenu(true)"
+        class="button neutral filters-button"
+        (activate)="toggleRelevancyMenu(true)"
         >
         <span *ngIf="!startNextCheck">Filter By Relevancy Check Dates</span>
-        </button> -->
-        <button
-          class="button neutral filters-button"
-          [ngClass]="{ active: dateSearchStart || dateSearchEnd }"
-          (activate)="toggleDateSearchMenu(true)"
+      </button> -->
+      <button
+        class="button neutral filters-button"
+        [ngClass]="{ active: dateSearchStart || dateSearchEnd }"
+        (activate)="toggleDateSearchMenu(true)"
         >
-          <div [ngClass]="{ 'indicator': dateSearchStart || dateSearchEnd }"></div>
-          <span *ngIf="dateSearchStart || dateSearchEnd; else elseBlock">{{ getDatesFilterLabel() }}</span>
-          <ng-template #elseBlock>Search By Date Range</ng-template>
-        </button>
-
-        <clark-dropdown-filter
-          name="Topics"
-          [isMultiSelect]="true"
-          [values]="topicFilterOptions"
-          [selectedValues]="selectedTopicValues"
-          (selectedValuesChange)="onTopicFiltersChange($event)"
-        ></clark-dropdown-filter>
-
-        <clark-dropdown-filter
-          name="Collections"
-          [isMultiSelect]="true"
-          [values]="collectionFilterOptions"
-          [selectedValues]="selectedCollectionValues"
-          (selectedValuesChange)="onCollectionFilterChange($event)"
-        ></clark-dropdown-filter>
-      </ng-container>
-      <ng-container *ngIf="showStatus">
-        <clark-dropdown-filter
-          name="Status"
-          [isMultiSelect]="true"
-          [values]="statusFilterOptions"
-          [selectedValues]="selectedStatusValues"
-          (selectedValuesChange)="onStatusFiltersChange($event)"
-        ></clark-dropdown-filter>
-      </ng-container>
+        <div [ngClass]="{ 'indicator': dateSearchStart || dateSearchEnd }"></div>
+        @if (dateSearchStart || dateSearchEnd) {
+          <span>{{ getDatesFilterLabel() }}</span>
+        } @else {
+          Search By Date Range
+        }
+      </button>
+      <clark-dropdown-filter
+        name="Topics"
+        [isMultiSelect]="true"
+        [values]="topicFilterOptions"
+        [selectedValues]="selectedTopicValues"
+        (selectedValuesChange)="onTopicFiltersChange($event)"
+      ></clark-dropdown-filter>
+      <clark-dropdown-filter
+        name="Collections"
+        [isMultiSelect]="true"
+        [values]="collectionFilterOptions"
+        [selectedValues]="selectedCollectionValues"
+        (selectedValuesChange)="onCollectionFilterChange($event)"
+      ></clark-dropdown-filter>
+    }
+    @if (showStatus) {
+      <clark-dropdown-filter
+        name="Status"
+        [isMultiSelect]="true"
+        [values]="statusFilterOptions"
+        [selectedValues]="selectedStatusValues"
+        (selectedValuesChange)="onStatusFiltersChange($event)"
+      ></clark-dropdown-filter>
+    }
+    @if (filters.size || selectedCollectionValues.length || filterTopics.size || dateSearchStart || dateSearchEnd) {
       <clark-clear-filters-button
-        *ngIf="filters.size || selectedCollectionValues.length || filterTopics.size || dateSearchStart || dateSearchEnd"
         class="filters-clear"
         label="Clear Filters"
         (clear)="clearAllFilters()"
       ></clark-clear-filters-button>
+    }
+  </div>
+</div>
+</div>
+
+@if (dateSearchMenuDown) {
+  <clark-popup (closed)="toggleDateSearchMenu(false)">
+    <div class="modal-container" #popupInner>
+      <div class="modal-title">Search by Date Range</div>
+      <div>
+        <br/>
+        @if (dateError) {
+          <p class="error-notice">End date must be after start date</p>
+        }
+      </div>
+      <div class="modal__inner">
+        <mat-form-field class="input">
+          <input matInput [matDatepicker]="startPicker" placeholder="Choose a start date" [(ngModel)]="dateSearchStart">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker startView="year" [startAt]="dateSearchStart"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="input">
+          <input matInput [matDatepicker]="endPicker" placeholder="Choose an end date" [(ngModel)]="dateSearchEnd">
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker startView="year" [startAt]="dateSearchEnd"></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="btn-group select">
+        <div>
+          @if (dateSearchStart || dateSearchEnd) {
+            <button class="button bad" (activate)="clearDateSearch()">Clear</button>
+          }
+        </div>
+        <div>
+          <button class="button neutral" (activate)="toggleDateSearchMenu(false)">Cancel</button>
+          <button class="button good" (activate)="setDateSearch()">Apply</button>
+        </div>
+      </div>
+    </div>
+  </clark-popup>
+}
+
+<!-- <clark-popup *ngIf="relevancyMenuDown" (closed)="toggleRelevancyMenu(false)">
+<div class="modal-container" #popupInner>
+  <div class="modal-title">Filter Learning Objects by Next Check Date</div>
+  <div class="modal__inner">
+    <mat-form-field class="input">
+      <input matInput [matDatepicker]="startPicker" placeholder="Choose a start date" [(ngModel)]="relevancyStart">
+      <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+      <mat-datepicker #startPicker startView="year" [startAt]="relevancyStart"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field class="input">
+      <input matInput [matDatepicker]="endPicker" placeholder="Choose an end date" [(ngModel)]="relevancyEnd">
+      <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+      <mat-datepicker #endPicker startView="year" [startAt]="relevancyEnd"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="btn-group select">
+    <div>
+      <button *ngIf="filterSelected" class="button bad" (activate)="clearDates()">Clear Filter</button>
+    </div>
+    <div>
+      <button class="button neutral" (activate)="toggleRelevancyMenu()">Cancel</button>
+      <button class="button good" (activate)="setDates()">Apply</button>
     </div>
   </div>
 </div>
-
-<clark-popup *ngIf="dateSearchMenuDown" (closed)="toggleDateSearchMenu(false)">
-  <div class="modal-container" #popupInner>
-    <div class="modal-title">Search by Date Range</div>
-    <div>
-      <br/>
-      <p *ngIf="dateError" class="error-notice">End date must be after start date</p>
-    </div>
-    <div class="modal__inner">
-      <mat-form-field class="input">
-        <input matInput [matDatepicker]="startPicker" placeholder="Choose a start date" [(ngModel)]="dateSearchStart">
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker startView="year" [startAt]="dateSearchStart"></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field class="input">
-        <input matInput [matDatepicker]="endPicker" placeholder="Choose an end date" [(ngModel)]="dateSearchEnd">
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker startView="year" [startAt]="dateSearchEnd"></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <div class="btn-group select">
-      <div>
-        <button class="button bad" *ngIf="dateSearchStart || dateSearchEnd" (activate)="clearDateSearch()">Clear</button>
-      </div>
-      <div>
-        <button class="button neutral" (activate)="toggleDateSearchMenu(false)">Cancel</button>
-        <button class="button good" (activate)="setDateSearch()">Apply</button>
-      </div>
-    </div>
-  </div>
-</clark-popup>
-
-<!-- <clark-popup *ngIf="relevancyMenuDown" (closed)="toggleRelevancyMenu(false)">
-  <div class="modal-container" #popupInner>
-    <div class="modal-title">Filter Learning Objects by Next Check Date</div>
-    <div class="modal__inner">
-      <mat-form-field class="input">
-        <input matInput [matDatepicker]="startPicker" placeholder="Choose a start date" [(ngModel)]="relevancyStart">
-        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-        <mat-datepicker #startPicker startView="year" [startAt]="relevancyStart"></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field class="input">
-        <input matInput [matDatepicker]="endPicker" placeholder="Choose an end date" [(ngModel)]="relevancyEnd">
-        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-        <mat-datepicker #endPicker startView="year" [startAt]="relevancyEnd"></mat-datepicker>
-      </mat-form-field>
-    </div>
-    <div class="btn-group select">
-      <div>
-        <button *ngIf="filterSelected" class="button bad" (activate)="clearDates()">Clear Filter</button>
-      </div>
-      <div>
-        <button class="button neutral" (activate)="toggleRelevancyMenu()">Cancel</button>
-        <button class="button good" (activate)="setDates()">Apply</button>
-      </div>
-    </div>
-  </div>
 </clark-popup> -->

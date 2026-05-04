@@ -1,55 +1,74 @@
 <clark-admin-content-wrapper>
   <div page-title>
-    <span *ngIf="activeCollection && activeCollection?.name.length > 0" class="collection-name">{{ activeCollection.name.toUpperCase() }}</span>
+    @if (activeCollection && activeCollection?.name.length > 0) {
+      <span class="collection-name">{{ activeCollection.name.toUpperCase() }}</span>
+    }
     {{ activeCollection && activeCollection.name?.length > 0 ? 'Reviewers' : 'Users' }} {{ users ? '(' + users.length + ')' : '' }}
   </div>
-  <clark-search-input
-    class="users-search"
-    search
-    *ngIf="!activeCollection"
-    [placeholder]="'Search ' + searchBarPlaceholder"
-    [fullWidth]="true"
-    (userInput)="getUsers($event)"
-  ></clark-search-input>
+  @if (!activeCollection) {
+    <clark-search-input
+      class="users-search"
+      search
+      [placeholder]="'Search ' + searchBarPlaceholder"
+      [fullWidth]="true"
+      (userInput)="getUsers($event)"
+    ></clark-search-input>
+  }
 
-  <div *ngIf="activeCollection && activeCollection?.name.length > 0" filter-options>
-    <div class="btn-group to-right">
-      <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : reviewerModal}" (activate)="toggleAddReviewerModal(true)"> Add Reviewer
-          <i class="far fa-user-plus"></i> 
-      </button>
-    </div>
-    <clark-teleporter *ngIf="reviewerModal">
-      <div #teleporterPayload class="reviewer-search-wrapper" (activate)="toggleAddReviewerModal(false)">
-        <div class="reviewer-search" (activate)="$event.stopPropagation()">
-          <clark-user-search-wrapper
-            [users]="users"
-            [collection]="activeCollection"
-            (selectedUser)="addAccessGroupToUser($event)"
-          ></clark-user-search-wrapper>
-        </div>
+  @if (activeCollection && activeCollection?.name.length > 0) {
+    <div filter-options>
+      <div class="btn-group to-right">
+        <button id="add-reviewers" class="button good add reviewers" [ngClass]= "{'shadow add reviewers' : reviewerModal}" (activate)="toggleAddReviewerModal(true)"> Add Reviewer
+          <i class="far fa-user-plus"></i>
+        </button>
       </div>
-    </clark-teleporter>
-  </div>
+      @if (reviewerModal) {
+        <clark-teleporter>
+          <div #teleporterPayload class="reviewer-search-wrapper" (activate)="toggleAddReviewerModal(false)">
+            <div class="reviewer-search" (activate)="$event.stopPropagation()">
+              <clark-user-search-wrapper
+                [users]="users"
+                [collection]="activeCollection"
+                (selectedUser)="addAccessGroupToUser($event)"
+              ></clark-user-search-wrapper>
+            </div>
+          </div>
+        </clark-teleporter>
+      }
+    </div>
+  }
 
   <div class="users" main>
-    <div *ngIf="!loading; else loadingTemplate">
-      <div *ngIf="users?.length; else emptyTemplate" class="user-cards" [@staggerChildren]>
-        <ng-container *ngFor="let user of users;trackBy: trackby">
-          <clark-admin-user-card class="user-cards__card"
-            [user]="user"
-            [reviewer]="authService.hasCuratorAccess() && !authService.hasEditorAccess()"
-            [canEditPrivilege]="authService.hasEditorAccess()"
-            (navigateToUserObjects)="navigateToUserObjects(user.username)"
-            (editPrivileges)="editPrivileges(user)"
-            (removeMember)="removeAccessGroupFromUser(user.username)"
-            [@fade]
-          ></clark-admin-user-card>
-        </ng-container>
+    @if (!loading) {
+      <div>
+        @if (users?.length) {
+          <div class="user-cards" [@staggerChildren]>
+            @for (user of users; track trackby($index, user)) {
+              <clark-admin-user-card class="user-cards__card"
+                [user]="user"
+                [reviewer]="authService.hasCuratorAccess() && !authService.hasEditorAccess()"
+                [canEditPrivilege]="authService.hasEditorAccess()"
+                (navigateToUserObjects)="navigateToUserObjects(user.username)"
+                (editPrivileges)="editPrivileges(user)"
+                (removeMember)="removeAccessGroupFromUser(user.username)"
+                [@fade]
+              ></clark-admin-user-card>
+            }
+          </div>
+        } @else {
+          <ng-template [ngTemplateOutlet]="emptyTemplate"></ng-template>
+        }
       </div>
-    </div>
-    <clark-popup *ngIf="displayRemoveReviewerModal" (closed)="displayRemoveReviewerModal= false">
-      <div #popupInner class="popup-inner">
-        <div class="modal-title">Are You Sure?</div>
+    } @else {
+      <div [@fade] class="loading-template">
+        <i class="far fa-spinner-third fa-spin"></i>
+        Loading Users...
+      </div>
+    }
+    @if (displayRemoveReviewerModal) {
+      <clark-popup (closed)="displayRemoveReviewerModal= false">
+        <div #popupInner class="popup-inner">
+          <div class="modal-title">Are You Sure?</div>
           <div class="modal-text">
             <form class="input-wrapper">
               <div class="header">
@@ -63,20 +82,17 @@
               </div>
             </form>
           </div>
-      </div>
-    </clark-popup>
+        </div>
+      </clark-popup>
+    }
   </div>
 
-  <ng-template #loadingTemplate>
-    <div [@fade] class="loading-template">
-      <i class="far fa-spinner-third fa-spin"></i>
-      Loading Users...
-    </div>
-  </ng-template>
 </clark-admin-content-wrapper>
 
-<clark-popup *ngIf="showPrivileges" (closed)="showPrivileges = false">
-  <div #popupInner class="privileges">
-    <clark-user-privileges [user]="selectedUser"></clark-user-privileges>
-  </div>
-</clark-popup>
+@if (showPrivileges) {
+  <clark-popup (closed)="showPrivileges = false">
+    <div #popupInner class="privileges">
+      <clark-user-privileges [user]="selectedUser"></clark-user-privileges>
+    </div>
+  </clark-popup>
+}

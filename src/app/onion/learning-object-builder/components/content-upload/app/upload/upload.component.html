@@ -14,111 +14,124 @@
       </ul>
     </div>
     <div class="materials-slides">
-      <div
-        [@fadeIn]
-        *ngIf="slide === 1"
-        class="slide slide1"
-        (dragenter)="dragenter($event)"
-        (dragover)="dragover($event)"
-        (drop)="handleDrop($event)"
-      >
-        <div *ngIf="solutionUpload" class="solutions-warning" aria-live="assertive">
-          Note: While the upload of solution files are not prohibited, they
-          won't be included during a Learning Object's download.
-        </div>
-        <onion-file-manager
-          *ngIf="!retrieving; else loadingTemplate"
-          [confirmDeletion]="confirmDeletion$"
-          [files$]="files$"
-          [deletionSuccessful$]="filesDeleted"
-          [folderMeta$]="folderMeta$"
-          (openFilePicker)="openFilePicker($event)"
+      @if (slide === 1) {
+        <div
+          [@fadeIn]
+          class="slide slide1"
+          (dragenter)="dragenter($event)"
+          (dragover)="dragover($event)"
+          (drop)="handleDrop($event)"
+          >
+          @if (solutionUpload) {
+            <div class="solutions-warning" aria-live="assertive">
+              Note: While the upload of solution files are not prohibited, they
+              won't be included during a Learning Object's download.
+            </div>
+          }
+          @if (!retrieving) {
+            <onion-file-manager
+              [confirmDeletion]="confirmDeletion$"
+              [files$]="files$"
+              [deletionSuccessful$]="filesDeleted"
+              [folderMeta$]="folderMeta$"
+              (openFilePicker)="openFilePicker($event)"
           (fileDeleted)="
             handleDeleteGenerator = handleDeletion($event);
             handleDeleteGenerator.next()
           "
-          (fileEdited)="handleEdit($event)"
-          (path)="openPath = $event"
-          (solutionUpload)="handleSolution($event)"
-          (downloadClicked)="handleFileDownload($event)"
-          (packageableToggled)="packageableToggled.emit($event)"
-        ></onion-file-manager>
-      </div>
-      <div [@fadeIn] *ngIf="slide === 2" class="slide slide2">
-        <clark-url-manager
-          [urls]="(learningObject$ | async)?.materials?.urls"
-          (add)="addURL()"
-          (update)="updateUrl($event)"
-          (remove)="removeURL($event)"
-        ></clark-url-manager>
-      </div>
-      <div [@fadeIn] *ngIf="slide === 3" class="slide slide3">
-        <div class="topbar">
-          <div class="slide-title">Notes</div>
+              (fileEdited)="handleEdit($event)"
+              (path)="openPath = $event"
+              (solutionUpload)="handleSolution($event)"
+              (downloadClicked)="handleFileDownload($event)"
+              (packageableToggled)="packageableToggled.emit($event)"
+            ></onion-file-manager>
+          } @else {
+            <div [@fadeIn] class="loading">
+              <i class="far fa-spinner-third fa-spin"></i>
+            </div>
+          }
         </div>
-        <div class="notes">
-          <st-editor
-            [(ngModel)]="notes"
-            [config]="config"
-            (keyup)="updateNotes(notes)"
-            [formControl]="notesText"
-          ></st-editor>
+      }
+      @if (slide === 2) {
+        <div [@fadeIn] class="slide slide2">
+          <clark-url-manager
+            [urls]="(learningObject$ | async)?.materials?.urls"
+            (add)="addURL()"
+            (update)="updateUrl($event)"
+            (remove)="removeURL($event)"
+          ></clark-url-manager>
         </div>
-      </div>
+      }
+      @if (slide === 3) {
+        <div [@fadeIn] class="slide slide3">
+          <div class="topbar">
+            <div class="slide-title">Notes</div>
+          </div>
+          <div class="notes">
+            <st-editor
+              [(ngModel)]="notes"
+              [config]="config"
+              (keyup)="updateNotes(notes)"
+              [formControl]="notesText"
+            ></st-editor>
+          </div>
+        </div>
+      }
     </div>
   </div>
-  <div *ngIf="uploadQueue.length" [@uploadQueue] class="upload-queue">
-    <onion-file-upload-status
-      [totalFiles]="uploadQueue.length"
-      [progress]="uploadProgress"
-    ></onion-file-upload-status>
-  </div>
+  @if (uploadQueue.length) {
+    <div [@uploadQueue] class="upload-queue">
+      <onion-file-upload-status
+        [totalFiles]="uploadQueue.length"
+        [progress]="uploadProgress"
+      ></onion-file-upload-status>
+    </div>
+  }
 
-  <clark-teleporter *ngIf="dragAndDropSupported">
-    <div
-      #teleporterPayload
-      class="uploader"
-      [ngClass]="{ dragging: showDragMenu, dropped: dropped }"
-      (dragenter)="dragenter($event)"
-      (dragover)="dragover($event)"
-      (drop)="handleDrop($event)"
-      (dragLeave)="toggleDrag(false)"
-    >
-      <div class="uploader-content">
-        <div class="uploader-icon">
-          <i class="far fa-arrow-up"></i>
-        </div>
-        <div class="uploader-text">
-          <div>Drop files and folders here</div>
-          to add them to
-          {{ !openPath ? 'your learning object' : "'" + openPath + "'" }}!
+  @if (dragAndDropSupported) {
+    <clark-teleporter>
+      <div
+        #teleporterPayload
+        class="uploader"
+        [ngClass]="{ dragging: showDragMenu, dropped: dropped }"
+        (dragenter)="dragenter($event)"
+        (dragover)="dragover($event)"
+        (drop)="handleDrop($event)"
+        (dragLeave)="toggleDrag(false)"
+        >
+        <div class="uploader-content">
+          <div class="uploader-icon">
+            <i class="far fa-arrow-up"></i>
+          </div>
+          <div class="uploader-text">
+            <div>Drop files and folders here</div>
+            to add them to
+            {{ !openPath ? 'your learning object' : "'" + openPath + "'" }}!
+          </div>
         </div>
       </div>
-    </div>
-  </clark-teleporter>
+    </clark-teleporter>
+  }
 
-  <ng-template #loadingTemplate>
-    <div [@fadeIn] class="loading">
-      <i class="far fa-spinner-third fa-spin"></i>
-    </div>
-  </ng-template>
 </div>
 
 <!-- Delete Confirmation Popup -->
-<clark-popup *ngIf="showDeletePopup" (closed)="cancelDeletion()">
-  <div #popupInner class="popup-inner">
-    <div class="modal-title">Are you sure?</div>
-    <div class="modal-text">You cannot undo this action!</div>
-    <div class="btn-group center">
-      <button class="button bad" (activate)="confirmDeletion()">
-        Yep, do it! <i class="far fa-trash"></i>
-      </button>
-      <button class="button neutral" (activate)="cancelDeletion()">
-        Wait, nevermind! <i class="far fa-ban"></i>
-      </button>
+@if (showDeletePopup) {
+  <clark-popup (closed)="cancelDeletion()">
+    <div #popupInner class="popup-inner">
+      <div class="modal-title">Are you sure?</div>
+      <div class="modal-text">You cannot undo this action!</div>
+      <div class="btn-group center">
+        <button class="button bad" (activate)="confirmDeletion()">
+          Yep, do it! <i class="far fa-trash"></i>
+        </button>
+        <button class="button neutral" (activate)="cancelDeletion()">
+          Wait, nevermind! <i class="far fa-ban"></i>
+        </button>
+      </div>
     </div>
-  </div>
-</clark-popup>
+  </clark-popup>
+}
 
 <input
   class="hidden"
@@ -127,11 +140,11 @@
   (change)="filesPicked(folderInput.files)"
   webkitDirectory
   aria-label="Folder input"
-/>
+  />
 <input
   class="hidden"
   #fileInput
   type="file"
   (change)="filesPicked(fileInput.files)"
   aria-label="File input"
-/>
+  />

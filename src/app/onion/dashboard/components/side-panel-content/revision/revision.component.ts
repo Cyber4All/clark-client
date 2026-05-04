@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { card, nullAnimation } from './revision.animations';
-import { NgIf, NgTemplateOutlet, NgClass, TitleCasePipe, DatePipe } from '@angular/common';
+import { NgTemplateOutlet, NgClass, TitleCasePipe, DatePipe } from '@angular/common';
 import { TipDirective } from '../../../../../shared/directives/tip.directive';
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 import { ContextMenuComponent } from '../../../../../shared/modules/contextmenu/context-menu/context-menu.component';
@@ -14,7 +14,7 @@ import { PopupComponent } from '../../../../../shared/modules/popups/popup.compo
     styleUrls: ['./revision.component.scss'],
     animations: [card, nullAnimation],
     standalone: true,
-    imports: [NgIf, TipDirective, NgTemplateOutlet, NgClass, ActivateDirective, ContextMenuComponent, RouterLink, PopupComponent, TitleCasePipe, DatePipe]
+    imports: [TipDirective, NgTemplateOutlet, NgClass, ActivateDirective, ContextMenuComponent, RouterLink, PopupComponent, TitleCasePipe, DatePipe]
 })
 export class RevisionComponent implements OnChanges {
   @Input() hasRevision: boolean;

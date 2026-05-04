@@ -7,41 +7,41 @@ import {
   HostListener,
 } from '@angular/core';
 import { ModalDirective } from './modal';
-import { NgIf, NgStyle, NgFor, NgClass } from '@angular/common';
+import { NgStyle, NgClass } from '@angular/common';
 import { ClickOutsideModule } from 'ng-click-outside';
 import { ActivateDirective } from '../../directives/activate.directive';
 
 @Component({
     selector: '<clark-contextmenu></clark-contextmenu>',
     template: `
-    <div
-      id="context-popup"
-      *ngIf="show"
-      class="popup "
-      [attr.class]="'popup ' + content.classes"
-      [ngStyle]="{ left: this.x, top: this.y }"
-      (clickOutside)="tryClose($event)"
-    >
-      <ul>
-        <li
-          *ngFor="let l of content['list']"
-          (activate)="!l.checkbox && optionClick($event, l.func)"
-          [ngClass]="l.classes ? l.classes : ''"
+    @if (show) {
+      <div
+        id="context-popup"
+        class="popup "
+        [attr.class]="'popup ' + content.classes"
+        [ngStyle]="{ left: this.x, top: this.y }"
+        (clickOutside)="tryClose($event)"
         >
-          <span [innerHTML]="l.text"></span>
-        </li>
-      </ul>
-    </div>
-  `,
+        <ul>
+          @for (l of content['list']; track l) {
+            <li
+              (activate)="!l.checkbox && optionClick($event, l.func)"
+              [ngClass]="l.classes ? l.classes : ''"
+              >
+              <span [innerHTML]="l.text"></span>
+            </li>
+          }
+        </ul>
+      </div>
+    }
+    `,
     standalone: true,
     imports: [
-        NgIf,
-        NgStyle,
-        ClickOutsideModule,
-        NgFor,
-        NgClass,
-        ActivateDirective,
-    ],
+    NgStyle,
+    ClickOutsideModule,
+    NgClass,
+    ActivateDirective
+],
 })
 export class ContextMenuComponent
   extends ModalDirective

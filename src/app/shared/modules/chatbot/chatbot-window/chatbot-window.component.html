@@ -6,7 +6,7 @@
           src="assets/images/logo.png"
           alt="CLARK AI"
           class="chatbot-header-logo"
-        />
+          />
         <h2 class="chatbot-title">CLARK AI</h2>
         <em>beta</em>
       </div>
@@ -17,7 +17,7 @@
           tabindex="0"
           matTooltip="Give feedback"
           matTooltipPosition="above"
-        >
+          >
           <i class="fa-solid fa-comments"></i>
         </span>
         <span
@@ -28,7 +28,7 @@
           (keydown.space)="minimizeChatbot()"
           matTooltip="Minimize chat window"
           matTooltipPosition="above"
-        >
+          >
           <i class="fa-solid fa-window-minimize"></i>
         </span>
         <span
@@ -39,7 +39,7 @@
           (keydown.space)="newChatSession()"
           matTooltip="Start a new chat"
           matTooltipPosition="above"
-        >
+          >
           <i class="fa-solid fa-plus"></i>
         </span>
       </div>
@@ -50,33 +50,36 @@
     class="chatbot-messages"
     #messagesContainer
     [class.feedback-overlay-active]="showFeedbackOverlay"
-  >
-    <div
-      *ngFor="let message of messages"
-      class="message"
-      [class.message-user]="message.sender === 'user'"
-      [class.message-bot]="message.sender === 'bot'"
     >
-      <div class="message-content">
-        <markdown ngPreserveWhitespaces>
-          {{ message.message }}
-        </markdown>
+    @for (message of messages; track message) {
+      <div
+        class="message"
+        [class.message-user]="message.sender === 'user'"
+        [class.message-bot]="message.sender === 'bot'"
+        >
+        <div class="message-content">
+          <markdown ngPreserveWhitespaces>
+            {{ message.message }}
+          </markdown>
+        </div>
       </div>
-    </div>
+    }
 
-    <div *ngIf="loading" class="message message-bot">
-      <div class="message-content">
-        <span class="loading-dots">
-          <span>.</span><span>.</span><span>.</span>
-        </span>
+    @if (loading) {
+      <div class="message message-bot">
+        <div class="message-content">
+          <span class="loading-dots">
+            <span>.</span><span>.</span><span>.</span>
+          </span>
+        </div>
       </div>
-    </div>
+    }
   </div>
 
   <div
     class="chatbot-input-container"
     [class.feedback-overlay-active]="showFeedbackOverlay"
-  >
+    >
     <textarea
       class="chatbot-input"
       [(ngModel)]="inputMessage"
@@ -90,74 +93,76 @@
       (click)="sendMessage()"
       [disabled]="inputMessage.trim() === ''"
       aria-label="Send message"
-    >
+      >
       <span class="send-icon">→</span>
     </button>
   </div>
 
   <!-- Feedback Overlay -->
-  <div *ngIf="showFeedbackOverlay" class="feedback-overlay-scrim"></div>
-  <div *ngIf="showFeedbackOverlay" class="feedback-overlay">
-    <div class="feedback-card">
-      <h3 class="feedback-title">Rate your CLARK AI beta experience</h3>
-
-      <!-- Star Rating -->
-      <div
-        class="feedback-stars"
-        role="group"
-        aria-label="Rate your experience from 1 to 5 stars"
-      >
-        <button
-          *ngFor="let star of [1, 2, 3, 4, 5]"
-          class="feedback-star"
-          [class.star-selected]="getStarState(star) === 'selected'"
-          [class.star-hover]="getStarState(star) === 'hover'"
-          (click)="setRating(star)"
-          (mouseenter)="setHover(star)"
-          (mouseleave)="clearHover()"
-          (keydown)="onFeedbackKeyDown($event, star)"
-          [attr.aria-label]="star + ' ' + (star === 1 ? 'star' : 'stars')"
-          [attr.aria-pressed]="selectedRating === star"
-          tabindex="0"
-        >
-          <i [class]="'fas fa-star'"></i>
-        </button>
+  @if (showFeedbackOverlay) {
+    <div class="feedback-overlay-scrim"></div>
+  }
+  @if (showFeedbackOverlay) {
+    <div class="feedback-overlay">
+      <div class="feedback-card">
+        <h3 class="feedback-title">Rate your CLARK AI beta experience</h3>
+        <!-- Star Rating -->
+        <div
+          class="feedback-stars"
+          role="group"
+          aria-label="Rate your experience from 1 to 5 stars"
+          >
+          @for (star of [1, 2, 3, 4, 5]; track star) {
+            <button
+              class="feedback-star"
+              [class.star-selected]="getStarState(star) === 'selected'"
+              [class.star-hover]="getStarState(star) === 'hover'"
+              (click)="setRating(star)"
+              (mouseenter)="setHover(star)"
+              (mouseleave)="clearHover()"
+              (keydown)="onFeedbackKeyDown($event, star)"
+              [attr.aria-label]="star + ' ' + (star === 1 ? 'star' : 'stars')"
+              [attr.aria-pressed]="selectedRating === star"
+              tabindex="0"
+              >
+              <i [class]="'fas fa-star'"></i>
+            </button>
+          }
+        </div>
+        <!-- Optional Message -->
+        <div class="feedback-message-group">
+          <textarea
+            class="feedback-textarea"
+            [(ngModel)]="feedbackMessage"
+            (keydown)="onKeyDownFeedbackTextarea($event)"
+            placeholder="Tell us more (optional)"
+            aria-label="Optional feedback message"
+            maxlength="1000"
+          ></textarea>
+          <span class="feedback-char-count"
+            >{{ feedbackMessage.length }}/1000</span
+            >
+          </div>
+          <!-- Actions -->
+          <div class="feedback-actions">
+            <button
+              class="feedback-submit-btn"
+              (click)="submitFeedback()"
+              [disabled]="selectedRating === null || feedbackSubmitting"
+              aria-label="Submit feedback"
+              >
+              Submit
+            </button>
+            <button
+              class="feedback-dismiss-btn"
+              (click)="dismissFeedback()"
+              [disabled]="feedbackSubmitting"
+              aria-label="Dismiss feedback"
+              >
+              Not now
+            </button>
+          </div>
+        </div>
       </div>
-
-      <!-- Optional Message -->
-      <div class="feedback-message-group">
-        <textarea
-          class="feedback-textarea"
-          [(ngModel)]="feedbackMessage"
-          (keydown)="onKeyDownFeedbackTextarea($event)"
-          placeholder="Tell us more (optional)"
-          aria-label="Optional feedback message"
-          maxlength="1000"
-        ></textarea>
-        <span class="feedback-char-count"
-          >{{ feedbackMessage.length }}/1000</span
-        >
-      </div>
-
-      <!-- Actions -->
-      <div class="feedback-actions">
-        <button
-          class="feedback-submit-btn"
-          (click)="submitFeedback()"
-          [disabled]="selectedRating === null || feedbackSubmitting"
-          aria-label="Submit feedback"
-        >
-          Submit
-        </button>
-        <button
-          class="feedback-dismiss-btn"
-          (click)="dismissFeedback()"
-          [disabled]="feedbackSubmitting"
-          aria-label="Dismiss feedback"
-        >
-          Not now
-        </button>
-      </div>
-    </div>
+    }
   </div>
-</div>

@@ -1,114 +1,128 @@
 <section class='library'>
-    <div class='library__splash'>
-        <div class='library__splash-container'>
-            <h1 class='library__splash-container__title'>
-                Your Library
-            </h1>
-        </div>
+  <div class='library__splash'>
+    <div class='library__splash-container'>
+      <h1 class='library__splash-container__title'>
+        Your Library
+      </h1>
     </div>
-  
-    <div class='library__content-container'>
-        <h2 class='library__cards-container__title'>
-            {{ notificationCount }} Update<span *ngIf="notificationCount !== 1">s</span> to Items in Your Library
-        </h2>
-        
-        <div *ngIf='notifications?.length; else emptyNotificationsTemplate' class='library__cards-container'>
-            <div class='notifications-container' hammertime (swipeRight)='setNotifications(firstIndex + 1)' (swipeLeft)='setNotifications(firstIndex - 1)'>
-                <button 
-                    *ngIf='firstIndex > 0' 
-                    class='cards-container__arrow-container left'
-                    (activate)='setNotifications(firstIndex - 1)'>
-                    <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
-                </button>
-                
-                <div [@slider]='lastIndex' class='notifications-container__cards'>
-                    <div *ngFor='let notification of notifications' class='cards-container__card'>
-                        <clark-notification-card
-                            [notification]='notification'
-                            (deleteButtonClicked)='deleteNotification(notification)'
-                            (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'
-                            (detailsButtonClicked)='goToNotification(notification)'>
-                        </clark-notification-card>
-                    </div>
-                </div>
-                
-                <button
-                    *ngIf='lastIndex < localNotifications.length || currentNotificationsPageNumber < lastNotificationsPageNumber'
-                    class='cards-container__arrow-container right'
-                    (activate)='setNotifications(firstIndex + 1)'>
-                    <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>
-                </button>
-            </div>
-        </div>
-        
-        <div class='library__content-container__saved-items'>
-            <h2 class='library-items__title' #savedList>
-                Saved Items
-            </h2>
-            <div *ngIf='libraryItems?.length; else emptyLibraryTemplate' class='library-items__list-items'>
-                <div *ngFor='let libraryItem of libraryItems; let i = index'>
-                    <clark-library-item
-                        [learningObject]='libraryItem.learningObject'
-                        [learningObjectAverageRating]='libraryItem.avgRating'
-                        (downloadButtonClicked)='downloadObject($event, libraryItem.learningObject, i)'
-                        (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemIdToDelete = libraryItem._id;'
-                        (titleClicked)='goToItem(libraryItem.learningObject)'
-                        [currIndex]='currentIndex'
-                        [myIndex]=i
-                    ></clark-library-item>
-                </div>
-            </div>
-            <div class="pagination-container">
-                <clark-pagination
-                [lastPageNumber] = lastPageNumber
-                [currentPageNumber] = currentPageNumber
-                (newPageNumberClicked) = 'changeLibraryItemPage($event)'
-                ></clark-pagination>
-            </div>
-        </div>
-    </div>
-</section>
+  </div>
 
-<ng-template #emptyNotificationsTemplate>
-    <div class='empty-notification-container'>
+  <div class='library__content-container'>
+    <h2 class='library__cards-container__title'>
+      {{ notificationCount }} Update@if (notificationCount !== 1) {
+      <span>s</span>
+      } to Items in Your Library
+    </h2>
+
+    @if (notifications?.length) {
+      <div class='library__cards-container'>
+        <div class='notifications-container' hammertime (swipeRight)='setNotifications(firstIndex + 1)' (swipeLeft)='setNotifications(firstIndex - 1)'>
+          @if (firstIndex > 0) {
+            <button
+              class='cards-container__arrow-container left'
+              (activate)='setNotifications(firstIndex - 1)'>
+              <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
+            </button>
+          }
+          <div [@slider]='lastIndex' class='notifications-container__cards'>
+            @for (notification of notifications; track notification) {
+              <div class='cards-container__card'>
+                <clark-notification-card
+                  [notification]='notification'
+                  (deleteButtonClicked)='deleteNotification(notification)'
+                  (changeLogButtonClicked)='openViewAllChangelogsModal(notification)'
+                  (detailsButtonClicked)='goToNotification(notification)'>
+                </clark-notification-card>
+              </div>
+            }
+          </div>
+          @if (lastIndex < localNotifications.length || currentNotificationsPageNumber < lastNotificationsPageNumber) {
+            <button
+              class='cards-container__arrow-container right'
+              (activate)='setNotifications(firstIndex + 1)'>
+              <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>
+            </button>
+          }
+        </div>
+      </div>
+    } @else {
+      <div class='empty-notification-container'>
         <i class="far fa-4x fa-thumbs-up empty-notification-container__icon"></i>
         <p class='empty-notification-container__message'>All of your saved items are up-to-date!</p>
-    </div>
-</ng-template>
+      </div>
+    }
 
-<ng-template #emptyLibraryTemplate>
-    <div class='empty-notification-container'>
-        <p class='empty-notification-container__message'>No Learning Objects in your Library</p>
-        <a [routerLink]="['/browse']">Browse Learning Objects</a>
-    </div>
-</ng-template>
-
-<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
-  <div style="max-width: 600px;" #popupInner>
-    <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
-  </div>
-</clark-popup>
-
-<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
-  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
-    <clark-changelog-modal
-      [learningObject] = "changelogLearningObject"
-      [changelogs] = "changelogs ? changelogs[0] : undefined"
-      [loading]="loadingChangelogs"
-    ></clark-changelog-modal>
-  </div> 
-</clark-popup>
-
-<clark-popup *ngIf="showDeleteLibraryItemModal" (closed)="toggleDeleteLibraryItemModal(false)">
-    <div style="max-width: 600px;" #popupInner>
-        <div class='delete-library-item-modal'>
-            <h3 class='delete-library-item-modal__header'>Are you sure?</h3>
-            <p class='delete-library-item-modal__warning'>You're deleting an item from your Library!</p>
+    <div class='library__content-container__saved-items'>
+      <h2 class='library-items__title' #savedList>
+        Saved Items
+      </h2>
+      @if (libraryItems?.length) {
+        <div class='library-items__list-items'>
+          @for (libraryItem of libraryItems; track libraryItem; let i = $index) {
             <div>
-                <button aria-label='cancel saved item deletion' class='button neutral' (activate)="toggleDeleteLibraryItemModal(false)">Cancel</button>
-                <button aria-label='delete saved item' class='delete-library-item-modal__button button' (activate)="removeItem()">Delete</button>
+              <clark-library-item
+                [learningObject]='libraryItem.learningObject'
+                [learningObjectAverageRating]='libraryItem.avgRating'
+                (downloadButtonClicked)='downloadObject($event, libraryItem.learningObject, i)'
+                (deleteButtonClicked)='toggleDeleteLibraryItemModal(true); libraryItemIdToDelete = libraryItem._id;'
+                (titleClicked)='goToItem(libraryItem.learningObject)'
+                [currIndex]='currentIndex'
+                [myIndex]=i
+              ></clark-library-item>
             </div>
+          }
         </div>
+      } @else {
+        <div class='empty-notification-container'>
+          <p class='empty-notification-container__message'>No Learning Objects in your Library</p>
+          <a [routerLink]="['/browse']">Browse Learning Objects</a>
+        </div>
+      }
+      <div class="pagination-container">
+        <clark-pagination
+          [lastPageNumber] = lastPageNumber
+          [currentPageNumber] = currentPageNumber
+          (newPageNumberClicked) = 'changeLibraryItemPage($event)'
+        ></clark-pagination>
+      </div>
     </div>
-</clark-popup>
+  </div>
+</section>
+
+
+
+@if (showDownloadModal) {
+  <clark-popup (closed)="toggleDownloadModal(false)">
+    <div style="max-width: 600px;" #popupInner>
+      <clark-download-notice-popup (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
+    </div>
+  </clark-popup>
+}
+
+@if (openChangelogModal) {
+  <clark-popup [floating]="true" (closed)="closeChangelogsModal()">
+    <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
+      <clark-changelog-modal
+        [learningObject] = "changelogLearningObject"
+        [changelogs] = "changelogs ? changelogs[0] : undefined"
+        [loading]="loadingChangelogs"
+      ></clark-changelog-modal>
+    </div>
+  </clark-popup>
+}
+
+@if (showDeleteLibraryItemModal) {
+  <clark-popup (closed)="toggleDeleteLibraryItemModal(false)">
+    <div style="max-width: 600px;" #popupInner>
+      <div class='delete-library-item-modal'>
+        <h3 class='delete-library-item-modal__header'>Are you sure?</h3>
+        <p class='delete-library-item-modal__warning'>You're deleting an item from your Library!</p>
+        <div>
+          <button aria-label='cancel saved item deletion' class='button neutral' (activate)="toggleDeleteLibraryItemModal(false)">Cancel</button>
+          <button aria-label='delete saved item' class='delete-library-item-modal__button button' (activate)="removeItem()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </clark-popup>
+}
 

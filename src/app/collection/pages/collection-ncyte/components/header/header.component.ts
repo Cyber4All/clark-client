@@ -2,13 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
-import { NgIf } from '@angular/common';
+
 @Component({
     selector: 'clark-ncyte-header',
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss'],
     standalone: true,
-    imports: [ActivateDirective, NgIf]
+    imports: [ActivateDirective]
 })
 export class HeaderComponent implements OnInit {
 

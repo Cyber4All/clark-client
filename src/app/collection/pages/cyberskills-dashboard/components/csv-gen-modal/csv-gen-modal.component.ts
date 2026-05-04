@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReportService } from '../../../../../core/report-module/report.service';
 import { ToastrOvenService } from '../../../../../shared/modules/toaster/notification.service';
-import { NgIf } from '@angular/common';
+
 import { PopupComponent } from '../../../../../shared/modules/popups/popup.component';
 import { MatFormField, MatLabel, MatHint, MatSuffix } from '@angular/material/form-field';
 import { MatDateRangeInput, MatStartDate, MatEndDate, MatDatepickerToggle, MatDateRangePicker } from '@angular/material/datepicker';
@@ -13,20 +13,19 @@ import { MatDateRangeInput, MatStartDate, MatEndDate, MatDatepickerToggle, MatDa
     styleUrls: ['./csv-gen-modal.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        PopupComponent,
-        MatFormField,
-        MatLabel,
-        MatDateRangeInput,
-        FormsModule,
-        ReactiveFormsModule,
-        MatStartDate,
-        MatEndDate,
-        MatHint,
-        MatDatepickerToggle,
-        MatSuffix,
-        MatDateRangePicker,
-    ],
+    PopupComponent,
+    MatFormField,
+    MatLabel,
+    MatDateRangeInput,
+    FormsModule,
+    ReactiveFormsModule,
+    MatStartDate,
+    MatEndDate,
+    MatHint,
+    MatDatepickerToggle,
+    MatSuffix,
+    MatDateRangePicker
+],
 })
 export class CsvGenModalComponent implements OnInit {
   @Output() generateCSV = new EventEmitter<{ start: Date; end: Date }>();

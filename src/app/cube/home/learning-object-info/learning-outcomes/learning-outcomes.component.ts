@@ -1,6 +1,6 @@
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
-import { NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'clark-learning-outcomes',
@@ -19,7 +19,7 @@ import { NgFor, NgClass } from '@angular/common';
         ])
     ],
     standalone: true,
-    imports: [NgFor, NgClass]
+    imports: [NgClass]
 })
 export class LearningOutcomesComponent implements OnInit {
 

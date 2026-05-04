@@ -5,7 +5,7 @@ import { AuthService } from '../core/auth-module/auth.service';
 import { trigger, transition, style, animate, animateChild, query, group } from '@angular/animations';
 import { ContextMenuComponent } from '../shared/modules/modals/contextmenu.component';
 import { DialogMenuComponent } from '../shared/modules/modals/dialogmenu.component';
-import { NgIf } from '@angular/common';
+
 import { EmailBannerComponent } from './components/email-banner/email-banner.component';
 
 export const onionTransitions = trigger('onionTransitions', [
@@ -48,7 +48,7 @@ export const onionTransitions = trigger('onionTransitions', [
     styleUrls: ['./onion.component.scss'],
     animations: [onionTransitions],
     standalone: true,
-    imports: [ContextMenuComponent, DialogMenuComponent, NgIf, RouterOutlet, EmailBannerComponent]
+    imports: [ContextMenuComponent, DialogMenuComponent, RouterOutlet, EmailBannerComponent]
 })
 export class OnionComponent implements AfterViewInit {
   activeRoute: string;

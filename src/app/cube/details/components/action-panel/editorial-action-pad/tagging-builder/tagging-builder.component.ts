@@ -5,7 +5,7 @@ import { TopicsService } from 'app/core/learning-object-module/topics/topics.ser
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 import { AlignmentService } from '../services/alignment.service';
 import { BundlingService } from '../../../../../../core/learning-object-module/bundling/bundling.service';
-import { NgStyle, NgIf } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { TopicsComponent } from '../components/topics/topics.component';
 import { TagsComponent } from '../components/tags/tags.component';
 import { GuidelinesComponent } from '../components/guidelines/guidelines.component';
@@ -15,7 +15,7 @@ import { GuidelinesComponent } from '../components/guidelines/guidelines.compone
     templateUrl: './tagging-builder.component.html',
     styleUrls: ['./tagging-builder.component.scss'],
     standalone: true,
-    imports: [NgStyle, NgIf, TopicsComponent, TagsComponent, GuidelinesComponent]
+    imports: [NgStyle, TopicsComponent, TagsComponent, GuidelinesComponent]
 })
 export class TaggingBuilderComponent implements OnInit, AfterViewInit {
 

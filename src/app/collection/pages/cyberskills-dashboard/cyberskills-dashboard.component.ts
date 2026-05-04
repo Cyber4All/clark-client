@@ -8,7 +8,7 @@ import { MetricService } from '../../../core/metric-module/metric.service';
 import { FilterQuery, OrderBy, SortType } from '../../../interfaces/query';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { StatsComponent } from '../collection-ncyte/components/stats/stats.component';
-import { NgIf, NgFor } from '@angular/common';
+
 import { CyberskillsFiltersComponent } from './components/cyberskills-filters/cyberskills-filters.component';
 import { CyberskillsCardComponent } from './components/cyberskills-card/cyberskills-card.component';
 import { PaginationComponent } from '../../../cube/library/components/pagination/pagination.component';
@@ -21,15 +21,13 @@ import { CsvGenModalComponent } from './components/csv-gen-modal/csv-gen-modal.c
     styleUrls: ['./cyberskills-dashboard.component.scss'],
     standalone: true,
     imports: [
-        StatsComponent,
-        NgIf,
-        CyberskillsFiltersComponent,
-        NgFor,
-        CyberskillsCardComponent,
-        PaginationComponent,
-        FooterComponent,
-        CsvGenModalComponent,
-    ],
+    StatsComponent,
+    CyberskillsFiltersComponent,
+    CyberskillsCardComponent,
+    PaginationComponent,
+    FooterComponent,
+    CsvGenModalComponent
+],
 })
 export class CyberskillsDashboardComponent implements OnInit {
   range = new UntypedFormGroup({

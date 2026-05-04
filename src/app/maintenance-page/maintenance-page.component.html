@@ -12,5 +12,7 @@
 </main>
 
 <div class="cogs">
-  <div *ngFor="let c of cogs"><i class="fas fa-cog"></i></div>
+  @for (c of cogs; track c) {
+    <div><i class="fas fa-cog"></i></div>
+  }
 </div>

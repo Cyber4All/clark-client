@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { LearningObject } from '@entity';
-import { NgClass, NgIf, SlicePipe, TitleCasePipe } from '@angular/common';
+import { NgClass, SlicePipe, TitleCasePipe } from '@angular/common';
 import { TipDirective } from '../../../../directives/tip.directive';
 
 @Component({
@@ -8,7 +8,7 @@ import { TipDirective } from '../../../../directives/tip.directive';
     templateUrl: './highlighted-learning-object.component.html',
     styleUrls: ['./highlighted-learning-object.component.scss'],
     standalone: true,
-    imports: [NgClass, TipDirective, NgIf, SlicePipe, TitleCasePipe]
+    imports: [NgClass, TipDirective, SlicePipe, TitleCasePipe]
 })
 export class HighlightedLearningObjectComponent implements OnInit {
 

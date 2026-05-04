@@ -2,7 +2,7 @@ import { animate, query, style, transition, trigger } from '@angular/animations'
 import { Component, OnInit } from '@angular/core';
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 import { GoogleTagService } from '../google-tag.service';
-import { NgIf, NgFor } from '@angular/common';
+
 import { HelpCardComponent } from './components/help-card/help-card.component';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
 import { HelpBackBtnComponent } from './components/help-back-btn/help-back-btn.component';
@@ -83,7 +83,7 @@ import { BuildProgramComponent } from './build-program/build-program.component';
         ]),
     ],
     standalone: true,
-    imports: [NgIf, NgFor, HelpCardComponent, ActivateDirective, HelpBackBtnComponent, TeachNowComponent, BuildProgramComponent]
+    imports: [HelpCardComponent, ActivateDirective, HelpBackBtnComponent, TeachNowComponent, BuildProgramComponent]
 })
 export class HelpComponent implements OnInit {
   helpOptions = [

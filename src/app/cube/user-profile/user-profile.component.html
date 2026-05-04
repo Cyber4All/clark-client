@@ -1,4 +1,4 @@
-<ng-container *ngIf="!loading; else loadingTemplate">
+@if (!loading) {
   <clark-profile-header
     [user]="user"
     [isUser]="isUser">
@@ -8,11 +8,10 @@
     [isUser]="isUser"
     [learningObjects]="allUserContributions">
   </clark-profile-learning-objects>
-</ng-container>
-
-<ng-template #loadingTemplate>
+} @else {
   <div class="details-loading">
     <i class="far fa-spinner-third fa-spin"></i>
     Loading User's Profile...
   </div>
-</ng-template>
+}
+

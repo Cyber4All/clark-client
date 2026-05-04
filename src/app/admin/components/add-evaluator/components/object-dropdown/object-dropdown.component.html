@@ -6,47 +6,79 @@
       placeholder="Search for Learning Objects" [(ngModel)]="query"
       (input)="objectSearchInput$.next($event.currentTarget.value)">
   </div>
-  <ul *ngIf="showDropdown" class="object-dropdown__list">
-    <ng-container
+  @if (showDropdown) {
+    <ul class="object-dropdown__list">
+      <ng-container
       *ngTemplateOutlet="loading && (searchResults && !searchResults.length) ? loadingTemplate : resultsTemplate"></ng-container>
-  </ul>
+    </ul>
+  }
 
-  <div *ngIf="assignedObjects && assignedObjects.length" class="object-details-container">
-    <div class="pill" *ngFor="let learningObject of assignedObjects">
-      {{ (learningObject.name.length > 40) ? (learningObject.name | slice:0:40) + '...' : learningObject.name }}
-      <button (click)="removeSelectedObject(learningObject)" class="pill-button"><i
+  @if (assignedObjects && assignedObjects.length) {
+    <div class="object-details-container">
+      @for (learningObject of assignedObjects; track learningObject) {
+        <div class="pill">
+          {{ (learningObject.name.length > 40) ? (learningObject.name | slice:0:40) + '...' : learningObject.name }}
+          <button (click)="removeSelectedObject(learningObject)" class="pill-button"><i
           class="fa-solid fa-xmark"></i></button>
+        </div>
+      }
     </div>
-  </div>
+  }
 </div>
 
 <ng-template #resultsTemplate>
-  <virtual-scroller *ngIf="searchResults && searchResults.length > 0; else noResultsTemplate " #searchResultsScroller
-    [style.height]="'calcVirtualScrollerHeight()'" [items]="searchResults">
-    <li class="object-dropdown__list-item" *ngFor="let learningObject of searchResultsScroller.viewPortItems"
-      (activate)="addSelectedObject(learningObject)">
-      <div tabindex="0" class="status"
-        [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription"
-        [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription"
-        tipPosition="top">
-        <span *ngIf="learningObject.status === 'unreleased'"><i class="fa-solid fa-eye-slash"></i></span>
-        <span *ngIf="learningObject.status === 'waiting'"><i class="fa-regular fa-hourglass"></i></span>
-        <span *ngIf="learningObject.status === 'review'"><i class="fa-solid fa-arrows-rotate"></i></span>
-        <span *ngIf="learningObject.status === 'proofing'"><i class="fa-solid fa-shield"></i></span>
-        <span *ngIf="learningObject.status === 'released'"><i class="fa-solid fa-eye"></i></span>
-        <span *ngIf="learningObject.status === 'rejected'"><i class="fa-solid fa-ban"></i></span>
-        <span *ngIf="learningObject.status === 'accepted_minor'"><i class="fa-solid fa-check-double"></i></span>
-        <span *ngIf="learningObject.status === 'accepted_major'"><i class="fa-solid fa-check"></i></span>
-      </div>
-      <div class="object-info">
-        <div>{{ (learningObject.name.length > 40) ? (learningObject.name | slice:0:40) + '...' : learningObject.name }}
-        </div>
-        <div>{{ learningObject.length | titlecase }}</div>
-        <div>{{ (learningObject.assigned) ? learningObject.assigned.length : 0 | titlecase }} Evaluator<span
-            *ngIf="learningObject.assigned && learningObject.assigned.length !== 1">s</span></div>
-      </div>
-    </li>
-  </virtual-scroller>
+  @if (searchResults && searchResults.length > 0) {
+    <virtual-scroller #searchResultsScroller
+      [style.height]="'calcVirtualScrollerHeight()'" [items]="searchResults">
+      @for (learningObject of searchResultsScroller.viewPortItems; track learningObject) {
+        <li class="object-dropdown__list-item"
+          (activate)="addSelectedObject(learningObject)">
+          <div tabindex="0" class="status"
+            [attr.aria-label]="'Learning Object Status: ' + learningObject.status + '. ' + statusDescription"
+            [ngClass]="learningObject.status" [tip]="statusDescription" [tipDisabled]="!statusDescription"
+            tipPosition="top">
+            @if (learningObject.status === 'unreleased') {
+              <span><i class="fa-solid fa-eye-slash"></i></span>
+            }
+            @if (learningObject.status === 'waiting') {
+              <span><i class="fa-regular fa-hourglass"></i></span>
+            }
+            @if (learningObject.status === 'review') {
+              <span><i class="fa-solid fa-arrows-rotate"></i></span>
+            }
+            @if (learningObject.status === 'proofing') {
+              <span><i class="fa-solid fa-shield"></i></span>
+            }
+            @if (learningObject.status === 'released') {
+              <span><i class="fa-solid fa-eye"></i></span>
+            }
+            @if (learningObject.status === 'rejected') {
+              <span><i class="fa-solid fa-ban"></i></span>
+            }
+            @if (learningObject.status === 'accepted_minor') {
+              <span><i class="fa-solid fa-check-double"></i></span>
+            }
+            @if (learningObject.status === 'accepted_major') {
+              <span><i class="fa-solid fa-check"></i></span>
+            }
+          </div>
+          <div class="object-info">
+            <div>{{ (learningObject.name.length > 40) ? (learningObject.name | slice:0:40) + '...' : learningObject.name }}
+            </div>
+            <div>{{ learningObject.length | titlecase }}</div>
+            <div>{{ (learningObject.assigned) ? learningObject.assigned.length : 0 | titlecase }} Evaluator@if (learningObject.assigned && learningObject.assigned.length !== 1) {
+              <span
+              >s</span>
+            }</div>
+          </div>
+        </li>
+      }
+    </virtual-scroller>
+  } @else {
+    <span class="object-dropdown__message">
+      No results!
+    </span>
+  }
 </ng-template>
 
 <ng-template #loadingTemplate>
@@ -55,8 +87,3 @@
   </span>
 </ng-template>
 
-<ng-template #noResultsTemplate>
-  <span class="object-dropdown__message">
-    No results!
-  </span>
-</ng-template>

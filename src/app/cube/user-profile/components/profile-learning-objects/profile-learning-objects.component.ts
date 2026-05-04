@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { BehaviorSubject } from 'rxjs';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/context-menu/context-menu.component';
 import { LearningObjectListingComponent } from '../../../shared/learning-object/learning-object.component';
@@ -11,7 +11,7 @@ import { LearningObjectListingComponent } from '../../../shared/learning-object/
     templateUrl: './profile-learning-objects.component.html',
     styleUrls: ['./profile-learning-objects.component.scss'],
     standalone: true,
-    imports: [NgIf, RouterLink, NgClass, NgFor, ContextMenuComponent, LearningObjectListingComponent]
+    imports: [RouterLink, NgClass, ContextMenuComponent, LearningObjectListingComponent]
 })
 export class ProfileLearningObjectsComponent implements OnChanges {
 

@@ -8,12 +8,12 @@
   attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{
     learningObject.author.name
   }}, last updated on {{ learningObject.date | date: 'longDate' }}"
->
+  >
   <div
     class="learning-object"
     id="learning-object"
     [ngClass]="{ trending: isTrending }"
-  >
+    >
     <div class="image">
       <img
         class="logo"
@@ -21,11 +21,13 @@
         alt="{{
           imagePath !== 'generic' ? topics[0] + ' logo' : 'Generic logo'
         }}"
-      />
-      <div *ngIf="isDCWFAligned" class="framework-badge dcwf-badge">
-        <i class="fas fa-shield-alt"></i>
-        DCWF Aligned
-      </div>
+        />
+      @if (isDCWFAligned) {
+        <div class="framework-badge dcwf-badge">
+          <i class="fas fa-shield-alt"></i>
+          DCWF Aligned
+        </div>
+      }
     </div>
     <div class="learning-object-content">
       <div class="pills">
@@ -33,20 +35,23 @@
           <div class="length">
             {{ learningObject.length.toUpperCase() }}
           </div>
-          <div *ngIf="learningObject.length" class="time">
-            <i class="far fa-clock"></i>
-            {{ humanReadableLength }}
-          </div>
+          @if (learningObject.length) {
+            <div class="time">
+              <i class="far fa-clock"></i>
+              {{ humanReadableLength }}
+            </div>
+          }
         </div>
-        <span
-          *ngIf="isTrending"
-          class="trending-badge"
-          title="Trending"
-          [tip]="'This Learning Object is trending'"
-          tipPosition="left"
-        >
-          <i class="fas fa-fire" aria-hidden="true"></i>
-        </span>
+        @if (isTrending) {
+          <span
+            class="trending-badge"
+            title="Trending"
+            [tip]="'This Learning Object is trending'"
+            tipPosition="left"
+            >
+            <i class="fas fa-fire" aria-hidden="true"></i>
+          </span>
+        }
       </div>
 
       <div class="title">
@@ -64,44 +69,52 @@
         </div>
         <div class="organization">
           {{
-            orgStore.organizationNameFromUser$(learningObject.author)
-              | async
+          orgStore.organizationNameFromUser$(learningObject.author)
+          | async
           }}
         </div>
       </div>
 
       <div class="rating-stars-container">
         <!-- Desktop: Full rating stars -->
-        <clark-rating-stars
-          *ngIf="averageRating > 0 && !isMobile"
-          [color]="'gold'"
-          [rating]="averageRating"
-          [reviewsCount]="reviewsCount"
-        ></clark-rating-stars>
+        @if (averageRating > 0 && !isMobile) {
+          <clark-rating-stars
+            [color]="'gold'"
+            [rating]="averageRating"
+            [reviewsCount]="reviewsCount"
+          ></clark-rating-stars>
+        }
         <!-- Mobile: Simplified single star with rating -->
-        <div *ngIf="averageRating > 0 && isMobile" class="mobile-rating">
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <span class="rating-value">{{
-            averageRating | number: '1.1-1'
-          }}</span>
-          <span class="review-count">({{ reviewsCount }})</span>
-        </div>
-        <div
-          *ngIf="downloadsCount >= 5"
-          class="downloads-indicator"
-          tabindex="0"
+        @if (averageRating > 0 && isMobile) {
+          <div class="mobile-rating">
+            <i class="fas fa-star" aria-hidden="true"></i>
+            <span class="rating-value">{{
+              averageRating | number: '1.1-1'
+            }}</span>
+            <span class="review-count">({{ reviewsCount }})</span>
+          </div>
+        }
+        @if (downloadsCount >= 5) {
+          <div
+            class="downloads-indicator"
+            tabindex="0"
           attr.aria-label="{{ downloadsCount }} download{{
             downloadsCount !== 1 ? 's' : ''
           }}"
-        >
-          <i class="far fa-download" aria-hidden="true"></i>
-          <span class="downloads-count">{{ downloadsCount | number }}</span>
-        </div>
+            >
+            <i class="far fa-download" aria-hidden="true"></i>
+            <span class="downloads-count">{{ downloadsCount | number }}</span>
+          </div>
+        }
       </div>
 
-      <div *ngIf="tags && tags.length > 0" class="tags-container">
-        <span *ngFor="let tagName of tags" class="tag-pill">{{ tagName }}</span>
-      </div>
+      @if (tags && tags.length > 0) {
+        <div class="tags-container">
+          @for (tagName of tags; track tagName) {
+            <span class="tag-pill">{{ tagName }}</span>
+          }
+        </div>
+      }
     </div>
   </div>
 </a>

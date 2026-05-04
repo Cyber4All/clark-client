@@ -7,7 +7,7 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
 import { OrderBy } from 'app/interfaces/query';
 import { HeaderWithCyberComponent } from './components/header/header.component';
 import { AboutWithCyberComponent } from './components/about/about.component';
-import { NgFor } from '@angular/common';
+
 import { LearningObjectListingComponent } from '../../../../cube/shared/learning-object/learning-object.component';
 import { LearningObjectCardDirective } from '../../../../shared/directives/learning-object-card.directive';
 import { StatsComponent } from '../../collection-ncyte/components/stats/stats.component';
@@ -19,7 +19,7 @@ import { FooterComponent } from '../../../../cube/shared/footer/footer.component
     templateUrl: './tag-with-cyber.component.html',
     styleUrls: ['./tag-with-cyber.component.scss'],
     standalone: true,
-    imports: [HeaderWithCyberComponent, AboutWithCyberComponent, NgFor, LearningObjectListingComponent, LearningObjectCardDirective, StatsComponent, FooterComponent]
+    imports: [HeaderWithCyberComponent, AboutWithCyberComponent, LearningObjectListingComponent, LearningObjectCardDirective, StatsComponent, FooterComponent]
 })
 export class TagWithCyberComponent implements OnInit, OnDestroy {
   abvCollection = 'withcyber';

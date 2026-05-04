@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 
 
 import { LearningObject } from '@entity';
-import { NgIf, NgClass, NgFor, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { ActivateDirective } from '../../../../../../../shared/directives/activate.directive';
 import { UrlRowComponent } from './url-row/url-row.component';
 import { SkipLinkComponent } from '../../../../../../../shared/components/skip-link/skip-link.component';
@@ -23,7 +23,7 @@ import { SkipLinkComponent } from '../../../../../../../shared/components/skip-l
     templateUrl: './url-manager.component.html',
     styleUrls: ['./url-manager.component.scss'],
     standalone: true,
-    imports: [NgIf, ActivateDirective, NgClass, NgFor, NgStyle, UrlRowComponent, SkipLinkComponent]
+    imports: [ActivateDirective, NgClass, NgStyle, UrlRowComponent, SkipLinkComponent]
 })
 export class UrlManagerComponent implements OnInit, OnDestroy {
   @Input()

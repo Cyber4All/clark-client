@@ -11,7 +11,7 @@ import {
 import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { carousel } from './carousel.animation';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
     selector: 'clark-carousel',
@@ -22,10 +22,8 @@ import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
     ],
     standalone: true,
     imports: [
-        NgFor,
-        NgIf,
-        NgTemplateOutlet,
-    ],
+    NgTemplateOutlet
+],
 })
 export class CarouselComponent implements AfterViewInit, OnDestroy {
   @ContentChildren(TemplateRef, { descendants: false }) items: QueryList<

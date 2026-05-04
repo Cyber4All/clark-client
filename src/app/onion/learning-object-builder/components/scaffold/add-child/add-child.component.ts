@@ -7,7 +7,7 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
 import { FormsModule } from '@angular/forms';
 import { AutofocusDirective } from '../../../../../shared/directives/autofocus.directive';
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
-import { NgIf, NgFor, NgClass, TitleCasePipe, DatePipe } from '@angular/common';
+import { NgClass, TitleCasePipe, DatePipe } from '@angular/common';
 import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 import { SkipLinkComponent } from '../../../../../shared/components/skip-link/skip-link.component';
 
@@ -16,7 +16,7 @@ import { SkipLinkComponent } from '../../../../../shared/components/skip-link/sk
     templateUrl: './add-child.component.html',
     styleUrls: ['./add-child.component.scss'],
     standalone: true,
-    imports: [FormsModule, AutofocusDirective, ActivateDirective, NgIf, VirtualScrollerModule, NgFor, NgClass, SkipLinkComponent, TitleCasePipe, DatePipe]
+    imports: [FormsModule, AutofocusDirective, ActivateDirective, VirtualScrollerModule, NgClass, SkipLinkComponent, TitleCasePipe, DatePipe]
 })
 export class AddChildComponent implements OnInit, OnDestroy {
   // the child that is currently being edited

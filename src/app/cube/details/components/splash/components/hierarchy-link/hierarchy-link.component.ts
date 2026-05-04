@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
-import { NgIf } from '@angular/common';
+
 import { ActivateDirective } from '../../../../../../shared/directives/activate.directive';
 
 
@@ -9,7 +9,7 @@ import { ActivateDirective } from '../../../../../../shared/directives/activate.
     templateUrl: './hierarchy-link.component.html',
     styleUrls: ['./hierarchy-link.component.scss'],
     standalone: true,
-    imports: [NgIf, ActivateDirective]
+    imports: [ActivateDirective]
 })
 export class HierarchyLinkComponent {
 

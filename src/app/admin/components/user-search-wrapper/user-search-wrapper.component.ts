@@ -8,7 +8,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { Collection } from 'app/core/collection-module/collections.service';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor, NgClass, NgStyle, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { NgClass, NgStyle, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
 
@@ -17,7 +17,7 @@ import { ActivateDirective } from '../../../shared/directives/activate.directive
     templateUrl: './user-search-wrapper.component.html',
     styleUrls: ['./user-search-wrapper.component.scss'],
     standalone: true,
-    imports: [FormsModule, NgIf, VirtualScrollerModule, NgFor, ActivateDirective, NgClass, NgStyle, AsyncPipe, TitleCasePipe]
+    imports: [FormsModule, VirtualScrollerModule, ActivateDirective, NgClass, NgStyle, AsyncPipe, TitleCasePipe]
 })
 export class UserSearchWrapperComponent implements OnInit, OnDestroy {
     // fires every time an input event occurs on the search input element

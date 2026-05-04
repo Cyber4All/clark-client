@@ -8,7 +8,7 @@ import { CollectionService, Collection } from 'app/core/collection-module/collec
 import { usersComponentAnimations } from './users.component.animations';
 import { AccessGroupService, AccessGroups } from 'app/core/access-group-module/access-group.service';
 import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
 import { TeleporterComponent } from '../../../shared/modules/teleporter/teleporter.component';
@@ -24,7 +24,7 @@ import { UserPrivilegesComponent } from '../../components/user-privileges/user-p
     styleUrls: ['./users.component.scss'],
     animations: usersComponentAnimations,
     standalone: true,
-    imports: [ContentWrapperComponent, NgIf, SearchInputComponent, NgClass, ActivateDirective, TeleporterComponent, UserSearchWrapperComponent, NgFor, AdminUserCardComponent, PopupComponent, FormsModule, UserPrivilegesComponent]
+    imports: [ContentWrapperComponent, SearchInputComponent, NgClass, ActivateDirective, TeleporterComponent, UserSearchWrapperComponent, AdminUserCardComponent, PopupComponent, FormsModule, UserPrivilegesComponent]
 })
 export class UsersComponent implements AfterViewInit {
   searchBarPlaceholder = 'Users';

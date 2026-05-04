@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NgIf } from '@angular/common';
+
 import { ChatbotLauncherComponent } from '../chatbot-launcher/chatbot-launcher.component';
 import { ChatbotWindowComponent } from '../chatbot-window/chatbot-window.component';
 
@@ -9,10 +9,9 @@ import { ChatbotWindowComponent } from '../chatbot-window/chatbot-window.compone
     styleUrls: ['./chatbot-container.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        ChatbotLauncherComponent,
-        ChatbotWindowComponent,
-    ],
+    ChatbotLauncherComponent,
+    ChatbotWindowComponent
+],
 })
 export class ChatbotContainerComponent {
   chatbotState: 'closed' | 'open' | 'minimized' = 'closed';

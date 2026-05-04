@@ -6,7 +6,7 @@ import { GuidelineService } from 'app/core/standard-guidelines-module/standard-g
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 import { FrameworkDocument } from 'entity/standard-guidelines/Framework';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 import { FormsModule } from '@angular/forms';
 
@@ -62,7 +62,7 @@ import { FormsModule } from '@angular/forms';
         ])
     ],
     standalone: true,
-    imports: [NgIf, NgFor, ActivateDirective, FormsModule, NgClass]
+    imports: [ActivateDirective, FormsModule, NgClass]
 })
 export class BuildProgramComponent implements OnInit {
   frameworks: FrameworkDocument[];
