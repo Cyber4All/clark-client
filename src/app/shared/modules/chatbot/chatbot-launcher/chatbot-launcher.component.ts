@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'clark-chatbot-launcher',
@@ -27,7 +27,7 @@ import { NgIf } from '@angular/common';
         ])
     ],
     standalone: true,
-    imports: [NgIf]
+    imports: []
 })
 export class ChatbotLauncherComponent implements OnInit, OnChanges, OnDestroy {
   @Input() isCookieBannerVisible = false;

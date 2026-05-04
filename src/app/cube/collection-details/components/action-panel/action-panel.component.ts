@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/auth-module/auth.service';
-import { NgIf } from '@angular/common';
+
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 
 @Component({
@@ -9,7 +9,7 @@ import { ActivateDirective } from '../../../../shared/directives/activate.direct
     templateUrl: './action-panel.component.html',
     styleUrls: ['./action-panel.component.scss'],
     standalone: true,
-    imports: [NgIf, ActivateDirective]
+    imports: [ActivateDirective]
 })
 export class ActionPanelComponent implements OnInit {
   @Input() collectionName: string;

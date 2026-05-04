@@ -4,7 +4,7 @@ import { CollectionService } from '../../core/collection-module/collections.serv
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActionPanelComponent } from './components/action-panel/action-panel.component';
 import { FeaturedComponent } from '../shared/featured/featured.component';
 import { FaqSectionComponent } from './faq-section/faq-section.component';
@@ -15,7 +15,7 @@ import { FaqSectionComponent } from './faq-section/faq-section.component';
     templateUrl: 'collection-details.component.html',
     styleUrls: ['collection-details.component.scss'],
     standalone: true,
-    imports: [NgClass, NgIf, ActionPanelComponent, RouterLink, FeaturedComponent, FaqSectionComponent]
+    imports: [NgClass, ActionPanelComponent, RouterLink, FeaturedComponent, FaqSectionComponent]
 })
 export class CollectionDetailsComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<void>();

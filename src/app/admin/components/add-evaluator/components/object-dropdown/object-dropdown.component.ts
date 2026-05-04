@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { FormsModule } from '@angular/forms';
-import { NgIf, NgTemplateOutlet, NgFor, NgClass, SlicePipe, TitleCasePipe } from '@angular/common';
+import { NgTemplateOutlet, NgClass, SlicePipe, TitleCasePipe } from '@angular/common';
 import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 import { TipDirective } from '../../../../../shared/directives/tip.directive';
@@ -23,7 +23,7 @@ import { TipDirective } from '../../../../../shared/directives/tip.directive';
     templateUrl: './object-dropdown.component.html',
     styleUrls: ['./object-dropdown.component.scss'],
     standalone: true,
-    imports: [FormsModule, NgIf, NgTemplateOutlet, NgFor, VirtualScrollerModule, ActivateDirective, NgClass, TipDirective, SlicePipe, TitleCasePipe]
+    imports: [FormsModule, NgTemplateOutlet, VirtualScrollerModule, ActivateDirective, NgClass, TipDirective, SlicePipe, TitleCasePipe]
 })
 export class ObjectDropdownComponent implements OnInit, OnDestroy {
 

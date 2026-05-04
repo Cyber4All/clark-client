@@ -15,7 +15,7 @@ import { MetricService } from '../../../core/metric-module/metric.service';
 import { RatingService } from '../../../core/rating-module/rating.service';
 import { OrganizationStore } from '../../../core/organization-module/organization.store';
 import { RouterLink } from '@angular/router';
-import { NgClass, NgIf, NgFor, AsyncPipe, DecimalPipe, TitleCasePipe, DatePipe } from '@angular/common';
+import { NgClass, AsyncPipe, DecimalPipe, TitleCasePipe, DatePipe } from '@angular/common';
 import { TipDirective } from '../../../shared/directives/tip.directive';
 import { RatingStarsComponent } from '../../../shared/components/rating-stars/rating-stars.component';
 
@@ -25,7 +25,7 @@ import { RatingStarsComponent } from '../../../shared/components/rating-stars/ra
     styleUrls: ['./learning-object.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [RouterLink, NgClass, NgIf, TipDirective, RatingStarsComponent, NgFor, AsyncPipe, DecimalPipe, TitleCasePipe, DatePipe]
+    imports: [RouterLink, NgClass, TipDirective, RatingStarsComponent, AsyncPipe, DecimalPipe, TitleCasePipe, DatePipe]
 })
 export class LearningObjectListingComponent implements OnDestroy {
   // -----------------------------

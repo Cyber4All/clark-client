@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { CollectionService } from '../../../core/collection-module/collections.service';
 import { LearningObject, Collection } from '@entity';
 import { OrganizationStore } from '../../../core/organization-module/organization.store';
-import { NgIf, NgClass, AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
+import { NgClass, AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
 
 
@@ -11,7 +11,7 @@ import { ActivateDirective } from '../../../shared/directives/activate.directive
     templateUrl: './draggable-learning-object.component.html',
     styleUrls: ['./draggable-learning-object.component.scss'],
     standalone: true,
-    imports: [NgIf, ActivateDirective, NgClass, AsyncPipe, TitleCasePipe, DatePipe]
+    imports: [ActivateDirective, NgClass, AsyncPipe, TitleCasePipe, DatePipe]
 })
 export class DraggableLearningObjectComponent implements OnInit {
   @Input() learningObject: LearningObject;

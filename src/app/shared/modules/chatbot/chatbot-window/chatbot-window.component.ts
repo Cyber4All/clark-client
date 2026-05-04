@@ -5,7 +5,7 @@ import { CoralogixLogSeverity } from '@coralogix/browser';
 import { ChatbotService } from 'app/core/chat-module/chatbot.service';
 import { CoralogixRumService } from 'app/core/services/coralogix-rum.service';
 import { MatTooltip } from '@angular/material/tooltip';
-import { NgFor, NgIf } from '@angular/common';
+
 import { MarkdownComponent } from 'ngx-markdown';
 import { FormsModule } from '@angular/forms';
 
@@ -42,12 +42,10 @@ export interface Message {
     ],
     standalone: true,
     imports: [
-        MatTooltip,
-        NgFor,
-        MarkdownComponent,
-        NgIf,
-        FormsModule,
-    ],
+    MatTooltip,
+    MarkdownComponent,
+    FormsModule
+],
 })
 export class ChatbotWindowComponent implements AfterViewInit {
   @ViewChild('messagesContainer')

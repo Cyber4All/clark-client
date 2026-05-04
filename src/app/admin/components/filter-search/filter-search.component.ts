@@ -18,7 +18,7 @@ import { Topic } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
 import { DropdownFilterComponent } from '../../../shared/components/dropdown-filter/dropdown-filter.component';
 import { ClearFiltersButtonComponent } from '../../../shared/components/clear-filters-button/clear-filters-button.component';
@@ -34,20 +34,19 @@ import { FormsModule } from '@angular/forms';
     styleUrls: ['./filter-search.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        NgClass,
-        ActivateDirective,
-        DropdownFilterComponent,
-        ClearFiltersButtonComponent,
-        PopupComponent,
-        MatFormField,
-        MatInput,
-        MatDatepickerInput,
-        FormsModule,
-        MatDatepickerToggle,
-        MatSuffix,
-        MatDatepicker,
-    ],
+    NgClass,
+    ActivateDirective,
+    DropdownFilterComponent,
+    ClearFiltersButtonComponent,
+    PopupComponent,
+    MatFormField,
+    MatInput,
+    MatDatepickerInput,
+    FormsModule,
+    MatDatepickerToggle,
+    MatSuffix,
+    MatDatepicker
+],
 })
 export class FilterSearchComponent implements OnInit {
   collections: Collection[] = [];

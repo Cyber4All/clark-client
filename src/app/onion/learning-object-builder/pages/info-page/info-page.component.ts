@@ -10,7 +10,7 @@ import { Observable, of, Subject, from } from 'rxjs';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ColumnWrapperComponent } from '../../components/column-wrapper/column-wrapper.component';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ScaffoldComponent } from '../../components/scaffold/scaffold.component';
 import { FormsModule } from '@angular/forms';
 import { MetadataComponent } from './metadata/metadata.component';
@@ -24,7 +24,7 @@ import { SkipLinkComponent } from '../../../../shared/components/skip-link/skip-
     templateUrl: './info-page.component.html',
     styleUrls: ['./info-page.component.scss'],
     standalone: true,
-    imports: [ColumnWrapperComponent, NgIf, ScaffoldComponent, FormsModule, MetadataComponent, UserDropdownComponent, NgFor, ContributorPillComponent, NgClass, ActivateDirective, LearningObjectDescriptionComponent, SkipLinkComponent]
+    imports: [ColumnWrapperComponent, ScaffoldComponent, FormsModule, MetadataComponent, UserDropdownComponent, ContributorPillComponent, NgClass, ActivateDirective, LearningObjectDescriptionComponent, SkipLinkComponent]
 })
 export class InfoPageComponent implements OnInit, OnDestroy {
   copy = COPY;

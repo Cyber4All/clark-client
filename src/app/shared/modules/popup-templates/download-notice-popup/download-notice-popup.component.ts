@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserAgentService } from 'app/core/client-module/user-agent.service';
-import { NgIf } from '@angular/common';
+
 import { ActivateDirective } from '../../../directives/activate.directive';
 
 @Component({
@@ -8,7 +8,7 @@ import { ActivateDirective } from '../../../directives/activate.directive';
     templateUrl: './download-notice-popup.component.html',
     styleUrls: ['./download-notice-popup.component.scss'],
     standalone: true,
-    imports: [NgIf, ActivateDirective]
+    imports: [ActivateDirective]
 })
 export class DownloadNoticePopupComponent implements OnInit {
 

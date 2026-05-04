@@ -1,284 +1,299 @@
 <div class="wrapper">
-    <clark-registration-progress
-        [index]="currentIndex"
-        [currentTemp]="currentTemp"
-        [showOrganizationStep]="shouldCreateOrganization"
-    ></clark-registration-progress>
-    <div class="content-box" [ngClass]="{'failed': registrationFailure}">
-        <clark-error-banner class="errBanner" [errorMessage]="errorMsg"></clark-error-banner>
-        <img src="/assets/images/logo.png" alt="Clark Logo" />
-        <h1>Register</h1>
-        <form class="form" #f="ngForm" (ngSubmit)="submit()" [@slideInRight]="slide" [@fallFromTop]="fall">            
-            <ng-container [ngSwitch]="currentTemp">
-                <ng-template #infoTemplate [ngSwitchCase]="TEMPLATES.info.temp">
-                    <div class="side-by-side">
-                        <clark-input-field
-                            [(ngModel)]="regInfo.firstname"
-                            #firstname
-                            name="firstName" 
-                            phold="First Name"
-                            [control]="infoFormGroup.get('firstname')"
-                        ></clark-input-field>
-                        <clark-input-field 
-                            [(ngModel)]="regInfo.lastname"
-                            name="lastName" 
-                            #lastname 
-                            phold="Last Name" 
-                            [control]="infoFormGroup.get('lastname')"
-                        ></clark-input-field>
-                    </div>
-                    <clark-input-field 
-                        [(ngModel)]="regInfo.email" 
-                        name="email" 
-                        #email 
-                        phold="Email" 
-                        [control]="infoFormGroup.get('email')"
-                        [errorMsg]="fieldErrorMsg"
-                    ></clark-input-field>
-                    <clark-input-field
-                        [(ngModel)]="regInfo.organization"
-                        name="organization"
-                        #organization
-                        phold="Organization"
-                        [control]="infoFormGroup.get('organization')"
-                        (keyup)="keyup($event)"
-                    ></clark-input-field>
-                    <ul
-                        *ngIf="showDropdown"
-                        (onBlur)="closeDropdown()"
-                        class="org-dropdown_list"
-                        >
-                        <ng-container
-                        *ngTemplateOutlet="organizationSearchLoading ? loadingTemplate : resultsTemplate"
-                        ></ng-container>
-                 </ul>
-                    <span
-                        tip="Enter first name, last name, and email first"
-                        [tipDisabled]="canEnterCustomOrganizationFlow"
-                        tipPosition="top"
-                    >
-                        <button
-                            type="button"
-                            class="organization-link"
-                            [ngClass]="{'organization-link--disabled': !canEnterCustomOrganizationFlow}"
-                            [disabled]="!canEnterCustomOrganizationFlow"
-                            (click)="enterCustomOrganizationFlow()"
-                        >
-                            Organization not listed, enter my organization info
-                        </button>
-                    </span>
-
-                    <div class="side-by-side" >
-                        <button type="button" class="white" (click)="navigateHome()">Cancel</button>
-                        <button
-                            type="button"
-                            (click)="nextTemp()"
-                            [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid || (!shouldCreateOrganization && selectedOrg === '') || loading}"
-                            class="button good"
-                        >Next</button>
-                    </div>
-                    <a [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}">Have an account? Log In!</a>
-                </ng-template>
-
-                <ng-template #orgTemplate [ngSwitchCase]="TEMPLATES.organization.temp">
-                    <clark-input-field
-                        [ngModel]="organizationFormGroup.get('name').value"
-                        (ngModelChange)="organizationFormGroup.get('name').setValue($event); onOrganizationDetailsChanged()"
-                        [ngModelOptions]="{standalone: true}"
-                        phold="Organization Name"
-                        [control]="organizationFormGroup.get('name')"
-                    ></clark-input-field>
-
-                    <label class="organization-field-label" for="organization-sector">Sector</label>
-                    <select
-                        id="organization-sector"
-                        class="organization-field"
-                        [formControl]="organizationFormGroup.get('sector')"
-                        (change)="onOrganizationDetailsChanged()"
-                    >
-                        <option value="">Select a sector</option>
-                        <option *ngFor="let sector of sectorOptions" [value]="sector">
-                            {{ formatOptionLabel(sector) }}
-                        </option>
-                    </select>
-                    <mat-error *ngIf="(organizationFormGroup.get('sector').touched || organizationContinueAttempted) && organizationFormGroup.get('sector').invalid">
-                        Sector is required
-                    </mat-error>
-
-                    <div class="organization-levels">
-                        <p class="organization-field-label">Education Levels</p>
-                        <p class="organization-levels-hint">Select any that apply. If none apply, leave them unselected.</p>
-                        <button
-                            type="button"
-                            class="organization-level-pill"
-                            [ngClass]="{'active': isOrganizationLevelSelected(level)}"
-                            *ngFor="let level of levelOptions"
-                            (click)="toggleOrganizationLevel(level)"
-                        >
-                            <span>{{ formatOptionLabel(level) }}</span>
-                        </button>
-                    </div>
-
-                    <div class="side-by-side">
-                        <div>
-                            <label class="organization-field-label" for="organization-country">Country</label>
-                            <select
-                                id="organization-country"
-                                class="organization-field"
-                                [formControl]="organizationFormGroup.get('country')"
-                            >
-                                <option value="">Select a country</option>
-                                <option *ngFor="let country of countryOptions" [value]="country.value">
-                                    {{ country.label }}
-                                </option>
-                            </select>
-                            <mat-error *ngIf="(organizationFormGroup.get('country').touched || organizationContinueAttempted) && organizationFormGroup.get('country').invalid">
-                                Country is required
-                            </mat-error>
-                        </div>
-                        <div>
-                            <label class="organization-field-label" for="organization-state">State</label>
-                            <select
-                                id="organization-state"
-                                class="organization-field"
-                                [formControl]="organizationFormGroup.get('state')"
-                                (change)="onOrganizationDetailsChanged()"
-                            >
-                                <option value="">Select a state</option>
-                                <option *ngFor="let state of usStateOptions" [value]="state.value">
-                                    {{ state.label }}
-                                </option>
-                            </select>
-                            <mat-error *ngIf="organizationFormGroup.get('state').enabled && (organizationFormGroup.get('state').touched || organizationContinueAttempted) && organizationFormGroup.get('state').invalid">
-                                State is required when country is United States
-                            </mat-error>
-                        </div>
-                    </div>
-
-                    <div class="side-by-side">
-                        <button type="button" class="white" (click)="goBack()">Back</button>
-                        <button
-                            type="button"
-                            class="button good"
+  <clark-registration-progress
+    [index]="currentIndex"
+    [currentTemp]="currentTemp"
+    [showOrganizationStep]="shouldCreateOrganization"
+  ></clark-registration-progress>
+  <div class="content-box" [ngClass]="{'failed': registrationFailure}">
+    <clark-error-banner class="errBanner" [errorMessage]="errorMsg"></clark-error-banner>
+    <img src="/assets/images/logo.png" alt="Clark Logo" />
+    <h1>Register</h1>
+    <form class="form" #f="ngForm" (ngSubmit)="submit()" [@slideInRight]="slide" [@fallFromTop]="fall">
+      @switch (currentTemp) {
+        @case (TEMPLATES.info.temp) {
+          <ng-template #infoTemplate>
+            <div class="side-by-side">
+              <clark-input-field
+                [(ngModel)]="regInfo.firstname"
+                #firstname
+                name="firstName"
+                phold="First Name"
+                [control]="infoFormGroup.get('firstname')"
+              ></clark-input-field>
+              <clark-input-field
+                [(ngModel)]="regInfo.lastname"
+                name="lastName"
+                #lastname
+                phold="Last Name"
+                [control]="infoFormGroup.get('lastname')"
+              ></clark-input-field>
+            </div>
+            <clark-input-field
+              [(ngModel)]="regInfo.email"
+              name="email"
+              #email
+              phold="Email"
+              [control]="infoFormGroup.get('email')"
+              [errorMsg]="fieldErrorMsg"
+            ></clark-input-field>
+            <clark-input-field
+              [(ngModel)]="regInfo.organization"
+              name="organization"
+              #organization
+              phold="Organization"
+              [control]="infoFormGroup.get('organization')"
+              (keyup)="keyup($event)"
+            ></clark-input-field>
+            @if (showDropdown) {
+              <ul
+                (onBlur)="closeDropdown()"
+                class="org-dropdown_list"
+                >
+                <ng-container
+                  *ngTemplateOutlet="organizationSearchLoading ? loadingTemplate : resultsTemplate"
+                ></ng-container>
+              </ul>
+            }
+            <span
+              tip="Enter first name, last name, and email first"
+              [tipDisabled]="canEnterCustomOrganizationFlow"
+              tipPosition="top"
+              >
+              <button
+                type="button"
+                class="organization-link"
+                [ngClass]="{'organization-link--disabled': !canEnterCustomOrganizationFlow}"
+                [disabled]="!canEnterCustomOrganizationFlow"
+                (click)="enterCustomOrganizationFlow()"
+                >
+                Organization not listed, enter my organization info
+              </button>
+            </span>
+            <div class="side-by-side" >
+              <button type="button" class="white" (click)="navigateHome()">Cancel</button>
+              <button
+                type="button"
+                (click)="nextTemp()"
+                [ngClass]="{'disabled': buttonGuards.isInfoPageInvalid || (!shouldCreateOrganization && selectedOrg === '') || loading}"
+                class="button good"
+              >Next</button>
+            </div>
+            <a [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}">Have an account? Log In!</a>
+          </ng-template>
+        }
+        @case (TEMPLATES.organization.temp) {
+          <ng-template #orgTemplate>
+            <clark-input-field
+              [ngModel]="organizationFormGroup.get('name').value"
+              (ngModelChange)="organizationFormGroup.get('name').setValue($event); onOrganizationDetailsChanged()"
+              [ngModelOptions]="{standalone: true}"
+              phold="Organization Name"
+              [control]="organizationFormGroup.get('name')"
+            ></clark-input-field>
+            <label class="organization-field-label" for="organization-sector">Sector</label>
+            <select
+              id="organization-sector"
+              class="organization-field"
+              [formControl]="organizationFormGroup.get('sector')"
+              (change)="onOrganizationDetailsChanged()"
+              >
+              <option value="">Select a sector</option>
+              @for (sector of sectorOptions; track sector) {
+                <option [value]="sector">
+                  {{ formatOptionLabel(sector) }}
+                </option>
+              }
+            </select>
+            @if ((organizationFormGroup.get('sector').touched || organizationContinueAttempted) && organizationFormGroup.get('sector').invalid) {
+              <mat-error>
+                Sector is required
+              </mat-error>
+            }
+            <div class="organization-levels">
+              <p class="organization-field-label">Education Levels</p>
+              <p class="organization-levels-hint">Select any that apply. If none apply, leave them unselected.</p>
+              @for (level of levelOptions; track level) {
+                <button
+                  type="button"
+                  class="organization-level-pill"
+                  [ngClass]="{'active': isOrganizationLevelSelected(level)}"
+                  (click)="toggleOrganizationLevel(level)"
+                  >
+                  <span>{{ formatOptionLabel(level) }}</span>
+                </button>
+              }
+            </div>
+            <div class="side-by-side">
+              <div>
+                <label class="organization-field-label" for="organization-country">Country</label>
+                <select
+                  id="organization-country"
+                  class="organization-field"
+                  [formControl]="organizationFormGroup.get('country')"
+                  >
+                  <option value="">Select a country</option>
+                  @for (country of countryOptions; track country) {
+                    <option [value]="country.value">
+                      {{ country.label }}
+                    </option>
+                  }
+                </select>
+                @if ((organizationFormGroup.get('country').touched || organizationContinueAttempted) && organizationFormGroup.get('country').invalid) {
+                  <mat-error>
+                    Country is required
+                  </mat-error>
+                }
+              </div>
+              <div>
+                <label class="organization-field-label" for="organization-state">State</label>
+                <select
+                  id="organization-state"
+                  class="organization-field"
+                  [formControl]="organizationFormGroup.get('state')"
+                  (change)="onOrganizationDetailsChanged()"
+                  >
+                  <option value="">Select a state</option>
+                  @for (state of usStateOptions; track state) {
+                    <option [value]="state.value">
+                      {{ state.label }}
+                    </option>
+                  }
+                </select>
+                @if (organizationFormGroup.get('state').enabled && (organizationFormGroup.get('state').touched || organizationContinueAttempted) && organizationFormGroup.get('state').invalid) {
+                  <mat-error>
+                    State is required when country is United States
+                  </mat-error>
+                }
+              </div>
+            </div>
+            <div class="side-by-side">
+              <button type="button" class="white" (click)="goBack()">Back</button>
+              <button
+                type="button"
+                class="button good"
                             [ngClass]="{
                                 'disabled': loading,
                                 'organization-next--invalid': buttonGuards.isOrganizationPageInvalid && !loading
                             }"
-                            (click)="continueFromOrganization()"
-                        >Next</button>
-                    </div>
-                </ng-template>
-                
-                <ng-template #accountTemplate [ngSwitchCase]="TEMPLATES.account.temp"  >
-                    <clark-input-field 
-                        [(ngModel)]="regInfo.username"
-                        name="username" 
-                        #username 
-                        phold="Username" 
-                        [control]="accountFormGroup.get('username')"
-                        [errorMsg]="fieldErrorMsg"
-                    ></clark-input-field>
-                    <clark-input-field 
-                        [(ngModel)]="regInfo.password"
-                        name="password" 
-                        #password 
-                        isPwrd="true" 
-                        phold="Password" 
-                        [control]="accountFormGroup.get('password')"
-                    ></clark-input-field>
-                    <clark-input-field 
-                        [(ngModel)]="regInfo.confirmPassword"
-                        name="confirmPassword" 
-                        #confirmPassword 
-                        isPwrd="true" 
-                        phold="Confirm Password" 
-                        [confirmType]="'Password'"
-                        [control]="accountFormGroup.get('confirmPassword')"
-                    ></clark-input-field>
-                
-                    <div 
-                        autofocus 
-                        class="recaptcha" 
-                        id="recaptcha" 
-                        ngRecaptcha 
-                        key="{{siteKey}}" 
-                        (captchaSuccess)="captureResponse($event)" 
-                        [formControl]="accountFormGroup.get('captcha')"
-                    ></div>
-                    <mat-error *ngIf="accountFormGroup.get('captcha').hasError('notVerified')">
-                        Please complete the reCaptcha to register
-                    </mat-error>
-                    <div class="side-by-side">
-                        <button type="button" class="white" (click)="goBack()">Back</button>
-                        <button 
-                            type="submit"
-                            class="button good" 
-                            [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid || loading || !verified || !checkCookieAgreement()}"
-                        >Register</button>
-                    </div>
-                    <a [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}">Have an account? Log In!</a>
-                </ng-template>
-                
-                <ng-template #submissionTemplate [ngSwitchCase]="TEMPLATES.submission.temp">
-                    <p>You’re registered! You should receive an email shortly asking you to verify your email.</p>
-                    <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
-                
-                    <div class="side-by-side">
-                        <button class="white bottom" (click)="navigateHome()">Skip SSO</button>
-                        <button type="button" (click)="nextTemp()" class="bottom">Continue</button>
-                    </div>
-                </ng-template>
-                
-                <ng-template #ssoTemplate [ngSwitchCase]="TEMPLATES.sso.temp">
-                    <p>Configure single sign on.</p>
-                    <p>This is optional, you can also configure this later from your profile page.</p>
-                    <p>Please make sure you select the google account associated with the email you used to register.</p>
-                    <div class="sso-section">
-                        <a [href]="ssoRedirect" class="sso-button">
-                            <img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img">
-                        </a>
-                    </div>
-                    <button type="button" (click)="navigateHome()" class="white bottom">Skip</button>
-                </ng-template>
-            </ng-container>
-        </form>
-        <mat-error *ngIf="!checkCookieAgreement()">
-            <button type="button" class="cookie" (click)="cookieAgreement.setShowCookieBanner(true)">You must accept the cookie agreement to register</button>
-        </mat-error>
-    </div>
+                (click)="continueFromOrganization()"
+              >Next</button>
+            </div>
+          </ng-template>
+        }
+        @case (TEMPLATES.account.temp) {
+          <ng-template #accountTemplate  >
+            <clark-input-field
+              [(ngModel)]="regInfo.username"
+              name="username"
+              #username
+              phold="Username"
+              [control]="accountFormGroup.get('username')"
+              [errorMsg]="fieldErrorMsg"
+            ></clark-input-field>
+            <clark-input-field
+              [(ngModel)]="regInfo.password"
+              name="password"
+              #password
+              isPwrd="true"
+              phold="Password"
+              [control]="accountFormGroup.get('password')"
+            ></clark-input-field>
+            <clark-input-field
+              [(ngModel)]="regInfo.confirmPassword"
+              name="confirmPassword"
+              #confirmPassword
+              isPwrd="true"
+              phold="Confirm Password"
+              [confirmType]="'Password'"
+              [control]="accountFormGroup.get('confirmPassword')"
+            ></clark-input-field>
+            <div
+              autofocus
+              class="recaptcha"
+              id="recaptcha"
+              ngRecaptcha
+              key="{{siteKey}}"
+              (captchaSuccess)="captureResponse($event)"
+              [formControl]="accountFormGroup.get('captcha')"
+            ></div>
+            @if (accountFormGroup.get('captcha').hasError('notVerified')) {
+              <mat-error>
+                Please complete the reCaptcha to register
+              </mat-error>
+            }
+            <div class="side-by-side">
+              <button type="button" class="white" (click)="goBack()">Back</button>
+              <button
+                type="submit"
+                class="button good"
+                [ngClass]="{'disabled': buttonGuards.isRegisterPageInvalid || loading || !verified || !checkCookieAgreement()}"
+              >Register</button>
+            </div>
+            <a [routerLink]="['/auth/login']" [queryParams]="{redirectUrl: redirectUrl}">Have an account? Log In!</a>
+          </ng-template>
+        }
+        @case (TEMPLATES.submission.temp) {
+          <ng-template #submissionTemplate>
+            <p>You’re registered! You should receive an email shortly asking you to verify your email.</p>
+            <p>If you would like to configure single sign on (SSO), click the ‘continue’ button below. Single sign on is optional. You can always configure it later on your profile page.</p>
+            <div class="side-by-side">
+              <button class="white bottom" (click)="navigateHome()">Skip SSO</button>
+              <button type="button" (click)="nextTemp()" class="bottom">Continue</button>
+            </div>
+          </ng-template>
+        }
+        @case (TEMPLATES.sso.temp) {
+          <ng-template #ssoTemplate>
+            <p>Configure single sign on.</p>
+            <p>This is optional, you can also configure this later from your profile page.</p>
+            <p>Please make sure you select the google account associated with the email you used to register.</p>
+            <div class="sso-section">
+              <a [href]="ssoRedirect" class="sso-button">
+                <img src="/assets/images/btn_google_signin_dark_normal_web@2x.png" alt="Sign In with Google" class="sso-img">
+              </a>
+            </div>
+            <button type="button" (click)="navigateHome()" class="white bottom">Skip</button>
+          </ng-template>
+        }
+      }
+    </form>
+    @if (!checkCookieAgreement()) {
+      <mat-error>
+        <button type="button" class="cookie" (click)="cookieAgreement.setShowCookieBanner(true)">You must accept the cookie agreement to register</button>
+      </mat-error>
+    }
+  </div>
 </div>
 
 <!-- organization dropdown template -->
 <ng-template #resultsTemplate>
-    <ng-container
-      *ngIf="searchResults && searchResults.length; else noResultsTemplate"
-    >
-        <virtual-scroller
-        #scroll
-        [style.height]="scrollerHeight"
-        [bufferAmount]="5"
-        [enableUnequalChildrenSizes]="true"
-        [items]="searchResults"
-        >
-            <li
-                class="org-dropdown_list-item"
-                *ngFor="let org of scroll.viewPortItems"
-                (click)="selectOrg(org)"
-            >
-                {{ org.name }}
-            </li>
-        </virtual-scroller>
-    </ng-container>
-  </ng-template>
-
-  <ng-template #noResultsTemplate>
+  @if (searchResults && searchResults.length) {
+    <virtual-scroller
+      #scroll
+      [style.height]="scrollerHeight"
+      [bufferAmount]="5"
+      [enableUnequalChildrenSizes]="true"
+      [items]="searchResults"
+      >
+      @for (org of scroll.viewPortItems; track org) {
+        <li
+          class="org-dropdown_list-item"
+          (click)="selectOrg(org)"
+          >
+          {{ org.name }}
+        </li>
+      }
+    </virtual-scroller>
+  } @else {
     <span class="org-dropdown__message">No listed organizations found.</span>
-  </ng-template>
+  }
+</ng-template>
 
-  <ng-template #loadingTemplate>
-    <span class="org-dropdown__message">
-      <i class="far fa-spinner-third fa-spin">
-        Loading
-      </i>
-    </span>
-  </ng-template>
+
+<ng-template #loadingTemplate>
+  <span class="org-dropdown__message">
+    <i class="far fa-spinner-third fa-spin">
+      Loading
+    </i>
+  </span>
+</ng-template>

@@ -1,14 +1,28 @@
 <div class="counter-wrapper">
   <div class="stats__icon" [ngClass]="stat.class">
-    <i *ngIf="stat?.title === 'Released Learning Objects' || stat?.title === 'Learning Objects Under Review'" class="far fa-cube"></i>
-    <i *ngIf="stat?.title === 'Quality-Assured Collections'" class="far fa-cubes"></i>
-    <i *ngIf="stat?.title === 'Downloads'" class="far fa-cloud-download"></i>
-    <i *ngIf="stat?.title === 'Users'" class="far fa-users"></i>
-    <i *ngIf="stat?.title === 'Affiliated Organizations'" class="far fa-university"></i>
+    @if (stat?.title === 'Released Learning Objects' || stat?.title === 'Learning Objects Under Review') {
+      <i class="far fa-cube"></i>
+    }
+    @if (stat?.title === 'Quality-Assured Collections') {
+      <i class="far fa-cubes"></i>
+    }
+    @if (stat?.title === 'Downloads') {
+      <i class="far fa-cloud-download"></i>
+    }
+    @if (stat?.title === 'Users') {
+      <i class="far fa-users"></i>
+    }
+    @if (stat?.title === 'Affiliated Organizations') {
+      <i class="far fa-university"></i>
+    }
   </div>
   <div class="number">
-    <span *ngIf="stat?.value === -1"><i class="fal fa-spinner-third fa-spin"></i></span>
-    <span *ngIf="stat?.value > -1">{{ stat?.value | number }}</span>
+    @if (stat?.value === -1) {
+      <span><i class="fal fa-spinner-third fa-spin"></i></span>
+    }
+    @if (stat?.value > -1) {
+      <span>{{ stat?.value | number }}</span>
+    }
   </div>
   <div class="title">
     <span>{{stat?.title}}</span>

@@ -8,14 +8,14 @@ import {
   Input
 } from '@angular/core';
 import { UtilityService } from 'app/core/utility-module/utility.service';
-import { NgStyle, NgClass, NgIf } from '@angular/common';
+import { NgStyle, NgClass } from '@angular/common';
 
 @Component({
     selector: 'clark-column-wrapper',
     templateUrl: './column-wrapper.component.html',
     styleUrls: ['./column-wrapper.component.scss'],
     standalone: true,
-    imports: [NgStyle, NgClass, NgIf]
+    imports: [NgStyle, NgClass]
 })
 export class ColumnWrapperComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('columnWrapper') columnWrapper: ElementRef;

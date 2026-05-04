@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
-import { NgIf, NgFor, NgClass, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { TipDirective } from '../../directives/tip.directive';
 import { ActivateDirective } from '../../directives/activate.directive';
 import { GenericCollectionLogoComponent } from '../generic-collection-logo/generic-collection-logo.component';
@@ -10,7 +10,7 @@ import { GenericCollectionLogoComponent } from '../generic-collection-logo/gener
     templateUrl: './collections-grid.component.html',
     styleUrls: ['./collections-grid.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, TipDirective, NgClass, ActivateDirective, NgStyle, GenericCollectionLogoComponent]
+    imports: [TipDirective, NgClass, ActivateDirective, NgStyle, GenericCollectionLogoComponent]
 })
 export class CollectionsGridComponent implements OnInit {
 

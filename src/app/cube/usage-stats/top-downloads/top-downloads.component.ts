@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LearningObject } from 'entity/learning-object/learning-object';
-import { NgIf, NgFor, NgClass, TitleCasePipe } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -8,7 +8,7 @@ import { RouterLink } from '@angular/router';
     templateUrl: './top-downloads.component.html',
     styleUrls: ['./top-downloads.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, NgClass, RouterLink, TitleCasePipe]
+    imports: [NgClass, RouterLink, TitleCasePipe]
 })
 export class TopDownloadsComponent implements OnInit {
   @Input() learningObjects: LearningObject[];

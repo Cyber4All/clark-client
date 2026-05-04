@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { LearningObject } from '@entity';
 import { BehaviorSubject } from 'rxjs';
-import { NgIf } from '@angular/common';
+
 import { FileBrowserComponent } from '../../../../shared/modules/filesystem/file-browser/file-browser.component';
 import { UrlsComponent } from './components/urls/urls.component';
 import { NotesComponent } from './components/notes/notes.component';
@@ -11,7 +11,7 @@ import { NotesComponent } from './components/notes/notes.component';
     templateUrl: './materials.component.html',
     styleUrls: ['./materials.component.scss'],
     standalone: true,
-    imports: [NgIf, FileBrowserComponent, UrlsComponent, NotesComponent]
+    imports: [FileBrowserComponent, UrlsComponent, NotesComponent]
 })
 export class MaterialsComponent implements OnInit, OnChanges {
 

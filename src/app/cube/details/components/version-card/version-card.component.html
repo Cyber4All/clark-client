@@ -5,10 +5,14 @@
   <div class='version-card__text-container'>
     You're seeing version {{ version }}!
   </div>
-  <div *ngIf='showButton' class='version-card__button-container'>
-    <button class='button' (click)='emitClickButtonEvent()'>VIEW CHANGE LOGS</button>
-  </div>
-  <div *ngIf='!showButton'>Please
-    <a [routerLink]="['/auth/login']">log in</a> to view Changelogs.
-  </div>
+  @if (showButton) {
+    <div class='version-card__button-container'>
+      <button class='button' (click)='emitClickButtonEvent()'>VIEW CHANGE LOGS</button>
+    </div>
+  }
+  @if (!showButton) {
+    <div>Please
+      <a [routerLink]="['/auth/login']">log in</a> to view Changelogs.
+    </div>
+  }
 </div>

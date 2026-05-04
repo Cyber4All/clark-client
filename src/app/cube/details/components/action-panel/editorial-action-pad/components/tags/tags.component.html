@@ -1,7 +1,7 @@
 <div class="search">
   <div class="input-container" (click)="focusInput()">
-    <i class="fas fa-search"></i> 
-    <input 
+    <i class="fas fa-search"></i>
+    <input
       #searchInput
       type="text"
       aria-label="Find for tags"
@@ -15,30 +15,38 @@
 <div class="filter-results">
   <div class="filters">
     <p>Types</p>
-    <form *ngIf="types.length > 0">
-      <div *ngFor="let type of types">
-          <input
-            type="checkbox"
-            [value]="type.value"
-            (change)="filter(type.value)"
-            name="filterCheckbox"
-          />
-          <label>
-          {{ type?.name }}
-        </label>
-        <br />
-      </div>
-    </form>
+    @if (types.length > 0) {
+      <form>
+        @for (type of types; track type) {
+          <div>
+            <input
+              type="checkbox"
+              [value]="type.value"
+              (change)="filter(type.value)"
+              name="filterCheckbox"
+              />
+            <label>
+              {{ type?.name }}
+            </label>
+            <br />
+          </div>
+        }
+      </form>
+    }
   </div>
-  <div *ngIf="tags.length > 0" class="pill-container">
-      <div *ngFor="let item of tags">
-        <button
-          [class.selected]="selected(item)"
-          (click)="toggleTags(item)"
-        >
-          {{ item.name }}
-        </button>
-      </div>
+  @if (tags.length > 0) {
+    <div class="pill-container">
+      @for (item of tags; track item) {
+        <div>
+          <button
+            [class.selected]="selected(item)"
+            (click)="toggleTags(item)"
+            >
+            {{ item.name }}
+          </button>
+        </div>
+      }
     </div>
+  }
 </div>
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LearningObject } from '@entity';
-import { NgIf, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ChangelogListComponent } from '../changelog-list/changelog-list.component';
 
 @Component({
@@ -9,10 +9,9 @@ import { ChangelogListComponent } from '../changelog-list/changelog-list.compone
     styleUrls: ['./changelog-modal.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        ChangelogListComponent,
-        DatePipe,
-    ],
+    ChangelogListComponent,
+    DatePipe
+],
 })
 export class ChangelogModalComponent implements OnInit {
 

@@ -14,7 +14,7 @@ import {
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
-import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
 @Component({
@@ -23,12 +23,10 @@ import { ActivateDirective } from '../../../../../shared/directives/activate.dir
     styleUrls: ['./outcome-typeahead.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        NgClass,
-        ActivateDirective,
-        NgFor,
-        TitleCasePipe,
-    ],
+    NgClass,
+    ActivateDirective,
+    TitleCasePipe
+],
 })
 export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('verbElement') verbElement: ElementRef;

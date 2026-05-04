@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   EventEmitter,
 } from '@angular/core';
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { TipDirective } from '../../../../shared/directives/tip.directive';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 import { FormsModule } from '@angular/forms';
@@ -18,12 +18,11 @@ import { FormsModule } from '@angular/forms';
     styleUrls: ['./new-rating.component.scss'],
     standalone: true,
     imports: [
-        NgClass,
-        NgFor,
-        TipDirective,
-        ActivateDirective,
-        FormsModule,
-    ],
+    NgClass,
+    TipDirective,
+    ActivateDirective,
+    FormsModule
+],
 })
 export class NewRatingComponent implements OnInit, OnChanges {
   @Input() count = 5;

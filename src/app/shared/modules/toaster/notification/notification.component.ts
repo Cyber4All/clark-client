@@ -1,44 +1,55 @@
 import { ToastrOvenService, ToastrOven } from '../notification.service';
 import { Component, ElementRef, AfterViewChecked } from '@angular/core';
-import { NgFor, NgStyle, NgIf } from '@angular/common';
+import { NgStyle } from '@angular/common';
 
 @Component({
     selector: '<clark-toastr-oven></clark-toastr-oven>',
     template: `
-    <div
-      *ngFor="let el of toRender; let i = index"
-      [attr.data-notification]="i"
-      [ngStyle]="el.style"
-      [attr.class]="'toastr-oven-notification ' + el.classes"
-    >
-      <div class="icon">
-        <div *ngIf="el.classes.includes('success')">
-          <i class="far fa-check"></i>
+    @for (el of toRender; track el; let i = $index) {
+      <div
+        [attr.data-notification]="i"
+        [ngStyle]="el.style"
+        [attr.class]="'toastr-oven-notification ' + el.classes"
+        >
+        <div class="icon">
+          @if (el.classes.includes('success')) {
+            <div>
+              <i class="far fa-check"></i>
+            </div>
+          }
+          @if (el.classes.includes('error')) {
+            <div>
+              <i class="far fa-times"></i>
+            </div>
+          }
+          @if (el.classes.includes('warning')) {
+            <div>
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+          }
+          @if (el.classes === '') {
+            <div><i class="fas fa-exclamation"></i></div>
+          }
+          @if (el.classes.includes('alert')) {
+            <div>
+              <i class="fas fa-exclamation"></i>
+            </div>
+          }
         </div>
-        <div *ngIf="el.classes.includes('error')">
-          <i class="far fa-times"></i>
-        </div>
-        <div *ngIf="el.classes.includes('warning')">
-          <i class="fas fa-exclamation-triangle"></i>
-        </div>
-        <div *ngIf="el.classes === ''"><i class="fas fa-exclamation"></i></div>
-        <div *ngIf="el.classes.includes('alert')">
-          <i class="fas fa-exclamation"></i>
+        <div class="note-content">
+          @if (el.title) {
+            <div class="title">{{ el.title }}</div>
+          }
+          <div class="text">{{ el.text }}</div>
         </div>
       </div>
-      <div class="note-content">
-        <div *ngIf="el.title" class="title">{{ el.title }}</div>
-        <div class="text">{{ el.text }}</div>
-      </div>
-    </div>
-  `,
+    }
+    `,
     styleUrls: ['notification.component.scss'],
     standalone: true,
     imports: [
-        NgFor,
-        NgStyle,
-        NgIf,
-    ],
+    NgStyle
+],
 })
 export class ToastrOvenComponent implements AfterViewChecked {
   toRender: Array<ToastrOvenElement> = [];

@@ -1,17 +1,21 @@
-<a *ngIf="link" [routerLink]="['/users', user.username]">
+@if (link) {
+  <a [routerLink]="['/users', user.username]">
+    <ng-container *ngTemplateOutlet="cardContent"></ng-container>
+  </a>
+}
+@if (!link) {
   <ng-container *ngTemplateOutlet="cardContent"></ng-container>
-</a>
-<ng-container *ngIf="!link">
-  <ng-container *ngTemplateOutlet="cardContent"></ng-container>
-</ng-container>
+}
 
 <ng-template #cardContent>
   <div class="user-card">
     <div class="image" id="card-image">
       <img [src]="icon" class="img" alt="User gravatar">
-      <span *ngIf="gravatarInfo" tip="What is this?" tipPosition="top" (activate)="showGravatarModal($event)">
-        <i class="fas fa-info-circle"></i>
-      </span>
+      @if (gravatarInfo) {
+        <span tip="What is this?" tipPosition="top" (activate)="showGravatarModal($event)">
+          <i class="fas fa-info-circle"></i>
+        </span>
+      }
     </div>
     <div class="user-content">
       <div tabindex="0" class="title" id="card-title">{{user.name | titlecase}}</div>
@@ -22,9 +26,11 @@
         <div tabindex="0" class="email" id="card-email">
           Email: {{user.email}}
         </div>
-        <div tabindex="0" *ngIf="objects" class="learning-objects">
-          Number of Learning Objects: {{objects.length}}
-        </div>
+        @if (objects) {
+          <div tabindex="0" class="learning-objects">
+            Number of Learning Objects: {{objects.length}}
+          </div>
+        }
       </div>
     </div>
   </div>

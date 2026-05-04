@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { LearningObject } from '../../../../../entity/learning-object/learning-object';
 import { Router, RouterLink } from '@angular/router';
 import { CollectionService } from '../../../../core/collection-module/collections.service';
-import { NgTemplateOutlet, NgFor, NgIf } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { FeatureCardsFiveotwoComponent } from '../feature-cards-fiveotwo/feature-cards-fiveotwo.component';
 import { FeatureCardsComponent } from './components/feature-cards/feature-cards.component';
 
@@ -11,7 +11,7 @@ import { FeatureCardsComponent } from './components/feature-cards/feature-cards.
     templateUrl: './collection-feature.component.html',
     styleUrls: ['./collection-feature.component.scss'],
     standalone: true,
-    imports: [NgTemplateOutlet, NgFor, RouterLink, FeatureCardsFiveotwoComponent, NgIf, FeatureCardsComponent]
+    imports: [NgTemplateOutlet, RouterLink, FeatureCardsFiveotwoComponent, FeatureCardsComponent]
 })
 export class CollectionFeatureComponent implements OnInit, OnChanges {
 

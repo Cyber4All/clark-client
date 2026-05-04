@@ -4,7 +4,7 @@ import { Topic } from '@entity';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { NgIf, NgFor } from '@angular/common';
+
 
 @Component({
     selector: 'clark-topic-tagging',
@@ -12,7 +12,7 @@ import { NgIf, NgFor } from '@angular/common';
     styleUrls: ['./topics.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
-    imports: [NgIf, NgFor]
+    imports: []
 })
 export class TopicsComponent implements OnInit, OnDestroy {
   topics: Topic[];

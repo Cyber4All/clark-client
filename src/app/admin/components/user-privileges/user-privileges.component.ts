@@ -7,7 +7,7 @@ import { userPrivilegesAnimations } from './user-privileges.component.animations
 import { AccessGroupService, AccessGroups } from 'app/core/access-group-module/access-group.service';
 import { CarouselComponent } from '../../../shared/components/carousel/carousel.component';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
-import { NgClass, NgIf, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { NgClass, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
 import { PrivilegesListComponent } from './privileges-list/privileges-list.component';
 import { CollectionsGridComponent } from '../../../shared/components/collections-grid/collections-grid.component';
 
@@ -17,7 +17,7 @@ import { CollectionsGridComponent } from '../../../shared/components/collections
     styleUrls: ['./user-privileges.component.scss'],
     animations: userPrivilegesAnimations,
     standalone: true,
-    imports: [CarouselComponent, ActivateDirective, NgClass, PrivilegesListComponent, NgIf, NgTemplateOutlet, CollectionsGridComponent, TitleCasePipe]
+    imports: [CarouselComponent, ActivateDirective, NgClass, PrivilegesListComponent, NgTemplateOutlet, CollectionsGridComponent, TitleCasePipe]
 })
 export class UserPrivilegesComponent implements OnInit {
   @Input() user: AuthUser;

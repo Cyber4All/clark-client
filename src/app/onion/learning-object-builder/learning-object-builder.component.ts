@@ -21,7 +21,7 @@ import { LearningOutcomeValidator } from './validators/learning-outcome.validato
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
 import { HistorySnapshot, HistoryService } from 'app/core/client-module/history.service';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { BuilderNavbarComponent } from './components/builder-navbar/builder-navbar.component';
 import { PopupComponent } from '../../shared/modules/popups/popup.component';
 import { ActivateDirective } from '../../shared/directives/activate.directive';
@@ -94,7 +94,7 @@ export const builderTransitions = trigger('builderTransition', [
     // these are provided here so that they'll be destroyed when navigating away
     providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator],
     standalone: true,
-    imports: [NgIf, BuilderNavbarComponent, RouterOutlet, NgClass, PopupComponent, ActivateDirective]
+    imports: [BuilderNavbarComponent, RouterOutlet, NgClass, PopupComponent, ActivateDirective]
 })
 export class LearningObjectBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   // fires when the component is destroyed

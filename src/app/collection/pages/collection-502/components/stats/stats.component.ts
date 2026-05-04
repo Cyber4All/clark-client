@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { TitleComponent } from '../title/title.component';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'clark-502-stats',
     templateUrl: './stats.component.html',
     styleUrls: ['./stats.component.scss'],
     standalone: true,
-    imports: [TitleComponent, NgIf]
+    imports: [TitleComponent]
 })
 export class Stats502Component implements OnInit {
   collectionName = '502_project';

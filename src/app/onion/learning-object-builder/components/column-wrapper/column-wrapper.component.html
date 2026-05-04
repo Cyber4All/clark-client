@@ -1,25 +1,31 @@
 <div class="builder-template-columns">
   <div #columnWrapper class="columns" [ngStyle]="{'top': columnOffset + 'px'}" [ngClass]="{'no-right': !rightColumn, 'no-left': !leftColumn}">
     <div class="scroll-wrapper scroll-wrapper--left" [ngStyle]="{'height': columnHeight + 'px'}">
-      <div *ngIf="showColumn('l')" class="left-column column">
-        <div class="content">
-          <ng-content select="[left]"></ng-content>
+      @if (showColumn('l')) {
+        <div class="left-column column">
+          <div class="content">
+            <ng-content select="[left]"></ng-content>
+          </div>
         </div>
-      </div>
+      }
     </div>
     <div class="scroll-wrapper" [ngStyle]="{'height': columnHeight + 'px'}">
-      <div *ngIf="showColumn('m')" class="main-column column">
-        <div class="content">
-          <ng-content select="[main]"></ng-content>
+      @if (showColumn('m')) {
+        <div class="main-column column">
+          <div class="content">
+            <ng-content select="[main]"></ng-content>
+          </div>
         </div>
-      </div>
+      }
     </div>
     <div class="scroll-wrapper scroll-wrapper--right" [ngStyle]="{'height': columnHeight + 'px'}">
-      <div *ngIf="showColumn('r')" class="right-column column">
-        <div class="content">
-          <ng-content select="[right]"></ng-content>
+      @if (showColumn('r')) {
+        <div class="right-column column">
+          <div class="content">
+            <ng-content select="[right]"></ng-content>
+          </div>
         </div>
-      </div>
+      }
     </div>
   </div>
 </div>

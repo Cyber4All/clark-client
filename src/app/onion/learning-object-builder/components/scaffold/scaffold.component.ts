@@ -13,7 +13,7 @@ import { BuilderStore } from '../../builder-store.service';
 import { LearningObject } from '@entity';
 import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 import { catchError } from 'rxjs/operators';
-import { NgIf, NgTemplateOutlet, NgFor, NgClass, NgStyle, TitleCasePipe, DatePipe } from '@angular/common';
+import { NgTemplateOutlet, NgClass, NgStyle, TitleCasePipe, DatePipe } from '@angular/common';
 import { ToggleSwitchComponent } from '../../../../shared/components/toggle-switch/toggle-switch.component';
 import { SkipLinkComponent } from '../../../../shared/components/skip-link/skip-link.component';
 import { TipDirective } from '../../../../shared/directives/tip.directive';
@@ -27,7 +27,7 @@ import { AddChildComponent } from './add-child/add-child.component';
     templateUrl: './scaffold.component.html',
     styleUrls: ['./scaffold.component.scss'],
     standalone: true,
-    imports: [NgIf, ToggleSwitchComponent, SkipLinkComponent, NgTemplateOutlet, CdkDropList, NgFor, CdkDrag, TipDirective, NgClass, CdkDragHandle, NgStyle, ActivateDirective, PopupComponent, TeleporterComponent, AddChildComponent, TitleCasePipe, DatePipe]
+    imports: [ToggleSwitchComponent, SkipLinkComponent, NgTemplateOutlet, CdkDropList, CdkDrag, TipDirective, NgClass, CdkDragHandle, NgStyle, ActivateDirective, PopupComponent, TeleporterComponent, AddChildComponent, TitleCasePipe, DatePipe]
 })
 export class ScaffoldComponent implements OnInit {
   @Input() learningObject: LearningObject;

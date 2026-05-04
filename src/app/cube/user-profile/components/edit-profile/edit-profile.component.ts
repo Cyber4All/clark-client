@@ -20,7 +20,7 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { Subject } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
-import { NgIf, NgTemplateOutlet, NgClass, NgFor } from '@angular/common';
+import { NgTemplateOutlet, NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
@@ -29,7 +29,7 @@ import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
     templateUrl: './edit-profile.component.html',
     styleUrls: ['./edit-profile.component.scss'],
     standalone: true,
-    imports: [FormsModule, InputFieldComponent, NgIf, NgTemplateOutlet, NgClass, ActivateDirective, VirtualScrollerModule, NgFor]
+    imports: [FormsModule, InputFieldComponent, NgTemplateOutlet, NgClass, ActivateDirective, VirtualScrollerModule]
 })
 export class EditProfileComponent implements OnChanges, OnInit, OnDestroy {
   ssoRedirect = AUTH_ROUTES.GOOGLE_SIGNUP();

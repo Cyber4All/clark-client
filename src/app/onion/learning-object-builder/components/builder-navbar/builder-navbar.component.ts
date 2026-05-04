@@ -11,7 +11,7 @@ import { LearningObject } from '@entity';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
 import { SkipLinkComponent } from '../../../../shared/components/skip-link/skip-link.component';
-import { NgStyle, NgIf, NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgStyle, NgClass, NgTemplateOutlet } from '@angular/common';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 import { TipDirective } from '../../../../shared/directives/tip.directive';
 import { LearningObjectStatusIndicatorComponent } from '../../../shared/status-indicator/status-indicator.component';
@@ -25,7 +25,7 @@ import { GenericCollectionLogoComponent } from '../../../../shared/components/ge
     templateUrl: './builder-navbar.component.html',
     styleUrls: ['./builder-navbar.component.scss'],
     standalone: true,
-    imports: [SkipLinkComponent, NgStyle, NgIf, ActivateDirective, TipDirective, LearningObjectStatusIndicatorComponent, NgClass, EditorActionPanelComponent, NgTemplateOutlet, SubmitComponent, RouterLinkActive, RouterLink, GenericCollectionLogoComponent]
+    imports: [SkipLinkComponent, NgStyle, ActivateDirective, TipDirective, LearningObjectStatusIndicatorComponent, NgClass, EditorActionPanelComponent, NgTemplateOutlet, SubmitComponent, RouterLinkActive, RouterLink, GenericCollectionLogoComponent]
 })
 export class BuilderNavbarComponent implements OnDestroy {
   isSaving: boolean;

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Organization } from 'app/core/organization-module/organization.types';
-import { NgIf } from '@angular/common';
+
 import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -11,11 +11,10 @@ import { MatIcon } from '@angular/material/icon';
     styleUrls: ['./organization-delete-modal.component.scss'],
     standalone: true,
     imports: [
-        NgIf,
-        PopupComponent,
-        MatButton,
-        MatIcon,
-    ],
+    PopupComponent,
+    MatButton,
+    MatIcon
+],
 })
 export class OrganizationDeleteModalComponent {
     @Input() isVisible = false;

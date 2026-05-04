@@ -12,7 +12,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import { trigger, style, group, transition, animate, query } from '@angular/animations';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
-import { NgIf, NgFor } from '@angular/common';
+
 import { HammertimeDirective } from '../../shared/directives/hammertime.directive';
 import { ActivateDirective } from '../../shared/directives/activate.directive';
 import { NotificationCardComponent } from './components/notification-card/notification-card.component';
@@ -52,7 +52,7 @@ import { ChangelogModalComponent } from '../../shared/modules/changelogs/changel
         ])
     ],
     standalone: true,
-    imports: [NgIf, HammertimeDirective, ActivateDirective, NgFor, NotificationCardComponent, LibraryItemComponent, PaginationComponent, RouterLink, PopupComponent, DownloadNoticePopupComponent, ChangelogModalComponent]
+    imports: [HammertimeDirective, ActivateDirective, NotificationCardComponent, LibraryItemComponent, PaginationComponent, RouterLink, PopupComponent, DownloadNoticePopupComponent, ChangelogModalComponent]
 })
 export class LibraryComponent implements OnInit, OnDestroy {
 

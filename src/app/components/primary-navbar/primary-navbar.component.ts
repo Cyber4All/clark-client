@@ -5,7 +5,7 @@ import { NavbarDropdownService } from 'app/core/client-module/navBarDropdown.ser
 import { Router, NavigationStart, Event as NavigationEvent, RouterLink } from '@angular/router';
 import { Topic } from '../../../entity';
 import { NotificationService } from 'app/core/notification-module/notification.service';
-import { NgIf, NgStyle, NgClass, NgFor, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { NgStyle, NgClass, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
 import { SearchComponent } from '../search/search.component';
 import { ContextMenuComponent } from '../../shared/modules/contextmenu/context-menu/context-menu.component';
 import { ActivateDirective } from '../../shared/directives/activate.directive';
@@ -18,7 +18,7 @@ import { SkipLinkComponent } from '../../shared/components/skip-link/skip-link.c
     styleUrls: ['./primary-navbar.component.scss'],
     providers: [NavbarDropdownService],
     standalone: true,
-    imports: [NgIf, RouterLink, SearchComponent, NgStyle, ContextMenuComponent, ActivateDirective, NgClass, NgFor, SkipLinkComponent, NgTemplateOutlet, TitleCasePipe]
+    imports: [RouterLink, SearchComponent, NgStyle, ContextMenuComponent, ActivateDirective, NgClass, SkipLinkComponent, NgTemplateOutlet, TitleCasePipe]
 })
 export class PrimaryNavbarComponent implements OnInit {
 

@@ -1,24 +1,36 @@
-<a [attr.aria-label]="'child of ' + parents[0]?.name + '; ' + 'parent of ' + children[0]?.name" *ngIf='children?.length || parents?.length' class='hierarchy-link' (activate)='emitLinkClickEvent()'>
-  <span class='hierarchy-link__icon-container'>
-    <i class="far fa-project-diagram"></i>
-  </span>
-  <span *ngIf='parents?.length' class='hierarchy-link__child-link-container'>
-    Child of 
-    <span class='hierarchy-link__child-link-container__link'>
-      {{ parents[0].name }}
+@if (children?.length || parents?.length) {
+  <a [attr.aria-label]="'child of ' + parents[0]?.name + '; ' + 'parent of ' + children[0]?.name" class='hierarchy-link' (activate)='emitLinkClickEvent()'>
+    <span class='hierarchy-link__icon-container'>
+      <i class="far fa-project-diagram"></i>
     </span>
-  </span>
-  <span *ngIf='parents?.length > 1' class='hierarchy-link__plus-more-link-container'>
-    + {{ parents?.length - 1 }} more
-  </span>
-  <span *ngIf='parents?.length' class='hierarchy-link__parent-child-separator'>;</span>
-  <span *ngIf='children?.length' class='hierarchy-link__parent-link-container'>
-    Parent of
-    <span class='hierarchy-link__parent-link-container__link'>
-      {{ children[0].name }}
-    </span>
-  </span>
-  <span *ngIf='children?.length > 1' class='hierarchy-link__plus-more-link-container'>
-    + {{ children?.length - 1 }} more
-  </span>
-</a>
+    @if (parents?.length) {
+      <span class='hierarchy-link__child-link-container'>
+        Child of
+        <span class='hierarchy-link__child-link-container__link'>
+          {{ parents[0].name }}
+        </span>
+      </span>
+    }
+    @if (parents?.length > 1) {
+      <span class='hierarchy-link__plus-more-link-container'>
+        + {{ parents?.length - 1 }} more
+      </span>
+    }
+    @if (parents?.length) {
+      <span class='hierarchy-link__parent-child-separator'>;</span>
+    }
+    @if (children?.length) {
+      <span class='hierarchy-link__parent-link-container'>
+        Parent of
+        <span class='hierarchy-link__parent-link-container__link'>
+          {{ children[0].name }}
+        </span>
+      </span>
+    }
+    @if (children?.length > 1) {
+      <span class='hierarchy-link__plus-more-link-container'>
+        + {{ children?.length - 1 }} more
+      </span>
+    }
+  </a>
+}

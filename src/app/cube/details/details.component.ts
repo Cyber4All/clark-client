@@ -13,7 +13,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SkipLinkComponent } from '../../shared/components/skip-link/skip-link.component';
-import { NgIf, NgFor, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
 import { SplashComponent } from './components/splash/splash.component';
 import { DescriptionComponent } from './components/description/description.component';
@@ -37,27 +37,25 @@ import { ChangelogModalComponent } from '../../shared/modules/changelogs/changel
     styleUrls: ['./details.component.scss'],
     standalone: true,
     imports: [
-        SkipLinkComponent,
-        NgIf,
-        CubePatternComponent,
-        SplashComponent,
-        DescriptionComponent,
-        NgFor,
-        OutcomeComponent,
-        AcademicLevelCardComponent,
-        MaterialsComponent,
-        TipDirective,
-        ActivateDirective,
-        LearningObjectRatingsComponent,
-        ToggleSwitchComponent,
-        ActionPanelComponent,
-        AuthorCardComponent,
-        VersionCardComponent,
-        PopupComponent,
-        NewRatingComponent,
-        ChangelogModalComponent,
-        DatePipe,
-    ],
+    SkipLinkComponent,
+    CubePatternComponent,
+    SplashComponent,
+    DescriptionComponent,
+    OutcomeComponent,
+    AcademicLevelCardComponent,
+    MaterialsComponent,
+    TipDirective,
+    ActivateDirective,
+    LearningObjectRatingsComponent,
+    ToggleSwitchComponent,
+    ActionPanelComponent,
+    AuthorCardComponent,
+    VersionCardComponent,
+    PopupComponent,
+    NewRatingComponent,
+    ChangelogModalComponent,
+    DatePipe
+],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
   learningObject: LearningObject;

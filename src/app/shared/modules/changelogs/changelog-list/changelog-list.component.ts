@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { trigger, transition, stagger, style, animate, query } from '@angular/animations';
-import { NgFor } from '@angular/common';
+
 import { ChangelogItemComponent } from '../changelog-item/changelog-item.component';
 
 @Component({
@@ -20,7 +20,7 @@ import { ChangelogItemComponent } from '../changelog-item/changelog-item.compone
         ])
     ],
     standalone: true,
-    imports: [NgFor, ChangelogItemComponent]
+    imports: [ChangelogItemComponent]
 })
 export class ChangelogListComponent implements OnInit {
 

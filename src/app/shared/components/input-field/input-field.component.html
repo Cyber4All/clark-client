@@ -1,29 +1,34 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <mat-form-field class="max-width-field">
-    <input
-        matInput
-        type="{{hide ? 'password' : 'text'}}" 
-        [value]="value"
-        (input)="changed($event.target.value)"
-        (blur)="touched()"
-        [formControl]="control"
+  <input
+    matInput
+    type="{{hide ? 'password' : 'text'}}"
+    [value]="value"
+    (input)="changed($event.target.value)"
+    (blur)="touched()"
+    [formControl]="control"
     >
-    <mat-icon 
-        class="material-icons"
-        matSuffix
-        *ngIf="isPwrd" 
-        (click)="hide = !hide"
-        >{{  hide ? 'visibility_off' : 'visibility'  }}
+  @if (isPwrd) {
+    <mat-icon
+      class="material-icons"
+      matSuffix
+      (click)="hide = !hide"
+      >{{  hide ? 'visibility_off' : 'visibility'  }}
     </mat-icon>
-    <mat-error *ngIf="control.errors !== null && confirmType === ''">
-        {{
-            errorMsg.length !== 0 ? errorMsg : authValidation.getInputErrorMessage(control)
-        }}
+  }
+  @if (control.errors !== null && confirmType === '') {
+    <mat-error>
+      {{
+      errorMsg.length !== 0 ? errorMsg : authValidation.getInputErrorMessage(control)
+      }}
     </mat-error>
-    <mat-error *ngIf="confirmType !== ''">
-        {{
-            authValidation.getInputErrorMessage(control, confirmType)
-        }}
+  }
+  @if (confirmType !== '') {
+    <mat-error>
+      {{
+      authValidation.getInputErrorMessage(control, confirmType)
+      }}
     </mat-error>
-    <mat-label>{{  phold }}</mat-label>
+  }
+  <mat-label>{{  phold }}</mat-label>
 </mat-form-field>

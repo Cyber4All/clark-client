@@ -3,7 +3,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SidePanelOptions } from '../panel.directive';
 import { fade } from '../panel.animations';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../directives/activate.directive';
 import { TrapFocusDirective } from '../../../directives/trap-focus.directive';
 
@@ -11,28 +11,31 @@ import { TrapFocusDirective } from '../../../directives/trap-focus.directive';
     selector: 'clark-side-panel-viewer',
     template: `
     <ng-container>
-      <div *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
+      @if (isOpen) {
+        <div (activate)="doClose()" [@fade] class="overlay"></div>
+      }
       <div
         trapFocus
         [style.width]="contentWidth + 'px'"
         (activate)="$event.stopPropagation()"
         class="side-panel" [ngClass]="{'side-panel--no-padding': options && !options.padding}"
-      >
-        <button
-          *ngIf="options.showExitButton"
-          class="side-panel__exit-button"
-          [style.color]="options.exitButtonColor"
-          (activate)='doClose()'
-          ><i class="fal fa-times"></i>
-        </button>
+        >
+        @if (options.showExitButton) {
+          <button
+            class="side-panel__exit-button"
+            [style.color]="options.exitButtonColor"
+            (activate)='doClose()'
+            ><i class="fal fa-times"></i>
+          </button>
+        }
         <ng-content></ng-content>
       </div>
     </ng-container>
-  `,
+    `,
     styleUrls: ['./side-panel-viewer.component.scss'],
     animations: [fade],
     standalone: true,
-    imports: [NgIf, ActivateDirective, TrapFocusDirective, NgClass]
+    imports: [ActivateDirective, TrapFocusDirective, NgClass]
 })
 export class SidePanelViewerComponent implements OnInit, OnDestroy {
   _controller$: BehaviorSubject<boolean>;

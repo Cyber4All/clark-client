@@ -15,7 +15,7 @@ import { TOOLTIP_TEXT } from '@env/tooltip-text';
 import { takeUntil } from 'rxjs/operators';
 import { getUserAgentBrowser } from 'getUserAgentBrowser';
 import { FileBreadcrumbComponent } from '../file-breadcrumb/file-breadcrumb.component';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { ActivateDirective } from '../../../directives/activate.directive';
 import { FileListViewComponent } from '../file-list-view/file-list-view.component';
 import { SkipLinkComponent } from '../../../components/skip-link/skip-link.component';
@@ -38,14 +38,13 @@ export type DescriptionUpdate = {
     styleUrls: ['file-browser.component.scss'],
     standalone: true,
     imports: [
-        FileBreadcrumbComponent,
-        NgIf,
-        ActivateDirective,
-        NgClass,
-        FileListViewComponent,
-        SkipLinkComponent,
-        AsyncPipe,
-    ],
+    FileBreadcrumbComponent,
+    ActivateDirective,
+    NgClass,
+    FileListViewComponent,
+    SkipLinkComponent,
+    AsyncPipe
+],
 })
 export class FileBrowserComponent implements OnInit, OnDestroy {
   @Input() canManage = false;

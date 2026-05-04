@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { NgIf } from '@angular/common';
+
 import { NgChartsModule } from 'ng2-charts';
 
 @Component({
@@ -7,7 +7,7 @@ import { NgChartsModule } from 'ng2-charts';
     templateUrl: 'distribution-chart.component.html',
     styleUrls: ['distribution-chart.component.scss'],
     standalone: true,
-    imports: [NgIf, NgChartsModule],
+    imports: [NgChartsModule],
 })
 export class DistributionChartComponent implements OnInit {
   @Input() chart: any;

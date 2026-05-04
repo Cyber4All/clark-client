@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { Collection } from '../../core/collection-module/collections.service';
-import { NgFor } from '@angular/common';
+
 import { CollectionCardComponent } from '../../shared/components/collection-card/collection-card.component';
 
 @Component({
@@ -9,7 +9,7 @@ import { CollectionCardComponent } from '../../shared/components/collection-card
     templateUrl: './collections.component.html',
     styleUrls: ['./collections.component.scss'],
     standalone: true,
-    imports: [NgFor, CollectionCardComponent]
+    imports: [CollectionCardComponent]
 })
 export class CollectionsComponent implements OnInit {
 

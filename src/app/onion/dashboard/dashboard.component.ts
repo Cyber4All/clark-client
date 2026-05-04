@@ -13,7 +13,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { EditorialService } from 'app/core/learning-object-module/editorial.service';
 import { SplashComponent } from './components/splash/splash.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../shared/directives/activate.directive';
 import { CarouselComponent } from '../../shared/components/carousel/carousel.component';
 import { ListComponent } from './components/list/list.component';
@@ -46,7 +46,7 @@ import { SubmitComponent } from '../shared/submit/submit.component';
         ]),
     ],
     standalone: true,
-    imports: [SplashComponent, NgIf, NgClass, ActivateDirective, CarouselComponent, ListComponent, PopupComponent, ChangelogModalComponent, SidePanelContentComponent, PanelDirective, SubmitComponent]
+    imports: [SplashComponent, NgClass, ActivateDirective, CarouselComponent, ListComponent, PopupComponent, ChangelogModalComponent, SidePanelContentComponent, PanelDirective, SubmitComponent]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   lastLocation: NavigationEnd;

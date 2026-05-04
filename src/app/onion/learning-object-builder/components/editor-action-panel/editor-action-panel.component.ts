@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {LearningObject} from '@entity';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 import { ChangeStatusModalComponent } from './change-status-modal/change-status-modal.component';
-import { NgIf } from '@angular/common';
+
 import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/context-menu/context-menu.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/con
     templateUrl: './editor-action-panel.component.html',
     styleUrls: ['./editor-action-panel.component.scss'],
     standalone: true,
-    imports: [ActivateDirective, ChangeStatusModalComponent, NgIf, ContextMenuComponent]
+    imports: [ActivateDirective, ChangeStatusModalComponent, ContextMenuComponent]
 })
 export class EditorActionPanelComponent {
 

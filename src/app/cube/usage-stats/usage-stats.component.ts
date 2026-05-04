@@ -8,7 +8,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import { MetricService } from '../../core/metric-module/metric.service';
 import { UtilityService } from '../../core/utility-module/utility.service';
 import { OutcomeService } from 'app/core/learning-object-module/outcomes/outcome.service';
-import { NgFor } from '@angular/common';
+
 import { DistributionChartComponent } from './distribution-chart/distribution-chart.component';
 import { TopDownloadsComponent } from './top-downloads/top-downloads.component';
 
@@ -21,11 +21,10 @@ let CHART_HOVERED = false;
     styleUrls: ['usage-stats.component.scss'],
     standalone: true,
     imports: [
-        NgFor,
-        CounterBlockComponent,
-        DistributionChartComponent,
-        TopDownloadsComponent,
-    ],
+    CounterBlockComponent,
+    DistributionChartComponent,
+    TopDownloadsComponent
+],
 })
 export class UsageStatsComponent implements OnInit {
   outcomeDistributionReady = false;

@@ -21,7 +21,7 @@ import { SearchService } from 'app/core/learning-object-module/search/search.ser
 import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
 import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
 import { FilterSearchComponent } from '../../components/filter-search/filter-search.component';
-import { NgIf, NgFor } from '@angular/common';
+
 import { CheckBoxComponent } from '../../../shared/components/checkbox/checkbox.component';
 import { ActivateDirective } from '../../../shared/directives/activate.directive';
 import { LearningObjectListItemComponent } from '../../components/learning-object-list-item/learning-object-list-item.component';
@@ -32,16 +32,14 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
     styleUrls: ['./learning-objects.component.scss'],
     standalone: true,
     imports: [
-        ContentWrapperComponent,
-        SearchInputComponent,
-        FilterSearchComponent,
-        NgIf,
-        CheckBoxComponent,
-        ActivateDirective,
-        NgFor,
-        LearningObjectListItemComponent,
-        PaginationComponent,
-    ],
+    ContentWrapperComponent,
+    SearchInputComponent,
+    FilterSearchComponent,
+    CheckBoxComponent,
+    ActivateDirective,
+    LearningObjectListItemComponent,
+    PaginationComponent
+],
 })
 export class LearningObjectsComponent
   implements OnInit, OnDestroy, AfterViewInit {

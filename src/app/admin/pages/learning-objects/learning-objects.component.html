@@ -21,56 +21,78 @@
   <div #list class="list" main>
     <div #listInner>
       <div class="list__body">
-        <div *ngIf="learningObjects?.length; else emptyTemplate" >
-          <div #headers class="body__column-headers">
-            <clark-checkbox role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
-            <div>Status</div>
-            <div>Name</div>
-            <div>Author</div>
-            <div>Length</div>
-            <div>Date
-              <button class="sort" (activate)="sortByDate()">
-                <span *ngIf="!_query.sortType else sortArrows">
-                  <i style="font-size: 18px;" class="far fa-sort"></i>
-                </span>
-              </button>
+        @if (learningObjects?.length) {
+          <div >
+            <div #headers class="body__column-headers">
+              <clark-checkbox role="button" aria-label="Select all Learning Objects" [value]="allSelected" (action)="selectAll()"></clark-checkbox>
+              <div>Status</div>
+              <div>Name</div>
+              <div>Author</div>
+              <div>Length</div>
+              <div>Date
+                <button class="sort" (activate)="sortByDate()">
+                  @if (!_query.sortType) {
+                    <span>
+                      <i style="font-size: 18px;" class="far fa-sort"></i>
+                    </span>
+                  } @else {
+                    @if (_query.sortType.toString() === '1') {
+                      <span>
+                        <i style="font-size: 18px;" class="far fa-sort-up"></i>
+                      </span>
+                    }
+                    @if (_query.sortType.toString() === '-1') {
+                      <span>
+                        <i style="font-size: 18px;" class="far fa-sort-down"></i>
+                      </span>
+                    }
+                  }
+                </button>
+              </div>
             </div>
+            @for (l of learningObjects; track l) {
+              <clark-learning-object-list-item
+                [learningObject]="l"
+                [status]="l.status"
+                [selected]="this.selected.get(l.id) !== undefined"
+                (select)="toggleSelect(l, $event, i)"
+                (viewUser)="getUserLearningObjects($event)"
+                (changeStatus)="openChangeStatusModal($event)"
+                (newPageNumberClicked)="changePage($event)"
+                >
+              </clark-learning-object-list-item>
+            }
+            <clark-admin-pagination
+              [lastPageNumber] = lastPage
+              [currentPageNumber] = query.currPage
+              (newPageNumberClicked) = 'changePage($event)'
+            ></clark-admin-pagination>
           </div>
-            <clark-learning-object-list-item
-              *ngFor="let l of learningObjects"
-              [learningObject]="l"
-              [status]="l.status"
-              [selected]="this.selected.get(l.id) !== undefined"
-              (select)="toggleSelect(l, $event, i)"
-              (viewUser)="getUserLearningObjects($event)"
-              (changeStatus)="openChangeStatusModal($event)"
-              (newPageNumberClicked)="changePage($event)"
-            >
-            </clark-learning-object-list-item>
-          <clark-admin-pagination
-                [lastPageNumber] = lastPage
-                [currentPageNumber] = query.currPage
-                (newPageNumberClicked) = 'changePage($event)'
-              ></clark-admin-pagination>
-        </div>
+        } @else {
+          @if (!loading) {
+            <div class="empty-template">
+              <div class="empty-template__top">
+                <i class="fal fa-box-open"></i>
+                <div class="top-message">
+                  Nothing here!
+                </div>
+              </div>
+              <div class="empty-text">
+                Learning Objects will appear here after they are submitted to your
+                collection
+              </div>
+            </div>
+          } @else {
+            <div class="loadingOrFinished__content">
+              <i class="fal fa-spinner-third fa-spin"></i>
+              Loading...
+            </div>
+          }
+        }
       </div>
     </div>
   </div>
 
-  <ng-template #emptyTemplate>
-    <div class="empty-template" *ngIf="!loading; else loadingTemplate">
-      <div class="empty-template__top">
-        <i class="fal fa-box-open"></i>
-        <div class="top-message">
-          Nothing here!
-        </div>
-      </div>
-      <div class="empty-text">
-        Learning Objects will appear here after they are submitted to your
-        collection
-      </div>
-    </div>
-  </ng-template>
 </clark-admin-content-wrapper>
 
 <ng-template #finishedLoadingTemplate>
@@ -80,18 +102,4 @@
   </div>
 </ng-template>
 
-<ng-template #sortArrows>
-  <span *ngIf="_query.sortType.toString() === '1'">
-    <i style="font-size: 18px;" class="far fa-sort-up"></i>
-  </span>
-  <span *ngIf="_query.sortType.toString() === '-1'">
-    <i style="font-size: 18px;" class="far fa-sort-down"></i>
-  </span>
-</ng-template>
 
-<ng-template #loadingTemplate>
-  <div class="loadingOrFinished__content">
-    <i class="fal fa-spinner-third fa-spin"></i>
-    Loading...
-  </div>
-</ng-template>

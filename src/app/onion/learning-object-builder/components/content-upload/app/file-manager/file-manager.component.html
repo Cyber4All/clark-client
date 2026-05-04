@@ -10,33 +10,36 @@
   [inBuilder]="true"
 ></clark-file-browser>
 
-<clark-context-menu
-  *ngIf="showNewOptions"
-  [anchor]="menuAnchor"
-  (close)="closeContextMenu()"
->
-  <ul #contextMenu>
-    <li (activate)="openFileDialog()"><i class="fas fa-file"></i> New File</li>
-    <li (activate)="openFolderDialog()">
-      <i class="fas fa-folder"></i> New Folder
-    </li>
-  </ul>
-</clark-context-menu>
-
-<clark-context-menu
-  *ngIf="showFileOptions"
-  [anchor]="menuAnchor"
-  (close)="closeContextMenu()"
->
-  <ul #contextMenu>
-    <li
-      *ngIf="!isDirectory(menuItem)"
-      (activate)="handleDownloadClick(menuItem)"
+@if (showNewOptions) {
+  <clark-context-menu
+    [anchor]="menuAnchor"
+    (close)="closeContextMenu()"
     >
-      <i class="far fa-download"></i>Download
-    </li>
-    <li (activate)="triggerDelete(menuItem)" class="bad">
-      <i class="far fa-trash-alt"></i>Delete
-    </li>
-  </ul>
-</clark-context-menu>
+    <ul #contextMenu>
+      <li (activate)="openFileDialog()"><i class="fas fa-file"></i> New File</li>
+      <li (activate)="openFolderDialog()">
+        <i class="fas fa-folder"></i> New Folder
+      </li>
+    </ul>
+  </clark-context-menu>
+}
+
+@if (showFileOptions) {
+  <clark-context-menu
+    [anchor]="menuAnchor"
+    (close)="closeContextMenu()"
+    >
+    <ul #contextMenu>
+      @if (!isDirectory(menuItem)) {
+        <li
+          (activate)="handleDownloadClick(menuItem)"
+          >
+          <i class="far fa-download"></i>Download
+        </li>
+      }
+      <li (activate)="triggerDelete(menuItem)" class="bad">
+        <i class="far fa-trash-alt"></i>Delete
+      </li>
+    </ul>
+  </clark-context-menu>
+}

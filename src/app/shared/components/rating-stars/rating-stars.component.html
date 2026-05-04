@@ -1,17 +1,23 @@
 <div class="rating-stars {{ color ? color : '' }}" [ngStyle]="styles" [tip]="rating + ' out of ' + count" [tipDisabled]="!reviewsCount" tipPosition="top">
   <div class="stars" tabindex="0" attr.aria-label="Rating: {{ rating }} out of 5 stars">
     <div class="empty-stars">
-      <div class="empty-star" *ngFor="let item of iterableCount">
-        <i class="fal fa-star"></i>
-      </div>
+      @for (item of iterableCount; track item) {
+        <div class="empty-star">
+          <i class="fal fa-star"></i>
+        </div>
+      }
     </div>
     <div class="full-stars-mask" [ngStyle]="{width: calculateBarWidth}">
       <div class="full-stars">
-        <div class="full-star" *ngFor="let item of iterableCount">
-          <i class="fas fa-star"></i>
-        </div>
+        @for (item of iterableCount; track item) {
+          <div class="full-star">
+            <i class="fas fa-star"></i>
+          </div>
+        }
       </div>
     </div>
   </div>
-  <div *ngIf="reviewsCount && reviewsCount > 0" class="number-reviews" tabindex="0" attr.aria-label="{{ reviewsCount }} {{ reviewsCount > 0 ? 'Review' : 'Reviews'}} ">({{ reviewsCount }})</div>
+  @if (reviewsCount && reviewsCount > 0) {
+    <div class="number-reviews" tabindex="0" attr.aria-label="{{ reviewsCount }} {{ reviewsCount > 0 ? 'Review' : 'Reviews'}} ">({{ reviewsCount }})</div>
+  }
 </div>

@@ -5,28 +5,30 @@
     [class.active]="internalSelectedValues.length > 0"
     [disabled]="disabled"
     (click)="toggleMenu()"
-  >
+    >
     {{ buttonLabel }}
     <i class="far fa-chevron-down" aria-hidden="true"></i>
   </button>
 
-  <div
-    class="dropdown-filter__menu"
-    *ngIf="isOpen"
-    (click)="$event.stopPropagation()"
-  >
-    <button
-      type="button"
-      class="dropdown-filter__option"
-      *ngFor="let option of options; trackBy: trackByValue"
-      [class.selected]="isSelected(option.value)"
-      [disabled]="option.disabled"
-      (click)="onOptionClick(option, $event)"
-    >
-      <span class="dropdown-filter__indicator" [class.checked]="isSelected(option.value)">
-        <i class="fas fa-check" aria-hidden="true"></i>
-      </span>
-      <span>{{ option.label }}</span>
-    </button>
-  </div>
+  @if (isOpen) {
+    <div
+      class="dropdown-filter__menu"
+      (click)="$event.stopPropagation()"
+      >
+      @for (option of options; track trackByValue($index, option)) {
+        <button
+          type="button"
+          class="dropdown-filter__option"
+          [class.selected]="isSelected(option.value)"
+          [disabled]="option.disabled"
+          (click)="onOptionClick(option, $event)"
+          >
+          <span class="dropdown-filter__indicator" [class.checked]="isSelected(option.value)">
+            <i class="fas fa-check" aria-hidden="true"></i>
+          </span>
+          <span>{{ option.label }}</span>
+        </button>
+      }
+    </div>
+  }
 </div>

@@ -1,32 +1,52 @@
 <div class="dashboard-item">
-    <div class="row-item">
-        <div>
-            <div class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status" [ngClass]="learningObject.status">
-                <span *ngIf="learningObject.status === 'unreleased'"><i class="fas fa-eye-slash"></i></span>
-                <span *ngIf="learningObject.status === 'waiting'"><i class="fas fa-hourglass"></i></span>
-                <span *ngIf="learningObject.status === 'review'"><i class="fas fa-sync"></i></span>
-                <span *ngIf="learningObject.status === 'proofing'"><i class="fas fa-shield"></i></span>
-                <span *ngIf="learningObject.status === 'released'"><i class="fas fa-eye"></i></span>
-                <span *ngIf="learningObject.status === 'rejected'"><i class="fas fa-ban"></i></span>
-                <span *ngIf="learningObject.status === 'accepted_minor'"><i class="fas fa-check-double"></i></span>
-                <span *ngIf="learningObject.status === 'accepted_major'"><i class="fas fa-check"></i></span>
-            </div>
-        </div>
-        <div>
-            {{ learningObject.name }}
-        </div>
-        <div>
-            {{ learningObject.author.name | titlecase }}
-        </div>
-        <div>{{ learningObject.length | titlecase }}</div>
-        <div>{{ learningObject.date | date:'longDate' }}</div>
-        <div>
-            <div *ngIf="!disabled" class="handle-bar">
-                <i class="far fa-bars"></i>
-            </div>
-            <div *ngIf="disabled" class="already-featured">
-                <i class="fas fa-star"></i>
-            </div>
-        </div>
+  <div class="row-item">
+    <div>
+      <div class="status" [attr.aria-label]="'Learning Object Status: ' + learningObject.status" [ngClass]="learningObject.status">
+        @if (learningObject.status === 'unreleased') {
+          <span><i class="fas fa-eye-slash"></i></span>
+        }
+        @if (learningObject.status === 'waiting') {
+          <span><i class="fas fa-hourglass"></i></span>
+        }
+        @if (learningObject.status === 'review') {
+          <span><i class="fas fa-sync"></i></span>
+        }
+        @if (learningObject.status === 'proofing') {
+          <span><i class="fas fa-shield"></i></span>
+        }
+        @if (learningObject.status === 'released') {
+          <span><i class="fas fa-eye"></i></span>
+        }
+        @if (learningObject.status === 'rejected') {
+          <span><i class="fas fa-ban"></i></span>
+        }
+        @if (learningObject.status === 'accepted_minor') {
+          <span><i class="fas fa-check-double"></i></span>
+        }
+        @if (learningObject.status === 'accepted_major') {
+          <span><i class="fas fa-check"></i></span>
+        }
+      </div>
     </div>
+    <div>
+      {{ learningObject.name }}
+    </div>
+    <div>
+      {{ learningObject.author.name | titlecase }}
+    </div>
+    <div>{{ learningObject.length | titlecase }}</div>
+    <div>{{ learningObject.date | date:'longDate' }}</div>
+    <div>
+      @if (!disabled) {
+        <div class="handle-bar">
+          <i class="far fa-bars"></i>
+        </div>
+      }
+      @if (disabled) {
+        <div class="already-featured">
+          <i class="fas fa-star"></i>
+        </div>
+      }
+    </div>
+  </div>
 </div>

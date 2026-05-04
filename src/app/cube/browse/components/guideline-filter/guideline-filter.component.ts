@@ -5,7 +5,7 @@ import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { FilterSectionInfo } from '../filter-section/filter-section.component';
-import { NgIf, NgFor } from '@angular/common';
+
 import { TipDirective } from '../../../../shared/directives/tip.directive';
 import { CheckBoxComponent } from '../../../../shared/components/checkbox/checkbox.component';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
@@ -16,7 +16,7 @@ import { PaginationComponent } from '../../../library/components/pagination/pagi
     templateUrl: './guideline-filter.component.html',
     styleUrls: ['./guideline-filter.component.scss'],
     standalone: true,
-    imports: [NgIf, NgFor, TipDirective, CheckBoxComponent, ActivateDirective, PaginationComponent]
+    imports: [TipDirective, CheckBoxComponent, ActivateDirective, PaginationComponent]
 })
 export class GuidelineFilterComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject<void>();

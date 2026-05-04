@@ -1,47 +1,58 @@
-<div *ngIf="preview">
-  <div class="wrapper">
-    <div class="grid-row header" [ngClass]="{ bundle: checkAccessGroups() }">
-      <div>Name</div>
-      <div>Size</div>
-      <div>Action</div>
-      <div class="toggle" *ngIf="checkAccessGroups()">
-        <p>Bundle</p>
-        <div class="icon" [tip]="toggleToolTip" [tipDisabled]="false">
-          <i class="fas fa-question-circle"></i>
-        </div>
+@if (preview) {
+  <div>
+    <div class="wrapper">
+      <div class="grid-row header" [ngClass]="{ bundle: checkAccessGroups() }">
+        <div>Name</div>
+        <div>Size</div>
+        <div>Action</div>
+        @if (checkAccessGroups()) {
+          <div class="toggle">
+            <p>Bundle</p>
+            <div class="icon" [tip]="toggleToolTip" [tipDisabled]="false">
+              <i class="fas fa-question-circle"></i>
+            </div>
+          </div>
+        }
+        @if (canManage) {
+          <div class="placeholder"></div>
+        }
       </div>
-      <div *ngIf="canManage" class="placeholder"></div>
-    </div>
-    <div *ngFor="let item of directoryListing" class="item">
-      <!-- Folder -->
-      <clark-folder-list-item
-        *ngIf="item.folders"
-        class="folder"
-        (clicked)="openFolder(item.name)"
-        (menuClicked)="handleMenuClicked($event, item)"
-        (toggleClicked)="handleToggleClicked($event, item)"
-        [inBuilder]="inBuilder"
-        [folder]="item"
-        [showOptionButton]="canManage"
-      ></clark-folder-list-item>
-
-      <!-- File -->
-      <clark-file-list-item
-        *ngIf="!item.folders"
-        class="file"
-        (clicked)="openFile(item)"
-        (menuClicked)="handleMenuClicked($event, item)"
-        (toggleClicked)="handleToggleClicked($event, item)"
-        [inBuilder]="inBuilder"
-        [file]="item"
-        [showOptionButton]="canManage"
-      ></clark-file-list-item>
+      @for (item of directoryListing; track item) {
+        <div class="item">
+          <!-- Folder -->
+          @if (item.folders) {
+            <clark-folder-list-item
+              class="folder"
+              (clicked)="openFolder(item.name)"
+              (menuClicked)="handleMenuClicked($event, item)"
+              (toggleClicked)="handleToggleClicked($event, item)"
+              [inBuilder]="inBuilder"
+              [folder]="item"
+              [showOptionButton]="canManage"
+            ></clark-folder-list-item>
+          }
+          <!-- File -->
+          @if (!item.folders) {
+            <clark-file-list-item
+              class="file"
+              (clicked)="openFile(item)"
+              (menuClicked)="handleMenuClicked($event, item)"
+              (toggleClicked)="handleToggleClicked($event, item)"
+              [inBuilder]="inBuilder"
+              [file]="item"
+              [showOptionButton]="canManage"
+            ></clark-file-list-item>
+          }
+        </div>
+      }
     </div>
   </div>
-</div>
-<div class="preview" *ngIf="!preview">
-  <clark-file-preview [file]="file"></clark-file-preview>
-  <button (activate)="returnToFileView()" class="button good">
-    Return to file view
-  </button>
-</div>
+}
+@if (!preview) {
+  <div class="preview">
+    <clark-file-preview [file]="file"></clark-file-preview>
+    <button (activate)="returnToFileView()" class="button good">
+      Return to file view
+    </button>
+  </div>
+}

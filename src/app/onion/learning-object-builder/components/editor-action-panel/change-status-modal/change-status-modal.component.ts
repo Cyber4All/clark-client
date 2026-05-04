@@ -12,7 +12,7 @@ import { ChangelogService } from 'app/core/learning-object-module/changelog/chan
 import { carousel } from './clark-change-status-modal.animations';
 import { Router } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { NgIf, NgTemplateOutlet, NgFor, NgClass } from '@angular/common';
+import { NgTemplateOutlet, NgClass } from '@angular/common';
 import { PopupComponent } from '../../../../../shared/modules/popups/popup.component';
 import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 import { LearningObjectStatusIndicatorComponent } from '../../../../shared/status-indicator/status-indicator.component';
@@ -25,7 +25,7 @@ import { TextEditorComponent } from '../../../../../shared/components/text-edito
     styleUrls: ['./change-status-modal.component.scss'],
     animations: [carousel],
     standalone: true,
-    imports: [NgIf, PopupComponent, NgTemplateOutlet, NgFor, NgClass, ActivateDirective, LearningObjectStatusIndicatorComponent, EditChangelogComponent, TextEditorComponent]
+    imports: [PopupComponent, NgTemplateOutlet, NgClass, ActivateDirective, LearningObjectStatusIndicatorComponent, EditChangelogComponent, TextEditorComponent]
 })
 export class ChangeStatusModalComponent implements OnInit {
   @Input() shouldShow;

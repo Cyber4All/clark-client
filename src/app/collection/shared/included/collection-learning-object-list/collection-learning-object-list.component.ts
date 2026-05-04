@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { OrderBy, Query, SortType } from 'app/interfaces/query';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
-import { NgFor } from '@angular/common';
+
 import { CollectionLearningObjectCardComponent } from '../collection-learning-object-card/collection-learning-object-card.component';
 
 @Component({
@@ -10,7 +10,7 @@ import { CollectionLearningObjectCardComponent } from '../collection-learning-ob
     templateUrl: './collection-learning-object-list.component.html',
     styleUrls: ['./collection-learning-object-list.component.scss'],
     standalone: true,
-    imports: [NgFor, CollectionLearningObjectCardComponent]
+    imports: [CollectionLearningObjectCardComponent]
 })
 export class CollectionLearningObjectListComponent implements OnInit {
   @Input() collectionName: string;

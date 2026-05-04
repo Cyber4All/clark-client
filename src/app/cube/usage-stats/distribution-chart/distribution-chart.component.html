@@ -1,22 +1,28 @@
 <div class="chart-wrapper">
-  <div *ngIf="!chart" class="loading">
-    <i class="fal fa-spinner-third fa-spin"></i>
-  </div>
-  <div *ngIf="chart" class="chart">
-    <div class="header">
-      <div class="title" tabindex="0">
-        {{chart?.title}}
-      </div>
-      <div *ngIf="moreInfoLink" class="learn-more">
-        <a [href]="moreInfoLink" target="__blank" rel="noopener" attr.aria-label="Learn More about {{ chart?.title }}">Learn More</a>
-      </div>
+  @if (!chart) {
+    <div class="loading">
+      <i class="fal fa-spinner-third fa-spin"></i>
     </div>
-    <canvas tabindex="0" attr.aria-label="{{ ariaLabel }}" baseChart
-            [data]="chart?.data"
-            [options]="chart?.options"
-            [type]="chart?.type"
-            [legend]="chart?.legend"
-            (mouseleave)="handleMouseleave()">
-    </canvas>
-  </div>
+  }
+  @if (chart) {
+    <div class="chart">
+      <div class="header">
+        <div class="title" tabindex="0">
+          {{chart?.title}}
+        </div>
+        @if (moreInfoLink) {
+          <div class="learn-more">
+            <a [href]="moreInfoLink" target="__blank" rel="noopener" attr.aria-label="Learn More about {{ chart?.title }}">Learn More</a>
+          </div>
+        }
+      </div>
+      <canvas tabindex="0" attr.aria-label="{{ ariaLabel }}" baseChart
+        [data]="chart?.data"
+        [options]="chart?.options"
+        [type]="chart?.type"
+        [legend]="chart?.legend"
+        (mouseleave)="handleMouseleave()">
+      </canvas>
+    </div>
+  }
 </div>

@@ -1,8 +1,10 @@
 
 <div class = "grid-container">
-    <div *ngFor = "let learningObject of learningObjects">
-     <clark-collection-learning-object-card [learnObj] = "learningObject"></clark-collection-learning-object-card>
+  @for (learningObject of learningObjects; track learningObject) {
+    <div>
+      <clark-collection-learning-object-card [learnObj] = "learningObject"></clark-collection-learning-object-card>
     </div>
+  }
 </div>
 
 

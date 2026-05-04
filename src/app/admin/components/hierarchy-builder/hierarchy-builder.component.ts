@@ -9,7 +9,7 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import { MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodeOutlet } from '@angular/material/tree';
 import { MatIconButton } from '@angular/material/button';
 import { HierarchyObjectComponent } from './hierarchy-object/hierarchy-object.component';
-import { NgIf } from '@angular/common';
+
 
 @Component({
     selector: 'clark-hierarchy-builder',
@@ -17,16 +17,15 @@ import { NgIf } from '@angular/common';
     styleUrls: ['hierarchy-builder.component.scss'],
     standalone: true,
     imports: [
-        MatTree,
-        MatTreeNodeDef,
-        MatTreeNode,
-        MatTreeNodeToggle,
-        MatIconButton,
-        HierarchyObjectComponent,
-        MatNestedTreeNode,
-        NgIf,
-        MatTreeNodeOutlet,
-    ],
+    MatTree,
+    MatTreeNodeDef,
+    MatTreeNode,
+    MatTreeNodeToggle,
+    MatIconButton,
+    HierarchyObjectComponent,
+    MatNestedTreeNode,
+    MatTreeNodeOutlet
+],
 })
 export class HierarchyBuilderComponent implements OnInit {
 

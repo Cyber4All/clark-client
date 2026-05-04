@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MetricService } from 'app/core/metric-module/metric.service';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 
 @Component({
@@ -8,7 +8,7 @@ import { NgIf, NgClass } from '@angular/common';
     templateUrl: './stats.component.html',
     styleUrls: ['./stats.component.scss'],
     standalone: true,
-    imports: [NgIf, NgClass]
+    imports: [NgClass]
 })
 export class StatsComponent implements OnInit {
   @Input() collectionName: string;

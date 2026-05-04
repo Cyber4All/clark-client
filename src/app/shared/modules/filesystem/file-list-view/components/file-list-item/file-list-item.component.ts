@@ -3,7 +3,7 @@ import { LearningObject } from '@entity';
 import { getIcon } from 'app/shared/modules/filesystem/file-icons';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../../../directives/activate.directive';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ToggleSwitchComponent } from '../../../../../components/toggle-switch/toggle-switch.component';
@@ -15,13 +15,12 @@ import { FileSizePipe } from '../../file-size.pipe';
     styleUrls: ['file-list-item.component.scss'],
     standalone: true,
     imports: [
-        NgClass,
-        ActivateDirective,
-        MatTooltip,
-        NgIf,
-        ToggleSwitchComponent,
-        FileSizePipe,
-    ],
+    NgClass,
+    ActivateDirective,
+    MatTooltip,
+    ToggleSwitchComponent,
+    FileSizePipe
+],
 })
 export class FileListItemComponent implements OnInit {
   @Input() file: LearningObject.Material.File;

@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { ActivateDirective } from '../../../../../../shared/directives/activate.directive';
 
 @Component({
@@ -7,7 +7,7 @@ import { ActivateDirective } from '../../../../../../shared/directives/activate.
     templateUrl: './tab-menu.component.html',
     styleUrls: ['./tab-menu.component.scss'],
     standalone: true,
-    imports: [NgFor, NgClass, ActivateDirective]
+    imports: [NgClass, ActivateDirective]
 })
 export class TabMenuComponent {
 

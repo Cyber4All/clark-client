@@ -15,7 +15,7 @@ import { GuidelineService } from 'app/core/standard-guidelines-module/standard-g
 import { stripHtmlTags } from 'app/shared/functions/StripHTML';
 import { selectedGuidelines } from './guidelines_data';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription } from '@angular/material/expansion';
-import { NgFor, NgClass, TitleCasePipe } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { MatChipSet, MatChipRow, MatChipRemove } from '@angular/material/chips';
 import { TipDirective } from '../../../../../../../shared/directives/tip.directive';
 import { MatCheckbox } from '@angular/material/checkbox';
@@ -33,22 +33,21 @@ interface SelectionDocument extends SearchItemDocument {
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
-        MatAccordion,
-        NgFor,
-        MatExpansionPanel,
-        MatExpansionPanelHeader,
-        NgClass,
-        MatExpansionPanelTitle,
-        MatExpansionPanelDescription,
-        MatChipSet,
-        MatChipRow,
-        MatChipRemove,
-        TipDirective,
-        MatCheckbox,
-        FormsModule,
-        StandardOutcomesComponent,
-        TitleCasePipe,
-    ],
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelHeader,
+    NgClass,
+    MatExpansionPanelTitle,
+    MatExpansionPanelDescription,
+    MatChipSet,
+    MatChipRow,
+    MatChipRemove,
+    TipDirective,
+    MatCheckbox,
+    FormsModule,
+    StandardOutcomesComponent,
+    TitleCasePipe
+],
 })
 export class GuidelinesComponent implements OnInit, OnDestroy {
   @Input() learningObject: LearningObject;

@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from '@entity';
-import { NgIf, NgFor } from '@angular/common';
+
 import { RouterLink } from '@angular/router';
 import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/context-menu/context-menu.component';
@@ -13,7 +13,7 @@ import { PopupComponent } from '../../../../shared/modules/popups/popup.componen
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.scss'],
     standalone: true,
-    imports: [NgIf, RouterLink, ActivateDirective, ContextMenuComponent, CheckBoxComponent, NgFor, DashboardItemComponent, PopupComponent]
+    imports: [RouterLink, ActivateDirective, ContextMenuComponent, CheckBoxComponent, DashboardItemComponent, PopupComponent]
 })
 export class ListComponent {
   @Input() showOptions: boolean;
