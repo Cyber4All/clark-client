@@ -1,13 +1,19 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthValidationService } from '../../../../core/auth-module/auth-validation.service';
 import { ReportService } from '../../../../core/report-module/report.service';
 import { ToastrOvenService } from '../../../../shared/modules/toaster/notification.service';
+import { StatsComponent } from '../components/stats/stats.component';
+import { MatFormField, MatLabel, MatHint, MatSuffix } from '@angular/material/form-field';
+import { MatDateRangeInput, MatStartDate, MatEndDate, MatDatepickerToggle, MatDateRangePicker } from '@angular/material/datepicker';
+import { FooterComponent } from '../../../../cube/shared/footer/footer.component';
 
 @Component({
-  selector: 'clark-ncyte-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+    selector: 'clark-ncyte-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.scss'],
+    standalone: true,
+    imports: [StatsComponent, MatFormField, MatLabel, MatDateRangeInput, FormsModule, ReactiveFormsModule, MatStartDate, MatEndDate, MatHint, MatDatepickerToggle, MatSuffix, MatDateRangePicker, FooterComponent]
 })
 export class NcyteDashboardComponent implements OnInit {
   range = new UntypedFormGroup({

@@ -1,9 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgClass, NgFor } from '@angular/common';
+import { ActivateDirective } from '../../../directives/activate.directive';
 
 @Component({
-  selector: 'clark-file-breadcrumb',
-  templateUrl: 'file-breadcrumb.component.html',
-  styleUrls: ['file-breadcrumb.component.scss']
+    selector: 'clark-file-breadcrumb',
+    templateUrl: 'file-breadcrumb.component.html',
+    styleUrls: ['file-breadcrumb.component.scss'],
+    standalone: true,
+    imports: [NgClass, ActivateDirective, NgFor]
 })
 export class FileBreadcrumbComponent implements OnInit {
   @Input()

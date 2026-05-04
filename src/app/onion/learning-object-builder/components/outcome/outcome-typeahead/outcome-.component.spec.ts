@@ -8,7 +8,7 @@ describe('TypeaheadComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [OutcomeTypeaheadComponent],
+    imports: [OutcomeTypeaheadComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

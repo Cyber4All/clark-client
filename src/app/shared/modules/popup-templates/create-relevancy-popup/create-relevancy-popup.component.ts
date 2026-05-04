@@ -1,23 +1,14 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { EditorialService } from '../../../../core/learning-object-module/editorial.service';
-import {
-  BOLD_BUTTON,
-  ITALIC_BUTTON,
-  LINK_INPUT,
-  ORDERED_LIST_BUTTON,
-  REDO_BUTTON,
-  REMOVE_FORMAT_BUTTON,
-  UNDERLINE_BUTTON,
-  UNDO_BUTTON,
-  UNORDERED_LIST_BUTTON,
-  SEPARATOR,
-} from 'ngx-simple-text-editor';
-import { FormControl } from '@angular/forms';
+import { BOLD_BUTTON, ITALIC_BUTTON, LINK_INPUT, ORDERED_LIST_BUTTON, REDO_BUTTON, REMOVE_FORMAT_BUTTON, UNDERLINE_BUTTON, UNDO_BUTTON, UNORDERED_LIST_BUTTON, SEPARATOR, NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
+import { FormControl, FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'clark-create-relevancy-popup',
-  templateUrl: './create-relevancy-popup.component.html',
-  styleUrls: ['./create-relevancy-popup.component.scss'],
+    selector: 'clark-create-relevancy-popup',
+    templateUrl: './create-relevancy-popup.component.html',
+    styleUrls: ['./create-relevancy-popup.component.scss'],
+    standalone: true,
+    imports: [NgxSimpleTextEditorModule, FormsModule],
 })
 export class CreateRelevancyPopupComponent implements OnInit {
   constructor(private editorialService: EditorialService) {}

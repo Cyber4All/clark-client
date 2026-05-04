@@ -1,15 +1,22 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, UntypedFormControl, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, UntypedFormControl, ValidationErrors, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Observable } from 'rxjs';
 import { LearningObjectNode } from '../tree-datasource';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
 
 
 @Component({
-  selector: 'clark-hierarchy-object',
-  templateUrl: './hierarchy-object.component.html',
-  styleUrls: ['./hierarchy-object.component.scss']
+    selector: 'clark-hierarchy-object',
+    templateUrl: './hierarchy-object.component.html',
+    styleUrls: ['./hierarchy-object.component.scss'],
+    standalone: true,
+    imports: [NgIf, MatFormField, MatLabel, MatInput, FormsModule, ReactiveFormsModule, MatError, MatSelect, NgFor, MatOption, TitleCasePipe]
 })
 export class HierarchyObjectComponent implements OnInit {
 

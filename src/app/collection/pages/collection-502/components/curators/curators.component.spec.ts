@@ -8,8 +8,8 @@ describe('CuratorsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CuratorsComponent ]
-    })
+    imports: [CuratorsComponent]
+})
     .compileComponents();
   });
 

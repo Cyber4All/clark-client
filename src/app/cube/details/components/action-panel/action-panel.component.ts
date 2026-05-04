@@ -17,18 +17,28 @@ import { LibraryService } from 'app/core/library-module/library.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { takeUntil } from 'rxjs/operators';
 import { CollectionService } from 'app/core/collection-module/collections.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { NavbarDropdownService } from '../../../../core/client-module/navBarDropdown.service';
 import { BUNDLING_ROUTES } from 'app/core/learning-object-module/bundling/bundling.routes';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { EditorialService } from 'app/core/learning-object-module/editorial.service';
+import { NgIf, NgClass, NgTemplateOutlet } from '@angular/common';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { EditorialActionPadComponent } from './editorial-action-pad/editorial-action-pad.component';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { ReviewerPanelComponent } from '../reviewer-panel/reviewer-panel.component';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
+import { DownloadNoticePopupComponent } from '../../../../shared/modules/popup-templates/download-notice-popup/download-notice-popup.component';
+import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/context-menu/context-menu.component';
 
 
 @Component({
-  selector: 'cube-details-action-panel',
-  styleUrls: ['action-panel.component.scss'],
-  templateUrl: 'action-panel.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'cube-details-action-panel',
+    styleUrls: ['action-panel.component.scss'],
+    templateUrl: 'action-panel.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [NgIf, TipDirective, NgClass, NgTemplateOutlet, EditorialActionPadComponent, RouterLink, ActivateDirective, ReviewerPanelComponent, PopupComponent, DownloadNoticePopupComponent, ContextMenuComponent]
 })
 export class ActionPanelComponent implements OnInit, OnDestroy {
 

@@ -3,11 +3,17 @@ import { OrganizationStore } from 'app/core/organization-module/organization.sto
 import { UserService } from 'app/core/user-module/user.service';
 import { BehaviorSubject } from 'rxjs';
 import { Observable, of } from 'rxjs';
+import { NgIf, NgTemplateOutlet, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 
 @Component({
-  selector: 'clark-profile-header',
-  templateUrl: './profile-header.component.html',
-  styleUrls: ['./profile-header.component.scss']
+    selector: 'clark-profile-header',
+    templateUrl: './profile-header.component.html',
+    styleUrls: ['./profile-header.component.scss'],
+    standalone: true,
+    imports: [NgIf, ActivateDirective, NgTemplateOutlet, PopupComponent, EditProfileComponent, AsyncPipe, TitleCasePipe]
 })
 export class ProfileHeaderComponent implements OnInit {
   /**

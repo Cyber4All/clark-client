@@ -14,12 +14,18 @@ import { TopicsService } from '../../../core/learning-object-module/topics/topic
 import { MetricService } from '../../../core/metric-module/metric.service';
 import { RatingService } from '../../../core/rating-module/rating.service';
 import { OrganizationStore } from '../../../core/organization-module/organization.store';
+import { RouterLink } from '@angular/router';
+import { NgClass, NgIf, NgFor, AsyncPipe, DecimalPipe, TitleCasePipe, DatePipe } from '@angular/common';
+import { TipDirective } from '../../../shared/directives/tip.directive';
+import { RatingStarsComponent } from '../../../shared/components/rating-stars/rating-stars.component';
 
 @Component({
-  selector: 'clark-learning-object-component',
-  templateUrl: 'learning-object.component.html',
-  styleUrls: ['./learning-object.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'clark-learning-object-component',
+    templateUrl: 'learning-object.component.html',
+    styleUrls: ['./learning-object.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [RouterLink, NgClass, NgIf, TipDirective, RatingStarsComponent, NgFor, AsyncPipe, DecimalPipe, TitleCasePipe, DatePipe]
 })
 export class LearningObjectListingComponent implements OnDestroy {
   // -----------------------------

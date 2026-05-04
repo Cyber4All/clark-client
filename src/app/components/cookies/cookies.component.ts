@@ -1,9 +1,12 @@
 import { Component, Output, EventEmitter } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'clark-cookies',
-  templateUrl: './cookies.component.html',
-  styleUrls: ['./cookies.component.scss']
+    selector: 'clark-cookies',
+    templateUrl: './cookies.component.html',
+    styleUrls: ['./cookies.component.scss'],
+    standalone: true,
+    imports: [RouterLink]
 })
 export class CookiesComponent {
 

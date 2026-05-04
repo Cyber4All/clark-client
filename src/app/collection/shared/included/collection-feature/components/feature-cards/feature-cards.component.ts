@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CollectionService } from '../../../../../../core/collection-module/collections.service';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { NgClass, NgIf, SlicePipe, TitleCasePipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-collection-feature-cards',
-  templateUrl: './feature-cards.component.html',
-  styleUrls: ['./feature-cards.component.scss']
+    selector: 'clark-collection-feature-cards',
+    templateUrl: './feature-cards.component.html',
+    styleUrls: ['./feature-cards.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf, SlicePipe, TitleCasePipe, DatePipe]
 })
 export class FeatureCardsComponent implements OnInit {
 

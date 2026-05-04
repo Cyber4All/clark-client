@@ -8,7 +8,7 @@ describe('FilterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [FilterComponent],
+    imports: [FilterComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

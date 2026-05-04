@@ -8,7 +8,7 @@ describe('ScaffoldComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [ScaffoldComponent],
+    imports: [ScaffoldComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

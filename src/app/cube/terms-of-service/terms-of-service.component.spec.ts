@@ -8,7 +8,7 @@ describe('TermsOfServiceComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [TermsOfServiceComponent],
+    imports: [TermsOfServiceComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

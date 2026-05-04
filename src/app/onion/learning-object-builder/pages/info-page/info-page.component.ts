@@ -9,10 +9,22 @@ import { COPY } from './info-page.copy';
 import { Observable, of, Subject, from } from 'rxjs';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { ColumnWrapperComponent } from '../../components/column-wrapper/column-wrapper.component';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ScaffoldComponent } from '../../components/scaffold/scaffold.component';
+import { FormsModule } from '@angular/forms';
+import { MetadataComponent } from './metadata/metadata.component';
+import { UserDropdownComponent } from '../../components/user-dropdown/user-dropdown.component';
+import { ContributorPillComponent } from '../../components/contributor-pill/contributor-pill.component';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { LearningObjectDescriptionComponent } from '../../components/description.component';
+import { SkipLinkComponent } from '../../../../shared/components/skip-link/skip-link.component';
 @Component({
-  selector: 'clark-info-page',
-  templateUrl: './info-page.component.html',
-  styleUrls: ['./info-page.component.scss']
+    selector: 'clark-info-page',
+    templateUrl: './info-page.component.html',
+    styleUrls: ['./info-page.component.scss'],
+    standalone: true,
+    imports: [ColumnWrapperComponent, NgIf, ScaffoldComponent, FormsModule, MetadataComponent, UserDropdownComponent, NgFor, ContributorPillComponent, NgClass, ActivateDirective, LearningObjectDescriptionComponent, SkipLinkComponent]
 })
 export class InfoPageComponent implements OnInit, OnDestroy {
   copy = COPY;

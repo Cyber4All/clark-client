@@ -7,8 +7,8 @@ describe('HierarchiesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HierarchiesComponent ]
-    })
+    imports: [HierarchiesComponent]
+})
     .compileComponents();
   });
 

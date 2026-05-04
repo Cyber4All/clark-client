@@ -4,11 +4,19 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { FormsModule } from '@angular/forms';
+import { AutofocusDirective } from '../../../../../shared/directives/autofocus.directive';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
+import { NgIf, NgFor, NgClass, TitleCasePipe, DatePipe } from '@angular/common';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
+import { SkipLinkComponent } from '../../../../../shared/components/skip-link/skip-link.component';
 
 @Component({
-  selector: 'clark-add-child',
-  templateUrl: './add-child.component.html',
-  styleUrls: ['./add-child.component.scss']
+    selector: 'clark-add-child',
+    templateUrl: './add-child.component.html',
+    styleUrls: ['./add-child.component.scss'],
+    standalone: true,
+    imports: [FormsModule, AutofocusDirective, ActivateDirective, NgIf, VirtualScrollerModule, NgFor, NgClass, SkipLinkComponent, TitleCasePipe, DatePipe]
 })
 export class AddChildComponent implements OnInit, OnDestroy {
   // the child that is currently being edited

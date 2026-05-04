@@ -8,8 +8,8 @@ describe('CyberskillsFiltersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CyberskillsFiltersComponent ]
-    })
+    imports: [CyberskillsFiltersComponent]
+})
     .compileComponents();
   });
 

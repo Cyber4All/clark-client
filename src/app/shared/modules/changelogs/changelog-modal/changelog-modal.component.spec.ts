@@ -10,8 +10,8 @@ describe('ChangelogModalComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
+    imports: [ChangelogModalComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [ChangelogModalComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

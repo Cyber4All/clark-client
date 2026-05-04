@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'clark-stats-card',
-  templateUrl: './stats-card.component.html',
-  styleUrls: ['./stats-card.component.scss'],
+    selector: 'clark-stats-card',
+    templateUrl: './stats-card.component.html',
+    styleUrls: ['./stats-card.component.scss'],
+    standalone: true,
 })
 export class StatsCardComponent {
   @Input() label = '';

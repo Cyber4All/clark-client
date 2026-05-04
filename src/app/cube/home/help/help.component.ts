@@ -2,80 +2,88 @@ import { animate, query, style, transition, trigger } from '@angular/animations'
 import { Component, OnInit } from '@angular/core';
 import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
 import { GoogleTagService } from '../google-tag.service';
+import { NgIf, NgFor } from '@angular/common';
+import { HelpCardComponent } from './components/help-card/help-card.component';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { HelpBackBtnComponent } from './components/help-back-btn/help-back-btn.component';
+import { TeachNowComponent } from './teach-now/teach-now.component';
+import { BuildProgramComponent } from './build-program/build-program.component';
 
 @Component({
-  selector: 'clark-help',
-  templateUrl: './help.component.html',
-  styleUrls: ['./help.component.scss'],
-  animations: [
-    trigger('helpCard', [
-      transition(':enter', [
-        style({
-          transform: 'translateX(-100%)',
-          opacity: 0
-        }),
-        animate('500ms 0ms ease-out', style({
-          transform: 'translateX(0)',
-          opacity: 1
-        }))
-      ]),
-      transition(':leave', [
-        style({
-          position: 'absolute'
-        }),
-        animate('500ms 0ms ease-out', style({
-          transform: 'translateX(-100%)',
-          opacity: 0
-        }))
-      ])
-    ]),
-    trigger('helpBackButton', [
-      transition(':enter', [
-        style({
-          display: 'inline-block',
-          transform: 'translateX(166%)',
-          opacity: 0
-        }),
-        animate('500ms 100ms ease-out', style({
-          transform: 'translateX(0)',
-          opacity: 1
-        }))
-      ]),
-      transition(':leave', [
-        style({
-          position: 'absolute',
-          top: '0'
-        }),
-        animate('400ms 0ms ease-out', style({
-          transform: 'translateX(166%)',
-          opacity: 0
-        }))
-      ])
-    ]),
-    trigger('helpComponent', [
-      transition(':enter', [
-        style({
-          display: 'inline-block',
-          transform: 'translateX(50%)',
-          opacity: 0
-        }),
-        animate('500ms 100ms ease-out', style({
-          transform: 'translateX(0)',
-          opacity: 1
-        }))
-      ]),
-      transition(':leave', [
-        style({
-          position: 'absolute',
-          top: '90px'
-        }),
-        animate('400ms 0ms ease-out', style({
-          transform: 'translateX(50%)',
-          opacity: 0
-        }))
-      ])
-    ]),
-  ]
+    selector: 'clark-help',
+    templateUrl: './help.component.html',
+    styleUrls: ['./help.component.scss'],
+    animations: [
+        trigger('helpCard', [
+            transition(':enter', [
+                style({
+                    transform: 'translateX(-100%)',
+                    opacity: 0
+                }),
+                animate('500ms 0ms ease-out', style({
+                    transform: 'translateX(0)',
+                    opacity: 1
+                }))
+            ]),
+            transition(':leave', [
+                style({
+                    position: 'absolute'
+                }),
+                animate('500ms 0ms ease-out', style({
+                    transform: 'translateX(-100%)',
+                    opacity: 0
+                }))
+            ])
+        ]),
+        trigger('helpBackButton', [
+            transition(':enter', [
+                style({
+                    display: 'inline-block',
+                    transform: 'translateX(166%)',
+                    opacity: 0
+                }),
+                animate('500ms 100ms ease-out', style({
+                    transform: 'translateX(0)',
+                    opacity: 1
+                }))
+            ]),
+            transition(':leave', [
+                style({
+                    position: 'absolute',
+                    top: '0'
+                }),
+                animate('400ms 0ms ease-out', style({
+                    transform: 'translateX(166%)',
+                    opacity: 0
+                }))
+            ])
+        ]),
+        trigger('helpComponent', [
+            transition(':enter', [
+                style({
+                    display: 'inline-block',
+                    transform: 'translateX(50%)',
+                    opacity: 0
+                }),
+                animate('500ms 100ms ease-out', style({
+                    transform: 'translateX(0)',
+                    opacity: 1
+                }))
+            ]),
+            transition(':leave', [
+                style({
+                    position: 'absolute',
+                    top: '90px'
+                }),
+                animate('400ms 0ms ease-out', style({
+                    transform: 'translateX(50%)',
+                    opacity: 0
+                }))
+            ])
+        ]),
+    ],
+    standalone: true,
+    imports: [NgIf, NgFor, HelpCardComponent, ActivateDirective, HelpBackBtnComponent, TeachNowComponent, BuildProgramComponent]
 })
 export class HelpComponent implements OnInit {
   helpOptions = [

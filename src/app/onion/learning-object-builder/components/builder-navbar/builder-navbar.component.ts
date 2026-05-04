@@ -4,18 +4,28 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLinkActive, RouterLink } from '@angular/router';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { LearningObject } from '@entity';
 import { BundlingService } from 'app/core/learning-object-module/bundling/bundling.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
+import { SkipLinkComponent } from '../../../../shared/components/skip-link/skip-link.component';
+import { NgStyle, NgIf, NgClass, NgTemplateOutlet } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { LearningObjectStatusIndicatorComponent } from '../../../shared/status-indicator/status-indicator.component';
+import { EditorActionPanelComponent } from '../editor-action-panel/editor-action-panel.component';
+import { SubmitComponent } from '../../../shared/submit/submit.component';
+import { GenericCollectionLogoComponent } from '../../../../shared/components/generic-collection-logo/generic-collection-logo.component';
 
 
 @Component({
-  selector: 'onion-builder-navbar',
-  templateUrl: './builder-navbar.component.html',
-  styleUrls: ['./builder-navbar.component.scss']
+    selector: 'onion-builder-navbar',
+    templateUrl: './builder-navbar.component.html',
+    styleUrls: ['./builder-navbar.component.scss'],
+    standalone: true,
+    imports: [SkipLinkComponent, NgStyle, NgIf, ActivateDirective, TipDirective, LearningObjectStatusIndicatorComponent, NgClass, EditorActionPanelComponent, NgTemplateOutlet, SubmitComponent, RouterLinkActive, RouterLink, GenericCollectionLogoComponent]
 })
 export class BuilderNavbarComponent implements OnDestroy {
   isSaving: boolean;

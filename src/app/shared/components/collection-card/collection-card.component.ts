@@ -1,9 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { NgIf, NgClass } from '@angular/common';
+import { GenericCollectionLogoComponent } from '../generic-collection-logo/generic-collection-logo.component';
 
 @Component({
-  selector: 'clark-collection-card',
-  templateUrl: './collection-card.component.html',
-  styleUrls: ['./collection-card.component.scss'],
+    selector: 'clark-collection-card',
+    templateUrl: './collection-card.component.html',
+    styleUrls: ['./collection-card.component.scss'],
+    standalone: true,
+    imports: [
+        RouterLink,
+        NgIf,
+        NgClass,
+        GenericCollectionLogoComponent,
+    ],
 })
 export class CollectionCardComponent implements OnInit {
   @Input() homepage = false;

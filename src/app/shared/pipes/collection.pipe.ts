@@ -9,7 +9,8 @@ import { CollectionService } from 'app/core/collection-module/collections.servic
  * @implements {PipeTransform}
  */
 @Pipe({
-  name: 'collection'
+    name: 'collection',
+    standalone: true
 })
 export class CollectionPipe implements PipeTransform {
 

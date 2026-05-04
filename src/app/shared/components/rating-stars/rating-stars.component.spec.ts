@@ -8,7 +8,7 @@ describe('RatingStarsComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [RatingStarsComponent],
+    imports: [RatingStarsComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

@@ -7,19 +7,17 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { SidePanelContentComponent } from './side-panel-content.component';
 import { RouterModule } from '@angular/router';
 @NgModule({
-  declarations: [
-    SidePanelContentComponent,
-    MetricsComponent,
-    RevisionComponent,
-    LearningObjectComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    SharedModule
-  ],
-  exports: [
-    SidePanelContentComponent
-  ]
+    imports: [
+        CommonModule,
+        RouterModule,
+        SharedModule,
+        SidePanelContentComponent,
+        MetricsComponent,
+        RevisionComponent,
+        LearningObjectComponent
+    ],
+    exports: [
+        SidePanelContentComponent
+    ]
 })
 export class SidePanelContentModule { }

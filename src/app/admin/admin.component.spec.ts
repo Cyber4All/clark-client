@@ -32,9 +32,8 @@ describe('AdminComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [AdminComponent],
     teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule],
+    imports: [RouterTestingModule, AdminComponent],
     providers: [
         AuthService,
         ToastrOvenService,

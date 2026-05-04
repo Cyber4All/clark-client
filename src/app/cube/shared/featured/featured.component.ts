@@ -5,11 +5,17 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { NgIf, NgFor } from '@angular/common';
+import { LearningObjectListingComponent } from '../learning-object/learning-object.component';
+import { LearningObjectCardDirective } from '../../../shared/directives/learning-object-card.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'cube-featured',
-  templateUrl: './featured.component.html',
-  styleUrls: ['./featured.component.scss']
+    selector: 'cube-featured',
+    templateUrl: './featured.component.html',
+    styleUrls: ['./featured.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor, LearningObjectListingComponent, LearningObjectCardDirective, RouterLink]
 })
 export class FeaturedComponent implements OnInit {
   destroyed$ = new Subject<void>();

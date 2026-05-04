@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
-import { MatStepper } from '@angular/material/stepper';
+import { MatStepper, MatStep, MatStepLabel } from '@angular/material/stepper';
 import {
     Organization,
     ORGANIZATION_LEVELS,
@@ -7,6 +7,17 @@ import {
     OrganizationLevel,
     OrganizationSector,
 } from 'app/core/organization-module/organization.types';
+import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatChip, MatChipRemove } from '@angular/material/chips';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 export interface OrganizationFormData {
     name: string;
@@ -21,6 +32,28 @@ export interface OrganizationFormData {
     selector: 'clark-organization-edit-modal',
     templateUrl: './organization-edit-modal.component.html',
     styleUrls: ['./organization-edit-modal.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        PopupComponent,
+        FormsModule,
+        MatStepper,
+        MatStep,
+        MatStepLabel,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatError,
+        MatSelect,
+        NgFor,
+        MatOption,
+        MatChip,
+        MatIcon,
+        MatChipRemove,
+        MatButton,
+        MatCheckbox,
+        TitleCasePipe,
+    ],
 })
 export class OrganizationEditModalComponent implements OnChanges {
     @Input() isVisible = false;

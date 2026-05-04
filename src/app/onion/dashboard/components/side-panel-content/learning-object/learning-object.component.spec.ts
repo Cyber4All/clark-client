@@ -14,9 +14,8 @@ describe('LearningObjectComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [LearningObjectComponent, CollectionPipe],
     teardown: { destroyAfterEach: false },
-    imports: [],
+    imports: [LearningObjectComponent, CollectionPipe],
     providers: [
         CollectionService,
         provideHttpClient(withInterceptorsFromDi()),

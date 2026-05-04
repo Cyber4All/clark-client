@@ -11,21 +11,20 @@ describe('CodePreviewComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [CodePreviewComponent],
-      imports: [HttpClientTestingModule, MarkdownModule.forRoot()],
-      providers: [
+    imports: [HttpClientTestingModule, MarkdownModule.forRoot(), CodePreviewComponent],
+    providers: [
         {
-          provide: ActivatedRoute,
-          useValue: {
-            queryParams: of({
-              url: 'test-url',
-              language: 'javascript',
-              filename: 'test.js',
-            }),
-          },
+            provide: ActivatedRoute,
+            useValue: {
+                queryParams: of({
+                    url: 'test-url',
+                    language: 'javascript',
+                    filename: 'test.js',
+                }),
+            },
         },
-      ],
-    }).compileComponents();
+    ],
+}).compileComponents();
 
     fixture = TestBed.createComponent(CodePreviewComponent);
     component = fixture.componentInstance;

@@ -1,15 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CollectionService } from '../../core/collection-module/collections.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
+import { NgClass, NgIf } from '@angular/common';
+import { ActionPanelComponent } from './components/action-panel/action-panel.component';
+import { FeaturedComponent } from '../shared/featured/featured.component';
+import { FaqSectionComponent } from './faq-section/faq-section.component';
 
 // This component sets its own page title
 @Component({
-  selector: 'cube-collection-details',
-  templateUrl: 'collection-details.component.html',
-  styleUrls: ['collection-details.component.scss']
+    selector: 'cube-collection-details',
+    templateUrl: 'collection-details.component.html',
+    styleUrls: ['collection-details.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf, ActionPanelComponent, RouterLink, FeaturedComponent, FaqSectionComponent]
 })
 export class CollectionDetailsComponent implements OnInit, OnDestroy {
   destroyed$ = new Subject<void>();

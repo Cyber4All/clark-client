@@ -26,7 +26,8 @@ export interface SidePanelOptions {
 }
 
 @Directive({
-  selector: '[panel]'
+    selector: '[panel]',
+    standalone: true
 })
 export class PanelDirective implements OnInit, OnDestroy {
   viewer: ComponentRef<SidePanelViewerComponent>;

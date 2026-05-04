@@ -8,7 +8,7 @@ describe('EditChangelogComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [EditChangelogComponent],
+    imports: [EditChangelogComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

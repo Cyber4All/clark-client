@@ -1,24 +1,28 @@
 import { Component, Input, OnInit, forwardRef } from '@angular/core';
-import { ControlValueAccessor, UntypedFormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ControlValueAccessor, UntypedFormControl, NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
+import { MatFormField, MatSuffix, MatError, MatLabel } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { NgIf } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
 /**
  * input field for authentication module using
  * angular material input field and designed
  * to be used with ngModel
  */
 @Component({
-  selector: 'clark-input-field',
-  templateUrl: './input-field.component.html',
-  styleUrls: ['./input-field.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(
-        () => InputFieldComponent
-      ),
-      multi: true
-    }
-  ]
+    selector: 'clark-input-field',
+    templateUrl: './input-field.component.html',
+    styleUrls: ['./input-field.component.scss'],
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => InputFieldComponent),
+            multi: true
+        }
+    ],
+    standalone: true,
+    imports: [MatFormField, MatInput, FormsModule, ReactiveFormsModule, NgIf, MatIcon, MatSuffix, MatError, MatLabel]
 })
 export class InputFieldComponent implements OnInit, ControlValueAccessor {
   // true if the field is for a password.

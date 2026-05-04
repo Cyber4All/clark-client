@@ -8,7 +8,7 @@ describe('LengthComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [LengthComponent],
+    imports: [LengthComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

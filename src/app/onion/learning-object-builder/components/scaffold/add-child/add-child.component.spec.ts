@@ -8,7 +8,7 @@ describe('AddChildComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [AddChildComponent],
+    imports: [AddChildComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

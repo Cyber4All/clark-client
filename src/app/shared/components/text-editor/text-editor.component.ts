@@ -21,15 +21,19 @@ import {
   UNORDERED_LIST_BUTTON,
   SEPARATOR,
 } from 'ngx-simple-text-editor';
+import { NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'clark-text-editor',
-  template: `
+    selector: 'clark-text-editor',
+    template: `
     <div *ngIf="showBox">
     <st-editor [(ngModel)]="editorContent" [config]="config"></st-editor>
     </div>
   `,
-  styles: ['#cke_bottom_detail, .cke_bottom { display: none; }'],
+    styles: ['#cke_bottom_detail, .cke_bottom { display: none; }'],
+    standalone: true,
+    imports: [NgIf, FormsModule],
 })
 export class TextEditorComponent implements OnInit, OnChanges {
   @Input() savedContent: string;

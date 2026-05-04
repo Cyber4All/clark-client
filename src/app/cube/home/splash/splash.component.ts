@@ -2,11 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { GoogleTagService } from '../google-tag.service';
 import { UtilityService } from '../../../core/utility-module/utility.service';
 import { SearchService } from '../../../core/learning-object-module/search/search.service';
+import { RouterLink } from '@angular/router';
+import { TipDirective } from '../../../shared/directives/tip.directive';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-splash',
-  templateUrl: './splash.component.html',
-  styleUrls: ['./splash.component.scss']
+    selector: 'clark-splash',
+    templateUrl: './splash.component.html',
+    styleUrls: ['./splash.component.scss'],
+    standalone: true,
+    imports: [RouterLink, TipDirective, DecimalPipe]
 })
 export class SplashComponent implements OnInit {
   numReleasedObjects = 0; // default number of released objects before the service provides a new number

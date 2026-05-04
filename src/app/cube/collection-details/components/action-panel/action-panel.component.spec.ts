@@ -8,7 +8,7 @@ describe('ActionPanelComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [ActionPanelComponent],
+    imports: [ActionPanelComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

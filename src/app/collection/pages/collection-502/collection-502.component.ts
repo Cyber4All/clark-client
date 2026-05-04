@@ -6,11 +6,20 @@ import { CollectionService } from '../../../core/collection-module/collections.s
 import { Title } from '@angular/platform-browser';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { Subscription } from 'rxjs';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { Header502Component } from './components/header/header.component';
+import { CollectionFeatureComponent } from '../../shared/included/collection-feature/collection-feature.component';
+import { Stats502Component } from './components/stats/stats.component';
+import { About502Component } from './components/about/about.component';
+import { Curators502Component } from './components/curators/curators.component';
 
 @Component({
-  selector: 'clark-502-collection-index',
-  templateUrl: './collection-502.component.html',
-  styleUrls: ['./collection-502.component.scss']
+    selector: 'clark-502-collection-index',
+    templateUrl: './collection-502.component.html',
+    styleUrls: ['./collection-502.component.scss'],
+    standalone: true,
+    imports: [MatSlideToggle, MatIcon, Header502Component, CollectionFeatureComponent, Stats502Component, About502Component, Curators502Component]
 })
 export class Collection502Component implements OnInit, OnDestroy {
 

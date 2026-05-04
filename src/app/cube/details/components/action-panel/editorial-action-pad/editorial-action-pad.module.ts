@@ -10,27 +10,25 @@ import { GuidelinesComponent } from './components/guidelines/guidelines.componen
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { OnionCoreModule } from 'app/onion/core/core.module';
+
 import { LearningObjectBuilderModule } from 'app/onion/learning-object-builder/learning-object-builder.module';
 import { StandardOutcomesComponent } from 'app/onion/learning-object-builder/components/standard-outcomes/standard-outcomes.component';
 
 @NgModule({
-  declarations: [
-    EditorialActionPadComponent,
-    TaggingBuilderComponent,
-    TopicsComponent,
-    TagsComponent,
-    GuidelinesComponent,
-  ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    FormsModule,
-    MatExpansionModule,
-    MatChipsModule,
-    MatCheckboxModule,
-    LearningObjectBuilderModule
-  ],
-  exports: [EditorialActionPadComponent],
+    imports: [
+        CommonModule,
+        SharedModule,
+        FormsModule,
+        MatExpansionModule,
+        MatChipsModule,
+        MatCheckboxModule,
+        LearningObjectBuilderModule,
+        EditorialActionPadComponent,
+        TaggingBuilderComponent,
+        TopicsComponent,
+        TagsComponent,
+        GuidelinesComponent
+    ],
+    exports: [EditorialActionPadComponent],
 })
 export class EditorialActionPadModule { }

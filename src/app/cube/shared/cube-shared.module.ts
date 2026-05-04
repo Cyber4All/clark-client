@@ -18,24 +18,22 @@ import { FeaturedComponent } from './featured/featured.component';
 import { LearningObjectListingComponent } from './learning-object/learning-object.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    ClickOutsideModule,
-    // TODO: Push down to feature feature modules if not all need to use it
-    SharedModule
-  ],
-  exports: [
-    FooterComponent,
-    FeaturedComponent,
-    LearningObjectListingComponent,
-  ],
-  declarations: [
-    FooterComponent,
-    FeaturedComponent,
-    LearningObjectListingComponent,
-  ],
-  providers: [ProfileResovler]
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        ClickOutsideModule,
+        // TODO: Push down to feature feature modules if not all need to use it
+        SharedModule,
+        FooterComponent,
+        FeaturedComponent,
+        LearningObjectListingComponent
+    ],
+    exports: [
+        FooterComponent,
+        FeaturedComponent,
+        LearningObjectListingComponent,
+    ],
+    providers: [ProfileResovler]
 })
 export class CubeSharedModule { }

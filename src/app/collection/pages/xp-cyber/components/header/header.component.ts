@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+    selector: 'clark-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: true,
+    imports: [ActivateDirective]
 })
 export class HeaderComponent implements OnInit {
 

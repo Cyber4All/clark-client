@@ -3,20 +3,30 @@ import { LearningObject, Tag } from '@entity';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { NgIf, NgFor, DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { LengthComponent } from './components/length/length.component';
+import { RatingStarsComponent } from '../../../../shared/components/rating-stars/rating-stars.component';
+import { HierarchyLinkComponent } from './components/hierarchy-link/hierarchy-link.component';
+import { TagPillComponent } from '../tag-pill/tag-pill.component';
+import { SidePanelContentComponent } from './components/components/side-panel-content/side-panel-content.component';
+import { PanelDirective } from '../../../../shared/modules/side-panel/panel.directive';
 
 
 @Component({
-  selector: 'clark-details-splash',
-  templateUrl: './splash.component.html',
-  styleUrls: ['./splash.component.scss'],
-  animations: [
-    trigger('collection', [
-      transition(':enter', [
-        style({ opacity: 0, height: 0 }),
-        animate('200ms ease', style({ opacity: 1, height: '*' }))
-      ])
-    ])
-  ]
+    selector: 'clark-details-splash',
+    templateUrl: './splash.component.html',
+    styleUrls: ['./splash.component.scss'],
+    animations: [
+        trigger('collection', [
+            transition(':enter', [
+                style({ opacity: 0, height: 0 }),
+                animate('200ms ease', style({ opacity: 1, height: '*' }))
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [NgIf, RouterLink, LengthComponent, RatingStarsComponent, HierarchyLinkComponent, NgFor, TagPillComponent, SidePanelContentComponent, PanelDirective, DatePipe]
 })
 export class SplashComponent implements OnInit, AfterViewInit {
   @Input() learningObject: LearningObject;

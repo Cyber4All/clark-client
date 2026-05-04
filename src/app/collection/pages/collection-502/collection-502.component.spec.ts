@@ -8,7 +8,7 @@ describe('Collection502Component', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [Collection502Component],
+    imports: [Collection502Component],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();
