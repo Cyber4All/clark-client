@@ -4,11 +4,15 @@ import { TaggingService } from '../../services/tagging.service';
 import { Tag } from '@entity';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'clark-tagging',
-  templateUrl: './tags.component.html',
-  styleUrls: ['./tags.component.scss']
+    selector: 'clark-tagging',
+    templateUrl: './tags.component.html',
+    styleUrls: ['./tags.component.scss'],
+    standalone: true,
+    imports: [FormsModule, NgIf, NgFor]
 })
 export class TagsComponent implements OnInit, OnDestroy {
   tags: Tag[];

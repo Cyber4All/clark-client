@@ -16,18 +16,25 @@ import {
 } from '@angular/animations';
 import { LearningObjectValidator } from '../../validators/learning-object.validator';
 import { LearningOutcomeValidator } from '../../validators/learning-outcome.validator';
+import { NgClass, NgStyle, NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { OutcomeTypeaheadComponent } from './outcome-typeahead/outcome-typeahead.component';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
 
 @Component({
-  selector: 'clark-outcome',
-  templateUrl: './outcome.component.html',
-  styleUrls: ['./outcome.component.scss'],
-  animations: [
-    trigger('outcome', [
-      state('open', style({ height: '*', opacity: 1 })),
-      state('closed', style({ height: '80px', opacity: 1 })),
-      transition('* <=> *', animate('350ms ease'))
-    ])
-  ]
+    selector: 'clark-outcome',
+    templateUrl: './outcome.component.html',
+    styleUrls: ['./outcome.component.scss'],
+    animations: [
+        trigger('outcome', [
+            state('open', style({ height: '*', opacity: 1 })),
+            state('closed', style({ height: '80px', opacity: 1 })),
+            transition('* <=> *', animate('350ms ease'))
+        ])
+    ],
+    standalone: true,
+    imports: [NgClass, NgStyle, NgIf, TipDirective, ActivateDirective, NgFor, OutcomeTypeaheadComponent, PopupComponent, TitleCasePipe]
 })
 export class OutcomeComponent implements OnInit {
   hiddenOverflow = true;

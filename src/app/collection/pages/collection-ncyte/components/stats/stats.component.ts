@@ -3,14 +3,23 @@ import { LearningObjectService } from 'app/core/learning-object-module/learning-
 import { MetricService } from 'app/core/metric-module/metric.service';
 import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
+import { NgIf } from '@angular/common';
+import { TopDownloadsComponent } from '../../../../../cube/usage-stats/top-downloads/top-downloads.component';
+import { DistributionChartComponent } from '../../../../../cube/usage-stats/distribution-chart/distribution-chart.component';
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
 let CHART_HOVERED = false;
 @Component({
-  selector: 'clark-dashboard-stats',
-  templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss'],
+    selector: 'clark-dashboard-stats',
+    templateUrl: './stats.component.html',
+    styleUrls: ['./stats.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        TopDownloadsComponent,
+        DistributionChartComponent,
+    ],
 })
 export class StatsComponent implements OnInit {
   @Input() collectionName: string;

@@ -7,7 +7,7 @@ import { LearningObjectBuilderModule } from './learning-object-builder/learning-
 
 
 // Other
-import { OnionCoreModule } from './core/core.module';
+
 import { SharedModule } from '../shared/shared.module';
 import { ModalModule } from '../shared/modules/modals/modal.module';
 import { OnionComponent } from './onion.component';
@@ -22,26 +22,21 @@ import { EmailBannerComponent } from './components/email-banner/email-banner.com
  * @author Sean Donnelly
  */
 @NgModule({
-  // Specifies the components included in this module
-  declarations: [
-    OnionComponent,
-    EmailBannerComponent
-  ],
-  // Specifies all modules to be imported
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    OnionCoreModule,
-    OnionSharedModule,
-    ModalModule,
-    LearningObjectBuilderModule,
-    OnionRoutingModule,
-    DashboardModule,
-    SidePanelContentModule,
-  ],
-  exports: [
-  ]
+    // Specifies all modules to be imported
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        OnionSharedModule,
+        ModalModule,
+        LearningObjectBuilderModule,
+        OnionRoutingModule,
+        DashboardModule,
+        SidePanelContentModule,
+        OnionComponent,
+        EmailBannerComponent,
+    ],
+    exports: []
 })
 export class OnionModule { }

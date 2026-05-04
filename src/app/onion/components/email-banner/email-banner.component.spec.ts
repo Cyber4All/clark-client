@@ -8,7 +8,7 @@ describe('EmailBannerComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [EmailBannerComponent],
+    imports: [EmailBannerComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

@@ -13,28 +13,26 @@ import { SidePanelContentModule } from './components/side-panel-content/side-pan
 import { OnionSharedModule } from '../shared/onion-shared.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: DashboardComponent
-      }
-    ]),
-    SharedModule,
-    OnionSharedModule,
-    SidePanelContentModule
-  ],
-  declarations: [
-    DashboardComponent,
-    SplashComponent,
-    SearchComponent,
-    ListComponent,
-    DashboardItemComponent
-  ],
-  exports: [
-    DashboardItemComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: DashboardComponent
+            }
+        ]),
+        SharedModule,
+        OnionSharedModule,
+        SidePanelContentModule,
+        DashboardComponent,
+        SplashComponent,
+        SearchComponent,
+        ListComponent,
+        DashboardItemComponent
+    ],
+    exports: [
+        DashboardItemComponent
+    ]
 })
 export class DashboardModule { }

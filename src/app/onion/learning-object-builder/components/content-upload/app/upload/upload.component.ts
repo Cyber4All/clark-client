@@ -34,19 +34,15 @@ import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
 
-import {
-  BOLD_BUTTON,
-  ITALIC_BUTTON,
-  LINK_INPUT,
-  ORDERED_LIST_BUTTON,
-  REDO_BUTTON,
-  REMOVE_FORMAT_BUTTON,
-  UNDERLINE_BUTTON,
-  UNDO_BUTTON,
-  UNORDERED_LIST_BUTTON,
-  SEPARATOR,
-} from 'ngx-simple-text-editor';
-import { UntypedFormControl } from '@angular/forms';
+import { BOLD_BUTTON, ITALIC_BUTTON, LINK_INPUT, ORDERED_LIST_BUTTON, REDO_BUTTON, REMOVE_FORMAT_BUTTON, UNDERLINE_BUTTON, UNDO_BUTTON, UNORDERED_LIST_BUTTON, SEPARATOR, NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { ActivateDirective } from '../../../../../../shared/directives/activate.directive';
+import { FileManagerComponent } from '../file-manager/file-manager.component';
+import { UrlManagerComponent } from './url-manager/url-manager.component';
+import { FileUploadStatusComponent } from './file-upload-status/file-upload-status.component';
+import { TeleporterComponent } from '../../../../../../shared/modules/teleporter/teleporter.component';
+import { PopupComponent } from '../../../../../../shared/modules/popups/popup.component';
 
 export interface FileInput extends File {
   fullPath?: string;
@@ -79,34 +75,43 @@ const config = {
 };
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
-  selector: 'app-upload',
-  templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss'],
-  animations: [
-    trigger('fadeIn', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('250ms', style({ opacity: 1 })),
-      ]),
-    ]),
-    trigger('uploadQueue', [
-      transition(':enter', [
-        style({ transform: 'translateY(20px)', opacity: 0 }),
-        animate(
-          '200ms 200ms ease-out',
-          style({ transform: 'translateY(0px)', opacity: 1 }),
-        ),
-      ]),
-      transition(':leave', [
-        style({ transform: 'translateY(-0px)', opacity: 1 }),
-        animate(
-          '200ms ease-out',
-          style({ transform: 'translateY(20px)', opacity: 0 }),
-        ),
-      ]),
-    ]),
-  ],
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: 'app-upload',
+    templateUrl: './upload.component.html',
+    styleUrls: ['./upload.component.scss'],
+    animations: [
+        trigger('fadeIn', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('250ms', style({ opacity: 1 })),
+            ]),
+        ]),
+        trigger('uploadQueue', [
+            transition(':enter', [
+                style({ transform: 'translateY(20px)', opacity: 0 }),
+                animate('200ms 200ms ease-out', style({ transform: 'translateY(0px)', opacity: 1 })),
+            ]),
+            transition(':leave', [
+                style({ transform: 'translateY(-0px)', opacity: 1 }),
+                animate('200ms ease-out', style({ transform: 'translateY(20px)', opacity: 0 })),
+            ]),
+        ]),
+    ],
+    standalone: true,
+    imports: [
+        NgClass,
+        ActivateDirective,
+        NgIf,
+        FileManagerComponent,
+        UrlManagerComponent,
+        NgxSimpleTextEditorModule,
+        FormsModule,
+        ReactiveFormsModule,
+        FileUploadStatusComponent,
+        TeleporterComponent,
+        PopupComponent,
+        AsyncPipe,
+    ],
 })
 export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
   notesText = new UntypedFormControl('');

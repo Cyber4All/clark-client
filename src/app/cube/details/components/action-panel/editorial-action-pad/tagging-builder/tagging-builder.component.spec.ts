@@ -8,8 +8,8 @@ describe('TaggingBuilderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TaggingBuilderComponent ]
-    })
+    imports: [TaggingBuilderComponent]
+})
     .compileComponents();
   });
 

@@ -8,9 +8,9 @@ describe('DashboardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [DashboardComponent],
     imports: [
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        DashboardComponent
     ],
     teardown: { destroyAfterEach: false }
 })

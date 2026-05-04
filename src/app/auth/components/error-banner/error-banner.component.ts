@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
+import { NgIf } from '@angular/common';
 @Component({
-  selector: 'clark-error-banner',
-  templateUrl: './error-banner.component.html',
-  styleUrls: ['./error-banner.component.scss']
+    selector: 'clark-error-banner',
+    templateUrl: './error-banner.component.html',
+    styleUrls: ['./error-banner.component.scss'],
+    standalone: true,
+    imports: [NgIf]
 })
 export class ErrorBannerComponent implements OnInit {
 

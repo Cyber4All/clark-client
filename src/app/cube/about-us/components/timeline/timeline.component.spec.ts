@@ -8,7 +8,7 @@ describe('TimelineComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [TimelineComponent],
+    imports: [TimelineComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

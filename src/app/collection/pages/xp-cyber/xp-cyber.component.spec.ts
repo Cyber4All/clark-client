@@ -8,7 +8,7 @@ describe('XPCyberComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [XPCyberComponent],
+    imports: [XPCyberComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

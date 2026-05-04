@@ -8,7 +8,7 @@ describe('MediaCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [MediaCardComponent],
+    imports: [MediaCardComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

@@ -14,8 +14,7 @@ describe('SidebarComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    imports: [RouterTestingModule],
-    declarations: [SidebarComponent],
+    imports: [RouterTestingModule, SidebarComponent],
     providers: [
         { provide: AuthService, useClass: AuthServiceMock },
     ],

@@ -1,7 +1,8 @@
 import { Directive, Input, HostListener, OnChanges, SimpleChanges, OnDestroy, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[tip]'
+    selector: '[tip]',
+    standalone: true
 })
 export class TipDirective implements OnChanges, OnDestroy {
   // the text of the tooltip

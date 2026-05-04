@@ -3,15 +3,22 @@ import { LearningObject } from '@entity';
 import { Subject } from 'rxjs';
 import { UriRetrieverService } from 'app/core/learning-object-module/uri-retriever.service';
 import { take, takeUntil, filter } from 'rxjs/operators';
-import { Router, NavigationStart } from '@angular/router';
+import { Router, NavigationStart, RouterLink } from '@angular/router';
 import { translateDown, sidePanelEnter, buttonWipeRight } from './side-panel-content.animations';
+import { NgIf, NgTemplateOutlet, AsyncPipe, DatePipe } from '@angular/common';
+import { MetricsComponent } from './metrics/metrics.component';
+import { RevisionComponent } from './revision/revision.component';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { CollectionPipe } from '../../../../shared/pipes/collection.pipe';
 
 
 @Component({
-  selector: 'clark-side-panel-content',
-  templateUrl: './side-panel-content.component.html',
-  styleUrls: ['./side-panel-content.component.scss'],
-  animations: [translateDown, sidePanelEnter, buttonWipeRight]
+    selector: 'clark-side-panel-content',
+    templateUrl: './side-panel-content.component.html',
+    styleUrls: ['./side-panel-content.component.scss'],
+    animations: [translateDown, sidePanelEnter, buttonWipeRight],
+    standalone: true,
+    imports: [NgIf, NgTemplateOutlet, RouterLink, MetricsComponent, RevisionComponent, ActivateDirective, AsyncPipe, DatePipe, CollectionPipe]
 })
 export class SidePanelContentComponent implements OnChanges, OnDestroy {
   private isDestroyed$ = new Subject<void>();

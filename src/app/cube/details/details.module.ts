@@ -4,14 +4,14 @@ import { DetailsComponent } from './details.component';
 import { RouterModule } from '@angular/router';
 import { SplashComponent } from './components/splash/splash.component';
 import { LengthComponent } from './components/splash/components/length/length.component';
-import { SharedPipesModule } from 'app/shared/pipes/shared-pipes.module';
+
 import { DescriptionComponent } from './components/description/description.component';
 import { OutcomeComponent } from './components/outcome/outcome.component';
 import { AcademicLevelCardComponent } from './components/academic-level-card/academic-level-card.component';
 import { MaterialsComponent } from './components/materials/materials.component';
 import { ActionPanelComponent } from './components/action-panel/action-panel.component';
 import { VersionCardComponent } from './components/version-card/version-card.component';
-import { FileBrowserModule } from 'app/shared/modules/filesystem/file-browser.module';
+
 import { TabMenuComponent } from './components/materials/components/tab-menu/tab-menu.component';
 import { SharedModules } from 'app/shared/modules/shared-modules.module';
 import { NotesComponent } from './components/materials/components/notes/notes.component';
@@ -29,35 +29,29 @@ import { EditorialActionPadModule } from './components/action-panel/editorial-ac
 import { ReviewerPanelComponent } from './components/reviewer-panel/reviewer-panel.component';
 import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
 import { RouteBackwardsCompatGuard } from '../core/route-backwards-compat.guard';
-import { OnionCoreModule } from '../../onion/core/core.module';
+
 import { TagPillComponent } from './components/tag-pill/tag-pill.component';
 
 @NgModule({
-  imports: [
+    imports: [
     CommonModule,
     RouterModule.forChild([
-      {
-        path: ':username/:cuid',
-        component: DetailsComponent,
-        canActivate: [RouteBackwardsCompatGuard]
-      },
-      {
-        path: ':username/:cuid/:version',
-        component: DetailsComponent,
-        canActivate: [RouteBackwardsCompatGuard]
-      }
+        {
+            path: ':username/:cuid',
+            component: DetailsComponent,
+            canActivate: [RouteBackwardsCompatGuard]
+        },
+        {
+            path: ':username/:cuid/:version',
+            component: DetailsComponent,
+            canActivate: [RouteBackwardsCompatGuard]
+        }
     ]),
-    SharedPipesModule,
-    FileBrowserModule,
     FormsModule,
     SharedModules,
     SharedModule,
     CubeSharedModule,
     EditorialActionPadModule,
-    OnionCoreModule
-  ],
-  exports: [LengthComponent],
-  declarations: [
     // root level component
     DetailsComponent,
     // page components
@@ -80,8 +74,9 @@ import { TagPillComponent } from './components/tag-pill/tag-pill.component';
     SidePanelContentComponent,
     ReviewerPanelComponent,
     CubePatternComponent,
-    TagPillComponent,
-  ],
-  providers: []
+    TagPillComponent
+],
+    exports: [LengthComponent],
+    providers: []
 })
 export class DetailsModule { }

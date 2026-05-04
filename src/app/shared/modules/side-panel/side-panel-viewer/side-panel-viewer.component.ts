@@ -3,10 +3,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { SidePanelOptions } from '../panel.directive';
 import { fade } from '../panel.animations';
+import { NgIf, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../../directives/activate.directive';
+import { TrapFocusDirective } from '../../../directives/trap-focus.directive';
 
 @Component({
-  selector: 'clark-side-panel-viewer',
-  template: `
+    selector: 'clark-side-panel-viewer',
+    template: `
     <ng-container>
       <div *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
       <div
@@ -26,8 +29,10 @@ import { fade } from '../panel.animations';
       </div>
     </ng-container>
   `,
-  styleUrls: ['./side-panel-viewer.component.scss'],
-  animations: [fade]
+    styleUrls: ['./side-panel-viewer.component.scss'],
+    animations: [fade],
+    standalone: true,
+    imports: [NgIf, ActivateDirective, TrapFocusDirective, NgClass]
 })
 export class SidePanelViewerComponent implements OnInit, OnDestroy {
   _controller$: BehaviorSubject<boolean>;

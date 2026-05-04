@@ -7,20 +7,18 @@ import {OnionSharedModule} from '../../../shared/onion-shared.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @NgModule({
-    declarations: [
-        EditorActionPanelComponent,
-        ChangeStatusModalComponent,
-    ],
     exports: [
         EditorActionPanelComponent,
     ],
     imports: [
         CommonModule,
         SharedModule,
-        OnionSharedModule
-    ], 
+        OnionSharedModule,
+        EditorActionPanelComponent,
+        ChangeStatusModalComponent
+    ],
     providers: [
         provideHttpClient(withInterceptorsFromDi())
     ]
-    })
+})
 export class EditorActionPanelModule { }

@@ -30,9 +30,8 @@ describe('UsersComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [UsersComponent],
     teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule],
+    imports: [RouterTestingModule, UsersComponent],
     providers: [
         AuthService,
         ToastrOvenService,

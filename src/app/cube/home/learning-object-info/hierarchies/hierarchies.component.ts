@@ -1,10 +1,13 @@
 import { Component, OnInit, Input} from '@angular/core';
 import { ClientRequest } from 'http';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
 
 @Component({
-  selector: 'clark-hierarchies',
-  templateUrl: './hierarchies.component.html',
-  styleUrls: ['./hierarchies.component.scss']
+    selector: 'clark-hierarchies',
+    templateUrl: './hierarchies.component.html',
+    styleUrls: ['./hierarchies.component.scss'],
+    standalone: true,
+    imports: [TipDirective]
 })
 export class HierarchiesComponent implements OnInit {
   length: 'nanomodule' | 'micromodule' | 'module' | 'unit' | 'course';

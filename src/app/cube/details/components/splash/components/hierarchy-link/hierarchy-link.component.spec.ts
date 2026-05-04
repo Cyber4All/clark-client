@@ -8,7 +8,7 @@ describe('HierarchyLinkComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [HierarchyLinkComponent],
+    imports: [HierarchyLinkComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

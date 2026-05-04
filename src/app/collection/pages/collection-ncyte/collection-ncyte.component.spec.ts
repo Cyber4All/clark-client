@@ -8,7 +8,7 @@ describe('CollectionNcyteComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [CollectionNcyteComponent],
+    imports: [CollectionNcyteComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

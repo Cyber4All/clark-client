@@ -6,10 +6,13 @@ import {
   AfterViewChecked,
 } from '@angular/core';
 import { ModalDirective } from './modal';
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { ClickOutsideModule } from 'ng-click-outside';
+import { ActivateDirective } from '../../directives/activate.directive';
 
 @Component({
-  selector: '<clark-dialogmenu></clark-dialogmenu>',
-  template: `
+    selector: '<clark-dialogmenu></clark-dialogmenu>',
+    template: `
     <div *ngIf="show" class="popup-wrapper">
       <div
         class="popup dialog "
@@ -41,6 +44,14 @@ import { ModalDirective } from './modal';
       </div>
     </div>
   `,
+    standalone: true,
+    imports: [
+        NgIf,
+        NgClass,
+        ClickOutsideModule,
+        ActivateDirective,
+        NgFor,
+    ],
 })
 export class DialogMenuComponent
   extends ModalDirective

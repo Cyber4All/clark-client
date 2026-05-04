@@ -1,11 +1,16 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { LearningObject } from '@entity';
 import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
+import { MatCalendar } from '@angular/material/datepicker';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-relevancy-date',
-  templateUrl: './relevancy-date.component.html',
-  styleUrls: ['./relevancy-date.component.scss']
+    selector: 'clark-relevancy-date',
+    templateUrl: './relevancy-date.component.html',
+    styleUrls: ['./relevancy-date.component.scss'],
+    standalone: true,
+    imports: [MatCalendar, ActivateDirective, DatePipe]
 })
 export class RelevancyDateComponent implements OnInit {
 

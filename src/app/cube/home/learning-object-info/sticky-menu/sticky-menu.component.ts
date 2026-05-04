@@ -3,29 +3,34 @@ import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GoogleTagService } from '../../google-tag.service';
 import { LEARNING_OBJECT_INFO_STATES } from '../learning-object-info.component';
+import { NgClass, NgIf } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { ContextMenuComponent } from '../../../../shared/modules/contextmenu/context-menu/context-menu.component';
 
 @Component({
-  selector: 'clark-sticky-menu',
-  templateUrl: './sticky-menu.component.html',
-  styleUrls: ['./sticky-menu.component.scss'],
-  animations: [
-    trigger('isHighlighed', [
-      state('highlighted', style({
-        backgroundColor: '#E9F0FE',
-        color: '#376ED6',
-        fontWeight: 600,
-      })),
-      state('notHighlighted', style({
-        color: '#AAAAAA'
-      })),
-      transition('isHighlighted => notHighlighted', [
-        animate('4s')
-      ]),
-      transition('notHightlighted => isHighlighted', [
-        animate('4s')
-      ])
-    ])
-  ]
+    selector: 'clark-sticky-menu',
+    templateUrl: './sticky-menu.component.html',
+    styleUrls: ['./sticky-menu.component.scss'],
+    animations: [
+        trigger('isHighlighed', [
+            state('highlighted', style({
+                backgroundColor: '#E9F0FE',
+                color: '#376ED6',
+                fontWeight: 600,
+            })),
+            state('notHighlighted', style({
+                color: '#AAAAAA'
+            })),
+            transition('isHighlighted => notHighlighted', [
+                animate('4s')
+            ]),
+            transition('notHightlighted => isHighlighted', [
+                animate('4s')
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [NgClass, ActivateDirective, NgIf, ContextMenuComponent]
 })
 export class StickyMenuComponent implements OnInit {
   isHighlighted = {

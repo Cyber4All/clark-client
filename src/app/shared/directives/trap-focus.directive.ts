@@ -1,7 +1,8 @@
 import { Directive, ElementRef, OnDestroy } from '@angular/core';
 
 @Directive({
-  selector: '[trapFocus]'
+    selector: '[trapFocus]',
+    standalone: true
 })
 export class TrapFocusDirective implements OnDestroy {
 

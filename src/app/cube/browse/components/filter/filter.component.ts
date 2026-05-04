@@ -8,12 +8,18 @@ import { GuidelineService } from 'app/core/standard-guidelines-module/standard-g
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { Query } from '../../../../interfaces/query';
-import { FilterSectionInfo } from '../filter-section/filter-section.component';
+import { FilterSectionInfo, FilterSectionComponent } from '../filter-section/filter-section.component';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
+import { GuidelineFilterComponent } from '../guideline-filter/guideline-filter.component';
 
 @Component({
-  selector: 'clark-filter',
-  templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+    selector: 'clark-filter',
+    templateUrl: './filter.component.html',
+    styleUrls: ['./filter.component.scss'],
+    standalone: true,
+    imports: [FilterSectionComponent, NgIf, NgFor, NgClass, ActivateDirective, PopupComponent, GuidelineFilterComponent]
 })
 export class FilterComponent implements OnInit, OnDestroy {
   @Input() clear: Observable<void>;

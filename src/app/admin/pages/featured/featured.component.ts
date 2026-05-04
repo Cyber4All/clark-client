@@ -8,20 +8,42 @@ import {
 import { LearningObject } from '@entity';
 import { FeaturedObjectsService } from 'app/core/feature-module/featured.service';
 import { Query } from 'app/interfaces/query';
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDropList, CdkDrag, CdkDragPreview } from '@angular/cdk/drag-drop';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
+import { NgClass, NgIf, NgFor } from '@angular/common';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { DraggableLearningObjectComponent } from '../../components/draggable-learning-object/draggable-learning-object.component';
+import { LearningObjectCardDirective } from '../../../shared/directives/learning-object-card.directive';
+import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
+import { FilterSearchComponent } from '../../components/filter-search/filter-search.component';
+import { DraggableDashboardItemComponent } from '../../components/draggable-dashboard-item/draggable-dashboard-item.component';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 @Component({
-  selector: 'clark-featured',
-  templateUrl: './featured.component.html',
-  styleUrls: ['./featured.component.scss'],
+    selector: 'clark-featured',
+    templateUrl: './featured.component.html',
+    styleUrls: ['./featured.component.scss'],
+    standalone: true,
+    imports: [
+        ContentWrapperComponent,
+        NgClass,
+        ActivateDirective,
+        NgIf,
+        CdkDropList,
+        NgFor,
+        CdkDrag,
+        DraggableLearningObjectComponent,
+        LearningObjectCardDirective,
+        SearchInputComponent,
+        FilterSearchComponent,
+        DraggableDashboardItemComponent,
+        CdkDragPreview,
+        PaginationComponent,
+    ],
 })
 export class FeaturedComponent implements OnInit, OnDestroy {
   @ViewChild('list') listElement: ElementRef<HTMLElement>;

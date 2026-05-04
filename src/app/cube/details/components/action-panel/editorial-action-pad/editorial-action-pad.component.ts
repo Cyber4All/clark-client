@@ -3,6 +3,12 @@ import { LearningObject } from '@entity';
 import { LearningObjectService as LOUri } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { EditorialService } from 'app/core/learning-object-module/editorial.service';
+import { NgIf } from '@angular/common';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
+import { PopupComponent } from '../../../../../shared/modules/popups/popup.component';
+import { RevisionNoticePopupComponent } from '../../../../../shared/modules/popup-templates/revision-notice-popup/revision-notice-popup.component';
+import { TaggingBuilderComponent } from './tagging-builder/tagging-builder.component';
+import { CreateRelevancyPopupComponent } from '../../../../../shared/modules/popup-templates/create-relevancy-popup/create-relevancy-popup.component';
 
 /**
  * EditorialActionPadComponent coordinates all editor functionality inside of the
@@ -10,9 +16,11 @@ import { EditorialService } from 'app/core/learning-object-module/editorial.serv
  * state of the Learning Object.
  */
 @Component({
-  selector: 'clark-editorial-action-pad',
-  templateUrl: './editorial-action-pad.component.html',
-  styleUrls: ['./editorial-action-pad.component.scss']
+    selector: 'clark-editorial-action-pad',
+    templateUrl: './editorial-action-pad.component.html',
+    styleUrls: ['./editorial-action-pad.component.scss'],
+    standalone: true,
+    imports: [NgIf, ActivateDirective, PopupComponent, RevisionNoticePopupComponent, TaggingBuilderComponent, CreateRelevancyPopupComponent]
 })
 export class EditorialActionPadComponent implements OnInit {
 

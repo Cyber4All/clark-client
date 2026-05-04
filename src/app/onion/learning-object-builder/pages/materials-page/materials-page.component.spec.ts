@@ -8,7 +8,7 @@ describe('MaterialsPageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [MaterialsPageComponent],
+    imports: [MaterialsPageComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

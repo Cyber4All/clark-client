@@ -21,10 +21,11 @@ import { ContextMenuViewerComponent } from '../context-menu-viewer/context-menu-
  * on the screen.
  */
 @Component({
-  selector: 'clark-context-menu',
-  template: '',
-  styleUrls: ['./context-menu.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'clark-context-menu',
+    template: '',
+    styleUrls: ['./context-menu.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true
 })
 export class ContextMenuComponent implements AfterViewInit, OnDestroy {
   @ContentChild('contextMenu') menuElement: ElementRef<HTMLElement>;

@@ -2,11 +2,21 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 import { TimeFunctions } from 'app/onion/learning-object-builder/components/content-upload/app/shared/time-functions';
 import { AuthService } from 'app/core/auth-module/auth.service';
+import { NgClass, NgIf } from '@angular/common';
+import { ActivateDirective } from '../../../../../directives/activate.directive';
+import { ToggleSwitchComponent } from '../../../../../components/toggle-switch/toggle-switch.component';
 
 @Component({
-  selector: 'clark-folder-list-item',
-  templateUrl: 'folder-list-item.component.html',
-  styleUrls: ['folder-list-item.component.scss'],
+    selector: 'clark-folder-list-item',
+    templateUrl: 'folder-list-item.component.html',
+    styleUrls: ['folder-list-item.component.scss'],
+    standalone: true,
+    imports: [
+        NgClass,
+        ActivateDirective,
+        NgIf,
+        ToggleSwitchComponent,
+    ],
 })
 export class FolderListItemComponent implements OnInit {
   @Input() folder: DirectoryNode;

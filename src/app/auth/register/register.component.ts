@@ -1,7 +1,7 @@
 import { animate, keyframes, query, stagger, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
 import { AuthService } from 'app/core/auth-module/auth.service';
@@ -23,52 +23,54 @@ import {
 } from './register-location-options';
 import { Subject, interval } from 'rxjs';
 import { debounce, debounceTime, take, takeUntil } from 'rxjs/operators';
+import { RegistrationProgressComponent } from './components/registration-progress/registration-progress.component';
+import { NgClass, NgSwitch, NgSwitchCase, NgIf, NgTemplateOutlet, NgFor } from '@angular/common';
+import { ErrorBannerComponent } from '../components/error-banner/error-banner.component';
+import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
+import { TipDirective } from '../../shared/directives/tip.directive';
+import { MatError } from '@angular/material/form-field';
+import { AutofocusDirective } from '../../shared/directives/autofocus.directive';
+import { RecaptchaDirective } from './components/recaptcha/recaptcha.directive';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 const EMAIL_REGEX =
   // eslint-disable-next-line max-len
   /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g;
 
 @Component({
-  selector: 'clark-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
-  animations: [
-    trigger('slideInRight', [
-      transition('* => *', [
-        style({ transform: 'translateX(100%)', opacity: 0 }),
-        animate('400ms', style({ transform: 'translateX(0)', opacity: 1 }))
-      ]),
-      transition('* => *', [
-        style({ transform: 'translateX(0)', opacity: 1 }),
-        animate('400ms', style({ transform: 'translateX(-100%)', opacity: 0 }))
-      ])
-    ]),
-
-    trigger('fallFromTop', [
-      transition('* => *', [
-        query(':enter', style({ opacity: 0 }), { optional: true }),
-
-        query(
-          ':enter',
-          stagger('300ms', [
-            animate(
-              '.6s ease-in',
-              keyframes([
-                style({ opacity: 0, transform: 'translateY(-75%)', offset: 0 }),
-                style({
-                  opacity: 0.5,
-                  transform: 'translateY(35px)',
-                  offset: 0.3
-                }),
-                style({ opacity: 1, transform: 'translateY(0)', offset: 1.0 })
-              ])
-            )
-          ]),
-          { optional: true }
-        )
-      ])
-    ])
-  ]
+    selector: 'clark-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    animations: [
+        trigger('slideInRight', [
+            transition('* => *', [
+                style({ transform: 'translateX(100%)', opacity: 0 }),
+                animate('400ms', style({ transform: 'translateX(0)', opacity: 1 }))
+            ]),
+            transition('* => *', [
+                style({ transform: 'translateX(0)', opacity: 1 }),
+                animate('400ms', style({ transform: 'translateX(-100%)', opacity: 0 }))
+            ])
+        ]),
+        trigger('fallFromTop', [
+            transition('* => *', [
+                query(':enter', style({ opacity: 0 }), { optional: true }),
+                query(':enter', stagger('300ms', [
+                    animate('.6s ease-in', keyframes([
+                        style({ opacity: 0, transform: 'translateY(-75%)', offset: 0 }),
+                        style({
+                            opacity: 0.5,
+                            transform: 'translateY(35px)',
+                            offset: 0.3
+                        }),
+                        style({ opacity: 1, transform: 'translateY(0)', offset: 1.0 })
+                    ]))
+                ]), { optional: true })
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [RegistrationProgressComponent, NgClass, ErrorBannerComponent, FormsModule, NgSwitch, NgSwitchCase, InputFieldComponent, NgIf, NgTemplateOutlet, TipDirective, RouterLink, ReactiveFormsModule, NgFor, MatError, AutofocusDirective, RecaptchaDirective, VirtualScrollerModule]
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();

@@ -8,8 +8,8 @@ describe('TagPillComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TagPillComponent ]
-    })
+    imports: [TagPillComponent]
+})
     .compileComponents();
   });
 

@@ -1,9 +1,13 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { NgStyle, NgFor, NgIf } from '@angular/common';
+import { TipDirective } from '../../directives/tip.directive';
 
 @Component({
-  selector: 'clark-rating-stars',
-  templateUrl: './rating-stars.component.html',
-  styleUrls: ['./rating-stars.component.scss']
+    selector: 'clark-rating-stars',
+    templateUrl: './rating-stars.component.html',
+    styleUrls: ['./rating-stars.component.scss'],
+    standalone: true,
+    imports: [NgStyle, TipDirective, NgFor, NgIf]
 })
 export class RatingStarsComponent implements OnInit, OnChanges {
   /**

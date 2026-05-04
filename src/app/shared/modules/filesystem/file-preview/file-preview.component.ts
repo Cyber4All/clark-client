@@ -7,9 +7,10 @@ import { noPreview, notLoggedIn } from './file-preview.copy';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
 
 @Component({
-  selector: 'clark-file-preview',
-  templateUrl: './file-preview.component.html',
-  styleUrls: ['./file-preview.component.scss'],
+    selector: 'clark-file-preview',
+    templateUrl: './file-preview.component.html',
+    styleUrls: ['./file-preview.component.scss'],
+    standalone: true,
 })
 export class FilePreviewComponent implements OnInit, OnDestroy {
   @Input() file: LearningObject.Material.File;
