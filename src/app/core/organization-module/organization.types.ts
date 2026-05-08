@@ -85,6 +85,10 @@ export interface UpdateOrganizationRequest {
     isVerified?: boolean;
 }
 
+export interface MigrateOrganizationUsersRequest {
+    organizationId: string;
+}
+
 /**
  * Response interfaces (what client receives from API)
  */

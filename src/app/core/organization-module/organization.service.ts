@@ -15,6 +15,7 @@ import {
     CreateOrganizationRequest,
     CreateOrganizationResponse,
     GetOrganizationByIdResponse,
+    MigrateOrganizationUsersRequest,
     Organization,
     SearchOrganizationsRequest,
     SearchOrganizationsResponse,
@@ -56,6 +57,10 @@ export class OrganizationService {
 
     private updatePath(id: string): string {
         return `${environment.apiURL}/organizations/${encodeURIComponent(id)}`;
+    }
+
+    private migratePath(id: string): string {
+        return `${this.updatePath(id)}/migrate`;
     }
 
     /**
@@ -204,6 +209,24 @@ export class OrganizationService {
             .patch<UpdateOrganizationResponse>(this.updatePath(id), request)
             .pipe(
                 map(data => UpdateOrganizationResponseSchema.parse(data)),
+                catchError(error => throwError(() => error))
+            );
+    }
+
+    /**
+     * Migrate all users from one organization to another.
+     *
+     * The backend signals success with HTTP 204 No Content.
+     *
+     * @param sourceOrganizationId Source organization ID
+     * @param request Request containing target organization ID
+     * @returns Observable that completes on success
+     */
+    migrateOrganizationUsers(sourceOrganizationId: string, request: MigrateOrganizationUsersRequest): Observable<void> {
+        return this.http
+            .post<void>(this.migratePath(sourceOrganizationId), request, { observe: 'response' })
+            .pipe(
+                map(() => undefined),
                 catchError(error => throwError(() => error))
             );
     }
