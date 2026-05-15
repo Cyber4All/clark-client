@@ -224,98 +224,78 @@
                     [attr.aria-label]="
                       organization.isVerified ? 'Mark organization unverified' : 'Verify organization'
                     "
-                        >
-                        <mat-icon>check</mat-icon>
-                      </button>
-                      <button
-                        mat-icon-button
-                        (click)="openEditModal(organization)"
-                        class="action-icon-button"
-                        title="Edit"
-                        >
-                        <mat-icon>edit</mat-icon>
-                      </button>
-                      <span
-                        class="disabled-action-tooltip"
-                        [matTooltip]="migrateNotSupportedTooltip"
-                        >
-                        <button
-                          mat-icon-button
-                          class="action-icon-button migrate"
-                          title="Migrate Users"
-                          [disabled]="true"
-                          >
-                          <mat-icon>sync_alt</mat-icon>
-                        </button>
-                      </span>
-                      <span
-                        class="disabled-action-tooltip"
-                        [matTooltip]="deleteNotSupportedTooltip"
-                        >
-                        <button
-                          mat-icon-button
-                          class="action-icon-button delete"
-                          title="Delete"
-                          [disabled]="true"
-                          >
-                          <mat-icon>delete</mat-icon>
-                        </button>
-                      </span>
-                    } @else {
-                      <button
-                        mat-icon-button
-                        class="action-icon-button action-meatball"
-                        [matMenuTriggerFor]="rowActionMenu"
-                        [matMenuTriggerData]="{ organization: organization }"
-                        title="Actions"
-                        >
-                        <mat-icon>more_vert</mat-icon>
-                      </button>
-                    }
-                  </div>
-                </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr
-                mat-row
-                *matRowDef="let row; columns: displayedColumns"
-                class="organization-row"
-                (click)="openEditModal(row)"
-              ></tr>
-            </table>
-          </div>
-          @if (isMobileTableView) {
-            <div
-              class="table-toolbar table-toolbar--bottom"
-              >
-              <mat-paginator
-                class="organizations-paginator"
-                [pageSizeOptions]="[10, 25, 50, 100]"
-                showFirstLastButtons
-                aria-label="Select page of organizations"
-                >
-              </mat-paginator>
-            </div>
-          }
-        </div>
-      } @else {
-        @if (!loading) {
-          <div class="empty-template">
-            <div class="empty-template__top">
-              <i class="fal fa-building"></i>
-              <div class="top-message">Nothing here!</div>
-            </div>
-            <div class="empty-text">Organizations will appear here</div>
-          </div>
-        } @else {
-          <div class="loadingOrFinished__content">
-            <i class="fal fa-spinner-third fa-spin"></i>
-            Loading...
-          </div>
-        }
-      }
+                  >
+                    <mat-icon>check</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    (click)="openEditModal(organization)"
+                    class="action-icon-button"
+                    title="Edit"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    (click)="openMigrateModal(organization)"
+                    class="action-icon-button migrate"
+                    title="Migrate Users"
+                  >
+                    <mat-icon>sync_alt</mat-icon>
+                  </button>
+                  <span
+                    class="disabled-action-tooltip"
+                    [matTooltip]="deleteNotSupportedTooltip"
+                  >
+                    <button
+                      mat-icon-button
+                      class="action-icon-button delete"
+                      title="Delete"
+                      [disabled]="true"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </span>
+                </ng-container>
+                <ng-template #mobileActions>
+                  <button
+                    mat-icon-button
+                    class="action-icon-button action-meatball"
+                    [matMenuTriggerFor]="rowActionMenu"
+                    [matMenuTriggerData]="{ organization: organization }"
+                    title="Actions"
+                  >
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                </ng-template>
+              </div>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="organization-row"
+            (click)="openEditModal(row)"
+          ></tr>
+        </table>
+      </div>
+      <div
+        class="table-toolbar table-toolbar--bottom"
+        *ngIf="isMobileTableView"
+      >
+        <mat-paginator
+          class="organizations-paginator"
+          [pageSizeOptions]="[10, 25, 50, 100]"
+          showFirstLastButtons
+          aria-label="Select page of organizations"
+        >
+        </mat-paginator>
+      </div>
     </div>
 
+<<<<<<< HEAD
     <mat-menu #rowActionMenu="matMenu" class="filter-menu row-action-menu">
       <ng-template matMenuContent let-organization="organization">
         <button
@@ -334,6 +314,38 @@
         <button mat-menu-item (click)="openEditModal(organization)">
           <mat-icon>edit</mat-icon>
           <span>Edit</span>
+=======
+  <mat-menu #rowActionMenu="matMenu" class="filter-menu row-action-menu">
+    <ng-template matMenuContent let-organization="organization">
+      <button
+        mat-menu-item
+        (click)="toggleOrganizationVerification(organization)"
+        [disabled]="isVerificationTogglePending(organization)"
+      >
+        <mat-icon
+          [class.verify-menu-icon--verified]="organization.isVerified"
+          [class.verify-menu-icon--unverified]="!organization.isVerified"
+        >
+          check
+        </mat-icon>
+        <span>{{ organization.isVerified ? 'Mark Unverified' : 'Verify' }}</span>
+      </button>
+      <button mat-menu-item (click)="openEditModal(organization)">
+        <mat-icon>edit</mat-icon>
+        <span>Edit</span>
+      </button>
+      <button mat-menu-item (click)="openMigrateModal(organization)">
+        <mat-icon>sync_alt</mat-icon>
+        <span>Migrate Users</span>
+      </button>
+      <span
+        class="disabled-action-tooltip disabled-action-tooltip--menu"
+        [matTooltip]="deleteNotSupportedTooltip"
+      >
+        <button mat-menu-item [disabled]="true">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+>>>>>>> main
         </button>
         <span
           class="disabled-action-tooltip disabled-action-tooltip--menu"
@@ -389,9 +401,23 @@
   [sourceUserCount]="
     selectedOrganization ? getUserCount(selectedOrganization) : 0
   "
+<<<<<<< HEAD
     [availableTargetOrganizations]="getAvailableTargetOrganizations()"
     [isMigrating]="isMigrating"
     [getUserCount]="getUserCount.bind(this)"
     (closed)="closeMigrateModal()"
     (migrate)="onMigrateUsers($event)"
   ></clark-organization-migrate-modal>
+=======
+  [sourceLearningObjectCount]="
+    selectedOrganization ? getLearningObjectCount(selectedOrganization) : 0
+  "
+  [availableTargetOrganizations]="getAvailableTargetOrganizations()"
+  [isMigrating]="isMigrating"
+  [getUserCount]="getUserCount.bind(this)"
+  [loadUserCount]="loadUserCountForMigration.bind(this)"
+  [loadLearningObjectCount]="loadLearningObjectCountForMigration.bind(this)"
+  (closed)="closeMigrateModal()"
+  (migrate)="onMigrateUsers($event)"
+></clark-organization-migrate-modal>
+>>>>>>> main
