@@ -108,6 +108,13 @@
           >
             <ul>
               <li
+                *ngIf="isAdminOrEditor()"
+                [ngClass]="{ selected: sortText === 'Oldest' }"
+                (click)="toggleSort('ad')"
+              >
+                Oldest
+              </li>
+              <li
                 [ngClass]="{ selected: sortText === 'Newest' }"
                 (click)="toggleSort('dd')"
               >

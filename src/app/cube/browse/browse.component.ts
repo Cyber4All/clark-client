@@ -18,6 +18,7 @@ import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { COPY } from './browse.copy';
 import { FilterSectionInfo } from './components/filter-section/filter-section.component';
 import { FilterComponent } from './components/filter/filter.component';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Component({
   selector: 'cube-browse',
@@ -99,6 +100,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private navService: NavbarService,
     private renderer: Renderer2,
+    private authService: AuthService
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -450,6 +452,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.sortText = 'Newest';
         this.query.orderBy = OrderBy.Date;
         this.query.sortType = SortType.Descending;
+      } else if (val === 'ad') {
+        this.sortText = 'Oldest';
+        this.query.orderBy = OrderBy.Date;
+        this.query.sortType = SortType.Ascending
       } else if (val === 'w') {
         this.sortText = 'Most Downloaded';
         this.query.orderBy = OrderBy.Downloads;
@@ -670,5 +676,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
     this.performSearch(true);
     this.cd.detectChanges();
+  }
+
+  isAdminOrEditor(): boolean {
+    return this.authService.isAdminOrEditor();
   }
 }
