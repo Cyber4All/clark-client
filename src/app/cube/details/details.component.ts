@@ -421,6 +421,25 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  openAddRatingModal() {
+    if (!this.auth.user.emailVerified) {
+      return;
+    }
+
+    this.editRating = false;
+    this.userRating = {
+      value: undefined,
+      comment: undefined,
+    };
+    this.showAddRating = true;
+  }
+
+  closeAddRatingModal() {
+    this.showAddRating = false;
+    this.editRating = false;
+    this.userRating = {};
+  }
+
   /**
    * Creates a new rating
    *
@@ -436,11 +455,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .then(
         () => {
           this.getLearningObjectRatings();
-          this.showAddRating = false;
+          this.closeAddRatingModal();
           this.toastService.success('Success!', 'Review submitted successfully!');
         },
         error => {
-          this.showAddRating = false;
+          this.closeAddRatingModal();
           this.toastService.error('Error!', 'An error occurred and your rating could not be submitted');
         }
       );
@@ -489,11 +508,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
       .then(
         () => {
           this.getLearningObjectRatings();
-          this.showAddRating = false;
+          this.closeAddRatingModal();
           this.toastService.success('Success!', 'Rating updated successfully!');
         },
         (error) => {
-          this.showAddRating = false;
+          this.closeAddRatingModal();
           this.toastService.error('Error!', 'An error occurred and your rating could not be updated');
         }
       );

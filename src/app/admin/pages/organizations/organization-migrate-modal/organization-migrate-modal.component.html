@@ -1,11 +1,12 @@
 <clark-popup *ngIf="isVisible" (closed)="onClose()">
-  <div #popupInner class="modal-container migrate-modal">
-    <div class="modal-title">Migrate Users</div>
-    <p class="confirmation-text">
-      Migrate all {{ sourceUserCount }} user(s) from
-      <strong>{{ sourceOrganization?.name }}</strong> to a verified
-      organization.
-    </p>
+    <div #popupInner class="modal-container migrate-modal">
+      <div class="modal-title">Migrate Users</div>
+      <p class="confirmation-text">
+        Migrate all {{ sourceUserCount }} users and
+        {{ getSourceLearningObjectText() }} from
+        <strong>{{ sourceOrganization?.name }}</strong> to a verified
+        organization.
+      </p>
 
     <mat-progress-bar
       *ngIf="isMigrating"
@@ -13,82 +14,88 @@
       class="migration-progress"
     ></mat-progress-bar>
 
-    <mat-vertical-stepper [linear]="true" #stepper>
-      <!-- Step 1: Select Target Organization -->
-      <mat-step [completed]="!!targetOrgId">
-        <ng-template matStepLabel>Select Target Organization</ng-template>
-        <div class="step-content">
-          <mat-form-field
-            appearance="outline"
-            class="full-width search-org-field"
-          >
-            <mat-label>Search Verified Organizations</mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="Type to search verified organizations..."
-              [(ngModel)]="searchTerm"
-              (ngModelChange)="filterOrganizations()"
-              name="orgSearch"
-              [disabled]="isMigrating"
-            />
-            <mat-icon matPrefix>search</mat-icon>
-          </mat-form-field>
+    <div class="migration-steps">
+      <div class="step-heading">
+        <span class="step-heading__number">1</span>
+        <span class="step-heading__label">Select Target Organization</span>
+      </div>
 
-          <div
-            class="organization-list"
-            *ngIf="filteredOrganizations.length > 0"
-          >
-            <div
-              *ngFor="let org of filteredOrganizations"
-              class="org-item"
-              [class.selected]="targetOrgId === org._id"
-              [class.disabled]="isMigrating"
-              (click)="!isMigrating && selectTargetOrganization(org._id)"
-            >
-              <div class="org-name">
-                {{ org.name }}
-                <i
-                  class="fas fa-check-circle verified-icon"
-                  title="Verified"
-                ></i>
-              </div>
-              <div class="org-details">
-                {{ org.sector | titlecase }} • {{ getUserCount(org) }} users
-              </div>
+      <div class="step-content">
+        <div class="search-shell">
+          <label class="search-org-field" aria-label="Search verified organizations">
+            <mat-icon class="search-org-field__icon">search</mat-icon>
+            <input
+              type="text"
+              [value]="searchTerm"
+              placeholder="Search Verified Organizations"
+              [disabled]="isMigrating"
+              (input)="onSearchInput($any($event.target).value)"
+            />
+          </label>
+
+          <div class="organization-dropdown" *ngIf="showDropdown">
+            <div class="organization-dropdown__message" *ngIf="searchLoading">
+              Searching organizations...
             </div>
-          </div>
-          <div
-            class="no-results"
-            *ngIf="searchTerm && filteredOrganizations.length === 0"
-          >
-            No verified organizations found matching "{{ searchTerm }}"
-          </div>
-          <div
-            class="no-results"
-            *ngIf="!searchTerm && filteredOrganizations.length === 0"
-          >
-            No verified organizations available for migration
+
+            <div class="organization-dropdown__message organization-dropdown__message--error" *ngIf="!searchLoading && searchError">
+              {{ searchError }}
+            </div>
+
+            <ul
+              class="organization-list"
+              *ngIf="!searchLoading && !searchError && searchResults.length > 0; else emptySearchResultsTemplate"
+            >
+              <li
+                class="org-item"
+                *ngFor="let org of searchResults"
+                [class.selected]="targetOrgId === org._id"
+                [class.disabled]="isMigrating"
+                (activate)="!isMigrating && selectTargetOrganization(org)"
+              >
+                <div class="org-name">
+                  {{ org.name }}
+                  <i
+                    class="fas fa-check-circle verified-icon"
+                    title="Verified"
+                  ></i>
+                </div>
+                <div class="org-details">
+                  {{ org.sector | titlecase }} • {{ getUserCountText(org) }} •
+                  {{ getLearningObjectCountText(org) }}
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-      </mat-step>
 
-      <!-- Step 2: Confirm Migration -->
-      <mat-step>
-        <ng-template matStepLabel>Confirm Migration</ng-template>
-        <div class="step-content">
-          <p class="confirm-text">
-            Migrate
-            <strong>{{ sourceUserCount }} user(s)</strong>
-            from <strong>{{ sourceOrganization?.name }}</strong> to
-            <strong>{{ getSelectedTargetOrganization()?.name }}</strong
+        <div
+          class="confirmation-section"
+          [class.confirmation-section--disabled]="!getSelectedTargetOrganization()"
+        >
+          <div class="step-heading step-heading--confirm">
+            <span class="step-heading__number">2</span>
+            <span class="step-heading__label">Confirm Migration</span>
+          </div>
+
+          <p class="confirm-text" *ngIf="getSelectedTargetOrganization() as selectedTarget; else confirmPlaceholderTemplate">
+            Are you sure you want to migrate {{ sourceUserCount }} users
+            and {{ getSourceLearningObjectText() }} from
+            <strong>{{ sourceOrganization?.name }}</strong> to
+            <strong>{{ selectedTarget.name }}</strong
             >?
           </p>
+
+          <ng-template #confirmPlaceholderTemplate>
+            <p class="confirm-text">
+              Select a target organization above to confirm the migration details.
+            </p>
+          </ng-template>
 
           <mat-checkbox
             [(ngModel)]="certified"
             class="certification-checkbox"
-            [disabled]="isMigrating"
+            [disabled]="!getSelectedTargetOrganization() || isMigrating"
           >
             I confirm this action is correct
           </mat-checkbox>
@@ -97,15 +104,21 @@
             <button
               mat-raised-button
               color="primary"
-              (click)="onMigrate()"
-              [disabled]="!certified || isMigrating"
+              (activate)="onMigrate()"
+              [disabled]="!getSelectedTargetOrganization() || !certified || isMigrating"
             >
               Migrate
               <mat-icon>check</mat-icon>
             </button>
           </div>
         </div>
-      </mat-step>
-    </mat-vertical-stepper>
+      </div>
+    </div>
   </div>
 </clark-popup>
+
+<ng-template #emptySearchResultsTemplate>
+  <div class="organization-dropdown__message" *ngIf="searchTerm && !searchLoading && !searchError">
+    No verified organizations found matching "{{ searchTerm }}"
+  </div>
+</ng-template>
