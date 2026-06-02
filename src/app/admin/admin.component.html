@@ -1,5 +1,5 @@
 <div class="admin" [style.top]="topAdjustment ? topAdjustment + 'px' : 0">
-  <div class="admin__sidebar">
+  <div class="admin__sidebar" *ngIf="!isTabletView">
     <clark-admin-sidebar
       [collections]="authorizedCollections"
       [activeCollection]="activeCollection"
@@ -7,7 +7,47 @@
       [editorMode]="editorMode"
     ></clark-admin-sidebar>
   </div>
+  <div class="admin__meatball" *ngIf="isTabletView">
+    <button
+      mat-icon-button
+      aria-label="Open admin menu"
+      [matMenuTriggerFor]="adminNavMenu"
+      class="admin__meatball-button"
+    >
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
   <div [ngClass]="{'admin__main-content--can-scroll': canScroll}" class="admin__main-content">
     <router-outlet></router-outlet>
   </div>
 </div>
+
+<mat-menu #adminNavMenu="matMenu" class="admin-nav-menu">
+  <button mat-menu-item [routerLink]="getAdminBaseUrl() + '/learning-objects'">
+    <mat-icon>inventory_2</mat-icon>
+    <span>Objects</span>
+  </button>
+  <button
+    mat-menu-item
+    [routerLink]="getAdminBaseUrl() + (editorMode ? '/users' : '/reviewers')"
+  >
+    <mat-icon>group</mat-icon>
+    <span>{{ editorMode ? 'Users' : 'Reviewers' }}</span>
+  </button>
+  <button
+    *ngIf="authService.isAdminOrEditor()"
+    mat-menu-item
+    [routerLink]="getAdminBaseUrl() + '/organizations'"
+  >
+    <mat-icon>apartment</mat-icon>
+    <span>Organizations</span>
+  </button>
+  <button
+    *ngIf="authService.isAdminOrEditor()"
+    mat-menu-item
+    [routerLink]="getAdminBaseUrl() + '/featured/learning-objects'"
+  >
+    <mat-icon>star</mat-icon>
+    <span>Featured</span>
+  </button>
+</mat-menu>

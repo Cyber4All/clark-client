@@ -1,0 +1,17 @@
+@import '_vars.scss';
+
+.clear-filters-button {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font-size: $small;
+  cursor: pointer;
+  color: $error-red;
+  text-decoration: underline;
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+.clear-filters-button:hover {
+  opacity: 0.8;
+}

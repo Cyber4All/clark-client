@@ -5,7 +5,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContextMenuModule } from 'app/shared/modules/contextmenu/contextmenu.module';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { CookieModule } from 'ngx-cookie';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { User, LearningObject } from '@entity';
 import { CollectionService } from 'app/core/collection-module/collections.service';
@@ -23,7 +22,6 @@ describe('DashboardItemComponent', () => {
     teardown: { destroyAfterEach: false },
     imports: [RouterTestingModule,
         ContextMenuModule.forRoot(),
-        CookieModule.forRoot(),
         SharedDirectivesModule],
     providers: [
         { provide: AuthService, useValue: { user: new User() } },

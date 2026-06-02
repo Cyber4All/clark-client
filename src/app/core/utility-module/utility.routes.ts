@@ -34,11 +34,11 @@ export const UTILITY_ROUTES = {
     return `${environment.downtimeUrl}/downtime?service=clark`;
   },
   /**
-   * Request to search organizations on CARD
+   * Request to search organizations
    * @method GET
    * @returns list of organizations
    */
   SEARCH_ORGANIZATIONS(queryString: string) {
-    return `${environment.cardUrl}/organizations?type=&verified=verified&mine=&sort=&text=${queryString}`;
+    return `${environment.apiURL}/organizations?type=&verified=verified&mine=&sort=&text=${queryString}`;
   }
 };

@@ -1,0 +1,26 @@
+@import '_vars.scss';
+
+:host {
+  display: block;
+}
+
+.stats-card {
+  background: #fff;
+  border: 1px solid #e1e5ec;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.stats-card__label {
+  font-size: $smaller;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $medium-grey;
+}
+
+.stats-card__value {
+  font-size: $large;
+  color: $darker-grey;
+  font-weight: 700;
+  margin-top: 4px;
+}

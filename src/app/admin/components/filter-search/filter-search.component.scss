@@ -3,6 +3,17 @@
 .btn-group {
   align-items: center;
 
+  &.to-right {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+  }
+
+  &.to-right > * {
+    margin: 0 !important;
+  }
+
   a {
     color: $error-red;
     font-size: $small;
@@ -21,7 +32,35 @@
 }
 
 .filters-button {
+  border: 1px solid $light-grey;
+  background: white;
+  border-radius: 10px;
+  height: 42px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  color: $darker-grey;
+  font-size: $normal;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  position: relative;
   transition: all 0.2s ease;
+  text-transform: none;
+
+  &:after {
+    display: none;
+  }
+
+  &:hover {
+    border-color: $dark-grey;
+    background: $primary-white;
+  }
+
+  &.active {
+    border-color: $blue-accent;
+    color: $blue-accent;
+    background: rgba(70, 144, 255, 0.05);
+  }
 
   .filter-badge {
     color: white;
@@ -68,6 +107,10 @@
     bottom: 0;
     margin: auto;
   }
+}
+
+.filters-clear {
+  margin-right: 8px;
 }
 .addEvaluators,
 .filter-status__container,

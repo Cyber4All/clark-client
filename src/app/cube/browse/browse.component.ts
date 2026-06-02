@@ -11,12 +11,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LearningObject } from '@entity';
 import { NavbarService } from 'app/core/client-module/navbar.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { OrderBy, Query, SortType } from '../../interfaces/query';
 import { COPY } from './browse.copy';
 import { FilterSectionInfo } from './components/filter-section/filter-section.component';
 import { FilterComponent } from './components/filter/filter.component';
+import { AuthService } from 'app/core/auth-module/auth.service';
 
 @Component({
   selector: 'cube-browse',
@@ -78,8 +80,6 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   sortMenuDown: boolean;
   sortText = 'Newest';
 
-  // Filter dropdown management
-  activeFilterDropdown: string | null = null;
   topicFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
   durationFilter: FilterSectionInfo;
@@ -100,6 +100,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private navService: NavbarService,
     private renderer: Renderer2,
+    private authService: AuthService
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -163,34 +164,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     }, 100);
   }
 
-  /**
-   * Toggle a filter dropdown
-   */
-  toggleFilterDropdown(filterName: string | null, event?: Event) {
-    if (event) {
-      event.stopPropagation();
-    }
-
-    if (this.activeFilterDropdown === filterName) {
-      // Close if clicking the same button
-      this.activeFilterDropdown = null;
-    } else {
-      // Open the requested dropdown
-      this.activeFilterDropdown = filterName;
-    }
-
-    this.cd.detectChanges();
-  }
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-
-    // Close filter dropdowns when clicking outside
-    if (this.activeFilterDropdown && !target.closest('.filter-dropdown-container') && !target.closest('.filter-dropdown-btn')) {
-      this.activeFilterDropdown = null;
-      this.cd.detectChanges();
-    }
 
     // Close sort dropdown when clicking outside
     if (this.sortMenuDown && !target.closest('.sort-dropdown-container')) {
@@ -199,30 +175,64 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  /**
-   * Toggle a filter option in a dropdown
-   */
-  toggleFilterOption(filterType: string, option: any) {
-    // Toggle the option's active state
-    option.active = !option.active;
-
-    // Update the main filter component's state to keep everything in sync
-    if (this.filterComponent) {
-      this.filterComponent.sendFilterChanges();
-    }
-
-    // Perform the search with the updated filters
-    this.performSearch(true);
-    this.cd.detectChanges();
+  get topicDropdownOptions(): DropdownFilterOption[] {
+    return (this.topicFilter?.filters || []).map((option) => ({
+      label: option.name,
+      value: option.value,
+    }));
   }
 
-  /**
-   * Handle changes from filter dropdowns
-   */
-  handleFilterChange() {
-    this.performSearch(true);
-    this.activeFilterDropdown = null;
-    this.cd.detectChanges();
+  get levelDropdownOptions(): DropdownFilterOption[] {
+    return (this.levelFilter?.filters || []).map((option) => ({
+      label: option.name,
+      value: option.value,
+    }));
+  }
+
+  get durationDropdownOptions(): DropdownFilterOption[] {
+    return (this.durationFilter?.filters || []).map((option) => ({
+      label: option.description || option.name,
+      value: option.value,
+    }));
+  }
+
+  get materialsDropdownOptions(): DropdownFilterOption[] {
+    return (this.materialsFilter?.filters || []).map((option) => ({
+      label: option.name,
+      value: option.value,
+    }));
+  }
+
+  get selectedTopicValues(): string[] {
+    return this.getSelectedValues(this.topicFilter);
+  }
+
+  get selectedLevelValues(): string[] {
+    return this.getSelectedValues(this.levelFilter);
+  }
+
+  get selectedDurationValues(): string[] {
+    return this.getSelectedValues(this.durationFilter);
+  }
+
+  get selectedMaterialValues(): string[] {
+    return this.getSelectedValues(this.materialsFilter);
+  }
+
+  onTopicFiltersChange(selectedValues: string[]): void {
+    this.applyDropdownSelection(this.topicFilter, selectedValues);
+  }
+
+  onLevelFiltersChange(selectedValues: string[]): void {
+    this.applyDropdownSelection(this.levelFilter, selectedValues);
+  }
+
+  onDurationFiltersChange(selectedValues: string[]): void {
+    this.applyDropdownSelection(this.durationFilter, selectedValues);
+  }
+
+  onMaterialsFiltersChange(selectedValues: string[]): void {
+    this.applyDropdownSelection(this.materialsFilter, selectedValues);
   }
 
   get isMobile(): boolean {
@@ -442,6 +452,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.sortText = 'Newest';
         this.query.orderBy = OrderBy.Date;
         this.query.sortType = SortType.Descending;
+      } else if (val === 'ad') {
+        this.sortText = 'Oldest';
+        this.query.orderBy = OrderBy.Date;
+        this.query.sortType = SortType.Ascending
       } else if (val === 'w') {
         this.sortText = 'Most Downloaded';
         this.query.orderBy = OrderBy.Downloads;
@@ -628,5 +642,43 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     return this.topicFilter.filters
       .filter(f => f.active)
       .map(f => f.name);
+  }
+
+  private getSelectedValues(filter?: FilterSectionInfo): string[] {
+    return (filter?.filters || [])
+      .filter((option) => option.active)
+      .map((option) => option.value);
+  }
+
+  private applyDropdownSelection(filter: FilterSectionInfo | undefined, selectedValues: string[]): void {
+    if (!filter?.filters) {
+      return;
+    }
+
+    const selectedSet = new Set(selectedValues);
+    let didChange = false;
+
+    filter.filters.forEach((option) => {
+      const nextState = selectedSet.has(option.value);
+      if (option.active !== nextState) {
+        option.active = nextState;
+        didChange = true;
+      }
+    });
+
+    if (!didChange) {
+      return;
+    }
+
+    if (this.filterComponent) {
+      this.filterComponent.sendFilterChanges();
+    }
+
+    this.performSearch(true);
+    this.cd.detectChanges();
+  }
+
+  isAdminOrEditor(): boolean {
+    return this.authService.isAdminOrEditor();
   }
 }

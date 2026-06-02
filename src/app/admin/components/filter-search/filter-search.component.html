@@ -10,116 +10,45 @@
         </button> -->
         <button
           class="button neutral filters-button"
+          [ngClass]="{ active: dateSearchStart || dateSearchEnd }"
           (activate)="toggleDateSearchMenu(true)"
         >
           <div [ngClass]="{ 'indicator': dateSearchStart || dateSearchEnd }"></div>
           <span *ngIf="dateSearchStart || dateSearchEnd; else elseBlock">{{ getDatesFilterLabel() }}</span>
           <ng-template #elseBlock>Search By Date Range</ng-template>
         </button>
-        <button
-          #toggleTopicMenuElement
-          class="button neutral filters-button"
-          (activate)="toggleTopicMenu(true)"
-          [ngClass]="{ 'filters-button--down': topicMenuDown }"
-        >
-          <span class="filter-badge" *ngIf="filterTopics.size">{{ filterTopics.size }}</span>
-          Topics
-          <i class="fas fa-chevron-down"></i>
-        </button>
-        <clark-context-menu
-          *ngIf="topicMenuDown"
-          class="filter-topic"
-          [anchor]="toggleTopicMenuElement"
-          [offset]="{ top: 10, left: 10 }"
-          (close)="toggleTopicMenu()"
-        >
-          <div #contextMenu id="contextMenu" class="filter-topic__container">
-            <ul>
-              <li
-                *ngFor="let topic of topics"
-                [className]="topic.name"
-                (activate)="toggleTopicFilter([topic])"
-              >
-                <div
-                  *ngIf="filterTopics.has(topic._id)"
-                  class="indicator"
-                ></div>
-                {{ topic.name | titlecase }}
-              </li>
-            </ul>
-          </div>
-        </clark-context-menu>
-        <button
-          #toggleCollectionMenuElement
-          class="button neutral filters-button"
-          (activate)="toggleCollectionMenu(true)"
-          [ngClass]="{ 'filters-button--down': collectionMenuDown }"
-        >
-          {{ selectedCollection ? selectedCollection.name : 'All Collections' }}
-          <i class="fas fa-chevron-down"></i>
-        </button>
-        <clark-context-menu
-          *ngIf="collectionMenuDown"
-          class="filter-collection"
-          [anchor]="toggleCollectionMenuElement"
-          [offset]="{ top: 10, left: 10 }"
-          (close)="toggleCollectionMenu()"
-        >
-          <div #contextMenu id="contextMenu" class="filter-collection__container">
-            <ul>
-              <li
-                *ngFor="let collection of collections"
-                [className]="collection.abvName"
-                (activate)="toggleCollectionFilter(collection.abvName)"
-              >
-                <div
-                  *ngIf="collection.abvName === selectedCollection?.abvName"
-                  class="indicator"
-                ></div>
-                {{ collection.name }}
-              </li>
-            </ul>
-          </div>
-        </clark-context-menu>
+
+        <clark-dropdown-filter
+          name="Topics"
+          [isMultiSelect]="true"
+          [values]="topicFilterOptions"
+          [selectedValues]="selectedTopicValues"
+          (selectedValuesChange)="onTopicFiltersChange($event)"
+        ></clark-dropdown-filter>
+
+        <clark-dropdown-filter
+          name="Collections"
+          [isMultiSelect]="true"
+          [values]="collectionFilterOptions"
+          [selectedValues]="selectedCollectionValues"
+          (selectedValuesChange)="onCollectionFilterChange($event)"
+        ></clark-dropdown-filter>
       </ng-container>
       <ng-container *ngIf="showStatus">
-        <button
-          #toggleFilterMenuElement
-          class="button neutral filters-button"
-          (activate)="toggleFilterMenu(true)"
-          [ngClass]="{ 'filters-button--down': filterMenuDown }"
-        >
-          <span class="filter-badge" *ngIf="filters.size">
-            {{ filters.size }}
-          </span>
-          All Statuses <i class="fas fa-chevron-down"></i>
-        </button>
-        <clark-context-menu
-          *ngIf="filterMenuDown"
-          class="filter-status"
-          [anchor]="toggleFilterMenuElement"
-          [offset]="{ top: 10, left: 10 }"
-          (close)="toggleFilterMenu(undefined)"
-        >
-          <div #contextMenu id="contextMenu" class="filter-status__container">
-            <ul>
-              <li
-                *ngFor="let status of statuses"
-                [ngClass]="status"
-                (activate)="toggleStatusFilter([status])">
-                  <div *ngIf="filters.has(status)" class="indicator"></div>
-                  <i [ngClass]="getStatusIcon(status)"></i> {{ status.replace('_', ' ') | titlecase }}
-              </li>
-            </ul>
-          </div>
-        </clark-context-menu>
+        <clark-dropdown-filter
+          name="Status"
+          [isMultiSelect]="true"
+          [values]="statusFilterOptions"
+          [selectedValues]="selectedStatusValues"
+          (selectedValuesChange)="onStatusFiltersChange($event)"
+        ></clark-dropdown-filter>
       </ng-container>
-      <a
-        *ngIf="filters.size || selectedCollection || filterTopics.size || dateSearchStart || dateSearchEnd"
-        (activate)="clearAllFilters()"
+      <clark-clear-filters-button
+        *ngIf="filters.size || selectedCollectionValues.length || filterTopics.size || dateSearchStart || dateSearchEnd"
         class="filters-clear"
-        >Clear filters</a
-      >
+        label="Clear Filters"
+        (clear)="clearAllFilters()"
+      ></clark-clear-filters-button>
     </div>
   </div>
 </div>

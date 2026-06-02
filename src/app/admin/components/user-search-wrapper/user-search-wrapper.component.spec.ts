@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from 'app/core/user-module/user.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { CookieModule } from 'ngx-cookie';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Collection } from 'app/core/collection-module/collections.service';
 
@@ -19,7 +18,7 @@ describe('UserSearchWrapperComponent', () => {
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [UserSearchWrapperComponent],
     teardown: { destroyAfterEach: false },
-    imports: [FormsModule, CookieModule.forRoot()],
+    imports: [FormsModule],
     providers: [AuthService, UserService, ToastrOvenService, provideHttpClient(withInterceptorsFromDi())]
 })
     .compileComponents();

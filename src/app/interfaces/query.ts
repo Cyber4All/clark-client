@@ -53,6 +53,7 @@ export interface FilterQuery extends Query {
 
 export interface UserQuery extends querystring.ParsedUrlQueryInput {
   accessGroups?: string[],
+  organizationId?: string[],
   sortType?: string,
   page?: number,
   limit?: number,

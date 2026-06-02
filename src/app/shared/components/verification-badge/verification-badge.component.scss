@@ -1,0 +1,25 @@
+@import '_vars.scss';
+
+.verification-badge {
+  display: inline-block;
+  margin: 0;
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+}
+
+.verification-badge.verified {
+  color: $success-green;
+}
+
+.verification-badge.unverified {
+  color: $error-red;
+}
+
+@media (max-width: 600px) {
+  .verification-badge {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+}

@@ -4,7 +4,7 @@ import { AuthService } from 'app/core/auth-module/auth.service';
 import { User } from '@entity';
 import { Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { titleCase } from 'title-case';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
 
 @Component({
   selector: 'clark-user-dropdown',
@@ -38,7 +38,12 @@ export class UserDropdownComponent implements OnInit, DoCheck, OnDestroy {
   // fired when an author is removed as a contributor
   @Output() removeAuthor: EventEmitter<User> = new EventEmitter();
 
-  constructor(private userService: UserService, private authService: AuthService, private differs: IterableDiffers) {
+  constructor(
+    private userService: UserService,
+    private authService: AuthService,
+    private differs: IterableDiffers,
+    public orgStore: OrganizationStore
+  ) {
     // init contributors iterable differ
     this.differ = this.differs.find([]).create(null);
   }
@@ -93,20 +98,6 @@ export class UserDropdownComponent implements OnInit, DoCheck, OnDestroy {
       });
     }
   }
-
-  /**
-   * Function to conditionally set the title case of an organization
-   *
-   * @param organization string of the users affiliated organization
-   * @returns string unformated or title cased
-   */
-     organizationFormat(organization: string) {
-      if ( organization.charAt(1) === organization.charAt(1).toUpperCase() ) {
-        return organization;
-      } else {
-        return titleCase(organization);
-      }
-    }
 
   /**
    * Toggles an author's selected status

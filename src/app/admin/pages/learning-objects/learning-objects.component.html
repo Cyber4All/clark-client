@@ -1,11 +1,13 @@
 <clark-admin-content-wrapper>
   <div #list2 class="el"></div>
   <div page-title>Learning Objects</div>
-  <clark-admin-search-bar
+  <clark-search-input
+    class="learning-objects-search"
     search
-    [placeholder]="searchBarPlaceholder"
+    [placeholder]="'Search ' + searchBarPlaceholder"
+    [fullWidth]="true"
     (userInput)="userSearchInput$.next($event)"
-  ></clark-admin-search-bar>
+  ></clark-search-input>
   <clark-admin-filter-search
     filter-options
     (filterQuery)="handleFilterQuery($event)"

@@ -8,8 +8,6 @@ export const environment = {
   cognitoRegion: 'us-east-1',
   cognitoIdentityPoolId: '',
   cognitoAdminIdentityPoolId: '',
-  cardUrl: 'http://localhost:3000',
   downtimeUrl: '',
   publicKey: 'cxtp_pbDbZsDUdNr5Wu3GWX6emisZyfKkV9',
-  builderApiKey: '6d6fbbcdc4754114ae684d91dae8e029',
 };

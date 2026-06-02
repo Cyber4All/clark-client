@@ -1,25 +1,26 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RegistrationProgressComponent } from './registration-progress.component';
 
 describe('RegistrationProgressComponent', () => {
   let component: RegistrationProgressComponent;
-  let fixture: ComponentFixture<RegistrationProgressComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ RegistrationProgressComponent ]
-    })
-    .compileComponents();
-  });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegistrationProgressComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = new RegistrationProgressComponent();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should mark account active in the standard registration flow', () => {
+    component.currentTemp = 'account';
+    component.showOrganizationStep = false;
+
+    expect(component.isStepActive('info')).toBe(true);
+    expect(component.isStepActive('account')).toBe(true);
+    expect(component.isStepActive('sso')).toBe(false);
+  });
+
+  it('should mark organization active only in the custom organization flow', () => {
+    component.currentTemp = 'organization';
+    component.showOrganizationStep = true;
+
+    expect(component.isStepActive('organization')).toBe(true);
+    expect(component.isStepActive('account')).toBe(false);
   });
 });

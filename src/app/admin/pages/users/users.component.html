@@ -3,11 +3,14 @@
     <span *ngIf="activeCollection && activeCollection?.name.length > 0" class="collection-name">{{ activeCollection.name.toUpperCase() }}</span>
     {{ activeCollection && activeCollection.name?.length > 0 ? 'Reviewers' : 'Users' }} {{ users ? '(' + users.length + ')' : '' }}
   </div>
-  <clark-admin-search-bar search 
+  <clark-search-input
+    class="users-search"
+    search
     *ngIf="!activeCollection"
-    [placeholder]="searchBarPlaceholder"
+    [placeholder]="'Search ' + searchBarPlaceholder"
+    [fullWidth]="true"
     (userInput)="getUsers($event)"
-  ></clark-admin-search-bar>
+  ></clark-search-input>
 
   <div *ngIf="activeCollection && activeCollection?.name.length > 0" filter-options>
     <div class="btn-group to-right">

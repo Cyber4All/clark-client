@@ -9,7 +9,6 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { CookieModule } from 'ngx-cookie';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 
 describe('UsersComponent', () => {
@@ -33,7 +32,7 @@ describe('UsersComponent', () => {
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
     declarations: [UsersComponent],
     teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule, CookieModule.forRoot()],
+    imports: [RouterTestingModule],
     providers: [
         AuthService,
         ToastrOvenService,
