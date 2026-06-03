@@ -1,3 +1,115 @@
+// =====================================================================
+// Modern design tokens (2026 refresh)
+// New work should reference these tokens. Legacy variables below are
+// preserved so unmigrated components keep compiling unchanged.
+// =====================================================================
+
+// ----- Color: primary brand -----
+$brand-50:  #eef5ff;
+$brand-100: #d9e8ff;
+$brand-200: #b4d0ff;
+$brand-300: #84b1ff;
+$brand-500: #2f6ee0;
+$brand-600: #1f5bc7;
+$brand-700: #1949a3;
+$brand-900: #0e2c64;
+
+// ----- Color: neutrals (single-hue, cool grey) -----
+$neutral-0:   #ffffff;
+$neutral-50:  #f7f8fa;
+$neutral-100: #eef0f4;
+$neutral-200: #dde1e8;
+$neutral-300: #c2c8d2;
+$neutral-400: #98a0ad;
+$neutral-500: #6b7280;
+$neutral-600: #4b5360;
+$neutral-700: #343a45;
+$neutral-800: #1f242d;
+$neutral-900: #0f1218;
+
+// ----- Color: text -----
+$text-primary:   $neutral-800;
+$text-secondary: $neutral-600;
+$text-muted:     $neutral-500;
+$text-inverse:   $neutral-0;
+
+// ----- Color: surface -----
+$surface-page:    $neutral-0;
+$surface-raised:  $neutral-0;
+$surface-sunken:  $neutral-50;
+$surface-border:  $neutral-200;
+$surface-divider: $neutral-100;
+
+// ----- Color: status -----
+$success-500: #16a34a;
+$success-50:  #ecfdf5;
+$warning-500: #ea8a17;
+$warning-50:  #fff7ed;
+$danger-500:  #d92d20;
+$danger-50:   #fef2f2;
+$info-500:    #0ea5e9;
+$info-50:     #ecfeff;
+
+// ----- Spacing (4px scale) -----
+$space-1:  4px;
+$space-2:  8px;
+$space-3:  12px;
+$space-4:  16px;
+$space-5:  20px;
+$space-6:  24px;
+$space-7:  32px;
+$space-8:  40px;
+$space-9:  48px;
+$space-10: 64px;
+$space-11: 80px;
+$space-12: 96px;
+
+// ----- Radius -----
+$radius-sm:   6px;
+$radius-md:   10px;
+$radius-lg:   16px;
+$radius-xl:   24px;
+$radius-pill: 999px;
+
+// ----- Shadow (soft, layered) -----
+$shadow-sm: 0 1px 2px rgba(15, 18, 24, 0.05);
+$shadow-md: 0 4px 10px rgba(15, 18, 24, 0.06), 0 2px 4px rgba(15, 18, 24, 0.04);
+$shadow-lg: 0 12px 28px rgba(15, 18, 24, 0.10), 0 4px 8px rgba(15, 18, 24, 0.05);
+$shadow-ring: 0 0 0 3px rgba(47, 110, 224, 0.35);
+
+// ----- Type (rem-based, 16px root) -----
+$font-display:  clamp(2.25rem, 4vw + 1rem, 3.5rem); // 36 -> 56px
+$font-h1:       2rem;     // 32px
+$font-h2:       1.5rem;   // 24px
+$font-h3:       1.25rem;  // 20px
+$font-body-lg:  1.0625rem;// 17px
+$font-body:     1rem;     // 16px
+$font-caption:  0.875rem; // 14px
+$font-micro:    0.75rem;  // 12px
+
+$line-height-tight:   1.15;
+$line-height-normal:  1.5;
+$line-height-relaxed: 1.65;
+
+$letter-spacing-tight: -0.015em;
+$letter-spacing-wide:  0.04em;
+
+// ----- Motion -----
+$duration-fast: 120ms;
+$duration-base: 200ms;
+$duration-slow: 320ms;
+$ease-standard: cubic-bezier(0.2, 0, 0, 1);
+$ease-emphasis: cubic-bezier(0.2, 0, 0, 1.2);
+
+// ----- Breakpoints -----
+$bp-mobile: 640px;
+$bp-tablet: 960px;
+$bp-desktop: 1200px;
+
+// =====================================================================
+// Legacy variables (preserved for back-compat across the app)
+// =====================================================================
+
 // variables
 $max-width: 1600px;
 

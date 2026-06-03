@@ -11,16 +11,20 @@
 }
 
 h1 {
-  color: $darker-grey;
-  font-size: $largest;
-  font-weight: 600;
-  margin: 0;
+  color: $text-primary;
+  font-size: $font-h1;
+  font-weight: 700;
+  line-height: $line-height-tight;
+  letter-spacing: $letter-spacing-tight;
+  margin: 0 0 $space-3;
 }
 
 h2 {
-  font-size: $larger;
-  font-weight: 600;
-  color: $darker-grey;
+  font-size: $font-h2;
+  font-weight: 700;
+  color: $text-primary;
+  letter-spacing: $letter-spacing-tight;
+  line-height: $line-height-tight;
   margin: 0;
 }
 

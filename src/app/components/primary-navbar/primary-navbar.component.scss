@@ -1,10 +1,12 @@
 @import '_vars.scss';
 .desktop-navbar {
-    max-height: 92px;
-    background: white;
-    color: $dark-grey;
+    max-height: 76px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(140%) blur(8px);
+    color: $text-secondary;
     position: relative;
     z-index: 4;
+    border-bottom: 1px solid $surface-divider;
 
     .nav-wrapper {
         margin: 0px;
@@ -12,34 +14,47 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        
+        align-items: center;
+        max-width: $max-width;
+        margin: 0 auto;
+        padding: 0 $space-6;
+
         a{
             text-decoration: none;
-        
+
             .logo {
                 cursor: pointer;
                 position: relative;
+                display: flex;
+                align-items: center;
                 left: 0;
-                padding: 20px;
-                padding-top: 30px;
-                
+                padding: $space-3 0;
+                border-radius: $radius-sm;
+
+                &:focus-visible {
+                    outline: 2px solid $brand-500;
+                    outline-offset: 4px;
+                }
+
                 &-image {
                     background-image: url('../../../assets/images/logo.png');
-                    width: 40px;
+                    width: 36px;
                     background-size: contain;
                     background-repeat: no-repeat;
+                    background-position: center;
                     flex-shrink: 0;
-                    height: 100%;
-                    padding: 20px;
+                    height: 36px;
+                    padding: 0;
                 }
-                
+
                 &-link {
-                    font-size: $larger;
+                    font-size: $font-h3;
                     font-weight: 700;
-                    padding-right: 15px;
+                    padding-right: $space-3;
                     position: relative;
-                    margin-left: 10px;
-                    color: $homepage-gray;
+                    margin-left: $space-3;
+                    color: $text-primary;
+                    letter-spacing: $letter-spacing-tight;
                 }
             }
         }
@@ -72,11 +87,18 @@
                 button {
                     cursor: pointer;
                     color: white;
-                    border-radius: 0px 6px 6px 0px;
+                    border-radius: 0px $radius-sm $radius-sm 0px;
                     border: none;
-                    width: 50px;
-                    height: 44px;
-                    background: $homepage-light-blue;
+                    width: 44px;
+                    height: 40px;
+                    background: $brand-600;
+                    transition: background-color $duration-fast $ease-standard;
+
+                    &:hover { background: $brand-700; }
+                    &:focus-visible {
+                        outline: 2px solid $brand-500;
+                        outline-offset: 2px;
+                    }
                 }
             }
         }
@@ -84,19 +106,36 @@
         .right {
             display: flex;
             flex-direction: row;
+            align-items: center;
             justify-content: flex-end;
-            padding: 20px 18px;
-            gap: 10px;
-            
+            padding: $space-3 0;
+            gap: $space-3;
+
             .contribute-button {
                 cursor: pointer;
-                color: $dark-grey;
-                background-color: $primary-white;
-                border: solid $secondary-white 1px;
-                height: 45px;
-                border-radius: 4px;
-                padding: 0 18px;
-                margin-right: 2vw;
+                color: $text-primary;
+                background-color: $neutral-0;
+                border: 1px solid $surface-border;
+                height: 40px;
+                border-radius: $radius-md;
+                padding: 0 $space-4;
+                font-weight: 600;
+                margin-right: $space-4;
+                transition:
+                    background-color $duration-fast $ease-standard,
+                    border-color $duration-fast $ease-standard,
+                    box-shadow $duration-base $ease-standard;
+
+                &:hover {
+                    background: $neutral-50;
+                    border-color: $neutral-300;
+                    box-shadow: $shadow-sm;
+                }
+
+                &:focus-visible {
+                    outline: 2px solid $brand-500;
+                    outline-offset: 2px;
+                }
             }
             
             .logged-in{
@@ -106,37 +145,52 @@
                 
                 
                 .profile-picture {
-                    width: 50px;
-                    height: 50px;
+                    width: 38px;
+                    height: 38px;
                     background-size: cover;
                     background-position: center;
                     background-repeat: no-repeat;
                     border-radius: 50%;
-                    box-shadow: 0  1px 6px 2px rgba(0, 0, 0, 0.05);
+                    box-shadow: $shadow-sm, 0 0 0 2px $neutral-0, 0 0 0 3px $surface-border;
                 }
-                
+
                 .username {
                     cursor: pointer;
                     display: flex;
                     flex-direction: row;
-                    padding: 15px 5px;
+                    align-items: center;
+                    padding: $space-2 $space-2;
+                    color: $text-secondary;
+                    border-radius: $radius-md;
                     overflow:visible;
+                    transition: background-color $duration-fast $ease-standard;
+
+                    &:hover { background: $neutral-50; color: $text-primary; }
+
                     .arrow {
-                        margin-left: 10px;
+                        margin-left: $space-2;
+                        font-size: 0.75em;
                     }
                 }
             }
-            
+
             .logged-out {
                 display: flex;
                 flex-direction: row;
+                align-items: center;
                 justify-content: space-evenly;
-                padding: 15px;
-                
+                gap: $space-2;
+                padding: 0;
+
                 .login-button {
-                    margin-right: 23px;
-                    color: $homepage-light-blue;
-                    font-weight: 400;
+                    margin-right: $space-3;
+                    color: $brand-600;
+                    font-weight: 600;
+                    padding: 8px 14px;
+                    border-radius: $radius-md;
+                    transition: background-color $duration-fast $ease-standard;
+
+                    &:hover { background: $brand-50; }
                 }
             }
         }
@@ -333,15 +387,15 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: $slideout-underlay;
-    opacity: 80%;
-    backdrop-filter: blur(10px);
+    background: rgba(15, 23, 42, 0.5);
+    opacity: 0;
+    backdrop-filter: blur(8px);
     z-index: 4;
-    transition: all 0.5s ease;
+    transition: opacity $duration-base $ease-standard, visibility $duration-base $ease-standard;
     visibility: hidden;
-    
+
     &.active {
-        opacity: 0.8;
+        opacity: 1;
         visibility: visible;
     }
 

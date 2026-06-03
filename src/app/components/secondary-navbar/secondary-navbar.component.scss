@@ -3,37 +3,47 @@
 .secondary-navbar {
     display: flex;
     flex-direction: row;
+    align-items: center;
     position: relative;
-    background-color: $primary-white;
-    padding: 12px 0 12px 40px;
-    border: solid 1px $secondary-white;
+    background-color: $neutral-0;
+    padding: $space-2 $space-6;
+    border-bottom: 1px solid $surface-divider;
     z-index: 4;
 
     .item {
         cursor: pointer;
-        font-weight: 400;
-        color: $dark-grey;
-        padding: 0 45px;
+        font-weight: 600;
+        font-size: $font-caption;
+        color: $text-secondary;
+        padding: $space-2 $space-4;
+        border-radius: $radius-md;
+        transition:
+            background-color $duration-fast $ease-standard,
+            color $duration-fast $ease-standard;
 
-        span {
-            margin-left: 5px;
+        span { margin-left: $space-2; }
+
+        &:hover {
+            background: $neutral-50;
+            color: $text-primary;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $brand-500;
+            outline-offset: 2px;
         }
     }
+
     a:hover {
-        color: $dark-grey;
         text-decoration: none;
     }
 
     .item:first-child {
-        padding-left: 0;
+        margin-left: 0;
     }
-
 }
 
 a {
     text-decoration: none;
-    color: $dark-grey;
-    &:hover {
-        color: white;
-    }
+    color: inherit;
 }

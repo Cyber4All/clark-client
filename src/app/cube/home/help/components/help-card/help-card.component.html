@@ -1,4 +1,4 @@
-<div class="helpCard" [routerLink]="option.link">
+<div class="helpCard" [routerLink]="option.link" tabindex="0" role="link" [attr.aria-label]="option.title">
     <div class="content">
         <span [ngClass]="option.iconColor">
             <i [ngClass]="option.icon"></i>

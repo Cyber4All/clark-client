@@ -2,24 +2,28 @@
 @import './global-details';
 
 .details-background {
-  background-color: white;
+  background: linear-gradient(180deg, $brand-50 0%, $surface-page 280px);
   min-height: 100vh;
 }
 
 .details {
-  background: white;
+  background: transparent;
   max-width: $max-width;
   margin: auto;
-  padding-left: 20px;
+  padding-left: $space-5;
   position: relative;
 }
 
 .section-title {
-  margin-bottom: 20px;
+  margin-bottom: $space-5;
+  font-size: $font-h2;
+  font-weight: 700;
+  color: $text-primary;
+  letter-spacing: $letter-spacing-tight;
 }
 
 .section {
-  padding-top: 30px;
+  padding-top: $space-8;
 }
 .details__content-container {
   display: flex;
@@ -79,13 +83,17 @@
 
 .details__content-relevancy__banner {
   z-index: 5;
-  background-color: $light-blue;
-  color: white;
-  padding: 10px;
+  background: linear-gradient(90deg, $brand-700, $brand-500);
+  color: $text-inverse;
+  padding: $space-3 $space-4;
   text-align: center;
+  font-weight: 600;
+  border-radius: $radius-md;
+  box-shadow: $shadow-md;
+  margin-bottom: $space-5;
 
   a {
-    color: white;
+    color: $text-inverse;
     text-decoration: underline;
   }
 }
@@ -133,32 +141,40 @@
 }
 
 .inner {
-  background: white;
-  border-radius: 2px;
-  box-shadow: 0 0 12px 1px rgba(0, 0, 0, 0.03);
-  padding: 20px;
-  margin-bottom: 15px;
+  background: $surface-raised;
+  border-radius: $radius-lg;
+  border: 1px solid $surface-border;
+  box-shadow: $shadow-sm;
+  padding: $space-6;
+  margin-bottom: $space-4;
 
   .no-revisions {
-    font-size: $normal;
-    color: $dark-grey;
-    padding-right: 10px;
+    font-size: $font-body;
+    color: $text-secondary;
+    padding-right: $space-2;
     text-align: center;
     display: inline-block;
   }
 }
+
 .text {
-  font-size: $normal;
-  color: $dark-grey;
-  padding-right: 10px;
-  padding-left: 50px;
+  font-size: $font-body;
+  color: $text-secondary;
+  padding-right: $space-2;
+  padding-left: $space-9;
   display: inline-block;
+  line-height: $line-height-relaxed;
 }
 
 .relevancy__notice {
-  color: $dark-grey;
-  padding: 10px;
+  color: $text-secondary;
+  padding: $space-3;
   text-align: center;
+  font-size: $font-caption;
+}
+
+.details-loading {
+  .svg-inline--fa { color: $brand-600; }
 }
 
 @media only screen and (max-width: 1400px) {

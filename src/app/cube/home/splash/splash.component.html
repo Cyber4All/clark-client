@@ -1,25 +1,54 @@
-<div class="wrapper">
-    <div class="first">
-        <h1>
-            Teach Cyber Today... <br />
-            Secure Tomorrow
-        </h1>
-        <p>
-            CLARK is the largest platform that provides <strong>FREE</strong> cybersecurity curriculum. It is home to high-value, high-impact 
-            cyber curriculum created by top educators and reviewed for relevance and quality. Whether you’re looking to teach something new tomorrow, 
-            align with curriculum guidelines and standards, or refine your current course, CLARK has free resources ready for you to use!
-        </p>
-        <button id="pageContent" (click)="this.googleTagService.triggerGoogleTagEvent('browse_learning_objects', 'homepageRedirect', 'splashBrowse')" [routerLink]="'/browse'">BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS</button>
-        <button id="pageContent" class="card" [tip]="'You will be redirected to the CAE Resource Directory'" (click)="utilityService.openCard()">BROWSE {{ resourceCount | number }}+ RESOURCES</button>
+<section class="hero">
+    <div class="hero__inner">
+        <div class="hero__copy">
+            <span class="hero__kicker">Free cybersecurity curriculum</span>
+            <h1 class="hero__title">
+                Teach Cyber Today.<br />
+                <span class="hero__title-accent">Secure Tomorrow.</span>
+            </h1>
+            <p class="hero__lede">
+                CLARK is the largest platform of <strong>free</strong> cybersecurity curriculum &mdash;
+                high-value content created by top educators and reviewed for relevance and quality.
+                Find resources to teach tomorrow, align with standards, or refine your current course.
+            </p>
+
+            <div class="hero__ctas">
+                <button
+                    id="pageContent"
+                    class="hero__cta hero__cta--primary"
+                    (click)="this.googleTagService.triggerGoogleTagEvent('browse_learning_objects', 'homepageRedirect', 'splashBrowse')"
+                    [routerLink]="'/browse'">
+                    Browse {{ numReleasedObjects | number }}+ learning objects
+                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </button>
+
+                <button
+                    id="pageContentResources"
+                    class="hero__cta hero__cta--ghost"
+                    [tip]="'You will be redirected to the CAE Resource Directory'"
+                    (click)="utilityService.openCard()">
+                    Browse {{ resourceCount | number }}+ resources
+                    <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <ul class="hero__signals" aria-label="Platform highlights">
+                <li><i class="fas fa-check-circle" aria-hidden="true"></i> Peer-reviewed content</li>
+                <li><i class="fas fa-check-circle" aria-hidden="true"></i> Aligned to standards</li>
+                <li><i class="fas fa-check-circle" aria-hidden="true"></i> Always free</li>
+            </ul>
+        </div>
+
+        <div class="hero__media">
+            <div class="hero__video">
+                <iframe
+                    src="https://www.youtube.com/embed/wXlZZjq0lDo"
+                    title="What is CLARK?"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
     </div>
-    <div class="second">
-        <iframe 
-        src="https://www.youtube.com/embed/wXlZZjq0lDo" 
-        title="What is CLARK?" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen
-        >
-        </iframe>
-    </div>
-</div>
+</section>

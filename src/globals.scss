@@ -13,12 +13,22 @@
 body {
   font-family: 'Source Sans Pro', sans-serif;
   background: $wrapper-background !important;
-  // height: 100vh;
+  color: $text-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
 
-  &.hide-outlines * {
-    outline: 0 !important;
+  // Hide focus rings for mouse interactions only; keyboard users still see them.
+  // Replaces the legacy `body.hide-outlines * { outline: 0 !important }` hack.
+  :focus:not(:focus-visible) {
+    outline: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid $brand-500;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 
   &.no-scroll {
@@ -28,11 +38,25 @@ body {
 
 a,
 a:visited {
-  color: $light-blue;
+  color: $brand-600;
   text-decoration: none;
+  text-underline-offset: 3px;
+  transition: color $duration-fast $ease-standard;
 
   &:hover {
+    color: $brand-700;
     text-decoration: underline;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -42,77 +66,129 @@ a:visited {
 }
 
 .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
   border: 0;
-  padding: 11px 20px 11px 25px;
-  border-radius: 4px;
-  background: white;
-  color: $light-blue;
+  padding: 10px 18px;
+  border-radius: $radius-md;
+  background: $neutral-0;
+  color: $brand-600;
   text-transform: uppercase;
-  font-size: $small;
+  letter-spacing: $letter-spacing-wide;
+  font-size: $font-caption;
+  font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
-  transition: opacity 0.2s ease;
   position: relative;
-  font-weight: normal;
+  box-shadow: $shadow-sm;
+  transition:
+    transform $duration-fast $ease-standard,
+    box-shadow $duration-base $ease-standard,
+    background-color $duration-fast $ease-standard,
+    color $duration-fast $ease-standard;
 
   &.shadow {
-    box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: $shadow-md;
   }
 
   .svg-inline--fa,
   .icon {
-    margin-left: 10px;
+    margin-left: 0;
   }
 
   &.icon-only {
-    padding: 4px 9px;
-
-    .svg-inline--fa,
-    .icon {
-      margin-left: 0;
-    }
-    margin: 0px 5px 10px;
+    padding: 8px 10px;
+    gap: 0;
+    margin: 0;
   }
 
+  // Primary action
   &.good {
-    color: white;
-    background: $light-blue-gradient;
-  }
+    color: $text-inverse;
+    background: $brand-600;
+    box-shadow: $shadow-sm;
 
-  &.neutral {
-    color: $dark-grey;
-    background: transparent;
-
-    &:after {
-      content: '';
-      background: transparent;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border: 1px solid $dark-grey;
-      border-radius: inherit;
-      position: absolute;
+    &:hover:not([disabled]):not(.disabled) {
+      background: $brand-700;
+      box-shadow: $shadow-md;
+      transform: translateY(-1px);
     }
   }
 
+  // Neutral / secondary
+  &.neutral {
+    color: $text-secondary;
+    background: $neutral-0;
+    box-shadow: inset 0 0 0 1px $surface-border;
+
+    &:hover:not([disabled]):not(.disabled) {
+      background: $neutral-50;
+      color: $text-primary;
+      box-shadow: inset 0 0 0 1px $neutral-300;
+    }
+
+    // Legacy positioning hook some templates rely on
+    &:after {
+      content: none;
+    }
+  }
+
+  // Destructive
   &.bad {
-    color: white;
-    background: $error-red;
+    color: $text-inverse;
+    background: $danger-500;
+
+    &:hover:not([disabled]):not(.disabled) {
+      background: darken($danger-500, 6%);
+      box-shadow: $shadow-md;
+      transform: translateY(-1px);
+    }
 
     &.inverted {
-      color: $error-red;
+      color: $danger-500;
       background: transparent;
+      box-shadow: inset 0 0 0 1px $danger-500;
     }
 
     &.white {
-      background: white;
-      color: $error-red;
+      background: $neutral-0;
+      color: $danger-500;
     }
   }
 
+  // Success
   &.green {
-    color: white;
-    background: $success-green;
+    color: $text-inverse;
+    background: $success-500;
+
+    &:hover:not([disabled]):not(.disabled) {
+      background: darken($success-500, 5%);
+      box-shadow: $shadow-md;
+      transform: translateY(-1px);
+    }
+  }
+
+  // Modern variants (opt-in)
+  &.button--ghost {
+    background: transparent;
+    color: $brand-600;
+    box-shadow: none;
+
+    &:hover:not([disabled]):not(.disabled) {
+      background: $brand-50;
+    }
+  }
+
+  &.button--pill {
+    border-radius: $radius-pill;
+    padding: 12px 24px;
+  }
+
+  &.button--lg {
+    padding: 14px 24px;
+    font-size: $font-body;
   }
 
   &.disabled,
@@ -121,10 +197,16 @@ a:visited {
     box-shadow: none;
     cursor: default;
     pointer-events: none;
+    transform: none;
   }
 
   &:hover {
-    opacity: 0.8;
+    // Default fallback hover for the bare white variant
+    background: $neutral-50;
+  }
+
+  &:active:not([disabled]):not(.disabled) {
+    transform: translateY(0);
   }
 }
 
@@ -175,9 +257,9 @@ a:visited {
 .popup {
   position: fixed;
   z-index: $popup-z;
-  background: white;
-  border-radius: 1px;
-  box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.05);
+  background: $neutral-0;
+  border-radius: $radius-md;
+  box-shadow: $shadow-lg;
 
   ul {
     margin: 0;
@@ -265,8 +347,8 @@ a:visited {
   &.dialog {
     max-width: 500px;
     min-width: 300px;
-    padding: 20px 40px;
-    border-radius: 4px;
+    padding: $space-6 $space-8;
+    border-radius: $radius-lg;
     margin: auto;
     left: 0;
     right: 0;

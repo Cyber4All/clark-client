@@ -178,9 +178,20 @@
 
   <!-- Results grid -->
   <div class="results-container" id="pageContent" tabindex="0">
-    <h3 *ngIf="learningObjects.length === 0 && !loading" class="no-results">
-      {{ copy.NORESULTS }}
-    </h3>
+    <div *ngIf="learningObjects.length === 0 && !loading" class="no-results">
+      <div class="no-results__icon" aria-hidden="true">
+        <i class="far fa-search"></i>
+      </div>
+      <h3 class="no-results__title">{{ copy.NORESULTS }}</h3>
+      <p class="no-results__hint">Try removing a filter, broadening your search, or browsing all topics.</p>
+      <button
+        *ngIf="anyFiltersSelected() || query?.text"
+        class="button neutral"
+        type="button"
+        (click)="clearAllFilters(true); clearSearch()">
+        Clear filters &amp; search
+      </button>
+    </div>
     <div class="results-grid" *ngIf="learningObjects.length > 0 || loading">
       <clark-learning-object-component
         *ngFor="let l of learningObjects; trackBy: trackByLearningObject"

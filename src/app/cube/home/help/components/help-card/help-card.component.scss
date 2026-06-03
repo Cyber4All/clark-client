@@ -1,32 +1,52 @@
 @import '_vars.scss';
 
 .helpCard {
-    background-color: $primary-white;
-    border: 1px solid $secondary-white;
-    border-radius: 6px;
+    background-color: $neutral-0;
+    border: 1px solid $surface-border;
+    border-radius: $radius-lg;
     text-align: center;
-    padding: 35px 35px;
+    padding: $space-7 $space-6;
     height: 100%;
     box-sizing: border-box;
-    transition: all 0.25s ease;
+    cursor: pointer;
+    transition:
+        transform $duration-base $ease-standard,
+        box-shadow $duration-base $ease-standard,
+        border-color $duration-base $ease-standard;
 
     &:hover {
-        transform: scale(1.02);
-        box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+        transform: translateY(-4px);
+        box-shadow: $shadow-lg;
+        border-color: $brand-200;
+    }
+
+    &:focus-visible {
+        outline: none;
+        border-color: $brand-500;
+        box-shadow: $shadow-md, $shadow-ring;
+        transform: translateY(-2px);
     }
 
     &:active {
-        transition-duration: 0.1s;
+        transform: translateY(-1px);
+        transition-duration: $duration-fast;
     }
 
     .content {
         h2 {
             padding: 0;
-            margin: 0;
+            margin: 0 0 $space-3;
+            font-size: $font-h3;
+            font-weight: 600;
+            color: $text-primary;
+            letter-spacing: $letter-spacing-tight;
         }
 
         p {
-            color: $homepage-text;
+            color: $text-secondary;
+            font-size: $font-body;
+            line-height: $line-height-relaxed;
+            margin: 0 0 $space-5;
         }
 
         span {
@@ -34,11 +54,11 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            margin: 0 auto 20px auto;
-            width: 70px;
-            height: 70px;
-            border-radius: 100px;
-            font-size: $larger;
+            margin: 0 auto $space-5;
+            width: 64px;
+            height: 64px;
+            border-radius: $radius-lg;
+            font-size: 1.5rem;
 
             &.orange {
                 color: $homepage-orange;
@@ -51,14 +71,27 @@
             }
 
             &.green {
-                color: $homepage-green;
-                background: $homepage-green-background;
+                color: $success-500;
+                background: $success-50;
             }
         }
 
         .link {
-            color: $homepage-light-blue;
+            display: inline-flex;
+            align-items: center;
+            gap: $space-2;
+            color: $brand-600;
+            font-weight: 600;
+            font-size: $font-caption;
+            text-transform: uppercase;
+            letter-spacing: $letter-spacing-wide;
+            transition: gap $duration-fast $ease-standard, color $duration-fast $ease-standard;
+
+            &:hover {
+                color: $brand-700;
+                gap: $space-3;
+                text-decoration: none;
+            }
         }
     }
-
 }

@@ -19,24 +19,27 @@
 
 // Page header section
 .page-header {
-  padding: 20px 0;
+  padding: $space-6 0 $space-4;
   margin-bottom: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   .results-title {
-    font-size: $normal;
-    text-transform: uppercase;
-    color: $darker-grey;
+    font-size: $font-h3;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: $letter-spacing-tight;
+    color: $text-primary;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: $space-3;
     flex-wrap: wrap;
 
     .loading {
       display: inline-block;
-      margin-left: 10px;
+      margin-left: $space-2;
+      color: $brand-500;
     }
   }
 }
@@ -74,35 +77,44 @@
 
   .filter-btn,
   .sort-btn {
-    border: 1px solid $light-grey;
-    background: white;
-    border-radius: 6px;
-    height: 42px;
-    padding: 0 12px;
+    border: 1px solid $surface-border;
+    background: $neutral-0;
+    border-radius: $radius-md;
+    height: 40px;
+    padding: 0 $space-3;
     box-sizing: border-box;
-    font-size: $normal;
+    font-size: $font-caption;
+    font-weight: 600;
     cursor: pointer;
-    color: $darker-grey;
+    color: $text-primary;
     display: flex;
     align-items: center;
-    gap: 6px;
-    transition: all 0.15s ease;
+    gap: $space-2;
+    transition:
+      border-color $duration-fast $ease-standard,
+      background-color $duration-fast $ease-standard,
+      box-shadow $duration-base $ease-standard,
+      color $duration-fast $ease-standard;
     white-space: nowrap;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    box-shadow: $shadow-sm;
 
-    i {
-      font-size: $smaller;
-    }
+    i { font-size: $font-micro; }
 
     &:hover {
-      border-color: $dark-grey;
-      background: $primary-white;
+      border-color: $neutral-300;
+      background: $neutral-50;
+      box-shadow: $shadow-md;
     }
 
     &.active {
-      border-color: $blue-accent;
-      color: $blue-accent;
-      background: rgba(70, 144, 255, 0.05);
+      border-color: $brand-500;
+      color: $brand-700;
+      background: $brand-50;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $brand-500;
+      outline-offset: 2px;
     }
   }
 
@@ -526,13 +538,43 @@
 
 // Results container
 .results-container {
-  padding: 30px 0;
+  padding: $space-7 0;
   min-height: 300px;
 
   .no-results {
     text-align: center;
-    color: $dark-grey;
-    padding: 40px 20px;
+    color: $text-secondary;
+    padding: $space-10 $space-5;
+    max-width: 480px;
+    margin: 0 auto;
+
+    &__icon {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto $space-5;
+      border-radius: $radius-pill;
+      background: $brand-50;
+      color: $brand-600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    &__title {
+      font-size: $font-h3;
+      color: $text-primary;
+      font-weight: 700;
+      letter-spacing: $letter-spacing-tight;
+      margin: 0 0 $space-3;
+    }
+
+    &__hint {
+      font-size: $font-body;
+      color: $text-secondary;
+      line-height: $line-height-relaxed;
+      margin: 0 0 $space-6;
+    }
   }
 }
 
@@ -551,7 +593,7 @@
 
 // Pagination
 .paginationCtrl {
-  margin: 40px 0 30px;
+  margin: $space-8 0 $space-7;
 
   ul {
     margin: 0;
@@ -560,38 +602,47 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: $space-1;
 
     li {
-      color: $homepage-light-blue;
-      border: none;
-      font-size: 15px;
+      color: $text-secondary;
+      border: 1px solid transparent;
+      font-size: $font-caption;
+      font-weight: 600;
       background: transparent;
-      padding: 5px 10px;
+      min-width: 36px;
+      height: 36px;
+      padding: 0 $space-3;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: $space-2;
       list-style-type: none;
       text-align: center;
-      border-radius: 4px;
+      border-radius: $radius-md;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition:
+        background-color $duration-fast $ease-standard,
+        color $duration-fast $ease-standard,
+        border-color $duration-fast $ease-standard;
 
-      svg {
-        padding: 0px 10px;
-      }
+      svg { padding: 0; }
 
       &.gone {
-        color: $homepage-pagination;
+        color: $neutral-300;
         cursor: default !important;
       }
 
-      &:not(.active):not(:disabled):hover {
-        opacity: 80%;
+      &:not(.active):not(.gone):hover {
+        background: $neutral-50;
+        color: $text-primary;
         cursor: pointer;
       }
 
       &.active {
-        background: $box-background;
-        color: $homepage-light-blue;
-        font-weight: 600;
+        background: $brand-600;
+        color: $text-inverse;
+        border-color: $brand-600;
       }
     }
   }
