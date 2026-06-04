@@ -37,6 +37,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     limit: 15,
     length: [],
     noGuidelines: '',
+    noDCWFGuidelines: '',
     guidelines: [],
     level: [],
     standardOutcomes: [],
@@ -374,6 +375,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       'guidelines',
       'standardOutcomes',
       'noGuidelines',
+      'noDCWFGuidelines',
     ].forEach((category) => {
       if (!this.filters[category]) {
         this.filters.removed.push(category);
@@ -394,6 +396,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       topics: [],
       guidelines: [],
       noGuidelines: '',
+      noDCWFGuidelines: '',
       collection: '',
       tags: [],
       fileTypes: [],
@@ -493,7 +496,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       return [];
     }
 
-    function toString(val: any, fallback: string = ''): string {
+    function toSingleString(val: any, fallback: string = ''): string {
+      if (Array.isArray(val)) {
+        return typeof val[0] === 'string' ? val[0] : fallback;
+      }
       return typeof val === 'string' ? val : fallback;
     }
 
@@ -506,7 +512,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       length: toStringArray(params.length),
       level: toStringArray(params.level),
       guidelines: toStringArray(params.guidelines),
-      noGuidelines: toString(params.noGuidelines?.[0]),
+      noGuidelines: toSingleString(params.noGuidelines),
+      noDCWFGuidelines: toSingleString(params.noDCWFGuidelines),
       standardOutcomes: [],
       orderBy: params.orderBy ? params.orderBy : OrderBy.Date,
       sortType: params.sortType ? Number(params.sortType) : -1,
@@ -574,6 +581,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       q.level?.length ||
       q.guidelines?.length ||
       q.noGuidelines ||
+      q.noDCWFGuidelines ||
       q.standardOutcomes?.length ||
       q.fileTypes?.length ||
       q.tags?.length
