@@ -14,7 +14,7 @@ import {
   Organization,
   ORGANIZATION_VERIFICATION_STATUS,
 } from "app/core/organization-module/organization.types";
-import { NgIf, NgFor, TitleCasePipe } from "@angular/common";
+import { TitleCasePipe } from "@angular/common";
 import { PopupComponent } from "../../../../shared/modules/popups/popup.component";
 import { MatProgressBar } from "@angular/material/progress-bar";
 import {
@@ -44,7 +44,6 @@ import {
   styleUrls: ["./organization-migrate-modal.component.scss"],
   standalone: true,
   imports: [
-    NgIf,
     PopupComponent,
     MatProgressBar,
     MatStepper,
@@ -56,11 +55,10 @@ import {
     FormsModule,
     MatIcon,
     MatPrefix,
-    NgFor,
     MatCheckbox,
     MatButton,
-    TitleCasePipe,
-  ],
+    TitleCasePipe
+],
 })
 export class OrganizationMigrateModalComponent
   implements OnInit, OnChanges, OnDestroy {

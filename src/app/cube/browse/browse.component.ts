@@ -19,7 +19,7 @@ import { COPY } from "./browse.copy";
 import { FilterSectionInfo } from "./components/filter-section/filter-section.component";
 import { FilterComponent } from "./components/filter/filter.component";
 import { SkipLinkComponent } from "../../shared/components/skip-link/skip-link.component";
-import { NgIf, NgClass, NgFor } from "@angular/common";
+import { NgClass } from "@angular/common";
 import { ActivateDirective } from "../../shared/directives/activate.directive";
 import { DropdownFilterComponent } from "../../shared/components/dropdown-filter/dropdown-filter.component";
 import { ClearFiltersButtonComponent } from "../../shared/components/clear-filters-button/clear-filters-button.component";
@@ -35,17 +35,15 @@ import { AuthService } from "app/core/auth-module/auth.service";
   standalone: true,
   imports: [
     SkipLinkComponent,
-    NgIf,
     ActivateDirective,
     DropdownFilterComponent,
     ClearFiltersButtonComponent,
     NgClass,
     TrapFocusDirective,
     FilterComponent,
-    NgFor,
     LearningObjectListingComponent,
-    LearningObjectCardDirective,
-  ],
+    LearningObjectCardDirective
+],
 })
 export class BrowseComponent implements AfterViewInit, OnDestroy {
   copy = COPY;

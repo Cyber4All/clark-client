@@ -107,128 +107,130 @@
               Sort By: {{ sortText }}<i class="far fa-angle-down"></i>
             </button>
 
-          <div
-            *ngIf="sortMenuDown"
-            class="sort-dropdown-menu"
-            (click)="$event.stopPropagation()"
+            @if (sortMenuDown) {
+              <div
+                class="sort-dropdown-menu"
+                (click)="$event.stopPropagation()"
+                >
+                <ul>
+                  @if (isAdminOrEditor()) {
+                    <li
+                      [ngClass]="{ selected: sortText === 'Oldest' }"
+                      (click)="toggleSort('ad')"
+                      >
+                      Oldest
+                    </li>
+                  }
+                  <li
+                    [ngClass]="{ selected: sortText === 'Newest' }"
+                    (click)="toggleSort('dd')"
+                    >
+                    Newest
+                  </li>
+                  <li
+                    [ngClass]="{ selected: sortText === 'Most Downloaded' }"
+                    (click)="toggleSort('w')"
+                    >
+                    Most Downloaded
+                  </li>
+                </ul>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Full filter modal for mobile/all filters -->
+      @if (filters) {
+        <div
+          class="filter-modal-wrapper"
+          [ngClass]="{ active: filtersDownMobile }"
+          (click)="onBackdropClick($event)"
+          trapFocus
           >
-            <ul>
-              <li
-                *ngIf="isAdminOrEditor()"
-                [ngClass]="{ selected: sortText === 'Oldest' }"
-                (click)="toggleSort('ad')"
-              >
-                Oldest
-              </li>
-              <li
-                [ngClass]="{ selected: sortText === 'Newest' }"
-                (click)="toggleSort('dd')"
-              >
-                Newest
-              </li>
-              <li
-                [ngClass]="{ selected: sortText === 'Most Downloaded' }"
-                (click)="toggleSort('w')"
-              >
-                Most Downloaded
-              </li>
-            </ul>
+          <div class="filter-modal" (click)="$event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="filter-modal-header">
+              <h2 class="filter-modal-title">Filter</h2>
+            </div>
+            <!-- Modal Body (Scrollable) -->
+            <div class="filter-modal-body">
+              <clark-filter
+                [display]="'vertical'"
+                [selected]="query"
+                [clear]="filterClearSubject$.asObservable()"
+                (changed)="filter($event)"
+              ></clark-filter>
+            </div>
+            <!-- Modal Footer (Sticky) -->
+            <div class="filter-modal-footer">
+              <button
+                (activate)="clearAllFilters(true)"
+                class="filter-footer-btn secondary-btn"
+                >
+                Clear All
+              </button>
+              <button
+                (activate)="applyFilters(); toggleFilters()"
+                class="filter-footer-btn primary-btn"
+                >
+                <span class="button-text">Show Results</span>
+                <span class="result-count">({{ totalLearningObjects }})</span>
+              </button>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Full filter modal for mobile/all filters -->
-    @if (filters) {
-      <div
-        class="filter-modal-wrapper"
-        [ngClass]="{ active: filtersDownMobile }"
-        (click)="onBackdropClick($event)"
-        trapFocus
-        >
-        <div class="filter-modal" (click)="$event.stopPropagation()">
-          <!-- Modal Header -->
-          <div class="filter-modal-header">
-            <h2 class="filter-modal-title">Filter</h2>
-          </div>
-          <!-- Modal Body (Scrollable) -->
-          <div class="filter-modal-body">
-            <clark-filter
-              [display]="'vertical'"
-              [selected]="query"
-              [clear]="filterClearSubject$.asObservable()"
-              (changed)="filter($event)"
-            ></clark-filter>
-          </div>
-          <!-- Modal Footer (Sticky) -->
-          <div class="filter-modal-footer">
-            <button
-              (activate)="clearAllFilters(true)"
-              class="filter-footer-btn secondary-btn"
-              >
-              Clear All
-            </button>
-            <button
-              (activate)="applyFilters(); toggleFilters()"
-              class="filter-footer-btn primary-btn"
-              >
-              <span class="button-text">Show Results</span>
-              <span class="result-count">({{ totalLearningObjects }})</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    }
-
-    <!-- Results grid -->
-    <div class="results-container" id="pageContent" tabindex="0">
-      @if (learningObjects.length === 0 && !loading) {
-        <h3 class="no-results">
-          {{ copy.NORESULTS }}
-        </h3>
-      }
-      @if (learningObjects.length > 0 || loading) {
-        <div class="results-grid">
-          @for (l of learningObjects; track trackByLearningObject($index, l)) {
-            <clark-learning-object-component
-              [learningObject]="l"
-              [loading]="loading"
-              [allowedTopics]="getActiveTopics()"
-              learningObjectCard
-            ></clark-learning-object-component>
-          }
         </div>
       }
-    </div>
 
-    <!-- Pagination -->
-    @if (learningObjects.length) {
-      <div class="paginationCtrl">
-        <ul>
-          <li (activate)="prevPage()" [ngClass]="{ gone: query.currPage <= 1 }">
-            <i
-              class="far fa-chevron-left"
-              aria-label="Previous page of results"
-            ></i>
-            Back
-          </li>
-          @for (p of pages; track p) {
-            <li
-              [ngClass]="{ active: query.currPage === p }"
-              (activate)="goToPage(p)"
-              attr.aria-label="Page {{ p }} of results"
-              >
-              {{ p }}
+      <!-- Results grid -->
+      <div class="results-container" id="pageContent" tabindex="0">
+        @if (learningObjects.length === 0 && !loading) {
+          <h3 class="no-results">
+            {{ copy.NORESULTS }}
+          </h3>
+        }
+        @if (learningObjects.length > 0 || loading) {
+          <div class="results-grid">
+            @for (l of learningObjects; track trackByLearningObject($index, l)) {
+              <clark-learning-object-component
+                [learningObject]="l"
+                [loading]="loading"
+                [allowedTopics]="getActiveTopics()"
+                learningObjectCard
+              ></clark-learning-object-component>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Pagination -->
+      @if (learningObjects.length) {
+        <div class="paginationCtrl">
+          <ul>
+            <li (activate)="prevPage()" [ngClass]="{ gone: query.currPage <= 1 }">
+              <i
+                class="far fa-chevron-left"
+                aria-label="Previous page of results"
+              ></i>
+              Back
             </li>
-          }
-          <li
-            (activate)="nextPage()"
-            [ngClass]="{ gone: query.currPage >= pageCount }"
-            >
-            Next
-            <i class="far fa-chevron-right" aria-label="Next page of results"></i>
-          </li>
-        </ul>
-      </div>
-    }
-  </div>
+            @for (p of pages; track p) {
+              <li
+                [ngClass]="{ active: query.currPage === p }"
+                (activate)="goToPage(p)"
+                attr.aria-label="Page {{ p }} of results"
+                >
+                {{ p }}
+              </li>
+            }
+            <li
+              (activate)="nextPage()"
+              [ngClass]="{ gone: query.currPage >= pageCount }"
+              >
+              Next
+              <i class="far fa-chevron-right" aria-label="Next page of results"></i>
+            </li>
+          </ul>
+        </div>
+      }
+    </div>

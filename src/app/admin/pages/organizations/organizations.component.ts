@@ -53,7 +53,7 @@ import {
 import { ContentWrapperComponent } from "../../components/content-wrapper/content-wrapper.component";
 import { StatsCardComponent } from "../../../shared/components/stats-card/stats-card.component";
 import { SearchInputComponent } from "../../../shared/components/search-input/search-input.component";
-import { NgIf, NgClass, NgFor, TitleCasePipe } from "@angular/common";
+import { NgClass, TitleCasePipe } from "@angular/common";
 import { DropdownFilterComponent } from "../../../shared/components/dropdown-filter/dropdown-filter.component";
 import { ClearFiltersButtonComponent } from "../../../shared/components/clear-filters-button/clear-filters-button.component";
 import { MatButton, MatIconButton } from "@angular/material/button";
@@ -78,7 +78,6 @@ import { OrganizationMigrateModalComponent } from "./organization-migrate-modal/
     ContentWrapperComponent,
     StatsCardComponent,
     SearchInputComponent,
-    NgIf,
     DropdownFilterComponent,
     ClearFiltersButtonComponent,
     MatPaginator,
@@ -94,7 +93,6 @@ import { OrganizationMigrateModalComponent } from "./organization-migrate-modal/
     MatCell,
     VerificationBadgeComponent,
     NgClass,
-    NgFor,
     MatIconButton,
     MatTooltip,
     MatMenuTrigger,
@@ -108,8 +106,8 @@ import { OrganizationMigrateModalComponent } from "./organization-migrate-modal/
     OrganizationEditModalComponent,
     OrganizationDeleteModalComponent,
     OrganizationMigrateModalComponent,
-    TitleCasePipe,
-  ],
+    TitleCasePipe
+],
 })
 export class OrganizationsComponent
   implements OnInit, OnDestroy, AfterViewInit {
