@@ -5,14 +5,27 @@ import {
   HostListener,
   OnDestroy,
   OnInit,
-  ViewChild
-} from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, MatSortHeader } from '@angular/material/sort';
-import { MatStepper } from '@angular/material/stepper';
-import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { SearchService } from 'app/core/learning-object-module/search/search.service';
-import { OrganizationService } from 'app/core/organization-module/organization.service';
+  ViewChild,
+} from "@angular/core";
+import { HttpErrorResponse } from "@angular/common/http";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort, MatSortHeader } from "@angular/material/sort";
+import { MatStepper } from "@angular/material/stepper";
+import {
+  MatTableDataSource,
+  MatTable,
+  MatColumnDef,
+  MatHeaderCellDef,
+  MatHeaderCell,
+  MatCellDef,
+  MatCell,
+  MatHeaderRowDef,
+  MatHeaderRow,
+  MatRowDef,
+  MatRow,
+} from "@angular/material/table";
+import { SearchService } from "app/core/learning-object-module/search/search.service";
+import { OrganizationService } from "app/core/organization-module/organization.service";
 import {
   Organization,
   ORGANIZATION_LEVELS,
@@ -21,81 +34,104 @@ import {
   OrganizationLevel,
   OrganizationSector,
   SearchOrganizationsResponse,
-} from 'app/core/organization-module/organization.types';
-import { UserService } from 'app/core/user-module/user.service';
-import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { forkJoin, merge, of, Subject } from 'rxjs';
-import { debounceTime, map, switchMap, takeUntil } from 'rxjs/operators';
-import { OrganizationFormData, OrganizationEditModalComponent } from './organization-edit-modal/organization-edit-modal.component';
-import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
-import { StatsCardComponent } from '../../../shared/components/stats-card/stats-card.component';
-import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
-import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
-import { DropdownFilterComponent } from '../../../shared/components/dropdown-filter/dropdown-filter.component';
-import { ClearFiltersButtonComponent } from '../../../shared/components/clear-filters-button/clear-filters-button.component';
-import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { VerificationBadgeComponent } from '../../../shared/components/verification-badge/verification-badge.component';
-import { MatTooltip } from '@angular/material/tooltip';
-import { MatMenuTrigger, MatMenu, MatMenuContent, MatMenuItem } from '@angular/material/menu';
-import { OrganizationDeleteModalComponent } from './organization-delete-modal/organization-delete-modal.component';
-import { OrganizationMigrateModalComponent } from './organization-migrate-modal/organization-migrate-modal.component';
+} from "app/core/organization-module/organization.types";
+import { UserService } from "app/core/user-module/user.service";
+import { DropdownFilterOption } from "app/shared/components/dropdown-filter/dropdown-filter.component";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
+import { forkJoin, merge, of, Subject } from "rxjs";
+import {
+  debounceTime,
+  finalize,
+  map,
+  switchMap,
+  takeUntil,
+} from "rxjs/operators";
+import {
+  OrganizationFormData,
+  OrganizationEditModalComponent,
+} from "./organization-edit-modal/organization-edit-modal.component";
+import { ContentWrapperComponent } from "../../components/content-wrapper/content-wrapper.component";
+import { StatsCardComponent } from "../../../shared/components/stats-card/stats-card.component";
+import { SearchInputComponent } from "../../../shared/components/search-input/search-input.component";
+import { NgIf, NgClass, NgFor, TitleCasePipe } from "@angular/common";
+import { DropdownFilterComponent } from "../../../shared/components/dropdown-filter/dropdown-filter.component";
+import { ClearFiltersButtonComponent } from "../../../shared/components/clear-filters-button/clear-filters-button.component";
+import { MatButton, MatIconButton } from "@angular/material/button";
+import { MatIcon } from "@angular/material/icon";
+import { VerificationBadgeComponent } from "../../../shared/components/verification-badge/verification-badge.component";
+import { MatTooltip } from "@angular/material/tooltip";
+import {
+  MatMenuTrigger,
+  MatMenu,
+  MatMenuContent,
+  MatMenuItem,
+} from "@angular/material/menu";
+import { OrganizationDeleteModalComponent } from "./organization-delete-modal/organization-delete-modal.component";
+import { OrganizationMigrateModalComponent } from "./organization-migrate-modal/organization-migrate-modal.component";
 
 @Component({
-    selector: 'clark-organizations',
-    templateUrl: './organizations.component.html',
-    styleUrls: ['./organizations.component.scss'],
-    standalone: true,
-    imports: [
-        ContentWrapperComponent,
-        StatsCardComponent,
-        SearchInputComponent,
-        NgIf,
-        DropdownFilterComponent,
-        ClearFiltersButtonComponent,
-        MatPaginator,
-        MatButton,
-        MatIcon,
-        MatTable,
-        MatSort,
-        MatColumnDef,
-        MatHeaderCellDef,
-        MatHeaderCell,
-        MatSortHeader,
-        MatCellDef,
-        MatCell,
-        VerificationBadgeComponent,
-        NgClass,
-        NgFor,
-        MatIconButton,
-        MatTooltip,
-        MatMenuTrigger,
-        MatHeaderRowDef,
-        MatHeaderRow,
-        MatRowDef,
-        MatRow,
-        MatMenu,
-        MatMenuContent,
-        MatMenuItem,
-        OrganizationEditModalComponent,
-        OrganizationDeleteModalComponent,
-        OrganizationMigrateModalComponent,
-        TitleCasePipe,
-    ],
+  selector: "clark-organizations",
+  templateUrl: "./organizations.component.html",
+  styleUrls: ["./organizations.component.scss"],
+  standalone: true,
+  imports: [
+    ContentWrapperComponent,
+    StatsCardComponent,
+    SearchInputComponent,
+    NgIf,
+    DropdownFilterComponent,
+    ClearFiltersButtonComponent,
+    MatPaginator,
+    MatButton,
+    MatIcon,
+    MatTable,
+    MatSort,
+    MatColumnDef,
+    MatHeaderCellDef,
+    MatHeaderCell,
+    MatSortHeader,
+    MatCellDef,
+    MatCell,
+    VerificationBadgeComponent,
+    NgClass,
+    NgFor,
+    MatIconButton,
+    MatTooltip,
+    MatMenuTrigger,
+    MatHeaderRowDef,
+    MatHeaderRow,
+    MatRowDef,
+    MatRow,
+    MatMenu,
+    MatMenuContent,
+    MatMenuItem,
+    OrganizationEditModalComponent,
+    OrganizationDeleteModalComponent,
+    OrganizationMigrateModalComponent,
+    TitleCasePipe,
+  ],
 })
-export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('list') listElement!: ElementRef<HTMLElement>;
+export class OrganizationsComponent
+  implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild("list") listElement!: ElementRef<HTMLElement>;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild('stepper') stepper!: MatStepper;
+  @ViewChild("stepper") stepper!: MatStepper;
 
   dataSource!: MatTableDataSource<Organization>;
-  displayedColumns: string[] = ['verified', 'name', 'users', 'learningObjects', 'sector', 'levels', 'actions'];
+  displayedColumns: string[] = [
+    "verified",
+    "name",
+    "users",
+    "learningObjects",
+    "sector",
+    "levels",
+    "actions",
+  ];
   isMobileTableView = false;
   isPhoneTableView = false;
-  searchBarPlaceholder = 'Organizations';
-  searchValue = '';
+  searchBarPlaceholder = "Organizations";
+  searchValue = "";
   private readonly organizationsPageSize = 1000;
 
   // Maps for per-organization totals loaded from users and learning-objects search APIs.
@@ -106,7 +142,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   private tableControlsBound = false;
 
   // Filter options
-  selectedVerifiedFilters: Array<'verified' | 'unverified'> = [];
+  selectedVerifiedFilters: Array<"verified" | "unverified"> = [];
   selectedSectorFilters: OrganizationSector[] = [];
   selectedLevelFilters: OrganizationLevel[] = [];
 
@@ -131,45 +167,45 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   // This multi-filter pattern (search + checkboxes) with custom filter predicates
   // is common across admin pages. Create a service that manages filter state,
   // builds filter objects, and provides filter predicate generators.
-  @HostListener('window:keyup', ['$event'])
+  @HostListener("window:keyup", ["$event"])
   handleKeyUp(event: KeyboardEvent) {
-    if (event.code === 'Escape') {
+    if (event.code === "Escape") {
       this.displayEditModal = false;
       this.displayDeleteModal = false;
       this.displayMigrateModal = false;
     }
   }
 
-  @HostListener('window:resize')
+  @HostListener("window:resize")
   onResize() {
     this.updateViewportMode();
   }
 
   readonly verifiedFilterOptions: DropdownFilterOption[] = [
-    { label: 'Verified', value: 'verified' },
-    { label: 'Unverified', value: 'unverified' },
+    { label: "Verified", value: "verified" },
+    { label: "Unverified", value: "unverified" },
   ];
-  readonly sectorFilterOptions: DropdownFilterOption[] = ORGANIZATION_SECTORS.map((sector) => ({
-    label: this.toTitleCase(sector),
-    value: sector,
-  }));
-  readonly levelFilterOptions: DropdownFilterOption[] = ORGANIZATION_LEVELS.map((level) => ({
-    label: this.toTitleCase(this.formatLevelName(level)),
-    value: level,
-  }));
+  readonly sectorFilterOptions: DropdownFilterOption[] =
+    ORGANIZATION_SECTORS.map((sector) => ({
+      label: this.toTitleCase(sector),
+      value: sector,
+    }));
+  readonly levelFilterOptions: DropdownFilterOption[] = ORGANIZATION_LEVELS.map(
+    (level) => ({
+      label: this.toTitleCase(this.formatLevelName(level)),
+      value: level,
+    }),
+  );
   // TODO(clark-api): Enable organization delete actions when backend delete API is implemented.
   readonly deleteNotSupportedTooltip =
-    'Delete is not supported by API. Please reach out to developers.';
-  // TODO(clark-api): Enable organization migration actions when backend migration API is implemented.
-  readonly migrateNotSupportedTooltip =
-    'Migrate is not supported by API. Please reach out to developers.';
+    "Delete is not supported by API. Please reach out to developers.";
 
   constructor(
     private readonly toaster: ToastrOvenService,
     private readonly organizationService: OrganizationService,
     private readonly userService: UserService,
     private readonly searchService: SearchService,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.updateViewportMode();
@@ -196,20 +232,23 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
         data.domains.some((d) => d.toLowerCase().includes(searchStr));
 
       // Verified filter
-      const verifiedFilters: Array<'verified' | 'unverified'> = filterObj.verified || [];
+      const verifiedFilters: Array<"verified" | "unverified"> =
+        filterObj.verified || [];
       const matchesVerified =
         verifiedFilters.length === 0 ||
-        (data.isVerified && verifiedFilters.includes('verified')) ||
-        (!data.isVerified && verifiedFilters.includes('unverified'));
+        (data.isVerified && verifiedFilters.includes("verified")) ||
+        (!data.isVerified && verifiedFilters.includes("unverified"));
 
       // Sector filter
       const sectorFilters: OrganizationSector[] = filterObj.sector || [];
-      const matchesSector = sectorFilters.length === 0 || sectorFilters.includes(data.sector);
+      const matchesSector =
+        sectorFilters.length === 0 || sectorFilters.includes(data.sector);
 
       // Level filter
       const levelFilters: OrganizationLevel[] = filterObj.level || [];
       const matchesLevel =
-        levelFilters.length === 0 || data.levels.some((level) => levelFilters.includes(level));
+        levelFilters.length === 0 ||
+        data.levels.some((level) => levelFilters.includes(level));
 
       return matchesSearch && matchesVerified && matchesSector && matchesLevel;
     };
@@ -229,13 +268,16 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   ngAfterViewInit(): void {
     // Custom sort accessor for special columns
-    this.dataSource.sortingDataAccessor = (data: Organization, sortHeaderId: string) => {
+    this.dataSource.sortingDataAccessor = (
+      data: Organization,
+      sortHeaderId: string,
+    ) => {
       switch (sortHeaderId) {
-        case 'verified':
+        case "verified":
           return data.isVerified ? 1 : 0;
-        case 'name':
+        case "name":
           return data.name.toLowerCase();
-        case 'users':
+        case "users":
           return this.getUserCount(data);
         default:
           return (data as any)[sortHeaderId];
@@ -252,13 +294,21 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.isPhoneTableView = window.innerWidth <= 600;
     this.isMobileTableView = window.innerWidth <= 900;
     if (this.isPhoneTableView) {
-      this.displayedColumns = ['verified', 'name', 'actions'];
+      this.displayedColumns = ["verified", "name", "actions"];
       return;
     }
 
     this.displayedColumns = this.isMobileTableView
-      ? ['verified', 'name', 'users', 'learningObjects', 'sector', 'actions']
-      : ['verified', 'name', 'users', 'learningObjects', 'sector', 'levels', 'actions'];
+      ? ["verified", "name", "users", "learningObjects", "sector", "actions"]
+      : [
+          "verified",
+          "name",
+          "users",
+          "learningObjects",
+          "sector",
+          "levels",
+          "actions",
+        ];
   }
 
   /**
@@ -279,8 +329,8 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.loading = false;
         },
         error: (error) => {
-          console.error('Error loading organizations:', error);
-          this.toaster.error('Error', 'Failed to load organizations.');
+          console.error("Error loading organizations:", error);
+          this.toaster.error("Error", "Failed to load organizations.");
           this.loading = false;
           // Fall back to empty array
           this.dataSource.data = [];
@@ -289,7 +339,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.totalOtherUsers = 0;
           this.userCountMap.clear();
           this.learningObjectCountMap.clear();
-        }
+        },
       });
   }
 
@@ -300,7 +350,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     ];
 
     return this.organizationService
-      .searchOrganizationsResponse({ page: 1, limit: this.organizationsPageSize, status: statuses })
+      .searchOrganizationsResponse({
+        page: 1,
+        limit: this.organizationsPageSize,
+        status: statuses,
+      })
       .pipe(
         switchMap((firstPage: SearchOrganizationsResponse) => {
           const firstOrganizations = firstPage.organizations || [];
@@ -312,9 +366,17 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
             return of(firstOrganizations);
           }
 
-          const pageRequests: Array<ReturnType<OrganizationService['searchOrganizationsResponse']>> = [];
+          const pageRequests: Array<
+            ReturnType<OrganizationService["searchOrganizationsResponse"]>
+          > = [];
           for (let page = 2; page <= totalPages; page++) {
-            pageRequests.push(this.organizationService.searchOrganizationsResponse({ page, limit, status: statuses }));
+            pageRequests.push(
+              this.organizationService.searchOrganizationsResponse({
+                page,
+                limit,
+                status: statuses,
+              }),
+            );
           }
 
           return forkJoin(pageRequests).pipe(
@@ -322,12 +384,14 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
               const orgById = new Map<string, Organization>();
               firstOrganizations.forEach((org) => orgById.set(org._id, org));
               responses.forEach((response) => {
-                response.organizations.forEach((org) => orgById.set(org._id, org));
+                response.organizations.forEach((org) =>
+                  orgById.set(org._id, org),
+                );
               });
               return Array.from(orgById.values());
-            })
+            }),
           );
-        })
+        }),
       );
   }
 
@@ -380,7 +444,9 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   onVerifiedFiltersChange(selectedValues: string[]): void {
-    this.selectedVerifiedFilters = selectedValues as Array<'verified' | 'unverified'>;
+    this.selectedVerifiedFilters = selectedValues as Array<
+      "verified" | "unverified"
+    >;
     this.applyFilter();
   }
 
@@ -433,13 +499,17 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     const nextVerifiedState = !org.isVerified;
     this.verifyingOrganizationIds.add(org._id);
 
-    this.organizationService.updateOrganization(org._id, { isVerified: nextVerifiedState })
+    this.organizationService
+      .updateOrganization(org._id, { isVerified: nextVerifiedState })
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (response) => {
           const updatedOrganization = response.organization;
-          this.dataSource.data = this.dataSource.data.map((existingOrganization) =>
-            existingOrganization._id === updatedOrganization._id ? updatedOrganization : existingOrganization
+          this.dataSource.data = this.dataSource.data.map(
+            (existingOrganization) =>
+              existingOrganization._id === updatedOrganization._id
+                ? updatedOrganization
+                : existingOrganization,
           );
 
           if (this.selectedOrganization?._id === updatedOrganization._id) {
@@ -449,17 +519,20 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           this.refreshOverviewCounts();
           this.loadVisibleOrganizationCounts();
           this.toaster.success(
-            'Success!',
-            `Organization ${updatedOrganization.isVerified ? 'verified' : 'marked unverified'} successfully.`
+            "Success!",
+            `Organization ${updatedOrganization.isVerified ? "verified" : "marked unverified"} successfully.`,
           );
           this.organizationService.clearCache();
           this.verifyingOrganizationIds.delete(org._id);
         },
         error: (error) => {
-          console.error('Error updating organization verification:', error);
-          this.toaster.error('Error', 'Failed to update organization verification.');
+          console.error("Error updating organization verification:", error);
+          this.toaster.error(
+            "Error",
+            "Failed to update organization verification.",
+          );
           this.verifyingOrganizationIds.delete(org._id);
-        }
+        },
       });
   }
 
@@ -478,13 +551,13 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private refreshExistingNames(): void {
     this.existingNames = this.dataSource.data
-      .filter((org): org is Organization => !!org && typeof org === 'object')
+      .filter((org): org is Organization => !!org && typeof org === "object")
       .map((org) => {
         const normalizedName = org.normalizedName?.toLowerCase().trim();
         if (normalizedName) {
           return normalizedName;
         }
-        return org.name?.toLowerCase().trim() || '';
+        return org.name?.toLowerCase().trim() || "";
       })
       .filter((name) => !!name);
   }
@@ -504,33 +577,40 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.loading = true;
     // TODO(clark-api): Support `domains` on organization create endpoint and include `formData.domains` here.
     // The create modal currently collects domains, but backend create API does not support persisting them yet.
-    this.organizationService.createOrganization({
-      name: formData.name,
-      sector: formData.sector,
-      levels: formData.levels,
-      country: formData.country || undefined,
-      state: formData.state || undefined,
-    })
+    this.organizationService
+      .createOrganization({
+        name: formData.name,
+        sector: formData.sector,
+        levels: formData.levels,
+        country: formData.country || undefined,
+        state: formData.state || undefined,
+      })
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (response) => {
-          this.dataSource.data = [...this.dataSource.data, response.organization];
+          this.dataSource.data = [
+            ...this.dataSource.data,
+            response.organization,
+          ];
           this.userCountMap.set(response.organization._id, 0);
           this.learningObjectCountMap.set(response.organization._id, 0);
           this.refreshExistingNames();
           this.refreshOverviewCounts();
           this.loadTotalOtherUsers();
           this.loadVisibleOrganizationCounts();
-          this.toaster.success('Success!', 'Organization created successfully.');
+          this.toaster.success(
+            "Success!",
+            "Organization created successfully.",
+          );
           this.loading = false;
           this.closeEditModal();
           this.organizationService.clearCache();
         },
         error: (error) => {
-          console.error('Error creating organization:', error);
-          this.toaster.error('Error', 'Failed to create organization.');
+          console.error("Error creating organization:", error);
+          this.toaster.error("Error", "Failed to create organization.");
           this.loading = false;
-        }
+        },
       });
   }
 
@@ -540,19 +620,20 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     this.loading = true;
-    this.organizationService.updateOrganization(this.selectedOrganization._id, {
-      name: formData.name,
-      sector: formData.sector,
-      levels: formData.levels,
-      country: formData.country || undefined,
-      state: formData.state || undefined,
-      domains: formData.domains,
-    })
+    this.organizationService
+      .updateOrganization(this.selectedOrganization._id, {
+        name: formData.name,
+        sector: formData.sector,
+        levels: formData.levels,
+        country: formData.country || undefined,
+        state: formData.state || undefined,
+        domains: formData.domains,
+      })
       .pipe(takeUntil(this.componentDestroyed$))
       .subscribe({
         next: (response) => {
           const index = this.dataSource.data.findIndex(
-            (org) => org._id === response.organization._id
+            (org) => org._id === response.organization._id,
           );
           if (index !== -1) {
             const updatedData = [...this.dataSource.data];
@@ -563,16 +644,19 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
             this.loadTotalOtherUsers();
             this.loadVisibleOrganizationCounts();
           }
-          this.toaster.success('Success!', 'Organization updated successfully.');
+          this.toaster.success(
+            "Success!",
+            "Organization updated successfully.",
+          );
           this.loading = false;
           this.closeEditModal();
           this.organizationService.clearCache();
         },
         error: (error) => {
-          console.error('Error updating organization:', error);
-          this.toaster.error('Error', 'Failed to update organization.');
+          console.error("Error updating organization:", error);
+          this.toaster.error("Error", "Failed to update organization.");
           this.loading = false;
-        }
+        },
       });
   }
 
@@ -604,15 +688,15 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     const userCount = this.getUserCount(this.selectedOrganization);
     if (userCount > 0) {
       this.toaster.error(
-        'Cannot Delete',
-        `This organization has ${userCount} user(s). Organizations with users cannot be deleted.`
+        "Cannot Delete",
+        `This organization has ${userCount} user(s). Organizations with users cannot be deleted.`,
       );
       return;
     }
 
     const selectedOrgId = this.selectedOrganization._id;
     this.dataSource.data = this.dataSource.data.filter(
-      (org) => org._id !== selectedOrgId
+      (org) => org._id !== selectedOrgId,
     );
     this.userCountMap.delete(selectedOrgId);
     this.learningObjectCountMap.delete(selectedOrgId);
@@ -621,7 +705,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     this.loadTotalOtherUsers();
     this.loadVisibleOrganizationCounts();
 
-    this.toaster.success('Success!', 'Organization deleted successfully.');
+    this.toaster.success("Success!", "Organization deleted successfully.");
     this.closeDeleteModal();
   }
 
@@ -634,6 +718,30 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   getLearningObjectCount(org: Organization): number {
     return this.learningObjectCountMap.get(org._id) || 0;
+  }
+
+  async loadUserCountForMigration(org: Organization): Promise<number> {
+    const cachedCount = this.userCountMap.get(org._id);
+    if (cachedCount !== undefined) {
+      return cachedCount;
+    }
+
+    const count = await this.fetchUserCount(org._id);
+    this.userCountMap.set(org._id, count);
+    return count;
+  }
+
+  async loadLearningObjectCountForMigration(
+    org: Organization,
+  ): Promise<number> {
+    const cachedCount = this.learningObjectCountMap.get(org._id);
+    if (cachedCount !== undefined) {
+      return cachedCount;
+    }
+
+    const count = await this.fetchLearningObjectCount(org._id);
+    this.learningObjectCountMap.set(org._id, count);
+    return count;
   }
 
   getTotalOtherUsers(): number {
@@ -657,7 +765,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    */
   formatLevelName(level: string): string {
     // eslint-disable-next-line prefer-regex-literals
-    return level.replace(/_/g, ' ');
+    return level.replace(/_/g, " ");
   }
 
   private toTitleCase(value: string): string {
@@ -668,9 +776,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     const currentVersion = ++this.otherUsersCountLoadVersion;
 
     try {
-      const organizations = await this.organizationService.searchOrganizations({ text: 'Other' }).toPromise();
+      const organizations = await this.organizationService
+        .searchOrganizations({ text: "Other" })
+        .toPromise();
       const otherOrganization = organizations.find(
-        (org) => (org.normalizedName || '').trim().toLowerCase() === 'other'
+        (org) => (org.normalizedName || "").trim().toLowerCase() === "other",
       );
 
       if (!otherOrganization?._id) {
@@ -694,7 +804,10 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       if (currentVersion !== this.otherUsersCountLoadVersion) {
         return;
       }
-      console.error('Failed to fetch total users in other-sector organizations', error);
+      console.error(
+        "Failed to fetch total users in other-sector organizations",
+        error,
+      );
       this.totalOtherUsers = 0;
     }
   }
@@ -703,13 +816,16 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     const visibleOrganizations = this.getVisibleOrganizations();
     const visibleOrganizationIds = visibleOrganizations.map((org) => org._id);
     const missingUserCountIds = visibleOrganizationIds.filter(
-      (organizationId) => !this.userCountMap.has(organizationId)
+      (organizationId) => !this.userCountMap.has(organizationId),
     );
     const missingLearningObjectCountIds = visibleOrganizationIds.filter(
-      (organizationId) => !this.learningObjectCountMap.has(organizationId)
+      (organizationId) => !this.learningObjectCountMap.has(organizationId),
     );
 
-    if (missingUserCountIds.length === 0 && missingLearningObjectCountIds.length === 0) {
+    if (
+      missingUserCountIds.length === 0 &&
+      missingLearningObjectCountIds.length === 0
+    ) {
       return;
     }
 
@@ -719,19 +835,21 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     if (missingUserCountIds.length > 0) {
       const userCountPairs = await this.fetchCountPairs(
         missingUserCountIds,
-        (organizationId) => this.fetchUserCount(organizationId)
+        (organizationId) => this.fetchUserCount(organizationId),
       );
       // If data reloaded while we were awaiting, discard stale results.
       if (currentVersion !== this.countsLoadVersion) {
         return;
       }
-      userCountPairs.forEach(([organizationId, count]) => this.userCountMap.set(organizationId, count));
+      userCountPairs.forEach(([organizationId, count]) =>
+        this.userCountMap.set(organizationId, count),
+      );
     }
 
     if (missingLearningObjectCountIds.length > 0) {
       const learningObjectCountPairs = await this.fetchCountPairs(
         missingLearningObjectCountIds,
-        (organizationId) => this.fetchLearningObjectCount(organizationId)
+        (organizationId) => this.fetchLearningObjectCount(organizationId),
       );
       // Same stale-result guard for the second async phase.
       if (currentVersion !== this.countsLoadVersion) {
@@ -783,13 +901,16 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   private async fetchCountPairs(
     organizationIds: string[],
     fetcher: (organizationId: string) => Promise<number>,
-    chunkSize = 8
+    chunkSize = 8,
   ): Promise<Array<[string, number]>> {
     const pairs: Array<[string, number]> = [];
     for (let i = 0; i < organizationIds.length; i += chunkSize) {
       const chunk = organizationIds.slice(i, i + chunkSize);
       const chunkCounts = await Promise.all(
-        chunk.map(async (organizationId) => [organizationId, await fetcher(organizationId)] as [string, number])
+        chunk.map(
+          async (organizationId) =>
+            [organizationId, await fetcher(organizationId)] as [string, number],
+        ),
       );
       pairs.push(...chunkCounts);
     }
@@ -805,12 +926,18 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       });
       return response.total || 0;
     } catch (error) {
-      console.error('Failed to fetch user count for organization', organizationId, error);
+      console.error(
+        "Failed to fetch user count for organization",
+        organizationId,
+        error,
+      );
       return 0;
     }
   }
 
-  private async fetchLearningObjectCount(organizationId: string): Promise<number> {
+  private async fetchLearningObjectCount(
+    organizationId: string,
+  ): Promise<number> {
     try {
       const response = await this.searchService.getLearningObjects({
         organizationId: [organizationId],
@@ -819,7 +946,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       });
       return response.total || 0;
     } catch (error) {
-      console.error('Failed to fetch learning object count for organization', organizationId, error);
+      console.error(
+        "Failed to fetch learning object count for organization",
+        organizationId,
+        error,
+      );
       return 0;
     }
   }
@@ -862,20 +993,71 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     const sourceOrg = this.selectedOrganization;
-    const targetOrg = this.dataSource.data.find((org) => org._id === targetOrgId);
+    const targetOrg = this.dataSource.data.find(
+      (org) => org._id === targetOrgId,
+    );
 
     if (!targetOrg) {
-      this.toaster.error('Error', 'Target organization not found.');
+      this.toaster.error("Error", "Target organization not found.");
       return;
     }
 
-    // TODO: Replace this placeholder with an OrganizationService migration API call when backend support exists.
-    // Current API does not support bulk migration without issuing hundreds of per-user requests.
-    this.toaster.warning(
-      'Not supported yet',
-      `Migration from ${sourceOrg.name} to ${targetOrg.name} is not currently supported by the API. Please contact developers.`
-    );
-    this.closeMigrateModal();
+    this.isMigrating = true;
+    this.organizationService
+      .migrateOrganizationUsers(sourceOrg._id, { organizationId: targetOrgId })
+      .pipe(
+        takeUntil(this.componentDestroyed$),
+        finalize(() => {
+          this.isMigrating = false;
+        }),
+      )
+      .subscribe({
+        next: () => {
+          this.organizationService.clearCache();
+          this.userCountMap.clear();
+          this.learningObjectCountMap.clear();
+          this.loadOrganizations();
+          this.toaster.success(
+            "Success!",
+            `Migrated users from ${sourceOrg.name} to ${targetOrg.name}.`,
+          );
+          this.closeMigrateModal();
+        },
+        error: (error: unknown) => {
+          console.error("Error migrating organization users:", error);
+          this.toaster.error(
+            "Migration failed",
+            this.getMigrationErrorMessage(error),
+          );
+        },
+      });
+  }
+
+  private getMigrationErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const backendError = error.error;
+
+      if (typeof backendError === "string" && backendError.trim()) {
+        return backendError;
+      }
+
+      if (backendError && typeof backendError === "object") {
+        const message = (backendError as { message?: unknown }).message;
+        if (typeof message === "string" && message.trim()) {
+          return message;
+        }
+      }
+
+      if (typeof error.message === "string" && error.message.trim()) {
+        return error.message;
+      }
+    }
+
+    if (error instanceof Error && error.message.trim()) {
+      return error.message;
+    }
+
+    return "There was an error migrating users. Please try again later.";
   }
 
   ngOnDestroy(): void {

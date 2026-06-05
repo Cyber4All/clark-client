@@ -10,9 +10,7 @@ import { TOPICS_ROUTES } from './topics.routes';
 })
 export class TopicsService {
   private headers = new HttpHeaders();
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   /**
    * This gets the list of object topics from the backend to display

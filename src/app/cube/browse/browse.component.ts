@@ -5,46 +5,47 @@ import {
   HostListener,
   OnDestroy,
   Renderer2,
-  ViewChild
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObject } from '@entity';
-import { NavbarService } from 'app/core/client-module/navbar.service';
-import { SearchService } from 'app/core/learning-object-module/search/search.service';
-import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { OrderBy, Query, SortType } from '../../interfaces/query';
-import { COPY } from './browse.copy';
-import { FilterSectionInfo } from './components/filter-section/filter-section.component';
-import { FilterComponent } from './components/filter/filter.component';
-import { SkipLinkComponent } from '../../shared/components/skip-link/skip-link.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
-import { ActivateDirective } from '../../shared/directives/activate.directive';
-import { DropdownFilterComponent } from '../../shared/components/dropdown-filter/dropdown-filter.component';
-import { ClearFiltersButtonComponent } from '../../shared/components/clear-filters-button/clear-filters-button.component';
-import { TrapFocusDirective } from '../../shared/directives/trap-focus.directive';
-import { LearningObjectListingComponent } from '../shared/learning-object/learning-object.component';
-import { LearningObjectCardDirective } from '../../shared/directives/learning-object-card.directive';
+  ViewChild,
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { LearningObject } from "@entity";
+import { NavbarService } from "app/core/client-module/navbar.service";
+import { SearchService } from "app/core/learning-object-module/search/search.service";
+import { DropdownFilterOption } from "app/shared/components/dropdown-filter/dropdown-filter.component";
+import { Observable, Subject } from "rxjs";
+import { debounceTime, takeUntil } from "rxjs/operators";
+import { OrderBy, Query, SortType } from "../../interfaces/query";
+import { COPY } from "./browse.copy";
+import { FilterSectionInfo } from "./components/filter-section/filter-section.component";
+import { FilterComponent } from "./components/filter/filter.component";
+import { SkipLinkComponent } from "../../shared/components/skip-link/skip-link.component";
+import { NgIf, NgClass, NgFor } from "@angular/common";
+import { ActivateDirective } from "../../shared/directives/activate.directive";
+import { DropdownFilterComponent } from "../../shared/components/dropdown-filter/dropdown-filter.component";
+import { ClearFiltersButtonComponent } from "../../shared/components/clear-filters-button/clear-filters-button.component";
+import { TrapFocusDirective } from "../../shared/directives/trap-focus.directive";
+import { LearningObjectListingComponent } from "../shared/learning-object/learning-object.component";
+import { LearningObjectCardDirective } from "../../shared/directives/learning-object-card.directive";
+import { AuthService } from "app/core/auth-module/auth.service";
 
 @Component({
-    selector: 'cube-browse',
-    templateUrl: './browse.component.html',
-    styleUrls: ['./browse.component.scss'],
-    standalone: true,
-    imports: [
-        SkipLinkComponent,
-        NgIf,
-        ActivateDirective,
-        DropdownFilterComponent,
-        ClearFiltersButtonComponent,
-        NgClass,
-        TrapFocusDirective,
-        FilterComponent,
-        NgFor,
-        LearningObjectListingComponent,
-        LearningObjectCardDirective,
-    ],
+  selector: "cube-browse",
+  templateUrl: "./browse.component.html",
+  styleUrls: ["./browse.component.scss"],
+  standalone: true,
+  imports: [
+    SkipLinkComponent,
+    NgIf,
+    ActivateDirective,
+    DropdownFilterComponent,
+    ClearFiltersButtonComponent,
+    NgClass,
+    TrapFocusDirective,
+    FilterComponent,
+    NgFor,
+    LearningObjectListingComponent,
+    LearningObjectCardDirective,
+  ],
 })
 export class BrowseComponent implements AfterViewInit, OnDestroy {
   copy = COPY;
@@ -53,18 +54,18 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   outcomeSources: any[];
 
   query: Query = {
-    text: '',
+    text: "",
     currPage: 1,
     limit: 15,
     length: [],
-    noGuidelines: '',
+    noGuidelines: "",
     guidelines: [],
     level: [],
     standardOutcomes: [],
     // Showcase the newest learning object
     orderBy: OrderBy.Date,
     sortType: -1,
-    collection: '',
+    collection: "",
     topics: [],
     fileTypes: [],
     status: [LearningObject.Status.RELEASED],
@@ -72,11 +73,11 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   };
 
   tooltipText = {
-    nanomodule: 'a Learning Object up to 1 hour in length',
-    micromodule: 'a Learning Object between 1 and 4 hours in length',
-    module: 'a Learning Object between 4 and 10 hours in length',
-    unit: 'a Learning Object over 10 hours in length',
-    course: 'a Learning Object 15 weeks in length',
+    nanomodule: "a Learning Object up to 1 hour in length",
+    micromodule: "a Learning Object between 1 and 4 hours in length",
+    module: "a Learning Object between 4 and 10 hours in length",
+    unit: "a Learning Object over 10 hours in length",
+    course: "a Learning Object 15 weeks in length",
   };
 
   loading = true;
@@ -99,7 +100,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   shouldResetPage = false;
 
   sortMenuDown: boolean;
-  sortText = 'Newest';
+  sortText = "Newest";
 
   topicFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
@@ -108,7 +109,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   @ViewChild(FilterComponent) filterComponent: FilterComponent;
 
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   handelResize(event) {
     this.windowWidth = event.target.innerWidth;
     this.cd.detectChanges();
@@ -121,6 +122,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private navService: NavbarService,
     private renderer: Renderer2,
+    private authService: AuthService,
   ) {
     this.windowWidth = window.innerWidth;
     this.cd.detach();
@@ -142,7 +144,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.makeQuery(params);
         // When searching, visually show that any pre-existing sorting is disabled
         this.sortText =
-          this.query.text && this.query.orderBy === OrderBy.None ? '' : this.sortText;
+          this.query.text && this.query.orderBy === OrderBy.None
+            ? ""
+            : this.sortText;
         await this.fetchLearningObjects(this.query);
         // Initialize filter dropdowns after filter component is initialized
         this.initializeFilterDropdowns();
@@ -164,12 +168,17 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         this.durationFilter = this.filterComponent.lengthFilter;
 
         // Try to get materials filter (tag-based)
-        const materialsTagFilter = this.filterComponent.getTagFilterByType('materials');
-        if (materialsTagFilter && materialsTagFilter.filters && materialsTagFilter.filters.length > 0) {
+        const materialsTagFilter =
+          this.filterComponent.getTagFilterByType("materials");
+        if (
+          materialsTagFilter &&
+          materialsTagFilter.filters &&
+          materialsTagFilter.filters.length > 0
+        ) {
           this.materialsFilter = materialsTagFilter;
         } else if (attempts === maxAttempts) {
           // Log if materials filter never loaded
-          console.warn('Materials filter not available after max attempts');
+          console.warn("Materials filter not available after max attempts");
         }
 
         this.cd.detectChanges();
@@ -184,12 +193,12 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     }, 100);
   }
 
-  @HostListener('document:click', ['$event'])
+  @HostListener("document:click", ["$event"])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
 
     // Close sort dropdown when clicking outside
-    if (this.sortMenuDown && !target.closest('.sort-dropdown-container')) {
+    if (this.sortMenuDown && !target.closest(".sort-dropdown-container")) {
       this.sortMenuDown = false;
       this.cd.detectChanges();
     }
@@ -320,21 +329,21 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   clearSearch() {
     this.navService.query.next(true);
-    this.query.text = '';
+    this.query.text = "";
     this.query.standardOutcomes = [];
     this.query.currPage = 1;
     this.query.orderBy = OrderBy.Date;
-    this.sortText = 'Newest';
-    this.router.navigate(['browse'], { queryParams: {} });
+    this.sortText = "Newest";
+    this.router.navigate(["browse"], { queryParams: {} });
   }
 
   get sortString() {
     return this.query.orderBy
-      ? this.query.orderBy.replace(/_/g, '') +
-      ' (' +
-      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-      ')'
-      : '';
+      ? this.query.orderBy.replace(/_/g, "") +
+          " (" +
+          (this.query.sortType > 0 ? "Asc" : "Desc") +
+          ")"
+      : "";
   }
 
   toggleFilters() {
@@ -361,9 +370,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    */
   private updateBodyScroll() {
     if (this.filtersDownMobile) {
-      this.renderer.setStyle(document.body, 'overflow', 'hidden');
+      this.renderer.setStyle(document.body, "overflow", "hidden");
     } else {
-      this.renderer.removeStyle(document.body, 'overflow');
+      this.renderer.removeStyle(document.body, "overflow");
     }
   }
 
@@ -385,15 +394,15 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.filters = filters;
     this.filters.removed = [];
     [
-      'collection',
-      'length',
-      'topics',
-      'tags',
-      'fileTypes',
-      'level',
-      'guidelines',
-      'standardOutcomes',
-      'noGuidelines',
+      "collection",
+      "length",
+      "topics",
+      "tags",
+      "fileTypes",
+      "level",
+      "guidelines",
+      "standardOutcomes",
+      "noGuidelines",
     ].forEach((category) => {
       if (!this.filters[category]) {
         this.filters.removed.push(category);
@@ -413,11 +422,11 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       level: [],
       topics: [],
       guidelines: [],
-      noGuidelines: '',
-      collection: '',
+      noGuidelines: "",
+      collection: "",
       tags: [],
       fileTypes: [],
-      standardOutcomes: []
+      standardOutcomes: [],
     };
 
     // Clear filter objects in the filter component
@@ -455,7 +464,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       }
       this.shouldResetPage = true;
 
-      this.router.navigate(['browse'], {
+      this.router.navigate(["browse"], {
         queryParams: this.removeObjFalsy(this.query),
       });
     }
@@ -468,12 +477,16 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   toggleSort(val) {
     if (val !== null) {
-      if (val === 'dd') {
-        this.sortText = 'Newest';
+      if (val === "dd") {
+        this.sortText = "Newest";
         this.query.orderBy = OrderBy.Date;
         this.query.sortType = SortType.Descending;
-      } else if (val === 'w') {
-        this.sortText = 'Most Downloaded';
+      } else if (val === "ad") {
+        this.sortText = "Oldest";
+        this.query.orderBy = OrderBy.Date;
+        this.query.sortType = SortType.Ascending;
+      } else if (val === "w") {
+        this.sortText = "Most Downloaded";
         this.query.orderBy = OrderBy.Downloads;
         this.query.sortType = SortType.Descending;
       }
@@ -495,7 +508,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   makeQuery(params: Record<string, string>) {
     // Helper functions to provide fall back values on erroneous query params
     function parseIntOrDefault(val: any, fallback: number): number {
-      const num = typeof val === 'string' ? parseInt(val, 10) : Number(val);
+      const num = typeof val === "string" ? parseInt(val, 10) : Number(val);
       return isNaN(num) ? fallback : num;
     }
 
@@ -503,14 +516,14 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       if (Array.isArray(val)) {
         return val.map(String);
       }
-      if (typeof val === 'string') {
+      if (typeof val === "string") {
         return [val];
       }
       return [];
     }
 
-    function toString(val: any, fallback: string = ''): string {
-      return typeof val === 'string' ? val : fallback;
+    function toString(val: any, fallback: string = ""): string {
+      return typeof val === "string" ? val : fallback;
     }
 
     // Rebuild the query from scratch and then apply modifications from params
@@ -526,7 +539,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       standardOutcomes: [],
       orderBy: params.orderBy ? params.orderBy : OrderBy.Date,
       sortType: params.sortType ? Number(params.sortType) : -1,
-      collection: params.collection || '',
+      collection: params.collection || "",
       topics: toStringArray(params.topics) || [],
       fileTypes: [],
       status: [LearningObject.Status.RELEASED],
@@ -538,11 +551,13 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     this.loading = true;
     this.learningObjects = [];
     // Trim leading and trailing whitespace
-    query.text = query.text ? query.text.trim() : '';
+    query.text = query.text ? query.text.trim() : "";
 
     try {
       const { learningObjects, total } =
-        await this.searchLearningObjectService.getLearningObjects(this.removeObjFalsy(query));
+        await this.searchLearningObjectService.getLearningObjects(
+          this.removeObjFalsy(query),
+        );
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
       this.pageCount = Math.ceil(total / +this.query.limit);
@@ -570,13 +585,12 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.next();
     // Clean up body scroll if modal was open
-    this.renderer.removeStyle(document.body, 'overflow');
+    this.renderer.removeStyle(document.body, "overflow");
   }
 
   trackByLearningObject(_index: number, item: any) {
     return item ? `${item.cuid}-${item.version}` : _index;
   }
-
 
   /** Returns true if any of the filter fields in the query are not empty or if any filters are active in the modal */
   public anyFiltersSelected(): boolean {
@@ -584,7 +598,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
     // Check query object for applied filters
     const queryFiltersActive = !!(
-      (q.collection && q.collection !== '') ||
+      (q.collection && q.collection !== "") ||
       q.length?.length ||
       q.topics?.length ||
       q.level?.length ||
@@ -610,7 +624,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    */
   getTopicsCount(): number {
     if (this.topicFilter?.filters) {
-      return this.topicFilter.filters.filter(f => f.active).length;
+      return this.topicFilter.filters.filter((f) => f.active).length;
     }
     return this.query.topics?.length || 0;
   }
@@ -620,7 +634,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    */
   getLevelsCount(): number {
     if (this.levelFilter?.filters) {
-      return this.levelFilter.filters.filter(f => f.active).length;
+      return this.levelFilter.filters.filter((f) => f.active).length;
     }
     return this.query.level?.length || 0;
   }
@@ -630,7 +644,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    */
   getDurationCount(): number {
     if (this.durationFilter?.filters) {
-      return this.durationFilter.filters.filter(f => f.active).length;
+      return this.durationFilter.filters.filter((f) => f.active).length;
     }
     return this.query.length?.length || 0;
   }
@@ -640,7 +654,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
    */
   getMaterialsCount(): number {
     if (this.materialsFilter?.filters) {
-      return this.materialsFilter.filters.filter(f => f.active).length;
+      return this.materialsFilter.filters.filter((f) => f.active).length;
     }
     return this.query.tags?.length || 0;
   }
@@ -653,11 +667,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
     if (!this.topicFilter?.filters) {
       return [];
     }
-    
+
     // Get the names of all active topics
-    return this.topicFilter.filters
-      .filter(f => f.active)
-      .map(f => f.name);
+    return this.topicFilter.filters.filter((f) => f.active).map((f) => f.name);
   }
 
   private getSelectedValues(filter?: FilterSectionInfo): string[] {
@@ -666,7 +678,10 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
       .map((option) => option.value);
   }
 
-  private applyDropdownSelection(filter: FilterSectionInfo | undefined, selectedValues: string[]): void {
+  private applyDropdownSelection(
+    filter: FilterSectionInfo | undefined,
+    selectedValues: string[],
+  ): void {
     if (!filter?.filters) {
       return;
     }
@@ -692,5 +707,9 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
     this.performSearch(true);
     this.cd.detectChanges();
+  }
+
+  isAdminOrEditor(): boolean {
+    return this.authService.isAdminOrEditor();
   }
 }
