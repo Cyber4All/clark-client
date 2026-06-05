@@ -107,27 +107,32 @@
               Sort By: {{ sortText }}<i class="far fa-angle-down"></i>
             </button>
 
-            @if (sortMenuDown) {
-              <div
-                class="sort-dropdown-menu"
-                (click)="$event.stopPropagation()"
-                >
-                <ul>
-                  <li
-                    [ngClass]="{ selected: sortText === 'Newest' }"
-                    (click)="toggleSort('dd')"
-                    >
-                    Newest
-                  </li>
-                  <li
-                    [ngClass]="{ selected: sortText === 'Most Downloaded' }"
-                    (click)="toggleSort('w')"
-                    >
-                    Most Downloaded
-                  </li>
-                </ul>
-              </div>
-            }
+          <div
+            *ngIf="sortMenuDown"
+            class="sort-dropdown-menu"
+            (click)="$event.stopPropagation()"
+          >
+            <ul>
+              <li
+                *ngIf="isAdminOrEditor()"
+                [ngClass]="{ selected: sortText === 'Oldest' }"
+                (click)="toggleSort('ad')"
+              >
+                Oldest
+              </li>
+              <li
+                [ngClass]="{ selected: sortText === 'Newest' }"
+                (click)="toggleSort('dd')"
+              >
+                Newest
+              </li>
+              <li
+                [ngClass]="{ selected: sortText === 'Most Downloaded' }"
+                (click)="toggleSort('w')"
+              >
+                Most Downloaded
+              </li>
+            </ul>
           </div>
         </div>
       </div>
