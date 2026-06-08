@@ -21,6 +21,7 @@ export interface Query {
   level?: string[];
   guidelines?: string[];
   noGuidelines?: string;
+  noDCWFGuidelines?: string;
   orderBy?: OrderBy | string;
   sortType?: SortType;
   text?: string;

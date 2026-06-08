@@ -28,7 +28,7 @@ export class FilterComponent implements OnInit, OnDestroy {
   materialFilter: FilterSectionInfo;
   levelFilter: FilterSectionInfo;
   frameworkFilter: FilterSectionInfo;
-  noGuidelineFilter: FilterSectionInfo;
+  adminEditorFilter: FilterSectionInfo;
   guidelineFilter: string[] = [];
   tagTypes: { name: string, value: string }[] = [];
 
@@ -57,7 +57,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     await this.getTagTypes();
     this.getMaterialFilters();
     this.getLevelFilters();
-    this.getNoGuidelinesFilter();
+    this.getAdminEditorFilters();
     await this.getFrameworkFilters();
     this.parseSelected();
 
@@ -86,7 +86,7 @@ export class FilterComponent implements OnInit, OnDestroy {
       if (this.tagFilter?.filters) this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
       if (this.materialFilter?.filters) this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
       if (this.frameworkFilter?.filters) this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
-      if (this.noGuidelineFilter?.filters) this.parseCategorySelected(this.selected.noGuidelines, this.noGuidelineFilter.filters);
+      this.parseAdminEditorSelected();
       if (this.collectionFilter?.filters) this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
     }
   }
@@ -132,7 +132,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     if (this.materialFilter?.filters) this.clearFilterCategory(this.materialFilter.filters);
     if (this.topicFilter?.filters) this.clearFilterCategory(this.topicFilter.filters);
     if (this.tagFilter?.filters) this.clearFilterCategory(this.tagFilter.filters);
-    if (this.noGuidelineFilter?.filters) this.clearFilterCategory(this.noGuidelineFilter.filters);
+    if (this.adminEditorFilter?.filters) this.clearFilterCategory(this.adminEditorFilter.filters);
     if (this.frameworkFilter?.filters) this.clearFilterCategory(this.frameworkFilter.filters);
     this.guidelineFilter = [];
 
@@ -164,7 +164,7 @@ export class FilterComponent implements OnInit, OnDestroy {
     if (this.topicFilter?.filters) this.checkFilter('topics', this.topicFilter.filters, query);
     if (this.tagFilter?.filters) this.checkFilter('tags', this.tagFilter.filters, query);
     if (this.frameworkFilter?.filters) this.checkFilter('guidelines', this.frameworkFilter.filters, query);
-    if (this.noGuidelineFilter?.filters) this.checkFilter('noGuidelines', this.noGuidelineFilter.filters, query);
+    if (this.adminEditorFilter?.filters) this.checkAdminEditorFilters(query);
     if (this.guidelineFilter && this.guidelineFilter.length > 0) {
       query['standardOutcomes'] = this.guidelineFilter;
     }
@@ -185,6 +185,24 @@ export class FilterComponent implements OnInit, OnDestroy {
     if (f && f.length > 0) {
       query[category] = f.map(filter => filter.value);
     }
+  }
+
+  private checkAdminEditorFilters(query: any) {
+    this.adminEditorFilter.filters
+      .filter(filter => filter.active)
+      .forEach(filter => {
+        query[filter.value] = ['true'];
+      });
+  }
+
+  private parseAdminEditorSelected() {
+    if (!this.adminEditorFilter?.filters) {
+      return;
+    }
+
+    this.adminEditorFilter.filters.forEach(filter => {
+      filter.active = this.selected?.[filter.value] === 'true';
+    });
   }
 
   /**
@@ -234,7 +252,7 @@ export class FilterComponent implements OnInit, OnDestroy {
             t.tagType?.includes(type),
           ));
         })
-        if(miscTags.length < 1) {
+        if (miscTags.length < 1) {
           return undefined;
         }
         return {
@@ -273,19 +291,19 @@ export class FilterComponent implements OnInit, OnDestroy {
           filters: techTags
         };
 
-        case 'materials':
-          const materialTags = this.tagFilter.filters.filter((t) => 
-            t.tagType?.includes('material'),
-          );
+      case 'materials':
+        const materialTags = this.tagFilter.filters.filter((t) =>
+          t.tagType?.includes('material'),
+        );
 
-          if (materialTags.length < 1) {
-            return undefined;
-          }
+        if (materialTags.length < 1) {
+          return undefined;
+        }
 
-          return {
-            section: 'Materials',
-            filters: materialTags
-          };
+        return {
+          section: 'Materials',
+          filters: materialTags
+        };
     }
   }
 
@@ -471,14 +489,12 @@ export class FilterComponent implements OnInit, OnDestroy {
     };
   }
 
-  /**
-   * Gets the no guidelines filter 🤪
-   */
-  getNoGuidelinesFilter() {
-    this.noGuidelineFilter = {
-      section: 'No Guidelines',
+  getAdminEditorFilters() {
+    this.adminEditorFilter = {
+      section: 'Admin/Editor Filters',
       filters: [
-        { name: 'No Guidelines', value: 'true', active: false }
+        { name: 'No Guidelines', value: 'noGuidelines', active: false },
+        { name: 'No DCWF guidelines', value: 'noDCWFGuidelines', active: false }
       ]
     };
   }
