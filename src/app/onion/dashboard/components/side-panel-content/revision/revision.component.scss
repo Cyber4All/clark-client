@@ -1,207 +1,207 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .meatball-trigger {
-  position: absolute;
-  top: 20px;
-  right: 25px;
+    position: absolute;
+    top: 20px;
+    right: 25px;
 }
 
 .revision__empty {
-  text-align: center;
-  color: $dark-grey;
-  font-size: $normal;
-  min-height: inherit;
-  padding-top: 5px;
-  box-sizing: border-box;
+    text-align: center;
+    color: $dark-grey;
+    font-size: $normal;
+    min-height: inherit;
+    padding-top: 5px;
+    box-sizing: border-box;
 
-  .empty__message {
-    margin-bottom: 20px;
-  }
+    .empty__message {
+        margin-bottom: 20px;
+    }
 }
 
 .revision-wrapper {
-  min-height: 90px;
-  position: relative;
+    min-height: 90px;
+    position: relative;
 }
-  
+
 .top-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  .status {
-    width: 30px;
-    height: 30px;
-    color: white;
-    font-size: $normal;
-    border-radius: 50%;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
-    background: $status_unreleased;
-    transition: all 0.2s ease;
-    box-shadow: none;
-    flex-shrink: 0;
-    margin-right: 10px;
-  
-    &.waiting {
-      background: $status_waiting;
-    }
-  
-    &.review {
-      background: $status_review;
+
+    .status {
+        width: 30px;
+        height: 30px;
+        color: white;
+        font-size: $normal;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: $status_unreleased;
+        transition: all 0.2s ease;
+        box-shadow: none;
+        flex-shrink: 0;
+        margin-right: 10px;
+
+        &.waiting {
+            background: $status_waiting;
+        }
+
+        &.review {
+            background: $status_review;
+        }
+
+        &.accepted_minor {
+            background: $status_accepted_minor;
+        }
+
+        &.accepted_major {
+            background: $status_accepted_major;
+        }
+
+        &.proofing {
+            background: $status_proofing;
+        }
+
+        &.released {
+            background: $status_released;
+        }
+
+        &.rejected {
+            background: $status_rejected;
+        }
     }
 
-    &.accepted_minor {
-      background: $status_accepted_minor;
+    .revision-name {
+        font-size: $large;
+        color: $darker-grey;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        margin: 0;
+        overflow: hidden;
     }
-
-    &.accepted_major {
-      background: $status_accepted_major;
-    }
-  
-    &.proofing {
-      background: $status_proofing;
-    }
-  
-    &.released {
-      background: $status_released;
-    }
-  
-    &.rejected {
-      background: $status_rejected;
-    }
-  }
-  
-  .revision-name {
-    font-size: $large;
-    color: $darker-grey;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    margin: 0;
-    overflow: hidden;
-  }
 }
 
 .revision-date {
-  color: $dark-grey;
-  padding: 10px 0;
+    color: $dark-grey;
+    padding: 10px 0;
 }
 
 .revision-length {
-  color: white;
-  border-radius: 3px;
-  font-size: $smaller;
-  padding: 5px;
-  margin-right: 3px;
-  display: inline;
-  text-transform: capitalize;
+    color: white;
+    border-radius: 3px;
+    font-size: $smaller;
+    padding: 5px;
+    margin-right: 3px;
+    display: inline;
+    text-transform: capitalize;
 
-  &.nanomodule {
-    background: $nanomodule-color;
-  }
+    &.nanomodule {
+        background: $nanomodule-color;
+    }
 
-  &.micromodule {
-    background: $micromodule-color;
-  }
+    &.micromodule {
+        background: $micromodule-color;
+    }
 
-  &.module {
-    background: $module-color;
-  }
+    &.module {
+        background: $module-color;
+    }
 
-  &.unit {
-    background: $unit-color;
-  }
+    &.unit {
+        background: $unit-color;
+    }
 
-  &.course {
-    background: $course-color;
-  }
+    &.course {
+        background: $course-color;
+    }
 }
 
 // meatball styles from this point downward
 .meatball {
-  align-items: right;
-  margin-left: 350px;
-  position: relative;
-  cursor: pointer;
-  padding: 5px;
+    align-items: right;
+    margin-left: 350px;
+    position: relative;
+    cursor: pointer;
+    padding: 5px;
 
-  .icon {
-    font-size: $large;
-    transform: rotate(-90deg);
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    height: 25px;
-    width: 12px;
-    opacity: 0;
-    color: white;
-    transition: all 0.2s ease;
-  }
-
-  .orb:before {
-    content: '';
-    margin-left: -10px;
-  }
-
-  .orb:after {
-    content: '';
-    margin-left: 10px;
-  }
-
-  .orb,
-  .orb:after,
-  .orb:before {
-    position: absolute;
-    width: 5px;
-    height: 5px;
-    background: $dark-grey;
-    border-radius: 50%;
-    z-index: 1;
-    transition: all 0.2s ease;
-  }
-
-  .orb {
-    left: 0;
-    right: 0;
-    margin: auto;
-  }
-
-  &:hover {
-    .orb,
-    .orb:before,
-    .orb:after,
     .icon {
-      background: $light-blue;
+        font-size: $large;
+        transform: rotate(-90deg);
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        height: 25px;
+        width: 12px;
+        opacity: 0;
+        color: white;
+        transition: all 0.2s ease;
     }
 
-    &:after {
-      opacity: 1;
-      transform: scale(1);
+    .orb:before {
+        content: "";
+        margin-left: -10px;
     }
-  }
 
-  &.open {
-    .orb,
-    .orb:before,
     .orb:after {
-      opacity: 0;
-      color: white;
+        content: "";
+        margin-left: 10px;
     }
 
-    .icon {
-      color: $light-blue;
-      transform: rotate(0);
-      opacity: 1;
+    .orb,
+    .orb:after,
+    .orb:before {
+        position: absolute;
+        width: 5px;
+        height: 5px;
+        background: $dark-grey;
+        border-radius: 50%;
+        z-index: 1;
+        transition: all 0.2s ease;
     }
-  }
 
-  &.disabled {
-    pointer-events: none;
-    opacity: 0.5;
-  }
+    .orb {
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    &:hover {
+        .orb,
+        .orb:before,
+        .orb:after,
+        .icon {
+            background: $light-blue;
+        }
+
+        &:after {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    &.open {
+        .orb,
+        .orb:before,
+        .orb:after {
+            opacity: 0;
+            color: white;
+        }
+
+        .icon {
+            color: $light-blue;
+            transform: rotate(0);
+            opacity: 1;
+        }
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+    }
 }

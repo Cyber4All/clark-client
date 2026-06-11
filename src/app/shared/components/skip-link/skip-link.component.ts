@@ -1,22 +1,19 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
-  selector: 'clark-skip-link',
-  templateUrl: './skip-link.component.html',
-  styleUrls: ['./skip-link.component.scss']
+    selector: "clark-skip-link",
+    templateUrl: "./skip-link.component.html",
+    styleUrls: ["./skip-link.component.scss"],
 })
 export class SkipLinkComponent implements OnInit {
+    @Input() title: string;
+    @Input() skipLocation: string;
+    @Input() identity: string;
+    constructor() {}
 
-  @Input() title: string;
-  @Input() skipLocation: string;
-  @Input() identity: string;
-  constructor() { }
+    ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  goToContent(value: string) {
-    document.getElementById(value).focus();
-  }
-
+    goToContent(value: string) {
+        document.getElementById(value).focus();
+    }
 }

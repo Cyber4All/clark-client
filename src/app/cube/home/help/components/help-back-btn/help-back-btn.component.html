@@ -11,12 +11,11 @@
             <p>{{ option.description }}</p>
         </div>
     </div>
-    <div 
-    *ngIf="buildProgramComponentService.currentFrameworkObservable | async" 
-    class="framework-query" 
-    role="button"
-    (activate)="$event.stopPropagation(); handleFrameworkClicked()"
-    >
+    <div
+        *ngIf="buildProgramComponentService.currentFrameworkObservable | async"
+        class="framework-query"
+        role="button"
+        (activate)="$event.stopPropagation(); handleFrameworkClicked()">
         <b>{{ currentFramework }}</b>
         <i class="fal fa-times"></i>
     </div>

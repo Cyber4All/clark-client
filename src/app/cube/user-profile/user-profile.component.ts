@@ -1,75 +1,80 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { SubscriptionLike as ISubscription } from 'rxjs';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { CollectionService } from 'app/core/collection-module/collections.service';
-import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
+import { SubscriptionLike as ISubscription } from "rxjs";
+import { AuthService } from "app/core/auth-module/auth.service";
+import { CollectionService } from "app/core/collection-module/collections.service";
+import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 @Component({
-  selector: 'clark-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+    selector: "clark-user-profile",
+    templateUrl: "./user-profile.component.html",
+    styleUrls: ["./user-profile.component.scss"],
 })
-
 export class UserProfileComponent implements OnInit {
-  loading: boolean;
-  subscription: ISubscription;
-  user: any;
-  isUser = false;
-  // Array of users learning objects
-  allUserContributions = [];
+    loading: boolean;
+    subscription: ISubscription;
+    user: any;
+    isUser = false;
+    // Array of users learning objects
+    allUserContributions = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private auth: AuthService,
-    private learningObjectService: LearningObjectService,
-    private collectionService: CollectionService
-  ) { }
+    constructor(
+        private route: ActivatedRoute,
+        private auth: AuthService,
+        private learningObjectService: LearningObjectService,
+        private collectionService: CollectionService,
+    ) {}
 
-  async ngOnInit() {
-    // Subscribe to data returned from profile.resolver
-    this.subscription = this.route.data.subscribe(async val => {
-      // Toggle page loading
-      this.loading = true;
-      this.user = val.user;
-      // Check if current user is on their profile
-      this.isUser = this.user.username === this.auth.username;
-      await this.initProfileData();
-    });
-  }
+    async ngOnInit() {
+        // Subscribe to data returned from profile.resolver
+        this.subscription = this.route.data.subscribe(async (val) => {
+            // Toggle page loading
+            this.loading = true;
+            this.user = val.user;
+            // Check if current user is on their profile
+            this.isUser = this.user.username === this.auth.username;
+            await this.initProfileData();
+        });
+    }
 
-  /**
-   * Method to retrieve the current user profile information
-   */
-  async initProfileData() {
     /**
-     * Two service methods are being used here:
-     *
-     * @method getCollectionData returns an array of objects with cuid, collection, status, and version
-     * @method fetchLearningObject returns an individual learning object based on cuid
-     * @fetchLearningObject is nested in order to load page elements concurrently while still performing acynchronous operations.
+     * Method to retrieve the current user profile information
      */
-    await this.collectionService
-      .getUserSubmittedCollections(this.user.username).then(async (collectionMeta) => {
-        const tempObjects = [];
-        // Filter for released objects
-        const filteredMeta = collectionMeta.filter(objectMeta => objectMeta.status === 'released');
-        // Await each learning object for a users profile
-        const promises = filteredMeta.map(async (objectMeta) => {
-          // Return a promise for the current learning object
-          return await this.learningObjectService.fetchLearningObject(objectMeta.cuid, objectMeta.version);
-        });
-        // Resolve all calls to retrieve a learning object
-        await Promise.allSettled(promises).then(promise => {
-          promise.map(p => {
-            if (p.status === 'fulfilled') {
-              tempObjects.push(p.value);
-            }
-          });
-        });
-        // Users Learning Objects
-        this.allUserContributions = tempObjects;
-        // Toggle off loading profile
-        this.loading = false;
-      });
-  }
+    async initProfileData() {
+        /**
+         * Two service methods are being used here:
+         *
+         * @method getCollectionData returns an array of objects with cuid, collection, status, and version
+         * @method fetchLearningObject returns an individual learning object based on cuid
+         * @fetchLearningObject is nested in order to load page elements concurrently while still performing acynchronous operations.
+         */
+        await this.collectionService
+            .getUserSubmittedCollections(this.user.username)
+            .then(async (collectionMeta) => {
+                const tempObjects = [];
+                // Filter for released objects
+                const filteredMeta = collectionMeta.filter(
+                    (objectMeta) => objectMeta.status === "released",
+                );
+                // Await each learning object for a users profile
+                const promises = filteredMeta.map(async (objectMeta) => {
+                    // Return a promise for the current learning object
+                    return await this.learningObjectService.fetchLearningObject(
+                        objectMeta.cuid,
+                        objectMeta.version,
+                    );
+                });
+                // Resolve all calls to retrieve a learning object
+                await Promise.allSettled(promises).then((promise) => {
+                    promise.map((p) => {
+                        if (p.status === "fulfilled") {
+                            tempObjects.push(p.value);
+                        }
+                    });
+                });
+                // Users Learning Objects
+                this.allUserContributions = tempObjects;
+                // Toggle off loading profile
+                this.loading = false;
+            });
+    }
 }

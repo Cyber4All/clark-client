@@ -1,16 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'clark-feature',
-  templateUrl: './feature.component.html',
-  styleUrls: ['./feature.component.scss']
+    selector: "clark-feature",
+    templateUrl: "./feature.component.html",
+    styleUrls: ["./feature.component.scss"],
 })
 export class FeatureComponent implements OnInit {
-  @Input() collectionName: string;
-  constructor() { }
+    @Input() collectionName: string;
+    constructor() {}
 
-  ngOnInit(): void {
-
-  }
-
+    ngOnInit(): void {}
 }

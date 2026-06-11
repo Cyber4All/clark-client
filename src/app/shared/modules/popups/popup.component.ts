@@ -1,101 +1,104 @@
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from "rxjs/operators";
 import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  ElementRef,
-  AfterViewInit,
-  ContentChild,
-  OnDestroy,
-  ApplicationRef,
-  ComponentFactoryResolver,
-  Injector,
-  ComponentRef,
-  EmbeddedViewRef,
-  HostListener,
-  Input
-} from '@angular/core';
-import { Subject } from 'rxjs';
-import { PopupViewerComponent } from './popup-viewer/popup-viewer.component';
+    Component,
+    OnInit,
+    Output,
+    EventEmitter,
+    ElementRef,
+    AfterViewInit,
+    ContentChild,
+    OnDestroy,
+    ApplicationRef,
+    ComponentFactoryResolver,
+    Injector,
+    ComponentRef,
+    EmbeddedViewRef,
+    HostListener,
+    Input,
+} from "@angular/core";
+import { Subject } from "rxjs";
+import { PopupViewerComponent } from "./popup-viewer/popup-viewer.component";
 
 @Component({
-  selector: 'clark-popup',
-  template: `
-    <div class="clark-popup"></div>
-  `
+    selector: "clark-popup",
+    template: ` <div class="clark-popup"></div> `,
 })
 export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
-  // grab the #popupInner element to be used as the popup body
-  @ContentChild('popupInner') content: ElementRef;
+    // grab the #popupInner element to be used as the popup body
+    @ContentChild("popupInner") content: ElementRef;
 
-  // specify whether or not the modal should float
-  @Input() floating: boolean;
+    // specify whether or not the modal should float
+    @Input() floating: boolean;
 
-  // event emitter to signal the popups closure to it's origin component
-  @Output() closed: EventEmitter<void> = new EventEmitter();
+    // event emitter to signal the popups closure to it's origin component
+    @Output() closed: EventEmitter<void> = new EventEmitter();
 
-  // instance of PopupViewerComponent to be populated from the content variable and injected into the DOM
-  viewer: ComponentRef<PopupViewerComponent>;
+    // instance of PopupViewerComponent to be populated from the content variable and injected into the DOM
+    viewer: ComponentRef<PopupViewerComponent>;
 
-  componentDestroyed$: Subject<void> = new Subject();
+    componentDestroyed$: Subject<void> = new Subject();
 
-  private triggerElement: ElementRef<HTMLElement>;
+    private triggerElement: ElementRef<HTMLElement>;
 
-  // listen for keyup event and, if it's the escape key, close the popup
-  @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
-    if (event.code === 'Escape') {
-      this.close();
-    }
-  }
-
-  constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
-    private injector: Injector,
-    private appRef: ApplicationRef
-  ) { }
-
-  ngOnInit() {
-    // set the triggerElement to the last-focused-element if it exists in the DOM
-    this.triggerElement = new ElementRef(document.querySelector('[lastFocusedElement]'));
-
-    if (!this.triggerElement || !this.triggerElement.nativeElement) {
-      // no last-focused-element existed on the DOM, set the trigger element instead to the document's activeElement
-      this.triggerElement = new ElementRef(document.activeElement as HTMLElement);
+    // listen for keyup event and, if it's the escape key, close the popup
+    @HostListener("window:keyup", ["$event"]) handleKeyUp(
+        event: KeyboardEvent,
+    ) {
+        if (event.code === "Escape") {
+            this.close();
+        }
     }
 
-    // Prevents scrolling while in this popup
-    document.body.classList.add('no-scroll');
-  }
+    constructor(
+        private componentFactoryResolver: ComponentFactoryResolver,
+        private injector: Injector,
+        private appRef: ApplicationRef,
+    ) {}
 
-  ngAfterViewInit() {
-    // create a new PopupViewerComponent and project our content into it
-    this.viewer = this.componentFactoryResolver
-      .resolveComponentFactory(PopupViewerComponent)
-      .create(this.injector, [[this.content.nativeElement]]);
+    ngOnInit() {
+        // set the triggerElement to the last-focused-element if it exists in the DOM
+        this.triggerElement = new ElementRef(
+            document.querySelector("[lastFocusedElement]"),
+        );
 
+        if (!this.triggerElement || !this.triggerElement.nativeElement) {
+            // no last-focused-element existed on the DOM, set the trigger element instead to the document's activeElement
+            this.triggerElement = new ElementRef(
+                document.activeElement as HTMLElement,
+            );
+        }
 
-    this.viewer.instance.floating = this.floating;
+        // Prevents scrolling while in this popup
+        document.body.classList.add("no-scroll");
+    }
 
-    // detect changes in the hostview so that :enter animations will work
-    this.viewer.hostView.detectChanges();
+    ngAfterViewInit() {
+        // create a new PopupViewerComponent and project our content into it
+        this.viewer = this.componentFactoryResolver
+            .resolveComponentFactory(PopupViewerComponent)
+            .create(this.injector, [[this.content.nativeElement]]);
 
-    // listen for the viewer to signal a close event and clean up here
-    this.viewer.instance.close
-      .pipe(takeUntil(this.componentDestroyed$))
-      .subscribe(() => {
-        this.close();
-      });
+        this.viewer.instance.floating = this.floating;
 
-    // attach component to angular's component tree (DOES NOT ADD TO DOM)
-    this.appRef.attachView(this.viewer.hostView);
+        // detect changes in the hostview so that :enter animations will work
+        this.viewer.hostView.detectChanges();
 
-    // append viewer element to DOM
-    const domElem = (this.viewer.hostView as EmbeddedViewRef<any>)
-      .rootNodes[0] as HTMLElement;
-    document.body.appendChild(domElem);
+        // listen for the viewer to signal a close event and clean up here
+        this.viewer.instance.close
+            .pipe(takeUntil(this.componentDestroyed$))
+            .subscribe(() => {
+                this.close();
+            });
 
-    /*
+        // attach component to angular's component tree (DOES NOT ADD TO DOM)
+        this.appRef.attachView(this.viewer.hostView);
+
+        // append viewer element to DOM
+        const domElem = (this.viewer.hostView as EmbeddedViewRef<any>)
+            .rootNodes[0] as HTMLElement;
+        document.body.appendChild(domElem);
+
+        /*
      This component appends it's payload (the HTML for the context menu) to the DOM, meaning
      it's inserted as the very last element in the <body> tag. As a result of this, when
      tabbing out of the last popup item, some browsers assume the user has tabbed through
@@ -106,29 +109,29 @@ export class PopupComponent implements OnInit, AfterViewInit, OnDestroy {
      popup. Now, when the user tabs away from the last popup item, the input is focused, allowing JS to redirect the focus
      event to the original anchor element. The dummy input is promptly removed from the DOM in the cleanup step.
    */
-    const dummyNode = document.createElement('input');
-    // hide the input immediately on render
-    dummyNode.setAttribute('id', 'popupDummyInput');
-    dummyNode.setAttribute('class', 'dummy-input');
-    document.body.appendChild(dummyNode);
-  }
+        const dummyNode = document.createElement("input");
+        // hide the input immediately on render
+        dummyNode.setAttribute("id", "popupDummyInput");
+        dummyNode.setAttribute("class", "dummy-input");
+        document.body.appendChild(dummyNode);
+    }
 
-  ngOnDestroy() {
-    document.getElementById('popupDummyInput').remove();
-    this.componentDestroyed$.next();
-    this.componentDestroyed$.unsubscribe();
+    ngOnDestroy() {
+        document.getElementById("popupDummyInput").remove();
+        this.componentDestroyed$.next();
+        this.componentDestroyed$.unsubscribe();
 
-    // remove dynamic component when this component is destroyed
-    this.close();
+        // remove dynamic component when this component is destroyed
+        this.close();
 
-    this.triggerElement.nativeElement.focus();
+        this.triggerElement.nativeElement.focus();
 
-    document.body.classList.remove('no-scroll');
-  }
+        document.body.classList.remove("no-scroll");
+    }
 
-  close() {
-    this.closed.emit();
-    this.appRef.detachView(this.viewer.hostView);
-    this.viewer.destroy();
-  }
+    close() {
+        this.closed.emit();
+        this.appRef.detachView(this.viewer.hostView);
+        this.viewer.destroy();
+    }
 }

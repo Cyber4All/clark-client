@@ -1,17 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import {default as events} from '../../../../../assets/events.json';
+import { Component, OnInit } from "@angular/core";
+import { default as events } from "../../../../../assets/events.json";
 
 @Component({
-  selector: 'clark-timeline',
-  templateUrl: './timeline.component.html',
-  styleUrls: ['./timeline.component.scss']
+    selector: "clark-timeline",
+    templateUrl: "./timeline.component.html",
+    styleUrls: ["./timeline.component.scss"],
 })
 export class TimelineComponent implements OnInit {
+    events = events;
 
-  events = events;
-
-  constructor() {
-  }
-  ngOnInit() {
-  }
+    constructor() {}
+    ngOnInit() {}
 }

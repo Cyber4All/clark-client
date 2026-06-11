@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .wrapper {
     padding: 50px, 0;
@@ -21,7 +21,7 @@
     }
 
     &:before {
-        content: '';
+        content: "";
         background: linear-gradient(90deg, white, $light-blue, white);
         position: absolute;
         top: 0;
@@ -30,12 +30,18 @@
         right: 0;
         mask: $cube-pattern repeat;
         z-index: 0;
-        opacity: .15;
+        opacity: 0.15;
     }
-    
+
     &:after {
-        content: '';
-        background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        content: "";
+        background: repeating-linear-gradient(
+            white,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            white
+        );
         position: absolute;
         top: 0;
         left: 0;
@@ -46,7 +52,7 @@
 
     .sso-section {
         width: 100%;
-        
+
         .sso-img {
             width: 200px;
         }
@@ -180,23 +186,23 @@
         z-index: 3;
 
         virtual-scroller {
-          margin: 0px;
-          min-height: 40px;
-          li {
-            cursor: pointer;
-            padding: 10px;
-          }
-          li:hover {
-            background-color: color-gray(6);
-          }
+            margin: 0px;
+            min-height: 40px;
+            li {
+                cursor: pointer;
+                padding: 10px;
+            }
+            li:hover {
+                background-color: color-gray(6);
+            }
         }
-      }
+    }
 
-      .org-dropdown__message {
+    .org-dropdown__message {
         padding: 10px;
         text-align: center;
         width: 100%;
         box-sizing: border-box;
         display: block;
-      }
+    }
 }

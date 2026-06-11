@@ -1,26 +1,25 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { LearningObjectBuilderComponent } from './learning-object-builder.component';
+import { LearningObjectBuilderComponent } from "./learning-object-builder.component";
 
-describe('LearningObjectBuilderComponent', () => {
-  let component: LearningObjectBuilderComponent;
-  let fixture: ComponentFixture<LearningObjectBuilderComponent>;
+describe("LearningObjectBuilderComponent", () => {
+    let component: LearningObjectBuilderComponent;
+    let fixture: ComponentFixture<LearningObjectBuilderComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    declarations: [LearningObjectBuilderComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [LearningObjectBuilderComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LearningObjectBuilderComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(LearningObjectBuilderComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

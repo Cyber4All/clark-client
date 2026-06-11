@@ -1,26 +1,25 @@
-import {waitForAsync, ComponentFixture, TestBed} from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import {ChangeStatusModalComponent} from './change-status-modal.component';
+import { ChangeStatusModalComponent } from "./change-status-modal.component";
 
-describe('ChangeStatusModalComponent', () => {
-  let component: ChangeStatusModalComponent;
-  let fixture: ComponentFixture<ChangeStatusModalComponent>;
+describe("ChangeStatusModalComponent", () => {
+    let component: ChangeStatusModalComponent;
+    let fixture: ComponentFixture<ChangeStatusModalComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    declarations: [ChangeStatusModalComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            declarations: [ChangeStatusModalComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ChangeStatusModalComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ChangeStatusModalComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

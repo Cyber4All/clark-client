@@ -1,20 +1,19 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { sections } from './copy';
+import { Component, NgModule, OnInit } from "@angular/core";
+import { sections } from "./copy";
 
 @Component({
-  selector: 'clark-editorial-process',
-  templateUrl: './editorial-process.component.html',
-  styleUrls: ['./editorial-process.component.scss']
+    selector: "clark-editorial-process",
+    templateUrl: "./editorial-process.component.html",
+    styleUrls: ["./editorial-process.component.scss"],
 })
 export class EditorialProcessComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
+    ngOnInit(): void {}
 
-  ngOnInit(): void { }
+    title = "Editorial Process";
 
-  title = 'Editorial Process';
-
-  get tabs(){
-    return Object.values(sections);
-  }
+    get tabs() {
+        return Object.values(sections);
+    }
 }

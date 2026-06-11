@@ -1,39 +1,42 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { Subject } from 'rxjs';
-import { Collection } from 'app/core/collection-module/collections.service';
-import { sidebarAnimations } from './sidebar.component.animation';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, Input } from "@angular/core";
+import { Subject } from "rxjs";
+import { Collection } from "app/core/collection-module/collections.service";
+import { sidebarAnimations } from "./sidebar.component.animation";
+import { AuthService } from "app/core/auth-module/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'clark-admin-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
-  animations: sidebarAnimations
+    selector: "clark-admin-sidebar",
+    templateUrl: "./sidebar.component.html",
+    styleUrls: ["./sidebar.component.scss"],
+    animations: sidebarAnimations,
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  destroyed$: Subject<void> = new Subject();
+    destroyed$: Subject<void> = new Subject();
 
-  @Input() collections: Collection[] = [];
-  @Input() activeCollection: string;
-  @Input() editorMode: boolean;
+    @Input() collections: Collection[] = [];
+    @Input() activeCollection: string;
+    @Input() editorMode: boolean;
 
-  @Input() initialized = false;
+    @Input() initialized = false;
 
-  constructor(private authService: AuthService, private router: Router) { }
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+    ) {}
 
-  ngOnInit() { }
+    ngOnInit() {}
 
-  goBack() {
-    this.router.navigate(['']);
-  }
+    goBack() {
+        this.router.navigate([""]);
+    }
 
-  isAdminOrEditor(): boolean {
-    return this.authService.isAdminOrEditor();
-  }
+    isAdminOrEditor(): boolean {
+        return this.authService.isAdminOrEditor();
+    }
 
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.unsubscribe();
-  }
+    ngOnDestroy() {
+        this.destroyed$.next();
+        this.destroyed$.unsubscribe();
+    }
 }

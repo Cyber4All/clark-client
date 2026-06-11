@@ -1,49 +1,68 @@
-<div class='outcome'>
-  <div (activate)='outcome.mappings?.length && toggleMappingsDisplay()' class='outcome__grid-container' aria-label='open mapped outcomes'>
-    <div class='outcome__grid-container__icon-container'>
-      <i class='far fa-2x' [ngClass]="{
-        'fa-cloud': outcome.bloom === 'remember and understand',
-        'fa-bolt': outcome.bloom === 'apply and analyze',
-        'fa-balance-scale-right': outcome.bloom === 'evaluate and synthesize'
-      }"></i>
-    </div>
-    <div class='outcome__grid-container__text-container'>
-      <div class='text-container__outcome'>
-        {{ outcomeText }}
-      </div>
-      <div class='text-container__mapped-to'>
-        {{ outcome?.mappings.length ? 'Mapped to' : 'No Mappings' }}
-        <span *ngFor='let mapping of mappingsFrameworks let i = index'>
-          {{ mapping?.frameworkName }}<span *ngIf="i < mappingsFrameworks.length - 1">,</span>
-        </span>
-      </div>
-    </div>
-    <div class='outcome__grid-container__mapped-outcomes-count-container'>
-      <div class='mapped-outcomes-count-container__number'>
-        {{ outcome?.mappings.length }}
-      </div>
-      <div class='mapped-outcomes-count-container__text'>
-        Alignment<span *ngIf="outcome?.mappings.length > 1 || outcome?.mappings.length === 0">s</span>
-      </div>
-    </div>
-    <div 
-      *ngIf="outcome?.mappings.length !== 0"
-      class='outcome__grid-container__toggle-container' 
-      [ngClass]="{'outcome__grid-container__toggle-container--active': showMappings}" 
-      >
-      <i class="far fa-chevron-down"></i>
-    </div>
-  </div>
-  <div [@showOutcome] *ngIf='showMappings' class='outcome__mappings-display'>
-    <ul class='outcome__mappings-display__list'>
-      <li [@outcome] class='mappings-display__list__item' *ngFor='let mapping of outcome?.mappings'>
-        <div class='list__item__header-text'>
-          {{ mapping?.frameworkName }} - {{ mapping?.guidelineName }} - {{ mapping?.year }}
+<div class="outcome">
+    <div
+        (activate)="outcome.mappings?.length && toggleMappingsDisplay()"
+        class="outcome__grid-container"
+        aria-label="open mapped outcomes">
+        <div class="outcome__grid-container__icon-container">
+            <i
+                class="far fa-2x"
+                [ngClass]="{
+                    'fa-cloud': outcome.bloom === 'remember and understand',
+                    'fa-bolt': outcome.bloom === 'apply and analyze',
+                    'fa-balance-scale-right':
+                        outcome.bloom === 'evaluate and synthesize',
+                }"></i>
         </div>
-        <div class='list__item__outcome-text'>
-          {{ mapping?.guidelineDescription }}
+        <div class="outcome__grid-container__text-container">
+            <div class="text-container__outcome">
+                {{ outcomeText }}
+            </div>
+            <div class="text-container__mapped-to">
+                {{ outcome?.mappings.length ? "Mapped to" : "No Mappings" }}
+                <span *ngFor="let mapping of mappingsFrameworks; let i = index">
+                    {{ mapping?.frameworkName
+                    }}<span *ngIf="i < mappingsFrameworks.length - 1">,</span>
+                </span>
+            </div>
         </div>
-      </li>
-    </ul>
-  </div>
+        <div class="outcome__grid-container__mapped-outcomes-count-container">
+            <div class="mapped-outcomes-count-container__number">
+                {{ outcome?.mappings.length }}
+            </div>
+            <div class="mapped-outcomes-count-container__text">
+                Alignment<span
+                    *ngIf="
+                        outcome?.mappings.length > 1 ||
+                        outcome?.mappings.length === 0
+                    "
+                    >s</span
+                >
+            </div>
+        </div>
+        <div
+            *ngIf="outcome?.mappings.length !== 0"
+            class="outcome__grid-container__toggle-container"
+            [ngClass]="{
+                'outcome__grid-container__toggle-container--active':
+                    showMappings,
+            }">
+            <i class="far fa-chevron-down"></i>
+        </div>
+    </div>
+    <div [@showOutcome] *ngIf="showMappings" class="outcome__mappings-display">
+        <ul class="outcome__mappings-display__list">
+            <li
+                [@outcome]
+                class="mappings-display__list__item"
+                *ngFor="let mapping of outcome?.mappings">
+                <div class="list__item__header-text">
+                    {{ mapping?.frameworkName }} -
+                    {{ mapping?.guidelineName }} - {{ mapping?.year }}
+                </div>
+                <div class="list__item__outcome-text">
+                    {{ mapping?.guidelineDescription }}
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>

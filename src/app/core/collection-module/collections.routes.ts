@@ -1,4 +1,4 @@
-import { environment } from '@env/environment';
+import { environment } from "@env/environment";
 
 export const COLLECTION_ROUTES = {
     /**
@@ -28,5 +28,5 @@ export const COLLECTION_ROUTES = {
      */
     GET_COLLECTION_METADATA(abvName: string) {
         return `${environment.apiURL}/collections/${encodeURIComponent(abvName)}`;
-    }
+    },
 };

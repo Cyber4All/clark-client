@@ -1,67 +1,61 @@
 <div
-  class="grid-row wrapper"
-  [ngClass]="{ bundle: checkAccessGroups() }"
-  role="link"
-  tabindex="0"
->
-  <div
-    (activate)="handleClick($event)"
-    class="text-contained inline-flex"
-    [ngClass]="{ 'hover-react': file.downloadURL }"
-    tipPosition="top"
-    id="file-name"
-  >
-    <i [ngClass]="['fas', icon, 'icon']"></i>
-    {{ file?.name }}
-  </div>
-  <div class="text-contained filesize" id="file-size">
-    {{ file?.size | fileSize }}
-  </div>
-  <div class="file-actions">
-    <!-- Download Button -->
-    <button
-      mat-icon-button
-      [matTooltip]="
-        isLoggedIn
-          ? file.downloadURL
-            ? 'Download'
-            : 'Click &quot;Download Now&quot; to view this file on your machine'
-          : 'Login to download'
-      "
-      (click)="onDownload()"
-      [disabled]="!file.downloadURL || !isLoggedIn"
-    >
-      <i class="fas fa-download"></i>
-    </button>
+    class="grid-row wrapper"
+    [ngClass]="{ bundle: checkAccessGroups() }"
+    role="link"
+    tabindex="0">
+    <div
+        (activate)="handleClick($event)"
+        class="text-contained inline-flex"
+        [ngClass]="{ 'hover-react': file.downloadURL }"
+        tipPosition="top"
+        id="file-name">
+        <i [ngClass]="['fas', icon, 'icon']"></i>
+        {{ file?.name }}
+    </div>
+    <div class="text-contained filesize" id="file-size">
+        {{ file?.size | fileSize }}
+    </div>
+    <div class="file-actions">
+        <!-- Download Button -->
+        <button
+            mat-icon-button
+            [matTooltip]="
+                isLoggedIn
+                    ? file.downloadURL
+                        ? 'Download'
+                        : 'Click &quot;Download Now&quot; to view this file on your machine'
+                    : 'Login to download'
+            "
+            (click)="onDownload()"
+            [disabled]="!file.downloadURL || !isLoggedIn">
+            <i class="fas fa-download"></i>
+        </button>
 
-    <!-- Preview Button -->
-    <button
-      mat-icon-button
-      [disabled]="!canPreview || !file.downloadURL || !isLoggedIn"
-      [matTooltip]="
-        isLoggedIn
-          ? file.downloadURL && canPreview
-            ? 'Preview'
-            : 'Preview unavailable. Download to view this file on your machine'
-          : 'Login to preview'
-      "
-      (click)="onPreview()"
-    >
-      <i class="fas fa-eye"></i>
-    </button>
-  </div>
-  <div class="toggleBundle" *ngIf="checkAccessGroups()">
-    <clark-toggle-switch
-      [state]="file.packageable"
-      (toggled)="handleToggle($event)"
-    ></clark-toggle-switch>
-  </div>
-  <a
-    tabindex="0"
-    *ngIf="showOptionButton"
-    class="meatballs"
-    (activate)="handleMeatballClick($event)"
-  >
-    <div></div>
-  </a>
+        <!-- Preview Button -->
+        <button
+            mat-icon-button
+            [disabled]="!canPreview || !file.downloadURL || !isLoggedIn"
+            [matTooltip]="
+                isLoggedIn
+                    ? file.downloadURL && canPreview
+                        ? 'Preview'
+                        : 'Preview unavailable. Download to view this file on your machine'
+                    : 'Login to preview'
+            "
+            (click)="onPreview()">
+            <i class="fas fa-eye"></i>
+        </button>
+    </div>
+    <div class="toggleBundle" *ngIf="checkAccessGroups()">
+        <clark-toggle-switch
+            [state]="file.packageable"
+            (toggled)="handleToggle($event)"></clark-toggle-switch>
+    </div>
+    <a
+        tabindex="0"
+        *ngIf="showOptionButton"
+        class="meatballs"
+        (activate)="handleMeatballClick($event)">
+        <div></div>
+    </a>
 </div>

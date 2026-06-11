@@ -1,14 +1,9 @@
 // Core
-import { NgModule } from '@angular/core';
-import {CollectionPipe} from './collection.pipe';
-
+import { NgModule } from "@angular/core";
+import { CollectionPipe } from "./collection.pipe";
 
 @NgModule({
-  declarations: [
-    CollectionPipe
-  ],
-  exports: [
-    CollectionPipe
-  ]
+    declarations: [CollectionPipe],
+    exports: [CollectionPipe],
 })
 export class SharedPipesModule {}

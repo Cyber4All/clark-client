@@ -6,36 +6,36 @@
  * Const arrays for organization enums (shared with zod schemas)
  */
 export const ORGANIZATION_SECTORS = [
-    'academia',
-    'government',
-    'industry',
-    'other',
+    "academia",
+    "government",
+    "industry",
+    "other",
 ] as const;
 
 export const ORGANIZATION_LEVELS = [
-    'elementary',
-    'middle',
-    'high',
-    'community_college',
-    'undergraduate',
-    'graduate',
-    'post_graduate',
-    'training',
+    "elementary",
+    "middle",
+    "high",
+    "community_college",
+    "undergraduate",
+    "graduate",
+    "post_graduate",
+    "training",
 ] as const;
 
 export const ORGANIZATION_VERIFICATION_STATUS = {
-    VERIFIED: 'verified',
-    UNVERIFIED: 'unverified',
+    VERIFIED: "verified",
+    UNVERIFIED: "unverified",
 } as const;
 
 /**
  * Types derived from const arrays
  */
-export type OrganizationSector = typeof ORGANIZATION_SECTORS[number];
+export type OrganizationSector = (typeof ORGANIZATION_SECTORS)[number];
 
-export type OrganizationLevel = typeof ORGANIZATION_LEVELS[number];
+export type OrganizationLevel = (typeof ORGANIZATION_LEVELS)[number];
 export type OrganizationVerificationStatus =
-    typeof ORGANIZATION_VERIFICATION_STATUS[keyof typeof ORGANIZATION_VERIFICATION_STATUS];
+    (typeof ORGANIZATION_VERIFICATION_STATUS)[keyof typeof ORGANIZATION_VERIFICATION_STATUS];
 
 /**
  * Organization entity (as received from API)

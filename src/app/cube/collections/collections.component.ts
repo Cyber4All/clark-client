@@ -1,27 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { CollectionService } from 'app/core/collection-module/collections.service';
-import { Collection } from '../../core/collection-module/collections.service';
+import { Component, OnInit } from "@angular/core";
+import { CollectionService } from "app/core/collection-module/collections.service";
+import { Collection } from "../../core/collection-module/collections.service";
 
 @Component({
-  selector: 'clark-collections',
-  templateUrl: './collections.component.html',
-  styleUrls: ['./collections.component.scss']
+    selector: "clark-collections",
+    templateUrl: "./collections.component.html",
+    styleUrls: ["./collections.component.scss"],
 })
 export class CollectionsComponent implements OnInit {
+    collections: Collection[];
 
-  collections: Collection[];
+    constructor(private collectionService: CollectionService) {}
 
-  constructor(private collectionService: CollectionService) { }
-
-  ngOnInit() {
-    this.collectionService
-      .getCollections()
-      .then((collections: Collection[]) => {
-        this.collections = collections;
-      })
-      .catch(e => {
-        console.error(e.message);
-      });
-  }
-
+    ngOnInit() {
+        this.collectionService
+            .getCollections()
+            .then((collections: Collection[]) => {
+                this.collections = collections;
+            })
+            .catch((e) => {
+                console.error(e.message);
+            });
+    }
 }

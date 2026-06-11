@@ -1,20 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { sections } from './copy';
+import { Component, OnInit } from "@angular/core";
+import { sections } from "./copy";
 
 @Component({
-  selector: 'clark-contribute-page',
-  templateUrl: './contribute-page.component.html',
-  styleUrls: ['./contribute-page.component.scss']
+    selector: "clark-contribute-page",
+    templateUrl: "./contribute-page.component.html",
+    styleUrls: ["./contribute-page.component.scss"],
 })
-
 export class ContributePageComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
+    ngOnInit(): void {}
 
-  ngOnInit(): void { }
-
-  title = 'Contribute';
-  get tabs() {
-    return Object.values(sections);
-  }
+    title = "Contribute";
+    get tabs() {
+        return Object.values(sections);
+    }
 }

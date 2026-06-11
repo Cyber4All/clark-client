@@ -1,20 +1,19 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { sections } from './copy';
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { sections } from "./copy";
 
 @Component({
-  selector: 'clark-about-us',
-  templateUrl: './about-us.component.html',
-  styleUrls: ['./about-us.component.scss']
+    selector: "clark-about-us",
+    templateUrl: "./about-us.component.html",
+    styleUrls: ["./about-us.component.scss"],
 })
 export class AboutClarkComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
+    ngOnInit(): void {}
 
-  ngOnInit(): void { }
+    title = "About Us";
 
-  title = 'About Us';
-
-  get tabs() {
-    return Object.values(sections);
-  }
+    get tabs() {
+        return Object.values(sections);
+    }
 }

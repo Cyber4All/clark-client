@@ -1,9 +1,9 @@
 // Core
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { SidePanelViewerComponent } from './side-panel-viewer/side-panel-viewer.component';
-import { PanelDirective } from './panel.directive';
-import { SharedDirectivesModule } from '../../directives/shared-directives.module';
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { SidePanelViewerComponent } from "./side-panel-viewer/side-panel-viewer.component";
+import { PanelDirective } from "./panel.directive";
+import { SharedDirectivesModule } from "../../directives/shared-directives.module";
 
 /**
  * Contains all stateless UI modules (directives, components, pipes) that are used across the app.
@@ -11,16 +11,8 @@ import { SharedDirectivesModule } from '../../directives/shared-directives.modul
  * @class SidePanelModule
  */
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedDirectivesModule,
-  ],
-  declarations: [
-    SidePanelViewerComponent,
-    PanelDirective
-  ],
-  exports: [
-    PanelDirective
-  ]
+    imports: [CommonModule, SharedDirectivesModule],
+    declarations: [SidePanelViewerComponent, PanelDirective],
+    exports: [PanelDirective],
 })
 export class SidePanelModule {}

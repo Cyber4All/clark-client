@@ -1,10 +1,12 @@
-<clark-contextmenu [content]="modalService.contextMenuContent"></clark-contextmenu>
+<clark-contextmenu
+    [content]="modalService.contextMenuContent"></clark-contextmenu>
 <clark-dialogmenu [content]="modalService.dialogMenuContent"></clark-dialogmenu>
 <div class="outer-wrapper" *ngIf="authService.status">
-  <div class="content">
-    <div [@onionTransitions]="routeState" class="outlet sub-content">
-      <router-outlet #o="outlet"></router-outlet>
+    <div class="content">
+        <div [@onionTransitions]="routeState" class="outlet sub-content">
+            <router-outlet #o="outlet"></router-outlet>
+        </div>
     </div>
-  </div>
 </div>
-<clark-email-banner *ngIf="!authService.user.emailVerified"></clark-email-banner>
+<clark-email-banner
+    *ngIf="!authService.user.emailVerified"></clark-email-banner>

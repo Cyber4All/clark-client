@@ -1,460 +1,465 @@
 import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  ElementRef,
-  Input,
-  ChangeDetectorRef,
-  AfterViewInit,
-} from '@angular/core';
-import { OrderBy, Query, SortType } from '../../../interfaces/query';
-import { LearningObject } from '../../../../entity';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil, debounceTime } from 'rxjs/operators';
-import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
-import { AuthService } from '../../../core/auth-module/auth.service';
-import { Collection } from '../../../core/collection-module/collections.service';
-import { UserService } from 'app/core/user-module/user.service';
-import { SearchService } from 'app/core/learning-object-module/search/search.service';
+    Component,
+    OnInit,
+    OnDestroy,
+    ViewChild,
+    ElementRef,
+    Input,
+    ChangeDetectorRef,
+    AfterViewInit,
+} from "@angular/core";
+import { OrderBy, Query, SortType } from "../../../interfaces/query";
+import { LearningObject } from "../../../../entity";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subject } from "rxjs";
+import { takeUntil, debounceTime } from "rxjs/operators";
+import { ToastrOvenService } from "../../../shared/modules/toaster/notification.service";
+import { AuthService } from "../../../core/auth-module/auth.service";
+import { Collection } from "../../../core/collection-module/collections.service";
+import { UserService } from "app/core/user-module/user.service";
+import { SearchService } from "app/core/learning-object-module/search/search.service";
 @Component({
-  selector: 'clark-learning-objects',
-  templateUrl: './learning-objects.component.html',
-  styleUrls: ['./learning-objects.component.scss'],
+    selector: "clark-learning-objects",
+    templateUrl: "./learning-objects.component.html",
+    styleUrls: ["./learning-objects.component.scss"],
 })
 export class LearningObjectsComponent
-  implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('list') listElement: ElementRef<HTMLElement>;
-  @ViewChild('headers') headersElement: ElementRef<HTMLElement>;
+    implements OnInit, OnDestroy, AfterViewInit {
+    @ViewChild("list") listElement: ElementRef<HTMLElement>;
+    @ViewChild("headers") headersElement: ElementRef<HTMLElement>;
 
-  learningObjects: LearningObject[] = [];
-  searchBarPlaceholder = 'Learning Objects';
-  searchValue = '';
-  lastPage: number;
+    learningObjects: LearningObject[] = [];
+    searchBarPlaceholder = "Learning Objects";
+    searchValue = "";
+    lastPage: number;
 
-  activeLearningObject;
+    activeLearningObject;
 
-  adminStatusList = Object.keys(LearningObject.Status);
-  selectedStatus: string;
+    adminStatusList = Object.keys(LearningObject.Status);
+    selectedStatus: string;
 
-  listViewHeightOffset: number;
+    listViewHeightOffset: number;
 
-  _query: Query = {
-    currPage: 1,
-    limit: 20,
-    sortType: -1,
-    orderBy: OrderBy.Date,
-    text: '',
-    collection: '',
-  };
+    _query: Query = {
+        currPage: 1,
+        limit: 20,
+        sortType: -1,
+        orderBy: OrderBy.Date,
+        text: "",
+        collection: "",
+    };
 
-  displayStatusModal = false;
+    displayStatusModal = false;
 
-  // the total number of learning objects for a given query as dictated from the API
-  total: number;
+    // the total number of learning objects for a given query as dictated from the API
+    total: number;
 
-  loading: boolean;
+    loading: boolean;
 
-  userSearchInput$: Subject<string> = new Subject();
-  componentDestroyed$: Subject<void> = new Subject();
+    userSearchInput$: Subject<string> = new Subject();
+    componentDestroyed$: Subject<void> = new Subject();
 
-  // whether or not the virtual scrolling list should continue trying to fetch as it's scrolled
-  allResultsReceived: boolean;
+    // whether or not the virtual scrolling list should continue trying to fetch as it's scrolled
+    allResultsReceived: boolean;
 
-  isAdminOrEditor: boolean;
+    isAdminOrEditor: boolean;
 
-  isCurator: boolean;
+    isCurator: boolean;
 
-  activeCollection: Collection;
+    activeCollection: Collection;
 
-  topAdjustment: number;
+    topAdjustment: number;
 
-  @Input() showOptions: boolean;
+    @Input() showOptions: boolean;
 
-  // Selection variables
-  selected: Map<string, LearningObject> = new Map();
-  selectedLearningObjects: LearningObject[] = [];
-  allSelected = false;
+    // Selection variables
+    selected: Map<string, LearningObject> = new Map();
+    selectedLearningObjects: LearningObject[] = [];
+    allSelected = false;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private toaster: ToastrOvenService,
-    private auth: AuthService,
-    private cd: ChangeDetectorRef,
-    private userService: UserService,
-    private searchLearningObjectService: SearchService,
-  ) {}
+    constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private toaster: ToastrOvenService,
+        private auth: AuthService,
+        private cd: ChangeDetectorRef,
+        private userService: UserService,
+        private searchLearningObjectService: SearchService,
+    ) {}
 
-  async ngOnInit(): Promise<void> {
-    this.isAdminOrEditor = this.auth.hasEditorAccess();
-    this.isCurator = this.auth.hasCuratorAccess();
+    async ngOnInit(): Promise<void> {
+        this.isAdminOrEditor = this.auth.hasEditorAccess();
+        this.isCurator = this.auth.hasCuratorAccess();
 
-    if (this.isCurator && !this.isAdminOrEditor) {
-      // Get first curator access group only
-      const curatorAccessGroup = this.auth.accessGroups.find((accessGroup) =>
-        accessGroup.includes('curator'),
-      );
+        if (this.isCurator && !this.isAdminOrEditor) {
+            // Get first curator access group only
+            const curatorAccessGroup = this.auth.accessGroups.find(
+                (accessGroup) => accessGroup.includes("curator"),
+            );
 
-      // Split to get collection name
-      const collection = curatorAccessGroup.split('@');
+            // Split to get collection name
+            const collection = curatorAccessGroup.split("@");
 
-      // If the curator access group has a collection then we want to
-      // set the query to that collection
-      if (collection.length === 2) {
-        // Verify that the current user is actually a curator for the collection
-        // before setting the query to the collection. This is to prevent users
-        // from updating the access groups on the browser and getting access to
-        // collections they are not supposed to have access to.
-        this.userService
-          .searchUsers({ accessGroups: [curatorAccessGroup] })
-          .then((curators) => {
-            curators.forEach((curator) => {
-              if (curator.username === this.auth.user.username) {
-                this.query = {
-                  collection: collection[1],
-                };
-              }
+            // If the curator access group has a collection then we want to
+            // set the query to that collection
+            if (collection.length === 2) {
+                // Verify that the current user is actually a curator for the collection
+                // before setting the query to the collection. This is to prevent users
+                // from updating the access groups on the browser and getting access to
+                // collections they are not supposed to have access to.
+                this.userService
+                    .searchUsers({ accessGroups: [curatorAccessGroup] })
+                    .then((curators) => {
+                        curators.forEach((curator) => {
+                            if (curator.username === this.auth.user.username) {
+                                this.query = {
+                                    collection: collection[1],
+                                };
+                            }
+                        });
+                    });
+            } else {
+                console.warn(
+                    `Curator access group is not formatted correctly: ${curatorAccessGroup}`,
+                );
+            }
+        }
+
+        // query by anything if it's passed in
+        // reset page to 1 since we can't scroll backwards
+        this.route.queryParams.subscribe((params) => {
+            this.searchValue = params.text || "";
+            this.query = {
+                ...params,
+                currPage:
+                    params.currPage && !isNaN(params.currPage)
+                        ? parseInt(params.currPage, 10)
+                        : 1,
+            };
+        });
+
+        // listen for input events from the search component and perform the search action
+        this.userSearchInput$
+            .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
+            .subscribe(async (searchTerm) => {
+                this.searchValue = searchTerm;
+                this.query = { currPage: 1, text: searchTerm };
+                if (!searchTerm || searchTerm.length <= 0) {
+                    this.query = {
+                        sortType: SortType.Descending,
+                        orderBy: OrderBy.Date,
+                    };
+                } else {
+                    delete this.query.sortType;
+                    delete this.query.orderBy;
+                }
+                this.learningObjects = [];
+
+                await this.getLearningObjects();
             });
-          });
-      } else {
-        console.warn(
-          `Curator access group is not formatted correctly: ${curatorAccessGroup}`,
-        );
-      }
+
+        if (this.isAdminOrEditor || this.isCurator) {
+            await this.getLearningObjects();
+        }
     }
 
-    // query by anything if it's passed in
-    // reset page to 1 since we can't scroll backwards
-    this.route.queryParams.subscribe((params) => {
-      this.searchValue = params.text || '';
-      this.query = {
-        ...params,
-        currPage:
-          params.currPage && !isNaN(params.currPage)
-            ? parseInt(params.currPage, 10)
-            : 1,
-      };
-    });
+    /**
+     * Return to Query object
+     *
+     * @type {Query}
+     * @memberof LearningObjectsComponent
+     */
+    get query(): Query {
+        return this._query;
+    }
 
-    // listen for input events from the search component and perform the search action
-    this.userSearchInput$
-      .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
-      .subscribe(async (searchTerm) => {
-        this.searchValue = searchTerm;
-        this.query = { currPage: 1, text: searchTerm };
-        if (!searchTerm || searchTerm.length <= 0) {
-          this.query = {
-            sortType: SortType.Descending,
-            orderBy: OrderBy.Date,
-          };
-        } else {
-          delete this.query.sortType;
-          delete this.query.orderBy;
+    changePage(pageNum) {
+        this.listElement.nativeElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+        });
+        this.query = {
+            currPage: pageNum,
+        };
+        this.getLearningObjects();
+    }
+
+    /**
+     * Sets the specified properties onto the Query object
+     *
+     *@param {Partial<Query>} q an object with the properties and their values with which to update the Query object
+     * @memberof LearningObjectsComponent
+     */
+    set query(q: Partial<Query>) {
+        // eslint-disable-next-line guard-for-in
+        for (const key in q) {
+            this.query[key] = q[key];
+        }
+
+        // if we have more than one property to change or the one property we have to change isn't the current page, reset the search
+        if (Object.keys(q).length > 1 || !Object.keys(q).includes("currPage")) {
+            this.allResultsReceived = false;
+        }
+
+        this.router.navigate([], {
+            queryParams: { ...this.query },
+            relativeTo: this.route,
+            replaceUrl: true,
+        });
+    }
+
+    /**
+     * Retrieve Learning Objects from the service
+     *
+     * @returns
+     * @memberof LearningObjectsComponent
+     */
+    async getLearningObjects() {
+        if (!this.allResultsReceived) {
+            // we know there are more objects to pull
+            this.loading = true;
+
+            if (this.query.username && this.query.username.length > 0) {
+                await this.searchLearningObjectService
+                    .getUsersLearningObjects(this.query.username, {
+                        ...this.query,
+                    })
+                    .then(
+                        (response: {
+                            learningObjects: LearningObject[];
+                            total: number;
+                        }) => {
+                            this.learningObjects = response.learningObjects;
+
+                            if (
+                                this.learningObjects.length === response.total
+                            ) {
+                                this.allResultsReceived = true;
+                            }
+                            this.lastPage = Math.ceil(response.total / 20);
+                        },
+                    )
+                    .catch((error) => {
+                        console.error(error);
+                        this.toaster.error(
+                            "Error!",
+                            "There was an error fetching Learning Objects. Please try again later.",
+                        );
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            } else {
+                await this.searchLearningObjectService
+                    .getLearningObjects(this.query)
+                    .then((val) => {
+                        this.learningObjects = val.learningObjects;
+
+                        if (this.learningObjects.length === val.total) {
+                            this.allResultsReceived = true;
+                        }
+                        this.lastPage = Math.ceil(val.total / 20);
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        this.toaster.error(
+                            "Error!",
+                            "There was an error fetching Learning Objects. Please try again later.",
+                        );
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            }
+        }
+    }
+
+    /**
+     * Sorts list by date
+     *
+     * @param direction the direction of the sort (ASC or DESC)
+     */
+    sortByDate() {
+        if (!this.query.sortType) {
+            this.query = {
+                sortType: SortType.Descending,
+                orderBy: OrderBy.Date,
+            };
+        } else if (this.query.sortType.toString() === "-1") {
+            this.query = {
+                ...this.query,
+                sortType: SortType.Ascending,
+            };
+        } else if (this.query.sortType.toString() === "1") {
+            this.query = {
+                ...this.query,
+                sortType: SortType.Descending,
+            };
         }
         this.learningObjects = [];
+        this.allResultsReceived = false;
 
-        await this.getLearningObjects();
-      });
-
-    if (this.isAdminOrEditor || this.isCurator) {
-      await this.getLearningObjects();
-    }
-  }
-
-  /**
-   * Return to Query object
-   *
-   * @type {Query}
-   * @memberof LearningObjectsComponent
-   */
-  get query(): Query {
-    return this._query;
-  }
-
-  changePage(pageNum) {
-    this.listElement.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start',
-    });
-    this.query = {
-      currPage: pageNum,
-    };
-    this.getLearningObjects();
-  }
-
-  /**
-   * Sets the specified properties onto the Query object
-   *
-   *@param {Partial<Query>} q an object with the properties and their values with which to update the Query object
-   * @memberof LearningObjectsComponent
-   */
-  set query(q: Partial<Query>) {
-    // eslint-disable-next-line guard-for-in
-    for (const key in q) {
-      this.query[key] = q[key];
+        this.getLearningObjects();
     }
 
-    // if we have more than one property to change or the one property we have to change isn't the current page, reset the search
-    if (Object.keys(q).length > 1 || !Object.keys(q).includes('currPage')) {
-      this.allResultsReceived = false;
+    /**
+     * Updates the queries startNextcheck and endNextCheck values
+     *
+     * @param dates The start and end dates for the relevancy date filter
+     */
+
+    getRelevancyFilteredLearningObjects(dates: any) {
+        this.query = {
+            startNextCheck: dates.start,
+            endNextCheck: dates.end,
+            start: "",
+            end: "",
+            currPage: 1,
+        };
+        this.learningObjects = [];
+
+        this.getLearningObjects();
     }
 
-    this.router.navigate([], {
-      queryParams: { ...this.query },
-      relativeTo: this.route,
-      replaceUrl: true,
-    });
-  }
+    /**
+     * Updates the queries start and end values
+     *
+     * @param dates The start and end dates for the date search filter
+     */
+    getDateFilteredLearningObjects(dates: { start: Date; end: Date }) {
+        this.query = {
+            start: dates.start,
+            end: dates.end,
+            startNextCheck: "",
+            endNextCheck: "",
+            currPage: 1,
+        };
+        this.learningObjects = [];
 
-  /**
-   * Retrieve Learning Objects from the service
-   *
-   * @returns
-   * @memberof LearningObjectsComponent
-   */
-  async getLearningObjects() {
-    if (!this.allResultsReceived) {
-      // we know there are more objects to pull
-      this.loading = true;
+        this.getLearningObjects();
+    }
 
-      if (this.query.username && this.query.username.length > 0) {
-        await this.searchLearningObjectService
-          .getUsersLearningObjects(this.query.username, {
-            ...this.query,
-          })
-          .then(
-            (response: {
-              learningObjects: LearningObject[];
-              total: number;
-            }) => {
-              this.learningObjects = response.learningObjects;
+    /**
+     * Clear the filters of both collection and status and reset the Learning Objects query
+     *
+     * @memberof LearningObjectsComponent
+     */
+    clearStatusAndCollectionFilters() {
+        delete this.query.collection;
+        delete this.query.topics;
+        delete this.query.status;
+        this.query.currPage = 1;
+        this.learningObjects = [];
 
-              if (this.learningObjects.length === response.total) {
-                this.allResultsReceived = true;
-              }
-              this.lastPage = Math.ceil(response.total / 20);
-            },
-          )
-          .catch((error) => {
-            console.error(error);
-            this.toaster.error(
-              'Error!',
-              'There was an error fetching Learning Objects. Please try again later.',
+        this.getLearningObjects();
+    }
+
+    /**
+     * Selects all learning objects
+     */
+    selectAll() {
+        this.allSelected = !this.allSelected;
+        if (this.allSelected) {
+            this.selected = new Map(
+                // @ts-ignore
+                this.learningObjects.map((learningObject) => [
+                    learningObject.id,
+                    learningObject,
+                ]),
             );
-          })
-          .finally(() => {
-            this.loading = false;
-          });
-      } else {
-        await this.searchLearningObjectService
-          .getLearningObjects(this.query)
-          .then((val) => {
-            this.learningObjects = val.learningObjects;
-
-            if (this.learningObjects.length === val.total) {
-              this.allResultsReceived = true;
-            }
-            this.lastPage = Math.ceil(val.total / 20);
-          })
-          .catch((error) => {
-            console.error(error);
-            this.toaster.error(
-              'Error!',
-              'There was an error fetching Learning Objects. Please try again later.',
-            );
-          })
-          .finally(() => {
-            this.loading = false;
-          });
-      }
+            this.selectedLearningObjects = this.learningObjects;
+            this.cd.detectChanges();
+        } else {
+            this.selected = new Map();
+            this.selectedLearningObjects = [];
+        }
     }
-  }
 
-  /**
-   * Sorts list by date
-   *
-   * @param direction the direction of the sort (ASC or DESC)
-   */
-  sortByDate() {
-    if (!this.query.sortType) {
-      this.query = {
-        sortType: SortType.Descending,
-        orderBy: OrderBy.Date,
-      };
-    } else if (this.query.sortType.toString() === '-1') {
-      this.query = {
-        ...this.query,
-        sortType: SortType.Ascending,
-      };
-    } else if (this.query.sortType.toString() === '1') {
-      this.query = {
-        ...this.query,
-        sortType: SortType.Descending,
-      };
+    /**
+     * Decides based on the value whether to select or deselect the learning object
+     *
+     * @param l learning object to be selected
+     * @param value boolean, true if object is selected, false otherwise
+     */
+    toggleSelect(l: LearningObject, value: boolean) {
+        value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
     }
-    this.learningObjects = [];
-    this.allResultsReceived = false;
 
-    this.getLearningObjects();
-  }
+    handleFilterQuery(filters: {
+        status: string[];
+        topic: string[];
+        collection: string;
+        start: Date;
+        end: Date;
+    }) {
+        const query = {
+            status: filters.status,
+            topics: filters.topic,
+            collection: filters.collection,
+            currPage: 1,
+            start: filters.start ? filters.start : "",
+            end: filters.end ? filters.end : "",
+        };
 
-  /**
-   * Updates the queries startNextcheck and endNextCheck values
-   *
-   * @param dates The start and end dates for the relevancy date filter
-   */
+        if (this.query.collection && query.collection.length === 0) {
+            this.query.collection = query.collection;
+        }
+        this.query = query;
+        this.learningObjects = [];
 
-  getRelevancyFilteredLearningObjects(dates: any) {
-    this.query = {
-      startNextCheck: dates.start,
-      endNextCheck: dates.end,
-      start: '',
-      end: '',
-      currPage: 1,
-    };
-    this.learningObjects = [];
-
-    this.getLearningObjects();
-  }
-
-  /**
-   * Updates the queries start and end values
-   *
-   * @param dates The start and end dates for the date search filter
-   */
-  getDateFilteredLearningObjects(dates: { start: Date; end: Date }) {
-    this.query = {
-      start: dates.start,
-      end: dates.end,
-      startNextCheck: '',
-      endNextCheck: '',
-      currPage: 1,
-    };
-    this.learningObjects = [];
-
-    this.getLearningObjects();
-  }
-
-  /**
-   * Clear the filters of both collection and status and reset the Learning Objects query
-   *
-   * @memberof LearningObjectsComponent
-   */
-  clearStatusAndCollectionFilters() {
-    delete this.query.collection;
-    delete this.query.topics;
-    delete this.query.status;
-    this.query.currPage = 1;
-    this.learningObjects = [];
-
-    this.getLearningObjects();
-  }
-
-  /**
-   * Selects all learning objects
-   */
-  selectAll() {
-    this.allSelected = !this.allSelected;
-    if (this.allSelected) {
-      this.selected = new Map(
-        // @ts-ignore
-        this.learningObjects.map((learningObject) => [
-          learningObject.id,
-          learningObject,
-        ]),
-      );
-      this.selectedLearningObjects = this.learningObjects;
-      this.cd.detectChanges();
-    } else {
-      this.selected = new Map();
-      this.selectedLearningObjects = [];
+        this.getLearningObjects();
     }
-  }
 
-  /**
-   * Decides based on the value whether to select or deselect the learning object
-   *
-   * @param l learning object to be selected
-   * @param value boolean, true if object is selected, false otherwise
-   */
-  toggleSelect(l: LearningObject, value: boolean) {
-    value ? this.selectLearningObject(l) : this.deselectLearningObject(l);
-  }
+    /**
+     * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
+     *
+     * @param l Learning Object to be selected
+     */
+    selectLearningObject(l: LearningObject) {
+        this.selected.set(l.id, l);
+        this.selectedLearningObjects.push(l);
+        this.cd.detectChanges();
 
-
-  handleFilterQuery(filters: {
-    status: string[];
-    topic: string[];
-    collection: string;
-    start: Date;
-    end: Date;
-  }) {
-    const query = {
-      status: filters.status,
-      topics: filters.topic,
-      collection: filters.collection,
-      currPage: 1,
-      start: filters.start ? filters.start : '',
-      end: filters.end ? filters.end : ''
-    };
-
-    if(this.query.collection && query.collection.length === 0) {
-      this.query.collection = query.collection;
+        if (
+            this.selected.size === this.learningObjects.length &&
+            !this.allSelected
+        ) {
+            this.allSelected = true;
+        }
     }
-    this.query = query;
-    this.learningObjects = [];
 
-    this.getLearningObjects();
-  }
+    /**
+     * Fired on select of a Learning Object, takes the object and removes it from the list of selected Learning Objects
+     *
+     * @param l Learning Object to be deselected
+     */
+    deselectLearningObject(l: LearningObject) {
+        this.selected.delete(l.id);
+        const index = this.selectedLearningObjects.indexOf(l);
+        if (index > -1) {
+            this.selectedLearningObjects.splice(index, 1);
+        }
+        this.cd.detectChanges();
 
-  /**
-   * Fired on select of a Learning Object, takes the object and either adds to the list of selected Learning Objects
-   *
-   * @param l Learning Object to be selected
-   */
-  selectLearningObject(l: LearningObject) {
-    this.selected.set(l.id, l);
-    this.selectedLearningObjects.push(l);
-    this.cd.detectChanges();
-
-    if (
-      this.selected.size === this.learningObjects.length &&
-      !this.allSelected
-    ) {
-      this.allSelected = true;
+        if (
+            this.selected.size < this.learningObjects.length &&
+            this.allSelected
+        ) {
+            this.allSelected = false;
+        }
     }
-  }
 
-  /**
-   * Fired on select of a Learning Object, takes the object and removes it from the list of selected Learning Objects
-   *
-   * @param l Learning Object to be deselected
-   */
-  deselectLearningObject(l: LearningObject) {
-    this.selected.delete(l.id);
-    const index = this.selectedLearningObjects.indexOf(l);
-    if (index > -1) {
-      this.selectedLearningObjects.splice(index, 1);
+    ngAfterViewInit(): void {
+        setTimeout(() => {
+            this.listViewHeightOffset =
+                this.listElement.nativeElement.getBoundingClientRect().top +
+                this.headersElement.nativeElement.getBoundingClientRect()
+                    .height;
+        }, 2000);
     }
-    this.cd.detectChanges();
 
-    if (this.selected.size < this.learningObjects.length && this.allSelected) {
-      this.allSelected = false;
+    ngOnDestroy() {
+        this.componentDestroyed$.next();
+        this.componentDestroyed$.unsubscribe();
     }
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.listViewHeightOffset =
-        this.listElement.nativeElement.getBoundingClientRect().top +
-        this.headersElement.nativeElement.getBoundingClientRect().height;
-    }, 2000);
-  }
-
-  ngOnDestroy() {
-    this.componentDestroyed$.next();
-    this.componentDestroyed$.unsubscribe();
-  }
 }

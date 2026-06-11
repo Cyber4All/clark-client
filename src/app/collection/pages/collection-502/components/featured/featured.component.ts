@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-  selector: 'clark-502-featured',
-  templateUrl: './featured.component.html',
-  styleUrls: ['./featured.component.scss']
+    selector: "clark-502-featured",
+    templateUrl: "./featured.component.html",
+    styleUrls: ["./featured.component.scss"],
 })
 export class FeaturedComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {}
 }
