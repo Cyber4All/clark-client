@@ -19,26 +19,24 @@ import { SharedModule } from 'app/shared/shared.module';
 import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 @NgModule({
-  declarations: [
-    AuthComponent,
-    RegisterComponent,
-    LoginComponent,
-    ChangePasswordComponent,
-    ForgotPasswordComponent,
-    EmailVerifiedComponent,
-    ErrorBannerComponent,
-    RecaptchaDirective,
-    RegistrationProgressComponent,
-  ],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    RouterModule,
-    MatInputModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SharedModule,
-    VirtualScrollerModule,
-  ],
+    imports: [
+        CommonModule,
+        AuthRoutingModule,
+        RouterModule,
+        MatInputModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SharedModule,
+        VirtualScrollerModule,
+        AuthComponent,
+        RegisterComponent,
+        LoginComponent,
+        ChangePasswordComponent,
+        ForgotPasswordComponent,
+        EmailVerifiedComponent,
+        ErrorBannerComponent,
+        RecaptchaDirective,
+        RegistrationProgressComponent,
+    ],
 })
 export class AuthModule { }

@@ -5,11 +5,19 @@ import { NavbarService } from '../../../core/client-module/navbar.service';
 import { Title } from '@angular/platform-browser';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { OrderBy } from 'app/interfaces/query';
+import { HeaderComponent } from './components/header/header.component';
+import { CollectionFeatureComponent } from '../../shared/included/collection-feature/collection-feature.component';
+import { AboutComponent } from './components/about/about.component';
+import { CuratorsComponent } from './components/curators/curators.component';
+import { StatsComponent } from './components/stats/stats.component';
+import { FooterComponent } from '../../../cube/shared/footer/footer.component';
 
 @Component({
-  selector: 'clark-collection-ncyte',
-  templateUrl: './collection-ncyte.component.html',
-  styleUrls: ['./collection-ncyte.component.scss']
+    selector: 'clark-collection-ncyte',
+    templateUrl: './collection-ncyte.component.html',
+    styleUrls: ['./collection-ncyte.component.scss'],
+    standalone: true,
+    imports: [HeaderComponent, CollectionFeatureComponent, AboutComponent, CuratorsComponent, StatsComponent, FooterComponent]
 })
 export class CollectionNcyteComponent implements OnInit, OnDestroy {
 

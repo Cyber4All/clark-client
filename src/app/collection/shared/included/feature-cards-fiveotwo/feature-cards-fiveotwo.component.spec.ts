@@ -8,8 +8,8 @@ describe('FeatureCardsFiveotwoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FeatureCardsFiveotwoComponent ]
-    })
+    imports: [FeatureCardsFiveotwoComponent]
+})
     .compileComponents();
   });
 

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { NgFor } from '@angular/common';
 
 @Component({
-  selector: 'clark-philosophy',
-  templateUrl: './philosophy.component.html',
-  styleUrls: ['./philosophy.component.scss']
+    selector: 'clark-philosophy',
+    templateUrl: './philosophy.component.html',
+    styleUrls: ['./philosophy.component.scss'],
+    standalone: true,
+    imports: [NgFor]
 })
 export class AboutPhilosophyComponent implements OnInit {
   values = [

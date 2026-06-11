@@ -8,8 +8,8 @@ describe('TagWithCyberComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TagWithCyberComponent ]
-    })
+    imports: [TagWithCyberComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(TagWithCyberComponent);

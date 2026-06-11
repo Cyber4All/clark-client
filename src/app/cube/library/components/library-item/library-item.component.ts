@@ -1,11 +1,16 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { LibraryService } from 'app/core/library-module/library.service';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { RatingStarsComponent } from '../../../../shared/components/rating-stars/rating-stars.component';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-library-item',
-  templateUrl: './library-item.component.html',
-  styleUrls: ['./library-item.component.scss']
+    selector: 'clark-library-item',
+    templateUrl: './library-item.component.html',
+    styleUrls: ['./library-item.component.scss'],
+    standalone: true,
+    imports: [ActivateDirective, RatingStarsComponent, TitleCasePipe]
 })
 export class LibraryItemComponent implements OnInit {
 

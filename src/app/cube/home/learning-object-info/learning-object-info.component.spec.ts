@@ -8,8 +8,8 @@ describe('LearningObjectInfoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LearningObjectInfoComponent ]
-    })
+    imports: [LearningObjectInfoComponent]
+})
     .compileComponents();
   });
 

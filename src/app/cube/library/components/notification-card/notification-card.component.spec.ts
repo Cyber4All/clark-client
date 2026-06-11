@@ -8,7 +8,7 @@ describe('NotificationCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [NotificationCardComponent],
+    imports: [NotificationCardComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

@@ -13,15 +13,30 @@ import { BuilderStore } from '../../builder-store.service';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { takeUntil, debounceTime, filter, map } from 'rxjs/operators';
 import { SearchItemDocument } from 'entity/standard-guidelines/search-index';
+import { FormsModule } from '@angular/forms';
+import { NgTemplateOutlet, NgIf, NgFor } from '@angular/common';
+import { SkipLinkComponent } from '../../../../shared/components/skip-link/skip-link.component';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
+import { OutcomesListItemComponent } from './outcomes-list-item/outcomes-list-item.component';
 
 export interface SuggestedOutcome extends SearchItemDocument {
   suggested?: boolean;
 }
 
 @Component({
-  selector: 'clark-standard-outcomes',
-  templateUrl: './standard-outcomes.component.html',
-  styleUrls: ['./standard-outcomes.component.scss'],
+    selector: 'clark-standard-outcomes',
+    templateUrl: './standard-outcomes.component.html',
+    styleUrls: ['./standard-outcomes.component.scss'],
+    standalone: true,
+    imports: [
+        FormsModule,
+        NgTemplateOutlet,
+        SkipLinkComponent,
+        VirtualScrollerModule,
+        NgIf,
+        NgFor,
+        OutcomesListItemComponent,
+    ],
 })
 export class StandardOutcomesComponent implements OnChanges, OnDestroy {
   // id of the currently selected outcome

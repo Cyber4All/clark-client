@@ -7,7 +7,7 @@ import {
   OnInit,
   Output
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AUTH_ROUTES } from 'app/core/auth-module/auth.routes';
@@ -19,11 +19,17 @@ import { UserService } from 'app/core/user-module/user.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { Subject } from 'rxjs';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
+import { InputFieldComponent } from '../../../../shared/components/input-field/input-field.component';
+import { NgIf, NgTemplateOutlet, NgClass, NgFor } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
 
 @Component({
-  selector: 'clark-edit-profile',
-  templateUrl: './edit-profile.component.html',
-  styleUrls: ['./edit-profile.component.scss']
+    selector: 'clark-edit-profile',
+    templateUrl: './edit-profile.component.html',
+    styleUrls: ['./edit-profile.component.scss'],
+    standalone: true,
+    imports: [FormsModule, InputFieldComponent, NgIf, NgTemplateOutlet, NgClass, ActivateDirective, VirtualScrollerModule, NgFor]
 })
 export class EditProfileComponent implements OnChanges, OnInit, OnDestroy {
   ssoRedirect = AUTH_ROUTES.GOOGLE_SIGNUP();

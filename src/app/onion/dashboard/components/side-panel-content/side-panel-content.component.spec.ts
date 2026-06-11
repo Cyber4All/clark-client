@@ -16,9 +16,8 @@ describe('SidePanelContentComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [SidePanelContentComponent],
     teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule, NoopAnimationsModule],
+    imports: [RouterTestingModule, NoopAnimationsModule, SidePanelContentComponent],
     providers: [
         RatingService,
         AuthService,

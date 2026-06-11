@@ -2,21 +2,26 @@ import { animate, sequence, style, transition, trigger } from '@angular/animatio
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CollectionService, Collection } from '../../../core/collection-module/collections.service';
 import { ToastrOvenService } from '../../modules/toaster/notification.service';
+import { NgIf, NgFor } from '@angular/common';
+import { CollectionCardComponent } from '../collection-card/collection-card.component';
+import { ActivateDirective } from '../../directives/activate.directive';
 
 @Component({
-  selector: 'clark-collections-dropdown',
-  templateUrl: './collections-dropdown.component.html',
-  styleUrls: ['./collections-dropdown.component.scss'],
-  animations: [
-    trigger('dropDownMenu', [
-      transition(':enter', [
-        style({ height: 0, overflow: 'hidden' }),
-        sequence([
-          animate('200ms', style({ height: '500px' })),
+    selector: 'clark-collections-dropdown',
+    templateUrl: './collections-dropdown.component.html',
+    styleUrls: ['./collections-dropdown.component.scss'],
+    animations: [
+        trigger('dropDownMenu', [
+            transition(':enter', [
+                style({ height: 0, overflow: 'hidden' }),
+                sequence([
+                    animate('200ms', style({ height: '500px' })),
+                ])
+            ])
         ])
-      ])
-    ])
-  ]
+    ],
+    standalone: true,
+    imports: [NgIf, NgFor, CollectionCardComponent, ActivateDirective]
 })
 export class CollectionsDropdownComponent implements OnInit {
 

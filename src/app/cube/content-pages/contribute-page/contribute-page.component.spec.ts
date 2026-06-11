@@ -7,8 +7,8 @@ describe('ContributePageComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ContributePageComponent ]
-    })
+    imports: [ContributePageComponent]
+})
     .compileComponents();
   }));
 

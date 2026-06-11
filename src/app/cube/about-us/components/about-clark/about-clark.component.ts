@@ -4,9 +4,10 @@ import { UsageStats } from '../../../shared/types/usage-stats';
 import { MetricService } from 'app/core/metric-module/metric.service';
 
 @Component({
-  selector: 'clark-about-clark',
-  templateUrl: './about-clark.component.html',
-  styleUrls: ['./about-clark.component.scss']
+    selector: 'clark-about-clark',
+    templateUrl: './about-clark.component.html',
+    styleUrls: ['./about-clark.component.scss'],
+    standalone: true
 })
 export class AboutClarkComponent implements OnInit {
   objectStatsLoaded = false;

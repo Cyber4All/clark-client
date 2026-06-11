@@ -1,10 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Tag } from '../../../../../entity/tag/tag';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { NgClass } from '@angular/common';
 
 @Component({
-  selector: 'clark-tag-pill',
-  templateUrl: './tag-pill.component.html',
-  styleUrls: ['./tag-pill.component.scss']
+    selector: 'clark-tag-pill',
+    templateUrl: './tag-pill.component.html',
+    styleUrls: ['./tag-pill.component.scss'],
+    standalone: true,
+    imports: [TipDirective, NgClass]
 })
 export class TagPillComponent implements OnInit {
   @Input() tag: Tag;

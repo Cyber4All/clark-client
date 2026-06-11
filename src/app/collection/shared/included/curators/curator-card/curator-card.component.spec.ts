@@ -8,7 +8,7 @@ describe('CuratorCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [CuratorCardComponent],
+    imports: [CuratorCardComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

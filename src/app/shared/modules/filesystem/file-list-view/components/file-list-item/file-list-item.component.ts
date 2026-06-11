@@ -3,11 +3,25 @@ import { LearningObject } from '@entity';
 import { getIcon } from 'app/shared/modules/filesystem/file-icons';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
+import { NgClass, NgIf } from '@angular/common';
+import { ActivateDirective } from '../../../../../directives/activate.directive';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ToggleSwitchComponent } from '../../../../../components/toggle-switch/toggle-switch.component';
+import { FileSizePipe } from '../../file-size.pipe';
 
 @Component({
-  selector: 'clark-file-list-item',
-  templateUrl: 'file-list-item.component.html',
-  styleUrls: ['file-list-item.component.scss'],
+    selector: 'clark-file-list-item',
+    templateUrl: 'file-list-item.component.html',
+    styleUrls: ['file-list-item.component.scss'],
+    standalone: true,
+    imports: [
+        NgClass,
+        ActivateDirective,
+        MatTooltip,
+        NgIf,
+        ToggleSwitchComponent,
+        FileSizePipe,
+    ],
 })
 export class FileListItemComponent implements OnInit {
   @Input() file: LearningObject.Material.File;

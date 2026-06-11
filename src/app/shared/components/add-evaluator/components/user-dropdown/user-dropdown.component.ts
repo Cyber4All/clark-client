@@ -14,11 +14,17 @@ import { OrganizationStore } from 'app/core/organization-module/organization.sto
 import { UserService } from 'app/core/user-module/user.service';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgTemplateOutlet, NgFor, NgStyle, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
+import { ActivateDirective } from '../../../../directives/activate.directive';
 
 @Component({
-  selector: 'clark-user-dropdown',
-  templateUrl: './user-dropdown.component.html',
-  styleUrls: ['./user-dropdown.component.scss']
+    selector: 'clark-user-dropdown',
+    templateUrl: './user-dropdown.component.html',
+    styleUrls: ['./user-dropdown.component.scss'],
+    standalone: true,
+    imports: [FormsModule, NgIf, NgTemplateOutlet, NgFor, VirtualScrollerModule, ActivateDirective, NgStyle, AsyncPipe, TitleCasePipe]
 })
 export class UserDropdownComponent implements OnInit, OnDestroy {
 

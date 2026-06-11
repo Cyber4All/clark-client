@@ -8,8 +8,8 @@ describe('StickyMenuComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ StickyMenuComponent ]
-    })
+    imports: [StickyMenuComponent]
+})
     .compileComponents();
   });
 

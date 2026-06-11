@@ -2,11 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
 import { User } from '@entity';
 import { UserService } from 'app/core/user-module/user.service';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-selected-user',
-  templateUrl: './selected-user.component.html',
-  styleUrls: ['./selected-user.component.scss']
+    selector: 'clark-selected-user',
+    templateUrl: './selected-user.component.html',
+    styleUrls: ['./selected-user.component.scss'],
+    standalone: true,
+    imports: [AsyncPipe, TitleCasePipe]
 })
 export class SelectedUserComponent implements OnInit {
 

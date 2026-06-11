@@ -20,12 +20,25 @@ import {
 } from 'app/core/learning-object-module/learning-object/learning-object.service';
 import { EditorialService } from 'app/core/learning-object-module/editorial.service';
 import { Router } from '@angular/router';
+import { CheckBoxComponent } from '../../../shared/components/checkbox/checkbox.component';
+import { NgClass, NgIf, TitleCasePipe, DatePipe } from '@angular/common';
+import { TipDirective } from '../../../shared/directives/tip.directive';
+import { MatBadge } from '@angular/material/badge';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { ContextMenuComponent } from '../../../shared/modules/contextmenu/context-menu/context-menu.component';
+import { PopupComponent } from '../../../shared/modules/popups/popup.component';
+import { ChangeCollectionComponent } from '../change-collection/change-collection.component';
+import { ChangeAuthorComponent } from '../change-author/change-author.component';
+import { RelevancyDateComponent } from '../relevancy-date/relevancy-date.component';
+import { HierarchyBuilderComponent } from '../hierarchy-builder/hierarchy-builder.component';
 
 @Component({
-  selector: 'clark-learning-object-list-item',
-  templateUrl: './learning-object-list-item.component.html',
-  styleUrls: ['./learning-object-list-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'clark-learning-object-list-item',
+    templateUrl: './learning-object-list-item.component.html',
+    styleUrls: ['./learning-object-list-item.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [CheckBoxComponent, NgClass, TipDirective, NgIf, MatBadge, ActivateDirective, ContextMenuComponent, PopupComponent, ChangeCollectionComponent, ChangeAuthorComponent, RelevancyDateComponent, HierarchyBuilderComponent, TitleCasePipe, DatePipe]
 })
 export class LearningObjectListItemComponent implements OnChanges {
   @Input()

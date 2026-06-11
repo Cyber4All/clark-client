@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'clark-registration-progress',
-  templateUrl: './registration-progress.component.html',
-  styleUrls: ['./registration-progress.component.scss']
+    selector: 'clark-registration-progress',
+    templateUrl: './registration-progress.component.html',
+    styleUrls: ['./registration-progress.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf]
 })
 export class RegistrationProgressComponent implements OnInit {
 

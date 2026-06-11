@@ -1,11 +1,17 @@
 import { Component } from '@angular/core';
 import { ModalService } from '../shared/modules/modals/modal.service';
 import { NavbarService } from '../core/client-module/navbar.service';
+import { ContextMenuComponent } from '../shared/modules/modals/contextmenu.component';
+import { DialogMenuComponent } from '../shared/modules/modals/dialogmenu.component';
+import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @Component({
-  selector: 'clark-cube',
-  templateUrl: './cube.component.html',
-  styleUrls: ['./cube.component.scss']
+    selector: 'clark-cube',
+    templateUrl: './cube.component.html',
+    styleUrls: ['./cube.component.scss'],
+    standalone: true,
+    imports: [ContextMenuComponent, DialogMenuComponent, RouterOutlet, FooterComponent]
 })
 export class CubeComponent {
   hideTopbar: any = false;

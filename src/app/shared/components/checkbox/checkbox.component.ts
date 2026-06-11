@@ -7,10 +7,12 @@ import {
   OnChanges,
   ChangeDetectorRef,
 } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { ActivateDirective } from '../../directives/activate.directive';
 
 @Component({
-  selector: 'clark-checkbox',
-  template: `
+    selector: 'clark-checkbox',
+    template: `
     <button
       class="checkbox"
       id="checkbox"
@@ -21,7 +23,9 @@ import {
       <i class="fas fa-check"></i>
     </button>
   `,
-  styleUrls: [ 'checkbox.component.scss' ],
+    styleUrls: ['checkbox.component.scss'],
+    standalone: true,
+    imports: [NgClass, ActivateDirective],
 })
 export class CheckBoxComponent implements OnChanges {
   private _state = false;

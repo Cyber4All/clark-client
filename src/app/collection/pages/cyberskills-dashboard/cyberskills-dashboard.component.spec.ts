@@ -8,8 +8,8 @@ describe('CyberskillsDashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CyberskillsDashboardComponent ]
-    })
+    imports: [CyberskillsDashboardComponent]
+})
     .compileComponents();
   });
 

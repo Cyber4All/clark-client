@@ -8,18 +8,16 @@ import { AboutClarkComponent } from './components/about-clark/about-clark.compon
 import { HomeModule } from '../home/home.module';
 
 @NgModule({
-  declarations: [
-    MissionComponent,
-    TimelineComponent,
-    AboutUsComponent,
-    AboutClarkComponent,
-  ],
-  imports: [
-    CommonModule,
-    HomeModule,
-  ],
-  exports: [
-    AboutUsComponent
-  ]
+    imports: [
+        CommonModule,
+        HomeModule,
+        MissionComponent,
+        TimelineComponent,
+        AboutUsComponent,
+        AboutClarkComponent,
+    ],
+    exports: [
+        AboutUsComponent
+    ]
 })
 export class AboutUsModule { }

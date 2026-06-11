@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'clark-502-title',
-  templateUrl: './title.component.html',
-  styleUrls: ['./title.component.scss']
+    selector: 'clark-502-title',
+    templateUrl: './title.component.html',
+    styleUrls: ['./title.component.scss'],
+    standalone: true
 })
 export class TitleComponent implements OnInit {
 

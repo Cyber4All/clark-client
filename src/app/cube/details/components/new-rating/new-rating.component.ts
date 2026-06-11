@@ -7,11 +7,23 @@ import {
   SimpleChanges,
   EventEmitter,
 } from '@angular/core';
+import { NgClass, NgFor } from '@angular/common';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'clark-new-rating',
-  templateUrl: './new-rating.component.html',
-  styleUrls: ['./new-rating.component.scss'],
+    selector: 'clark-new-rating',
+    templateUrl: './new-rating.component.html',
+    styleUrls: ['./new-rating.component.scss'],
+    standalone: true,
+    imports: [
+        NgClass,
+        NgFor,
+        TipDirective,
+        ActivateDirective,
+        FormsModule,
+    ],
 })
 export class NewRatingComponent implements OnInit, OnChanges {
   @Input() count = 5;

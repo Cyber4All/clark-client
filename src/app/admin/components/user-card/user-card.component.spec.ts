@@ -12,14 +12,14 @@ describe('UserCardComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AdminUserCardComponent],
-      teardown: { destroyAfterEach: false },
-      providers: [
+    imports: [AdminUserCardComponent],
+    teardown: { destroyAfterEach: false },
+    providers: [
         AuthService,
         UserService,
         provideHttpClient(withInterceptorsFromDi())
-      ]
-    })
+    ]
+})
     .compileComponents();
   }));
 

@@ -1,9 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgIf, NgFor, LowerCasePipe, TitleCasePipe } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'clark-report-rating',
-  templateUrl: './report-rating.component.html',
-  styleUrls: ['./report-rating.component.scss']
+    selector: 'clark-report-rating',
+    templateUrl: './report-rating.component.html',
+    styleUrls: ['./report-rating.component.scss'],
+    standalone: true,
+    imports: [NgIf, ActivateDirective, NgFor, FormsModule, LowerCasePipe, TitleCasePipe]
 })
 export class ReportRatingComponent implements OnInit {
   @Input() subject = 'rating';

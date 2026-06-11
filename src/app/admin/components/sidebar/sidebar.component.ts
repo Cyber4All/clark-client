@@ -3,13 +3,17 @@ import { Subject } from 'rxjs';
 import { Collection } from 'app/core/collection-module/collections.service';
 import { sidebarAnimations } from './sidebar.component.animation';
 import { AuthService } from 'app/core/auth-module/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { NgIf, NgTemplateOutlet, NgFor, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'clark-admin-sidebar',
-  templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss'],
-  animations: sidebarAnimations
+    selector: 'clark-admin-sidebar',
+    templateUrl: './sidebar.component.html',
+    styleUrls: ['./sidebar.component.scss'],
+    animations: sidebarAnimations,
+    standalone: true,
+    imports: [ActivateDirective, NgIf, NgTemplateOutlet, RouterLink, RouterLinkActive, NgFor, NgClass]
 })
 export class SidebarComponent implements OnInit, OnDestroy {
   destroyed$: Subject<void> = new Subject();

@@ -1,9 +1,13 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-admin-pagination',
-  templateUrl: './pagination.component.html',
-  styleUrls: ['./pagination.component.scss']
+    selector: 'clark-admin-pagination',
+    templateUrl: './pagination.component.html',
+    styleUrls: ['./pagination.component.scss'],
+    standalone: true,
+    imports: [NgIf, ActivateDirective, NgFor, NgClass]
 })
 export class PaginationComponent implements OnInit {
 

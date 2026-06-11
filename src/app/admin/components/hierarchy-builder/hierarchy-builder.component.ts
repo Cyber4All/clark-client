@@ -6,11 +6,27 @@ import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hier
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObjectNode, TreeDataSource } from './tree-datasource';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodeOutlet } from '@angular/material/tree';
+import { MatIconButton } from '@angular/material/button';
+import { HierarchyObjectComponent } from './hierarchy-object/hierarchy-object.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'clark-hierarchy-builder',
-  templateUrl: 'hierarchy-builder.component.html',
-  styleUrls: ['hierarchy-builder.component.scss'],
+    selector: 'clark-hierarchy-builder',
+    templateUrl: 'hierarchy-builder.component.html',
+    styleUrls: ['hierarchy-builder.component.scss'],
+    standalone: true,
+    imports: [
+        MatTree,
+        MatTreeNodeDef,
+        MatTreeNode,
+        MatTreeNodeToggle,
+        MatIconButton,
+        HierarchyObjectComponent,
+        MatNestedTreeNode,
+        NgIf,
+        MatTreeNodeOutlet,
+    ],
 })
 export class HierarchyBuilderComponent implements OnInit {
 

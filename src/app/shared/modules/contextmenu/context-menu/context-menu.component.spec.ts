@@ -8,7 +8,7 @@ describe('ContextMenuComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [ContextMenuComponent],
+    imports: [ContextMenuComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

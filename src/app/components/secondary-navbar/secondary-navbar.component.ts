@@ -2,12 +2,18 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { Topic } from '../../../entity';
 import { NavbarDropdownService } from '../../core/client-module/navBarDropdown.service';
 import { UtilityService } from '../../core/utility-module/utility.service';
+import { NgIf, NgFor } from '@angular/common';
+import { ContextMenuComponent } from '../../shared/modules/contextmenu/context-menu/context-menu.component';
+import { RouterLink } from '@angular/router';
+import { CollectionsDropdownComponent } from '../../shared/components/collections-dropdown/collections-dropdown.component';
 
 @Component({
-  selector: 'clark-secondary-navbar',
-  templateUrl: './secondary-navbar.component.html',
-  styleUrls: ['./secondary-navbar.component.scss'],
-  providers: [NavbarDropdownService]
+    selector: 'clark-secondary-navbar',
+    templateUrl: './secondary-navbar.component.html',
+    styleUrls: ['./secondary-navbar.component.scss'],
+    providers: [NavbarDropdownService],
+    standalone: true,
+    imports: [NgIf, ContextMenuComponent, RouterLink, NgFor, CollectionsDropdownComponent]
 })
 export class SecondaryNavbarComponent implements OnInit {
 

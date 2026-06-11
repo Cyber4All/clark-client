@@ -8,8 +8,8 @@ describe('CollectionsDropdownComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CollectionsDropdownComponent ]
-    })
+    imports: [CollectionsDropdownComponent]
+})
     .compileComponents();
   });
 

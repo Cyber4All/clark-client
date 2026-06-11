@@ -9,9 +9,9 @@ import {
 } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatStepper } from '@angular/material/stepper';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
 import { OrganizationService } from 'app/core/organization-module/organization.service';
 import {
@@ -28,12 +28,62 @@ import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/drop
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { forkJoin, merge, of, Subject } from 'rxjs';
 import { debounceTime, finalize, map, switchMap, takeUntil } from 'rxjs/operators';
-import { OrganizationFormData } from './organization-edit-modal/organization-edit-modal.component';
+import { OrganizationFormData, OrganizationEditModalComponent } from './organization-edit-modal/organization-edit-modal.component';
+import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
+import { StatsCardComponent } from '../../../shared/components/stats-card/stats-card.component';
+import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
+import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
+import { DropdownFilterComponent } from '../../../shared/components/dropdown-filter/dropdown-filter.component';
+import { ClearFiltersButtonComponent } from '../../../shared/components/clear-filters-button/clear-filters-button.component';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { VerificationBadgeComponent } from '../../../shared/components/verification-badge/verification-badge.component';
+import { MatTooltip } from '@angular/material/tooltip';
+import { MatMenuTrigger, MatMenu, MatMenuContent, MatMenuItem } from '@angular/material/menu';
+import { OrganizationDeleteModalComponent } from './organization-delete-modal/organization-delete-modal.component';
+import { OrganizationMigrateModalComponent } from './organization-migrate-modal/organization-migrate-modal.component';
 
 @Component({
-  selector: 'clark-organizations',
-  templateUrl: './organizations.component.html',
-  styleUrls: ['./organizations.component.scss'],
+    selector: 'clark-organizations',
+    templateUrl: './organizations.component.html',
+    styleUrls: ['./organizations.component.scss'],
+    standalone: true,
+    imports: [
+        ContentWrapperComponent,
+        StatsCardComponent,
+        SearchInputComponent,
+        NgIf,
+        DropdownFilterComponent,
+        ClearFiltersButtonComponent,
+        MatPaginator,
+        MatButton,
+        MatIcon,
+        MatTable,
+        MatSort,
+        MatColumnDef,
+        MatHeaderCellDef,
+        MatHeaderCell,
+        MatSortHeader,
+        MatCellDef,
+        MatCell,
+        VerificationBadgeComponent,
+        NgClass,
+        NgFor,
+        MatIconButton,
+        MatTooltip,
+        MatMenuTrigger,
+        MatHeaderRowDef,
+        MatHeaderRow,
+        MatRowDef,
+        MatRow,
+        MatMenu,
+        MatMenuContent,
+        MatMenuItem,
+        OrganizationEditModalComponent,
+        OrganizationDeleteModalComponent,
+        OrganizationMigrateModalComponent,
+        TitleCasePipe,
+    ],
 })
 export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('list') listElement!: ElementRef<HTMLElement>;

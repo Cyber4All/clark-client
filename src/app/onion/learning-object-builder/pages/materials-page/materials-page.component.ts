@@ -5,11 +5,19 @@ import { takeUntil, filter } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { FileUploadMeta } from '../../components/content-upload/app/services/typings';
 import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
+import { ColumnWrapperComponent } from '../../components/column-wrapper/column-wrapper.component';
+import { NgIf, NgFor } from '@angular/common';
+import { ScaffoldComponent } from '../../components/scaffold/scaffold.component';
+import { UploadComponent } from '../../components/content-upload/app/upload/upload.component';
+import { SkipLinkComponent } from '../../../../shared/components/skip-link/skip-link.component';
+import { MaterialNotesComponent } from '../../components/material-notes/material-notes.component';
 
 @Component({
-  selector: 'clark-materials-page',
-  templateUrl: './materials-page.component.html',
-  styleUrls: ['./materials-page.component.scss']
+    selector: 'clark-materials-page',
+    templateUrl: './materials-page.component.html',
+    styleUrls: ['./materials-page.component.scss'],
+    standalone: true,
+    imports: [ColumnWrapperComponent, NgIf, ScaffoldComponent, UploadComponent, SkipLinkComponent, NgFor, MaterialNotesComponent]
 })
 export class MaterialsPageComponent implements OnInit, OnDestroy {
   saving$: Subject<boolean> = new Subject<boolean>();

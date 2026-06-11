@@ -8,7 +8,7 @@ describe('ChangeAuthorUserDropdownComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [ChangeAuthorUserDropdownComponent],
+    imports: [ChangeAuthorUserDropdownComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

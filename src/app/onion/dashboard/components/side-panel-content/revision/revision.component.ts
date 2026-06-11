@@ -1,12 +1,20 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { card, nullAnimation } from './revision.animations';
+import { NgIf, NgTemplateOutlet, NgClass, TitleCasePipe, DatePipe } from '@angular/common';
+import { TipDirective } from '../../../../../shared/directives/tip.directive';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
+import { ContextMenuComponent } from '../../../../../shared/modules/contextmenu/context-menu/context-menu.component';
+import { RouterLink } from '@angular/router';
+import { PopupComponent } from '../../../../../shared/modules/popups/popup.component';
 
 @Component({
-  selector: 'clark-revision',
-  templateUrl: './revision.component.html',
-  styleUrls: ['./revision.component.scss'],
-  animations: [ card, nullAnimation ]
+    selector: 'clark-revision',
+    templateUrl: './revision.component.html',
+    styleUrls: ['./revision.component.scss'],
+    animations: [card, nullAnimation],
+    standalone: true,
+    imports: [NgIf, TipDirective, NgTemplateOutlet, NgClass, ActivateDirective, ContextMenuComponent, RouterLink, PopupComponent, TitleCasePipe, DatePipe]
 })
 export class RevisionComponent implements OnChanges {
   @Input() hasRevision: boolean;

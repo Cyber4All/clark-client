@@ -8,7 +8,7 @@ describe('PhilosophyComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [PhilosophyComponent],
+    imports: [PhilosophyComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

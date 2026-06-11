@@ -3,11 +3,14 @@ import { User } from '@entity';
 import { UserService } from 'app/core/user-module/user.service';
 import { Users } from 'aws-sdk/clients/workmail';
 import { OrganizationStore } from 'app/core/organization-module/organization.store';
+import { NgClass, NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-curator-card',
-  templateUrl: './curator-card.component.html',
-  styleUrls: ['./curator-card.component.scss']
+    selector: 'clark-curator-card',
+    templateUrl: './curator-card.component.html',
+    styleUrls: ['./curator-card.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf, AsyncPipe, TitleCasePipe]
 })
 export class CuratorCardComponent implements OnInit {
 

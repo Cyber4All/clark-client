@@ -4,10 +4,15 @@ import { SubscriptionLike as ISubscription } from 'rxjs';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { CollectionService } from 'app/core/collection-module/collections.service';
 import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { NgIf } from '@angular/common';
+import { ProfileHeaderComponent } from './components/profile-header/profile-header.component';
+import { ProfileLearningObjectsComponent } from './components/profile-learning-objects/profile-learning-objects.component';
 @Component({
-  selector: 'clark-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+    selector: 'clark-user-profile',
+    templateUrl: './user-profile.component.html',
+    styleUrls: ['./user-profile.component.scss'],
+    standalone: true,
+    imports: [NgIf, ProfileHeaderComponent, ProfileLearningObjectsComponent]
 })
 
 export class UserProfileComponent implements OnInit {

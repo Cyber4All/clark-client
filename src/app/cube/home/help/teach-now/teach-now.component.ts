@@ -3,11 +3,18 @@ import { Router } from '@angular/router';
 import { LearningObject, Topic } from '@entity';
 import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { FormsModule } from '@angular/forms';
+import { LearningObjectListingComponent } from '../../../shared/learning-object/learning-object.component';
+import { LearningObjectCardDirective } from '../../../../shared/directives/learning-object-card.directive';
 
 @Component({
-  selector: 'clark-teach-now',
-  templateUrl: './teach-now.component.html',
-  styleUrls: ['./teach-now.component.scss']
+    selector: 'clark-teach-now',
+    templateUrl: './teach-now.component.html',
+    styleUrls: ['./teach-now.component.scss'],
+    standalone: true,
+    imports: [NgIf, ActivateDirective, NgFor, NgClass, FormsModule, LearningObjectListingComponent, LearningObjectCardDirective]
 })
 export class TeachNowComponent implements OnInit, AfterViewInit {
 

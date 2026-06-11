@@ -1,10 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CollectionService } from 'app/core/collection-module/collections.service';
+import { NgIf, SlicePipe, TitleCasePipe, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-feature-cards-fiveotwo',
-  templateUrl: './feature-cards-fiveotwo.component.html',
-  styleUrls: ['./feature-cards-fiveotwo.component.scss']
+    selector: 'clark-feature-cards-fiveotwo',
+    templateUrl: './feature-cards-fiveotwo.component.html',
+    styleUrls: ['./feature-cards-fiveotwo.component.scss'],
+    standalone: true,
+    imports: [NgIf, SlicePipe, TitleCasePipe, DatePipe]
 })
 export class FeatureCardsFiveotwoComponent implements OnInit {
 

@@ -8,7 +8,7 @@ describe('HighlightedLearningObjectComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [HighlightedLearningObjectComponent],
+    imports: [HighlightedLearningObjectComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

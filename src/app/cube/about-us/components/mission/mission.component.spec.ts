@@ -8,7 +8,7 @@ describe('MissionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [MissionComponent],
+    imports: [MissionComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

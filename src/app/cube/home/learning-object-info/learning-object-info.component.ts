@@ -1,4 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { StickyMenuComponent } from './sticky-menu/sticky-menu.component';
+import { LearningObjectsComponent } from './learning-objects/learning-objects.component';
+import { LearningOutcomesComponent } from './learning-outcomes/learning-outcomes.component';
+import { HierarchiesComponent } from './hierarchies/hierarchies.component';
 
 export enum LEARNING_OBJECT_INFO_STATES {
   LEARNING_OBJECT = 'learningObject',
@@ -7,9 +11,11 @@ export enum LEARNING_OBJECT_INFO_STATES {
 };
 
 @Component({
-  selector: 'clark-learning-object-info',
-  templateUrl: './learning-object-info.component.html',
-  styleUrls: ['./learning-object-info.component.scss']
+    selector: 'clark-learning-object-info',
+    templateUrl: './learning-object-info.component.html',
+    styleUrls: ['./learning-object-info.component.scss'],
+    standalone: true,
+    imports: [StickyMenuComponent, LearningObjectsComponent, LearningOutcomesComponent, HierarchiesComponent]
 })
 export class LearningObjectInfoComponent implements OnInit {
   currentComponent: LEARNING_OBJECT_INFO_STATES;

@@ -8,7 +8,7 @@ describe('AccessibilityStatementComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [AccessibilityStatementComponent],
+    imports: [AccessibilityStatementComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();
