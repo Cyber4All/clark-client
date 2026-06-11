@@ -29,6 +29,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   copy = COPY;
   learningObjects: LearningObject[] = [];
   totalLearningObjects = 0;
+  totalLearningObjectsPreview = 0;
   outcomeSources: any[];
 
   query: Query = {
@@ -75,6 +76,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   windowWidth: number;
 
   unsubscribe: Subject<void> = new Subject();
+  private totalLearningObjectsPreviewRequestId = 0;
 
   shouldResetPage = false;
 
@@ -330,9 +332,11 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
   /**
    * Handle backdrop click to close modal
+   * Applies pending modal filters first so clicking outside behaves like the Show Results button.
    */
   onBackdropClick(event: MouseEvent) {
     if (event.target === event.currentTarget) {
+      this.applyFilters();
       this.closeFilters();
     }
   }
@@ -384,6 +388,8 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
 
     if (!this.filtersDownMobile) {
       this.performSearch(true);
+    } else {
+      this.fetchTotalLearningObjectsPreview();
     }
   }
 
@@ -526,6 +532,7 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
   }
 
   async fetchLearningObjects(query: Query) {
+    this.totalLearningObjectsPreviewRequestId++;
     this.loading = true;
     this.learningObjects = [];
     // Trim leading and trailing whitespace
@@ -536,12 +543,65 @@ export class BrowseComponent implements AfterViewInit, OnDestroy {
         await this.searchLearningObjectService.getLearningObjects(this.removeObjFalsy(query));
       this.learningObjects = learningObjects;
       this.totalLearningObjects = total;
+      this.totalLearningObjectsPreview = total;
       this.pageCount = Math.ceil(total / +this.query.limit);
       this.loading = false;
       this.cd.detectChanges();
     } catch (e) {
       console.log(`Error: ${e}`);
     }
+  }
+
+  /**
+   * Fetches only the result count for the filters currently selected in the modal.
+   * This lets the modal preview the number of matching learning objects without
+   * navigating or replacing the result cards shown on the page.
+   */
+  private async fetchTotalLearningObjectsPreview() {
+    const requestId = ++this.totalLearningObjectsPreviewRequestId;
+    const previewQuery = {
+      ...this.getQueryWithPendingFilters(),
+      currPage: 1,
+      limit: 1,
+    };
+
+    previewQuery.text = previewQuery.text ? previewQuery.text.trim() : '';
+
+    try {
+      const { total } =
+        await this.searchLearningObjectService.getLearningObjects(this.removeObjFalsy(previewQuery));
+
+      if (requestId !== this.totalLearningObjectsPreviewRequestId) {
+        return;
+      }
+
+      this.totalLearningObjectsPreview = total;
+      this.cd.detectChanges();
+    } catch (e) {
+      console.log(`Error: ${e}`);
+    }
+  }
+
+  /**
+   * Builds a query from the applied route state plus any pending modal filter changes.
+   * Removed filter categories are deleted from the applied query so the preview count
+   * matches what would be sent if the user applied the current modal state.
+   */
+  private getQueryWithPendingFilters(): Query {
+    const pendingQuery = { ...this.query };
+
+    if (this.filters && Object.keys(this.filters).length > 0) {
+      (this.filters.removed as string[] || []).forEach(
+        (category) => delete pendingQuery[category],
+      );
+
+      const filters = { ...this.filters };
+      delete filters.removed;
+
+      return { ...pendingQuery, ...filters };
+    }
+
+    return pendingQuery;
   }
 
   /**
