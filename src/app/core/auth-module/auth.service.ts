@@ -413,7 +413,7 @@ export class AuthService {
     password: string,
   }): Promise<User> {
     try {
-      const data = await this.encryptionService.encryptRSA(user);
+      const data = await this.encryptionService.encryptPayload(user);
       const response = await this.http
         .post<AuthUser & { tokens: Tokens }>(
           AUTH_ROUTES.REGISTER(),
