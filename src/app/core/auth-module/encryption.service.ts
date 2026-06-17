@@ -33,6 +33,71 @@ export class EncryptionService {
     };
   }
 
+  // Envelope encryption using AES-GCM for the payload and RSA-OAEP to wrap the AES key
+  async encryptPayload(data: object) {
+    try {
+      const rsaKey = await this.importPublicKey(); // RSA public wrapping Key
+      const aesKey = await crypto.subtle.generateKey( // AES data encryption Key
+        {
+          name: "AES-GCM",
+          length: 256,
+        },
+        true,
+        ["encrypt", "decrypt"]
+      );
+
+      // Initialization Vector for AES, initial starting state for encryption to prevent identifying patterns in encrypted data
+      // Should be random and unique for each encryption but does not need to be secret
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+
+      // Encrypted User Data using AES-GCM
+      const encryptedPayload = await crypto.subtle.encrypt(
+        {
+          name: "AES-GCM",
+          iv,
+        },
+        aesKey,
+        new TextEncoder().encode(JSON.stringify(data))
+      );
+
+      // Encrypt/wrap the AES key using the RSA public key, so it can be safely sent to the backend to decrypt the data
+      const rawAesKey = await crypto.subtle.exportKey("raw", aesKey);
+      const encryptedKey = await crypto.subtle.encrypt(
+        {
+          name: "RSA-OAEP",
+        },
+        rsaKey.key,
+        rawAesKey
+      );
+
+      // Web Crypto AES-GCM returns ciphertext with the 16-byte auth tag appended at the end.
+      // Node's AES-GCM decrypt API expects the auth tag separately, so split it off here.
+      // The auth tag lets the backend verify the ciphertext was not tampered with, prevents tampering with encrypted data
+      // to send corrupt data to clark-service
+      const encryptedPayloadBytes = new Uint8Array(encryptedPayload);
+      const authTag = encryptedPayloadBytes.slice(
+        encryptedPayloadBytes.length - 16
+      );
+
+      // The encrypted data is the encrypted payload without the auth tag, since the auth tag is needed to decrypt the data and is not actually part of the encrypted data
+      const encryptedData = encryptedPayloadBytes.slice(
+        0,
+        encryptedPayloadBytes.length - 16
+      );
+
+      return {
+        data: JSON.stringify(Array.from(encryptedData)),
+        encryptedKey: JSON.stringify(Array.from(new Uint8Array(encryptedKey))),
+        iv: JSON.stringify(Array.from(iv)),
+        authTag: JSON.stringify(Array.from(authTag)),
+        publicKey: rsaKey.publicKey,
+      };
+    } catch (error) {
+      console.error("Error encrypting data:", error);
+      throw error;
+    }
+  }
+
   /**
    * Gets the randomly generated public key from the backend and parses it so it can be used by the
    * web crypto package to encrypt data

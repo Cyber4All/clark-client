@@ -21,29 +21,27 @@ import { FormsModule } from '@angular/forms';
 import { BlogsComponent } from 'app/components/blogs/blogs.component';
 
 @NgModule({
-  declarations: [
-    HomeComponent,
-    SplashComponent,
-    MissionComponent,
-    HelpComponent,
-    LearningObjectInfoComponent,
-    TeachNowComponent,
-    BuildProgramComponent,
-    ExploreCollectionsComponent,
-    LearningObjectsComponent,
-    LearningOutcomesComponent,
-    HierarchiesComponent,
-    StickyMenuComponent,
-    HelpCardComponent,
-    HelpBackBtnComponent,
-    BlogsComponent
-  ],
-  imports: [
-    CommonModule,
-    CubeSharedModule,
-    SharedModule,
-    RouterModule,
-    FormsModule,
-  ]
+    imports: [
+        CommonModule,
+        CubeSharedModule,
+        SharedModule,
+        RouterModule,
+        FormsModule,
+        HomeComponent,
+        SplashComponent,
+        MissionComponent,
+        HelpComponent,
+        LearningObjectInfoComponent,
+        TeachNowComponent,
+        BuildProgramComponent,
+        ExploreCollectionsComponent,
+        LearningObjectsComponent,
+        LearningOutcomesComponent,
+        HierarchiesComponent,
+        StickyMenuComponent,
+        HelpCardComponent,
+        HelpBackBtnComponent,
+        BlogsComponent,
+    ]
 })
 export class HomeModule { }

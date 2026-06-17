@@ -8,8 +8,8 @@ describe('ErrorBannerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ErrorBannerComponent ]
-    })
+    imports: [ErrorBannerComponent]
+})
     .compileComponents();
   });
 

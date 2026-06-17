@@ -14,11 +14,28 @@ import { DescriptionUpdate } from '../file-browser/file-browser.component';
 import { LearningObject } from '@entity';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { FileService } from 'app/core/learning-object-module/file/file.service';
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { TipDirective } from '../../../directives/tip.directive';
+import { FolderListItemComponent } from './components/folder-list-item/folder-list-item.component';
+import { FileListItemComponent } from './components/file-list-item/file-list-item.component';
+import { FilePreviewComponent } from '../file-preview/file-preview.component';
+import { ActivateDirective } from '../../../directives/activate.directive';
 
 @Component({
-  selector: 'clark-file-list-view',
-  templateUrl: 'file-list-view.component.html',
-  styleUrls: ['file-list-view.component.scss'],
+    selector: 'clark-file-list-view',
+    templateUrl: 'file-list-view.component.html',
+    styleUrls: ['file-list-view.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgClass,
+        TipDirective,
+        NgFor,
+        FolderListItemComponent,
+        FileListItemComponent,
+        FilePreviewComponent,
+        ActivateDirective,
+    ],
 })
 export class FileListViewComponent implements OnInit, OnDestroy {
   @Input()

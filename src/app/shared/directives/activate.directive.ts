@@ -1,7 +1,8 @@
 import { Directive, Output, EventEmitter, HostListener, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[activate]'
+    selector: '[activate]',
+    standalone: true
 })
 export class ActivateDirective {
 

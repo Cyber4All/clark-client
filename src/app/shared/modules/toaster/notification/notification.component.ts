@@ -1,9 +1,10 @@
 import { ToastrOvenService, ToastrOven } from '../notification.service';
 import { Component, ElementRef, AfterViewChecked } from '@angular/core';
+import { NgFor, NgStyle, NgIf } from '@angular/common';
 
 @Component({
-  selector: '<clark-toastr-oven></clark-toastr-oven>',
-  template: `
+    selector: '<clark-toastr-oven></clark-toastr-oven>',
+    template: `
     <div
       *ngFor="let el of toRender; let i = index"
       [attr.data-notification]="i"
@@ -31,7 +32,13 @@ import { Component, ElementRef, AfterViewChecked } from '@angular/core';
       </div>
     </div>
   `,
-  styleUrls: ['notification.component.scss'],
+    styleUrls: ['notification.component.scss'],
+    standalone: true,
+    imports: [
+        NgFor,
+        NgStyle,
+        NgIf,
+    ],
 })
 export class ToastrOvenComponent implements AfterViewChecked {
   toRender: Array<ToastrOvenElement> = [];

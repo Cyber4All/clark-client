@@ -2,7 +2,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { NavbarService } from '../../core/client-module/navbar.service';
 import { BuilderStore, BUILDER_ERRORS } from './builder-store.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 
 import { Subject } from 'rxjs';
 import {
@@ -21,6 +21,10 @@ import { LearningOutcomeValidator } from './validators/learning-outcome.validato
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { LearningObject } from '@entity';
 import { HistorySnapshot, HistoryService } from 'app/core/client-module/history.service';
+import { NgIf, NgClass } from '@angular/common';
+import { BuilderNavbarComponent } from './components/builder-navbar/builder-navbar.component';
+import { PopupComponent } from '../../shared/modules/popups/popup.component';
+import { ActivateDirective } from '../../shared/directives/activate.directive';
 
 export const builderTransitions = trigger('builderTransition', [
   transition('* => *', [
@@ -76,19 +80,21 @@ export const builderTransitions = trigger('builderTransition', [
 
 // This component sets its own page title within the builder store
 @Component({
-  selector: 'clark-learning-object-builder',
-  templateUrl: './learning-object-builder.component.html',
-  styleUrls: ['./learning-object-builder.component.scss'],
-  animations: [
-    trigger('serviceInteraction', [
-      state('open', style({ opacity: '1', transform: 'translateY(-20px)' })),
-      state('closed', style({ opacity: '0', transform: 'translateY(0px)' })),
-      transition('* => *', animate('300ms ease'))
-    ]),
-    builderTransitions
-  ],
-  // these are provided here so that they'll be destroyed when navigating away
-  providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator]
+    selector: 'clark-learning-object-builder',
+    templateUrl: './learning-object-builder.component.html',
+    styleUrls: ['./learning-object-builder.component.scss'],
+    animations: [
+        trigger('serviceInteraction', [
+            state('open', style({ opacity: '1', transform: 'translateY(-20px)' })),
+            state('closed', style({ opacity: '0', transform: 'translateY(0px)' })),
+            transition('* => *', animate('300ms ease'))
+        ]),
+        builderTransitions
+    ],
+    // these are provided here so that they'll be destroyed when navigating away
+    providers: [BuilderStore, LearningObjectValidator, LearningOutcomeValidator],
+    standalone: true,
+    imports: [NgIf, BuilderNavbarComponent, RouterOutlet, NgClass, PopupComponent, ActivateDirective]
 })
 export class LearningObjectBuilderComponent implements OnInit, AfterViewInit, OnDestroy {
   // fires when the component is destroyed

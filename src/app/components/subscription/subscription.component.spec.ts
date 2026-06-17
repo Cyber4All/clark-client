@@ -8,7 +8,7 @@ describe('SubscriptionComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [SubscriptionComponent],
+    imports: [SubscriptionComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

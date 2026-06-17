@@ -14,16 +14,16 @@ describe('SearchBarComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
-      declarations: [FilterSearchComponent],
-      teardown: { destroyAfterEach: false },
-      providers: [
+    imports: [FilterSearchComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    teardown: { destroyAfterEach: false },
+    providers: [
         { provide: AuthService, useValue: { user: { accessGroups: [] } } },
         CollectionService,
         ToastrOvenService,
         provideHttpClient(withInterceptorsFromDi())
-      ]
-    })
+    ]
+})
     .compileComponents();
   }));
 

@@ -7,10 +7,13 @@ import {
   HostListener,
 } from '@angular/core';
 import { ModalDirective } from './modal';
+import { NgIf, NgStyle, NgFor, NgClass } from '@angular/common';
+import { ClickOutsideModule } from 'ng-click-outside';
+import { ActivateDirective } from '../../directives/activate.directive';
 
 @Component({
-  selector: '<clark-contextmenu></clark-contextmenu>',
-  template: `
+    selector: '<clark-contextmenu></clark-contextmenu>',
+    template: `
     <div
       id="context-popup"
       *ngIf="show"
@@ -30,6 +33,15 @@ import { ModalDirective } from './modal';
       </ul>
     </div>
   `,
+    standalone: true,
+    imports: [
+        NgIf,
+        NgStyle,
+        ClickOutsideModule,
+        NgFor,
+        NgClass,
+        ActivateDirective,
+    ],
 })
 export class ContextMenuComponent
   extends ModalDirective

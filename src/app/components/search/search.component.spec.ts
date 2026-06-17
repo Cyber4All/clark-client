@@ -8,7 +8,7 @@ describe('SearchComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [SearchComponent],
+    imports: [SearchComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

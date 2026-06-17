@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-email-banner',
-  templateUrl: './email-banner.component.html',
-  styleUrls: ['./email-banner.component.scss']
+    selector: 'clark-email-banner',
+    templateUrl: './email-banner.component.html',
+    styleUrls: ['./email-banner.component.scss'],
+    standalone: true,
+    imports: [ActivateDirective]
 })
 export class EmailBannerComponent implements OnInit {
 

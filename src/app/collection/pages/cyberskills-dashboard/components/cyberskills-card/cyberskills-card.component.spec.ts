@@ -8,8 +8,8 @@ describe('CyberskillsCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CyberskillsCardComponent ]
-    })
+    imports: [CyberskillsCardComponent]
+})
     .compileComponents();
   });
 

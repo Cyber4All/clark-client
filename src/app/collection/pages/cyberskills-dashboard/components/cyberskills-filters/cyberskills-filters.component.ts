@@ -11,14 +11,26 @@ import {
 import { LearningObject } from '@entity';
 import { ActivatedRoute } from '@angular/router';
 import { FilterQuery, OrderBy, SortType } from '../../../../../interfaces/query';
+import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
+import { ContextMenuComponent } from '../../../../../shared/modules/contextmenu/context-menu/context-menu.component';
 
 @Component({
-  selector: 'clark-cyberskills-filters',
-  templateUrl: './cyberskills-filters.component.html',
-  styleUrls: [
-    '../../../../../admin/components/filter-search/filter-search.component.scss',
-    './cyberskills-filters.component.scss',
-  ],
+    selector: 'clark-cyberskills-filters',
+    templateUrl: './cyberskills-filters.component.html',
+    styleUrls: [
+        '../../../../../admin/components/filter-search/filter-search.component.scss',
+        './cyberskills-filters.component.scss',
+    ],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgClass,
+        NgFor,
+        ActivateDirective,
+        ContextMenuComponent,
+        TitleCasePipe,
+    ],
 })
 export class CyberskillsFiltersComponent implements OnInit {
   statusFilters: Set<string> = new Set();

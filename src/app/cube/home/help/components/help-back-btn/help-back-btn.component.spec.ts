@@ -8,8 +8,8 @@ describe('HelpBackBtnComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HelpBackBtnComponent ]
-    })
+    imports: [HelpBackBtnComponent]
+})
     .compileComponents();
   });
 

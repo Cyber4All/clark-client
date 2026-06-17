@@ -14,16 +14,41 @@ import { LearningOutcome, LearningObject } from '@entity';
 import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
 import { stripHtmlTags } from 'app/shared/functions/StripHTML';
 import { selectedGuidelines } from './guidelines_data';
+import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription } from '@angular/material/expansion';
+import { NgFor, NgClass, TitleCasePipe } from '@angular/common';
+import { MatChipSet, MatChipRow, MatChipRemove } from '@angular/material/chips';
+import { TipDirective } from '../../../../../../../shared/directives/tip.directive';
+import { MatCheckbox } from '@angular/material/checkbox';
+import { FormsModule } from '@angular/forms';
+import { StandardOutcomesComponent } from '../../../../../../../onion/learning-object-builder/components/standard-outcomes/standard-outcomes.component';
 
 interface SelectionDocument extends SearchItemDocument {
   checked: boolean;
 }
 
 @Component({
-  selector: 'clark-guidelines',
-  templateUrl: './guidelines.component.html',
-  styleUrls: ['./guidelines.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'clark-guidelines',
+    templateUrl: './guidelines.component.html',
+    styleUrls: ['./guidelines.component.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: true,
+    imports: [
+        MatAccordion,
+        NgFor,
+        MatExpansionPanel,
+        MatExpansionPanelHeader,
+        NgClass,
+        MatExpansionPanelTitle,
+        MatExpansionPanelDescription,
+        MatChipSet,
+        MatChipRow,
+        MatChipRemove,
+        TipDirective,
+        MatCheckbox,
+        FormsModule,
+        StandardOutcomesComponent,
+        TitleCasePipe,
+    ],
 })
 export class GuidelinesComponent implements OnInit, OnDestroy {
   @Input() learningObject: LearningObject;

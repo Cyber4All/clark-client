@@ -1,8 +1,13 @@
 import { ChangeDetectorRef, Component, DoCheck, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgIf, NgFor, LowerCasePipe } from '@angular/common';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { CheckBoxComponent } from '../../../../shared/components/checkbox/checkbox.component';
 @Component({
-  selector: 'clark-filter-section',
-  templateUrl: './filter-section.component.html',
-  styleUrls: ['./filter-section.component.scss']
+    selector: 'clark-filter-section',
+    templateUrl: './filter-section.component.html',
+    styleUrls: ['./filter-section.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor, TipDirective, CheckBoxComponent, LowerCasePipe]
 })
 export class FilterSectionComponent implements OnInit, DoCheck {
   private _info?: FilterSectionInfo;

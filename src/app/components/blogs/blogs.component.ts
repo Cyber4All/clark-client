@@ -3,26 +3,28 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UtilityService } from 'app/core/utility-module/utility.service';
 import { Observable } from 'rxjs';
 import { Blog } from './types/blog';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
-  selector: 'clark-blogs',
-  templateUrl: './blogs.component.html',
-  styleUrls: ['./blogs.component.scss'],
-  animations: [
-    trigger('blogView', [
-      transition(':enter', [
-        style({
-          position: 'relative',
-          left: '-100%'
-        }),
-        animate('500ms ease-out', style({
-          position: 'relative',
-          left: '0%'
-        })
-        )
-      ]),
-    ])
-  ]
+    selector: 'clark-blogs',
+    templateUrl: './blogs.component.html',
+    styleUrls: ['./blogs.component.scss'],
+    animations: [
+        trigger('blogView', [
+            transition(':enter', [
+                style({
+                    position: 'relative',
+                    left: '-100%'
+                }),
+                animate('500ms ease-out', style({
+                    position: 'relative',
+                    left: '0%'
+                }))
+            ]),
+        ])
+    ],
+    standalone: true,
+    imports: [NgIf, AsyncPipe]
 })
 export class BlogsComponent implements OnInit {
   blogObservable: Observable<Blog[]>; // used for the template

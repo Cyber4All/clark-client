@@ -7,12 +7,24 @@ import { ToastrOvenService } from 'app/shared/modules/toaster/notification.servi
 import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
 import { usersComponentAnimations } from './users.component.animations';
 import { AccessGroupService, AccessGroups } from 'app/core/access-group-module/access-group.service';
+import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { TeleporterComponent } from '../../../shared/modules/teleporter/teleporter.component';
+import { UserSearchWrapperComponent } from '../../components/user-search-wrapper/user-search-wrapper.component';
+import { AdminUserCardComponent } from '../../components/user-card/user-card.component';
+import { PopupComponent } from '../../../shared/modules/popups/popup.component';
+import { FormsModule } from '@angular/forms';
+import { UserPrivilegesComponent } from '../../components/user-privileges/user-privileges.component';
 
 @Component({
-  selector: 'clark-users',
-  templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
-  animations: usersComponentAnimations
+    selector: 'clark-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.scss'],
+    animations: usersComponentAnimations,
+    standalone: true,
+    imports: [ContentWrapperComponent, NgIf, SearchInputComponent, NgClass, ActivateDirective, TeleporterComponent, UserSearchWrapperComponent, NgFor, AdminUserCardComponent, PopupComponent, FormsModule, UserPrivilegesComponent]
 })
 export class UsersComponent implements AfterViewInit {
   searchBarPlaceholder = 'Users';

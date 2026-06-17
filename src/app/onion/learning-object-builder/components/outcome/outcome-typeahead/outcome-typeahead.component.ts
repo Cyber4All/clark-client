@@ -14,11 +14,21 @@ import {
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { taxonomy, levels } from '@cyber4all/clark-taxonomy';
+import { NgIf, NgClass, NgFor, TitleCasePipe } from '@angular/common';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-outcome-typeahead',
-  templateUrl: './outcome-typeahead.component.html',
-  styleUrls: ['./outcome-typeahead.component.scss'],
+    selector: 'clark-outcome-typeahead',
+    templateUrl: './outcome-typeahead.component.html',
+    styleUrls: ['./outcome-typeahead.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgClass,
+        ActivateDirective,
+        NgFor,
+        TitleCasePipe,
+    ],
 })
 export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('verbElement') verbElement: ElementRef;

@@ -1,8 +1,12 @@
 import { ModalService, ModalListElement, Position } from '../shared/modules/modals/modal.module';
 import { Component, ChangeDetectorRef, OnInit, AfterViewInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterOutlet } from '@angular/router';
 import { AuthService } from '../core/auth-module/auth.service';
 import { trigger, transition, style, animate, animateChild, query, group } from '@angular/animations';
+import { ContextMenuComponent } from '../shared/modules/modals/contextmenu.component';
+import { DialogMenuComponent } from '../shared/modules/modals/dialogmenu.component';
+import { NgIf } from '@angular/common';
+import { EmailBannerComponent } from './components/email-banner/email-banner.component';
 
 export const onionTransitions = trigger('onionTransitions', [
   transition('* => builder', [
@@ -39,10 +43,12 @@ export const onionTransitions = trigger('onionTransitions', [
  * @author Sean Donnelly
  */
 @Component({
-  selector: 'onion-root',
-  templateUrl: './onion.component.html',
-  styleUrls: ['./onion.component.scss'],
-  animations: [ onionTransitions ]
+    selector: 'onion-root',
+    templateUrl: './onion.component.html',
+    styleUrls: ['./onion.component.scss'],
+    animations: [onionTransitions],
+    standalone: true,
+    imports: [ContextMenuComponent, DialogMenuComponent, NgIf, RouterOutlet, EmailBannerComponent]
 })
 export class OnionComponent implements AfterViewInit {
   activeRoute: string;

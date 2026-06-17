@@ -3,11 +3,24 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { User, LearningObject } from '@entity';
 import { ModalService, ModalListElement } from '../../modules/modals/modal.module';
 import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { NgIf, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { TipDirective } from '../../directives/tip.directive';
+import { ActivateDirective } from '../../directives/activate.directive';
 
 @Component({
-  selector: 'clark-user-card',
-  templateUrl: './user-card.component.html',
-  styleUrls: ['./user-card.component.scss'],
+    selector: 'clark-user-card',
+    templateUrl: './user-card.component.html',
+    styleUrls: ['./user-card.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        RouterLink,
+        NgTemplateOutlet,
+        TipDirective,
+        ActivateDirective,
+        TitleCasePipe,
+    ],
 })
 export class UserCardComponent implements OnInit, OnChanges {
   @Input() user: User;

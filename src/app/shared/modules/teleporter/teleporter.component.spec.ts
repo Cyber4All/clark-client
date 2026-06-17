@@ -8,7 +8,7 @@ describe('TeleporterComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [TeleporterComponent],
+    imports: [TeleporterComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

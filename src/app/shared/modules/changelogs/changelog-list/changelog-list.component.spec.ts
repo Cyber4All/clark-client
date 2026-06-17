@@ -11,8 +11,7 @@ describe('ChangelogListComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    declarations: [ChangelogListComponent],
-    imports: [NoopAnimationsModule],
+    imports: [NoopAnimationsModule, ChangelogListComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

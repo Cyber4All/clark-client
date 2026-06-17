@@ -1,16 +1,20 @@
 
 import { filter } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd, RouterLink } from '@angular/router';
 import { COPY } from './footer.copy';
 import { environment } from '../../../../environments/environment';
 import { SubscriptionAgreementService } from '../../../core/utility-module/subscription-agreement.service';
 import { ToastrOvenService } from '../../../shared/modules/toaster/notification.service';
+import { NgIf } from '@angular/common';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'cube-footer',
-  templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.scss']
+    selector: 'cube-footer',
+    templateUrl: './footer.component.html',
+    styleUrls: ['./footer.component.scss'],
+    standalone: true,
+    imports: [NgIf, RouterLink, ActivateDirective]
 })
 export class FooterComponent implements OnInit {
   copy = COPY;

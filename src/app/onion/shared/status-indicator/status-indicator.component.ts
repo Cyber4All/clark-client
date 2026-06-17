@@ -1,8 +1,10 @@
 import {Component, Input} from '@angular/core';
+import { NgIf, NgClass } from '@angular/common';
+import { TipDirective } from '../../../shared/directives/tip.directive';
 
 @Component({
-  selector: 'clark-lo-status-indicator',
-  template: `
+    selector: 'clark-lo-status-indicator',
+    template: `
     <div
       *ngIf="status" class="top__status"
       [ngClass]="status"
@@ -20,7 +22,9 @@ import {Component, Input} from '@angular/core';
       <span *ngIf="status === 'accepted_minor'"><i class="fas fa-check-double"></i></span>
     </div>
   `,
-  styleUrls: ['status-indicator.component.scss']
+    styleUrls: ['status-indicator.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgClass, TipDirective]
 })
 export class LearningObjectStatusIndicatorComponent {
   @Input() status;

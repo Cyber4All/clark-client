@@ -13,6 +13,10 @@ import { DirectoryNode } from 'app/shared/modules/filesystem/DirectoryNode';
 
 import { LearningObject } from '@entity';
 import { takeUntil, take } from 'rxjs/operators';
+import { FileBrowserComponent } from '../../../../../../shared/modules/filesystem/file-browser/file-browser.component';
+import { NgIf } from '@angular/common';
+import { ContextMenuComponent } from '../../../../../../shared/modules/contextmenu/context-menu/context-menu.component';
+import { ActivateDirective } from '../../../../../../shared/directives/activate.directive';
 
 export interface FileEdit {
   id?: string;
@@ -22,9 +26,16 @@ export interface FileEdit {
 }
 
 @Component({
-  selector: 'onion-file-manager',
-  templateUrl: './file-manager.component.html',
-  styleUrls: ['./file-manager.component.scss', '../../dropzone.scss'],
+    selector: 'onion-file-manager',
+    templateUrl: './file-manager.component.html',
+    styleUrls: ['./file-manager.component.scss', '../../dropzone.scss'],
+    standalone: true,
+    imports: [
+        FileBrowserComponent,
+        NgIf,
+        ContextMenuComponent,
+        ActivateDirective,
+    ],
 })
 export class FileManagerComponent implements OnInit, OnDestroy {
   @Input()

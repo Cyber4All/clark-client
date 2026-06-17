@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'clark-unsupported',
-  templateUrl: './unsupported.component.html',
-  styles: [`
+    selector: 'clark-unsupported',
+    templateUrl: './unsupported.component.html',
+    styles: [`
   .warning {
     text-align:center;
     background-color: lightpink;
@@ -12,7 +13,9 @@ import { Router } from '@angular/router';
     padding: 100px;
     margin: 100px;
    }
-   `]
+   `],
+    standalone: true,
+    imports: [NgIf]
 })
 export class UnsupportedComponent {
   isSupported: boolean;

@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-  selector: 'clark-search-input',
-  templateUrl: './search-input.component.html',
-  styleUrls: ['./search-input.component.scss'],
+    selector: 'clark-search-input',
+    templateUrl: './search-input.component.html',
+    styleUrls: ['./search-input.component.scss'],
+    standalone: true,
+    imports: [MatIcon],
 })
 export class SearchInputComponent implements OnChanges, OnDestroy {
   @Input() placeholder = 'Search';

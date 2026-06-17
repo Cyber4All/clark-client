@@ -8,8 +8,8 @@ describe('CsvGenModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CsvGenModalComponent ]
-    })
+    imports: [CsvGenModalComponent]
+})
     .compileComponents();
   });
 

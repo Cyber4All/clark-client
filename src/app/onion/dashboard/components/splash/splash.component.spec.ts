@@ -8,9 +8,9 @@ describe('SplashComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [SplashComponent],
     imports: [
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        SplashComponent
     ],
     teardown: { destroyAfterEach: false }
 })

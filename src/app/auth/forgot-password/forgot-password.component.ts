@@ -1,39 +1,44 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { UntypedFormGroup, FormsModule } from '@angular/forms';
 import { MatchValidator } from 'app/shared/validators/MatchValidator';
 import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { debounce, takeUntil } from 'rxjs/operators';
 import { Subject, interval } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { NgClass, NgIf } from '@angular/common';
+import { ErrorBannerComponent } from '../components/error-banner/error-banner.component';
+import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
 
 @Component({
-  selector: 'clark-forgot-password',
-  templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss'],
-  animations: [
-    trigger('toggleButton', [
-      state('disabled', style({
-        borderColor: 'grey',
-        backgroundColor: 'grey',
-        color: 'black',
-        opacity: 0.2
-      })),
-      state('enabled', style({
-        color: 'white',
-        opacity: 1
-      })),
-      transition('disabled <=> enabled', [
-        animate('0.2s')
-      ])
-    ]),
-    trigger('switchViews', [
-      transition(':enter', [
-        style({ opacity: 0 }),
-        animate('1000ms')
-      ])
-    ])
-  ]
+    selector: 'clark-forgot-password',
+    templateUrl: './forgot-password.component.html',
+    styleUrls: ['./forgot-password.component.scss'],
+    animations: [
+        trigger('toggleButton', [
+            state('disabled', style({
+                borderColor: 'grey',
+                backgroundColor: 'grey',
+                color: 'black',
+                opacity: 0.2
+            })),
+            state('enabled', style({
+                color: 'white',
+                opacity: 1
+            })),
+            transition('disabled <=> enabled', [
+                animate('0.2s')
+            ])
+        ]),
+        trigger('switchViews', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('1000ms')
+            ])
+        ])
+    ],
+    standalone: true,
+    imports: [NgClass, ErrorBannerComponent, NgIf, FormsModule, InputFieldComponent]
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
   showError: Boolean = false;

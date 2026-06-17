@@ -1,10 +1,13 @@
 import { Component, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
 @Component({
-  selector: 'clark-dashboard-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+    selector: 'clark-dashboard-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.scss'],
+    standalone: true,
+    imports: [FormsModule]
 })
 export class SearchComponent implements OnDestroy {
   @Input() value: string;

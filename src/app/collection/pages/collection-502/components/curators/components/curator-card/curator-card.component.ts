@@ -2,9 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { UserService } from 'app/core/user-module/user.service';
 
 @Component({
-  selector: 'clark-502-curator-card',
-  templateUrl: './curator-card.component.html',
-  styleUrls: ['./curator-card.component.scss']
+    selector: 'clark-502-curator-card',
+    templateUrl: './curator-card.component.html',
+    styleUrls: ['./curator-card.component.scss'],
+    standalone: true
 })
 export class CuratorCardComponent implements OnInit {
 

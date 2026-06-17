@@ -4,6 +4,10 @@ import { Router } from '@angular/router';
 import { CoralogixLogSeverity } from '@coralogix/browser';
 import { ChatbotService } from 'app/core/chat-module/chatbot.service';
 import { CoralogixRumService } from 'app/core/services/coralogix-rum.service';
+import { MatTooltip } from '@angular/material/tooltip';
+import { NgFor, NgIf } from '@angular/common';
+import { MarkdownComponent } from 'ngx-markdown';
+import { FormsModule } from '@angular/forms';
 
 export interface Message {
   message: string;
@@ -13,35 +17,37 @@ export interface Message {
 }
 
 @Component({
-  selector: 'clark-chatbot-window',
-  templateUrl: './chatbot-window.component.html',
-  styleUrls: ['./chatbot-window.component.scss'],
-  animations: [
-    trigger('windowSlideIn', [
-      transition(':enter', [
-        style({
-          opacity: 0,
-          transform: 'translateY(20px)',
-        }),
-        animate(
-          '300ms ease-out',
-          style({
-            opacity: 1,
-            transform: 'translateY(0)',
-          }),
-        ),
-      ]),
-      transition(':leave', [
-        animate(
-          '300ms ease-out',
-          style({
-            opacity: 0,
-            transform: 'translateY(20px)',
-          }),
-        ),
-      ]),
-    ]),
-  ],
+    selector: 'clark-chatbot-window',
+    templateUrl: './chatbot-window.component.html',
+    styleUrls: ['./chatbot-window.component.scss'],
+    animations: [
+        trigger('windowSlideIn', [
+            transition(':enter', [
+                style({
+                    opacity: 0,
+                    transform: 'translateY(20px)',
+                }),
+                animate('300ms ease-out', style({
+                    opacity: 1,
+                    transform: 'translateY(0)',
+                })),
+            ]),
+            transition(':leave', [
+                animate('300ms ease-out', style({
+                    opacity: 0,
+                    transform: 'translateY(20px)',
+                })),
+            ]),
+        ]),
+    ],
+    standalone: true,
+    imports: [
+        MatTooltip,
+        NgFor,
+        MarkdownComponent,
+        NgIf,
+        FormsModule,
+    ],
 })
 export class ChatbotWindowComponent implements AfterViewInit {
   @ViewChild('messagesContainer')

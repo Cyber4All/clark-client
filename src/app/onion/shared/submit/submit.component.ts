@@ -11,23 +11,22 @@ import { HierarchyService } from 'app/core/learning-object-module/hierarchy/hier
 import { CHANGE_AUTHORIZATION_LIST } from '../../../../environments/strings';
 import { Router } from '@angular/router';
 import { SubmissionsService } from 'app/core/learning-object-module/submissions/submissions.service';
-import {
-  BOLD_BUTTON,
-  ITALIC_BUTTON,
-  LINK_INPUT,
-  ORDERED_LIST_BUTTON,
-  REDO_BUTTON,
-  REMOVE_FORMAT_BUTTON,
-  UNDERLINE_BUTTON,
-  UNDO_BUTTON,
-  UNORDERED_LIST_BUTTON,
-  SEPARATOR
-} from 'ngx-simple-text-editor';
+import { BOLD_BUTTON, ITALIC_BUTTON, LINK_INPUT, ORDERED_LIST_BUTTON, REDO_BUTTON, REMOVE_FORMAT_BUTTON, UNDERLINE_BUTTON, UNDO_BUTTON, UNORDERED_LIST_BUTTON, SEPARATOR, NgxSimpleTextEditorModule } from 'ngx-simple-text-editor';
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { PopupComponent } from '../../../shared/modules/popups/popup.component';
+import { CarouselComponent } from '../../../shared/components/carousel/carousel.component';
+import { CheckBoxComponent } from '../../../shared/components/checkbox/checkbox.component';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { FormsModule } from '@angular/forms';
+import { CollectionsGridComponent } from '../../../shared/components/collections-grid/collections-grid.component';
+import { EditChangelogComponent } from '../edit-changelog/edit-changelog.component';
 
 @Component({
-  selector: 'clark-submit',
-  templateUrl: './submit.component.html',
-  styleUrls: ['./submit.component.scss']
+    selector: 'clark-submit',
+    templateUrl: './submit.component.html',
+    styleUrls: ['./submit.component.scss'],
+    standalone: true,
+    imports: [NgIf, PopupComponent, CarouselComponent, CheckBoxComponent, NgClass, ActivateDirective, NgxSimpleTextEditorModule, FormsModule, NgFor, CollectionsGridComponent, EditChangelogComponent]
 })
 export class SubmitComponent implements OnInit {
   @Input() collection?: string;

@@ -5,12 +5,19 @@ import { Subject } from 'rxjs';
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { userPrivilegesAnimations } from './user-privileges.component.animations';
 import { AccessGroupService, AccessGroups } from 'app/core/access-group-module/access-group.service';
+import { CarouselComponent } from '../../../shared/components/carousel/carousel.component';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { NgClass, NgIf, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { PrivilegesListComponent } from './privileges-list/privileges-list.component';
+import { CollectionsGridComponent } from '../../../shared/components/collections-grid/collections-grid.component';
 
 @Component({
-  selector: 'clark-user-privileges',
-  templateUrl: './user-privileges.component.html',
-  styleUrls: ['./user-privileges.component.scss'],
-  animations: userPrivilegesAnimations
+    selector: 'clark-user-privileges',
+    templateUrl: './user-privileges.component.html',
+    styleUrls: ['./user-privileges.component.scss'],
+    animations: userPrivilegesAnimations,
+    standalone: true,
+    imports: [CarouselComponent, ActivateDirective, NgClass, PrivilegesListComponent, NgIf, NgTemplateOutlet, CollectionsGridComponent, TitleCasePipe]
 })
 export class UserPrivilegesComponent implements OnInit {
   @Input() user: AuthUser;

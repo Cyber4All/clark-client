@@ -12,20 +12,18 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    CubeSharedModule,
-    SharedModule,
-    RouterModule,
-    MatExpansionModule,
-    MatDividerModule
-  ],
-  exports: [],
-  declarations: [
-    CollectionDetailsComponent,
-    ActionPanelComponent,
-    FaqSectionComponent
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        CubeSharedModule,
+        SharedModule,
+        RouterModule,
+        MatExpansionModule,
+        MatDividerModule,
+        CollectionDetailsComponent,
+        ActionPanelComponent,
+        FaqSectionComponent
+    ],
+    exports: []
 })
 export class CollectionModule {}

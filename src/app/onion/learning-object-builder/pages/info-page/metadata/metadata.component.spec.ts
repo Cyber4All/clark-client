@@ -8,7 +8,7 @@ describe('MetadataComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [MetadataComponent],
+    imports: [MetadataComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

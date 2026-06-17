@@ -2,16 +2,23 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth-module/auth.service';
 import { UserService } from 'app/core/user-module/user.service';
 import { NavbarDropdownService } from 'app/core/client-module/navBarDropdown.service';
-import { Router, NavigationStart, Event as NavigationEvent } from '@angular/router';
+import { Router, NavigationStart, Event as NavigationEvent, RouterLink } from '@angular/router';
 import { Topic } from '../../../entity';
 import { NotificationService } from 'app/core/notification-module/notification.service';
+import { NgIf, NgStyle, NgClass, NgFor, NgTemplateOutlet, TitleCasePipe } from '@angular/common';
+import { SearchComponent } from '../search/search.component';
+import { ContextMenuComponent } from '../../shared/modules/contextmenu/context-menu/context-menu.component';
+import { ActivateDirective } from '../../shared/directives/activate.directive';
+import { SkipLinkComponent } from '../../shared/components/skip-link/skip-link.component';
 
 
 @Component({
-  selector: 'clark-primary-navbar',
-  templateUrl: './primary-navbar.component.html',
-  styleUrls: ['./primary-navbar.component.scss'],
-  providers: [NavbarDropdownService]
+    selector: 'clark-primary-navbar',
+    templateUrl: './primary-navbar.component.html',
+    styleUrls: ['./primary-navbar.component.scss'],
+    providers: [NavbarDropdownService],
+    standalone: true,
+    imports: [NgIf, RouterLink, SearchComponent, NgStyle, ContextMenuComponent, ActivateDirective, NgClass, NgFor, SkipLinkComponent, NgTemplateOutlet, TitleCasePipe]
 })
 export class PrimaryNavbarComponent implements OnInit {
 

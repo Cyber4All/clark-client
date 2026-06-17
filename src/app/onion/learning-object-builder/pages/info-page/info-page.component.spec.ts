@@ -8,7 +8,7 @@ describe('InfoPageComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [InfoPageComponent],
+    imports: [InfoPageComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

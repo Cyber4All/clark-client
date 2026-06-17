@@ -8,7 +8,7 @@ describe('ChangeAuthorComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [ChangeAuthorComponent],
+    imports: [ChangeAuthorComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

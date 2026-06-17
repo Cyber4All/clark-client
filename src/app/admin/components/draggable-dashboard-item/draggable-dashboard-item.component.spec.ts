@@ -8,7 +8,7 @@ describe('DraggableDashboardItemComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-    declarations: [DraggableDashboardItemComponent],
+    imports: [DraggableDashboardItemComponent],
     teardown: { destroyAfterEach: false }
 })
     .compileComponents();

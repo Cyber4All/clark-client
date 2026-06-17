@@ -3,11 +3,17 @@ import { RelevancyService } from 'app/core/learning-object-module/relevancy/rele
 import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
 import { LearningObject } from 'entity/learning-object/learning-object';
 import { User } from 'entity/user/user';
+import { NgIf } from '@angular/common';
+import { SelectedUserComponent } from './components/selected-user/selected-user.component';
+import { ObjectDropdownComponent } from './components/object-dropdown/object-dropdown.component';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
 
 @Component({
-  selector: 'clark-admin-add-evaluator',
-  templateUrl: './add-evaluator.component.html',
-  styleUrls: ['./add-evaluator.component.scss']
+    selector: 'clark-admin-add-evaluator',
+    templateUrl: './add-evaluator.component.html',
+    styleUrls: ['./add-evaluator.component.scss'],
+    standalone: true,
+    imports: [NgIf, SelectedUserComponent, ObjectDropdownComponent, ActivateDirective]
 })
 export class AddEvaluatorComponent implements OnInit {
 

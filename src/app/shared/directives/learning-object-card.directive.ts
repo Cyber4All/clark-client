@@ -1,7 +1,8 @@
 import { Directive, Renderer2, ElementRef } from '@angular/core';
 
 @Directive({
-  selector: '[learningObjectCard]'
+    selector: '[learningObjectCard]',
+    standalone: true
 })
 export class LearningObjectCardDirective {
 
