@@ -2,7 +2,7 @@ export const environment = {
   production: true,
   environment: 'staging',
   experimental: false,
-  apiURL: 'https://clark-gateway.yeetbot.click',
+  apiURL: 'https://api.staging.clark.center',
   s3Bucket: 'clark-staging-file-uploads',
   s3BucketRegion: 'us-east-1',
   cognitoRegion: 'us-east-1',
