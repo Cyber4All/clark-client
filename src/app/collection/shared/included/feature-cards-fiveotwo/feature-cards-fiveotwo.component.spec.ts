@@ -1,25 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { FeatureCardsFiveotwoComponent } from './feature-cards-fiveotwo.component';
+import { FeatureCardsFiveotwoComponent } from "./feature-cards-fiveotwo.component";
 
-describe('FeatureCardsFiveotwoComponent', () => {
-  let component: FeatureCardsFiveotwoComponent;
-  let fixture: ComponentFixture<FeatureCardsFiveotwoComponent>;
+describe("FeatureCardsFiveotwoComponent", () => {
+    let component: FeatureCardsFiveotwoComponent;
+    let fixture: ComponentFixture<FeatureCardsFiveotwoComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    imports: [FeatureCardsFiveotwoComponent]
-})
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [FeatureCardsFiveotwoComponent],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FeatureCardsFiveotwoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(FeatureCardsFiveotwoComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

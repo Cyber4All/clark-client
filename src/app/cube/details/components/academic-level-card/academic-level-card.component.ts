@@ -1,20 +1,19 @@
-import { Component, Input } from '@angular/core';
-import { NgFor, NgClass, NgIf, TitleCasePipe } from '@angular/common';
+import { Component, Input } from "@angular/core";
+import { NgFor, NgClass, NgIf, TitleCasePipe } from "@angular/common";
 
 @Component({
-    selector: 'clark-academic-level-card',
-    templateUrl: './academic-level-card.component.html',
-    styleUrls: ['./academic-level-card.component.scss'],
+    selector: "clark-academic-level-card",
+    templateUrl: "./academic-level-card.component.html",
+    styleUrls: ["./academic-level-card.component.scss"],
     standalone: true,
-    imports: [NgFor, NgClass, NgIf, TitleCasePipe]
+    imports: [NgFor, NgClass, NgIf, TitleCasePipe],
 })
-
 export class AcademicLevelCardComponent {
-  @Input() category: string;
-  @Input() academicLevels: { [name: string]: boolean };
+    @Input() category: string;
+    @Input() academicLevels: { [name: string]: boolean };
 
-  getSortedLevels(): string[] {
-    const sortedLevels = Object.keys(this.academicLevels);
-    return sortedLevels;
-  }
+    getSortedLevels(): string[] {
+        const sortedLevels = Object.keys(this.academicLevels);
+        return sortedLevels;
+    }
 }

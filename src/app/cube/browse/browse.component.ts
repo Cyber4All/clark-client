@@ -1,37 +1,37 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  HostListener,
-  OnDestroy,
-  Renderer2,
-  ViewChild
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { LearningObject } from '@entity';
-import { NavbarService } from 'app/core/client-module/navbar.service';
-import { SearchService } from 'app/core/learning-object-module/search/search.service';
-import { DropdownFilterOption } from 'app/shared/components/dropdown-filter/dropdown-filter.component';
-import { Observable, Subject } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { OrderBy, Query, SortType } from '../../interfaces/query';
-import { COPY } from './browse.copy';
-import { FilterSectionInfo } from './components/filter-section/filter-section.component';
-import { FilterComponent } from './components/filter/filter.component';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { SkipLinkComponent } from '../../shared/components/skip-link/skip-link.component';
-import { NgIf, NgClass, NgFor } from '@angular/common';
-import { ActivateDirective } from '../../shared/directives/activate.directive';
-import { DropdownFilterComponent } from '../../shared/components/dropdown-filter/dropdown-filter.component';
-import { ClearFiltersButtonComponent } from '../../shared/components/clear-filters-button/clear-filters-button.component';
-import { TrapFocusDirective } from '../../shared/directives/trap-focus.directive';
-import { LearningObjectListingComponent } from '../shared/learning-object/learning-object.component';
-import { LearningObjectCardDirective } from '../../shared/directives/learning-object-card.directive';
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    HostListener,
+    OnDestroy,
+    Renderer2,
+    ViewChild,
+} from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { LearningObject } from "@entity";
+import { NavbarService } from "app/core/client-module/navbar.service";
+import { SearchService } from "app/core/learning-object-module/search/search.service";
+import { DropdownFilterOption } from "app/shared/components/dropdown-filter/dropdown-filter.component";
+import { Observable, Subject } from "rxjs";
+import { debounceTime, takeUntil } from "rxjs/operators";
+import { OrderBy, Query, SortType } from "../../interfaces/query";
+import { COPY } from "./browse.copy";
+import { FilterSectionInfo } from "./components/filter-section/filter-section.component";
+import { FilterComponent } from "./components/filter/filter.component";
+import { AuthService } from "app/core/auth-module/auth.service";
+import { SkipLinkComponent } from "../../shared/components/skip-link/skip-link.component";
+import { NgIf, NgClass, NgFor } from "@angular/common";
+import { ActivateDirective } from "../../shared/directives/activate.directive";
+import { DropdownFilterComponent } from "../../shared/components/dropdown-filter/dropdown-filter.component";
+import { ClearFiltersButtonComponent } from "../../shared/components/clear-filters-button/clear-filters-button.component";
+import { TrapFocusDirective } from "../../shared/directives/trap-focus.directive";
+import { LearningObjectListingComponent } from "../shared/learning-object/learning-object.component";
+import { LearningObjectCardDirective } from "../../shared/directives/learning-object-card.directive";
 
 @Component({
-    selector: 'cube-browse',
-    templateUrl: './browse.component.html',
-    styleUrls: ['./browse.component.scss'],
+    selector: "cube-browse",
+    templateUrl: "./browse.component.html",
+    styleUrls: ["./browse.component.scss"],
     standalone: true,
     imports: [
         SkipLinkComponent,
@@ -48,727 +48,747 @@ import { LearningObjectCardDirective } from '../../shared/directives/learning-ob
     ],
 })
 export class BrowseComponent implements AfterViewInit, OnDestroy {
-  copy = COPY;
-  learningObjects: LearningObject[] = [];
-  totalLearningObjects = 0;
-  totalLearningObjectsPreview = 0;
-  outcomeSources: any[];
+    copy = COPY;
+    learningObjects: LearningObject[] = [];
+    totalLearningObjects = 0;
+    totalLearningObjectsPreview = 0;
+    outcomeSources: any[];
 
-  query: Query = {
-    text: '',
-    currPage: 1,
-    limit: 15,
-    length: [],
-    noGuidelines: '',
-    noDCWFGuidelines: '',
-    guidelines: [],
-    level: [],
-    standardOutcomes: [],
-    // Showcase the newest learning object
-    orderBy: OrderBy.Date,
-    sortType: -1,
-    collection: '',
-    topics: [],
-    fileTypes: [],
-    status: [LearningObject.Status.RELEASED],
-    tags: [],
-  };
+    query: Query = {
+        text: "",
+        currPage: 1,
+        limit: 15,
+        length: [],
+        noGuidelines: "",
+        noDCWFGuidelines: "",
+        guidelines: [],
+        level: [],
+        standardOutcomes: [],
+        // Showcase the newest learning object
+        orderBy: OrderBy.Date,
+        sortType: -1,
+        collection: "",
+        topics: [],
+        fileTypes: [],
+        status: [LearningObject.Status.RELEASED],
+        tags: [],
+    };
 
-  tooltipText = {
-    nanomodule: 'a Learning Object up to 1 hour in length',
-    micromodule: 'a Learning Object between 1 and 4 hours in length',
-    module: 'a Learning Object between 4 and 10 hours in length',
-    unit: 'a Learning Object over 10 hours in length',
-    course: 'a Learning Object 15 weeks in length',
-  };
+    tooltipText = {
+        nanomodule: "a Learning Object up to 1 hour in length",
+        micromodule: "a Learning Object between 1 and 4 hours in length",
+        module: "a Learning Object between 4 and 10 hours in length",
+        unit: "a Learning Object over 10 hours in length",
+        course: "a Learning Object 15 weeks in length",
+    };
 
-  loading = true;
-  mappingsPopup = false;
+    loading = true;
+    mappingsPopup = false;
 
-  pageCount: number;
-  filtering = false;
-  filters: any = {};
+    pageCount: number;
+    filtering = false;
+    filters: any = {};
 
-  searchDelaySubject: any;
+    searchDelaySubject: any;
 
-  filterInput: Observable<string>;
-  filterClearSubject$: Subject<void> = new Subject<void>();
+    filterInput: Observable<string>;
+    filterClearSubject$: Subject<void> = new Subject<void>();
 
-  filtersDownMobile = false;
-  windowWidth: number;
+    filtersDownMobile = false;
+    windowWidth: number;
 
-  unsubscribe: Subject<void> = new Subject();
-  private totalLearningObjectsPreviewRequestId = 0;
+    unsubscribe: Subject<void> = new Subject();
+    private totalLearningObjectsPreviewRequestId = 0;
 
-  shouldResetPage = false;
+    shouldResetPage = false;
 
-  sortMenuDown: boolean;
-  sortText = 'Newest';
+    sortMenuDown: boolean;
+    sortText = "Newest";
 
-  topicFilter: FilterSectionInfo;
-  levelFilter: FilterSectionInfo;
-  durationFilter: FilterSectionInfo;
-  materialsFilter: FilterSectionInfo;
+    topicFilter: FilterSectionInfo;
+    levelFilter: FilterSectionInfo;
+    durationFilter: FilterSectionInfo;
+    materialsFilter: FilterSectionInfo;
 
-  @ViewChild(FilterComponent) filterComponent: FilterComponent;
+    @ViewChild(FilterComponent) filterComponent: FilterComponent;
 
-  @HostListener('window:resize', ['$event'])
-  handelResize(event) {
-    this.windowWidth = event.target.innerWidth;
-    this.cd.detectChanges();
-  }
-
-  constructor(
-    private searchLearningObjectService: SearchService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private cd: ChangeDetectorRef,
-    private navService: NavbarService,
-    private renderer: Renderer2,
-    private authService: AuthService
-  ) {
-    this.windowWidth = window.innerWidth;
-    this.cd.detach();
-  }
-
-  ngAfterViewInit() {
-    // used by the performSearch function (when delay is true) to add a debounce effect
-    this.searchDelaySubject = new Subject<void>()
-      .pipe(debounceTime(650), takeUntil(this.unsubscribe))
-      .subscribe(() => {
-        this.performSearch();
-      });
-
-    // whenever the queryParams change, map them to the query object and perform the search
-    this.route.queryParams
-      .pipe(takeUntil(this.unsubscribe))
-      .subscribe(async (params) => {
-        // mutates the query to an acceptable format and sends request to fetch learning objects
-        this.makeQuery(params);
-        // When searching, visually show that any pre-existing sorting is disabled
-        this.sortText =
-          this.query.text && this.query.orderBy === OrderBy.None ? '' : this.sortText;
-        await this.fetchLearningObjects(this.query);
-        // Initialize filter dropdowns after filter component is initialized
-        this.initializeFilterDropdowns();
-      });
-  }
-
-  /**
-   * Initialize filter dropdown data from the filter component
-   */
-  private initializeFilterDropdowns() {
-    // Wait for filter component to be ready (with retries)
-    let attempts = 0;
-    const maxAttempts = 30; // Increased for materials filter which may load slower
-    const checkInterval = setInterval(() => {
-      attempts++;
-      if (this.filterComponent && this.filterComponent.topicFilter) {
-        this.topicFilter = this.filterComponent.topicFilter;
-        this.levelFilter = this.filterComponent.levelFilter;
-        this.durationFilter = this.filterComponent.lengthFilter;
-
-        // Try to get materials filter (tag-based)
-        const materialsTagFilter = this.filterComponent.getTagFilterByType('materials');
-        if (materialsTagFilter && materialsTagFilter.filters && materialsTagFilter.filters.length > 0) {
-          this.materialsFilter = materialsTagFilter;
-        } else if (attempts === maxAttempts) {
-          // Log if materials filter never loaded
-          console.warn('Materials filter not available after max attempts');
-        }
-
+    @HostListener("window:resize", ["$event"])
+    handelResize(event) {
+        this.windowWidth = event.target.innerWidth;
         this.cd.detectChanges();
+    }
 
-        // Only clear interval if we have the basic filters
-        if (this.topicFilter && this.levelFilter && this.durationFilter) {
-          clearInterval(checkInterval);
+    constructor(
+        private searchLearningObjectService: SearchService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private cd: ChangeDetectorRef,
+        private navService: NavbarService,
+        private renderer: Renderer2,
+        private authService: AuthService,
+    ) {
+        this.windowWidth = window.innerWidth;
+        this.cd.detach();
+    }
+
+    ngAfterViewInit() {
+        // used by the performSearch function (when delay is true) to add a debounce effect
+        this.searchDelaySubject = new Subject<void>()
+            .pipe(debounceTime(650), takeUntil(this.unsubscribe))
+            .subscribe(() => {
+                this.performSearch();
+            });
+
+        // whenever the queryParams change, map them to the query object and perform the search
+        this.route.queryParams
+            .pipe(takeUntil(this.unsubscribe))
+            .subscribe(async (params) => {
+                // mutates the query to an acceptable format and sends request to fetch learning objects
+                this.makeQuery(params);
+                // When searching, visually show that any pre-existing sorting is disabled
+                this.sortText =
+                    this.query.text && this.query.orderBy === OrderBy.None
+                        ? ""
+                        : this.sortText;
+                await this.fetchLearningObjects(this.query);
+                // Initialize filter dropdowns after filter component is initialized
+                this.initializeFilterDropdowns();
+            });
+    }
+
+    /**
+     * Initialize filter dropdown data from the filter component
+     */
+    private initializeFilterDropdowns() {
+        // Wait for filter component to be ready (with retries)
+        let attempts = 0;
+        const maxAttempts = 30; // Increased for materials filter which may load slower
+        const checkInterval = setInterval(() => {
+            attempts++;
+            if (this.filterComponent && this.filterComponent.topicFilter) {
+                this.topicFilter = this.filterComponent.topicFilter;
+                this.levelFilter = this.filterComponent.levelFilter;
+                this.durationFilter = this.filterComponent.lengthFilter;
+
+                // Try to get materials filter (tag-based)
+                const materialsTagFilter =
+                    this.filterComponent.getTagFilterByType("materials");
+                if (
+                    materialsTagFilter &&
+                    materialsTagFilter.filters &&
+                    materialsTagFilter.filters.length > 0
+                ) {
+                    this.materialsFilter = materialsTagFilter;
+                } else if (attempts === maxAttempts) {
+                    // Log if materials filter never loaded
+                    console.warn(
+                        "Materials filter not available after max attempts",
+                    );
+                }
+
+                this.cd.detectChanges();
+
+                // Only clear interval if we have the basic filters
+                if (
+                    this.topicFilter &&
+                    this.levelFilter &&
+                    this.durationFilter
+                ) {
+                    clearInterval(checkInterval);
+                }
+            } else if (attempts >= maxAttempts) {
+                clearInterval(checkInterval);
+            }
+        }, 100);
+    }
+
+    @HostListener("document:click", ["$event"])
+    onDocumentClick(event: MouseEvent) {
+        const target = event.target as HTMLElement;
+
+        // Close sort dropdown when clicking outside
+        if (this.sortMenuDown && !target.closest(".sort-dropdown-container")) {
+            this.sortMenuDown = false;
+            this.cd.detectChanges();
         }
-      } else if (attempts >= maxAttempts) {
-        clearInterval(checkInterval);
-      }
-    }, 100);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    // Close sort dropdown when clicking outside
-    if (this.sortMenuDown && !target.closest('.sort-dropdown-container')) {
-      this.sortMenuDown = false;
-      this.cd.detectChanges();
     }
-  }
 
-  get topicDropdownOptions(): DropdownFilterOption[] {
-    return (this.topicFilter?.filters || []).map((option) => ({
-      label: option.name,
-      value: option.value,
-    }));
-  }
+    get topicDropdownOptions(): DropdownFilterOption[] {
+        return (this.topicFilter?.filters || []).map((option) => ({
+            label: option.name,
+            value: option.value,
+        }));
+    }
 
-  get levelDropdownOptions(): DropdownFilterOption[] {
-    return (this.levelFilter?.filters || []).map((option) => ({
-      label: option.name,
-      value: option.value,
-    }));
-  }
+    get levelDropdownOptions(): DropdownFilterOption[] {
+        return (this.levelFilter?.filters || []).map((option) => ({
+            label: option.name,
+            value: option.value,
+        }));
+    }
 
-  get durationDropdownOptions(): DropdownFilterOption[] {
-    return (this.durationFilter?.filters || []).map((option) => ({
-      label: option.description || option.name,
-      value: option.value,
-    }));
-  }
+    get durationDropdownOptions(): DropdownFilterOption[] {
+        return (this.durationFilter?.filters || []).map((option) => ({
+            label: option.description || option.name,
+            value: option.value,
+        }));
+    }
 
-  get materialsDropdownOptions(): DropdownFilterOption[] {
-    return (this.materialsFilter?.filters || []).map((option) => ({
-      label: option.name,
-      value: option.value,
-    }));
-  }
+    get materialsDropdownOptions(): DropdownFilterOption[] {
+        return (this.materialsFilter?.filters || []).map((option) => ({
+            label: option.name,
+            value: option.value,
+        }));
+    }
 
-  get selectedTopicValues(): string[] {
-    return this.getSelectedValues(this.topicFilter);
-  }
+    get selectedTopicValues(): string[] {
+        return this.getSelectedValues(this.topicFilter);
+    }
 
-  get selectedLevelValues(): string[] {
-    return this.getSelectedValues(this.levelFilter);
-  }
+    get selectedLevelValues(): string[] {
+        return this.getSelectedValues(this.levelFilter);
+    }
 
-  get selectedDurationValues(): string[] {
-    return this.getSelectedValues(this.durationFilter);
-  }
+    get selectedDurationValues(): string[] {
+        return this.getSelectedValues(this.durationFilter);
+    }
 
-  get selectedMaterialValues(): string[] {
-    return this.getSelectedValues(this.materialsFilter);
-  }
+    get selectedMaterialValues(): string[] {
+        return this.getSelectedValues(this.materialsFilter);
+    }
 
-  onTopicFiltersChange(selectedValues: string[]): void {
-    this.applyDropdownSelection(this.topicFilter, selectedValues);
-  }
+    onTopicFiltersChange(selectedValues: string[]): void {
+        this.applyDropdownSelection(this.topicFilter, selectedValues);
+    }
 
-  onLevelFiltersChange(selectedValues: string[]): void {
-    this.applyDropdownSelection(this.levelFilter, selectedValues);
-  }
+    onLevelFiltersChange(selectedValues: string[]): void {
+        this.applyDropdownSelection(this.levelFilter, selectedValues);
+    }
 
-  onDurationFiltersChange(selectedValues: string[]): void {
-    this.applyDropdownSelection(this.durationFilter, selectedValues);
-  }
+    onDurationFiltersChange(selectedValues: string[]): void {
+        this.applyDropdownSelection(this.durationFilter, selectedValues);
+    }
 
-  onMaterialsFiltersChange(selectedValues: string[]): void {
-    this.applyDropdownSelection(this.materialsFilter, selectedValues);
-  }
+    onMaterialsFiltersChange(selectedValues: string[]): void {
+        this.applyDropdownSelection(this.materialsFilter, selectedValues);
+    }
 
-  get isMobile(): boolean {
-    return this.windowWidth < 750;
-  }
+    get isMobile(): boolean {
+        return this.windowWidth < 750;
+    }
 
-  // creates an array of numbers where each represents a page that can be navigated to.
-  // defaults to a grand total of 5 pages, either your page in the middle and two on each side,
-  // or (if you're say on page 2) 1 page on the left and 3 pages on the right. (1, 2, 3, 4, 5)
-  get pages() {
-    const total = 5;
-    const cursor = +this.query.currPage;
-    let count = 1;
-    let upCount = 1;
-    let downCount = 1;
-    const arr = [cursor];
+    // creates an array of numbers where each represents a page that can be navigated to.
+    // defaults to a grand total of 5 pages, either your page in the middle and two on each side,
+    // or (if you're say on page 2) 1 page on the left and 3 pages on the right. (1, 2, 3, 4, 5)
+    get pages() {
+        const total = 5;
+        const cursor = +this.query.currPage;
+        let count = 1;
+        let upCount = 1;
+        let downCount = 1;
+        const arr = [cursor];
 
-    if (this.learningObjects.length) {
-      while (count < Math.min(total, this.pageCount)) {
-        if (cursor + upCount <= this.pageCount) {
-          arr.push(cursor + upCount++);
-          count++;
+        if (this.learningObjects.length) {
+            while (count < Math.min(total, this.pageCount)) {
+                if (cursor + upCount <= this.pageCount) {
+                    arr.push(cursor + upCount++);
+                    count++;
+                }
+
+                if (cursor - downCount > 0) {
+                    arr.unshift(cursor - downCount++);
+                    count++;
+                }
+            }
+        } else {
+            return [];
         }
 
-        if (cursor - downCount > 0) {
-          arr.unshift(cursor - downCount++);
-          count++;
+        return arr;
+    }
+
+    // navigate to previous page
+    prevPage() {
+        const page = +this.query.currPage - 1;
+        if (page > 0) {
+            this.query.currPage = page;
+            this.shouldResetPage = false;
+            this.performSearch();
         }
-      }
-    } else {
-      return [];
     }
 
-    return arr;
-  }
-
-  // navigate to previous page
-  prevPage() {
-    const page = +this.query.currPage - 1;
-    if (page > 0) {
-      this.query.currPage = page;
-      this.shouldResetPage = false;
-      this.performSearch();
+    // navigate to next page
+    nextPage() {
+        const page = +this.query.currPage + 1;
+        if (page <= this.pageCount) {
+            this.query.currPage = page;
+            this.shouldResetPage = false;
+            this.performSearch();
+        }
     }
-  }
 
-  // navigate to next page
-  nextPage() {
-    const page = +this.query.currPage + 1;
-    if (page <= this.pageCount) {
-      this.query.currPage = page;
-      this.shouldResetPage = false;
-      this.performSearch();
+    // navigate to a numbered page
+    goToPage(page) {
+        if (page > 0 && page <= this.pageCount) {
+            this.query.currPage = +page;
+            this.shouldResetPage = false;
+            this.performSearch();
+        }
     }
-  }
 
-  // navigate to a numbered page
-  goToPage(page) {
-    if (page > 0 && page <= this.pageCount) {
-      this.query.currPage = +page;
-      this.shouldResetPage = false;
-      this.performSearch();
-    }
-  }
-
-  clearSearch() {
-    this.navService.query.next(true);
-    this.query.text = '';
-    this.query.standardOutcomes = [];
-    this.query.currPage = 1;
-    this.query.orderBy = OrderBy.Date;
-    this.sortText = 'Newest';
-    this.router.navigate(['browse'], { queryParams: {} });
-  }
-
-  get sortString() {
-    return this.query.orderBy
-      ? this.query.orderBy.replace(/_/g, '') +
-      ' (' +
-      (this.query.sortType > 0 ? 'Asc' : 'Desc') +
-      ')'
-      : '';
-  }
-
-  toggleFilters() {
-    this.filtersDownMobile = !this.filtersDownMobile;
-    this.updateBodyScroll();
-    this.cd.detectChanges();
-  }
-
-  closeFilters() {
-    this.toggleFilters();
-  }
-
-  /**
-   * Handle backdrop click to close modal
-   * Applies pending modal filters first so clicking outside behaves like the Show Results button.
-   */
-  onBackdropClick(event: MouseEvent) {
-    if (event.target === event.currentTarget) {
-      this.applyFilters();
-      this.closeFilters();
-    }
-  }
-
-  /**
-   * Prevent/allow body scroll when modal is open
-   */
-  private updateBodyScroll() {
-    if (this.filtersDownMobile) {
-      this.renderer.setStyle(document.body, 'overflow', 'hidden');
-    } else {
-      this.renderer.removeStyle(document.body, 'overflow');
-    }
-  }
-
-  /**
-   * This is used only on modal layouts, injects the tempFilter storage into the query object and sends it
-   */
-  applyFilters() {
-    this.performSearch();
-  }
-
-  /**
-   * Registers the filters from the filter menu
-   *
-   * @param filters The filters emitted from the filter component
-   */
-  filter(filters: any) {
-    // Set filters and sets the ones that were removed so the performSearch function can
-    // correctly interface with sort and search
-    this.filters = filters;
-    this.filters.removed = [];
-    [
-      'collection',
-      'length',
-      'topics',
-      'tags',
-      'fileTypes',
-      'level',
-      'guidelines',
-      'standardOutcomes',
-      'noGuidelines',
-      'noDCWFGuidelines',
-    ].forEach((category) => {
-      if (!this.filters[category]) {
-        this.filters.removed.push(category);
-      }
-    });
-
-    if (!this.filtersDownMobile) {
-      this.performSearch(true);
-    } else {
-      this.fetchTotalLearningObjectsPreview();
-    }
-  }
-
-  clearAllFilters(sendFilters: boolean = true) {
-    // Reset query object to default state
-    this.query = {
-      ...this.query,
-      length: [],
-      level: [],
-      topics: [],
-      guidelines: [],
-      noGuidelines: '',
-      noDCWFGuidelines: '',
-      collection: '',
-      tags: [],
-      fileTypes: [],
-      standardOutcomes: []
-    };
-
-    // Clear filter objects in the filter component
-    this.filterClearSubject$.next();
-
-    if (sendFilters) {
-      this.performSearch();
-    }
-  }
-
-  /**
-   * Executes a search by reading through the query object and mapping it to query parameters and then re-navigating to the component
-   *
-   * @param delay if true, triggers a debounced subject, which will call performSearch again with no delay
-   */
-  performSearch(delay: boolean = false) {
-    if (delay) {
-      this.searchDelaySubject.next();
-    } else {
-      if (this.filters && Object.keys(this.filters).length > 0) {
-        // Remove the removed filter categories from the query object
-        (this.filters.removed as string[]).forEach(
-          (category) => delete this.query[category],
-        );
-        delete this.filters.removed;
-
-        // Append the filters without the removed option (not used in search) and resets filters
-        this.query = { ...this.query, ...this.filters };
-        this.filters = {};
-      }
-
-      // if we're adding a filter that isn't a page change, reset the currPage in query to 1
-      if (this.shouldResetPage) {
+    clearSearch() {
+        this.navService.query.next(true);
+        this.query.text = "";
+        this.query.standardOutcomes = [];
         this.query.currPage = 1;
-      }
-      this.shouldResetPage = true;
-
-      this.router.navigate(['browse'], {
-        queryParams: this.removeObjFalsy(this.query),
-      });
-    }
-  }
-
-  toggleSortMenu(state: boolean) {
-    this.sortMenuDown = state;
-    this.cd.detectChanges();
-  }
-
-  toggleSort(val) {
-    if (val !== null) {
-      if (val === 'dd') {
-        this.sortText = 'Newest';
         this.query.orderBy = OrderBy.Date;
-        this.query.sortType = SortType.Descending;
-      } else if (val === 'ad') {
-        this.sortText = 'Oldest';
-        this.query.orderBy = OrderBy.Date;
-        this.query.sortType = SortType.Ascending
-      } else if (val === 'w') {
-        this.sortText = 'Most Downloaded';
-        this.query.orderBy = OrderBy.Downloads;
-        this.query.sortType = SortType.Descending;
-      }
-      // remove date filters if previously set
-      delete this.query.start;
-      delete this.query.end;
-
-      this.performSearch();
+        this.sortText = "Newest";
+        this.router.navigate(["browse"], { queryParams: {} });
     }
 
-    this.toggleSortMenu(false);
-  }
-
-  /**
-   * Takes an object of parameters and attempts to map them to the query objcet
-   *
-   * @param {*} params the object returned from subscribing to the routers queryParams observable
-   */
-  makeQuery(params: Record<string, string>) {
-    // Helper functions to provide fall back values on erroneous query params
-    function parseIntOrDefault(val: any, fallback: number): number {
-      const num = typeof val === 'string' ? parseInt(val, 10) : Number(val);
-      return isNaN(num) ? fallback : num;
+    get sortString() {
+        return this.query.orderBy
+            ? this.query.orderBy.replace(/_/g, "") +
+                  " (" +
+                  (this.query.sortType > 0 ? "Asc" : "Desc") +
+                  ")"
+            : "";
     }
 
-    function toStringArray(val: any): string[] {
-      if (Array.isArray(val)) {
-        return val.map(String);
-      }
-      if (typeof val === 'string') {
-        return [val];
-      }
-      return [];
+    toggleFilters() {
+        this.filtersDownMobile = !this.filtersDownMobile;
+        this.updateBodyScroll();
+        this.cd.detectChanges();
     }
 
-    function toSingleString(val: any, fallback: string = ''): string {
-      if (Array.isArray(val)) {
-        return typeof val[0] === 'string' ? val[0] : fallback;
-      }
-      return typeof val === 'string' ? val : fallback;
+    closeFilters() {
+        this.toggleFilters();
     }
 
-    // Rebuild the query from scratch and then apply modifications from params
-    // This prevents any pre-existing queries from sticking around
-    this.query = {
-      text: params.text,
-      currPage: parseIntOrDefault(params.currPage, 1),
-      limit: parseIntOrDefault(params.limit, 15),
-      length: toStringArray(params.length),
-      level: toStringArray(params.level),
-      guidelines: toStringArray(params.guidelines),
-      noGuidelines: toSingleString(params.noGuidelines),
-      noDCWFGuidelines: toSingleString(params.noDCWFGuidelines),
-      standardOutcomes: [],
-      orderBy: params.orderBy ? params.orderBy : OrderBy.Date,
-      sortType: params.sortType ? Number(params.sortType) : -1,
-      collection: params.collection || '',
-      topics: toStringArray(params.topics) || [],
-      fileTypes: [],
-      status: [LearningObject.Status.RELEASED],
-      tags: toStringArray(params.tags),
-    };
-  }
-
-  async fetchLearningObjects(query: Query) {
-    this.totalLearningObjectsPreviewRequestId++;
-    this.loading = true;
-    this.learningObjects = [];
-    // Trim leading and trailing whitespace
-    query.text = query.text ? query.text.trim() : '';
-
-    try {
-      const { learningObjects, total } =
-        await this.searchLearningObjectService.getLearningObjects(this.removeObjFalsy(query));
-      this.learningObjects = learningObjects;
-      this.totalLearningObjects = total;
-      this.totalLearningObjectsPreview = total;
-      this.pageCount = Math.ceil(total / +this.query.limit);
-      this.loading = false;
-      this.cd.detectChanges();
-    } catch (e) {
-      console.log(`Error: ${e}`);
-    }
-  }
-
-  /**
-   * Fetches only the result count for the filters currently selected in the modal.
-   * This lets the modal preview the number of matching learning objects without
-   * navigating or replacing the result cards shown on the page.
-   */
-  private async fetchTotalLearningObjectsPreview() {
-    const requestId = ++this.totalLearningObjectsPreviewRequestId;
-    const previewQuery = {
-      ...this.getQueryWithPendingFilters(),
-      currPage: 1,
-      limit: 1,
-    };
-
-    previewQuery.text = previewQuery.text ? previewQuery.text.trim() : '';
-
-    try {
-      const { total } =
-        await this.searchLearningObjectService.getLearningObjects(this.removeObjFalsy(previewQuery));
-
-      if (requestId !== this.totalLearningObjectsPreviewRequestId) {
-        return;
-      }
-
-      this.totalLearningObjectsPreview = total;
-      this.cd.detectChanges();
-    } catch (e) {
-      console.log(`Error: ${e}`);
-    }
-  }
-
-  /**
-   * Builds a query from the applied route state plus any pending modal filter changes.
-   * Removed filter categories are deleted from the applied query so the preview count
-   * matches what would be sent if the user applied the current modal state.
-   */
-  private getQueryWithPendingFilters(): Query {
-    const pendingQuery = { ...this.query };
-
-    if (this.filters && Object.keys(this.filters).length > 0) {
-      (this.filters.removed as string[] || []).forEach(
-        (category) => delete pendingQuery[category],
-      );
-
-      const filters = { ...this.filters };
-      delete filters.removed;
-
-      return { ...pendingQuery, ...filters };
+    /**
+     * Handle backdrop click to close modal
+     * Applies pending modal filters first so clicking outside behaves like the Show Results button.
+     */
+    onBackdropClick(event: MouseEvent) {
+        if (event.target === event.currentTarget) {
+            this.applyFilters();
+            this.closeFilters();
+        }
     }
 
-    return pendingQuery;
-  }
-
-  /**
-   * Deep copy and strip all falsy values (and empty arrays) from an object
-   */
-  private removeObjFalsy(obj: any): any {
-    return Object.keys(obj).reduce((acc, key) => {
-      // Checks if the value is truthy
-      if (obj[key]) {
-        acc[key] = obj[key];
-      }
-      return acc;
-      // Initialize with an empty object
-    }, {});
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    // Clean up body scroll if modal was open
-    this.renderer.removeStyle(document.body, 'overflow');
-  }
-
-  trackByLearningObject(_index: number, item: any) {
-    return item ? `${item.cuid}-${item.version}` : _index;
-  }
-
-
-  /** Returns true if any of the filter fields in the query are not empty or if any filters are active in the modal */
-  public anyFiltersSelected(): boolean {
-    const q = this.query;
-
-    // Check query object for applied filters
-    const queryFiltersActive = !!(
-      (q.collection && q.collection !== '') ||
-      q.length?.length ||
-      q.topics?.length ||
-      q.level?.length ||
-      q.guidelines?.length ||
-      q.noGuidelines ||
-      q.noDCWFGuidelines ||
-      q.standardOutcomes?.length ||
-      q.fileTypes?.length ||
-      q.tags?.length
-    );
-
-    // Also check if any filters are selected in the modal (but not yet applied)
-    const modalFiltersActive =
-      this.getTopicsCount() > 0 ||
-      this.getLevelsCount() > 0 ||
-      this.getDurationCount() > 0 ||
-      this.getMaterialsCount() > 0;
-
-    return queryFiltersActive || modalFiltersActive;
-  }
-
-  /**
-   * Get the count of selected topics
-   */
-  getTopicsCount(): number {
-    if (this.topicFilter?.filters) {
-      return this.topicFilter.filters.filter(f => f.active).length;
-    }
-    return this.query.topics?.length || 0;
-  }
-
-  /**
-   * Get the count of selected levels
-   */
-  getLevelsCount(): number {
-    if (this.levelFilter?.filters) {
-      return this.levelFilter.filters.filter(f => f.active).length;
-    }
-    return this.query.level?.length || 0;
-  }
-
-  /**
-   * Get the count of selected duration options
-   */
-  getDurationCount(): number {
-    if (this.durationFilter?.filters) {
-      return this.durationFilter.filters.filter(f => f.active).length;
-    }
-    return this.query.length?.length || 0;
-  }
-
-  /**
-   * Get the count of selected material tags
-   */
-  getMaterialsCount(): number {
-    if (this.materialsFilter?.filters) {
-      return this.materialsFilter.filters.filter(f => f.active).length;
-    }
-    return this.query.tags?.length || 0;
-  }
-
-  /**
-   * Get the list of active topic names (for filtering learning object images)
-   * Returns an array of topic names that match the active filters
-   */
-  getActiveTopics(): string[] {
-    if (!this.topicFilter?.filters) {
-      return [];
-    }
-    
-    // Get the names of all active topics
-    return this.topicFilter.filters
-      .filter(f => f.active)
-      .map(f => f.name);
-  }
-
-  private getSelectedValues(filter?: FilterSectionInfo): string[] {
-    return (filter?.filters || [])
-      .filter((option) => option.active)
-      .map((option) => option.value);
-  }
-
-  private applyDropdownSelection(filter: FilterSectionInfo | undefined, selectedValues: string[]): void {
-    if (!filter?.filters) {
-      return;
+    /**
+     * Prevent/allow body scroll when modal is open
+     */
+    private updateBodyScroll() {
+        if (this.filtersDownMobile) {
+            this.renderer.setStyle(document.body, "overflow", "hidden");
+        } else {
+            this.renderer.removeStyle(document.body, "overflow");
+        }
     }
 
-    const selectedSet = new Set(selectedValues);
-    let didChange = false;
-
-    filter.filters.forEach((option) => {
-      const nextState = selectedSet.has(option.value);
-      if (option.active !== nextState) {
-        option.active = nextState;
-        didChange = true;
-      }
-    });
-
-    if (!didChange) {
-      return;
+    /**
+     * This is used only on modal layouts, injects the tempFilter storage into the query object and sends it
+     */
+    applyFilters() {
+        this.performSearch();
     }
 
-    if (this.filterComponent) {
-      this.filterComponent.sendFilterChanges();
+    /**
+     * Registers the filters from the filter menu
+     *
+     * @param filters The filters emitted from the filter component
+     */
+    filter(filters: any) {
+        // Set filters and sets the ones that were removed so the performSearch function can
+        // correctly interface with sort and search
+        this.filters = filters;
+        this.filters.removed = [];
+        [
+            "collection",
+            "length",
+            "topics",
+            "tags",
+            "fileTypes",
+            "level",
+            "guidelines",
+            "standardOutcomes",
+            "noGuidelines",
+            "noDCWFGuidelines",
+        ].forEach((category) => {
+            if (!this.filters[category]) {
+                this.filters.removed.push(category);
+            }
+        });
+
+        if (!this.filtersDownMobile) {
+            this.performSearch(true);
+        } else {
+            this.fetchTotalLearningObjectsPreview();
+        }
     }
 
-    this.performSearch(true);
-    this.cd.detectChanges();
-  }
+    clearAllFilters(sendFilters: boolean = true) {
+        // Reset query object to default state
+        this.query = {
+            ...this.query,
+            length: [],
+            level: [],
+            topics: [],
+            guidelines: [],
+            noGuidelines: "",
+            noDCWFGuidelines: "",
+            collection: "",
+            tags: [],
+            fileTypes: [],
+            standardOutcomes: [],
+        };
 
-  isAdminOrEditor(): boolean {
-    return this.authService.isAdminOrEditor();
-  }
+        // Clear filter objects in the filter component
+        this.filterClearSubject$.next();
+
+        if (sendFilters) {
+            this.performSearch();
+        }
+    }
+
+    /**
+     * Executes a search by reading through the query object and mapping it to query parameters and then re-navigating to the component
+     *
+     * @param delay if true, triggers a debounced subject, which will call performSearch again with no delay
+     */
+    performSearch(delay: boolean = false) {
+        if (delay) {
+            this.searchDelaySubject.next();
+        } else {
+            if (this.filters && Object.keys(this.filters).length > 0) {
+                // Remove the removed filter categories from the query object
+                (this.filters.removed as string[]).forEach(
+                    (category) => delete this.query[category],
+                );
+                delete this.filters.removed;
+
+                // Append the filters without the removed option (not used in search) and resets filters
+                this.query = { ...this.query, ...this.filters };
+                this.filters = {};
+            }
+
+            // if we're adding a filter that isn't a page change, reset the currPage in query to 1
+            if (this.shouldResetPage) {
+                this.query.currPage = 1;
+            }
+            this.shouldResetPage = true;
+
+            this.router.navigate(["browse"], {
+                queryParams: this.removeObjFalsy(this.query),
+            });
+        }
+    }
+
+    toggleSortMenu(state: boolean) {
+        this.sortMenuDown = state;
+        this.cd.detectChanges();
+    }
+
+    toggleSort(val) {
+        if (val !== null) {
+            if (val === "dd") {
+                this.sortText = "Newest";
+                this.query.orderBy = OrderBy.Date;
+                this.query.sortType = SortType.Descending;
+            } else if (val === "ad") {
+                this.sortText = "Oldest";
+                this.query.orderBy = OrderBy.Date;
+                this.query.sortType = SortType.Ascending;
+            } else if (val === "w") {
+                this.sortText = "Most Downloaded";
+                this.query.orderBy = OrderBy.Downloads;
+                this.query.sortType = SortType.Descending;
+            }
+            // remove date filters if previously set
+            delete this.query.start;
+            delete this.query.end;
+
+            this.performSearch();
+        }
+
+        this.toggleSortMenu(false);
+    }
+
+    /**
+     * Takes an object of parameters and attempts to map them to the query objcet
+     *
+     * @param {*} params the object returned from subscribing to the routers queryParams observable
+     */
+    makeQuery(params: Record<string, string>) {
+        // Helper functions to provide fall back values on erroneous query params
+        function parseIntOrDefault(val: any, fallback: number): number {
+            const num =
+                typeof val === "string" ? parseInt(val, 10) : Number(val);
+            return isNaN(num) ? fallback : num;
+        }
+
+        function toStringArray(val: any): string[] {
+            if (Array.isArray(val)) {
+                return val.map(String);
+            }
+            if (typeof val === "string") {
+                return [val];
+            }
+            return [];
+        }
+
+        function toSingleString(val: any, fallback: string = ""): string {
+            if (Array.isArray(val)) {
+                return typeof val[0] === "string" ? val[0] : fallback;
+            }
+            return typeof val === "string" ? val : fallback;
+        }
+
+        // Rebuild the query from scratch and then apply modifications from params
+        // This prevents any pre-existing queries from sticking around
+        this.query = {
+            text: params.text,
+            currPage: parseIntOrDefault(params.currPage, 1),
+            limit: parseIntOrDefault(params.limit, 15),
+            length: toStringArray(params.length),
+            level: toStringArray(params.level),
+            guidelines: toStringArray(params.guidelines),
+            noGuidelines: toSingleString(params.noGuidelines),
+            noDCWFGuidelines: toSingleString(params.noDCWFGuidelines),
+            standardOutcomes: [],
+            orderBy: params.orderBy ? params.orderBy : OrderBy.Date,
+            sortType: params.sortType ? Number(params.sortType) : -1,
+            collection: params.collection || "",
+            topics: toStringArray(params.topics) || [],
+            fileTypes: [],
+            status: [LearningObject.Status.RELEASED],
+            tags: toStringArray(params.tags),
+        };
+    }
+
+    async fetchLearningObjects(query: Query) {
+        this.totalLearningObjectsPreviewRequestId++;
+        this.loading = true;
+        this.learningObjects = [];
+        // Trim leading and trailing whitespace
+        query.text = query.text ? query.text.trim() : "";
+
+        try {
+            const { learningObjects, total } =
+                await this.searchLearningObjectService.getLearningObjects(
+                    this.removeObjFalsy(query),
+                );
+            this.learningObjects = learningObjects;
+            this.totalLearningObjects = total;
+            this.totalLearningObjectsPreview = total;
+            this.pageCount = Math.ceil(total / +this.query.limit);
+            this.loading = false;
+            this.cd.detectChanges();
+        } catch (e) {
+            console.log(`Error: ${e}`);
+        }
+    }
+
+    /**
+     * Fetches only the result count for the filters currently selected in the modal.
+     * This lets the modal preview the number of matching learning objects without
+     * navigating or replacing the result cards shown on the page.
+     */
+    private async fetchTotalLearningObjectsPreview() {
+        const requestId = ++this.totalLearningObjectsPreviewRequestId;
+        const previewQuery = {
+            ...this.getQueryWithPendingFilters(),
+            currPage: 1,
+            limit: 1,
+        };
+
+        previewQuery.text = previewQuery.text ? previewQuery.text.trim() : "";
+
+        try {
+            const { total } =
+                await this.searchLearningObjectService.getLearningObjects(
+                    this.removeObjFalsy(previewQuery),
+                );
+
+            if (requestId !== this.totalLearningObjectsPreviewRequestId) {
+                return;
+            }
+
+            this.totalLearningObjectsPreview = total;
+            this.cd.detectChanges();
+        } catch (e) {
+            console.log(`Error: ${e}`);
+        }
+    }
+
+    /**
+     * Builds a query from the applied route state plus any pending modal filter changes.
+     * Removed filter categories are deleted from the applied query so the preview count
+     * matches what would be sent if the user applied the current modal state.
+     */
+    private getQueryWithPendingFilters(): Query {
+        const pendingQuery = { ...this.query };
+
+        if (this.filters && Object.keys(this.filters).length > 0) {
+            ((this.filters.removed as string[]) || []).forEach(
+                (category) => delete pendingQuery[category],
+            );
+
+            const filters = { ...this.filters };
+            delete filters.removed;
+
+            return { ...pendingQuery, ...filters };
+        }
+
+        return pendingQuery;
+    }
+
+    /**
+     * Deep copy and strip all falsy values (and empty arrays) from an object
+     */
+    private removeObjFalsy(obj: any): any {
+        return Object.keys(obj).reduce((acc, key) => {
+            // Checks if the value is truthy
+            if (obj[key]) {
+                acc[key] = obj[key];
+            }
+            return acc;
+            // Initialize with an empty object
+        }, {});
+    }
+
+    ngOnDestroy() {
+        this.unsubscribe.next();
+        // Clean up body scroll if modal was open
+        this.renderer.removeStyle(document.body, "overflow");
+    }
+
+    trackByLearningObject(_index: number, item: any) {
+        return item ? `${item.cuid}-${item.version}` : _index;
+    }
+
+    /** Returns true if any of the filter fields in the query are not empty or if any filters are active in the modal */
+    public anyFiltersSelected(): boolean {
+        const q = this.query;
+
+        // Check query object for applied filters
+        const queryFiltersActive = !!(
+            (q.collection && q.collection !== "") ||
+            q.length?.length ||
+            q.topics?.length ||
+            q.level?.length ||
+            q.guidelines?.length ||
+            q.noGuidelines ||
+            q.noDCWFGuidelines ||
+            q.standardOutcomes?.length ||
+            q.fileTypes?.length ||
+            q.tags?.length
+        );
+
+        // Also check if any filters are selected in the modal (but not yet applied)
+        const modalFiltersActive =
+            this.getTopicsCount() > 0 ||
+            this.getLevelsCount() > 0 ||
+            this.getDurationCount() > 0 ||
+            this.getMaterialsCount() > 0;
+
+        return queryFiltersActive || modalFiltersActive;
+    }
+
+    /**
+     * Get the count of selected topics
+     */
+    getTopicsCount(): number {
+        if (this.topicFilter?.filters) {
+            return this.topicFilter.filters.filter((f) => f.active).length;
+        }
+        return this.query.topics?.length || 0;
+    }
+
+    /**
+     * Get the count of selected levels
+     */
+    getLevelsCount(): number {
+        if (this.levelFilter?.filters) {
+            return this.levelFilter.filters.filter((f) => f.active).length;
+        }
+        return this.query.level?.length || 0;
+    }
+
+    /**
+     * Get the count of selected duration options
+     */
+    getDurationCount(): number {
+        if (this.durationFilter?.filters) {
+            return this.durationFilter.filters.filter((f) => f.active).length;
+        }
+        return this.query.length?.length || 0;
+    }
+
+    /**
+     * Get the count of selected material tags
+     */
+    getMaterialsCount(): number {
+        if (this.materialsFilter?.filters) {
+            return this.materialsFilter.filters.filter((f) => f.active).length;
+        }
+        return this.query.tags?.length || 0;
+    }
+
+    /**
+     * Get the list of active topic names (for filtering learning object images)
+     * Returns an array of topic names that match the active filters
+     */
+    getActiveTopics(): string[] {
+        if (!this.topicFilter?.filters) {
+            return [];
+        }
+
+        // Get the names of all active topics
+        return this.topicFilter.filters
+            .filter((f) => f.active)
+            .map((f) => f.name);
+    }
+
+    private getSelectedValues(filter?: FilterSectionInfo): string[] {
+        return (filter?.filters || [])
+            .filter((option) => option.active)
+            .map((option) => option.value);
+    }
+
+    private applyDropdownSelection(
+        filter: FilterSectionInfo | undefined,
+        selectedValues: string[],
+    ): void {
+        if (!filter?.filters) {
+            return;
+        }
+
+        const selectedSet = new Set(selectedValues);
+        let didChange = false;
+
+        filter.filters.forEach((option) => {
+            const nextState = selectedSet.has(option.value);
+            if (option.active !== nextState) {
+                option.active = nextState;
+                didChange = true;
+            }
+        });
+
+        if (!didChange) {
+            return;
+        }
+
+        if (this.filterComponent) {
+            this.filterComponent.sendFilterChanges();
+        }
+
+        this.performSearch(true);
+        this.cd.detectChanges();
+    }
+
+    isAdminOrEditor(): boolean {
+        return this.authService.isAdminOrEditor();
+    }
 }

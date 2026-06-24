@@ -1,23 +1,47 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Subject } from 'rxjs';
-import { User } from '@entity';
-import { debounceTime, takeUntil } from 'rxjs/operators';
-import { UserService } from 'app/core/user-module/user.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { Collection } from 'app/core/collection-module/collections.service';
-import { OrganizationStore } from 'app/core/organization-module/organization.store';
-import { FormsModule } from '@angular/forms';
-import { NgIf, NgFor, NgClass, NgStyle, AsyncPipe, TitleCasePipe } from '@angular/common';
-import { VirtualScrollerModule } from '@iharbeck/ngx-virtual-scroller';
-import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import {
+    Component,
+    OnInit,
+    OnDestroy,
+    Input,
+    Output,
+    EventEmitter,
+} from "@angular/core";
+import { Subject } from "rxjs";
+import { User } from "@entity";
+import { debounceTime, takeUntil } from "rxjs/operators";
+import { UserService } from "app/core/user-module/user.service";
+import { AuthService } from "app/core/auth-module/auth.service";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
+import { Collection } from "app/core/collection-module/collections.service";
+import { OrganizationStore } from "app/core/organization-module/organization.store";
+import { FormsModule } from "@angular/forms";
+import {
+    NgIf,
+    NgFor,
+    NgClass,
+    NgStyle,
+    AsyncPipe,
+    TitleCasePipe,
+} from "@angular/common";
+import { VirtualScrollerModule } from "@iharbeck/ngx-virtual-scroller";
+import { ActivateDirective } from "../../../shared/directives/activate.directive";
 
 @Component({
-    selector: 'clark-user-search-wrapper',
-    templateUrl: './user-search-wrapper.component.html',
-    styleUrls: ['./user-search-wrapper.component.scss'],
+    selector: "clark-user-search-wrapper",
+    templateUrl: "./user-search-wrapper.component.html",
+    styleUrls: ["./user-search-wrapper.component.scss"],
     standalone: true,
-    imports: [FormsModule, NgIf, VirtualScrollerModule, NgFor, ActivateDirective, NgClass, NgStyle, AsyncPipe, TitleCasePipe]
+    imports: [
+        FormsModule,
+        NgIf,
+        VirtualScrollerModule,
+        NgFor,
+        ActivateDirective,
+        NgClass,
+        NgStyle,
+        AsyncPipe,
+        TitleCasePipe,
+    ],
 })
 export class UserSearchWrapperComponent implements OnInit, OnDestroy {
     // fires every time an input event occurs on the search input element
@@ -39,75 +63,83 @@ export class UserSearchWrapperComponent implements OnInit, OnDestroy {
     // Fired when user is selected
     @Output() selectedUser: EventEmitter<User> = new EventEmitter();
 
-  constructor(
-    private user: UserService,
-    private toaster: ToastrOvenService,
-    private authService: AuthService,
-    public orgStore: OrganizationStore,
-  ) { }
+    constructor(
+        private user: UserService,
+        private toaster: ToastrOvenService,
+        private authService: AuthService,
+        public orgStore: OrganizationStore,
+    ) {}
 
-  ngOnInit() {
-      // subscribe to the search input and fire search after debounce
-      this.userSearchInput$.pipe(
-        debounceTime(650),
-        takeUntil(this.destroyed$)
-      ).subscribe((val: string) => {
-        this.findUser(val.trim());
-      });
+    ngOnInit() {
+        // subscribe to the search input and fire search after debounce
+        this.userSearchInput$
+            .pipe(debounceTime(650), takeUntil(this.destroyed$))
+            .subscribe((val: string) => {
+                this.findUser(val.trim());
+            });
 
-      this.userSearchInput$.pipe(
-        takeUntil(this.destroyed$)
-      ).subscribe((val: string) => {
-        if (val && val !== '') {
-          this.loading = true;
-        } else {
-          this.clearSearch();
-          this.loading = false;
-        }
-      });
-  }
-
-  /**
-   * Queries the UserService with query text and sets the searchResults variable
-   *
-   * @memberof UserSearchWrapperComponent
-   */
-  findUser(query: string) {
-    if (query && query !== '') {
-      this.user.searchUsers({ text: query }).then((results: User[]) => {
-        // remove current user from results
-        this.searchResults = results.filter(result => result.username !== this.authService.username);
-        this.loading = false;
-      }).catch(error => {
-        this.toaster.error('Error!', 'There was an error fetching users. Please try again later.');
-      });
+        this.userSearchInput$
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((val: string) => {
+                if (val && val !== "") {
+                    this.loading = true;
+                } else {
+                    this.clearSearch();
+                    this.loading = false;
+                }
+            });
     }
-  }
 
-  /**
-   * Fires event with selected user index
-   *
-   * @memberof UserSearchWrapperComponent
-   */
-  selectUser(index: number) {
-    this.selectedUser.emit(this.searchResults[index]);
-    this.searchResults = [];
-    this.clearSearch();
-  }
+    /**
+     * Queries the UserService with query text and sets the searchResults variable
+     *
+     * @memberof UserSearchWrapperComponent
+     */
+    findUser(query: string) {
+        if (query && query !== "") {
+            this.user
+                .searchUsers({ text: query })
+                .then((results: User[]) => {
+                    // remove current user from results
+                    this.searchResults = results.filter(
+                        (result) =>
+                            result.username !== this.authService.username,
+                    );
+                    this.loading = false;
+                })
+                .catch((error) => {
+                    this.toaster.error(
+                        "Error!",
+                        "There was an error fetching users. Please try again later.",
+                    );
+                });
+        }
+    }
 
-  /**
-   * Clear's the current search text and results
-   *
-   * @memberof UserSearchWrapperComponent
-   */
-  clearSearch() {
-    this.query = '';
-    this.searchResults = [];
-    this.loading = false;
-  }
+    /**
+     * Fires event with selected user index
+     *
+     * @memberof UserSearchWrapperComponent
+     */
+    selectUser(index: number) {
+        this.selectedUser.emit(this.searchResults[index]);
+        this.searchResults = [];
+        this.clearSearch();
+    }
 
-  ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.unsubscribe();
-  }
+    /**
+     * Clear's the current search text and results
+     *
+     * @memberof UserSearchWrapperComponent
+     */
+    clearSearch() {
+        this.query = "";
+        this.searchResults = [];
+        this.loading = false;
+    }
+
+    ngOnDestroy() {
+        this.destroyed$.next();
+        this.destroyed$.unsubscribe();
+    }
 }
