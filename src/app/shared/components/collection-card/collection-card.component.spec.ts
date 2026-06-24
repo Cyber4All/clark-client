@@ -1,26 +1,25 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { CollectionCardComponent } from './collection-card.component';
+import { CollectionCardComponent } from "./collection-card.component";
 
-describe('CollectionCardComponent', () => {
-  let component: CollectionCardComponent;
-  let fixture: ComponentFixture<CollectionCardComponent>;
+describe("CollectionCardComponent", () => {
+    let component: CollectionCardComponent;
+    let fixture: ComponentFixture<CollectionCardComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [CollectionCardComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [CollectionCardComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(CollectionCardComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(CollectionCardComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

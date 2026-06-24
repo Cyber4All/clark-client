@@ -1,26 +1,25 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { RatingStarsComponent } from './rating-stars.component';
+import { RatingStarsComponent } from "./rating-stars.component";
 
-describe('RatingStarsComponent', () => {
-  let component: RatingStarsComponent;
-  let fixture: ComponentFixture<RatingStarsComponent>;
+describe("RatingStarsComponent", () => {
+    let component: RatingStarsComponent;
+    let fixture: ComponentFixture<RatingStarsComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [RatingStarsComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [RatingStarsComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RatingStarsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(RatingStarsComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

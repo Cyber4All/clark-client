@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 /**
  * @class 'SubscriptionAgreementService' is a component used to toggle the
@@ -8,50 +8,50 @@ import { Injectable } from '@angular/core';
  */
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
 export class SubscriptionAgreementService {
-  /**
-   * Temporarily disabeling newsletter subscription banner 2024_03_06
-   */
-  showSubscriptionBanner = false;
-  isMobile = window.screen.width < 600 ? true : false;
+    /**
+     * Temporarily disabeling newsletter subscription banner 2024_03_06
+     */
+    showSubscriptionBanner = false;
+    isMobile = window.screen.width < 600 ? true : false;
 
-  constructor() {}
+    constructor() {}
 
-  /**
-   * Function that retrieves the toggle value for the subscription banner
-   *
-   * @returns current value of 'showSubscriptionBanner'
-   */
-  getShowSubscriptionBannerVal(): boolean {
-    this.checkShowSubscriptionBanner();
-    return this.showSubscriptionBanner;
-  }
-
-  /**
-   * @private Function to initialize local storage variable for the subscription banner
-   *
-   * @const banner checks local storage for 'showSubscriptionBanner'
-   * If null: intialize it^ @function setShowSubscriptionBanner(true)
-   */
-  private checkShowSubscriptionBanner() {
-    const banner = localStorage.getItem('showSubscriptionBanner');
-    if (banner == null) {
-      this.setShowSubscriptionBanner(false);
-    } else if (banner && this.isMobile) {
-      this.setShowSubscriptionBanner(false);
+    /**
+     * Function that retrieves the toggle value for the subscription banner
+     *
+     * @returns current value of 'showSubscriptionBanner'
+     */
+    getShowSubscriptionBannerVal(): boolean {
+        this.checkShowSubscriptionBanner();
+        return this.showSubscriptionBanner;
     }
-    this.showSubscriptionBanner = !(banner !== null && banner === 'false');
-  }
 
-  /**
-   * Function to toggle on and off the subscription banner
-   *
-   * @param val boolean toggle: when true banner shows
-   */
-  setShowSubscriptionBanner(val: boolean) {
-    localStorage.setItem('showSubscriptionBanner', val.toString());
-    this.showSubscriptionBanner = val;
-  }
+    /**
+     * @private Function to initialize local storage variable for the subscription banner
+     *
+     * @const banner checks local storage for 'showSubscriptionBanner'
+     * If null: intialize it^ @function setShowSubscriptionBanner(true)
+     */
+    private checkShowSubscriptionBanner() {
+        const banner = localStorage.getItem("showSubscriptionBanner");
+        if (banner == null) {
+            this.setShowSubscriptionBanner(false);
+        } else if (banner && this.isMobile) {
+            this.setShowSubscriptionBanner(false);
+        }
+        this.showSubscriptionBanner = !(banner !== null && banner === "false");
+    }
+
+    /**
+     * Function to toggle on and off the subscription banner
+     *
+     * @param val boolean toggle: when true banner shows
+     */
+    setShowSubscriptionBanner(val: boolean) {
+        localStorage.setItem("showSubscriptionBanner", val.toString());
+        this.showSubscriptionBanner = val;
+    }
 }

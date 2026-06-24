@@ -1,50 +1,78 @@
 <div>
-  <!-- Topics Filters - Pill/Chip Style (using filter-section for accordion behavior) -->
-  <clark-filter-section [info]="topicFilter" (change)="registerChange()">
-    <div class="topic-pills-container" *ngIf="topicFilter?.filters">
-      <button *ngFor="let topic of topicFilter.filters"
-        class="topic-pill"
-        [ngClass]="{'active': topic.active}"
-        (activate)="toggleTopicFilter(topic)">
-        {{ topic.name }}
-      </button>
-    </div>
-  </clark-filter-section>
+    <!-- Topics Filters - Pill/Chip Style (using filter-section for accordion behavior) -->
+    <clark-filter-section [info]="topicFilter" (change)="registerChange()">
+        <div class="topic-pills-container" *ngIf="topicFilter?.filters">
+            <button
+                *ngFor="let topic of topicFilter.filters"
+                class="topic-pill"
+                [ngClass]="{ active: topic.active }"
+                (activate)="toggleTopicFilter(topic)">
+                {{ topic.name }}
+            </button>
+        </div>
+    </clark-filter-section>
 
-  <!-- Level Filters -->
-  <clark-filter-section [info]="levelFilter" (change)="registerChange()"></clark-filter-section>
+    <!-- Level Filters -->
+    <clark-filter-section
+        [info]="levelFilter"
+        (change)="registerChange()"></clark-filter-section>
 
-  <!-- Materials Filters (from Tags) -->
-  <clark-filter-section [info]="getTagFilterByType('materials')" [collapsed]="false" (change)="registerChange()"></clark-filter-section>
+    <!-- Materials Filters (from Tags) -->
+    <clark-filter-section
+        [info]="getTagFilterByType('materials')"
+        [collapsed]="false"
+        (change)="registerChange()"></clark-filter-section>
 
-  <clark-filter-section [info]="getTagFilterByType('misc')" [collapsed]="false"(change)="registerChange()"></clark-filter-section>
+    <clark-filter-section
+        [info]="getTagFilterByType('misc')"
+        [collapsed]="false"
+        (change)="registerChange()"></clark-filter-section>
 
-  <clark-filter-section [info]="getTagFilterByType('code')" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
+    <clark-filter-section
+        [info]="getTagFilterByType('code')"
+        [collapsed]="true"
+        (change)="registerChange()"></clark-filter-section>
 
-  <clark-filter-section [info]="getTagFilterByType('tech')" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
+    <clark-filter-section
+        [info]="getTagFilterByType('tech')"
+        [collapsed]="true"
+        (change)="registerChange()"></clark-filter-section>
 
-  <!-- Duration Filters (formerly Length) -->
-  <clark-filter-section [info]="lengthFilter" [collapsed]="false"(change)="registerChange()"></clark-filter-section>
+    <!-- Duration Filters (formerly Length) -->
+    <clark-filter-section
+        [info]="lengthFilter"
+        [collapsed]="false"
+        (change)="registerChange()"></clark-filter-section>
 
-  <!-- Collections Filters -->
-  <clark-filter-section [info]="collectionFilter" [collapsed]="true"(change)="registerChange()"></clark-filter-section>
+    <!-- Collections Filters -->
+    <clark-filter-section
+        [info]="collectionFilter"
+        [collapsed]="true"
+        (change)="registerChange()"></clark-filter-section>
 
-  <!-- Frameworks Filters (formerly Guidelines) -->
-  <clark-filter-section [info]="frameworkFilter" [collapsed]="false" (change)="registerChange()">
-    <!-- <a (click)="openAdvancedSearch()">Advanced Search                                                  **Temporarily disabling this advanced search until its fully implemented**
+    <!-- Frameworks Filters (formerly Guidelines) -->
+    <clark-filter-section
+        [info]="frameworkFilter"
+        [collapsed]="false"
+        (change)="registerChange()">
+        <!-- <a (click)="openAdvancedSearch()">Advanced Search                                                  **Temporarily disabling this advanced search until its fully implemented**
       <span *ngIf="guidelineFilter.length > 0">({{ guidelineFilter.length }} Selected)</span></a>  -->
-  </clark-filter-section>
+    </clark-filter-section>
 </div>
 
 <div *ngIf="isAdminOrEditor()">
-  <br />
-  <clark-filter-section [info]="adminEditorFilter" (change)="registerChange()"></clark-filter-section>
+    <br />
+    <p>Admin/Editor Filters</p>
+    <clark-filter-section
+        [info]="adminEditorFilter"
+        (change)="registerChange()"></clark-filter-section>
 </div>
 
-
 <clark-popup *ngIf="showAdvancedSearch" (closed)="closeAdvancedSearch()">
-  <div class="modal-container center" #popupInner>
-    <clark-guideline-filter [selectedGuidelines]="guidelineFilter.slice()" (close)="closeAdvancedSearch()"
-      (changed)="filterGuidelines($event)"></clark-guideline-filter>
-  </div>
+    <div class="modal-container center" #popupInner>
+        <clark-guideline-filter
+            [selectedGuidelines]="guidelineFilter.slice()"
+            (close)="closeAdvancedSearch()"
+            (changed)="filterGuidelines($event)"></clark-guideline-filter>
+    </div>
 </clark-popup>

@@ -1,78 +1,78 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .admin {
-  display: grid;
-  grid-template-columns: minmax(150px, 225px) 1fr;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: auto;
+    display: grid;
+    grid-template-columns: minmax(150px, 225px) 1fr;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
 }
 
 .admin__sidebar {
-  background: white;
-  padding: 20px 0;
-  max-height: 100vh;
-  border-right: 2px solid $light-grey;
-  box-sizing: border-box;
+    background: white;
+    padding: 20px 0;
+    max-height: 100vh;
+    border-right: 2px solid $light-grey;
+    box-sizing: border-box;
 }
 
 .admin__main-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: stretch;
-  padding: 30px 30px 0;
-  box-sizing: border-box;
-  flex: 1;
-  overflow-y: scroll;
-  max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    padding: 30px 30px 0;
+    box-sizing: border-box;
+    flex: 1;
+    overflow-y: scroll;
+    max-height: 100vh;
 
-  &.admin__main-content--can-scroll {
-    padding-bottom: 30px;
-  }
+    &.admin__main-content--can-scroll {
+        padding-bottom: 30px;
+    }
 }
 
 .admin__meatball {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 20;
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 20;
 }
 
 .admin__meatball-button {
-  background: white;
-  border: 1px solid $light-grey;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  border-radius: 12px;
-  width: 44px;
-  height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+    background: white;
+    border: 1px solid $light-grey;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .admin__meatball-button .mat-icon {
-  margin: 0;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  font-size: 20px;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 20px;
 }
 
 ::ng-deep .admin-nav-menu .mat-mdc-menu-panel {
-  border-radius: 12px;
-  border: 1px solid #d9e1ec;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    border-radius: 12px;
+    border: 1px solid #d9e1ec;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
 @media (max-width: 1024px) {
-  .admin {
-    grid-template-columns: 1fr;
-  }
+    .admin {
+        grid-template-columns: 1fr;
+    }
 
-  .admin__main-content {
-    padding: 24px 20px 0;
-  }
+    .admin__main-content {
+        padding: 24px 20px 0;
+    }
 }

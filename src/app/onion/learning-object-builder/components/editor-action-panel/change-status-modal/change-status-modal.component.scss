@@ -1,55 +1,56 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .popup-inner {
-  min-width: 600px;
-  min-height: 400px;
-  position: relative;
-  margin-top: 5px;
+    min-width: 600px;
+    min-height: 400px;
+    position: relative;
+    margin-top: 5px;
 
-  & > * {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    right: 20px;
-    bottom: 20px;
-  }
+    & > * {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+    }
 }
 
 .title {
-  font-size: $large;
-  color: $darker-grey;
-  margin-bottom: 15px;
+    font-size: $large;
+    color: $darker-grey;
+    margin-bottom: 15px;
 }
 
 .status-options-wrapper {
-  margin-top: 25px;
+    margin-top: 25px;
 }
 
 .status-item {
-  display: flex;
-  flex-flow: row nowrap;
-  margin-bottom: 15px;
-  box-shadow: 0 0 5px $light-grey;
-  padding: 10px 24px;
-  cursor: pointer;
-  transition: box-shadow 0.2s ease;
-
-  &.unfocused {
-    opacity: .3;
-  }
-
-  &:hover, &:focus {
-    box-shadow: 0 0 5px $light-blue;
-  }
-
-  .status-item__text {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 15px;
-  }
+    flex-flow: row nowrap;
+    margin-bottom: 15px;
+    box-shadow: 0 0 5px $light-grey;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease;
+
+    &.unfocused {
+        opacity: 0.3;
+    }
+
+    &:hover,
+    &:focus {
+        box-shadow: 0 0 5px $light-blue;
+    }
+
+    .status-item__text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 15px;
+    }
 }
 
 .btn-group {
-  margin-top: 25px;
+    margin-top: 25px;
 }

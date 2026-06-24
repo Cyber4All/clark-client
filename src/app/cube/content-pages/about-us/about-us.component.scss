@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 h1 {
     text-align: center;
@@ -25,8 +25,8 @@ div {
 
 .header {
     &:before {
-        content: '';
-        background: linear-gradient( #ecf2f9, #ecf2f9, white);
+        content: "";
+        background: linear-gradient(#ecf2f9, #ecf2f9, white);
         position: absolute;
         top: 0;
         bottom: 0;
@@ -35,10 +35,17 @@ div {
         mask: $cube-pattern repeat;
         height: 250px;
         z-index: 0;
-      }
+    }
     &:after {
-        content: '';
-        background: linear-gradient(90deg, white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        content: "";
+        background: linear-gradient(
+            90deg,
+            white,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            white
+        );
         position: absolute;
         top: 0;
         left: 0;
@@ -46,7 +53,7 @@ div {
         bottom: 0;
         height: 300px;
         z-index: 1;
-      }
+    }
 }
 
 .accordion {
@@ -59,7 +66,10 @@ div {
 }
 
 .mat-expansion-panel {
-    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.2),0px 0px 0px 0px rgba(0, 0, 0, 0.14),0px 0px 3px 0px rgba(0, 0, 0, 0.12);
+    box-shadow:
+        0px 0px 0px 0px rgba(0, 0, 0, 0.2),
+        0px 0px 0px 0px rgba(0, 0, 0, 0.14),
+        0px 0px 3px 0px rgba(0, 0, 0, 0.12);
     padding-top: 5px;
     padding-bottom: 5px;
 }
@@ -80,14 +90,15 @@ div {
     padding: 0px;
 }
 
-::ng-deep .mat-tab-label, .mat-tab-link {
+::ng-deep .mat-tab-label,
+.mat-tab-link {
     font-size: $large;
 }
 
 ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
     background-color: $light-blue !important;
 }
-    
+
 ::ng-deep .clark-hierarchies {
     display: block;
     margin: auto;

@@ -1,107 +1,114 @@
 <a
-  [routerLink]="[
-    '/details',
-    learningObject.author.username,
-    learningObject.cuid,
-    learningObject.version,
-  ]"
-  attr.aria-label="{{ learningObject.name }}, {{ learningObject.length }}, by {{
-    learningObject.author.name
-  }}, last updated on {{ learningObject.date | date: 'longDate' }}"
->
-  <div
-    class="learning-object"
-    id="learning-object"
-    [ngClass]="{ trending: isTrending }"
-  >
-    <div class="image">
-      <img
-        class="logo"
-        src="{{ imagePath }}"
-        alt="{{
-          imagePath !== 'generic' ? topics[0] + ' logo' : 'Generic logo'
-        }}"
-      />
-      <div *ngIf="isDCWFAligned" class="framework-badge dcwf-badge">
-        <i class="fas fa-shield-alt"></i>
-        DCWF Aligned
-      </div>
+    [routerLink]="[
+        '/details',
+        learningObject.author.username,
+        learningObject.cuid,
+        learningObject.version,
+    ]"
+    attr.aria-label="{{ learningObject.name }}, {{
+        learningObject.length
+    }}, by {{ learningObject.author.name }}, last updated on {{
+        learningObject.date | date: 'longDate'
+    }}">
+    <div
+        class="learning-object"
+        id="learning-object"
+        [ngClass]="{ trending: isTrending }">
+        <div class="image">
+            <img
+                class="logo"
+                src="{{ imagePath }}"
+                alt="{{
+                    imagePath !== 'generic'
+                        ? topics[0] + ' logo'
+                        : 'Generic logo'
+                }}" />
+            <div *ngIf="isDCWFAligned" class="framework-badge dcwf-badge">
+                <i class="fas fa-shield-alt"></i>
+                DCWF Aligned
+            </div>
+        </div>
+        <div class="learning-object-content">
+            <div class="pills">
+                <div class="pills-left">
+                    <div class="length">
+                        {{ learningObject.length.toUpperCase() }}
+                    </div>
+                    <div *ngIf="learningObject.length" class="time">
+                        <i class="far fa-clock"></i>
+                        {{ humanReadableLength }}
+                    </div>
+                </div>
+                <span
+                    *ngIf="isTrending"
+                    class="trending-badge"
+                    title="Trending"
+                    [tip]="'This Learning Object is trending'"
+                    tipPosition="left">
+                    <i class="fas fa-fire" aria-hidden="true"></i>
+                </span>
+            </div>
+
+            <div class="title">
+                {{ truncateText(learningObject.name, isMobile ? 45 : 80) }}
+            </div>
+
+            <div class="date">
+                Updated {{ learningObject.date | date: "mediumDate" }}
+            </div>
+
+            <div class="details">
+                <div class="author">
+                    {{ learningObject.author?.name | titlecase }}
+                    {{
+                        learningObject.contributors?.length > 1 ? " et al." : ""
+                    }}
+                </div>
+                <div class="organization">
+                    {{
+                        orgStore.organizationNameFromUser$(
+                            learningObject.author
+                        ) | async
+                    }}
+                </div>
+            </div>
+
+            <div class="rating-stars-container">
+                <!-- Desktop: Full rating stars -->
+                <clark-rating-stars
+                    *ngIf="averageRating > 0 && !isMobile"
+                    [color]="'gold'"
+                    [rating]="averageRating"
+                    [reviewsCount]="reviewsCount"></clark-rating-stars>
+                <!-- Mobile: Simplified single star with rating -->
+                <div
+                    *ngIf="averageRating > 0 && isMobile"
+                    class="mobile-rating">
+                    <i class="fas fa-star" aria-hidden="true"></i>
+                    <span class="rating-value">{{
+                        averageRating | number: "1.1-1"
+                    }}</span>
+                    <span class="review-count">({{ reviewsCount }})</span>
+                </div>
+                <div
+                    *ngIf="downloadsCount >= 5"
+                    class="downloads-indicator"
+                    tabindex="0"
+                    attr.aria-label="{{ downloadsCount }} download{{
+                        downloadsCount !== 1 ? 's' : ''
+                    }}">
+                    <i class="far fa-download" aria-hidden="true"></i>
+                    <span class="downloads-count">{{
+                        downloadsCount | number
+                    }}</span>
+                </div>
+            </div>
+
+            <div *ngIf="tags && tags.length > 0" class="tags-container">
+                <span *ngFor="let tagName of tags" class="tag-pill">{{
+                    tagName
+                }}</span>
+            </div>
+        </div>
     </div>
-    <div class="learning-object-content">
-      <div class="pills">
-        <div class="pills-left">
-          <div class="length">
-            {{ learningObject.length.toUpperCase() }}
-          </div>
-          <div *ngIf="learningObject.length" class="time">
-            <i class="far fa-clock"></i>
-            {{ humanReadableLength }}
-          </div>
-        </div>
-        <span
-          *ngIf="isTrending"
-          class="trending-badge"
-          title="Trending"
-          [tip]="'This Learning Object is trending'"
-          tipPosition="left"
-        >
-          <i class="fas fa-fire" aria-hidden="true"></i>
-        </span>
-      </div>
-
-      <div class="title">
-        {{ truncateText(learningObject.name, isMobile ? 45 : 80) }}
-      </div>
-
-      <div class="date">
-        Updated {{ learningObject.date | date: 'mediumDate' }}
-      </div>
-
-      <div class="details">
-        <div class="author">
-          {{ learningObject.author?.name | titlecase }}
-          {{ learningObject.contributors?.length > 1 ? ' et al.' : '' }}
-        </div>
-        <div class="organization">
-          {{
-            orgStore.organizationNameFromUser$(learningObject.author)
-              | async
-          }}
-        </div>
-      </div>
-
-      <div class="rating-stars-container">
-        <!-- Desktop: Full rating stars -->
-        <clark-rating-stars
-          *ngIf="averageRating > 0 && !isMobile"
-          [color]="'gold'"
-          [rating]="averageRating"
-          [reviewsCount]="reviewsCount"
-        ></clark-rating-stars>
-        <!-- Mobile: Simplified single star with rating -->
-        <div *ngIf="averageRating > 0 && isMobile" class="mobile-rating">
-          <i class="fas fa-star" aria-hidden="true"></i>
-          <span class="rating-value">{{
-            averageRating | number: '1.1-1'
-          }}</span>
-          <span class="review-count">({{ reviewsCount }})</span>
-        </div>
-        <div
-          *ngIf="downloadsCount >= 5"
-          class="downloads-indicator"
-          tabindex="0"
-          attr.aria-label="{{ downloadsCount }} download{{
-            downloadsCount !== 1 ? 's' : ''
-          }}"
-        >
-          <i class="far fa-download" aria-hidden="true"></i>
-          <span class="downloads-count">{{ downloadsCount | number }}</span>
-        </div>
-      </div>
-
-      <div *ngIf="tags && tags.length > 0" class="tags-container">
-        <span *ngFor="let tagName of tags" class="tag-pill">{{ tagName }}</span>
-      </div>
-    </div>
-  </div>
 </a>

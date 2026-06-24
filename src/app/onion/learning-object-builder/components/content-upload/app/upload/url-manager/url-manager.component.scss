@@ -1,71 +1,71 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .empty-message {
-  margin: auto;
-  align-self: center;
-  font-weight: 200;
-  font-size: $largest;
-  color: $dark-grey;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-top: 10px;
-
-  & > .svg-inline--fa {
-    font-size: 60px;
-    margin-bottom: 10px;
-  }
-
-  .empty-title {
+    margin: auto;
+    align-self: center;
+    font-weight: 200;
     font-size: $largest;
-    margin-bottom: 15px;
-  }
-
-  .button {
-    margin-bottom: 15px;
-  }
-}
-
-.topbar {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  .slide-title {
-    font-size: $larger;
-    border-radius: 4px;
-    padding: 15px 0 5px;
-  }
-}
-
-.url-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: space-between;
-  margin-top: 20px;
-
-  .link {
+    color: $dark-grey;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
 
-    & > * {
-      flex-grow: 2;
+    & > .svg-inline--fa {
+        font-size: 60px;
+        margin-bottom: 10px;
     }
 
-    &:not(:last-child) {
-      margin-bottom: 20px;
+    .empty-title {
+        font-size: $largest;
+        margin-bottom: 15px;
     }
 
     .button {
-      flex-grow: 0;
-      flex-shrink: 0;
-      height: 40px;
-      margin-top: 5px;
-      margin-right: 5px;
-      margin-left: 5px;
+        margin-bottom: 15px;
     }
-  }
+}
+
+.topbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .slide-title {
+        font-size: $larger;
+        border-radius: 4px;
+        padding: 15px 0 5px;
+    }
+}
+
+.url-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    .link {
+        display: flex;
+        flex-direction: row;
+
+        & > * {
+            flex-grow: 2;
+        }
+
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            flex-grow: 0;
+            flex-shrink: 0;
+            height: 40px;
+            margin-top: 5px;
+            margin-right: 5px;
+            margin-left: 5px;
+        }
+    }
 }

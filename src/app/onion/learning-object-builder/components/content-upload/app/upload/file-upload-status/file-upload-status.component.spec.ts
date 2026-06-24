@@ -1,26 +1,25 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { FileUploadStatusComponent } from './file-upload-status.component';
+import { FileUploadStatusComponent } from "./file-upload-status.component";
 
-describe('FileUploadStatusComponent', () => {
-  let component: FileUploadStatusComponent;
-  let fixture: ComponentFixture<FileUploadStatusComponent>;
+describe("FileUploadStatusComponent", () => {
+    let component: FileUploadStatusComponent;
+    let fixture: ComponentFixture<FileUploadStatusComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [FileUploadStatusComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [FileUploadStatusComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(FileUploadStatusComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(FileUploadStatusComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

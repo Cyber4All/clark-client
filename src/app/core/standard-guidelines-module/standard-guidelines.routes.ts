@@ -1,5 +1,5 @@
-import { environment } from '@env/environment';
-import * as querystring from 'querystring';
+import { environment } from "@env/environment";
+import * as querystring from "querystring";
 
 export const STANDARD_GUIDELINES_ROUTES = {
     /**
@@ -17,5 +17,5 @@ export const STANDARD_GUIDELINES_ROUTES = {
      */
     SEARCH_GUIDELINES(query: any) {
         return `${environment.apiURL}/guidelines/?${query}`;
-    }
+    },
 };

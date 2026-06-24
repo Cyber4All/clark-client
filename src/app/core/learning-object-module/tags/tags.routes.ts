@@ -1,5 +1,5 @@
-import * as querystring from 'querystring';
-import { environment } from '../../../../environments/environment';
+import * as querystring from "querystring";
+import { environment } from "../../../../environments/environment";
 
 export const TAGS_ROUTES = {
     /**
@@ -7,7 +7,7 @@ export const TAGS_ROUTES = {
      * @method GET
      * @param id the object id of the tag
      */
-    GET_TAG(id: string){
+    GET_TAG(id: string) {
         return `${environment.apiURL}/tags/${encodeURIComponent(id)}`;
     },
     /**
@@ -26,7 +26,7 @@ export const TAGS_ROUTES = {
      */
     UPDATE_TAG(learningObjectCuid: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectCuid
+            learningObjectCuid,
         )}/tags`;
     },
     /**
@@ -35,5 +35,5 @@ export const TAGS_ROUTES = {
      */
     GET_ALL_TAG_TYPES() {
         return `${environment.apiURL}/tags/types`;
-    }
+    },
 };

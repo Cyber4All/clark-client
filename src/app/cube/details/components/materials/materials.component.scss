@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .materials__tab-menu-container {
     margin-top: 55px;
@@ -21,7 +21,7 @@
     color: $dark-grey;
 
     & .icon {
-      font-family: 1.2rem;
+        font-family: 1.2rem;
     }
 }
 
@@ -32,15 +32,15 @@
 }
 
 .materials__review-materials__empty-banner {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0 .8rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  color: white;
-  font-size: large;
-  background: $orange-gradient;
-  font-size: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 0 0.8rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    color: white;
+    font-size: large;
+    background: $orange-gradient;
+    font-size: 1rem;
 }

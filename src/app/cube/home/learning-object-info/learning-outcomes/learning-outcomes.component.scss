@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .content {
     margin-top: 50px;
@@ -6,7 +6,7 @@
     padding-left: 0px;
     display: flex;
     flex-direction: column;
-    
+
     .blooms-cards {
         display: flex;
         flex-direction: row;
@@ -42,31 +42,32 @@
                 align-items: center;
                 justify-content: center;
                 max-height: 100px;
-                -webkit-transform : rotateY(0deg);
-                -ms-transform     : rotateY(0deg);
-                transform         : rotateY(0deg);
+                -webkit-transform: rotateY(0deg);
+                -ms-transform: rotateY(0deg);
+                transform: rotateY(0deg);
             }
 
             .blooms-description {
                 text-align: center;
-                -webkit-transform : rotateY(-180deg);
-                -ms-transform     : rotateY(-180deg);
-                transform         : rotateY(-180deg);
+                -webkit-transform: rotateY(-180deg);
+                -ms-transform: rotateY(-180deg);
+                transform: rotateY(-180deg);
 
                 p {
                     margin: 0;
                 }
             }
 
-            &:hover, &:focus {
+            &:hover,
+            &:focus {
                 border: 1px solid $homepage-light-blue;
                 cursor: pointer;
             }
         }
     }
 }
-@media (max-width: 950px){
-    .content{
+@media (max-width: 950px) {
+    .content {
         margin-right: 0;
 
         .blooms-cards {
@@ -75,10 +76,10 @@
             align-items: center;
         }
     }
-    h1{
+    h1 {
         text-align: center;
     }
-    p{
+    p {
         text-align: center;
     }
 }

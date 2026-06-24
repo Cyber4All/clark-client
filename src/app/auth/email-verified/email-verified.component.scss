@@ -48,13 +48,13 @@
             opacity: 100%;
         }
 
-        .fa-5x, svg {
+        .fa-5x,
+        svg {
             margin-top: 20px;
             text-align: center;
             display: inline-block;
-            width:100%;
+            width: 100%;
             margin: 20px 0 0 0;
-            
         }
 
         .fa-times-circle {
@@ -67,7 +67,7 @@
     }
 
     &:before {
-        content: '';
+        content: "";
         background: linear-gradient(90deg, white, $light-blue, white);
         position: absolute;
         top: 0;
@@ -76,12 +76,18 @@
         right: 0;
         mask: $cube-pattern repeat;
         z-index: 0;
-        opacity: .15;
+        opacity: 0.15;
     }
-    
+
     &:after {
-        content: '';
-        background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        content: "";
+        background: repeating-linear-gradient(
+            white,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            white
+        );
         position: absolute;
         top: 0;
         left: 0;

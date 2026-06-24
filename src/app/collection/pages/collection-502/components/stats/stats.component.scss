@@ -1,4 +1,4 @@
-@import '../../../../collection-globals.scss';
+@import "../../../../collection-globals.scss";
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -14,7 +14,6 @@
             display: block;
             padding-bottom: 100px;
         }
-
     }
 
     .stats {
@@ -37,7 +36,7 @@
             flex-direction: column;
             align-items: center;
             margin: 15px;
-            
+
             .stat__icon {
                 font-size: 30px;
                 padding: 10px;
@@ -47,10 +46,10 @@
                 justify-content: center;
                 background-color: $darkPurple_502;
                 border-radius: 1000px;
-                color: #F7EC2F;
+                color: #f7ec2f;
 
                 &.review {
-                    background-color: #F7EC2F;
+                    background-color: #f7ec2f;
                     color: $darkPurple_502;
                 }
                 &.download {

@@ -1,5 +1,5 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule, Optional, SkipSelf } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
 /**
  * Contains all singleton services for the cube module.
@@ -7,16 +7,16 @@ import { CommonModule } from '@angular/common';
  * @class CubeCoreModule
  */
 @NgModule({
-  imports: [CommonModule],
-  exports: [],
+    imports: [CommonModule],
+    exports: [],
 })
 export class CubeCoreModule {
-  // Ensure that the module is only imported by one NgModule
-  constructor(@Optional() @SkipSelf() parentModule: CubeCoreModule) {
-    if (parentModule) {
-      throw new Error(
-        'CubeCoreModule has already been loaded! This module may only be loaded once.'
-      );
+    // Ensure that the module is only imported by one NgModule
+    constructor(@Optional() @SkipSelf() parentModule: CubeCoreModule) {
+        if (parentModule) {
+            throw new Error(
+                "CubeCoreModule has already been loaded! This module may only be loaded once.",
+            );
+        }
     }
-  }
 }

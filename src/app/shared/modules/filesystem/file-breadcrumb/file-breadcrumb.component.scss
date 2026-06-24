@@ -1,32 +1,32 @@
-@import '_vars.scss';
+@import "_vars.scss";
 .file-breadcrumb {
-  .crumb {
-    font-size: $larger;
-    margin: 5px 0;
-    padding: 0;
-    border-radius: 4px;
-    margin-right: 5px;
-    padding-right: 7px;
-    border: none;
-    background: transparent;
-    cursor: default!important;
+    .crumb {
+        font-size: $larger;
+        margin: 5px 0;
+        padding: 0;
+        border-radius: 4px;
+        margin-right: 5px;
+        padding-right: 7px;
+        border: none;
+        background: transparent;
+        cursor: default !important;
 
-    &:not(:first-child) {
-      margin: 5px;
-      padding: 0 7px;
-    }
+        &:not(:first-child) {
+            margin: 5px;
+            padding: 0 7px;
+        }
 
-    &.link:hover {
-      background: $light-grey;
+        &.link:hover {
+            background: $light-grey;
+        }
     }
-  }
 }
 
 // mobile styles
 @media screen and (max-width: "600px") {
-  .file-breadcrumb {
-    .crumb {
-      font-size: $large;
+    .file-breadcrumb {
+        .crumb {
+            font-size: $large;
+        }
     }
-  }
 }
