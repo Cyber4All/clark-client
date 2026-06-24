@@ -1,69 +1,89 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
-import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
-import { ReportService } from "../../../../../core/report-module/report.service";
-import { ToastrOvenService } from "../../../../../shared/modules/toaster/notification.service";
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { UntypedFormGroup, UntypedFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReportService } from '../../../../../core/report-module/report.service';
+import { ToastrOvenService } from '../../../../../shared/modules/toaster/notification.service';
+import { NgIf } from '@angular/common';
+import { PopupComponent } from '../../../../../shared/modules/popups/popup.component';
+import { MatFormField, MatLabel, MatHint, MatSuffix } from '@angular/material/form-field';
+import { MatDateRangeInput, MatStartDate, MatEndDate, MatDatepickerToggle, MatDateRangePicker } from '@angular/material/datepicker';
 
 @Component({
-    selector: "clark-csv-gen-modal",
-    templateUrl: "./csv-gen-modal.component.html",
-    styleUrls: ["./csv-gen-modal.component.scss"],
+    selector: 'clark-csv-gen-modal',
+    templateUrl: './csv-gen-modal.component.html',
+    styleUrls: ['./csv-gen-modal.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        PopupComponent,
+        MatFormField,
+        MatLabel,
+        MatDateRangeInput,
+        FormsModule,
+        ReactiveFormsModule,
+        MatStartDate,
+        MatEndDate,
+        MatHint,
+        MatDatepickerToggle,
+        MatSuffix,
+        MatDateRangePicker,
+    ],
 })
 export class CsvGenModalComponent implements OnInit {
-    @Output() generateCSV = new EventEmitter<{ start: Date; end: Date }>();
-    @Output() closed = new EventEmitter<void>();
+  @Output() generateCSV = new EventEmitter<{ start: Date; end: Date }>();
+  @Output() closed = new EventEmitter<void>();
 
-    range: UntypedFormGroup;
-    filterSelected = false;
-    showModal = true;
+  range: UntypedFormGroup;
+  filterSelected = false;
+  showModal = true;
 
-    constructor(
-        private fb: UntypedFormBuilder,
-        private toaster: ToastrOvenService,
-        private reportService: ReportService,
-    ) {}
+  constructor(
+    private fb: UntypedFormBuilder,
+    private toaster: ToastrOvenService,
+    private reportService: ReportService,
+  ) {}
 
-    ngOnInit(): void {
-        this.range = this.fb.group({
-            start: [null],
-            end: [null],
-        });
+  ngOnInit(): void {
+    this.range = this.fb.group({
+      start: [null],
+      end: [null],
+    });
+  }
+
+  clearDates(): void {
+    this.range.reset();
+    this.filterSelected = false;
+  }
+
+  onDownload(): void {
+    if (!this.range.value.start && !this.range.value.end) {
+      this.toaster.error('Error!', 'Please enter a date range.');
+      return;
     }
 
-    clearDates(): void {
-        this.range.reset();
-        this.filterSelected = false;
-    }
+    const start = `${this.range.value.start.getFullYear()}-${this.range.value.start.getMonth() + 1}-${this.range.value.start.getDate()}`;
+    const end = `${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`;
 
-    onDownload(): void {
-        if (!this.range.value.start && !this.range.value.end) {
-            this.toaster.error("Error!", "Please enter a date range.");
-            return;
-        }
+    this.reportService.generateCollectionReport(
+      ['cyberskills2work'],
+      `cyberskills2work_from_${start}_to_${end}`,
+      {
+        start: start,
+        end: end,
+      },
+    );
 
-        const start = `${this.range.value.start.getFullYear()}-${this.range.value.start.getMonth() + 1}-${this.range.value.start.getDate()}`;
-        const end = `${this.range.value.end.getFullYear()}-${this.range.value.end.getMonth() + 1}-${this.range.value.end.getDate()}`;
+    this.toaster.alert(
+      'We\'re working on it!',
+      'Please wait while we generate the report.',
+    );
+  }
 
-        this.reportService.generateCollectionReport(
-            ["cyberskills2work"],
-            `cyberskills2work_from_${start}_to_${end}`,
-            {
-                start: start,
-                end: end,
-            },
-        );
+  onCancel(): void {
+    this.closeModal();
+  }
 
-        this.toaster.alert(
-            "We're working on it!",
-            "Please wait while we generate the report.",
-        );
-    }
-
-    onCancel(): void {
-        this.closeModal();
-    }
-
-    closeModal(): void {
-        this.showModal = false;
-        this.closed.emit();
-    }
+  closeModal(): void {
+    this.showModal = false;
+    this.closed.emit();
+  }
 }

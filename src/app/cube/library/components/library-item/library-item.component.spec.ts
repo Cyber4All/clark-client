@@ -1,25 +1,26 @@
-import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LibraryItemComponent } from "./library-item.component";
+import { LibraryItemComponent } from './library-item.component';
 
-describe("LibraryItemComponent", () => {
-    let component: LibraryItemComponent;
-    let fixture: ComponentFixture<LibraryItemComponent>;
+describe('LibraryItemComponent', () => {
+  let component: LibraryItemComponent;
+  let fixture: ComponentFixture<LibraryItemComponent>;
 
-    beforeEach(waitForAsync(() => {
-        TestBed.configureTestingModule({
-            declarations: [LibraryItemComponent],
-            teardown: { destroyAfterEach: false },
-        }).compileComponents();
-    }));
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+    imports: [LibraryItemComponent],
+    teardown: { destroyAfterEach: false }
+})
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(LibraryItemComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LibraryItemComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it("should create", () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

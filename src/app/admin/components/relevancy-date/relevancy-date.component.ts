@@ -1,46 +1,50 @@
-import { Component, Input, OnInit, Output, EventEmitter } from "@angular/core";
-import { LearningObject } from "@entity";
-import { RelevancyService } from "app/core/learning-object-module/relevancy/relevancy.service";
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { LearningObject } from '@entity';
+import { RelevancyService } from 'app/core/learning-object-module/relevancy/relevancy.service';
+import { MatCalendar } from '@angular/material/datepicker';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { DatePipe } from '@angular/common';
 
 @Component({
-    selector: "clark-relevancy-date",
-    templateUrl: "./relevancy-date.component.html",
-    styleUrls: ["./relevancy-date.component.scss"],
+    selector: 'clark-relevancy-date',
+    templateUrl: './relevancy-date.component.html',
+    styleUrls: ['./relevancy-date.component.scss'],
+    standalone: true,
+    imports: [MatCalendar, ActivateDirective, DatePipe]
 })
 export class RelevancyDateComponent implements OnInit {
-    @Input() learningObject: LearningObject;
-    @Output() close: EventEmitter<void> = new EventEmitter();
 
-    minDate: Date;
-    maxDate: Date;
-    selected: Date;
+  @Input() learningObject: LearningObject;
+  @Output() close: EventEmitter<void> = new EventEmitter();
 
-    constructor(private relevancyService: RelevancyService) {}
+  minDate: Date;
+  maxDate: Date;
+  selected: Date;
 
-    ngOnInit(): void {
-        // Set the current nextCheck
-        this.selected = new Date(this.learningObject.nextCheck);
+  constructor(private relevancyService: RelevancyService) { }
 
-        // Set min and maxes for calendar picks
-        this.minDate = new Date();
-        this.maxDate = new Date();
-        this.minDate.setMonth(this.minDate.getMonth() + 4);
-        this.maxDate.setFullYear(this.maxDate.getFullYear() + 3);
-    }
+  ngOnInit(): void {
+    // Set the current nextCheck
+    this.selected = new Date(this.learningObject.nextCheck);
 
-    toggleDate(date: any) {
-        this.selected = date;
-    }
+    // Set min and maxes for calendar picks
+    this.minDate = new Date();
+    this.maxDate = new Date();
+    this.minDate.setMonth(this.minDate.getMonth() + 4);
+    this.maxDate.setFullYear(this.maxDate.getFullYear() + 3);
+  }
 
-    async setDate() {
-        await this.relevancyService.setNextCheckDate(
-            this.learningObject.id,
-            this.selected,
-        );
-        this.close.emit();
-    }
+  toggleDate(date: any) {
+    this.selected = date;
+  }
 
-    cancelUpdate() {
-        this.close.emit();
-    }
+  async setDate() {
+    await this.relevancyService.setNextCheckDate(this.learningObject.id, this.selected);
+    this.close.emit();
+  }
+
+  cancelUpdate() {
+    this.close.emit();
+  }
+
 }

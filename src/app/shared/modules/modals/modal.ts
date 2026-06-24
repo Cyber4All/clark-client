@@ -13,7 +13,8 @@ import {
     selector: "[modal]",
 })
 export abstract class ModalDirective
-    implements AfterViewChecked, DoCheck, OnDestroy {
+    implements AfterViewChecked, DoCheck, OnDestroy
+{
     protected name: string;
     protected x: number;
     protected y: number;

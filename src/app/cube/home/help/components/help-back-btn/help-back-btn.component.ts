@@ -1,37 +1,35 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { BuildProgramComponentService } from "app/cube/core/build-program-component.service";
+import { Component, OnInit, Input } from '@angular/core';
+import { BuildProgramComponentService } from 'app/cube/core/build-program-component.service';
+import { NgClass, NgIf, AsyncPipe } from '@angular/common';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
 @Component({
-    selector: "clark-help-back-btn",
-    templateUrl: "./help-back-btn.component.html",
-    styleUrls: ["./help-back-btn.component.scss"],
+    selector: 'clark-help-back-btn',
+    templateUrl: './help-back-btn.component.html',
+    styleUrls: ['./help-back-btn.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf, ActivateDirective, AsyncPipe]
 })
 export class HelpBackBtnComponent implements OnInit {
-    @Input() option: {
-        title: string;
-        description: string;
-        icon: string;
-        iconColor: string;
-    };
 
-    currentFramework: string;
+  @Input() option: {title: string, description: string, icon: string, iconColor: string};
 
-    constructor(
-        public buildProgramComponentService: BuildProgramComponentService,
-    ) {}
+  currentFramework: string;
 
-    ngOnInit(): void {
-        this.buildProgramComponentService.currentFrameworkObservable.subscribe(
-            (framework) => {
-                this.currentFramework = framework;
-            },
-        );
-    }
+  constructor(public buildProgramComponentService: BuildProgramComponentService) { }
 
-    /**
-     * Communicates to other components that the current framework has been deleted
-     */
-    handleFrameworkClicked() {
-        this.buildProgramComponentService.updateCurrentFramework("");
-    }
+  ngOnInit(): void {
+    this.buildProgramComponentService.currentFrameworkObservable
+    .subscribe(framework => {
+      this.currentFramework = framework;
+    });
+  }
+
+  /**
+   * Communicates to other components that the current framework has been deleted
+   */
+  handleFrameworkClicked() {
+    this.buildProgramComponentService.updateCurrentFramework('');
+  }
+
 }

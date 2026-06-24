@@ -1,74 +1,63 @@
-import { animate, style, transition, trigger } from "@angular/animations";
-import { Component, OnInit } from "@angular/core";
-import { UntypedFormGroup } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
-import { AuthValidationService } from "app/core/auth-module/auth-validation.service";
-import { AuthService } from "app/core/auth-module/auth.service";
-import { MatchValidator } from "app/shared/validators/MatchValidator";
+import { animate, style, transition, trigger } from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+import { UntypedFormGroup, FormsModule } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { AuthValidationService } from 'app/core/auth-module/auth-validation.service';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { MatchValidator } from 'app/shared/validators/MatchValidator';
+import { NgClass, NgIf } from '@angular/common';
+import { ErrorBannerComponent } from '../components/error-banner/error-banner.component';
+import { InputFieldComponent } from '../../shared/components/input-field/input-field.component';
 
 @Component({
-    selector: "clark-change-password",
-    templateUrl: "./change-password.component.html",
-    styleUrls: ["./change-password.component.scss"],
+    selector: 'clark-change-password',
+    templateUrl: './change-password.component.html',
+    styleUrls: ['./change-password.component.scss'],
     animations: [
-        trigger("fadeIn", [
-            transition(":enter", [style({ opacity: 0 }), animate("1000ms")]),
-        ]),
+        trigger('fadeIn', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('1000ms')
+            ])
+        ])
     ],
+    standalone: true,
+    imports: [NgClass, ErrorBannerComponent, NgIf, FormsModule, InputFieldComponent, RouterLink]
 })
 export class ChangePasswordComponent implements OnInit {
-    errorMessage: String;
-    showError: Boolean;
-    otaCode: string;
-    done = false;
+  errorMessage: String;
+  showError: Boolean;
+  otaCode: string;
+  done = false;
 
-    passwords: UntypedFormGroup;
+  passwords: UntypedFormGroup;
 
-    constructor(
-        private authValidationService: AuthValidationService,
-        private authService: AuthService,
-        private activatedRoute: ActivatedRoute,
-    ) {
-        this.passwords = new UntypedFormGroup(
-            {
-                password:
-                    this.authValidationService.getInputFormControl("password"),
-                confirmPassword:
-                    this.authValidationService.getInputFormControl("password"),
-            },
-            {
-                validators: MatchValidator.mustMatch(
-                    "password",
-                    "confirmPassword",
-                ),
-            },
-        );
-    }
+  constructor(private authValidationService: AuthValidationService,
+    private authService: AuthService,
+    private activatedRoute: ActivatedRoute) {
+    this.passwords = new UntypedFormGroup({
+      'password': this.authValidationService.getInputFormControl('password'),
+      'confirmPassword': this.authValidationService.getInputFormControl('password')
+    }, { validators: MatchValidator.mustMatch('password', 'confirmPassword') });
+  }
 
-    ngOnInit(): void {
-        this.authValidationService
-            .getErrorState()
-            .subscribe((err) => (this.showError = err));
-        this.otaCode = this.activatedRoute.queryParams["_value"]["otaCode"];
-    }
+  ngOnInit(): void {
+    this.authValidationService.getErrorState().subscribe(err => this.showError = err);
+    this.otaCode = this.activatedRoute.queryParams['_value']['otaCode'];
+  }
 
-    submit(): void {
-        this.authService
-            .resetPassword(this.passwords.get("password").value, this.otaCode)
-            .subscribe(
-                (val) => {
-                    this.done = true;
-                },
-                (error) => {
-                    if (error.includes("User is not verified")) {
-                        this.errorMessage =
-                            "Email address must be verified before password can be changed, please contact us at info@secured.team";
-                    } else {
-                        this.errorMessage =
-                            "Something went wrong! We're looking into the issue. Please check back later.";
-                    }
-                    this.authValidationService.showError();
-                },
-            );
-    }
+  submit(): void {
+    this.authService.resetPassword(this.passwords.get('password').value, this.otaCode)
+      .subscribe(val => {
+        this.done = true;
+      }, error => {
+
+        if (error.includes('User is not verified')) {
+          this.errorMessage = 'Email address must be verified before password can be changed, please contact us at info@secured.team';
+        } else {
+          this.errorMessage = 'Something went wrong! We\'re looking into the issue. Please check back later.';
+        }
+        this.authValidationService.showError();
+      });
+  }
 }

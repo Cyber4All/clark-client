@@ -1,25 +1,26 @@
-import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProgressComponent } from "./progress.component";
+import { ProgressComponent } from './progress.component';
 
-describe("ProgressComponent", () => {
-    let component: ProgressComponent;
-    let fixture: ComponentFixture<ProgressComponent>;
+describe('ProgressComponent', () => {
+  let component: ProgressComponent;
+  let fixture: ComponentFixture<ProgressComponent>;
 
-    beforeEach(waitForAsync(() => {
-        TestBed.configureTestingModule({
-            declarations: [ProgressComponent],
-            teardown: { destroyAfterEach: false },
-        }).compileComponents();
-    }));
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+    imports: [ProgressComponent],
+    teardown: { destroyAfterEach: false }
+})
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(ProgressComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ProgressComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it("should create", () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

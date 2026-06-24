@@ -1,24 +1,25 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CollectionsDropdownComponent } from "./collections-dropdown.component";
+import { CollectionsDropdownComponent } from './collections-dropdown.component';
 
-describe("CollectionsDropdownComponent", () => {
-    let component: CollectionsDropdownComponent;
-    let fixture: ComponentFixture<CollectionsDropdownComponent>;
+describe('CollectionsDropdownComponent', () => {
+  let component: CollectionsDropdownComponent;
+  let fixture: ComponentFixture<CollectionsDropdownComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [CollectionsDropdownComponent],
-        }).compileComponents();
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+    imports: [CollectionsDropdownComponent]
+})
+    .compileComponents();
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(CollectionsDropdownComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CollectionsDropdownComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it("should create", () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

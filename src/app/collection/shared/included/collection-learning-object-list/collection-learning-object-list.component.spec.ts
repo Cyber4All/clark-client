@@ -1,27 +1,26 @@
-import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CollectionLearningObjectListComponent } from "./collection-learning-object-list.component";
+import { CollectionLearningObjectListComponent } from './collection-learning-object-list.component';
 
-describe("CollectionLearningObjectCardComponent", () => {
-    let component: CollectionLearningObjectListComponent;
-    let fixture: ComponentFixture<CollectionLearningObjectListComponent>;
+describe('CollectionLearningObjectCardComponent', () => {
+  let component: CollectionLearningObjectListComponent;
+  let fixture: ComponentFixture<CollectionLearningObjectListComponent>;
 
-    beforeEach(waitForAsync(() => {
-        TestBed.configureTestingModule({
-            declarations: [CollectionLearningObjectListComponent],
-            teardown: { destroyAfterEach: false },
-        }).compileComponents();
-    }));
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+    imports: [CollectionLearningObjectListComponent],
+    teardown: { destroyAfterEach: false }
+})
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(
-            CollectionLearningObjectListComponent,
-        );
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CollectionLearningObjectListComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it("should create", () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

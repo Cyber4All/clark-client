@@ -1,54 +1,54 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Collection, LearningObject } from "@entity";
-import { CollectionService } from "app/core/collection-module/collections.service";
-import { NavbarService } from "../../../core/client-module/navbar.service";
-import { Title } from "@angular/platform-browser";
-import { SearchService } from "app/core/learning-object-module/search/search.service";
-import { OrderBy } from "app/interfaces/query";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Collection, LearningObject } from '@entity';
+import { CollectionService } from 'app/core/collection-module/collections.service';
+import { NavbarService } from '../../../core/client-module/navbar.service';
+import { Title } from '@angular/platform-browser';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { OrderBy } from 'app/interfaces/query';
+import { HeaderComponent } from './components/header/header.component';
+import { CollectionFeatureComponent } from '../../shared/included/collection-feature/collection-feature.component';
+import { AboutComponent } from './components/about/about.component';
+import { CuratorsComponent } from './components/curators/curators.component';
+import { StatsComponent } from './components/stats/stats.component';
+import { FooterComponent } from '../../../cube/shared/footer/footer.component';
 
 @Component({
-    selector: "clark-collection-ncyte",
-    templateUrl: "./collection-ncyte.component.html",
-    styleUrls: ["./collection-ncyte.component.scss"],
+    selector: 'clark-collection-ncyte',
+    templateUrl: './collection-ncyte.component.html',
+    styleUrls: ['./collection-ncyte.component.scss'],
+    standalone: true,
+    imports: [HeaderComponent, CollectionFeatureComponent, AboutComponent, CuratorsComponent, StatsComponent, FooterComponent]
 })
 export class CollectionNcyteComponent implements OnInit, OnDestroy {
-    abvCollection = "ncyte";
-    collection: Collection;
-    learningObjects: LearningObject[];
 
-    constructor(
-        private navbarService: NavbarService,
-        private collectionService: CollectionService,
-        private titleService: Title,
-        private searchService: SearchService,
-    ) {}
+  abvCollection = 'ncyte';
+  collection: Collection;
+  learningObjects: LearningObject[];
 
-    async ngOnInit() {
-        this.navbarService.show();
+  constructor(
+    private navbarService: NavbarService,
+    private collectionService: CollectionService,
+    private titleService: Title,
+    private searchService: SearchService) { }
 
-        this.collection = await this.collectionService.getCollection(
-            this.abvCollection,
-        );
+  async ngOnInit() {
+    this.navbarService.show();
 
-        this.learningObjects = await this.getFeaturedLearningObjects();
+    this.collection = await this.collectionService.getCollection(this.abvCollection);
 
-        this.titleService.setTitle("CLARK | " + this.collection.name);
-    }
+    this.learningObjects = await this.getFeaturedLearningObjects();
 
-    ngOnDestroy(): void {
-        this.navbarService.hide();
-    }
+    this.titleService.setTitle('CLARK | ' + this.collection.name);
+  }
 
-    async getFeaturedLearningObjects() {
-        const queryParams = {
-            collection: this.abvCollection,
-            orderBy: OrderBy.Date,
-            sortType: -1,
-            limit: 5,
-        };
-        const response =
-            await this.searchService.getLearningObjects(queryParams);
-        const list = response.learningObjects ?? [];
-        return list;
+  ngOnDestroy(): void {
+    this.navbarService.hide();
+  }
+
+  async getFeaturedLearningObjects(){
+      const queryParams = { collection: this.abvCollection, orderBy: OrderBy.Date, sortType: -1,  limit: 5 };
+      const response = await this.searchService.getLearningObjects(queryParams);
+      const list = response.learningObjects ?? [];
+      return list;
     }
 }

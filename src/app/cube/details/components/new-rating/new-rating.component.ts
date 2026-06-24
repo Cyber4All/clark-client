@@ -1,96 +1,108 @@
 import {
-    Component,
-    OnInit,
-    Input,
-    Output,
-    OnChanges,
-    SimpleChanges,
-    EventEmitter,
-} from "@angular/core";
+  Component,
+  OnInit,
+  Input,
+  Output,
+  OnChanges,
+  SimpleChanges,
+  EventEmitter,
+} from '@angular/core';
+import { NgClass, NgFor } from '@angular/common';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: "clark-new-rating",
-    templateUrl: "./new-rating.component.html",
-    styleUrls: ["./new-rating.component.scss"],
+    selector: 'clark-new-rating',
+    templateUrl: './new-rating.component.html',
+    styleUrls: ['./new-rating.component.scss'],
+    standalone: true,
+    imports: [
+        NgClass,
+        NgFor,
+        TipDirective,
+        ActivateDirective,
+        FormsModule,
+    ],
 })
 export class NewRatingComponent implements OnInit, OnChanges {
-    @Input() count = 5;
-    @Input() rating: { value: number; comment: string; id: string };
-    @Input() editing = false;
-    @Output() setRating: EventEmitter<{
-        value: number;
-        comment: string;
-        id?: string;
-        editing?: boolean;
-    }> = new EventEmitter();
-    @Output() cancelRating: EventEmitter<void> = new EventEmitter();
-    iterableCount: Array<any>;
+  @Input() count = 5;
+  @Input() rating: { value: number; comment: string; id: string };
+  @Input() editing = false;
+  @Output() setRating: EventEmitter<{
+    value: number;
+    comment: string;
+    id?: string;
+    editing?: boolean;
+  }> = new EventEmitter();
+  @Output() cancelRating: EventEmitter<void> = new EventEmitter();
+  iterableCount: Array<any>;
 
-    tips = ["Poor", "Needs Work", "Average", "Good", "Excellent"];
+  tips = ['Poor', 'Needs Work', 'Average', 'Good', 'Excellent'];
 
-    activeHover = -1;
-    activePanel = 0;
+  activeHover = -1;
+  activePanel = 0;
 
-    oldRating: number;
+  oldRating: number;
 
-    constructor() {}
+  constructor() {}
 
-    get isSubmitDisabled(): boolean {
-        const comment = this.rating?.comment?.trim() || "";
-        return comment === "" || (this.rating?.comment?.length ?? 0) > 512;
+  get isSubmitDisabled(): boolean {
+    const comment = this.rating?.comment?.trim() || '';
+    return comment === '' || (this.rating?.comment?.length ?? 0) > 512;
+  }
+
+  ngOnInit() {
+    this.iterableCount = Array(this.count).fill(0);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.count) {
+      this.iterableCount = Array(changes.count.currentValue).fill(0);
     }
 
-    ngOnInit() {
-        this.iterableCount = Array(this.count).fill(0);
+    if (changes.rating) {
+      if (!changes.rating.isFirstChange || changes.rating.currentValue) {
+        this.advance();
+      }
     }
+  }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes.count) {
-            this.iterableCount = Array(changes.count.currentValue).fill(0);
-        }
+  regress() {
+    this.activePanel = 0;
+  }
 
-        if (changes.rating) {
-            if (!changes.rating.isFirstChange || changes.rating.currentValue) {
-                this.advance();
-            }
-        }
-    }
+  advance() {
+    this.activePanel = 1;
+  }
 
-    regress() {
-        this.activePanel = 0;
-    }
+  setHover(i: number) {
+    this.activeHover = i;
+  }
 
-    advance() {
-        this.activePanel = 1;
-    }
+  reset() {
+    // reset the hover
+    this.activeHover = -1;
+  }
 
-    setHover(i: number) {
-        this.activeHover = i;
-    }
+  rate(i: number) {
+    this.rating.value = i;
+    this.activePanel = 1;
+    this.activeHover = -1;
+  }
 
-    reset() {
-        // reset the hover
-        this.activeHover = -1;
-    }
+  submitRating() {
+    this.setRating.emit({ ...this.rating, editing: this.editing });
+  }
 
-    rate(i: number) {
-        this.rating.value = i;
-        this.activePanel = 1;
-        this.activeHover = -1;
-    }
+  cancel() {
+    this.cancelRating.emit();
+  }
 
-    submitRating() {
-        this.setRating.emit({ ...this.rating, editing: this.editing });
-    }
-
-    cancel() {
-        this.cancelRating.emit();
-    }
-
-    starShouldShow(i: number): boolean {
-        return (
-            (this.activeHover !== -1 && i <= this.activeHover) ||
-            (this.activeHover === -1 && this.rating && i < this.rating.value)
-        );
-    }
+  starShouldShow(i: number): boolean {
+    return (
+      (this.activeHover !== -1 && i <= this.activeHover) ||
+      (this.activeHover === -1 && this.rating && i < this.rating.value)
+    );
+  }
 }

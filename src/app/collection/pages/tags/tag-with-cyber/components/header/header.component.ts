@@ -1,23 +1,25 @@
-import { Component, Input } from "@angular/core";
-import { Router } from "@angular/router";
-import { TagsService } from "app/core/learning-object-module/tags/tags.service";
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { ActivateDirective } from '../../../../../../shared/directives/activate.directive';
 @Component({
-    selector: "clark-with-cyber-header",
-    templateUrl: "./header.component.html",
-    styleUrls: ["./header.component.scss"],
+    selector: 'clark-with-cyber-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: true,
+    imports: [ActivateDirective]
 })
 export class HeaderWithCyberComponent {
-    @Input() collectionAbv: string;
-    isUserAuthorized = false;
-    constructor(
-        private router: Router,
-        private tagsService: TagsService,
-    ) {}
 
-    async navigateToBrowse() {
-        const tag = await this.tagsService.getTagIdByName("WITHcyber");
-        this.router.navigate(["/browse"], {
-            queryParams: { currPage: 1, tags: tag },
-        });
-    }
+  @Input() collectionAbv: string;
+  isUserAuthorized = false;
+  constructor(
+    private router: Router,
+    private tagsService: TagsService
+  ) {}
+
+  async navigateToBrowse() {
+    const tag = await this.tagsService.getTagIdByName('WITHcyber');
+    this.router.navigate(['/browse'], { queryParams : {currPage: 1, tags: tag} });
+  }
 }

@@ -1,24 +1,25 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CyberskillsCardComponent } from "./cyberskills-card.component";
+import { CyberskillsCardComponent } from './cyberskills-card.component';
 
-describe("CyberskillsCardComponent", () => {
-    let component: CyberskillsCardComponent;
-    let fixture: ComponentFixture<CyberskillsCardComponent>;
+describe('CyberskillsCardComponent', () => {
+  let component: CyberskillsCardComponent;
+  let fixture: ComponentFixture<CyberskillsCardComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [CyberskillsCardComponent],
-        }).compileComponents();
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+    imports: [CyberskillsCardComponent]
+})
+    .compileComponents();
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(CyberskillsCardComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CyberskillsCardComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it("should create", () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

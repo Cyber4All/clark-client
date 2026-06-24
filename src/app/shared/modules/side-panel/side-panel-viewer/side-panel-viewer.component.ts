@@ -1,98 +1,93 @@
-import {
-    Component,
-    OnInit,
-    OnDestroy,
-    EventEmitter,
-    Output,
-} from "@angular/core";
-import { BehaviorSubject, Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { SidePanelOptions } from "../panel.directive";
-import { fade } from "../panel.animations";
+import { Component, OnInit, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { SidePanelOptions } from '../panel.directive';
+import { fade } from '../panel.animations';
+import { NgIf, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../../directives/activate.directive';
+import { TrapFocusDirective } from '../../../directives/trap-focus.directive';
 
 @Component({
-    selector: "clark-side-panel-viewer",
+    selector: 'clark-side-panel-viewer',
     template: `
-        <ng-container>
-            <div
-                *ngIf="isOpen"
-                (activate)="doClose()"
-                [@fade]
-                class="overlay"></div>
-            <div
-                trapFocus
-                [style.width]="contentWidth + 'px'"
-                (activate)="$event.stopPropagation()"
-                class="side-panel"
-                [ngClass]="{
-                    'side-panel--no-padding': options && !options.padding,
-                }">
-                <button
-                    *ngIf="options.showExitButton"
-                    class="side-panel__exit-button"
-                    [style.color]="options.exitButtonColor"
-                    (activate)="doClose()">
-                    <i class="fal fa-times"></i>
-                </button>
-                <ng-content></ng-content>
-            </div>
-        </ng-container>
-    `,
-    styleUrls: ["./side-panel-viewer.component.scss"],
+    <ng-container>
+      <div *ngIf="isOpen" (activate)="doClose()" [@fade] class="overlay"></div>
+      <div
+        trapFocus
+        [style.width]="contentWidth + 'px'"
+        (activate)="$event.stopPropagation()"
+        class="side-panel" [ngClass]="{'side-panel--no-padding': options && !options.padding}"
+      >
+        <button
+          *ngIf="options.showExitButton"
+          class="side-panel__exit-button"
+          [style.color]="options.exitButtonColor"
+          (activate)='doClose()'
+          ><i class="fal fa-times"></i>
+        </button>
+        <ng-content></ng-content>
+      </div>
+    </ng-container>
+  `,
+    styleUrls: ['./side-panel-viewer.component.scss'],
     animations: [fade],
+    standalone: true,
+    imports: [NgIf, ActivateDirective, TrapFocusDirective, NgClass]
 })
 export class SidePanelViewerComponent implements OnInit, OnDestroy {
-    _controller$: BehaviorSubject<boolean>;
-    contentWidth = 400;
+  _controller$: BehaviorSubject<boolean>;
+  contentWidth = 400;
 
-    options: SidePanelOptions;
+  options: SidePanelOptions;
 
-    isOpen = true;
+  isOpen = true;
 
-    @Output() close = new EventEmitter<any>();
-    defaultCloseParam: any;
+  @Output() close = new EventEmitter<any>();
+  defaultCloseParam: any;
 
-    private defaultWidth = 350;
-    private destroyed$: Subject<void> = new Subject();
+  private defaultWidth = 350;
+  private destroyed$: Subject<void> = new Subject();
 
-    constructor() {}
+  constructor() { }
 
-    /**
-     * Calculate the speed necessary to open te side panel
-     *
-     * @readonly
-     * @memberof SidePanelViewerComponent
-     */
-    get outSpeed() {
-        return 350 + (this.contentWidth - this.defaultWidth) * 0.3;
+  /**
+   * Calculate the speed necessary to open te side panel
+   *
+   * @readonly
+   * @memberof SidePanelViewerComponent
+   */
+  get outSpeed() {
+    return 350 + (this.contentWidth - this.defaultWidth) * 0.3;
+  }
+
+  /**
+   * Calculate the speed necessary to close the side panel
+   *
+   * @readonly
+   * @memberof SidePanelViewerComponent
+   */
+  get inSpeed() {
+    return 250 + (this.contentWidth - this.defaultWidth) * 0.3;
+  }
+
+  doClose() {
+    if (this.defaultCloseParam) {
+      this.close.emit(this.defaultCloseParam);
+    } else {
+      this.close.emit();
     }
+  }
 
-    /**
-     * Calculate the speed necessary to close the side panel
-     *
-     * @readonly
-     * @memberof SidePanelViewerComponent
-     */
-    get inSpeed() {
-        return 250 + (this.contentWidth - this.defaultWidth) * 0.3;
-    }
+  ngOnInit() {
+    this.close.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(() => {
+      this.isOpen = false;
+    });
+  }
 
-    doClose() {
-        if (this.defaultCloseParam) {
-            this.close.emit(this.defaultCloseParam);
-        } else {
-            this.close.emit();
-        }
-    }
-
-    ngOnInit() {
-        this.close.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-            this.isOpen = false;
-        });
-    }
-
-    ngOnDestroy() {
-        this.destroyed$.next();
-        this.destroyed$.unsubscribe();
-    }
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
+  }
 }

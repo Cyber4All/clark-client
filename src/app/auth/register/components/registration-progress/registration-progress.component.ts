@@ -1,31 +1,37 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
-    selector: "clark-registration-progress",
-    templateUrl: "./registration-progress.component.html",
-    styleUrls: ["./registration-progress.component.scss"],
+    selector: 'clark-registration-progress',
+    templateUrl: './registration-progress.component.html',
+    styleUrls: ['./registration-progress.component.scss'],
+    standalone: true,
+    imports: [NgClass, NgIf]
 })
 export class RegistrationProgressComponent implements OnInit {
-    @Input() index = 1;
-    @Input() currentTemp = "info";
-    @Input() showOrganizationStep = false;
 
-    constructor() {}
+  @Input() index = 1;
+  @Input() currentTemp = 'info';
+  @Input() showOrganizationStep = false;
 
-    ngOnInit(): void {}
+  constructor() { }
 
-    isStepActive(step: "info" | "organization" | "account" | "sso"): boolean {
-        const visibleSteps = this.showOrganizationStep
-            ? ["info", "organization", "account", "submission", "sso"]
-            : ["info", "account", "submission", "sso"];
+  ngOnInit(): void {
+  }
 
-        const currentStepIndex = visibleSteps.indexOf(this.currentTemp);
-        const targetStepIndex = visibleSteps.indexOf(step);
+  isStepActive(step: 'info' | 'organization' | 'account' | 'sso'): boolean {
+    const visibleSteps = this.showOrganizationStep
+      ? ['info', 'organization', 'account', 'submission', 'sso']
+      : ['info', 'account', 'submission', 'sso'];
 
-        if (currentStepIndex === -1 || targetStepIndex === -1) {
-            return false;
-        }
+    const currentStepIndex = visibleSteps.indexOf(this.currentTemp);
+    const targetStepIndex = visibleSteps.indexOf(step);
 
-        return currentStepIndex >= targetStepIndex;
+    if (currentStepIndex === -1 || targetStepIndex === -1) {
+      return false;
     }
+
+    return currentStepIndex >= targetStepIndex;
+  }
+
 }

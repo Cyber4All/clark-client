@@ -1,194 +1,176 @@
-import {
-    Component,
-    HostListener,
-    ChangeDetectorRef,
-    AfterViewInit,
-} from "@angular/core";
-import { UserService } from "app/core/user-module/user.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { User } from "@entity";
-import { AuthService } from "app/core/auth-module/auth.service";
-import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
-import {
-    CollectionService,
-    Collection,
-} from "app/core/collection-module/collections.service";
-import { usersComponentAnimations } from "./users.component.animations";
-import {
-    AccessGroupService,
-    AccessGroups,
-} from "app/core/access-group-module/access-group.service";
+import { Component, HostListener, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { UserService } from 'app/core/user-module/user.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { User } from '@entity';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
+import { usersComponentAnimations } from './users.component.animations';
+import { AccessGroupService, AccessGroups } from 'app/core/access-group-module/access-group.service';
+import { ContentWrapperComponent } from '../../components/content-wrapper/content-wrapper.component';
+import { NgIf, NgClass, NgFor } from '@angular/common';
+import { SearchInputComponent } from '../../../shared/components/search-input/search-input.component';
+import { ActivateDirective } from '../../../shared/directives/activate.directive';
+import { TeleporterComponent } from '../../../shared/modules/teleporter/teleporter.component';
+import { UserSearchWrapperComponent } from '../../components/user-search-wrapper/user-search-wrapper.component';
+import { AdminUserCardComponent } from '../../components/user-card/user-card.component';
+import { PopupComponent } from '../../../shared/modules/popups/popup.component';
+import { FormsModule } from '@angular/forms';
+import { UserPrivilegesComponent } from '../../components/user-privileges/user-privileges.component';
 
 @Component({
-    selector: "clark-users",
-    templateUrl: "./users.component.html",
-    styleUrls: ["./users.component.scss"],
+    selector: 'clark-users',
+    templateUrl: './users.component.html',
+    styleUrls: ['./users.component.scss'],
     animations: usersComponentAnimations,
+    standalone: true,
+    imports: [ContentWrapperComponent, NgIf, SearchInputComponent, NgClass, ActivateDirective, TeleporterComponent, UserSearchWrapperComponent, NgFor, AdminUserCardComponent, PopupComponent, FormsModule, UserPrivilegesComponent]
 })
 export class UsersComponent implements AfterViewInit {
-    searchBarPlaceholder = "Users";
-    users: User[];
-    loading = false;
-    displayRemoveReviewerModal = false;
-    removeReviewerId: string;
-    reviewerModal: boolean;
-    showPrivileges: boolean;
-    selectedUser: User;
+  searchBarPlaceholder = 'Users';
+  users: User[];
+  loading = false;
+  displayRemoveReviewerModal = false;
+  removeReviewerId: string;
+  reviewerModal: boolean;
+  showPrivileges: boolean;
+  selectedUser: User;
 
-    activeCollection: Collection;
+  activeCollection: Collection;
 
-    @HostListener("window:keyup", ["$event"]) handleKeyUp(
-        event: KeyboardEvent,
-    ) {
-        if (event.code === "Escape") {
-            this.reviewerModal = false;
-        }
+  @HostListener('window:keyup', ['$event']) handleKeyUp(event: KeyboardEvent) {
+    if (event.code === 'Escape') {
+        this.reviewerModal = false;
     }
+}
 
-    constructor(
-        private accessGroups: AccessGroupService,
-        private user: UserService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private toaster: ToastrOvenService,
-        public authService: AuthService,
-        private collectionService: CollectionService,
-        private access: AccessGroupService,
-    ) {}
+  constructor(
+    private accessGroups: AccessGroupService,
+    private user: UserService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private toaster: ToastrOvenService,
+    public authService: AuthService,
+    private collectionService: CollectionService,
+    private access: AccessGroupService
+  ) {
+  }
 
-    ngAfterViewInit() {
-        this.route.parent.params.subscribe(async (params) => {
-            this.activeCollection = await this.collectionService.getCollection(
-                params["collection"],
-            );
-            if (this.activeCollection) {
-                this.fetchReviewers();
-            } else {
-                this.getUsers();
-            }
-        });
-    }
+  ngAfterViewInit() {
+    this.route.parent.params.subscribe(async params => {
+      this.activeCollection = await this.collectionService.getCollection(params['collection']);
+      if (this.activeCollection) {
+        this.fetchReviewers();
+      } else {
+        this.getUsers();
+      }
+   });
+  }
 
-    /**
-     * Retrieve a list of user's with a text query
-     *
-     * @param {string} [text] the text with which to query
-     * @memberof UsersComponent
-     */
-    getUsers(text?: string) {
-        this.loading = true;
-        this.user
-            .searchUsers({ text })
-            .then((val) => {
-                this.users = val;
-                this.loading = false;
-            })
-            .catch((error) => {
-                this.toaster.error(
-                    "Error!",
-                    "There was an error fetching users. Please try again later.",
-                );
-                this.loading = false;
-            });
-    }
-
-    /**
-     * Returns the current reviewer members of the specified collection
-     */
-    async fetchReviewers() {
-        this.loading = true;
-        this.users = await this.access.getUsersWithAccessToCollection(
-            this.activeCollection.abvName,
-            AccessGroups.REVIEWER,
-        );
+  /**
+   * Retrieve a list of user's with a text query
+   *
+   * @param {string} [text] the text with which to query
+   * @memberof UsersComponent
+   */
+  getUsers(text?: string) {
+    this.loading = true;
+    this.user.searchUsers({ text })
+      .then(val => {
+        this.users = val;
         this.loading = false;
-    }
+      }).catch(error => {
+        this.toaster.error('Error!', 'There was an error fetching users. Please try again later.');
+        this.loading = false;
+      });
+  }
 
-    /**
-     * Adds a user as a reviewer to a collection after being clicked on in the user search
-     *
-     * @param user the elements of a clark user such as id and role
-     */
-    addAccessGroupToUser(user: User) {
-        this.accessGroups
-            .addAccessGroupToUser(
-                user.username,
-                AccessGroups.REVIEWER,
-                this.activeCollection.abvName,
-            )
-            .then(() => {
-                this.users.splice(0, 0, user);
-            })
-            .catch((error) => {
-                this.toaster.error(
-                    "Error!",
-                    "Could not add reviewer. Please try again later",
-                );
-            });
-    }
+  /**
+   * Returns the current reviewer members of the specified collection
+   */
+  async fetchReviewers() {
+    this.loading = true;
+    this.users = await this.access.getUsersWithAccessToCollection(this.activeCollection.abvName, AccessGroups.REVIEWER);
+    this.loading = false;
+  }
 
-    /**
-     * Toggle the modal to add reviewers on and off
-     *
-     * @param {boolean} value true if the modal should display, false otherwise
-     * @memberof UsersComponent
-     */
-    toggleAddReviewerModal(value: boolean) {
-        this.reviewerModal = value;
-    }
+  /**
+   * Adds a user as a reviewer to a collection after being clicked on in the user search
+   *
+   * @param user the elements of a clark user such as id and role
+   */
+  addAccessGroupToUser(user: User) {
+    this.accessGroups
+      .addAccessGroupToUser(
+        user.username,
+        AccessGroups.REVIEWER,
+        this.activeCollection.abvName
+      )
+      .then(() => {
+        this.users.splice(0, 0, user);
+      }).catch(error => {
+        this.toaster.error('Error!', 'Could not add reviewer. Please try again later');
+      });
+  }
 
-    /**
-     * Removes the reviewer access from a user in a collection
-     */
-    removeAccessGroupFromUser(username?: string) {
-        this.displayRemoveReviewerModal = false;
-        this.accessGroups
-            .removeAccessGroupFromUser(
-                username,
-                AccessGroups.REVIEWER,
-                this.activeCollection.abvName,
-            )
-            .then(() => {
-                this.users = this.users.filter((x) => x.username !== username);
-            })
-            .catch((error) => {
-                this.toaster.error(
-                    "Error!",
-                    "Could not remove reviewer. Please try again later",
-                );
-            });
-    }
+  /**
+   * Toggle the modal to add reviewers on and off
+   *
+   * @param {boolean} value true if the modal should display, false otherwise
+   * @memberof UsersComponent
+   */
+  toggleAddReviewerModal(value: boolean) {
+    this.reviewerModal = value;
+  }
 
-    /**
-     * Navigate to an author's Learning Objects on the Learning Object's page
-     *
-     * @param {string} username the username of the author
-     * @memberof UsersComponent
-     */
-    navigateToUserObjects(username: string) {
-        this.router.navigate(["admin/learning-objects"], {
-            queryParams: { username },
-        });
-    }
+  /**
+   * Removes the reviewer access from a user in a collection
+   */
+  removeAccessGroupFromUser(username?: string) {
+    this.displayRemoveReviewerModal = false;
+    this.accessGroups
+      .removeAccessGroupFromUser(
+        username,
+        AccessGroups.REVIEWER,
+        this.activeCollection.abvName
+      )
+      .then(() => {
+        this.users = this.users.filter(x => x.username !== username);
+      })
+      .catch(error => {
+        this.toaster.error('Error!', 'Could not remove reviewer. Please try again later');
+      });
+  }
 
-    /**
-     * Toggle the modal to edit a user's privileges on and select the specified user
-     *
-     * @param {User} user the user who's privileges should be edited
-     * @memberof UsersComponent
-     */
-    editPrivileges(user: User) {
-        this.selectedUser = user;
-        this.showPrivileges = true;
-    }
+  /**
+   * Navigate to an author's Learning Objects on the Learning Object's page
+   *
+   * @param {string} username the username of the author
+   * @memberof UsersComponent
+   */
+  navigateToUserObjects(username: string) {
+    this.router.navigate(['admin/learning-objects'], { queryParams: { username } });
+  }
 
-    /**
-     * Dictates to the *ngFor directive how to track changes to the User's list
-     *
-     * @param index
-     * @param item
-     */
-    trackby(index: number, item) {
-        return item.id;
-    }
+  /**
+   * Toggle the modal to edit a user's privileges on and select the specified user
+   *
+   * @param {User} user the user who's privileges should be edited
+   * @memberof UsersComponent
+   */
+  editPrivileges(user: User) {
+    this.selectedUser = user;
+    this.showPrivileges = true;
+  }
+
+  /**
+   * Dictates to the *ngFor directive how to track changes to the User's list
+   *
+   * @param index
+   * @param item
+   */
+  trackby(index: number, item) {
+    return item.id;
+  }
+
 }

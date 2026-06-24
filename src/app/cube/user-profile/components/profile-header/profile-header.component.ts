@@ -1,94 +1,96 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { OrganizationStore } from "app/core/organization-module/organization.store";
-import { UserService } from "app/core/user-module/user.service";
-import { BehaviorSubject } from "rxjs";
-import { Observable, of } from "rxjs";
+import { Component, Input, OnInit } from '@angular/core';
+import { OrganizationStore } from 'app/core/organization-module/organization.store';
+import { UserService } from 'app/core/user-module/user.service';
+import { BehaviorSubject } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { NgIf, NgTemplateOutlet, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 
 @Component({
-    selector: "clark-profile-header",
-    templateUrl: "./profile-header.component.html",
-    styleUrls: ["./profile-header.component.scss"],
+    selector: 'clark-profile-header',
+    templateUrl: './profile-header.component.html',
+    styleUrls: ['./profile-header.component.scss'],
+    standalone: true,
+    imports: [NgIf, ActivateDirective, NgTemplateOutlet, PopupComponent, EditProfileComponent, AsyncPipe, TitleCasePipe]
 })
 export class ProfileHeaderComponent implements OnInit {
-    /**
-     * @private _user is an observable that subscribes to the user being set in the parent component
-     * Profiles uses a route resolver that fetches a profile when a user's profile is visited. This subscription
-     * allows the profile data to be rendered dynamically when visiting a new profile.
-     * EXAMPLE:
-     * 1. Dr. Taylor is logged into CLARK
-     * 2. Dr. Taylor visits Dr. Kaza's profile
-     * 3. Dr. Taylor decides to navigate to her profile from Dr. Kaza's profile
-     * Without the behavior subject, Dr. Taylor's profile would not render correctly. Dr. Kaza's
-     * header would persist through this example
-     */
-    private _user = new BehaviorSubject<any>({});
-    @Input() set user(user: any) {
-        this._user.next(user);
-        this.organizationName$ = this.orgStore.organizationName$(
-            user?.organizationId,
-        );
-    }
-    get user() {
-        return this._user.value;
-    }
-    // Toggle disply edit profile button for authenticated user
-    @Input() isUser: boolean;
+  /**
+   * @private _user is an observable that subscribes to the user being set in the parent component
+   * Profiles uses a route resolver that fetches a profile when a user's profile is visited. This subscription
+   * allows the profile data to be rendered dynamically when visiting a new profile.
+   * EXAMPLE:
+   * 1. Dr. Taylor is logged into CLARK
+   * 2. Dr. Taylor visits Dr. Kaza's profile
+   * 3. Dr. Taylor decides to navigate to her profile from Dr. Kaza's profile
+   * Without the behavior subject, Dr. Taylor's profile would not render correctly. Dr. Kaza's
+   * header would persist through this example
+   */
+  private _user = new BehaviorSubject<any>({});
+  @Input() set user(user: any) {
+    this._user.next(user);
+    this.organizationName$ = this.orgStore.organizationName$(user?.organizationId);
+  }
+  get user() {
+    return this._user.value;
+  }
+  // Toggle disply edit profile button for authenticated user
+  @Input() isUser: boolean;
 
-    gravatarImage: string;
-    size = 200;
-    anyUserStats = false;
-    editProfile = false;
-    savedObjects: number;
-    contributedObjects: number;
-    downloadedObjects: number;
-    firstName = "";
-    lastName = "";
-    organizationName$: Observable<string> = of("");
+  gravatarImage: string;
+  size = 200;
+  anyUserStats = false;
+  editProfile = false;
+  savedObjects: number;
+  contributedObjects: number;
+  downloadedObjects: number;
+  firstName = '';
+  lastName = '';
+  organizationName$: Observable<string> = of('');
 
-    constructor(
-        private userService: UserService,
-        public orgStore: OrganizationStore,
-    ) {}
+  constructor(
+    private userService: UserService,
+    public orgStore: OrganizationStore,
+  ) {}
 
-    async ngOnInit() {
-        this._user.subscribe(async (val) => {
-            // Set profile image
-            this.gravatarImage = await this.userService.getGravatarImage(
-                val.email,
-                this.size,
-            );
-            // Split name into first and last name
-            const split = val.name.split(" ");
-            if (split.length > 2) {
-                this.firstName = split[0] + " " + split[1];
-                for (let i = 2; i < split.length; i++) {
-                    this.lastName += split[i] + " ";
-                }
-            } else {
-                this.firstName = split[0];
-                this.lastName = split[1];
-            }
-        });
-    }
+  async ngOnInit() {
+    this._user.subscribe(async val => {
+      // Set profile image
+      this.gravatarImage = await this.userService.getGravatarImage(val.email, this.size);
+      // Split name into first and last name
+      const split = val.name.split(' ');
+      if (split.length > 2) {
+        this.firstName = split[0] + ' ' + split[1];
+        for (let  i = 2; i < split.length; i++) {
+          this.lastName += split[i] + ' ';
+        }
+      } else {
+        this.firstName = split[0];
+        this.lastName = split[1];
+      }
+    });
 
-    /**
-     * Function to retrieve stats of user interactions on downloads, contributions, and saves
-     */
-    async checkUserStats() {
-        // TODO -- create aggregation for user downloads, user contributions, and saved objects
-    }
+  }
 
-    /**
-     * Method to update user info from service after changes have been made
-     */
-    async updateInfo() {
-        this.user = await this.userService.fetchUserProfile(this.user.username);
-    }
+  /**
+   * Function to retrieve stats of user interactions on downloads, contributions, and saves
+   */
+  async checkUserStats() {
+    // TODO -- create aggregation for user downloads, user contributions, and saved objects
+  }
 
-    /**
-     * Method to toggle off edit profile view
-     */
-    closeEdit() {
-        this.editProfile = false;
-    }
+  /**
+   * Method to update user info from service after changes have been made
+   */
+  async updateInfo() {
+    this.user = await this.userService.fetchUserProfile(this.user.username);
+  }
+
+  /**
+   * Method to toggle off edit profile view
+   */
+   closeEdit() {
+    this.editProfile = false;
+  }
 }

@@ -1,12 +1,16 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-    selector: "clark-press-about",
-    templateUrl: "./about.component.html",
-    styleUrls: ["./about.component.scss"],
+    selector: 'clark-press-about',
+    templateUrl: './about.component.html',
+    styleUrls: ['./about.component.scss'],
+    standalone: true
 })
 export class AboutComponent implements OnInit {
-    constructor() {}
 
-    ngOnInit() {}
+  constructor() { }
+
+  ngOnInit() {
+  }
+
 }

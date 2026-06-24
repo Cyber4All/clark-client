@@ -1,25 +1,26 @@
-import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TermsOfServiceComponent } from "./terms-of-service.component";
+import { TermsOfServiceComponent } from './terms-of-service.component';
 
-describe("TermsOfServiceComponent", () => {
-    let component: TermsOfServiceComponent;
-    let fixture: ComponentFixture<TermsOfServiceComponent>;
+describe('TermsOfServiceComponent', () => {
+  let component: TermsOfServiceComponent;
+  let fixture: ComponentFixture<TermsOfServiceComponent>;
 
-    beforeEach(waitForAsync(() => {
-        TestBed.configureTestingModule({
-            declarations: [TermsOfServiceComponent],
-            teardown: { destroyAfterEach: false },
-        }).compileComponents();
-    }));
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+    imports: [TermsOfServiceComponent],
+    teardown: { destroyAfterEach: false }
+})
+    .compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(TermsOfServiceComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TermsOfServiceComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it("should create", () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

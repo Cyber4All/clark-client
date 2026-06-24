@@ -1,57 +1,62 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { CollectionService } from "app/core/collection-module/collections.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { CollectionService } from 'app/core/collection-module/collections.service';
+import { NgIf, SlicePipe, TitleCasePipe, DatePipe } from '@angular/common';
 
 @Component({
-    selector: "clark-feature-cards-fiveotwo",
-    templateUrl: "./feature-cards-fiveotwo.component.html",
-    styleUrls: ["./feature-cards-fiveotwo.component.scss"],
+    selector: 'clark-feature-cards-fiveotwo',
+    templateUrl: './feature-cards-fiveotwo.component.html',
+    styleUrls: ['./feature-cards-fiveotwo.component.scss'],
+    standalone: true,
+    imports: [NgIf, SlicePipe, TitleCasePipe, DatePipe]
 })
 export class FeatureCardsFiveotwoComponent implements OnInit {
-    @Input() learningObject: any;
 
-    displayDescription: string;
+  @Input() learningObject: any;
 
-    outcomes;
-    loading = true;
-    updatedLearningObject;
-    frameworkNames;
-    mapped = false;
-    theme = "dark";
+  displayDescription: string;
 
-    constructor(private collectionService: CollectionService) {}
+  outcomes;
+  loading = true;
+  updatedLearningObject;
+  frameworkNames;
+  mapped = false;
+  theme = 'dark';
 
-    async ngOnInit() {
-        this.loading = true;
-        this.setDescription();
-        this.setFrameworkName(this.learningObject);
-        this.loading = false;
-        this.collectionService.darkMode502.subscribe((mode) => {
-            this.theme = mode ? "dark" : "light";
-        });
+  constructor(
+    private collectionService: CollectionService
+  ) { }
+
+  async ngOnInit() {
+    this.loading = true;
+    this.setDescription();
+    this.setFrameworkName(this.learningObject);
+    this.loading = false;
+    this.collectionService.darkMode502.subscribe(mode => {
+      this.theme = mode ? 'dark' : 'light';
+    });
+  }
+/**
+ * Creates an array of all the unique mappings of an object
+ *
+ * @param object
+ */
+  setFrameworkName(object) {
+    const mappings = [];
+    let uniqueNames = [];
+    object.guidelines.forEach(mapping => {
+      mappings.push(mapping);
+    });
+    uniqueNames = [...new Set(mappings.map(x => x.source))];
+    if (uniqueNames.length > 0){
+        this.mapped = true;
     }
-    /**
-     * Creates an array of all the unique mappings of an object
-     *
-     * @param object
-     */
-    setFrameworkName(object) {
-        const mappings = [];
-        let uniqueNames = [];
-        object.guidelines.forEach((mapping) => {
-            mappings.push(mapping);
-        });
-        uniqueNames = [...new Set(mappings.map((x) => x.source))];
-        if (uniqueNames.length > 0) {
-            this.mapped = true;
-        }
-        this.frameworkNames = uniqueNames;
-    }
-    /**
-     * truncates description and adds elipse
-     */
-    setDescription() {
-        this.displayDescription =
-            this.learningObject.description.slice(0, 220) +
-            (this.learningObject.description.length > 220 ? " ..." : "");
-    }
+    this.frameworkNames = uniqueNames;
+  }
+/**
+ * truncates description and adds elipse
+ */
+  setDescription() {
+    this.displayDescription =
+      this.learningObject.description.slice(0, 220) + (this.learningObject.description.length > 220 ? ' ...' : '');
+  }
 }

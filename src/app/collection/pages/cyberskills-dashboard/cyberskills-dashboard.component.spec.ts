@@ -1,24 +1,25 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CyberskillsDashboardComponent } from "./cyberskills-dashboard.component";
+import { CyberskillsDashboardComponent } from './cyberskills-dashboard.component';
 
-describe("CyberskillsDashboardComponent", () => {
-    let component: CyberskillsDashboardComponent;
-    let fixture: ComponentFixture<CyberskillsDashboardComponent>;
+describe('CyberskillsDashboardComponent', () => {
+  let component: CyberskillsDashboardComponent;
+  let fixture: ComponentFixture<CyberskillsDashboardComponent>;
 
-    beforeEach(async () => {
-        await TestBed.configureTestingModule({
-            declarations: [CyberskillsDashboardComponent],
-        }).compileComponents();
-    });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+    imports: [CyberskillsDashboardComponent]
+})
+    .compileComponents();
+  });
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(CyberskillsDashboardComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
-    });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CyberskillsDashboardComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    it("should create", () => {
-        expect(component).toBeTruthy();
-    });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });

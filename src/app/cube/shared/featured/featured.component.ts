@@ -1,63 +1,65 @@
-import { LearningObject } from "@entity";
-import { Component, OnInit, Input, ChangeDetectorRef } from "@angular/core";
-import { Query, OrderBy, SortType } from "../../../interfaces/query";
-import { Subject } from "rxjs";
-import { takeUntil } from "rxjs/operators";
-import { SearchService } from "app/core/learning-object-module/search/search.service";
+import { LearningObject } from '@entity';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { Query, OrderBy, SortType } from '../../../interfaces/query';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { SearchService } from 'app/core/learning-object-module/search/search.service';
+import { NgIf, NgFor } from '@angular/common';
+import { LearningObjectListingComponent } from '../learning-object/learning-object.component';
+import { LearningObjectCardDirective } from '../../../shared/directives/learning-object-card.directive';
+import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: "cube-featured",
-    templateUrl: "./featured.component.html",
-    styleUrls: ["./featured.component.scss"],
+    selector: 'cube-featured',
+    templateUrl: './featured.component.html',
+    styleUrls: ['./featured.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor, LearningObjectListingComponent, LearningObjectCardDirective, RouterLink]
 })
 export class FeaturedComponent implements OnInit {
-    destroyed$ = new Subject<void>();
-    @Input() collection: Subject<string>;
-    learningObjects: LearningObject[] = Array(5);
-    query: Query = {
-        limit: 5,
-        orderBy: OrderBy.Date,
-        sortType: SortType.Descending,
-        status: [LearningObject.Status.RELEASED],
-    };
-    loading = false;
-    collectionName: string;
+  destroyed$ = new Subject<void>();
+  @Input() collection: Subject<string>;
+  learningObjects: LearningObject[] = Array(5);
+  query: Query = {
+    limit: 5,
+    orderBy: OrderBy.Date,
+    sortType: SortType.Descending,
+    status: [LearningObject.Status.RELEASED]
+  };
+  loading = false;
+  collectionName: string;
 
-    constructor(
-        private searchLearningObjectService: SearchService,
-        private cd: ChangeDetectorRef,
-    ) {
-        this.learningObjects = Array.from(
-            { length: 5 },
-            () => new LearningObject(),
-        ); // placeholder array for loading state
+  constructor(
+    private searchLearningObjectService: SearchService,
+    private cd: ChangeDetectorRef
+  ) {
+    this.learningObjects = Array.from({ length: 5 }, () => new LearningObject()); // placeholder array for loading state
+  }
+
+  async ngOnInit() {
+
+  this.collection
+    .pipe(takeUntil(this.destroyed$))
+    .subscribe(collection => {
+      this.collectionName = collection;
+      this.query.collection = collection;
+
+      this.fetchLearningObjects();
+    });
+  }
+
+  async fetchLearningObjects() {
+    this.loading = true;
+
+    try {
+      this.learningObjects = (await this.searchLearningObjectService.getLearningObjects(
+        this.query
+      )).learningObjects;
+      this.loading = false;
+      this.cd.detectChanges();
+    } catch (e) {
+      this.loading = false;
+      this.cd.detectChanges();
     }
-
-    async ngOnInit() {
-        this.collection
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe((collection) => {
-                this.collectionName = collection;
-                this.query.collection = collection;
-
-                this.fetchLearningObjects();
-            });
-    }
-
-    async fetchLearningObjects() {
-        this.loading = true;
-
-        try {
-            this.learningObjects = (
-                await this.searchLearningObjectService.getLearningObjects(
-                    this.query,
-                )
-            ).learningObjects;
-            this.loading = false;
-            this.cd.detectChanges();
-        } catch (e) {
-            this.loading = false;
-            this.cd.detectChanges();
-        }
-    }
+  }
 }

@@ -1,33 +1,34 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
-import { AuthService } from "app/core/auth-module/auth.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
+import { NgIf } from '@angular/common';
 @Component({
-    selector: "clark-ncyte-header",
-    templateUrl: "./header.component.html",
-    styleUrls: ["./header.component.scss"],
+    selector: 'clark-ncyte-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: true,
+    imports: [ActivateDirective, NgIf]
 })
 export class HeaderComponent implements OnInit {
-    @Input() collectionAbv: string;
-    isUserAuthorized = false;
-    constructor(
-        private router: Router,
-        private auth: AuthService,
-    ) {}
 
-    ngOnInit(): void {
-        this.isUserAuthorized =
-            this.auth.accessGroups.includes("curator@ncyte") ||
-            this.auth.accessGroups.includes("admin") ||
-            this.auth.accessGroups.includes("editor@ncyte");
-    }
+  @Input() collectionAbv: string;
+  isUserAuthorized = false;
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+  ) { }
 
-    navigateToBrowse() {
-        this.router.navigate(["/browse"], {
-            queryParams: { collection: this.collectionAbv, currPage: 1 },
-        });
-    }
+  ngOnInit(): void {
+    this.isUserAuthorized = this.auth.accessGroups.includes('curator@ncyte')
+      || this.auth.accessGroups.includes('admin') || this.auth.accessGroups.includes('editor@ncyte');
+  }
 
-    navigateToStatistics() {
-        this.router.navigate(["/collections/ncyte/dashboard"]);
-    }
+  navigateToBrowse() {
+    this.router.navigate(['/browse'], { queryParams: { collection: this.collectionAbv, currPage: 1 } });
+  }
+
+  navigateToStatistics() {
+    this.router.navigate(['/collections/ncyte/dashboard']);
+  }
 }

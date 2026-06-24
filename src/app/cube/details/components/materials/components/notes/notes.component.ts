@@ -1,18 +1,20 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-    selector: "clark-notes",
-    templateUrl: "./notes.component.html",
-    styleUrls: ["./notes.component.scss"],
+    selector: 'clark-notes',
+    templateUrl: './notes.component.html',
+    styleUrls: ['./notes.component.scss'],
+    standalone: true
 })
 export class NotesComponent implements OnInit {
-    @Input() notes: string;
 
-    constructor() {}
+  @Input() notes: string;
 
-    ngOnInit() {
-        if (!this.notes) {
-            this.notes = "This Learning Object does not have any notes";
-        }
+  constructor() { }
+
+  ngOnInit() {
+    if (!this.notes) {
+      this.notes = 'This Learning Object does not have any notes';
     }
+  }
 }

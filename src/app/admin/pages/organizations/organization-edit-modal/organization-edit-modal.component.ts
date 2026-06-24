@@ -1,19 +1,23 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    Output,
-    ViewChild,
-} from "@angular/core";
-import { MatStepper } from "@angular/material/stepper";
+import { Component, EventEmitter, Input, OnChanges, Output, ViewChild } from '@angular/core';
+import { MatStepper, MatStep, MatStepLabel } from '@angular/material/stepper';
 import {
     Organization,
     ORGANIZATION_LEVELS,
     ORGANIZATION_SECTORS,
     OrganizationLevel,
     OrganizationSector,
-} from "app/core/organization-module/organization.types";
+} from 'app/core/organization-module/organization.types';
+import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
+import { FormsModule } from '@angular/forms';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatChip, MatChipRemove } from '@angular/material/chips';
+import { MatIcon } from '@angular/material/icon';
+import { MatButton } from '@angular/material/button';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 export interface OrganizationFormData {
     name: string;
@@ -25,9 +29,31 @@ export interface OrganizationFormData {
 }
 
 @Component({
-    selector: "clark-organization-edit-modal",
-    templateUrl: "./organization-edit-modal.component.html",
-    styleUrls: ["./organization-edit-modal.component.scss"],
+    selector: 'clark-organization-edit-modal',
+    templateUrl: './organization-edit-modal.component.html',
+    styleUrls: ['./organization-edit-modal.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        PopupComponent,
+        FormsModule,
+        MatStepper,
+        MatStep,
+        MatStepLabel,
+        MatFormField,
+        MatLabel,
+        MatInput,
+        MatError,
+        MatSelect,
+        NgFor,
+        MatOption,
+        MatChip,
+        MatIcon,
+        MatChipRemove,
+        MatButton,
+        MatCheckbox,
+        TitleCasePipe,
+    ],
 })
 export class OrganizationEditModalComponent implements OnChanges {
     @Input() isVisible = false;
@@ -39,19 +65,19 @@ export class OrganizationEditModalComponent implements OnChanges {
     @Output() closed = new EventEmitter<void>();
     @Output() save = new EventEmitter<OrganizationFormData>();
 
-    @ViewChild("editStepper") editStepper!: MatStepper;
+    @ViewChild('editStepper') editStepper!: MatStepper;
 
     form: OrganizationFormData = {
-        name: "",
-        sector: "academia",
+        name: '',
+        sector: 'academia',
         levels: [],
-        country: "",
-        state: "",
+        country: '',
+        state: '',
         domains: [],
     };
 
-    newDomain = "";
-    domainError = "";
+    newDomain = '';
+    domainError = '';
     certified = false;
     sectorOptions: OrganizationSector[] = [...ORGANIZATION_SECTORS];
     levelOptions: OrganizationLevel[] = [...ORGANIZATION_LEVELS];
@@ -60,11 +86,11 @@ export class OrganizationEditModalComponent implements OnChanges {
         if (this.isVisible) {
             if (this.isCreateMode) {
                 this.form = {
-                    name: "",
-                    sector: "academia",
+                    name: '',
+                    sector: 'academia',
                     levels: [],
-                    country: "",
-                    state: "",
+                    country: '',
+                    state: '',
                     domains: [],
                 };
             } else if (this.organization) {
@@ -72,13 +98,13 @@ export class OrganizationEditModalComponent implements OnChanges {
                     name: this.organization.name,
                     sector: this.organization.sector,
                     levels: [...this.organization.levels],
-                    country: this.organization.country || "",
-                    state: this.organization.state || "",
+                    country: this.organization.country || '',
+                    state: this.organization.state || '',
                     domains: [...this.organization.domains],
                 };
             }
-            this.newDomain = "";
-            this.domainError = "";
+            this.newDomain = '';
+            this.domainError = '';
             this.certified = false;
 
             // Reset stepper
@@ -105,22 +131,19 @@ export class OrganizationEditModalComponent implements OnChanges {
         }
 
         if (!this.isValidDomain(domain)) {
-            this.domainError =
-                "Please enter a valid domain (e.g., example.edu).";
+            this.domainError = 'Please enter a valid domain (e.g., example.edu).';
             return;
         }
 
-        const alreadyAdded = this.form.domains.some(
-            (existing) => existing.toLowerCase() === domain,
-        );
+        const alreadyAdded = this.form.domains.some((existing) => existing.toLowerCase() === domain);
         if (alreadyAdded) {
-            this.domainError = "This domain has already been added.";
+            this.domainError = 'This domain has already been added.';
             return;
         }
 
         this.form.domains.push(domain);
-        this.newDomain = "";
-        this.domainError = "";
+        this.newDomain = '';
+        this.domainError = '';
     }
 
     removeDomain(index: number): void {
@@ -128,7 +151,7 @@ export class OrganizationEditModalComponent implements OnChanges {
     }
 
     onDomainInputChange(): void {
-        this.domainError = "";
+        this.domainError = '';
     }
 
     isNameDuplicate(): boolean {
@@ -141,14 +164,13 @@ export class OrganizationEditModalComponent implements OnChanges {
 
     formatLevelName(level: string): string {
         // eslint-disable-next-line prefer-regex-literals
-        return level.replace(/_/g, " ");
+        return level.replace(/_/g, ' ');
     }
 
     private isValidDomain(domain: string): boolean {
         // Validates a hostname-style domain: total length <= 253, labels are alphanumeric/hyphen
         // (no leading/trailing hyphen), at least one dot, and a 2-63 letter TLD.
-        const domainPattern =
-            /^(?=.{1,253}$)(?!-)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
+        const domainPattern = /^(?=.{1,253}$)(?!-)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z]{2,63}$/i;
         return domainPattern.test(domain);
     }
 }

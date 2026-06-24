@@ -1,187 +1,170 @@
 import {
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    Input,
-    OnChanges,
-    Output,
-    SimpleChanges,
-} from "@angular/core";
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { NgIf, NgFor } from '@angular/common';
 
 export interface DropdownFilterOption {
-    label: string;
-    value: string;
-    disabled?: boolean;
+  label: string;
+  value: string;
+  disabled?: boolean;
 }
 
 export interface DropdownFilterSelection {
-    selectedValues: string[];
-    selectedItems: DropdownFilterOption[];
+  selectedValues: string[];
+  selectedItems: DropdownFilterOption[];
 }
 
 @Component({
-    selector: "clark-dropdown-filter",
-    templateUrl: "./dropdown-filter.component.html",
-    styleUrls: ["./dropdown-filter.component.scss"],
+    selector: 'clark-dropdown-filter',
+    templateUrl: './dropdown-filter.component.html',
+    styleUrls: ['./dropdown-filter.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor],
 })
 export class DropdownFilterComponent implements OnChanges {
-    @Input() name = "";
-    @Input() isMultiSelect = true;
-    @Input() values: Array<string | DropdownFilterOption> = [];
-    @Input() selectedValues: string[] = [];
-    @Input() disabled = false;
+  @Input() name = '';
+  @Input() isMultiSelect = true;
+  @Input() values: Array<string | DropdownFilterOption> = [];
+  @Input() selectedValues: string[] = [];
+  @Input() disabled = false;
 
-    @Output() selectedValuesChange: EventEmitter<string[]> = new EventEmitter<
-        string[]
-    >();
-    @Output() selectionChange: EventEmitter<DropdownFilterSelection> =
-        new EventEmitter<DropdownFilterSelection>();
+  @Output() selectedValuesChange: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() selectionChange: EventEmitter<DropdownFilterSelection> =
+    new EventEmitter<DropdownFilterSelection>();
 
-    isOpen = false;
-    options: DropdownFilterOption[] = [];
-    internalSelectedValues: string[] = [];
+  isOpen = false;
+  options: DropdownFilterOption[] = [];
+  internalSelectedValues: string[] = [];
 
-    constructor(
-        private readonly elementRef: ElementRef<HTMLElement>,
-        private readonly cd: ChangeDetectorRef,
-    ) {}
+  constructor(
+    private readonly elementRef: ElementRef<HTMLElement>,
+    private readonly cd: ChangeDetectorRef,
+  ) {}
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.values) {
-            this.options = this.normalizeOptions(this.values);
-        }
-
-        if (changes.selectedValues || changes.values || changes.isMultiSelect) {
-            this.internalSelectedValues = this.normalizeSelectedValues(
-                this.selectedValues,
-            );
-        }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.values) {
+      this.options = this.normalizeOptions(this.values);
     }
 
-    @HostListener("document:click", ["$event"])
-    handleDocumentClick(event: MouseEvent): void {
-        if (!this.isOpen) {
-            return;
-        }
+    if (changes.selectedValues || changes.values || changes.isMultiSelect) {
+      this.internalSelectedValues = this.normalizeSelectedValues(this.selectedValues);
+    }
+  }
 
-        const target = event.target as Node | null;
-        if (!target || !this.elementRef.nativeElement.contains(target)) {
-            this.isOpen = false;
-            this.cd.detectChanges();
-        }
+  @HostListener('document:click', ['$event'])
+  handleDocumentClick(event: MouseEvent): void {
+    if (!this.isOpen) {
+      return;
     }
 
-    get buttonLabel(): string {
-        const selectedCount = this.internalSelectedValues.length;
-        if (selectedCount === 0) {
-            return this.name;
-        }
+    const target = event.target as Node | null;
+    if (!target || !this.elementRef.nativeElement.contains(target)) {
+      this.isOpen = false;
+      this.cd.detectChanges();
+    }
+  }
 
-        if (!this.isMultiSelect && selectedCount === 1) {
-            const selectedValue = this.internalSelectedValues[0];
-            const selectedItem = this.options.find(
-                (option) => option.value === selectedValue,
-            );
-            return selectedItem
-                ? `${this.name}: ${selectedItem.label}`
-                : this.name;
-        }
-
-        return `${this.name} (${selectedCount})`;
+  get buttonLabel(): string {
+    const selectedCount = this.internalSelectedValues.length;
+    if (selectedCount === 0) {
+      return this.name;
     }
 
-    toggleMenu(): void {
-        if (this.disabled) {
-            return;
-        }
-
-        this.isOpen = !this.isOpen;
-        this.cd.detectChanges();
+    if (!this.isMultiSelect && selectedCount === 1) {
+      const selectedValue = this.internalSelectedValues[0];
+      const selectedItem = this.options.find((option) => option.value === selectedValue);
+      return selectedItem ? `${this.name}: ${selectedItem.label}` : this.name;
     }
 
-    isSelected(value: string): boolean {
-        return this.internalSelectedValues.includes(value);
+    return `${this.name} (${selectedCount})`;
+  }
+
+  toggleMenu(): void {
+    if (this.disabled) {
+      return;
     }
 
-    onOptionClick(option: DropdownFilterOption, event: MouseEvent): void {
-        event.stopPropagation();
-        if (option.disabled) {
-            return;
-        }
+    this.isOpen = !this.isOpen;
+    this.cd.detectChanges();
+  }
 
-        if (this.isMultiSelect) {
-            if (this.isSelected(option.value)) {
-                this.internalSelectedValues =
-                    this.internalSelectedValues.filter(
-                        (selectedValue) => selectedValue !== option.value,
-                    );
-            } else {
-                this.internalSelectedValues = [
-                    ...this.internalSelectedValues,
-                    option.value,
-                ];
-            }
-        } else {
-            this.internalSelectedValues = this.isSelected(option.value)
-                ? []
-                : [option.value];
-            this.isOpen = false;
-        }
+  isSelected(value: string): boolean {
+    return this.internalSelectedValues.includes(value);
+  }
 
-        this.emitSelection();
-        this.cd.detectChanges();
+  onOptionClick(option: DropdownFilterOption, event: MouseEvent): void {
+    event.stopPropagation();
+    if (option.disabled) {
+      return;
     }
 
-    trackByValue(_index: number, option: DropdownFilterOption): string {
-        return option.value;
+    if (this.isMultiSelect) {
+      if (this.isSelected(option.value)) {
+        this.internalSelectedValues = this.internalSelectedValues.filter(
+          (selectedValue) => selectedValue !== option.value,
+        );
+      } else {
+        this.internalSelectedValues = [...this.internalSelectedValues, option.value];
+      }
+    } else {
+      this.internalSelectedValues = this.isSelected(option.value) ? [] : [option.value];
+      this.isOpen = false;
     }
 
-    private emitSelection(): void {
-        const selectedValues = [...this.internalSelectedValues];
-        this.selectedValuesChange.emit(selectedValues);
-        this.selectionChange.emit({
-            selectedValues,
-            selectedItems: this.options.filter((option) =>
-                selectedValues.includes(option.value),
-            ),
-        });
+    this.emitSelection();
+    this.cd.detectChanges();
+  }
+
+  trackByValue(_index: number, option: DropdownFilterOption): string {
+    return option.value;
+  }
+
+  private emitSelection(): void {
+    const selectedValues = [...this.internalSelectedValues];
+    this.selectedValuesChange.emit(selectedValues);
+    this.selectionChange.emit({
+      selectedValues,
+      selectedItems: this.options.filter((option) => selectedValues.includes(option.value)),
+    });
+  }
+
+  private normalizeOptions(values: Array<string | DropdownFilterOption>): DropdownFilterOption[] {
+    return values.map((option) => {
+      if (typeof option === 'string') {
+        return {
+          label: option,
+          value: option,
+        };
+      }
+      return option;
+    });
+  }
+
+  private normalizeSelectedValues(selectedValues: string[]): string[] {
+    const validValues: string[] = [];
+
+    for (const selectedValue of selectedValues || []) {
+      if (!this.options.some((option) => option.value === selectedValue)) {
+        continue;
+      }
+      if (validValues.includes(selectedValue)) {
+        continue;
+      }
+      validValues.push(selectedValue);
     }
 
-    private normalizeOptions(
-        values: Array<string | DropdownFilterOption>,
-    ): DropdownFilterOption[] {
-        return values.map((option) => {
-            if (typeof option === "string") {
-                return {
-                    label: option,
-                    value: option,
-                };
-            }
-            return option;
-        });
+    if (!this.isMultiSelect && validValues.length > 1) {
+      return [validValues[0]];
     }
 
-    private normalizeSelectedValues(selectedValues: string[]): string[] {
-        const validValues: string[] = [];
-
-        for (const selectedValue of selectedValues || []) {
-            if (
-                !this.options.some((option) => option.value === selectedValue)
-            ) {
-                continue;
-            }
-            if (validValues.includes(selectedValue)) {
-                continue;
-            }
-            validValues.push(selectedValue);
-        }
-
-        if (!this.isMultiSelect && validValues.length > 1) {
-            return [validValues[0]];
-        }
-
-        return validValues;
-    }
+    return validValues;
+  }
 }

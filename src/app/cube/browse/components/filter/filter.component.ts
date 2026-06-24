@@ -1,627 +1,535 @@
-import {
-    ChangeDetectorRef,
-    Component,
-    EventEmitter,
-    Input,
-    OnDestroy,
-    OnInit,
-    Output,
-} from "@angular/core";
-import { LearningObject } from "@entity";
-import { AuthService } from "app/core/auth-module/auth.service";
-import { CollectionService } from "app/core/collection-module/collections.service";
-import { TagsService } from "app/core/learning-object-module/tags/tags.service";
-import { TopicsService } from "app/core/learning-object-module/topics/topics.service";
-import { GuidelineService } from "app/core/standard-guidelines-module/standard-guidelines.service";
-import { Observable, Subject } from "rxjs";
-import { debounceTime, takeUntil } from "rxjs/operators";
-import { Query } from "../../../../interfaces/query";
-import { FilterSectionInfo } from "../filter-section/filter-section.component";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { LearningObject } from '@entity';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { CollectionService } from 'app/core/collection-module/collections.service';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { TopicsService } from 'app/core/learning-object-module/topics/topics.service';
+import { GuidelineService } from 'app/core/standard-guidelines-module/standard-guidelines.service';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
+import { Query } from '../../../../interfaces/query';
+import { FilterSectionInfo, FilterSectionComponent } from '../filter-section/filter-section.component';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
+import { GuidelineFilterComponent } from '../guideline-filter/guideline-filter.component';
 
 @Component({
-    selector: "clark-filter",
-    templateUrl: "./filter.component.html",
-    styleUrls: ["./filter.component.scss"],
+    selector: 'clark-filter',
+    templateUrl: './filter.component.html',
+    styleUrls: ['./filter.component.scss'],
+    standalone: true,
+    imports: [FilterSectionComponent, NgIf, NgFor, NgClass, ActivateDirective, PopupComponent, GuidelineFilterComponent]
 })
 export class FilterComponent implements OnInit, OnDestroy {
-    @Input() clear: Observable<void>;
-    @Input() selected?: Query;
-    @Output() changed: EventEmitter<any> = new EventEmitter();
+  @Input() clear: Observable<void>;
+  @Input() selected?: Query;
+  @Output() changed: EventEmitter<any> = new EventEmitter();
 
-    // The section filters
-    collectionFilter: FilterSectionInfo;
-    lengthFilter: FilterSectionInfo;
-    topicFilter: FilterSectionInfo;
-    tagFilter: FilterSectionInfo;
-    materialFilter: FilterSectionInfo;
-    levelFilter: FilterSectionInfo;
-    frameworkFilter: FilterSectionInfo;
-    adminEditorFilter: FilterSectionInfo;
-    guidelineFilter: string[] = [];
-    tagTypes: { name: string; value: string }[] = [];
+  // The section filters
+  collectionFilter: FilterSectionInfo;
+  lengthFilter: FilterSectionInfo;
+  topicFilter: FilterSectionInfo;
+  tagFilter: FilterSectionInfo;
+  materialFilter: FilterSectionInfo;
+  levelFilter: FilterSectionInfo;
+  frameworkFilter: FilterSectionInfo;
+  adminEditorFilter: FilterSectionInfo;
+  guidelineFilter: string[] = [];
+  tagTypes: { name: string, value: string }[] = [];
 
-    // Used to communicate filter changes
-    filterChanged$ = new Subject(); // Used to debounce the time to avoid spammed filter changes
-    destroyed$ = new Subject();
+  // Used to communicate filter changes
+  filterChanged$ = new Subject(); // Used to debounce the time to avoid spammed filter changes
+  destroyed$ = new Subject();
 
-    // Advanced search
-    showAdvancedSearch = false;
+  // Advanced search
+  showAdvancedSearch = false;
 
-    constructor(
-        private collectionService: CollectionService,
-        private topicsService: TopicsService,
-        private tagsService: TagsService,
-        private guidelineService: GuidelineService,
-        private cd: ChangeDetectorRef,
-        private authService: AuthService,
-    ) {}
+  constructor(
+    private collectionService: CollectionService,
+    private topicsService: TopicsService,
+    private tagsService: TagsService,
+    private guidelineService: GuidelineService,
+    private cd: ChangeDetectorRef,
+    private authService: AuthService
+  ) { }
 
-    async ngOnInit(): Promise<void> {
-        // Get the filter information
-        await this.getCollectionFilters();
-        this.getLengthFilters();
-        await this.getTopicFilters();
-        await this.getTagFilters();
-        await this.getTagTypes();
-        this.getMaterialFilters();
-        this.getLevelFilters();
-        this.getAdminEditorFilters();
-        await this.getFrameworkFilters();
-        this.parseSelected();
+  async ngOnInit(): Promise<void> {
+    // Get the filter information
+    await this.getCollectionFilters();
+    this.getLengthFilters();
+    await this.getTopicFilters();
+    await this.getTagFilters();
+    await this.getTagTypes();
+    this.getMaterialFilters();
+    this.getLevelFilters();
+    this.getAdminEditorFilters();
+    await this.getFrameworkFilters();
+    this.parseSelected();
 
-        // Register filter changes
-        this.filterChanged$
-            .pipe(debounceTime(650), takeUntil(this.destroyed$))
-            .subscribe(() => this.sendFilterChanges());
+    // Register filter changes
+    this.filterChanged$
+      .pipe(debounceTime(650), takeUntil(this.destroyed$))
+      .subscribe(() => this.sendFilterChanges());
 
-        this.clear
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe(() => this.clearFilters());
+    this.clear
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(() => this.clearFilters());
 
-        // Update UI
-        this.cd.detectChanges();
+    // Update UI
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Parses a query object which saves the current
+   * query state (used for mobile filters)
+   */
+  private parseSelected() {
+    if (this.selected) {
+      if (this.lengthFilter?.filters) this.parseCategorySelected(this.selected.length, this.lengthFilter.filters);
+      if (this.levelFilter?.filters) this.parseCategorySelected(this.selected.level, this.levelFilter.filters);
+      if (this.topicFilter?.filters) this.parseCategorySelected(this.selected.topics, this.topicFilter.filters);
+      if (this.tagFilter?.filters) this.parseCategorySelected(this.selected.tags, this.tagFilter.filters);
+      if (this.materialFilter?.filters) this.parseCategorySelected(this.selected.fileTypes, this.materialFilter.filters);
+      if (this.frameworkFilter?.filters) this.parseCategorySelected(this.selected.guidelines, this.frameworkFilter.filters);
+      this.parseAdminEditorSelected();
+      if (this.collectionFilter?.filters) this.parseCategorySelected(this.selected.collection, this.collectionFilter.filters);
     }
+  }
 
-    /**
-     * Parses a query object which saves the current
-     * query state (used for mobile filters)
-     */
-    private parseSelected() {
-        if (this.selected) {
-            if (this.lengthFilter?.filters)
-                this.parseCategorySelected(
-                    this.selected.length,
-                    this.lengthFilter.filters,
-                );
-            if (this.levelFilter?.filters)
-                this.parseCategorySelected(
-                    this.selected.level,
-                    this.levelFilter.filters,
-                );
-            if (this.topicFilter?.filters)
-                this.parseCategorySelected(
-                    this.selected.topics,
-                    this.topicFilter.filters,
-                );
-            if (this.tagFilter?.filters)
-                this.parseCategorySelected(
-                    this.selected.tags,
-                    this.tagFilter.filters,
-                );
-            if (this.materialFilter?.filters)
-                this.parseCategorySelected(
-                    this.selected.fileTypes,
-                    this.materialFilter.filters,
-                );
-            if (this.frameworkFilter?.filters)
-                this.parseCategorySelected(
-                    this.selected.guidelines,
-                    this.frameworkFilter.filters,
-                );
-            this.parseAdminEditorSelected();
-            if (this.collectionFilter?.filters)
-                this.parseCategorySelected(
-                    this.selected.collection,
-                    this.collectionFilter.filters,
-                );
+  /**
+   * Sets each filter to active if they are already
+   * selected
+   *
+   * @param selectedCategory The query selected category
+   * (i.e. length, level, collection, etc)
+   * @param filters The filters array associated with the
+   * category to check
+   */
+  private parseCategorySelected(
+    selectedCategory: string[] | string,
+    filters: { active: boolean, name: string, value: string, tip?: string }[]
+  ) {
+    if (selectedCategory && selectedCategory.length > 0) {
+      filters.forEach(filter => {
+        if (selectedCategory.includes(filter.value)) {
+          filter.active = true;
         }
+      });
+    }
+  }
+
+  /**
+   * Opens the advanced search popup
+   */
+  openAdvancedSearch() {
+    this.showAdvancedSearch = true;
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Clears all the filters (sets them as not active)
+   */
+  clearFilters() {
+    // Clear each category filter
+    if (this.collectionFilter?.filters) this.clearFilterCategory(this.collectionFilter.filters);
+    if (this.lengthFilter?.filters) this.clearFilterCategory(this.lengthFilter.filters);
+    if (this.levelFilter?.filters) this.clearFilterCategory(this.levelFilter.filters);
+    if (this.materialFilter?.filters) this.clearFilterCategory(this.materialFilter.filters);
+    if (this.topicFilter?.filters) this.clearFilterCategory(this.topicFilter.filters);
+    if (this.tagFilter?.filters) this.clearFilterCategory(this.tagFilter.filters);
+    if (this.adminEditorFilter?.filters) this.clearFilterCategory(this.adminEditorFilter.filters);
+    if (this.frameworkFilter?.filters) this.clearFilterCategory(this.frameworkFilter.filters);
+    this.guidelineFilter = [];
+
+    // Detect changes and resend the filter object
+    this.cd.detectChanges();
+    this.sendFilterChanges();
+  }
+
+  /**
+   * Sets each filter to inactive in a filter category
+   *
+   * @param filters The array of filters
+   */
+  private clearFilterCategory(filters: { active: boolean, name: string, value: string, tip?: string }[]) {
+    filters.forEach(filter => filter.active = false);
+  }
+
+  /**
+   * Formats the filter query to search/filter
+   */
+  sendFilterChanges() {
+    const query = {};
+
+    // Creates the query
+    if (this.collectionFilter?.filters) this.checkFilter('collection', this.collectionFilter.filters, query);
+    if (this.lengthFilter?.filters) this.checkFilter('length', this.lengthFilter.filters, query);
+    if (this.levelFilter?.filters) this.checkFilter('level', this.levelFilter.filters, query);
+    if (this.materialFilter?.filters) this.checkFilter('fileTypes', this.materialFilter.filters, query);
+    if (this.topicFilter?.filters) this.checkFilter('topics', this.topicFilter.filters, query);
+    if (this.tagFilter?.filters) this.checkFilter('tags', this.tagFilter.filters, query);
+    if (this.frameworkFilter?.filters) this.checkFilter('guidelines', this.frameworkFilter.filters, query);
+    if (this.adminEditorFilter?.filters) this.checkAdminEditorFilters(query);
+    if (this.guidelineFilter && this.guidelineFilter.length > 0) {
+      query['standardOutcomes'] = this.guidelineFilter;
     }
 
-    /**
-     * Sets each filter to active if they are already
-     * selected
-     *
-     * @param selectedCategory The query selected category
-     * (i.e. length, level, collection, etc)
-     * @param filters The filters array associated with the
-     * category to check
-     */
-    private parseCategorySelected(
-        selectedCategory: string[] | string,
-        filters: {
-            active: boolean;
-            name: string;
-            value: string;
-            tip?: string;
-        }[],
-    ) {
-        if (selectedCategory && selectedCategory.length > 0) {
-            filters.forEach((filter) => {
-                if (selectedCategory.includes(filter.value)) {
-                    filter.active = true;
-                }
-            });
+    // Emits changes
+    this.changed.emit(query);
+  }
+
+  /**
+   * Appends the filter query with the given filter category if it exists
+   *
+   * @param category the filter category to append
+   * @param filters The filters to append to the category
+   * @param query The query object to emit
+   */
+  private checkFilter(category: string, filters: { active: boolean, name: string, value: string, tip?: string }[], query: any) {
+    const f = filters.filter(filter => filter.active);
+    if (f && f.length > 0) {
+      query[category] = f.map(filter => filter.value);
+    }
+  }
+
+  private checkAdminEditorFilters(query: any) {
+    this.adminEditorFilter.filters
+      .filter(filter => filter.active)
+      .forEach(filter => {
+        query[filter.value] = ['true'];
+      });
+  }
+
+  private parseAdminEditorSelected() {
+    if (!this.adminEditorFilter?.filters) {
+      return;
+    }
+
+    this.adminEditorFilter.filters.forEach(filter => {
+      filter.active = this.selected?.[filter.value] === 'true';
+    });
+  }
+
+  /**
+   * Registers a change in the filter, used for debounce-ing the filter selection
+   */
+  registerChange() {
+    this.filterChanged$.next();
+  }
+
+  /**
+   * Toggle a topic selection when rendered as pills/chips.
+   * Keeps the existing filter state logic intact by mutating `topicFilter.filters[].active`
+   * and then using the existing debounced `registerChange()` pipeline.
+   */
+  toggleTopicFilter(topic: { active: boolean; name: string; value: string }) {
+    topic.active = !topic.active;
+    this.cd.detectChanges();
+    this.registerChange();
+  }
+
+  /**
+   * Toggle a material selection when rendered as pills/chips.
+   * Keeps the existing filter state logic intact by mutating tag filter active state
+   * and then using the existing debounced `registerChange()` pipeline.
+   */
+  toggleMaterialFilter(material: { active: boolean; name: string; value: string }) {
+    material.active = !material.active;
+    this.cd.detectChanges();
+    this.registerChange();
+  }
+
+  /**
+   * Gets the tag filters based on the provided type as needed in the html template.
+   */
+  getTagFilterByType(type: string): FilterSectionInfo | undefined {
+    // Return undefined if tagFilter is not initialized yet
+    if (!this.tagFilter?.filters) {
+      return undefined;
+    }
+
+    switch (type) {
+      case 'misc':
+        const miscTypes = ['info', 'modality', 'lang', 'quality']; // grouping these as a single 'miscellaneous' filter section
+        const miscTags = [];
+        miscTypes.forEach((type) => {
+          miscTags.push(...this.tagFilter.filters.filter((t) =>
+            t.tagType?.includes(type),
+          ));
+        })
+        if (miscTags.length < 1) {
+          return undefined;
         }
-    }
+        return {
+          section: 'Misc',
+          filters: miscTags
+        };
 
-    /**
-     * Opens the advanced search popup
-     */
-    openAdvancedSearch() {
-        this.showAdvancedSearch = true;
-        this.cd.detectChanges();
-    }
-
-    /**
-     * Clears all the filters (sets them as not active)
-     */
-    clearFilters() {
-        // Clear each category filter
-        if (this.collectionFilter?.filters)
-            this.clearFilterCategory(this.collectionFilter.filters);
-        if (this.lengthFilter?.filters)
-            this.clearFilterCategory(this.lengthFilter.filters);
-        if (this.levelFilter?.filters)
-            this.clearFilterCategory(this.levelFilter.filters);
-        if (this.materialFilter?.filters)
-            this.clearFilterCategory(this.materialFilter.filters);
-        if (this.topicFilter?.filters)
-            this.clearFilterCategory(this.topicFilter.filters);
-        if (this.tagFilter?.filters)
-            this.clearFilterCategory(this.tagFilter.filters);
-        if (this.adminEditorFilter?.filters)
-            this.clearFilterCategory(this.adminEditorFilter.filters);
-        if (this.frameworkFilter?.filters)
-            this.clearFilterCategory(this.frameworkFilter.filters);
-        this.guidelineFilter = [];
-
-        // Detect changes and resend the filter object
-        this.cd.detectChanges();
-        this.sendFilterChanges();
-    }
-
-    /**
-     * Sets each filter to inactive in a filter category
-     *
-     * @param filters The array of filters
-     */
-    private clearFilterCategory(
-        filters: {
-            active: boolean;
-            name: string;
-            value: string;
-            tip?: string;
-        }[],
-    ) {
-        filters.forEach((filter) => (filter.active = false));
-    }
-
-    /**
-     * Formats the filter query to search/filter
-     */
-    sendFilterChanges() {
-        const query = {};
-
-        // Creates the query
-        if (this.collectionFilter?.filters)
-            this.checkFilter(
-                "collection",
-                this.collectionFilter.filters,
-                query,
-            );
-        if (this.lengthFilter?.filters)
-            this.checkFilter("length", this.lengthFilter.filters, query);
-        if (this.levelFilter?.filters)
-            this.checkFilter("level", this.levelFilter.filters, query);
-        if (this.materialFilter?.filters)
-            this.checkFilter("fileTypes", this.materialFilter.filters, query);
-        if (this.topicFilter?.filters)
-            this.checkFilter("topics", this.topicFilter.filters, query);
-        if (this.tagFilter?.filters)
-            this.checkFilter("tags", this.tagFilter.filters, query);
-        if (this.frameworkFilter?.filters)
-            this.checkFilter("guidelines", this.frameworkFilter.filters, query);
-        if (this.adminEditorFilter?.filters)
-            this.checkAdminEditorFilters(query);
-        if (this.guidelineFilter && this.guidelineFilter.length > 0) {
-            query["standardOutcomes"] = this.guidelineFilter;
-        }
-
-        // Emits changes
-        this.changed.emit(query);
-    }
-
-    /**
-     * Appends the filter query with the given filter category if it exists
-     *
-     * @param category the filter category to append
-     * @param filters The filters to append to the category
-     * @param query The query object to emit
-     */
-    private checkFilter(
-        category: string,
-        filters: {
-            active: boolean;
-            name: string;
-            value: string;
-            tip?: string;
-        }[],
-        query: any,
-    ) {
-        const f = filters.filter((filter) => filter.active);
-        if (f && f.length > 0) {
-            query[category] = f.map((filter) => filter.value);
-        }
-    }
-
-    private checkAdminEditorFilters(query: any) {
-        this.adminEditorFilter.filters
-            .filter((filter) => filter.active)
-            .forEach((filter) => {
-                query[filter.value] = ["true"];
-            });
-    }
-
-    private parseAdminEditorSelected() {
-        if (!this.adminEditorFilter?.filters) {
-            return;
-        }
-
-        this.adminEditorFilter.filters.forEach((filter) => {
-            filter.active = this.selected?.[filter.value] === "true";
-        });
-    }
-
-    /**
-     * Registers a change in the filter, used for debounce-ing the filter selection
-     */
-    registerChange() {
-        this.filterChanged$.next();
-    }
-
-    /**
-     * Toggle a topic selection when rendered as pills/chips.
-     * Keeps the existing filter state logic intact by mutating `topicFilter.filters[].active`
-     * and then using the existing debounced `registerChange()` pipeline.
-     */
-    toggleTopicFilter(topic: { active: boolean; name: string; value: string }) {
-        topic.active = !topic.active;
-        this.cd.detectChanges();
-        this.registerChange();
-    }
-
-    /**
-     * Toggle a material selection when rendered as pills/chips.
-     * Keeps the existing filter state logic intact by mutating tag filter active state
-     * and then using the existing debounced `registerChange()` pipeline.
-     */
-    toggleMaterialFilter(material: {
-        active: boolean;
-        name: string;
-        value: string;
-    }) {
-        material.active = !material.active;
-        this.cd.detectChanges();
-        this.registerChange();
-    }
-
-    /**
-     * Gets the tag filters based on the provided type as needed in the html template.
-     */
-    getTagFilterByType(type: string): FilterSectionInfo | undefined {
-        // Return undefined if tagFilter is not initialized yet
-        if (!this.tagFilter?.filters) {
-            return undefined;
-        }
-
-        switch (type) {
-            case "misc":
-                const miscTypes = ["info", "modality", "lang", "quality"]; // grouping these as a single 'miscellaneous' filter section
-                const miscTags = [];
-                miscTypes.forEach((type) => {
-                    miscTags.push(
-                        ...this.tagFilter.filters.filter((t) =>
-                            t.tagType?.includes(type),
-                        ),
-                    );
-                });
-                if (miscTags.length < 1) {
-                    return undefined;
-                }
-                return {
-                    section: "Misc",
-                    filters: miscTags,
-                };
-
-            case "code":
-                // Get tags of type 'code'
-                const codeTags = this.tagFilter.filters.filter((t) =>
-                    t.tagType?.includes("code"),
-                );
-
-                // If no code tags, return undefined
-                if (codeTags.length < 1) {
-                    return undefined;
-                }
-
-                return {
-                    section: "Code",
-                    filters: codeTags,
-                };
-
-            case "tech":
-                const techTags = this.tagFilter.filters.filter((t) =>
-                    t.tagType?.includes("tech"),
-                );
-
-                // If no tech tags, return undefined
-                if (techTags.length < 1) {
-                    return undefined;
-                }
-
-                return {
-                    section: "Tech",
-                    filters: techTags,
-                };
-
-            case "materials":
-                const materialTags = this.tagFilter.filters.filter((t) =>
-                    t.tagType?.includes("material"),
-                );
-
-                if (materialTags.length < 1) {
-                    return undefined;
-                }
-
-                return {
-                    section: "Materials",
-                    filters: materialTags,
-                };
-        }
-    }
-
-    /**
-     * Get a list of tags based on a provided tag type.
-     * @param {string} providedType The type of tag you want to filter by
-     *
-     * @see filter.component.html:12 This dropdown uses this function.
-     * @returns An object named after the providedType with a list of tags filtered by that providedType
-     */
-    getFilteredTags(providedType: { name: string; value: string }): {
-        section?: string;
-        filters?: any[];
-    } {
-        // Return undefined if tagFilter is not initialized yet
-        if (!this.tagFilter?.filters) {
-            return undefined;
-        }
-
-        // Get the tags that are of type `providedType`.
-        // i.e. if you want tags with type 'code', this will only return
-        //      the tags that include the tag type 'code'.
-        const currFilter = this.tagFilter.filters.filter((t) =>
-            t.tagType?.includes(providedType.value),
+      case 'code':
+        // Get tags of type 'code'
+        const codeTags = this.tagFilter.filters.filter((t) =>
+          t.tagType?.includes('code'),
         );
 
-        // If the filter doesn't have any items, return undefined
-        // so that `filter-section` doesn't render the dropdown
-        // when `ngDoCheck`
-        if (currFilter.length < 1) {
-            return undefined;
+        // If no code tags, return undefined
+        if (codeTags.length < 1) {
+          return undefined;
         }
 
-        // Return the dropdown with the section of the tag name,
-        // and tag items with that tag.
         return {
-            section: providedType.name,
-            filters: currFilter,
+          section: 'Code',
+          filters: codeTags
+        };
+
+      case 'tech':
+        const techTags = this.tagFilter.filters.filter((t) =>
+          t.tagType?.includes('tech'),
+        );
+
+        // If no tech tags, return undefined
+        if (techTags.length < 1) {
+          return undefined;
+        }
+
+        return {
+          section: 'Tech',
+          filters: techTags
+        };
+
+      case 'materials':
+        const materialTags = this.tagFilter.filters.filter((t) =>
+          t.tagType?.includes('material'),
+        );
+
+        if (materialTags.length < 1) {
+          return undefined;
+        }
+
+        return {
+          section: 'Materials',
+          filters: materialTags
         };
     }
+  }
 
-    /**
-     * Gets the collection filters
-     */
-    async getCollectionFilters() {
-        const collections = await this.collectionService.getCollections();
-        this.collectionFilter = {
-            section: "Collections",
-            filters: collections
-                .map((collection) => ({
-                    name: collection.name,
-                    value: collection.abvName,
-                    active: false,
-                }))
-                .sort((a, b) => {
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-                    if (a.name > b.name) {
-                        return 1;
-                    }
-                    return 0;
-                }),
-        };
+  /**
+   * Get a list of tags based on a provided tag type.
+   * @param {string} providedType The type of tag you want to filter by
+   *
+   * @see filter.component.html:12 This dropdown uses this function.
+   * @returns An object named after the providedType with a list of tags filtered by that providedType
+   */
+  getFilteredTags(providedType: { name: string, value: string }): { section?: string; filters?: any[] } {
+    // Return undefined if tagFilter is not initialized yet
+    if (!this.tagFilter?.filters) {
+      return undefined;
     }
 
-    /**
-     * Gets the length filters
-     */
-    getLengthFilters() {
-        this.lengthFilter = {
-            section: "Duration",
-            filters: [
-                {
-                    name: "Nanomodule",
-                    value: "nanomodule",
-                    active: false,
-                    description: "< 1 hour",
-                },
-                {
-                    name: "Micromodule",
-                    value: "micromodule",
-                    active: false,
-                    description: "1-4 hours",
-                },
-                {
-                    name: "Module",
-                    value: "module",
-                    active: false,
-                    description: "4-10 hours",
-                },
-                {
-                    name: "Unit",
-                    value: "unit",
-                    active: false,
-                    description: "10+ hours",
-                },
-                {
-                    name: "Course",
-                    value: "course",
-                    active: false,
-                    description: "15 weeks",
-                },
-            ],
-        };
+    // Get the tags that are of type `providedType`.
+    // i.e. if you want tags with type 'code', this will only return
+    //      the tags that include the tag type 'code'.
+    const currFilter = this.tagFilter.filters.filter((t) =>
+      t.tagType?.includes(providedType.value),
+    );
+
+    // If the filter doesn't have any items, return undefined
+    // so that `filter-section` doesn't render the dropdown
+    // when `ngDoCheck`
+    if (currFilter.length < 1) {
+      return undefined;
     }
 
-    /**
-     * Gets the topic filters
-     */
-    async getTopicFilters() {
-        const topics = await this.topicsService.getTopics();
-        this.topicFilter = {
-            section: "Topics",
-            filters: topics.map((topic) => ({
-                name: topic.name,
-                value: topic._id,
-                active: false,
-            })),
-        };
-    }
+    // Return the dropdown with the section of the tag name,
+    // and tag items with that tag.
+    return {
+      section: providedType.name,
+      filters: currFilter
+    };
+  }
 
-    /**
-     * Gets the tag filters
-     */
-    async getTagFilters() {
-        const tags = await this.tagsService.getTags();
-        this.tagFilter = {
-            section: "Tags",
-            filters: tags.map((tag) => ({
-                name: tag.name,
-                tagType: tag.type,
-                value: tag._id,
-                active: false,
-            })),
-        };
-    }
+  /**
+   * Gets the collection filters
+   */
+  async getCollectionFilters() {
+    const collections = await this.collectionService.getCollections();
+    this.collectionFilter = {
+      section: 'Collections',
+      filters: collections.map(collection => ({
+        name: collection.name,
+        value: collection.abvName,
+        active: false,
+      })).sort((a, b) => {
+        if (a.name < b.name) {
+          return -1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      }),
+    };
+  }
 
-    async getTagTypes() {
-        const tagTypes = await this.tagsService.getTagTypes();
-        this.tagTypes = tagTypes.types;
-    }
+  /**
+   * Gets the length filters
+   */
+  getLengthFilters() {
+    this.lengthFilter = {
+      section: 'Duration',
+      filters: [
+        {
+          name: 'Nanomodule',
+          value: 'nanomodule',
+          active: false,
+          description: '< 1 hour'
+        },
+        {
+          name: 'Micromodule',
+          value: 'micromodule',
+          active: false,
+          description: '1-4 hours'
+        },
+        {
+          name: 'Module',
+          value: 'module',
+          active: false,
+          description: '4-10 hours'
+        },
+        {
+          name: 'Unit',
+          value: 'unit',
+          active: false,
+          description: '10+ hours'
+        },
+        {
+          name: 'Course',
+          value: 'course',
+          active: false,
+          description: '15 weeks'
+        },
+      ],
+    };
+  }
 
-    /**
-     * Gets the material filters
-     */
-    getMaterialFilters() {
-        this.materialFilter = {
-            section: "Type of Material",
-            filters: [
-                {
-                    name: "Video",
-                    value: "video",
-                    active: false,
-                },
-            ],
-        };
-    }
+  /**
+   * Gets the topic filters
+   */
+  async getTopicFilters() {
+    const topics = await this.topicsService.getTopics();
+    this.topicFilter = {
+      section: 'Topics',
+      filters: topics.map((topic) => ({
+        name: topic.name,
+        value: topic._id,
+        active: false,
+      })),
+    };
+  }
 
-    /**
-     * Gets the level filters
-     */
-    getLevelFilters() {
-        this.levelFilter = {
-            section: "Levels",
-            filters: Object.values(LearningObject.Level).map((level) => ({
-                name: level.replace(/\w\S*/g, (txt) => {
-                    return (
-                        txt.charAt(0).toUpperCase() +
-                        txt.substr(1).toLowerCase()
-                    );
-                }),
-                value: level,
-                active: false,
-            })),
-        };
-    }
+  /**
+   * Gets the tag filters
+   */
+  async getTagFilters() {
+    const tags = (await this.tagsService.getTags());
+    this.tagFilter = {
+      section: 'Tags',
+      filters: tags.map((tag) => ({
+        name: tag.name,
+        tagType: tag.type,
+        value: tag._id,
+        active: false,
+      })),
+    };
+  }
 
-    /**
-     * Gets the framework filters
-     */
-    async getFrameworkFilters() {
-        const frameworks = await this.guidelineService.getFrameworks({
-            limit: 100,
-            page: 1,
-        });
-        this.frameworkFilter = {
-            section: "Frameworks",
-            filters: frameworks.map((framework) => ({
-                name: framework.name,
-                value: framework.name,
-                active: false,
-            })),
-        };
-    }
+  async getTagTypes() {
+    const tagTypes = await this.tagsService.getTagTypes();
+    this.tagTypes = tagTypes.types;
+  }
 
-    getAdminEditorFilters() {
-        this.adminEditorFilter = {
-            section: "Admin/Editor Filters",
-            filters: [
-                { name: "No Guidelines", value: "noGuidelines", active: false },
-                {
-                    name: "No DCWF guidelines",
-                    value: "noDCWFGuidelines",
-                    active: false,
-                },
-            ],
-        };
-    }
+  /**
+   * Gets the material filters
+   */
+  getMaterialFilters() {
+    this.materialFilter = {
+      section: 'Type of Material',
+      filters: [{
+        name: 'Video',
+        value: 'video',
+        active: false,
+      }]
+    };
+  }
 
-    /**
-     * Closes the advanced search popup
-     */
-    closeAdvancedSearch() {
-        this.showAdvancedSearch = false;
-        this.cd.detectChanges();
-    }
+  /**
+   * Gets the level filters
+   */
+  getLevelFilters() {
+    this.levelFilter = {
+      section: 'Levels',
+      filters: Object.values(LearningObject.Level).map(level => ({
+        name: level.replace(
+          /\w\S*/g, ((txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          })
+        ),
+        value: level,
+        active: false,
+      })),
+    };
+  }
 
-    /**
-     * Grabs the guideline ids from the event and set them in the filter
-     *
-     * @param guidelineIds The new guideline ids selected
-     */
-    filterGuidelines(guidelineIds: string[]) {
-        this.guidelineFilter = guidelineIds;
-        this.closeAdvancedSearch();
-        this.registerChange();
-    }
+  /**
+   * Gets the framework filters
+   */
+  async getFrameworkFilters() {
+    const frameworks = await this.guidelineService.getFrameworks({ limit: 100, page: 1 });
+    this.frameworkFilter = {
+      section: 'Frameworks',
+      filters: frameworks.map(framework => ({
+        name: framework.name,
+        value: framework.name,
+        active: false,
+      })),
+    };
+  }
 
-    isAdminOrEditor(): boolean {
-        return this.authService.isAdminOrEditor();
-    }
+  getAdminEditorFilters() {
+    this.adminEditorFilter = {
+      section: 'Admin/Editor Filters',
+      filters: [
+        { name: 'No Guidelines', value: 'noGuidelines', active: false },
+        { name: 'No DCWF guidelines', value: 'noDCWFGuidelines', active: false }
+      ]
+    };
+  }
 
-    ngOnDestroy() {
-        this.destroyed$.next();
-        this.destroyed$.unsubscribe();
-    }
+  /**
+   * Closes the advanced search popup
+   */
+  closeAdvancedSearch() {
+    this.showAdvancedSearch = false;
+    this.cd.detectChanges();
+  }
+
+  /**
+   * Grabs the guideline ids from the event and set them in the filter
+   *
+   * @param guidelineIds The new guideline ids selected
+   */
+  filterGuidelines(guidelineIds: string[]) {
+    this.guidelineFilter = guidelineIds;
+    this.closeAdvancedSearch();
+    this.registerChange();
+  }
+
+  isAdminOrEditor(): boolean {
+    return this.authService.isAdminOrEditor();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.unsubscribe();
+  }
 }

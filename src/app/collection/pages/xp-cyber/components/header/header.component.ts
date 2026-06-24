@@ -1,19 +1,25 @@
-import { Component, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
 
 @Component({
-    selector: "clark-header",
-    templateUrl: "./header.component.html",
-    styleUrls: ["./header.component.scss"],
+    selector: 'clark-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: true,
+    imports: [ActivateDirective]
 })
 export class HeaderComponent implements OnInit {
-    constructor(private router: Router) {}
 
-    ngOnInit(): void {}
+  constructor(
+    private router: Router
+  ) { }
 
-    navigateToBrowse() {
-        this.router.navigate(["/browse"], {
-            queryParams: { collection: "xpcyber", currPage: 1 },
-        });
-    }
+  ngOnInit(): void {
+  }
+
+  navigateToBrowse() {
+    this.router.navigate(['/browse'], { queryParams: { collection: 'xpcyber', currPage: 1 }});
+  }
+
 }

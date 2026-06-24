@@ -1,268 +1,259 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { LearningObject, User } from "@entity";
-import { ActivatedRoute, Router } from "@angular/router";
-import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
-import { takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
-import { Title } from "@angular/platform-browser";
-import { UserService } from "app/core/user-module/user.service";
-import { RatingService } from "app/core/rating-module/rating.service";
-import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
-import { ModalService } from "app/shared/modules/modals/modal.module";
-import { AuthService } from "app/core/auth-module/auth.service";
-import { ChangelogService } from "app/core/learning-object-module/changelog/changelog.service";
-import { HttpErrorResponse } from "@angular/common/http";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { LearningObject, User } from '@entity';
+import { ActivatedRoute, Router } from '@angular/router';
+import { LearningObjectService } from 'app/core/learning-object-module/learning-object/learning-object.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { Title } from '@angular/platform-browser';
+import { UserService } from 'app/core/user-module/user.service';
+import { RatingService } from 'app/core/rating-module/rating.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { ModalService } from 'app/shared/modules/modals/modal.module';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { ChangelogService } from 'app/core/learning-object-module/changelog/changelog.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { SkipLinkComponent } from '../../shared/components/skip-link/skip-link.component';
+import { NgIf, NgFor, DatePipe } from '@angular/common';
+import { CubePatternComponent } from './components/cube-pattern/cube-pattern.component';
+import { SplashComponent } from './components/splash/splash.component';
+import { DescriptionComponent } from './components/description/description.component';
+import { OutcomeComponent } from './components/outcome/outcome.component';
+import { AcademicLevelCardComponent } from './components/academic-level-card/academic-level-card.component';
+import { MaterialsComponent } from './components/materials/materials.component';
+import { TipDirective } from '../../shared/directives/tip.directive';
+import { ActivateDirective } from '../../shared/directives/activate.directive';
+import { LearningObjectRatingsComponent } from './components/learning-object-ratings/learning-object-ratings.component';
+import { ToggleSwitchComponent } from '../../shared/components/toggle-switch/toggle-switch.component';
+import { ActionPanelComponent } from './components/action-panel/action-panel.component';
+import { AuthorCardComponent } from '../../shared/components/author-card/author-card.component';
+import { VersionCardComponent } from './components/version-card/version-card.component';
+import { PopupComponent } from '../../shared/modules/popups/popup.component';
+import { NewRatingComponent } from './components/new-rating/new-rating.component';
+import { ChangelogModalComponent } from '../../shared/modules/changelogs/changelog-modal/changelog-modal.component';
 
 @Component({
-    selector: "clark-details",
-    templateUrl: "./details.component.html",
-    styleUrls: ["./details.component.scss"],
+    selector: 'clark-details',
+    templateUrl: './details.component.html',
+    styleUrls: ['./details.component.scss'],
+    standalone: true,
+    imports: [
+        SkipLinkComponent,
+        NgIf,
+        CubePatternComponent,
+        SplashComponent,
+        DescriptionComponent,
+        NgFor,
+        OutcomeComponent,
+        AcademicLevelCardComponent,
+        MaterialsComponent,
+        TipDirective,
+        ActivateDirective,
+        LearningObjectRatingsComponent,
+        ToggleSwitchComponent,
+        ActionPanelComponent,
+        AuthorCardComponent,
+        VersionCardComponent,
+        PopupComponent,
+        NewRatingComponent,
+        ChangelogModalComponent,
+        DatePipe,
+    ],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
-    learningObject: LearningObject;
-    private isDestroyed$ = new Subject<void>();
+  learningObject: LearningObject;
+  private isDestroyed$ = new Subject<void>();
 
-    // flags
-    loading: boolean;
+  // flags
+  loading: boolean;
 
-    academicLevelMetadata = [
-        {
-            category: "K-12",
-            academicLevels: {
-                elementary: false,
-                middle: false,
-                high: false,
-            },
-        },
-        {
-            category: "College",
-            academicLevels: {
-                undergraduate: false,
-                graduate: false,
-                "post graduate": false,
-            },
-        },
-        {
-            category: "Corporate",
-            academicLevels: {
-                training: false,
-            },
-        },
-    ];
-
-    loggedin: boolean;
-    learningObjectOwners: string[];
-    averageRatingValue = 0;
-    showAddRating = false;
-    editRating = false;
-    showAddResponse = false;
-
-    // Removed rating type to avoid conflict with the
-    // rating type from the backend
-    ratings: {
-        id?: string;
-        user: {
-            name: string;
-            username: string;
-            email: string;
-        };
-        value: number;
-        comment: string;
-        date: number;
-        source?: {
-            cuid: string;
-            version: number;
-        };
-        response?: object;
-    }[] = [];
-
-    userRating: { value?: number; comment?: string; id?: string } = {};
-
-    openChangelogModal = false;
-    loadingChangelogs: boolean;
-    changelogs = [];
-
-    reviewer: boolean;
-    revisedLearningObject: LearningObject;
-    revisedVersion = false;
-    releasedLearningObject: LearningObject;
-    hasRevision: boolean;
-    version: number;
-    revisedChildren: LearningObject[];
-    releasedChildren: LearningObject[];
-    errorStatus: number;
-    redirectUrl: string;
-
-    authors: User[] = [];
-
-    canAddNewRating = true;
-
-    link: string;
-
-    constructor(
-        private route: ActivatedRoute,
-        private learningObjectService: LearningObjectService,
-        private titleService: Title,
-        private userService: UserService,
-        private ratingService: RatingService,
-        private toastService: ToastrOvenService,
-        public modalService: ModalService,
-        private auth: AuthService,
-        private changelogService: ChangelogService,
-        private router: Router,
-    ) {}
-
-    ngOnInit() {
-        this.authors = [];
-        this.auth.isLoggedIn
-            .pipe(takeUntil(this.isDestroyed$))
-            .subscribe((val) => {
-                this.loggedin = val;
-
-                if (!this.loggedin) {
-                    this.reviewer = false;
-                } else {
-                    this.reviewer = this.auth.hasReviewerAccess();
-                }
-            });
-        this.route.params.subscribe(
-            ({
-                username,
-                cuid,
-                version,
-            }: {
-                username: string;
-                cuid: string;
-                version: number;
-            }) => {
-                this.fetchReleasedLearningObject(username, cuid, version);
-            },
-        );
+  academicLevelMetadata = [
+    {
+      category: 'K-12',
+      academicLevels: {
+        elementary: false,
+        middle: false,
+        high: false,
+      },
+    },
+    {
+      category: 'College',
+      academicLevels: {
+        undergraduate: false,
+        graduate: false,
+        'post graduate': false,
+      },
+    },
+    {
+      category: 'Corporate',
+      academicLevels: {
+        training: false,
+      },
     }
+  ];
 
-    /**
-     * Fetches the released learning object to display first. If the object hasRevisions and the user has reviewer access
-     * the revised copy is also fetched.
-     *
-     * @param author the author of the learning object
-     * @param name the name of the learning object
-     */
-    async fetchReleasedLearningObject(
-        author: string,
-        cuid: string,
-        version: number,
-    ) {
-        this.loading = true;
+  loggedin: boolean;
+  learningObjectOwners: string[];
+  averageRatingValue = 0;
+  showAddRating = false;
+  editRating = false;
+  showAddResponse = false;
 
-        try {
-            this.resetRatings();
-            this.resetAuthors();
+  // Removed rating type to avoid conflict with the
+  // rating type from the backend
+  ratings: {
+    id?: string;
+    user: {
+      name: string;
+      username: string;
+      email: string;
+    };
+    value: number;
+    comment: string;
+    date: number;
+    source?: {
+      cuid: string,
+      version: number,
+    };
+    response?: object;
+  }[] = [];
 
-            const resources = [
-                "children",
-                "parents",
-                "outcomes",
-                "materials",
-                "metrics",
-                "ratings",
-            ];
-            await this.learningObjectService
-                .fetchLearningObjectWithResources(
-                    { author, cuidInfo: { cuid, version } },
-                    resources,
-                )
-                .pipe(takeUntil(this.isDestroyed$))
-                .subscribe(async (object) => {
-                    if (object instanceof LearningObject) {
-                        this.releasedLearningObject = object;
+  userRating: {value?: number, comment?: string, id?: string} = {};
 
-                        // FIXME: This filter should be removed when service logic for filtering children is updated
-                        this.releasedChildren = (
-                            this.releasedLearningObject.children as any[]
-                        ).filter((child) => {
-                            return (
-                                child.status ===
-                                    LearningObject.Status["RELEASED"] ||
-                                child.status ===
-                                    LearningObject.Status["REVIEW"] ||
-                                child.status ===
-                                    LearningObject.Status["PROOFING"] ||
-                                child.status ===
-                                    LearningObject.Status["WAITING"] ||
-                                child.status ===
-                                    LearningObject.Status["ACCEPTED_MINOR"] ||
-                                child.status ===
-                                    LearningObject.Status["ACCEPTED_MAJOR"]
-                            );
-                        });
+  openChangelogModal = false;
+  loadingChangelogs: boolean;
+  changelogs = [];
 
-                        const owners =
-                            this.releasedLearningObject.contributors.map(
-                                (user) => user.username,
-                            );
-                        owners.push(
-                            this.releasedLearningObject.author.username,
-                        );
+  reviewer: boolean;
+  revisedLearningObject: LearningObject;
+  revisedVersion = false;
+  releasedLearningObject: LearningObject;
+  hasRevision: boolean;
+  version: number;
+  revisedChildren: LearningObject[];
+  releasedChildren: LearningObject[];
+  errorStatus: number;
+  redirectUrl: string;
 
-                        this.learningObjectOwners = owners;
-                        this.hasRevision =
-                            !!this.releasedLearningObject.revisionUri;
-                        this.learningObject = this.releasedLearningObject;
-                        // Set page title
-                        this.titleService.setTitle(
-                            "CLARK | " + this.learningObject.name,
-                        );
-                        this.version = this.learningObject.version + 1;
-                        await this.getLearningObjectRatings();
-                        this.setAcademicLevels();
-                        this.setLearningObjectAuthors();
-                        this.loading = false;
-                        if (
-                            this.learningObject.collection === "ncyte" ||
-                            this.learningObject.collection === "xpcyber"
-                        ) {
-                            this.link =
-                                "/collections/" +
-                                this.learningObject.collection;
-                        } else {
-                            this.link = "/c/" + this.learningObject.collection;
-                        }
+  authors: User[] = [];
 
-                        if (this.learningObject.revisionUri) {
-                            this.hasRevision = true;
-                            await this.loadRevisedLearningObject();
-                        } else {
-                            this.revisedLearningObject = null;
-                        }
-                    } else {
-                        if (object instanceof HttpErrorResponse) {
-                            if (object.status === 404) {
-                                this.router.navigate(["not-found"]);
-                            }
-                            if (
-                                object.status === 401 ||
-                                object.status === 403
-                            ) {
-                                this.redirectUrl = window.location.href;
-                                this.router.navigate([
-                                    "unauthorized",
-                                    object.status,
-                                    this.redirectUrl,
-                                ]);
-                            }
-                        }
-                    }
-                });
-            // this.loading.pop();
-        } catch (e) {
-            /**
-             * TODO: change status to 404 when issue #149 is closed
-             * if server error is thrown, navigate to not-found page
-             */
+  canAddNewRating = true;
+
+  link: string;
+
+  constructor(
+    private route: ActivatedRoute,
+    private learningObjectService: LearningObjectService,
+    private titleService: Title,
+    private userService: UserService,
+    private ratingService: RatingService,
+    private toastService: ToastrOvenService,
+    public modalService: ModalService,
+    private auth: AuthService,
+    private changelogService: ChangelogService,
+    private router: Router,
+  ) { }
+
+  ngOnInit() {
+    this.authors = [];
+    this.auth.isLoggedIn.pipe(takeUntil(this.isDestroyed$)).subscribe(val => {
+      this.loggedin = val;
+
+      if (!this.loggedin) {
+        this.reviewer = false;
+      } else {
+        this.reviewer = this.auth.hasReviewerAccess();
+      }
+    });
+    this.route.params.subscribe(({ username, cuid, version }: { username: string, cuid: string, version: number }) => {
+      this.fetchReleasedLearningObject(username, cuid, version);
+    });
+  }
+
+  /**
+   * Fetches the released learning object to display first. If the object hasRevisions and the user has reviewer access
+   * the revised copy is also fetched.
+   *
+   * @param author the author of the learning object
+   * @param name the name of the learning object
+   */
+  async fetchReleasedLearningObject(author: string, cuid: string, version: number) {
+    this.loading = true;
+
+    try {
+      this.resetRatings();
+      this.resetAuthors();
+
+      const resources = ['children', 'parents', 'outcomes', 'materials', 'metrics', 'ratings'];
+      await this.learningObjectService.fetchLearningObjectWithResources(
+        { author, cuidInfo: { cuid, version } }, resources
+      ).pipe(takeUntil(this.isDestroyed$)).subscribe(async (object) => {
+        if (object instanceof LearningObject) {
+          this.releasedLearningObject = object;
+
+          // FIXME: This filter should be removed when service logic for filtering children is updated
+          this.releasedChildren = (this.releasedLearningObject.children as any[]).filter(
+            child => {
+              return child.status === LearningObject.Status['RELEASED'] ||
+                child.status === LearningObject.Status['REVIEW'] ||
+                child.status === LearningObject.Status['PROOFING'] ||
+                child.status === LearningObject.Status['WAITING'] ||
+                child.status === LearningObject.Status['ACCEPTED_MINOR'] ||
+                child.status === LearningObject.Status['ACCEPTED_MAJOR'];
+            }
+          );
+
+          const owners = this.releasedLearningObject.contributors.map(user => user.username);
+          owners.push(this.releasedLearningObject.author.username);
+
+          this.learningObjectOwners = owners;
+          this.hasRevision = !!this.releasedLearningObject.revisionUri;
+          this.learningObject = this.releasedLearningObject;
+          // Set page title
+          this.titleService.setTitle('CLARK | ' + this.learningObject.name);
+          this.version = this.learningObject.version + 1;
+          await this.getLearningObjectRatings();
+          this.setAcademicLevels();
+          this.setLearningObjectAuthors();
+          this.loading = false;
+          if (
+            this.learningObject.collection === 'ncyte' ||
+            this.learningObject.collection === 'xpcyber'
+          ) {
+            this.link = '/collections/' + this.learningObject.collection;
+          } else {
+            this.link = '/c/' + this.learningObject.collection;
+          }
+
+          if (this.learningObject.revisionUri) {
+            this.hasRevision = true;
+            await this.loadRevisedLearningObject();
+          } else {
+            this.revisedLearningObject = null;
+          }
+        } else {
+          if (object instanceof HttpErrorResponse) {
+            if (object.status === 404) {
+              this.router.navigate(['not-found']);
+            }
+            if (object.status === 401 || object.status === 403) {
+              this.redirectUrl = window.location.href;
+              this.router.navigate(['unauthorized', object.status, this.redirectUrl]);
+            }
+          }
         }
-    }
+      });
+      // this.loading.pop();
+    } catch (e) {
 
-    /**
+      /**
+       * TODO: change status to 404 when issue #149 is closed
+       * if server error is thrown, navigate to not-found page
+       */
+
+    }
+  }
+
+  /**
    * Returns a boolean representing whether or not the children component should be displayed
    *
    * true true if:
@@ -272,578 +263,508 @@ export class DetailsComponent implements OnInit, OnDestroy {
    * @readonly
    * @memberof DetailsComponent
    */
-    get showChildren() {
-        return (
-            (!this.revisedVersion &&
-                this.releasedChildren &&
-                this.releasedChildren.length) ||
-            (this.revisedVersion &&
-                this.revisedChildren &&
-                this.revisedChildren.length)
-        );
+  get showChildren() {
+    return (
+      !this.revisedVersion &&
+      this.releasedChildren &&
+      this.releasedChildren.length)
+      ||
+      (
+        this.revisedVersion &&
+        this.revisedChildren &&
+        this.revisedChildren.length);
+  }
+
+  /**
+   * Gets if the relevancy banner should be displayed if the next
+   * check date is within a month before/after the date
+   */
+  get relevancyBannerStatus(): boolean {
+    const startDate = new Date(this.learningObject.nextCheck);
+    startDate.setMonth(startDate.getMonth() - 1);
+    startDate.setHours(0, 0, 0, 0);
+
+    return startDate <= new Date() || new Date() >= this.learningObject.nextCheck;
+  }
+
+  /**
+   * toggles between released and revised copies of a learning object
+   *
+   * @param revised the boolean for if the revised is being viewed
+   */
+  async viewReleased(revised: boolean) {
+    this.revisedVersion = revised;
+
+    if (this.revisedVersion) {
+      // await this.loadRevisedLearningObject();
+      this.learningObject = this.revisedLearningObject;
+    } else {
+      this.learningObject = this.releasedLearningObject;
     }
+  }
 
-    /**
-     * Gets if the relevancy banner should be displayed if the next
-     * check date is within a month before/after the date
-     */
-    get relevancyBannerStatus(): boolean {
-        const startDate = new Date(this.learningObject.nextCheck);
-        startDate.setMonth(startDate.getMonth() - 1);
-        startDate.setHours(0, 0, 0, 0);
+  /**
+   * Loaded a revised copy of the learning object if the hasRevisions flag is true
+   */
+  async loadRevisedLearningObject() {
+    // this.loading.push(1);
+    try {
+      this.resetRatings();
+      this.revisedLearningObject = await this.learningObjectService.fetchUri(this.learningObject.revisionUri, ([o]) => {
+        return new LearningObject(o);
+      }).toPromise();
 
-        return (
-            startDate <= new Date() ||
-            new Date() >= this.learningObject.nextCheck
-        );
+      this.learningObjectService.fetchLearningObjectResources(
+        this.revisedLearningObject,
+        ['children', 'parents', 'outcomes', 'materials', 'ratings']
+      ).subscribe(val => {
+        this.revisedLearningObject[val.name] = val.data;
+      });
+      // FIXME: This filter should be removed when service logic is updated
+      this.revisedChildren = this.revisedLearningObject.children.filter(
+        child => {
+          return child.status === LearningObject.Status['RELEASED'] ||
+            child.status === LearningObject.Status['REVIEW'] ||
+            child.status === LearningObject.Status['PROOFING'] ||
+            child.status === LearningObject.Status['WAITING'] ||
+            child.status === LearningObject.Status['ACCEPTED_MAJOR'] ||
+            child.status === LearningObject.Status['ACCEPTED_MINOR'];
+        }
+      );
+
+      const owners = this.revisedLearningObject.contributors.map(user => user.username);
+      owners.push(this.revisedLearningObject.author.username);
+
+      this.learningObjectOwners = owners;
+      // this.loading.pop();
+    } catch (e) {
+
+      /**
+       * TODO: change status to 404 when issue #149 is closed
+       * if server error is thrown, navigate to not-found page
+       */
+
+      if (e instanceof HttpErrorResponse) {
+        if (e.status === 404) {
+          this.router.navigate(['not-found']);
+        }
+        if (e.status === 401) {
+          let redirectUrl = '';
+          this.route.url.subscribe(segments => {
+            if (segments) {
+              segments.forEach(segment => {
+                redirectUrl = redirectUrl + '/' + segment.path;
+              });
+            }
+          });
+          this.errorStatus = e.status;
+          this.redirectUrl = redirectUrl;
+        }
+      }
+      // this.loading.pop();
     }
+  }
 
-    /**
-     * toggles between released and revised copies of a learning object
-     *
-     * @param revised the boolean for if the revised is being viewed
-     */
-    async viewReleased(revised: boolean) {
-        this.revisedVersion = revised;
+  setLearningObjectAuthors() {
+    if (this.learningObject?.author) {
+      this.authors.push(this.learningObject.author);
+    }
+    this.learningObject.contributors.forEach(contributor => {
+      if (!this.authors.find(author => author.username === contributor.username)) {
+        this.authors.push(contributor);
+      }
+    });
+  }
 
+  resetAuthors() {
+    this.authors = [];
+  }
+
+  setAcademicLevels() {
+    this.learningObject.levels.forEach(level => {
+      this.academicLevelMetadata.forEach(data => {
+        if (data.academicLevels[level] === false) {
+          data.academicLevels[level] = true;
+        }
+      });
+    });
+  }
+
+  getGravatar(user: User) {
+    return this.userService.getGravatarImage(
+      user.email,
+      200,
+    );
+  }
+
+  /**
+   * Closes any open change log modals
+   */
+  closeChangelogsModal() {
+    this.openChangelogModal = false;
+    this.changelogs = undefined;
+  }
+
+  /**
+   * Opens the Change Log modal for a specified learning object and fetches its change logs
+   */
+  async openViewAllChangelogsModal() {
+    if (!this.openChangelogModal) {
+      this.loadingChangelogs = true;
+      try {
         if (this.revisedVersion) {
-            // await this.loadRevisedLearningObject();
-            this.learningObject = this.revisedLearningObject;
-        } else {
-            this.learningObject = this.releasedLearningObject;
-        }
-    }
-
-    /**
-     * Loaded a revised copy of the learning object if the hasRevisions flag is true
-     */
-    async loadRevisedLearningObject() {
-        // this.loading.push(1);
-        try {
-            this.resetRatings();
-            this.revisedLearningObject = await this.learningObjectService
-                .fetchUri(this.learningObject.revisionUri, ([o]) => {
-                    return new LearningObject(o);
-                })
-                .toPromise();
-
-            this.learningObjectService
-                .fetchLearningObjectResources(this.revisedLearningObject, [
-                    "children",
-                    "parents",
-                    "outcomes",
-                    "materials",
-                    "ratings",
-                ])
-                .subscribe((val) => {
-                    this.revisedLearningObject[val.name] = val.data;
-                });
-            // FIXME: This filter should be removed when service logic is updated
-            this.revisedChildren = this.revisedLearningObject.children.filter(
-                (child) => {
-                    return (
-                        child.status === LearningObject.Status["RELEASED"] ||
-                        child.status === LearningObject.Status["REVIEW"] ||
-                        child.status === LearningObject.Status["PROOFING"] ||
-                        child.status === LearningObject.Status["WAITING"] ||
-                        child.status ===
-                            LearningObject.Status["ACCEPTED_MAJOR"] ||
-                        child.status === LearningObject.Status["ACCEPTED_MINOR"]
-                    );
-                },
-            );
-
-            const owners = this.revisedLearningObject.contributors.map(
-                (user) => user.username,
-            );
-            owners.push(this.revisedLearningObject.author.username);
-
-            this.learningObjectOwners = owners;
-            // this.loading.pop();
-        } catch (e) {
-            /**
-             * TODO: change status to 404 when issue #149 is closed
-             * if server error is thrown, navigate to not-found page
-             */
-
-            if (e instanceof HttpErrorResponse) {
-                if (e.status === 404) {
-                    this.router.navigate(["not-found"]);
-                }
-                if (e.status === 401) {
-                    let redirectUrl = "";
-                    this.route.url.subscribe((segments) => {
-                        if (segments) {
-                            segments.forEach((segment) => {
-                                redirectUrl = redirectUrl + "/" + segment.path;
-                            });
-                        }
-                    });
-                    this.errorStatus = e.status;
-                    this.redirectUrl = redirectUrl;
-                }
-            }
-            // this.loading.pop();
-        }
-    }
-
-    setLearningObjectAuthors() {
-        if (this.learningObject?.author) {
-            this.authors.push(this.learningObject.author);
-        }
-        this.learningObject.contributors.forEach((contributor) => {
-            if (
-                !this.authors.find(
-                    (author) => author.username === contributor.username,
-                )
-            ) {
-                this.authors.push(contributor);
-            }
-        });
-    }
-
-    resetAuthors() {
-        this.authors = [];
-    }
-
-    setAcademicLevels() {
-        this.learningObject.levels.forEach((level) => {
-            this.academicLevelMetadata.forEach((data) => {
-                if (data.academicLevels[level] === false) {
-                    data.academicLevels[level] = true;
-                }
-            });
-        });
-    }
-
-    getGravatar(user: User) {
-        return this.userService.getGravatarImage(user.email, 200);
-    }
-
-    /**
-     * Closes any open change log modals
-     */
-    closeChangelogsModal() {
-        this.openChangelogModal = false;
-        this.changelogs = undefined;
-    }
-
-    /**
-     * Opens the Change Log modal for a specified learning object and fetches its change logs
-     */
-    async openViewAllChangelogsModal() {
-        if (!this.openChangelogModal) {
-            this.loadingChangelogs = true;
-            try {
-                if (this.revisedVersion) {
-                    this.changelogs =
-                        await this.changelogService.getAllChangelogs(
-                            this.learningObject.cuid,
-                            false, //minusRevision
-                        );
-                } else {
-                    this.changelogs =
-                        await this.changelogService.getAllChangelogs(
-                            this.learningObject.cuid,
-                            true, //minusRevision
-                        );
-                }
-            } catch (error) {
-                let errorMessage;
-
-                if (error.status === 401) {
-                    // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
-                    this.auth.logout();
-                } else if (error.status !== 404) {
-                    errorMessage = `We encountered an error while attempting to
-          retrieve change logs for this Learning Object. Please try again later.`;
-                    this.toastService.error("Error!", errorMessage);
-                }
-            }
-            this.loadingChangelogs = false;
-            this.openChangelogModal = true;
-        }
-    }
-
-    /**
-     * Determines if a rating is being created or edited and calls appropriate function
-     *
-     * @param rating the rating object to be created
-     */
-    handleRatingSubmission(rating: {
-        value: number;
-        comment: string;
-        editing?: boolean;
-        id?: string;
-    }) {
-        if (!rating.editing) {
-            // creating
-            delete rating.editing;
-            this.createRating(rating);
-        } else {
-            // editing
-            delete rating.editing;
-            this.updateRating(rating);
-        }
-    }
-
-    openAddRatingModal() {
-        if (!this.auth.user.emailVerified) {
-            return;
-        }
-
-        this.editRating = false;
-        this.userRating = {
-            value: undefined,
-            comment: undefined,
-        };
-        this.showAddRating = true;
-    }
-
-    closeAddRatingModal() {
-        this.showAddRating = false;
-        this.editRating = false;
-        this.userRating = {};
-    }
-
-    /**
-     * Creates a new rating
-     *
-     * @param rating the rating to be created
-     */
-    createRating(rating: { value: number; comment: string; id?: string }) {
-        this.ratingService
-            .createRating({
-                CUID: this.learningObject.cuid,
-                version: this.learningObject.version,
-                rating,
-            })
-            .then(
-                () => {
-                    this.getLearningObjectRatings();
-                    this.closeAddRatingModal();
-                    this.toastService.success(
-                        "Success!",
-                        "Review submitted successfully!",
-                    );
-                },
-                (error) => {
-                    this.closeAddRatingModal();
-                    this.toastService.error(
-                        "Error!",
-                        "An error occurred and your rating could not be submitted",
-                    );
-                },
-            );
-        this.canAddNewRating = false;
-    }
-
-    triggerUpdateRating(event: {
-        value: number;
-        comment: string;
-        index: number;
-    }) {
-        // Set the showAddRating to true so that the rating form is displayed
-        this.showAddRating = true;
-
-        // Set the editRating to true so that the form knows to update the rating
-        this.editRating = true;
-
-        // Set the userRating to the rating they want to edit
-        const rating = this.ratings[event.index];
-        this.userRating = {
-            value: event.value,
-            comment: event.comment,
-            id: rating.id,
-        };
-    }
-
-    /**
-     * Edits an existing rating. An id must be supplied.
-     *
-     * @param rating the rating object to be updated
-     */
-    async updateRating(rating: {
-        value: number;
-        comment: string;
-        id?: string;
-    }) {
-        const { value, comment, id } = rating;
-        if (!id) {
-            this.toastService.error(
-                "Error!",
-                "An error occured and your rating could not be updated",
-            );
-            return;
-        }
-
-        this.ratingService
-            .editRating({
-                CUID: this.learningObject.cuid,
-                version: this.learningObject.version,
-                ratingId: id,
-                rating: { value, comment },
-            })
-            .then(
-                () => {
-                    this.getLearningObjectRatings();
-                    this.closeAddRatingModal();
-                    this.toastService.success(
-                        "Success!",
-                        "Rating updated successfully!",
-                    );
-                },
-                (error) => {
-                    this.closeAddRatingModal();
-                    this.toastService.error(
-                        "Error!",
-                        "An error occurred and your rating could not be updated",
-                    );
-                },
-            );
-    }
-
-    /**
-     * Delets a user's rating (user's can only delete their own ratings)
-     *
-     * @param index the index in the array of ratings that represents the rating to be deleted
-     */
-    async deleteRating(index) {
-        // 'index' here is the index in the ratings array to delete
-        this.ratingService
-            .deleteRating({
-                CUID: this.learningObject.cuid,
-                version: this.learningObject.version,
-                ratingId: this.ratings[index].id,
-            })
-            .then((val) => {
-                this.getLearningObjectRatings();
-                this.toastService.success(
-                    "Success!",
-                    "Rating deleted successfully!",
-                );
-            })
-            .catch(() => {
-                this.toastService.error("Error!", "Rating couldn't be deleted");
-            });
-        // Set the user Rating to empty so that if they choose enter a new ratings their old one isn't there
-        this.userRating = {};
-        this.canAddNewRating = true;
-    }
-
-    /**
-     * Submits a report for a rating. Report.index is a number representing the index in the list of ratings where the target rating is stored
-     *
-     * @param report the report to be submitted
-     */
-    reportRating(report: { concern: string; index: number; comment?: string }) {
-        // locate target rating and then delete the index param from the report
-        const ratingId = this.ratings[report.index].id;
-        delete report.index;
-
-        if (ratingId) {
-            this.ratingService
-                .flagLearningObjectRating({
-                    ratingId,
-                    report,
-                })
-                .catch((response) => {
-                    if (response.status === 200) {
-                        this.toastService.success(
-                            "Success!",
-                            "Report submitted successfully!",
-                        );
-                    } else {
-                        this.toastService.error(
-                            "Error!",
-                            "An error occured and your report could not be submitted",
-                        );
-                    }
-                });
-        } else {
-            this.toastService.error(
-                "Error!",
-                "An error occured and your report could not be submitted",
-            );
-        }
-    }
-
-    /**
-     * Submit new rating response
-     *
-     * @param {string} comment
-     * @param {number} index
-     */
-    async submitResponse(response: { comment: string; index: number }) {
-        // locate target rating and then delete the index param from the response
-        const ratingId = this.ratings[response.index].id;
-        delete response.index;
-
-        if (ratingId) {
-            await this.ratingService
-                .createResponse({ ratingId, response })
-                .then(
-                    () => {
-                        this.getLearningObjectRatings();
-                        this.toastService.success(
-                            "Success!",
-                            "Response submitted successfully!",
-                        );
-                    },
-                    (error) => {
-                        this.toastService.error(
-                            "Error!",
-                            "An error occurred and your response could not be submitted " +
-                                error.error.message,
-                        );
-                    },
-                );
-        } else {
-            this.toastService.error(
-                "Error!",
-                "An error occurred and your response could not be submitted",
-            );
-        }
-    }
-
-    /**
-     * Edit an existing rating response
-     *
-     * @param {string} comment
-     * @param {number} index
-     */
-    async editResponse(response: { comment: string; index: number }) {
-        // locate target rating and then delete the index param from the response
-        const ratingId = this.learningObject.ratings.ratings[response.index].id;
-        const responseId = this.ratings[response.index].response[0]._id;
-        if (!ratingId) {
-            this.toastService.error(
-                "Error!",
-                "An error occurred and your response could not be updated",
-            );
-            return;
-        }
-
-        if (ratingId) {
-            await this.ratingService
-                .editResponse({
-                    responseId,
-                    updates: response,
-                })
-                .then(
-                    () => {
-                        this.getLearningObjectRatings();
-                        this.toastService.success(
-                            "Success!",
-                            "Response updated successfully!",
-                        );
-                    },
-                    (error) => {
-                        this.toastService.error(
-                            "Error!",
-                            "An error occurred and your response could not be updated",
-                        );
-                    },
-                );
-        }
-    }
-
-    /**
-     * Delete a rating response
-     *
-     * @param {number} index
-     */
-    async deleteResponse(index: number) {
-        // locate target rating and then delete the index param from the response
-        const responseId = this.ratings[index].response[0]._id;
-        this.ratingService
-            .deleteResponse({
-                responseId,
-            })
-            .then((val) => {
-                this.getLearningObjectRatings();
-                this.toastService.success(
-                    "Success!",
-                    "Response deleted successfully!",
-                );
-            })
-            .catch(() => {
-                this.toastService.error(
-                    "Error!",
-                    "An error occured and your response could not be deleted",
-                );
-            });
-    }
-
-    /**
-     * Retrieves list of learning object ratings from the RatingService.
-     * If the user has a review in that list, it is assigned to the userReview variable.
-     * If the service does not return any ratings, the UI resets to default rating values.
-     */
-    private async getLearningObjectRatings() {
-        const ratings = await this.ratingService.getLearningObjectRatings(
+          this.changelogs = await this.changelogService.getAllChangelogs(
             this.learningObject.cuid,
-            this.learningObject.version,
-        );
-
-        if (!ratings) {
-            this.resetRatings();
-            return;
-        }
-
-        this.ratings = ratings.ratings;
-        this.averageRatingValue = ratings.avgValue;
-
-        const u = this.auth.username;
-        if (this.ratings && this.ratings.length) {
-            for (let i = 0, l = this.ratings.length; i < l; i++) {
-                if (u === this.ratings[i].user.username) {
-                    // this is the user's rating
-                    // we deep copy this to prevent direct modification from component subtree
-                    this.userRating = Object.assign({}, ratings[i]);
-                    // See if the user can add new rating or will have the option to edit their current rating
-                    if (this.userRating) {
-                        this.canAddNewRating = false;
-                    }
-                    return;
-                }
-            }
-        }
-        // if we found the rating, we've returned from the function at this point
-        this.userRating = {};
-    }
-
-    /**
-     * Returns a boolean whether or not the object is the owner's
-     *
-     * @memberof DetailsComponent
-     */
-    get isOwnObject() {
-        if (
-            this.auth.user &&
-            this.learningObjectOwners &&
-            this.learningObjectOwners.includes(this.auth.username)
-        ) {
-            return true;
+            false, //minusRevision
+          );
         } else {
-            return false;
+          this.changelogs = await this.changelogService.getAllChangelogs(
+            this.learningObject.cuid,
+            true, //minusRevision
+          );
         }
+      } catch (error) {
+        let errorMessage;
+
+        if (error.status === 401) {
+          // user isn't logged-in, set client's state to logged-out and reload so that the route guards can redirect to login page
+          this.auth.logout();
+        } else if (error.status !== 404) {
+          errorMessage = `We encountered an error while attempting to
+          retrieve change logs for this Learning Object. Please try again later.`;
+          this.toastService.error('Error!', errorMessage);
+        }
+      }
+      this.loadingChangelogs = false;
+      this.openChangelogModal = true;
+    }
+  }
+
+  /**
+   * Determines if a rating is being created or edited and calls appropriate function
+   *
+   * @param rating the rating object to be created
+   */
+  handleRatingSubmission(rating: {
+    value: number;
+    comment: string;
+    editing?: boolean;
+    id?: string;
+  }) {
+    if (!rating.editing) {
+      // creating
+      delete rating.editing;
+      this.createRating(rating);
+    } else {
+      // editing
+      delete rating.editing;
+      this.updateRating(rating);
+    }
+  }
+
+  openAddRatingModal() {
+    if (!this.auth.user.emailVerified) {
+      return;
     }
 
-    /**
-     * Resets rating related properties to defaults
-     *
-     * @private
-     * @memberof DetailsComponent
-     */
-    private resetRatings() {
-        this.ratings = [];
-        this.averageRatingValue = 0;
-        this.userRating = {};
+    this.editRating = false;
+    this.userRating = {
+      value: undefined,
+      comment: undefined,
+    };
+    this.showAddRating = true;
+  }
+
+  closeAddRatingModal() {
+    this.showAddRating = false;
+    this.editRating = false;
+    this.userRating = {};
+  }
+
+  /**
+   * Creates a new rating
+   *
+   * @param rating the rating to be created
+   */
+  createRating(rating: { value: number; comment: string; id?: string }) {
+    this.ratingService
+      .createRating({
+        CUID: this.learningObject.cuid,
+        version: this.learningObject.version,
+        rating,
+      })
+      .then(
+        () => {
+          this.getLearningObjectRatings();
+          this.closeAddRatingModal();
+          this.toastService.success('Success!', 'Review submitted successfully!');
+        },
+        error => {
+          this.closeAddRatingModal();
+          this.toastService.error('Error!', 'An error occurred and your rating could not be submitted');
+        }
+      );
+    this.canAddNewRating = false;
+  }
+
+  triggerUpdateRating(event: { value: number; comment: string, index: number }) {
+    // Set the showAddRating to true so that the rating form is displayed
+    this.showAddRating = true;
+
+    // Set the editRating to true so that the form knows to update the rating
+    this.editRating = true;
+
+    // Set the userRating to the rating they want to edit
+    const rating = this.ratings[event.index];
+    this.userRating = {
+      value: event.value,
+      comment: event.comment,
+      id: rating.id,
+    };
+  }
+
+  /**
+   * Edits an existing rating. An id must be supplied.
+   *
+   * @param rating the rating object to be updated
+   */
+  async updateRating(rating: {
+    value: number;
+    comment: string;
+    id?: string;
+  }) {
+    const { value, comment, id } = rating;
+    if (!id) {
+      this.toastService.error('Error!', 'An error occured and your rating could not be updated');
+      return;
     }
 
-    ngOnDestroy() {
-        this.isDestroyed$.next();
-        this.isDestroyed$.unsubscribe();
+    this.ratingService
+      .editRating({
+        CUID: this.learningObject.cuid,
+        version: this.learningObject.version,
+        ratingId: id,
+        rating: {value, comment},
+      })
+      .then(
+        () => {
+          this.getLearningObjectRatings();
+          this.closeAddRatingModal();
+          this.toastService.success('Success!', 'Rating updated successfully!');
+        },
+        (error) => {
+          this.closeAddRatingModal();
+          this.toastService.error('Error!', 'An error occurred and your rating could not be updated');
+        }
+      );
+  }
+
+  /**
+   * Delets a user's rating (user's can only delete their own ratings)
+   *
+   * @param index the index in the array of ratings that represents the rating to be deleted
+   */
+  async deleteRating(index) {
+    // 'index' here is the index in the ratings array to delete
+    this.ratingService
+      .deleteRating({
+        CUID: this.learningObject.cuid,
+        version: this.learningObject.version,
+        ratingId: this.ratings[index].id,
+      })
+      .then(val => {
+        this.getLearningObjectRatings();
+        this.toastService.success('Success!', 'Rating deleted successfully!');
+      })
+      .catch(() => {
+        this.toastService.error('Error!', 'Rating couldn\'t be deleted');
+      });
+    // Set the user Rating to empty so that if they choose enter a new ratings their old one isn't there
+    this.userRating = {};
+    this.canAddNewRating = true;
+  }
+
+  /**
+   * Submits a report for a rating. Report.index is a number representing the index in the list of ratings where the target rating is stored
+   *
+   * @param report the report to be submitted
+   */
+  reportRating(report: { concern: string; index: number; comment?: string }) {
+    // locate target rating and then delete the index param from the report
+    const ratingId = this.ratings[report.index].id;
+    delete report.index;
+
+    if (ratingId) {
+      this.ratingService
+        .flagLearningObjectRating({
+          ratingId,
+          report
+        })
+        .catch(response => {
+          if (response.status === 200) {
+            this.toastService.success('Success!', 'Report submitted successfully!');
+          } else {
+            this.toastService.error('Error!', 'An error occured and your report could not be submitted');
+          }
+        });
+    } else {
+      this.toastService.error('Error!', 'An error occured and your report could not be submitted');
     }
+  }
+
+  /**
+   * Submit new rating response
+   *
+   * @param {string} comment
+   * @param {number} index
+   */
+  async submitResponse(response: {
+    comment: string,
+    index: number
+  }) {
+    // locate target rating and then delete the index param from the response
+    const ratingId = this.ratings[response.index].id;
+    delete response.index;
+
+    if (ratingId) {
+      await this.ratingService
+        .createResponse({ratingId, response})
+        .then(
+          () => {
+            this.getLearningObjectRatings();
+            this.toastService.success('Success!', 'Response submitted successfully!');
+          },
+          (error) => {
+            this.toastService.error('Error!', 'An error occurred and your response could not be submitted ' + error.error.message);
+          }
+        );
+    } else {
+      this.toastService.error('Error!', 'An error occurred and your response could not be submitted');
+    }
+  }
+
+  /**
+   * Edit an existing rating response
+   *
+   * @param {string} comment
+   * @param {number} index
+   */
+  async editResponse(response: {
+    comment: string,
+    index: number,
+  }) {
+    // locate target rating and then delete the index param from the response
+    const ratingId = this.learningObject.ratings.ratings[response.index].id;
+    const responseId = this.ratings[response.index].response[0]._id;
+    if (!ratingId) {
+      this.toastService.error('Error!', 'An error occurred and your response could not be updated');
+      return;
+    }
+
+    if (ratingId) {
+      await this.ratingService
+        .editResponse({
+          responseId,
+          updates: response,
+        }).then(
+          () => {
+            this.getLearningObjectRatings();
+            this.toastService.success('Success!', 'Response updated successfully!');
+          },
+          (error) => {
+            this.toastService.error('Error!', 'An error occurred and your response could not be updated');
+          }
+        );
+    }
+  }
+
+  /**
+   * Delete a rating response
+   *
+   * @param {number} index
+   */
+  async deleteResponse(index: number) {
+    // locate target rating and then delete the index param from the response
+    const responseId = this.ratings[index].response[0]._id;
+    this.ratingService
+      .deleteResponse({
+        responseId,
+      })
+      .then(val => {
+        this.getLearningObjectRatings();
+        this.toastService.success('Success!', 'Response deleted successfully!');
+      })
+      .catch(() => {
+        this.toastService.error('Error!', 'An error occured and your response could not be deleted');
+      });
+  }
+
+  /**
+   * Retrieves list of learning object ratings from the RatingService.
+   * If the user has a review in that list, it is assigned to the userReview variable.
+   * If the service does not return any ratings, the UI resets to default rating values.
+   */
+  private async getLearningObjectRatings() {
+      const ratings = await this.ratingService.getLearningObjectRatings(this.learningObject.cuid, this.learningObject.version);
+
+      if (!ratings) {
+        this.resetRatings();
+        return;
+      }
+
+      this.ratings = ratings.ratings;
+      this.averageRatingValue = ratings.avgValue;
+
+      const u = this.auth.username;
+      if (this.ratings && this.ratings.length) {
+        for (let i = 0, l = this.ratings.length; i < l; i++) {
+          if (u === this.ratings[i].user.username) {
+            // this is the user's rating
+            // we deep copy this to prevent direct modification from component subtree
+            this.userRating = Object.assign({}, ratings[i]);
+            // See if the user can add new rating or will have the option to edit their current rating
+            if (this.userRating) {
+              this.canAddNewRating = false;
+            }
+            return;
+          }
+        }
+      }
+      // if we found the rating, we've returned from the function at this point
+      this.userRating = {};
+  };
+
+
+  /**
+   * Returns a boolean whether or not the object is the owner's
+   *
+   * @memberof DetailsComponent
+   */
+  get isOwnObject() {
+    if (
+      this.auth.user && this.learningObjectOwners &&
+      this.learningObjectOwners.includes(this.auth.username)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Resets rating related properties to defaults
+   *
+   * @private
+   * @memberof DetailsComponent
+   */
+  private resetRatings() {
+    this.ratings = [];
+    this.averageRatingValue = 0;
+    this.userRating = {};
+  }
+
+  ngOnDestroy() {
+    this.isDestroyed$.next();
+    this.isDestroyed$.unsubscribe();
+  }
 }

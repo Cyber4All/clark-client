@@ -1,178 +1,160 @@
-import { Component, OnInit, OnDestroy, HostListener } from "@angular/core";
-import { NavbarService } from "app/core/client-module/navbar.service";
-import { Subject } from "rxjs";
-import { ActivatedRoute, Router, NavigationEnd } from "@angular/router";
-import {
-    takeUntil,
-    skipWhile,
-    take,
-    filter,
-    map,
-    switchMap,
-} from "rxjs/operators";
-import { AuthService } from "app/core/auth-module/auth.service";
-import {
-    CollectionService,
-    Collection,
-} from "app/core/collection-module/collections.service";
-import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
-import { UtilityService } from "app/core/utility-module/utility.service";
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { NavbarService } from 'app/core/client-module/navbar.service';
+import { Subject } from 'rxjs';
+import { ActivatedRoute, Router, NavigationEnd, RouterOutlet, RouterLink } from '@angular/router';
+import { takeUntil, skipWhile, take, filter, map, switchMap } from 'rxjs/operators';
+import { AuthService } from 'app/core/auth-module/auth.service';
+import { CollectionService, Collection } from 'app/core/collection-module/collections.service';
+import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
+import { UtilityService } from 'app/core/utility-module/utility.service';
+import { NgIf, NgClass } from '@angular/common';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatIcon } from '@angular/material/icon';
+
 
 @Component({
-    selector: "clark-admin",
-    templateUrl: "./admin.component.html",
-    styleUrls: ["./admin.component.scss"],
+    selector: 'clark-admin',
+    templateUrl: './admin.component.html',
+    styleUrls: ['./admin.component.scss'],
+    standalone: true,
+    imports: [NgIf, SidebarComponent, MatIconButton, MatMenuTrigger, MatIcon, NgClass, RouterOutlet, MatMenu, MatMenuItem, RouterLink]
 })
 export class AdminComponent implements OnInit, OnDestroy {
-    destroyed$: Subject<void> = new Subject();
+  destroyed$: Subject<void> = new Subject();
 
-    authorizedCollections: Collection[] = [];
-    activeCollection: string;
+  authorizedCollections: Collection[] = [];
+  activeCollection: string;
 
-    editorMode: boolean;
+  editorMode: boolean;
 
-    canScroll = true;
+  canScroll = true;
 
-    collectionsLoaded: boolean;
+  collectionsLoaded: boolean;
 
-    topAdjustment: number;
-    isTabletView = false;
+  topAdjustment: number;
+  isTabletView = false;
 
-    constructor(
-        private navbarService: NavbarService,
-        private route: ActivatedRoute,
-        private router: Router,
-        public authService: AuthService,
-        private collectionService: CollectionService,
-        public toaster: ToastrOvenService,
-        private utilityServicce: UtilityService,
-    ) {}
+  constructor(
+    private navbarService: NavbarService,
+    private route: ActivatedRoute,
+    private router: Router,
+    public authService: AuthService,
+    private collectionService: CollectionService,
+    public toaster: ToastrOvenService,
+    private utilityServicce: UtilityService
+  ) { }
 
-    async ngOnInit() {
-        this.updateViewportMode();
-        // hide CLARK navbar
-        this.navbarService.hide();
+  async ngOnInit() {
+    this.updateViewportMode();
+    // hide CLARK navbar
+    this.navbarService.hide();
 
-        try {
-            if (!!(await this.utilityServicce.getDowntime()).message) {
-                // the message banner is down, adjust UI to account for it
-                setTimeout(() => {
-                    this.topAdjustment = document
-                        .querySelector("clark-message .wrapper")
-                        .getBoundingClientRect().height;
-                });
-            }
-        } catch (err) {
-            console.error(err);
-        }
-
-        // set the can scroll value to determine whether or not we add 30px of padding to the bottom of the content wrapper
-        const canScroll = this.route.snapshot.firstChild.data.canScroll;
-        this.canScroll = typeof canScroll === "boolean" ? canScroll : true;
-
-        // listen for route changes to perform the same check above
-        this.router.events
-            .pipe(
-                filter((event) => event instanceof NavigationEnd),
-                map(() => this.route),
-                map((route) => route.firstChild),
-                switchMap((route) => route.data),
-            )
-            .subscribe((data) => {
-                this.canScroll =
-                    typeof data.canScroll === "boolean" ? data.canScroll : true;
-            });
-
-        if (this.authService.hasEditorAccess()) {
-            this.editorMode = true;
-            // we don't need to load collections, so we can set that initialization block to true
-            this.collectionsLoaded = true;
-        } else {
-            // this user isn't an admin/editor so fetch the route parameter representing the selected collection
-            this.route.paramMap
-                .pipe(takeUntil(this.destroyed$))
-                .subscribe((params) => {
-                    // we don't need to authorize here since that's done in the route guard
-                    this.activeCollection = params.get("collection");
-                });
-
-            // wait for user to be logged in (edge case: slow connections can cause the application to
-            // temporarily load in an unauthenticated state) and then fetch list of curated collections
-            this.retrieveAuthorizedCollectionsAfterLogin()
-                .then(() => {
-                    // collections array is now set and we should redirect to the first collection
-                    if (!this.activeCollection) {
-                        this.router.navigate(
-                            [this.authorizedCollections[0].abvName],
-                            { relativeTo: this.route },
-                        );
-                    }
-                })
-                .catch((error) => {
-                    this.toaster.error(
-                        "Error!",
-                        "There was an error retrieving collections. Please try again later.",
-                    );
-                });
-        }
-    }
-
-    /**
-     * Wait for the login event to fire to ensure an authenticated state and then call the retrieveAuthorizedCollections function
-     *
-     * @returns
-     * @memberof AdminComponent
-     */
-    async retrieveAuthorizedCollectionsAfterLogin() {
-        return await this.authService.isLoggedIn
-            .pipe(
-                skipWhile((x) => x === false),
-                take(1),
-            )
-            .toPromise()
-            .then(async () => {
-                await this.retrieveAuthorizedCollections();
-            });
-    }
-
-    /**
-     * Retrieve a list of collection names for which the user is authorized to view (has curator status for)
-     *
-     * @memberof AdminComponent
-     */
-    async retrieveAuthorizedCollections() {
-        // we're sure the user is logged in here and so access groups should be defined
-        return await Promise.all(
-            this.authService.user.accessGroups
-                .filter((group) => group.includes("curator@"))
-                .map((group) =>
-                    this.collectionService
-                        .getCollection(group.split("@")[1])
-                        .then((c) => this.authorizedCollections.push(c)),
-                ),
-        ).then(() => {
-            // remove the initialization block
-            this.collectionsLoaded = true;
+    try {
+      if (!!(await this.utilityServicce.getDowntime()).message) {
+        // the message banner is down, adjust UI to account for it
+        setTimeout(() => {
+          this.topAdjustment = document.querySelector('clark-message .wrapper').getBoundingClientRect().height;
         });
+      }
+    } catch (err) {
+      console.error(err);
     }
 
-    ngOnDestroy() {
-        this.navbarService.show();
-    }
+    // set the can scroll value to determine whether or not we add 30px of padding to the bottom of the content wrapper
+    const canScroll = this.route.snapshot.firstChild.data.canScroll;
+    this.canScroll = typeof canScroll === 'boolean' ? canScroll : true;
 
-    @HostListener("window:resize")
-    onResize() {
-        this.updateViewportMode();
-    }
+    // listen for route changes to perform the same check above
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(() => this.route),
+      map(route => route.firstChild),
+      switchMap(route => route.data),
+    ).subscribe(data => {
+      this.canScroll = typeof data.canScroll === 'boolean' ? data.canScroll : true;
+    });
 
-    updateViewportMode() {
-        this.isTabletView = window.innerWidth <= 1024;
-    }
+    if (this.authService.hasEditorAccess()) {
+      this.editorMode = true;
+      // we don't need to load collections, so we can set that initialization block to true
+      this.collectionsLoaded = true;
+    } else {
+      // this user isn't an admin/editor so fetch the route parameter representing the selected collection
+      this.route.paramMap
+        .pipe(takeUntil(this.destroyed$))
+        .subscribe(params => {
+          // we don't need to authorize here since that's done in the route guard
+          this.activeCollection = params.get('collection');
+        });
 
-    getAdminBaseUrl(): string {
-        if (!this.editorMode && this.activeCollection) {
-            return `/admin/${this.activeCollection}`;
+      // wait for user to be logged in (edge case: slow connections can cause the application to
+      // temporarily load in an unauthenticated state) and then fetch list of curated collections
+      this.retrieveAuthorizedCollectionsAfterLogin().then(() => {
+        // collections array is now set and we should redirect to the first collection
+        if (!this.activeCollection) {
+          this.router.navigate([this.authorizedCollections[0].abvName], { relativeTo: this.route });
         }
-        return "/admin";
+      }).catch(error => {
+        this.toaster.error('Error!', 'There was an error retrieving collections. Please try again later.');
+      });
     }
+  }
+
+  /**
+   * Wait for the login event to fire to ensure an authenticated state and then call the retrieveAuthorizedCollections function
+   *
+   * @returns
+   * @memberof AdminComponent
+   */
+  async retrieveAuthorizedCollectionsAfterLogin() {
+    return await this.authService.isLoggedIn.pipe(
+      skipWhile(x => x === false),
+      take(1)
+    )
+      .toPromise()
+      .then(async () => {
+        await this.retrieveAuthorizedCollections();
+      });
+  }
+
+  /**
+   * Retrieve a list of collection names for which the user is authorized to view (has curator status for)
+   *
+   * @memberof AdminComponent
+   */
+  async retrieveAuthorizedCollections() {
+    // we're sure the user is logged in here and so access groups should be defined
+    return await Promise.all(
+      this.authService.user.accessGroups
+        .filter(group => group.includes('curator@'))
+        .map(group =>
+          this.collectionService.getCollection(group.split('@')[1]).then(c => this.authorizedCollections.push(c))
+        ))
+      .then(() => {
+        // remove the initialization block
+        this.collectionsLoaded = true;
+      });
+  }
+
+  ngOnDestroy() {
+    this.navbarService.show();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.updateViewportMode();
+  }
+
+  updateViewportMode() {
+    this.isTabletView = window.innerWidth <= 1024;
+  }
+
+  getAdminBaseUrl(): string {
+    if (!this.editorMode && this.activeCollection) {
+      return `/admin/${this.activeCollection}`;
+    }
+    return '/admin';
+  }
 }

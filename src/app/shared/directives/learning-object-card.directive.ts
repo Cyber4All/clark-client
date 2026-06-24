@@ -1,10 +1,13 @@
-import { Directive, Renderer2, ElementRef } from "@angular/core";
+import { Directive, Renderer2, ElementRef } from '@angular/core';
 
 @Directive({
-    selector: "[learningObjectCard]",
+    selector: '[learningObjectCard]',
+    standalone: true
 })
 export class LearningObjectCardDirective {
-    constructor(renderer: Renderer2, hostElement: ElementRef) {
-        renderer.addClass(hostElement.nativeElement, "card");
-    }
+
+  constructor(renderer: Renderer2, hostElement: ElementRef) {
+    renderer.addClass(hostElement.nativeElement, 'card');
+  }
+
 }

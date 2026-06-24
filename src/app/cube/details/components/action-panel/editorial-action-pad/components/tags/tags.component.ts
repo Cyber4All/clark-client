@@ -1,94 +1,85 @@
-import {
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    OnDestroy,
-    OnInit,
-    ViewChild,
-} from "@angular/core";
-import { TagsService } from "app/core/learning-object-module/tags/tags.service";
-import { TaggingService } from "../../services/tagging.service";
-import { Tag } from "@entity";
-import { Subject } from "rxjs";
-import { debounceTime, distinctUntilChanged, takeUntil } from "rxjs/operators";
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { TagsService } from 'app/core/learning-object-module/tags/tags.service';
+import { TaggingService } from '../../services/tagging.service';
+import { Tag } from '@entity';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-    selector: "clark-tagging",
-    templateUrl: "./tags.component.html",
-    styleUrls: ["./tags.component.scss"],
+    selector: 'clark-tagging',
+    templateUrl: './tags.component.html',
+    styleUrls: ['./tags.component.scss'],
+    standalone: true,
+    imports: [FormsModule, NgIf, NgFor]
 })
 export class TagsComponent implements OnInit, OnDestroy {
-    tags: Tag[];
-    selectedTags: Tag[];
-    query: string;
+  tags: Tag[];
+  selectedTags: Tag[];
+  query: string;
 
-    types: { [key: string]: boolean }[] = [];
-    selectedTypes: { [key: string]: boolean } = {};
+  types: { [key: string]: boolean }[] = [];
+  selectedTypes: { [key: string]: boolean } = {};
 
-    private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-    @ViewChild("searchInput") searchInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('searchInput') searchInput!: ElementRef<HTMLInputElement>;
 
-    constructor(
-        private tagsService: TagsService,
-        private taggingService: TaggingService,
-        private cdr: ChangeDetectorRef,
-    ) {}
 
-    async ngOnInit(): Promise<void> {
-        // Subscribe to the source arrays
-        this.taggingService.tags$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((items: any) => {
-                this.tags = items;
-            });
+  constructor(
+    private tagsService: TagsService,
+    private taggingService: TaggingService,
+    private cdr: ChangeDetectorRef
+  ) {
+  }
 
-        this.taggingService.selectedTags$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((selected: any) => {
-                this.selectedTags = selected;
-            });
+  async ngOnInit(): Promise<void> {
+    // Subscribe to the source arrays
+    this.taggingService.tags$.pipe(takeUntil(this.destroy$)).subscribe((items: any) => {
+      this.tags = items;
+    });
 
-        this.types = await this.tagsService.getTypes();
-        this.types.forEach((type: any) => {
-            this.selectedTypes[type.value] = false;
-        });
-        this.cdr.detectChanges();
-    }
+    this.taggingService.selectedTags$.pipe(takeUntil(this.destroy$)).subscribe((selected: any) => {
+      this.selectedTags = selected;
+    });
 
-    // Toggle item selection of tags
-    toggleTags(item: any): void {
-        this.taggingService.toggleItemInArray("tags", item);
-    }
+    this.types = await this.tagsService.getTypes();
+    this.types.forEach((type: any) => {
+      this.selectedTypes[type.value] = false;
+    });
+    this.cdr.detectChanges();
+  }
 
-    async search(): Promise<void> {
-        const tags = await this.tagsService.getTags({ text: this.query });
-        this.taggingService.setSourceArray("tags", tags);
-    }
+  // Toggle item selection of tags
+  toggleTags(item: any): void {
+    this.taggingService.toggleItemInArray('tags', item);
+  }
 
-    async filter(val: string): Promise<void> {
-        this.selectedTypes[val] = !this.selectedTypes[val];
-        const keys = Object.keys(this.selectedTypes).filter(
-            (key) => this.selectedTypes[key] === true,
-        );
-        const tags = await this.tagsService.getTags({
-            text: this.query,
-            type: keys,
-        });
-        this.taggingService.setSourceArray("tags", tags);
-        this.cdr.detectChanges();
-    }
+  async search(): Promise<void> {
+    const tags = await this.tagsService.getTags({ text: this.query});
+    this.taggingService.setSourceArray('tags', tags);
+  }
 
-    selected(item: Tag) {
-        return this.selectedTags.some((tag) => tag._id === item._id);
-    }
+  async filter(val: string): Promise<void> {
+    this.selectedTypes[val] = !this.selectedTypes[val];
+    const keys = Object.keys(this.selectedTypes).filter(key => this.selectedTypes[key] === true);
+    const tags = await this.tagsService.getTags({ text: this.query, type: keys });
+    this.taggingService.setSourceArray('tags', tags);
+    this.cdr.detectChanges();
+  }
 
-    focusInput() {
-        this.searchInput.nativeElement.focus();
-    }
+  selected(item: Tag) {
+    return this.selectedTags.some(tag => tag._id === item._id);
+  }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
+  focusInput() {
+    this.searchInput.nativeElement.focus();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
 }

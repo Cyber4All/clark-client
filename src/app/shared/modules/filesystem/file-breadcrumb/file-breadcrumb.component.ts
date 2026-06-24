@@ -1,30 +1,34 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgClass, NgFor } from '@angular/common';
+import { ActivateDirective } from '../../../directives/activate.directive';
 
 @Component({
-    selector: "clark-file-breadcrumb",
-    templateUrl: "file-breadcrumb.component.html",
-    styleUrls: ["file-breadcrumb.component.scss"],
+    selector: 'clark-file-breadcrumb',
+    templateUrl: 'file-breadcrumb.component.html',
+    styleUrls: ['file-breadcrumb.component.scss'],
+    standalone: true,
+    imports: [NgClass, ActivateDirective, NgFor]
 })
 export class FileBreadcrumbComponent implements OnInit {
-    @Input()
-    paths: string[] = [];
+  @Input()
+  paths: string[] = [];
 
-    @Output() pathChanged: EventEmitter<string[]> = new EventEmitter();
+  @Output() pathChanged: EventEmitter<string[]> = new EventEmitter();
 
-    constructor() {}
+  constructor() {}
 
-    ngOnInit(): void {}
+  ngOnInit(): void {}
 
-    jumpTo(index: number, root?: boolean) {
-        let path;
-        if (root) {
-            path = [];
-        } else {
-            path = this.paths.slice(0, index + 1);
-        }
-        if (JSON.stringify(path) !== JSON.stringify(this.paths)) {
-            this.paths = path;
-            this.pathChanged.emit(this.paths);
-        }
+  jumpTo(index: number, root?: boolean) {
+    let path;
+    if (root) {
+      path = [];
+    } else {
+      path = this.paths.slice(0, index + 1);
     }
+    if (JSON.stringify(path) !== JSON.stringify(this.paths)) {
+      this.paths = path;
+      this.pathChanged.emit(this.paths);
+    }
+  }
 }

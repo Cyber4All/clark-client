@@ -1,114 +1,127 @@
-import { Component, OnInit, EventEmitter, Input, Output } from "@angular/core";
-import { levels } from "@cyber4all/clark-taxonomy";
-import { LearningOutcome } from "@entity";
 import {
-    trigger,
-    transition,
-    style,
-    animate,
-    state,
-} from "@angular/animations";
-import { LearningObjectValidator } from "../../validators/learning-object.validator";
-import { LearningOutcomeValidator } from "../../validators/learning-outcome.validator";
+  Component,
+  OnInit,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
+import { levels } from '@cyber4all/clark-taxonomy';
+import { LearningOutcome } from '@entity';
+import {
+  trigger,
+  transition,
+  style,
+  animate,
+  state
+} from '@angular/animations';
+import { LearningObjectValidator } from '../../validators/learning-object.validator';
+import { LearningOutcomeValidator } from '../../validators/learning-outcome.validator';
+import { NgClass, NgStyle, NgIf, NgFor, TitleCasePipe } from '@angular/common';
+import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import { OutcomeTypeaheadComponent } from './outcome-typeahead/outcome-typeahead.component';
+import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
 
 @Component({
-    selector: "clark-outcome",
-    templateUrl: "./outcome.component.html",
-    styleUrls: ["./outcome.component.scss"],
+    selector: 'clark-outcome',
+    templateUrl: './outcome.component.html',
+    styleUrls: ['./outcome.component.scss'],
     animations: [
-        trigger("outcome", [
-            state("open", style({ height: "*", opacity: 1 })),
-            state("closed", style({ height: "80px", opacity: 1 })),
-            transition("* <=> *", animate("350ms ease")),
-        ]),
+        trigger('outcome', [
+            state('open', style({ height: '*', opacity: 1 })),
+            state('closed', style({ height: '80px', opacity: 1 })),
+            transition('* <=> *', animate('350ms ease'))
+        ])
     ],
+    standalone: true,
+    imports: [NgClass, NgStyle, NgIf, TipDirective, ActivateDirective, NgFor, OutcomeTypeaheadComponent, PopupComponent, TitleCasePipe]
 })
 export class OutcomeComponent implements OnInit {
-    hiddenOverflow = true;
+  hiddenOverflow = true;
 
-    @Input()
-    outcome: LearningOutcome;
-    @Input()
-    totalOutcomes: number;
-    @Input()
-    active: boolean;
+  @Input()
+  outcome: LearningOutcome;
+  @Input()
+  totalOutcomes: number;
+  @Input()
+  active: boolean;
 
-    noAnimation = true;
+  noAnimation = true;
 
-    @Output()
-    unmap: EventEmitter<{
-        standardOutcome: LearningOutcome;
-        value: boolean;
-    }> = new EventEmitter();
+  @Output()
+  unmap: EventEmitter<{
+    standardOutcome: LearningOutcome;
+    value: boolean;
+  }> = new EventEmitter();
 
-    showDeleteConfirm = false;
+  showDeleteConfirm = false;
 
-    outcomeLevels = Array.from(levels.values());
+  outcomeLevels = Array.from(levels.values());
 
-    // this value keeps track of the index of newly created outcomes, it will be incorrect when loading existing outcomes
-    outcomeNumber = 1;
+  // this value keeps track of the index of newly created outcomes, it will be incorrect when loading existing outcomes
+  outcomeNumber = 1;
 
-    @Output()
-    selectedVerb: EventEmitter<string> = new EventEmitter();
-    @Output()
-    selectedLevel: EventEmitter<string> = new EventEmitter();
-    @Output()
-    textChanged: EventEmitter<string> = new EventEmitter();
-    @Output()
-    deleted: EventEmitter<void> = new EventEmitter();
+  @Output()
+  selectedVerb: EventEmitter<string> = new EventEmitter();
+  @Output()
+  selectedLevel: EventEmitter<string> = new EventEmitter();
+  @Output()
+  textChanged: EventEmitter<string> = new EventEmitter();
+  @Output()
+  deleted: EventEmitter<void> = new EventEmitter();
 
-    constructor(
-        public validator: LearningObjectValidator,
-        public outcomeValidator: LearningOutcomeValidator,
-    ) {}
+  constructor(
+    public validator: LearningObjectValidator,
+    public outcomeValidator: LearningOutcomeValidator
+  ) {}
 
-    ngOnInit() {
-        // set the outcomeNumber to however many outcomes are currently in the outcomes array
-        this.outcomeNumber = this.totalOutcomes;
+  ngOnInit() {
+    // set the outcomeNumber to however many outcomes are currently in the outcomes array
+    this.outcomeNumber = this.totalOutcomes;
+  }
+
+  /**
+   * By default, the overflow should be set to hidden, but when
+   * the dropdown button containing all the verbs is clicked, overflow should be set to visible
+   * The overflow value is changed using ngStyle
+   *
+   * @param visibleOverflow
+   */
+  setOverflow(visibleOverflow) {
+    if (visibleOverflow) {
+      // set overflow to visible when the dropdown menu is clicked
+      this.hiddenOverflow = false;
+    } else {
+      // set overflow to hidden by default
+      this.hiddenOverflow = true;
     }
+  }
 
-    /**
-     * By default, the overflow should be set to hidden, but when
-     * the dropdown button containing all the verbs is clicked, overflow should be set to visible
-     * The overflow value is changed using ngStyle
-     *
-     * @param visibleOverflow
-     */
-    setOverflow(visibleOverflow) {
-        if (visibleOverflow) {
-            // set overflow to visible when the dropdown menu is clicked
-            this.hiddenOverflow = false;
-        } else {
-            // set overflow to hidden by default
-            this.hiddenOverflow = true;
-        }
+  emitVerb(val) {
+    this.selectedVerb.emit(val);
+    if (val === undefined) {
+      // Update verb for typeahead
+      this.outcome.verb = '';
     }
+  }
 
-    emitVerb(val) {
-        this.selectedVerb.emit(val);
-        if (val === undefined) {
-            // Update verb for typeahead
-            this.outcome.verb = "";
-        }
+  emitLevel(val) {
+    this.selectedLevel.emit(val);
+    if (val === undefined) {
+      // Update bloom for typeahead
+      this.outcome.bloom = '';
     }
+  }
 
-    emitLevel(val) {
-        this.selectedLevel.emit(val);
-        if (val === undefined) {
-            // Update bloom for typeahead
-            this.outcome.bloom = "";
-        }
-    }
+  emitText(val) {
+    this.textChanged.emit(val);
+  }
 
-    emitText(val) {
-        this.textChanged.emit(val);
-    }
+  emitDeletion() {
+    this.deleted.emit();
+  }
 
-    emitDeletion() {
-        this.deleted.emit();
-    }
-
-    removeMapping(standardOutcome: LearningOutcome) {
-        this.unmap.emit({ standardOutcome, value: false });
-    }
+  removeMapping(standardOutcome: LearningOutcome) {
+    this.unmap.emit({ standardOutcome, value: false });
+  }
 }

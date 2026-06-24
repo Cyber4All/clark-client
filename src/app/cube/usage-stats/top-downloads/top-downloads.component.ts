@@ -1,15 +1,21 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { LearningObject } from "entity/learning-object/learning-object";
+import { Component, OnInit, Input } from '@angular/core';
+import { LearningObject } from 'entity/learning-object/learning-object';
+import { NgIf, NgFor, NgClass, TitleCasePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: "clark-top-downloads",
-    templateUrl: "./top-downloads.component.html",
-    styleUrls: ["./top-downloads.component.scss"],
+    selector: 'clark-top-downloads',
+    templateUrl: './top-downloads.component.html',
+    styleUrls: ['./top-downloads.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor, NgClass, RouterLink, TitleCasePipe]
 })
 export class TopDownloadsComponent implements OnInit {
-    @Input() learningObjects: LearningObject[];
-    @Input() loading: boolean;
-    constructor() {}
+  @Input() learningObjects: LearningObject[];
+  @Input() loading: boolean;
+  constructor() { }
 
-    ngOnInit(): void {}
+  ngOnInit(): void {
+  }
+
 }

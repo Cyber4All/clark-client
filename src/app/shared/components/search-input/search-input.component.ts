@@ -1,63 +1,58 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    Output,
-    SimpleChanges,
-} from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    selector: "clark-search-input",
-    templateUrl: "./search-input.component.html",
-    styleUrls: ["./search-input.component.scss"],
+    selector: 'clark-search-input',
+    templateUrl: './search-input.component.html',
+    styleUrls: ['./search-input.component.scss'],
+    standalone: true,
+    imports: [MatIcon],
 })
 export class SearchInputComponent implements OnChanges, OnDestroy {
-    @Input() placeholder = "Search";
-    @Input() ariaLabel = "";
-    @Input() width = "260px";
-    @Input() fullWidth = false;
-    @Input() value = "";
-    @Input() debounceMs = 0;
+  @Input() placeholder = 'Search';
+  @Input() ariaLabel = '';
+  @Input() width = '260px';
+  @Input() fullWidth = false;
+  @Input() value = '';
+  @Input() debounceMs = 0;
 
-    @Output() userInput: EventEmitter<string> = new EventEmitter<string>();
+  @Output() userInput: EventEmitter<string> = new EventEmitter<string>();
 
-    currentValue = "";
-    private debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  currentValue = '';
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.placeholder && !this.ariaLabel) {
-            this.ariaLabel = this.placeholder;
-        }
-
-        if (changes.value) {
-            this.currentValue = this.value || "";
-        }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.placeholder && !this.ariaLabel) {
+      this.ariaLabel = this.placeholder;
     }
 
-    ngOnDestroy(): void {
-        if (this.debounceTimer) {
-            clearTimeout(this.debounceTimer);
-            this.debounceTimer = null;
-        }
+    if (changes.value) {
+      this.currentValue = this.value || '';
     }
+  }
 
-    onInputChange(event: Event): void {
-        const target = event.target as HTMLInputElement;
-        this.currentValue = target.value;
+  ngOnDestroy(): void {
+    if (this.debounceTimer) {
+      clearTimeout(this.debounceTimer);
+      this.debounceTimer = null;
+    }
+  }
 
-        if (this.debounceMs > 0) {
-            if (this.debounceTimer) {
-                clearTimeout(this.debounceTimer);
-            }
+  onInputChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    this.currentValue = target.value;
 
-            this.debounceTimer = setTimeout(() => {
-                this.userInput.emit(this.currentValue);
-            }, this.debounceMs);
-            return;
-        }
+    if (this.debounceMs > 0) {
+      if (this.debounceTimer) {
+        clearTimeout(this.debounceTimer);
+      }
 
+      this.debounceTimer = setTimeout(() => {
         this.userInput.emit(this.currentValue);
+      }, this.debounceMs);
+      return;
     }
+
+    this.userInput.emit(this.currentValue);
+  }
 }

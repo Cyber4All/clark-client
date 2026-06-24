@@ -1,68 +1,69 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import {
-    Collection,
-    CollectionService,
-} from "app/core/collection-module/collections.service";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Collection, CollectionService } from 'app/core/collection-module/collections.service';
+import { NgIf, NgFor, NgClass, NgStyle } from '@angular/common';
+import { TipDirective } from '../../directives/tip.directive';
+import { ActivateDirective } from '../../directives/activate.directive';
+import { GenericCollectionLogoComponent } from '../generic-collection-logo/generic-collection-logo.component';
 
 @Component({
-    selector: "clark-collections-grid",
-    templateUrl: "./collections-grid.component.html",
-    styleUrls: ["./collections-grid.component.scss"],
+    selector: 'clark-collections-grid',
+    templateUrl: './collections-grid.component.html',
+    styleUrls: ['./collections-grid.component.scss'],
+    standalone: true,
+    imports: [NgIf, NgFor, TipDirective, NgClass, ActivateDirective, NgStyle, GenericCollectionLogoComponent]
 })
 export class CollectionsGridComponent implements OnInit {
-    // list of collections from service
-    @Input() collections: Collection[];
 
-    // highlights collection if one is already present
-    @Input() currentCollection: string;
+  // list of collections from service
+  @Input() collections: Collection[];
 
-    // collections that cannot be selected
-    @Input() preselect: string[];
+  // highlights collection if one is already present
+  @Input() currentCollection: string;
 
-    // a string that defines why a user can't select any collections defined in the preselect input
-    @Input() preselectReason: string;
+  // collections that cannot be selected
+  @Input() preselect: string[];
 
-    // fires when the user selects a collection
-    @Output() selected: EventEmitter<string> = new EventEmitter();
+  // a string that defines why a user can't select any collections defined in the preselect input
+  @Input() preselectReason: string;
 
-    // flags
-    loading = false;
-    licenseAccepted = false;
+  // fires when the user selects a collection
+  @Output() selected: EventEmitter<string> = new EventEmitter();
 
-    constructor(private collectionService: CollectionService) {}
+  // flags
+  loading = false;
+  licenseAccepted = false;
 
-    async ngOnInit() {
-        // if no collections list was passed through component input, fetch them here
-        if (!this.collections) {
-            this.collections = await this.loadCollections();
-        }
+  constructor(private collectionService: CollectionService) { }
+
+  async ngOnInit() {
+    // if no collections list was passed through component input, fetch them here
+    if (!this.collections) {
+      this.collections = await this.loadCollections();
     }
+  }
 
-    /**
-     * Load a list of collections
-     *
-     * @return {Promise<Collection[]>} list of collections from service
-     */
-    async loadCollections(): Promise<Collection[]> {
-        this.loading = true;
-        return this.collectionService
-            .getCollections()
-            .then((val) => {
-                this.loading = false;
-                return val;
-            })
-            .catch((error) => {
-                this.loading = false;
-                return [];
-            });
-    }
+  /**
+   * Load a list of collections
+   *
+   * @return {Promise<Collection[]>} list of collections from service
+   */
+  async loadCollections(): Promise<Collection[]> {
+    this.loading = true;
+    return  this.collectionService.getCollections().then(val => {
+      this.loading = false;
+      return val;
+    }).catch(error => {
+      this.loading = false;
+      return [];
+    });
+  }
 
-    select(collection: string) {
-        this.currentCollection = collection;
-        this.selected.emit(collection);
-    }
+  select(collection: string) {
+    this.currentCollection = collection;
+    this.selected.emit(collection);
+  }
 
-    isPreselected(collectionAbv: string) {
-        return this.preselect && this.preselect.includes(collectionAbv);
-    }
+  isPreselected(collectionAbv: string) {
+    return this.preselect && this.preselect.includes(collectionAbv);
+  }
 }
