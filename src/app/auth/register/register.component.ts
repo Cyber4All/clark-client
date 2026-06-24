@@ -606,6 +606,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
         return maybeError.message;
       }
 
+      if (Array.isArray(maybeError.message) && maybeError.message.length > 0) {
+        const firstMessage = maybeError.message[0]?.message || maybeError.message[0];
+        if (firstMessage) {
+          return firstMessage;
+        }
+      }
+
       if (Array.isArray(maybeError.errors) && maybeError.errors.length > 0) {
         const firstMessage = maybeError.errors.find(item => item?.message)?.message;
         if (firstMessage) {
