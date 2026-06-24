@@ -13,6 +13,7 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { MatButton } from '@angular/material/button';
 import { Subject, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
+import { ActivateDirective } from '../../../../shared/directives/activate.directive';
 
 @Component({
     selector: 'clark-organization-migrate-modal',
@@ -36,6 +37,7 @@ import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUnt
         MatCheckbox,
         MatButton,
         TitleCasePipe,
+        ActivateDirective,
     ],
 })
 export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnDestroy {
