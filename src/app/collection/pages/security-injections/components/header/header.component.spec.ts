@@ -1,26 +1,25 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { SecurityInjectionsHeaderComponent } from './header.component';
+import { SecurityInjectionsHeaderComponent } from "./header.component";
 
-describe('HeaderComponent', () => {
-  let component: SecurityInjectionsHeaderComponent;
-  let fixture: ComponentFixture<SecurityInjectionsHeaderComponent>;
+describe("HeaderComponent", () => {
+    let component: SecurityInjectionsHeaderComponent;
+    let fixture: ComponentFixture<SecurityInjectionsHeaderComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [SecurityInjectionsHeaderComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [SecurityInjectionsHeaderComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SecurityInjectionsHeaderComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(SecurityInjectionsHeaderComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -1,36 +1,72 @@
 <div class="splash">
-  <div class="inner">
-   <div class="header">
-    <div [@collection] *ngIf="collections.get(learningObject.collection)" class="collection">
-      <div>
-        <i class="fal fa-cubes"></i> Part of the 
-        <a class="collection-link" routerLink="{{ link }}" attr.aria-label="Clickable link {{ collections.get(learningObject.collection) }} collection page">{{ collections.get(learningObject.collection)}}</a> collection
-      </div>
+    <div class="inner">
+        <div class="header">
+            <div
+                [@collection]
+                *ngIf="collections.get(learningObject.collection)"
+                class="collection">
+                <div>
+                    <i class="fal fa-cubes"></i> Part of the
+                    <a
+                        class="collection-link"
+                        routerLink="{{ link }}"
+                        attr.aria-label="Clickable link {{
+                            collections.get(learningObject.collection)
+                        }} collection page"
+                        >{{ collections.get(learningObject.collection) }}</a
+                    >
+                    collection
+                </div>
+            </div>
+            <h1 class="learning-object-name">{{ learningObject.name }}</h1>
+            <p class="updated">
+                Last Updated {{ learningObject.date | date: "shortDate" }}
+            </p>
+            <clark-details-splash-length
+                [length]="learningObject.length"></clark-details-splash-length>
+            <span class="rating-stars-container">
+                <clark-rating-stars
+                    [color]="starColor"
+                    [rating]="averageRating"
+                    [reviewsCount]="reviewsCount"></clark-rating-stars>
+            </span>
+            <div
+                class="hierarchy-link-container"
+                *ngIf="
+                    learningObject.parents?.length > 0 ||
+                    learningObject.children?.length > 0
+                ">
+                <clark-hierarchy-link
+                    [parents]="learningObject.parents"
+                    [children]="learningObject.children"
+                    (linkClickEvent)="showSidePanel()"></clark-hierarchy-link>
+            </div>
+            <div
+                class="hierarchy-link-container empty"
+                *ngIf="
+                    learningObject.parents?.length === 0 &&
+                    learningObject.children?.length === 0
+                "></div>
+            <div *ngFor="let tag of fullTags" class="pills">
+                <clark-tag-pill [tag]="tag"></clark-tag-pill>
+            </div>
+        </div>
     </div>
-      <h1 class="learning-object-name">{{ learningObject.name }}</h1>
-      <p class="updated"> Last Updated {{ learningObject.date | date:'shortDate' }}</p>
-      <clark-details-splash-length [length]="learningObject.length"></clark-details-splash-length>
-      <span class='rating-stars-container'> 
-        <clark-rating-stars [color]='starColor' [rating]='averageRating' [reviewsCount]='reviewsCount'></clark-rating-stars>
-      </span>
-      <div class='hierarchy-link-container' *ngIf="learningObject.parents?.length > 0 || learningObject.children?.length > 0">
-        <clark-hierarchy-link [parents]='learningObject.parents' [children]='learningObject.children' (linkClickEvent)='showSidePanel()'></clark-hierarchy-link>
-      </div>
-      <div class='hierarchy-link-container empty' *ngIf="learningObject.parents?.length === 0 && learningObject.children?.length === 0"></div>
-      <div *ngFor="let tag of fullTags" class="pills">
-        <clark-tag-pill [tag]="tag"></clark-tag-pill>
-      </div>
-   </div>
-  </div>
- 
-  <clark-side-panel-content 
-    panel 
-    *ngIf='showPanel' 
-    [parents]=learningObject.parents
-    [children]=learningObject.children 
-    [options]='showMobileSidePanel ? {showExitButton: true, padding: true, exitButtonColor: "white"} : {padding: true}'
-    [contentWidth]='showMobileSidePanel ? 300 : 400'
-    (close)='hideSidePanel()'
-  ></clark-side-panel-content>
- 
+
+    <clark-side-panel-content
+        panel
+        *ngIf="showPanel"
+        [parents]="learningObject.parents"
+        [children]="learningObject.children"
+        [options]="
+            showMobileSidePanel
+                ? {
+                      showExitButton: true,
+                      padding: true,
+                      exitButtonColor: 'white',
+                  }
+                : { padding: true }
+        "
+        [contentWidth]="showMobileSidePanel ? 300 : 400"
+        (close)="hideSidePanel()"></clark-side-panel-content>
 </div>

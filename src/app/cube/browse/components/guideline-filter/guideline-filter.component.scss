@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 hr {
     height: 1px;
@@ -45,7 +45,7 @@ h3 {
         display: block;
         width: 100%;
     }
-    
+
     label {
         background: transparent;
         padding: 5px;
@@ -69,22 +69,22 @@ h3 {
     font-size: $small;
     display: inline;
     flex-wrap: nowrap;
-  
+
     &.filter-checkbox {
         display: flex;
         flex-direction: row;
-  
+
         clark-checkbox {
             @include vert-center;
             margin-right: 10px;
         }
     }
-  
+
     .checkbox-grid {
         display: inline-grid;
         grid-template-columns: auto auto;
         align-items: start !important;
-  
+
         clark-checkbox {
             align-self: start;
             margin-top: 2px;

@@ -1,26 +1,25 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ReviewerPanelComponent } from './reviewer-panel.component';
+import { ReviewerPanelComponent } from "./reviewer-panel.component";
 
-describe('ReviewerPanelComponent', () => {
-  let component: ReviewerPanelComponent;
-  let fixture: ComponentFixture<ReviewerPanelComponent>;
+describe("ReviewerPanelComponent", () => {
+    let component: ReviewerPanelComponent;
+    let fixture: ComponentFixture<ReviewerPanelComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [ReviewerPanelComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [ReviewerPanelComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ReviewerPanelComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ReviewerPanelComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

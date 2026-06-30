@@ -1,30 +1,27 @@
 <div class="clark-search">
-  <div class="search-options">
-    <form (submit)="performSearch(searchInput)">
-      <div class="input">
-        <input
-          #searchInput
-          name="searchInput"
-          id="clark-search-input"
-          type="search"
-          placeholder="Search..."
-          (ngModelChange)="togglePlaceholder()"
-          aria-label="Search"
-          [(ngModel)]="searchValue"
-        />
-        <button
-          aria-label="Search"
-          class="icon"
-          (activate)="performSearch(searchInput)"
-        >
-          <i class="far fa-search"></i>
-        </button>
-      </div>
-    </form>
-    <!-- Alert message for invalid input -->
-    <div id="search-alert">
-      Please enter at least 3 characters to search.
+    <div class="search-options">
+        <form (submit)="performSearch(searchInput)">
+            <div class="input">
+                <input
+                    #searchInput
+                    name="searchInput"
+                    id="clark-search-input"
+                    type="search"
+                    placeholder="Search..."
+                    (ngModelChange)="togglePlaceholder()"
+                    aria-label="Search"
+                    [(ngModel)]="searchValue" />
+                <button
+                    aria-label="Search"
+                    class="icon"
+                    (activate)="performSearch(searchInput)">
+                    <i class="far fa-search"></i>
+                </button>
+            </div>
+        </form>
+        <!-- Alert message for invalid input -->
+        <div id="search-alert">
+            Please enter at least 3 characters to search.
+        </div>
     </div>
-  </div>
 </div>
-

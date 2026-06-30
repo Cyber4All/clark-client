@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .blogs-component {
     display: flex;
@@ -71,19 +71,17 @@
             }
         }
     }
-
-
 }
 
 @media (max-width: 1090px) {
     .blogs-component {
         flex-direction: column;
-        .first-view{
+        .first-view {
             flex-direction: column;
-            .left{
+            .left {
                 justify-content: center;
             }
-            .side-by-side{
+            .side-by-side {
                 justify-content: center;
             }
         }

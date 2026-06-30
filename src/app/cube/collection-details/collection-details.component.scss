@@ -1,153 +1,156 @@
-@import '_vars.scss';
+@import "_vars.scss";
 .background {
-  background-color: white;
-  min-height: calc(100vh - 40px);
+    background-color: white;
+    min-height: calc(100vh - 40px);
 }
 
 .hero {
-  position: relative;
-  overflow: hidden;
-  padding: 50px;
+    position: relative;
+    overflow: hidden;
+    padding: 50px;
 
-  &:after {
-      content: '';
-      background: repeating-linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) );
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 1;
-  }
-
-  &:before {
-      content: '';
-      background: linear-gradient(to bottom, white, $light-blue, white);
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      mask: $cube-pattern repeat;
-      z-index: 0;
-      opacity: .15;
-  }
-
-  .inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      margin-bottom: 20px;
-      z-index: 2;
-  }
-
-  .logos {
-    width: 100px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-    img {
-      width: 100%;
-      height: 100%;
+    &:after {
+        content: "";
+        background: repeating-linear-gradient(
+            rgb(255, 255, 255),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0)
+        );
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
     }
 
-    &.long {
-      width: 200px;
+    &:before {
+        content: "";
+        background: linear-gradient(to bottom, white, $light-blue, white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        z-index: 0;
+        opacity: 0.15;
     }
-  }
 
-  .title__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin: auto;
-    margin-bottom: 10px;
-    background: white;
-    color: $light-blue;
-    width: 100px;
-    height: 100px;
-    border-radius: 100px;
-    border: 2px solid $light-blue;
-    svg {
-      width: 60px;
-      height: 60px;
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 20px;
+        z-index: 2;
     }
-   }
 
+    .logos {
+        width: 100px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
 
-  .header {
-      color: $light-blue;
-      font-size: $largest;
-      font-weight: bold;
-      padding: 0;
-      margin-top: 10px;
-      z-index: 2;
-  }
-  
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        &.long {
+            width: 200px;
+        }
+    }
+
+    .title__icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: auto;
+        margin-bottom: 10px;
+        background: white;
+        color: $light-blue;
+        width: 100px;
+        height: 100px;
+        border-radius: 100px;
+        border: 2px solid $light-blue;
+        svg {
+            width: 60px;
+            height: 60px;
+        }
+    }
+
+    .header {
+        color: $light-blue;
+        font-size: $largest;
+        font-weight: bold;
+        padding: 0;
+        margin-top: 10px;
+        z-index: 2;
+    }
 }
 
 .collection-container {
-  max-width: $max-width;
-  padding-bottom: 100px;
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-  margin-top: 50px;
-  box-sizing: border-box;
-  .description {
-    color: $dark-grey;
-    margin-bottom: 40px;
-    padding: 20px;
+    max-width: $max-width;
+    padding-bottom: 100px;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 50px;
+    box-sizing: border-box;
+    .description {
+        color: $dark-grey;
+        margin-bottom: 40px;
+        padding: 20px;
 
-    .heading {
-      font-weight: bold;
-      font-size: $larger;
+        .heading {
+            font-weight: bold;
+            font-size: $larger;
+        }
     }
-  }
-  .featured--header {
-    display: flex;
-    justify-content: space-between;
+    .featured--header {
+        display: flex;
+        justify-content: space-between;
 
-    .recently-released {
-      padding: 20px;
-      color: $dark-grey;
-      font-weight: bold;
-      font-size: $larger;
+        .recently-released {
+            padding: 20px;
+            color: $dark-grey;
+            font-weight: bold;
+            font-size: $larger;
+        }
+
+        .view-all {
+            color: $light-blue;
+            font-size: $large;
+            width: 100px;
+            cursor: pointer;
+            @include vert-center;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            text-align: right;
+            padding-right: 12px;
+            &:hover {
+                text-decoration: underline;
+            }
+            .svg-inline--fa {
+                @include vert-center;
+                margin-left: 15px;
+            }
+        }
     }
 
-    .view-all {
-      color: $light-blue;
-      font-size: $large;
-      width: 100px;
-      cursor: pointer;
-      @include vert-center;
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      text-align: right;
-      padding-right: 12px;
-      &:hover {
-        text-decoration: underline;
-      }
-      .svg-inline--fa {
-        @include vert-center;
-        margin-left: 15px;
-      }
+    .faq-section {
+        .header {
+            padding: 20px;
+            color: $dark-grey;
+            font-weight: bold;
+            font-size: $larger;
+        }
     }
-  }
-
-  .faq-section {
-    .header {
-      padding: 20px;
-      color: $dark-grey;
-      font-weight: bold;
-      font-size: $larger;
-    }
-  }
 }

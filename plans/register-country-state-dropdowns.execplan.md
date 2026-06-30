@@ -76,10 +76,10 @@ Target behavior:
 2. The state control is a dropdown of US states.
 3. The state dropdown is disabled unless `country === 'US'`.
 4. Validation requires:
-   - `name`
-   - `sector`
-   - `country`
-   - `state` only when `country === 'US'`
+    - `name`
+    - `sector`
+    - `country`
+    - `state` only when `country === 'US'`
 5. The create-organization payload continues to use the form values, now sourced from controlled dropdowns.
 
 Non-goals:
@@ -111,10 +111,10 @@ Phase 3: Update template rendering
 Phase 4: Update tests and validate
 
 - Extend `register.component.spec.ts` to cover:
-  - `country` required
-  - `state` required only for `US`
-  - state reset/disabled behavior for non-US countries
-  - payload values using country codes
+    - `country` required
+    - `state` required only for `US`
+    - state reset/disabled behavior for non-US countries
+    - payload values using country codes
 - Run the nearest practical lint/test validation for the touched files.
 
 ## Concrete Steps
@@ -156,10 +156,10 @@ Manual validation:
 ## Idempotence and Recovery
 
 - The work can land safely in stages:
-  - constants file
-  - component validation logic
-  - template update
-  - tests
+    - constants file
+    - component validation logic
+    - template update
+    - tests
 - If implementation pauses after the component logic change, the template should not ship until both dropdown rendering and validation behavior agree.
 - If any payload mismatch is discovered with the backend, preserve the local option lists and adjust the service boundary or value mapping in the component rather than returning to free-text inputs.
 

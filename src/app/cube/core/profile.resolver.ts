@@ -1,27 +1,27 @@
-import { User } from '@entity';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { Injectable } from '@angular/core';
-import { UserService } from 'app/core/user-module/user.service';
+import { User } from "@entity";
+import { ActivatedRouteSnapshot, Router } from "@angular/router";
+import { Injectable } from "@angular/core";
+import { UserService } from "app/core/user-module/user.service";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
-export class ProfileResovler  {
-  constructor(
-    private userService: UserService,
-    private router: Router
-  ) { }
+export class ProfileResovler {
+    constructor(
+        private userService: UserService,
+        private router: Router,
+    ) {}
 
-  async resolve(
-    route: ActivatedRouteSnapshot,
-  ): Promise<any> {
-    // Retrieves user profile object
-    return await this.userService.fetchUserProfile(route.params.username).then(val => {
-      return val;
-    })
-      .catch(() => {
-        // Routes to 404 not-found
-        this.router.navigate(['users']);
-      });
-  }
+    async resolve(route: ActivatedRouteSnapshot): Promise<any> {
+        // Retrieves user profile object
+        return await this.userService
+            .fetchUserProfile(route.params.username)
+            .then((val) => {
+                return val;
+            })
+            .catch(() => {
+                // Routes to 404 not-found
+                this.router.navigate(["users"]);
+            });
+    }
 }

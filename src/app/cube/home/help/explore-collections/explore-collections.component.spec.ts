@@ -1,25 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { ExploreCollectionsComponent } from './explore-collections.component';
+import { ExploreCollectionsComponent } from "./explore-collections.component";
 
-describe('ExploreCollectionsComponent', () => {
-  let component: ExploreCollectionsComponent;
-  let fixture: ComponentFixture<ExploreCollectionsComponent>;
+describe("ExploreCollectionsComponent", () => {
+    let component: ExploreCollectionsComponent;
+    let fixture: ComponentFixture<ExploreCollectionsComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    imports: [ExploreCollectionsComponent]
-})
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [ExploreCollectionsComponent],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(ExploreCollectionsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(ExploreCollectionsComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

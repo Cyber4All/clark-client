@@ -1,424 +1,423 @@
 // font
 // @use '@angular/material' as mat;
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700&display=swap');
-@import '_vars.scss';
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700&display=swap");
+@import "_vars.scss";
 
 .dummy-input {
-  position: fixed;
-  width: 50px;
-  opacity: 0;
-  left: -100px;
+    position: fixed;
+    width: 50px;
+    opacity: 0;
+    left: -100px;
 }
 
 body {
-  font-family: 'Source Sans Pro', sans-serif;
-  background: $wrapper-background !important;
-  // height: 100vh;
-  margin: 0;
-  padding: 0;
+    font-family: "Source Sans Pro", sans-serif;
+    background: $wrapper-background !important;
+    // height: 100vh;
+    margin: 0;
+    padding: 0;
 
-  &.hide-outlines * {
-    outline: 0 !important;
-  }
+    &.hide-outlines * {
+        outline: 0 !important;
+    }
 
-  &.no-scroll {
-    overflow-y: hidden;
-  }
+    &.no-scroll {
+        overflow-y: hidden;
+    }
 }
 
 a,
 a:visited {
-  color: $light-blue;
-  text-decoration: none;
+    color: $light-blue;
+    text-decoration: none;
 
-  &:hover {
-    text-decoration: underline;
-  }
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 // vvv global styles vvv
 .vert-center {
-  @include vert-center;
+    @include vert-center;
 }
 
 .button {
-  border: 0;
-  padding: 11px 20px 11px 25px;
-  border-radius: 4px;
-  background: white;
-  color: $light-blue;
-  text-transform: uppercase;
-  font-size: $small;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-  position: relative;
-  font-weight: normal;
-
-  &.shadow {
-    box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-  }
-
-  .svg-inline--fa,
-  .icon {
-    margin-left: 10px;
-  }
-
-  &.icon-only {
-    padding: 4px 9px;
-
-    .svg-inline--fa,
-    .icon {
-      margin-left: 0;
-    }
-    margin: 0px 5px 10px;
-  }
-
-  &.good {
-    color: white;
-    background: $light-blue-gradient;
-  }
-
-  &.neutral {
-    color: $dark-grey;
-    background: transparent;
-
-    &:after {
-      content: '';
-      background: transparent;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      border: 1px solid $dark-grey;
-      border-radius: inherit;
-      position: absolute;
-    }
-  }
-
-  &.bad {
-    color: white;
-    background: $error-red;
-
-    &.inverted {
-      color: $error-red;
-      background: transparent;
-    }
-
-    &.white {
-      background: white;
-      color: $error-red;
-    }
-  }
-
-  &.green {
-    color: white;
-    background: $success-green;
-  }
-
-  &.disabled,
-  &[disabled] {
-    opacity: 0.5;
-    box-shadow: none;
-    cursor: default;
-    pointer-events: none;
-  }
-
-  &:hover {
-    opacity: 0.8;
-  }
-}
-
-.btn-group {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-
-  &.to-right,
-  &.center {
-    flex-direction: row-reverse;
-  }
-
-  &.center {
-    justify-content: center;
-  }
-
-  .button:not(:last-child) {
-    margin-left: 15px;
-  }
-
-  &.vertical {
-    flex-direction: column;
-
-    .button {
-      text-align: center;
-    }
-
-    .button:not(:last-child) {
-      margin-left: 0;
-      margin-bottom: 15px;
-    }
-  }
-}
-
-.popup-wrapper {
-  background: rgba(0, 0, 0, 0.6);
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  z-index: calc(#{$popup-z - 1});
-  display: flex;
-}
-
-.popup {
-  position: fixed;
-  z-index: $popup-z;
-  background: white;
-  border-radius: 1px;
-  box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.05);
-
-  ul {
-    margin: 0;
-    padding: 10px 0;
-  }
-
-  li {
-    cursor: pointer;
+    border: 0;
+    padding: 11px 20px 11px 25px;
+    border-radius: 4px;
+    background: white;
+    color: $light-blue;
+    text-transform: uppercase;
     font-size: $small;
-    padding: 8px 15px;
-    list-style-type: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    position: relative;
+    font-weight: normal;
+
+    &.shadow {
+        box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
+    }
 
     .svg-inline--fa,
     .icon {
-      margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    &.icon-only {
+        padding: 4px 9px;
+
+        .svg-inline--fa,
+        .icon {
+            margin-left: 0;
+        }
+        margin: 0px 5px 10px;
+    }
+
+    &.good {
+        color: white;
+        background: $light-blue-gradient;
+    }
+
+    &.neutral {
+        color: $dark-grey;
+        background: transparent;
+
+        &:after {
+            content: "";
+            background: transparent;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid $dark-grey;
+            border-radius: inherit;
+            position: absolute;
+        }
     }
 
     &.bad {
-      color: $error-red;
+        color: white;
+        background: $error-red;
+
+        &.inverted {
+            color: $error-red;
+            background: transparent;
+        }
+
+        &.white {
+            background: white;
+            color: $error-red;
+        }
+    }
+
+    &.green {
+        color: white;
+        background: $success-green;
+    }
+
+    &.disabled,
+    &[disabled] {
+        opacity: 0.5;
+        box-shadow: none;
+        cursor: default;
+        pointer-events: none;
     }
 
     &:hover {
-      color: white;
-      background: $blue-accent;
+        opacity: 0.8;
+    }
+}
 
-      &.bad {
-        background: $error-red;
-      }
+.btn-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    &.to-right,
+    &.center {
+        flex-direction: row-reverse;
     }
 
-    .checkbox {
-      display: inline-block;
-      margin-right: 15px;
+    &.center {
+        justify-content: center;
     }
-  }
 
-  // context menus
-  &.small {
-    width: 170px;
-  }
+    .button:not(:last-child) {
+        margin-left: 15px;
+    }
 
-  &.dropdown {
-    $t: 7px;
-    width: 200px;
+    &.vertical {
+        flex-direction: column;
+
+        .button {
+            text-align: center;
+        }
+
+        .button:not(:last-child) {
+            margin-left: 0;
+            margin-bottom: 15px;
+        }
+    }
+}
+
+.popup-wrapper {
+    background: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: calc(#{$popup-z - 1});
+    display: flex;
+}
+
+.popup {
+    position: fixed;
+    z-index: $popup-z;
+    background: white;
+    border-radius: 1px;
     box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.05);
-    border-top: 1px solid #e7e7e7;
 
-    &:after,
-    &:before {
-      content: '';
-      position: absolute;
-      top: calc(#{$t} * -1);
-      right: 10px;
-      margin: auto;
-      width: 0;
-      height: 0;
-      border-left: $t solid transparent;
-      border-right: $t solid transparent;
-      border-bottom: $t solid white;
-    }
-
-    &:before {
-      $bw: calc(#{$t} + 1px);
-      right: 9px;
-      top: calc(#{$t} * -1 - 1px);
-      border-left-width: $bw;
-      border-left-style: solid;
-      border-left-color: transparent;
-
-      border-right-width: $bw;
-      border-right-style: solid;
-      border-right-color: transparent;
-
-      border-bottom-width: $bw;
-      border-bottom-style: solid;
-      border-bottom-color: #e7e7e7;
+    ul {
+        margin: 0;
+        padding: 10px 0;
     }
 
     li {
-      font-size: $normal;
-    }
-  }
+        cursor: pointer;
+        font-size: $small;
+        padding: 8px 15px;
+        list-style-type: none;
 
-  // small popups (IE delete confirms) usually with action buttons
-  &.dialog {
-    max-width: 500px;
-    min-width: 300px;
-    padding: 20px 40px;
-    border-radius: 4px;
-    margin: auto;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    position: relative;
+        .svg-inline--fa,
+        .icon {
+            margin-right: 10px;
+        }
 
-    .dialog-close {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      cursor: pointer;
-    }
+        &.bad {
+            color: $error-red;
+        }
 
-    .title-text {
-      color: $blue-accent;
-      font-size: $larger;
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 10px;
+        &:hover {
+            color: white;
+            background: $blue-accent;
+
+            &.bad {
+                background: $error-red;
+            }
+        }
+
+        .checkbox {
+            display: inline-block;
+            margin-right: 15px;
+        }
     }
 
-    .text {
-      color: $dark-grey;
-      text-align: center;
-      margin: 25px auto;
-      font-size: $normal;
+    // context menus
+    &.small {
+        width: 170px;
     }
 
-    &.title-bad .title-text {
-      color: $error-red;
+    &.dropdown {
+        $t: 7px;
+        width: 200px;
+        box-shadow: 0 0 12px 2px rgba(0, 0, 0, 0.05);
+        border-top: 1px solid #e7e7e7;
+
+        &:after,
+        &:before {
+            content: "";
+            position: absolute;
+            top: calc(#{$t} * -1);
+            right: 10px;
+            margin: auto;
+            width: 0;
+            height: 0;
+            border-left: $t solid transparent;
+            border-right: $t solid transparent;
+            border-bottom: $t solid white;
+        }
+
+        &:before {
+            $bw: calc(#{$t} + 1px);
+            right: 9px;
+            top: calc(#{$t} * -1 - 1px);
+            border-left-width: $bw;
+            border-left-style: solid;
+            border-left-color: transparent;
+
+            border-right-width: $bw;
+            border-right-style: solid;
+            border-right-color: transparent;
+
+            border-bottom-width: $bw;
+            border-bottom-style: solid;
+            border-bottom-color: #e7e7e7;
+        }
+
+        li {
+            font-size: $normal;
+        }
     }
 
-    &.title-good .title-text {
-      color: $success-green;
+    // small popups (IE delete confirms) usually with action buttons
+    &.dialog {
+        max-width: 500px;
+        min-width: 300px;
+        padding: 20px 40px;
+        border-radius: 4px;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        position: relative;
+
+        .dialog-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        .title-text {
+            color: $blue-accent;
+            font-size: $larger;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .text {
+            color: $dark-grey;
+            text-align: center;
+            margin: 25px auto;
+            font-size: $normal;
+        }
+
+        &.title-bad .title-text {
+            color: $error-red;
+        }
+
+        &.title-good .title-text {
+            color: $success-green;
+        }
     }
-  }
 }
 
 // CLARK STYLES
 // this is the container, holds everything (topbar, content) except for modal components
 .outer-wrapper {
-  position: relative;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: $wrapper-background;
-  z-index: 1;
-  font-family: 'Source Sans Pro', sans-serif;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $wrapper-background;
+    z-index: 1;
+    font-family: "Source Sans Pro", sans-serif;
 }
 
 // use this inside container divs to standardize the max-width and maintain grid structures
 .inner {
-  max-width: $max-width;
-  margin: auto;
-  position: relative;
+    max-width: $max-width;
+    margin: auto;
+    position: relative;
 }
 
 // this should hold page content (IE not the topbar) and be placed inside the .outer-wrapper
 .content {
-  padding: 20px 20px 0;
-  box-sizing: border-box;
+    padding: 20px 20px 0;
+    box-sizing: border-box;
 
-  & > .inner {
-    padding-bottom: 20px; // fixes bug in firefox where scrolling would clip the bottom of the content div
-  }
+    & > .inner {
+        padding-bottom: 20px; // fixes bug in firefox where scrolling would clip the bottom of the content div
+    }
 
-  // adjusts the spacing between actual page content and the content switcher
-  .sub-content {
-    margin-top: 10px;
-  }
+    // adjusts the spacing between actual page content and the content switcher
+    .sub-content {
+        margin-top: 10px;
+    }
 }
 
 // styles for the 'switch' used for transitioning between SEARCH and CONTRIBUTE options (IE Onion and Cube)
 .content-switch {
-  width: 300px;
-  overflow: hidden;
-  border-radius: 5px;
-  background: #e1e3ec;
-  position: relative;
-
-  .options {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-shrink: 0;
-    z-index: 2;
+    width: 300px;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #e1e3ec;
     position: relative;
 
-    & > div {
-      width: 150px;
-      padding: 10px 5px;
-      text-align: center;
-      color: $blue-accent;
-      font-size: $normal;
-      cursor: pointer;
-      transition: color 0.2s ease;
-      text-transform: uppercase;
-    }
-  }
+    .options {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        flex-shrink: 0;
+        z-index: 2;
+        position: relative;
 
-  .highlight {
-    background: $blue-accent;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 150px;
-    border-radius: 5px;
-    transition: left 0.2s ease;
-    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
-  }
-
-  &.left {
-    .options .left {
-      color: white;
-    }
-  }
-
-  &.right {
-    .options .right {
-      color: white;
+        & > div {
+            width: 150px;
+            padding: 10px 5px;
+            text-align: center;
+            color: $blue-accent;
+            font-size: $normal;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            text-transform: uppercase;
+        }
     }
 
     .highlight {
-      left: 150px;
+        background: $blue-accent;
+        z-index: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 150px;
+        border-radius: 5px;
+        transition: left 0.2s ease;
+        box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
     }
-  }
+
+    &.left {
+        .options .left {
+            color: white;
+        }
+    }
+
+    &.right {
+        .options .right {
+            color: white;
+        }
+
+        .highlight {
+            left: 150px;
+        }
+    }
 }
 
 .icon.left {
-  margin-right: 10px;
+    margin-right: 10px;
 }
 
 .icon.right {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
-
 @keyframes fa-spin {
-  0% {
-    transform: rotate(0deg);
-
-  } 100% {
-    transform: rotate(1080deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(1080deg);
+    }
 }
 
 // Angular Material overrides, makes the calendar header visable
 .mat-calendar-period-button {
-  color: black !important;
-  font-size: 14px !important;
+    color: black !important;
+    font-size: 14px !important;
 }

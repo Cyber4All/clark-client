@@ -1,43 +1,43 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .content {
-  padding: 0;
+    padding: 0;
 
-  .sub-content {
-    margin-top: 0;
-  }
+    .sub-content {
+        margin-top: 0;
+    }
 }
 
 .inner {
-  padding-top: 0;
+    padding-top: 0;
 }
 
 .flex {
-  display: flex;
+    display: flex;
 
-  &.h {
-    flex-direction: row;
-  }
+    &.h {
+        flex-direction: row;
+    }
 
-  &.v {
-    flex-direction: column;
-  }
+    &.v {
+        flex-direction: column;
+    }
 
-  &.left-right {
-    justify-content: space-between;
-  }
+    &.left-right {
+        justify-content: space-between;
+    }
 
-  &.end {
-    justify-content: flex-end;
-  }
+    &.end {
+        justify-content: flex-end;
+    }
 }
 
 a:not(.no-link) {
-  text-decoration: underline;
-  color: $blue-accent;
+    text-decoration: underline;
+    color: $blue-accent;
 }
 
 ::ng-deep clark-dashboard,
 ::ng-deep clark-learning-object-builder {
-  display: block;
+    display: block;
 }

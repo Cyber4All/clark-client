@@ -1,102 +1,149 @@
 <div class="hierarchy-container">
-  <div class="vertical-container">
-    <div class="main-text">
-    <h1>Related curricula grouped hierarchically</h1>
-    <!-- Dummy text until the full text is provided for this section -->
-    <p>A learning object is not just a single lesson or lab and although they can often be used individually, it is often constructed 
-      of multiple labs and lessons. Hierarchies on CLARK are designed to provide a structure for combining individual learning objects 
-      into larger modules, units, or courses. Taking a modular approach to creating curriculum allows for educators to organize their 
-      materials in a way that supports the learning outcomes and allows easy use in the classroom.</p>
+    <div class="vertical-container">
+        <div class="main-text">
+            <h1>Related curricula grouped hierarchically</h1>
+            <!-- Dummy text until the full text is provided for this section -->
+            <p>
+                A learning object is not just a single lesson or lab and
+                although they can often be used individually, it is often
+                constructed of multiple labs and lessons. Hierarchies on CLARK
+                are designed to provide a structure for combining individual
+                learning objects into larger modules, units, or courses. Taking
+                a modular approach to creating curriculum allows for educators
+                to organize their materials in a way that supports the learning
+                outcomes and allows easy use in the classroom.
+            </p>
 
-    <hr class="hierarchyhr">
-    </div>
-    
-    <div class="hierarchy">
-      <div class="hierarchy__card">
-        <div class="course" [tip]="getHierarchyTooltip('course')">
-          <span class="badge badge--course">
-            <span class="badge__icon" aria-hidden="true"><i class="fa-solid fa-book-open"></i></span>
-            Course
-          </span>
-          <h2 class="course__title">Intro to Cybersecurity</h2>
+            <hr class="hierarchyhr" />
         </div>
 
-        <div class="modules">
-          <section class="micro has-nano">
-            <header class="micro__header" [tip]="getHierarchyTooltip('micromodule')">
-              <span class="badge badge--micro">
-                <span class="badge__icon" aria-hidden="true"><i class="fa-solid fa-cubes"></i></span>
-                Micromodule
-              </span>
-              <h3 class="micro__title">Cyber Foundations</h3>
-            </header>
+        <div class="hierarchy">
+            <div class="hierarchy__card">
+                <div class="course" [tip]="getHierarchyTooltip('course')">
+                    <span class="badge badge--course">
+                        <span class="badge__icon" aria-hidden="true"
+                            ><i class="fa-solid fa-book-open"></i
+                        ></span>
+                        Course
+                    </span>
+                    <h2 class="course__title">Intro to Cybersecurity</h2>
+                </div>
 
-            <div class="nano">
-              <div class="nano__row" [tip]="getHierarchyTooltip('nanomodule')">
-                <span class="badge badge--nano">
-                  <span class="badge__icon" aria-hidden="true"><i class="fa-regular fa-file-lines"></i></span>
-                  Nanomodule
-                </span>
-                <span class="nano__dash" aria-hidden="true"></span>
-                <div class="nano__text">Cybersecurity Case Studies</div>
-              </div>
+                <div class="modules">
+                    <section class="micro has-nano">
+                        <header
+                            class="micro__header"
+                            [tip]="getHierarchyTooltip('micromodule')">
+                            <span class="badge badge--micro">
+                                <span class="badge__icon" aria-hidden="true"
+                                    ><i class="fa-solid fa-cubes"></i
+                                ></span>
+                                Micromodule
+                            </span>
+                            <h3 class="micro__title">Cyber Foundations</h3>
+                        </header>
+
+                        <div class="nano">
+                            <div
+                                class="nano__row"
+                                [tip]="getHierarchyTooltip('nanomodule')">
+                                <span class="badge badge--nano">
+                                    <span class="badge__icon" aria-hidden="true"
+                                        ><i class="fa-regular fa-file-lines"></i
+                                    ></span>
+                                    Nanomodule
+                                </span>
+                                <span
+                                    class="nano__dash"
+                                    aria-hidden="true"></span>
+                                <div class="nano__text">
+                                    Cybersecurity Case Studies
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="micro has-nano">
+                        <header
+                            class="micro__header"
+                            [tip]="getHierarchyTooltip('micromodule')">
+                            <span class="badge badge--micro">
+                                <span class="badge__icon" aria-hidden="true"
+                                    ><i class="fa-solid fa-cubes"></i
+                                ></span>
+                                Micromodule
+                            </span>
+                            <h3 class="micro__title">Cyber War</h3>
+                        </header>
+
+                        <div class="nano">
+                            <div
+                                class="nano__row"
+                                [tip]="getHierarchyTooltip('nanomodule')">
+                                <span class="badge badge--nano">
+                                    <span class="badge__icon" aria-hidden="true"
+                                        ><i class="fa-regular fa-file-lines"></i
+                                    ></span>
+                                    Nanomodule
+                                </span>
+                                <span
+                                    class="nano__dash"
+                                    aria-hidden="true"></span>
+                                <div class="nano__text">
+                                    Cyberwarfare Exercise
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="micro has-nano">
+                        <header
+                            class="micro__header"
+                            [tip]="getHierarchyTooltip('micromodule')">
+                            <span class="badge badge--micro">
+                                <span class="badge__icon" aria-hidden="true"
+                                    ><i class="fa-solid fa-cubes"></i
+                                ></span>
+                                Micromodule
+                            </span>
+                            <h3 class="micro__title">Network Security</h3>
+                        </header>
+
+                        <div class="nano">
+                            <div
+                                class="nano__row"
+                                [tip]="getHierarchyTooltip('nanomodule')">
+                                <span class="badge badge--nano">
+                                    <span class="badge__icon" aria-hidden="true"
+                                        ><i class="fa-regular fa-file-lines"></i
+                                    ></span>
+                                    Nanomodule
+                                </span>
+                                <span
+                                    class="nano__dash"
+                                    aria-hidden="true"></span>
+                                <div class="nano__text">
+                                    Network Security Lab
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="micro">
+                        <header
+                            class="micro__header"
+                            [tip]="getHierarchyTooltip('micromodule')">
+                            <span class="badge badge--micro">
+                                <span class="badge__icon" aria-hidden="true"
+                                    ><i class="fa-solid fa-cubes"></i
+                                ></span>
+                                Micromodule
+                            </span>
+                            <h3 class="micro__title">Secure Software</h3>
+                        </header>
+                    </section>
+                </div>
             </div>
-          </section>
-
-          <section class="micro has-nano">
-            <header class="micro__header" [tip]="getHierarchyTooltip('micromodule')">
-              <span class="badge badge--micro">
-                <span class="badge__icon" aria-hidden="true"><i class="fa-solid fa-cubes"></i></span>
-                Micromodule
-              </span>
-              <h3 class="micro__title">Cyber War</h3>
-            </header>
-
-            <div class="nano">
-              <div class="nano__row" [tip]="getHierarchyTooltip('nanomodule')">
-                <span class="badge badge--nano">
-                  <span class="badge__icon" aria-hidden="true"><i class="fa-regular fa-file-lines"></i></span>
-                  Nanomodule
-                </span>
-                <span class="nano__dash" aria-hidden="true"></span>
-                <div class="nano__text">Cyberwarfare Exercise</div>
-              </div>
-            </div>
-          </section>
-
-          <section class="micro has-nano">
-            <header class="micro__header" [tip]="getHierarchyTooltip('micromodule')">
-              <span class="badge badge--micro">
-                <span class="badge__icon" aria-hidden="true"><i class="fa-solid fa-cubes"></i></span>
-                Micromodule
-              </span>
-              <h3 class="micro__title">Network Security</h3>
-            </header>
-
-            <div class="nano">
-              <div class="nano__row" [tip]="getHierarchyTooltip('nanomodule')">
-                <span class="badge badge--nano">
-                  <span class="badge__icon" aria-hidden="true"><i class="fa-regular fa-file-lines"></i></span>
-                  Nanomodule
-                </span>
-                <span class="nano__dash" aria-hidden="true"></span>
-                <div class="nano__text">Network Security Lab</div>
-              </div>
-            </div>
-          </section>
-
-          <section class="micro">
-            <header class="micro__header" [tip]="getHierarchyTooltip('micromodule')">
-              <span class="badge badge--micro">
-                <span class="badge__icon" aria-hidden="true"><i class="fa-solid fa-cubes"></i></span>
-                Micromodule
-              </span>
-              <h3 class="micro__title">Secure Software</h3>
-            </header>
-          </section>
         </div>
-      </div>
     </div>
-
-  </div>
 </div>

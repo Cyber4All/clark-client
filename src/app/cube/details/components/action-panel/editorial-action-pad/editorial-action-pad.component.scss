@@ -1,41 +1,41 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 button.neutral {
-  width: 100%;
+    width: 100%;
 }
 
 p {
-  font-size: $normal;
+    font-size: $normal;
 }
 
 .btn-group {
-  button {
-    width: auto;
-  }
+    button {
+        width: auto;
+    }
 }
 
 .popup-content {
-  max-width: 800px;
-  padding: 16px;
+    max-width: 800px;
+    padding: 16px;
 }
 
 .popup-header {
-  width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  margin-bottom: 25px;
+    width: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin-bottom: 25px;
 
-  .fa-exclamation-triangle {
-    font-size: 60px;
-    color: $medium-grey;
-  }
+    .fa-exclamation-triangle {
+        font-size: 60px;
+        color: $medium-grey;
+    }
 }
 
 .modal-container {
-  width: 600px;
+    width: 600px;
 
-  &.center {
-    text-align: center;
-  }
+    &.center {
+        text-align: center;
+    }
 }

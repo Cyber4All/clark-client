@@ -1,291 +1,294 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .btn-group {
-  align-items: center;
-
-  &.to-right {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
     align-items: center;
-  }
 
-  &.to-right > * {
-    margin: 0 !important;
-  }
-
-  a {
-    color: $error-red;
-    font-size: $small;
-    cursor: pointer;
-  }
-
-  &.select {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    button:not(:last-child) {
-      margin-right: 10px;
+    &.to-right {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
     }
-  }
+
+    &.to-right > * {
+        margin: 0 !important;
+    }
+
+    a {
+        color: $error-red;
+        font-size: $small;
+        cursor: pointer;
+    }
+
+    &.select {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        button:not(:last-child) {
+            margin-right: 10px;
+        }
+    }
 }
 
 .filters-button {
-  border: 1px solid $light-grey;
-  background: white;
-  border-radius: 10px;
-  height: 42px;
-  padding: 0 12px;
-  box-sizing: border-box;
-  color: $darker-grey;
-  font-size: $normal;
-  display: inline-flex;
-  align-items: center;
-  white-space: nowrap;
-  position: relative;
-  transition: all 0.2s ease;
-  text-transform: none;
-
-  &:after {
-    display: none;
-  }
-
-  &:hover {
-    border-color: $dark-grey;
-    background: $primary-white;
-  }
-
-  &.active {
-    border-color: $blue-accent;
-    color: $blue-accent;
-    background: rgba(70, 144, 255, 0.05);
-  }
-
-  .filter-badge {
-    color: white;
-    background: $light-blue;
-    border-radius: 4px;
-    padding: 0 5px;
-    margin-right: 5px;
-    margin-left: -5px;
-    text-align: center;
-    display: inline-block;
-  }
-
-  &:after {
+    border: 1px solid $light-grey;
+    background: white;
+    border-radius: 10px;
+    height: 42px;
+    padding: 0 12px;
+    box-sizing: border-box;
+    color: $darker-grey;
+    font-size: $normal;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    position: relative;
     transition: all 0.2s ease;
-  }
+    text-transform: none;
 
-  .svg-inline--fa {
-    transition: all 0.2s ease;
-  }
+    &:after {
+        display: none;
+    }
 
-  &.filters-button--down {
-    $lighter-blue: rgba(red($light-blue), green($light-blue), blue($light-blue), 0.1);
-    background: $lighter-blue;
-    color: $light-blue;
+    &:hover {
+        border-color: $dark-grey;
+        background: $primary-white;
+    }
 
-    & > .svg-inline--fa {
-      transform: rotate(180deg);
+    &.active {
+        border-color: $blue-accent;
+        color: $blue-accent;
+        background: rgba(70, 144, 255, 0.05);
+    }
+
+    .filter-badge {
+        color: white;
+        background: $light-blue;
+        border-radius: 4px;
+        padding: 0 5px;
+        margin-right: 5px;
+        margin-left: -5px;
+        text-align: center;
+        display: inline-block;
     }
 
     &:after {
-      border-color: transparent;
+        transition: all 0.2s ease;
     }
-  }
 
-  .indicator {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    display: inline-block;
-    background: $light-blue;
-    position: absolute;
-    left: 15px;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-  }
+    .svg-inline--fa {
+        transition: all 0.2s ease;
+    }
+
+    &.filters-button--down {
+        $lighter-blue: rgba(
+            red($light-blue),
+            green($light-blue),
+            blue($light-blue),
+            0.1
+        );
+        background: $lighter-blue;
+        color: $light-blue;
+
+        & > .svg-inline--fa {
+            transform: rotate(180deg);
+        }
+
+        &:after {
+            border-color: transparent;
+        }
+    }
+
+    .indicator {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+        background: $light-blue;
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+    }
 }
 
 .filters-clear {
-  margin-right: 8px;
+    margin-right: 8px;
 }
 .addEvaluators,
 .filter-status__container,
 .filter-collection__container,
 .filter-topic__container {
-
-  li {
-    position: relative;
-    color: $dark-grey;
-    text-indent: 15px;
-
-    .indicator {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      display: inline-block;
-      background: $dark-grey;
-      position: absolute;
-      left: 15px;
-      top: 0;
-      bottom: 0;
-      margin: auto;
-    }
-
-    .svg-inline--fa,
-    .icon {
-      margin-left: 10px;
-    }
-
-    &:hover {
-      color: white;
-
-      .indicator {
-        background: white;
-      }
-    }
-
-    &.waiting {
-      color: $status_waiting;
-
-      .indicator {
-        background: $status_waiting;
-      }
-
-      &:hover {
-        color: white;
-        background: $status_waiting;
+    li {
+        position: relative;
+        color: $dark-grey;
+        text-indent: 15px;
 
         .indicator {
-          background: white;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+            background: $dark-grey;
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
         }
-      }
-    }
 
-    &.review {
-      color: $status_review;
-
-      .indicator {
-        background: $status_review;
-      }
-
-      &:hover {
-        color: white;
-        background: $status_review;
-
-        .indicator {
-          background: white;
+        .svg-inline--fa,
+        .icon {
+            margin-left: 10px;
         }
-      }
-    }
 
-    &.accepted_minor {
-      color: $status_accepted_minor;
+        &:hover {
+            color: white;
 
-      .indicator {
-        background: $status_accepted_minor;
-      }
-
-      &:hover {
-        color: white;
-        background: $status_accepted_minor;
-
-        .indicator {
-          background: white;
+            .indicator {
+                background: white;
+            }
         }
-      }
-    }
 
-    &.accepted_major {
-      color: $status_accepted_major;
+        &.waiting {
+            color: $status_waiting;
 
-      .indicator {
-        background: $status_accepted_major;
-      }
+            .indicator {
+                background: $status_waiting;
+            }
 
-      &:hover {
-        color: white;
-        background: $status_accepted_major;
+            &:hover {
+                color: white;
+                background: $status_waiting;
 
-        .indicator {
-          background: white;
+                .indicator {
+                    background: white;
+                }
+            }
         }
-      }
-    }
 
-    &.proofing {
-      color: $status_proofing;
+        &.review {
+            color: $status_review;
 
-      .indicator {
-        background: $status_proofing;
-      }
+            .indicator {
+                background: $status_review;
+            }
 
-      &:hover {
-        color: white;
-        background: $status_proofing;
+            &:hover {
+                color: white;
+                background: $status_review;
 
-        .indicator {
-          background: white;
+                .indicator {
+                    background: white;
+                }
+            }
         }
-      }
-    }
 
-    &.released {
-      color: $status_released;
+        &.accepted_minor {
+            color: $status_accepted_minor;
 
-      .indicator {
-        background: $status_released;
-      }
+            .indicator {
+                background: $status_accepted_minor;
+            }
 
-      &:hover {
-        color: white;
-        background: $status_released;
+            &:hover {
+                color: white;
+                background: $status_accepted_minor;
 
-        .indicator {
-          background: white;
+                .indicator {
+                    background: white;
+                }
+            }
         }
-      }
-    }
 
-    &.rejected {
-      color: $status_rejected;
+        &.accepted_major {
+            color: $status_accepted_major;
 
-      .indicator {
-        background: $status_rejected;
-      }
+            .indicator {
+                background: $status_accepted_major;
+            }
 
-      &:hover {
-        color: white;
-        background: $status_rejected;
+            &:hover {
+                color: white;
+                background: $status_accepted_major;
 
-        .indicator {
-          background: white;
+                .indicator {
+                    background: white;
+                }
+            }
         }
-      }
+
+        &.proofing {
+            color: $status_proofing;
+
+            .indicator {
+                background: $status_proofing;
+            }
+
+            &:hover {
+                color: white;
+                background: $status_proofing;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+
+        &.released {
+            color: $status_released;
+
+            .indicator {
+                background: $status_released;
+            }
+
+            &:hover {
+                color: white;
+                background: $status_released;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
+
+        &.rejected {
+            color: $status_rejected;
+
+            .indicator {
+                background: $status_rejected;
+            }
+
+            &:hover {
+                color: white;
+                background: $status_rejected;
+
+                .indicator {
+                    background: white;
+                }
+            }
+        }
     }
-  }
 }
 
-
 .modal-container {
-  width: 500px;
+    width: 500px;
 
-  .modal-title {
-    padding-top: 10px;
-    font-size: $large;
-  }
+    .modal-title {
+        padding-top: 10px;
+        font-size: $large;
+    }
 
-  .modal__inner {
-    text-align: center;
-  }
+    .modal__inner {
+        text-align: center;
+    }
 
-  .input {
-    padding-top: 20px;
-    padding-right: 20px;
-  }
+    .input {
+        padding-top: 20px;
+        padding-right: 20px;
+    }
 }
 
 .error-notice {
@@ -297,6 +300,6 @@
 }
 
 #contextMenu {
-  max-height: 350px;
-  overflow-y: auto;
+    max-height: 350px;
+    overflow-y: auto;
 }

@@ -58,7 +58,7 @@ Provides:
 
 - `organization$(id)` - Get Organization object as Observable (cached with shareReplay)
 - `organizationName$(id)` - Get formatted organization name as Observable<string>
-  - Uses formatOrgName() with acronym-preserving heuristic + TitleCasePipe
+    - Uses formatOrgName() with acronym-preserving heuristic + TitleCasePipe
 - `refresh(id)` - Force refetch for a specific organization
 - `clear()` - Clear entire cache
 
@@ -201,81 +201,81 @@ return this.http.get<Organization>(`${this.url}/${id}`).pipe(map((org) => Organi
 **Strategy**: Cache individual organization lookups using Map with shareReplay(1) to prevent duplicate HTTP requests.
 
 ```typescript
-import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, shareReplay } from 'rxjs/operators';
-import { TitleCasePipe } from '@angular/common';
-import { OrganizationService } from './organization.service';
-import { Organization } from './organization.types';
+import { Injectable } from "@angular/core";
+import { Observable, of, throwError } from "rxjs";
+import { catchError, map, shareReplay } from "rxjs/operators";
+import { TitleCasePipe } from "@angular/common";
+import { OrganizationService } from "./organization.service";
+import { Organization } from "./organization.types";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class OrganizationStore {
-  private cache = new Map<string, Observable<Organization>>();
-  private titleCasePipe = new TitleCasePipe();
+    private cache = new Map<string, Observable<Organization>>();
+    private titleCasePipe = new TitleCasePipe();
 
-  constructor(private orgService: OrganizationService) {}
+    constructor(private orgService: OrganizationService) {}
 
-  /**
-   * Get organization by ID (cached)
-   * @param id Organization ObjectId
-   * @returns Observable<Organization | null> - null if id is empty or error occurs
-   */
-  organization$(id: string): Observable<Organization | null> {
-    if (!id) return of(null);
+    /**
+     * Get organization by ID (cached)
+     * @param id Organization ObjectId
+     * @returns Observable<Organization | null> - null if id is empty or error occurs
+     */
+    organization$(id: string): Observable<Organization | null> {
+        if (!id) return of(null);
 
-    if (!this.cache.has(id)) {
-      const org$ = this.orgService.getOrganizationById(id).pipe(
-        catchError((err) => {
-          // Evict from cache on error so future calls can retry
-          this.cache.delete(id);
-          // Return null for UI resilience (component can handle gracefully)
-          return of(null as any);
-        }),
-        shareReplay({ bufferSize: 1, refCount: false }),
-      );
-      this.cache.set(id, org$);
+        if (!this.cache.has(id)) {
+            const org$ = this.orgService.getOrganizationById(id).pipe(
+                catchError((err) => {
+                    // Evict from cache on error so future calls can retry
+                    this.cache.delete(id);
+                    // Return null for UI resilience (component can handle gracefully)
+                    return of(null as any);
+                }),
+                shareReplay({ bufferSize: 1, refCount: false }),
+            );
+            this.cache.set(id, org$);
+        }
+
+        return this.cache.get(id)!;
     }
 
-    return this.cache.get(id)!;
-  }
-
-  /**
-   * Get formatted organization name by ID
-   * @param id Organization ObjectId
-   * @returns Observable<string> - formatted organization name
-   */
-  organizationName$(id: string): Observable<string> {
-    return this.organization$(id).pipe(map((org) => (org ? this.formatOrgName(org.name) : '')));
-  }
-
-  /**
-   * Force refresh organization by ID
-   * @param id Organization ObjectId
-   */
-  refresh(id: string): void {
-    this.cache.delete(id);
-  }
-
-  /**
-   * Clear entire cache
-   */
-  clear(): void {
-    this.cache.clear();
-  }
-
-  /**
-   * Format organization name - preserve acronyms, apply title case to others
-   * @param name Organization name
-   * @returns Formatted name
-   */
-  private formatOrgName(name: string): string {
-    if (!name) return '';
-    // If second character is uppercase, assume it's an acronym (e.g., "UCLA")
-    if (name.length > 1 && name.charAt(1) === name.charAt(1).toUpperCase()) {
-      return name;
+    /**
+     * Get formatted organization name by ID
+     * @param id Organization ObjectId
+     * @returns Observable<string> - formatted organization name
+     */
+    organizationName$(id: string): Observable<string> {
+        return this.organization$(id).pipe(map((org) => (org ? this.formatOrgName(org.name) : "")));
     }
-    return this.titleCasePipe.transform(name);
-  }
+
+    /**
+     * Force refresh organization by ID
+     * @param id Organization ObjectId
+     */
+    refresh(id: string): void {
+        this.cache.delete(id);
+    }
+
+    /**
+     * Clear entire cache
+     */
+    clear(): void {
+        this.cache.clear();
+    }
+
+    /**
+     * Format organization name - preserve acronyms, apply title case to others
+     * @param name Organization name
+     * @returns Formatted name
+     */
+    private formatOrgName(name: string): string {
+        if (!name) return "";
+        // If second character is uppercase, assume it's an acronym (e.g., "UCLA")
+        if (name.length > 1 && name.charAt(1) === name.charAt(1).toUpperCase()) {
+            return name;
+        }
+        return this.titleCasePipe.transform(name);
+    }
 }
 ```
 
@@ -295,11 +295,11 @@ export class OrganizationStore {
 **Component Pattern**:
 
 ```typescript
-import { OrganizationStore } from '@app/core/organization-module/organization.store';
+import { OrganizationStore } from "@app/core/organization-module/organization.store";
 
 export class ExampleComponent {
-  // Inject as public for template access
-  constructor(public orgStore: OrganizationStore) {}
+    // Inject as public for template access
+    constructor(public orgStore: OrganizationStore) {}
 }
 ```
 
@@ -367,13 +367,13 @@ For each component using `organizationFormat()`, migrate in this order:
 
 ```typescript
 export class ExampleComponent {
-  organizationFormat(organization: string) {
-    if (organization.charAt(1) === organization.charAt(1).toUpperCase()) {
-      return organization;
-    } else {
-      return titleCase(organization);
+    organizationFormat(organization: string) {
+        if (organization.charAt(1) === organization.charAt(1).toUpperCase()) {
+            return organization;
+        } else {
+            return titleCase(organization);
+        }
     }
-  }
 }
 ```
 
@@ -386,15 +386,15 @@ export class ExampleComponent {
 **After** (TypeScript):
 
 ```typescript
-import { inject, DestroyRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { OrganizationStore } from '@app/core/organization-module/organization.store';
+import { inject, DestroyRef } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { OrganizationStore } from "@app/core/organization-module/organization.store";
 
 export class ExampleComponent {
-  private destroyRef = inject(DestroyRef);
+    private destroyRef = inject(DestroyRef);
 
-  constructor(public orgStore: OrganizationStore) {}
-  // Remove organizationFormat() method entirely
+    constructor(public orgStore: OrganizationStore) {}
+    // Remove organizationFormat() method entirely
 }
 ```
 
@@ -487,39 +487,39 @@ someMethod() {
 **Implementation**:
 
 ```typescript
-import { inject, DestroyRef } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { OrganizationStore } from '@app/core/organization-module/organization.store';
+import { inject, DestroyRef } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { OrganizationStore } from "@app/core/organization-module/organization.store";
 
 export class AuthService {
-  private destroyRef = inject(DestroyRef);
-  private orgStore = inject(OrganizationStore);
+    private destroyRef = inject(DestroyRef);
+    private orgStore = inject(OrganizationStore);
 
-  private sendRumMetadata() {
-    const metadata = {
-      userId: this.user.userId,
-      organizationId: this.user.organizationId,
-    };
+    private sendRumMetadata() {
+        const metadata = {
+            userId: this.user.userId,
+            organizationId: this.user.organizationId,
+        };
 
-    // Send organizationId immediately
-    this.rumService.setUserContext(metadata);
+        // Send organizationId immediately
+        this.rumService.setUserContext(metadata);
 
-    // Resolve organization name asynchronously (best-effort, non-blocking)
-    if (this.user.organizationId) {
-      this.orgStore
-        .organizationName$(this.user.organizationId)
-        .pipe(takeUntilDestroyed(this.destroyRef))
-        .subscribe((orgName) => {
-          if (orgName) {
-            // Update RUM context with organization name when available
-            this.rumService.setUserContext({
-              ...metadata,
-              organizationName: orgName,
-            });
-          }
-        });
+        // Resolve organization name asynchronously (best-effort, non-blocking)
+        if (this.user.organizationId) {
+            this.orgStore
+                .organizationName$(this.user.organizationId)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe((orgName) => {
+                    if (orgName) {
+                        // Update RUM context with organization name when available
+                        this.rumService.setUserContext({
+                            ...metadata,
+                            organizationName: orgName,
+                        });
+                    }
+                });
+        }
     }
-  }
 }
 ```
 
@@ -546,35 +546,35 @@ export class AuthService {
 ### Phase 6: Testing & Validation (1-2 days)
 
 1. **Remove deprecated code**:
-   - Remove `organizationFormat()` from all components
-   - Verify no `.organization` string references remain
+    - Remove `organizationFormat()` from all components
+    - Verify no `.organization` string references remain
 
 2. **Testing Strategy**:
-   - Unit tests for OrganizationStore
-     - Caching with shareReplay({ refCount: false })
-     - Verify same ID returns same observable (cache hit)
-     - Error eviction and retry capability
-     - formatOrgName() preserves acronyms (e.g., "UCLA" stays "UCLA")
-   - Unit tests for OrganizationService.getOrganizationById()
-     - HTTP GET request
-     - Response shape handling
-     - Zod schema validation
-   - Component tests with async pipe
-     - Mock OrganizationStore
-     - Test observables resolve correctly in templates
-   - E2E tests for:
-     - User profile editing
-     - User registration
-     - Learning object authorship display
-     - Collection curator display
-     - Admin user management
+    - Unit tests for OrganizationStore
+        - Caching with shareReplay({ refCount: false })
+        - Verify same ID returns same observable (cache hit)
+        - Error eviction and retry capability
+        - formatOrgName() preserves acronyms (e.g., "UCLA" stays "UCLA")
+    - Unit tests for OrganizationService.getOrganizationById()
+        - HTTP GET request
+        - Response shape handling
+        - Zod schema validation
+    - Component tests with async pipe
+        - Mock OrganizationStore
+        - Test observables resolve correctly in templates
+    - E2E tests for:
+        - User profile editing
+        - User registration
+        - Learning object authorship display
+        - Collection curator display
+        - Admin user management
 
 3. **Performance Testing**:
-   - Verify caching prevents duplicate HTTP calls for same organizationId
-   - Verify shareReplay shares in-flight requests (same ID accessed simultaneously)
-   - Test with slow network to ensure proper async handling with async pipe
-   - Monitor list views: many unique organizationIds will trigger multiple requests (expected)
-   - Future optimization: consider batch endpoint (POST /organizations/lookup) if needed
+    - Verify caching prevents duplicate HTTP calls for same organizationId
+    - Verify shareReplay shares in-flight requests (same ID accessed simultaneously)
+    - Test with slow network to ensure proper async handling with async pipe
+    - Monitor list views: many unique organizationIds will trigger multiple requests (expected)
+    - Future optimization: consider batch endpoint (POST /organizations/lookup) if needed
 
 ---
 
@@ -583,46 +583,46 @@ export class AuthService {
 ### High Risk Areas
 
 1. **auth.service RUM tracking**
-   - Used for analytics/monitoring across entire application
-   - Organization data sent to monitoring service
-   - Changes could affect reporting and dashboards
-   - **Mitigation**: Send both organizationId (for filtering) and organizationName (for display)
-   - **Implementation**: Use takeUntilDestroyed() for async resolution, non-blocking
+    - Used for analytics/monitoring across entire application
+    - Organization data sent to monitoring service
+    - Changes could affect reporting and dashboards
+    - **Mitigation**: Send both organizationId (for filtering) and organizationName (for display)
+    - **Implementation**: Use takeUntilDestroyed() for async resolution, non-blocking
 
 2. **edit-profile** and **register** components
-   - Backend already updated (no coordination needed)
-   - Critical user flows - any bugs block user onboarding/profile updates
-   - **Mitigation**: Thorough testing in dev environment, staged rollout
+    - Backend already updated (no coordination needed)
+    - Critical user flows - any bugs block user onboarding/profile updates
+    - **Mitigation**: Thorough testing in dev environment, staged rollout
 
 3. **change-author** component
-   - Complex logic with author switching
-   - Used in admin workflows
-   - **Mitigation**: Extensive testing, staged rollout
+    - Complex logic with author switching
+    - Used in admin workflows
+    - **Mitigation**: Extensive testing, staged rollout
 
 4. **Learning object displays**
-   - High traffic areas with multiple contributors
-   - Each unique contributor orgId triggers separate HTTP call (expected behavior)
-   - **Mitigation**: OrganizationStore caching prevents duplicate calls for same ID; consider batch endpoint if performance issues arise
+    - High traffic areas with multiple contributors
+    - Each unique contributor orgId triggers separate HTTP call (expected behavior)
+    - **Mitigation**: OrganizationStore caching prevents duplicate calls for same ID; consider batch endpoint if performance issues arise
 
 ### Medium Risk Areas
 
 1. **User list/table displays**
-   - Many users shown at once
-   - **Cache behavior**: Each unique organizationId triggers ONE HTTP call; shareReplay shares in-flight requests
-   - Many unique IDs will result in many requests (expected until batch endpoint added)
-   - **Mitigation**: Monitor performance; verify shareReplay({ refCount: false }) prevents duplicate calls
+    - Many users shown at once
+    - **Cache behavior**: Each unique organizationId triggers ONE HTTP call; shareReplay shares in-flight requests
+    - Many unique IDs will result in many requests (expected until batch endpoint added)
+    - **Mitigation**: Monitor performance; verify shareReplay({ refCount: false }) prevents duplicate calls
 
 2. **Async Pipe Management**
-   - Components rely on async pipe for automatic subscription management
-   - Memory leak risk if manual subscriptions used without takeUntilDestroyed()
-   - **Mitigation**: Code review to ensure no manual subscriptions without cleanup
+    - Components rely on async pipe for automatic subscription management
+    - Memory leak risk if manual subscriptions used without takeUntilDestroyed()
+    - **Mitigation**: Code review to ensure no manual subscriptions without cleanup
 
 ### Low Risk Areas
 
 1. **author-card**, **curator-card**, **profile-header**
-   - Single organization display
-   - Less critical flows
-   - Good for initial testing
+    - Single organization display
+    - Less critical flows
+    - Good for initial testing
 
 ---
 
@@ -631,21 +631,21 @@ export class AuthService {
 ### Unit Tests Required
 
 - [ ] OrganizationStore
-  - Caching behavior (Map + shareReplay({ refCount: false }))
-  - Verify same ID returns same observable (cache hit)
-  - Error eviction (delete from cache on error)
-  - formatOrgName() logic (acronym preservation: "UCLA" → "UCLA", "towson" → "Towson")
-  - refresh(id) triggers refetch
-  - clear() clears entire cache
+    - Caching behavior (Map + shareReplay({ refCount: false }))
+    - Verify same ID returns same observable (cache hit)
+    - Error eviction (delete from cache on error)
+    - formatOrgName() logic (acronym preservation: "UCLA" → "UCLA", "towson" → "Towson")
+    - refresh(id) triggers refetch
+    - clear() clears entire cache
 - [ ] OrganizationService.getOrganizationById()
-  - HTTP GET request to /organizations/:id
-  - Response shape handling
-  - Zod schema validation
-  - Error handling (404, network errors)
+    - HTTP GET request to /organizations/:id
+    - Response shape handling
+    - Zod schema validation
+    - Error handling (404, network errors)
 - [ ] Component integration with async pipe
-  - Mock OrganizationStore
-  - Test observables resolve correctly in templates
-  - Test null organizationId handling
+    - Mock OrganizationStore
+    - Test observables resolve correctly in templates
+    - Test null organizationId handling
 
 ### Integration Tests Required
 
@@ -690,34 +690,34 @@ export class AuthService {
 ## Open Questions
 
 1. ~~Backend Coordination~~ **RESOLVED**:
-   - ✅ Backend has GET /organizations/:id endpoint
-   - ✅ Backend already requires organizationId in user updates/registration
-   - ✅ Organization string field REMOVED from database
+    - ✅ Backend has GET /organizations/:id endpoint
+    - ✅ Backend already requires organizationId in user updates/registration
+    - ✅ Organization string field REMOVED from database
 
 2. **RUM Tracking (auth.service)** ⚠️ **DECISION MADE**:
-   - RUM service needs organization name for dashboard filtering/display
-   - **Solution**: Send both `organizationId` AND `organizationName` (resolved via OrganizationStore)
-   - Use takeUntilDestroyed() for async resolution without blocking auth flow
-   - **Impact**: This affects all analytics and monitoring across the application
-   - **Action**: Test RUM dashboard after change to verify reports still work
+    - RUM service needs organization name for dashboard filtering/display
+    - **Solution**: Send both `organizationId` AND `organizationName` (resolved via OrganizationStore)
+    - Use takeUntilDestroyed() for async resolution without blocking auth flow
+    - **Impact**: This affects all analytics and monitoring across the application
+    - **Action**: Test RUM dashboard after change to verify reports still work
 
 3. **Async Observable Handling**:
-   - Prefer async pipe in templates (automatic subscription management)
-   - Use takeUntilDestroyed() for manual subscriptions (no toPromise())
-   - shareReplay({ refCount: false }) in OrganizationStore prevents duplicate HTTP calls
+    - Prefer async pipe in templates (automatic subscription management)
+    - Use takeUntilDestroyed() for manual subscriptions (no toPromise())
+    - shareReplay({ refCount: false }) in OrganizationStore prevents duplicate HTTP calls
 
 4. ~~Backward Compatibility~~ **NOT APPLICABLE**:
-   - No backward compatibility needed
-   - Organization field is GONE from database
-   - All code must migrate (no fallback option)
+    - No backward compatibility needed
+    - Organization field is GONE from database
+    - All code must migrate (no fallback option)
 
 5. **Caching Strategy**:
-   - OrganizationStore uses Map<id, Observable<Organization>> with shareReplay({ refCount: false })
-   - Each unique organizationId triggers ONE HTTP call
-   - shareReplay shares in-flight requests across multiple simultaneous subscribers
-   - Errors evict from cache (allows retry on next call)
-   - refresh(id) method for manual cache invalidation
-   - On-demand fetching - organizations loaded as needed (no preloading)
+    - OrganizationStore uses Map<id, Observable<Organization>> with shareReplay({ refCount: false })
+    - Each unique organizationId triggers ONE HTTP call
+    - shareReplay shares in-flight requests across multiple simultaneous subscribers
+    - Errors evict from cache (allows retry on next call)
+    - refresh(id) method for manual cache invalidation
+    - On-demand fetching - organizations loaded as needed (no preloading)
 
 ## Implementation Notes (2026-02-20)
 
@@ -763,13 +763,13 @@ export class AuthService {
 If critical issues arise:
 
 1. **Immediate**:
-   - Revert frontend code to last working commit
-   - Deploy previous version
-   - This will cause errors since organization field doesn't exist in database
+    - Revert frontend code to last working commit
+    - Deploy previous version
+    - This will cause errors since organization field doesn't exist in database
 2. **Only option**:
-   - Fix bugs in OrganizationStore quickly
-   - Deploy hotfix
-   - **OR** coordinate with backend team to restore organization field temporarily (requires database migration)
+    - Fix bugs in OrganizationStore quickly
+    - Deploy hotfix
+    - **OR** coordinate with backend team to restore organization field temporarily (requires database migration)
 
 **Prevention is critical**:
 
@@ -810,59 +810,53 @@ If critical issues arise:
 
 **User Entity** (remove organization field): 26. `src/entity/user/user.ts`
 
-**Additional updates**:
-27. `src/app/core/organization-module/organization.schemas.ts`
-28. `src/app/core/organization-module/organization.types.ts`
-29. `src/app/core/utility-module/organization.service.ts` (removed `toPromise()`)
+**Additional updates**: 27. `src/app/core/organization-module/organization.schemas.ts` 28. `src/app/core/organization-module/organization.types.ts` 29. `src/app/core/utility-module/organization.service.ts` (removed `toPromise()`)
 
 ---
 
 ## Document History
 
 - **2026-02-20 (v1.0)**: Initial audit and plan created
-  - Documented all .organization usage (68+ references)
-  - Identified 13 display components, 4 direct access, 2 forms, 1 service
-  - Initial assumption: preload all organizations synchronously
-  
+    - Documented all .organization usage (68+ references)
+    - Identified 13 display components, 4 direct access, 2 forms, 1 service
+    - Initial assumption: preload all organizations synchronously
 - **2026-02-20 (v2.0)**: Major revision
-  - Backend removed organization field (BREAKING CHANGE)
-  - Initially thought no getById endpoint existed
-  - Changed to preloaded cache + synchronous lookup approach
-  - Reduced timeline from 2-3 weeks to 1 week
-  
+    - Backend removed organization field (BREAKING CHANGE)
+    - Initially thought no getById endpoint existed
+    - Changed to preloaded cache + synchronous lookup approach
+    - Reduced timeline from 2-3 weeks to 1 week
 - **2026-02-20 (v3.0)**: Architecture revision
-  - Confirmed Backend has GET /organizations/:id endpoint
-  - Changed from preloaded cache to async observable approach
-  - Use OrganizationStore (not OrganizationDisplayService)
-  - Async pipe in templates with individual cached HTTP calls
-  - shareReplay(1) prevents duplicate queries
-  - takeUntilDestroyed() for manual subscriptions
-  - No toPromise() usage
-  - Timeline remains 5-7 days (1 week)
+    - Confirmed Backend has GET /organizations/:id endpoint
+    - Changed from preloaded cache to async observable approach
+    - Use OrganizationStore (not OrganizationDisplayService)
+    - Async pipe in templates with individual cached HTTP calls
+    - shareReplay(1) prevents duplicate queries
+    - takeUntilDestroyed() for manual subscriptions
+    - No toPromise() usage
+    - Timeline remains 5-7 days (1 week)
 
 - **2026-02-20 (v4.0)**: Angular 18+ best practices alignment
-  - Fixed RxJS imports: operators from 'rxjs/operators'
-  - Updated OrganizationStore: cache type Map<string, Observable<Organization>> (not nullable)
-  - Use shareReplay({ bufferSize: 1, refCount: false }) for long-lived cache
-  - Removed console.error from store (centralized error handling preferred)
-  - Clarified caching behavior: prevents duplicate calls for SAME ID (not all N+1 scenarios)
-  - OrganizationService.getOrganizationById() with proper response shape handling
-  - Enhanced auth.service RUM: non-blocking async resolution with takeUntilDestroyed()
-  - Removed all OrganizationDisplayService/preload/synchronous references
-  - Added trackBy guidance for list performance
-  - Status: All issues from feedback addressed
+    - Fixed RxJS imports: operators from 'rxjs/operators'
+    - Updated OrganizationStore: cache type Map<string, Observable<Organization>> (not nullable)
+    - Use shareReplay({ bufferSize: 1, refCount: false }) for long-lived cache
+    - Removed console.error from store (centralized error handling preferred)
+    - Clarified caching behavior: prevents duplicate calls for SAME ID (not all N+1 scenarios)
+    - OrganizationService.getOrganizationById() with proper response shape handling
+    - Enhanced auth.service RUM: non-blocking async resolution with takeUntilDestroyed()
+    - Removed all OrganizationDisplayService/preload/synchronous references
+    - Added trackBy guidance for list performance
+    - Status: All issues from feedback addressed
 
 - **2026-02-20 (v5.0)**: Implementation completed
-  - Implemented `OrganizationService.getOrganizationById()` with support for wrapped and direct API response shapes
-  - Added `OrganizationStore` with per-ID observable caching and `shareReplay({ bufferSize: 1, refCount: false })`
-  - Migrated all audited UI org displays from `.organization`/`organizationFormat()` to `orgStore.organizationName$(organizationId) | async`
-  - Updated `edit-profile` and `register` submission payloads to send `organizationId`
-  - Updated `auth.service` RUM metadata to send `organizationId` immediately and enrich with `organizationName` via `take(1)`
-  - Removed `organization` field from `User` entity model and serialization
-  - Added unit tests for organization store caching/formatting and org service get-by-id behavior
-  - Added compile verification via `npx tsc -p src/tsconfig.app.json --noEmit`
-  - Remaining TODOs: run full CI tests and E2E, validate RUM dashboards in deployed environment
-  
+    - Implemented `OrganizationService.getOrganizationById()` with support for wrapped and direct API response shapes
+    - Added `OrganizationStore` with per-ID observable caching and `shareReplay({ bufferSize: 1, refCount: false })`
+    - Migrated all audited UI org displays from `.organization`/`organizationFormat()` to `orgStore.organizationName$(organizationId) | async`
+    - Updated `edit-profile` and `register` submission payloads to send `organizationId`
+    - Updated `auth.service` RUM metadata to send `organizationId` immediately and enrich with `organizationName` via `take(1)`
+    - Removed `organization` field from `User` entity model and serialization
+    - Added unit tests for organization store caching/formatting and org service get-by-id behavior
+    - Added compile verification via `npx tsc -p src/tsconfig.app.json --noEmit`
+    - Remaining TODOs: run full CI tests and E2E, validate RUM dashboards in deployed environment
 - Document Version: **5.0**
 - Author: Development Team
 - Status: **IMPLEMENTED - VALIDATION IN PROGRESS**
