@@ -38,7 +38,6 @@ import { ClearFiltersButtonComponent } from '../../../shared/components/clear-fi
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { VerificationBadgeComponent } from '../../../shared/components/verification-badge/verification-badge.component';
-import { MatTooltip } from '@angular/material/tooltip';
 import { MatMenuTrigger, MatMenu, MatMenuContent, MatMenuItem } from '@angular/material/menu';
 import { OrganizationDeleteModalComponent } from './organization-delete-modal/organization-delete-modal.component';
 import { OrganizationMigrateModalComponent } from './organization-migrate-modal/organization-migrate-modal.component';
@@ -70,7 +69,6 @@ import { OrganizationMigrateModalComponent } from './organization-migrate-modal/
         NgClass,
         NgFor,
         MatIconButton,
-        MatTooltip,
         MatMenuTrigger,
         MatHeaderRowDef,
         MatHeaderRow,
@@ -159,9 +157,6 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     label: this.toTitleCase(this.formatLevelName(level)),
     value: level,
   }));
-  // TODO(clark-api): Enable organization delete actions when backend delete API is implemented.
-  readonly deleteNotSupportedTooltip =
-    'Delete is not supported by API. Please reach out to developers.';
 
   constructor(
     private readonly toaster: ToastrOvenService,
@@ -849,7 +844,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   private async fetchLearningObjectCount(organizationId: string): Promise<number> {
     try {
       const response = await this.searchService.getLearningObjects({
-        organizationId: [organizationId],
+        organizationIds: [organizationId],
         currPage: 1,
         limit: 1,
       });

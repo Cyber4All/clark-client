@@ -235,16 +235,14 @@
                   >
                     <mat-icon>sync_alt</mat-icon>
                   </button>
-                  <span class="disabled-action-tooltip">
-                    <button
-                      mat-icon-button
-                      (click)="openDeleteModal(organization)"
-                      class="action-icon-button delete"
-                      title="Delete"
-                    >
-                      <mat-icon>delete</mat-icon>
-                    </button>
-                  </span>
+                  <button
+                    mat-icon-button
+                    (click)="openDeleteModal(organization)"
+                    class="action-icon-button delete"
+                    title="Delete"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
                 </ng-container>
                 <ng-template #mobileActions>
                   <button
@@ -308,12 +306,10 @@
         <mat-icon>sync_alt</mat-icon>
         <span>Migrate Users</span>
       </button>
-      <span class="disabled-action-tooltip disabled-action-tooltip--menu">
-        <button mat-menu-item (click)="openDeleteModal(organization)">
-          <mat-icon>delete</mat-icon>
-          <span>Delete</span>
-        </button>
-      </span>
+      <button mat-menu-item (click)="openDeleteModal(organization)">
+        <mat-icon>delete</mat-icon>
+        <span>Delete</span>
+      </button>
     </ng-template>
   </mat-menu>
 

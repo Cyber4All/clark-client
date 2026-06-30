@@ -39,6 +39,7 @@ export interface Query {
   tags?: string[]
   username?: string;
   admin?: string;
+  organizationIds?: string[];
 }
 
 export interface MappingQuery extends Query {

@@ -19,9 +19,10 @@ Wire the admin organizations dashboard delete action to the backend `DELETE /org
 - [x] (2026-06-30 17:40Z) Increment 3: add focused component specs for delete guard, success, and backend error handling.
 - [x] (2026-06-30 17:40Z) Increment 3 validation: `npx tsc -p src/tsconfig.app.json --noEmit` passed.
 - [x] (2026-06-30 17:40Z) Increment 3 validation: `npx jest --no-watchman src/app/admin/pages/organizations/organizations.component.spec.ts` still fails before tests execute with existing `configSet.processWithEsbuild is not a function`.
-- [ ] Increment 4: update delete modal markup/styles to match the current organization modal patterns and require confirmation certification.
+- [x] (2026-06-30 17:48Z) Increment 4: update existing delete modal to require `I confirm this action is correct` before enabling Delete.
+- [x] (2026-06-30 17:48Z) Increment 4: remove stale delete-not-supported tooltip import, component property, wrapper markup, and styles.
 - [x] (2026-06-30 17:40Z) Update focused component Jest specs after component behavior changes are reintroduced.
-- [ ] Run focused validation after each increment.
+- [x] (2026-06-30 17:48Z) Increment 4 validation: `npx tsc -p src/tsconfig.app.json --noEmit` passed.
 
 ## Surprises & Discoveries
 
@@ -50,7 +51,7 @@ Wire the admin organizations dashboard delete action to the backend `DELETE /org
 
 ## Outcomes & Retrospective
 
-Prior all-at-once implementation was reset by the user to isolate behavior changes. Reimplementation is now staged. Increment 1 adds only the service-layer delete method and service spec; no organizations dashboard template, component behavior, or styling was changed in this increment.
+Prior all-at-once implementation was reset by the user to isolate behavior changes. Reimplementation was completed in staged commits: service method, delete button enablement, API-backed component behavior, and final modal certification/tooltip cleanup. The existing delete modal was reused rather than replaced.
 
 ## Context and Orientation
 

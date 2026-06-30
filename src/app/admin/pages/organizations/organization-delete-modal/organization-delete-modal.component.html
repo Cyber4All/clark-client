@@ -6,15 +6,24 @@
       <strong>{{ organization?.name }}</strong> from the system. This action
       cannot be undone.
     </p>
+
+    <mat-checkbox
+      [(ngModel)]="certified"
+      class="certification-checkbox"
+    >
+      I confirm this action is correct
+    </mat-checkbox>
+
     <div class="btn-group center">
       <button
         type="button"
         mat-raised-button
         color="warn"
         (click)="onConfirm()"
+        [disabled]="!certified"
       >
         <mat-icon>delete</mat-icon>
-        Yes, Delete
+        Delete
       </button>
       <button type="button" mat-raised-button (click)="onClose()">
         <mat-icon>close</mat-icon>
