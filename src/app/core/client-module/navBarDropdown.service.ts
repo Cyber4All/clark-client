@@ -1,19 +1,17 @@
-import { Injectable } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { Topic } from '../../../entity';
-import { TopicsService } from '../learning-object-module/topics/topics.service';
-
+import { Injectable } from "@angular/core";
+import { NavigationEnd, Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
+import { Topic } from "../../../entity";
+import { TopicsService } from "../learning-object-module/topics/topics.service";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class NavbarDropdownService {
-
     constructor(
         private router: Router,
-        private topicsService: TopicsService
-    ) { }
+        private topicsService: TopicsService,
+    ) {}
     //mobile or desktop
     public isDesktop = new BehaviorSubject<boolean>(true);
     //user options main navbar
@@ -33,15 +31,24 @@ export class NavbarDropdownService {
     public showNavbars = new BehaviorSubject<boolean>(true);
 
     public externalResources = [
-        { name: 'CAE Resource Directory (CARD)', link: 'https://caeresource.clark.center' },
-        { name: 'Standard Guidelines Tool', link: 'https://standard-guidelines.clark.center' },
-        { name: 'CPNC Competency Constructor', link: 'https://cybercompetencies.com' },
-        { name: 'Curriculum Task Force', link: 'https://cyberedtaskforce.org' },
-        { name: 'Task Tool', link: 'https://tasktool.clark.center' },
-        { name: 'CAE Community Site', link: 'https://www.caecommunity.org/' },
+        {
+            name: "CAE Resource Directory (CARD)",
+            link: "https://caeresource.clark.center",
+        },
+        {
+            name: "Standard Guidelines Tool",
+            link: "https://standard-guidelines.clark.center",
+        },
+        {
+            name: "CPNC Competency Constructor",
+            link: "https://cybercompetencies.com",
+        },
+        { name: "Curriculum Task Force", link: "https://cyberedtaskforce.org" },
+        { name: "Task Tool", link: "https://tasktool.clark.center" },
+        { name: "CAE Community Site", link: "https://www.caecommunity.org/" },
     ];
     public topics = new BehaviorSubject<Topic[]>([]);
-    public topicSelection = new BehaviorSubject<Topic>({ _id: '', name: '' });
+    public topicSelection = new BehaviorSubject<Topic>({ _id: "", name: "" });
 
     async getTopicList(): Promise<void> {
         this.topics.next(await this.topicsService.getTopics());
@@ -49,7 +56,15 @@ export class NavbarDropdownService {
 
     public setTopic(topic: Topic): void {
         this.closeAll();
-        this.router.navigate(['/browse'], { queryParams: { currPage: 1, limit: 10, status: 'released', topics: topic } })
+        this.router
+            .navigate(["/browse"], {
+                queryParams: {
+                    currPage: 1,
+                    limit: 10,
+                    status: "released",
+                    topics: topic,
+                },
+            })
             .then(() => window.location.reload());
     }
 
@@ -86,26 +101,25 @@ export class NavbarDropdownService {
         if (this.browseDropdown.getValue()) {
             this.browseDropdown.next(false);
         }
-
     }
 
     public setNavbarStatus(): void {
-        this.router.events.subscribe(e => {
+        this.router.events.subscribe((e) => {
             if (e instanceof NavigationEnd) {
                 // if we're in onion, auth, or admin, toggle the navbars off
                 this.closeMobileMenus();
                 this.closeAll();
-                const url = e.url.split('/');
+                const url = e.url.split("/");
                 if (
-                    url[1] === 'auth' ||
-                    url[1] === 'onion' ||
-                    url[1] === 'admin'
+                    url[1] === "auth" ||
+                    url[1] === "onion" ||
+                    url[1] === "admin"
                 ) {
                     this.toggleNavbars(false);
                 } else {
                     this.toggleNavbars(true);
-                };
-            };
+                }
+            }
             window.scrollTo(0, 0);
         });
     }

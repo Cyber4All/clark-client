@@ -1,90 +1,88 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .full-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 20;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 20;
 }
 
 // begin default context menu styles
 ::ng-deep .context-menu {
-  display: block;
-  position: fixed;
-  min-width: 200px;
-  background: white;
-  padding: 5px 0;
-  max-height: 60vh;
-  border-radius: 3px;
-  box-sizing: border-box;
-  box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
-  overflow: auto;
-  transform-origin: top center;
+    display: block;
+    position: fixed;
+    min-width: 200px;
+    background: white;
+    padding: 5px 0;
+    max-height: 60vh;
+    border-radius: 3px;
+    box-sizing: border-box;
+    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.08);
+    overflow: auto;
+    transform-origin: top center;
 
-  ul {
-    margin: 0;
-    padding: 0;
+    ul {
+        margin: 0;
+        padding: 0;
 
-    li {
-      font-size: $small;
-      list-style-type: none;
-      padding:5px 15px;
-      color: $dark-grey;
-      cursor: pointer;
+        li {
+            font-size: $small;
+            list-style-type: none;
+            padding: 5px 15px;
+            color: $dark-grey;
+            cursor: pointer;
 
-      .svg-inline--fa,
-      .icon {
-        margin-right: 10px;
-      }
-
-      &.new-feature_wrapper {
-
-        p {
-          margin: 0;
-          display: inline;
-  
-          &.list-item_title {
-            margin-right: 35px;
-          }
-  
-          &.new-item_element {
-            margin: 0;
-            color: $orange;
-  
-            .svg-inline--fa{
-              margin-right: 2px;
+            .svg-inline--fa,
+            .icon {
+                margin-right: 10px;
             }
-          }
+
+            &.new-feature_wrapper {
+                p {
+                    margin: 0;
+                    display: inline;
+
+                    &.list-item_title {
+                        margin-right: 35px;
+                    }
+
+                    &.new-item_element {
+                        margin: 0;
+                        color: $orange;
+
+                        .svg-inline--fa {
+                            margin-right: 2px;
+                        }
+                    }
+                }
+            }
+
+            .notifications {
+                background-color: $error-red;
+                border: 1px solid white;
+                border-radius: 20px;
+                color: white;
+                padding: 1px 5px;
+                text-align: center;
+                display: inline-block;
+                margin-left: 5px;
+            }
+
+            &:hover {
+                background: $light-blue;
+                color: white;
+            }
+
+            &.bad {
+                color: $error-red;
+
+                &:hover {
+                    background: $error-red;
+                    color: white;
+                }
+            }
         }
-      }
-      
-
-      .notifications {
-        background-color: $error-red;
-        border: 1px solid white;
-        border-radius: 20px;
-        color: white;
-        padding: 1px 5px;
-        text-align: center;
-        display: inline-block;
-        margin-left: 5px;
-      }
-
-      &:hover {
-        background: $light-blue;
-        color: white;
-      }
-
-      &.bad {
-        color: $error-red;
-
-        &:hover {
-          background: $error-red;
-          color: white;
-        }
-      }
     }
-  }
 }

@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .library-item {
     display: grid;
@@ -19,23 +19,23 @@
 
     &.nanomodule {
         background: $nanomodule-color;
-      }
-    
-      &.micromodule {
+    }
+
+    &.micromodule {
         background: $micromodule-color;
-      }
-    
-      &.module {
+    }
+
+    &.module {
         background: $module-color;
-      }
-    
-      &.unit {
+    }
+
+    &.unit {
         background: $unit-color;
-      }
-    
-      &.course {
+    }
+
+    &.course {
         background: $course-color;
-      }
+    }
 }
 
 .library-item__title {
@@ -67,7 +67,6 @@
 .library-item__download-button {
     color: $light-blue;
     margin-right: 10px;
-    
 }
 
 .library-item__delete-button {
@@ -77,12 +76,12 @@
 button {
     border: none;
     outline: none;
-    font-size: 1.0em;
+    font-size: 1em;
     cursor: pointer;
     background-color: white;
 }
 
-@media only screen and (max-width:  830px) {
+@media only screen and (max-width: 830px) {
     .library-item__length {
         margin-top: 10px;
         margin-bottom: 5px;
@@ -99,7 +98,7 @@ button {
             .library-item__download-button {
                 margin-top: -40px;
             }
-            
+
             .library-item__delete-button {
                 margin-top: -40px;
             }

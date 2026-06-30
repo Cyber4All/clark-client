@@ -1,15 +1,19 @@
-<div class='academic-level-card'>
-  <div class='academic-level-card__title-container'>
-    {{ category }}
-  </div>
-  <ul class='academic-level-card__applied-levels-container'>
-    <li *ngFor='let level of getSortedLevels()'>
-      <div class='academic-level-card__applied-levels-container__level' [ngClass]="{'level-selected' : academicLevels[level]}">
-        <span class='academic-level-card__applied-levels-container__icon-container' *ngIf='academicLevels[level]'>
-          <i class="far fa-check-circle"></i>
-        </span>
-        {{ level | titlecase }}
-      </div>
-    </li>
-  </ul>
+<div class="academic-level-card">
+    <div class="academic-level-card__title-container">
+        {{ category }}
+    </div>
+    <ul class="academic-level-card__applied-levels-container">
+        <li *ngFor="let level of getSortedLevels()">
+            <div
+                class="academic-level-card__applied-levels-container__level"
+                [ngClass]="{ 'level-selected': academicLevels[level] }">
+                <span
+                    class="academic-level-card__applied-levels-container__icon-container"
+                    *ngIf="academicLevels[level]">
+                    <i class="far fa-check-circle"></i>
+                </span>
+                {{ level | titlecase }}
+            </div>
+        </li>
+    </ul>
 </div>

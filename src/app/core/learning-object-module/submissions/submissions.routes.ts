@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from "../../../../environments/environment";
 
 export const SUBMISSION_ROUTES = {
     /**
@@ -12,7 +12,7 @@ export const SUBMISSION_ROUTES = {
             collection: string;
         };
     }) {
-        const q = 'collection=' + params.query.collection;
+        const q = "collection=" + params.query.collection;
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(params.learningObjectId)}/submissions?${q}`;
     },
     /**

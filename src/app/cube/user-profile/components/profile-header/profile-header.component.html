@@ -1,6 +1,6 @@
 <div class="user-profile-header_container">
     <div class="user-profile-header_wrapper">
-        <img [src]="gravatarImage" class="img">
+        <img [src]="gravatarImage" class="img" />
         <div class="user-profile_info">
             <h1>{{ firstName + " " + lastName | titlecase }}</h1>
             <p>{{ organizationName$ | async }}</p>
@@ -14,16 +14,29 @@
     <div class="user-profile-bio_wrapper">
         <div class="profile-bio_wrapper">
             <div class="bioheader">
-                <h2>About {{ firstName ? (firstName + ' ' + lastName | titlecase) : 'them' }}</h2>
+                <h2>
+                    About
+                    {{
+                        firstName
+                            ? (firstName + " " + lastName | titlecase)
+                            : "them"
+                    }}
+                </h2>
             </div>
-            <ng-container [ngTemplateOutlet]="user.bio !== '' ? bioExists : noBio"></ng-container>
+            <ng-container
+                [ngTemplateOutlet]="
+                    user.bio !== '' ? bioExists : noBio
+                "></ng-container>
         </div>
     </div>
 </div>
 
 <clark-popup class="popup_container" *ngIf="editProfile" (closed)="closeEdit()">
     <div class="modal-container" #popupInner>
-        <clark-edit-profile [user]="user" [gravatarImage]="gravatarImage" (userInfo)="updateInfo()"
+        <clark-edit-profile
+            [user]="user"
+            [gravatarImage]="gravatarImage"
+            (userInfo)="updateInfo()"
             (close)="closeEdit()"></clark-edit-profile>
     </div>
 </clark-popup>
@@ -35,12 +48,16 @@
 <ng-template #noBio>
     <div class="noBio">
         <p>¯\_(ツ)_/¯</p>
-        <p>{{
-            firstName ? (firstName.split(' ').length > 1 ?
-            (firstName.split(' ')[0] + ' ' + lastName| titlecase) :
-            firstName | titlecase) :
-            'This user'
-        }} hasn't updated their bio yet!</p>
+        <p>
+            {{
+                firstName
+                    ? firstName.split(" ").length > 1
+                        ? (firstName.split(" ")[0] + " " + lastName | titlecase)
+                        : (firstName | titlecase)
+                    : "This user"
+            }}
+            hasn't updated their bio yet!
+        </p>
     </div>
 </ng-template>
 

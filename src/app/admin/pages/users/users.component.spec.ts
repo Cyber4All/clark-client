@@ -1,57 +1,59 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { UsersComponent } from './users.component';
-import { of } from 'rxjs';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from 'app/core/user-module/user.service';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { CollectionService } from 'app/core/collection-module/collections.service';
+import { UsersComponent } from "./users.component";
+import { of } from "rxjs";
+import { RouterTestingModule } from "@angular/router/testing";
+import { Router, ActivatedRoute } from "@angular/router";
+import { UserService } from "app/core/user-module/user.service";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
+import { AuthService } from "app/core/auth-module/auth.service";
+import {
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from "@angular/common/http";
+import { CollectionService } from "app/core/collection-module/collections.service";
 
-describe('UsersComponent', () => {
-  let component: UsersComponent;
-  let fixture: ComponentFixture<UsersComponent>;
+describe("UsersComponent", () => {
+    let component: UsersComponent;
+    let fixture: ComponentFixture<UsersComponent>;
 
-  class ActivatedRouteStub {
-    public parent = {
-      params: of({})
+    class ActivatedRouteStub {
+        public parent = {
+            params: of({}),
+        };
+    }
+
+    const routerStub = {
+        navigate: (commands: any[]) => {
+            Promise.resolve(true);
+        },
     };
-  }
 
-  const routerStub = {
-    navigate: (commands: any[]) => {
- Promise.resolve(true);
-},
-  };
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            teardown: { destroyAfterEach: false },
+            imports: [RouterTestingModule, UsersComponent],
+            providers: [
+                AuthService,
+                ToastrOvenService,
+                CollectionService,
+                UserService,
+                { provide: Router, userValue: routerStub },
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+                provideHttpClient(withInterceptorsFromDi()),
+            ],
+        }).compileComponents();
+    }));
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule, UsersComponent],
-    providers: [
-        AuthService,
-        ToastrOvenService,
-        CollectionService,
-        UserService,
-        { provide: Router, userValue: routerStub },
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        provideHttpClient(withInterceptorsFromDi())
-    ]
-})
-    .compileComponents();
-  }));
+    beforeEach(() => {
+        fixture = TestBed.createComponent(UsersComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UsersComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

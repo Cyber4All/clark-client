@@ -1,37 +1,33 @@
 <div class="wrapper">
-  <div class="wrapper__text-content">
-    <div
-      class="text-content__progress"
-      [ngClass]="{ completed: progress === 100 }"
-    >
-      <div class="progress__uploading-txt">
-        Uploading {{ totalFiles | number: '1.0-0' }} file{{
-          totalFiles === 1 ? '' : 's'
-        }}
-      </div>
-      <div class="progress__progress-txt" aria-live="polite">
-        {{ progress | number: '1.0-0' }}%
-      </div>
+    <div class="wrapper__text-content">
+        <div
+            class="text-content__progress"
+            [ngClass]="{ completed: progress === 100 }">
+            <div class="progress__uploading-txt">
+                Uploading {{ totalFiles | number: "1.0-0" }} file{{
+                    totalFiles === 1 ? "" : "s"
+                }}
+            </div>
+            <div class="progress__progress-txt" aria-live="polite">
+                {{ progress | number: "1.0-0" }}%
+            </div>
+        </div>
+        <div
+            class="text-content__upload-complete"
+            [ngClass]="{ completed: progress === 100 }">
+            <div class="upload-complete__uploaded-txt" aria-live="polite">
+                Uploaded {{ totalFiles }} file{{ totalFiles === 1 ? "" : "s" }}
+            </div>
+            <div class="upload-complete__check">
+                <i class="fal fa-check"></i>
+            </div>
+        </div>
     </div>
+    <clark-progress
+        [percentage]="progress"
+        [ngClass]="{ completed: progress === 100 }"></clark-progress>
     <div
-      class="text-content__upload-complete"
-      [ngClass]="{ completed: progress === 100 }"
-    >
-      <div class="upload-complete__uploaded-txt" aria-live="polite">
-        Uploaded {{ totalFiles }} file{{ totalFiles === 1 ? '' : 's' }}
-      </div>
-      <div class="upload-complete__check">
-        <i class="fal fa-check"></i>
-      </div>
-    </div>
-  </div>
-  <clark-progress
-    [percentage]="progress"
-    [ngClass]="{ completed: progress === 100 }"
-  ></clark-progress>
-  <div
-    class="wrapper__progress-bg"
-    [style.width]="progress + '%'"
-    [ngClass]="{ filled: progress === 100 }"
-  ></div>
+        class="wrapper__progress-bg"
+        [style.width]="progress + '%'"
+        [ngClass]="{ filled: progress === 100 }"></div>
 </div>

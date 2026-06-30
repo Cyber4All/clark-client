@@ -1,47 +1,47 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .top__status {
-  width: 32px;
-  height: 32px;
-  color: white;
-  font-size: $normal;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: $status_unreleased;
-  transition: all 0.2s ease;
-  box-shadow: none;
+    width: 32px;
+    height: 32px;
+    color: white;
+    font-size: $normal;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $status_unreleased;
+    transition: all 0.2s ease;
+    box-shadow: none;
 
-  &.waiting {
-    background: $status_waiting;
-  }
+    &.waiting {
+        background: $status_waiting;
+    }
 
-  &.review {
-    background: $status_review;
-  }
+    &.review {
+        background: $status_review;
+    }
 
-  &.accepted_minor {
-    background: $status_accepted_minor;
-  }
+    &.accepted_minor {
+        background: $status_accepted_minor;
+    }
 
-  &.accepted_major {
-    background: $status_accepted_major;
-  }
+    &.accepted_major {
+        background: $status_accepted_major;
+    }
 
-  &.proofing {
-    background: $status_proofing;
-  }
+    &.proofing {
+        background: $status_proofing;
+    }
 
-  &.released {
-    background: $status_released;
-  }
+    &.released {
+        background: $status_released;
+    }
 
-  &.rejected {
-    background: $status_rejected;
-  }
-  
-  &:hover {
-    box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
-  }
+    &.rejected {
+        background: $status_rejected;
+    }
+
+    &:hover {
+        box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.08);
+    }
 }

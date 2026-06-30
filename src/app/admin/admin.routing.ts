@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AdminGuard } from 'app/core/client-module/admin.guard';
-import { AdminComponent } from './admin.component';
-import { FeaturedComponent } from './pages/featured/featured.component';
-import { LearningObjectsComponent } from './pages/learning-objects/learning-objects.component';
-import { UsersComponent } from './pages/users/users.component';
-import { OrganizationsComponent } from './pages/organizations/organizations.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { AdminGuard } from "app/core/client-module/admin.guard";
+import { AdminComponent } from "./admin.component";
+import { FeaturedComponent } from "./pages/featured/featured.component";
+import { LearningObjectsComponent } from "./pages/learning-objects/learning-objects.component";
+import { UsersComponent } from "./pages/users/users.component";
+import { OrganizationsComponent } from "./pages/organizations/organizations.component";
 
 /**
  * Contains all routes for the module, stored in a Routes array.
@@ -17,36 +17,68 @@ import { OrganizationsComponent } from './pages/organizations/organizations.comp
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const admin_routes: Routes = [
-  {
-    path: '', component: AdminComponent, canActivate: [AdminGuard], children: [
-      {
-        path: 'learning-objects',
-        component: LearningObjectsComponent,
-        data: { canScroll: false, title: 'Collection Dashboard Learning Objects' }
-      },
-      {
-        path: 'featured/learning-objects',
-        component: FeaturedComponent,
-        data: { canScroll: false, title: 'Collection Dashboard Featured Learning Objects' }
-      },
-      { path: 'users', component: UsersComponent, data: { title: 'Collection Dashboard Users' } },
-      { path: 'organizations', component: OrganizationsComponent, data: { title: 'Collection Dashboard Organizations' } },
-      { path: '', redirectTo: 'learning-objects', pathMatch: 'full' }
-    ],
-  },
-  { path: ':collection', redirectTo: '/admin/:collection/learning-objects', pathMatch: 'full' },
-  {
-    path: ':collection', component: AdminComponent, canActivate: [AdminGuard], children: [
-      {
-        path: 'learning-objects', component: LearningObjectsComponent,
-        data: { canScroll: false, title: 'Collection Dashboard Learning Objects' }
-      },
-      { path: 'reviewers', component: UsersComponent, data: { title: 'Collection Dashboard Reviewers' } },
-    ],
-  },
+    {
+        path: "",
+        component: AdminComponent,
+        canActivate: [AdminGuard],
+        children: [
+            {
+                path: "learning-objects",
+                component: LearningObjectsComponent,
+                data: {
+                    canScroll: false,
+                    title: "Collection Dashboard Learning Objects",
+                },
+            },
+            {
+                path: "featured/learning-objects",
+                component: FeaturedComponent,
+                data: {
+                    canScroll: false,
+                    title: "Collection Dashboard Featured Learning Objects",
+                },
+            },
+            {
+                path: "users",
+                component: UsersComponent,
+                data: { title: "Collection Dashboard Users" },
+            },
+            {
+                path: "organizations",
+                component: OrganizationsComponent,
+                data: { title: "Collection Dashboard Organizations" },
+            },
+            { path: "", redirectTo: "learning-objects", pathMatch: "full" },
+        ],
+    },
+    {
+        path: ":collection",
+        redirectTo: "/admin/:collection/learning-objects",
+        pathMatch: "full",
+    },
+    {
+        path: ":collection",
+        component: AdminComponent,
+        canActivate: [AdminGuard],
+        children: [
+            {
+                path: "learning-objects",
+                component: LearningObjectsComponent,
+                data: {
+                    canScroll: false,
+                    title: "Collection Dashboard Learning Objects",
+                },
+            },
+            {
+                path: "reviewers",
+                component: UsersComponent,
+                data: { title: "Collection Dashboard Reviewers" },
+            },
+        ],
+    },
 ];
 @NgModule({
-  imports: [RouterModule.forChild(admin_routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(admin_routes)],
+    exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}

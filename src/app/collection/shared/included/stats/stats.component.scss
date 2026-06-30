@@ -1,5 +1,5 @@
-@import '_vars.scss';
-@import '../../../collection-globals.scss';
+@import "_vars.scss";
+@import "../../../collection-globals.scss";
 
 .section-stats {
     display: flex;
@@ -26,7 +26,7 @@
                 background-color: $light-blue;
                 border-radius: 1000px;
                 color: #fff;
-            }   
+            }
         }
 
         &.icon-review {
@@ -68,13 +68,13 @@
     color: $dark-grey;
     font-size: $large;
 }
-.num{
+.num {
     padding-top: 10px;
     color: $dark-grey;
     font-size: $larger;
     font-weight: bold;
 }
-.section-accent{
+.section-accent {
     color: #fff;
     font-size: $largest;
     border-radius: 10px 0 0 0px;
@@ -87,18 +87,18 @@
         background-color: $ncyte-blue;
     }
 }
-.accent-content{
+.accent-content {
     padding: 10%;
     max-height: 300px;
 }
 
-@media (max-width: 1110px){
-    .section-stats{
+@media (max-width: 1110px) {
+    .section-stats {
         flex-direction: column;
         justify-content: center;
     }
 
-    .section-accent{
+    .section-accent {
         width: 100%;
         border-radius: 0px !important;
     }

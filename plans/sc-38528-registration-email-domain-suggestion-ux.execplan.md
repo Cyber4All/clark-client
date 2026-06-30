@@ -89,9 +89,9 @@ Relevant current flow:
 2. `RegisterComponent` manages the multi-step registration flow.
 3. The first step collects first name, last name, email, and organization.
 4. The current component already performs:
-   - email uniqueness checks through `AuthService`
-   - username uniqueness checks through `AuthService`
-   - searchable organization lookup through `OrganizationService.searchOrganizations(...)`
+    - email uniqueness checks through `AuthService`
+    - username uniqueness checks through `AuthService`
+    - searchable organization lookup through `OrganizationService.searchOrganizations(...)`
 5. The selected organization is stored as an organization ID and later sent in the registration request through `AuthService.register(...)`.
 6. After this story, a suggested organization should populate that selected organization automatically when possible, without requiring a separate confirmation step.
 
@@ -132,41 +132,41 @@ Target direction for touched code in this story:
 ## Concrete Steps
 
 1. Update `RegisterComponent` state
-   - Add explicit state for:
-     - suggestion loading
-     - search loading
-     - suggested organization
-     - whether the searchable selector is active
-   - Ensure state resets when the email changes.
+    - Add explicit state for:
+        - suggestion loading
+        - search loading
+        - suggested organization
+        - whether the searchable selector is active
+    - Ensure state resets when the email changes.
 
 2. Trigger domain suggestion
-   - After email entry and validation, call `OrganizationService.suggestDomain(email)`.
-   - Only continue to suggestion when email is syntactically valid and not already in use.
+    - After email entry and validation, call `OrganizationService.suggestDomain(email)`.
+    - Only continue to suggestion when email is syntactically valid and not already in use.
 
 3. Handle suggestion outcomes
-   - If the API returns an organization, auto-select it and render it as the current chosen organization.
-   - If the API returns no organization, show the searchable selector by default.
-   - If the API fails, also show the searchable selector by default.
+    - If the API returns an organization, auto-select it and render it as the current chosen organization.
+    - If the API returns no organization, show the searchable selector by default.
+    - If the API fails, also show the searchable selector by default.
 
 4. Implement user actions
-   - Suggested org default: set the selected org ID automatically and write the organization name directly into the organization field.
-   - Manual override: typing in the existing organization field should switch the flow back to searchable selection behavior.
-   - Existing organization search result selection should continue to set `selectedOrg`.
+    - Suggested org default: set the selected org ID automatically and write the organization name directly into the organization field.
+    - Manual override: typing in the existing organization field should switch the flow back to searchable selection behavior.
+    - Existing organization search result selection should continue to set `selectedOrg`.
 
 5. Update template and styling
-   - Keep the organization input visible at all times.
-   - Show the suggested organization through the field value rather than additional UI chrome.
-   - Keep current dropdown/search layout intact for fallback behavior.
-   - Avoid additional shared-input changes unless the existing control cannot display the selected organization value correctly.
+    - Keep the organization input visible at all times.
+    - Show the suggested organization through the field value rather than additional UI chrome.
+    - Keep current dropdown/search layout intact for fallback behavior.
+    - Avoid additional shared-input changes unless the existing control cannot display the selected organization value correctly.
 
 6. Add tests
-   - Update `register.component.spec.ts` to cover:
-     - suggestion success
-     - no suggestion
-     - suggestion error fallback
-     - auto-selection behavior
-     - change-organization behavior
-   - Extend service tests only if needed for any uncovered suggestion behavior contract.
+    - Update `register.component.spec.ts` to cover:
+        - suggestion success
+        - no suggestion
+        - suggestion error fallback
+        - auto-selection behavior
+        - change-organization behavior
+    - Extend service tests only if needed for any uncovered suggestion behavior contract.
 
 ## Validation and Acceptance
 
@@ -216,9 +216,9 @@ If the story needs to be resumed by a new contributor:
 - Story ID: `38528`
 - Shortcut story title: `Registration: Implement email domain suggestion UX`
 - Existing service dependency:
-  - `OrganizationService.suggestDomain(email: string)`
+    - `OrganizationService.suggestDomain(email: string)`
 - Existing fallback/manual search dependency:
-  - `OrganizationService.searchOrganizations({ text })`
+    - `OrganizationService.searchOrganizations({ text })`
 
 Known technical debt intentionally left in place for this story:
 

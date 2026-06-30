@@ -1,26 +1,25 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { AccessibilityStatementComponent } from './accessibility-statement.component';
+import { AccessibilityStatementComponent } from "./accessibility-statement.component";
 
-describe('AccessibilityStatementComponent', () => {
-  let component: AccessibilityStatementComponent;
-  let fixture: ComponentFixture<AccessibilityStatementComponent>;
+describe("AccessibilityStatementComponent", () => {
+    let component: AccessibilityStatementComponent;
+    let fixture: ComponentFixture<AccessibilityStatementComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [AccessibilityStatementComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [AccessibilityStatementComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AccessibilityStatementComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(AccessibilityStatementComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

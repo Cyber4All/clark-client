@@ -1,92 +1,89 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 $height: 20px;
 
 :host {
-  height: $height;
+    height: $height;
 }
 
 .switch {
-  width: calc(#{$height} * 2);
-  height: $height;
-  position: absolute;
-  cursor: pointer;
-  display: inline-block;
-  outline: 0;
-
-  // disable selection
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-
-  .switch__background {
-    background: $light-grey;
-    border-radius: 50px;
-    border: 2px;
-    width: inherit;
-    height: inherit;
-    transition: background 0.2s ease;
-    position: relative;
-
-    &:before {
-      content: '';
-      transform: scale(0, 0);
-      width: inherit;
-      height: inherit;
-      transition: all 0.2s ease;
-      position: absolute;
-      border-radius: inherit;
-      transform-origin: left;
-      opacity: 0;
-    }
-  }
-
-  .switch__fob {
-    border-radius: 50%;
-    width: $height;
+    width: calc(#{$height} * 2);
     height: $height;
     position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    background: $medium-grey;
-    transition: all 0.2s ease;
-    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.15);
-  }
+    cursor: pointer;
+    display: inline-block;
+    outline: 0;
 
-  &.switch--on {
+    // disable selection
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    .switch__background {
+        background: $light-grey;
+        border-radius: 50px;
+        border: 2px;
+        width: inherit;
+        height: inherit;
+        transition: background 0.2s ease;
+        position: relative;
+
+        &:before {
+            content: "";
+            transform: scale(0, 0);
+            width: inherit;
+            height: inherit;
+            transition: all 0.2s ease;
+            position: absolute;
+            border-radius: inherit;
+            transform-origin: left;
+            opacity: 0;
+        }
+    }
 
     .switch__fob {
-      background: white;
-      transform: translateX($height);
+        border-radius: 50%;
+        width: $height;
+        height: $height;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        background: $medium-grey;
+        transition: all 0.2s ease;
+        box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.15);
     }
 
-    .switch__background:before {
-      opacity: 1;
-      transform: scale(1, 1);
-    }
-  }
+    &.switch--on {
+        .switch__fob {
+            background: white;
+            transform: translateX($height);
+        }
 
-  // switch style variants
-  .switch__background--blue {
-      
-    &:before {
-      background: $light-blue;
+        .switch__background:before {
+            opacity: 1;
+            transform: scale(1, 1);
+        }
     }
-  }
 
-  .switch__background--orange {
-
-    &:before {
-      background: $orange;
+    // switch style variants
+    .switch__background--blue {
+        &:before {
+            background: $light-blue;
+        }
     }
-  }
 
-  &:focus {
-    .switch__background {
-      outline: 2px;
-      outline-color: $light-blue;
+    .switch__background--orange {
+        &:before {
+            background: $orange;
+        }
     }
-  }
+
+    &:focus {
+        .switch__background {
+            outline: 2px;
+            outline-color: $light-blue;
+        }
+    }
 }

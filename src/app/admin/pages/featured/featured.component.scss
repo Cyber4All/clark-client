@@ -1,11 +1,11 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
-  .featured-search {
+.featured-search {
     display: block;
     margin-top: 20px;
-  }
+}
 
-  .featured-list {
+.featured-list {
     width: 1375px;
     max-width: 100%;
     min-height: 350px;
@@ -16,16 +16,16 @@
     padding-bottom: 10px;
 
     .empty-drag {
-      position: relative;
-      text-align: center;
-      font-size: $large;
-      color: $dark-grey;
-      width: 100%;
-      min-height: 350px;
+        position: relative;
+        text-align: center;
+        font-size: $large;
+        color: $dark-grey;
+        width: 100%;
+        min-height: 350px;
     }
-  }
-  
-  .featured-card {
+}
+
+.featured-card {
     padding: 20px 10px;
     display: flex;
     max-width: 250px;
@@ -38,27 +38,27 @@
     font-size: 14px;
     flex-grow: 1;
     flex-basis: 0;
-  }
-  
-  // Drag and drop
-  .cdk-drag-preview {
+}
+
+// Drag and drop
+.cdk-drag-preview {
     width: 250px;
-    height:400px;
-  }
-  .cdk-drag-placeholder {
+    height: 400px;
+}
+.cdk-drag-placeholder {
     opacity: 0;
-  }
+}
 
-  .cdk-drag-animating {
+.cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
-  
-  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-  }
+}
 
-  // Not Featured List Styles
-  .list {
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+// Not Featured List Styles
+.list {
     max-width: 100%;
     position: relative;
     margin: auto;
@@ -66,39 +66,39 @@
     min-height: 500px;
     overflow: hidden;
     margin-top: 40px;
-  }
-  
-  .list__body {
+}
+
+.list__body {
     .body__column-headers,
     ::ng-deep .row-item {
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: 32px 2.5fr 100px 80px 120px 50px;
-      grid-gap: 0 50px;
-      align-items: center;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 32px 2.5fr 100px 80px 120px 50px;
+        grid-gap: 0 50px;
+        align-items: center;
     }
-  
+
     ::ng-deep .row-item {
-      & > div {
-        padding-top: 20px;
-        padding-bottom: 20px;
-      }
+        & > div {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
     }
-  
+
     .body__column-headers {
-      font-size: $small;
-      color: $dark-grey;
-      padding-top: 20px;
-      padding-bottom: 10px;
+        font-size: $small;
+        color: $dark-grey;
+        padding-top: 20px;
+        padding-bottom: 10px;
     }
-  
+
     clark-learning-object-list-item {
-      position: relative;
-      display: block;
+        position: relative;
+        display: block;
     }
-  }
-  
-  .empty-template {
+}
+
+.empty-template {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -111,9 +111,9 @@
     bottom: 0;
     color: $dark-grey;
     font-size: $normal;
-  }
-  
-  .empty-template__top {
+}
+
+.empty-template__top {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -122,35 +122,33 @@
     font-size: $larger;
     margin-bottom: 10px;
     .svg-inline--fa {
-      font-size: $largest;
-      margin-right: 10px;
+        font-size: $largest;
+        margin-right: 10px;
     }
-  }
-  
-  .loadingOrFinished__content {
+}
+
+.loadingOrFinished__content {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-  
+
     color: $dark-grey;
     font-size: $large;
     padding: 40px;
-  
-    .svg-inline--fa {
-      color: $light-blue;
-      font-size: $larger;
-      margin-bottom: 20px;
-    }
-  }
 
-  .error-notice {
+    .svg-inline--fa {
+        color: $light-blue;
+        font-size: $larger;
+        margin-bottom: 20px;
+    }
+}
+
+.error-notice {
     float: right;
     background: $error-red;
     border-radius: 3px;
     color: white;
     padding: 5px;
-  }
-    
-  
+}
