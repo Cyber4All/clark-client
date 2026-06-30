@@ -15,9 +15,12 @@ Wire the admin organizations dashboard delete action to the backend `DELETE /org
 - [x] (2026-06-30 17:30Z) Increment 1 validation: `npx jest --no-watchman src/app/core/organization-module/organization.service.spec.ts` still fails before tests execute with existing `configSet.processWithEsbuild is not a function`.
 - [x] (2026-06-30 17:30Z) Increment 2: enable desktop and mobile delete actions in `organizations.component.html`, using the existing delete modal without redesign.
 - [x] (2026-06-30 17:30Z) Increment 2 validation: `npx tsc -p src/tsconfig.app.json --noEmit` passed.
-- [ ] Increment 3: update `OrganizationsComponent.deleteOrganization()` to call the API, preserve the user-count guard, update table state only on success, and surface backend error messages.
+- [x] (2026-06-30 17:40Z) Increment 3: update `OrganizationsComponent.deleteOrganization()` to call the API, preserve the user-count guard, update table state only on success, and surface backend error messages.
+- [x] (2026-06-30 17:40Z) Increment 3: add focused component specs for delete guard, success, and backend error handling.
+- [x] (2026-06-30 17:40Z) Increment 3 validation: `npx tsc -p src/tsconfig.app.json --noEmit` passed.
+- [x] (2026-06-30 17:40Z) Increment 3 validation: `npx jest --no-watchman src/app/admin/pages/organizations/organizations.component.spec.ts` still fails before tests execute with existing `configSet.processWithEsbuild is not a function`.
 - [ ] Increment 4: update delete modal markup/styles to match the current organization modal patterns and require confirmation certification.
-- [ ] Update focused component Jest specs only after the component behavior changes are reintroduced.
+- [x] (2026-06-30 17:40Z) Update focused component Jest specs after component behavior changes are reintroduced.
 - [ ] Run focused validation after each increment.
 
 ## Surprises & Discoveries

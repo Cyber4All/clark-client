@@ -116,6 +116,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   displayMigrateModal = false;
   isCreateMode = false;
   selectedOrganization: Organization | null = null;
+  isDeleting = false;
   isMigrating = false;
 
   loading = false;
@@ -594,7 +595,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
    * Confirm and delete organization
    */
   deleteOrganization(): void {
-    if (!this.selectedOrganization) {
+    if (!this.selectedOrganization || this.isDeleting) {
       return;
     }
 
@@ -609,18 +610,33 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     const selectedOrgId = this.selectedOrganization._id;
-    this.dataSource.data = this.dataSource.data.filter(
-      (org) => org._id !== selectedOrgId
-    );
-    this.userCountMap.delete(selectedOrgId);
-    this.learningObjectCountMap.delete(selectedOrgId);
-    this.refreshExistingNames();
-    this.refreshOverviewCounts();
-    this.loadTotalOtherUsers();
-    this.loadVisibleOrganizationCounts();
+    this.isDeleting = true;
 
-    this.toaster.success('Success!', 'Organization deleted successfully.');
-    this.closeDeleteModal();
+    this.organizationService.deleteOrganization(selectedOrgId)
+      .pipe(takeUntil(this.componentDestroyed$))
+      .subscribe({
+        next: () => {
+          this.dataSource.data = this.dataSource.data.filter(
+            (org) => org._id !== selectedOrgId
+          );
+          this.userCountMap.delete(selectedOrgId);
+          this.learningObjectCountMap.delete(selectedOrgId);
+          this.refreshExistingNames();
+          this.refreshOverviewCounts();
+          this.loadTotalOtherUsers();
+          this.loadVisibleOrganizationCounts();
+          this.organizationService.clearCache();
+
+          this.toaster.success('Success!', 'Organization deleted successfully.');
+          this.isDeleting = false;
+          this.closeDeleteModal();
+        },
+        error: (error: unknown) => {
+          console.error('Error deleting organization:', error);
+          this.toaster.error('Delete failed', this.getDeleteErrorMessage(error));
+          this.isDeleting = false;
+        }
+      });
   }
 
   /**
@@ -942,6 +958,34 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
     }
 
     return 'There was an error migrating users. Please try again later.';
+  }
+
+  private getDeleteErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      const backendError = error.error;
+
+      if (typeof backendError === 'string' && backendError.trim()) {
+        return backendError;
+      }
+
+      if (backendError && typeof backendError === 'object') {
+        const message = (backendError as { message?: unknown; error?: unknown }).message
+          ?? (backendError as { error?: unknown }).error;
+        if (typeof message === 'string' && message.trim()) {
+          return message;
+        }
+      }
+
+      if (typeof error.message === 'string' && error.message.trim()) {
+        return error.message;
+      }
+    }
+
+    if (error instanceof Error && error.message.trim()) {
+      return error.message;
+    }
+
+    return 'There was an error deleting this organization. Please try again later.';
   }
 
   ngOnDestroy(): void {

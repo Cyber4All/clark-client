@@ -34,13 +34,88 @@ describe('OrganizationsComponent', () => {
     toaster = jasmine.createSpyObj<ToastrOvenService>('ToastrOvenService', ['success', 'error']);
     organizationService = jasmine.createSpyObj<OrganizationService>(
       'OrganizationService',
-      ['clearCache', 'migrateOrganizationUsers', 'searchOrganizations', 'searchOrganizationsResponse']
+      ['clearCache', 'deleteOrganization', 'migrateOrganizationUsers', 'searchOrganizations', 'searchOrganizationsResponse']
     );
     userService = jasmine.createSpyObj<UserService>('UserService', ['searchUsersResponse']);
     searchService = jasmine.createSpyObj<SearchService>('SearchService', ['getLearningObjects']);
 
     component = new OrganizationsComponent(toaster, organizationService, userService, searchService);
     component.dataSource = new MatTableDataSource<Organization>([]);
+  });
+
+  it('does not call the delete API when the selected organization has users', () => {
+    const organization = buildOrganization({ _id: 'org-with-users', name: 'Users University' });
+
+    component.selectedOrganization = organization;
+    component.displayDeleteModal = true;
+    component.dataSource.data = [organization];
+    (component as any).userCountMap.set(organization._id, 3);
+
+    component.deleteOrganization();
+
+    expect(organizationService.deleteOrganization).not.toHaveBeenCalled();
+    expect(toaster.error).toHaveBeenCalledWith(
+      'Cannot Delete',
+      'This organization has 3 user(s). Organizations with users cannot be deleted.'
+    );
+    expect(component.dataSource.data).toEqual([organization]);
+    expect(component.displayDeleteModal).toBe(true);
+    expect(component.isDeleting).toBe(false);
+  });
+
+  it('deletes an organization, clears local state, and closes the modal on success', () => {
+    const organization = buildOrganization({ _id: 'delete-org', name: 'Delete University' });
+    const remainingOrganization = buildOrganization({ _id: 'remaining-org', name: 'Remaining University' });
+    const loadTotalOtherUsersSpy = spyOn<any>(component, 'loadTotalOtherUsers');
+    const loadVisibleOrganizationCountsSpy = spyOn<any>(component, 'loadVisibleOrganizationCounts');
+
+    component.selectedOrganization = organization;
+    component.displayDeleteModal = true;
+    component.dataSource.data = [organization, remainingOrganization];
+    (component as any).userCountMap.set(organization._id, 0);
+    (component as any).learningObjectCountMap.set(organization._id, 2);
+    (organizationService.deleteOrganization as any).and.returnValue(of(undefined));
+
+    component.deleteOrganization();
+
+    expect(organizationService.deleteOrganization).toHaveBeenCalledWith(organization._id);
+    expect(component.dataSource.data).toEqual([remainingOrganization]);
+    expect((component as any).userCountMap.has(organization._id)).toBe(false);
+    expect((component as any).learningObjectCountMap.has(organization._id)).toBe(false);
+    expect(organizationService.clearCache).toHaveBeenCalled();
+    expect(loadTotalOtherUsersSpy).toHaveBeenCalled();
+    expect(loadVisibleOrganizationCountsSpy).toHaveBeenCalled();
+    expect(toaster.success).toHaveBeenCalledWith('Success!', 'Organization deleted successfully.');
+    expect(component.displayDeleteModal).toBe(false);
+    expect(component.selectedOrganization).toBeNull();
+    expect(component.isDeleting).toBe(false);
+  });
+
+  it('keeps the organization visible and shows the backend message when delete fails', () => {
+    const organization = buildOrganization({ _id: 'delete-org', name: 'Delete University' });
+
+    component.selectedOrganization = organization;
+    component.displayDeleteModal = true;
+    component.dataSource.data = [organization];
+    (organizationService.deleteOrganization as any).and.returnValue(
+      throwError(() => new HttpErrorResponse({
+        status: 409,
+        error: { message: 'Organization has linked learning objects.' },
+      }))
+    );
+
+    component.deleteOrganization();
+
+    expect(organizationService.deleteOrganization).toHaveBeenCalledWith(organization._id);
+    expect(component.dataSource.data).toEqual([organization]);
+    expect(organizationService.clearCache).not.toHaveBeenCalled();
+    expect(toaster.error).toHaveBeenCalledWith(
+      'Delete failed',
+      'Organization has linked learning objects.'
+    );
+    expect(component.displayDeleteModal).toBe(true);
+    expect(component.selectedOrganization).toEqual(organization);
+    expect(component.isDeleting).toBe(false);
   });
 
   it('returns verified target organizations excluding the selected source org', () => {
