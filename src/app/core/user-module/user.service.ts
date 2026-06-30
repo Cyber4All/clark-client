@@ -22,15 +22,15 @@ export class UserService {
    * @returns {Promise<User[]>} array of users matching the text query
    * @memberof UserService
    */
-  searchUsers(query: UserQuery): Promise<User[]> {
-    return this.searchUsersResponse(query).then((response) => response.users);
+  async searchUsers(query: UserQuery): Promise<User[]> {
+    return await this.searchUsersResponse(query).then((response) => response.users);
   }
 
   /**
    * Performs a user search and returns users plus total count metadata.
    */
-  searchUsersResponse(query: UserQuery): Promise<{ users: User[]; total: number }> {
-    return this.http
+  async searchUsersResponse(query: UserQuery): Promise<{ users: User[]; total: number }> {
+    return await this.http
       .get(USER_ROUTES.SEARCH_USERS(query), {
         withCredentials: true,
       })

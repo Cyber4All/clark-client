@@ -109,4 +109,15 @@ describe('OrganizationService', () => {
     expect(request.request.body).toEqual({ organizationId: 'org-2' });
     request.flush(null, { status: 204, statusText: 'No Content' });
   });
+
+  it('deletes organization with a 204 no-content response', (done) => {
+    service.deleteOrganization('org-1').subscribe(() => {
+      done();
+    });
+
+    const request = httpMock.expectOne(`${environment.apiURL}/organizations/org-1`);
+    expect(request.request.method).toBe('DELETE');
+    expect(request.request.body).toBeNull();
+    request.flush(null, { status: 204, statusText: 'No Content' });
+  });
 });

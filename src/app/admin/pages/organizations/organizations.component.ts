@@ -702,7 +702,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
       }
 
       const response = await this.userService.searchUsersResponse({
-        organizationId: [otherOrganization._id],
+        organizationIds: [otherOrganization._id],
         page: 1,
         limit: 1,
       });
@@ -819,7 +819,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   private async fetchUserCount(organizationId: string): Promise<number> {
     try {
       const response = await this.userService.searchUsersResponse({
-        organizationId: [organizationId],
+        organizationIds: [organizationId],
         page: 1,
         limit: 1,
       });

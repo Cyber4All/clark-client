@@ -214,6 +214,23 @@ export class OrganizationService {
     }
 
     /**
+     * Delete an existing organization.
+     *
+     * The backend signals success with HTTP 204 No Content.
+     *
+     * @param id Organization ID
+     * @returns Observable that completes on success
+     */
+    deleteOrganization(id: string): Observable<void> {
+        return this.http
+            .delete<void>(this.updatePath(id), { observe: 'response' })
+            .pipe(
+                map(() => undefined),
+                catchError(error => throwError(() => error))
+            );
+    }
+
+    /**
      * Migrate all users from one organization to another.
      *
      * The backend signals success with HTTP 204 No Content.
