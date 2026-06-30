@@ -118,6 +118,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
   isMigrating = false;
 
   loading = false;
+  filteredOrganizationCount = 0;
   filteredVerifiedCount = 0;
   filteredUnverifiedCount = 0;
   totalOtherUsers = 0;
@@ -673,6 +674,7 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private refreshOverviewCounts(): void {
     const organizations = this.dataSource.filteredData;
+    this.filteredOrganizationCount = organizations.length;
     let verified = 0;
     for (const org of organizations) {
       if (org.isVerified) {
