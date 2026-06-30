@@ -235,15 +235,12 @@
                   >
                     <mat-icon>sync_alt</mat-icon>
                   </button>
-                  <span
-                    class="disabled-action-tooltip"
-                    [matTooltip]="deleteNotSupportedTooltip"
-                  >
+                  <span class="disabled-action-tooltip">
                     <button
                       mat-icon-button
+                      (click)="openDeleteModal(organization)"
                       class="action-icon-button delete"
                       title="Delete"
-                      [disabled]="true"
                     >
                       <mat-icon>delete</mat-icon>
                     </button>
@@ -311,11 +308,8 @@
         <mat-icon>sync_alt</mat-icon>
         <span>Migrate Users</span>
       </button>
-      <span
-        class="disabled-action-tooltip disabled-action-tooltip--menu"
-        [matTooltip]="deleteNotSupportedTooltip"
-      >
-        <button mat-menu-item [disabled]="true">
+      <span class="disabled-action-tooltip disabled-action-tooltip--menu">
+        <button mat-menu-item (click)="openDeleteModal(organization)">
           <mat-icon>delete</mat-icon>
           <span>Delete</span>
         </button>
