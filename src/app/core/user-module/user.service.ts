@@ -18,18 +18,16 @@ export class UserService {
         private auth: AuthService,
     ) {}
 
-    /**
-     * Performs a text search and returns a list of matching users
-     *
-     * @param {string} query the text string to query by
-     * @returns {Promise<User[]>} array of users matching the text query
-     * @memberof UserService
-     */
-    searchUsers(query: UserQuery): Promise<User[]> {
-        return this.searchUsersResponse(query).then(
-            (response) => response.users,
-        );
-    }
+  /**
+   * Performs a text search and returns a list of matching users
+   *
+   * @param {string} query the text string to query by
+   * @returns {Promise<User[]>} array of users matching the text query
+   * @memberof UserService
+   */
+  async searchUsers(query: UserQuery): Promise<User[]> {
+    return await this.searchUsersResponse(query).then((response) => response.users);
+  }
 
     /**
      * Performs a user search and returns users plus total count metadata.

@@ -14,31 +14,32 @@ export enum SortType {
 }
 
 export interface Query {
-    [index: string]: any;
-    currPage?: number;
-    limit?: number;
-    length?: string[] | string;
-    level?: string[];
-    guidelines?: string[];
-    noGuidelines?: string;
-    noDCWFGuidelines?: string;
-    orderBy?: OrderBy | string;
-    sortType?: SortType;
-    text?: string;
-    standardOutcomes?:
-        | string[]
-        | { id: string; name: string; date: string; outcome: string }[];
-    collection?: string;
-    status?: string[];
-    fileTypes?: string[];
-    start?: Date | string;
-    end?: Date | string;
-    startNextCheck?: string;
-    endNextCheck?: string;
-    topics?: string[];
-    tags?: string[];
-    username?: string;
-    admin?: string;
+  [index: string]: any;
+  currPage?: number;
+  limit?: number;
+  length?: string[] | string;
+  level?: string[];
+  guidelines?: string[];
+  noGuidelines?: string;
+  noDCWFGuidelines?: string;
+  orderBy?: OrderBy | string;
+  sortType?: SortType;
+  text?: string;
+  standardOutcomes?:
+  | string[]
+  | { id: string; name: string; date: string; outcome: string }[];
+  collection?: string;
+  status?: string[];
+  fileTypes?: string[];
+  start?: Date | string;
+  end?: Date | string;
+  startNextCheck?: string;
+  endNextCheck?: string;
+  topics?: string[];
+  tags?: string[]
+  username?: string;
+  admin?: string;
+  organizationIds?: string[];
 }
 
 export interface MappingQuery extends Query {
@@ -53,10 +54,10 @@ export interface FilterQuery extends Query {
 }
 
 export interface UserQuery extends querystring.ParsedUrlQueryInput {
-    accessGroups?: string[];
-    organizationId?: string[];
-    sortType?: string;
-    page?: number;
-    limit?: number;
-    text?: string;
+  accessGroups?: string[],
+  organizationIds?: string[],
+  sortType?: string,
+  page?: number,
+  limit?: number,
+  text?: string,
 }
