@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .wrapper {
     margin: 0 60px;
@@ -31,7 +31,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
     margin: 0 30px;
-    
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -45,12 +45,20 @@
 
         &.right {
             right: 0;
-            background-image: linear-gradient(90deg, rgba(255, 255, 255, 0), white);
+            background-image: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0),
+                white
+            );
         }
 
         &.left {
             left: 0;
-            background-image: linear-gradient(90deg, white, rgba(255, 255, 255, 0));
+            background-image: linear-gradient(
+                90deg,
+                white,
+                rgba(255, 255, 255, 0)
+            );
         }
     }
 
@@ -101,11 +109,11 @@ select {
         }
     }
 
-    clark-learning-object-component {    
+    clark-learning-object-component {
         &.card {
-          width: 285px;
+            width: 285px;
         }
-      }
+    }
 }
 
 @media (max-width: 1130px) {

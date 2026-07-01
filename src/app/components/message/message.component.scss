@@ -1,46 +1,47 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .wrapper {
-  position: relative;
-  z-index: 4;
-  padding: 10px;
-  background: $blue-accent;
-  color: white;
+    position: relative;
+    z-index: 4;
+    padding: 10px;
+    background: $blue-accent;
+    color: white;
 
-  .inner-wrapper {
-    max-width: $max-width;
-    margin: auto;
-    font-size: $normal;
-    font-weight: normal;
-    text-align: center;
+    .inner-wrapper {
+        max-width: $max-width;
+        margin: auto;
+        font-size: $normal;
+        font-weight: normal;
+        text-align: center;
 
-    .status-link {
-      color: white;
-      margin-left: 5px;
-      text-decoration: underline;
+        .status-link {
+            color: white;
+            margin-left: 5px;
+            text-decoration: underline;
+        }
+
+        a:hover,
+        a:focus {
+            cursor: pointer;
+        }
     }
 
-    a:hover, a:focus{
-      cursor: pointer;
+    &.bad {
+        background: $error-red;
+        color: white;
     }
-  }
 
-  &.bad {
-    background: $error-red;
-    color: white;
-  }
+    &.good {
+        background: $success-green;
+        color: white;
+    }
 
-  &.good {
-    background: $success-green;
-    color: white;
-  }
-
-  &.warning {
-    background: $light-blue;
-    color: white;
-  }
+    &.warning {
+        background: $light-blue;
+        color: white;
+    }
 }
 
 .status-link {
-  display: block;
+    display: block;
 }

@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from "../../../../environments/environment";
 
 export const RELEVANCY_ROUTES = {
     /**
@@ -19,7 +19,7 @@ export const RELEVANCY_ROUTES = {
      */
     UPDATE_MAPPING(id: string, outcomeId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(id)}/learning-outcomes/${encodeURIComponent(
-            outcomeId
+            outcomeId,
         )}/guidelines`;
     },
     /**

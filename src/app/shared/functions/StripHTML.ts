@@ -6,5 +6,8 @@
  * @returns The input string without HTML tags
  */
 export function stripHtmlTags(input: string): string {
-    return input.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+    return input
+        .replace(/<[^>]*>/g, "")
+        .replace(/&nbsp;/g, " ")
+        .trim();
 }

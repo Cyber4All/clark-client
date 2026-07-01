@@ -1,35 +1,33 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { OrganizationStore } from 'app/core/organization-module/organization.store';
-import { User } from '@entity';
-import { UserService } from 'app/core/user-module/user.service';
-import { AsyncPipe, TitleCasePipe } from '@angular/common';
+import { Component, Input, OnInit } from "@angular/core";
+import { OrganizationStore } from "app/core/organization-module/organization.store";
+import { User } from "@entity";
+import { UserService } from "app/core/user-module/user.service";
+import { AsyncPipe, TitleCasePipe } from "@angular/common";
 
 @Component({
-    selector: 'clark-selected-user',
-    templateUrl: './selected-user.component.html',
-    styleUrls: ['./selected-user.component.scss'],
+    selector: "clark-selected-user",
+    templateUrl: "./selected-user.component.html",
+    styleUrls: ["./selected-user.component.scss"],
     standalone: true,
-    imports: [AsyncPipe, TitleCasePipe]
+    imports: [AsyncPipe, TitleCasePipe],
 })
 export class SelectedUserComponent implements OnInit {
+    @Input() user: User;
 
-  @Input() user: User;
+    constructor(
+        private userService: UserService,
+        public orgStore: OrganizationStore,
+    ) {}
 
-  constructor(private userService: UserService, public orgStore: OrganizationStore) {}
+    ngOnInit(): void {}
 
-  ngOnInit(): void {}
-
-  /**
-   * Retrieve the gravatar image for the card's user
-   *
-   * @returns
-   * @memberof AdminUserCardComponent
-   */
-  getGravatar() {
-    return this.userService.getGravatarImage(
-      this.user.email,
-      200,
-    );
-  }
-
+    /**
+     * Retrieve the gravatar image for the card's user
+     *
+     * @returns
+     * @memberof AdminUserCardComponent
+     */
+    getGravatar() {
+        return this.userService.getGravatarImage(this.user.email, 200);
+    }
 }

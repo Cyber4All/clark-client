@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .library {
     background-color: white;
@@ -18,12 +18,11 @@
 }
 
 .library__splash-container {
-
     padding-top: 125px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 
     &:before {
-        content: '';
+        content: "";
         background: linear-gradient(90deg, white, $light-blue, white);
         position: absolute;
         top: 0;
@@ -32,12 +31,18 @@
         right: 0;
         mask: $cube-pattern repeat;
         z-index: 0;
-        opacity: .15;
-  }
+        opacity: 0.15;
+    }
 
     &:after {
-        content: '';
-        background: repeating-linear-gradient(white, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        content: "";
+        background: repeating-linear-gradient(
+            white,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            white
+        );
         position: absolute;
         top: 0;
         left: 0;
@@ -68,8 +73,8 @@
 }
 
 .notifications-container {
-  position: relative;
-  height: 100%;
+    position: relative;
+    height: 100%;
 }
 
 .notifications-container__cards {
@@ -103,7 +108,8 @@
     outline: none;
 }
 
-.cards-container__arrow-container:hover, :focus {
+.cards-container__arrow-container:hover,
+:focus {
     color: $light-blue;
     cursor: pointer;
 }
@@ -179,13 +185,14 @@
     width: 100%;
 }
 
-@media only screen and (max-width:  830px) {
-  .library__cards-container__title, .library-items__title {
-    font-size: $large;
-  }
+@media only screen and (max-width: 830px) {
+    .library__cards-container__title,
+    .library-items__title {
+        font-size: $large;
+    }
 }
 
-@media only screen and (max-width:  600px) {
+@media only screen and (max-width: 600px) {
     .notifications-container__cards {
         position: relative;
         z-index: 1;
@@ -202,8 +209,3 @@
         z-index: 0;
     }
 }
-
-
-
-
-

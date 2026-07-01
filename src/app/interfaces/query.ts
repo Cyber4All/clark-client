@@ -1,16 +1,16 @@
-import * as querystring from 'querystring';
+import * as querystring from "querystring";
 
 export enum OrderBy {
-  Name = 'name',
-  Date = 'date',
-  Downloads = 'downloads',
-  Rating = 'rating',
-  None = 'none'
+    Name = "name",
+    Date = "date",
+    Downloads = "downloads",
+    Rating = "rating",
+    None = "none",
 }
 
 export enum SortType {
-  Ascending = 1,
-  Descending = -1
+    Ascending = 1,
+    Descending = -1,
 }
 
 export interface Query {
@@ -43,14 +43,14 @@ export interface Query {
 }
 
 export interface MappingQuery extends Query {
-  standardOutcomes?:
-  | string[]
-  | { id: string; name: string; date: string; outcome: string }[];
+    standardOutcomes?:
+        | string[]
+        | { id: string; name: string; date: string; outcome: string }[];
 }
 
 export interface FilterQuery extends Query {
-  length?: string[];
-  level?: string[];
+    length?: string[];
+    level?: string[];
 }
 
 export interface UserQuery extends querystring.ParsedUrlQueryInput {

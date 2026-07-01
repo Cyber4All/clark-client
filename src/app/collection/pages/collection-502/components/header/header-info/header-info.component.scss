@@ -1,51 +1,50 @@
-@import '_vars.scss';
-@import '../../../../../collection-globals.scss';
+@import "_vars.scss";
+@import "../../../../../collection-globals.scss";
 .header-info {
     background-color: var(--background-color);
     z-index: 0;
     overflow: hidden;
 }
-.header-container{
+.header-container {
     display: flex;
     padding-top: 50px;
     justify-content: center;
     align-items: stretch;
 }
-.about{
+.about {
     width: 400px;
     align-items: center;
     padding: 42px 75px;
     z-index: 2;
-    &::after{
-        background-color: $darkPurple_502; 
+    &::after {
+        background-color: $darkPurple_502;
     }
     p {
         color: white;
         font-size: $larger;
         text-align: center;
     }
-
 }
 .join {
     width: 400px;
     position: relative;
     display: flex;
-    flex-direction: column;   
+    flex-direction: column;
     align-items: center;
     padding: 30px 75px;
     z-index: 2;
-    &::after{
+    &::after {
         background-color: $blue_502;
     }
-    p{
+    p {
         font-size: $larger;
         text-align: center;
-        color: #32363F;
+        color: #32363f;
     }
 }
 .slanty {
     position: relative;
-    &::after{
+    &::after {
         content: "";
         position: absolute;
         transform: skewX(-15deg);
@@ -56,34 +55,33 @@
         z-index: -1;
     }
 }
-.survey{
+.survey {
     background-color: $darkPurple_502;
     padding: 10px 50px;
     height: fit-content;
-    h2{
+    h2 {
         color: white;
         font-size: $larger;
         margin: 0;
     }
-
 }
-.more{
+.more {
     text-align: center;
     font-size: $large;
     color: var(--primary-text);
 }
 
-@media screen and (max-width: 1270px){
-    .header-container{
+@media screen and (max-width: 1270px) {
+    .header-container {
         flex-direction: column;
         width: 100%;
         padding: 0px;
     }
-    .about{
+    .about {
         box-sizing: border-box;
         width: 100%;
         padding: 25px 30px;
-        background-color: $darkPurple_502;    
+        background-color: $darkPurple_502;
     }
     .join {
         box-sizing: border-box;
@@ -91,11 +89,10 @@
         padding: 24px 30px 50px 30px;
         background-color: $blue_502;
     }
-    .more{
+    .more {
         visibility: hidden;
     }
-    .slanty::after{
+    .slanty::after {
         transform: skewX(0deg);
     }
 }
-    

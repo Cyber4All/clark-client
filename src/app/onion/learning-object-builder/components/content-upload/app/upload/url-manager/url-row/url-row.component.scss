@@ -1,26 +1,26 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .url-wrap {
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
 
-  .title-field,
-  .url-field {
-    float: left;
-    width: 99%;
-  }
-
-  input {
-    padding: 10px;
-    appearance: none;
-    outline: 0;
-    border: 1px solid $medium-grey;
-    border-radius: 2px;
-    width: 90%;
-    margin: 8px;
-
-    &:focus {
-      border-color: $light-blue;
+    .title-field,
+    .url-field {
+        float: left;
+        width: 99%;
     }
-  }
+
+    input {
+        padding: 10px;
+        appearance: none;
+        outline: 0;
+        border: 1px solid $medium-grey;
+        border-radius: 2px;
+        width: 90%;
+        margin: 8px;
+
+        &:focus {
+            border-color: $light-blue;
+        }
+    }
 }

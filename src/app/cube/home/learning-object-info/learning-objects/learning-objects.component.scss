@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 p {
     color: $homepage-text;
@@ -52,7 +52,6 @@ p {
             ul {
                 margin-top: 12px;
                 padding-inline-start: 20px;
-
             }
         }
 
@@ -68,9 +67,7 @@ p {
                 display: flex;
                 flex-direction: row;
             }
-
         }
-
     }
 
     .learning-object-button {
@@ -118,7 +115,6 @@ p {
         }
     }
 }
-
 
 @media screen and (max-width: 500px) {
     .wrapper {

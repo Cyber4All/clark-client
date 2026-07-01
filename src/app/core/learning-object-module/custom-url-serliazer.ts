@@ -1,17 +1,19 @@
-import { UrlSerializer, UrlTree, DefaultUrlSerializer } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { UrlSerializer, UrlTree, DefaultUrlSerializer } from "@angular/router";
+import { Injectable } from "@angular/core";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class CustomUrlSerializer implements UrlSerializer {
     parse(url: any): UrlTree {
         const dus = new DefaultUrlSerializer();
 
-        const path = dus.parse(url.replace(/[!'()*]/g, (c) => {
-            // Also encode !, ', (, ), and *
-            return '%' + c.charCodeAt(0).toString(16);
-        }));
+        const path = dus.parse(
+            url.replace(/[!'()*]/g, (c) => {
+                // Also encode !, ', (, ), and *
+                return "%" + c.charCodeAt(0).toString(16);
+            }),
+        );
 
         return path;
     }

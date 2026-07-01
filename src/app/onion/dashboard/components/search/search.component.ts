@@ -1,40 +1,43 @@
-import { Component, Output, EventEmitter, Input, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil, debounceTime } from 'rxjs/operators';
-import { FormsModule } from '@angular/forms';
+import {
+    Component,
+    Output,
+    EventEmitter,
+    Input,
+    OnDestroy,
+} from "@angular/core";
+import { BehaviorSubject, Subject } from "rxjs";
+import { takeUntil, debounceTime } from "rxjs/operators";
+import { FormsModule } from "@angular/forms";
 @Component({
-    selector: 'clark-dashboard-search',
-    templateUrl: './search.component.html',
-    styleUrls: ['./search.component.scss'],
+    selector: "clark-dashboard-search",
+    templateUrl: "./search.component.html",
+    styleUrls: ["./search.component.scss"],
     standalone: true,
-    imports: [FormsModule]
+    imports: [FormsModule],
 })
 export class SearchComponent implements OnDestroy {
-  @Input() value: string;
-  @Output() text: EventEmitter<string> = new EventEmitter();
-  searchString$: BehaviorSubject<string> = new BehaviorSubject('');
-  componentDestroyed$: Subject<void> = new Subject();
+    @Input() value: string;
+    @Output() text: EventEmitter<string> = new EventEmitter();
+    searchString$: BehaviorSubject<string> = new BehaviorSubject("");
+    componentDestroyed$: Subject<void> = new Subject();
 
-  constructor() {
-    this.searchString$
-      .pipe(
-        takeUntil(this.componentDestroyed$),
-        debounceTime(650)
-      )
-      .subscribe(() => {
-        this.submitSearch();
-      });
-  }
-
-  submitSearch(event?: KeyboardEvent) {
-    if (!event || event.code === 'Enter') {
-      // no event was passed or event was passed and key pressed is enter key
-      this.text.emit(this.value);
+    constructor() {
+        this.searchString$
+            .pipe(takeUntil(this.componentDestroyed$), debounceTime(650))
+            .subscribe(() => {
+                this.submitSearch();
+            });
     }
-  }
 
-  ngOnDestroy() {
-    this.componentDestroyed$.next();
-    this.componentDestroyed$.unsubscribe();
-  }
+    submitSearch(event?: KeyboardEvent) {
+        if (!event || event.code === "Enter") {
+            // no event was passed or event was passed and key pressed is enter key
+            this.text.emit(this.value);
+        }
+    }
+
+    ngOnDestroy() {
+        this.componentDestroyed$.next();
+        this.componentDestroyed$.unsubscribe();
+    }
 }

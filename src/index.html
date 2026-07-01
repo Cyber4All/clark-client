@@ -1,90 +1,130 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <!-- Google Tag Manager -->
+        <script>
+            (function (w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    "gtm.start": new Date().getTime(),
+                    event: "gtm.js",
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != "dataLayer" ? "&l=" + l : "";
+                j.async = true;
+                j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, "script", "dataLayer", "GTM-K4SF65J");
+        </script>
+        <!-- End Google Tag Manager -->
+        <!-- Google Analytics Scripts -->
+        <script>
+            window.ga =
+                window.ga ||
+                function () {
+                    (ga.q = ga.q || []).push(arguments);
+                };
+            ga.l = +new Date();
+            ga("create", "UA-120134925-1", "auto");
 
-<head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-K4SF65J');</script>
-    <!-- End Google Tag Manager -->
-  <!-- Google Analytics Scripts -->
-  <script>
-    window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
-    ga('create', 'UA-120134925-1', 'auto');
+            // Plugins in use.
+            ga("require", "outboundLinkTracker");
+            ga("require", "urlChangeTracker");
+            // ...
 
-    // Plugins in use.
-    ga('require', 'outboundLinkTracker');
-    ga('require', 'urlChangeTracker');
-    // ...
+            ga("send", "pageview");
+        </script>
 
-    ga('send', 'pageview');
-  </script>
+        <!-- Google tag (gtag.js) -->
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-SPF9CKLGYL"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
 
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SPF9CKLGYL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-SPF9CKLGYL');
-  </script>
-  <script async src="https://www.google-analytics.com/analytics.js"></script>
-  <script async src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"></script>
-  <!-- END Google Analytics Scripts -->
-  <meta charset="utf-8">
-  <title>CLARK | Cybersecurity Library</title>
-  <meta name="description" content="CLARK is a digital library that hosts diverse cybersecurity
+            gtag("config", "G-SPF9CKLGYL");
+        </script>
+        <script
+            async
+            src="https://www.google-analytics.com/analytics.js"></script>
+        <script
+            async
+            src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.4.1/autotrack.js"></script>
+        <!-- END Google Analytics Scripts -->
+        <meta charset="utf-8" />
+        <title>CLARK | Cybersecurity Library</title>
+        <meta
+            name="description"
+            content="CLARK is a digital library that hosts diverse cybersecurity
   learning objects. It was created because there is a demonstrated need for a high-quality and
   high-availability repository for curricular and ancillary resources in the cybersecurity education
-  community. The curriculum in CLARK is free, resides in several collections, and undergoes stringent reviews.">
-  <meta name="keywords" content="cybersecurity, cyber, security, cyber security, digital library, repository, quality curriculum, curriculum, curriculum management, education, cube">
-  <meta name="robots" content="index, follow" />
-  <base href="/">
+  community. The curriculum in CLARK is free, resides in several collections, and undergoes stringent reviews." />
+        <meta
+            name="keywords"
+            content="cybersecurity, cyber, security, cyber security, digital library, repository, quality curriculum, curriculum, curriculum management, education, cube" />
+        <meta name="robots" content="index, follow" />
+        <base href="/" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
-  <!-- Font Awesome 5 Config *** MAKE SURE THIS LOADS BEFORE THE FONT AWESOME LIBRARY LOADS *** -->
-  <script>
-  </script>
-  <!-- Font Awesome 5 Pro -->
-  <script src="https://kit.fontawesome.com/791c37424b.js" crossorigin="anonymous"></script>
-  <!-- <script type="text/javascript">!function (d) { var s = d.createElement('script'); s.src = 'https://widget.indemand.ly/launcher.js'; s.onload = function () { new Indemandly({ "domain": "clark" }); }; var c = d.getElementsByTagName('script')[0]; c.parentNode.insertBefore(s, c); }(document)</script> -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
+        <!-- Font Awesome 5 Config *** MAKE SURE THIS LOADS BEFORE THE FONT AWESOME LIBRARY LOADS *** -->
+        <script></script>
+        <!-- Font Awesome 5 Pro -->
+        <script
+            src="https://kit.fontawesome.com/791c37424b.js"
+            crossorigin="anonymous"></script>
+        <!-- <script type="text/javascript">!function (d) { var s = d.createElement('script'); s.src = 'https://widget.indemand.ly/launcher.js'; s.onload = function () { new Indemandly({ "domain": "clark" }); }; var c = d.getElementsByTagName('script')[0]; c.parentNode.insertBefore(s, c); }(document)</script> -->
+        <link
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500"
+            rel="stylesheet" />
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet" />
+    </head>
 
-<body class="hide-outlines">
-  <!-- Google Tag Manager (noscript) -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-K4SF65J"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
-  <!-- Load the Facebook SDK -->
-  <script>
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId            : '232270740891436',
-        autoLogAppEvents : true,
-        xfbml            : true,
-        version          : 'v3.0'
-      });
-    };
+    <body class="hide-outlines">
+        <!-- Google Tag Manager (noscript) -->
+        <noscript
+            ><iframe
+                src="https://www.googletagmanager.com/ns.html?id=GTM-K4SF65J"
+                height="0"
+                width="0"
+                style="display: none; visibility: hidden"></iframe
+        ></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+        <!-- Load the Facebook SDK -->
+        <script>
+            window.fbAsyncInit = function () {
+                FB.init({
+                    appId: "232270740891436",
+                    autoLogAppEvents: true,
+                    xfbml: true,
+                    version: "v3.0",
+                });
+            };
 
-    (function(d, s, id){
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {return;}
-        js = d.createElement(s); js.id = id;
-        js.src = "https://connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
-
-  </script>
-  <clark-root></clark-root>
-</body>
-
+            (function (d, s, id) {
+                var js,
+                    fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) {
+                    return;
+                }
+                js = d.createElement(s);
+                js.id = id;
+                js.src = "https://connect.facebook.net/en_US/sdk.js";
+                fjs.parentNode.insertBefore(js, fjs);
+            })(document, "script", "facebook-jssdk");
+        </script>
+        <clark-root></clark-root>
+    </body>
 </html>

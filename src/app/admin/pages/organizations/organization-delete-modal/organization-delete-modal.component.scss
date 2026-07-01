@@ -1,14 +1,14 @@
 // Delete modal styles
 .modal-container {
-  &.center {
-    text-align: center;
-  }
+    &.center {
+        text-align: center;
+    }
 }
 
 .confirmation-text {
-  margin: 20px 0;
-  font-size: 1rem;
-  color: rgba(0, 0, 0, 0.87);
+    margin: 20px 0;
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.87);
 }
 
 .certification-checkbox {
@@ -17,12 +17,12 @@
 }
 
 .btn-group {
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: 24px;
-
-  &.center {
+    display: flex;
+    gap: 12px;
     justify-content: center;
-  }
+    margin-top: 24px;
+
+    &.center {
+        justify-content: center;
+    }
 }

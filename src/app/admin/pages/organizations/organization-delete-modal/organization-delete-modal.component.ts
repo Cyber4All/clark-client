@@ -8,9 +8,9 @@ import { MatCheckbox } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'clark-organization-delete-modal',
-    templateUrl: './organization-delete-modal.component.html',
-    styleUrls: ['./organization-delete-modal.component.scss'],
+    selector: "clark-organization-delete-modal",
+    templateUrl: "./organization-delete-modal.component.html",
+    styleUrls: ["./organization-delete-modal.component.scss"],
     standalone: true,
     imports: [
         NgIf,

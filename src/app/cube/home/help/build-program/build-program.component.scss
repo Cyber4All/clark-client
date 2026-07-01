@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .wrapper {
     margin: 0px 60px;
@@ -7,7 +7,7 @@
         font-size: 20px;
         font-weight: 600;
     }
-    
+
     .framework {
         margin: 0 15px 15px 0;
         padding: 10px 24px;
@@ -47,7 +47,7 @@
                 width: 30%;
             }
 
-            &:hover{
+            &:hover {
                 border-color: $homepage-light-blue;
             }
         }
@@ -88,7 +88,7 @@
                     border: 1px solid $homepage-light-blue;
                     opacity: 80%;
                 }
-    
+
                 &:active {
                     border: 1px solid $homepage-light-blue;
                     background: $box-background;
@@ -97,7 +97,7 @@
             }
         }
     }
-    
+
     .pagination {
         margin-top: 70px;
         button {
@@ -125,7 +125,6 @@
                 color: $homepage-pagination;
             }
         }
-        
     }
 }
 
@@ -134,11 +133,11 @@
         .search {
             display: flex;
             flex-direction: column;
-    
+
             .input input {
                 width: 85%;
             }
-    
+
             span {
                 margin-top: 5px;
             }
@@ -153,7 +152,7 @@
                 padding: 10px 15px;
             }
         }
-    } 
+    }
 }
 
 @media screen and (max-width: 425px) {
@@ -192,4 +191,3 @@
         }
     }
 }
-

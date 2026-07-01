@@ -1,8 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '@env/environment';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map, shareReplay } from 'rxjs/operators';
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { environment } from "@env/environment";
+import { Observable, throwError } from "rxjs";
+import { catchError, map, shareReplay } from "rxjs/operators";
 import {
     CreateOrganizationResponseSchema,
     GetOrganizationByIdResponseSchema,
@@ -10,7 +10,7 @@ import {
     SearchOrganizationsResponseSchema,
     SuggestDomainResponseSchema,
     UpdateOrganizationResponseSchema,
-} from './organization.schemas';
+} from "./organization.schemas";
 import {
     CreateOrganizationRequest,
     CreateOrganizationResponse,
@@ -22,27 +22,33 @@ import {
     SuggestDomainResponse,
     UpdateOrganizationRequest,
     UpdateOrganizationResponse,
-} from './organization.types';
+} from "./organization.types";
 
 /**
  * Service for organization HTTP operations
  * Uses Observables for all async operations with runtime validation via zod
  */
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class OrganizationService {
     /**
      * Cache for suggestDomain requests keyed by normalized email domain
      */
-    private readonly suggestCache = new Map<string, Observable<SuggestDomainResponse>>();
+    private readonly suggestCache = new Map<
+        string,
+        Observable<SuggestDomainResponse>
+    >();
 
     /**
      * Cache for searchOrganizations requests keyed by stringified normalized request
      */
-    private readonly searchCache = new Map<string, Observable<SearchOrganizationsResponse>>();
+    private readonly searchCache = new Map<
+        string,
+        Observable<SearchOrganizationsResponse>
+    >();
 
-    constructor(private readonly http: HttpClient) { }
+    constructor(private readonly http: HttpClient) {}
 
     /**
      * Private path helpers
@@ -69,11 +75,17 @@ export class OrganizationService {
      * @param request Search parameters
      * @returns Observable of organization array
      */
-    searchOrganizations(request: SearchOrganizationsRequest = {}): Observable<Organization[]> {
-        return this.searchOrganizationsResponse(request).pipe(map((response) => response.organizations));
+    searchOrganizations(
+        request: SearchOrganizationsRequest = {},
+    ): Observable<Organization[]> {
+        return this.searchOrganizationsResponse(request).pipe(
+            map((response) => response.organizations),
+        );
     }
 
-    searchOrganizationsResponse(request: SearchOrganizationsRequest = {}): Observable<SearchOrganizationsResponse> {
+    searchOrganizationsResponse(
+        request: SearchOrganizationsRequest = {},
+    ): Observable<SearchOrganizationsResponse> {
         // Normalize request for cache key
         const cacheKey = this.normalizeSearchRequest(request);
 
@@ -86,41 +98,45 @@ export class OrganizationService {
         // Build HTTP params
         let params = new HttpParams();
         if (request.text) {
-            params = params.set('text', request.text.trim());
+            params = params.set("text", request.text.trim());
         }
         if (request.sector) {
-            params = params.set('sector', request.sector);
+            params = params.set("sector", request.sector);
         }
         if (request.levels && request.levels.length > 0) {
             // CSV format for levels
-            params = params.set('levels', request.levels.join(','));
+            params = params.set("levels", request.levels.join(","));
         }
         if (request.status) {
             const statusValue = Array.isArray(request.status)
-                ? request.status.join(',')
+                ? request.status.join(",")
                 : request.status;
-            params = params.set('status', statusValue);
+            params = params.set("status", statusValue);
         }
         if (request.domain) {
-            params = params.set('domain', request.domain);
+            params = params.set("domain", request.domain);
         }
         if (request.page !== undefined) {
-            params = params.set('page', String(request.page));
+            params = params.set("page", String(request.page));
         }
         if (request.limit !== undefined) {
-            params = params.set('limit', String(request.limit));
+            params = params.set("limit", String(request.limit));
         }
 
         // Make request with validation and caching
         const request$ = this.http
-            .get<SearchOrganizationsResponse | Organization[]>(this.organizationsPath(), {
-                params,
-                withCredentials: true,
-            })
+            .get<SearchOrganizationsResponse | Organization[]>(
+                this.organizationsPath(),
+                {
+                    params,
+                    withCredentials: true,
+                },
+            )
             .pipe(
                 map((data): SearchOrganizationsResponse => {
                     if (Array.isArray(data)) {
-                        const organizations = OrganizationArraySchema.parse(data);
+                        const organizations =
+                            OrganizationArraySchema.parse(data);
                         return {
                             organizations,
                             total: organizations.length,
@@ -130,12 +146,12 @@ export class OrganizationService {
                     }
                     return SearchOrganizationsResponseSchema.parse(data);
                 }),
-                catchError(error => {
+                catchError((error) => {
                     // Evict cache on error
                     this.searchCache.delete(cacheKey);
                     return throwError(() => error);
                 }),
-                shareReplay({ bufferSize: 1, refCount: false })
+                shareReplay({ bufferSize: 1, refCount: false }),
             );
 
         // Store in cache
@@ -161,20 +177,21 @@ export class OrganizationService {
         }
 
         // Build HTTP params
-        const params = new HttpParams().set('email', email);
+        const params = new HttpParams().set("email", email);
 
         // Make request with validation and caching
-        const request$ = this.http
-            .get(this.suggestPath(), { params })
-            .pipe(
-                map((data): SuggestDomainResponse => SuggestDomainResponseSchema.parse(data)),
-                catchError(error => {
-                    // Evict cache on error
-                    this.suggestCache.delete(cacheKey);
-                    return throwError(() => error);
-                }),
-                shareReplay({ bufferSize: 1, refCount: false })
-            );
+        const request$ = this.http.get(this.suggestPath(), { params }).pipe(
+            map(
+                (data): SuggestDomainResponse =>
+                    SuggestDomainResponseSchema.parse(data),
+            ),
+            catchError((error) => {
+                // Evict cache on error
+                this.suggestCache.delete(cacheKey);
+                return throwError(() => error);
+            }),
+            shareReplay({ bufferSize: 1, refCount: false }),
+        );
 
         // Store in cache
         this.suggestCache.set(cacheKey, request$);
@@ -188,12 +205,14 @@ export class OrganizationService {
      * @param request Organization data
      * @returns Observable of created organization response
      */
-    createOrganization(request: CreateOrganizationRequest): Observable<CreateOrganizationResponse> {
+    createOrganization(
+        request: CreateOrganizationRequest,
+    ): Observable<CreateOrganizationResponse> {
         return this.http
             .post<CreateOrganizationResponse>(this.organizationsPath(), request)
             .pipe(
-                map(data => CreateOrganizationResponseSchema.parse(data)),
-                catchError(error => throwError(() => error))
+                map((data) => CreateOrganizationResponseSchema.parse(data)),
+                catchError((error) => throwError(() => error)),
             );
     }
 
@@ -204,12 +223,15 @@ export class OrganizationService {
      * @param request Update data
      * @returns Observable of updated organization response
      */
-    updateOrganization(id: string, request: UpdateOrganizationRequest): Observable<UpdateOrganizationResponse> {
+    updateOrganization(
+        id: string,
+        request: UpdateOrganizationRequest,
+    ): Observable<UpdateOrganizationResponse> {
         return this.http
             .patch<UpdateOrganizationResponse>(this.updatePath(id), request)
             .pipe(
-                map(data => UpdateOrganizationResponseSchema.parse(data)),
-                catchError(error => throwError(() => error))
+                map((data) => UpdateOrganizationResponseSchema.parse(data)),
+                catchError((error) => throwError(() => error)),
             );
     }
 
@@ -239,12 +261,17 @@ export class OrganizationService {
      * @param request Request containing target organization ID
      * @returns Observable that completes on success
      */
-    migrateOrganizationUsers(sourceOrganizationId: string, request: MigrateOrganizationUsersRequest): Observable<void> {
+    migrateOrganizationUsers(
+        sourceOrganizationId: string,
+        request: MigrateOrganizationUsersRequest,
+    ): Observable<void> {
         return this.http
-            .post<void>(this.migratePath(sourceOrganizationId), request, { observe: 'response' })
+            .post<void>(this.migratePath(sourceOrganizationId), request, {
+                observe: "response",
+            })
             .pipe(
                 map(() => undefined),
-                catchError(error => throwError(() => error))
+                catchError((error) => throwError(() => error)),
             );
     }
 
@@ -258,8 +285,12 @@ export class OrganizationService {
         return this.http
             .get<GetOrganizationByIdResponse>(this.updatePath(id))
             .pipe(
-                map((data): Organization => GetOrganizationByIdResponseSchema.parse(data).organization),
-                catchError(error => throwError(() => error))
+                map(
+                    (data): Organization =>
+                        GetOrganizationByIdResponseSchema.parse(data)
+                            .organization,
+                ),
+                catchError((error) => throwError(() => error)),
             );
     }
 
@@ -274,13 +305,22 @@ export class OrganizationService {
     /**
      * Private helper: Normalize search request for stable cache key
      */
-    private normalizeSearchRequest(request: SearchOrganizationsRequest): string {
+    private normalizeSearchRequest(
+        request: SearchOrganizationsRequest,
+    ): string {
         const normalized = {
             text: request.text?.trim() || undefined,
             sector: request.sector || undefined,
-            levels: request.levels?.slice().sort((a, b) => a.localeCompare(b)).join(',') || undefined,
+            levels:
+                request.levels
+                    ?.slice()
+                    .sort((a, b) => a.localeCompare(b))
+                    .join(",") || undefined,
             status: Array.isArray(request.status)
-                ? request.status.slice().sort((a, b) => a.localeCompare(b)).join(',')
+                ? request.status
+                      .slice()
+                      .sort((a, b) => a.localeCompare(b))
+                      .join(",")
                 : request.status,
             domain: request.domain || undefined,
             page: request.page,
@@ -294,7 +334,7 @@ export class OrganizationService {
      */
     private normalizeEmailDomain(email: string): string {
         const normalized = email.toLowerCase().trim();
-        const atIndex = normalized.indexOf('@');
+        const atIndex = normalized.indexOf("@");
         if (atIndex === -1) {
             return normalized;
         }

@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from "../../../../environments/environment";
 
 export const CHANGE_AUTHORSHIP_ROUTES = {
     /**
@@ -10,9 +10,9 @@ export const CHANGE_AUTHORSHIP_ROUTES = {
      */
     CHANGE_AUTHORSHIP(userId: string, learningObjectId: string) {
         return `${environment.apiURL}/users/${encodeURIComponent(
-            userId
+            userId,
         )}/learning-objects/${encodeURIComponent(
-            learningObjectId
+            learningObjectId,
         )}/change-author`;
-    }
+    },
 };
