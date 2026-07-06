@@ -87,6 +87,6 @@
         "npm": ">=8"
     },
     "lint-staged": {
-        "*.{ts,js,html,scss,css,json}": "prettier --write"
+        "src/**/*.{ts,html,scss,css,json}": "prettier --write"
     }
 }
