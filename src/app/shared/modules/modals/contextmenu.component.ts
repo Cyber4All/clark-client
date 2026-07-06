@@ -43,7 +43,8 @@ import { ActivateDirective } from "../../directives/activate.directive";
 })
 export class ContextMenuComponent
     extends ModalDirective
-    implements DoCheck, AfterViewChecked {
+    implements DoCheck, AfterViewChecked
+{
     constructor(
         private elementRef: ElementRef,
         modalService: ModalService,

@@ -47,7 +47,8 @@ import { ActivateDirective } from "../../directives/activate.directive";
 })
 export class DialogMenuComponent
     extends ModalDirective
-    implements DoCheck, AfterViewChecked {
+    implements DoCheck, AfterViewChecked
+{
     type = "dialog";
 
     tryClose(event) {

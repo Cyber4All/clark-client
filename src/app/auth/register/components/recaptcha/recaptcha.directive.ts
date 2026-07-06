@@ -39,7 +39,8 @@ declare global {
     standalone: true,
 })
 export class RecaptchaDirective
-    implements OnInit, AfterViewInit, ControlValueAccessor {
+    implements OnInit, AfterViewInit, ControlValueAccessor
+{
     @Input() key: string;
     @Input() config: ReCaptchaConfig = {};
     @Input() lang: string;

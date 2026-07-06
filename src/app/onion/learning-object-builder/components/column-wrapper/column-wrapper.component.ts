@@ -18,7 +18,8 @@ import { NgStyle, NgClass, NgIf } from "@angular/common";
     imports: [NgStyle, NgClass, NgIf],
 })
 export class ColumnWrapperComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild("columnWrapper") columnWrapper: ElementRef;
 
     @Input() columns = "lmr";

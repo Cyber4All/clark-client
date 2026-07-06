@@ -123,7 +123,8 @@ export const builderTransitions = trigger("builderTransition", [
     ],
 })
 export class LearningObjectBuilderComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     // fires when the component is destroyed
     destroyed$: Subject<void> = new Subject();
 

@@ -44,7 +44,8 @@ import { PaginationComponent } from "../../components/pagination/pagination.comp
     ],
 })
 export class LearningObjectsComponent
-    implements OnInit, OnDestroy, AfterViewInit {
+    implements OnInit, OnDestroy, AfterViewInit
+{
     @ViewChild("list") listElement: ElementRef<HTMLElement>;
     @ViewChild("headers") headersElement: ElementRef<HTMLElement>;
 

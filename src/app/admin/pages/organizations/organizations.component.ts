@@ -112,7 +112,8 @@ import { OrganizationMigrateModalComponent } from "./organization-migrate-modal/
     ],
 })
 export class OrganizationsComponent
-    implements OnInit, OnDestroy, AfterViewInit {
+    implements OnInit, OnDestroy, AfterViewInit
+{
     @ViewChild("list") listElement!: ElementRef<HTMLElement>;
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild(MatPaginator) paginator!: MatPaginator;

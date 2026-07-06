@@ -64,7 +64,8 @@ import { ActivateDirective } from "../../../../shared/directives/activate.direct
     ],
 })
 export class OrganizationMigrateModalComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() isVisible = false;
     @Input() sourceOrganization: Organization | null = null;
     @Input() sourceUserCount = 0;
