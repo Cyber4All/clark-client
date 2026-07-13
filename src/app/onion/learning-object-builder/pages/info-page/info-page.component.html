@@ -43,6 +43,7 @@
                     <div data>
                         <clark-user-dropdown
                             [contributors]="learningObject.contributors"
+                            [hasError]="!!validator.get('contributors')"
                             (addAuthor)="toggleContributor($event)"
                             (removeAuthor)="
                                 toggleContributor($event)

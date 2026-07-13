@@ -66,6 +66,7 @@ export class UserDropdownComponent implements OnInit, DoCheck, OnDestroy {
     destroyed$: Subject<void> = new Subject();
 
     @Input() contributors: User[];
+    @Input() hasError = false;
     differ: IterableDiffer<User>;
 
     // fired when an author is added as a contributor

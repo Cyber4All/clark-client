@@ -5,6 +5,7 @@
         ariaLabel="Find users by name, username, or email"
         [fullWidth]="true"
         [value]="query"
+        [hasError]="hasError"
         (userInput)="userSearchInput$.next($event)"></clark-search-input>
     <ul *ngIf="showDropdown" class="user-dropdown__list">
         <ng-container

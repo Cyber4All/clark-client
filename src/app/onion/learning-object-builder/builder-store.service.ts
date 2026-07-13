@@ -1059,9 +1059,11 @@ export class BuilderStore {
             .catch((e) => {
                 this.serviceInteraction$.next(false);
                 if (e.status === 400) {
+                    const validationError =
+                        this.getServiceValidationError(e);
                     this.validator.errors.saveErrors.set(
-                        "name",
-                        e.error.message,
+                        validationError.property,
+                        validationError.message,
                     );
                     this.handleServiceError(
                         e,
@@ -1119,7 +1121,7 @@ export class BuilderStore {
             updates.materials = object.materials;
         }
 
-        if (object.contributors) {
+        if (object.contributors?.length) {
             updates.contributors = object.contributors.map(
                 (contributor: any) =>
                     contributor.userId || contributor.id || contributor,
@@ -1145,13 +1147,12 @@ export class BuilderStore {
             })
             .catch((e) => {
                 if (e.status === 400) {
-                    const body =
-                        typeof e.error === "string"
-                            ? JSON.parse(e.error)
-                            : e.error;
-                    const errorMsg = body?.message?.[0]?.message?.[0] ?? "";
-
-                    this.validator.errors.saveErrors.set("name", errorMsg);
+                    const validationError =
+                        this.getServiceValidationError(e);
+                    this.validator.errors.saveErrors.set(
+                        validationError.property,
+                        validationError.message,
+                    );
                     this.handleServiceError(
                         e,
                         BUILDER_ERRORS.SPECIAL_CHARACTER_NAME,
@@ -1160,6 +1161,40 @@ export class BuilderStore {
                     this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
                 }
             });
+    }
+
+    private getServiceValidationError(e: HttpErrorResponse): {
+        property: string;
+        message: string;
+    } {
+        let body: any = e.error;
+        if (typeof e.error === "string") {
+            try {
+                body = JSON.parse(e.error);
+            } catch (_error) {
+                body = { message: e.error };
+            }
+        }
+
+        const serviceMessage = body?.message ?? e.error?.message ?? "";
+        const firstMessage = Array.isArray(serviceMessage)
+            ? serviceMessage[0]
+            : serviceMessage;
+        const message = Array.isArray(firstMessage?.message)
+            ? firstMessage.message[0]
+            : firstMessage?.message || firstMessage || "Unable to save";
+        const property =
+            firstMessage?.property || this.inferErrorProperty(message);
+
+        return { property, message };
+    }
+
+    private inferErrorProperty(message: string): string {
+        if (message.toLowerCase().includes("contributor")) {
+            return "contributors";
+        }
+
+        return "name";
     }
 
     /**

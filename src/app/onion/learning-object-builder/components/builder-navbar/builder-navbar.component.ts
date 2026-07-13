@@ -132,16 +132,16 @@ export class BuilderNavbarComponent implements OnDestroy {
      */
     canRoute(route: string) {
         let result: boolean;
+        const hasSavedLearningObject = !!this.learningObject?.id;
 
         switch (route) {
             case "outcomes":
-                result = this.validator.saveable && this.store.touched;
+                result = hasSavedLearningObject;
                 break;
             case "materials":
                 result = !!(
                     this.auth.user.emailVerified &&
-                    this.validator.saveable &&
-                    this.store.touched
+                    hasSavedLearningObject
                 );
                 break;
         }
