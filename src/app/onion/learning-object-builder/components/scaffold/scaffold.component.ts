@@ -107,6 +107,11 @@ export class ScaffoldComponent implements OnInit {
         this.childrenConfirmation = false;
         this.ariaLabel = "Add and delete Children";
 
+        if (!this.learningObject.id) {
+            this.children = [];
+            return;
+        }
+
         // if the Learning Object can have children, attempt to load them
         if (this.learningObject.length !== LearningObject.Length.NANOMODULE) {
             this.loading = true;
@@ -229,6 +234,10 @@ export class ScaffoldComponent implements OnInit {
      * Toggles the child modal
      */
     toggleAddChild(value: boolean = true) {
+        if (!this.learningObject.id) {
+            return;
+        }
+
         if (value) {
             // [left, top]
             const position = [

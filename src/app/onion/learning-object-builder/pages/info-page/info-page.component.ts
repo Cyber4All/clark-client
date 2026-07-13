@@ -55,6 +55,7 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     learningObject: LearningObject;
 
     selectedLevels: string[] = [];
+    selectedLength: string;
     academicLevels = Object.values(LearningObject.Level);
     lengthOptions = [
         { label: COPY.NANO, value: "nanomodule" },
@@ -66,11 +67,13 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
     descriptionTouched: boolean;
     descriptionDirty: boolean;
+    nameTouched: boolean;
 
     destroyed$: Subject<void> = new Subject();
 
     // Emits raw name values from the input for per-keystroke checks
     private nameChanges$: Subject<string> = new Subject();
+    private pendingLength: string;
 
     constructor(
         private store: BuilderStore,
@@ -88,6 +91,13 @@ export class InfoPageComponent implements OnInit, OnDestroy {
                     // re-initialize our state variables
                     this.learningObject = payload;
                     this.selectedLevels = payload.levels || [];
+                    if (
+                        !this.pendingLength ||
+                        payload.length === this.pendingLength
+                    ) {
+                        this.selectedLength = payload.length;
+                        this.pendingLength = undefined;
+                    }
                 }
             });
 
@@ -111,13 +121,28 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     }
 
     onNameInput(value: string) {
+        this.nameTouched = true;
         this.mutateLearningObject({ name: value });
         this.nameChanges$.next(value);
+    }
+
+    getNameError(): string | undefined {
+        if (
+            !this.nameTouched &&
+            !this.validator.showSaveErrors &&
+            !this.validator.submissionMode
+        ) {
+            return undefined;
+        }
+
+        return this.validator.get("name");
     }
 
     updateLength(selection: DropdownFilterSelection): void {
         const [length] = selection.selectedValues;
         if (length) {
+            this.selectedLength = length;
+            this.pendingLength = length;
             this.mutateLearningObject({ length });
         }
     }

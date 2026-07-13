@@ -185,6 +185,10 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.routesClicked.add(route);
     }
 
+    triggerBlockedRouteClick(): void {
+        this.validator.showSaveErrors = true;
+    }
+
     /**
      * Function used to handle actions on exit of learning-object builder
      * 1. Remove any outcomes that have null text

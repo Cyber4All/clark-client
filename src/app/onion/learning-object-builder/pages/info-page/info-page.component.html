@@ -10,7 +10,7 @@
             class="content-wrapper">
             <form>
                 <clark-info-page-metadata
-                    [error]="validator.get('name') || undefined">
+                    [error]="getNameError()">
                     <div title class="field-label">
                         <i class="fa-solid fa-asterisk required-asterisk"></i>
                         {{ copy.NAME }}
@@ -19,7 +19,7 @@
                         <input
                             #nameInput
                             class="name-field"
-                            [class.name-field--error]="validator.get('name')"
+                            [class.name-field--error]="getNameError()"
                             name="name"
                             type="text"
                             placeholder="Learning Object Name"
@@ -91,7 +91,7 @@
                             [isMultiSelect]="false"
                             [allowEmptySelection]="false"
                             [values]="lengthOptions"
-                            [selectedValues]="[learningObject.length]"
+                            [selectedValues]="[selectedLength]"
                             (selectionChange)="updateLength($event)">
                         </clark-dropdown-filter>
                     </div>

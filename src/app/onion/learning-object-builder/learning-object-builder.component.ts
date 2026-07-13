@@ -343,10 +343,7 @@ export class LearningObjectBuilderComponent
     get errorState(): boolean {
         this.errorMessage = this.validator.nextError;
 
-        return (
-            !this.validator.saveable ||
-            (this.validator.submissionMode && !this.validator.submittable)
-        );
+        return this.validator.submissionMode && !this.validator.submittable;
     }
 
     /**

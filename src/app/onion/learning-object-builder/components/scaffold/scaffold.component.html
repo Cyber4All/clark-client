@@ -71,8 +71,19 @@
     <button
         id="children"
         #addChildButton
-        aria-label="Add Child"
+        [attr.aria-label]="
+            learningObject?.id
+                ? 'Add Child'
+                : 'Name this learning object before adding children'
+        "
         class="edit-children"
+        [disabled]="!learningObject?.id"
+        [tip]="
+            !learningObject?.id
+                ? 'Name this learning object before adding children.'
+                : undefined
+        "
+        tipPosition="right"
         (activate)="toggleAddChild(); $event.stopPropagation()"
         *ngIf="learningObject?.length !== 'nanomodule'">
         Add Child
