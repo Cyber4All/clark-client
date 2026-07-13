@@ -7,7 +7,7 @@ $right-column: minmax(290px, 340px);
     grid-template-columns: $left-column $middle-column $right-column;
     grid-gap: 5px;
     margin: 0 25px;
-    position: absolute;
+    position: fixed;
     top: 160px;
 
     &.no-left {

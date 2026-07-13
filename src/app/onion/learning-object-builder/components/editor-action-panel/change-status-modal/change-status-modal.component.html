@@ -15,7 +15,7 @@
 
 <ng-template #changeStatus>
     <div [@carousel]="direction">
-        <p class="title">What would you like to do?</p>
+        <p class="title">Choose a status</p>
         <div class="status-options-wrapper">
             <div
                 *ngFor="let status of statuses"
@@ -53,7 +53,7 @@
 
 <ng-template #updateChangelog>
     <div [@carousel]="direction">
-        <p class="title">What changes were made?</p>
+        <p class="title">Release notes</p>
         <clark-edit-changelog
             [(changelog)]="changelog"
             (back)="regress()"
@@ -64,9 +64,17 @@
 
 <ng-template #requestChanges>
     <div [@carousel]="direction">
-        <p class="title">What changes would you like to request?</p>
+        <p class="title">
+            Request changes
+            <span
+                class="field-badge field-badge--optional"
+                tip="Add a reason when it helps the author understand the decision."
+                tipPosition="right">
+                Optional
+            </span>
+        </p>
         <clark-text-editor
-            editorPlaceholder="What changes would you like the author(s) to make?"
+            editorPlaceholder="Add a reason or requested changes."
             [(savedContent)]="reason"
             (textOutput)="reason = $event"
             name="reason">

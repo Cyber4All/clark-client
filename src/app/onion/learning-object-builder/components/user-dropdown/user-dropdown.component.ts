@@ -15,7 +15,6 @@ import { User } from "@entity";
 import { Subject } from "rxjs";
 import { takeUntil, debounceTime } from "rxjs/operators";
 import { OrganizationStore } from "app/core/organization-module/organization.store";
-import { FormsModule } from "@angular/forms";
 import {
     NgIf,
     NgTemplateOutlet,
@@ -27,6 +26,7 @@ import {
 } from "@angular/common";
 import { VirtualScrollerModule } from "@iharbeck/ngx-virtual-scroller";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
+import { SearchInputComponent } from "../../../../shared/components/search-input/search-input.component";
 
 @Component({
     selector: "clark-user-dropdown",
@@ -34,7 +34,6 @@ import { ActivateDirective } from "../../../../shared/directives/activate.direct
     styleUrls: ["./user-dropdown.component.scss"],
     standalone: true,
     imports: [
-        FormsModule,
         NgIf,
         NgTemplateOutlet,
         VirtualScrollerModule,
@@ -44,6 +43,7 @@ import { ActivateDirective } from "../../../../shared/directives/activate.direct
         NgStyle,
         AsyncPipe,
         TitleCasePipe,
+        SearchInputComponent,
     ],
 })
 export class UserDropdownComponent implements OnInit, DoCheck, OnDestroy {
@@ -97,6 +97,7 @@ export class UserDropdownComponent implements OnInit, DoCheck, OnDestroy {
         this.userSearchInput$
             .pipe(takeUntil(this.destroyed$))
             .subscribe((val: string) => {
+                this.query = val;
                 if (val && val !== "") {
                     this.showDropdown = true;
                     this.loading = true;

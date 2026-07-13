@@ -2,13 +2,11 @@
     <!-- Topics Filters - Pill/Chip Style (using filter-section for accordion behavior) -->
     <clark-filter-section [info]="topicFilter" (change)="registerChange()">
         <div class="topic-pills-container" *ngIf="topicFilter?.filters">
-            <button
+            <clark-pill
                 *ngFor="let topic of topicFilter.filters"
-                class="topic-pill"
-                [ngClass]="{ active: topic.active }"
-                (activate)="toggleTopicFilter(topic)">
-                {{ topic.name }}
-            </button>
+                [label]="topic.name"
+                [active]="topic.active"
+                (selected)="toggleTopicFilter(topic)"></clark-pill>
         </div>
     </clark-filter-section>
 

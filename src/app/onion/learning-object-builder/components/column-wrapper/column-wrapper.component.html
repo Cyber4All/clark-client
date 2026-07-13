@@ -3,7 +3,10 @@
         #columnWrapper
         class="columns"
         [ngStyle]="{ top: columnOffset + 'px' }"
-        [ngClass]="{ 'no-right': !rightColumn, 'no-left': !leftColumn }">
+        [ngClass]="{
+            'no-right': !rightColumn,
+            'no-left': !leftColumn
+        }">
         <div
             class="scroll-wrapper scroll-wrapper--left"
             [ngStyle]="{ height: columnHeight + 'px' }">

@@ -183,8 +183,9 @@ export class ScaffoldComponent implements OnInit {
      */
     deleteButton(index) {
         this.deleteIndex = index;
-        this.childrenConfirmationMessage = `Just to confirm, you want to remove '
-        ${this.children[index].name}' as a child of '${
+        this.childrenConfirmationMessage = `Remove '${
+            this.children[index].name
+        }' as a child of '${
             this.learningObject.name
         }'?`;
 

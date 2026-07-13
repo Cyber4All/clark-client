@@ -5,19 +5,9 @@
 }
 
 .user-dropdown__search-input {
-    appearance: none;
-    font-size: $small;
-    padding: 8px 10px;
-    border: 1px solid $medium-grey;
-    border-radius: 2px;
-    outline: 0;
+    display: block;
     max-width: 500px;
     width: 100%;
-    box-sizing: border-box;
-
-    &:focus {
-        border-color: $light-blue;
-    }
 }
 
 .user-dropdown__list {

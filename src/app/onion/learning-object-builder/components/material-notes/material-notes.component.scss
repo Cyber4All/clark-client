@@ -11,6 +11,13 @@
             text-align: right;
             padding-right: 5px;
         }
+
+        .note-title__help {
+            cursor: help;
+            float: right;
+            font-size: $normal;
+            margin-top: 3px;
+        }
     }
 
     .note-title-blue {

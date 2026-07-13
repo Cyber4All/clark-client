@@ -21,6 +21,24 @@
     margin-bottom: 15px;
 }
 
+.field-badge {
+    border-radius: 2px;
+    cursor: help;
+    display: inline-block;
+    font-size: $small;
+    font-weight: 600;
+    line-height: 1;
+    margin-left: 8px;
+    padding: 4px 6px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.field-badge--optional {
+    background: $light-grey;
+    color: $dark-grey;
+}
+
 .status-options-wrapper {
     margin-top: 25px;
 }

@@ -10,6 +10,14 @@
             <i class="fa fa-chevron-up"></i>
         </span>
         {{ note.title }}
+        <span
+            *ngIf="note.tip"
+            class="note-title__help"
+            [tip]="note.tip"
+            tipPosition="left"
+            (click)="$event.stopPropagation()">
+            <i class="far fa-info-circle"></i>
+        </span>
     </div>
     <div *ngIf="open" class="note-content" [innerHTML]="note.content"></div>
 </div>

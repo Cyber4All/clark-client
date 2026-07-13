@@ -677,7 +677,10 @@ export class BuilderStore {
 
         this.validator.validateLearningObject(learningObject, this.outcomes);
 
-        if (!this.validator.get("name")) {
+        const hasInvalidNameChange =
+            dataProperties.includes("name") && !!this.validator.get("name");
+
+        if (!hasInvalidNameChange) {
             this.learningObject = new LearningObject(learningObject);
         }
 

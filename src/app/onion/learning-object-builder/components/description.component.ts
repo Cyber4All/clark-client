@@ -1,21 +1,20 @@
-import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
-    UntypedFormControl,
     FormsModule,
     ReactiveFormsModule,
+    UntypedFormControl,
 } from "@angular/forms";
 import {
     BOLD_BUTTON,
     ITALIC_BUTTON,
     LINK_INPUT,
+    NgxSimpleTextEditorModule,
     ORDERED_LIST_BUTTON,
     REDO_BUTTON,
-    REMOVE_FORMAT_BUTTON,
+    SEPARATOR,
     UNDERLINE_BUTTON,
     UNDO_BUTTON,
     UNORDERED_LIST_BUTTON,
-    SEPARATOR,
-    NgxSimpleTextEditorModule,
 } from "ngx-simple-text-editor";
 import { skip } from "rxjs/operators";
 
@@ -47,6 +46,94 @@ import { skip } from "rxjs/operators";
                 max-width: 800px;
                 width: 100%;
             }
+
+            .description-wrapper {
+                width: 100%;
+            }
+
+            .goals,
+            .description-wrapper ::ng-deep st-editor,
+            .description-wrapper ::ng-deep .st-editor-container {
+                display: block;
+                width: 100%;
+            }
+
+            .description-wrapper ::ng-deep .st-editor-container {
+                border: 1px solid #d9e1ec;
+                border-radius: 8px;
+                overflow: hidden;
+                background: #fff;
+            }
+
+            .description-wrapper ::ng-deep .st-toolbar {
+                border: 0;
+                border-bottom: 1px solid #d9e1ec;
+                border-radius: 0;
+                gap: 4px;
+                padding: 8px;
+                background: #f8fafc;
+            }
+
+            .description-wrapper ::ng-deep .st-toolbar-item {
+                align-items: center;
+                background: transparent;
+                border: 0;
+                border-radius: 6px;
+                color: #4a5568;
+                display: inline-flex;
+                height: 32px;
+                justify-content: center;
+                margin: 0;
+                min-width: 32px;
+                padding: 0 9px;
+                transition:
+                    background 0.15s ease,
+                    color 0.15s ease;
+            }
+
+            .description-wrapper ::ng-deep .st-toolbar-item:hover {
+                background: #e8f1ff;
+                color: #1c70dd;
+            }
+
+            .description-wrapper ::ng-deep .st-toolbar-item:focus {
+                outline: 2px solid #1c70dd;
+                outline-offset: 1px;
+            }
+
+            .description-wrapper ::ng-deep .st-button.active {
+                background: #1c70dd;
+                color: #fff;
+            }
+
+            .description-wrapper ::ng-deep .st-toolbar-item i {
+                font-size: 14px;
+                line-height: 1;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+                text-rendering: geometricPrecision;
+            }
+
+            .description-wrapper ::ng-deep .st-divider {
+                border-right: 1px solid #d9e1ec;
+                height: 24px;
+                margin: 0 3px;
+            }
+
+            .description-wrapper ::ng-deep .st-area {
+                border: 0;
+                border-radius: 0;
+                color: #2d3748;
+                font-size: 16px;
+                line-height: 1.5;
+                min-height: 140px;
+                padding: 12px;
+            }
+
+            .description-wrapper ::ng-deep .st-area:focus {
+                outline: 2px solid rgba(28, 112, 221, 0.35);
+                outline-offset: -2px;
+            }
         `,
     ],
     standalone: true,
@@ -65,8 +152,6 @@ export class LearningObjectDescriptionComponent implements OnInit {
             BOLD_BUTTON,
             ITALIC_BUTTON,
             UNDERLINE_BUTTON,
-            SEPARATOR,
-            REMOVE_FORMAT_BUTTON,
             SEPARATOR,
             ORDERED_LIST_BUTTON,
             UNORDERED_LIST_BUTTON,

@@ -1,30 +1,35 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from "@angular/core";
+import { NgFor, NgIf } from "@angular/common";
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { LearningObject, User } from "@entity";
+import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
+import { Observable, Subject, from, of } from "rxjs";
 import {
+    catchError,
     distinctUntilChanged,
+    map,
     switchMap,
     takeUntil,
-    map,
-    catchError,
 } from "rxjs/operators";
+import {
+    DropdownFilterComponent,
+    DropdownFilterSelection,
+} from "../../../../shared/components/dropdown-filter/dropdown-filter.component";
+import { PillComponent } from "../../../../shared/components/pill/pill.component";
+import { SkipLinkComponent } from "../../../../shared/components/skip-link/skip-link.component";
+import { TipDirective } from "../../../../shared/directives/tip.directive";
 import {
     BuilderStore,
     BUILDER_ACTIONS as actions,
 } from "../../builder-store.service";
-import { LearningObject, User } from "@entity";
-import { COPY } from "./info-page.copy";
-import { Observable, of, Subject, from } from "rxjs";
-import { LearningObjectValidator } from "../../validators/learning-object.validator";
-import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { ColumnWrapperComponent } from "../../components/column-wrapper/column-wrapper.component";
-import { NgIf, NgFor, NgClass } from "@angular/common";
-import { ScaffoldComponent } from "../../components/scaffold/scaffold.component";
-import { FormsModule } from "@angular/forms";
-import { MetadataComponent } from "./metadata/metadata.component";
-import { UserDropdownComponent } from "../../components/user-dropdown/user-dropdown.component";
 import { ContributorPillComponent } from "../../components/contributor-pill/contributor-pill.component";
-import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { LearningObjectDescriptionComponent } from "../../components/description.component";
-import { SkipLinkComponent } from "../../../../shared/components/skip-link/skip-link.component";
+import { ScaffoldComponent } from "../../components/scaffold/scaffold.component";
+import { UserDropdownComponent } from "../../components/user-dropdown/user-dropdown.component";
+import { LearningObjectValidator } from "../../validators/learning-object.validator";
+import { COPY } from "./info-page.copy";
+import { MetadataComponent } from "./metadata/metadata.component";
+
 @Component({
     selector: "clark-info-page",
     templateUrl: "./info-page.component.html",
@@ -34,15 +39,15 @@ import { SkipLinkComponent } from "../../../../shared/components/skip-link/skip-
         ColumnWrapperComponent,
         NgIf,
         ScaffoldComponent,
-        FormsModule,
         MetadataComponent,
         UserDropdownComponent,
         NgFor,
         ContributorPillComponent,
-        NgClass,
-        ActivateDirective,
         LearningObjectDescriptionComponent,
         SkipLinkComponent,
+        TipDirective,
+        DropdownFilterComponent,
+        PillComponent,
     ],
 })
 export class InfoPageComponent implements OnInit, OnDestroy {
@@ -51,6 +56,13 @@ export class InfoPageComponent implements OnInit, OnDestroy {
 
     selectedLevels: string[] = [];
     academicLevels = Object.values(LearningObject.Level);
+    lengthOptions = [
+        { label: COPY.NANO, value: "nanomodule" },
+        { label: COPY.MICRO, value: "micromodule" },
+        { label: COPY.MOD, value: "module" },
+        { label: COPY.UNIT, value: "unit" },
+        { label: COPY.COURSE, value: "course" },
+    ];
 
     descriptionTouched: boolean;
     descriptionDirty: boolean;
@@ -101,6 +113,17 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     onNameInput(value: string) {
         this.mutateLearningObject({ name: value });
         this.nameChanges$.next(value);
+    }
+
+    updateLength(selection: DropdownFilterSelection): void {
+        const [length] = selection.selectedValues;
+        if (length) {
+            this.mutateLearningObject({ length });
+        }
+    }
+
+    formatLevelLabel(level: string): string {
+        return level.replace(/\b\w/g, (letter) => letter.toUpperCase());
     }
 
     private checkNameAvailability(name: string): Observable<void> {
@@ -198,6 +221,10 @@ export class InfoPageComponent implements OnInit, OnDestroy {
             attribution = "List of Contributors";
         }
         return attribution;
+    }
+
+    getCollectionAttribution(): string {
+        return this.learningObject.collection || "Collection Name";
     }
 
     private capitalizeName(name) {

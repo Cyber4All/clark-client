@@ -309,6 +309,9 @@ export class LearningObjectBuilderComponent
                     "Unable to update Learning Object",
                 );
                 break;
+            case BUILDER_ERRORS.DUPLICATE_OBJECT_NAME:
+            case BUILDER_ERRORS.SPECIAL_CHARACTER_NAME:
+                break;
             case BUILDER_ERRORS.UPDATE_OUTCOME:
                 this.noteService.error(
                     toasterTitle,

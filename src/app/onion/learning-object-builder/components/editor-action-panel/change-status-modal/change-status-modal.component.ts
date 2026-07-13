@@ -18,6 +18,7 @@ import { ActivateDirective } from "../../../../../shared/directives/activate.dir
 import { LearningObjectStatusIndicatorComponent } from "../../../../shared/status-indicator/status-indicator.component";
 import { EditChangelogComponent } from "../../../../shared/edit-changelog/edit-changelog.component";
 import { TextEditorComponent } from "../../../../../shared/components/text-editor/text-editor.component";
+import { TipDirective } from "../../../../../shared/directives/tip.directive";
 
 @Component({
     selector: "clark-change-status-modal",
@@ -35,6 +36,7 @@ import { TextEditorComponent } from "../../../../../shared/components/text-edito
         LearningObjectStatusIndicatorComponent,
         EditChangelogComponent,
         TextEditorComponent,
+        TipDirective,
     ],
 })
 export class ChangeStatusModalComponent implements OnInit {
@@ -158,7 +160,7 @@ export class ChangeStatusModalComponent implements OnInit {
     getStatusText(status: string) {
         switch (status) {
             case LearningObject.Status.RELEASED:
-                return `Release this Learning Object`;
+                return "Release";
             case LearningObject.Status.PROOFING:
                 return "Move to Proofing";
             case LearningObject.Status.REVIEW:
@@ -170,7 +172,7 @@ export class ChangeStatusModalComponent implements OnInit {
             case LearningObject.Status.ACCEPTED_MAJOR:
                 return "Request Major Changes";
             case LearningObject.Status.REJECTED:
-                return "Reject this Learning Object";
+                return "Reject";
         }
     }
 

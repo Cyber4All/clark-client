@@ -11,7 +11,7 @@
             #title="ngModel" />
         <div style="color: red" [hidden]="title.valid || title.untouched">
             <div [hidden]="!title.hasError('required')">
-                Title must be provided
+                Enter a title.
             </div>
         </div>
     </div>
@@ -31,10 +31,10 @@
             style="color: red"
             [hidden]="link.valid || title.untouched || link.untouched">
             <div [hidden]="!link.hasError('pattern')">
-                Not a valid URL. Must include https:// or http://
+                Include https:// or http://.
             </div>
             <div [hidden]="!link.hasError('required')">
-                Please type in valid URL
+                Enter a valid URL.
             </div>
         </div>
     </div>

@@ -18,6 +18,7 @@ import { ScaffoldComponent } from "../../components/scaffold/scaffold.component"
 import { OutcomeComponent } from "../../components/outcome/outcome.component";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { StandardOutcomesComponent } from "../../components/standard-outcomes/standard-outcomes.component";
+import { TipDirective } from "../../../../shared/directives/tip.directive";
 @Component({
     selector: "clark-outcome-page",
     templateUrl: "./outcome-page.component.html",
@@ -32,6 +33,7 @@ import { StandardOutcomesComponent } from "../../components/standard-outcomes/st
         ActivateDirective,
         NgClass,
         StandardOutcomesComponent,
+        TipDirective,
     ],
 })
 export class OutcomePageComponent implements OnInit, OnDestroy {
