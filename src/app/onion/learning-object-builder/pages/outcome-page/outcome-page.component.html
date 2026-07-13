@@ -49,17 +49,11 @@
 <ng-template #noOutcomesTemplate>
     <div class="no-outcomes">
         <i class="far fa-box-open"></i>
-        <div class="no-outcomes__title">
-            No outcomes yet
-            <span
-                class="no-outcomes__help"
-                tip="Learning outcomes describe what a learner should be able to do after completing the materials."
-                tipPosition="right">
-                <i class="far fa-info-circle"></i>
-            </span>
-        </div>
+        <div class="no-outcomes__title">No outcomes yet!</div>
         <div class="no-outcomes__description">
-            Add what learners should be able to do.
+            Learning Outcomes are a collection of statements that describe
+            different actions a user should be able to accomplish after
+            experiencing the materials in the Learning Object.
         </div>
         <div *ngIf="validator.submissionMode" class="no-outcomes__error">
             Add at least one outcome to submit.

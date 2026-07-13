@@ -1,5 +1,5 @@
-import { Component, Input } from "@angular/core";
 import { NgClass, NgIf } from "@angular/common";
+import { Component, Input } from "@angular/core";
 import { TipDirective } from "../../../../shared/directives/tip.directive";
 
 @Component({
@@ -11,7 +11,7 @@ import { TipDirective } from "../../../../shared/directives/tip.directive";
 })
 export class MaterialNotesComponent {
     open = false;
-    @Input() note: { title: string; content: string; tip?: string };
+    @Input() note: { title: string; content: string; };
 
     openNote(): void {
         this.open = !this.open;
