@@ -9,7 +9,10 @@
                     Loading Collections...
                 </div>
             </div>
-            <clark-collection-card (activate)="activateClose()" class="item" *ngFor="let c of collections"
+            <clark-collection-card
+                (activate)="activateClose()"
+                class="item"
+                *ngFor="let c of collections"
                 [collection]="c"></clark-collection-card>
         </div>
     </div>

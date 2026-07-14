@@ -1,9 +1,14 @@
 <div class="curator-card">
-    <div [ngClass] = "{
-        'card-content': !mobile,
-        'card-content-mobile': mobile
-    }">
-        <img class="grav" *ngIf="profileImg" [src]="profileImg" alt="Curator's Logo" />
+    <div
+        [ngClass]="{
+            'card-content': !mobile,
+            'card-content-mobile': mobile,
+        }">
+        <img
+            class="grav"
+            *ngIf="profileImg"
+            [src]="profileImg"
+            alt="Curator's Logo" />
         <div class="info">
             <div class="name">
                 <p>{{ curator.name | titlecase }}</p>
@@ -14,4 +19,3 @@
         </div>
     </div>
 </div>
-  

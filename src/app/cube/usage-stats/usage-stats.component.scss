@@ -1,96 +1,92 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 $row-gap: 25px;
 
 .container {
-  padding: 20px 50px;
-  background-color: white;
+    padding: 20px 50px;
+    background-color: white;
 }
 
 .header {
-  margin-bottom: 25px;
-  font-size: $largest;
-  color: $darker-grey;
-  font-weight: 500;
+    margin-bottom: 25px;
+    font-size: $largest;
+    color: $darker-grey;
+    font-weight: 500;
 }
 
 .stat-counters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  grid-column-gap: 25px;
-  grid-row-gap: $row-gap;
-  margin-bottom: $row-gap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-column-gap: 25px;
+    grid-row-gap: $row-gap;
+    margin-bottom: $row-gap;
 }
 
 .charts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  grid-column-gap: 25px;
-  grid-row-gap: $row-gap;
-  margin-bottom: $row-gap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-column-gap: 25px;
+    grid-row-gap: $row-gap;
+    margin-bottom: $row-gap;
 }
 
 .heat-map-wrapper {
-  margin-bottom: $row-gap;
-  height: 100%;
+    margin-bottom: $row-gap;
+    height: 100%;
 }
 
 .active-users-wrapper {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  grid-column-gap: 25px;
-  grid-row-gap: $row-gap;
-  margin-bottom: $row-gap;
-  overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-column-gap: 25px;
+    grid-row-gap: $row-gap;
+    margin-bottom: $row-gap;
+    overflow: hidden;
 
-  .title {
-    color: $darker-grey;
-    font-size: $larger;
-    font-weight: 500;
-  }
+    .title {
+        color: $darker-grey;
+        font-size: $larger;
+        font-weight: 500;
+    }
 }
 
-
-
-
 .iframe-wrapper {
-  position: relative;
-  display: inline-block;
-  overflow: hidden;
-  padding-top: 56.25%; // Maintains aspect ratio of heat map (Original 1366w X 768h)
-  width: 100%;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    padding-top: 56.25%; // Maintains aspect ratio of heat map (Original 1366w X 768h)
+    width: 100%;
 }
 
 .resp-iframe {
-  z-index: 1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
 }
 
 @media only screen and (max-width: 450px) {
-  .charts {
-    grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
-  }
+    .charts {
+        grid-template-columns: repeat(auto-fit, minmax(100%, 1fr));
+    }
 }
 
-
 @media print {
-  .container {
-    padding: 25px 0;
-  }
+    .container {
+        padding: 25px 0;
+    }
 
-  .heat-map-wrapper,
-  .active-users-wrapper {
-    display: none;
-  }
+    .heat-map-wrapper,
+    .active-users-wrapper {
+        display: none;
+    }
 
-  .charts {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+    .charts {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }

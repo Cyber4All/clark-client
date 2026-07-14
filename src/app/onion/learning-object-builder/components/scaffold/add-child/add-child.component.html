@@ -1,42 +1,65 @@
 <div class="search-bar">
-  <input aria-label="Search for Children" type="search" placeholder="Search for Children" [(ngModel)]="childrenSearchString" (ngModelChange)="searchString$.next($event)" id="childrenSearch" autofocus/>
-  <button aria-label="Search for Children" class="search-button" (activate)="search()">
-    <i class="far fa-search"></i>
-  </button>
+    <input
+        aria-label="Search for Children"
+        type="search"
+        placeholder="Search for Children"
+        [(ngModel)]="childrenSearchString"
+        (ngModelChange)="searchString$.next($event)"
+        id="childrenSearch"
+        autofocus />
+    <button
+        aria-label="Search for Children"
+        class="search-button"
+        (activate)="search()">
+        <i class="far fa-search"></i>
+    </button>
 </div>
 
 <ng-container *ngIf="children && children?.length > 0">
-  <div class="children-list">
-    <virtual-scroller #scroll [style.height]="'400px'" [items]="children"> 
-      <div *ngFor="let c of scroll.viewPortItems; let i= index" class="child-box">
-        <div class = "info">
-          <div class = "top-row">
-            <div class = "child-title">{{c.name}}</div>
-          </div>
-          <div class = "bottom-row">
-            <div [ngClass]="c.length" class="child-length" >{{c.length | titlecase}}</div>
-            <div class = "child-last-updated">{{c.date |  date:'shortDate'}}</div>
-          </div>
-        </div>
-        <button attr.aria-label="Add {{ c.name }} as child" class="add" (activate)="addChildToList(c, i)">
-         <i class="fas fa-plus"></i>
-        </button>
-      </div>
-    </virtual-scroller>
-  </div>
+    <div class="children-list">
+        <virtual-scroller #scroll [style.height]="'400px'" [items]="children">
+            <div
+                *ngFor="let c of scroll.viewPortItems; let i = index"
+                class="child-box">
+                <div class="info">
+                    <div class="top-row">
+                        <div class="child-title">{{ c.name }}</div>
+                    </div>
+                    <div class="bottom-row">
+                        <div [ngClass]="c.length" class="child-length">
+                            {{ c.length | titlecase }}
+                        </div>
+                        <div class="child-last-updated">
+                            {{ c.date | date: "shortDate" }}
+                        </div>
+                    </div>
+                </div>
+                <button
+                    attr.aria-label="Add {{ c.name }} as child"
+                    class="add"
+                    (activate)="addChildToList(c, i)">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </virtual-scroller>
+    </div>
 </ng-container>
-<clark-skip-link title="Return to Search for Children" skipLocation="childrenSearch"></clark-skip-link>
-<clark-skip-link title="Skip to Builder Form" skipLocation="form"></clark-skip-link> 
+<clark-skip-link
+    title="Return to Search for Children"
+    skipLocation="childrenSearch"></clark-skip-link>
+<clark-skip-link
+    title="Skip to Builder Form"
+    skipLocation="form"></clark-skip-link>
 
 <ng-template [ngIf]="!children">
-  <div class="loading-template">
-    <i class="far fa-spinner-third fa-spin"></i>
-    Loading...
-  </div>
+    <div class="loading-template">
+        <i class="far fa-spinner-third fa-spin"></i>
+        Loading...
+    </div>
 </ng-template>
 
 <ng-template [ngIf]="children?.length === 0">
-  <div class="no-children">
-    No children available for this Learning Object
-  </div>
+    <div class="no-children">
+        No children available for this Learning Object
+    </div>
 </ng-template>

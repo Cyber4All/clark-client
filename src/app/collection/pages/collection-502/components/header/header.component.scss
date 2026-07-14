@@ -1,5 +1,5 @@
-@import '_vars.scss';
-@import '../../../../collection-globals.scss';
+@import "_vars.scss";
+@import "../../../../collection-globals.scss";
 .container1 {
     overflow: hidden;
     max-width: 600px;
@@ -24,7 +24,7 @@
     z-index: 1;
     opacity: 0.3;
     transform: scale(-1, -1);
-    -webkit-transform: scale(-1, -1)
+    -webkit-transform: scale(-1, -1);
 }
 .header {
     display: flex;
@@ -35,7 +35,7 @@
     z-index: 0;
 }
 
-.box_logo{
+.box_logo {
     position: absolute;
     background-color: $blue_502;
     width: 200px;
@@ -43,20 +43,19 @@
     padding-top: 2px;
 }
 
-.box_headbox{
+.box_headbox {
     position: absolute;
     right: -50px;
     background-color: $yellow_502;
     width: 200px;
     height: 138px;
-
 }
 
 .logo_wrapper {
     margin: 42px 0;
     padding: 25px 220px 25px 75px;
     z-index: 2;
-    &::after{
+    &::after {
         background-color: $blue_502;
     }
 }
@@ -65,8 +64,6 @@
     max-width: 400px;
     z-index: 2;
 }
-
-
 
 .headbox-container {
     order: 2;
@@ -81,17 +78,16 @@
     justify-content: space-between;
     right: 50px;
     z-index: 2;
-    &::after{
-        background-color: #F7EC2F;
+    &::after {
+        background-color: #f7ec2f;
     }
     h1 {
         font-size: $largest;
         padding-left: 5%;
         width: 400px;
         text-align: center;
-        color: #535D69;
+        color: #535d69;
     }
-    
 }
 .involved {
     background-color: $darkPurple_502;
@@ -109,7 +105,7 @@
 
 .slanty {
     position: relative;
-    &::after{
+    &::after {
         content: "";
         position: absolute;
         transform: skewX(-15deg);
@@ -122,18 +118,16 @@
 }
 
 @media (max-width: 1315px) {
-
-    .box_headbox{
+    .box_headbox {
         height: 183px;
     }
-    
-    .box_logo{
+
+    .box_logo {
         height: 221px;
     }
-    
 }
 
-@media screen and (max-width: 1270px){
+@media screen and (max-width: 1270px) {
     .visual1 {
         display: none;
     }
@@ -171,17 +165,17 @@
             padding: 0;
             width: 100%;
             text-align: center;
-            color: #535D69;
+            color: #535d69;
         }
     }
-    .box_headbox{
+    .box_headbox {
         display: none;
     }
-    .box_logo{
+    .box_logo {
         display: none;
     }
 
-    .slanty::after{
+    .slanty::after {
         transform: skewX(0deg);
     }
 }

@@ -1,26 +1,31 @@
-import { Injectable } from '@angular/core';
-import { CoralogixBrowserSdkConfig, CoralogixLogSeverity, CoralogixRum, UserContextConfig } from '@coralogix/browser';
-import { environment } from '@env/environment';
-import { COMMIT_HASH } from '../../../commit-hash';
+import { Injectable } from "@angular/core";
+import {
+    CoralogixBrowserSdkConfig,
+    CoralogixLogSeverity,
+    CoralogixRum,
+    UserContextConfig,
+} from "@coralogix/browser";
+import { environment } from "@env/environment";
+import { COMMIT_HASH } from "../../../commit-hash";
 
 // Application display name and Version information
-const { version } = require('../../../../package.json');
+const { version } = require("../../../../package.json");
 
 // For staging, we'll use version + commit hash, otherwise use the package version
 const getRumVersion = (): string => {
-    if (environment.environment === 'staging') {
+    if (environment.environment === "staging") {
         return `${version}-${COMMIT_HASH}`;
     }
     return version;
 };
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class CoralogixRumService {
     private isInitialized = false;
 
-    constructor() { }
+    constructor() {}
 
     /**
      * Initialize Coralogix RUM
@@ -30,8 +35,14 @@ export class CoralogixRumService {
             return;
         }
 
-        if (!['production', 'staging', 'development'].includes(environment.environment)) {
-            console.log('Coralogix RUM skipped - not in production/staging/development environment');
+        if (
+            !["production", "staging", "development"].includes(
+                environment.environment,
+            )
+        ) {
+            console.log(
+                "Coralogix RUM skipped - not in production/staging/development environment",
+            );
             return;
         }
 
@@ -42,7 +53,7 @@ export class CoralogixRumService {
                 public_key: environment.publicKey,
                 application: `clark-${environment.environment}`,
                 version: rumVersion,
-                coralogixDomain: 'US1' as const,
+                coralogixDomain: "US1" as const,
             };
 
             CoralogixRum.init(rumConfig);
@@ -54,9 +65,9 @@ export class CoralogixRumService {
             });
 
             this.isInitialized = true;
-            console.log('Coralogix RUM initialized successfully');
+            console.log("Coralogix RUM initialized successfully");
         } catch (error) {
-            console.error('Failed to initialize Coralogix RUM:', error);
+            console.error("Failed to initialize Coralogix RUM:", error);
         }
     }
 
@@ -71,7 +82,7 @@ export class CoralogixRumService {
         try {
             CoralogixRum.setUserContext(userContext);
         } catch (error) {
-            console.error('Failed to set user context:', error);
+            console.error("Failed to set user context:", error);
         }
     }
 
@@ -86,7 +97,7 @@ export class CoralogixRumService {
         try {
             CoralogixRum.setLabels(labels);
         } catch (error) {
-            console.error('Failed to set labels:', error);
+            console.error("Failed to set labels:", error);
         }
     }
 
@@ -103,10 +114,10 @@ export class CoralogixRumService {
             // Otherwise, you can set labels to track the event
             this.setLabels({
                 customEvent: eventName,
-                ...properties
+                ...properties,
             });
         } catch (error) {
-            console.error('Failed to track event:', error);
+            console.error("Failed to track event:", error);
         }
     }
 
@@ -121,7 +132,7 @@ export class CoralogixRumService {
         try {
             CoralogixRum.sendCustomMeasurement(measurementName, value);
         } catch (error) {
-            console.error('Failed to send custom measurement:', error);
+            console.error("Failed to send custom measurement:", error);
         }
     }
 
@@ -131,16 +142,25 @@ export class CoralogixRumService {
      * @param message - Log message (appears in cx_rum.log_context.message)
      * @param context - Additional context data (appears in cx_rum.log_context.data)
      */
-    sendLog(severity: CoralogixLogSeverity, message: string, context?: Record<string, any>): void {
+    sendLog(
+        severity: CoralogixLogSeverity,
+        message: string,
+        context?: Record<string, any>,
+    ): void {
         if (!this.isInitialized) {
             return;
         }
 
         try {
-            console.log('Sending log to Coralogix RUM:', severity, message, context);
+            console.log(
+                "Sending log to Coralogix RUM:",
+                severity,
+                message,
+                context,
+            );
             CoralogixRum.log(severity, message, context);
         } catch (error) {
-            console.error('Failed to send log:', error);
+            console.error("Failed to send log:", error);
         }
     }
 

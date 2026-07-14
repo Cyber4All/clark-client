@@ -1,136 +1,207 @@
-<clark-skip-link identity="pageContent" title="Skip Directly to Download" skipLocation="download-button"></clark-skip-link>
-<main id='pageContent' class='details-background'>
-  <ng-container *ngIf="!loading; else loadingTemplate">
-    <!-- <section class='details__content-relevancy__banner' *ngIf="relevancyBannerStatus">
+<clark-skip-link
+    identity="pageContent"
+    title="Skip Directly to Download"
+    skipLocation="download-button"></clark-skip-link>
+<main id="pageContent" class="details-background">
+    <ng-container *ngIf="!loading; else loadingTemplate">
+        <!-- <section class='details__content-relevancy__banner' *ngIf="relevancyBannerStatus">
       This Learning Object is currently under review for relevancy.
       To learn more about our process for this review please read our <a href="https://blogs.clark.center/the-relevant-solution-how-the-clark-library-handles-curriculum-relevancy-2faadbd35aa7" target="_blank">blog post</a>.
     </section> -->
-    <div class='details'>
-      <section class='details__content-container__cube-pattern-container section'>
-        <clark-cube-pattern></clark-cube-pattern>
-      </section>
-      <section class='details__content-container'>
-        <section class='details__content-container__top-left-side'>
-          <clark-details-splash
-            [learningObject]='learningObject'
-            [averageRating]='averageRatingValue'
-            [reviewsCount]='ratings?.length'
-            [link]='link'>
-          </clark-details-splash>
-        </section>
-        <section class='details__content-container__left-side'>
-          <section class='details__content-container__description-container section'>
-            <h2 class='section-title'>Description</h2>
-            <clark-details-description [description]='learningObject.description'></clark-details-description>
-          </section>
-          <section class='details__content-container__learning-outcomes-container section'>
-            <h2 class='section-title'>Learning Outcomes</h2>
-            <div *ngFor='let outcome of learningObject.outcomes' >
-              <clark-outcome [outcome]=outcome></clark-outcome>
-            </div>
-          </section>
-          <section class='details__content-container__academic-levels-container section'>
-            <h2 class='section-title'>Academic Levels</h2>
-            <div class='content-container__academic-levels-container__card-grid'>
-              <div *ngFor='let data of academicLevelMetadata' class='content-container__academic-levels-container__card'>
-                <clark-academic-level-card [category]=data.category [academicLevels]=data.academicLevels></clark-academic-level-card>
-              </div>
-            </div>
-          </section>
-          <section class='details__content-container__materials-container section'>
-            <h2 class='section-title'>Materials</h2>
-            <clark-materials [materials]='learningObject.materials'></clark-materials>
-          </section>
-          <section class='details__content-container__ratings-container section'>
-            <div class='details__content-container__ratings-container__header-container'>
-              <h2 class='section-title'>Reviews</h2>
-                <button
-                  tabindex="0"
-                  *ngIf="!isMobile && loggedin && !isOwnObject"
-                  tip="You must verify your email in order to review Learning Objects."
-                  [tipDisabled]="auth.user.emailVerified"
-                  class="button good content-container__ratings-container__button-container"
-                  (activate)="openAddRatingModal()"
-                  attr.aria-label="Clickable button Write a review">Write a review
-                  <i class="far fa-pencil"></i>
-                </button>
-            </div>
-            <clark-learning-object-ratings
-              *ngIf="ratings"
-              [ratings]="ratings"
-              [averageRating]="averageRatingValue"
-              [learningObjectOwners]="learningObjectOwners"
-              [loggedIn]="loggedin"
-              (editRating)="triggerUpdateRating($event)"
-              (deleteRating)="deleteRating($event)"
-              (editResponse)="editResponse($event)"
-              (deleteResponse)="deleteResponse($event)"
-              (reportRating)="reportRating($event)"
-              (respondRating)="submitResponse($event)">
-            </clark-learning-object-ratings>
-          </section>
-        </section>
+        <div class="details">
+            <section
+                class="details__content-container__cube-pattern-container section">
+                <clark-cube-pattern></clark-cube-pattern>
+            </section>
+            <section class="details__content-container">
+                <section class="details__content-container__top-left-side">
+                    <clark-details-splash
+                        [learningObject]="learningObject"
+                        [averageRating]="averageRatingValue"
+                        [reviewsCount]="ratings?.length"
+                        [link]="link">
+                    </clark-details-splash>
+                </section>
+                <section class="details__content-container__left-side">
+                    <section
+                        class="details__content-container__description-container section">
+                        <h2 class="section-title">Description</h2>
+                        <clark-details-description
+                            [description]="
+                                learningObject.description
+                            "></clark-details-description>
+                    </section>
+                    <section
+                        class="details__content-container__learning-outcomes-container section">
+                        <h2 class="section-title">Learning Outcomes</h2>
+                        <div *ngFor="let outcome of learningObject.outcomes">
+                            <clark-outcome [outcome]="outcome"></clark-outcome>
+                        </div>
+                    </section>
+                    <section
+                        class="details__content-container__academic-levels-container section">
+                        <h2 class="section-title">Academic Levels</h2>
+                        <div
+                            class="content-container__academic-levels-container__card-grid">
+                            <div
+                                *ngFor="let data of academicLevelMetadata"
+                                class="content-container__academic-levels-container__card">
+                                <clark-academic-level-card
+                                    [category]="data.category"
+                                    [academicLevels]="
+                                        data.academicLevels
+                                    "></clark-academic-level-card>
+                            </div>
+                        </div>
+                    </section>
+                    <section
+                        class="details__content-container__materials-container section">
+                        <h2 class="section-title">Materials</h2>
+                        <clark-materials
+                            [materials]="
+                                learningObject.materials
+                            "></clark-materials>
+                    </section>
+                    <section
+                        class="details__content-container__ratings-container section">
+                        <div
+                            class="details__content-container__ratings-container__header-container">
+                            <h2 class="section-title">Reviews</h2>
+                            <button
+                                tabindex="0"
+                                *ngIf="!isMobile && loggedin && !isOwnObject"
+                                tip="You must verify your email in order to review Learning Objects."
+                                [tipDisabled]="auth.user.emailVerified"
+                                class="button good content-container__ratings-container__button-container"
+                                (activate)="openAddRatingModal()"
+                                attr.aria-label="Clickable button Write a review">
+                                Write a review
+                                <i class="far fa-pencil"></i>
+                            </button>
+                        </div>
+                        <clark-learning-object-ratings
+                            *ngIf="ratings"
+                            [ratings]="ratings"
+                            [averageRating]="averageRatingValue"
+                            [learningObjectOwners]="learningObjectOwners"
+                            [loggedIn]="loggedin"
+                            (editRating)="triggerUpdateRating($event)"
+                            (deleteRating)="deleteRating($event)"
+                            (editResponse)="editResponse($event)"
+                            (deleteResponse)="deleteResponse($event)"
+                            (reportRating)="reportRating($event)"
+                            (respondRating)="submitResponse($event)">
+                        </clark-learning-object-ratings>
+                    </section>
+                </section>
 
-        <section class='details__content-container__right-side'>
-
-          <section class='details__content-container__action-pad-container'>
-            <div *ngIf="reviewer" class="inner">
-              <div *ngIf="loggedin && hasRevision" class="revisions">
-                <div tabindex="0" class="text">View Revisions</div>
-                <clark-toggle-switch style="color: orange" [aria]="ariaLabel" (toggled)="viewReleased($event)"></clark-toggle-switch>
-              </div>
-              <div tabindex="0" class="no-revisions" *ngIf="!hasRevision">No revisions have been made since last release.</div>
-            </div>
-            <cube-details-action-panel
-              [reviewer]="reviewer"
-              [revisedDate]="revisedLearningObject?.date"
-              [isRevision]="revisedVersion"
-              [releasedDate]="releasedLearningObject?.date"
-              [revisedVersion]="revisedVersion"
-              [learningObject]="learningObject"
-              [hasRevision]="hasRevision"
-              [revisedLearningObject]="revisedLearningObject">
-            </cube-details-action-panel>
-          </section>
-          <section class='details__content-container__right-side-container'>
-            <h3 class='section-title'>Authors</h3>
-            <div shouldanimate class='content-container__profile-cards-container-profile-card' *ngFor='let author of authors'>
-              <clark-author-card [author]=author [profileImageURL]=getGravatar(author)></clark-author-card>
-            </div>
-            <div class='details__content-container__version-card-container'>
-              <clark-version-card [version]='learningObject.version' [showButton]='loggedin && auth.user.emailVerified' (clickButtonEvent)='openViewAllChangelogsModal()'></clark-version-card>
-            </div>
-            <p class="relevancy__notice">Relevancy check next due on or around {{learningObject?.nextCheck | date:'mediumDate'}}</p>
-          </section>
-        </section>
-      </section>
-    </div>
-  </ng-container>
+                <section class="details__content-container__right-side">
+                    <section
+                        class="details__content-container__action-pad-container">
+                        <div *ngIf="reviewer" class="inner">
+                            <div
+                                *ngIf="loggedin && hasRevision"
+                                class="revisions">
+                                <div tabindex="0" class="text">
+                                    View Revisions
+                                </div>
+                                <clark-toggle-switch
+                                    style="color: orange"
+                                    [aria]="ariaLabel"
+                                    (toggled)="
+                                        viewReleased($event)
+                                    "></clark-toggle-switch>
+                            </div>
+                            <div
+                                tabindex="0"
+                                class="no-revisions"
+                                *ngIf="!hasRevision">
+                                No revisions have been made since last release.
+                            </div>
+                        </div>
+                        <cube-details-action-panel
+                            [reviewer]="reviewer"
+                            [revisedDate]="revisedLearningObject?.date"
+                            [isRevision]="revisedVersion"
+                            [releasedDate]="releasedLearningObject?.date"
+                            [revisedVersion]="revisedVersion"
+                            [learningObject]="learningObject"
+                            [hasRevision]="hasRevision"
+                            [revisedLearningObject]="revisedLearningObject">
+                        </cube-details-action-panel>
+                    </section>
+                    <section
+                        class="details__content-container__right-side-container">
+                        <h3 class="section-title">Authors</h3>
+                        <div
+                            shouldanimate
+                            class="content-container__profile-cards-container-profile-card"
+                            *ngFor="let author of authors">
+                            <clark-author-card
+                                [author]="author"
+                                [profileImageURL]="
+                                    getGravatar(author)
+                                "></clark-author-card>
+                        </div>
+                        <div
+                            class="details__content-container__version-card-container">
+                            <clark-version-card
+                                [version]="learningObject.version"
+                                [showButton]="
+                                    loggedin && auth.user.emailVerified
+                                "
+                                (clickButtonEvent)="
+                                    openViewAllChangelogsModal()
+                                "></clark-version-card>
+                        </div>
+                        <p class="relevancy__notice">
+                            Relevancy check next due on or around
+                            {{ learningObject?.nextCheck | date: "mediumDate" }}
+                        </p>
+                    </section>
+                </section>
+            </section>
+        </div>
+    </ng-container>
 </main>
 
-<clark-popup [floating]="true" *ngIf="showAddRating" (closed)="closeAddRatingModal()">
-  <div #popupInner style="min-width: 300px; max-width:100vw" class="popup-inner">
-    <div class="new-rating">
-      <div class="title">Rate this Learning Object</div>
-      <clark-new-rating [rating]="userRating" [editing]="editRating" (setRating)="handleRatingSubmission($event)"
-        (cancelRating)="closeAddRatingModal()"></clark-new-rating>
+<clark-popup
+    [floating]="true"
+    *ngIf="showAddRating"
+    (closed)="closeAddRatingModal()">
+    <div
+        #popupInner
+        style="min-width: 300px; max-width: 100vw"
+        class="popup-inner">
+        <div class="new-rating">
+            <div class="title">Rate this Learning Object</div>
+            <clark-new-rating
+                [rating]="userRating"
+                [editing]="editRating"
+                (setRating)="handleRatingSubmission($event)"
+                (cancelRating)="closeAddRatingModal()"></clark-new-rating>
+        </div>
     </div>
-  </div>
 </clark-popup>
 
-<clark-popup [floating]="true" *ngIf="openChangelogModal" (closed)="closeChangelogsModal()">
-  <div #popupInner style="min-width: 500px; max-width: 650px;" class="popup-inner">
-    <clark-changelog-modal
-      [learningObject] = "learningObject"
-      [changelogs] = "changelogs ? changelogs[0] : undefined"
-      [loading]="loadingChangelogs"
-    ></clark-changelog-modal>
-  </div>
+<clark-popup
+    [floating]="true"
+    *ngIf="openChangelogModal"
+    (closed)="closeChangelogsModal()">
+    <div
+        #popupInner
+        style="min-width: 500px; max-width: 650px"
+        class="popup-inner">
+        <clark-changelog-modal
+            [learningObject]="learningObject"
+            [changelogs]="changelogs ? changelogs[0] : undefined"
+            [loading]="loadingChangelogs"></clark-changelog-modal>
+    </div>
 </clark-popup>
 
 <ng-template #loadingTemplate>
-  <div class="details-loading">
-    <i class="far fa-spinner-third fa-spin"></i>
-    Loading Learning Object...
-  </div>
+    <div class="details-loading">
+        <i class="far fa-spinner-third fa-spin"></i>
+        Loading Learning Object...
+    </div>
 </ng-template>

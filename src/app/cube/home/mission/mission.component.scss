@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .wrapper {
     display: flex;
@@ -12,7 +12,7 @@
         text-align: center;
         padding: 0px 240px 100px;
 
-        h1{
+        h1 {
             padding-bottom: 35px;
         }
     }
@@ -37,12 +37,11 @@
                 .fa-stack-2x {
                     color: $box-background;
                 }
-    
+
                 .fa-stack-1x {
                     color: $homepage-light-blue;
                 }
             }
-            
         }
     }
 }
@@ -50,11 +49,11 @@
 p {
     font-weight: 400;
     font-size: 18px;
-    color: #454545; 
+    color: #454545;
 }
 
 @media screen and (max-width: 950px) {
-    .wrapper{
+    .wrapper {
         padding: 10px 30px;
         .first {
             padding: 0px 0px 60px;
@@ -76,5 +75,4 @@ p {
             }
         }
     }
-    
 }

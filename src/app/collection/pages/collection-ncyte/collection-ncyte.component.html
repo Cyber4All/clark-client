@@ -1,9 +1,15 @@
 <div class="wrapper">
-  <clark-ncyte-header [collectionAbv]="abvCollection"></clark-ncyte-header>
-  <clark-collection-feature [collection]="'ncyte'" [learningObjects]="learningObjects" [primaryColor]="'#00305c'"></clark-collection-feature>
-  <clark-ncyte-about></clark-ncyte-about>
-  <clark-ncyte-curators></clark-ncyte-curators>
-  <clark-dashboard-stats [collectionName]="abvCollection" [displayCharts]="false"></clark-dashboard-stats>
-<div>
-<cube-footer></cube-footer>
-
+    <clark-ncyte-header [collectionAbv]="abvCollection"></clark-ncyte-header>
+    <clark-collection-feature
+        [collection]="'ncyte'"
+        [learningObjects]="learningObjects"
+        [primaryColor]="'#00305c'"></clark-collection-feature>
+    <clark-ncyte-about></clark-ncyte-about>
+    <clark-ncyte-curators></clark-ncyte-curators>
+    <clark-dashboard-stats
+        [collectionName]="abvCollection"
+        [displayCharts]="false"></clark-dashboard-stats>
+    <div>
+        <cube-footer></cube-footer>
+    </div>
+</div>

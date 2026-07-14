@@ -1,24 +1,47 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
-import { MatStepper, MatStep, MatStepLabel } from '@angular/material/stepper';
-import { OrganizationService } from 'app/core/organization-module/organization.service';
-import { Organization, ORGANIZATION_VERIFICATION_STATUS } from 'app/core/organization-module/organization.types';
-import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
-import { PopupComponent } from '../../../../shared/modules/popups/popup.component';
-import { MatProgressBar } from '@angular/material/progress-bar';
-import { MatFormField, MatLabel, MatPrefix } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { MatIcon } from '@angular/material/icon';
-import { MatCheckbox } from '@angular/material/checkbox';
-import { MatButton } from '@angular/material/button';
-import { Subject, of } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, map, switchMap, takeUntil } from 'rxjs/operators';
-import { ActivateDirective } from '../../../../shared/directives/activate.directive';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges,
+} from "@angular/core";
+import { MatStepper, MatStep, MatStepLabel } from "@angular/material/stepper";
+import { OrganizationService } from "app/core/organization-module/organization.service";
+import {
+    Organization,
+    ORGANIZATION_VERIFICATION_STATUS,
+} from "app/core/organization-module/organization.types";
+import { NgIf, NgFor, TitleCasePipe } from "@angular/common";
+import { PopupComponent } from "../../../../shared/modules/popups/popup.component";
+import { MatProgressBar } from "@angular/material/progress-bar";
+import {
+    MatFormField,
+    MatLabel,
+    MatPrefix,
+} from "@angular/material/form-field";
+import { MatInput } from "@angular/material/input";
+import { FormsModule } from "@angular/forms";
+import { MatIcon } from "@angular/material/icon";
+import { MatCheckbox } from "@angular/material/checkbox";
+import { MatButton } from "@angular/material/button";
+import { Subject, of } from "rxjs";
+import {
+    catchError,
+    debounceTime,
+    distinctUntilChanged,
+    map,
+    switchMap,
+    takeUntil,
+} from "rxjs/operators";
+import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 
 @Component({
-    selector: 'clark-organization-migrate-modal',
-    templateUrl: './organization-migrate-modal.component.html',
-    styleUrls: ['./organization-migrate-modal.component.scss'],
+    selector: "clark-organization-migrate-modal",
+    templateUrl: "./organization-migrate-modal.component.html",
+    styleUrls: ["./organization-migrate-modal.component.scss"],
     standalone: true,
     imports: [
         NgIf,
@@ -40,7 +63,8 @@ import { ActivateDirective } from '../../../../shared/directives/activate.direct
         ActivateDirective,
     ],
 })
-export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnDestroy {
+export class OrganizationMigrateModalComponent
+    implements OnInit, OnChanges, OnDestroy {
     @Input() isVisible = false;
     @Input() sourceOrganization: Organization | null = null;
     @Input() sourceUserCount = 0;
@@ -54,14 +78,14 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
     @Output() closed = new EventEmitter<void>();
     @Output() migrate = new EventEmitter<string>();
 
-    targetOrgId = '';
-    searchTerm = '';
+    targetOrgId = "";
+    searchTerm = "";
     searchResults: Organization[] = [];
     selectedTargetOrganization: Organization | null = null;
     certified = false;
     showDropdown = false;
     searchLoading = false;
-    searchError = '';
+    searchError = "";
     userCountCache = new Map<string, number>();
     learningObjectCountCache = new Map<string, number>();
     loadingUserCountIds = new Set<string>();
@@ -82,14 +106,14 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
 
                     if (!trimmedTerm) {
                         this.searchLoading = false;
-                        this.searchError = '';
+                        this.searchError = "";
                         this.searchResults = [];
                         this.showDropdown = false;
                         return of<Organization[]>([]);
                     }
 
                     this.searchLoading = true;
-                    this.searchError = '';
+                    this.searchError = "";
                     this.showDropdown = true;
 
                     return this.organizationService
@@ -100,18 +124,25 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
                         })
                         .pipe(
                             map((organizations) =>
-                                organizations.filter((organization) =>
-                                    organization._id !== this.sourceOrganization?._id && organization.isVerified
-                                )
+                                organizations.filter(
+                                    (organization) =>
+                                        organization._id !==
+                                            this.sourceOrganization?._id &&
+                                        organization.isVerified,
+                                ),
                             ),
                             catchError((error) => {
-                                console.error('Failed to search target organizations for migration', error);
-                                this.searchError = 'Failed to search organizations.';
+                                console.error(
+                                    "Failed to search target organizations for migration",
+                                    error,
+                                );
+                                this.searchError =
+                                    "Failed to search organizations.";
                                 return of<Organization[]>([]);
-                            })
+                            }),
                         );
                 }),
-                takeUntil(this.destroyed$)
+                takeUntil(this.destroyed$),
             )
             .subscribe((organizations) => {
                 this.searchResults = organizations;
@@ -121,21 +152,24 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        const opened = changes.isVisible?.currentValue && !changes.isVisible?.previousValue;
+        const opened =
+            changes.isVisible?.currentValue &&
+            !changes.isVisible?.previousValue;
         const sourceChangedWhileOpen =
             this.isVisible &&
             !!changes.sourceOrganization &&
-            changes.sourceOrganization.currentValue?._id !== changes.sourceOrganization.previousValue?._id;
+            changes.sourceOrganization.currentValue?._id !==
+                changes.sourceOrganization.previousValue?._id;
 
         if (opened || sourceChangedWhileOpen) {
-            this.targetOrgId = '';
-            this.searchTerm = '';
+            this.targetOrgId = "";
+            this.searchTerm = "";
             this.certified = false;
             this.searchResults = [];
             this.selectedTargetOrganization = null;
             this.showDropdown = false;
             this.searchLoading = false;
-            this.searchError = '';
+            this.searchError = "";
             this.userCountCache.clear();
             this.learningObjectCountCache.clear();
             this.loadingUserCountIds.clear();
@@ -169,20 +203,24 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
     goBackToSelection(): void {
         if (!this.isMigrating && this.selectedTargetOrganization) {
             this.selectedTargetOrganization = null;
-            this.targetOrgId = '';
+            this.targetOrgId = "";
             this.certified = false;
         }
     }
 
     getSelectedTargetOrganization(): Organization | undefined {
-        return this.selectedTargetOrganization
-            || this.availableTargetOrganizations.find((org) => org._id === this.targetOrgId);
+        return (
+            this.selectedTargetOrganization ||
+            this.availableTargetOrganizations.find(
+                (org) => org._id === this.targetOrgId,
+            )
+        );
     }
 
     getUserCountText(org: Organization): string {
         if (this.userCountCache.has(org._id)) {
             const count = this.userCountCache.get(org._id) || 0;
-            return `${count} user${count === 1 ? '' : 's'}`;
+            return `${count} user${count === 1 ? "" : "s"}`;
         }
 
         const cachedCount = this.getUserCount(org);
@@ -191,28 +229,28 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
         }
 
         if (this.loadingUserCountIds.has(org._id)) {
-            return 'Loading users...';
+            return "Loading users...";
         }
 
-        return 'Loading users...';
+        return "Loading users...";
     }
 
     getLearningObjectCountText(org: Organization): string {
         if (this.learningObjectCountCache.has(org._id)) {
             const count = this.learningObjectCountCache.get(org._id) || 0;
-            return `${count} learning object${count === 1 ? '' : 's'}`;
+            return `${count} learning object${count === 1 ? "" : "s"}`;
         }
 
         if (this.loadingLearningObjectCountIds.has(org._id)) {
-            return 'Loading learning objects...';
+            return "Loading learning objects...";
         }
 
-        return 'Loading learning objects...';
+        return "Loading learning objects...";
     }
 
     getSourceLearningObjectText(): string {
         const count = this.sourceLearningObjectCount || 0;
-        return `${count} learning object${count === 1 ? '' : 's'}`;
+        return `${count} learning object${count === 1 ? "" : "s"}`;
     }
 
     private ensureUserCounts(organizations: Organization[]): void {
@@ -221,7 +259,10 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
         }
 
         organizations.forEach((organization) => {
-            if (this.userCountCache.has(organization._id) || this.loadingUserCountIds.has(organization._id)) {
+            if (
+                this.userCountCache.has(organization._id) ||
+                this.loadingUserCountIds.has(organization._id)
+            ) {
                 return;
             }
 
@@ -231,7 +272,11 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
                     this.userCountCache.set(organization._id, count);
                 })
                 .catch((error) => {
-                    console.error('Failed to load user count for migration search result', organization._id, error);
+                    console.error(
+                        "Failed to load user count for migration search result",
+                        organization._id,
+                        error,
+                    );
                     this.userCountCache.set(organization._id, 0);
                 })
                 .finally(() => {
@@ -248,7 +293,10 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
         }
 
         organizations.forEach((organization) => {
-            if (this.learningObjectCountCache.has(organization._id) || this.loadingLearningObjectCountIds.has(organization._id)) {
+            if (
+                this.learningObjectCountCache.has(organization._id) ||
+                this.loadingLearningObjectCountIds.has(organization._id)
+            ) {
                 return;
             }
 
@@ -259,9 +307,9 @@ export class OrganizationMigrateModalComponent implements OnInit, OnChanges, OnD
                 })
                 .catch((error) => {
                     console.error(
-                        'Failed to load learning object count for migration search result',
+                        "Failed to load learning object count for migration search result",
                         organization._id,
-                        error
+                        error,
                     );
                     this.learningObjectCountCache.set(organization._id, 0);
                 })

@@ -64,14 +64,14 @@ RUM is initialized in `main.ts` before the Angular application bootstraps, but o
 ```typescript
 // Initialize Coralogix RUM before bootstrapping
 if (userVersion === appVersion) {
-  import('./app/core/services/coralogix-rum.service')
-    .then(({ CoralogixRumService }) => {
-      const rumService = new CoralogixRumService();
-      rumService.init(); // Only initializes in production
-    })
-    .catch((error) => {
-      console.error('Failed to initialize RUM service:', error);
-    });
+    import("./app/core/services/coralogix-rum.service")
+        .then(({ CoralogixRumService }) => {
+            const rumService = new CoralogixRumService();
+            rumService.init(); // Only initializes in production
+        })
+        .catch((error) => {
+            console.error("Failed to initialize RUM service:", error);
+        });
 }
 ```
 
@@ -174,11 +174,11 @@ Due to TypeScript compatibility issues with the Coralogix dependencies, the foll
 
 ```json
 {
-  "compilerOptions": {
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "typeRoots": ["node_modules/@types", "src/types"]
-  }
+    "compilerOptions": {
+        "skipLibCheck": true,
+        "allowSyntheticDefaultImports": true,
+        "typeRoots": ["node_modules/@types", "src/types"]
+    }
 }
 ```
 

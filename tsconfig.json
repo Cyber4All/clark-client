@@ -1,28 +1,28 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "importHelpers": true,
-    "module": "es2020",
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "target": "ES2022",
-    "skipLibCheck": true,
-    "typeRoots": ["node_modules/@types"],
-    "lib": ["es2018", "dom"],
-    "baseUrl": "src",
-    "paths": {
-      "app/*": ["app/*"],
-      "@env/*": ["environments/*"],
-      "@entity": ["entity/index"],
-      "core-js/es6/reflect": ["../node_modules/core-js/es/reflect"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "importHelpers": true,
+        "module": "es2020",
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "moduleResolution": "node",
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "target": "ES2022",
+        "skipLibCheck": true,
+        "typeRoots": ["node_modules/@types"],
+        "lib": ["es2018", "dom"],
+        "baseUrl": "src",
+        "paths": {
+            "app/*": ["app/*"],
+            "@env/*": ["environments/*"],
+            "@entity": ["entity/index"],
+            "core-js/es6/reflect": ["../node_modules/core-js/es/reflect"]
+        },
+        "types": ["jest", "node"],
+        "allowJs": true
     },
-    "types": ["jest", "node"],
-    "allowJs": true
-  },
-  "exclude": ["*.copy.ts"]
+    "exclude": ["*.copy.ts"]
 }

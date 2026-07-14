@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .wrapper {
     display: flex;
@@ -25,7 +25,7 @@
     }
 }
 
-@media screen and (max-width: 1199px){
+@media screen and (max-width: 1199px) {
     .message {
         width: 90%;
         font-size: $normal;

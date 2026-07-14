@@ -1,20 +1,22 @@
-import { TitleCasePipe } from '@angular/common';
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map, shareReplay } from 'rxjs/operators';
-import { OrganizationService } from './organization.service';
-import { Organization } from './organization.types';
+import { TitleCasePipe } from "@angular/common";
+import { Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
+import { catchError, map, shareReplay } from "rxjs/operators";
+import { OrganizationService } from "./organization.service";
+import { Organization } from "./organization.types";
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: "root",
 })
 export class OrganizationStore {
     private readonly cache = new Map<string, Observable<Organization>>();
     private readonly titleCasePipe = new TitleCasePipe();
 
-    constructor(private readonly orgService: OrganizationService) { }
+    constructor(private readonly orgService: OrganizationService) {}
 
-    organization$(id: string | null | undefined): Observable<Organization | null> {
+    organization$(
+        id: string | null | undefined,
+    ): Observable<Organization | null> {
         if (!id) {
             return of(null);
         }
@@ -22,9 +24,7 @@ export class OrganizationStore {
         if (!this.cache.has(id)) {
             const organization$ = this.orgService
                 .getOrganizationById(id)
-                .pipe(
-                    shareReplay({ bufferSize: 1, refCount: false }),
-                );
+                .pipe(shareReplay({ bufferSize: 1, refCount: false }));
 
             this.cache.set(id, organization$);
         }
@@ -34,13 +34,15 @@ export class OrganizationStore {
             catchError(() => {
                 this.cache.delete(id);
                 return of(null);
-            })
+            }),
         );
     }
 
     organizationName$(id: string | null | undefined): Observable<string> {
         return this.organization$(id).pipe(
-            map((organization) => organization ? this.formatOrgName(organization.name) : '')
+            map((organization) =>
+                organization ? this.formatOrgName(organization.name) : "",
+            ),
         );
     }
 
@@ -50,13 +52,22 @@ export class OrganizationStore {
      * `organizationNameFromUser$` usages back to `organizationName$`.
      */
     organizationNameFromUser$(
-        user: { organizationId?: string | null; organization?: string | null; _organization?: string | null } | null | undefined
+        user:
+            | {
+                  organizationId?: string | null;
+                  organization?: string | null;
+                  _organization?: string | null;
+              }
+            | null
+            | undefined,
     ): Observable<string> {
         const organizationId = user?.organizationId;
         if (organizationId) {
             return this.organizationName$(organizationId);
         }
-        return of(this.formatOrgName(user?.organization ?? user?._organization));
+        return of(
+            this.formatOrgName(user?.organization ?? user?._organization),
+        );
     }
 
     refresh(id: string): void {
@@ -68,12 +79,15 @@ export class OrganizationStore {
     }
 
     private formatOrgName(name: string | null | undefined): string {
-        const trimmed = name?.trim() ?? '';
+        const trimmed = name?.trim() ?? "";
         if (!trimmed) {
-            return '';
+            return "";
         }
 
-        if (trimmed.length > 1 && trimmed.charAt(1) === trimmed.charAt(1).toUpperCase()) {
+        if (
+            trimmed.length > 1 &&
+            trimmed.charAt(1) === trimmed.charAt(1).toUpperCase()
+        ) {
             return trimmed;
         }
 

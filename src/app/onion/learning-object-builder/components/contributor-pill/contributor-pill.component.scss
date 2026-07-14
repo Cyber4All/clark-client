@@ -1,33 +1,34 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .contributor-pill {
-  position: relative;
-  color: $light-blue;
-  text-decoration: underline;
+    position: relative;
+    color: $light-blue;
+    text-decoration: underline;
 }
 
 .contributor-pill__dropdown-option {
-  color: $error-red;
-  font-size: $small;
-  cursor: pointer;
-  text-align: center;
-  border: none;
-  display: inline-block;
-
-  .svg-inline--fa,
-  .icon {
     color: $error-red;
-    margin-right: 3px;
-    margin-left: 3px;
-  }
-
-  &:hover, &:focus {
-    color: white;
-    background: $error-red;
+    font-size: $small;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+    display: inline-block;
 
     .svg-inline--fa,
     .icon {
-      color: white;
+        color: $error-red;
+        margin-right: 3px;
+        margin-left: 3px;
     }
-  }
+
+    &:hover,
+    &:focus {
+        color: white;
+        background: $error-red;
+
+        .svg-inline--fa,
+        .icon {
+            color: white;
+        }
+    }
 }

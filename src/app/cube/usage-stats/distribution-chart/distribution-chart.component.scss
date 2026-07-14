@@ -1,65 +1,62 @@
-@import '_vars.scss';
+@import "_vars.scss";
 .chart-wrapper {
-  display: block;
-  background: white;
-  padding: 20px;
-  border-radius: 2px;
-  max-width: 100%;
-  overflow-x: scroll;
+    display: block;
+    background: white;
+    padding: 20px;
+    border-radius: 2px;
+    max-width: 100%;
+    overflow-x: scroll;
 }
 
 .loading {
-  text-align: center;
-  font-size: 50px;
+    text-align: center;
+    font-size: 50px;
 }
 
 .chart {
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
 
-    .title {
-      font-size: $larger;
-      color: $darker-grey;
+        .title {
+            font-size: $larger;
+            color: $darker-grey;
+        }
+
+        margin-bottom: 15px;
     }
 
-    margin-bottom: 15px;
-
-  }
-
-
-  canvas {
-    margin-bottom: 15px;
-    width: auto;
-    max-height: 300px;
-  }
+    canvas {
+        margin-bottom: 15px;
+        width: auto;
+        max-height: 300px;
+    }
 }
 
 @media screen and (max-width: 600px) {
-  .chart-wrapper {
-    padding: 20px 0;
-  }
+    .chart-wrapper {
+        padding: 20px 0;
+    }
 }
 
 @media print {
-  .chart-wrapper {
-    padding: 0;
-    border-radius: 0;
-  }
-
-  .chart {
-    .header {
-      display: block;
-
-      .title {
-        text-align: center;
-      }
-
-      .learn-more {
-        display: none;
-      }
+    .chart-wrapper {
+        padding: 0;
+        border-radius: 0;
     }
 
-  }
+    .chart {
+        .header {
+            display: block;
+
+            .title {
+                text-align: center;
+            }
+
+            .learn-more {
+                display: none;
+            }
+        }
+    }
 }

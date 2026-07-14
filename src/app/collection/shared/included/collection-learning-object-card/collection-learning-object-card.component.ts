@@ -1,53 +1,53 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { NgClass, NgIf, DatePipe } from '@angular/common';
+import { Component, HostListener, Input, OnInit } from "@angular/core";
+import { RouterLink } from "@angular/router";
+import { NgClass, NgIf, DatePipe } from "@angular/common";
 
 @Component({
-    selector: 'clark-collection-learning-object-card',
-    templateUrl: './collection-learning-object-card.component.html',
-    styleUrls: ['./collection-learning-object-card.component.scss'],
+    selector: "clark-collection-learning-object-card",
+    templateUrl: "./collection-learning-object-card.component.html",
+    styleUrls: ["./collection-learning-object-card.component.scss"],
     standalone: true,
-    imports: [RouterLink, NgClass, NgIf, DatePipe]
+    imports: [RouterLink, NgClass, NgIf, DatePipe],
 })
 export class CollectionLearningObjectCardComponent implements OnInit {
-  @Input() learnObj = new Input();
-  shortenedDesc: string;
-  constructor() { }
+    @Input() learnObj = new Input();
+    shortenedDesc: string;
+    constructor() {}
 
-  mobile = false;
+    mobile = false;
 
-  ngOnInit(): void {
-    if (window.screen.width < 450) {
-      this.mobile = true;
+    ngOnInit(): void {
+        if (window.screen.width < 450) {
+            this.mobile = true;
+        }
+
+        if (this.learnObj.description) {
+            this.shortenedDesc = this.truncateHtml(this.learnObj.description);
+        }
     }
 
-    if(this.learnObj.description){
-      this.shortenedDesc = this.truncateHtml(this.learnObj.description);
-    }
-  }
+    truncateHtml(html: string): string {
+        if (!html) {
+            return html;
+        }
 
-  truncateHtml(html: string): string {
-    if (!html) {
-      return html;
-    }
+        const doc = new DOMParser().parseFromString(html, "text/html");
+        let text = doc.body.textContent || "";
 
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    let text = doc.body.textContent || '';
+        if (text.length > 70) {
+            text = text.substring(0, 70) + "...";
+        }
 
-    if (text.length > 70) {
-      text = text.substring(0, 70) + '...';
+        return text;
     }
 
-    return text;
-  }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    if (window.screen.width < 450) { // 768px portrait
-      this.mobile = true;
-    } else {
-      this.mobile = false;
+    @HostListener("window:resize", ["$event"])
+    onResize(event) {
+        if (window.screen.width < 450) {
+            // 768px portrait
+            this.mobile = true;
+        } else {
+            this.mobile = false;
+        }
     }
-  }
-
 }

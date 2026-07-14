@@ -1,18 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
 
 @Component({
-    selector: 'clark-auth',
-    templateUrl: './auth.component.html',
-    styleUrls: ['./auth.component.scss'],
+    selector: "clark-auth",
+    templateUrl: "./auth.component.html",
+    styleUrls: ["./auth.component.scss"],
     standalone: true,
-    imports: [RouterOutlet]
+    imports: [RouterOutlet],
 })
 export class AuthComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {}
 }

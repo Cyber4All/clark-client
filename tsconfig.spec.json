@@ -1,13 +1,11 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-      "emitDecoratorMetadata": true,
-      "outDir": "../out-tsc/spec",
-      "module": "commonjs",
-      "target": "es5",
-      "allowJs": true
+        "emitDecoratorMetadata": true,
+        "outDir": "../out-tsc/spec",
+        "module": "commonjs",
+        "target": "es5",
+        "allowJs": true
     },
-    "include": [
-      "/.*/.*(spec).(ts|tsx|js)$"
-    ]
-  }
+    "include": ["/.*/.*(spec).(ts|tsx|js)$"]
+}

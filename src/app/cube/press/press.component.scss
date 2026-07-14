@@ -1,6 +1,5 @@
-@import '_vars.scss';
-@import'globals.scss';
-
+@import "_vars.scss";
+@import "globals.scss";
 
 .about-container {
     text-align: center;
@@ -16,7 +15,6 @@
     }
 }
 
-
 .card-container {
     display: flex;
     flex-direction: row;
@@ -27,9 +25,9 @@
     min-height: 350px;
     align-items: stretch;
     margin: auto;
-  
+
     clark-media-card {
-      margin-top: 24px;
+        margin-top: 24px;
     }
 }
 

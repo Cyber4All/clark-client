@@ -1,36 +1,34 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
-import { NgFor, NgClass } from '@angular/common';
-import { ActivateDirective } from '../../../../../../shared/directives/activate.directive';
+import { Component, Output, EventEmitter, Input } from "@angular/core";
+import { NgFor, NgClass } from "@angular/common";
+import { ActivateDirective } from "../../../../../../shared/directives/activate.directive";
 
 @Component({
-    selector: 'clark-tab-menu',
-    templateUrl: './tab-menu.component.html',
-    styleUrls: ['./tab-menu.component.scss'],
+    selector: "clark-tab-menu",
+    templateUrl: "./tab-menu.component.html",
+    styleUrls: ["./tab-menu.component.scss"],
     standalone: true,
-    imports: [NgFor, NgClass, ActivateDirective]
+    imports: [NgFor, NgClass, ActivateDirective],
 })
 export class TabMenuComponent {
+    @Input() currentSelection: string;
+    @Output() select: EventEmitter<string> = new EventEmitter();
 
-  @Input() currentSelection: string;
-  @Output() select: EventEmitter<string> = new EventEmitter();
+    options = [
+        {
+            name: "Files",
+            class: "far fa-folders",
+        },
+        {
+            name: "URLs",
+            class: "far fa-link",
+        },
+        {
+            name: "Notes",
+            class: "far fa-sticky-note",
+        },
+    ];
 
-  options = [
-    {
-      name: 'Files',
-      class: 'far fa-folders',
-    },
-    {
-      name: 'URLs',
-      class: 'far fa-link',
-    },
-    {
-      name: 'Notes',
-      class: 'far fa-sticky-note'
-    },
-  ];
-
-  emitSelection(selection: string) {
-    this.select.emit(selection);
-  }
-
+    emitSelection(selection: string) {
+        this.select.emit(selection);
+    }
 }

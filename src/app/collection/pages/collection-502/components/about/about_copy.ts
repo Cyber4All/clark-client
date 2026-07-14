@@ -1,5 +1,5 @@
 export const content = {
-    'ABOUT': `<p>The 502 Project (named for the \“Bad Gateway\” HTTP error code) seeks to develop a persistent
+    ABOUT: `<p>The 502 Project (named for the \“Bad Gateway\” HTTP error code) seeks to develop a persistent
      cybersecurity community platform for high-school students, providing participants
      with access to peers and a diverse group of cybersecurity mentors. By connecting, supporting,
       and extending current efforts in cybersecurity education, the initiative capitalizes on the momentum
@@ -19,5 +19,5 @@ export const content = {
     </ol>
     <p>This space is currently under construction, but will soon be the home of our repository of cybersecurity curricula.</p>
      <p>For more information on supporting and/or participating in The 502 Project, please complete our intake form:
-      <a href="https://usf.az1.qualtrics.com/jfe/form/SV_bxCW0543jNVXWuy">https://usf.az1.qualtrics.com/jfe/form/SV_bxCW0543jNVXWuy</a></p>`
+      <a href="https://usf.az1.qualtrics.com/jfe/form/SV_bxCW0543jNVXWuy">https://usf.az1.qualtrics.com/jfe/form/SV_bxCW0543jNVXWuy</a></p>`,
 };

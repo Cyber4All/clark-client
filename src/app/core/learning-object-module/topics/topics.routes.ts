@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from "../../../../environments/environment";
 
 export const TOPICS_ROUTES = {
     /**
@@ -16,7 +16,7 @@ export const TOPICS_ROUTES = {
      */
     UPDATE_TOPIC(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectId
+            learningObjectId,
         )}/topics`;
     },
 };

@@ -1,100 +1,99 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .learning-object {
-  padding: 15px;
-  background: white;
-  border-radius: 4px;
-  box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
 }
 .learning-object__row {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 
-  &:not(:first-child) {
-    margin-top: 5px;
-  }
+    &:not(:first-child) {
+        margin-top: 5px;
+    }
 }
 
 .learning-object__row--delim {
+    & > *:not(:last-child) {
+        position: relative;
+        margin-right: 8px;
 
-  & > *:not(:last-child) {
-    position: relative;
-    margin-right: 8px;
-
-    &:after {
-      content: '';
-      position: absolute;
-      right: -11px;
-      bottom: 0;
-      top: 0;
-      background: white;
-      border-radius: 50%;
-      width: 4px;
-      height: 4px;
-      margin: auto;
+        &:after {
+            content: "";
+            position: absolute;
+            right: -11px;
+            bottom: 0;
+            top: 0;
+            background: white;
+            border-radius: 50%;
+            width: 4px;
+            height: 4px;
+            margin: auto;
+        }
     }
-  }
 
-  & > *:not(:first-child) {
-    margin-left: 8px;
-  }
+    & > *:not(:first-child) {
+        margin-left: 8px;
+    }
 }
 
 .learning-object__name {
-  font-size: $larger;
-  color: black;
+    font-size: $larger;
+    color: black;
 }
 
 .learning-object__length {
-  color: white;
-  border-radius: 2px;
-  font-size: $smaller;
-  padding: 3px;
-  margin-right: 3px;
+    color: white;
+    border-radius: 2px;
+    font-size: $smaller;
+    padding: 3px;
+    margin-right: 3px;
 
-  &.nanomodule {
-    background: $nanomodule-color;
-  }
+    &.nanomodule {
+        background: $nanomodule-color;
+    }
 
-  &.micromodule {
-    background: $micromodule-color;
-  }
+    &.micromodule {
+        background: $micromodule-color;
+    }
 
-  &.module {
-    background: $module-color;
-  }
+    &.module {
+        background: $module-color;
+    }
 
-  &.unit {
-    background: $unit-color;
-  }
+    &.unit {
+        background: $unit-color;
+    }
 
-  &.course {
-    background: $course-color;
-  }
+    &.course {
+        background: $course-color;
+    }
 }
 
 .learning-object__date {
-  color: $darker-grey;
-  font-size: $small;
+    color: $darker-grey;
+    font-size: $small;
 }
 
 .learning-object__collection {
-  color: $darker-grey;
+    color: $darker-grey;
 }
 
 .collection-image {
-  position: relative;
-  width: 40px;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-  padding-right: 10px;
+    position: relative;
+    width: 40px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding-right: 10px;
 
     &:after {
-      content: '';
-      display: block;
-      padding-bottom: 100%;
+        content: "";
+        display: block;
+        padding-bottom: 100%;
     }
 }

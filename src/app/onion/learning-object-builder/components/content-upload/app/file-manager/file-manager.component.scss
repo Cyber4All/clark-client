@@ -1,147 +1,146 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .top-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
 }
 .view-switcher {
-  .button {
-    text-align: center;
-    margin: 0 5px;
-  }
+    .button {
+        text-align: center;
+        margin: 0 5px;
+    }
 
-  .button.icon {
-    margin: 0;
-  }
+    .button.icon {
+        margin: 0;
+    }
 }
 .icon-clean {
-  margin: 0;
+    margin: 0;
 }
 .flex-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  background: white;
-  border-radius: 4px;
-  padding: 10px;
-  cursor: pointer;
-  max-height: 500px;
-  overflow-x: hidden;
-  overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background: white;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    max-height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 .empty {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 .file-breadcrumb {
-  .link {
-    font-size: $larger;
-    font-weight: 700;
-    margin: 5px;
-    padding: 0 7px;
-    border-radius: 4px;
-  }
-  & :hover {
-    cursor: pointer;
-    background: $light-grey;
-  }
+    .link {
+        font-size: $larger;
+        font-weight: 700;
+        margin: 5px;
+        padding: 0 7px;
+        border-radius: 4px;
+    }
+    & :hover {
+        cursor: pointer;
+        background: $light-grey;
+    }
 }
 .full-width {
-  width: 100%;
+    width: 100%;
 }
 .context-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  .description-input {
-    margin-bottom: 10px;
-  }
-
-  input {
-    width: 100%;
-    padding: 0 10px;
-  }
-
-  .buttons {
-    display: grid;
+    display: flex;
     align-items: center;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 10px;
-  }
+    justify-content: space-between;
+    cursor: pointer;
+    .description-input {
+        margin-bottom: 10px;
+    }
+
+    input {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .buttons {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 10px;
+    }
 }
 .context-item.stacked {
-  flex-direction: column;
+    flex-direction: column;
 }
 .context-item.bad {
-  color: $error-red;
+    color: $error-red;
 }
 
 .button.slim {
-  padding: 1px 15px;
+    padding: 1px 15px;
 }
 
 .inline-flex {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 .inline-flex.right {
-  flex: 1;
-  justify-content: flex-end;
+    flex: 1;
+    justify-content: flex-end;
 }
 .icon-left {
-  margin: 0;
-  margin-right: 10px;
+    margin: 0;
+    margin-right: 10px;
 }
 
 .context-item {
-  .option {
-    font-size: $large;
-  }
+    .option {
+        font-size: $large;
+    }
 }
 .icon.light {
-  color: $medium-grey;
+    color: $medium-grey;
 }
 
 .help {
-  text-align: center;
+    text-align: center;
 }
 
 .description-popup-inner {
-  min-width: 500px;
+    min-width: 500px;
 
-  .file-name {
-    text-align: center;
-    color: $dark-grey;
-    margin-top: 10px;
+    .file-name {
+        text-align: center;
+        color: $dark-grey;
+        margin-top: 10px;
 
-    .svg-inline--fa {
-      margin-right: 3px;
+        .svg-inline--fa {
+            margin-right: 3px;
+        }
     }
-  }
 
-  textarea {
-    margin-top: 20px;
-    width: 100%;
-    padding: 10px;
-    border-radius: 1px;
-    box-sizing: border-box;
-    border: 1px solid $placeholder;
-    font-size: $small;
-    outline: 0;
+    textarea {
+        margin-top: 20px;
+        width: 100%;
+        padding: 10px;
+        border-radius: 1px;
+        box-sizing: border-box;
+        border: 1px solid $placeholder;
+        font-size: $small;
+        outline: 0;
 
-    &:focus {
-      border-color: $light-blue;
+        &:focus {
+            border-color: $light-blue;
+        }
     }
-  }
 
-  .btn-group {
-    margin-top: 20px;
-  }
-
+    .btn-group {
+        margin-top: 20px;
+    }
 }

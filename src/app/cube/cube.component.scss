@@ -1,96 +1,95 @@
-@import '_vars.scss';
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import "_vars.scss";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
 $footer-height: 250px;
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
 }
 
 .dropdown {
-  @include vert-center;
+    @include vert-center;
 }
 
 .flex {
-  display: flex;
-  &.h {
-    flex-direction: row;
-  }
-  &.v {
-    flex-direction: column;
-  }
-  &.left-right {
-    justify-content: space-between;
-  }
-  &.end {
-    justify-content: flex-end;
-  }
+    display: flex;
+    &.h {
+        flex-direction: row;
+    }
+    &.v {
+        flex-direction: column;
+    }
+    &.left-right {
+        justify-content: space-between;
+    }
+    &.end {
+        justify-content: flex-end;
+    }
 }
 
 // Global CLARK Style Overrides
 .user {
-  display: flex;
-  flex-direction: row;
-
-  .left {
     display: flex;
-    flex-direction: row !important;
+    flex-direction: row;
 
-    & > * {
-      @include vert-center;
+    .left {
+        display: flex;
+        flex-direction: row !important;
+
+        & > * {
+            @include vert-center;
+        }
     }
-  }
 }
 
 .inner-content {
-  flex: 1 0 auto;
-  margin-top: 0;
+    flex: 1 0 auto;
+    margin-top: 0;
 
-  .content-switch {
-    margin-top: 20px;
-    margin-left: 20px;
-    margin-bottom: 20px;
-  }
+    .content-switch {
+        margin-top: 20px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
 }
 
 .content {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  height: 100%;
-  padding: 0px;
-  flex-flow: column nowrap;
-  align-content: flex-start;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    height: 100%;
+    padding: 0px;
+    flex-flow: column nowrap;
+    align-content: flex-start;
 
-  .outlet {
-    margin-top: 0px;
-  }
+    .outlet {
+        margin-top: 0px;
+    }
 }
 
 @media (max-width: 1370px) {
-  .filter-options-button {
-    display: block !important;
-  }
-
-  .filter-options {
-    position: absolute;
-    top: 110px;
-    right: 20px;
-    flex-direction: column !important;
-    background: white;
-    z-index: 2;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.2s ease;
-
-    &.active {
-      top: 150px;
-      opacity: 1;
-      visibility: visible;
+    .filter-options-button {
+        display: block !important;
     }
-  }
-}
 
+    .filter-options {
+        position: absolute;
+        top: 110px;
+        right: 20px;
+        flex-direction: column !important;
+        background: white;
+        z-index: 2;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.2s ease;
+
+        &.active {
+            top: 150px;
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}

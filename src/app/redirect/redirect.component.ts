@@ -1,18 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { RouterLink } from "@angular/router";
 
 @Component({
-    selector: 'clark-redirect',
-    templateUrl: './redirect.component.html',
-    styleUrls: ['./redirect.component.scss'],
+    selector: "clark-redirect",
+    templateUrl: "./redirect.component.html",
+    styleUrls: ["./redirect.component.scss"],
     standalone: true,
-    imports: [RouterLink]
+    imports: [RouterLink],
 })
 export class RedirectComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {}
 }

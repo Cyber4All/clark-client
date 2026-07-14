@@ -1,16 +1,16 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .notes {
     color: $dark-grey;
 
     & .top-wrapper {
-      & p {
-        cursor: default;
-        font-family: sans-serif;
-        font-size: $larger;
-        color: black;
-      }
-      margin: 27px 0 15px 0;
+        & p {
+            cursor: default;
+            font-family: sans-serif;
+            font-size: $larger;
+            color: black;
+        }
+        margin: 27px 0 15px 0;
     }
 }
 

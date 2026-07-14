@@ -1,9 +1,8 @@
-<div 
-  class="identification-pill"
-  [ngClass]="{
-    'default': theme === 'default',
-    'proofing': theme === 'proofing'
-  }"
->
-  {{ accessGroup | titlecase }}
+<div
+    class="identification-pill"
+    [ngClass]="{
+        default: theme === 'default',
+        proofing: theme === 'proofing',
+    }">
+    {{ accessGroup | titlecase }}
 </div>

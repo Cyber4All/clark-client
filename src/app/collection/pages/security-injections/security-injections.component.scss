@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .hide-overflow {
     overflow: hidden;
@@ -13,9 +13,9 @@
 
 .table-heading {
     padding: 12px 20px;
-    background-color: #F8F8F8;
-    border-radius: 7px 7px 0 0; 
-    border: 1px solid #D9D9D9;
+    background-color: #f8f8f8;
+    border-radius: 7px 7px 0 0;
+    border: 1px solid #d9d9d9;
     vertical-align: baseline;
 
     font-size: 18px;
@@ -24,15 +24,15 @@
 }
 
 .table-cell {
-    border-right: 1px solid #D9D9D9;
-    border-left: 1px solid #D9D9D9;
+    border-right: 1px solid #d9d9d9;
+    border-left: 1px solid #d9d9d9;
     padding: 7px 15px;
     vertical-align: baseline;
     white-space: nowrap;
 }
 
 .table-cell.bottom {
-    border-bottom: 1px solid #D9D9D9;
+    border-bottom: 1px solid #d9d9d9;
     border-radius: 0px 0px 7px 7px;
 }
 
@@ -46,7 +46,7 @@
 }
 
 #blue-1 {
-    background: #06348B;
+    background: #06348b;
 }
 
 #blue-2 {
@@ -54,22 +54,21 @@
 }
 
 #blue-3 {
-    background: #4A70B7;
+    background: #4a70b7;
 }
 
 #purple {
-    background: #56359D;
+    background: #56359d;
 }
 
 a {
     text-decoration: none;
-    color: #FFFFFF;
+    color: #ffffff;
     font-weight: 400;
     font-size: 15px;
 }
 
 .desktop {
-
     .collection-container {
         margin-left: 50px;
         margin-right: 50px;
@@ -112,7 +111,7 @@ a {
     .single-cell {
         padding: 10px 15px;
         vertical-align: middle;
-        border-left: 1px solid #D9D9D9;
+        border-left: 1px solid #d9d9d9;
     }
 
     mat-card {
@@ -144,11 +143,11 @@ a {
             max-width: 700px;
             padding: 30px 40px;
         }
-        
+
         .table-cell {
             white-space: normal;
         }
-        
+
         .matrix-table {
             table {
                 margin-left: auto;
@@ -162,7 +161,7 @@ a {
                 width: 90px;
             }
         }
-    
+
         .other-cards {
             margin: 5px 4px;
             justify-self: center;
@@ -170,7 +169,7 @@ a {
         }
 
         .single-cell {
-            border-left: 2px solid #D9D9D9;
+            border-left: 2px solid #d9d9d9;
 
             mat-card {
                 white-space: normal;
@@ -179,9 +178,9 @@ a {
         }
 
         .module-name {
-            border-radius: 7px 0px 0px 7px; 
-            border: 1px solid #D9D9D9;  
-            background-color: #F8F8F8;
+            border-radius: 7px 0px 0px 7px;
+            border: 1px solid #d9d9d9;
+            background-color: #f8f8f8;
             white-space: normal;
             text-align: center;
             max-width: 100px;
@@ -189,7 +188,7 @@ a {
 
         .module-name.single {
             border: none;
-            background-color: #FFFFFF;
+            background-color: #ffffff;
         }
     }
 
@@ -198,7 +197,7 @@ a {
             margin-left: auto;
             margin-right: auto;
         }
-    }    
+    }
 
     #extra-margin {
         margin-bottom: 40px;
@@ -206,7 +205,6 @@ a {
 }
 
 .mobile {
-
     .collection-container {
         margin: 40px 30px;
         max-width: 400px;
@@ -231,12 +229,12 @@ a {
 
     .mat-expansion-panel {
         box-shadow: none;
-        border: 1px solid #D9D9D9;
+        border: 1px solid #d9d9d9;
         border-radius: 5px;
         margin: 5px 0px;
 
         mat-expansion-panel-header {
-            background-color: #F8F8F8;
+            background-color: #f8f8f8;
         }
 
         .no-wrap {
@@ -250,7 +248,7 @@ a {
             white-space: nowrap;
             margin-right: 0px;
         }
-        
+
         mat-expansion-panel-body {
             padding: 20px;
         }

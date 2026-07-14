@@ -1,10 +1,19 @@
-import { ModalService } from './modal.service';
-import { Output, Input, EventEmitter, Directive, AfterViewChecked, DoCheck, OnDestroy } from '@angular/core';
+import { ModalService } from "./modal.service";
+import {
+    Output,
+    Input,
+    EventEmitter,
+    Directive,
+    AfterViewChecked,
+    DoCheck,
+    OnDestroy,
+} from "@angular/core";
 
 @Directive({
-    selector: '[modal]'
-  })
-export abstract class ModalDirective implements AfterViewChecked, DoCheck, OnDestroy {
+    selector: "[modal]",
+})
+export abstract class ModalDirective
+    implements AfterViewChecked, DoCheck, OnDestroy {
     protected name: string;
     protected x: number;
     protected y: number;
@@ -25,11 +34,11 @@ export abstract class ModalDirective implements AfterViewChecked, DoCheck, OnDes
 
     ngDoCheck(): void {
         this.name = this.content.name;
-        this.show = (Object.keys(this.content).length > 0);
+        this.show = Object.keys(this.content).length > 0;
     }
 
     ngAfterViewChecked() {
-        if (!this.show && this.type !== 'dialog') {
+        if (!this.show && this.type !== "dialog") {
             this.justCreated = true;
         }
     }
@@ -55,7 +64,7 @@ export abstract class ModalDirective implements AfterViewChecked, DoCheck, OnDes
      * @param msg
      */
     sendEvent(msg) {
-        this.action.next(JSON.stringify({name: this.name, message: msg}));
+        this.action.next(JSON.stringify({ name: this.name, message: msg }));
     }
 
     tryClose(event) {
@@ -67,7 +76,7 @@ export abstract class ModalDirective implements AfterViewChecked, DoCheck, OnDes
     }
 
     close() {
-        this.sendEvent('closed');
+        this.sendEvent("closed");
         this.modalService.close(this.type);
         this.justCreated = true;
     }

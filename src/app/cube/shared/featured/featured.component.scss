@@ -1,92 +1,91 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .feature-text {
-  font-weight: 200;
-  font-size: $largest;
-  margin-bottom: 25px;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+    font-weight: 200;
+    font-size: $largest;
+    margin-bottom: 25px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
 }
 .title {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  max-width: 1375px;
-  margin: auto;
-  position: relative;
-  margin-bottom: 25px;
-  padding: 0px 12px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    max-width: 1375px;
+    margin: auto;
+    position: relative;
+    margin-bottom: 25px;
+    padding: 0px 12px;
 
-  & > * {
-    width: 33.3%;
-    flex: 1;
-  }
+    & > * {
+        width: 33.3%;
+        flex: 1;
+    }
 
+    .feature-text {
+        margin-bottom: 0px;
+        text-align: left;
+        flex: 2;
+    }
 
-  .feature-text {
-    margin-bottom: 0px;
-    text-align: left;
-    flex: 2;
-  }
-
-  h1 {
-    margin-top: 5px;
-    margin-right: 20px;
-  }
-  .clear-button {
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    color: $blue-accent;
-  }
+    h1 {
+        margin-top: 5px;
+        margin-right: 20px;
+    }
+    .clear-button {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        color: $blue-accent;
+    }
 }
 .card-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
-  max-width: 1375px;
-  align-items: stretch;
-  margin: auto;
-  // this margin offsets each individual card's top margin
-  margin-top: -24px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: center;
+    max-width: 1375px;
+    align-items: stretch;
+    margin: auto;
+    // this margin offsets each individual card's top margin
+    margin-top: -24px;
 
-  clark-learning-object-component {
-    margin-top: 24px;
+    clark-learning-object-component {
+        margin-top: 24px;
 
-    &.card {
-      width: 250px;
-      margin-right: 12px;
-      margin-left: 12px;
+        &.card {
+            width: 250px;
+            margin-right: 12px;
+            margin-left: 12px;
+        }
     }
-  }
 }
 
 .no-objects {
-  font-size: $large;
-  text-align: center;
-  color: $dark-grey;
+    font-size: $large;
+    text-align: center;
+    color: $dark-grey;
 }
 
-@media(max-width: 750px) {
-  .feature-text {
-    text-align: center !important;
-  }
-  .title {
-    flex-direction: column !important;
-    justify-content: center !important;
-
-    & > * {
-      width: 100% !important;
-      
-      &.spacer {
-        display: none !important;
-      }
-
-      &.view-all {
-        justify-content: center !important;
-      }
+@media (max-width: 750px) {
+    .feature-text {
+        text-align: center !important;
     }
-  }
+    .title {
+        flex-direction: column !important;
+        justify-content: center !important;
+
+        & > * {
+            width: 100% !important;
+
+            &.spacer {
+                display: none !important;
+            }
+
+            &.view-all {
+                justify-content: center !important;
+            }
+        }
+    }
 }

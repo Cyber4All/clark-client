@@ -126,65 +126,65 @@ Architectural impact for this story:
 2. Add the new migration API method to `OrganizationService` using the repo’s existing typed/zod pattern.
 3. Enable the organizations-page migration actions in both desktop and mobile table UIs.
 4. Replace the placeholder migration toast path with a real async flow that:
-   - sets `isMigrating`
-   - calls the service with source and target org IDs
-   - handles success and failure messaging
-   - refreshes organizations and any visible counts after success
+    - sets `isMigrating`
+    - calls the service with source and target org IDs
+    - handles success and failure messaging
+    - refreshes organizations and any visible counts after success
 5. Update the modal or parent orchestration only as needed so the loading state and close behavior remain correct.
 6. Add or repair focused tests for the new service method and organizations-page behavior.
 
 ## Concrete Steps
 
 1. Extend organization domain types
-   - Add a request type that clearly models the target organization ID sent in the POST body.
-   - Add a response type only if the backend returns a structured payload that the client needs.
-   - Keep naming aligned with the backend story language while staying idiomatic for the Angular client.
+    - Add a request type that clearly models the target organization ID sent in the POST body.
+    - Add a response type only if the backend returns a structured payload that the client needs.
+    - Keep naming aligned with the backend story language while staying idiomatic for the Angular client.
 
 2. Extend organization schemas
-   - Add zod schema support for the migration response if the response body is structured and used by the client.
-   - If the endpoint returns no meaningful body, document that and avoid unnecessary schema churn.
+    - Add zod schema support for the migration response if the response body is structured and used by the client.
+    - If the endpoint returns no meaningful body, document that and avoid unnecessary schema churn.
 
 3. Implement the service API call
-   - Add a private path helper for `POST /organizations/:organizationId/migrate` or a similarly scoped helper.
-   - Implement a typed `migrateOrganizationUsers(sourceOrganizationId, request)` method in `OrganizationService`.
-   - Treat HTTP `204 No Content` as the success case and avoid requiring a response body for successful completion.
-   - Preserve existing `HttpClient` conventions, including credentials behavior if required by the surrounding service patterns.
+    - Add a private path helper for `POST /organizations/:organizationId/migrate` or a similarly scoped helper.
+    - Implement a typed `migrateOrganizationUsers(sourceOrganizationId, request)` method in `OrganizationService`.
+    - Treat HTTP `204 No Content` as the success case and avoid requiring a response body for successful completion.
+    - Preserve existing `HttpClient` conventions, including credentials behavior if required by the surrounding service patterns.
 
 4. Enable the admin UI actions
-   - Remove the disabled migration button state and "not supported" tooltip in the organizations table.
-   - Do the same for the mobile action menu.
-   - Keep delete actions untouched because that API is still unsupported.
+    - Remove the disabled migration button state and "not supported" tooltip in the organizations table.
+    - Do the same for the mobile action menu.
+    - Keep delete actions untouched because that API is still unsupported.
 
 5. Replace placeholder page orchestration
-   - Update `onMigrateUsers(targetOrgId: string)` in `OrganizationsComponent` to call the new service method.
-   - Guard against missing `selectedOrganization` and missing client-side target lookup as the current code already does.
-   - Set `isMigrating` before the request and clear it in both success and error paths.
-   - On success:
-     - treat a completed `204` response as the success signal
-     - show a success toast
-     - close the modal
-     - clear or refresh any cached organization data as needed
-     - reload organizations so counts and filters reflect the new data
-   - On error:
-     - keep the modal open unless the UX clearly calls for closing it
-     - show a user-facing error toast based on the backend failure, preferring backend-provided error messaging when available and falling back to a safe generic message when not
-     - ensure the loading state resets cleanly
+    - Update `onMigrateUsers(targetOrgId: string)` in `OrganizationsComponent` to call the new service method.
+    - Guard against missing `selectedOrganization` and missing client-side target lookup as the current code already does.
+    - Set `isMigrating` before the request and clear it in both success and error paths.
+    - On success:
+        - treat a completed `204` response as the success signal
+        - show a success toast
+        - close the modal
+        - clear or refresh any cached organization data as needed
+        - reload organizations so counts and filters reflect the new data
+    - On error:
+        - keep the modal open unless the UX clearly calls for closing it
+        - show a user-facing error toast based on the backend failure, preferring backend-provided error messaging when available and falling back to a safe generic message when not
+        - ensure the loading state resets cleanly
 
 6. Check modal integration details
-   - Confirm the modal’s `isMigrating` input disables selection and confirmation paths correctly during the request.
-   - Adjust copy only if needed to better reflect the now-live backend action.
-   - Avoid a redesign of the stepper or target-search UX in this story.
+    - Confirm the modal’s `isMigrating` input disables selection and confirmation paths correctly during the request.
+    - Adjust copy only if needed to better reflect the now-live backend action.
+    - Avoid a redesign of the stepper or target-search UX in this story.
 
 7. Add or repair tests
-   - Extend `src/app/core/organization-module/organization.service.spec.ts` to prove the new POST path, request body, and parsing behavior.
-   - Inspect `src/app/admin/pages/organizations/organizations.component.spec.ts` and either:
-     - repair it enough to support targeted migration-flow tests, or
-     - replace its stale assumptions with focused tests around the actual current component behavior
-   - Add coverage for:
-     - migration action enabled state
-     - successful migration flow
-     - missing target lookup guard
-     - failed migration flow resetting loading state and surfacing an error
+    - Extend `src/app/core/organization-module/organization.service.spec.ts` to prove the new POST path, request body, and parsing behavior.
+    - Inspect `src/app/admin/pages/organizations/organizations.component.spec.ts` and either:
+        - repair it enough to support targeted migration-flow tests, or
+        - replace its stale assumptions with focused tests around the actual current component behavior
+    - Add coverage for:
+        - migration action enabled state
+        - successful migration flow
+        - missing target lookup guard
+        - failed migration flow resetting loading state and surfacing an error
 
 ## Validation and Acceptance
 
@@ -221,11 +221,11 @@ Manual validation:
 If work pauses midway:
 
 - start by reading this ExecPlan and then inspecting the diff in:
-  - `src/app/core/organization-module/organization.service.ts`
-  - `src/app/core/organization-module/organization.types.ts`
-  - `src/app/core/organization-module/organization.schemas.ts`
-  - `src/app/admin/pages/organizations/organizations.component.ts`
-  - `src/app/admin/pages/organizations/organizations.component.html`
+    - `src/app/core/organization-module/organization.service.ts`
+    - `src/app/core/organization-module/organization.types.ts`
+    - `src/app/core/organization-module/organization.schemas.ts`
+    - `src/app/admin/pages/organizations/organizations.component.ts`
+    - `src/app/admin/pages/organizations/organizations.component.html`
 - verify the desktop and mobile migration actions are in the same enabled/disabled state
 - verify `isMigrating` always resets on both success and error paths before making more UI changes
 - rerun the focused service spec first, then the organizations-page spec, because stale tests in this area may need repair before they give useful signal
@@ -241,14 +241,14 @@ If the change must be backed out safely:
 - Story ID: `38807`
 - Shortcut story title: `Integrate Organization User Migration API in Admin Client`
 - Backend dependency:
-  - new admin-only endpoint at `POST /organizations/:organizationId/migrate`
-  - request path param is the source organization ID
-  - request body `organizationId` is the target organization ID
+    - new admin-only endpoint at `POST /organizations/:organizationId/migrate`
+    - request path param is the source organization ID
+    - request body `organizationId` is the target organization ID
 - Existing client assets already in place:
-  - `clark-organization-migrate-modal`
-  - `openMigrateModal(...)`
-  - `getAvailableTargetOrganizations()`
-  - `isMigrating` state on `OrganizationsComponent`
+    - `clark-organization-migrate-modal`
+    - `openMigrateModal(...)`
+    - `getAvailableTargetOrganizations()`
+    - `isMigrating` state on `OrganizationsComponent`
 
 Technical debt intentionally left in place unless implementation proves otherwise:
 
@@ -261,12 +261,12 @@ Technical debt intentionally left in place unless implementation proves otherwis
 Primary frontend interface changes expected:
 
 - `src/app/core/organization-module/organization.types.ts`
-  - add migration request type
-  - optionally add migration response type
+    - add migration request type
+    - optionally add migration response type
 - `src/app/core/organization-module/organization.schemas.ts`
-  - optionally add migration response schema
+    - optionally add migration response schema
 - `src/app/core/organization-module/organization.service.ts`
-  - add migration method and path helper
+    - add migration method and path helper
 
 Primary feature dependency chain:
 

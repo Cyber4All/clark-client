@@ -1,8 +1,7 @@
-@import '_vars.scss';
-@import '../../../collection-globals.scss';
+@import "_vars.scss";
+@import "../../../collection-globals.scss";
 
-
-.section-featured-learning{
+.section-featured-learning {
     display: flex;
     flex-basis: 100vw;
 }
@@ -11,7 +10,7 @@
     width: 100%;
 }
 
-.section-accent{
+.section-accent {
     display: flex;
     align-items: center;
 
@@ -27,30 +26,29 @@
         background-color: $ncyte-blue;
     }
 
-    .accent-content{
+    .accent-content {
         padding: 20%;
     }
 
-    .featured-learning-title{
+    .featured-learning-title {
         font-size: $largest;
     }
 
     p {
         font-size: $larger;
     }
-
 }
 
-@media (max-width: 1200px){
-    .section-featured-learning{
+@media (max-width: 1200px) {
+    .section-featured-learning {
         flex-wrap: wrap;
     }
 
-    .section-accent{
+    .section-accent {
         flex-basis: 100%;
         border-radius: 0px !important;
     }
-    .accent-content{
-       padding-bottom: 80px;
+    .accent-content {
+        padding-bottom: 80px;
     }
 }

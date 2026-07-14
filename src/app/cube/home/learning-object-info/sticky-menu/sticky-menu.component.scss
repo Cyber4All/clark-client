@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .wrapper {
     width: 250px;
@@ -39,7 +39,9 @@
 
     .greyout {
         color: $text-greyout;
-        transition: background-color 500ms, color 500ms;
+        transition:
+            background-color 500ms,
+            color 500ms;
     }
 
     .dropdown {
@@ -96,14 +98,12 @@
                 &:hover {
                     cursor: pointer;
                 }
-
             }
 
             .arrow {
                 padding-left: 10px;
             }
         }
-
     }
 }
 ::ng-deep .context-menu {

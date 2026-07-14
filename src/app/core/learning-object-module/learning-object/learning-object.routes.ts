@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from "../../../../environments/environment";
 
 export const LEARNING_OBJECT_ROUTES = {
     /**
@@ -10,7 +10,7 @@ export const LEARNING_OBJECT_ROUTES = {
      * @returns Promise<FullLearningObject[]>
      */
     GET_LEARNING_OBJECT(cuid: string, version?: number) {
-        const versionQuery = version ? `?version=${version}` : '';
+        const versionQuery = version ? `?version=${version}` : "";
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(cuid)}${versionQuery}`;
     },
     /**
@@ -43,12 +43,12 @@ export const LEARNING_OBJECT_ROUTES = {
      * @returns
      */
     GET_LEARNING_OBJECT_REVISION(username, learningObjectId, revisionId) {
-      return `${environment.apiURL}/users/${encodeURIComponent(
-          username,
-      )}/learning-objects/${encodeURIComponent(
-          learningObjectId,
-      )}/revisions/${encodeURIComponent(revisionId)}`;
-  },
+        return `${environment.apiURL}/users/${encodeURIComponent(
+            username,
+        )}/learning-objects/${encodeURIComponent(
+            learningObjectId,
+        )}/revisions/${encodeURIComponent(revisionId)}`;
+    },
 
     /**
      * Path to update the status of a learning object
@@ -96,7 +96,7 @@ export const LEARNING_OBJECT_ROUTES = {
      */
     UPDATE_LEARNING_OBJECT_COLLECTION(learningObjectCuid: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectCuid
+            learningObjectCuid,
         )}/collection`;
     },
 

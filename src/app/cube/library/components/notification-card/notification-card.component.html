@@ -1,21 +1,41 @@
-<div class='notification-card'>
-  <button aria-label='Dismiss notification' class='notification-card__exit-button' (activate)='onDeleteButtonClick($event)' tip="Dismiss notification"
-  tipPosition="top">
-    <i class="fal fa-times"></i>
-  </button>
-  <h4 class='notification-card__title' [tip]="notification.attributes?.name" tipPosition="top" tabindex="0">
-    {{ (notification.attributes?.name.length>25) ? (notification.attributes?.name | slice:0:22)+'...' : notification.attributes?.name }}
-  </h4>
-  <div class='notification-card__version-history'>
-    <div>
-      Version {{ notification.attributes?.version }}
+<div class="notification-card">
+    <button
+        aria-label="Dismiss notification"
+        class="notification-card__exit-button"
+        (activate)="onDeleteButtonClick($event)"
+        tip="Dismiss notification"
+        tipPosition="top">
+        <i class="fal fa-times"></i>
+    </button>
+    <h4
+        class="notification-card__title"
+        [tip]="notification.attributes?.name"
+        tipPosition="top"
+        tabindex="0">
+        {{
+            notification.attributes?.name.length > 25
+                ? (notification.attributes?.name | slice: 0 : 22) + "..."
+                : notification.attributes?.name
+        }}
+    </h4>
+    <div class="notification-card__version-history">
+        <div>Version {{ notification.attributes?.version }}</div>
+        <div>Released on {{ notification.timestamp | date }}</div>
     </div>
-    <div>
-      Released on {{ notification.timestamp | date }}
+    <div class="notification-card__links">
+        <a
+            class="details"
+            aria-label="to Details page"
+            href=""
+            (activate)="onDetailsButtonClick($event)"
+            >VIEW DETAILS</a
+        >
+        <a
+            class="changelogs"
+            aria-label="view change logs"
+            href=""
+            (activate)="onChangelogButtonClick($event)"
+            >VIEW CHANGELOGS</a
+        >
     </div>
-  </div>
-  <div class='notification-card__links'>
-    <a class='details' aria-label='to Details page' href="" (activate)='onDetailsButtonClick($event)'>VIEW DETAILS</a>
-    <a class='changelogs' aria-label='view change logs' href="" (activate)='onChangelogButtonClick($event)'>VIEW CHANGELOGS</a>
-  </div>
 </div>

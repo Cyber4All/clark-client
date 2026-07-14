@@ -1,32 +1,32 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 // style for the reusable container that houses the metadata
 .metadata-container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  height: 100%;
-  padding: 30px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: 100%;
+    padding: 30px 20px 40px;
 }
 
 // Style for all titles within the resuable containers
 .title {
-  color: $light-blue;
-  font-size: $large;
-  font-weight: 600;
+    color: $light-blue;
+    font-size: $large;
+    font-weight: 600;
 }
 // Style for all directions within the resuable containers
 .directions {
-  color: $dark-grey;
-  font-size: $normal;
-  margin-bottom: 20px;
+    color: $dark-grey;
+    font-size: $normal;
+    margin-bottom: 20px;
 }
 
 .metadata-container__error {
-  margin-top: 10px;
-  color: $error-red;
+    margin-top: 10px;
+    color: $error-red;
 }
 
 .metadata-container__error--warning {
-  color: orange;
+    color: orange;
 }

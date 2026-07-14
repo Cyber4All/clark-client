@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
 export class UserAgentService {
+    isWindows: boolean;
 
-  isWindows: boolean;
-
-  constructor() {
-    this.isWindows = (navigator.appVersion.indexOf('Win') !== -1);
-  }
+    constructor() {
+        this.isWindows = navigator.appVersion.indexOf("Win") !== -1;
+    }
 }

@@ -1,149 +1,146 @@
-@import '_vars.scss';
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import "_vars.scss";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 $footer-height: 250px;
 
 footer {
-  width: 100%;
-  color: whitesmoke;
-  background: linear-gradient(45deg, #393f4d, lighten(#1d1e22, 10));
-  padding: 20px;
-  text-align: center;
-  box-sizing: border-box;
-
-  p {
-    font-size: $small;
-    margin-top: 20px;
-  }
-
-  .footer-info {
-    display: flex;
-    flex-flow: row;
-    align-items: flex-start;
-    justify-content: space-around;
     width: 100%;
-  }
-
-  .links {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: flex-start;
-
-    div {
-      margin-right: 60px;
-      text-align: left;
-
-      h3 {
-        font-size: $normal;
-      }
-
-      a {
-        display: block;
-        margin-bottom: 5px;
-        font-size: $small;
-        color: whitesmoke;
-      }
-    }
-  }
-
-  .grants {
-
-    .images {
-      display: flex;
-      flex-direction: row;
-      justify-content: right;
-      align-items: center;
-      padding-bottom: 10px;
-
-      &.bottom {
-        justify-content: center;
-        align-items: center;
-      }
-
-
-      img {
-        width: 100px;
-        margin: 0 10px;
-      }
-
-      .ncyte {
-        width: 150px;
-      }
-
-      .csusb {
-        width: 150px;
-      }
-     
-      .project_502 {
-        width: 150px;
-      }
-
-      .gula {
-        width: 150px;
-      }
-    }
-  }
-
-  .share-icons {
+    color: whitesmoke;
+    background: linear-gradient(45deg, #393f4d, lighten(#1d1e22, 10));
+    padding: 20px;
     text-align: center;
-    padding: 0;
-    margin: 0;
-  
-    & > a {
-      background: none;
-      color: white !important;
-      transform: scale(1);
-      cursor: pointer;
-      margin-left: 10px;
-      font-size: 25px;
-  
-      &:active:hover {
-        transform: scale(0.95);
-      }
+    box-sizing: border-box;
+
+    p {
+        font-size: $small;
+        margin-top: 20px;
     }
-  }
-}
 
-@media(max-width: 1575px) {
-  .grants {
-    .images {
-      flex-wrap: wrap;
-
-      img {
-        margin: 10px !important;
-      }
+    .footer-info {
+        display: flex;
+        flex-flow: row;
+        align-items: flex-start;
+        justify-content: space-around;
+        width: 100%;
     }
-  }
-}
-
-
-@media(max-width: 800px) {
-  .footer-info {
-    flex-flow: column !important;
-    align-items: center !important;
 
     .links {
-      display: inline-block;
-      text-align: left;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: flex-start;
 
-      div {
-        margin: 0 0 30px;
-      }
+        div {
+            margin-right: 60px;
+            text-align: left;
+
+            h3 {
+                font-size: $normal;
+            }
+
+            a {
+                display: block;
+                margin-bottom: 5px;
+                font-size: $small;
+                color: whitesmoke;
+            }
+        }
     }
 
     .grants {
-      margin-top: 40px;
-      margin-bottom: 40px;
-      .images {
-        flex-direction: column;
+        .images {
+            display: flex;
+            flex-direction: row;
+            justify-content: right;
+            align-items: center;
+            padding-bottom: 10px;
 
-        img {
-          margin-top: 20px;
+            &.bottom {
+                justify-content: center;
+                align-items: center;
+            }
+
+            img {
+                width: 100px;
+                margin: 0 10px;
+            }
+
+            .ncyte {
+                width: 150px;
+            }
+
+            .csusb {
+                width: 150px;
+            }
+
+            .project_502 {
+                width: 150px;
+            }
+
+            .gula {
+                width: 150px;
+            }
         }
-        .csusb {
-          margin-right: 0 !important;
-        }
-      }
     }
-  }
+
+    .share-icons {
+        text-align: center;
+        padding: 0;
+        margin: 0;
+
+        & > a {
+            background: none;
+            color: white !important;
+            transform: scale(1);
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 25px;
+
+            &:active:hover {
+                transform: scale(0.95);
+            }
+        }
+    }
+}
+
+@media (max-width: 1575px) {
+    .grants {
+        .images {
+            flex-wrap: wrap;
+
+            img {
+                margin: 10px !important;
+            }
+        }
+    }
+}
+
+@media (max-width: 800px) {
+    .footer-info {
+        flex-flow: column !important;
+        align-items: center !important;
+
+        .links {
+            display: inline-block;
+            text-align: left;
+
+            div {
+                margin: 0 0 30px;
+            }
+        }
+
+        .grants {
+            margin-top: 40px;
+            margin-bottom: 40px;
+            .images {
+                flex-direction: column;
+
+                img {
+                    margin-top: 20px;
+                }
+                .csusb {
+                    margin-right: 0 !important;
+                }
+            }
+        }
+    }
 }

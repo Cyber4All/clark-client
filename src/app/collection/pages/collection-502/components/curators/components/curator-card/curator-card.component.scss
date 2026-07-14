@@ -1,4 +1,4 @@
-@import '../../../../../../collection-globals.scss';
+@import "../../../../../../collection-globals.scss";
 .wrapper {
     max-width: 200px;
     text-align: center;
@@ -9,7 +9,7 @@
         min-height: 250px;
 
         &.back {
-            background-color: #F7EC2F;
+            background-color: #f7ec2f;
             transform: skew(-10deg) translateY(-8px) translateX(-8px);
         }
 
@@ -17,7 +17,7 @@
             background-color: $darkPurple_502;
             transform: skew(-10deg) translateX(8px);
         }
-        
+
         &.top {
             background-color: $blue_502;
             transform: skew(-10deg) translateX(-2px) translateY(8px);
@@ -46,6 +46,4 @@
             font-size: 26px;
         }
     }
-
-      
 }

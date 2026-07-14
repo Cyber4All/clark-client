@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .pagination-container {
     text-align: center;
@@ -25,7 +25,7 @@
     margin: 0 10px;
 }
 
-.selected { 
+.selected {
     color: $light-blue;
     font-size: $normal;
     font-weight: 500;

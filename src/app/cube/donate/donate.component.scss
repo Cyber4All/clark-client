@@ -1,4 +1,4 @@
-@import '_vars.scss';
+@import "_vars.scss";
 .background {
     background-color: white;
     min-height: calc(100vh - 40px);
@@ -8,10 +8,15 @@
     position: relative;
     overflow: hidden;
     padding: 100px;
-  
+
     &:after {
-        content: '';
-        background: repeating-linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) );
+        content: "";
+        background: repeating-linear-gradient(
+            rgb(255, 255, 255),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0)
+        );
         position: absolute;
         top: 0;
         left: 0;
@@ -19,9 +24,9 @@
         bottom: 0;
         z-index: 1;
     }
-  
+
     &:before {
-        content: '';
+        content: "";
         background: linear-gradient(to bottom, white, $light-blue, white);
         position: absolute;
         top: 0;
@@ -30,9 +35,9 @@
         right: 0;
         mask: $cube-pattern repeat;
         z-index: 0;
-        opacity: .15;
+        opacity: 0.15;
     }
-  
+
     .inner {
         display: flex;
         flex-direction: column;
@@ -50,7 +55,6 @@
         font-weight: bold;
         z-index: 2;
     }
-    
 }
 
 .wrapper {
@@ -85,12 +89,13 @@
     }
 
     .donation_methods {
-        .corporate, .contributor { 
+        .corporate,
+        .contributor {
             padding-top: 20px;
 
             .level {
                 padding: 20px;
-    
+
                 &.corporate {
                     border-color: $light-blue;
                     border-style: solid;
@@ -99,12 +104,11 @@
                     margin: 20px auto;
                     padding-top: 20px;
                 }
-    
+
                 &.individual {
                     padding-top: 10px;
                     margin: 0px;
                 }
-                
             }
             .item_icon {
                 color: $light-blue;
@@ -117,7 +121,7 @@
                     color: $light-grey;
                 }
                 &.gold {
-                    color: #D4AF37;
+                    color: #d4af37;
                 }
             }
         }

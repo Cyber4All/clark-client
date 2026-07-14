@@ -1,110 +1,159 @@
 <div class="privileges">
+    <div class="privileges__banner">
+        <div class="banner__title">Privileges: {{ user.name | titlecase }}</div>
+        <div class="banner__sub">
+            Edit this user's privileges for specific collections in the CLARK
+            system.
+        </div>
+    </div>
 
-  <div class="privileges__banner">
-    <div class="banner__title">Privileges: {{ user.name | titlecase }}</div>
-    <div class="banner__sub">Edit this user's privileges for specific collections in the CLARK system.</div>
-  </div>
+    <!-- Title Carousel -->
+    <div class="privileges__top">
+        <clark-carousel [action$]="carouselAction$">
+            <ng-template>
+                <div class="privileges__top-inner">
+                    <div class="privileges__subtitle">Active Privileges</div>
+                    <div class="privileges__actions btn-group to-right">
+                        <button (activate)="advance()" class="button good">
+                            Add Privilege <i class="far fa-user-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
 
-  <!-- Title Carousel -->
-  <div class="privileges__top">
+            <ng-template>
+                <div class="privileges__top-inner">
+                    <button
+                        aria-label="to privileges"
+                        (activate)="regress()"
+                        class="privileges__subtitle privileges__subtitle--interactable">
+                        <i class="fas fa-arrow-left"></i> Back to privileges
+                    </button>
+                </div>
+            </ng-template>
+
+            <ng-template>
+                <div class="privileges__top-inner">
+                    <div
+                        (activate)="regress()"
+                        class="privileges__subtitle privileges__subtitle--interactable">
+                        <i class="fas fa-arrow-left"></i> Back to role selector
+                    </div>
+                    <div class="privileges__actions btn-group to-right">
+                        <button
+                            (activate)="
+                                selectedCollection && selectedRole && submit()
+                            "
+                            class="button good"
+                            [ngClass]="{
+                                disabled: !selectedCollection || !selectedRole,
+                            }">
+                            Save Privilege <i class="far fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            </ng-template>
+
+            <ng-template>
+                <div class="privileges__top-inner">
+                    <button
+                        aria-label="to privileges"
+                        (activate)="regress(2)"
+                        class="privileges__subtitle privileges__subtitle--interactable">
+                        <i class="fas fa-arrow-left"></i> Back to privileges
+                    </button>
+                </div>
+            </ng-template>
+        </clark-carousel>
+    </div>
+
+    <!-- Main Carousel -->
     <clark-carousel [action$]="carouselAction$">
+        <ng-template>
+            <div class="privilege-wrapper">
+                <clark-privileges-list
+                    [privileges]="privileges"
+                    [collections]="collections"
+                    (delete)="remove($event)"></clark-privileges-list>
+                <ng-container
+                    *ngIf="!privileges?.length"
+                    [ngTemplateOutlet]="noPrivilegesTemplate"></ng-container>
+            </div>
+        </ng-template>
 
-      <ng-template>
-        <div class="privileges__top-inner">
-          <div class="privileges__subtitle">
-            Active Privileges
-          </div>
-          <div class="privileges__actions btn-group to-right">
-            <button (activate)="advance()" class="button good">Add Privilege <i class="far fa-user-plus"></i></button>
-          </div>
-        </div>
-      </ng-template>
+        <ng-template>
+            <ng-container [ngTemplateOutlet]="roleSelector"></ng-container>
+        </ng-template>
 
-      <ng-template>
-        <div class="privileges__top-inner">
-          <button aria-label='to privileges' (activate)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
-            <i class="fas fa-arrow-left"></i> Back to privileges
-          </button>
-        </div>
-      </ng-template>
+        <ng-template>
+            <clark-collections-grid
+                [preselect]="collectionsWithSelectedRole"
+                preselectReason="This user is already a {{
+                    selectedRole
+                }} in this collection."
+                (selected)="selectCollection($event)"></clark-collections-grid>
+        </ng-template>
 
-      <ng-template>
-        <div class="privileges__top-inner">
-          <div (activate)="regress()" class="privileges__subtitle privileges__subtitle--interactable">
-            <i class="fas fa-arrow-left"></i> Back to role selector
-          </div>
-          <div class="privileges__actions btn-group to-right">
-            <button (activate)="selectedCollection && selectedRole && submit()" class="button good" [ngClass]="{'disabled': !selectedCollection || !selectedRole}">Save Privilege <i class="far fa-check"></i></button>
-          </div>
-        </div>
-      </ng-template>
-
-      <ng-template>
-        <div class="privileges__top-inner">
-          <button aria-label='to privileges' (activate)="regress(2)" class="privileges__subtitle privileges__subtitle--interactable">
-            <i class="fas fa-arrow-left"></i> Back to privileges
-          </button>
-        </div>
-      </ng-template>
-      
+        <ng-template>
+            <div class="mapper-confirmation">
+                <h2 class="mapper-confirmation__header">Are you sure?</h2>
+                <p class="mapper-confirmation__sub">
+                    You are about to promote this user to a Mapper.
+                </p>
+                <div class="btn-group center">
+                    <button
+                        aria-label="add mapper"
+                        (activate)="addMapper()"
+                        class="button good">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </ng-template>
     </clark-carousel>
-  </div>
-  
-  <!-- Main Carousel -->
-  <clark-carousel [action$]="carouselAction$">
-    <ng-template>
-      <div class="privilege-wrapper">
-        <clark-privileges-list [privileges]="privileges" [collections]="collections" (delete)="remove($event)"></clark-privileges-list>
-        <ng-container *ngIf="!privileges?.length" [ngTemplateOutlet]="noPrivilegesTemplate"></ng-container>
-      </div>
-    </ng-template>
-
-    <ng-template>
-      <ng-container [ngTemplateOutlet]="roleSelector"></ng-container>
-    </ng-template>
-
-    <ng-template>
-      <clark-collections-grid [preselect]="collectionsWithSelectedRole" preselectReason="This user is already a {{ selectedRole }} in this collection." (selected)="selectCollection($event)"></clark-collections-grid>
-    </ng-template>
-
-    <ng-template>
-      <div class='mapper-confirmation'>
-        <h2 class='mapper-confirmation__header'>Are you sure?</h2>
-        <p class='mapper-confirmation__sub'>You are about to promote this user to a Mapper.</p>
-        <div class='btn-group center'>
-          <button aria-label='add mapper' (activate)='addMapper()' class='button good'>Submit</button>
-        </div>
-      </div>
-    </ng-template>
-
-  </clark-carousel>
-
 </div>
 
 <ng-template #roleSelector>
-  <div class="role-selector">
-    <button aria-label='Reviewer' [ngClass]="{'role-selector__role--active': selectedRole === 'reviewer'}" (activate)="selectedRole = 'reviewer'; advance()" class="role-selector__role">
-      <i class="far fa-user-edit"></i>
-      Reviewer
-    </button>
-    <button aria-label='Curator' [ngClass]="{'role-selector__role--active': selectedRole === 'curator'}" (activate)="selectedRole = 'curator'; advance()" class="role-selector__role">
-      <i class="far fa-user-crown"></i>
-      Curator
-    </button>
-    <button aria-label='Mapper' *ngIf="!privileges[0]?.includes('mapper')"[ngClass]="{'role-selector__role--active': selectedRole === 'mapper'}" (activate)="selectedRole = 'mapper'; advance(2)" class="role-selector__role">
-      <i class="far fa-map"></i>
-      Mapper
-    </button>
-  </div>
+    <div class="role-selector">
+        <button
+            aria-label="Reviewer"
+            [ngClass]="{
+                'role-selector__role--active': selectedRole === 'reviewer',
+            }"
+            (activate)="selectedRole = 'reviewer'; advance()"
+            class="role-selector__role">
+            <i class="far fa-user-edit"></i>
+            Reviewer
+        </button>
+        <button
+            aria-label="Curator"
+            [ngClass]="{
+                'role-selector__role--active': selectedRole === 'curator',
+            }"
+            (activate)="selectedRole = 'curator'; advance()"
+            class="role-selector__role">
+            <i class="far fa-user-crown"></i>
+            Curator
+        </button>
+        <button
+            aria-label="Mapper"
+            *ngIf="!privileges[0]?.includes('mapper')"
+            [ngClass]="{
+                'role-selector__role--active': selectedRole === 'mapper',
+            }"
+            (activate)="selectedRole = 'mapper'; advance(2)"
+            class="role-selector__role">
+            <i class="far fa-map"></i>
+            Mapper
+        </button>
+    </div>
 </ng-template>
 
 <ng-template #noPrivilegesTemplate>
-  <div [@noPrivileges] class="no-privileges">
-    <div>
-      <i class="far fa-user-lock"></i>
+    <div [@noPrivileges] class="no-privileges">
+        <div>
+            <i class="far fa-user-lock"></i>
+        </div>
+        <div>This user doesn't have any administrator privileges yet!</div>
     </div>
-    <div>
-      This user doesn't have any administrator privileges yet!
-    </div>
-  </div>
 </ng-template>

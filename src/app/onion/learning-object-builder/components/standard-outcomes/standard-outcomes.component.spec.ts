@@ -1,26 +1,25 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { StandardOutcomesComponent } from './standard-outcomes.component';
+import { StandardOutcomesComponent } from "./standard-outcomes.component";
 
-describe('StandardOutcomesComponent', () => {
-  let component: StandardOutcomesComponent;
-  let fixture: ComponentFixture<StandardOutcomesComponent>;
+describe("StandardOutcomesComponent", () => {
+    let component: StandardOutcomesComponent;
+    let fixture: ComponentFixture<StandardOutcomesComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    imports: [StandardOutcomesComponent],
-    teardown: { destroyAfterEach: false }
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            imports: [StandardOutcomesComponent],
+            teardown: { destroyAfterEach: false },
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(StandardOutcomesComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(StandardOutcomesComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

@@ -24,13 +24,13 @@ This plan keeps the implementation bounded to the touched auth area, strengthens
 
 ## Progress
 
-- [x] 2026-03-27  Initial code inspection completed for register component, progress component, organization types/service, and nearby tests.
-- [x] 2026-03-27  Confirmed this work needs an ExecPlan because it spans a multi-step flow and is likely more than one implementation session.
-- [x] 2026-03-27  Confirmed Shortcut story ID `38529`.
-- [x] 2026-03-27  Confirmed product/API workflow for custom organizations: create an unverified organization through `OrganizationService.createOrganization(...)` when the user does not find an existing organization.
-- [x] 2026-03-27  Implemented organization-step UI and conditional navigation in the registration flow.
-- [x] 2026-03-27  Wired unverified-organization create flow and registration payload handoff.
-- [x] 2026-03-27  Added focused specs and validated touched files with ESLint; Jest execution is currently blocked by repo-level test harness drift.
+- [x] 2026-03-27 Initial code inspection completed for register component, progress component, organization types/service, and nearby tests.
+- [x] 2026-03-27 Confirmed this work needs an ExecPlan because it spans a multi-step flow and is likely more than one implementation session.
+- [x] 2026-03-27 Confirmed Shortcut story ID `38529`.
+- [x] 2026-03-27 Confirmed product/API workflow for custom organizations: create an unverified organization through `OrganizationService.createOrganization(...)` when the user does not find an existing organization.
+- [x] 2026-03-27 Implemented organization-step UI and conditional navigation in the registration flow.
+- [x] 2026-03-27 Wired unverified-organization create flow and registration payload handoff.
+- [x] 2026-03-27 Added focused specs and validated touched files with ESLint; Jest execution is currently blocked by repo-level test harness drift.
 
 ## Surprises & Discoveries
 
@@ -38,8 +38,8 @@ This plan keeps the implementation bounded to the touched auth area, strengthens
 - `src/app/auth/register/register.component.html` already contains an empty `orgTemplate` block, so there is a natural insertion point for the new fields.
 - `src/app/auth/register/components/registration-progress/registration-progress.component.html` already shows `1. Info`, `2. Organization`, `3. Account`, `4. SSO`. This likely reflects recent progress, but it currently does not match the actual runtime step transitions because the submission step also exists in the main component.
 - `src/app/core/organization-module/organization.types.ts` already defines the exact enum-like values needed for `sector` and `levels`, including:
-  - sectors: `academia`, `government`, `industry`, `other`
-  - levels: `elementary`, `middle`, `high`, `community_college`, `undergraduate`, `graduate`, `post_graduate`, `training`
+    - sectors: `academia`, `government`, `industry`, `other`
+    - levels: `elementary`, `middle`, `high`, `community_college`, `undergraduate`, `graduate`, `post_graduate`, `training`
 - `OrganizationService` already exposes `createOrganization(...)`, and this is now the confirmed service boundary for the unverified-organization path.
 - The existing register specs are very shallow and will need targeted improvement if we want meaningful regression protection.
 
@@ -125,11 +125,11 @@ Phase 2: Build the organization-step UI
 
 - Populate the empty `orgTemplate` in `register.component.html`.
 - Add inputs/selectors for:
-  - organization name
-  - sector
-  - education levels
-  - state
-  - country
+    - organization name
+    - sector
+    - education levels
+    - state
+    - country
 - Match the surrounding auth/register styling patterns instead of introducing a new component library pattern.
 - Add back/next navigation that respects validation.
 - Ensure the new UI is only required for the custom-organization path if that is the agreed UX.
@@ -146,11 +146,11 @@ Phase 4: Validate and tighten regressions
 
 - Update registration progress expectations if the visible labels or indexes need correction.
 - Add focused component tests around:
-  - step transitions
-  - button enable/disable behavior
-  - organization options rendering
-  - existing-organization vs custom-organization branching
-  - create-organization-before-register sequencing where practical
+    - step transitions
+    - button enable/disable behavior
+    - organization options rendering
+    - existing-organization vs custom-organization branching
+    - create-organization-before-register sequencing where practical
 - Run the nearest supported test command for the auth/register area.
 - Do manual verification of both registration paths in the browser if feasible.
 
@@ -159,19 +159,19 @@ Phase 4: Validate and tighten regressions
 1. Inspect the exact `CreateOrganizationRequest` client type and confirm it matches the new backend POST body.
 2. Use the manual-entry link on the info step as the trigger for the unverified-organization flow.
 3. Extend `RegisterComponent` state with:
-   - sector options from `ORGANIZATION_SECTORS`
-   - level options from `ORGANIZATION_LEVELS`
-   - form controls/model fields for sector, levels, state, country
+    - sector options from `ORGANIZATION_SECTORS`
+    - level options from `ORGANIZATION_LEVELS`
+    - form controls/model fields for sector, levels, state, country
 4. Add an `organizationFormGroup` or equivalent validation strategy.
 5. Update `nextTemp()` to move from `info` to `organization`, and from `organization` to `account`.
 6. Update `goBack()` to support:
-   - `account -> organization`
-   - `organization -> info`
+    - `account -> organization`
+    - `organization -> info`
 7. Fill in the `orgTemplate` with the new fields and step actions.
 8. Keep existing listed-organization selection behavior intact.
 9. On submit:
-   - existing organization path uses the already selected `organizationId`
-   - custom organization path calls `createOrganization(...)` first, then registers with the returned ID
+    - existing organization path uses the already selected `organizationId`
+    - custom organization path calls `createOrganization(...)` first, then registers with the returned ID
 10. Update shallow specs into focused assertions for step order, branching, and orchestration.
 11. Run local validation and capture any API/tooling drift.
 
@@ -181,11 +181,11 @@ Functional acceptance:
 
 - Registration flow visually shows and actually navigates through `Info -> Organization -> Account -> Submission -> SSO`.
 - User can enter:
-  - organization name
-  - sector
-  - one or more education levels
-  - state
-  - country
+    - organization name
+    - sector
+    - one or more education levels
+    - state
+    - country
 - Required validation prevents progression when mandatory organization fields are missing for the custom-organization path.
 - Existing organization search still works.
 - Selecting an existing organization does not create a new organization.
@@ -211,9 +211,9 @@ Manual validation:
 ## Idempotence and Recovery
 
 - The flow work can be staged safely:
-  - first land UI navigation and local form state
-  - then wire create-organization behavior
-  - then add tests
+    - first land UI navigation and local form state
+    - then wire create-organization behavior
+    - then add tests
 - If implementation pauses after Phase 2, the component should not ship unless the custom-organization path is either fully wired or clearly blocked.
 - Avoid deleting the current organization search path until the replacement path is proven.
 - If backend request fields differ from current client typings, update the service/types first and then resume component wiring.
@@ -221,27 +221,27 @@ Manual validation:
 ## Artifacts and Notes
 
 - Existing org search currently uses:
-  - `organizationInput$`
-  - `searchResults`
-  - `selectedOrg`
-  - `OrganizationService.searchOrganizations(...)`
+    - `organizationInput$`
+    - `searchResults`
+    - `selectedOrg`
+    - `OrganizationService.searchOrganizations(...)`
 - Existing fallback `Other` selection hardcodes organization ID `602ae2a038e2aaa1059f3c39`. This is legacy behavior that should likely be removed or bypassed for story `38529`, because the new flow creates a dedicated unverified organization record instead of reusing a shared placeholder.
 - The progress component currently lists four visible steps while the main component internally tracks five templates including `submission`. That mismatch should be left alone only if it still matches intended UX; otherwise it should be clarified during implementation.
 
 ## Interfaces and Dependencies
 
 - UI dependencies:
-  - `RegisterComponent`
-  - `RegistrationProgressComponent`
+    - `RegisterComponent`
+    - `RegistrationProgressComponent`
 - Domain/service dependencies:
-  - `OrganizationService.searchOrganizations(...)`
-  - `OrganizationService.createOrganization(...)`
-  - `AuthService.register(...)`
+    - `OrganizationService.searchOrganizations(...)`
+    - `OrganizationService.createOrganization(...)`
+    - `AuthService.register(...)`
 - Type dependencies:
-  - `Organization`
-  - `CreateOrganizationRequest`
-  - `ORGANIZATION_SECTORS`
-  - `ORGANIZATION_LEVELS`
+    - `Organization`
+    - `CreateOrganizationRequest`
+    - `ORGANIZATION_SECTORS`
+    - `ORGANIZATION_LEVELS`
 - Open interface questions:
-  - Is `country` required or optional for the unverified organization POST?
-  - Should the organization step be always visible, or only meaningfully required for the custom-organization path?
+    - Is `country` required or optional for the unverified organization POST?
+    - Should the organization step be always visible, or only meaningfully required for the custom-organization path?

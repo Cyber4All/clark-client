@@ -1,97 +1,102 @@
-@import '_vars.scss';
+@import "_vars.scss";
 $sidebar-width: 350px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
 .background {
-  background-color: white;
-  min-height: 100vh;
+    background-color: white;
+    min-height: 100vh;
 }
 .hero {
-  position: relative;
-  overflow: hidden;
-  padding: 100px;
+    position: relative;
+    overflow: hidden;
+    padding: 100px;
 
-  &:after {
-    content: '';
-    background: repeating-linear-gradient(rgb(255, 255, 255), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) );
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-}
-
-  &:before {
-    content: '';
-    background: linear-gradient(to bottom, white, $light-blue, white);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    mask: $cube-pattern repeat;
-    z-index: 0;
-    opacity: .15;
-}
-
-  .inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    margin-bottom: 50px;
-
-    .title__icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      margin: auto;
-      color: $light-blue;
-      width: 100px;
-      height: 100px;
-      border-radius: 50px;
-
-      svg {
-        width: 60px;
-        height: 60px;
-      }
+    &:after {
+        content: "";
+        background: repeating-linear-gradient(
+            rgb(255, 255, 255),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0)
+        );
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
     }
-  }
 
-  .logos {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-
-    & > *:first-child {
-      margin-right: 0;
+    &:before {
+        content: "";
+        background: linear-gradient(to bottom, white, $light-blue, white);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        mask: $cube-pattern repeat;
+        z-index: 0;
+        opacity: 0.15;
     }
-  }
 
-  .header {
-    color: $darker-grey;
-    font-size: $largest;
-    text-transform: uppercase;
-    font-weight: bold;
-  }
+    .inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: 50px;
 
-  .description {
-    color: $darker-grey;
-    font-size: $large;
-    font-weight: normal;
-    padding: 10px;
-  }
+        .title__icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: auto;
+            color: $light-blue;
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+
+            svg {
+                width: 60px;
+                height: 60px;
+            }
+        }
+    }
+
+    .logos {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+
+        & > *:first-child {
+            margin-right: 0;
+        }
+    }
+
+    .header {
+        color: $darker-grey;
+        font-size: $largest;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .description {
+        color: $darker-grey;
+        font-size: $large;
+        font-weight: normal;
+        padding: 10px;
+    }
 }
 
 .collections__grid {
-  max-width: $max-width;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  grid-gap: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 20px;
-  padding-bottom: 120px;
+    max-width: $max-width;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 20px;
+    padding-bottom: 120px;
 }

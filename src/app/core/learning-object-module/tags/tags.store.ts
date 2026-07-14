@@ -4,14 +4,13 @@ import { Observable, of } from "rxjs";
 import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
 export class TagsStore {
-
     private readonly cache = new Map<string, Tag>();
     private readonly pending = new Map<string, Promise<Tag | null>>();
-    constructor(private readonly tagsService: TagsService){}
- 
+    constructor(private readonly tagsService: TagsService) {}
+
     async tag$(id: string): Promise<Observable<Tag | null>> {
         if (this.cache.has(id)) {
             return of(this.cache.get(id)!);
@@ -20,7 +19,8 @@ export class TagsStore {
         if (!this.pending.has(id)) {
             this.pending.set(
                 id,
-                this.tagsService.getTag(id)
+                this.tagsService
+                    .getTag(id)
                     .then((tag) => {
                         if (tag) {
                             this.cache.set(id, tag);
@@ -33,7 +33,7 @@ export class TagsStore {
                     })
                     .finally(() => {
                         this.pending.delete(id);
-                    })
+                    }),
             );
         }
 

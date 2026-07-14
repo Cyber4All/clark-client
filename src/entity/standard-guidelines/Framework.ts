@@ -1,9 +1,9 @@
 export enum FRAMEWORK_PROPERTY {
-    ID = 'id',
-    NAME = 'name',
-    AUTHOR = 'author',
-    SOURCE = 'source',
-    DESCRIPTION = 'description',
+    ID = "id",
+    NAME = "name",
+    AUTHOR = "author",
+    SOURCE = "source",
+    DESCRIPTION = "description",
 }
 
 export interface Framework {

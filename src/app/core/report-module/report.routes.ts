@@ -1,4 +1,4 @@
-import { environment } from '@env/environment';
+import { environment } from "@env/environment";
 
 export const REPORT_ROUTES = {
     /**
@@ -6,8 +6,7 @@ export const REPORT_ROUTES = {
      * @method POST
      * @auth required
      */
-    GENERATE_REPORT(
-    ) {
+    GENERATE_REPORT() {
         return `${environment.apiURL}/reports`;
-    }
+    },
 };

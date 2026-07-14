@@ -1,148 +1,146 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .top-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0 5px;
 }
 
 .icon-clean {
-  margin: 0;
+    margin: 0;
 }
 
 .flex-wrapper {
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  border-radius: 4px;
-  padding: 10px 0;
-  height: 500px;
-  overflow-x: hidden;
-  overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 4px;
+    padding: 10px 0;
+    height: 500px;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .empty {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 .file-breadcrumb {
+    .link {
+        font-size: $larger;
+        font-weight: 700;
+        margin: 5px 0;
+        padding: 0;
+        border-radius: 4px;
+    }
 
-  .link {
-    font-size: $larger;
-    font-weight: 700;
-    margin: 5px 0;
-    padding: 0;
-    border-radius: 4px;
-  }
+    &:not(:first-child) > * {
+        margin: 5px;
+        padding: 0 7px;
+    }
 
-  &:not(:first-child) > * {
-    margin: 5px;
-    padding: 0 7px;
-  }
-
-  &:hover {
-    cursor: pointer;
-    background: $light-grey;
-  }
+    &:hover {
+        cursor: pointer;
+        background: $light-grey;
+    }
 }
 
 .full-width {
-  width: 100%;
+    width: 100%;
 }
 
 .context-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-
-  .description-input {
-    margin-bottom: 10px;
-  }
-
-  input {
-    width: 100%;
-    padding: 0 10px;
-  }
-
-  .buttons {
-    display: grid;
+    display: flex;
     align-items: center;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 10px;
-  }
+    justify-content: space-between;
+    cursor: pointer;
+
+    .description-input {
+        margin-bottom: 10px;
+    }
+
+    input {
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    .buttons {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 10px;
+    }
 }
 
 .context-item.stacked {
-  flex-direction: column;
+    flex-direction: column;
 }
 
 .context-item.bad {
-  color: $error-red;
+    color: $error-red;
 }
 
 .button.slim {
-  padding: 1px 15px;
+    padding: 1px 15px;
 }
 
 .inline-flex {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .inline-flex.right {
-  flex: 1;
-  justify-content: flex-end;
+    flex: 1;
+    justify-content: flex-end;
 }
 
 .icon-left {
-  margin: 0;
-  margin-right: 10px;
+    margin: 0;
+    margin-right: 10px;
 }
 
 .context-item {
-
-  .option {
-    font-size: $large;
-  }
+    .option {
+        font-size: $large;
+    }
 }
 
 .icon.light {
-  color: $medium-grey;
+    color: $medium-grey;
 }
 
 .help {
-  text-align: center;
-  margin-bottom: 10px;
+    text-align: center;
+    margin-bottom: 10px;
 }
 
 div.dropzone-message {
-  margin: auto;
-  align-self: center;
-  font-weight: 200;
-  font-size: $larger;
-  color: $dark-grey;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    margin: auto;
+    align-self: center;
+    font-weight: 200;
+    font-size: $larger;
+    color: $dark-grey;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  & > .svg-inline--fa {
-    font-size: 60px;
-    margin-bottom: 10px;
-    color: inherit;
-  }
+    & > .svg-inline--fa {
+        font-size: 60px;
+        margin-bottom: 10px;
+        color: inherit;
+    }
 
-  .empty-title {
-    font-size: $largest;
-    margin-bottom: 15px;
-  }
+    .empty-title {
+        font-size: $largest;
+        margin-bottom: 15px;
+    }
 
-  .button {
-    margin-bottom: 15px;
-  }
+    .button {
+        margin-bottom: 15px;
+    }
 }

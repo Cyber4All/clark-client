@@ -1,13 +1,12 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .note-wrapper {
-
     .note-title {
         padding: 12px;
         font-size: larger;
         cursor: pointer;
         border-bottom: solid 2px $light-grey;
-        
+
         .arrow {
             text-align: right;
             padding-right: 5px;

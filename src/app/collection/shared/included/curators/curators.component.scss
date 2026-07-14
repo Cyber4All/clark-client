@@ -1,18 +1,18 @@
-@import '_vars.scss';
-@import '../../../collection-globals.scss';
+@import "_vars.scss";
+@import "../../../collection-globals.scss";
 
-.section-curators{
+.section-curators {
     display: flex;
     flex-wrap: wrap;
     text-align: center;
     color: #fff;
     font-size: $larger;
 
-    .accent-content{
+    .accent-content {
         padding: 50px 50px 50px 50px;
     }
 
-    .section-accent{
+    .section-accent {
         display: flex;
         align-items: center;
 
@@ -39,18 +39,18 @@
     }
 }
 
-@media (max-width: 1110px){
-    .section-accent{
+@media (max-width: 1110px) {
+    .section-accent {
         flex-basis: 100% !important;
         border-radius: 0px !important;
     }
-    .accent-content{
+    .accent-content {
         padding-bottom: 50px;
-    } 
+    }
 }
 
-@media (max-width: 800px){
-    .curators{
+@media (max-width: 800px) {
+    .curators {
         display: flex;
         flex-wrap: wrap;
     }

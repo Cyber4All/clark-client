@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-    selector: 'clark-mission',
-    templateUrl: './mission.component.html',
-    styleUrls: ['./mission.component.scss'],
-    standalone: true
+    selector: "clark-mission",
+    templateUrl: "./mission.component.html",
+    styleUrls: ["./mission.component.scss"],
+    standalone: true,
 })
 export class MissionComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+    ngOnInit() {}
 }

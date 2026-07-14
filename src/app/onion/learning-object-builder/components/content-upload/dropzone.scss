@@ -1,18 +1,18 @@
-@import '_vars.scss';
+@import "_vars.scss";
 .dropzone {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 div.dropzone-message {
-  margin: auto;
-  align-self: center;
-  font-weight: 200;
-  font-size: $larger;
-  color: $dark-grey;
-  pointer-events: none;
+    margin: auto;
+    align-self: center;
+    font-weight: 200;
+    font-size: $larger;
+    color: $dark-grey;
+    pointer-events: none;
 }
 
 ::ng-deep .dz-progress,
@@ -20,5 +20,5 @@ div.dropzone-message {
 ::ng-deep .dz-success-mark,
 ::ng-deep .dz-error-mark,
 ::ng-deep .dz-preview {
-  display: none !important;
+    display: none !important;
 }

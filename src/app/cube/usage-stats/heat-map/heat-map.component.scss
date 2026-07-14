@@ -1,75 +1,75 @@
-@import '_vars.scss';
+@import "_vars.scss";
 .heat-map-wrapper {
-  background: white;
-  border-radius: 2px;
-  padding: 40px;
-  height: 100%;
+    background: white;
+    border-radius: 2px;
+    padding: 40px;
+    height: 100%;
 
-  .title {
-    font-size: $larger;
-    color: $darker-grey;
-  }
+    .title {
+        font-size: $larger;
+        color: $darker-grey;
+    }
 
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .graph-wrapper {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .iframe-wrapper {
-  padding-top: 45.25%; // Maintains aspect ratio of the report
-  position: relative;
-  overflow: hidden;
-  width: 100%;
-  height: 395px;
-  box-sizing: border-box;
+    padding-top: 45.25%; // Maintains aspect ratio of the report
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 395px;
+    box-sizing: border-box;
 }
 
 .resp-iframe {
-  z-index: 1;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
 }
 
 @media screen and (max-width: 500px) {
-  .heat-map-wrapper {
-    .title {
-      top: 10px;
+    .heat-map-wrapper {
+        .title {
+            top: 10px;
+        }
     }
-  }
 }
 
 @media screen and (max-width: 998px) {
-  .heat-map-wrapper {
-    max-height: 350px;
-  }
+    .heat-map-wrapper {
+        max-height: 350px;
+    }
 
-  .iframe-wrapper {
-    min-height: 300px;
-  }
+    .iframe-wrapper {
+        min-height: 300px;
+    }
 }
 
 @media screen and (max-width: 600px) {
-  .heat-map-wrapper {
-    max-height: none;
-    padding: 20px 0;
-  }
+    .heat-map-wrapper {
+        max-height: none;
+        padding: 20px 0;
+    }
 
-  .graph-wrapper {
-    display: block;
-    max-width: 100%;
-    overflow-x: scroll;
-  }
+    .graph-wrapper {
+        display: block;
+        max-width: 100%;
+        overflow-x: scroll;
+    }
 
-  .iframe-wrapper {
-    margin-bottom: 15px;
-    min-height: 250px;
-    height: auto;
-  }
+    .iframe-wrapper {
+        margin-bottom: 15px;
+        min-height: 250px;
+        height: auto;
+    }
 }

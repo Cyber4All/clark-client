@@ -1,25 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { LearningObjectInfoComponent } from './learning-object-info.component';
+import { LearningObjectInfoComponent } from "./learning-object-info.component";
 
-describe('LearningObjectInfoComponent', () => {
-  let component: LearningObjectInfoComponent;
-  let fixture: ComponentFixture<LearningObjectInfoComponent>;
+describe("LearningObjectInfoComponent", () => {
+    let component: LearningObjectInfoComponent;
+    let fixture: ComponentFixture<LearningObjectInfoComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-    imports: [LearningObjectInfoComponent]
-})
-    .compileComponents();
-  });
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [LearningObjectInfoComponent],
+        }).compileComponents();
+    });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LearningObjectInfoComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(LearningObjectInfoComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

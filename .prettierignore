@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+
+# Angular and build output
+.angular/
+dist/
+out-tsc/
+tmp/
+
+# Test and analysis output
+coverage/
+reports/
+
+# Local development state
+.devenv/
+.direnv/
+.idea/
+.sass-cache/
+
+# Generated files
+src/commit-hash.ts
+src/env.js
+package-lock.json
+
+# Minified and bundled artifacts
+*.min.*
+*.bundle.*
+*.map
+
+# Binary/static assets
+*.avif
+*.bmp
+*.gif
+*.ico
+*.jpeg
+*.jpg
+*.pdf
+*.png
+*.webp
+*.woff
+*.woff2
+*.ttf
+*.eot

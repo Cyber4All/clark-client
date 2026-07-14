@@ -1,92 +1,108 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
-import { trigger, transition, style, animate } from '@angular/animations';
-import { NgIf } from '@angular/common';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    OnInit,
+    OnChanges,
+    OnDestroy,
+    SimpleChanges,
+} from "@angular/core";
+import { trigger, transition, style, animate } from "@angular/animations";
+import { NgIf } from "@angular/common";
 
 @Component({
-    selector: 'clark-chatbot-launcher',
-    templateUrl: './chatbot-launcher.component.html',
-    styleUrls: ['./chatbot-launcher.component.scss'],
+    selector: "clark-chatbot-launcher",
+    templateUrl: "./chatbot-launcher.component.html",
+    styleUrls: ["./chatbot-launcher.component.scss"],
     animations: [
-        trigger('tooltipAppear', [
-            transition(':enter', [
+        trigger("tooltipAppear", [
+            transition(":enter", [
                 style({
                     opacity: 0,
-                    transform: 'translateY(10px)'
+                    transform: "translateY(10px)",
                 }),
-                animate('200ms ease-out', style({
-                    opacity: 1,
-                    transform: 'translateY(0)'
-                }))
+                animate(
+                    "200ms ease-out",
+                    style({
+                        opacity: 1,
+                        transform: "translateY(0)",
+                    }),
+                ),
             ]),
-            transition(':leave', [
-                animate('200ms ease-out', style({
-                    opacity: 0,
-                    transform: 'translateY(10px)'
-                }))
-            ])
-        ])
+            transition(":leave", [
+                animate(
+                    "200ms ease-out",
+                    style({
+                        opacity: 0,
+                        transform: "translateY(10px)",
+                    }),
+                ),
+            ]),
+        ]),
     ],
     standalone: true,
-    imports: [NgIf]
+    imports: [NgIf],
 })
 export class ChatbotLauncherComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() isCookieBannerVisible = false;
-  @Output() chatbotOpened = new EventEmitter<void>();
+    @Input() isCookieBannerVisible = false;
+    @Output() chatbotOpened = new EventEmitter<void>();
 
-  showTooltip = false;
-  bannerHeight = 0;
-  private resizeObserver: ResizeObserver;
+    showTooltip = false;
+    bannerHeight = 0;
+    private resizeObserver: ResizeObserver;
 
-  ngOnInit(): void {
-    this.observeBannerHeight();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['isCookieBannerVisible']) {
-      // When banner visibility changes, update height
-      this.updateBannerHeight();
+    ngOnInit(): void {
+        this.observeBannerHeight();
     }
-  }
 
-  ngOnDestroy(): void {
-    if (this.resizeObserver) {
-      this.resizeObserver.disconnect();
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes["isCookieBannerVisible"]) {
+            // When banner visibility changes, update height
+            this.updateBannerHeight();
+        }
     }
-  }
 
-  private observeBannerHeight(): void {
-    const bannerElement = document.querySelector('clark-cookies');
-
-    if (bannerElement) {
-      this.resizeObserver = new ResizeObserver(() => {
-        this.updateBannerHeight();
-      });
-
-      this.resizeObserver.observe(bannerElement);
-      this.updateBannerHeight();
+    ngOnDestroy(): void {
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
     }
-  }
 
-  private updateBannerHeight(): void {
-    const bannerElement = document.querySelector('clark-cookies');
+    private observeBannerHeight(): void {
+        const bannerElement = document.querySelector("clark-cookies");
 
-    if (bannerElement && this.isCookieBannerVisible) {
-      this.bannerHeight = (bannerElement as HTMLElement).offsetHeight + 20;
-    } else {
-      this.bannerHeight = 0;
+        if (bannerElement) {
+            this.resizeObserver = new ResizeObserver(() => {
+                this.updateBannerHeight();
+            });
+
+            this.resizeObserver.observe(bannerElement);
+            this.updateBannerHeight();
+        }
     }
-  }
 
-  openChatbot(): void {
-    this.chatbotOpened.emit();
-    this.showTooltip = false;
-  }
+    private updateBannerHeight(): void {
+        const bannerElement = document.querySelector("clark-cookies");
 
-  onMouseEnter(): void {
-    this.showTooltip = true;
-  }
+        if (bannerElement && this.isCookieBannerVisible) {
+            this.bannerHeight =
+                (bannerElement as HTMLElement).offsetHeight + 20;
+        } else {
+            this.bannerHeight = 0;
+        }
+    }
 
-  onMouseLeave(): void {
-    this.showTooltip = false;
-  }
+    openChatbot(): void {
+        this.chatbotOpened.emit();
+        this.showTooltip = false;
+    }
+
+    onMouseEnter(): void {
+        this.showTooltip = true;
+    }
+
+    onMouseLeave(): void {
+        this.showTooltip = false;
+    }
 }

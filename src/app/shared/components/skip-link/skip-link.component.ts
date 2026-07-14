@@ -1,25 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ActivateDirective } from '../../directives/activate.directive';
+import { Component, OnInit, Input } from "@angular/core";
+import { ActivateDirective } from "../../directives/activate.directive";
 
 @Component({
-    selector: 'clark-skip-link',
-    templateUrl: './skip-link.component.html',
-    styleUrls: ['./skip-link.component.scss'],
+    selector: "clark-skip-link",
+    templateUrl: "./skip-link.component.html",
+    styleUrls: ["./skip-link.component.scss"],
     standalone: true,
-    imports: [ActivateDirective]
+    imports: [ActivateDirective],
 })
 export class SkipLinkComponent implements OnInit {
+    @Input() title: string;
+    @Input() skipLocation: string;
+    @Input() identity: string;
+    constructor() {}
 
-  @Input() title: string;
-  @Input() skipLocation: string;
-  @Input() identity: string;
-  constructor() { }
+    ngOnInit() {}
 
-  ngOnInit() {
-  }
-
-  goToContent(value: string) {
-    document.getElementById(value).focus();
-  }
-
+    goToContent(value: string) {
+        document.getElementById(value).focus();
+    }
 }

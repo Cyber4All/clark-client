@@ -1,131 +1,131 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .wrapper {
-  height: 100%;
-  width: 100%;
-  font-size: $normal;
+    height: 100%;
+    width: 100%;
+    font-size: $normal;
 
-  &:hover {
-    cursor: pointer;
-  }
+    &:hover {
+        cursor: pointer;
+    }
 
-  &:active {
-    opacity: 0.5;
-  }
+    &:active {
+        opacity: 0.5;
+    }
 }
 .icon {
-  color: $medium-grey;
-  font-size: 20px;
-  margin-right: 5px;
+    color: $medium-grey;
+    font-size: 20px;
+    margin-right: 5px;
 }
 
 .grid-row {
-  display: grid;
-  grid-template-columns: 4fr 1fr 0.5fr 25px;
-  grid-column-gap: 20px;
-  align-items: center;
-  width: 100%;
-  justify-self: center;
-  background: transparent !important;
-  margin-bottom: 1.5rem;
+    display: grid;
+    grid-template-columns: 4fr 1fr 0.5fr 25px;
+    grid-column-gap: 20px;
+    align-items: center;
+    width: 100%;
+    justify-self: center;
+    background: transparent !important;
+    margin-bottom: 1.5rem;
 
-  &.bundle {
-    grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
-  }
+    &.bundle {
+        grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
+    }
 }
 
 .text-contained {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  font-size: $small;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: $small;
 
-  .svg-inline--fa {
-    margin-right: 13px;
-    width: 20px;
-  }
-
-  input {
-    display: none;
-  }
-
-  &.hover-react {
-    cursor: pointer;
-
-    &:hover {
-      text-decoration: underline;
+    .svg-inline--fa {
+        margin-right: 13px;
+        width: 20px;
     }
-  }
+
+    input {
+        display: none;
+    }
+
+    &.hover-react {
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 .inline-flex {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .description {
-  color: $dark-grey;
+    color: $dark-grey;
 }
 
 .description:focus {
-  white-space: initial;
+    white-space: initial;
 }
 
 .toggleBundle {
-  display: flex;
-  justify-content: center;
-
-  clark-toggle-switch {
     display: flex;
     justify-content: center;
-    position: relative;
-  }
+
+    clark-toggle-switch {
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
 }
 
 .meatballs {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  height: 30px;
-  outline: 0;
-  gap: 2px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 30px;
+    outline: 0;
+    gap: 2px;
 
-  & > div,
-  &:before,
-  &:after {
-    content: '';
-    background: $light-blue;
-    border-radius: 50%;
-    height: 6px;
-    width: 6px;
-    flex: 0 0 auto;
-  }
+    & > div,
+    &:before,
+    &:after {
+        content: "";
+        background: $light-blue;
+        border-radius: 50%;
+        height: 6px;
+        width: 6px;
+        flex: 0 0 auto;
+    }
 }
 
 input {
-  width: 100%;
-  padding: 5px 10px;
+    width: 100%;
+    padding: 5px 10px;
 }
 
 @media screen and (max-width: 600px) {
-  .grid-row {
-    display: block;
-  }
-  .text-contained {
-    font-size: $small;
-    text-align: left;
+    .grid-row {
+        display: block;
+    }
+    .text-contained {
+        font-size: $small;
+        text-align: left;
 
-    &.timestamp {
-      padding-left: 25px;
-    }
+        &.timestamp {
+            padding-left: 25px;
+        }
 
-    &.description {
-      padding-left: 25px;
+        &.description {
+            padding-left: 25px;
+        }
+        .svg-inline--fa {
+            margin-right: 3px;
+        }
     }
-    .svg-inline--fa {
-      margin-right: 3px;
-    }
-  }
 }

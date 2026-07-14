@@ -1,28 +1,35 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
-.mission-container{
+.mission-container {
     padding: 50px;
     position: relative;
-    
+
     display: flex;
     justify-content: space-around;
     align-items: center;
     background: $wrapper-background;
 
     &:before {
-        content: '';
-        background: linear-gradient(90deg, white,rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0), white);
+        content: "";
+        background: linear-gradient(
+            90deg,
+            white,
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            rgba(255, 255, 255, 0),
+            white
+        );
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
         z-index: 0;
-        opacity: .15;
-      }
-    
+        opacity: 0.15;
+    }
+
     &:after {
-        content: '';
+        content: "";
         background: linear-gradient($light-blue, $light-blue, white);
         position: absolute;
         top: 0;
@@ -30,25 +37,25 @@
         left: 0;
         right: 0;
         mask: $cube-pattern repeat;
-        opacity: .2;
+        opacity: 0.2;
         z-index: 3;
     }
 
-    .right-side{ 
+    .right-side {
         width: 50%;
         display: flex;
         justify-content: center;
-        .text-container{
+        .text-container {
             font-size: $largest;
             color: $light-blue;
             z-index: 99;
         }
     }
 
-    .left-side{
+    .left-side {
         display: flex;
         justify-content: space-around;
-        .mission-logo{
+        .mission-logo {
             width: 290px;
             height: 320px;
             z-index: 2;
@@ -57,34 +64,33 @@
             z-index: 99;
         }
     }
-    
 }
 
-@media screen and (max-width:1030px){
-    .mission-container{
+@media screen and (max-width: 1030px) {
+    .mission-container {
         flex-direction: column;
-        padding: 50px 25px 25px 25px; 
+        padding: 50px 25px 25px 25px;
 
-        .right-side{
+        .right-side {
             width: 85%;
-            .text-container{
+            .text-container {
                 text-align: center;
             }
         }
     }
 }
 
-@media screen and (max-width: 700px){
-    .mission-container{
-        .left-side{
-            .mission-logo{
+@media screen and (max-width: 700px) {
+    .mission-container {
+        .left-side {
+            .mission-logo {
                 width: 150px;
                 height: 167.84px;
             }
         }
-        .right-side{
+        .right-side {
             width: 100%;
-            .text-container{
+            .text-container {
                 font-size: $large;
             }
         }

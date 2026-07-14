@@ -1,12 +1,12 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 a {
-  text-decoration: none;
-  color: inherit;
+    text-decoration: none;
+    color: inherit;
 }
 
 :host {
-  display: block;
+    display: block;
 }
 
 /* ---------------------------------------------
@@ -14,285 +14,285 @@ a {
 ---------------------------------------------- */
 
 .learning-object {
-  background: white;
-  border-radius: 6px;
-  border: 1px solid $profile-border;
-  display: flex;
-  flex-direction: row;
-  max-width: 850px;
-  width: 100%;
-  outline: none;
-  cursor: pointer;
-  position: relative;
-  align-items: stretch;
-  justify-content: flex-start;
-  overflow: hidden;
-  box-shadow: none;
-  transition: all 0.15s ease-in;
-
-  .image {
-    background: $primary-white;
-    min-width: 175px;
-    flex: 0 0 175px;
-    position: relative;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid $profile-border;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    overflow: hidden;
-    box-sizing: border-box;
-
-    ::ng-deep canvas {
-      opacity: 0.4;
-      max-width: 100%;
-      max-height: 100%;
-    }
-
-    /* LIST view image behavior: small, centered, "logo tile" */
-    .logo {
-      max-height: 80px;
-      max-width: 145px;
-      object-fit: contain;
-      width: auto;
-      height: auto;
-      display: block;
-    }
-
-    .framework-badge {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: $smaller;
-      font-weight: 600;
-      text-transform: uppercase;
-      z-index: 10;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
-      display: flex;
-      align-items: center;
-      gap: 4px;
-
-      &.dcwf-badge {
-        background: #25215f;
-        color: white;
-
-        i {
-          font-size: 14px;
-        }
-      }
-    }
-
-    &:after {
-      content: '';
-      background: white;
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      opacity: 0.05;
-      mask: $cube-pattern repeat;
-      pointer-events: none;
-    }
-  }
-
-  .learning-object-content {
-    padding: 10px 15px;
-    min-width: 0;
-    position: relative;
+    flex-direction: row;
+    max-width: 850px;
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    position: relative;
+    align-items: stretch;
+    justify-content: flex-start;
+    overflow: hidden;
+    box-shadow: none;
+    transition: all 0.15s ease-in;
 
-    .download-btn {
-      size: 6px;
-
-      &:focus,
-      &:hover {
-        color: $light-blue;
-      }
-    }
-
-    .rating-stars-container {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-
-      .mobile-rating {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: $small;
-        color: $gold;
-
-        .rating-value {
-          font-weight: 600;
-          color: $darker-grey;
-        }
-
-        .review-count {
-          color: $medium-grey;
-          font-size: $smaller;
-        }
-      }
-
-      .downloads-indicator {
-        display: inline-flex;
-        align-items: center;
-        color: $dark-grey;
-        font-size: $small;
-
-        i,
-        svg,
-        .svg-inline--fa {
-          margin-right: 5px;
-        }
-
-        .downloads-count {
-          margin-left: 0;
-        }
-
-        &.has-icon .downloads-count {
-          margin-left: 2px;
-        }
-      }
-    }
-
-    .title {
-      font-size: $normal;
-      color: $darker-grey;
-      font-weight: 600;
-      padding-bottom: 10px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      line-height: 1.4;
-    }
-
-    .date {
-      font-size: $small;
-      color: $dark-grey;
-      margin-bottom: 6px;
-    }
-
-    .length {
-      background: rgba(70, 144, 255, 0.12);
-      padding: 2px 5px;
-      margin-right: 0;
-      border-radius: 3px;
-      display: inline-block;
-      position: relative;
-      color: $homepage-light-blue;
-      font-size: $smaller;
-      font-weight: 500;
-    }
-
-    .time {
-      background: $primary-white;
-      padding: 2px 5px;
-      border-radius: 3px;
-      border: 1px solid $secondary-white;
-      display: inline-block;
-      position: relative;
-      color: $darker-grey;
-      font-size: $smaller;
-      font-weight: 400;
-
-      svg {
-        padding-right: 5px;
-      }
-    }
-
-    .details {
-      font-size: $small;
-      color: $dark-grey;
-      margin-bottom: 10px;
-
-      .author {
-        overflow-x: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-        display: block;
-        margin-bottom: 2px;
-      }
-
-      .organization {
-        overflow-x: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-        display: block;
-        color: $medium-grey;
-        font-size: $smaller;
-      }
-    }
-
-    .pills {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 10px;
-      align-items: center;
-      position: relative;
-      min-height: 24px;
-      overflow: hidden;
-
-      .pills-left {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-        flex: 1;
-        min-width: 0;
-      }
-
-      .trending-badge {
-        color: $orange;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        padding: 0 4px;
-        flex-shrink: 0;
-
-        i {
-          margin: 0;
-        }
-      }
-    }
-
-    .tags-container {
-      margin-top: auto;
-      padding-top: 12px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-
-      .tag-pill {
+    .image {
         background: $primary-white;
-        border: 1px solid $light-grey;
-        padding: 3px 8px;
-        border-radius: 12px;
-        font-size: $smaller;
-        color: $darker-grey;
-        font-weight: 400;
-        display: inline-block;
-      }
-    }
-  }
+        min-width: 175px;
+        flex: 0 0 175px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        overflow: hidden;
+        box-sizing: border-box;
 
-  &:hover {
-    box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.25);
-    transform: scale(1.01);
-    transition: all 0.15s ease-out;
-  }
+        ::ng-deep canvas {
+            opacity: 0.4;
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        /* LIST view image behavior: small, centered, "logo tile" */
+        .logo {
+            max-height: 80px;
+            max-width: 145px;
+            object-fit: contain;
+            width: auto;
+            height: auto;
+            display: block;
+        }
+
+        .framework-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: $smaller;
+            font-weight: 600;
+            text-transform: uppercase;
+            z-index: 10;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            &.dcwf-badge {
+                background: #25215f;
+                color: white;
+
+                i {
+                    font-size: 14px;
+                }
+            }
+        }
+
+        &:after {
+            content: "";
+            background: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.05;
+            mask: $cube-pattern repeat;
+            pointer-events: none;
+        }
+    }
+
+    .learning-object-content {
+        padding: 10px 15px;
+        min-width: 0;
+        position: relative;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+
+        .download-btn {
+            size: 6px;
+
+            &:focus,
+            &:hover {
+                color: $light-blue;
+            }
+        }
+
+        .rating-stars-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+
+            .mobile-rating {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                font-size: $small;
+                color: $gold;
+
+                .rating-value {
+                    font-weight: 600;
+                    color: $darker-grey;
+                }
+
+                .review-count {
+                    color: $medium-grey;
+                    font-size: $smaller;
+                }
+            }
+
+            .downloads-indicator {
+                display: inline-flex;
+                align-items: center;
+                color: $dark-grey;
+                font-size: $small;
+
+                i,
+                svg,
+                .svg-inline--fa {
+                    margin-right: 5px;
+                }
+
+                .downloads-count {
+                    margin-left: 0;
+                }
+
+                &.has-icon .downloads-count {
+                    margin-left: 2px;
+                }
+            }
+        }
+
+        .title {
+            font-size: $normal;
+            color: $darker-grey;
+            font-weight: 600;
+            padding-bottom: 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            line-height: 1.4;
+        }
+
+        .date {
+            font-size: $small;
+            color: $dark-grey;
+            margin-bottom: 6px;
+        }
+
+        .length {
+            background: rgba(70, 144, 255, 0.12);
+            padding: 2px 5px;
+            margin-right: 0;
+            border-radius: 3px;
+            display: inline-block;
+            position: relative;
+            color: $homepage-light-blue;
+            font-size: $smaller;
+            font-weight: 500;
+        }
+
+        .time {
+            background: $primary-white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            border: 1px solid $secondary-white;
+            display: inline-block;
+            position: relative;
+            color: $darker-grey;
+            font-size: $smaller;
+            font-weight: 400;
+
+            svg {
+                padding-right: 5px;
+            }
+        }
+
+        .details {
+            font-size: $small;
+            color: $dark-grey;
+            margin-bottom: 10px;
+
+            .author {
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+                width: 100%;
+                display: block;
+                margin-bottom: 2px;
+            }
+
+            .organization {
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+                width: 100%;
+                display: block;
+                color: $medium-grey;
+                font-size: $smaller;
+            }
+        }
+
+        .pills {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 10px;
+            align-items: center;
+            position: relative;
+            min-height: 24px;
+            overflow: hidden;
+
+            .pills-left {
+                display: flex;
+                gap: 6px;
+                flex-wrap: wrap;
+                flex: 1;
+                min-width: 0;
+            }
+
+            .trending-badge {
+                color: $orange;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 18px;
+                padding: 0 4px;
+                flex-shrink: 0;
+
+                i {
+                    margin: 0;
+                }
+            }
+        }
+
+        .tags-container {
+            margin-top: auto;
+            padding-top: 12px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+
+            .tag-pill {
+                background: $primary-white;
+                border: 1px solid $light-grey;
+                padding: 3px 8px;
+                border-radius: 12px;
+                font-size: $smaller;
+                color: $darker-grey;
+                font-weight: 400;
+                display: inline-block;
+            }
+        }
+    }
+
+    &:hover {
+        box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.25);
+        transform: scale(1.01);
+        transition: all 0.15s ease-out;
+    }
 }
 
 /* Trending styles */
 .learning-object.trending {
-  border-bottom: 4px solid $orange;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    border-bottom: 4px solid $orange;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 /* ---------------------------------------------
@@ -300,83 +300,83 @@ a {
 ---------------------------------------------- */
 
 @media (min-width: 751px) {
-  :host.card {
-    min-height: 350px;
-    height: auto;
+    :host.card {
+        min-height: 350px;
+        height: auto;
 
-    .learning-object {
-      height: 100%;
-      flex-direction: column;
-      align-items: stretch;
+        .learning-object {
+            height: 100%;
+            flex-direction: column;
+            align-items: stretch;
 
-      .image {
-        width: 100%;
-        min-width: 100%;
-        max-width: 100%;
-        height: 180px;
-        min-height: 180px;
-        max-height: 180px;
-        flex: 0 0 180px;
-        padding: 0;
+            .image {
+                width: 100%;
+                min-width: 100%;
+                max-width: 100%;
+                height: 180px;
+                min-height: 180px;
+                max-height: 180px;
+                flex: 0 0 180px;
+                padding: 0;
 
-        /* CARD view image behavior: full-bleed hero */
-        .logo {
-          width: 100%;
-          height: 100%;
-          max-width: none;
-          max-height: none;
-          object-fit: cover;
-          object-position: center;
-          display: block;
-        }
-      }
-
-      .learning-object-content {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-
-        .pills {
-          gap: 10px;
-          margin-bottom: 10px;
-          align-items: center;
-          min-height: 24px;
-          overflow: hidden;
-
-          .pills-left {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            flex: 1;
-            min-width: 0;
-          }
-
-          .trending-badge {
-            color: $orange;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            padding: 0 4px;
-            flex-shrink: 0;
-
-            i {
-              margin: 0;
+                /* CARD view image behavior: full-bleed hero */
+                .logo {
+                    width: 100%;
+                    height: 100%;
+                    max-width: none;
+                    max-height: none;
+                    object-fit: cover;
+                    object-position: center;
+                    display: block;
+                }
             }
-          }
-        }
 
-        .tags-container {
-          margin-top: auto;
+            .learning-object-content {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
 
-          .tag-pill {
-            font-size: $smaller;
-            padding: 2px 6px;
-          }
+                .pills {
+                    gap: 10px;
+                    margin-bottom: 10px;
+                    align-items: center;
+                    min-height: 24px;
+                    overflow: hidden;
+
+                    .pills-left {
+                        display: flex;
+                        gap: 10px;
+                        flex-wrap: wrap;
+                        flex: 1;
+                        min-width: 0;
+                    }
+
+                    .trending-badge {
+                        color: $orange;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 18px;
+                        padding: 0 4px;
+                        flex-shrink: 0;
+
+                        i {
+                            margin: 0;
+                        }
+                    }
+                }
+
+                .tags-container {
+                    margin-top: auto;
+
+                    .tag-pill {
+                        font-size: $smaller;
+                        padding: 2px 6px;
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
 /* ---------------------------------------------
@@ -384,134 +384,134 @@ a {
 ---------------------------------------------- */
 
 @media (max-width: 750px) {
-  :host {
-    &.card {
-      width: 100% !important;
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-    }
-  }
-
-  .learning-object {
-    .learning-object-content {
-      .title {
-        font-size: $small !important;
-      }
-
-      .pills {
-        .length {
-          display: none;
+    :host {
+        &.card {
+            width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
         }
-      }
-
-      .tags-container {
-        display: none;
-      }
     }
-  }
 
-  /* Mobile LIST view: keep compact logo tile */
-  :host:not(.card) {
     .learning-object {
-      .image {
-        width: 100px;
-        min-width: 100px;
-        flex: 0 0 100px;
-        padding: 10px;
+        .learning-object-content {
+            .title {
+                font-size: $small !important;
+            }
 
-        .logo {
-          max-height: 70px;
-          max-width: 100%;
-          object-fit: contain;
+            .pills {
+                .length {
+                    display: none;
+                }
+            }
+
+            .tags-container {
+                display: none;
+            }
         }
-
-        .framework-badge {
-          font-size: 9px;
-          padding: 2px 6px;
-          top: 4px;
-          right: 4px;
-          gap: 3px;
-
-          &.dcwf-badge i {
-            font-size: 10px;
-          }
-        }
-      }
     }
-  }
 
-  /* Mobile CARD view: still hero-style image */
-  :host.card {
-    .learning-object {
-      flex-direction: column;
-      height: 390px; // Fixed height for consistent card heights in grid
-      max-height: 390px;
+    /* Mobile LIST view: keep compact logo tile */
+    :host:not(.card) {
+        .learning-object {
+            .image {
+                width: 100px;
+                min-width: 100px;
+                flex: 0 0 100px;
+                padding: 10px;
 
-      .image {
-        width: 100%;
-        min-width: 100%;
-        flex: 0 0 160px;
-        height: 160px;
-        min-height: 160px;
-        max-height: 160px;
-        padding: 0;
+                .logo {
+                    max-height: 70px;
+                    max-width: 100%;
+                    object-fit: contain;
+                }
 
-        .logo {
-          width: 100%;
-          height: 100%;
-          max-width: none;
-          max-height: none;
-          object-fit: cover;
-          object-position: center;
-          display: block;
+                .framework-badge {
+                    font-size: 9px;
+                    padding: 2px 6px;
+                    top: 4px;
+                    right: 4px;
+                    gap: 3px;
+
+                    &.dcwf-badge i {
+                        font-size: 10px;
+                    }
+                }
+            }
         }
-
-        .framework-badge {
-          font-size: 9px;
-          padding: 2px 6px;
-          top: 6px;
-          right: 6px;
-          gap: 3px;
-
-          &.dcwf-badge i {
-            font-size: 10px;
-          }
-        }
-      }
-
-      .learning-object-content {
-        .title {
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          line-height: 1.4;
-          max-height: calc(1.4em * 3);
-        }
-
-        .details {
-          .author {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-          }
-
-          .organization {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: normal;
-          }
-        }
-      }
     }
-  }
+
+    /* Mobile CARD view: still hero-style image */
+    :host.card {
+        .learning-object {
+            flex-direction: column;
+            height: 390px; // Fixed height for consistent card heights in grid
+            max-height: 390px;
+
+            .image {
+                width: 100%;
+                min-width: 100%;
+                flex: 0 0 160px;
+                height: 160px;
+                min-height: 160px;
+                max-height: 160px;
+                padding: 0;
+
+                .logo {
+                    width: 100%;
+                    height: 100%;
+                    max-width: none;
+                    max-height: none;
+                    object-fit: cover;
+                    object-position: center;
+                    display: block;
+                }
+
+                .framework-badge {
+                    font-size: 9px;
+                    padding: 2px 6px;
+                    top: 6px;
+                    right: 6px;
+                    gap: 3px;
+
+                    &.dcwf-badge i {
+                        font-size: 10px;
+                    }
+                }
+            }
+
+            .learning-object-content {
+                .title {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    line-height: 1.4;
+                    max-height: calc(1.4em * 3);
+                }
+
+                .details {
+                    .author {
+                        display: -webkit-box;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: normal;
+                    }
+
+                    .organization {
+                        display: -webkit-box;
+                        -webkit-line-clamp: 1;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: normal;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /* ---------------------------------------------
@@ -519,62 +519,62 @@ a {
 ---------------------------------------------- */
 
 :host.loading {
-  $color: $light-grey;
-  pointer-events: none;
-  overflow: hidden;
-
-  .image {
-    background: $color !important;
-  }
-
-  .card-collection {
-    visibility: hidden;
-  }
-
-  .learning-object-content {
-    width: 100%;
-
-    & > * {
-      color: transparent !important;
-      background: $color !important;
-      margin-bottom: 20px;
-      height: 15px;
-      max-width: 500px;
-      width: 100% !important;
-    }
-  }
-
-  .learning-object {
+    $color: $light-grey;
+    pointer-events: none;
     overflow: hidden;
 
-    &:after {
-      content: '';
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0),
-        white,
-        rgba(255, 255, 255, 0)
-      );
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      max-width: 200px;
-      width: 70%;
-      animation: loading 2s linear forwards infinite;
+    .image {
+        background: $color !important;
     }
-  }
+
+    .card-collection {
+        visibility: hidden;
+    }
+
+    .learning-object-content {
+        width: 100%;
+
+        & > * {
+            color: transparent !important;
+            background: $color !important;
+            margin-bottom: 20px;
+            height: 15px;
+            max-width: 500px;
+            width: 100% !important;
+        }
+    }
+
+    .learning-object {
+        overflow: hidden;
+
+        &:after {
+            content: "";
+            background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0),
+                white,
+                rgba(255, 255, 255, 0)
+            );
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            max-width: 200px;
+            width: 70%;
+            animation: loading 2s linear forwards infinite;
+        }
+    }
 }
 
 @keyframes loading {
-  0% {
-    left: -200px;
-    opacity: 0;
-  }
-  50% {
-    opacity: 0.8;
-  }
-  100% {
-    opacity: 0;
-    left: 100%;
-  }
+    0% {
+        left: -200px;
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+        left: 100%;
+    }
 }

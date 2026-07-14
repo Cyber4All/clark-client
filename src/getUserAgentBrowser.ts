@@ -4,14 +4,14 @@
  * The order matters here, and this may report false positives for unlisted browsers.
  */
 const BROWSERS = {
-  Firefox: 'Mozilla Firefox',
-  Opera: 'Opera',
-  Trident: 'Microsoft Internet Explorer',
-  Edge: 'Microsoft Edge',
-  Chrome: 'Google Chrome',
-  Safari: 'Apple Safari'
+    Firefox: "Mozilla Firefox",
+    Opera: "Opera",
+    Trident: "Microsoft Internet Explorer",
+    Edge: "Microsoft Edge",
+    Chrome: "Google Chrome",
+    Safari: "Apple Safari",
 };
-const UNKNOWN_BROWSER = 'unknown';
+const UNKNOWN_BROWSER = "unknown";
 
 const browserKeys = Object.keys(BROWSERS);
 
@@ -22,13 +22,13 @@ const browserKeys = Object.keys(BROWSERS);
  * @returns string
  */
 export function getUserAgentBrowser(): string {
-  if (window && window.navigator && window.navigator.userAgent) {
-    const userAgent = window.navigator.userAgent;
-    for (const key of browserKeys) {
-      if (userAgent.indexOf(key) > -1) {
-        return BROWSERS[key];
-      }
+    if (window && window.navigator && window.navigator.userAgent) {
+        const userAgent = window.navigator.userAgent;
+        for (const key of browserKeys) {
+            if (userAgent.indexOf(key) > -1) {
+                return BROWSERS[key];
+            }
+        }
     }
-  }
-  return UNKNOWN_BROWSER;
+    return UNKNOWN_BROWSER;
 }

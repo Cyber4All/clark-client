@@ -1,18 +1,18 @@
-@import '_vars.scss';
+@import "_vars.scss";
 
 .admin-badge {
-  background: $orange-gradient;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 2px;
-  font-size: $normal;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  
-  .admin-badge__dropdown {
-    margin-left: 5px;
-    padding-left: 5px;
-    font-size: $small;
-  }
+    background: $orange-gradient;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-size: $normal;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    .admin-badge__dropdown {
+        margin-left: 5px;
+        padding-left: 5px;
+        font-size: $small;
+    }
 }

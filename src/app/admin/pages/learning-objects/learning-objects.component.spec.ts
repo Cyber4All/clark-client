@@ -1,50 +1,52 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from "@angular/core/testing";
 
-import { LearningObjectsComponent } from './learning-objects.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterTestingModule } from '@angular/router/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
-import { ToastrOvenService } from 'app/shared/modules/toaster/notification.service';
-import { AuthService } from 'app/core/auth-module/auth.service';
-import { CollectionService } from 'app/core/collection-module/collections.service';
-import { of } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { LearningObjectsComponent } from "./learning-objects.component";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { RouterTestingModule } from "@angular/router/testing";
+import {
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from "@angular/common/http";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
+import { AuthService } from "app/core/auth-module/auth.service";
+import { CollectionService } from "app/core/collection-module/collections.service";
+import { of } from "rxjs";
+import { ActivatedRoute } from "@angular/router";
 
-describe('LearningObjectsComponent', () => {
-  let component: LearningObjectsComponent;
-  let fixture: ComponentFixture<LearningObjectsComponent>;
+describe("LearningObjectsComponent", () => {
+    let component: LearningObjectsComponent;
+    let fixture: ComponentFixture<LearningObjectsComponent>;
 
-  class ActivatedRouteStub {
-    public parent = {
-      params: of({})
-    };
+    class ActivatedRouteStub {
+        public parent = {
+            params: of({}),
+        };
 
-    public queryParams = of({});
-  }
+        public queryParams = of({});
+    }
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    teardown: { destroyAfterEach: false },
-    imports: [RouterTestingModule, LearningObjectsComponent],
-    providers: [
-        ToastrOvenService,
-        AuthService,
-        CollectionService,
-        { provide: ActivatedRoute, useClass: ActivatedRouteStub },
-        provideHttpClient(withInterceptorsFromDi())
-    ]
-})
-    .compileComponents();
-  }));
+    beforeEach(waitForAsync(() => {
+        TestBed.configureTestingModule({
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            teardown: { destroyAfterEach: false },
+            imports: [RouterTestingModule, LearningObjectsComponent],
+            providers: [
+                ToastrOvenService,
+                AuthService,
+                CollectionService,
+                { provide: ActivatedRoute, useClass: ActivatedRouteStub },
+                provideHttpClient(withInterceptorsFromDi()),
+            ],
+        }).compileComponents();
+    }));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(LearningObjectsComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    beforeEach(() => {
+        fixture = TestBed.createComponent(LearningObjectsComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

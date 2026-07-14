@@ -1,23 +1,36 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Injectable } from "@angular/core";
+import {
+    ActivatedRouteSnapshot,
+    Router,
+    RouterStateSnapshot,
+    UrlTree,
+} from "@angular/router";
+import { Observable } from "rxjs";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: "root",
 })
-export class CollectionsGuard  {
-  private paidCollections = ['ncyte', '502-project', 'xpcyber', 'secinj'];
+export class CollectionsGuard {
+    private paidCollections = ["ncyte", "502-project", "xpcyber", "secinj"];
 
-  constructor(private router: Router) {}
+    constructor(private router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      // If the collection is a paid collection, navigate to the paid collection page
-      if (this.paidCollections.includes(route.params.abvName)) {
-        return this.router.createUrlTree(['collections', route.params.abvName]);
-      }
-      // Else navigate to default page
-      return true;
-  }
+    canActivate(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot,
+    ):
+        | Observable<boolean | UrlTree>
+        | Promise<boolean | UrlTree>
+        | boolean
+        | UrlTree {
+        // If the collection is a paid collection, navigate to the paid collection page
+        if (this.paidCollections.includes(route.params.abvName)) {
+            return this.router.createUrlTree([
+                "collections",
+                route.params.abvName,
+            ]);
+        }
+        // Else navigate to default page
+        return true;
+    }
 }

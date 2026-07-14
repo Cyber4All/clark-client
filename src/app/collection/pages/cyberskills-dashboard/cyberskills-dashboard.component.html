@@ -1,48 +1,61 @@
 <div class="container">
-  <h1 class="title">CyberSkills2Work Collection Statistics Dashboard</h1>
+    <h1 class="title">CyberSkills2Work Collection Statistics Dashboard</h1>
 
-  <clark-dashboard-stats [collectionName]="'cyberskills2work'" [displayCharts]="true"></clark-dashboard-stats>
+    <clark-dashboard-stats
+        [collectionName]="'cyberskills2work'"
+        [displayCharts]="true"></clark-dashboard-stats>
 
-  <div class="downloads-header">
-    <h2>All Learning Objects</h2>
-    <div class="filters-wrap" *ngIf="!showCsvModal">
-      <!--
+    <div class="downloads-header">
+        <h2>All Learning Objects</h2>
+        <div class="filters-wrap" *ngIf="!showCsvModal">
+            <!--
         When filterQuery is emitted, we will always load the first page
         because the contents are bound to change and there's no guarantee
         that the currPage will have any content to serve.
 
         We do the same for clearAll once filterQuery is empty.
       -->
-      <clark-cyberskills-filters 
-        (filterQuery)="handlePaginationAndLoadItems(1, $event)"
-        (clearAll)="handlePaginationAndLoadItems(1, {})">
-      </clark-cyberskills-filters>
+            <clark-cyberskills-filters
+                (filterQuery)="handlePaginationAndLoadItems(1, $event)"
+                (clearAll)="handlePaginationAndLoadItems(1, {})">
+            </clark-cyberskills-filters>
 
-      <button class="button good desktop-buttons" (click)="openCsvGenModal()">
-        <span class="csv-button-text">Download CSV of Released Learning Objects</span>
-      </button>
-    </div>
-  </div>
-
-  <div *ngIf="learningObjects.length > 0; else noObjects" class="learning-object-table">
-    <div class="header">
-      <span>Status</span>
-      <span>Length</span>
-      <span>Name</span>
-      <span>Last Updated</span>
-      <span>Downloads</span>
-      <span>Rating</span>
-      <span></span>
+            <button
+                class="button good desktop-buttons"
+                (click)="openCsvGenModal()">
+                <span class="csv-button-text"
+                    >Download CSV of Released Learning Objects</span
+                >
+            </button>
+        </div>
     </div>
 
-    <clark-cyberskills-card *ngFor="let learningObject of learningObjects" [learningObject]="learningObject"
-      [statusDescription]="statusDescription">
-    </clark-cyberskills-card>
+    <div
+        *ngIf="learningObjects.length > 0; else noObjects"
+        class="learning-object-table">
+        <div class="header">
+            <span>Status</span>
+            <span>Length</span>
+            <span>Name</span>
+            <span>Last Updated</span>
+            <span>Downloads</span>
+            <span>Rating</span>
+            <span></span>
+        </div>
 
-    <clark-pagination [lastPageNumber]="lastPage" [currentPageNumber]="currPage"
-    (newPageNumberClicked)="handlePaginationAndLoadItems($event)"></clark-pagination>
-  </div>
+        <clark-cyberskills-card
+            *ngFor="let learningObject of learningObjects"
+            [learningObject]="learningObject"
+            [statusDescription]="statusDescription">
+        </clark-cyberskills-card>
 
+        <clark-pagination
+            [lastPageNumber]="lastPage"
+            [currentPageNumber]="currPage"
+            (newPageNumberClicked)="
+                handlePaginationAndLoadItems($event)
+            "></clark-pagination>
+    </div>
 </div>
 <cube-footer></cube-footer>
 
@@ -50,5 +63,5 @@
 </clark-csv-gen-modal>
 
 <ng-template #noObjects>
-  <p class="no-objects-message">No Learning Objects</p>
+    <p class="no-objects-message">No Learning Objects</p>
 </ng-template>

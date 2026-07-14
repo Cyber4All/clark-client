@@ -1,14 +1,28 @@
-<div class='library-item'>
+<div class="library-item">
+    <h5 [attr.class]="'library-item__length  ' + learningObject.length">
+        {{ learningObject.length | titlecase }}
+    </h5>
 
-    <h5 [attr.class]="'library-item__length  ' + learningObject.length">{{ learningObject.length | titlecase }}</h5>
+    <a class="library-item__title" (activate)="onTitleClick($event)">{{
+        learningObject.name
+    }}</a>
 
-    <a class='library-item__title' (activate)='onTitleClick($event)'>{{ learningObject.name }}</a>
+    <h5 class="library-item__author">{{ getContributorsList() }}</h5>
 
-    <h5 class='library-item__author '>{{ getContributorsList() }}</h5>
-  
-    <clark-rating-stars rating='{{ learningObjectAverageRating }}' color='gold'></clark-rating-stars>
-    <div class='library-item__actions-container'>
-        <button aria-label='download Learning Object' class='library-item__download-button' (activate)='onDownloadClick($event)' [innerHtml]="toggleDownload()"></button>
-        <button aria-label='delete item from Library' class='library-item__delete-button' (activate)='onDeleteButtonClick($event)'><i class="far fa-trash-alt"></i></button> 
+    <clark-rating-stars
+        rating="{{ learningObjectAverageRating }}"
+        color="gold"></clark-rating-stars>
+    <div class="library-item__actions-container">
+        <button
+            aria-label="download Learning Object"
+            class="library-item__download-button"
+            (activate)="onDownloadClick($event)"
+            [innerHtml]="toggleDownload()"></button>
+        <button
+            aria-label="delete item from Library"
+            class="library-item__delete-button"
+            (activate)="onDeleteButtonClick($event)">
+            <i class="far fa-trash-alt"></i>
+        </button>
     </div>
 </div>

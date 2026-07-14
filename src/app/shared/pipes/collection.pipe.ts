@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { CollectionService } from 'app/core/collection-module/collections.service';
+import { Pipe, PipeTransform } from "@angular/core";
+import { CollectionService } from "app/core/collection-module/collections.service";
 
 /**
  * Takes an abbreviated collection name and returns the full collection name
@@ -9,17 +9,15 @@ import { CollectionService } from 'app/core/collection-module/collections.servic
  * @implements {PipeTransform}
  */
 @Pipe({
-    name: 'collection',
-    standalone: true
+    name: "collection",
+    standalone: true,
 })
 export class CollectionPipe implements PipeTransform {
+    constructor(private collections: CollectionService) {}
 
-  constructor(private collections: CollectionService) {}
-
-  transform(abvName: any): Promise<string> {
-    return this.collections.getCollection(abvName).then(val => {
-      return val.name;
-    });
-  }
-
+    transform(abvName: any): Promise<string> {
+        return this.collections.getCollection(abvName).then((val) => {
+            return val.name;
+        });
+    }
 }

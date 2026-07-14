@@ -1,29 +1,29 @@
-import { Component, OnInit, Input} from '@angular/core';
-import { ClientRequest } from 'http';
-import { TipDirective } from '../../../../shared/directives/tip.directive';
+import { Component, OnInit, Input } from "@angular/core";
+import { ClientRequest } from "http";
+import { TipDirective } from "../../../../shared/directives/tip.directive";
 
 @Component({
-    selector: 'clark-hierarchies',
-    templateUrl: './hierarchies.component.html',
-    styleUrls: ['./hierarchies.component.scss'],
+    selector: "clark-hierarchies",
+    templateUrl: "./hierarchies.component.html",
+    styleUrls: ["./hierarchies.component.scss"],
     standalone: true,
-    imports: [TipDirective]
+    imports: [TipDirective],
 })
 export class HierarchiesComponent implements OnInit {
-  length: 'nanomodule' | 'micromodule' | 'module' | 'unit' | 'course';
+    length: "nanomodule" | "micromodule" | "module" | "unit" | "course";
 
-  constructor() { }
+    constructor() {}
 
-  ngOnInit(): void {}
+    ngOnInit(): void {}
 
-  getHierarchyTooltip(hierarchyLevel: string): string {
-    const tooltipMap = {
-      'course': '15 weeks',
-      'unit': 'Over 10 Hours',
-      'module': '4 - 10 Hours',
-      'micromodule': '1 - 4 Hours',
-      'nanomodule': 'Less than 1 Hour'
-    };
-    return tooltipMap[hierarchyLevel] || '';
-  }
+    getHierarchyTooltip(hierarchyLevel: string): string {
+        const tooltipMap = {
+            course: "15 weeks",
+            unit: "Over 10 Hours",
+            module: "4 - 10 Hours",
+            micromodule: "1 - 4 Hours",
+            nanomodule: "Less than 1 Hour",
+        };
+        return tooltipMap[hierarchyLevel] || "";
+    }
 }

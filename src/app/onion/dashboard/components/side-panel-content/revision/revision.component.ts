@@ -1,90 +1,114 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { LearningObject } from 'entity/learning-object/learning-object';
-import { card, nullAnimation } from './revision.animations';
-import { NgIf, NgTemplateOutlet, NgClass, TitleCasePipe, DatePipe } from '@angular/common';
-import { TipDirective } from '../../../../../shared/directives/tip.directive';
-import { ActivateDirective } from '../../../../../shared/directives/activate.directive';
-import { ContextMenuComponent } from '../../../../../shared/modules/contextmenu/context-menu/context-menu.component';
-import { RouterLink } from '@angular/router';
-import { PopupComponent } from '../../../../../shared/modules/popups/popup.component';
+import {
+    Component,
+    Input,
+    Output,
+    EventEmitter,
+    OnChanges,
+    SimpleChanges,
+} from "@angular/core";
+import { LearningObject } from "entity/learning-object/learning-object";
+import { card, nullAnimation } from "./revision.animations";
+import {
+    NgIf,
+    NgTemplateOutlet,
+    NgClass,
+    TitleCasePipe,
+    DatePipe,
+} from "@angular/common";
+import { TipDirective } from "../../../../../shared/directives/tip.directive";
+import { ActivateDirective } from "../../../../../shared/directives/activate.directive";
+import { ContextMenuComponent } from "../../../../../shared/modules/contextmenu/context-menu/context-menu.component";
+import { RouterLink } from "@angular/router";
+import { PopupComponent } from "../../../../../shared/modules/popups/popup.component";
 
 @Component({
-    selector: 'clark-revision',
-    templateUrl: './revision.component.html',
-    styleUrls: ['./revision.component.scss'],
+    selector: "clark-revision",
+    templateUrl: "./revision.component.html",
+    styleUrls: ["./revision.component.scss"],
     animations: [card, nullAnimation],
     standalone: true,
-    imports: [NgIf, TipDirective, NgTemplateOutlet, NgClass, ActivateDirective, ContextMenuComponent, RouterLink, PopupComponent, TitleCasePipe, DatePipe]
+    imports: [
+        NgIf,
+        TipDirective,
+        NgTemplateOutlet,
+        NgClass,
+        ActivateDirective,
+        ContextMenuComponent,
+        RouterLink,
+        PopupComponent,
+        TitleCasePipe,
+        DatePipe,
+    ],
 })
 export class RevisionComponent implements OnChanges {
-  @Input() hasRevision: boolean;
-  @Input() revision: LearningObject;
+    @Input() hasRevision: boolean;
+    @Input() revision: LearningObject;
 
-  @Output() createRevision: EventEmitter<void> = new EventEmitter();
-  @Output() submit: EventEmitter<void> = new EventEmitter();
-  @Output() cancelSubmission: EventEmitter<void> = new EventEmitter();
-  @Output() delete: EventEmitter<void> = new EventEmitter();
+    @Output() createRevision: EventEmitter<void> = new EventEmitter();
+    @Output() submit: EventEmitter<void> = new EventEmitter();
+    @Output() cancelSubmission: EventEmitter<void> = new EventEmitter();
+    @Output() delete: EventEmitter<void> = new EventEmitter();
 
-  meatballOpen: boolean;
-  deleteConfirmationOpen: boolean;
+    meatballOpen: boolean;
+    deleteConfirmationOpen: boolean;
 
-  constructor() { }
+    constructor() {}
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.hasRevision = false;
+    ngOnChanges(changes: SimpleChanges) {
+        this.hasRevision = false;
 
-    if (this.revision) {
-      this.hasRevision = true;
+        if (this.revision) {
+            this.hasRevision = true;
+        }
     }
-  }
 
     /**
      * Toggles the context menu on and off
      */
-  toggleContextMenu() {
-    this.meatballOpen = !this.meatballOpen;
-  }
-
-  /**
-   * Create a revision of the object that is currently released
-   */
-  makeRevision() {
-    this.createRevision.emit();
-    this.hasRevision = true;
-  }
-
-  attemptDelete() {
-    this.deleteConfirmationOpen = true;
-  }
-
-  /**
-   * Given a string representation of a context menu action, returns true if that action should be allowed based on
-   * parameters such as learing object length and learning object status
-   *
-   * @param action {string} the action in question
-   */
-  actionPermissions(action: string) {
-    const permissions = {
-      edit: ['unreleased', 'denied'],
-      editChildren: [
-        'unreleased',
-        'denied',
-        this.revision.length !== 'nanomodule'
-      ],
-      manageMaterials: ['unreleased', 'denied'],
-      submit: ['unreleased', 'denied'],
-      view: ['released'],
-      delete: ['unreleased', 'denied'],
-      cancelSubmission: ['waiting'],
-      infoPanel: ['released']
-    };
-
-    const p = permissions[action];
-
-    if (p.includes(false)) {
-      return false;
+    toggleContextMenu() {
+        this.meatballOpen = !this.meatballOpen;
     }
 
-    return p.includes(this.revision.status);
-  }
+    /**
+     * Create a revision of the object that is currently released
+     */
+    makeRevision() {
+        this.createRevision.emit();
+        this.hasRevision = true;
+    }
+
+    attemptDelete() {
+        this.deleteConfirmationOpen = true;
+    }
+
+    /**
+     * Given a string representation of a context menu action, returns true if that action should be allowed based on
+     * parameters such as learing object length and learning object status
+     *
+     * @param action {string} the action in question
+     */
+    actionPermissions(action: string) {
+        const permissions = {
+            edit: ["unreleased", "denied"],
+            editChildren: [
+                "unreleased",
+                "denied",
+                this.revision.length !== "nanomodule",
+            ],
+            manageMaterials: ["unreleased", "denied"],
+            submit: ["unreleased", "denied"],
+            view: ["released"],
+            delete: ["unreleased", "denied"],
+            cancelSubmission: ["waiting"],
+            infoPanel: ["released"],
+        };
+
+        const p = permissions[action];
+
+        if (p.includes(false)) {
+            return false;
+        }
+
+        return p.includes(this.revision.status);
+    }
 }

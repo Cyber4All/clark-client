@@ -1,16 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-    selector: 'clark-generic-page',
-    templateUrl: './generic-page.component.html',
-    styleUrls: ['./generic-page.component.scss'],
-    standalone: true
+    selector: "clark-generic-page",
+    templateUrl: "./generic-page.component.html",
+    styleUrls: ["./generic-page.component.scss"],
+    standalone: true,
 })
 export class GenericPageComponent implements OnInit {
+    constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+    ngOnInit(): void {}
 }

@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from "../../../../environments/environment";
 
 export const CHANGELOG_ROUTES = {
     /**
@@ -9,7 +9,7 @@ export const CHANGELOG_ROUTES = {
      */
     CREATE_CHANGELOG(learningObjectCuid: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectCuid
+            learningObjectCuid,
         )}/changelog`;
     },
     /**
@@ -21,14 +21,12 @@ export const CHANGELOG_ROUTES = {
     GET_CHANGELOGS(
         learningObjectCuid: string,
         minusRevision?: boolean,
-        recent?: boolean
+        recent?: boolean,
     ) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectCuid
+            learningObjectCuid,
         )}/changelogs?minusRevision=${encodeURIComponent(
-            minusRevision ?? false
-        )}&recent=${encodeURIComponent(
-            recent ?? false
-        )}`;
-    }
+            minusRevision ?? false,
+        )}&recent=${encodeURIComponent(recent ?? false)}`;
+    },
 };

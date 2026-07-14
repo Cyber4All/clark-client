@@ -2,8 +2,11 @@
  * Zod schemas for runtime validation of organization API responses
  */
 
-import { z } from 'zod';
-import { ORGANIZATION_SECTORS, ORGANIZATION_LEVELS } from './organization.types';
+import { z } from "zod";
+import {
+    ORGANIZATION_SECTORS,
+    ORGANIZATION_LEVELS,
+} from "./organization.types";
 
 /**
  * Organization sector schema (references shared const array)

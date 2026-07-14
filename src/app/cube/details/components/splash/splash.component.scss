@@ -1,69 +1,68 @@
-@import '_vars.scss';
-@import '../../global-details';
+@import "_vars.scss";
+@import "../../global-details";
 
 $sidebar-width: 320px;
 $content-width: calc(#{$max-width} - #{$sidebar-width});
 
 .splash {
-  padding-top: 50px;
-  position: relative;
+    padding-top: 50px;
+    position: relative;
 
-  .inner {
-    max-width: $max-width;
-    margin: auto;
-    box-sizing: border-box;
-    z-index: 2;
+    .inner {
+        max-width: $max-width;
+        margin: auto;
+        box-sizing: border-box;
+        z-index: 2;
 
-    .header {
-      max-width: $content-width;
-      padding-right: 20px;
-    }
-    .collection {
-      color: $light-blue;
-      margin: 0;
+        .header {
+            max-width: $content-width;
+            padding-right: 20px;
+        }
+        .collection {
+            color: $light-blue;
+            margin: 0;
 
-      div {
-        padding: 16px 0;
-      }
-    }
+            div {
+                padding: 16px 0;
+            }
+        }
 
-    .collection-link {
-      cursor: pointer;
-    }
-    .collection-link:hover {
-      opacity: .6;
-    }
+        .collection-link {
+            cursor: pointer;
+        }
+        .collection-link:hover {
+            opacity: 0.6;
+        }
 
-    .learning-object-name {
-      font-size: $largest;
-      color: $darker-grey;
-      width: 100%;
-    }
+        .learning-object-name {
+            font-size: $largest;
+            color: $darker-grey;
+            width: 100%;
+        }
 
-    .updated {
-      font-size: $normal;
-      color: $dark-grey;
+        .updated {
+            font-size: $normal;
+            color: $dark-grey;
+        }
     }
-  }
 }
 
 .hierarchy-link-container {
-  margin-top: 20px;
-  margin-left: 10px;
-  padding-bottom: 20px;
-  min-height: 50px;
+    margin-top: 20px;
+    margin-left: 10px;
+    padding-bottom: 20px;
+    min-height: 50px;
 
-  &.empty{
-    height: 50px;
-  }
+    &.empty {
+        height: 50px;
+    }
 }
 
 .rating-stars-container {
-  margin-left: 10px;
+    margin-left: 10px;
 }
 
-
 .pills {
-  display: inline-block;
-  margin-right: 8px;
+    display: inline-block;
+    margin-right: 8px;
 }

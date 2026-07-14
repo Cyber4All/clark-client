@@ -1,13 +1,14 @@
-<clark-contextmenu [content]="modalService.contextMenuContent"></clark-contextmenu>
+<clark-contextmenu
+    [content]="modalService.contextMenuContent"></clark-contextmenu>
 <clark-dialogmenu [content]="modalService.dialogMenuContent"></clark-dialogmenu>
 <div class="outer-wrapper">
-  <div class="content">
-    <div class="inner-content">
-      <div class="outlet sub-content">
-        <router-outlet></router-outlet>
-      </div>
+    <div class="content">
+        <div class="inner-content">
+            <div class="outlet sub-content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+        <cube-footer></cube-footer>
     </div>
-    <cube-footer></cube-footer>
-  </div>
 </div>
 <div id="learning-object-download"></div>

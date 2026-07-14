@@ -1,41 +1,46 @@
 <clark-column-wrapper>
-  <div left>
-    <clark-scaffold
-      *ngIf="learningObject"
-      [learningObject]="learningObject"
-    ></clark-scaffold>
-  </div>
-  <div main>
-    <!-- upload content here -->
-    <app-upload
-      [learningObject$]="learningObject$"
-      [error$]="error$"
-      [saving$]="saving$"
-      (filesDeleted)="handleFileDeletion($event)"
-      (filesUploaded)="handleFilesUploaded($event)"
-      (urlAdded)="handleUrlAdded()"
-      (urlUpdated)="handleUrlUpdated($event)"
-      (urlRemoved)="handleUrlRemoved($event)"
-      (fileDescriptionUpdated)="handleFileDescriptionUpdate($event)"
-      (folderDescriptionUpdated)="handleFolderDescriptionUpdate($event)"
-      (notesUpdated)="handleNotesUpdate($event)"
-      (uploadComplete)="handleUploadComplete($event)"
-      (packageableToggled)="handlePackageableToggled($event)"
-    ></app-upload>
-    <clark-skip-link title="Go to Materials Tab List" skipLocation="form"></clark-skip-link>
-    <clark-skip-link title="Skip to Submit for Review" skipLocation="submit"></clark-skip-link>
-  </div>
-  <div right>
-    <div class="notes-header">
-      <div class="icon">
-        <div class="far fa-sticky-note"></div>
-      </div>
-      <div class="title">
-          Notes on Materials
-      </div>
+    <div left>
+        <clark-scaffold
+            *ngIf="learningObject"
+            [learningObject]="learningObject"></clark-scaffold>
     </div>
-    <div class="note-list">
-      <clark-material-notes *ngFor="let n of notes" [note]="n" class="note"></clark-material-notes>
+    <div main>
+        <!-- upload content here -->
+        <app-upload
+            [learningObject$]="learningObject$"
+            [error$]="error$"
+            [saving$]="saving$"
+            (filesDeleted)="handleFileDeletion($event)"
+            (filesUploaded)="handleFilesUploaded($event)"
+            (urlAdded)="handleUrlAdded()"
+            (urlUpdated)="handleUrlUpdated($event)"
+            (urlRemoved)="handleUrlRemoved($event)"
+            (fileDescriptionUpdated)="handleFileDescriptionUpdate($event)"
+            (folderDescriptionUpdated)="handleFolderDescriptionUpdate($event)"
+            (notesUpdated)="handleNotesUpdate($event)"
+            (uploadComplete)="handleUploadComplete($event)"
+            (packageableToggled)="
+                handlePackageableToggled($event)
+            "></app-upload>
+        <clark-skip-link
+            title="Go to Materials Tab List"
+            skipLocation="form"></clark-skip-link>
+        <clark-skip-link
+            title="Skip to Submit for Review"
+            skipLocation="submit"></clark-skip-link>
     </div>
-  </div>
+    <div right>
+        <div class="notes-header">
+            <div class="icon">
+                <div class="far fa-sticky-note"></div>
+            </div>
+            <div class="title">Notes on Materials</div>
+        </div>
+        <div class="note-list">
+            <clark-material-notes
+                *ngFor="let n of notes"
+                [note]="n"
+                class="note"></clark-material-notes>
+        </div>
+    </div>
 </clark-column-wrapper>

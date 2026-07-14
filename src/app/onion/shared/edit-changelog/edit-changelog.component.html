@@ -1,12 +1,18 @@
 <div class="changelog">
-  <st-editor [(ngModel)]="changelog" [config]="config"></st-editor>
-  <div class="button-bar">
-    <div class="btn-group to-left">
-      <button (activate)="back.emit()" class="button neutral">Back</button>
+    <st-editor [(ngModel)]="changelog" [config]="config"></st-editor>
+    <div class="button-bar">
+        <div class="btn-group to-left">
+            <button (activate)="back.emit()" class="button neutral">
+                Back
+            </button>
+        </div>
+        <div class="btn-group to-right">
+            <button (activate)="completeChangelog()" class="button good">
+                {{ changelog && changelog !== "" ? "Confirm" : "No changes" }}
+            </button>
+            <button (activate)="cancel.emit()" class="button neutral">
+                Cancel
+            </button>
+        </div>
     </div>
-    <div class="btn-group to-right">
-      <button (activate)="completeChangelog()" class="button good">{{ changelog && changelog !== '' ? 'Confirm' : 'No changes' }}</button>
-      <button (activate)="cancel.emit()" class="button neutral">Cancel</button>
-    </div>
-  </div>
 </div>

@@ -1,4 +1,4 @@
-import { environment } from '../../../../environments/environment';
+import { environment } from "../../../../environments/environment";
 
 export const BUNDLING_ROUTES = {
     /**
@@ -9,7 +9,8 @@ export const BUNDLING_ROUTES = {
      */
     DOWNLOAD_BUNDLE(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectId)}/bundle`;
+            learningObjectId,
+        )}/bundle`;
     },
     /**
      * Request to bundle a learning object
@@ -19,7 +20,7 @@ export const BUNDLING_ROUTES = {
      */
     BUNDLE_LEARNING_OBJECT(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
-            learningObjectId
+            learningObjectId,
         )}/bundle`;
     },
 };

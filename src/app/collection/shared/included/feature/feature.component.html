@@ -1,26 +1,25 @@
 <div class="section section-featured-learning">
-    <section [ngClass]="collectionName" class ="section-accent">
+    <section [ngClass]="collectionName" class="section-accent">
         <div class="accent-content">
             <i class="fa-3x far fa-cube icon"></i>
-             <h2 class="featured-learning-title">
-                 FEATURED LEARNING OBJECTS
-             </h2>
-             <p *ngIf="collectionName !== 'xpcyber' else xpcyberDescription">
-                 Packaged cybersecurity learning objects
-                  designed to help your students learn skills 
-                  that employers are seeking
-             </p>
+            <h2 class="featured-learning-title">FEATURED LEARNING OBJECTS</h2>
+            <p *ngIf="collectionName !== 'xpcyber'; else xpcyberDescription">
+                Packaged cybersecurity learning objects designed to help your
+                students learn skills that employers are seeking
+            </p>
         </div>
     </section>
     <div class="learning-objects">
-        <clark-collection-learning-object-list [collectionName] = "collectionName" class = "object-list"></clark-collection-learning-object-list>
+        <clark-collection-learning-object-list
+            [collectionName]="collectionName"
+            class="object-list"></clark-collection-learning-object-list>
     </div>
 </div>
 
 <ng-template #xpcyberDescription>
     <p>
-        Our latest and greatest hands-on cybersecurity workforce challenges
-        are designed to bring your students the cyber workforce experience
-        before the workforce. 
+        Our latest and greatest hands-on cybersecurity workforce challenges are
+        designed to bring your students the cyber workforce experience before
+        the workforce.
     </p>
 </ng-template>
