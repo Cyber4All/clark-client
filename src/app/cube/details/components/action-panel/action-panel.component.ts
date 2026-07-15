@@ -88,6 +88,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     contributorsList = [];
     error = false;
     userIsAuthor = false;
+    private addToLibraryPending = false;
 
     public tips = TOOLTIP_TEXT;
 
@@ -122,19 +123,19 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
 
         this.url = this.buildLocation();
         // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
-        await this.libraryService.getLibrary({
-            learningObjectCuid: this.learningObject.cuid,
-            version: this.learningObject.version,
-        });
-        this.saved = this.libraryService.has(this.learningObject.id);
+        await this.refreshLibraryStatus();
         this.getCollection();
-        this.libraryService.loaded.subscribe((val) => {
-            this.downloading = val;
-            this.changeDetectorRef.markForCheck();
-        });
-        this.dropdowns.userDropdown.subscribe((val) => {
-            this.userDropdown = val;
-        });
+        this.libraryService.loaded
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((val) => {
+                this.downloading = val;
+                this.changeDetectorRef.markForCheck();
+            });
+        this.dropdowns.userDropdown
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((val) => {
+                this.userDropdown = val;
+            });
     }
 
     get isReleased(): boolean {
@@ -148,50 +149,96 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     async addToLibrary(download?: boolean) {
         this.error = false;
 
+        const canSaveToLibrary =
+            !!this.auth.user && !this.userIsAuthor && this.isReleased;
+        const alreadySaved = this.isSavedToLibrary();
+        const shouldAddToLibrary = canSaveToLibrary && !alreadySaved;
+
+        if (this.addToLibraryPending) {
+            return;
+        }
+
+        if (
+            download &&
+            (!this.auth.user || !this.hasDownloadAccess || this.downloading)
+        ) {
+            return;
+        }
+
+        if (canSaveToLibrary) {
+            this.saved = alreadySaved;
+        }
+
+        if (shouldAddToLibrary) {
+            this.addToLibraryPending = true;
+        }
+
         if (!download) {
             // we don't want the add to library button spinner on the 'download' action
-            this.addingToLibrary = true;
+            this.addingToLibrary = shouldAddToLibrary;
         }
-        if (download) {
-            this.download(this.learningObject.id);
-        }
-        if (!this.userIsAuthor && this.isReleased) {
-            this.saved = this.libraryService.has(this.learningObject.id);
 
-            if (!this.saved) {
-                try {
-                    await this.libraryService.addToLibrary(
-                        this.learningObject.cuid,
-                        this.learningObject.version,
-                    );
+        let savedByThisAction = false;
+        try {
+            if (shouldAddToLibrary) {
+                const result = await this.libraryService.addToLibrary(
+                    this.learningObject.cuid,
+                    this.learningObject.version,
+                );
 
+                this.saved = true;
+                savedByThisAction = true;
+                if (!result?.alreadySaved) {
                     this.toaster.success(
                         "Successfully Added!",
                         "Learning Object added to your library",
                     );
-                    this.saved = true;
                     this.animateSaves();
-                } catch (err: any) {
-                    if (err.status !== 201) {
-                        this.toaster.error(
-                            "Error!",
-                            "There was an error adding to your library",
-                        );
-                        this.addingToLibrary = false;
-                        this.changeDetectorRef.detectChanges();
-                        return;
-                    } else {
-                        // Do nothing if status is 201.
-                    }
                 }
             }
+
+            if (canSaveToLibrary) {
+                await this.refreshLibraryStatus();
+                this.saved = this.saved || savedByThisAction;
+            }
+        } catch (err: any) {
+            if (err.status === 409) {
+                this.saved = true;
+                await this.refreshLibraryStatus();
+            } else {
+                this.toaster.error(
+                    "Error!",
+                    "There was an error adding to your library",
+                );
+            }
+        } finally {
+            this.addToLibraryPending = false;
+            this.addingToLibrary = false;
+            this.changeDetectorRef.detectChanges();
         }
 
-        this.libraryService.getLibrary({
+        if (download) {
+            this.download(this.learningObject.id);
+        }
+    }
+
+    private async refreshLibraryStatus(): Promise<void> {
+        await this.libraryService.getLibrary({
             learningObjectCuid: this.learningObject.cuid,
+            version: this.learningObject.version,
         });
-        this.addingToLibrary = false;
-        this.changeDetectorRef.detectChanges();
+        this.saved = this.isSavedToLibrary();
+    }
+
+    private isSavedToLibrary(): boolean {
+        return (
+            this.saved ||
+            this.libraryService.has(
+                this.learningObject.id,
+                this.learningObject.cuid,
+                this.learningObject.version,
+            )
+        );
     }
 
     /**
