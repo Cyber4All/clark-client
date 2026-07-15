@@ -617,11 +617,11 @@ export class OrganizationsComponent implements OnInit, OnDestroy, AfterViewInit 
           );
           this.userCountMap.delete(selectedOrgId);
           this.learningObjectCountMap.delete(selectedOrgId);
+          this.organizationService.clearCache();
           this.refreshExistingNames();
           this.refreshOverviewCounts();
           this.loadTotalOtherUsers();
           this.loadVisibleOrganizationCounts();
-          this.organizationService.clearCache();
 
           this.toaster.success('Success!', 'Organization deleted successfully.');
           this.isDeleting = false;
