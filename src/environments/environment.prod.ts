@@ -2,7 +2,7 @@ export const environment = {
     production: true,
     environment: "production",
     experimental: false,
-    apiURL: "https://clark-gateway.clark.center",
+    apiURL: "https://api-gateway.clark.center",
     s3Bucket: "clark-prod-file-uploads",
     s3BucketRegion: "us-east-1",
     cognitoRegion: "us-east-1",
