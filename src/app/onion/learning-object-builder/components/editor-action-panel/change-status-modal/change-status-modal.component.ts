@@ -94,6 +94,7 @@ export class ChangeStatusModalComponent implements OnInit {
                     LearningObject.Status.ACCEPTED_MINOR,
                     LearningObject.Status.ACCEPTED_MAJOR,
                     LearningObject.Status.PROOFING,
+                    LearningObject.Status.RELEASED,
                 ];
                 break;
             case LearningObject.Status.ACCEPTED_MINOR:

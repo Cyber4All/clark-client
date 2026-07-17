@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { LearningObject } from "@entity";
 import { LearningObjectService as LOUri } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
@@ -34,6 +34,7 @@ export class EditorialActionPadComponent implements OnInit {
     @Input() learningObject: LearningObject;
     @Input() userIsAuthor: boolean;
     @Input() revisedLearningObject: LearningObject;
+    @Output() taggingUpdated: EventEmitter<void> = new EventEmitter();
 
     openRevisionModal: boolean;
     openRelevancyStoryModal = false;
@@ -114,8 +115,11 @@ export class EditorialActionPadComponent implements OnInit {
 
     closeTaggingModal() {
         this.openTagModal = false;
-        // Easiest way to reload the page so newest data is in the client
-        window.location.href = window.location.href;
+    }
+
+    handleTaggingSaved() {
+        this.openTagModal = false;
+        this.taggingUpdated.emit();
     }
 
     // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object

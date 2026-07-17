@@ -176,7 +176,7 @@ export class LearningObjectListItemComponent implements OnChanges {
         this.refactoredLearningObjectService
             .updateLearningObjectStatus(
                 this.learningObject.id,
-                LearningObject.Status.PROOFING,
+                LearningObject.Status.REVIEW,
             )
             .then(() => {
                 this.toaster.success(

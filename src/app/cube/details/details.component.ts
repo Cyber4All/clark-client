@@ -355,6 +355,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
     }
 
+    refreshLearningObject() {
+        const { username, cuid, version } = this.route.snapshot.params;
+
+        this.fetchReleasedLearningObject(username, cuid, version);
+    }
+
     /**
      * Loaded a revised copy of the learning object if the hasRevisions flag is true
      */
