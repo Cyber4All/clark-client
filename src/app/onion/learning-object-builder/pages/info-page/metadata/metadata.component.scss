@@ -6,7 +6,7 @@
     flex-direction: column;
     flex-wrap: nowrap;
     height: 100%;
-    padding: 30px 20px 40px;
+    padding: 20px 20px 20px;
 }
 
 // Style for all titles within the resuable containers
@@ -14,12 +14,18 @@
     color: $light-blue;
     font-size: $large;
     font-weight: 600;
+    padding-bottom: 20px;
 }
 // Style for all directions within the resuable containers
 .directions {
     color: $dark-grey;
     font-size: $normal;
     margin-bottom: 20px;
+
+    &:empty {
+        display: none;
+        margin-bottom: 0;
+    }
 }
 
 .metadata-container__error {

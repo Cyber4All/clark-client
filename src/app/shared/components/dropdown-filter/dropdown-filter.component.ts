@@ -35,6 +35,7 @@ export class DropdownFilterComponent implements OnChanges {
     @Input() values: Array<string | DropdownFilterOption> = [];
     @Input() selectedValues: string[] = [];
     @Input() disabled = false;
+    @Input() allowEmptySelection = true;
 
     @Output() selectedValuesChange: EventEmitter<string[]> = new EventEmitter<
         string[]
@@ -87,11 +88,17 @@ export class DropdownFilterComponent implements OnChanges {
             const selectedItem = this.options.find(
                 (option) => option.value === selectedValue,
             );
-            return selectedItem
+            if (!selectedItem) {
+                return this.name;
+            }
+            return this.name
                 ? `${this.name}: ${selectedItem.label}`
-                : this.name;
+                : selectedItem.label;
         }
 
+        if (!this.name) {
+            return `${selectedCount}`;
+        }
         return `${this.name} (${selectedCount})`;
     }
 
@@ -127,9 +134,16 @@ export class DropdownFilterComponent implements OnChanges {
                 ];
             }
         } else {
-            this.internalSelectedValues = this.isSelected(option.value)
-                ? []
-                : [option.value];
+            if (this.isSelected(option.value)) {
+                if (!this.allowEmptySelection) {
+                    this.isOpen = false;
+                    this.cd.detectChanges();
+                    return;
+                }
+                this.internalSelectedValues = [];
+            } else {
+                this.internalSelectedValues = [option.value];
+            }
             this.isOpen = false;
         }
 

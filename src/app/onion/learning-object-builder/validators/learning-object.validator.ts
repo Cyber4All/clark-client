@@ -97,6 +97,7 @@ export class LearningObjectErrorGroup {
 })
 export class LearningObjectValidator {
     submissionMode: boolean;
+    showSaveErrors: boolean;
     errors = new LearningObjectErrorGroup();
 
     constructor(public outcomeValidator: LearningOutcomeValidator) {}

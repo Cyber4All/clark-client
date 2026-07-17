@@ -4,7 +4,7 @@
     font-size: $large;
     font-weight: 600;
     color: $darker-grey;
-    margin: 0 0 20px 25px;
+    margin: 0 0 0 25px;
     padding-top: 20px;
 }
 
@@ -15,46 +15,51 @@ hr {
     margin: 0;
 }
 
-// This is styling for the input field for the learning object name
-input {
-    padding: 7px;
-    padding-left: 0;
-    font-size: $normal;
+.name-field {
     border: 0;
-    width: 522px;
-    outline: 0;
     border-bottom: 2px solid $light-blue;
+    box-sizing: border-box;
+    color: $dark-grey;
+    display: block;
+    font-size: $normal;
+    max-width: 100%;
+    outline: 0;
+    padding: 7px 0;
+    width: 522px;
 }
 
-.select-wrapper {
-    display: inline-flex;
+.name-field--error {
+    border-bottom-color: $error-red;
 }
 
-// This is styling for the academic levels list
-.levels {
+.field-label {
+    align-items: center;
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    gap: 8px;
+}
 
-    .pill {
-        color: $light-blue;
-        background: white;
-        border-radius: 2px;
-        box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-        cursor: pointer;
-        padding: 4px 9px;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        text-transform: capitalize;
-        font-size: normal;
+.required-asterisk {
+    align-self: flex-start;
+    color: $error-red;
+    font-size: 8px;
+    line-height: 1;
+    margin-top: 4px;
+}
 
-        &.selected {
-            box-shadow: inset 0 1px 2px 1px rgba(0, 0, 0, 0.1);
-            background: $light-blue-gradient;
-            color: white;
-        }
-    }
+.help-icon {
+    color: $dark-grey;
+    cursor: help;
+    display: inline-flex;
+    font-size: $small;
+}
+
+.topic-pills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 0;
 }
 
 .contributors-list {
@@ -84,6 +89,12 @@ input {
     font-size: $small;
 
     &.bottom {
-        padding-bottom: 40px;
+        padding-bottom: 20px;
     }
+}
+
+.attribution-preview__collection {
+    border-bottom: 1px dotted $dark-grey;
+    cursor: help;
+    font-style: italic;
 }

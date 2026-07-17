@@ -57,4 +57,11 @@
         font-size: $largest;
         margin-bottom: 5px;
     }
+
+    .no-outcomes__help {
+        color: $dark-grey;
+        cursor: help;
+        font-size: $normal;
+        margin-bottom: 0;
+    }
 }

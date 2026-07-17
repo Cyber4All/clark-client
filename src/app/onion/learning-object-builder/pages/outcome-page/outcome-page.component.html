@@ -1,7 +1,7 @@
 <clark-column-wrapper>
     <div left>
         <clark-scaffold
-            *ngIf="learningObject"
+            *ngIf="learningObject?.length !== 'nanomodule'"
             [learningObject]="learningObject"></clark-scaffold>
     </div>
     <div main class="main">
@@ -50,14 +50,13 @@
     <div class="no-outcomes">
         <i class="far fa-box-open"></i>
         <div class="no-outcomes__title">No outcomes yet!</div>
-        <!-- TODO someone rewrite this pls -->
         <div class="no-outcomes__description">
             Learning Outcomes are a collection of statements that describe
             different actions a user should be able to accomplish after
             experiencing the materials in the Learning Object.
         </div>
         <div *ngIf="validator.submissionMode" class="no-outcomes__error">
-            A learning object must have outcomes to submit
+            Add at least one outcome to submit.
         </div>
     </div>
 </ng-template>

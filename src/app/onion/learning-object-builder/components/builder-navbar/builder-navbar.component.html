@@ -169,11 +169,12 @@
         >{{ text }}</a
     >
     <a
-        aria-label="Please give this learning object a name before adding outcomes or uploading materials"
+        aria-label="Please name this learning object before adding outcomes or materials"
         *ngIf="disabled"
         class="disabled"
-        tip="Please give this learning object a name before adding outcomes or uploading materials"
+        tip="Please name this learning object before adding outcomes or materials."
         tipPosition="top"
+        (activate)="triggerBlockedRouteClick()"
         ><i class="fas fa-lock"></i>{{ text }}</a
     >
 </ng-template>

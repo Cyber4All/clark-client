@@ -107,6 +107,11 @@ export class ScaffoldComponent implements OnInit {
         this.childrenConfirmation = false;
         this.ariaLabel = "Add and delete Children";
 
+        if (!this.learningObject.id) {
+            this.children = [];
+            return;
+        }
+
         // if the Learning Object can have children, attempt to load them
         if (this.learningObject.length !== LearningObject.Length.NANOMODULE) {
             this.loading = true;
@@ -183,8 +188,9 @@ export class ScaffoldComponent implements OnInit {
      */
     deleteButton(index) {
         this.deleteIndex = index;
-        this.childrenConfirmationMessage = `Just to confirm, you want to remove '
-        ${this.children[index].name}' as a child of '${
+        this.childrenConfirmationMessage = `Remove '${
+            this.children[index].name
+        }' as a child of '${
             this.learningObject.name
         }'?`;
 
@@ -228,6 +234,10 @@ export class ScaffoldComponent implements OnInit {
      * Toggles the child modal
      */
     toggleAddChild(value: boolean = true) {
+        if (!this.learningObject.id) {
+            return;
+        }
+
         if (value) {
             // [left, top]
             const position = [

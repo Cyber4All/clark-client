@@ -23,6 +23,7 @@ export class SearchInputComponent implements OnChanges, OnDestroy {
     @Input() fullWidth = false;
     @Input() value = "";
     @Input() debounceMs = 0;
+    @Input() hasError = false;
 
     @Output() userInput: EventEmitter<string> = new EventEmitter<string>();
 

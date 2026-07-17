@@ -20,10 +20,10 @@ import {
     FilterSectionInfo,
     FilterSectionComponent,
 } from "../filter-section/filter-section.component";
-import { NgIf, NgFor, NgClass } from "@angular/common";
-import { ActivateDirective } from "../../../../shared/directives/activate.directive";
+import { NgIf, NgFor } from "@angular/common";
 import { PopupComponent } from "../../../../shared/modules/popups/popup.component";
 import { GuidelineFilterComponent } from "../guideline-filter/guideline-filter.component";
+import { PillComponent } from "../../../../shared/components/pill/pill.component";
 
 @Component({
     selector: "clark-filter",
@@ -34,10 +34,9 @@ import { GuidelineFilterComponent } from "../guideline-filter/guideline-filter.c
         FilterSectionComponent,
         NgIf,
         NgFor,
-        NgClass,
-        ActivateDirective,
         PopupComponent,
         GuidelineFilterComponent,
+        PillComponent,
     ],
 })
 export class FilterComponent implements OnInit, OnDestroy {

@@ -132,16 +132,16 @@ export class BuilderNavbarComponent implements OnDestroy {
      */
     canRoute(route: string) {
         let result: boolean;
+        const hasSavedLearningObject = !!this.learningObject?.id;
 
         switch (route) {
             case "outcomes":
-                result = this.validator.saveable && this.store.touched;
+                result = hasSavedLearningObject;
                 break;
             case "materials":
                 result = !!(
                     this.auth.user.emailVerified &&
-                    this.validator.saveable &&
-                    this.store.touched
+                    hasSavedLearningObject
                 );
                 break;
         }
@@ -183,6 +183,10 @@ export class BuilderNavbarComponent implements OnDestroy {
      */
     triggerRouteClick(route: string) {
         this.routesClicked.add(route);
+    }
+
+    triggerBlockedRouteClick(): void {
+        this.validator.showSaveErrors = true;
     }
 
     /**
@@ -273,11 +277,12 @@ export class BuilderNavbarComponent implements OnDestroy {
                 errorPages.set("info", true);
             }
 
-            // notify user
-            this.toasterService.error(
-                "Error!",
-                "Please correct the errors and try again!",
-            );
+            if (!errorPages.get(currentRoute)) {
+                this.toasterService.error(
+                    "Error!",
+                    "Please correct the errors and try again!",
+                );
+            }
 
             if (errorPages.size && !errorPages.get(currentRoute)) {
                 // we've found errors on other pages and none on our current page, so route to that page

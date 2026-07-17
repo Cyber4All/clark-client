@@ -1,6 +1,7 @@
 <label
     class="search-input"
     [class.search-input--full-width]="fullWidth"
+    [class.search-input--error]="hasError"
     [style.width]="fullWidth ? null : width"
     [attr.aria-label]="ariaLabel || placeholder">
     <mat-icon class="search-input__icon">search</mat-icon>

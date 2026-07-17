@@ -1,11 +1,12 @@
 <div class="user-dropdown">
-    <input
-        type="text"
-        aria-label="Find users by their name, username, or email address."
+    <clark-search-input
         class="user-dropdown__search-input"
-        placeholder="Search for authors"
-        [(ngModel)]="query"
-        (input)="userSearchInput$.next($event.currentTarget.value)" />
+        placeholder="Search contributors"
+        ariaLabel="Find users by name, username, or email"
+        [fullWidth]="true"
+        [value]="query"
+        [hasError]="hasError"
+        (userInput)="userSearchInput$.next($event)"></clark-search-input>
     <ul *ngIf="showDropdown" class="user-dropdown__list">
         <ng-container
             *ngTemplateOutlet="

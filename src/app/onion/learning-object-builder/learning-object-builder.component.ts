@@ -309,6 +309,9 @@ export class LearningObjectBuilderComponent
                     "Unable to update Learning Object",
                 );
                 break;
+            case BUILDER_ERRORS.DUPLICATE_OBJECT_NAME:
+            case BUILDER_ERRORS.SPECIAL_CHARACTER_NAME:
+                break;
             case BUILDER_ERRORS.UPDATE_OUTCOME:
                 this.noteService.error(
                     toasterTitle,
@@ -340,10 +343,7 @@ export class LearningObjectBuilderComponent
     get errorState(): boolean {
         this.errorMessage = this.validator.nextError;
 
-        return (
-            !this.validator.saveable ||
-            (this.validator.submissionMode && !this.validator.submittable)
-        );
+        return this.validator.submissionMode && !this.validator.submittable;
     }
 
     /**
