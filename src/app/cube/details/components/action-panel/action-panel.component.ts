@@ -179,6 +179,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         }
 
         let savedByThisAction = false;
+        let addError: any;
         try {
             if (shouldAddToLibrary) {
                 const result = await this.libraryService.addToLibrary(
@@ -198,27 +199,44 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
             }
 
             if (canSaveToLibrary) {
-                await this.refreshLibraryStatus();
+                await this.tryRefreshLibraryStatus();
                 this.saved = this.saved || savedByThisAction;
             }
         } catch (err: any) {
-            if (err.status === 409) {
-                this.saved = true;
-                await this.refreshLibraryStatus();
-            } else {
-                this.toaster.error(
-                    "Error!",
-                    "There was an error adding to your library",
-                );
-            }
+            addError = err;
         } finally {
             this.addToLibraryPending = false;
             this.addingToLibrary = false;
             this.changeDetectorRef.detectChanges();
         }
 
+        if (addError) {
+            if (addError.status === 409) {
+                this.saved = true;
+            }
+
+            await this.tryRefreshLibraryStatus();
+
+            if (!this.saved) {
+                this.toaster.error(
+                    "Error!",
+                    "There was an error adding to your library",
+                );
+            }
+
+            this.changeDetectorRef.detectChanges();
+        }
+
         if (download) {
             this.download(this.learningObject.id);
+        }
+    }
+
+    private async tryRefreshLibraryStatus(): Promise<void> {
+        try {
+            await this.refreshLibraryStatus();
+        } catch {
+            // A failed refresh should not surface as an add-to-library failure.
         }
     }
 

@@ -150,7 +150,7 @@ export class LibraryService {
             )
             .pipe(
                 catchError((error) => {
-                    if (error.status === 409) {
+                    if (this.isAlreadySavedError(error)) {
                         return of(new HttpResponse({ status: 409 }));
                     }
                     return throwError(error);
@@ -277,6 +277,32 @@ export class LibraryService {
 
     private getLearningObjectKey(cuid: string, version: number): string {
         return `${cuid}:${version}`;
+    }
+
+    private isAlreadySavedError(error: HttpErrorResponse): boolean {
+        if (error.status === 409) {
+            return true;
+        }
+
+        const errorBody = error.error;
+        const errorText = [
+            error.message,
+            typeof errorBody === "string" ? errorBody : undefined,
+            errorBody?.message,
+            errorBody?.error,
+        ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+        return (
+            (errorText.includes("already") &&
+                (errorText.includes("library") ||
+                    errorText.includes("saved"))) ||
+            (errorText.includes("duplicate") &&
+                (errorText.includes("library") ||
+                    errorText.includes("learning")))
+        );
     }
 
     private handleError(error: HttpErrorResponse) {
