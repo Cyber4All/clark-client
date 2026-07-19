@@ -61,7 +61,7 @@ export class EditorialActionPadComponent implements OnInit {
         );
     }
 
-    // Determines if an editor can make edits to a waiting, review, or proofing learning object
+    // Determines if an editor can make permitted draft or review edits.
     get canMakeEdits() {
         return this.editorialService.canMakeEdits(
             this.learningObject,
@@ -122,7 +122,7 @@ export class EditorialActionPadComponent implements OnInit {
         this.taggingUpdated.emit();
     }
 
-    // Redirects the editors and authors to the builder to make edits to a waiting, review, or proofing object
+    // Redirects editors and authors to the builder to make permitted edits.
     editLearningObject() {
         if (this.revisedLearningObject) {
             this.editorialService.navigateToEditor(this.revisedLearningObject);
