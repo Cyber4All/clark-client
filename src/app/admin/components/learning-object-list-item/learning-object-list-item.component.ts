@@ -207,13 +207,6 @@ export class LearningObjectListItemComponent implements OnChanges {
         return this.auth.user.emailVerified;
     }
 
-        return getLearningObjectStatusLabel(this.learningObject.status);
-    }
-
-    get statusIcon(): string {
-        return getLearningObjectStatusIcon(this.learningObject.status);
-    }
-
     private loadHierarchyState(): Promise<void> {
         if (this.hierarchyStateLoaded) {
             return Promise.resolve();
