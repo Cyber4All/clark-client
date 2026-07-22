@@ -69,16 +69,8 @@ jobs:
             - attach_workspace:
                   at: .
             - run:
-                  name: Upload source maps to Coralogix
-                  command: |
-                      PACKAGE_VERSION=$(node -p "require('./package.json').version")
-                      if [ "<< parameters.environment >>" = "staging" ]; then
-                        COMMIT_HASH=${CIRCLE_SHA1:0:7}
-                        export RUM_VERSION="${PACKAGE_VERSION}-${COMMIT_HASH}"
-                      else
-                        export RUM_VERSION=${PACKAGE_VERSION}
-                      fi
-                      npm run rum:upload-<< parameters.environment >>
+                  name: Upload source maps to Sentry
+                  command: npm run sentry:sourcemaps
 
     semgrep-sast:
         docker:

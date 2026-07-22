@@ -1,9 +1,9 @@
+import * as Sentry from "@sentry/angular";
 import {
-    enableProdMode,
     APP_INITIALIZER,
+    ErrorHandler,
     importProvidersFrom,
 } from "@angular/core";
-import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 
 import { environment } from "@env/environment";
 
@@ -13,7 +13,7 @@ import {
     BrowserModule,
     bootstrapApplication,
 } from "@angular/platform-browser";
-import { UrlSerializer } from "@angular/router";
+import { Router, UrlSerializer } from "@angular/router";
 import { CustomUrlSerializer } from "./app/core/learning-object-module/custom-url-serliazer";
 import {
     HTTP_INTERCEPTORS,
@@ -21,7 +21,6 @@ import {
     withInterceptorsFromDi,
 } from "@angular/common/http";
 import { HttpConfigInterceptor } from "./app/core/interceptor/httpconfig.interceptor";
-import { CoralogixRumService } from "./app/core/services/coralogix-rum.service";
 import { ClarkRoutingModule } from "./app/clark.routing";
 import { SharedModule } from "./app/shared/shared.module";
 import { provideAnimations } from "@angular/platform-browser/animations";
@@ -37,10 +36,22 @@ const {
     displayName: appDisplayName,
 } = require("../package.json");
 const VERSION_STORE = `${appName} version`;
+const SENTRY_ENABLED_ENVIRONMENTS = ["staging", "production"];
 
-if (environment.production) {
-    enableProdMode();
-}
+Sentry.init({
+    dsn: "https://791057349c7a589e044c88bd5c9a2c19@o4511711309463552.ingest.us.sentry.io/4511711708381184",
+    enabled: SENTRY_ENABLED_ENVIRONMENTS.includes(environment.environment),
+    environment: environment.environment,
+    release: appVersion,
+    integrations: [
+        Sentry.browserTracingIntegration(),
+        Sentry.replayIntegration(),
+    ],
+    tracesSampleRate: 1,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1,
+    enableLogs: true,
+});
 
 // Get the version of the application the user last ran
 const userVersion = localStorage.getItem(VERSION_STORE);
@@ -79,10 +90,17 @@ if (userVersion === appVersion) {
                 multi: true,
             },
             {
+                provide: ErrorHandler,
+                useValue: Sentry.createErrorHandler(),
+            },
+            {
+                provide: Sentry.TraceService,
+                deps: [Router],
+            },
+            {
                 provide: APP_INITIALIZER,
-                useFactory: (rumService: CoralogixRumService) => () =>
-                    rumService.init(),
-                deps: [CoralogixRumService],
+                useFactory: () => () => {},
+                deps: [Sentry.TraceService],
                 multi: true,
             },
             provideHttpClient(withInterceptorsFromDi()),
