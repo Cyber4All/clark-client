@@ -29,14 +29,13 @@ import { ChatbotModule } from "app/shared/modules/chatbot/chatbot.module";
 import { MarkdownModule } from "ngx-markdown";
 import { ClarkComponent } from "./app/clark.component";
 
-// Application display name and Version information
 const {
     version: appVersion,
     name: appName,
     displayName: appDisplayName,
 } = require("../package.json");
 const VERSION_STORE = `${appName} version`;
-const SENTRY_ENABLED_ENVIRONMENTS = ["staging", "production"];
+const SENTRY_ENABLED_ENVIRONMENTS = ["development", "staging", "production"];
 
 Sentry.init({
     dsn: "https://791057349c7a589e044c88bd5c9a2c19@o4511711309463552.ingest.us.sentry.io/4511711708381184",
@@ -51,6 +50,21 @@ Sentry.init({
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1,
     enableLogs: true,
+    beforeSend: (event) => ({
+        ...event,
+        environment: environment.environment,
+    }),
+    beforeSendTransaction: (event) => ({
+        ...event,
+        environment: environment.environment,
+    }),
+    beforeSendLog: (log) => ({
+        ...log,
+        attributes: {
+            ...log.attributes,
+            environment: environment.environment,
+        },
+    }),
 });
 
 // Get the version of the application the user last ran
@@ -63,8 +77,8 @@ const userVersion = localStorage.getItem(VERSION_STORE);
     userVersion !== appVersion
         ? location.reload()
         : console.log(
-              `${appDisplayName} running version: ${appVersion} - Up to date.`,
-          );
+            `${appDisplayName} running version: ${appVersion} - Up to date.`,
+        );
 })();
 
 if (userVersion === appVersion) {
@@ -99,7 +113,7 @@ if (userVersion === appVersion) {
             },
             {
                 provide: APP_INITIALIZER,
-                useFactory: () => () => {},
+                useFactory: () => () => { },
                 deps: [Sentry.TraceService],
                 multi: true,
             },

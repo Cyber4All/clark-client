@@ -1,6 +1,6 @@
 import { Message } from "./../../shared/modules/chatbot/chatbot-window/chatbot-window.component";
 import { Injectable } from "@angular/core";
-import { CoralogixRumService } from "app/core/services/coralogix-rum.service";
+import * as Sentry from "@sentry/angular";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { CHATBOT_ROUTE } from "app/core/chat-module/chatbot.routes";
 import { catchError } from "rxjs/operators";
@@ -10,10 +10,7 @@ import { throwError } from "rxjs";
     providedIn: "root",
 })
 export class ChatbotService {
-    constructor(
-        private readonly rumService: CoralogixRumService,
-        private readonly http: HttpClient,
-    ) {}
+    constructor(private readonly http: HttpClient) {}
     async sendPrompt(message: Message) {
         return this.http
             .post(CHATBOT_ROUTE.CHAT(), {
@@ -25,10 +22,15 @@ export class ChatbotService {
     }
 
     private handleError(error: HttpErrorResponse) {
-        this.rumService.trackEvent("Chatbot Error", {
-            message: error.message,
-            status: error.status,
-            error: error.error,
+        Sentry.captureException(error, {
+            tags: {
+                feature: "chatbot",
+            },
+            extra: {
+                message: error.message,
+                status: error.status,
+                error: error.error,
+            },
         });
 
         if (error.error instanceof ErrorEvent) {

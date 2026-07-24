@@ -170,7 +170,7 @@ export class ClarkComponent implements OnInit {
                 });
             }, 300000); // 5 min interval
             // check to see if the current version is behind the latest verison
-            // As of February 4, 2025 there is not a solution to this issue and it clogging up our coralogix errors so we are disabling it
+            // As of February 4, 2025 there is not a solution to this issue and it is clogging up observability errors so we are disabling it
             // setInterval(async () => {
             //   try {
             //     await this.utilityService.checkClientVersion();
