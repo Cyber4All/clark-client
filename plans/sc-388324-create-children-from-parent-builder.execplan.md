@@ -16,8 +16,9 @@ The existing add-existing-child search remains available, including released lea
 - [x] (2026-07-24 16:43Z) Phase 1: made Add Child persistent, removed the Add/Delete toggle/edit state, rendered the panel for Nanomodules with an explained disabled action, moved reorder left, kept delete right, and added focused scaffold expectations.
 - [x] (2026-07-24 18:49Z) Phase 2: added Create New and Add Existing paths, preserved the existing search/selection flow as the default, exposed the approved editable default name and child-length preview, and added focused expectations.
 - [x] (2026-07-24 18:55Z) Phase 3: implemented name validation plus the successful create → attach → refresh → open-child sequence using existing learning-object service routes, with loading protection and focused expectations.
-- [ ] Phase 4: implement duplicate-submit protection and recoverable create/attach/refresh failure states, then validate independently.
-- [ ] Run final focused tests, lint/build validation, and manual acceptance checks.
+- [x] (2026-07-24 19:03Z) Phase 4: added explicit operation stages, duplicate-submit protection, retained-child recovery for attach failures, refresh-only retry after successful attachment, child-opening recovery, and dismissal locking that prevents partial state loss.
+- [x] (2026-07-24 19:08Z) Completed the final static acceptance audit, full-project lint, focused lint, Angular compiler validation, and whitespace validation.
+- [ ] Run authenticated browser acceptance checks against a working CLARK API, including simulated attach and refresh failures.
 
 ## Surprises & Discoveries
 
@@ -45,8 +46,14 @@ The existing add-existing-child search remains available, including released lea
 - Observation: The Angular application builder aborts in the current environment without a diagnostic after printing `Building...`.
   Evidence: Both `./node_modules/.bin/ng build clark` and a retry with `NG_BUILD_MAX_WORKERS=2` exit with code 134. Running the Angular compiler directly with `./node_modules/.bin/ngc -p src/tsconfig.app.json` succeeds, including template compilation for the Phase 1 changes.
 
+- Observation: The alternate Angular/Karma test target is unavailable in the current installation.
+  Evidence: A focused `ng test` attempt fails during setup with `Cannot find module 'karma'`. Jest remains blocked by its transformer incompatibility, so neither configured browser/unit runner can execute component assertions in this checkout.
+
 - Observation: Opening a new window only after asynchronous create and attach calls may trigger browser popup blocking.
   Evidence: The new browsing context is no longer directly opened during the user's activation event. Implementation should reserve or otherwise open the context during the submit activation and navigate it after success, while keeping failure recovery usable.
+
+- Observation: Existing click-away and Escape behavior could destroy the add-child component during an in-flight operation or partial failure.
+  Evidence: `ScaffoldComponent` closes the teleported popup from window click and keyup host listeners. Phase 4 now locks dismissal from the start of validation through successful hierarchy refresh, retaining the created child and recovery actions after attach or refresh failure.
 
 ## Decision Log
 
@@ -86,8 +93,16 @@ The existing add-existing-child search remains available, including released lea
   Rationale: The private method replaces the store's current learning object, while this workflow must preserve the parent and retain the created child between independently recoverable operations.
   Date/Author: 2026-07-24 / Codex
 
-- Decision: Reserve the child window synchronously from the Create and Add Child activation, then navigate it only after create, attach, and refresh succeed.
-  Rationale: This keeps the parent builder open and avoids common popup blocking caused by calling `window.open` only after asynchronous requests finish.
+- Decision: Reserve the child window synchronously from the Create and Add Child activation.
+  Rationale: This keeps the parent builder open and avoids common popup blocking caused by calling `window.open` only after asynchronous requests finish. The navigation timing is recorded separately below.
+  Date/Author: 2026-07-24 / Codex
+
+- Decision: Navigate the reserved child window after attachment succeeds, before refreshing the parent hierarchy.
+  Rationale: A refresh failure means the child was successfully created and attached; opening it should not be withheld because the parent display is temporarily stale. The parent popup remains open with Retry Refresh.
+  Date/Author: 2026-07-24 / Codex
+
+- Decision: Prevent click-away and Escape dismissal while an operation or partial-failure recovery is active.
+  Rationale: Destroying the component at that point would discard the only frontend reference to the created child ID and violate the recovery requirements. Normal pre-creation and existing-child search states remain dismissible.
   Date/Author: 2026-07-24 / Codex
 
 ## Outcomes & Retrospective
@@ -98,12 +113,18 @@ Phase 2 is complete. The existing popup now exposes tab-like Create New and Add 
 
 Phase 3 is complete. Create and Add Child now checks name availability, creates an unreleased child through the existing learning-object service, attaches the returned ID to the current parent through the existing children route, reloads the parent children, updates the scaffold, closes the popup, and navigates a synchronously reserved tab/window to the returned CUID/version. The submit action stays disabled while the sequence is active. The builder store keeps create and attach as separate public operations so Phase 4 can retry from the correct partial state.
 
+Phase 4 is complete. The create UI now distinguishes validation, creation, attachment, and refresh. Creation failure stops before attachment. Attachment failure retains and displays the created child, closes the unused reserved blank window, and provides Open Created Child and Retry Attach; retry does not call create again. After attachment succeeds, the child builder opens and refresh failure retains the child plus Retry Refresh; retry does not create or attach again. Operation controls, mode tabs, and the name input are disabled while work is active. The scaffold prevents click-away/Escape dismissal while a created child requires recovery, so the child reference is not silently lost.
+
+The implementation and static acceptance audit are complete. Every story criterion has a corresponding code path and focused expectation. Authenticated browser verification remains because it requires a running API, a real author session, and controlled request failures. Automated component execution is blocked by pre-existing Jest/Karma setup drift, not by a story assertion.
+
 Validation at this checkpoint:
 
 - Focused ESLint over all touched TypeScript and Angular templates passes.
+- Full-project `npm run lint` passes with zero errors and 259 pre-existing warnings in unrelated files.
 - Angular compilation via `ngc -p src/tsconfig.app.json` passes.
 - `git diff --check` passes.
-- Focused Jest remains blocked before execution by the recorded `jest-preset-angular` transformer incompatibility, including after adding success-path, payload, name-validation, hierarchy-refresh, and child-window expectations.
+- Focused Jest remains blocked before execution by the recorded `jest-preset-angular` transformer incompatibility, including after adding success-path, payload, name-validation, hierarchy-refresh, child-window, duplicate-submission, create-failure, attach-retry, refresh-retry, and dismissal-lock expectations.
+- Focused Angular/Karma execution is also blocked because the declared Angular test target cannot load the uninstalled `karma` module.
 - Repository-wide spec type-check remains blocked by unrelated legacy spec errors and reports no Phase 1 file errors.
 - The Angular application builder aborts with exit 134 in this environment, as recorded above.
 

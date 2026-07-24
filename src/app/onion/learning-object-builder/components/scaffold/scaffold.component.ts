@@ -75,6 +75,7 @@ export class ScaffoldComponent implements OnInit {
     loading: boolean;
     childrenConfirmation: boolean;
     isAddingChild: boolean;
+    childFlowLocked: boolean;
 
     @ViewChild("addChildButton") addChildButton: ElementRef;
     @ViewChild("teleporterPayload") teleporterPayload: ElementRef;
@@ -169,6 +170,7 @@ export class ScaffoldComponent implements OnInit {
     handleCreatedChild(result: CreatedChildHierarchy): void {
         this.children = result.children;
         this.childrenIDs = result.children.map((child) => child.id);
+        this.childFlowLocked = false;
         this.toggleAddChild(false);
     }
 
@@ -241,6 +243,10 @@ export class ScaffoldComponent implements OnInit {
             return;
         }
 
+        if (!value && this.childFlowLocked) {
+            return;
+        }
+
         if (value) {
             // [left, top]
             const position = [
@@ -292,6 +298,7 @@ export class ScaffoldComponent implements OnInit {
         } else {
             // remove the payload from the DOM
             this.isAddingChild = value;
+            this.childFlowLocked = false;
         }
     }
 }

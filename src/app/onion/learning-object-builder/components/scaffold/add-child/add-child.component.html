@@ -10,6 +10,7 @@
         [class.add-child-options__tab--active]="mode === 'create'"
         [attr.aria-selected]="mode === 'create'"
         aria-controls="createChildPanel"
+        [disabled]="creatingChild || !!createdChild"
         (activate)="selectMode('create')">
         Create New
     </button>
@@ -21,6 +22,7 @@
         [class.add-child-options__tab--active]="mode === 'existing'"
         [attr.aria-selected]="mode === 'existing'"
         aria-controls="existingChildPanel"
+        [disabled]="creatingChild || !!createdChild"
         (activate)="selectMode('existing')">
         Add Existing
     </button>
@@ -37,6 +39,7 @@
         id="newChildName"
         type="text"
         name="newChildName"
+        [disabled]="creatingChild || !!createdChild"
         [(ngModel)]="newChildName" />
     <div class="create-child__length">
         <span>Default length</span>
@@ -51,7 +54,40 @@
         role="alert">
         {{ createChildError }}
     </div>
+    <div *ngIf="createdChild" class="create-child__recovery">
+        <div class="create-child__created-object">
+            Created child:
+            <strong>{{ createdChild.name }}</strong>
+        </div>
+        <button
+            type="button"
+            class="create-child__secondary-action"
+            [disabled]="creatingChild"
+            (activate)="openCreatedChild()">
+            Open Created Child
+            <i class="far fa-external-link"></i>
+        </button>
+        <button
+            *ngIf="creationStage === 'attachFailed'"
+            type="button"
+            class="create-child__submit"
+            [disabled]="creatingChild"
+            (activate)="retryAttach()">
+            Retry Attach
+            <i class="far fa-redo"></i>
+        </button>
+        <button
+            *ngIf="creationStage === 'refreshFailed'"
+            type="button"
+            class="create-child__submit"
+            [disabled]="creatingChild"
+            (activate)="retryRefresh()">
+            Retry Refresh
+            <i class="far fa-redo"></i>
+        </button>
+    </div>
     <button
+        *ngIf="!createdChild"
         type="button"
         class="create-child__submit"
         [disabled]="creatingChild || !newChildName?.trim()"
@@ -61,11 +97,23 @@
             <i class="far fa-plus"></i>
         </ng-container>
     </button>
+    <div
+        *ngIf="creatingChild && createdChild"
+        class="create-child__loading"
+        aria-live="polite">
+        <ng-container [ngTemplateOutlet]="creatingChildTemplate"></ng-container>
+    </div>
 </section>
 
 <ng-template #creatingChildTemplate>
     <i class="fal fa-spinner-third fa-spin"></i>
-    Creating and adding child...
+    <ng-container [ngSwitch]="creationStage">
+        <span *ngSwitchCase="'validating'">Validating child name...</span>
+        <span *ngSwitchCase="'creating'">Creating child...</span>
+        <span *ngSwitchCase="'attaching'">Attaching child...</span>
+        <span *ngSwitchCase="'refreshing'">Refreshing hierarchy...</span>
+        <span *ngSwitchDefault>Working...</span>
+    </ng-container>
 </ng-template>
 
 <section

@@ -21,6 +21,11 @@
             color: $light-blue;
             border-bottom-color: $light-blue;
         }
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
     }
 }
 
@@ -58,6 +63,29 @@
         font-size: $small;
     }
 
+    &__recovery {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+    }
+
+    &__created-object {
+        flex-basis: 100%;
+        color: $dark-grey;
+        font-size: $small;
+    }
+
+    &__loading {
+        align-self: flex-end;
+        color: $dark-grey;
+        font-size: $small;
+
+        .svg-inline--fa {
+            margin-right: 6px;
+        }
+    }
+
     &__submit {
         align-self: flex-end;
         border: 0;
@@ -74,6 +102,31 @@
 
         &:disabled {
             background: $medium-grey;
+            cursor: not-allowed;
+        }
+
+        .svg-inline--fa {
+            margin-left: 6px;
+        }
+    }
+
+    &__secondary-action {
+        border: solid 1px $light-blue;
+        border-radius: 2px;
+        background: white;
+        color: $light-blue;
+        cursor: pointer;
+        padding: 8px 12px;
+
+        &:focus,
+        &:hover:not(:disabled) {
+            background: $light-blue-gradient;
+            color: white;
+        }
+
+        &:disabled {
+            border-color: $medium-grey;
+            color: $medium-grey;
             cursor: not-allowed;
         }
 

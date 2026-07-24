@@ -14,12 +14,30 @@ import { SearchService } from "app/core/learning-object-module/search/search.ser
 import { FormsModule } from "@angular/forms";
 import { AutofocusDirective } from "../../../../../shared/directives/autofocus.directive";
 import { ActivateDirective } from "../../../../../shared/directives/activate.directive";
-import { NgIf, NgFor, NgClass, TitleCasePipe, DatePipe } from "@angular/common";
+import {
+    NgIf,
+    NgFor,
+    NgClass,
+    NgTemplateOutlet,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    TitleCasePipe,
+    DatePipe,
+} from "@angular/common";
 import { VirtualScrollerModule } from "@iharbeck/ngx-virtual-scroller";
 import { SkipLinkComponent } from "../../../../../shared/components/skip-link/skip-link.component";
 import { BuilderStore } from "../../../builder-store.service";
 
 type AddChildMode = "create" | "existing";
+type ChildCreationStage =
+    | "idle"
+    | "validating"
+    | "creating"
+    | "attaching"
+    | "attachFailed"
+    | "refreshing"
+    | "refreshFailed";
 
 export interface CreatedChildHierarchy {
     child: LearningObject;
@@ -39,6 +57,10 @@ export interface CreatedChildHierarchy {
         VirtualScrollerModule,
         NgFor,
         NgClass,
+        NgTemplateOutlet,
+        NgSwitch,
+        NgSwitchCase,
+        NgSwitchDefault,
         SkipLinkComponent,
         TitleCasePipe,
         DatePipe,
@@ -52,6 +74,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
     @Output() childToAdd: EventEmitter<LearningObject> = new EventEmitter();
     @Output() childCreated: EventEmitter<CreatedChildHierarchy> =
         new EventEmitter();
+    @Output() dismissalLockChange: EventEmitter<boolean> = new EventEmitter();
 
     children: LearningObject[];
     loading: boolean;
@@ -60,7 +83,10 @@ export class AddChildComponent implements OnInit, OnDestroy {
     newChildName: string;
     defaultChildLength: LearningObject.Length;
     creatingChild: boolean;
+    creationStage: ChildCreationStage = "idle";
+    createdChild: LearningObject;
     createChildError: string;
+    private childWindow: Window | null;
 
     childrenSearchString: string;
     searchString$: BehaviorSubject<string> = new BehaviorSubject("");
@@ -101,7 +127,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
     }
 
     async createNewChild(): Promise<void> {
-        if (this.creatingChild) {
+        if (this.creatingChild || this.createdChild) {
             return;
         }
 
@@ -112,8 +138,10 @@ export class AddChildComponent implements OnInit, OnDestroy {
         }
 
         this.creatingChild = true;
+        this.creationStage = "validating";
         this.createChildError = undefined;
-        const childWindow = this.reserveChildWindow();
+        this.dismissalLockChange.emit(true);
+        this.childWindow = this.reserveChildWindow();
 
         try {
             const nameAvailable =
@@ -121,32 +149,76 @@ export class AddChildComponent implements OnInit, OnDestroy {
             if (!nameAvailable) {
                 this.createChildError =
                     "A learning object with this name already exists.";
-                childWindow?.close();
+                this.creationStage = "idle";
+                this.dismissalLockChange.emit(false);
+                this.closeReservedChildWindow();
                 return;
             }
+        } catch {
+            this.createChildError =
+                "Unable to validate this child name. Try again.";
+            this.creationStage = "idle";
+            this.dismissalLockChange.emit(false);
+            this.closeReservedChildWindow();
+            return;
+        }
 
+        try {
+            this.creationStage = "creating";
             const child = new LearningObject({
                 author: this.auth.user,
                 name,
                 length: this.defaultChildLength,
                 status: LearningObject.Status.UNRELEASED,
             });
-            const createdChild = await this.store.createHierarchyChild(
+            this.createdChild = await this.store.createHierarchyChild(
                 child.toPlainObject(),
             );
-
-            await this.store.attachHierarchyChild(createdChild.id);
-            const children = await this.store.getChildren();
-
-            this.childCreated.emit({ child: createdChild, children });
-            this.openChildBuilder(createdChild, childWindow);
         } catch {
             this.createChildError =
-                "Unable to create and attach this child. Try again.";
-            childWindow?.close();
+                "The child could not be created. No child was attached. Try again.";
+            this.creationStage = "idle";
+            this.dismissalLockChange.emit(false);
+            this.closeReservedChildWindow();
+            return;
         } finally {
             this.creatingChild = false;
         }
+
+        await this.attachCreatedChild();
+    }
+
+    async retryAttach(): Promise<void> {
+        if (
+            this.creatingChild ||
+            !this.createdChild ||
+            this.creationStage !== "attachFailed"
+        ) {
+            return;
+        }
+
+        this.childWindow = this.reserveChildWindow();
+        await this.attachCreatedChild();
+    }
+
+    async retryRefresh(): Promise<void> {
+        if (
+            this.creatingChild ||
+            !this.createdChild ||
+            this.creationStage !== "refreshFailed"
+        ) {
+            return;
+        }
+
+        await this.refreshParentHierarchy();
+    }
+
+    openCreatedChild(): void {
+        if (!this.createdChild) {
+            return;
+        }
+
+        this.openChildBuilder(this.createdChild, null);
     }
 
     /**
@@ -236,6 +308,49 @@ export class AddChildComponent implements OnInit, OnDestroy {
                 "Creating child learning object...";
         }
         return childWindow;
+    }
+
+    private async attachCreatedChild(): Promise<void> {
+        this.creatingChild = true;
+        this.creationStage = "attaching";
+        this.createChildError = undefined;
+
+        try {
+            await this.store.attachHierarchyChild(this.createdChild.id);
+        } catch {
+            this.creationStage = "attachFailed";
+            this.createChildError = `'${this.createdChild.name}' was created but could not be attached to '${this.child.name}'. Open the created child or retry attaching it.`;
+            this.closeReservedChildWindow();
+            this.creatingChild = false;
+            return;
+        }
+
+        this.openChildBuilder(this.createdChild, this.childWindow);
+        this.childWindow = null;
+        this.creatingChild = false;
+        await this.refreshParentHierarchy();
+    }
+
+    private async refreshParentHierarchy(): Promise<void> {
+        this.creatingChild = true;
+        this.creationStage = "refreshing";
+        this.createChildError = undefined;
+
+        try {
+            const children = await this.store.getChildren();
+            this.dismissalLockChange.emit(false);
+            this.childCreated.emit({ child: this.createdChild, children });
+        } catch {
+            this.creationStage = "refreshFailed";
+            this.createChildError = `'${this.createdChild.name}' was created and attached, but the parent hierarchy could not be refreshed. Retry refreshing the hierarchy.`;
+        } finally {
+            this.creatingChild = false;
+        }
+    }
+
+    private closeReservedChildWindow(): void {
+        this.childWindow?.close();
+        this.childWindow = null;
     }
 
     private openChildBuilder(

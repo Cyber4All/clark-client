@@ -53,6 +53,18 @@ describe("AddChildComponent", () => {
         },
     };
 
+    function makeChildWindow(): Window {
+        return {
+            opener: window,
+            document: {
+                title: "",
+                body: { textContent: "" },
+            },
+            location: { href: "" },
+            close: jest.fn(),
+        } as unknown as Window;
+    }
+
     beforeEach(async () => {
         jest.clearAllMocks();
 
@@ -77,6 +89,10 @@ describe("AddChildComponent", () => {
         fixture.detectChanges();
         await fixture.whenStable();
         fixture.detectChanges();
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
     });
 
     it("starts with the existing-child search path", () => {
@@ -144,15 +160,7 @@ describe("AddChildComponent", () => {
     });
 
     it("creates, attaches, refreshes, and opens a new child in order", async () => {
-        const childWindow = {
-            opener: window,
-            document: {
-                title: "",
-                body: { textContent: "" },
-            },
-            location: { href: "" },
-            close: jest.fn(),
-        } as unknown as Window;
+        const childWindow = makeChildWindow();
         jest.spyOn(window, "open").mockReturnValue(childWindow);
         const hierarchyUpdates = [];
         component.childCreated.subscribe((result) =>
@@ -187,15 +195,7 @@ describe("AddChildComponent", () => {
 
     it("does not create a child when its name is unavailable", async () => {
         store.isLearningObjectNameAvailable.mockResolvedValueOnce(false);
-        const childWindow = {
-            opener: window,
-            document: {
-                title: "",
-                body: { textContent: "" },
-            },
-            location: { href: "" },
-            close: jest.fn(),
-        } as unknown as Window;
+        const childWindow = makeChildWindow();
         jest.spyOn(window, "open").mockReturnValue(childWindow);
 
         await component.createNewChild();
@@ -204,5 +204,110 @@ describe("AddChildComponent", () => {
         expect(store.attachHierarchyChild).not.toHaveBeenCalled();
         expect(childWindow.close).toHaveBeenCalled();
         expect(component.createChildError).toContain("already exists");
+    });
+
+    it("does not attach when child creation fails", async () => {
+        store.createHierarchyChild.mockRejectedValueOnce(
+            new Error("create failed"),
+        );
+        const childWindow = makeChildWindow();
+        jest.spyOn(window, "open").mockReturnValue(childWindow);
+
+        await component.createNewChild();
+
+        expect(store.attachHierarchyChild).not.toHaveBeenCalled();
+        expect(store.getChildren).not.toHaveBeenCalled();
+        expect(component.createdChild).toBeUndefined();
+        expect(component.createChildError).toContain(
+            "could not be created",
+        );
+        expect(childWindow.close).toHaveBeenCalled();
+    });
+
+    it("retains a created child and retries only attachment after attach fails", async () => {
+        store.attachHierarchyChild.mockRejectedValueOnce(
+            new Error("attach failed"),
+        );
+        const initialWindow = makeChildWindow();
+        const retryWindow = makeChildWindow();
+        jest.spyOn(window, "open")
+            .mockReturnValueOnce(initialWindow)
+            .mockReturnValueOnce(retryWindow);
+        const hierarchyUpdates = [];
+        component.childCreated.subscribe((result) =>
+            hierarchyUpdates.push(result),
+        );
+
+        await component.createNewChild();
+
+        expect(component.createdChild).toBe(createdChild);
+        expect(component.creationStage).toBe("attachFailed");
+        expect(component.createChildError).toContain(
+            "was created but could not be attached",
+        );
+        expect(initialWindow.close).toHaveBeenCalled();
+        expect(store.getChildren).not.toHaveBeenCalled();
+
+        await component.retryAttach();
+
+        expect(store.createHierarchyChild).toHaveBeenCalledTimes(1);
+        expect(store.attachHierarchyChild).toHaveBeenCalledTimes(2);
+        expect(store.getChildren).toHaveBeenCalledTimes(1);
+        expect(hierarchyUpdates).toEqual([
+            { child: createdChild, children: refreshedChildren },
+        ]);
+        expect(retryWindow.location.href).toContain(
+            "/onion/learning-object-builder/created-child-cuid/1",
+        );
+    });
+
+    it("retries only hierarchy refresh after attach succeeds", async () => {
+        store.getChildren.mockRejectedValueOnce(new Error("refresh failed"));
+        const childWindow = makeChildWindow();
+        jest.spyOn(window, "open").mockReturnValue(childWindow);
+        const hierarchyUpdates = [];
+        component.childCreated.subscribe((result) =>
+            hierarchyUpdates.push(result),
+        );
+
+        await component.createNewChild();
+
+        expect(component.createdChild).toBe(createdChild);
+        expect(component.creationStage).toBe("refreshFailed");
+        expect(component.createChildError).toContain(
+            "created and attached",
+        );
+        expect(childWindow.location.href).toContain(
+            "/onion/learning-object-builder/created-child-cuid/1",
+        );
+
+        await component.retryRefresh();
+
+        expect(store.createHierarchyChild).toHaveBeenCalledTimes(1);
+        expect(store.attachHierarchyChild).toHaveBeenCalledTimes(1);
+        expect(store.getChildren).toHaveBeenCalledTimes(2);
+        expect(hierarchyUpdates).toEqual([
+            { child: createdChild, children: refreshedChildren },
+        ]);
+    });
+
+    it("prevents duplicate submissions while creation is in progress", async () => {
+        let resolveNameAvailability: (available: boolean) => void;
+        store.isLearningObjectNameAvailable.mockReturnValueOnce(
+            new Promise((resolve) => {
+                resolveNameAvailability = resolve;
+            }),
+        );
+        jest.spyOn(window, "open").mockReturnValue(makeChildWindow());
+
+        const firstSubmission = component.createNewChild();
+        const duplicateSubmission = component.createNewChild();
+
+        expect(store.isLearningObjectNameAvailable).toHaveBeenCalledTimes(1);
+        resolveNameAvailability(true);
+        await Promise.all([firstSubmission, duplicateSubmission]);
+
+        expect(store.createHierarchyChild).toHaveBeenCalledTimes(1);
+        expect(store.attachHierarchyChild).toHaveBeenCalledTimes(1);
     });
 });

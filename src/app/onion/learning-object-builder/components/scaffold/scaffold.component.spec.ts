@@ -111,4 +111,14 @@ describe("ScaffoldComponent", () => {
             "Name this learning object before adding children",
         );
     });
+
+    it("keeps the popup open while a child operation requires recovery", async () => {
+        await createComponent(LearningObject.Length.MODULE);
+        component.isAddingChild = true;
+        component.childFlowLocked = true;
+
+        component.toggleAddChild(false);
+
+        expect(component.isAddingChild).toBe(true);
+    });
 });

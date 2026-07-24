@@ -125,6 +125,9 @@
             [currentChildren]="childrenIDs"
             [child]="learningObject"
             (childToAdd)="addToChild($event)"
-            (childCreated)="handleCreatedChild($event)"></clark-add-child>
+            (childCreated)="handleCreatedChild($event)"
+            (dismissalLockChange)="
+                childFlowLocked = $event
+            "></clark-add-child>
     </div>
 </clark-teleporter>
