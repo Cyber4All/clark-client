@@ -17,8 +17,14 @@ import { ActivateDirective } from "../../../../../shared/directives/activate.dir
 import { NgIf, NgFor, NgClass, TitleCasePipe, DatePipe } from "@angular/common";
 import { VirtualScrollerModule } from "@iharbeck/ngx-virtual-scroller";
 import { SkipLinkComponent } from "../../../../../shared/components/skip-link/skip-link.component";
+import { BuilderStore } from "../../../builder-store.service";
 
 type AddChildMode = "create" | "existing";
+
+export interface CreatedChildHierarchy {
+    child: LearningObject;
+    children: LearningObject[];
+}
 
 @Component({
     selector: "clark-add-child",
@@ -43,7 +49,9 @@ export class AddChildComponent implements OnInit, OnDestroy {
     @Input() child: LearningObject;
     @Input() currentChildren: string[];
     // emits the child that is to be added to the children array
-    @Output() childToAdd: EventEmitter<{}> = new EventEmitter();
+    @Output() childToAdd: EventEmitter<LearningObject> = new EventEmitter();
+    @Output() childCreated: EventEmitter<CreatedChildHierarchy> =
+        new EventEmitter();
 
     children: LearningObject[];
     loading: boolean;
@@ -51,6 +59,8 @@ export class AddChildComponent implements OnInit, OnDestroy {
     mode: AddChildMode = "existing";
     newChildName: string;
     defaultChildLength: LearningObject.Length;
+    creatingChild: boolean;
+    createChildError: string;
 
     childrenSearchString: string;
     searchString$: BehaviorSubject<string> = new BehaviorSubject("");
@@ -66,6 +76,7 @@ export class AddChildComponent implements OnInit, OnDestroy {
 
     constructor(
         private searchLearningObjectService: SearchService,
+        private store: BuilderStore,
         public auth: AuthService,
     ) {
         this.searchString$
@@ -86,6 +97,56 @@ export class AddChildComponent implements OnInit, OnDestroy {
 
     selectMode(mode: AddChildMode): void {
         this.mode = mode;
+        this.createChildError = undefined;
+    }
+
+    async createNewChild(): Promise<void> {
+        if (this.creatingChild) {
+            return;
+        }
+
+        const name = this.newChildName?.trim();
+        if (!name) {
+            this.createChildError = "Enter a name for the new child.";
+            return;
+        }
+
+        this.creatingChild = true;
+        this.createChildError = undefined;
+        const childWindow = this.reserveChildWindow();
+
+        try {
+            const nameAvailable =
+                await this.store.isLearningObjectNameAvailable(name);
+            if (!nameAvailable) {
+                this.createChildError =
+                    "A learning object with this name already exists.";
+                childWindow?.close();
+                return;
+            }
+
+            const child = new LearningObject({
+                author: this.auth.user,
+                name,
+                length: this.defaultChildLength,
+                status: LearningObject.Status.UNRELEASED,
+            });
+            const createdChild = await this.store.createHierarchyChild(
+                child.toPlainObject(),
+            );
+
+            await this.store.attachHierarchyChild(createdChild.id);
+            const children = await this.store.getChildren();
+
+            this.childCreated.emit({ child: createdChild, children });
+            this.openChildBuilder(createdChild, childWindow);
+        } catch {
+            this.createChildError =
+                "Unable to create and attach this child. Try again.";
+            childWindow?.close();
+        } finally {
+            this.creatingChild = false;
+        }
     }
 
     /**
@@ -164,6 +225,33 @@ export class AddChildComponent implements OnInit, OnDestroy {
             null,
             this.childrenSearchString,
         );
+    }
+
+    private reserveChildWindow(): Window | null {
+        const childWindow = window.open("", "_blank");
+        if (childWindow) {
+            childWindow.opener = null;
+            childWindow.document.title = "Creating child learning object";
+            childWindow.document.body.textContent =
+                "Creating child learning object...";
+        }
+        return childWindow;
+    }
+
+    private openChildBuilder(
+        child: LearningObject,
+        childWindow: Window | null,
+    ): void {
+        const path = `/onion/learning-object-builder/${encodeURIComponent(
+            child.cuid,
+        )}/${child.version}`;
+        const url = new URL(path, window.location.origin).toString();
+
+        if (childWindow) {
+            childWindow.location.href = url;
+        } else {
+            window.open(url, "_blank", "noopener,noreferrer");
+        }
     }
 
     ngOnDestroy() {

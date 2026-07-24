@@ -15,7 +15,7 @@ The existing add-existing-child search remains available, including released lea
 - [x] (2026-07-24 16:24Z) Ran the focused Jest baseline for `ScaffoldComponent` and `AddChildComponent`; both suites are blocked before test execution by the repository's existing Jest/Angular transformer incompatibility.
 - [x] (2026-07-24 16:43Z) Phase 1: made Add Child persistent, removed the Add/Delete toggle/edit state, rendered the panel for Nanomodules with an explained disabled action, moved reorder left, kept delete right, and added focused scaffold expectations.
 - [x] (2026-07-24 18:49Z) Phase 2: added Create New and Add Existing paths, preserved the existing search/selection flow as the default, exposed the approved editable default name and child-length preview, and added focused expectations.
-- [ ] Phase 3: implement successful create, attach, refresh, and child-builder opening behavior, then validate independently.
+- [x] (2026-07-24 18:55Z) Phase 3: implemented name validation plus the successful create → attach → refresh → open-child sequence using existing learning-object service routes, with loading protection and focused expectations.
 - [ ] Phase 4: implement duplicate-submit protection and recoverable create/attach/refresh failure states, then validate independently.
 - [ ] Run final focused tests, lint/build validation, and manual acceptance checks.
 
@@ -82,18 +82,28 @@ The existing add-existing-child search remains available, including released lea
   Rationale: Existing create and attach routes are sufficient, and backend hierarchy validation and release rules are explicitly out of scope.
   Date/Author: 2026-07-24 / Codex
 
+- Decision: Expose separate create-child and attach-child methods on the builder store rather than reusing its private parent autosave creation method.
+  Rationale: The private method replaces the store's current learning object, while this workflow must preserve the parent and retain the created child between independently recoverable operations.
+  Date/Author: 2026-07-24 / Codex
+
+- Decision: Reserve the child window synchronously from the Create and Add Child activation, then navigate it only after create, attach, and refresh succeed.
+  Rationale: This keeps the parent builder open and avoids common popup blocking caused by calling `window.open` only after asynchronous requests finish.
+  Date/Author: 2026-07-24 / Codex
+
 ## Outcomes & Retrospective
 
 Phase 1 is complete. The hierarchy panel now remains present for Nanomodules, Add Child is persistent and explains both Nanomodule and unsaved-parent disabled states, the toggle-specific component state/imports are removed, and each child row permanently exposes reorder on the left and delete on the right. Existing loading, search-popup, reorder, and deletion operations remain in place.
 
 Phase 2 is complete. The existing popup now exposes tab-like Create New and Add Existing paths. Add Existing remains the initial path and retains the current draft/released searches and selection event. Create New shows the editable `<parent name> Child #<current child count + 1>` value and the one-level-shorter default length with guidance that length can be changed in the child builder. This checkpoint deliberately does not submit the create form; service orchestration begins in Phase 3.
 
+Phase 3 is complete. Create and Add Child now checks name availability, creates an unreleased child through the existing learning-object service, attaches the returned ID to the current parent through the existing children route, reloads the parent children, updates the scaffold, closes the popup, and navigates a synchronously reserved tab/window to the returned CUID/version. The submit action stays disabled while the sequence is active. The builder store keeps create and attach as separate public operations so Phase 4 can retry from the correct partial state.
+
 Validation at this checkpoint:
 
 - Focused ESLint over all touched TypeScript and Angular templates passes.
 - Angular compilation via `ngc -p src/tsconfig.app.json` passes.
 - `git diff --check` passes.
-- Focused Jest remains blocked before execution by the recorded `jest-preset-angular` transformer incompatibility, including after adding the Phase 2 expectations.
+- Focused Jest remains blocked before execution by the recorded `jest-preset-angular` transformer incompatibility, including after adding success-path, payload, name-validation, hierarchy-refresh, and child-window expectations.
 - Repository-wide spec type-check remains blocked by unrelated legacy spec errors and reports no Phase 1 file errors.
 - The Angular application builder aborts with exit 134 in this environment, as recorded above.
 

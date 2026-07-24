@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { LearningObject } from "@entity";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { SearchService } from "app/core/learning-object-module/search/search.service";
+import { BuilderStore } from "../../../builder-store.service";
 import { AddChildComponent } from "./add-child.component";
 
 describe("AddChildComponent", () => {
@@ -29,6 +30,28 @@ describe("AddChildComponent", () => {
                 }),
         ),
     };
+    const createdChild = {
+        id: "created-child-id",
+        cuid: "created-child-cuid",
+        version: 1,
+        name: "Parent Child #2",
+        length: LearningObject.Length.MICROMODULE,
+        status: LearningObject.Status.UNRELEASED,
+    } as LearningObject;
+    const refreshedChildren = [draftChild, releasedChild, createdChild];
+    const store = {
+        isLearningObjectNameAvailable: jest.fn().mockResolvedValue(true),
+        createHierarchyChild: jest.fn().mockResolvedValue(createdChild),
+        attachHierarchyChild: jest.fn().mockResolvedValue(undefined),
+        getChildren: jest.fn().mockResolvedValue(refreshedChildren),
+    };
+    const auth = {
+        user: {
+            id: "author-id",
+            username: "author",
+            name: "Author",
+        },
+    };
 
     beforeEach(async () => {
         jest.clearAllMocks();
@@ -37,7 +60,8 @@ describe("AddChildComponent", () => {
             imports: [AddChildComponent],
             providers: [
                 { provide: SearchService, useValue: searchService },
-                { provide: AuthService, useValue: {} },
+                { provide: BuilderStore, useValue: store },
+                { provide: AuthService, useValue: auth },
             ],
         }).compileComponents();
 
@@ -116,5 +140,69 @@ describe("AddChildComponent", () => {
 
         expect(emittedChildren).toEqual([releasedChild]);
         expect(component.children).toEqual([]);
+        expect(store.createHierarchyChild).not.toHaveBeenCalled();
+    });
+
+    it("creates, attaches, refreshes, and opens a new child in order", async () => {
+        const childWindow = {
+            opener: window,
+            document: {
+                title: "",
+                body: { textContent: "" },
+            },
+            location: { href: "" },
+            close: jest.fn(),
+        } as unknown as Window;
+        jest.spyOn(window, "open").mockReturnValue(childWindow);
+        const hierarchyUpdates = [];
+        component.childCreated.subscribe((result) =>
+            hierarchyUpdates.push(result),
+        );
+        component.selectMode("create");
+
+        await component.createNewChild();
+
+        expect(store.isLearningObjectNameAvailable).toHaveBeenCalledWith(
+            "Parent Child #2",
+        );
+        expect(store.createHierarchyChild).toHaveBeenCalledWith(
+            expect.objectContaining({
+                name: "Parent Child #2",
+                length: LearningObject.Length.MICROMODULE,
+                status: LearningObject.Status.UNRELEASED,
+            }),
+        );
+        expect(store.attachHierarchyChild).toHaveBeenCalledWith(
+            "created-child-id",
+        );
+        expect(store.getChildren).toHaveBeenCalled();
+        expect(hierarchyUpdates).toEqual([
+            { child: createdChild, children: refreshedChildren },
+        ]);
+        expect(childWindow.location.href).toContain(
+            "/onion/learning-object-builder/created-child-cuid/1",
+        );
+        expect(component.creatingChild).toBe(false);
+    });
+
+    it("does not create a child when its name is unavailable", async () => {
+        store.isLearningObjectNameAvailable.mockResolvedValueOnce(false);
+        const childWindow = {
+            opener: window,
+            document: {
+                title: "",
+                body: { textContent: "" },
+            },
+            location: { href: "" },
+            close: jest.fn(),
+        } as unknown as Window;
+        jest.spyOn(window, "open").mockReturnValue(childWindow);
+
+        await component.createNewChild();
+
+        expect(store.createHierarchyChild).not.toHaveBeenCalled();
+        expect(store.attachHierarchyChild).not.toHaveBeenCalled();
+        expect(childWindow.close).toHaveBeenCalled();
+        expect(component.createChildError).toContain("already exists");
     });
 });

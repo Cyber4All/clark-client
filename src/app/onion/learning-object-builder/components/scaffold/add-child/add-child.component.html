@@ -45,7 +45,28 @@
         </span>
     </div>
     <p>The child length can be changed after it opens in the builder.</p>
+    <div
+        *ngIf="createChildError"
+        class="create-child__error"
+        role="alert">
+        {{ createChildError }}
+    </div>
+    <button
+        type="button"
+        class="create-child__submit"
+        [disabled]="creatingChild || !newChildName?.trim()"
+        (activate)="createNewChild()">
+        <ng-container *ngIf="!creatingChild; else creatingChildTemplate">
+            Create and Add Child
+            <i class="far fa-plus"></i>
+        </ng-container>
+    </button>
 </section>
+
+<ng-template #creatingChildTemplate>
+    <i class="fal fa-spinner-third fa-spin"></i>
+    Creating and adding child...
+</ng-template>
 
 <section
     *ngIf="mode === 'existing'"

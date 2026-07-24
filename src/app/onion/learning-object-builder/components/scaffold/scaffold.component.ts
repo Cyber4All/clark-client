@@ -31,7 +31,10 @@ import { TipDirective } from "../../../../shared/directives/tip.directive";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { PopupComponent } from "../../../../shared/modules/popups/popup.component";
 import { TeleporterComponent } from "../../../../shared/modules/teleporter/teleporter.component";
-import { AddChildComponent } from "./add-child/add-child.component";
+import {
+    AddChildComponent,
+    CreatedChildHierarchy,
+} from "./add-child/add-child.component";
 
 @Component({
     selector: "clark-scaffold",
@@ -161,6 +164,12 @@ export class ScaffoldComponent implements OnInit {
 
         // send request to the service to set children
         this.store.setChildren(this.childrenIDs);
+    }
+
+    handleCreatedChild(result: CreatedChildHierarchy): void {
+        this.children = result.children;
+        this.childrenIDs = result.children.map((child) => child.id);
+        this.toggleAddChild(false);
     }
 
     /**

@@ -52,6 +52,35 @@
         align-items: center;
         justify-content: space-between;
     }
+
+    &__error {
+        color: $error-red;
+        font-size: $small;
+    }
+
+    &__submit {
+        align-self: flex-end;
+        border: 0;
+        border-radius: 2px;
+        background: $light-blue;
+        color: white;
+        cursor: pointer;
+        padding: 8px 12px;
+
+        &:focus,
+        &:hover:not(:disabled) {
+            background: $light-blue-gradient;
+        }
+
+        &:disabled {
+            background: $medium-grey;
+            cursor: not-allowed;
+        }
+
+        .svg-inline--fa {
+            margin-left: 6px;
+        }
+    }
 }
 
 .child-length {

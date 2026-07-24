@@ -124,6 +124,7 @@
         <clark-add-child
             [currentChildren]="childrenIDs"
             [child]="learningObject"
-            (childToAdd)="addToChild($event)"></clark-add-child>
+            (childToAdd)="addToChild($event)"
+            (childCreated)="handleCreatedChild($event)"></clark-add-child>
     </div>
 </clark-teleporter>

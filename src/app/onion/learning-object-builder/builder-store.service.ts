@@ -337,6 +337,43 @@ export class BuilderStore {
     }
 
     /**
+     * Checks whether a proposed child name is available before creation.
+     */
+    isLearningObjectNameAvailable(name: string): Promise<boolean> {
+        return this.refactoredLearningObjectService.checkNameAvailability(name);
+    }
+
+    /**
+     * Creates an unreleased learning object without replacing the parent
+     * currently held by this builder store.
+     */
+    createHierarchyChild(
+        child: Partial<LearningObject>,
+    ): Promise<LearningObject> {
+        return this.refactoredLearningObjectService.create({
+            ...child,
+            status: LearningObject.Status.UNRELEASED,
+        });
+    }
+
+    /**
+     * Attaches a previously created learning object to the current parent.
+     */
+    attachHierarchyChild(childId: string): Promise<any> {
+        if (!this.learningObject.id) {
+            return Promise.reject(
+                new Error("A parent learning object is required."),
+            );
+        }
+
+        return this.refactoredLearningObjectService.setChildren(
+            this.learningObject.id,
+            [childId],
+            false,
+        );
+    }
+
+    /**
      * Sets the learning objects children after they have been re-ordered
      *
      * @param remove {boolean} True if removing a child from the list, false if adding
