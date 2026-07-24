@@ -3,28 +3,30 @@
         <div class="far fa-project-diagram icon"></div>
     </div>
     <div class="title">Children</div>
-    <div
-        *ngIf="
-            children?.length !== 0 && learningObject?.length !== 'nanomodule'
-        "
-        class="edit">
-        <div class="text">Add/Delete</div>
-        <clark-toggle-switch
-            *ngIf="!loadingChildrenError"
-            identity="children"
-            [state]="editContent"
-            style="blue"
-            [aria]="ariaLabel"
-            (toggled)="toggleAddDelete()"></clark-toggle-switch>
-    </div>
 </div>
 <clark-skip-link
-    *ngIf="!editContent || learningObject?.length === 'nanomodule'"
     title="Skip to Builder Form"
     skipLocation="form"></clark-skip-link>
 <div
-    [ngTemplateOutlet]="addChild"
-    *ngIf="editContent || children?.length === 0"></div>
+    class="add-child-action"
+    [tip]="addChildDisabledReason"
+    [tipDisabled]="!addChildDisabledReason"
+    tipPosition="right">
+    <button
+        id="children"
+        #addChildButton
+        [attr.aria-label]="
+            addChildDisabledReason
+                ? 'Add Child unavailable. ' + addChildDisabledReason
+                : 'Add Child'
+        "
+        class="edit-children"
+        [disabled]="!!addChildDisabledReason"
+        (activate)="toggleAddChild(); $event.stopPropagation()">
+        Add Child
+        <i class="far fa-plus"></i>
+    </button>
+</div>
 <ng-template [ngIf]="children && children.length > 0">
     <div cdkDropList class="children-list" (cdkDropListDropped)="drop($event)">
         <div
@@ -33,6 +35,13 @@
             cdkDragLockAxis="y"
             cdkDragBoundary=".children-list"
             cdkDrag>
+            <div
+                tabindex="0"
+                attr.aria-label="Move {{ c.name }}"
+                class="hamburger-handle"
+                cdkDragHandle>
+                <i class="fas fa-bars"></i>
+            </div>
             <div class="info">
                 <div class="top-row">
                     <div class="child-title" [tip]="c.name" tipPosition="top">
@@ -48,47 +57,14 @@
                     </div>
                 </div>
             </div>
-            <div
-                tabindex="0"
-                attr.aria-label="Move {{ c.name }}"
-                [ngStyle]="{ display: editContent ? 'none' : 'block' }"
-                class="hamburger-handle"
-                cdkDragHandle>
-                <i class="fas fa-bars"></i>
-            </div>
             <button
                 attr.aria-label="Delete {{ c.name }}"
-                [ngStyle]="{ display: editContent ? 'block' : 'none' }"
                 class="delete"
                 (activate)="deleteButton(i)">
                 <i class="far fa-trash-alt"></i>
             </button>
         </div>
     </div>
-</ng-template>
-
-<ng-template #addChild>
-    <button
-        id="children"
-        #addChildButton
-        [attr.aria-label]="
-            learningObject?.id
-                ? 'Add Child'
-                : 'Name this learning object before adding children'
-        "
-        class="edit-children"
-        [disabled]="!learningObject?.id"
-        [tip]="
-            !learningObject?.id
-                ? 'Name this learning object before adding children.'
-                : undefined
-        "
-        tipPosition="right"
-        (activate)="toggleAddChild(); $event.stopPropagation()"
-        *ngIf="learningObject?.length !== 'nanomodule'">
-        Add Child
-        <i class="far fa-plus"></i>
-    </button>
 </ng-template>
 
 <ng-template [ngIf]="loading">

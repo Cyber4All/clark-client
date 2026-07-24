@@ -19,13 +19,6 @@
         align-items: left;
         justify-content: left;
     }
-    .edit {
-        .text {
-            padding-right: 10px;
-            font-size: $small;
-            display: inline-block;
-        }
-    }
 }
 .children-list {
     width: 100%;
@@ -49,8 +42,8 @@
     background: white;
 
     .info {
-        float: left;
-        width: 90%;
+        flex: 1 1 auto;
+        min-width: 0;
 
         .top-row {
             display: flex;
@@ -113,7 +106,8 @@
         width: 20px;
         height: 20px;
         font-size: $large;
-        margin-left: auto;
+        flex: 0 0 20px;
+        margin-right: 10px;
     }
 
     .delete {
@@ -154,10 +148,19 @@
     }
 
     &:focus,
-    &:hover {
+    &:hover:not(:disabled) {
         background: $light-blue-gradient;
         color: white;
     }
+
+    &:disabled {
+        color: $medium-grey;
+        cursor: not-allowed;
+    }
+}
+
+.add-child-action {
+    width: 100%;
 }
 
 .cdk-drag-preview {

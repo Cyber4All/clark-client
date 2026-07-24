@@ -21,14 +21,11 @@ import { UriRetrieverService } from "app/core/learning-object-module/uri-retriev
 import { catchError } from "rxjs/operators";
 import {
     NgIf,
-    NgTemplateOutlet,
     NgFor,
     NgClass,
-    NgStyle,
     TitleCasePipe,
     DatePipe,
 } from "@angular/common";
-import { ToggleSwitchComponent } from "../../../../shared/components/toggle-switch/toggle-switch.component";
 import { SkipLinkComponent } from "../../../../shared/components/skip-link/skip-link.component";
 import { TipDirective } from "../../../../shared/directives/tip.directive";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
@@ -43,16 +40,13 @@ import { AddChildComponent } from "./add-child/add-child.component";
     standalone: true,
     imports: [
         NgIf,
-        ToggleSwitchComponent,
         SkipLinkComponent,
-        NgTemplateOutlet,
         CdkDropList,
         NgFor,
         CdkDrag,
         TipDirective,
         NgClass,
         CdkDragHandle,
-        NgStyle,
         ActivateDirective,
         PopupComponent,
         TeleporterComponent,
@@ -67,7 +61,6 @@ export class ScaffoldComponent implements OnInit {
     // array to obtain children IDs
     childrenIDs: string[] = [];
     childrenConfirmationMessage: string;
-    ariaLabel: string;
 
     loadingChildrenError: boolean;
 
@@ -79,8 +72,6 @@ export class ScaffoldComponent implements OnInit {
     loading: boolean;
     childrenConfirmation: boolean;
     isAddingChild: boolean;
-    // boolean to indicate if edit is selected for the list
-    @Input() editContent: boolean;
 
     @ViewChild("addChildButton") addChildButton: ElementRef;
     @ViewChild("teleporterPayload") teleporterPayload: ElementRef;
@@ -105,7 +96,6 @@ export class ScaffoldComponent implements OnInit {
 
     ngOnInit() {
         this.childrenConfirmation = false;
-        this.ariaLabel = "Add and delete Children";
 
         if (!this.learningObject.id) {
             this.children = [];
@@ -128,7 +118,23 @@ export class ScaffoldComponent implements OnInit {
                     this.loading = false;
                     this.loadingChildrenError = true;
                 });
+        } else {
+            this.children = [];
         }
+    }
+
+    get addChildDisabledReason(): string | undefined {
+        if (
+            this.learningObject.length === LearningObject.Length.NANOMODULE
+        ) {
+            return "Nanomodules cannot have children.";
+        }
+
+        if (!this.learningObject.id) {
+            return "Name this learning object before adding children.";
+        }
+
+        return undefined;
     }
 
     /**
@@ -175,13 +181,6 @@ export class ScaffoldComponent implements OnInit {
     }
 
     /**
-     * Toggle the delete and add buttons on and off
-     */
-    toggleAddDelete() {
-        this.editContent = !this.editContent;
-    }
-
-    /**
      * Triggers the delete confirmation modal for the child selected for deletion
      *
      * @param index of the LO selected for deletion
@@ -214,11 +213,6 @@ export class ScaffoldComponent implements OnInit {
         );
         await this.store.setChildren(this.childrenIDs, true);
 
-        // if deleted child was last child toggle off editContent because there is no longer content to edit
-        if (this.children.length === 0) {
-            this.editContent = false;
-        }
-
         // get the children again to get current childrens array
         await this.store.getChildren();
     }
@@ -234,7 +228,7 @@ export class ScaffoldComponent implements OnInit {
      * Toggles the child modal
      */
     toggleAddChild(value: boolean = true) {
-        if (!this.learningObject.id) {
+        if (value && this.addChildDisabledReason) {
             return;
         }
 
@@ -259,8 +253,6 @@ export class ScaffoldComponent implements OnInit {
 
             // add the payload to the DOM
             this.isAddingChild = value;
-            // enable the add/delete mode since the user is currently adding children
-            this.editContent = true;
 
             // detect changes to populate the ViewChild with the correct element
             this.cd.detectChanges();
