@@ -18,6 +18,8 @@ import { NgIf, NgFor, NgClass, TitleCasePipe, DatePipe } from "@angular/common";
 import { VirtualScrollerModule } from "@iharbeck/ngx-virtual-scroller";
 import { SkipLinkComponent } from "../../../../../shared/components/skip-link/skip-link.component";
 
+type AddChildMode = "create" | "existing";
+
 @Component({
     selector: "clark-add-child",
     templateUrl: "./add-child.component.html",
@@ -46,11 +48,21 @@ export class AddChildComponent implements OnInit, OnDestroy {
     children: LearningObject[];
     loading: boolean;
 
+    mode: AddChildMode = "existing";
+    newChildName: string;
+    defaultChildLength: LearningObject.Length;
+
     childrenSearchString: string;
     searchString$: BehaviorSubject<string> = new BehaviorSubject("");
     componentDestroyed$: Subject<void> = new Subject();
 
-    lengths = ["nanomodule", "micromodule", "module", "unit", "course"];
+    readonly lengths = [
+        LearningObject.Length.NANOMODULE,
+        LearningObject.Length.MICROMODULE,
+        LearningObject.Length.MODULE,
+        LearningObject.Length.UNIT,
+        LearningObject.Length.COURSE,
+    ];
 
     constructor(
         private searchLearningObjectService: SearchService,
@@ -64,7 +76,16 @@ export class AddChildComponent implements OnInit, OnDestroy {
     }
 
     async ngOnInit() {
+        this.newChildName = `${this.child.name} Child #${
+            (this.currentChildren?.length ?? 0) + 1
+        }`;
+        const parentLengthIndex = this.lengths.indexOf(this.child.length);
+        this.defaultChildLength = this.lengths[parentLengthIndex - 1];
         this.children = await this.getLearningObjects();
+    }
+
+    selectMode(mode: AddChildMode): void {
+        this.mode = mode;
     }
 
     /**

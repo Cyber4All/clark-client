@@ -1,4 +1,87 @@
 @import "_vars.scss";
+
+.add-child-options {
+    display: flex;
+    border-bottom: solid 1px $light-grey;
+    margin-bottom: 12px;
+
+    &__tab {
+        flex: 1;
+        border: 0;
+        border-bottom: solid 3px transparent;
+        background: transparent;
+        color: $dark-grey;
+        cursor: pointer;
+        font-size: $normal;
+        padding: 10px;
+
+        &:focus,
+        &:hover,
+        &--active {
+            color: $light-blue;
+            border-bottom-color: $light-blue;
+        }
+    }
+}
+
+.create-child {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 8px;
+
+    label {
+        color: $darker-grey;
+        font-weight: 600;
+    }
+
+    input {
+        border: solid 1px $medium-grey;
+        border-radius: 2px;
+        padding: 8px;
+    }
+
+    p {
+        color: $dark-grey;
+        font-size: $small;
+        margin: 0;
+    }
+
+    &__length {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.child-length {
+    text-align: left;
+    font-size: $smaller;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 2px;
+
+    &.nanomodule {
+        background: $nanomodule-color;
+    }
+
+    &.micromodule {
+        background: $micromodule-color;
+    }
+
+    &.module {
+        background: $module-color;
+    }
+
+    &.unit {
+        background: $unit-color;
+    }
+
+    &.course {
+        background: $course-color;
+    }
+}
+
 .children-list {
     width: 100%;
     max-width: 100%;
@@ -41,34 +124,6 @@
         }
         .bottom-row {
             display: flex;
-
-            .child-length {
-                text-align: left;
-                font-size: $smaller;
-                color: white;
-                padding: 2px 5px;
-                border-radius: 2px;
-
-                &.nanomodule {
-                    background: $nanomodule-color;
-                }
-
-                &.micromodule {
-                    background: $micromodule-color;
-                }
-
-                &.module {
-                    background: $module-color;
-                }
-
-                &.unit {
-                    background: $unit-color;
-                }
-
-                &.course {
-                    background: $course-color;
-                }
-            }
 
             .child-last-updated {
                 color: $dark-grey;

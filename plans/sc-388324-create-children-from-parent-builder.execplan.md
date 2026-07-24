@@ -14,7 +14,7 @@ The existing add-existing-child search remains available, including released lea
 - [x] (2026-07-24 16:22Z) Recorded the initial implementation decisions and phased delivery strategy in this ExecPlan before changing application code.
 - [x] (2026-07-24 16:24Z) Ran the focused Jest baseline for `ScaffoldComponent` and `AddChildComponent`; both suites are blocked before test execution by the repository's existing Jest/Angular transformer incompatibility.
 - [x] (2026-07-24 16:43Z) Phase 1: made Add Child persistent, removed the Add/Delete toggle/edit state, rendered the panel for Nanomodules with an explained disabled action, moved reorder left, kept delete right, and added focused scaffold expectations.
-- [ ] Phase 2: introduce Create New and Add Existing paths while preserving existing search/attachment behavior, then validate independently.
+- [x] (2026-07-24 18:49Z) Phase 2: added Create New and Add Existing paths, preserved the existing search/selection flow as the default, exposed the approved editable default name and child-length preview, and added focused expectations.
 - [ ] Phase 3: implement successful create, attach, refresh, and child-builder opening behavior, then validate independently.
 - [ ] Phase 4: implement duplicate-submit protection and recoverable create/attach/refresh failure states, then validate independently.
 - [ ] Run final focused tests, lint/build validation, and manual acceptance checks.
@@ -62,6 +62,10 @@ The existing add-existing-child search remains available, including released lea
   Rationale: This preserves the current search workflow while giving the top-down workflow a clear entry point in the same popup.
   Date/Author: 2026-07-24 / Codex
 
+- Decision: Default the popup to Add Existing until the author explicitly selects Create New.
+  Rationale: This keeps the existing popup behavior unchanged for current authors while making the new path clear and directly reachable. Create submission is intentionally deferred to Phase 3.
+  Date/Author: 2026-07-24 / Codex
+
 - Decision: Use an editable default name of `<parent name> Child #<current child count + 1>`.
   Rationale: This is the product-approved format and gives each creation attempt a useful starting name. Existing name-availability behavior will be reused so collisions are not submitted silently.
   Date/Author: 2026-07-24 / Codex
@@ -82,12 +86,14 @@ The existing add-existing-child search remains available, including released lea
 
 Phase 1 is complete. The hierarchy panel now remains present for Nanomodules, Add Child is persistent and explains both Nanomodule and unsaved-parent disabled states, the toggle-specific component state/imports are removed, and each child row permanently exposes reorder on the left and delete on the right. Existing loading, search-popup, reorder, and deletion operations remain in place.
 
+Phase 2 is complete. The existing popup now exposes tab-like Create New and Add Existing paths. Add Existing remains the initial path and retains the current draft/released searches and selection event. Create New shows the editable `<parent name> Child #<current child count + 1>` value and the one-level-shorter default length with guidance that length can be changed in the child builder. This checkpoint deliberately does not submit the create form; service orchestration begins in Phase 3.
+
 Validation at this checkpoint:
 
 - Focused ESLint over all touched TypeScript and Angular templates passes.
 - Angular compilation via `ngc -p src/tsconfig.app.json` passes.
 - `git diff --check` passes.
-- Focused Jest remains blocked before execution by the recorded `jest-preset-angular` transformer incompatibility.
+- Focused Jest remains blocked before execution by the recorded `jest-preset-angular` transformer incompatibility, including after adding the Phase 2 expectations.
 - Repository-wide spec type-check remains blocked by unrelated legacy spec errors and reports no Phase 1 file errors.
 - The Angular application builder aborts with exit 134 in this environment, as recorded above.
 
