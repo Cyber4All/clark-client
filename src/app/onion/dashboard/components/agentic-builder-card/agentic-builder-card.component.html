@@ -1,0 +1,29 @@
+<section class="agentic-builder-card" aria-labelledby="agentic-builder-title">
+    <div class="agentic-builder-card__icon" aria-hidden="true">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+    </div>
+    <div class="agentic-builder-card__content">
+        <div
+            *ngIf="showAnnouncement"
+            class="agentic-builder-card__announcement">
+            <span>New Agentic Builder experience</span>
+            <button
+                type="button"
+                class="agentic-builder-card__dismiss"
+                aria-label="Dismiss Agentic Builder announcement"
+                (activate)="dismissAnnouncement.emit()">
+                <i class="fa-regular fa-xmark"></i>
+            </button>
+        </div>
+        <h2 id="agentic-builder-title">Build with AI assistance</h2>
+        <p>
+            Upload your existing materials first, then let Agentic Builder help
+            turn them into a draft learning object.
+        </p>
+    </div>
+    <div class="agentic-builder-card__actions">
+        <a class="button good" [routerLink]="ctaRoute">
+            {{ ctaLabel }} <i class="fa-solid fa-arrow-right"></i>
+        </a>
+    </div>
+</section>
