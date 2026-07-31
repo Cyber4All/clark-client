@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 // Google Analytics
-let gtag: Function;
+declare let gtag: Function;
 
 @Injectable({
     providedIn: "root",
