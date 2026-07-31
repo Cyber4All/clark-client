@@ -22,6 +22,13 @@ import { ChangelogModalComponent } from "../../shared/modules/changelogs/changel
 import { SidePanelContentComponent } from "./components/side-panel-content/side-panel-content.component";
 import { PanelDirective } from "../../shared/modules/side-panel/panel.directive";
 import { SubmitComponent } from "../shared/submit/submit.component";
+import {
+    FeatureHighlightAction,
+    FeatureHighlightCardComponent,
+} from "../../shared/components/feature-highlight-card/feature-highlight-card.component";
+import { FeatureAnnouncementPreferencesService } from "./services/feature-announcement-preferences.service";
+
+const AGENTIC_BUILDER_ANNOUNCEMENT_KEY = "agentic-builder-dashboard";
 
 @Component({
     selector: "clark-dashboard",
@@ -67,6 +74,7 @@ import { SubmitComponent } from "../shared/submit/submit.component";
         SidePanelContentComponent,
         PanelDirective,
         SubmitComponent,
+        FeatureHighlightCardComponent,
     ],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
@@ -99,6 +107,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     // delete
     objectsToDelete: any[];
 
+    showAgenticBuilderAnnouncement = true;
+    readonly agenticBuilderTitle = "New: AI Object Builder";
+    readonly agenticBuilderBody =
+        "Upload curriculum materials and let CLARK prefill your learning object.";
+    readonly agenticBuilderIconClass = "fa-solid fa-wand-magic-sparkles";
+    readonly agenticBuilderIconLabel = "AI Object Builder";
+    readonly agenticBuilderPrimaryAction: FeatureHighlightAction = {
+        label: "Try it",
+        ariaLabel: "Try AI Object Builder",
+    };
+    readonly agenticBuilderSecondaryAction: FeatureHighlightAction = {
+        label: "Dismiss",
+        ariaLabel: "Dismiss AI Object Builder announcement",
+    };
+    readonly agenticBuilderDismissLabel =
+        "Close AI Object Builder announcement";
+
     sidePanelPromiseResolver: Promise<any>;
 
     checkQueryParams$ = new Subject<void>();
@@ -117,12 +142,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private cd: ChangeDetectorRef,
         private submissionService: SubmissionsService,
         private editorialService: EditorialService,
+        private featureAnnouncementPreferences: FeatureAnnouncementPreferencesService,
     ) {
         this.navbar.hide();
     }
 
     async ngOnInit() {
         this.loading = true;
+        this.showAgenticBuilderAnnouncement =
+            !this.featureAnnouncementPreferences.isDismissed(
+                AGENTIC_BUILDER_ANNOUNCEMENT_KEY,
+                this.auth.username,
+            );
 
         // retrieve draft status learning objects
         setTimeout(async () => {
@@ -507,6 +538,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     navigateHome() {
         this.router.navigate(["/home"]);
+    }
+
+    startAgenticBuilder() {
+        this.router.navigate(["/onion/learning-object-builder/materials"]);
+    }
+
+    dismissAgenticBuilderAnnouncement() {
+        this.featureAnnouncementPreferences.updatePreference({
+            featureKey: AGENTIC_BUILDER_ANNOUNCEMENT_KEY,
+            username: this.auth.username,
+            dismissed: true,
+        });
+        this.showAgenticBuilderAnnouncement = false;
     }
 
     ngOnDestroy() {
