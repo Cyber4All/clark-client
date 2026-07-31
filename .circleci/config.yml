@@ -209,6 +209,7 @@ workflows:
                   requires:
                       - build-staging
             - upload-source-maps:
+                  context: [Sentry]
                   name: upload-source-maps-staging
                   environment: staging
                   requires:
@@ -249,6 +250,7 @@ workflows:
                       - semgrep-sast
                       - trivy-sca-sbom
             - upload-source-maps:
+                  context: [Sentry]
                   name: upload-source-maps-production
                   environment: prod
                   requires:

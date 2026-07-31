@@ -35,7 +35,7 @@ const {
     displayName: appDisplayName,
 } = require("../package.json");
 const VERSION_STORE = `${appName} version`;
-const SENTRY_ENABLED_ENVIRONMENTS = ["development", "staging", "production"];
+const SENTRY_ENABLED_ENVIRONMENTS = ["staging", "production"];
 
 Sentry.init({
     dsn: "https://791057349c7a589e044c88bd5c9a2c19@o4511711309463552.ingest.us.sentry.io/4511711708381184",
@@ -43,10 +43,10 @@ Sentry.init({
     environment: environment.environment,
     release: appVersion,
     integrations: [
-        Sentry.browserTracingIntegration(),
         Sentry.replayIntegration(),
     ],
-    tracesSampleRate: 1,
+    // Don't send traces
+    tracesSampleRate: 0.5,
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1,
     enableLogs: true,

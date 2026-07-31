@@ -9,7 +9,7 @@
             "projectType": "application",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:application",
+                    "builder": "@angular-builders/custom-webpack:browser",
                     "options": {
                         "outputPath": {
                             "base": "dist"
@@ -173,7 +173,7 @@
             "projectType": "application",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:application",
+                    "builder": "@angular-builders/custom-webpack:browser",
                     "options": {
                         "tsConfig": "src/tsconfig.app.json",
                         "polyfills": [
