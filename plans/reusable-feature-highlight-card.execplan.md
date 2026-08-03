@@ -19,6 +19,13 @@ CLARK needs a reusable UI component for announcing new features across app pages
 - [x] (2026-07-31 12:15 America/New_York) Updated the shared component and author dashboard usage to match the screenshot: compact bottom-right floating AI Object Builder announcement with icon, close control, `Try it`, and `Dismiss` actions.
 - [x] (2026-07-31 12:18 America/New_York) Changed dismissal from localStorage-backed persistence to current-app-session preference state so the announcement can appear again on a later login.
 - [x] (2026-07-31 12:22 America/New_York) Re-ran validation after the floating-notification update: app TypeScript and lint passed; Jest/spec execution remains blocked by existing repo test-tooling drift.
+- [x] (2026-08-03 12:29 America/New_York) Updated the secondary `Dismiss` button to persist the hide preference in browser localStorage with key `Hide AI Announcemednt` and value `1`.
+- [x] (2026-08-03 12:29 America/New_York) Kept the top-right close icon as current-view-only dismissal that does not write localStorage.
+- [x] (2026-08-03 12:34 America/New_York) Ran validation after localStorage update: app TypeScript, targeted lint, and whitespace checks passed; focused Jest remains blocked by existing setup failure.
+- [x] (2026-08-03 12:57 America/New_York) Planned follow-up route change: `Try it` should navigate to a new `/onion/ai-object-builder` page instead of the existing materials tab.
+- [x] (2026-08-03 13:00 America/New_York) Added an AI Object Builder page with upload dropzone, selected-file list, no-files empty state, guidance input, and disabled build button until files are selected.
+- [x] (2026-08-03 13:00 America/New_York) Updated the dashboard announcement primary action to route to `/onion/ai-object-builder`.
+- [x] (2026-08-03 13:00 America/New_York) Added focused page tests and reran validation: app TypeScript, targeted lint, and whitespace checks passed; Jest/spec/build blockers remain existing repo/tooling issues.
 
 ## Surprises & Discoveries
 
@@ -43,16 +50,22 @@ CLARK needs a reusable UI component for announcing new features across app pages
 - Decision: Keep preference persistence outside the shared component and emit a dismiss event.
   Rationale: This keeps the component reusable and lets the author dashboard call the appropriate user-preference update flow.
   Date/Author: 2026-07-31 / Codex
-- Decision: Make the dashboard AI Object Builder dismissal non-permanent.
-  Rationale: The screenshot-follow-up clarified that dismissing should not suppress the notification across future CLARK logins. The service now stores dismissal in memory for the current app session instead of writing localStorage.
+- Decision: Superseded prior decision to make the dashboard AI Object Builder dismissal non-permanent.
+  Rationale: The screenshot-follow-up initially clarified that dismissal should not suppress future CLARK logins, but later product feedback changed the secondary `Dismiss` action to persist the hide preference in browser localStorage.
   Date/Author: 2026-07-31 / Codex
 - Decision: Add `appearance`, `iconClass`, and `iconLabel` inputs to the reusable component rather than creating a separate dashboard-only toast component.
   Rationale: The same feature-highlight contract can support inline and floating placements while keeping page-specific copy, routing, and dismissal behavior in consumers.
   Date/Author: 2026-07-31 / Codex
+- Decision: Store the secondary `Dismiss` action in localStorage while keeping the `x` close action transient.
+  Rationale: Product feedback clarified that the secondary button should mean "do not show this announcement again" using the exact browser-storage key `Hide AI Announcemednt`, while the close icon should only hide the card in the current view.
+  Date/Author: 2026-08-03 / Codex
+- Decision: Add a sibling AI Object Builder route instead of sending users into the existing manual builder materials tab.
+  Rationale: The mock shows a separate upload-first experience with its own title, dropzone, selected-file list, guidance input, and build action. Keeping it separate avoids changing the manual builder tabs and preserves the existing `/onion/learning-object-builder/materials` behavior.
+  Date/Author: 2026-08-03 / Codex
 
 ## Outcomes & Retrospective
 
-Completed the reusable feature highlight card and author-dashboard integration. The shared component is generic and presentation-only; dashboard code supplies AI Object Builder copy/actions and owns dismissal behavior. The dashboard now shows a compact bottom-right floating announcement matching the provided screenshot direction. Automated app TypeScript and lint validation passed. Focused Jest execution and full spec TypeScript validation are still blocked by existing repository test-tooling/spec drift. The Angular build command also terminates with exit code `-1` before producing diagnostics.
+Completed the reusable feature highlight card and author-dashboard integration. The shared component is generic and presentation-only; dashboard code supplies AI Object Builder copy/actions and owns dismissal behavior. The dashboard now shows a compact bottom-right floating announcement matching the provided screenshot direction. The secondary `Dismiss` action stores `Hide AI Announcemednt = "1"` in localStorage so future dashboard loads hide the card, while the top-right close icon only hides it for the current view. Added a new `/onion/ai-object-builder` upload-first page and routed the announcement primary action there. Automated app TypeScript and targeted lint validation passed. Focused Jest execution and full spec TypeScript validation are still blocked by existing repository test-tooling/spec drift. The Angular build command also terminates with exit code `-1` before producing diagnostics.
 
 ## Context and Orientation
 
@@ -60,13 +73,17 @@ The author dashboard is rendered by `src/app/onion/dashboard/dashboard.component
 
 Shared UI components live under `src/app/shared/components`, with several standalone components already imported directly by feature components. This story adds a new shared presentation component there. The component must not depend on dashboard routes, Agentic Builder copy, AuthService, localStorage, or any user-preference service.
 
-Dismissal persistence belongs in dashboard/application code. This story will add a small dashboard-area service for the Agentic Builder announcement preference and wire it through `DashboardComponent`. No route, guard, interceptor, environment, backend API, or build configuration changes are planned.
+Dismissal persistence belongs in dashboard/application code. This story adds a small dashboard-area service for the Agentic Builder announcement preference and wires it through `DashboardComponent`. The service uses browser localStorage with the exact key `Hide AI Announcemednt` and values `"1"` for hidden and `"0"` for visible. No route, guard, interceptor, environment, backend API, or build configuration changes are planned.
+
+The AI Object Builder follow-up adds a new Onion route at `/onion/ai-object-builder`. It is a separate upload-first page, not a child of the existing manual builder tab flow. The page is local UI only for this pass: selected files are kept in component state, no backend upload or generation API is called, and the build action is disabled until at least one file is selected.
 
 ## Plan of Work
 
 Create a shared standalone `FeatureHighlightCardComponent` that accepts typed action inputs for primary and secondary actions and emits outputs when those actions or dismiss are activated. The component will render a semantic heading, body text, optional icon, optional action buttons, and an accessible dismiss button. It supports inline and compact floating appearances through inputs and local SCSS while avoiding page-specific copy or route assumptions.
 
-Integrate the component into the author dashboard with AI Object Builder-specific content provided by `DashboardComponent`. Dashboard code will own navigation to the builder route and the dismiss preference update. A small dashboard service will keep current-app-session dismissal state localized and testable.
+Integrate the component into the author dashboard with AI Object Builder-specific content provided by `DashboardComponent`. Dashboard code will own navigation to the builder route and the dismiss preference update. A small dashboard service will keep localStorage-backed dismissal state localized and testable.
+
+Add a new `AiObjectBuilderComponent` under `src/app/onion/ai-object-builder` with NgModule routing. It should render a Save & Return action to `/onion/dashboard`, a centered title/subtitle, a drag/drop file selector, a selected-file list when files exist, a quiet `No files uploaded yet` state when none exist, optional guidance input, and a disabled `Build Learning Object` button until files are selected.
 
 Testing will focus on the shared component's inputs/outputs and the dashboard preference service. Dashboard integration will be kept small enough that existing dashboard tests only need minimal provider/import support unless they reveal more meaningful behavior to cover.
 
@@ -77,10 +94,13 @@ Out of scope: creating a global preferences architecture, changing dashboard rou
 From the repository root:
 
 1. Add `src/app/shared/components/feature-highlight-card/feature-highlight-card.component.ts`, `.html`, `.scss`, and `.spec.ts`.
-2. Add `src/app/onion/dashboard/services/feature-announcement-preferences.service.ts` with focused current-app-session preference methods.
+2. Add `src/app/onion/dashboard/services/feature-announcement-preferences.service.ts` with focused localStorage-backed preference methods.
 3. Update `src/app/onion/dashboard/dashboard.component.ts` to provide card content, react to action outputs, and call the preference service on dismiss.
-4. Update `src/app/onion/dashboard/dashboard.component.html` and `.scss` to place the reusable card as a fixed bottom-right floating announcement when it has not been dismissed in the current app session.
+4. Update `src/app/onion/dashboard/dashboard.component.html` and `.scss` to place the reusable card as a fixed bottom-right floating announcement when it has not been hidden in browser storage.
 5. Run targeted Jest/component validation where possible, then TypeScript/lint validation for touched files.
+6. Add `src/app/onion/ai-object-builder/` with module, routing, component, styles, and spec files.
+7. Add an `/onion/ai-object-builder` child route in `src/app/onion/onion.routing.ts`.
+8. Update `DashboardComponent.startAgenticBuilder()` to navigate to `/onion/ai-object-builder`.
 
 ## Validation and Acceptance
 
@@ -89,7 +109,11 @@ Acceptance is met when:
 - The reusable component supports title, body text, primary action, secondary action, and dismiss action.
 - The reusable component contains no author-dashboard or Agentic Builder assumptions.
 - The author dashboard renders the component with AI Object Builder content in a bottom-right floating notification.
-- Dismissing the dashboard announcement calls dashboard-owned preference update flow and hides the card without permanently suppressing future-login visibility.
+- Clicking the secondary `Dismiss` button calls dashboard-owned preference update flow, writes `Hide AI Announcemednt = "1"` to localStorage, and hides the card on future dashboard loads in that browser.
+- Clicking the top-right close icon hides the card for the current view without writing localStorage.
+- `Try it` opens `/onion/ai-object-builder` instead of `/onion/learning-object-builder/materials`.
+- The AI Object Builder page shows no fake uploaded files; when empty, it shows `No files uploaded yet` and disables `Build Learning Object`.
+- When files are selected, the page lists their names and formatted sizes.
 - The component is responsive and uses accessible buttons, labels, and semantic heading structure.
 - Basic tests cover component rendering and output events.
 
@@ -130,6 +154,58 @@ Expected: spec TypeScript compiles. Observed: blocked by unrelated existing spec
 
 Expected and observed: passed.
 
+Validation repeated after the August 3 localStorage update:
+
+    npx prettier --write plans/reusable-feature-highlight-card.execplan.md src/app/onion/dashboard/services/feature-announcement-preferences.service.ts src/app/onion/dashboard/services/feature-announcement-preferences.service.spec.ts src/app/onion/dashboard/dashboard.component.ts src/app/onion/dashboard/dashboard.component.html
+
+Expected and observed: completed with no formatting changes.
+
+    git diff --check
+
+Expected and observed: passed.
+
+    npx tsc -p src/tsconfig.app.json --noEmit
+
+Expected and observed: passed.
+
+    npx ng lint clark --lint-file-patterns src/app/onion/dashboard/services/feature-announcement-preferences.service.ts src/app/onion/dashboard/services/feature-announcement-preferences.service.spec.ts src/app/onion/dashboard/dashboard.component.ts src/app/onion/dashboard/dashboard.component.html
+
+Expected and observed: all files pass linting.
+
+    npx jest --runTestsByPath src/app/onion/dashboard/services/feature-announcement-preferences.service.spec.ts
+
+Expected: focused service spec executes. Observed: still blocked before tests run by `TypeError: configSet.processWithEsbuild is not a function` in `jest-preset-angular` setup.
+
+Validation repeated after the AI Object Builder route/page update:
+
+    npx prettier --write plans/reusable-feature-highlight-card.execplan.md src/app/onion/ai-object-builder/ai-object-builder.component.ts src/app/onion/ai-object-builder/ai-object-builder.component.html src/app/onion/ai-object-builder/ai-object-builder.component.scss src/app/onion/ai-object-builder/ai-object-builder.routing.ts src/app/onion/ai-object-builder/ai-object-builder.module.ts src/app/onion/ai-object-builder/ai-object-builder.component.spec.ts src/app/onion/onion.routing.ts src/app/onion/dashboard/dashboard.component.ts
+
+Expected and observed: completed.
+
+    npx tsc -p src/tsconfig.app.json --noEmit
+
+Expected and observed: passed.
+
+    npx ng lint clark --lint-file-patterns src/app/onion/ai-object-builder/ai-object-builder.component.ts src/app/onion/ai-object-builder/ai-object-builder.component.html src/app/onion/ai-object-builder/ai-object-builder.component.spec.ts src/app/onion/ai-object-builder/ai-object-builder.routing.ts src/app/onion/ai-object-builder/ai-object-builder.module.ts src/app/onion/onion.routing.ts src/app/onion/dashboard/dashboard.component.ts
+
+Expected and observed: all files pass linting.
+
+    git diff --check
+
+Expected and observed: passed.
+
+    npx jest --runTestsByPath src/app/onion/ai-object-builder/ai-object-builder.component.spec.ts src/app/onion/dashboard/services/feature-announcement-preferences.service.spec.ts
+
+Expected: focused specs execute. Observed: still blocked before tests run by `TypeError: configSet.processWithEsbuild is not a function` in `jest-preset-angular` setup.
+
+    npx tsc -p src/tsconfig.spec.json --noEmit
+
+Expected: spec TypeScript compiles. Observed: still blocked by unrelated existing spec errors in admin, collection, cube, onion dashboard-item, filesystem, and entity tests.
+
+    npx ng build clark --no-progress
+
+Expected: Angular application build completes or reports actionable diagnostics. Observed: terminated with exit code `-1` before emitting useful output.
+
     npx ng build clark --no-progress
 
 Expected: Angular application build completes or reports actionable diagnostics. Observed: terminated with exit code `-1` before emitting useful output.
@@ -168,14 +244,16 @@ Do not modify or remove the existing untracked `plans/agentic-builder-dashboard-
 
 ## Artifacts and Notes
 
-- New floating announcement usage on the author dashboard routes primary action to `/onion/learning-object-builder/materials`.
-- The secondary `Dismiss` button and top-right close control both hide the announcement through `dismissAgenticBuilderAnnouncement()`.
-- Dismissal is stored only in the dashboard preference service's in-memory set, keyed by `<username-or-anonymous>:agentic-builder-dashboard`, so it is not permanently hidden across future logins.
+- New floating announcement usage on the author dashboard routes primary action to `/onion/ai-object-builder`.
+- The secondary `Dismiss` button hides the announcement through `hideAgenticBuilderAnnouncement()` and writes `Hide AI Announcemednt = "1"` to localStorage.
+- The top-right close control hides the announcement through `dismissAgenticBuilderAnnouncement()` without writing localStorage.
+- The AI Object Builder page intentionally shows no fake uploaded files. It displays `No files uploaded yet` and disables `Build Learning Object` until files are selected.
 
 ## Interfaces and Dependencies
 
 - New shared component: `FeatureHighlightCardComponent`.
 - Dashboard integration: `DashboardComponent` template, class, and styles.
-- Dashboard preference service: in-memory current-app-session service under `src/app/onion/dashboard/services`.
+- AI Object Builder page: `AiObjectBuilderComponent`, `AiObjectBuilderModule`, and `AiObjectBuilderRoutingModule`.
+- Dashboard preference service: localStorage-backed service under `src/app/onion/dashboard/services`.
 - Angular dependencies: `CommonModule` for structural directives and standard Angular inputs/outputs.
 - No backend, environment, guard, interceptor, or route contract changes are expected.

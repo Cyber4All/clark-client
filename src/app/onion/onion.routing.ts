@@ -43,6 +43,15 @@ const onion_routes: Routes = [
                     ),
                 canActivate: [AuthGuard],
             },
+            {
+                path: "ai-object-builder",
+                loadChildren: () =>
+                    import("../onion/ai-object-builder/ai-object-builder.module").then(
+                        (m) => m.AiObjectBuilderModule,
+                    ),
+                canActivate: [AuthGuard],
+                data: { state: "builder", title: "AI Object Builder" },
+            },
             { path: "**", redirectTo: "dashboard" },
         ],
     },

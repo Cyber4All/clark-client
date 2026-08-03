@@ -1,0 +1,104 @@
+<main class="ai-object-builder">
+    <button
+        type="button"
+        class="ai-object-builder__return"
+        (click)="saveAndReturn()">
+        <i aria-hidden="true" class="far fa-arrow-left"></i>
+        Save & Return
+    </button>
+
+    <section
+        class="ai-object-builder__content"
+        [attr.aria-labelledby]="'ai-builder-title'">
+        <header class="ai-object-builder__header">
+            <h1 id="ai-builder-title">{{ title }}</h1>
+            <p>{{ subtitle }}</p>
+        </header>
+
+        <div class="ai-object-builder__panel">
+            <div
+                class="ai-object-builder__dropzone"
+                role="button"
+                tabindex="0"
+                [ngClass]="{
+                    'ai-object-builder__dropzone--active': isDragActive,
+                }"
+                (click)="openFilePicker()"
+                (keydown)="onDropzoneKeydown($event)"
+                (dragover)="onDragOver($event)"
+                (dragleave)="onDragLeave($event)"
+                (drop)="onDrop($event)">
+                <input
+                    #fileInput
+                    type="file"
+                    multiple
+                    [accept]="acceptedFileTypes"
+                    (change)="onFileInputChange($event)" />
+                <i aria-hidden="true" class="fa-solid fa-cloud-arrow-up"></i>
+                <span class="ai-object-builder__dropzone-title">
+                    Drop files here or <span>browse</span>
+                </span>
+                <span class="ai-object-builder__dropzone-types">
+                    {{ acceptedFileTypeLabel }}
+                </span>
+            </div>
+
+            <div class="ai-object-builder__files" aria-live="polite">
+                <h2>Uploaded files ({{ files.length }})</h2>
+                <div
+                    *ngIf="hasFiles; else noFilesTemplate"
+                    class="ai-object-builder__file-list">
+                    <div
+                        *ngFor="let item of files"
+                        class="ai-object-builder__file-row">
+                        <i
+                            aria-hidden="true"
+                            [ngClass]="[
+                                'ai-object-builder__file-icon',
+                                item.iconClass,
+                            ]"></i>
+                        <span class="ai-object-builder__file-name">
+                            {{ item.file.name }}
+                        </span>
+                        <span class="ai-object-builder__file-size">
+                            {{ formatFileSize(item.file) }}
+                        </span>
+                        <button
+                            type="button"
+                            class="ai-object-builder__file-menu"
+                            aria-label="File actions">
+                            <i
+                                aria-hidden="true"
+                                class="fa-solid fa-ellipsis"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ai-object-builder__footer">
+                <label class="ai-object-builder__guidance">
+                    <span class="visually-hidden">
+                        Optional guidance for CLARK AI
+                    </span>
+                    <input
+                        type="text"
+                        name="guidance"
+                        [(ngModel)]="guidance"
+                        placeholder="Optional guidance for CLARK AI - e.g., focus on beginner-friendly objectives and suggest a concise title..." />
+                </label>
+                <button
+                    type="button"
+                    class="ai-object-builder__build"
+                    [disabled]="!hasFiles"
+                    (click)="buildLearningObject()">
+                    Build Learning Object
+                    <i aria-hidden="true" class="far fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<ng-template #noFilesTemplate>
+    <div class="ai-object-builder__empty">No files uploaded yet</div>
+</ng-template>

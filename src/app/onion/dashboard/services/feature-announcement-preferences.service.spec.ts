@@ -4,40 +4,43 @@ import { FeatureAnnouncementPreferencesService } from "./feature-announcement-pr
 
 describe("FeatureAnnouncementPreferencesService", () => {
     let service: FeatureAnnouncementPreferencesService;
-    const featureKey = "agentic-builder-dashboard";
-    const username = "author";
+    const featureKey = "Hide AI Announcemednt";
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
         service = TestBed.inject(FeatureAnnouncementPreferencesService);
+        localStorage.clear();
+    });
+
+    afterEach(() => {
+        localStorage.clear();
     });
 
     it("returns false when a feature has not been dismissed", () => {
-        expect(service.isDismissed(featureKey, username)).toBe(false);
+        expect(service.isDismissed(featureKey)).toBe(false);
     });
 
-    it("stores a dismissed feature announcement preference for the current app session", () => {
+    it("stores a dismissed feature announcement preference in localStorage", () => {
         service.updatePreference({
             featureKey,
-            username,
             dismissed: true,
         });
 
-        expect(service.isDismissed(featureKey, username)).toBe(true);
+        expect(localStorage.getItem(featureKey)).toBe("1");
+        expect(service.isDismissed(featureKey)).toBe(true);
     });
 
-    it("removes a dismissed feature announcement preference", () => {
+    it("stores an active feature announcement preference", () => {
         service.updatePreference({
             featureKey,
-            username,
             dismissed: true,
         });
         service.updatePreference({
             featureKey,
-            username,
             dismissed: false,
         });
 
-        expect(service.isDismissed(featureKey, username)).toBe(false);
+        expect(localStorage.getItem(featureKey)).toBe("0");
+        expect(service.isDismissed(featureKey)).toBe(false);
     });
 });

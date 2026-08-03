@@ -28,7 +28,7 @@ import {
 } from "../../shared/components/feature-highlight-card/feature-highlight-card.component";
 import { FeatureAnnouncementPreferencesService } from "./services/feature-announcement-preferences.service";
 
-const AGENTIC_BUILDER_ANNOUNCEMENT_KEY = "agentic-builder-dashboard";
+const HIDE_AI_ANNOUNCEMENT_KEY = "Hide AI Announcemednt";
 
 @Component({
     selector: "clark-dashboard",
@@ -151,8 +151,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.loading = true;
         this.showAgenticBuilderAnnouncement =
             !this.featureAnnouncementPreferences.isDismissed(
-                AGENTIC_BUILDER_ANNOUNCEMENT_KEY,
-                this.auth.username,
+                HIDE_AI_ANNOUNCEMENT_KEY,
             );
 
         // retrieve draft status learning objects
@@ -541,13 +540,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     startAgenticBuilder() {
-        this.router.navigate(["/onion/learning-object-builder/materials"]);
+        this.router.navigate(["/onion/ai-object-builder"]);
     }
 
     dismissAgenticBuilderAnnouncement() {
+        this.showAgenticBuilderAnnouncement = false;
+    }
+
+    hideAgenticBuilderAnnouncement() {
         this.featureAnnouncementPreferences.updatePreference({
-            featureKey: AGENTIC_BUILDER_ANNOUNCEMENT_KEY,
-            username: this.auth.username,
+            featureKey: HIDE_AI_ANNOUNCEMENT_KEY,
             dismissed: true,
         });
         this.showAgenticBuilderAnnouncement = false;
