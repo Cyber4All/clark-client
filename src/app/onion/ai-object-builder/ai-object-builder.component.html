@@ -1,0 +1,120 @@
+<div class="ai-object-builder">
+    <header class="ai-object-builder__header">
+        <button
+            type="button"
+            class="ai-object-builder__back"
+            (click)="saveAndReturn()">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            <span>Save & Return</span>
+        </button>
+    </header>
+
+    <main class="ai-object-builder__main">
+        <section
+            class="ai-object-builder__content"
+            aria-labelledby="ai-object-builder-title">
+            <h1 id="ai-object-builder-title">CLARK AI Object Builder</h1>
+            <p class="ai-object-builder__subtitle">
+                Upload your curriculum materials and let CLARK AI draft your
+                learning object.
+            </p>
+
+            <div class="ai-object-builder__panel">
+                <input
+                    #fileInput
+                    type="file"
+                    class="ai-object-builder__file-input"
+                    [accept]="acceptedFileTypes"
+                    multiple
+                    aria-label="Upload curriculum materials"
+                    (change)="onFileInputChange($event)" />
+
+                <div
+                    class="ai-object-builder__dropzone"
+                    [ngClass]="{
+                        'ai-object-builder__dropzone--active': isDragActive,
+                    }"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Drop files here or browse to upload curriculum materials"
+                    (click)="openFilePicker()"
+                    (keydown)="onDropzoneKeydown($event)"
+                    (dragover)="onDragOver($event)"
+                    (dragleave)="onDragLeave($event)"
+                    (drop)="onDrop($event)">
+                    <i
+                        class="fa-solid fa-cloud-arrow-up ai-object-builder__upload-icon"
+                        aria-hidden="true"></i>
+                    <div class="ai-object-builder__dropzone-title">
+                        Drop files here or <span>browse</span>
+                    </div>
+                    <div class="ai-object-builder__dropzone-types">
+                        {{ acceptedFileTypeLabel }}
+                    </div>
+                </div>
+
+                <section
+                    class="ai-object-builder__files"
+                    aria-labelledby="uploaded-files-title">
+                    <h2 id="uploaded-files-title">
+                        Uploaded files ({{ files.length }})
+                    </h2>
+
+                    <div
+                        *ngIf="!hasFiles"
+                        class="ai-object-builder__empty-files">
+                        No files uploaded yet
+                    </div>
+
+                    <ul *ngIf="hasFiles" class="ai-object-builder__file-list">
+                        <li
+                            *ngFor="let upload of files"
+                            class="ai-object-builder__file-row">
+                            <i
+                                [class]="upload.iconClass"
+                                aria-hidden="true"></i>
+                            <span class="ai-object-builder__file-name">
+                                {{ upload.file.name }}
+                            </span>
+                            <span class="ai-object-builder__file-size">
+                                {{ formatFileSize(upload.file) }}
+                            </span>
+                            <button
+                                type="button"
+                                aria-label="Remove {{ upload.file.name }}"
+                                class="ai-object-builder__file-action"
+                                (click)="removeFile(upload.file)">
+                                <i
+                                    class="fa-regular fa-xmark"
+                                    aria-hidden="true"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </section>
+
+                <form
+                    class="ai-object-builder__prompt"
+                    (ngSubmit)="buildLearningObject()">
+                    <label for="ai-object-builder-guidance">
+                        Optional guidance for CLARK AI
+                    </label>
+                    <input
+                        id="ai-object-builder-guidance"
+                        name="guidance"
+                        type="text"
+                        [(ngModel)]="guidance"
+                        placeholder="Optional guidance for CLARK AI - e.g., focus on beginner-friendly objectives and suggest a concise title for the learning object." />
+                    <button
+                        type="submit"
+                        class="button good"
+                        [disabled]="!hasFiles">
+                        Build Learning Object
+                        <i
+                            class="fa-solid fa-arrow-right"
+                            aria-hidden="true"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+</div>

@@ -6,11 +6,6 @@
         [@dashboardList]
         class="dashboard__lists"
         *ngIf="!loading; else loadingTemplate">
-        <clark-agentic-builder-card
-            class="dashboard__agentic-builder"
-            [showAnnouncement]="showAgenticBuilderAnnouncement"
-            (dismissAnnouncement)="dismissAgenticBuilderAnnouncement()">
-        </clark-agentic-builder-card>
         <div role="tablist" class="dashboard__tabs">
             <button
                 class="tabs__item"

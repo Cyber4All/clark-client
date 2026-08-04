@@ -38,4 +38,13 @@ describe("ListComponent", () => {
             "/onion/learning-object-builder",
         );
     });
+
+    it("should point the AI Object Builder button at the AI builder flow", () => {
+        const aiBuilderButton = fixture.debugElement.query(
+            By.css('[aria-label="Open AI Object Builder"]'),
+        );
+        const routerLink = aiBuilderButton.injector.get(RouterLink);
+
+        expect(routerLink.urlTree.toString()).toBe("/onion/ai-object-builder");
+    });
 });

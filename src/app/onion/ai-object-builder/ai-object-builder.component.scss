@@ -1,0 +1,285 @@
+@import "_vars.scss";
+
+.ai-object-builder {
+    min-height: 100vh;
+    background: white;
+    color: $darker-grey;
+}
+
+.ai-object-builder__header {
+    max-width: $max-width;
+    margin: 0 auto;
+    padding: 48px 32px 0;
+}
+
+.ai-object-builder__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $darker-grey;
+    cursor: pointer;
+    font-size: $large;
+
+    &:hover,
+    &:focus-visible {
+        color: $light-blue;
+    }
+}
+
+.ai-object-builder__main {
+    display: flex;
+    justify-content: center;
+    padding: 28px 24px 80px;
+}
+
+.ai-object-builder__content {
+    width: min(100%, 920px);
+
+    h1 {
+        margin: 0;
+        color: #101828;
+        font-size: 32px;
+        font-weight: 700;
+        line-height: 1.2;
+        text-align: center;
+    }
+}
+
+.ai-object-builder__subtitle {
+    margin: 8px 0 28px;
+    color: $dark-grey;
+    font-size: $large;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.ai-object-builder__panel {
+    padding: 28px;
+    border: 1px solid $light-grey;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 12px 28px rgba(16, 24, 40, 0.1);
+}
+
+.ai-object-builder__file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+.ai-object-builder__dropzone {
+    display: flex;
+    min-height: 160px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    border: 2px dashed #71a8ff;
+    border-radius: 8px;
+    background: #fbfdff;
+    cursor: pointer;
+    text-align: center;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+
+    &:hover,
+    &:focus-visible,
+    &.ai-object-builder__dropzone--active {
+        border-color: $light-blue;
+        background: #f2f7ff;
+    }
+}
+
+.ai-object-builder__upload-icon {
+    margin-bottom: 12px;
+    color: $light-blue;
+    font-size: 48px;
+}
+
+.ai-object-builder__dropzone-title {
+    color: $darker-grey;
+    font-size: $large;
+    font-weight: 600;
+
+    span {
+        color: $light-blue;
+    }
+}
+
+.ai-object-builder__dropzone-types {
+    margin-top: 8px;
+    color: $dark-grey;
+    font-size: $normal;
+}
+
+.ai-object-builder__files {
+    margin-top: 22px;
+
+    h2 {
+        margin: 0 0 12px;
+        color: $dark-grey;
+        font-size: $normal;
+        font-weight: 700;
+    }
+}
+
+.ai-object-builder__empty-files {
+    display: flex;
+    min-height: 64px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $light-grey;
+    border-radius: 6px;
+    color: $dark-grey;
+    font-size: $normal;
+}
+
+.ai-object-builder__file-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ai-object-builder__file-row {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr) auto 32px;
+    gap: 14px;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 12px;
+    border: 1px solid $light-grey;
+    border-radius: 6px;
+    color: $darker-grey;
+}
+
+.ai-object-builder__file-icon--pdf {
+    color: #d92d20;
+}
+
+.ai-object-builder__file-icon--word {
+    color: $light-blue;
+}
+
+.ai-object-builder__file-icon--powerpoint {
+    color: #f15a24;
+}
+
+.ai-object-builder__file-icon--text,
+.ai-object-builder__file-icon--default {
+    color: $dark-grey;
+}
+
+.ai-object-builder__file-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ai-object-builder__file-size {
+    color: $dark-grey;
+    white-space: nowrap;
+}
+
+.ai-object-builder__file-action {
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: $dark-grey;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        color: $error-red;
+    }
+}
+
+.ai-object-builder__prompt {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 10px;
+    margin-top: 28px;
+    border: 1px solid $medium-grey;
+    border-radius: 8px;
+    padding: 6px;
+
+    label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+    }
+
+    input {
+        min-width: 0;
+        border: 0;
+        padding: 0 14px;
+        color: $darker-grey;
+        font-size: $small;
+
+        &:focus {
+            outline: 0;
+        }
+    }
+
+    .button {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 700px) {
+    .ai-object-builder__header {
+        padding: 32px 20px 0;
+    }
+
+    .ai-object-builder__main {
+        padding: 24px 16px 48px;
+    }
+
+    .ai-object-builder__content h1 {
+        font-size: 28px;
+    }
+
+    .ai-object-builder__subtitle {
+        font-size: $normal;
+    }
+
+    .ai-object-builder__panel {
+        padding: 18px;
+    }
+
+    .ai-object-builder__file-row {
+        grid-template-columns: 28px minmax(0, 1fr) 32px;
+    }
+
+    .ai-object-builder__file-size {
+        grid-column: 2 / 3;
+        font-size: $smaller;
+    }
+
+    .ai-object-builder__file-action {
+        grid-column: 3 / 4;
+        grid-row: 1 / 3;
+    }
+
+    .ai-object-builder__prompt {
+        grid-template-columns: 1fr;
+
+        input {
+            min-height: 44px;
+        }
+    }
+}

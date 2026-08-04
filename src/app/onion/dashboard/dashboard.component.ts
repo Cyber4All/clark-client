@@ -22,8 +22,6 @@ import { ChangelogModalComponent } from "../../shared/modules/changelogs/changel
 import { SidePanelContentComponent } from "./components/side-panel-content/side-panel-content.component";
 import { PanelDirective } from "../../shared/modules/side-panel/panel.directive";
 import { SubmitComponent } from "../shared/submit/submit.component";
-import { AgenticBuilderCardComponent } from "./components/agentic-builder-card/agentic-builder-card.component";
-import { AgenticBuilderPreferencesService } from "./services/agentic-builder-preferences.service";
 
 @Component({
     selector: "clark-dashboard",
@@ -69,14 +67,12 @@ import { AgenticBuilderPreferencesService } from "./services/agentic-builder-pre
         SidePanelContentComponent,
         PanelDirective,
         SubmitComponent,
-        AgenticBuilderCardComponent,
     ],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
     lastLocation: NavigationEnd;
     activeIndex = 0;
     loading: boolean;
-    showAgenticBuilderAnnouncement = true;
     releasedLearningObjects: LearningObject[];
     workingLearningObjects: LearningObject[];
 
@@ -121,17 +117,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
         private cd: ChangeDetectorRef,
         private submissionService: SubmissionsService,
         private editorialService: EditorialService,
-        private agenticBuilderPreferences: AgenticBuilderPreferencesService,
     ) {
         this.navbar.hide();
     }
 
     async ngOnInit() {
         this.loading = true;
-        this.showAgenticBuilderAnnouncement =
-            this.agenticBuilderPreferences.shouldShowAnnouncement(
-                this.auth.username,
-            );
 
         // retrieve draft status learning objects
         setTimeout(async () => {
@@ -516,11 +507,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     navigateHome() {
         this.router.navigate(["/home"]);
-    }
-
-    dismissAgenticBuilderAnnouncement() {
-        this.agenticBuilderPreferences.dismissAnnouncement(this.auth.username);
-        this.showAgenticBuilderAnnouncement = false;
     }
 
     ngOnDestroy() {
