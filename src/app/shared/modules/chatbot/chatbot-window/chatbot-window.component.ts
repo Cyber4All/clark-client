@@ -10,6 +10,7 @@ import {
 } from "@angular/core";
 import { Router } from "@angular/router";
 import * as Sentry from "@sentry/angular";
+import { AuthService } from "app/core/auth-module/auth.service";
 import { ChatbotService } from "app/core/chat-module/chatbot.service";
 import { MatTooltip } from "@angular/material/tooltip";
 import { NgFor, NgIf } from "@angular/common";
@@ -77,6 +78,7 @@ export class ChatbotWindowComponent implements AfterViewInit {
 
     constructor(
         private readonly chatbotService: ChatbotService,
+        private readonly authService: AuthService,
         private readonly router: Router,
     ) {
         const sessionId = sessionStorage.getItem("sessionID");
@@ -251,12 +253,18 @@ export class ChatbotWindowComponent implements AfterViewInit {
                 product: "clark_ai",
                 surface: "chatbot_beta",
             };
+            const feedbackUser = {
+                username: this.authService.user?.username,
+                email: this.authService.user?.email,
+            };
 
             Sentry.captureFeedback(
                 {
                     message:
                         this.feedbackMessage ||
                         `CLARK AI beta rating: ${this.selectedRating}`,
+                    name: feedbackUser.username,
+                    email: feedbackUser.email,
                     source: "clark-chatbot-window",
                     tags: feedbackData,
                 },
@@ -268,6 +276,8 @@ export class ChatbotWindowComponent implements AfterViewInit {
                 extra: {
                     feedbackMessage: this.feedbackMessage,
                     rating: this.selectedRating,
+                    username: feedbackUser.username,
+                    email: feedbackUser.email,
                 },
             });
 
