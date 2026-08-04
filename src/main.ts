@@ -44,6 +44,7 @@ Sentry.init({
     release: appVersion,
     integrations: [
         Sentry.replayIntegration(),
+        Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] }),
     ],
     // Don't send traces
     tracesSampleRate: 0.5,
@@ -77,8 +78,8 @@ const userVersion = localStorage.getItem(VERSION_STORE);
     userVersion !== appVersion
         ? location.reload()
         : console.log(
-            `${appDisplayName} running version: ${appVersion} - Up to date.`,
-        );
+              `${appDisplayName} running version: ${appVersion} - Up to date.`,
+          );
 })();
 
 if (userVersion === appVersion) {
@@ -113,7 +114,7 @@ if (userVersion === appVersion) {
             },
             {
                 provide: APP_INITIALIZER,
-                useFactory: () => () => { },
+                useFactory: () => () => {},
                 deps: [Sentry.TraceService],
                 multi: true,
             },
