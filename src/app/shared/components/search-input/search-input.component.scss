@@ -27,9 +27,22 @@
     background: rgba(70, 144, 255, 0.03);
 }
 
+.search-input--error {
+    border-color: $error-red;
+}
+
+.search-input--error:focus-within {
+    border-color: $error-red;
+    background: rgba($error-red, 0.03);
+}
+
 .search-input__icon {
     color: $light-blue;
     margin-right: 2px;
+}
+
+.search-input--error .search-input__icon {
+    color: $error-red;
 }
 
 .search-input input {

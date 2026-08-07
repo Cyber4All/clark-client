@@ -1,7 +1,7 @@
 <clark-column-wrapper>
     <div left>
         <clark-scaffold
-            *ngIf="learningObject"
+            *ngIf="learningObject?.length !== 'nanomodule'"
             [learningObject]="learningObject"></clark-scaffold>
     </div>
     <div main>
@@ -9,46 +9,41 @@
             *ngIf="learningObject; else loadingTemplate"
             class="content-wrapper">
             <form>
-                <div class="title">
-                    {{ copy.TITLE }}
-                </div>
                 <clark-info-page-metadata
-                    [error]="validator.get('name') || undefined">
-                    <div title>{{ copy.NAME }}</div>
-                    <div directions>{{ copy.NAMEPLACEHOLDER }}</div>
+                    [error]="getNameError()">
+                    <div title class="field-label">
+                        <i class="fa-solid fa-asterisk required-asterisk"></i>
+                        {{ copy.NAME }}
+                    </div>
                     <div data>
                         <input
-                            attr.aria-label="{{ copy.NAME }} {{
-                                copy.NAMEPLACEHOLDER
-                            }}"
+                            #nameInput
                             class="name-field"
-                            autocomplete="off"
-                            type="text"
+                            [class.name-field--error]="getNameError()"
                             name="name"
+                            type="text"
                             placeholder="Learning Object Name"
-                            (input)="onNameInput($event.currentTarget.value)"
                             [value]="learningObject.name"
-                            id="form" />
+                            (input)="onNameInput(nameInput.value)" />
                     </div>
                 </clark-info-page-metadata>
                 <hr />
                 <clark-info-page-metadata
                     [error]="validator.get('contributors') || undefined">
-                    <div id="contributor-title" title>
-                        Who else worked on this?
-                    </div>
-                    <div id="contributor-directions" directions>
-                        You can find users by their name, username, or email
-                        address.
-                        <b
-                            >Make sure to include yourself as a contributor if
-                            you participated in the development of the materials
-                            for this Learning Object.</b
-                        >
+                    <div id="contributor-title" title class="field-label">
+                        <i class="fa-solid fa-asterisk required-asterisk"></i>
+                        {{ copy.CONTRIBUTORS }}
+                        <span
+                            class="help-icon"
+                            [tip]="copy.CONTRIBUTORSTIP"
+                            tipPosition="right">
+                            <i class="far fa-info-circle"></i>
+                        </span>
                     </div>
                     <div data>
                         <clark-user-dropdown
                             [contributors]="learningObject.contributors"
+                            [hasError]="!!validator.get('contributors')"
                             (addAuthor)="toggleContributor($event)"
                             (removeAuthor)="
                                 toggleContributor($event)
@@ -69,83 +64,60 @@
                         </div>
                     </div>
                 </clark-info-page-metadata>
-                <div class="attribution-preview">
-                    <b>Note: </b><i>Submitted Collection Name</i> will be
-                    replaced with the collection name you submit to. So if you
-                    submit to NSA NCCP, 'NSA NCCP' will be shown instead of
-                    'Submitted Collection Name'.
-                </div>
                 <div class="attribution-preview bottom">
-                    <b>Attribution preview: </b
-                    ><i>{{
+                    <b>Attribution preview: </b>
+                    <i>{{
                         learningObject.name
                             ? learningObject.name
                             : "Learning Object Name"
                     }}</i>
                     by <i>{{ getContributorAttribution() }}</i
                     >,
-                    <i>{{
-                        learningObject.collection
-                            ? learningObject.collection
-                            : "Submitted Collection Name"
-                    }}</i>
+                    <span
+                        class="attribution-preview__collection"
+                        [tip]="copy.COLLECTIONTIP"
+                        tipPosition="top"
+                        >{{ getCollectionAttribution() }}</span
+                    >
                     is licensed under CC BY-NC-SA 4.0.
                 </div>
                 <hr />
                 <clark-info-page-metadata>
-                    <div title>{{ copy.LENGTH }}</div>
-                    <div directions>{{ copy.CHOOSE }}</div>
+                    <div title class="field-label">
+                        {{ copy.LENGTH }}
+                    </div>
                     <div data>
-                        <div class="select-wrapper">
-                            <select
-                                name="type"
-                                attr.aria-label="{{ copy.LENGTH }} {{
-                                    copy.CHOOSE
-                                }}"
-                                (ngModelChange)="
-                                    mutateLearningObject({ length: $event })
-                                "
-                                [ngModel]="learningObject.length"
-                                [ngModelOptions]="{ standalone: true }">
-                                <option value="nanomodule">
-                                    {{ copy.NANO }}
-                                </option>
-                                <option value="micromodule">
-                                    {{ copy.MICRO }}
-                                </option>
-                                <option value="module">{{ copy.MOD }}</option>
-                                <option value="unit">{{ copy.UNIT }}</option>
-                                <option value="course">
-                                    {{ copy.COURSE }}
-                                </option>
-                            </select>
-                        </div>
+                        <clark-dropdown-filter
+                            [name]="''"
+                            [isMultiSelect]="false"
+                            [allowEmptySelection]="false"
+                            [values]="lengthOptions"
+                            [selectedValues]="[selectedLength]"
+                            (selectionChange)="updateLength($event)">
+                        </clark-dropdown-filter>
                     </div>
                 </clark-info-page-metadata>
                 <hr />
                 <clark-info-page-metadata
                     [error]="validator.get('levels')"
                     [warning]="!validator.submissionMode">
-                    <div title>{{ copy.LEVELS }}</div>
-                    <div directions>{{ copy.SELECT }}</div>
+                    <div title class="field-label">
+                        {{ copy.LEVELS }}
+                    </div>
                     <div data>
                         <div
-                            class="levels"
-                            attr.aria-label="{{ copy.LEVELS }} {{
-                                copy.SELECT
-                            }}">
-                            <div
+                            class="topic-pills-container"
+                            attr.aria-label="{{ copy.LEVELS }}">
+                            <clark-pill
                                 *ngFor="let level of academicLevels"
-                                class="pill"
-                                attr.aria-label="{{ level }} Selected: {{
+                                [label]="formatLevelLabel(level)"
+                                [active]="selectedLevels.includes(level)"
+                                ariaLabel="{{
+                                    formatLevelLabel(level)
+                                }} Selected: {{
                                     selectedLevels.includes(level)
                                 }}"
-                                [ngClass]="{
-                                    selected: selectedLevels.includes(level),
-                                }"
-                                (activate)="toggleLevel(level)">
-                                {{ level }}
-                            </div>
+                                (selected)="toggleLevel(level)"></clark-pill>
                         </div>
                     </div>
                 </clark-info-page-metadata>
@@ -157,11 +129,11 @@
                             : undefined
                     "
                     [warning]="!validator.submissionMode">
-                    <div title>{{ copy.QUESTION }}</div>
-                    <div directions>{{ copy.TIP }}</div>
-                    <div
-                        data
-                        attr.aria-label="{{ copy.QUESTION }} {{ copy.TIP }}">
+                    <div title class="field-label">
+                        <i class="fa-solid fa-asterisk required-asterisk"></i>
+                        {{ copy.QUESTION }}
+                    </div>
+                    <div data attr.aria-label="{{ copy.QUESTION }}">
                         <onion-learning-object-description
                             [learningObject]="learningObject"
                             (textOutput)="

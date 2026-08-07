@@ -21,6 +21,7 @@
             [disabled]="option.disabled"
             (click)="onOptionClick(option, $event)">
             <span
+                *ngIf="isMultiSelect"
                 class="dropdown-filter__indicator"
                 [class.checked]="isSelected(option.value)">
                 <i class="fas fa-check" aria-hidden="true"></i>

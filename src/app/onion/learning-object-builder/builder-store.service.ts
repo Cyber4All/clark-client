@@ -318,6 +318,10 @@ export class BuilderStore {
      *
      */
     async getChildren(): Promise<LearningObject[]> {
+        if (!this.learningObject.id) {
+            return [];
+        }
+
         if (this.learningObject.resourceUris !== undefined) {
             const children = this.uriRetriever.getLearningObjectChildren({
                 uri: this.learningObject.resourceUris.children,
@@ -338,6 +342,10 @@ export class BuilderStore {
      * @param remove {boolean} True if removing a child from the list, false if adding
      */
     async setChildren(children: string[], remove: boolean = false) {
+        if (!this.learningObject.id) {
+            return;
+        }
+
         this.serviceInteraction$.next(true);
         if (remove) {
             children = this.learningObject.children
@@ -677,7 +685,10 @@ export class BuilderStore {
 
         this.validator.validateLearningObject(learningObject, this.outcomes);
 
-        if (!this.validator.get("name")) {
+        const hasInvalidNameChange =
+            dataProperties.includes("name") && !!this.validator.get("name");
+
+        if (!hasInvalidNameChange) {
             this.learningObject = new LearningObject(learningObject);
         }
 
@@ -982,6 +993,15 @@ export class BuilderStore {
         this.titleService.setTitle("CLARK | " + this.learningObject.name);
         let value = this.objectCache$.getValue();
         this.touched = true;
+        const canSave =
+            this.validator.saveable ||
+            (this.validator.submissionMode && this.validator.submittable);
+
+        if (!canSave) {
+            this.objectCache$.next(undefined);
+            this.serviceInteraction$.next(false);
+            return;
+        }
 
         // if delay is true, combine the new properties with the object in the cache exit
         // the cache subject will automatically call this function again without a delay property
@@ -989,14 +1009,6 @@ export class BuilderStore {
             const newValue = value ? Object.assign(value, data) : data;
             this.objectCache$.next(newValue);
         } else {
-            const canSave =
-                this.validator.saveable ||
-                (this.validator.submissionMode && this.validator.submittable);
-            // don't attempt to save if object isn't saveable, but keep cache so that we can try again later
-            if (!canSave) {
-                return;
-            }
-
             // clear the cache before submission so that any late arrivals will be cached for the next query
             this.objectCache$.next(undefined);
 
@@ -1004,7 +1016,9 @@ export class BuilderStore {
             // in this case we'll use the current data instead
             value = value || data;
             if (!this.learningObject.id) {
-                this.createLearningObject(value);
+                this.createLearningObject(
+                    Object.assign(this.learningObject.toPlainObject(), value),
+                );
             } else {
                 // this is an existing object and we can save it (has a saveable name)
                 this.updateLearningObject(value);
@@ -1029,15 +1043,27 @@ export class BuilderStore {
         this.refactoredLearningObjectService
             .create(object)
             .then((learningObject) => {
-                this.learningObject = learningObject;
-                this.serviceInteraction$.next(false);
+                const postCreateUpdates =
+                    this.getPostCreateUpdatePayload(object);
+                this.learningObject = this.mergeCreatedLearningObject(
+                    learningObject,
+                    object,
+                );
+
+                if (Object.keys(postCreateUpdates).length) {
+                    this.updateLearningObject(postCreateUpdates);
+                } else {
+                    this.serviceInteraction$.next(false);
+                }
             })
             .catch((e) => {
                 this.serviceInteraction$.next(false);
                 if (e.status === 400) {
+                    const validationError =
+                        this.getServiceValidationError(e);
                     this.validator.errors.saveErrors.set(
-                        "name",
-                        e.error.message,
+                        validationError.property,
+                        validationError.message,
                     );
                     this.handleServiceError(
                         e,
@@ -1047,6 +1073,62 @@ export class BuilderStore {
                     this.handleServiceError(e, BUILDER_ERRORS.CREATE_OBJECT);
                 }
             });
+    }
+
+    private mergeCreatedLearningObject(
+        createdObject: LearningObject,
+        localObject: Partial<LearningObject>,
+    ): LearningObject {
+        const created = createdObject.toPlainObject();
+        const local: any = Object.assign({}, localObject);
+
+        delete local.id;
+        delete local.cuid;
+        delete local.date;
+        delete local.resourceUris;
+        delete local.revisionUri;
+        delete local.revision;
+        delete local.version;
+        delete local.parents;
+        delete local.metrics;
+        delete local.assigned;
+
+        return new LearningObject(Object.assign(created, local));
+    }
+
+    private getPostCreateUpdatePayload(
+        object: Partial<LearningObject>,
+    ): Partial<LearningObject> {
+        const updates: any = {};
+
+        if (object.name) {
+            updates.name = object.name;
+        }
+
+        if (object.description) {
+            updates.description = object.description;
+        }
+
+        if (object.length) {
+            updates.length = object.length;
+        }
+
+        if (object.levels) {
+            updates.levels = object.levels;
+        }
+
+        if (object.materials) {
+            updates.materials = object.materials;
+        }
+
+        if (object.contributors?.length) {
+            updates.contributors = object.contributors.map(
+                (contributor: any) =>
+                    contributor.userId || contributor.id || contributor,
+            ) as any;
+        }
+
+        return updates;
     }
 
     /**
@@ -1065,13 +1147,12 @@ export class BuilderStore {
             })
             .catch((e) => {
                 if (e.status === 400) {
-                    const body =
-                        typeof e.error === "string"
-                            ? JSON.parse(e.error)
-                            : e.error;
-                    const errorMsg = body?.message?.[0]?.message?.[0] ?? "";
-
-                    this.validator.errors.saveErrors.set("name", errorMsg);
+                    const validationError =
+                        this.getServiceValidationError(e);
+                    this.validator.errors.saveErrors.set(
+                        validationError.property,
+                        validationError.message,
+                    );
                     this.handleServiceError(
                         e,
                         BUILDER_ERRORS.SPECIAL_CHARACTER_NAME,
@@ -1080,6 +1161,40 @@ export class BuilderStore {
                     this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OBJECT);
                 }
             });
+    }
+
+    private getServiceValidationError(e: HttpErrorResponse): {
+        property: string;
+        message: string;
+    } {
+        let body: any = e.error;
+        if (typeof e.error === "string") {
+            try {
+                body = JSON.parse(e.error);
+            } catch (_error) {
+                body = { message: e.error };
+            }
+        }
+
+        const serviceMessage = body?.message ?? e.error?.message ?? "";
+        const firstMessage = Array.isArray(serviceMessage)
+            ? serviceMessage[0]
+            : serviceMessage;
+        const message = Array.isArray(firstMessage?.message)
+            ? firstMessage.message[0]
+            : firstMessage?.message || firstMessage || "Unable to save";
+        const property =
+            firstMessage?.property || this.inferErrorProperty(message);
+
+        return { property, message };
+    }
+
+    private inferErrorProperty(message: string): string {
+        if (message.toLowerCase().includes("contributor")) {
+            return "contributors";
+        }
+
+        return "name";
     }
 
     /**

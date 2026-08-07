@@ -20,6 +20,11 @@ export interface LibraryItem {
     learningObject: LearningObject;
 }
 
+export interface AddToLibraryResult {
+    status: number;
+    alreadySaved: boolean;
+}
+
 @Injectable({
     providedIn: "root",
 })
@@ -27,6 +32,7 @@ export class LibraryService {
     private user;
     private headers = new HttpHeaders();
     public libraryItems: Array<LibraryItem> = [];
+    private savedLearningObjectKeys = new Set<string>();
 
     // Observable boolean to toggle download spinner in components
     private _loading$ = new BehaviorSubject<boolean>(false);
@@ -92,14 +98,25 @@ export class LibraryService {
                     const learningObject = new LearningObject(
                         libraryItem.learningObject,
                     );
-                    learningObject.id = libraryItem.learningObject?._id;
+                    if (!learningObject.id && libraryItem.learningObject?._id) {
+                        learningObject.id = libraryItem.learningObject._id;
+                    }
 
-                    return {
+                    const item = {
                         _id: libraryItem._id,
                         savedBy: libraryItem.savedBy,
                         savedOn: libraryItem.savedOn,
                         learningObject,
                     };
+
+                    this.savedLearningObjectKeys.add(
+                        this.getLearningObjectKey(
+                            learningObject.cuid,
+                            learningObject.version,
+                        ),
+                    );
+
+                    return item;
                 });
                 return {
                     libraryItems: this.libraryItems,
@@ -108,7 +125,11 @@ export class LibraryService {
             });
     }
 
-    async addToLibrary(cuid: string, version: number): Promise<any> {
+    async addToLibrary(
+        cuid: string,
+        version: number,
+    ): Promise<AddToLibraryResult> {
+        this.updateUser();
         if (!this.user) {
             return;
         }
@@ -121,31 +142,44 @@ export class LibraryService {
                     cuid,
                     version,
                 },
-                { headers: this.headers, withCredentials: true },
+                {
+                    headers: this.headers,
+                    observe: "response",
+                    withCredentials: true,
+                },
             )
             .pipe(
                 catchError((error) => {
-                    // Check if the error is a 409 conflict error
-                    if (error.status === 409) {
-                        // Log the error or handle it as needed
-                        console.log(
-                            "Conflict error (409) occurred, but proceeding without throwing.",
-                        );
-                        // Return an observable that completes without emitting, effectively "skipping" the error
-                        return of(null);
+                    if (this.isAlreadySavedError(error)) {
+                        return of(new HttpResponse({ status: 409 }));
                     }
-                    // For other errors, re-throw them or handle them as needed
                     return throwError(error);
                 }),
             )
-            .toPromise();
+            .toPromise()
+            .then((response: HttpResponse<unknown>) => {
+                this.savedLearningObjectKeys.add(
+                    this.getLearningObjectKey(cuid, version),
+                );
+
+                return {
+                    status: response.status,
+                    alreadySaved: response.status === 409,
+                };
+            });
     }
 
     removeFromLibrary(libraryItemId: string): Promise<void> {
         if (!this.user) {
             return;
         }
-        this.http
+        const removedItem = this.libraryItems.find(
+            (item) =>
+                item._id === libraryItemId ||
+                item.learningObject.id === libraryItemId,
+        );
+
+        return this.http
             .delete(
                 LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
                     this.user.username,
@@ -154,7 +188,17 @@ export class LibraryService {
                 { headers: this.headers, withCredentials: true },
             )
             .pipe(catchError((error) => this.handleError(error)))
-            .toPromise();
+            .toPromise()
+            .then(() => {
+                if (removedItem) {
+                    this.savedLearningObjectKeys.delete(
+                        this.getLearningObjectKey(
+                            removedItem.learningObject.cuid,
+                            removedItem.learningObject.version,
+                        ),
+                    );
+                }
+            });
     }
 
     /**
@@ -205,12 +249,59 @@ export class LibraryService {
      * @param learningObjectId the learning object to check for in the library
      * @returns whether the learning object exists in the library
      */
-    has(learningObjectId: string): boolean {
+    has(learningObjectId: string, cuid?: string, version?: number): boolean {
+        if (
+            cuid &&
+            version != null &&
+            this.savedLearningObjectKeys.has(
+                this.getLearningObjectKey(cuid, version),
+            )
+        ) {
+            return true;
+        }
+
         return (
-            this.libraryItems.filter(
-                (libraryItem: LibraryItem) =>
-                    libraryItem.learningObject.id === learningObjectId,
-            ).length > 0
+            this.libraryItems.filter((libraryItem: LibraryItem) => {
+                const learningObject = libraryItem.learningObject;
+
+                return (
+                    learningObject.id === learningObjectId ||
+                    (cuid &&
+                        version != null &&
+                        learningObject.cuid === cuid &&
+                        learningObject.version === version)
+                );
+            }).length > 0
+        );
+    }
+
+    private getLearningObjectKey(cuid: string, version: number): string {
+        return `${cuid}:${version}`;
+    }
+
+    private isAlreadySavedError(error: HttpErrorResponse): boolean {
+        if (error.status === 409) {
+            return true;
+        }
+
+        const errorBody = error.error;
+        const errorText = [
+            error.message,
+            typeof errorBody === "string" ? errorBody : undefined,
+            errorBody?.message,
+            errorBody?.error,
+        ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
+
+        return (
+            (errorText.includes("already") &&
+                (errorText.includes("library") ||
+                    errorText.includes("saved"))) ||
+            (errorText.includes("duplicate") &&
+                (errorText.includes("library") ||
+                    errorText.includes("learning")))
         );
     }
 

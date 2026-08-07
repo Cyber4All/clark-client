@@ -1,16 +1,16 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { NgFor, NgIf } from "@angular/common";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { LearningObject } from "@entity";
-import { BuilderStore, BUILDER_ACTIONS } from "../../builder-store.service";
-import { takeUntil, filter } from "rxjs/operators";
-import { Subject, Observable } from "rxjs";
-import { FileUploadMeta } from "../../components/content-upload/app/services/typings";
 import { DirectoryNode } from "app/shared/modules/filesystem/DirectoryNode";
-import { ColumnWrapperComponent } from "../../components/column-wrapper/column-wrapper.component";
-import { NgIf, NgFor } from "@angular/common";
-import { ScaffoldComponent } from "../../components/scaffold/scaffold.component";
-import { UploadComponent } from "../../components/content-upload/app/upload/upload.component";
+import { Observable, Subject } from "rxjs";
+import { filter, takeUntil } from "rxjs/operators";
 import { SkipLinkComponent } from "../../../../shared/components/skip-link/skip-link.component";
+import { BUILDER_ACTIONS, BuilderStore } from "../../builder-store.service";
+import { ColumnWrapperComponent } from "../../components/column-wrapper/column-wrapper.component";
+import { FileUploadMeta } from "../../components/content-upload/app/services/typings";
+import { UploadComponent } from "../../components/content-upload/app/upload/upload.component";
 import { MaterialNotesComponent } from "../../components/material-notes/material-notes.component";
+import { ScaffoldComponent } from "../../components/scaffold/scaffold.component";
 
 @Component({
     selector: "clark-materials-page",
@@ -36,43 +36,31 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     notes = [
         {
             title: "Videos",
-            content: `<p>Video files uploaded to CLARK will be transferred to our Youtube channel to prevent file corruption or other problems.
-       If you prefer to upload your videos to your own Youtube channel then provide links to them in the materials section. 
-       If there are no additional revisions, we will proceed with the release and notify you via email if you video content
-       needs to be updated in the future.</p>`,
+            content: `<p>Uploaded videos are transferred to CLARK's YouTube channel. If you host videos yourself, add them as URLs. We will contact you if video content needs updates.</p>`,
         },
         {
             title: "Solution Files",
-            content: `<p>CLARK allows for the upload of solution files. If you do not wish to upload solutions with the 
-      learning object, please add a note (in the "notes" section) indicating where the solutions can be found in the learning object.</p>`,
+            content: `<p>You may upload solution files. If solutions are included elsewhere in the learning object, note where reviewers can find them.</p>`,
         },
         {
             title: "Malware",
-            content: `<p>If you plan to upload malware samples, we will add a file description during the review process to indicate 
-      that the file is malware, along with a note about the presence of malware material for downloading users. We encourage you
-      to upload all malware samples in password-protected ZIP files and include the password in the learning object's notes section.</p>`,
+            content: `<p>Reviewers will label malware files and add a user-facing note. Upload malware samples in password-protected ZIP files and include the password in notes.</p>`,
         },
         {
-            title: "Large Files greater than 1GB",
-            content: `<p>If you plan to upload large files (1GB or larger, including VMs, log files, applications, etc.), we ask that you reach 
-      out to our team at <a href="mailto:editors@secured.team">editors@secured.team</a> 
-      for guidance on how to submit your learning object.</p>`,
+            title: "Large Files (1GB+)",
+            content: `<p>For files 1GB or larger, including VMs, logs, or applications, contact <a href="mailto:editors@secured.team">editors@secured.team</a> before submitting.</p>`,
         },
         {
-            title: "Third Party Software",
-            content: `<p>If your learning object requires the use of third party software please include a link to any FAQ/Troubleshooting
-      resources specific to that software.</p>`,
+            title: "Third-Party Software",
+            content: `<p>If the object requires third-party software, include links to relevant FAQ or troubleshooting resources.</p>`,
         },
         {
-            title: "Semester Identifying Information",
-            content: `<p>For ease of sharing with the community, our team recommends removing any semester identifying information (i.e., 
-        due dates) before submitting materials. By submitting your object, you are giving consent to have the CLARK team remove any 
-        semester identifying information found during reviews. If you do not want the team to remove this information, please reach out 
-        to us at info@secured.team.</p>`,
+            title: "Semester Info",
+            content: `<p>Remove semester-specific details, such as due dates, before submitting. By submitting, you consent to CLARK removing semester details found during review. Contact info@secured.team if you do not want this removed.</p>`,
         },
     ];
 
-    constructor(private store: BuilderStore) {}
+    constructor(private store: BuilderStore) { }
 
     ngOnInit() {
         // Sets the learning object observable to continuously update the
