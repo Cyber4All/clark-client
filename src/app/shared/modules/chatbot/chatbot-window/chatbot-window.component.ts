@@ -9,9 +9,9 @@ import {
     AfterViewInit,
 } from "@angular/core";
 import { Router } from "@angular/router";
-import { CoralogixLogSeverity } from "@coralogix/browser";
+import * as Sentry from "@sentry/angular";
+import { AuthService } from "app/core/auth-module/auth.service";
 import { ChatbotService } from "app/core/chat-module/chatbot.service";
-import { CoralogixRumService } from "app/core/services/coralogix-rum.service";
 import { MatTooltip } from "@angular/material/tooltip";
 import { NgFor, NgIf } from "@angular/common";
 import { MarkdownComponent } from "ngx-markdown";
@@ -78,7 +78,7 @@ export class ChatbotWindowComponent implements AfterViewInit {
 
     constructor(
         private readonly chatbotService: ChatbotService,
-        private readonly coralogixService: CoralogixRumService,
+        private readonly authService: AuthService,
         private readonly router: Router,
     ) {
         const sessionId = sessionStorage.getItem("sessionID");
@@ -253,19 +253,33 @@ export class ChatbotWindowComponent implements AfterViewInit {
                 product: "clark_ai",
                 surface: "chatbot_beta",
             };
+            const feedbackUser = {
+                username: this.authService.user?.username,
+                email: this.authService.user?.email,
+            };
 
-            // Send custom measurement for tracking average rating
-            this.coralogixService.sendCustomMeasurement(
-                "clark_ai.beta.rating",
-                this.selectedRating,
+            Sentry.captureFeedback(
+                {
+                    message:
+                        this.feedbackMessage ||
+                        `CLARK AI beta rating: ${this.selectedRating}`,
+                    name: feedbackUser.username,
+                    email: feedbackUser.email,
+                    source: "clark-chatbot-window",
+                    tags: feedbackData,
+                },
+                { includeReplay: true },
             );
-
-            // Send custom log event with feedback data - corrected parameter order
-            this.coralogixService.sendLog(
-                CoralogixLogSeverity.Info,
-                this.feedbackMessage,
-                feedbackData,
-            );
+            Sentry.captureMessage("CLARK AI beta feedback submitted", {
+                level: "info",
+                tags: feedbackData,
+                extra: {
+                    feedbackMessage: this.feedbackMessage,
+                    rating: this.selectedRating,
+                    username: feedbackUser.username,
+                    email: feedbackUser.email,
+                },
+            });
 
             // Mark feedback as submitted
             localStorage.setItem("clark_ai_feedback_submitted", "true");
