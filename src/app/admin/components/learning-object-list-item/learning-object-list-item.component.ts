@@ -89,6 +89,9 @@ export class LearningObjectListItemComponent implements OnChanges {
 
     hasParents = false;
     hasChildren = false;
+    hierarchyStateLoaded = false;
+
+    private hierarchyStateRequest?: Promise<void>;
 
     private headers = new HttpHeaders();
     constructor(
@@ -114,8 +117,6 @@ export class LearningObjectListItemComponent implements OnChanges {
                     this.cd.detectChanges();
                 });
         }
-        await this.checkForParents();
-        await this.checkForChildren();
     }
 
     /**
@@ -126,6 +127,10 @@ export class LearningObjectListItemComponent implements OnChanges {
      */
     toggleContextMenu(value?: boolean) {
         this.meatballOpen = value;
+
+        if (value) {
+            void this.loadHierarchyState();
+        }
     }
 
     /**
@@ -202,25 +207,34 @@ export class LearningObjectListItemComponent implements OnChanges {
         return this.auth.user.emailVerified;
     }
 
-    async checkForParents() {
-        this.hasParents =
-            (
-                await this.learningObjectService.getLearningObjectParents(
-                    this.learningObject.id,
-                )
-            ).length > 0;
-    }
+    private loadHierarchyState(): Promise<void> {
+        if (this.hierarchyStateLoaded) {
+            return Promise.resolve();
+        }
 
-    /**
-     * Checks if the learning object has any children
-     */
-    async checkForChildren() {
-        this.hasChildren =
-            (
-                await this.learningObjectService.getLearningObjectChildren(
-                    this.learningObject.id,
-                )
-            ).length > 0;
+        if (this.hierarchyStateRequest) {
+            return this.hierarchyStateRequest;
+        }
+
+        this.hierarchyStateRequest = Promise.all([
+            this.learningObjectService.getLearningObjectParents(
+                this.learningObject.id,
+            ),
+            this.learningObjectService.getLearningObjectChildren(
+                this.learningObject.id,
+            ),
+        ])
+            .then(([parents, children]) => {
+                this.hasParents = parents.length > 0;
+                this.hasChildren = children.length > 0;
+                this.hierarchyStateLoaded = true;
+                this.cd.detectChanges();
+            })
+            .finally(() => {
+                this.hierarchyStateRequest = undefined;
+            });
+
+        return this.hierarchyStateRequest;
     }
 
     /**

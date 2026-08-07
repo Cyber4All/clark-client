@@ -94,11 +94,16 @@
             </li>
             <li
                 (click)="toggleHierarchyBuilder(true)"
-                *ngIf="learningObject.length !== 'nanomodule' && !hasChildren">
+                *ngIf="
+                    hierarchyStateLoaded &&
+                    learningObject.length !== 'nanomodule' &&
+                    !hasChildren
+                ">
                 <i class="fa-lg fal fa-chart-network"></i>Generate Hierarchy
             </li>
             <li
                 *ngIf="
+                    hierarchyStateLoaded &&
                     !hasParents &&
                     hasChildren &&
                     learningObject.status === 'proofing'
@@ -121,7 +126,7 @@
                 <i class="fal fa-history"></i>Mark Next Check Date
             </li>
             <li
-                *ngIf="hasParents === false"
+                *ngIf="hierarchyStateLoaded && hasParents === false"
                 (click)="toggleChangeAuthorModal(true)">
                 <i class="far fa-user"></i>Change Author
             </li>
