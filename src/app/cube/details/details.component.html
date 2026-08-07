@@ -127,7 +127,8 @@
                             [revisedVersion]="revisedVersion"
                             [learningObject]="learningObject"
                             [hasRevision]="hasRevision"
-                            [revisedLearningObject]="revisedLearningObject">
+                            [revisedLearningObject]="revisedLearningObject"
+                            (taggingUpdated)="refreshLearningObject()">
                         </cube-details-action-panel>
                     </section>
                     <section

@@ -68,8 +68,7 @@ export class StatsComponent implements OnInit {
                 this.objReleased = res.statusMetrics[0].released;
                 const num =
                     res.statusMetrics[0].waiting +
-                    res.statusMetrics[0].peerReview +
-                    res.statusMetrics[0].proofing;
+                    res.statusMetrics[0].peerReview;
                 this.objReview = num;
                 this.authorCollection = res.authors.length;
                 stats = res;

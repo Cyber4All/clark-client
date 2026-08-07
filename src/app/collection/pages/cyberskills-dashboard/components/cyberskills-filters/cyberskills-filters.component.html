@@ -37,7 +37,7 @@
                         ]"
                         (click)="toggleStatusFilter([status])">
                         <i [ngClass]="getStatusIcon(status)"></i>
-                        {{ status.replace("_", " ") | titlecase }}
+                        {{ getStatusLabel(status) }}
                     </li>
                 </ul>
             </div>
@@ -145,7 +145,7 @@
                         *ngIf="statusFilters.has(status)"
                         class="indicator"></div>
                     <i [ngClass]="getStatusIcon(status)"></i>
-                    {{ status.replace("_", " ") | titlecase }}
+                    {{ getStatusLabel(status) }}
                 </li>
             </ul>
         </div>

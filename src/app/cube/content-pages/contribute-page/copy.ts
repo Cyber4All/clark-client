@@ -20,7 +20,7 @@ export const sections = {
                             "Your dashboard is where you will access and create all of your learning objects. The dashboard is the " +
                             "primary way to begin building a learning object. All draft (non-released) and released learning objects can be" +
                             " viewed within the dashboard. Statuses are used to designate where the learning object is in our review process," +
-                            " draft learning objects include the waiting, review, accepted minor, accepted major, and proofing statuses and " +
+                            " draft learning objects include Draft, Waiting, and Review statuses and " +
                             " released includes all learning objects publicly available.",
                     },
                     {

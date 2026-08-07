@@ -29,6 +29,10 @@ import { ChangeCollectionComponent } from "../change-collection/change-collectio
 import { ChangeAuthorComponent } from "../change-author/change-author.component";
 import { RelevancyDateComponent } from "../relevancy-date/relevancy-date.component";
 import { HierarchyBuilderComponent } from "../hierarchy-builder/hierarchy-builder.component";
+import {
+    getLearningObjectStatusIcon,
+    getLearningObjectStatusLabel,
+} from "app/shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-learning-object-list-item",
@@ -181,14 +185,14 @@ export class LearningObjectListItemComponent implements OnChanges {
         this.refactoredLearningObjectService
             .updateLearningObjectStatus(
                 this.learningObject.id,
-                LearningObject.Status.PROOFING,
+                LearningObject.Status.UNRELEASED,
             )
             .then(() => {
                 this.toaster.success(
                     "Success",
                     "Learning object was successfully unreleased",
                 );
-                this.learningObject.status = LearningObject.Status.PROOFING;
+                this.learningObject.status = LearningObject.Status.UNRELEASED;
             })
             .catch(() =>
                 this.toaster.error(
@@ -205,6 +209,14 @@ export class LearningObjectListItemComponent implements OnChanges {
      */
     get verifiedEmail(): boolean {
         return this.auth.user.emailVerified;
+    }
+
+    get statusLabel(): string {
+        return getLearningObjectStatusLabel(this.learningObject.status);
+    }
+
+    get statusIcon(): string {
+        return getLearningObjectStatusIcon(this.learningObject.status);
     }
 
     private loadHierarchyState(): Promise<void> {

@@ -26,8 +26,9 @@
                 [userIsAuthor]="userIsAuthor"
                 [hasRevision]="hasRevision"
                 [learningObject]="learningObject"
-                [revisedLearningObject]="
-                    revisedLearningObject
+                [revisedLearningObject]="revisedLearningObject"
+                (taggingUpdated)="
+                    taggingUpdated.emit()
                 "></clark-editorial-action-pad>
         </div>
         <ng-container *ngIf="!auth.user">

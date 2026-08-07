@@ -14,6 +14,7 @@ import { CyberskillsCardComponent } from "./components/cyberskills-card/cyberski
 import { PaginationComponent } from "../../../cube/library/components/pagination/pagination.component";
 import { FooterComponent } from "../../../cube/shared/footer/footer.component";
 import { CsvGenModalComponent } from "./components/csv-gen-modal/csv-gen-modal.component";
+import { LearningObject } from "../../../../entity";
 
 @Component({
     selector: "clark-cyberskills-dashboard",
@@ -103,14 +104,13 @@ export class CyberskillsDashboardComponent implements OnInit {
                 limit: 20,
                 status: this.filterQuery?.status?.length
                     ? this.filterQuery.status
-                    : [
-                          "released",
-                          "waiting",
-                          "proofing",
-                          "review",
-                          "accepted_major",
-                          "accepted_minor",
-                      ],
+                    : Object.values(LearningObject.Status).filter(
+                          (status) =>
+                              ![
+                                  LearningObject.Status.ALL,
+                                  LearningObject.Status.UNRELEASED,
+                              ].includes(status),
+                      ),
                 length: this.filterQuery?.length || [],
                 sortType: this.filterQuery?.sortType || SortType.Descending,
                 orderBy: this.filterQuery?.orderBy || OrderBy.Date,

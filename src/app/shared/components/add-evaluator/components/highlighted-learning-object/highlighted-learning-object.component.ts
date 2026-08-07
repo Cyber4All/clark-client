@@ -2,6 +2,10 @@ import { Component, Input, OnInit } from "@angular/core";
 import { LearningObject } from "@entity";
 import { NgClass, NgIf, SlicePipe, TitleCasePipe } from "@angular/common";
 import { TipDirective } from "../../../../directives/tip.directive";
+import {
+    getLearningObjectStatusIcon,
+    getLearningObjectStatusLabel,
+} from "app/shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-highlighted-learning-object",
@@ -17,4 +21,12 @@ export class HighlightedLearningObjectComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {}
+
+    get statusLabel(): string {
+        return getLearningObjectStatusLabel(this.learningObject.status);
+    }
+
+    get statusIcon(): string {
+        return getLearningObjectStatusIcon(this.learningObject.status);
+    }
 }
