@@ -4,13 +4,13 @@ import {
     HttpHeaders,
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import * as Sentry from "@sentry/angular";
 import { User } from "@entity";
 import { environment } from "@env/environment";
 import { CookieService } from "ngx-cookie-service";
 import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { catchError, take } from "rxjs/operators";
 import { OrganizationStore } from "../organization-module/organization.store";
-import { CoralogixRumService } from "../services/coralogix-rum.service";
 import { AUTH_ROUTES } from "./auth.routes";
 import { EncryptionService } from "./encryption.service";
 
@@ -63,7 +63,6 @@ export class AuthService {
         private readonly http: HttpClient,
         private readonly cookies: CookieService,
         private readonly encryptionService: EncryptionService,
-        private readonly rumService: CoralogixRumService,
         private readonly orgStore: OrganizationStore,
     ) {
         if (this.cookies.get("presence")) {
@@ -78,7 +77,7 @@ export class AuthService {
      * Logged in status to true
      * Access group of logged in user
      * Access token in local storage
-     * RUM user context
+     * Sentry user context
      *
      * @private
      * @param {AuthUser} user [User data for the logged in user]
@@ -101,8 +100,8 @@ export class AuthService {
             JSON.stringify({ bearer: tokens.bearer, openId: tokens.openId }),
         );
 
-        // Set user context for RUM tracking
-        this.setRumUserContext();
+        // Set user context for Sentry tracking
+        this.setSentryUserContext();
     }
 
     /**
@@ -142,7 +141,7 @@ export class AuthService {
      * Logged in status is set to false
      * The user's access group is set to vistor
      * All tokens are cleared from local storage
-     * Clear RUM user context
+     * Clear Sentry user context
      *
      * @private
      * @memberof AuthService
@@ -160,8 +159,8 @@ export class AuthService {
         document.cookie =
             "presence=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 
-        // Clear RUM user context on logout
-        this.clearRumUserContext();
+        // Clear Sentry user context on logout
+        this.clearSentryUserContext();
     }
 
     private clearAuthHeaders() {
@@ -328,8 +327,8 @@ export class AuthService {
             this.assignUserToGroup();
             this.changeStatus(true);
 
-            // Set user context for RUM tracking after successful validation
-            this.setRumUserContext();
+            // Set user context for Sentry tracking after successful validation
+            this.setSentryUserContext();
         } catch (error) {
             this.endSession();
             throw error;
@@ -596,33 +595,29 @@ export class AuthService {
     }
 
     /**
-     * Set user context for RUM tracking when user logs in
+     * Set user context for Sentry tracking when user logs in
      *
      * @private
      * @memberof AuthService
      */
-    private setRumUserContext(): void {
+    private setSentryUserContext(): void {
         if (!this.user) {
             return;
         }
 
-        const baseUserContext = {
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            user_id: this.user.userId ?? "unknown",
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            user_name: this.user.name || this.user.username,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            user_email: this.user.email,
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            user_metadata: {
-                username: this.user.username,
-                accessGroups: this.user.accessGroups,
-                authGroup: AUTH_GROUP[this.group.value],
-                organizationId: this.user.organizationId,
-            },
+        const userMetadata = {
+            username: this.user.username,
+            accessGroups: this.user.accessGroups,
+            authGroup: AUTH_GROUP[this.group.value],
+            organizationId: this.user.organizationId,
         };
 
-        this.rumService.setUserContext(baseUserContext);
+        Sentry.setUser({
+            id: this.user.userId ?? "unknown",
+            username: this.user.name || this.user.username,
+            email: this.user.email,
+        });
+        Sentry.setContext("user_metadata", userMetadata);
 
         if (this.user.organizationId) {
             this.orgStore
@@ -632,53 +627,45 @@ export class AuthService {
                     if (!organizationName) {
                         return;
                     }
-                    this.rumService.setUserContext({
-                        ...baseUserContext,
-                        // eslint-disable-next-line @typescript-eslint/naming-convention
-                        user_metadata: {
-                            ...baseUserContext.user_metadata,
-                            organizationName,
-                        },
+                    Sentry.setContext("user_metadata", {
+                        ...userMetadata,
+                        organizationName,
                     });
+                    Sentry.setTag("organizationName", organizationName);
                 });
         }
 
-        // Set additional labels for user role tracking
-        this.rumService.setLabels({
-            ...this.rumService.labels,
+        // Set additional tags for user role tracking
+        Sentry.setTags({
             userRole: AUTH_GROUP[this.group.value],
             hasReviewerAccess: this.hasReviewerAccess(),
             hasCuratorAccess: this.hasCuratorAccess(),
             hasEditorAccess: this.hasEditorAccess(),
             isAdminOrEditor: this.isAdminOrEditor(),
+            organizationId: this.user.organizationId || "",
+            organizationName: "",
         });
     }
 
     /**
-     * Clear user context for RUM tracking when user logs out
+     * Clear user context for Sentry tracking when user logs out
      *
      * @private
      * @memberof AuthService
      */
-    private clearRumUserContext(): void {
-        // Set anonymous user context
-        this.rumService.setUserContext({
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            user_id: "anonymous",
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            user_name: "Anonymous User",
-            // eslint-disable-next-line @typescript-eslint/naming-convention
-            user_email: "anonymous@clark.center",
-        });
+    private clearSentryUserContext(): void {
+        Sentry.setUser(null);
+        Sentry.setContext("user_metadata", null);
 
-        // Clear role-based labels
-        this.rumService.setLabels({
-            ...this.rumService.labels,
+        // Clear role-based tags
+        Sentry.setTags({
             userRole: "VISITOR",
             hasReviewerAccess: false,
             hasCuratorAccess: false,
             hasEditorAccess: false,
             isAdminOrEditor: false,
+            organizationId: "",
+            organizationName: "",
         });
     }
 }

@@ -29,10 +29,6 @@ import { ChangeCollectionComponent } from "../change-collection/change-collectio
 import { ChangeAuthorComponent } from "../change-author/change-author.component";
 import { RelevancyDateComponent } from "../relevancy-date/relevancy-date.component";
 import { HierarchyBuilderComponent } from "../hierarchy-builder/hierarchy-builder.component";
-import {
-    getLearningObjectStatusIcon,
-    getLearningObjectStatusLabel,
-} from "app/shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-learning-object-list-item",
@@ -93,6 +89,9 @@ export class LearningObjectListItemComponent implements OnChanges {
 
     hasParents = false;
     hasChildren = false;
+    hierarchyStateLoaded = false;
+
+    private hierarchyStateRequest?: Promise<void>;
 
     private headers = new HttpHeaders();
     constructor(
@@ -118,8 +117,6 @@ export class LearningObjectListItemComponent implements OnChanges {
                     this.cd.detectChanges();
                 });
         }
-        await this.checkForParents();
-        await this.checkForChildren();
     }
 
     /**
@@ -130,6 +127,10 @@ export class LearningObjectListItemComponent implements OnChanges {
      */
     toggleContextMenu(value?: boolean) {
         this.meatballOpen = value;
+
+        if (value) {
+            void this.loadHierarchyState();
+        }
     }
 
     /**
@@ -180,14 +181,14 @@ export class LearningObjectListItemComponent implements OnChanges {
         this.refactoredLearningObjectService
             .updateLearningObjectStatus(
                 this.learningObject.id,
-                LearningObject.Status.REVIEW,
+                LearningObject.Status.PROOFING,
             )
             .then(() => {
                 this.toaster.success(
                     "Success",
                     "Learning object was successfully unreleased",
                 );
-                this.learningObject.status = LearningObject.Status.UNRELEASED;
+                this.learningObject.status = LearningObject.Status.PROOFING;
             })
             .catch(() =>
                 this.toaster.error(
@@ -206,33 +207,34 @@ export class LearningObjectListItemComponent implements OnChanges {
         return this.auth.user.emailVerified;
     }
 
-    get statusLabel(): string {
-        return getLearningObjectStatusLabel(this.learningObject.status);
-    }
+    private loadHierarchyState(): Promise<void> {
+        if (this.hierarchyStateLoaded) {
+            return Promise.resolve();
+        }
 
-    get statusIcon(): string {
-        return getLearningObjectStatusIcon(this.learningObject.status);
-    }
+        if (this.hierarchyStateRequest) {
+            return this.hierarchyStateRequest;
+        }
 
-    async checkForParents() {
-        this.hasParents =
-            (
-                await this.learningObjectService.getLearningObjectParents(
-                    this.learningObject.id,
-                )
-            ).length > 0;
-    }
+        this.hierarchyStateRequest = Promise.all([
+            this.learningObjectService.getLearningObjectParents(
+                this.learningObject.id,
+            ),
+            this.learningObjectService.getLearningObjectChildren(
+                this.learningObject.id,
+            ),
+        ])
+            .then(([parents, children]) => {
+                this.hasParents = parents.length > 0;
+                this.hasChildren = children.length > 0;
+                this.hierarchyStateLoaded = true;
+                this.cd.detectChanges();
+            })
+            .finally(() => {
+                this.hierarchyStateRequest = undefined;
+            });
 
-    /**
-     * Checks if the learning object has any children
-     */
-    async checkForChildren() {
-        this.hasChildren =
-            (
-                await this.learningObjectService.getLearningObjectChildren(
-                    this.learningObject.id,
-                )
-            ).length > 0;
+        return this.hierarchyStateRequest;
     }
 
     /**
