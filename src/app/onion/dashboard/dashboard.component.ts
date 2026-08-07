@@ -28,7 +28,7 @@ import {
 } from "../../shared/components/feature-highlight-card/feature-highlight-card.component";
 import { FeatureAnnouncementPreferencesService } from "./services/feature-announcement-preferences.service";
 
-const HIDE_AI_ANNOUNCEMENT_KEY = "Hide AI Announcemednt";
+const HIDE_AI_ANNOUNCEMENT_KEY = "Hide AI Announcement";
 
 @Component({
     selector: "clark-dashboard",
