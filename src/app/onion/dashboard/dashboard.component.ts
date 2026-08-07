@@ -23,8 +23,8 @@ import { SidePanelContentComponent } from "./components/side-panel-content/side-
 import { PanelDirective } from "../../shared/modules/side-panel/panel.directive";
 import { SubmitComponent } from "../shared/submit/submit.component";
 import {
-    FeatureHighlightAction,
     FeatureHighlightCardComponent,
+    FeatureHighlightConfig,
 } from "../../shared/components/feature-highlight-card/feature-highlight-card.component";
 import { FeatureAnnouncementPreferencesService } from "./services/feature-announcement-preferences.service";
 
@@ -108,21 +108,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     objectsToDelete: any[];
 
     showAgenticBuilderAnnouncement = true;
-    readonly agenticBuilderTitle = "New: AI Object Builder";
-    readonly agenticBuilderBody =
-        "Upload curriculum materials and let CLARK prefill your learning object.";
-    readonly agenticBuilderIconClass = "fa-solid fa-wand-magic-sparkles";
-    readonly agenticBuilderIconLabel = "AI Object Builder";
-    readonly agenticBuilderPrimaryAction: FeatureHighlightAction = {
-        label: "Try it",
-        ariaLabel: "Try AI Object Builder",
+    readonly agenticBuilderHighlight: FeatureHighlightConfig = {
+        title: "New: AI Object Builder",
+        body: "Upload curriculum materials and let CLARK prefill your learning object.",
+        appearance: "floating",
+        iconClass: "fa-solid fa-wand-magic-sparkles",
+        iconLabel: "AI Object Builder",
+        primaryAction: {
+            label: "Try it",
+            ariaLabel: "Try AI Object Builder",
+        },
+        secondaryAction: {
+            label: "Dismiss",
+            ariaLabel: "Dismiss AI Object Builder announcement",
+        },
+        dismissLabel: "Close AI Object Builder announcement",
     };
-    readonly agenticBuilderSecondaryAction: FeatureHighlightAction = {
-        label: "Dismiss",
-        ariaLabel: "Dismiss AI Object Builder announcement",
-    };
-    readonly agenticBuilderDismissLabel =
-        "Close AI Object Builder announcement";
 
     sidePanelPromiseResolver: Promise<any>;
 

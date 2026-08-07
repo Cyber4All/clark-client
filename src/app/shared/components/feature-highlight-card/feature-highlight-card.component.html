@@ -3,22 +3,24 @@
     [class.feature-highlight-card--floating]="isFloating"
     [attr.aria-labelledby]="titleId"
     [attr.aria-describedby]="bodyId">
-    <button
-        *ngIf="dismissible"
-        type="button"
-        class="feature-highlight-card__dismiss"
-        [attr.aria-label]="dismissLabel"
-        (click)="onDismiss()">
-        <i aria-hidden="true" class="fa-solid fa-xmark"></i>
-    </button>
+    @if (dismissible) {
+        <button
+            type="button"
+            class="feature-highlight-card__dismiss"
+            [attr.aria-label]="dismissLabel"
+            (click)="onDismiss()">
+            <i aria-hidden="true" class="fa-solid fa-xmark"></i>
+        </button>
+    }
 
-    <div
-        *ngIf="hasIcon"
-        class="feature-highlight-card__icon"
-        [attr.aria-label]="iconLabel || null"
-        [attr.aria-hidden]="iconLabel ? null : true">
-        <i [class]="iconClass"></i>
-    </div>
+    @if (hasIcon) {
+        <div
+            class="feature-highlight-card__icon"
+            [attr.aria-label]="iconLabel || null"
+            [attr.aria-hidden]="iconLabel ? null : true">
+            <i [class]="iconClass"></i>
+        </div>
+    }
 
     <div class="feature-highlight-card__content">
         <h2 class="feature-highlight-card__title" [id]="titleId">
@@ -30,23 +32,25 @@
     </div>
 
     <div class="feature-highlight-card__actions">
-        <button
-            *ngIf="hasPrimaryAction"
-            type="button"
-            class="feature-highlight-card__button feature-highlight-card__button--primary"
-            [disabled]="primaryAction?.disabled"
-            [attr.aria-label]="primaryAction?.ariaLabel || null"
-            (click)="onPrimaryAction()">
-            {{ primaryAction?.label }}
-        </button>
-        <button
-            *ngIf="hasSecondaryAction"
-            type="button"
-            class="feature-highlight-card__button feature-highlight-card__button--secondary"
-            [disabled]="secondaryAction?.disabled"
-            [attr.aria-label]="secondaryAction?.ariaLabel || null"
-            (click)="onSecondaryAction()">
-            {{ secondaryAction?.label }}
-        </button>
+        @if (hasPrimaryAction) {
+            <button
+                type="button"
+                class="feature-highlight-card__button feature-highlight-card__button--primary"
+                [disabled]="primaryAction?.disabled"
+                [attr.aria-label]="primaryAction?.ariaLabel || null"
+                (click)="onPrimaryAction()">
+                {{ primaryAction?.label }}
+            </button>
+        }
+        @if (hasSecondaryAction) {
+            <button
+                type="button"
+                class="feature-highlight-card__button feature-highlight-card__button--secondary"
+                [disabled]="secondaryAction?.disabled"
+                [attr.aria-label]="secondaryAction?.ariaLabel || null"
+                (click)="onSecondaryAction()">
+                {{ secondaryAction?.label }}
+            </button>
+        }
     </div>
 </section>

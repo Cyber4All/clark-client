@@ -28,6 +28,7 @@ CLARK needs a reusable UI component for announcing new features across app pages
 - [x] (2026-08-03 13:00 America/New_York) Added focused page tests and reran validation: app TypeScript, targeted lint, and whitespace checks passed; Jest/spec/build blockers remain existing repo/tooling issues.
 - [x] (2026-08-04 10:37 America/New_York) Removed the AI Object Builder page files and local route registration from this PR because that implementation belongs to `feature/sc-39646/agentic-builder-dashboard-entry-point-for-new`.
 - [x] (2026-08-04 10:37 America/New_York) Kept the dashboard announcement primary action pointed at `/onion/ai-object-builder` so the reusable announcement can route to the page once the other PR supplies it.
+- [x] (2026-08-07 10:50 America/New_York) Addressed PR review feedback by replacing the feature-highlight card's individual inputs with one typed `FeatureHighlightConfig` signal input, updating the dashboard to pass one config object, and replacing the card template's `*ngIf` usage with Angular control-flow `@if` blocks.
 
 ## Surprises & Discoveries
 
@@ -43,6 +44,8 @@ CLARK needs a reusable UI component for announcing new features across app pages
   Evidence: `npx tsc -p src/tsconfig.spec.json --noEmit` reports stale/missing spec imports in admin, collection, cube, onion dashboard-item, filesystem, and entity specs before any new-file issue is reported.
 - Observation: Angular build validation is currently not diagnostic.
   Evidence: `npx ng build clark --no-progress` terminated with exit code `-1` before emitting useful output.
+- Observation: Focused Jest specs remain blocked before executing tests after the Angular 18 input/control-flow review update.
+  Evidence: `npx jest src/app/shared/components/feature-highlight-card/feature-highlight-card.component.spec.ts --runInBand` and `npx jest src/app/onion/dashboard/dashboard.component.spec.ts --runInBand` fail in `src/setup-jest.ts` with `TypeError: configSet.processWithEsbuild is not a function`.
 
 ## Decision Log
 
@@ -209,6 +212,29 @@ Expected: spec TypeScript compiles. Observed: still blocked by unrelated existin
     npx ng build clark --no-progress
 
 Expected: Angular application build completes or reports actionable diagnostics. Observed: terminated with exit code `-1` before emitting useful output.
+
+Validation repeated after the August 7 review-feedback update:
+
+    npx prettier --write src/app/shared/components/feature-highlight-card/feature-highlight-card.component.ts src/app/shared/components/feature-highlight-card/feature-highlight-card.component.html src/app/shared/components/feature-highlight-card/feature-highlight-card.component.spec.ts src/app/onion/dashboard/dashboard.component.ts src/app/onion/dashboard/dashboard.component.html
+
+Expected and observed: completed with no formatting changes.
+
+    npx jest src/app/shared/components/feature-highlight-card/feature-highlight-card.component.spec.ts --runInBand
+    npx jest src/app/onion/dashboard/dashboard.component.spec.ts --runInBand
+
+Expected: focused specs execute. Observed: still blocked before tests run by `TypeError: configSet.processWithEsbuild is not a function` in `jest-preset-angular` setup.
+
+    npx ng build clark --configuration=development
+
+Expected: Angular application build completes. Observed: blocked because the workspace does not define a `development` build configuration.
+
+    npx ng build clark
+
+Expected: Angular application build completes or reports actionable diagnostics. Observed: terminated with exit code `-1` after printing `Building...` and before emitting useful diagnostics.
+
+    git diff --check
+
+Expected and observed: passed.
 
 Validation repeated after removing AI Object Builder page/route ownership from this PR:
 

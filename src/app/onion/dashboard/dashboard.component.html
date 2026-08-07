@@ -67,14 +67,7 @@
         class="dashboard__feature-announcement"
         *ngIf="showAgenticBuilderAnnouncement">
         <clark-feature-highlight-card
-            appearance="floating"
-            [title]="agenticBuilderTitle"
-            [body]="agenticBuilderBody"
-            [iconClass]="agenticBuilderIconClass"
-            [iconLabel]="agenticBuilderIconLabel"
-            [primaryAction]="agenticBuilderPrimaryAction"
-            [secondaryAction]="agenticBuilderSecondaryAction"
-            [dismissLabel]="agenticBuilderDismissLabel"
+            [config]="agenticBuilderHighlight"
             (primaryActionSelected)="startAgenticBuilder()"
             (secondaryActionSelected)="hideAgenticBuilderAnnouncement()"
             (dismissed)="dismissAgenticBuilderAnnouncement()">

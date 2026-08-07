@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-
 import { FeatureHighlightCardComponent } from "./feature-highlight-card.component";
 
 describe("FeatureHighlightCardComponent", () => {
@@ -15,10 +14,12 @@ describe("FeatureHighlightCardComponent", () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(FeatureHighlightCardComponent);
         component = fixture.componentInstance;
-        component.title = "Try the new builder";
-        component.body = "Upload materials and let CLARK help create a draft.";
-        component.primaryAction = { label: "Try it" };
-        component.secondaryAction = { label: "Dismiss" };
+        fixture.componentRef.setInput("config", {
+            title: "Try the new builder",
+            body: "Upload materials and let CLARK help create a draft.",
+            primaryAction: { label: "Try it" },
+            secondaryAction: { label: "Dismiss" },
+        });
         fixture.detectChanges();
     });
 
@@ -71,7 +72,12 @@ describe("FeatureHighlightCardComponent", () => {
 
     it("does not emit a disabled action", () => {
         jest.spyOn(component.primaryActionSelected, "emit");
-        component.primaryAction = { label: "Try it", disabled: true };
+        fixture.componentRef.setInput("config", {
+            title: "Try the new builder",
+            body: "Upload materials and let CLARK help create a draft.",
+            primaryAction: { label: "Try it", disabled: true },
+            secondaryAction: { label: "Dismiss" },
+        });
         fixture.detectChanges();
 
         (
@@ -84,7 +90,13 @@ describe("FeatureHighlightCardComponent", () => {
     });
 
     it("can hide the dismiss action", () => {
-        component.dismissible = false;
+        fixture.componentRef.setInput("config", {
+            title: "Try the new builder",
+            body: "Upload materials and let CLARK help create a draft.",
+            primaryAction: { label: "Try it" },
+            secondaryAction: { label: "Dismiss" },
+            dismissible: false,
+        });
         fixture.detectChanges();
 
         expect(
@@ -95,9 +107,15 @@ describe("FeatureHighlightCardComponent", () => {
     });
 
     it("supports the floating announcement appearance with an icon", () => {
-        component.appearance = "floating";
-        component.iconClass = "fa-solid fa-wand-magic-sparkles";
-        component.iconLabel = "AI Object Builder";
+        fixture.componentRef.setInput("config", {
+            title: "Try the new builder",
+            body: "Upload materials and let CLARK help create a draft.",
+            appearance: "floating",
+            iconClass: "fa-solid fa-wand-magic-sparkles",
+            iconLabel: "AI Object Builder",
+            primaryAction: { label: "Try it" },
+            secondaryAction: { label: "Dismiss" },
+        });
         fixture.detectChanges();
 
         const card: HTMLElement = fixture.nativeElement.querySelector(
