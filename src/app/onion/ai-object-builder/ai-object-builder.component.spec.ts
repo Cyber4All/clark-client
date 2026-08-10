@@ -24,13 +24,42 @@ describe("AiObjectBuilderComponent", () => {
         fixture.detectChanges();
     });
 
-    it("should show an empty uploaded files state", () => {
+    it("should render the materials organizer", () => {
         expect(fixture.nativeElement.textContent).toContain(
-            "Uploaded files (0)",
+            "CLARK AI Learning Object Builder",
+        );
+        expect(fixture.nativeElement.textContent).toContain("My Materials");
+        expect(fixture.nativeElement.textContent).toContain("Course Materials");
+        expect(fixture.nativeElement.textContent).toContain("Module 1");
+        expect(fixture.nativeElement.textContent).toContain("Lectures");
+        expect(fixture.nativeElement.textContent).toContain("Assignments");
+        expect(fixture.nativeElement.textContent).toContain("Module 2");
+        expect(fixture.nativeElement.textContent).toContain("Assessments");
+        expect(fixture.nativeElement.textContent).toContain("Images");
+        expect(fixture.nativeElement.textContent).not.toContain(
+            "Introduction to CLARK.pdf",
+        );
+    });
+
+    it("should keep module rows in a scrollable table body", () => {
+        expect(
+            fixture.nativeElement.querySelector(
+                ".ai-object-builder__table-body",
+            ),
+        ).toBeTruthy();
+    });
+
+    it("should keep upload controls inside the organizer without the storage or top upload actions", () => {
+        expect(fixture.nativeElement.textContent).toContain(
+            "Drop files here or browse",
         );
         expect(fixture.nativeElement.textContent).toContain(
-            "No files uploaded yet",
+            "Supports PDF, DOCX, PPTX, XLSX, TXT and more",
         );
+        expect(fixture.nativeElement.textContent).not.toContain("GB used");
+        expect(
+            fixture.nativeElement.querySelector('button[aria-label="Upload"]'),
+        ).toBeNull();
     });
 
     it("should disable building until a file is selected", () => {
@@ -47,11 +76,10 @@ describe("AiObjectBuilderComponent", () => {
         ]);
         fixture.detectChanges();
 
-        expect(fixture.nativeElement.textContent).toContain(
-            "Uploaded files (1)",
-        );
         expect(fixture.nativeElement.textContent).toContain("sample.pdf");
+        expect(fixture.nativeElement.textContent).toContain("PDF");
         expect(fixture.nativeElement.textContent).toContain("6 B");
+        expect(fixture.nativeElement.textContent).toContain("Today");
     });
 
     it("should navigate back to the dashboard", () => {

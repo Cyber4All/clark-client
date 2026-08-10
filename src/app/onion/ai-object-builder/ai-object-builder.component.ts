@@ -8,6 +8,14 @@ interface AiBuilderFile {
     iconClass: string;
 }
 
+interface MaterialItem {
+    name: string;
+    type: string;
+    size: string;
+    modified: string;
+    iconClass: string;
+}
+
 @Component({
     selector: "clark-ai-object-builder",
     templateUrl: "./ai-object-builder.component.html",
@@ -18,8 +26,27 @@ interface AiBuilderFile {
 export class AiObjectBuilderComponent {
     @ViewChild("fileInput") fileInput?: ElementRef<HTMLInputElement>;
 
-    readonly acceptedFileTypes = ".pdf,.doc,.docx,.ppt,.pptx,.txt";
-    readonly acceptedFileTypeLabel = "PDF, DOCX, PPTX, TXT";
+    readonly acceptedFileTypes = ".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt";
+    readonly acceptedFileTypeLabel =
+        "Supports PDF, DOCX, PPTX, XLSX, TXT and more";
+    readonly materialItems: MaterialItem[] = [
+        {
+            name: "Lectures",
+            type: "Folder",
+            size: "-",
+            modified: "May 14, 2024",
+            iconClass:
+                "fa-regular fa-folder ai-object-builder__file-icon--folder",
+        },
+        {
+            name: "Assignments",
+            type: "Folder",
+            size: "-",
+            modified: "May 14, 2024",
+            iconClass:
+                "fa-regular fa-folder ai-object-builder__file-icon--folder",
+        },
+    ];
 
     files: AiBuilderFile[] = [];
     guidance = "";
@@ -106,6 +133,10 @@ export class AiObjectBuilderComponent {
         return `${(kilobytes / 1024).toFixed(1)} MB`;
     }
 
+    getFileType(fileName: string): string {
+        return fileName.split(".").pop()?.toUpperCase() || "File";
+    }
+
     private getFileIconClass(fileName: string): string {
         switch (fileName.split(".").pop()?.toLowerCase()) {
             case "pdf":
@@ -118,6 +149,9 @@ export class AiObjectBuilderComponent {
                 return "fa-solid fa-file-powerpoint ai-object-builder__file-icon--powerpoint";
             case "txt":
                 return "fa-solid fa-file-lines ai-object-builder__file-icon--text";
+            case "xls":
+            case "xlsx":
+                return "fa-solid fa-file-excel ai-object-builder__file-icon--spreadsheet";
             default:
                 return "fa-solid fa-file ai-object-builder__file-icon--default";
         }

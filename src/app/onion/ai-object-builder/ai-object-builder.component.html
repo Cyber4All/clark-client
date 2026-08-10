@@ -13,108 +13,270 @@
         <section
             class="ai-object-builder__content"
             aria-labelledby="ai-object-builder-title">
-            <h1 id="ai-object-builder-title">CLARK AI Object Builder</h1>
-            <p class="ai-object-builder__subtitle">
-                Upload your curriculum materials and let CLARK AI draft your
-                learning object.
-            </p>
-
-            <div class="ai-object-builder__panel">
-                <input
-                    #fileInput
-                    type="file"
-                    class="ai-object-builder__file-input"
-                    [accept]="acceptedFileTypes"
-                    multiple
-                    aria-label="Upload curriculum materials"
-                    (change)="onFileInputChange($event)" />
-
-                <div
-                    class="ai-object-builder__dropzone"
-                    [ngClass]="{
-                        'ai-object-builder__dropzone--active': isDragActive,
-                    }"
-                    role="button"
-                    tabindex="0"
-                    aria-label="Drop files here or browse to upload curriculum materials"
-                    (click)="openFilePicker()"
-                    (keydown)="onDropzoneKeydown($event)"
-                    (dragover)="onDragOver($event)"
-                    (dragleave)="onDragLeave($event)"
-                    (drop)="onDrop($event)">
-                    <i
-                        class="fa-solid fa-cloud-arrow-up ai-object-builder__upload-icon"
-                        aria-hidden="true"></i>
-                    <div class="ai-object-builder__dropzone-title">
-                        Drop files here or <span>browse</span>
-                    </div>
-                    <div class="ai-object-builder__dropzone-types">
-                        {{ acceptedFileTypeLabel }}
-                    </div>
+            <div class="ai-object-builder__title-row">
+                <i
+                    class="fa-solid fa-wand-magic-sparkles ai-object-builder__title-icon"
+                    aria-hidden="true"></i>
+                <div>
+                    <h1 id="ai-object-builder-title">
+                        CLARK AI Learning Object Builder
+                    </h1>
+                    <p class="ai-object-builder__subtitle">
+                        Upload your curriculum materials and let CLARK AI draft
+                        your learning object.
+                    </p>
                 </div>
+            </div>
+
+            <div class="ai-object-builder__organizer">
+                <aside
+                    class="ai-object-builder__sidebar"
+                    aria-label="Materials folders">
+                    <div class="ai-object-builder__folder-root">
+                        <i class="fa-regular fa-folder" aria-hidden="true"></i>
+                        <span>My Materials</span>
+                    </div>
+
+                    <nav class="ai-object-builder__folder-tree">
+                        <button
+                            type="button"
+                            class="ai-object-builder__folder ai-object-builder__folder--level-1">
+                            <i
+                                class="fa-solid fa-chevron-down"
+                                aria-hidden="true"></i>
+                            <i
+                                class="fa-regular fa-folder"
+                                aria-hidden="true"></i>
+                            <span>Course Materials</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="ai-object-builder__folder ai-object-builder__folder--level-2 ai-object-builder__folder--active">
+                            <i
+                                class="fa-solid fa-chevron-down"
+                                aria-hidden="true"></i>
+                            <i
+                                class="fa-regular fa-folder"
+                                aria-hidden="true"></i>
+                            <span>Module 1</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="ai-object-builder__folder ai-object-builder__folder--level-3">
+                            <span
+                                class="ai-object-builder__folder-spacer"></span>
+                            <i
+                                class="fa-regular fa-folder"
+                                aria-hidden="true"></i>
+                            <span>Lectures</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="ai-object-builder__folder ai-object-builder__folder--level-3">
+                            <span
+                                class="ai-object-builder__folder-spacer"></span>
+                            <i
+                                class="fa-regular fa-folder"
+                                aria-hidden="true"></i>
+                            <span>Assignments</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="ai-object-builder__folder ai-object-builder__folder--level-2">
+                            <i
+                                class="fa-solid fa-chevron-right"
+                                aria-hidden="true"></i>
+                            <i
+                                class="fa-regular fa-folder"
+                                aria-hidden="true"></i>
+                            <span>Module 2</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="ai-object-builder__folder ai-object-builder__folder--level-1">
+                            <i
+                                class="fa-solid fa-chevron-right"
+                                aria-hidden="true"></i>
+                            <i
+                                class="fa-regular fa-folder"
+                                aria-hidden="true"></i>
+                            <span>Assessments</span>
+                        </button>
+                        <button
+                            type="button"
+                            class="ai-object-builder__folder ai-object-builder__folder--level-1">
+                            <i
+                                class="fa-solid fa-chevron-right"
+                                aria-hidden="true"></i>
+                            <i
+                                class="fa-regular fa-folder"
+                                aria-hidden="true"></i>
+                            <span>Images</span>
+                        </button>
+                    </nav>
+                </aside>
 
                 <section
-                    class="ai-object-builder__files"
-                    aria-labelledby="uploaded-files-title">
-                    <h2 id="uploaded-files-title">
-                        Uploaded files ({{ files.length }})
-                    </h2>
+                    class="ai-object-builder__workspace"
+                    aria-label="Module 1 materials">
+                    <input
+                        #fileInput
+                        type="file"
+                        class="ai-object-builder__file-input"
+                        [accept]="acceptedFileTypes"
+                        multiple
+                        aria-label="Upload curriculum materials"
+                        (change)="onFileInputChange($event)" />
 
                     <div
-                        *ngIf="!hasFiles"
-                        class="ai-object-builder__empty-files">
-                        No files uploaded yet
+                        class="ai-object-builder__dropzone"
+                        [ngClass]="{
+                            'ai-object-builder__dropzone--active': isDragActive,
+                        }"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Drop files here or browse to upload curriculum materials"
+                        (click)="openFilePicker()"
+                        (keydown)="onDropzoneKeydown($event)"
+                        (dragover)="onDragOver($event)"
+                        (dragleave)="onDragLeave($event)"
+                        (drop)="onDrop($event)">
+                        <span class="ai-object-builder__upload-icon">
+                            <i
+                                class="fa-solid fa-arrow-up-from-bracket"
+                                aria-hidden="true"></i>
+                        </span>
+                        <div>
+                            <div class="ai-object-builder__dropzone-title">
+                                Drop files here or <span>browse</span>
+                            </div>
+                            <div class="ai-object-builder__dropzone-types">
+                                {{ acceptedFileTypeLabel }}
+                            </div>
+                        </div>
                     </div>
 
-                    <ul *ngIf="hasFiles" class="ai-object-builder__file-list">
-                        <li
-                            *ngFor="let upload of files"
-                            class="ai-object-builder__file-row">
-                            <i
-                                [class]="upload.iconClass"
-                                aria-hidden="true"></i>
-                            <span class="ai-object-builder__file-name">
-                                {{ upload.file.name }}
-                            </span>
-                            <span class="ai-object-builder__file-size">
-                                {{ formatFileSize(upload.file) }}
-                            </span>
-                            <button
-                                type="button"
-                                aria-label="Remove {{ upload.file.name }}"
-                                class="ai-object-builder__file-action"
-                                (click)="removeFile(upload.file)">
-                                <i
-                                    class="fa-regular fa-xmark"
-                                    aria-hidden="true"></i>
-                            </button>
-                        </li>
-                    </ul>
-                </section>
-
-                <form
-                    class="ai-object-builder__prompt"
-                    (ngSubmit)="buildLearningObject()">
-                    <label for="ai-object-builder-guidance">
-                        Optional guidance for CLARK AI
-                    </label>
-                    <input
-                        id="ai-object-builder-guidance"
-                        name="guidance"
-                        type="text"
-                        [(ngModel)]="guidance"
-                        placeholder="Optional guidance for CLARK AI - e.g., focus on beginner-friendly objectives and suggest a concise title for the learning object." />
-                    <button
-                        type="submit"
-                        class="button good"
-                        [disabled]="!hasFiles">
-                        Build Learning Object
+                    <div
+                        class="ai-object-builder__breadcrumbs"
+                        aria-label="Breadcrumb">
+                        <span>My Materials</span>
                         <i
-                            class="fa-solid fa-arrow-right"
+                            class="fa-solid fa-chevron-right"
                             aria-hidden="true"></i>
-                    </button>
-                </form>
+                        <span>Course Materials</span>
+                        <i
+                            class="fa-solid fa-chevron-right"
+                            aria-hidden="true"></i>
+                        <strong>Module 1</strong>
+                    </div>
+
+                    <div class="ai-object-builder__table" role="table">
+                        <div
+                            class="ai-object-builder__table-row ai-object-builder__table-row--head"
+                            role="row">
+                            <div role="columnheader">
+                                Name
+                                <i
+                                    class="fa-solid fa-sort"
+                                    aria-hidden="true"></i>
+                            </div>
+                            <div role="columnheader">Type</div>
+                            <div role="columnheader">Size</div>
+                            <div role="columnheader">Modified</div>
+                            <div role="columnheader" aria-label="Actions"></div>
+                        </div>
+
+                        <div class="ai-object-builder__table-body">
+                            <div
+                                *ngFor="let upload of files"
+                                class="ai-object-builder__table-row"
+                                role="row">
+                                <div
+                                    class="ai-object-builder__name-cell"
+                                    role="cell">
+                                    <i
+                                        [class]="upload.iconClass"
+                                        aria-hidden="true"></i>
+                                    <span>{{ upload.file.name }}</span>
+                                </div>
+                                <div role="cell">
+                                    {{ getFileType(upload.file.name) }}
+                                </div>
+                                <div role="cell">
+                                    {{ formatFileSize(upload.file) }}
+                                </div>
+                                <div role="cell">Today</div>
+                                <div role="cell">
+                                    <button
+                                        type="button"
+                                        class="ai-object-builder__row-action"
+                                        aria-label="Remove {{
+                                            upload.file.name
+                                        }}"
+                                        (click)="removeFile(upload.file)">
+                                        <i
+                                            class="fa-regular fa-xmark"
+                                            aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div
+                                *ngFor="let item of materialItems"
+                                class="ai-object-builder__table-row"
+                                role="row">
+                                <div
+                                    class="ai-object-builder__name-cell"
+                                    role="cell">
+                                    <i
+                                        [class]="item.iconClass"
+                                        aria-hidden="true"></i>
+                                    <span>{{ item.name }}</span>
+                                </div>
+                                <div role="cell">{{ item.type }}</div>
+                                <div role="cell">{{ item.size }}</div>
+                                <div role="cell">{{ item.modified }}</div>
+                                <div role="cell">
+                                    <button
+                                        type="button"
+                                        class="ai-object-builder__row-action"
+                                        aria-label="More actions for {{
+                                            item.name
+                                        }}">
+                                        <i
+                                            class="fa-solid fa-ellipsis"
+                                            aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
+
+            <form
+                class="ai-object-builder__prompt"
+                (ngSubmit)="buildLearningObject()">
+                <i class="fa-solid fa-paperclip" aria-hidden="true"></i>
+                <label for="ai-object-builder-guidance">
+                    Optional guidance for CLARK AI
+                </label>
+                <input
+                    id="ai-object-builder-guidance"
+                    name="guidance"
+                    type="text"
+                    [(ngModel)]="guidance"
+                    placeholder="Optional: Add any guidance for CLARK AI (e.g., focus on learning outcomes, target audience, tone, etc.)" />
+                <button
+                    type="submit"
+                    class="button good"
+                    [disabled]="!hasFiles">
+                    <i
+                        class="fa-solid fa-wand-magic-sparkles"
+                        aria-hidden="true"></i>
+                    Build Learning Object
+                </button>
+            </form>
         </section>
     </main>
 </div>

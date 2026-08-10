@@ -12,6 +12,8 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - [x] 2026-08-04: Add the lazy-loaded AI Object Builder route and page.
 - [x] 2026-08-04: Add the `AI Object Builder` dashboard list action between `Filter` and `New +`.
 - [x] 2026-08-04: Validate formatting, type checking, linting, and focused tests where repo tooling allows.
+- [x] 2026-08-10: Rework the AI builder page into a materials organizer layout, keeping drag/drop upload at the top of the organizer workspace and omitting sidebar storage usage and the top-right upload button.
+- [x] 2026-08-10: Refine the organizer by removing the header divider, aligning the folder hierarchy to `My Materials > Course Materials > Module 1`, and making the table rows scroll within the module area.
 
 ## Surprises & Discoveries
 
@@ -26,10 +28,12 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - Add a separate outlined `AI Object Builder` button so users can intentionally open the AI-assisted flow from the dashboard.
 - Use a lazy-loaded NgModule route to match the surrounding Onion routing pattern.
 - Keep the first builder page UI local-only for now: selected files are shown from browser state, and the empty state shows no uploaded files.
+- Match the revised mockup by placing upload inside the organizer workspace and rendering selected browser files as rows in the organizer table.
+- Avoid pre-populating the organizer with real-looking sample files; only uploaded browser files should render as file rows.
 
 ## Outcomes & Retrospective
 
-The dashboard no longer renders the wide Agentic Builder announcement banner. The draft list action area now includes a distinct `AI Object Builder` button between `Filter` and `New +`, with `New +` still targeting the manual builder. The branch now owns a lazy-loaded `/onion/ai-object-builder` route and a responsive, accessible first-step upload page that shows an empty uploaded-files state until the user selects or drops files.
+The dashboard no longer renders the wide Agentic Builder announcement banner. The draft list action area now includes a distinct `AI Object Builder` button between `Filter` and `New +`, with `New +` still targeting the manual builder. The branch now owns a lazy-loaded `/onion/ai-object-builder` route and a responsive, accessible first-step upload page shaped as a materials organizer. The organizer includes a folder tree, breadcrumb, material table, top-of-workspace dropzone, scrollable module rows, and bottom guidance/action bar, while intentionally excluding sidebar storage usage and a top-right upload button.
 
 ## Context and Orientation
 
@@ -59,6 +63,7 @@ Remove the dashboard-specific inline announcement because discovery is now handl
 - Visible dashboard behavior: draft list actions show `Filter`, `AI Object Builder`, and `New +`.
 - Routing behavior: `AI Object Builder` navigates to `/onion/ai-object-builder`.
 - Builder page behavior: no selected files shows `Uploaded files (0)` and a no-files empty state; selected files render real filename and size.
+- Builder page behavior: organizer renders the folder tree, breadcrumb, material table, and top-of-workspace dropzone; selected files render in the organizer table with file type, size, and a removable row.
 - Run Prettier on touched files.
 - Run TypeScript app compilation with `npx tsc -p src/tsconfig.app.json --noEmit`.
 - Run targeted Angular lint for touched TypeScript and HTML files.
