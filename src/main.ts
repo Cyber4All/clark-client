@@ -47,6 +47,7 @@ Sentry.init({
         Sentry.consoleLoggingIntegration({ levels: ["log", "warn", "error"] }),
         Sentry.feedbackIntegration({
             colorScheme: "system",
+            autoInject: false,
         }),
     ],
     // Don't send traces
