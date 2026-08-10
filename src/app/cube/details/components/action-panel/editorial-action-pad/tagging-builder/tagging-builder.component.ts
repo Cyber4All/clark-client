@@ -36,7 +36,6 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     @Input() learningObject: LearningObject;
     oldOutcomes: LearningOutcome[];
     @Output() close: EventEmitter<void> = new EventEmitter();
-    @Output() saved: EventEmitter<void> = new EventEmitter();
 
     currentTab: "topics" | "tags" | "alignment" = "topics";
     underlineLeft = "0px";
@@ -162,7 +161,7 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
         );
         await this.bundlingService.bundleLearningObject(this.learningObject.id);
 
-        this.saved.emit();
+        this.close.emit();
     }
 
     cancel() {

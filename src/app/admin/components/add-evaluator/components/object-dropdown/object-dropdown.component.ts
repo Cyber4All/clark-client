@@ -24,10 +24,6 @@ import {
 import { VirtualScrollerModule } from "@iharbeck/ngx-virtual-scroller";
 import { ActivateDirective } from "../../../../../shared/directives/activate.directive";
 import { TipDirective } from "../../../../../shared/directives/tip.directive";
-import {
-    getLearningObjectStatusIcon,
-    getLearningObjectStatusLabel,
-} from "app/shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-object-dropdown",
@@ -95,14 +91,6 @@ export class ObjectDropdownComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.destroyed$.next();
         this.destroyed$.unsubscribe();
-    }
-
-    getStatusLabel(status: string): string {
-        return getLearningObjectStatusLabel(status);
-    }
-
-    getStatusIcon(status: string): string {
-        return getLearningObjectStatusIcon(status);
     }
 
     /**

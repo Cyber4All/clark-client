@@ -4,7 +4,9 @@
             [ngTemplateOutlet]="
                 page === 1
                     ? changeStatus
-                    : selectedStatus === 'rejected'
+                    : selectedStatus === 'accepted_major' ||
+                        selectedStatus === 'accepted_minor' ||
+                        selectedStatus === 'rejected'
                       ? requestChanges
                       : updateChangelog
             "></ng-container>

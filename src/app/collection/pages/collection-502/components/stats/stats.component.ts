@@ -29,7 +29,8 @@ export class Stats502Component implements OnInit {
                 this.objReleased = res.statusMetrics[0].count;
                 const num =
                     res.statusMetrics[0].waiting +
-                    res.statusMetrics[0].peerReview;
+                    res.statusMetrics[0].peerReview +
+                    res.statusMetrics[0].proofing;
                 this.objReview = num;
                 this.authorCollection = res.authors.length;
             });

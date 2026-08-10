@@ -19,12 +19,6 @@ import { NgFor } from "@angular/common";
 import { DistributionChartComponent } from "./distribution-chart/distribution-chart.component";
 import { TopDownloadsComponent } from "./top-downloads/top-downloads.component";
 
-type LearningObjectStatsResponse = LearningObjectStats & {
-    status?: LearningObjectStats["status"] & {
-        peerReview?: number;
-    };
-};
-
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
 let CHART_HOVERED = false;
@@ -62,7 +56,10 @@ export class UsageStatsComponent implements OnInit {
             },
             status: {
                 waiting: -1,
-                review: -1,
+                peerReview: -1,
+                acceptedMinor: -1,
+                acceptedMajor: -1,
+                proofing: -1,
             },
             collections: { number: -1 },
         },
@@ -109,31 +106,32 @@ export class UsageStatsComponent implements OnInit {
     async ngOnInit() {
         // this.buildOrganizationBreakdownChart();
         this.buildCounterStats();
-        this.metricService
-            .getLearningObjectStats()
-            .then((stats: LearningObjectStatsResponse) => {
-                this.usageStats.objects.review = stats.review;
-                this.usageStats.objects.total = stats.total;
-                this.usageStats.objects.released = stats.released;
-                this.usageStats.objects.downloads = stats.downloads;
-                this.usageStats.objects.topDownloads = stats.topDownloads;
-                this.usageStats.objects.lengths = {
-                    nanomodule: stats.lengths.nanomodule,
-                    micromodule: stats.lengths.micromodule,
-                    module: stats.lengths.module,
-                    unit: stats.lengths.unit,
-                    course: stats.lengths.course,
-                };
-                this.usageStats.objects.collections = stats.collections;
-                this.usageStats.objects.status = {
-                    waiting: stats.status?.waiting,
-                    review: stats.status?.review ?? stats.status?.peerReview,
-                };
+        this.metricService.getLearningObjectStats().then((stats) => {
+            this.usageStats.objects.review = stats.review;
+            this.usageStats.objects.total = stats.total;
+            this.usageStats.objects.released = stats.released;
+            this.usageStats.objects.downloads = stats.downloads;
+            this.usageStats.objects.topDownloads = stats.topDownloads;
+            this.usageStats.objects.lengths = {
+                nanomodule: stats.lengths.nanomodule,
+                micromodule: stats.lengths.micromodule,
+                module: stats.lengths.module,
+                unit: stats.lengths.unit,
+                course: stats.lengths.course,
+            };
+            this.usageStats.objects.collections = stats.collections;
+            this.usageStats.objects.status = {
+                waiting: stats.lengths.nanomodule,
+                peerReview: stats.lengths.micromodule,
+                acceptedMinor: stats.lengths.module,
+                acceptedMajor: stats.lengths.unit,
+                proofing: stats.lengths.course,
+            };
 
-                this.buildCounterStats();
-                this.buildLengthDistributionChart();
-                this.buildTopDownloads();
-            });
+            this.buildCounterStats();
+            this.buildLengthDistributionChart();
+            this.buildTopDownloads();
+        });
 
         this.outcomeService.getLearningOutcomeStats().then((stats) => {
             this.usageStats.outcomes = {

@@ -52,7 +52,8 @@
                                 <div
                                     *ngIf="filters.get('unreleased')"
                                     class="indicator"></div>
-                                <i class="fa-regular fa-eye-slash"></i>Draft
+                                <i class="fa-regular fa-eye-slash"></i
+                                >Unreleased
                             </li>
                             <li
                                 class="waiting"
@@ -73,12 +74,38 @@
                                 Review
                             </li>
                             <li
+                                class="accepted_major"
+                                (activate)="toggleFilter('accepted_major')">
+                                <div
+                                    *ngIf="filters.get('accepted_major')"
+                                    class="indicator"></div>
+                                <i class="fa-regular fa-check"></i>Major Changes
+                                Requested
+                            </li>
+                            <li
+                                class="accepted_minor"
+                                (activate)="toggleFilter('accepted_minor')">
+                                <div
+                                    *ngIf="filters.get('accepted_minor')"
+                                    class="indicator"></div>
+                                <i class="fa-solid fa-check-double"></i>Minor
+                                Changes Requested
+                            </li>
+                            <li
+                                class="proofing"
+                                (activate)="toggleFilter('proofing')">
+                                <div
+                                    *ngIf="filters.get('proofing')"
+                                    class="indicator"></div>
+                                <i class="fa-solid fa-shield"></i>Proofing
+                            </li>
+                            <li
                                 class="denied"
                                 (activate)="toggleFilter('rejected')">
                                 <div
                                     *ngIf="filters.get('rejected')"
                                     class="indicator"></div>
-                                <i class="fa-solid fa-ban"></i>Rejected
+                                <i class="fa-solid fa-ban"></i>Denied
                             </li>
                         </ul>
                     </div>

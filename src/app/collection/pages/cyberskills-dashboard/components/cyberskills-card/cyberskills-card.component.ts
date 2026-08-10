@@ -4,10 +4,6 @@ import { NgClass, NgIf, DatePipe } from "@angular/common";
 import { LengthComponent } from "../../../../../cube/details/components/splash/components/length/length.component";
 import { RatingStarsComponent } from "../../../../../shared/components/rating-stars/rating-stars.component";
 import { RouterLink } from "@angular/router";
-import {
-    getLearningObjectStatusIcon,
-    getLearningObjectStatusLabel,
-} from "../../../../../shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-cyberskills-card",
@@ -31,12 +27,4 @@ export class CyberskillsCardComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {}
-
-    get statusLabel(): string {
-        return getLearningObjectStatusLabel(this.learningObject.status);
-    }
-
-    get statusIcon(): string {
-        return getLearningObjectStatusIcon(this.learningObject.status);
-    }
 }

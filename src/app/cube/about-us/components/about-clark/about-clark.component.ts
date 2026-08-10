@@ -29,7 +29,10 @@ export class AboutClarkComponent implements OnInit {
             },
             status: {
                 waiting: 0,
-                review: 0,
+                peerReview: 0,
+                acceptedMinor: 0,
+                acceptedMajor: 0,
+                proofing: 0,
             },
             collections: { number: 0 },
         },

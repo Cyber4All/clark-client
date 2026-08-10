@@ -25,10 +25,6 @@ import {
     MatDatepicker,
 } from "@angular/material/datepicker";
 import { FormsModule } from "@angular/forms";
-import {
-    getLearningObjectStatusIcon,
-    getLearningObjectStatusLabel,
-} from "app/shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-admin-filter-search",
@@ -60,11 +56,7 @@ export class FilterSearchComponent implements OnInit {
     filterTopics: Set<string> = new Set();
     selectedCollections: Set<string> = new Set();
     statuses = Object.values(LearningObject.Status).filter(
-        (status) =>
-            ![
-                LearningObject.Status.ALL,
-                LearningObject.Status.UNRELEASED,
-            ].includes(status),
+        (status) => status !== "rejected",
     );
     dateError = false;
 
@@ -107,6 +99,9 @@ export class FilterSearchComponent implements OnInit {
         this.findUserRestrictions();
         this.getTopics();
 
+        this.statuses = this.statuses.filter(
+            (s) => !["all", "unreleased"].includes(s.toLowerCase()),
+        );
         this.relevancyStart = new Date();
 
         //check for params in the query and add them to the filter dropdown bars
@@ -368,7 +363,24 @@ export class FilterSearchComponent implements OnInit {
      * @memberof FilterSearchComponent
      */
     getStatusIcon(status: string): string {
-        return `far ${getLearningObjectStatusIcon(status)}`;
+        switch (status) {
+            case "unreleased":
+                return "far fa-eye-slash";
+            case "waiting":
+                return "far fa-hourglass";
+            case "review":
+                return "far fa-sync";
+            case "proofing":
+                return "far fa-shield";
+            case "released":
+                return "far fa-eye";
+            case "rejected":
+                return "far fa-ban";
+            case "accepted_minor":
+                return "fas fa-check-double";
+            case "accepted_major":
+                return "fas fa-check";
+        }
     }
 
     /**
@@ -411,7 +423,7 @@ export class FilterSearchComponent implements OnInit {
 
     get statusFilterOptions(): DropdownFilterOption[] {
         return this.statuses.map((status) => ({
-            label: getLearningObjectStatusLabel(status),
+            label: this.toLabel(status),
             value: status,
         }));
     }

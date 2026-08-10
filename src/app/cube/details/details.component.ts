@@ -227,7 +227,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
                                 child.status ===
                                     LearningObject.Status["REVIEW"] ||
                                 child.status ===
-                                    LearningObject.Status["WAITING"]
+                                    LearningObject.Status["PROOFING"] ||
+                                child.status ===
+                                    LearningObject.Status["WAITING"] ||
+                                child.status ===
+                                    LearningObject.Status["ACCEPTED_MINOR"] ||
+                                child.status ===
+                                    LearningObject.Status["ACCEPTED_MAJOR"]
                             );
                         });
 
@@ -349,12 +355,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
         }
     }
 
-    refreshLearningObject() {
-        const { username, cuid, version } = this.route.snapshot.params;
-
-        this.fetchReleasedLearningObject(username, cuid, version);
-    }
-
     /**
      * Loaded a revised copy of the learning object if the hasRevisions flag is true
      */
@@ -385,7 +385,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
                     return (
                         child.status === LearningObject.Status["RELEASED"] ||
                         child.status === LearningObject.Status["REVIEW"] ||
-                        child.status === LearningObject.Status["WAITING"]
+                        child.status === LearningObject.Status["PROOFING"] ||
+                        child.status === LearningObject.Status["WAITING"] ||
+                        child.status ===
+                            LearningObject.Status["ACCEPTED_MAJOR"] ||
+                        child.status === LearningObject.Status["ACCEPTED_MINOR"]
                     );
                 },
             );

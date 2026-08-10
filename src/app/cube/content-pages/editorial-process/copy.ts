@@ -71,6 +71,12 @@ export const sections = {
                             <li>Draft Learning Objects: Unsubmitted learning objects.</li>
                             <li>Waiting: Submitted learning objects that have yet to be reviewed.</li>
                             <li>Review: Learning objects that are currently being reviewed.</li>
+                            <li>Accepted Minor Changes: Learning objects that could be accepted after the author applies 
+                                minor changes.</li>
+                            <li>Accepted Major Changes: Learning objects that could be accepted after the author applies major
+                                 changes.</li>
+                            <li>Proofing: Learning objects that are being prepped for release with small quality of life changes made 
+                                by the editorial team.</li>
                             <li>Released: Learning objects that have been approved and are now publicly available on CLARK. </li>
                             <li>Rejected: Learning objects that are deemed not releasable on CLARK.</li>
                         </ul>
@@ -114,33 +120,44 @@ export const sections = {
                     },
                     {
                         question:
-                            "What kinds of issues can prevent release?",
+                            "What is the difference between accepted minor and accepted major?",
                         answer: [
                             `
                         <p>
-                        Reviewers evaluate whether a learning object is complete, usable, properly attributed, and submitted
-                        to the right collection. Issues that can prevent release include:
+                        Both statuses require action from the author as there are changes that the editorial team cannot
+                        make. The main differences in statuses are provided below: 
                         </p>
                         <ul>
-                            <li>A learning object is missing files.</li>
-                            <li>A learning object video is not available on YouTube.</li>
-                            <li>A learning object lacks proper contributor attribution.</li>
-                            <li>A learning object file has an incomplete paragraph or section.</li>
-                            <li>A learning object contains outdated curriculum that does not allow for 
-                            completion of the learning outcomes.</li>
-                            <li>A learning object has a color contrast issue.</li>
-                            <li>A learning object was submitted to the wrong collection.</li>
-                            <li>A learning object is under the wrong learning object length.</li>
+                            <li>Accepted Major</li>
+                            <ul>
+                                <li>A learning object is missing files.</li>
+                                <li>A learning object video is not available on YouTube.</li>
+                                <li>A learning object lacks proper contributor attribution.</li>
+                                <li>A learning object file has an incomplete paragraph or section.</li>
+                                <li>A learning object contains outdated curriculum that does not allow for 
+                                completion of the learning outcomes.</li>
+                                <li>A learning object that is not usable based on unavailable content.</li>
+                            </ul>
+                            <li>Accepted Minor</li>
+                            <ul>
+                                <li>A learning object has a color contrast issue.</li>
+                                <li>A learning object was submitted to the wrong collection</li>
+                                <li>A learning object is under the wrong learning object length.</li>
+                                <li>A learning object should be broken up into a hierarchy but does not 
+                                have issues that would classify it as needing Accepted Major changes</li>
+                            </ul>
                         </ul>
                             `,
                         ],
                     },
                     {
                         question:
-                            "What does it mean for an object to be in Review?",
+                            "What is the difference for an object to be in 'Review' and 'Proofing'?",
                         answer:
-                            "A learning object in Review is being evaluated by the review team. Reviewers may release it when approved " +
-                            "or reject it when it is not ready for CLARK.",
+                            "A learning object going through a review status is only being evaluated and documented on any " +
+                            "potential problems. On the other hand, a learning object going through a proofing status has small fixes " +
+                            "applied to minor issues such as typos, grammar, punctuation, formatting, and alternative text for imagery. " +
+                            "Typically, a proofing status is near the end of the review lifecycle, while a review status is at the start.",
                     },
                     {
                         question:

@@ -74,7 +74,7 @@ describe("Class: LearningObject", () => {
             children: [new LearningObject()],
             contributors: [validContributor],
             collection: "My collection",
-            status: LearningObject.Status.REVIEW,
+            status: LearningObject.Status.PROOFING,
         };
         const newObject = new LearningObject(someObject);
         expect(newObject).toBeDefined();

@@ -855,6 +855,9 @@ export namespace LearningObject {
         UNRELEASED = "unreleased",
         WAITING = "waiting",
         REVIEW = "review",
+        ACCEPTED_MINOR = "accepted_minor",
+        ACCEPTED_MAJOR = "accepted_major",
+        PROOFING = "proofing",
         RELEASED = "released",
     }
 

@@ -1,12 +1,10 @@
 import {
     Component,
     ElementRef,
-    EventEmitter,
     HostListener,
     Input,
     OnDestroy,
     OnInit,
-    Output,
     Renderer2,
     ViewChild,
     ChangeDetectionStrategy,
@@ -63,7 +61,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     @Input() isRevision: boolean;
     @Input() hasRevision: boolean;
     @Input() revisedLearningObject: LearningObject;
-    @Output() taggingUpdated: EventEmitter<void> = new EventEmitter();
     @ViewChild("objectLinkElement") objectLinkElement: ElementRef;
     @ViewChild("objectAttributionElement") objectAttributionElement: ElementRef;
     @ViewChild("savesRef") savesRef: ElementRef;
