@@ -9,11 +9,9 @@
             "projectType": "application",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:application",
+                    "builder": "@angular-builders/custom-webpack:browser",
                     "options": {
-                        "outputPath": {
-                            "base": "dist"
-                        },
+                        "outputPath": "dist/browser",
                         "index": "src/index.html",
                         "tsConfig": "src/tsconfig.app.json",
                         "polyfills": [
@@ -47,7 +45,6 @@
                             "./node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js"
                         ],
                         "extractLicenses": false,
-                        "sourceMap": true,
                         "optimization": false,
                         "namedChunks": true,
                         "allowedCommonJsDependencies": [
@@ -58,7 +55,7 @@
                             "ng-click-outside",
                             "rxjs/internal/observable/of"
                         ],
-                        "browser": "src/main.ts"
+                        "main": "src/main.ts"
                     },
                     "configurations": {
                         "experimental": {
@@ -70,6 +67,7 @@
                             ]
                         },
                         "staging": {
+                            "sourceMap": true,
                             "fileReplacements": [
                                 {
                                     "replace": "src/environments/environment.ts",
@@ -80,7 +78,7 @@
                         "production": {
                             "optimization": true,
                             "outputHashing": "all",
-                            "sourceMap": false,
+                            "sourceMap": true,
                             "namedChunks": false,
                             "extractLicenses": true,
                             "fileReplacements": [
@@ -94,7 +92,7 @@
                     "defaultConfiguration": ""
                 },
                 "serve": {
-                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "builder": "@angular-builders/custom-webpack:dev-server",
                     "options": {
                         "buildTarget": "clark:build"
                     },
@@ -111,7 +109,7 @@
                     }
                 },
                 "extract-i18n": {
-                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "builder": "@angular-builders/custom-webpack:extract-i18n",
                     "options": {
                         "buildTarget": "clark:build"
                     }
@@ -173,7 +171,7 @@
             "projectType": "application",
             "architect": {
                 "build": {
-                    "builder": "@angular-devkit/build-angular:application",
+                    "builder": "@angular-builders/custom-webpack:browser",
                     "options": {
                         "tsConfig": "src/tsconfig.app.json",
                         "polyfills": [
