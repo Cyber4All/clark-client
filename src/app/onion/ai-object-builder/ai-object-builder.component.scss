@@ -236,6 +236,20 @@
         font-weight: 700;
     }
 
+    button {
+        border: 0;
+        background: transparent;
+        color: $dark-grey;
+        cursor: pointer;
+        font: inherit;
+        padding: 0;
+
+        &:hover,
+        &:focus-visible {
+            color: $light-blue;
+        }
+    }
+
     .svg-inline--fa {
         color: $medium-grey;
         font-size: 10px;
@@ -287,6 +301,15 @@
     }
 }
 
+.ai-object-builder__table-row--folder .ai-object-builder__name-cell {
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+        color: $light-blue;
+    }
+}
+
 .ai-object-builder__file-icon--folder {
     color: $light-blue;
 }
@@ -325,6 +348,22 @@
     &:focus-visible {
         background: #f3f7ff;
         color: $light-blue;
+    }
+}
+
+::ng-deep .context-menu .ai-object-builder__action-menu {
+    max-height: min(320px, 60vh);
+    overflow-y: auto;
+
+    .ai-object-builder__action-menu-item--disabled {
+        color: $medium-grey;
+        cursor: not-allowed;
+
+        &:hover,
+        &:focus-visible {
+            background: transparent;
+            color: $medium-grey;
+        }
     }
 }
 

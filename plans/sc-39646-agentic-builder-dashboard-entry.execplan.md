@@ -14,6 +14,10 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - [x] 2026-08-04: Validate formatting, type checking, linting, and focused tests where repo tooling allows.
 - [x] 2026-08-10: Rework the AI builder page into a materials organizer layout, keeping drag/drop upload at the top of the organizer workspace and omitting sidebar storage usage and the top-right upload button.
 - [x] 2026-08-10: Refine the organizer by removing the header divider, aligning the folder hierarchy to `My Materials > Course Materials > Module 1`, and making the table rows scroll within the module area.
+- [x] 2026-08-11: Add local interactive organizer behavior: expandable/selectable folders, selected-folder breadcrumbs, uploads scoped to the selected folder, and row action menus.
+- [x] 2026-08-11: Replace the folder-list implementation with a single `TreeNode` source of truth plus separate selected-folder, expanded-folder, and upload state so Course Materials and modules are collapsed by default and only real child nodes render.
+- [x] 2026-08-11: Reuse the existing body-portaled `clark-context-menu` for row actions to avoid clipping inside the scrollable table and add explicit chevron click handling to prevent duplicate toggles.
+- [x] 2026-08-11: Investigated folder creation support. Existing builder file management can upload folders/files and derive folder structure from file paths, but this AI builder route has no persisted materials API, parent-folder creation endpoint, or reload-backed folder tree source yet, so folder creation is intentionally not implemented here.
 
 ## Surprises & Discoveries
 
@@ -30,10 +34,15 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - Keep the first builder page UI local-only for now: selected files are shown from browser state, and the empty state shows no uploaded files.
 - Match the revised mockup by placing upload inside the organizer workspace and rendering selected browser files as rows in the organizer table.
 - Avoid pre-populating the organizer with real-looking sample files; only uploaded browser files should render as file rows.
+- Keep organizer interactions local-only until a real materials API exists. Row menus expose likely actions, but only `Open` for folders and `Remove` for uploaded files are active.
+- Keep Module 1 and Module 2 as fixed Course Materials children for this step, but do not add placeholder module contents. Uploaded files are the only file nodes in the tree until backend data exists.
+- Do not add folder creation in this branch until a persisted API contract exists for creating folders under a stable parent id and returning them on reload.
 
 ## Outcomes & Retrospective
 
-The dashboard no longer renders the wide Agentic Builder announcement banner. The draft list action area now includes a distinct `AI Object Builder` button between `Filter` and `New +`, with `New +` still targeting the manual builder. The branch now owns a lazy-loaded `/onion/ai-object-builder` route and a responsive, accessible first-step upload page shaped as a materials organizer. The organizer includes a folder tree, breadcrumb, material table, top-of-workspace dropzone, scrollable module rows, and bottom guidance/action bar, while intentionally excluding sidebar storage usage and a top-right upload button.
+The dashboard no longer renders the wide Agentic Builder announcement banner. The draft list action area now includes a distinct `AI Object Builder` button between `Filter` and `New +`, with `New +` still targeting the manual builder. The branch now owns a lazy-loaded `/onion/ai-object-builder` route and a responsive, accessible first-step upload page shaped as a materials organizer. The organizer includes an interactive folder tree, selected-folder breadcrumb, selected-folder material table, top-of-workspace dropzone, scrollable module rows, row action menus, and bottom guidance/action bar, while intentionally excluding sidebar storage usage and a top-right upload button.
+
+The original tree bug came from mixing folder data with `expanded` flags on the nodes and rendering hard-coded placeholder module children. The current implementation separates tree data from expanded/selected/upload state and derives both the left tree and main table from the same tree.
 
 ## Context and Orientation
 

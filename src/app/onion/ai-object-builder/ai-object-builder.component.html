@@ -39,79 +39,39 @@
 
                     <nav class="ai-object-builder__folder-tree">
                         <button
+                            *ngFor="
+                                let item of visibleTreeNodes;
+                                trackBy: trackNodeById
+                            "
                             type="button"
-                            class="ai-object-builder__folder ai-object-builder__folder--level-1">
+                            class="ai-object-builder__folder"
+                            [ngClass]="{
+                                'ai-object-builder__folder--level-1':
+                                    item.level === 1,
+                                'ai-object-builder__folder--level-2':
+                                    item.level === 2,
+                                'ai-object-builder__folder--level-3':
+                                    item.level === 3,
+                                'ai-object-builder__folder--active':
+                                    item.node.id === selectedFolderId,
+                            }"
+                            (click)="onTreeNodeClick(item.node)">
                             <i
-                                class="fa-solid fa-chevron-down"
-                                aria-hidden="true"></i>
-                            <i
-                                class="fa-regular fa-folder"
-                                aria-hidden="true"></i>
-                            <span>Course Materials</span>
-                        </button>
-                        <button
-                            type="button"
-                            class="ai-object-builder__folder ai-object-builder__folder--level-2 ai-object-builder__folder--active">
-                            <i
-                                class="fa-solid fa-chevron-down"
-                                aria-hidden="true"></i>
-                            <i
-                                class="fa-regular fa-folder"
-                                aria-hidden="true"></i>
-                            <span>Module 1</span>
-                        </button>
-                        <button
-                            type="button"
-                            class="ai-object-builder__folder ai-object-builder__folder--level-3">
+                                *ngIf="hasChildren(item.node)"
+                                [ngClass]="{
+                                    'fa-solid': true,
+                                    'fa-chevron-down': isExpanded(item.node),
+                                    'fa-chevron-right': !isExpanded(item.node),
+                                }"
+                                aria-label="Toggle {{ item.node.name }}"
+                                (click)="onChevronClick(item.node, $event)"></i>
                             <span
+                                *ngIf="!hasChildren(item.node)"
                                 class="ai-object-builder__folder-spacer"></span>
                             <i
-                                class="fa-regular fa-folder"
+                                [class]="getNodeIconClass(item.node)"
                                 aria-hidden="true"></i>
-                            <span>Lectures</span>
-                        </button>
-                        <button
-                            type="button"
-                            class="ai-object-builder__folder ai-object-builder__folder--level-3">
-                            <span
-                                class="ai-object-builder__folder-spacer"></span>
-                            <i
-                                class="fa-regular fa-folder"
-                                aria-hidden="true"></i>
-                            <span>Assignments</span>
-                        </button>
-                        <button
-                            type="button"
-                            class="ai-object-builder__folder ai-object-builder__folder--level-2">
-                            <i
-                                class="fa-solid fa-chevron-right"
-                                aria-hidden="true"></i>
-                            <i
-                                class="fa-regular fa-folder"
-                                aria-hidden="true"></i>
-                            <span>Module 2</span>
-                        </button>
-                        <button
-                            type="button"
-                            class="ai-object-builder__folder ai-object-builder__folder--level-1">
-                            <i
-                                class="fa-solid fa-chevron-right"
-                                aria-hidden="true"></i>
-                            <i
-                                class="fa-regular fa-folder"
-                                aria-hidden="true"></i>
-                            <span>Assessments</span>
-                        </button>
-                        <button
-                            type="button"
-                            class="ai-object-builder__folder ai-object-builder__folder--level-1">
-                            <i
-                                class="fa-solid fa-chevron-right"
-                                aria-hidden="true"></i>
-                            <i
-                                class="fa-regular fa-folder"
-                                aria-hidden="true"></i>
-                            <span>Images</span>
+                            <span>{{ item.node.name }}</span>
                         </button>
                     </nav>
                 </aside>
@@ -160,14 +120,30 @@
                         class="ai-object-builder__breadcrumbs"
                         aria-label="Breadcrumb">
                         <span>My Materials</span>
-                        <i
-                            class="fa-solid fa-chevron-right"
-                            aria-hidden="true"></i>
-                        <span>Course Materials</span>
-                        <i
-                            class="fa-solid fa-chevron-right"
-                            aria-hidden="true"></i>
-                        <strong>Module 1</strong>
+                        <ng-container
+                            *ngFor="
+                                let node of breadcrumbNodes;
+                                trackBy: trackNodeById
+                            ">
+                            <i
+                                class="fa-solid fa-chevron-right"
+                                aria-hidden="true"></i>
+                            <strong
+                                *ngIf="
+                                    node.id === selectedFolderId;
+                                    else breadcrumbLink
+                                ">
+                                {{ node.name }}
+                            </strong>
+                            <ng-template #breadcrumbLink>
+                                <button
+                                    type="button"
+                                    class="ai-object-builder__breadcrumb-button"
+                                    (click)="selectFolder(node.id)">
+                                    {{ node.name }}
+                                </button>
+                            </ng-template>
+                        </ng-container>
                     </div>
 
                     <div class="ai-object-builder__table" role="table">
@@ -188,61 +164,42 @@
 
                         <div class="ai-object-builder__table-body">
                             <div
-                                *ngFor="let upload of files"
+                                *ngFor="
+                                    let row of currentRows;
+                                    trackBy: trackNodeById
+                                "
                                 class="ai-object-builder__table-row"
-                                role="row">
+                                role="row"
+                                [ngClass]="{
+                                    'ai-object-builder__table-row--folder':
+                                        row.type === 'folder',
+                                }"
+                                (click)="onTableNodeClick(row)">
                                 <div
                                     class="ai-object-builder__name-cell"
                                     role="cell">
                                     <i
-                                        [class]="upload.iconClass"
+                                        [class]="getNodeIconClass(row)"
                                         aria-hidden="true"></i>
-                                    <span>{{ upload.file.name }}</span>
+                                    <span>{{ row.name }}</span>
                                 </div>
                                 <div role="cell">
-                                    {{ getFileType(upload.file.name) }}
+                                    {{ getNodeTypeLabel(row) }}
                                 </div>
                                 <div role="cell">
-                                    {{ formatFileSize(upload.file) }}
+                                    {{ getNodeSizeLabel(row) }}
                                 </div>
-                                <div role="cell">Today</div>
                                 <div role="cell">
-                                    <button
-                                        type="button"
-                                        class="ai-object-builder__row-action"
-                                        aria-label="Remove {{
-                                            upload.file.name
-                                        }}"
-                                        (click)="removeFile(upload.file)">
-                                        <i
-                                            class="fa-regular fa-xmark"
-                                            aria-hidden="true"></i>
-                                    </button>
+                                    {{ getNodeModifiedLabel(row) }}
                                 </div>
-                            </div>
-
-                            <div
-                                *ngFor="let item of materialItems"
-                                class="ai-object-builder__table-row"
-                                role="row">
-                                <div
-                                    class="ai-object-builder__name-cell"
-                                    role="cell">
-                                    <i
-                                        [class]="item.iconClass"
-                                        aria-hidden="true"></i>
-                                    <span>{{ item.name }}</span>
-                                </div>
-                                <div role="cell">{{ item.type }}</div>
-                                <div role="cell">{{ item.size }}</div>
-                                <div role="cell">{{ item.modified }}</div>
                                 <div role="cell">
                                     <button
                                         type="button"
                                         class="ai-object-builder__row-action"
                                         aria-label="More actions for {{
-                                            item.name
-                                        }}">
+                                            row.name
+                                        }}"
+                                        (click)="toggleActionMenu(row, $event)">
                                         <i
                                             class="fa-solid fa-ellipsis"
                                             aria-hidden="true"></i>
@@ -280,3 +237,23 @@
         </section>
     </main>
 </div>
+
+<ng-container *ngIf="activeActionNode as actionNode">
+    <clark-context-menu
+        *ngIf="actionMenuAnchor"
+        [anchor]="actionMenuAnchor"
+        [offset]="{ top: 4, left: -104 }"
+        (close)="closeActionMenu()">
+        <ul #contextMenu class="ai-object-builder__action-menu">
+            <li
+                *ngFor="let option of getActionMenuOptions(actionNode)"
+                [ngClass]="{
+                    'ai-object-builder__action-menu-item--disabled':
+                        !isActionEnabled(option),
+                }"
+                (activate)="handleAction(option, actionNode)">
+                {{ option }}
+            </li>
+        </ul>
+    </clark-context-menu>
+</ng-container>
