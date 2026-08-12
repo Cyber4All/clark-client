@@ -366,11 +366,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
             )
             .subscribe(async (value) => {
                 this.usernameLoading = false;
+
+                if (!value || value.trim() === "") {
+                    return;
+                }
+
                 await this.auth
                     .usernameInUse(value)
-                    .catch((err) => {
-                        this.authValidation.showError();
-                    })
                     .then((res: any) => {
                         this.usernameInUse = res.identifierInUse;
                         if (this.usernameInUse) {
@@ -382,6 +384,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
                         } else {
                             this.fieldErrorMsg = "";
                         }
+                    })
+                    .catch((err) => {
+                        this.authValidation.showError();
                     });
             });
     }
