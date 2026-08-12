@@ -529,7 +529,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
 
     openAddRatingModal() {
-        if (!this.auth.user.emailVerified) {
+        if (!this.auth.user?.emailVerified) {
             return;
         }
 

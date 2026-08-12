@@ -71,7 +71,7 @@
                                 tabindex="0"
                                 *ngIf="!isMobile && loggedin && !isOwnObject"
                                 tip="You must verify your email in order to review Learning Objects."
-                                [tipDisabled]="auth.user.emailVerified"
+                                [tipDisabled]="auth.user?.emailVerified"
                                 class="button good content-container__ratings-container__button-container"
                                 (activate)="openAddRatingModal()"
                                 attr.aria-label="Clickable button Write a review">
@@ -148,7 +148,7 @@
                             <clark-version-card
                                 [version]="learningObject.version"
                                 [showButton]="
-                                    loggedin && auth.user.emailVerified
+                                    loggedin && auth.user?.emailVerified
                                 "
                                 (clickButtonEvent)="
                                     openViewAllChangelogsModal()

@@ -66,9 +66,9 @@
                     [ngClass]="{
                         good: !submissionError,
                         bad: validator.submissionMode && submissionError,
-                        disabled: !auth.user.emailVerified,
+                        disabled: !auth.user?.emailVerified,
                     }"
-                    (activate)="auth.user.emailVerified && triggerSubmit()">
+                    (activate)="auth.user?.emailVerified && triggerSubmit()">
                     <div
                         *ngIf="validator.submissionMode && submissionError"
                         class="button__cancel"
