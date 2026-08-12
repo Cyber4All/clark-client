@@ -436,7 +436,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         try {
             await this.auth.validateToken();
 
-            if (!this.auth.user.emailVerified) {
+            if (!this.auth.user?.emailVerified) {
                 await this.auth.sendEmailVerification().toPromise();
                 this.toaster.success(
                     `Success!`,
