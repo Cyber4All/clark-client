@@ -17,11 +17,8 @@ export class TrapFocusDirective implements OnDestroy {
                     el.classList.add("focus--trapped");
 
                     el.addEventListener("blur", (event) => {
-                        if (
-                            !(
-                                event.relatedTarget as HTMLElement
-                            ).classList.contains("focus--trapped")
-                        ) {
+                        const rt = event.relatedTarget as HTMLElement;
+                        if (!rt || !rt.classList.contains("focus--trapped")) {
                             // if we've left the focus-trapped region, refocus the first element in the focus-trapped region
                             this.focusFirstElement();
                         }
