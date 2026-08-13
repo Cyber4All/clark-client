@@ -99,7 +99,9 @@ export class ProfileLearningObjectsComponent implements OnChanges {
                 a.name.localeCompare(b.name),
             );
             // Default first released collection tab values
-            this.content(this.tabMain, this.collectionsReleased[0].abvName);
+            if (this.collectionsReleased.length > 0) {
+                this.content(this.tabMain, this.collectionsReleased[0].abvName);
+            }
             this.loading = false;
         });
     }
