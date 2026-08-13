@@ -19,7 +19,7 @@
                         role="tab"
                         (click)="
                             activateMainTab('released');
-                            content(1, collectionsReleased[0].abvName);
+                            content(1, collectionsReleased[0]?.abvName);
                             activateCollectionTab(0)
                         "
                         [ngClass]="{ active: tabMain === 1 }">
