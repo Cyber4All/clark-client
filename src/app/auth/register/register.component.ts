@@ -368,9 +368,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 this.usernameLoading = false;
                 await this.auth
                     .usernameInUse(value)
-                    .catch((err) => {
-                        this.authValidation.showError();
-                    })
                     .then((res: any) => {
                         this.usernameInUse = res.identifierInUse;
                         if (this.usernameInUse) {
