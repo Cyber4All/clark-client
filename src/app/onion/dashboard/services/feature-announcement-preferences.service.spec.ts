@@ -4,7 +4,7 @@ import { FeatureAnnouncementPreferencesService } from "./feature-announcement-pr
 
 describe("FeatureAnnouncementPreferencesService", () => {
     let service: FeatureAnnouncementPreferencesService;
-    const featureKey = "Hide AI Announcemednt";
+    const featureKey = "Hide AI Announcement";
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
