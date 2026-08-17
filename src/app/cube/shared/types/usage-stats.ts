@@ -14,10 +14,7 @@ export interface LearningObjectStats {
     };
     status: {
         waiting: number;
-        peerReview: number;
-        acceptedMinor: number;
-        acceptedMajor: number;
-        proofing: number;
+        review: number;
     };
     collections: { number: number };
 }

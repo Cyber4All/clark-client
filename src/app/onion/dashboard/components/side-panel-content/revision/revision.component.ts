@@ -20,6 +20,10 @@ import { ActivateDirective } from "../../../../../shared/directives/activate.dir
 import { ContextMenuComponent } from "../../../../../shared/modules/contextmenu/context-menu/context-menu.component";
 import { RouterLink } from "@angular/router";
 import { PopupComponent } from "../../../../../shared/modules/popups/popup.component";
+import {
+    getLearningObjectStatusIcon,
+    getLearningObjectStatusLabel,
+} from "app/shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-revision",
@@ -81,6 +85,14 @@ export class RevisionComponent implements OnChanges {
         this.deleteConfirmationOpen = true;
     }
 
+    get statusLabel(): string {
+        return getLearningObjectStatusLabel(this.revision.status);
+    }
+
+    get statusIcon(): string {
+        return getLearningObjectStatusIcon(this.revision.status);
+    }
+
     /**
      * Given a string representation of a context menu action, returns true if that action should be allowed based on
      * parameters such as learing object length and learning object status
@@ -89,16 +101,15 @@ export class RevisionComponent implements OnChanges {
      */
     actionPermissions(action: string) {
         const permissions = {
-            edit: ["unreleased", "denied"],
+            edit: ["unreleased", "rejected"],
             editChildren: [
                 "unreleased",
-                "denied",
                 this.revision.length !== "nanomodule",
             ],
-            manageMaterials: ["unreleased", "denied"],
-            submit: ["unreleased", "denied"],
+            manageMaterials: ["unreleased"],
+            submit: ["unreleased"],
             view: ["released"],
-            delete: ["unreleased", "denied"],
+            delete: ["unreleased", "rejected"],
             cancelSubmission: ["waiting"],
             infoPanel: ["released"],
         };

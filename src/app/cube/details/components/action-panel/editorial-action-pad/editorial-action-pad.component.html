@@ -48,7 +48,8 @@
     <div #popupInner style="width: 60vw; margin-top: 10px">
         <clark-tagging-builder
             [learningObject]="learningObject"
-            (close)="closeTaggingModal()"></clark-tagging-builder>
+            (close)="closeTaggingModal()"
+            (saved)="handleTaggingSaved()"></clark-tagging-builder>
     </div>
 </clark-popup>
 

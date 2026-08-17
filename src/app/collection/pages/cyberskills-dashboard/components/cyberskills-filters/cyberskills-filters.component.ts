@@ -18,6 +18,10 @@ import {
 import { NgIf, NgClass, NgFor, TitleCasePipe } from "@angular/common";
 import { ActivateDirective } from "../../../../../shared/directives/activate.directive";
 import { ContextMenuComponent } from "../../../../../shared/modules/contextmenu/context-menu/context-menu.component";
+import {
+    getLearningObjectStatusIcon,
+    getLearningObjectStatusLabel,
+} from "../../../../../shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-cyberskills-filters",
@@ -44,7 +48,13 @@ export class CyberskillsFiltersComponent implements OnInit {
     selectedLastUpdatedSortType?: SortType;
     selectedRatingSortType?: SortType;
 
-    statuses = Object.values(LearningObject.Status);
+    statuses = Object.values(LearningObject.Status).filter(
+        (status) =>
+            ![
+                LearningObject.Status.ALL,
+                LearningObject.Status.UNRELEASED,
+            ].includes(status),
+    );
     lengths = Object.values(LearningObject.Length);
     sortValues = Object.values(SortType);
 
@@ -71,13 +81,6 @@ export class CyberskillsFiltersComponent implements OnInit {
     ) {}
 
     async ngOnInit() {
-        // Insert 'all' into the list of statuses
-        this.statuses.splice(0, 0);
-
-        this.statuses = this.statuses.filter(
-            (s) => !["rejected", "unreleased"].includes(s.toLowerCase()),
-        );
-
         // Check for query params in the URL
         const qParams = this.route.parent?.snapshot.queryParamMap;
         const queryStatuses = qParams?.getAll("statuses");
@@ -318,24 +321,11 @@ export class CyberskillsFiltersComponent implements OnInit {
      * @returns {string}
      */
     getStatusIcon(status: string): string {
-        switch (status) {
-            case "unreleased":
-                return "far fa-eye-slash";
-            case "waiting":
-                return "far fa-hourglass";
-            case "review":
-                return "far fa-sync";
-            case "proofing":
-                return "far fa-shield";
-            case "released":
-                return "far fa-eye";
-            case "rejected":
-                return "far fa-ban";
-            case "accepted_minor":
-                return "fas fa-check-double";
-            case "accepted_major":
-                return "fas fa-check";
-        }
+        return `far ${getLearningObjectStatusIcon(status)}`;
+    }
+
+    getStatusLabel(status: string): string {
+        return getLearningObjectStatusLabel(status);
     }
 
     /**

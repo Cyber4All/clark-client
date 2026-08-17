@@ -55,7 +55,7 @@
                 class="status"
                 [attr.aria-label]="
                     'Learning Object Status: ' +
-                    learningObject.status +
+                    getStatusLabel(learningObject.status) +
                     '. ' +
                     statusDescription
                 "
@@ -63,30 +63,11 @@
                 [tip]="statusDescription"
                 [tipDisabled]="!statusDescription"
                 tipPosition="top">
-                <span *ngIf="learningObject.status === 'unreleased'"
-                    ><i class="fa-solid fa-eye-slash"></i
-                ></span>
-                <span *ngIf="learningObject.status === 'waiting'"
-                    ><i class="fa-regular fa-hourglass"></i
-                ></span>
-                <span *ngIf="learningObject.status === 'review'"
-                    ><i class="fa-solid fa-arrows-rotate"></i
-                ></span>
-                <span *ngIf="learningObject.status === 'proofing'"
-                    ><i class="fa-solid fa-shield"></i
-                ></span>
-                <span *ngIf="learningObject.status === 'released'"
-                    ><i class="fa-solid fa-eye"></i
-                ></span>
-                <span *ngIf="learningObject.status === 'rejected'"
-                    ><i class="fa-solid fa-ban"></i
-                ></span>
-                <span *ngIf="learningObject.status === 'accepted_minor'"
-                    ><i class="fa-solid fa-check-double"></i
-                ></span>
-                <span *ngIf="learningObject.status === 'accepted_major'"
-                    ><i class="fa-solid fa-check"></i
-                ></span>
+                <span>
+                    <i
+                        class="fa-solid"
+                        [ngClass]="getStatusIcon(learningObject.status)"></i>
+                </span>
             </div>
             <div class="object-info">
                 <div>
