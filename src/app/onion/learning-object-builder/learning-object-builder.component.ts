@@ -352,10 +352,8 @@ export class LearningObjectBuilderComponent
      * @param object the Learning Object in question.
      */
     private isInReviewStage(object): boolean {
-        return (
-            object.status.includes("waiting") &&
-            object.status.includes("review") &&
-            object.status.includes("proofing")
+        return [LearningObject.Status.WAITING, LearningObject.Status.REVIEW].includes(
+            object.status,
         );
     }
 

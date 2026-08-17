@@ -22,6 +22,10 @@ import {
 import { TipDirective } from "../../../shared/directives/tip.directive";
 import { ChangeAuthorUserDropdownComponent } from "./components/change-author-user-dropdown/change-author-user-dropdown.component";
 import { ActivateDirective } from "../../../shared/directives/activate.directive";
+import {
+    getLearningObjectStatusIcon,
+    getLearningObjectStatusLabel,
+} from "app/shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-change-author",
@@ -69,6 +73,18 @@ export class ChangeAuthorComponent implements OnInit {
                 this.highlightedLearningObject.id,
             );
         this.hasChildren = this.children.length > 0;
+    }
+
+    get statusLabel(): string {
+        return getLearningObjectStatusLabel(
+            this.highlightedLearningObject.status,
+        );
+    }
+
+    get statusIcon(): string {
+        return getLearningObjectStatusIcon(
+            this.highlightedLearningObject.status,
+        );
     }
 
     toggleState(renderFinalStage: boolean) {

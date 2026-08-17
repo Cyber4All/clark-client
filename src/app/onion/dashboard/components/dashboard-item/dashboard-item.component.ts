@@ -27,6 +27,10 @@ import { TipDirective } from "../../../../shared/directives/tip.directive";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { RouterLink } from "@angular/router";
 import { ContextMenuComponent } from "../../../../shared/modules/contextmenu/context-menu/context-menu.component";
+import {
+    getLearningObjectStatusIcon,
+    getLearningObjectStatusLabel,
+} from "app/shared/functions/learning-object-status";
 
 @Component({
     selector: "clark-dashboard-item",
@@ -162,23 +166,17 @@ export class DashboardItemComponent implements OnInit, OnChanges {
      */
     actionPermissions(action: string) {
         const permissions = {
-            edit: ["unreleased", "accepted_minor", "accepted_major"],
+            edit: ["unreleased"],
             editChildren: [
                 "unreleased",
-                "accepted_minor",
-                "accepted_major",
                 this.learningObject.length !== "nanomodule",
             ],
             manageMaterials: [
                 "unreleased",
-                "accepted_minor",
-                "accepted_major",
                 this.verifiedEmail,
             ],
             submit: [
                 "unreleased",
-                "accepted_minor",
-                "accepted_major",
                 this.verifiedEmail,
             ],
             submitHierarchy: [
@@ -187,7 +185,6 @@ export class DashboardItemComponent implements OnInit, OnChanges {
                 this.hasChildren,
                 this.verifiedEmail,
             ],
-            resubmit: ["accepted_minor", "accepted_major"],
             view: ["released"],
             delete: ["unreleased", "rejected"],
             cancelSubmission: ["waiting", this.verifiedEmail],
@@ -220,6 +217,14 @@ export class DashboardItemComponent implements OnInit, OnChanges {
      */
     get verifiedEmail(): boolean {
         return this.auth.user.emailVerified;
+    }
+
+    get statusLabel(): string {
+        return getLearningObjectStatusLabel(this.learningObject.status);
+    }
+
+    get statusIcon(): string {
+        return getLearningObjectStatusIcon(this.learningObject.status);
     }
 
     /**

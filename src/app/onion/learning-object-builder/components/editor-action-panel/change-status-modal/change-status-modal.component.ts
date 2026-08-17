@@ -91,23 +91,12 @@ export class ChangeStatusModalComponent implements OnInit {
                 break;
             case LearningObject.Status.REVIEW:
                 this.statuses = [
-                    LearningObject.Status.ACCEPTED_MINOR,
-                    LearningObject.Status.ACCEPTED_MAJOR,
-                    LearningObject.Status.PROOFING,
-                ];
-                break;
-            case LearningObject.Status.ACCEPTED_MINOR:
-            case LearningObject.Status.ACCEPTED_MAJOR:
-                this.statuses = [
-                    LearningObject.Status.WAITING,
-                    LearningObject.Status.PROOFING,
-                ];
-                break;
-            case LearningObject.Status.PROOFING:
-                this.statuses = [
                     LearningObject.Status.RELEASED,
                     LearningObject.Status.REJECTED,
                 ];
+                break;
+            default:
+                this.statuses = [];
         }
     }
 
@@ -161,16 +150,10 @@ export class ChangeStatusModalComponent implements OnInit {
         switch (status) {
             case LearningObject.Status.RELEASED:
                 return "Release";
-            case LearningObject.Status.PROOFING:
-                return "Move to Proofing";
             case LearningObject.Status.REVIEW:
                 return "Move to Review";
             case LearningObject.Status.WAITING:
                 return "Move to Waiting";
-            case LearningObject.Status.ACCEPTED_MINOR:
-                return "Request Minor Changes";
-            case LearningObject.Status.ACCEPTED_MAJOR:
-                return "Request Major Changes";
             case LearningObject.Status.REJECTED:
                 return "Reject";
         }

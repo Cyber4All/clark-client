@@ -114,7 +114,7 @@ export class EditorialService {
     }
 
     /**
-     * Checks if an editor is permitted to make edits to a waiting, review, or proofing Learning Object
+     * Checks if an editor is permitted to make edits to a draft or active review Learning Object.
      * @param learningObject Learning Object
      * @param revisedLearningObject Revised Learning Object
      * @returns {boolean}
@@ -130,9 +130,6 @@ export class EditorialService {
             learningObject.status === "review" ||
             (revisedLearningObject &&
                 revisedLearningObject.status === "review") ||
-            learningObject.status === "proofing" ||
-            (revisedLearningObject &&
-                revisedLearningObject.status === "proofing") ||
             learningObject.status === "unreleased" ||
             (revisedLearningObject &&
                 revisedLearningObject.status === "unreleased")
