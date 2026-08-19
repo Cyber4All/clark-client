@@ -18,6 +18,11 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - [x] 2026-08-11: Replace the folder-list implementation with a single `TreeNode` source of truth plus separate selected-folder, expanded-folder, and upload state so Course Materials and modules are collapsed by default and only real child nodes render.
 - [x] 2026-08-11: Reuse the existing body-portaled `clark-context-menu` for row actions to avoid clipping inside the scrollable table and add explicit chevron click handling to prevent duplicate toggles.
 - [x] 2026-08-11: Investigated folder creation support. Existing builder file management can upload folders/files and derive folder structure from file paths, but this AI builder route has no persisted materials API, parent-folder creation endpoint, or reload-backed folder tree source yet, so folder creation is intentionally not implemented here.
+- [x] 2026-08-19T15:40Z: Replaced the breadcrumb/table/action-menu organizer with a checkbox material tree and selected-context file list.
+- [x] 2026-08-19T15:40Z: Added a single selected-file ID source of truth with derived folder, nested folder, and Select All checked/indeterminate states.
+- [x] 2026-08-19T15:40Z: Updated the selected-context area with count badge, clear action, fixed scroll viewport, filename truncation titles, and automatic selection for newly uploaded files.
+- [x] 2026-08-19T15:49Z: Ran formatter, TypeScript app compilation, lint, diff check, and production build for the AI builder changes. Focused Jest remains blocked by the existing `configSet.processWithEsbuild is not a function` setup error before tests execute.
+- [x] 2026-08-19T16:04Z: Added height-aware desktop styling so the builder card keeps the full 650px layout on roomy screens but compresses vertical spacing and organizer height on shorter browser windows.
 
 ## Surprises & Discoveries
 
@@ -25,6 +30,7 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - The inline dashboard banner currently uses localStorage through `AgenticBuilderPreferencesService`; that behavior now belongs to the reusable announcement PR instead of this dashboard-entry PR.
 - Focused Jest specs are still blocked before test execution by the existing repo setup error `TypeError: configSet.processWithEsbuild is not a function`.
 - Repo-wide spec TypeScript compilation is blocked by unrelated legacy spec errors, but it did not report errors in the files added or edited for this story.
+- The sandboxed production build cannot inline Google Fonts because `fonts.googleapis.com` is blocked; the same build passes when run with network permission.
 
 ## Decision Log
 
@@ -37,12 +43,16 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - Keep organizer interactions local-only until a real materials API exists. Row menus expose likely actions, but only `Open` for folders and `Remove` for uploaded files are active.
 - Keep Module 1 and Module 2 as fixed Course Materials children for this step, but do not add placeholder module contents. Uploaded files are the only file nodes in the tree until backend data exists.
 - Do not add folder creation in this branch until a persisted API contract exists for creating folders under a stable parent id and returning them on reload.
+- Use `selectedFileIds` as the only selection source of truth and derive folder and Select All states from current file descendants.
+- Replace row action menus with explicit selected-context controls because the updated mockup intentionally removes the breadcrumb folder table and ellipsis menus.
 
 ## Outcomes & Retrospective
 
 The dashboard no longer renders the wide Agentic Builder announcement banner. The draft list action area now includes a distinct `AI Object Builder` button between `Filter` and `New +`, with `New +` still targeting the manual builder. The branch now owns a lazy-loaded `/onion/ai-object-builder` route and a responsive, accessible first-step upload page shaped as a materials organizer. The organizer includes an interactive folder tree, selected-folder breadcrumb, selected-folder material table, top-of-workspace dropzone, scrollable module rows, row action menus, and bottom guidance/action bar, while intentionally excluding sidebar storage usage and a top-right upload button.
 
 The original tree bug came from mixing folder data with `expanded` flags on the nodes and rendering hard-coded placeholder module children. The current implementation separates tree data from expanded/selected/upload state and derives both the left tree and main table from the same tree.
+
+The 2026-08-19 mockup revision replaces the breadcrumb/table/action-menu workspace with a checkbox hierarchy plus a selected-context file list. The file list is derived from selected file IDs, shows only files, preserves upload behavior, and keeps scrolling inside the selected-files box.
 
 ## Context and Orientation
 
@@ -71,8 +81,9 @@ Remove the dashboard-specific inline announcement because discovery is now handl
 - Visible dashboard behavior: no wide inline AI banner appears above the tabs/list.
 - Visible dashboard behavior: draft list actions show `Filter`, `AI Object Builder`, and `New +`.
 - Routing behavior: `AI Object Builder` navigates to `/onion/ai-object-builder`.
-- Builder page behavior: no selected files shows `Uploaded files (0)` and a no-files empty state; selected files render real filename and size.
-- Builder page behavior: organizer renders the folder tree, breadcrumb, material table, and top-of-workspace dropzone; selected files render in the organizer table with file type, size, and a removable row.
+- Builder page behavior: no selected files shows a selected-context empty state and disables `Build Learning Object`.
+- Builder page behavior: organizer renders the checkbox material tree, Select All, top-of-workspace dropzone, selected-context heading/helper text/count/clear action, and selected file rows with checkbox, icon, filename, parent path, type, size, and remove action.
+- Builder page behavior: selected-context rows scroll inside the selected-files box after roughly 5-6 rows without horizontal scrolling.
 - Run Prettier on touched files.
 - Run TypeScript app compilation with `npx tsc -p src/tsconfig.app.json --noEmit`.
 - Run targeted Angular lint for touched TypeScript and HTML files.

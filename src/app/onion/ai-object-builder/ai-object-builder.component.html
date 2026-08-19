@@ -31,54 +31,118 @@
             <div class="ai-object-builder__organizer">
                 <aside
                     class="ai-object-builder__sidebar"
-                    aria-label="Materials folders">
+                    aria-label="Materials tree">
                     <div class="ai-object-builder__folder-root">
                         <i class="fa-regular fa-folder" aria-hidden="true"></i>
                         <span>My Materials</span>
                     </div>
 
+                    <label class="ai-object-builder__select-all">
+                        <input
+                            type="checkbox"
+                            [checked]="isSelectAllChecked"
+                            [indeterminate]="isSelectAllIndeterminate"
+                            [attr.aria-checked]="
+                                isSelectAllIndeterminate
+                                    ? 'mixed'
+                                    : isSelectAllChecked
+                            "
+                            (change)="
+                                toggleSelectAll($any($event.target).checked)
+                            " />
+                        <span>Select All</span>
+                    </label>
+
                     <nav class="ai-object-builder__folder-tree">
-                        <button
+                        <div
                             *ngFor="
                                 let item of visibleTreeNodes;
                                 trackBy: trackNodeById
                             "
-                            type="button"
-                            class="ai-object-builder__folder"
-                            [ngClass]="{
-                                'ai-object-builder__folder--level-1':
-                                    item.level === 1,
-                                'ai-object-builder__folder--level-2':
-                                    item.level === 2,
-                                'ai-object-builder__folder--level-3':
-                                    item.level === 3,
-                                'ai-object-builder__folder--active':
-                                    item.node.id === selectedFolderId,
-                            }"
-                            (click)="onTreeNodeClick(item.node)">
-                            <i
-                                *ngIf="hasChildren(item.node)"
-                                [ngClass]="{
-                                    'fa-solid': true,
-                                    'fa-chevron-down': isExpanded(item.node),
-                                    'fa-chevron-right': !isExpanded(item.node),
-                                }"
-                                aria-label="Toggle {{ item.node.name }}"
-                                (click)="onChevronClick(item.node, $event)"></i>
-                            <span
-                                *ngIf="!hasChildren(item.node)"
-                                class="ai-object-builder__folder-spacer"></span>
-                            <i
-                                [class]="getNodeIconClass(item.node)"
-                                aria-hidden="true"></i>
-                            <span>{{ item.node.name }}</span>
-                        </button>
+                            class="ai-object-builder__tree-row"
+                            [style.padding-left.px]="(item.level - 1) * 24">
+                            <button
+                                *ngIf="
+                                    item.node.type === 'folder' &&
+                                        hasChildren(item.node);
+                                    else treeSpacer
+                                "
+                                type="button"
+                                class="ai-object-builder__chevron"
+                                [attr.aria-label]="
+                                    (isExpanded(item.node)
+                                        ? 'Collapse '
+                                        : 'Expand ') + item.node.name
+                                "
+                                [attr.aria-expanded]="isExpanded(item.node)"
+                                (click)="onChevronClick(item.node, $event)">
+                                <i
+                                    [ngClass]="{
+                                        'fa-solid': true,
+                                        'fa-chevron-down': isExpanded(
+                                            item.node
+                                        ),
+                                        'fa-chevron-right': !isExpanded(
+                                            item.node
+                                        ),
+                                    }"
+                                    aria-hidden="true"></i>
+                            </button>
+                            <ng-template #treeSpacer>
+                                <span
+                                    class="ai-object-builder__chevron-spacer"></span>
+                            </ng-template>
+
+                            <input
+                                type="checkbox"
+                                [id]="'ai-object-builder-node-' + item.node.id"
+                                [attr.aria-label]="'Select ' + item.node.name"
+                                [checked]="isNodeChecked(item.node)"
+                                [indeterminate]="isNodeIndeterminate(item.node)"
+                                [attr.aria-checked]="
+                                    isNodeIndeterminate(item.node)
+                                        ? 'mixed'
+                                        : isNodeChecked(item.node)
+                                "
+                                (change)="
+                                    toggleNodeSelection(
+                                        item.node,
+                                        $any($event.target).checked
+                                    )
+                                " />
+
+                            <button
+                                *ngIf="
+                                    item.node.type === 'folder';
+                                    else fileTreeLabel
+                                "
+                                type="button"
+                                class="ai-object-builder__tree-label"
+                                [title]="item.node.name"
+                                (click)="onTreeNodeLabelClick(item.node)">
+                                <i
+                                    [class]="getNodeIconClass(item.node)"
+                                    aria-hidden="true"></i>
+                                <span>{{ item.node.name }}</span>
+                            </button>
+
+                            <ng-template #fileTreeLabel>
+                                <span
+                                    class="ai-object-builder__tree-label"
+                                    [title]="item.node.name">
+                                    <i
+                                        [class]="getNodeIconClass(item.node)"
+                                        aria-hidden="true"></i>
+                                    <span>{{ item.node.name }}</span>
+                                </span>
+                            </ng-template>
+                        </div>
                     </nav>
                 </aside>
 
                 <section
                     class="ai-object-builder__workspace"
-                    aria-label="Module 1 materials">
+                    aria-label="Upload and selected context">
                     <input
                         #fileInput
                         type="file"
@@ -116,98 +180,116 @@
                         </div>
                     </div>
 
-                    <div
-                        class="ai-object-builder__breadcrumbs"
-                        aria-label="Breadcrumb">
-                        <span>My Materials</span>
-                        <ng-container
-                            *ngFor="
-                                let node of breadcrumbNodes;
-                                trackBy: trackNodeById
-                            ">
-                            <i
-                                class="fa-solid fa-chevron-right"
-                                aria-hidden="true"></i>
-                            <strong
-                                *ngIf="
-                                    node.id === selectedFolderId;
-                                    else breadcrumbLink
-                                ">
-                                {{ node.name }}
-                            </strong>
-                            <ng-template #breadcrumbLink>
-                                <button
-                                    type="button"
-                                    class="ai-object-builder__breadcrumb-button"
-                                    (click)="selectFolder(node.id)">
-                                    {{ node.name }}
-                                </button>
-                            </ng-template>
-                        </ng-container>
-                    </div>
-
-                    <div class="ai-object-builder__table" role="table">
-                        <div
-                            class="ai-object-builder__table-row ai-object-builder__table-row--head"
-                            role="row">
-                            <div role="columnheader">
-                                Name
-                                <i
-                                    class="fa-solid fa-sort"
-                                    aria-hidden="true"></i>
+                    <section
+                        class="ai-object-builder__selected-context"
+                        aria-labelledby="ai-object-builder-selected-title">
+                        <div class="ai-object-builder__selected-header">
+                            <div>
+                                <div
+                                    class="ai-object-builder__selected-title-row">
+                                    <h2 id="ai-object-builder-selected-title">
+                                        Files selected as context for CLARK AI
+                                        to read
+                                    </h2>
+                                    <span
+                                        class="ai-object-builder__count-badge">
+                                        {{ selectedFileCount }}
+                                        {{
+                                            selectedFileCount === 1
+                                                ? "file"
+                                                : "files"
+                                        }}
+                                    </span>
+                                </div>
+                                <p>
+                                    These files will be used by CLARK AI to
+                                    understand your content and draft your
+                                    learning object.
+                                </p>
                             </div>
-                            <div role="columnheader">Type</div>
-                            <div role="columnheader">Size</div>
-                            <div role="columnheader">Modified</div>
-                            <div role="columnheader" aria-label="Actions"></div>
+
+                            <button
+                                type="button"
+                                class="ai-object-builder__clear"
+                                [disabled]="selectedFileCount === 0"
+                                (click)="clearSelection()">
+                                <i
+                                    class="fa-regular fa-trash-can"
+                                    aria-hidden="true"></i>
+                                Clear all
+                            </button>
                         </div>
 
-                        <div class="ai-object-builder__table-body">
+                        <div
+                            class="ai-object-builder__selected-list"
+                            tabindex="0"
+                            role="region"
+                            aria-label="Selected context files">
                             <div
-                                *ngFor="
-                                    let row of currentRows;
-                                    trackBy: trackNodeById
+                                *ngIf="
+                                    selectedFileCount === 0;
+                                    else selectedFileRows
                                 "
-                                class="ai-object-builder__table-row"
-                                role="row"
-                                [ngClass]="{
-                                    'ai-object-builder__table-row--folder':
-                                        row.type === 'folder',
-                                }"
-                                (click)="onTableNodeClick(row)">
+                                class="ai-object-builder__empty-state">
+                                No files selected yet.
+                            </div>
+
+                            <ng-template #selectedFileRows>
                                 <div
-                                    class="ai-object-builder__name-cell"
-                                    role="cell">
+                                    *ngFor="
+                                        let file of selectedFiles;
+                                        trackBy: trackNodeById
+                                    "
+                                    class="ai-object-builder__selected-row">
+                                    <input
+                                        type="checkbox"
+                                        [id]="
+                                            'ai-object-builder-selected-' +
+                                            file.id
+                                        "
+                                        checked
+                                        (change)="
+                                            toggleNodeSelection(
+                                                file,
+                                                $any($event.target).checked
+                                            )
+                                        " />
                                     <i
-                                        [class]="getNodeIconClass(row)"
+                                        [class]="getNodeIconClass(file)"
                                         aria-hidden="true"></i>
-                                    <span>{{ row.name }}</span>
-                                </div>
-                                <div role="cell">
-                                    {{ getNodeTypeLabel(row) }}
-                                </div>
-                                <div role="cell">
-                                    {{ getNodeSizeLabel(row) }}
-                                </div>
-                                <div role="cell">
-                                    {{ getNodeModifiedLabel(row) }}
-                                </div>
-                                <div role="cell">
+                                    <div
+                                        class="ai-object-builder__selected-name">
+                                        <label
+                                            [for]="
+                                                'ai-object-builder-selected-' +
+                                                file.id
+                                            "
+                                            [title]="file.name">
+                                            {{ file.name }}
+                                        </label>
+                                        <span [title]="getNodeParentPath(file)">
+                                            {{ getNodeParentPath(file) }}
+                                        </span>
+                                    </div>
+                                    <span>{{ getNodeTypeLabel(file) }}</span>
+                                    <span>{{ getNodeSizeLabel(file) }}</span>
                                     <button
                                         type="button"
-                                        class="ai-object-builder__row-action"
-                                        aria-label="More actions for {{
-                                            row.name
-                                        }}"
-                                        (click)="toggleActionMenu(row, $event)">
+                                        class="ai-object-builder__remove"
+                                        [attr.aria-label]="
+                                            'Remove ' + file.name
+                                        "
+                                        (click)="
+                                            toggleNodeSelection(file, false)
+                                        ">
                                         <i
-                                            class="fa-solid fa-ellipsis"
+                                            class="fa-solid fa-xmark"
                                             aria-hidden="true"></i>
                                     </button>
                                 </div>
-                            </div>
+                            </ng-template>
                         </div>
-                    </div>
+                    </section>
                 </section>
             </div>
 
@@ -237,23 +319,3 @@
         </section>
     </main>
 </div>
-
-<ng-container *ngIf="activeActionNode as actionNode">
-    <clark-context-menu
-        *ngIf="actionMenuAnchor"
-        [anchor]="actionMenuAnchor"
-        [offset]="{ top: 4, left: -104 }"
-        (close)="closeActionMenu()">
-        <ul #contextMenu class="ai-object-builder__action-menu">
-            <li
-                *ngFor="let option of getActionMenuOptions(actionNode)"
-                [ngClass]="{
-                    'ai-object-builder__action-menu-item--disabled':
-                        !isActionEnabled(option),
-                }"
-                (activate)="handleAction(option, actionNode)">
-                {{ option }}
-            </li>
-        </ul>
-    </clark-context-menu>
-</ng-container>

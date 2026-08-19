@@ -2,8 +2,6 @@ import { NgClass, NgFor, NgIf } from "@angular/common";
 import { Component, ElementRef, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
-import { ActivateDirective } from "../../shared/directives/activate.directive";
-import { ContextMenuComponent } from "../../shared/modules/contextmenu/context-menu/context-menu.component";
 
 type TreeNodeType = "folder" | "file";
 
@@ -16,6 +14,7 @@ interface TreeNode {
         size?: number;
         mimeType?: string;
         modifiedAt?: string;
+        parentPath?: string;
     };
 }
 
@@ -30,24 +29,12 @@ interface UploadedFile {
     file: File;
 }
 
-interface ActionMenu {
-    nodeId: string;
-    nodeType: TreeNodeType;
-}
-
 @Component({
     selector: "clark-ai-object-builder",
     templateUrl: "./ai-object-builder.component.html",
     styleUrls: ["./ai-object-builder.component.scss"],
     standalone: true,
-    imports: [
-        ContextMenuComponent,
-        ActivateDirective,
-        FormsModule,
-        NgClass,
-        NgFor,
-        NgIf,
-    ],
+    imports: [FormsModule, NgClass, NgFor, NgIf],
 })
 export class AiObjectBuilderComponent {
     @ViewChild("fileInput") fileInput?: ElementRef<HTMLInputElement>;
@@ -94,13 +81,13 @@ export class AiObjectBuilderComponent {
     isDragActive = false;
     selectedFolderId = "course-materials";
     expandedFolderIds = new Set<string>();
-    activeActionMenu?: ActionMenu;
-    actionMenuAnchor?: HTMLElement;
+    selectedFileIds = new Set<string>();
+    private uploadSequence = 0;
 
     constructor(private router: Router) {}
 
     get hasFiles(): boolean {
-        return this.uploadedFiles.length > 0;
+        return this.selectedFileIds.size > 0;
     }
 
     get tree(): TreeNode[] {
@@ -127,12 +114,33 @@ export class AiObjectBuilderComponent {
         return visibleNodes;
     }
 
-    get breadcrumbNodes(): TreeNode[] {
-        return this.findPath(this.selectedFolderId) || [this.selectedFolder];
+    get allFileNodes(): TreeNode[] {
+        return this.collectFileNodes(this.tree);
     }
 
-    get currentRows(): TreeNode[] {
-        return this.selectedFolder.children || [];
+    get selectedFiles(): TreeNode[] {
+        return this.allFileNodes.filter(({ id }) =>
+            this.selectedFileIds.has(id),
+        );
+    }
+
+    get selectedFileCount(): number {
+        return this.selectedFiles.length;
+    }
+
+    get isSelectAllChecked(): boolean {
+        const fileIds = this.allFileNodes.map(({ id }) => id);
+
+        return (
+            fileIds.length > 0 &&
+            fileIds.every((id) => this.selectedFileIds.has(id))
+        );
+    }
+
+    get isSelectAllIndeterminate(): boolean {
+        const selectedCount = this.selectedFileCount;
+
+        return selectedCount > 0 && selectedCount < this.allFileNodes.length;
     }
 
     saveAndReturn(): void {
@@ -179,7 +187,7 @@ export class AiObjectBuilderComponent {
         }
     }
 
-    onTreeNodeClick(node: TreeNode): void {
+    onTreeNodeLabelClick(node: TreeNode): void {
         if (node.type !== "folder") {
             return;
         }
@@ -193,15 +201,6 @@ export class AiObjectBuilderComponent {
         this.toggleExpanded(node);
     }
 
-    onTableNodeClick(node: TreeNode): void {
-        if (node.type !== "folder") {
-            return;
-        }
-
-        this.selectFolder(node.id);
-        this.toggleExpanded(node);
-    }
-
     selectFolder(folderId: string): void {
         const folder = this.findNode(folderId);
 
@@ -210,68 +209,6 @@ export class AiObjectBuilderComponent {
         }
 
         this.selectedFolderId = folderId;
-        this.activeActionMenu = undefined;
-    }
-
-    toggleActionMenu(node: TreeNode, event: MouseEvent): void {
-        event.stopPropagation();
-
-        if (this.activeActionMenu?.nodeId === node.id) {
-            this.closeActionMenu();
-            return;
-        }
-
-        this.activeActionMenu = {
-            nodeId: node.id,
-            nodeType: node.type,
-        };
-        this.actionMenuAnchor = event.currentTarget as HTMLElement;
-    }
-
-    closeActionMenu(): void {
-        this.activeActionMenu = undefined;
-        this.actionMenuAnchor = undefined;
-    }
-
-    get activeActionNode(): TreeNode | undefined {
-        if (!this.activeActionMenu) {
-            return undefined;
-        }
-
-        return this.findNode(this.activeActionMenu.nodeId);
-    }
-
-    getActionMenuOptions(node?: TreeNode): string[] {
-        if (!node) {
-            return [];
-        }
-
-        if (node.type === "folder") {
-            return ["Open", "Rename", "Move to...", "Delete folder"];
-        }
-
-        return ["Preview", "Rename", "Move to...", "Remove"];
-    }
-
-    isActionEnabled(option: string): boolean {
-        return option === "Open" || option === "Remove";
-    }
-
-    handleAction(option: string, node: TreeNode): void {
-        if (!this.isActionEnabled(option)) {
-            return;
-        }
-
-        if (option === "Open" && node.type === "folder") {
-            this.selectFolder(node.id);
-            this.closeActionMenu();
-            return;
-        }
-
-        if (option === "Remove" && node.type === "file") {
-            this.removeFile(node.id);
-            this.closeActionMenu();
-        }
     }
 
     addFiles(fileList?: FileList | File[] | null): void {
@@ -280,18 +217,82 @@ export class AiObjectBuilderComponent {
         }
 
         const nextFiles = Array.from(fileList).map((file, index) => ({
-            id: `${Date.now()}-${index}-${file.name}`,
+            id: `${Date.now()}-${this.uploadSequence++}-${index}-${file.name}`,
             parentId: this.selectedFolderId,
             file,
         }));
 
         this.uploadedFiles = [...this.uploadedFiles, ...nextFiles];
+        nextFiles.forEach(({ id }) => this.selectedFileIds.add(id));
         this.expandedFolderIds.add(this.selectedFolderId);
     }
 
     removeFile(fileId: string): void {
         this.uploadedFiles = this.uploadedFiles.filter(
             ({ id }) => id !== fileId,
+        );
+        this.selectedFileIds.delete(fileId);
+    }
+
+    clearSelection(): void {
+        this.selectedFileIds.clear();
+    }
+
+    toggleSelectAll(checked: boolean): void {
+        if (!checked) {
+            this.clearSelection();
+            return;
+        }
+
+        this.selectedFileIds = new Set(this.allFileNodes.map(({ id }) => id));
+    }
+
+    toggleNodeSelection(node: TreeNode, checked: boolean): void {
+        const fileIds =
+            node.type === "file"
+                ? [node.id]
+                : this.collectFileNodes(node.children || []).map(
+                      ({ id }) => id,
+                  );
+
+        if (checked) {
+            fileIds.forEach((id) => this.selectedFileIds.add(id));
+            return;
+        }
+
+        fileIds.forEach((id) => this.selectedFileIds.delete(id));
+    }
+
+    isNodeChecked(node: TreeNode): boolean {
+        if (node.type === "file") {
+            return this.selectedFileIds.has(node.id);
+        }
+
+        const descendantFileIds = this.collectFileNodes(
+            node.children || [],
+        ).map(({ id }) => id);
+
+        return (
+            descendantFileIds.length > 0 &&
+            descendantFileIds.every((id) => this.selectedFileIds.has(id))
+        );
+    }
+
+    isNodeIndeterminate(node: TreeNode): boolean {
+        if (node.type === "file") {
+            return false;
+        }
+
+        const descendantFileIds = this.collectFileNodes(
+            node.children || [],
+        ).map(({ id }) => id);
+        const selectedDescendantCount = descendantFileIds.filter((id) =>
+            this.selectedFileIds.has(id),
+        ).length;
+
+        return (
+            selectedDescendantCount > 0 &&
+            selectedDescendantCount < descendantFileIds.length
         );
     }
 
@@ -325,6 +326,10 @@ export class AiObjectBuilderComponent {
         }
 
         return node.file?.modifiedAt || "Today";
+    }
+
+    getNodeParentPath(node: TreeNode): string {
+        return node.file?.parentPath || "My Materials/";
     }
 
     getNodeIconClass(node: TreeNode): string {
@@ -368,12 +373,19 @@ export class AiObjectBuilderComponent {
         });
     }
 
-    private attachUploadedFiles(nodes: TreeNode[]): TreeNode[] {
+    private attachUploadedFiles(
+        nodes: TreeNode[],
+        parentPath = "",
+    ): TreeNode[] {
         return nodes.map((node) => {
-            const children = this.attachUploadedFiles(node.children || []);
+            const nodePath = `${parentPath}${node.name}/`;
+            const children = this.attachUploadedFiles(
+                node.children || [],
+                nodePath,
+            );
             const files = this.uploadedFiles
                 .filter(({ parentId }) => parentId === node.id)
-                .map((upload) => this.toFileNode(upload));
+                .map((upload) => this.toFileNode(upload, nodePath));
 
             return {
                 ...node,
@@ -382,7 +394,7 @@ export class AiObjectBuilderComponent {
         });
     }
 
-    private toFileNode(upload: UploadedFile): TreeNode {
+    private toFileNode(upload: UploadedFile, parentPath: string): TreeNode {
         return {
             id: upload.id,
             name: upload.file.name,
@@ -391,6 +403,7 @@ export class AiObjectBuilderComponent {
                 size: upload.file.size,
                 mimeType: upload.file.type,
                 modifiedAt: "Today",
+                parentPath,
             },
         };
     }
@@ -428,6 +441,16 @@ export class AiObjectBuilderComponent {
         }
 
         return undefined;
+    }
+
+    private collectFileNodes(nodes: TreeNode[]): TreeNode[] {
+        return nodes.flatMap((node) => {
+            if (node.type === "file") {
+                return [node];
+            }
+
+            return this.collectFileNodes(node.children || []);
+        });
     }
 
     private formatBytes(size: number): string {
