@@ -1,0 +1,321 @@
+<div class="ai-object-builder">
+    <header class="ai-object-builder__header">
+        <button
+            type="button"
+            class="ai-object-builder__back"
+            (click)="saveAndReturn()">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+            <span>Save & Return</span>
+        </button>
+    </header>
+
+    <main class="ai-object-builder__main">
+        <section
+            class="ai-object-builder__content"
+            aria-labelledby="ai-object-builder-title">
+            <div class="ai-object-builder__title-row">
+                <i
+                    class="fa-solid fa-wand-magic-sparkles ai-object-builder__title-icon"
+                    aria-hidden="true"></i>
+                <div>
+                    <h1 id="ai-object-builder-title">
+                        CLARK AI Learning Object Builder
+                    </h1>
+                    <p class="ai-object-builder__subtitle">
+                        Upload your curriculum materials and let CLARK AI draft
+                        your learning object.
+                    </p>
+                </div>
+            </div>
+
+            <div class="ai-object-builder__organizer">
+                <aside
+                    class="ai-object-builder__sidebar"
+                    aria-label="Materials tree">
+                    <div class="ai-object-builder__folder-root">
+                        <i class="fa-regular fa-folder" aria-hidden="true"></i>
+                        <span>My Materials</span>
+                    </div>
+
+                    <label class="ai-object-builder__select-all">
+                        <input
+                            type="checkbox"
+                            [checked]="isSelectAllChecked"
+                            [indeterminate]="isSelectAllIndeterminate"
+                            [attr.aria-checked]="
+                                isSelectAllIndeterminate
+                                    ? 'mixed'
+                                    : isSelectAllChecked
+                            "
+                            (change)="
+                                toggleSelectAll($any($event.target).checked)
+                            " />
+                        <span>Select All</span>
+                    </label>
+
+                    <nav class="ai-object-builder__folder-tree">
+                        <div
+                            *ngFor="
+                                let item of visibleTreeNodes;
+                                trackBy: trackNodeById
+                            "
+                            class="ai-object-builder__tree-row"
+                            [style.padding-left.px]="(item.level - 1) * 24">
+                            <button
+                                *ngIf="
+                                    item.node.type === 'folder' &&
+                                        hasChildren(item.node);
+                                    else treeSpacer
+                                "
+                                type="button"
+                                class="ai-object-builder__chevron"
+                                [attr.aria-label]="
+                                    (isExpanded(item.node)
+                                        ? 'Collapse '
+                                        : 'Expand ') + item.node.name
+                                "
+                                [attr.aria-expanded]="isExpanded(item.node)"
+                                (click)="onChevronClick(item.node, $event)">
+                                <i
+                                    [ngClass]="{
+                                        'fa-solid': true,
+                                        'fa-chevron-down': isExpanded(
+                                            item.node
+                                        ),
+                                        'fa-chevron-right': !isExpanded(
+                                            item.node
+                                        ),
+                                    }"
+                                    aria-hidden="true"></i>
+                            </button>
+                            <ng-template #treeSpacer>
+                                <span
+                                    class="ai-object-builder__chevron-spacer"></span>
+                            </ng-template>
+
+                            <input
+                                type="checkbox"
+                                [id]="'ai-object-builder-node-' + item.node.id"
+                                [attr.aria-label]="'Select ' + item.node.name"
+                                [checked]="isNodeChecked(item.node)"
+                                [indeterminate]="isNodeIndeterminate(item.node)"
+                                [attr.aria-checked]="
+                                    isNodeIndeterminate(item.node)
+                                        ? 'mixed'
+                                        : isNodeChecked(item.node)
+                                "
+                                (change)="
+                                    toggleNodeSelection(
+                                        item.node,
+                                        $any($event.target).checked
+                                    )
+                                " />
+
+                            <button
+                                *ngIf="
+                                    item.node.type === 'folder';
+                                    else fileTreeLabel
+                                "
+                                type="button"
+                                class="ai-object-builder__tree-label"
+                                [title]="item.node.name"
+                                (click)="onTreeNodeLabelClick(item.node)">
+                                <i
+                                    [class]="getNodeIconClass(item.node)"
+                                    aria-hidden="true"></i>
+                                <span>{{ item.node.name }}</span>
+                            </button>
+
+                            <ng-template #fileTreeLabel>
+                                <span
+                                    class="ai-object-builder__tree-label"
+                                    [title]="item.node.name">
+                                    <i
+                                        [class]="getNodeIconClass(item.node)"
+                                        aria-hidden="true"></i>
+                                    <span>{{ item.node.name }}</span>
+                                </span>
+                            </ng-template>
+                        </div>
+                    </nav>
+                </aside>
+
+                <section
+                    class="ai-object-builder__workspace"
+                    aria-label="Upload and selected context">
+                    <input
+                        #fileInput
+                        type="file"
+                        class="ai-object-builder__file-input"
+                        [accept]="acceptedFileTypes"
+                        multiple
+                        aria-label="Upload curriculum materials"
+                        (change)="onFileInputChange($event)" />
+
+                    <div
+                        class="ai-object-builder__dropzone"
+                        [ngClass]="{
+                            'ai-object-builder__dropzone--active': isDragActive,
+                        }"
+                        role="button"
+                        tabindex="0"
+                        aria-label="Drop files here or browse to upload curriculum materials"
+                        (click)="openFilePicker()"
+                        (keydown)="onDropzoneKeydown($event)"
+                        (dragover)="onDragOver($event)"
+                        (dragleave)="onDragLeave($event)"
+                        (drop)="onDrop($event)">
+                        <span class="ai-object-builder__upload-icon">
+                            <i
+                                class="fa-solid fa-arrow-up-from-bracket"
+                                aria-hidden="true"></i>
+                        </span>
+                        <div>
+                            <div class="ai-object-builder__dropzone-title">
+                                Drop files here or <span>browse</span>
+                            </div>
+                            <div class="ai-object-builder__dropzone-types">
+                                {{ acceptedFileTypeLabel }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <section
+                        class="ai-object-builder__selected-context"
+                        aria-labelledby="ai-object-builder-selected-title">
+                        <div class="ai-object-builder__selected-header">
+                            <div>
+                                <div
+                                    class="ai-object-builder__selected-title-row">
+                                    <h2 id="ai-object-builder-selected-title">
+                                        Files selected as context for CLARK AI
+                                        to read
+                                    </h2>
+                                    <span
+                                        class="ai-object-builder__count-badge">
+                                        {{ selectedFileCount }}
+                                        {{
+                                            selectedFileCount === 1
+                                                ? "file"
+                                                : "files"
+                                        }}
+                                    </span>
+                                </div>
+                                <p>
+                                    These files will be used by CLARK AI to
+                                    understand your content and draft your
+                                    learning object.
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                class="ai-object-builder__clear"
+                                [disabled]="selectedFileCount === 0"
+                                (click)="clearSelection()">
+                                <i
+                                    class="fa-regular fa-trash-can"
+                                    aria-hidden="true"></i>
+                                Clear all
+                            </button>
+                        </div>
+
+                        <div
+                            class="ai-object-builder__selected-list"
+                            tabindex="0"
+                            role="region"
+                            aria-label="Selected context files">
+                            <div
+                                *ngIf="
+                                    selectedFileCount === 0;
+                                    else selectedFileRows
+                                "
+                                class="ai-object-builder__empty-state">
+                                No files selected yet.
+                            </div>
+
+                            <ng-template #selectedFileRows>
+                                <div
+                                    *ngFor="
+                                        let file of selectedFiles;
+                                        trackBy: trackNodeById
+                                    "
+                                    class="ai-object-builder__selected-row">
+                                    <input
+                                        type="checkbox"
+                                        [id]="
+                                            'ai-object-builder-selected-' +
+                                            file.id
+                                        "
+                                        checked
+                                        (change)="
+                                            toggleNodeSelection(
+                                                file,
+                                                $any($event.target).checked
+                                            )
+                                        " />
+                                    <i
+                                        [class]="getNodeIconClass(file)"
+                                        aria-hidden="true"></i>
+                                    <div
+                                        class="ai-object-builder__selected-name">
+                                        <label
+                                            [for]="
+                                                'ai-object-builder-selected-' +
+                                                file.id
+                                            "
+                                            [title]="file.name">
+                                            {{ file.name }}
+                                        </label>
+                                        <span [title]="getNodeParentPath(file)">
+                                            {{ getNodeParentPath(file) }}
+                                        </span>
+                                    </div>
+                                    <span>{{ getNodeTypeLabel(file) }}</span>
+                                    <span>{{ getNodeSizeLabel(file) }}</span>
+                                    <button
+                                        type="button"
+                                        class="ai-object-builder__remove"
+                                        [attr.aria-label]="
+                                            'Remove ' + file.name
+                                        "
+                                        (click)="
+                                            toggleNodeSelection(file, false)
+                                        ">
+                                        <i
+                                            class="fa-solid fa-xmark"
+                                            aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </section>
+                </section>
+            </div>
+
+            <form
+                class="ai-object-builder__prompt"
+                (ngSubmit)="buildLearningObject()">
+                <i class="fa-solid fa-paperclip" aria-hidden="true"></i>
+                <label for="ai-object-builder-guidance">
+                    Optional guidance for CLARK AI
+                </label>
+                <input
+                    id="ai-object-builder-guidance"
+                    name="guidance"
+                    type="text"
+                    [(ngModel)]="guidance"
+                    placeholder="Optional: Add any guidance for CLARK AI (e.g., focus on learning outcomes, target audience, tone, etc.)" />
+                <button
+                    type="submit"
+                    class="button good"
+                    [disabled]="!hasFiles">
+                    <i
+                        class="fa-solid fa-wand-magic-sparkles"
+                        aria-hidden="true"></i>
+                    Build Learning Object
+                </button>
+            </form>
+        </section>
+    </main>
+</div>
