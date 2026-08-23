@@ -594,6 +594,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             } else if (e.message.includes("File name contains")) {
                 this.error$.next(e.message);
                 this.resetUploadStatuses();
+                return;
             } else {
                 this.error$.next(UPLOAD_ERRORS.SERVICE_ERROR);
             }
