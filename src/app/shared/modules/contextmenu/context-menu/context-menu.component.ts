@@ -135,22 +135,24 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
 
             // focus the first element in the context menu for accessibility
             const firstElement = domElem.querySelector("li");
-            firstElement.focus();
+            firstElement?.focus();
 
             // listen for the user to tab out of the context menu and close the menu
-            domElem
-                .querySelectorAll("li:first-child, li:last-child")
-                .forEach((el) => {
-                    el.addEventListener("blur", (event: FocusEvent) => {
-                        if (
-                            !event.relatedTarget ||
-                            (event.relatedTarget as HTMLElement)
-                                .parentElement !== firstElement.parentElement
-                        ) {
-                            this.close.emit();
-                        }
+            if (firstElement) {
+                domElem
+                    .querySelectorAll("li:first-child, li:last-child")
+                    .forEach((el) => {
+                        el.addEventListener("blur", (event: FocusEvent) => {
+                            if (
+                                !event.relatedTarget ||
+                                (event.relatedTarget as HTMLElement)
+                                    .parentElement !== firstElement.parentElement
+                            ) {
+                                this.close.emit();
+                            }
+                        });
                     });
-                });
+            }
 
             // mark the anchor element has the last focused element, since the menu will disappear whenever an element is selected
             this.anchor.setAttribute("lastFocusedElement", "true");
