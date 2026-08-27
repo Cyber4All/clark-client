@@ -35,17 +35,17 @@
                 *ngIf="
                     !['unreleased', 'rejected'].includes(
                         learningObject?.status
-                    ) && learningObject?.collection
+                    ) && learningObject?.collection && collection
                 "
                 class="top__collection"
                 tip="This learning object has been submitted to the {{
                     collection?.name
                 }} collection."
                 tipPosition="bottom">
-                <span>{{ collection.name }}</span>
+                <span>{{ collection?.name }}</span>
                 <div
                     *ngIf="
-                        collection.hasLogo;
+                        collection?.hasLogo;
                         else genericCollectionLogoTemplate
                     "
                     class="collection__image"
