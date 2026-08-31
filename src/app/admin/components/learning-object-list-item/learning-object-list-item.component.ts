@@ -12,10 +12,8 @@ import {
 import { StatusDescriptions } from "environments/status-descriptions";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { LearningObject } from "@entity";
-import { HttpHeaders } from "@angular/common/http";
 import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
-import { LearningObjectService as RefactoredLearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { EditorialService } from "app/core/learning-object-module/editorial.service";
 import { Router } from "@angular/router";
 import { CheckBoxComponent } from "../../../shared/components/checkbox/checkbox.component";
@@ -97,7 +95,6 @@ export class LearningObjectListItemComponent implements OnChanges {
 
     private hierarchyStateRequest?: Promise<void>;
 
-    private headers = new HttpHeaders();
     constructor(
         private auth: AuthService,
         private router: Router,
@@ -105,7 +102,6 @@ export class LearningObjectListItemComponent implements OnChanges {
         private cd: ChangeDetectorRef,
         private toaster: ToastrOvenService,
         private learningObjectService: LearningObjectService,
-        private refactoredLearningObjectService: RefactoredLearningObjectService,
         private editorialService: EditorialService,
     ) {}
 
@@ -156,19 +152,6 @@ export class LearningObjectListItemComponent implements OnChanges {
     }
 
     /**
-     * Closes the unrelease a object modal with a value for if the user
-     * confirmed they want to unrelease a object
-     *
-     * @param value True if wanting to unrelease, false otherwise
-     */
-    closeUnreleaseModal(value: boolean) {
-        this.toggleUnreleaseConfirm(false);
-        if (value) {
-            this.unreleaseLearningObject();
-        }
-    }
-
-    /**
      * Opens or closes the change collection modal based
      * on the passed value
      *
@@ -176,30 +159,6 @@ export class LearningObjectListItemComponent implements OnChanges {
      */
     toggleChangeCollectionModal(value: boolean) {
         this.showChangeCollection = value;
-    }
-
-    /**
-     * Reaches to a service to unrelease the object.
-     */
-    unreleaseLearningObject() {
-        this.refactoredLearningObjectService
-            .updateLearningObjectStatus(
-                this.learningObject.id,
-                LearningObject.Status.UNRELEASED,
-            )
-            .then(() => {
-                this.toaster.success(
-                    "Success",
-                    "Learning object was successfully unreleased",
-                );
-                this.learningObject.status = LearningObject.Status.UNRELEASED;
-            })
-            .catch(() =>
-                this.toaster.error(
-                    "Error",
-                    "There was an issue unreleasing this learning object, please try again later",
-                ),
-            );
     }
 
     /**
