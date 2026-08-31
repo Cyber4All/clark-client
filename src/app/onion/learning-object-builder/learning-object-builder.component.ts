@@ -178,10 +178,12 @@ export class LearningObjectBuilderComponent
                     this.isRevision = true;
                     this.store.isRevision = true;
                     this.store.fetch(cuid, version).then((learningObject) => {
+                        if (!learningObject) { return; }
                         this.setBuilderMode(learningObject);
                     });
                 } else if (cuid) {
                     this.store.fetch(cuid, version).then((learningObject) => {
+                        if (!learningObject) { return; }
                         if (
                             learningObject.status ===
                             LearningObject.Status.RELEASED
