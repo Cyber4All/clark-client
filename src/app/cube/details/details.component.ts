@@ -219,7 +219,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
                         // FIXME: This filter should be removed when service logic for filtering children is updated
                         this.releasedChildren = (
-                            this.releasedLearningObject.children as any[]
+                            (this.releasedLearningObject.children ?? []) as any[]
                         ).filter((child) => {
                             return (
                                 child.status ===
