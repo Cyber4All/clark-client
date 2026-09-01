@@ -72,6 +72,7 @@ describe("AiObjectBuilderComponent", () => {
                 ".ai-object-builder__action-menu",
             ),
         ).toBeNull();
+        expect(fixture.nativeElement.textContent).not.toContain("Rename");
     });
 
     it("should select and deselect an individual file by stable file id", () => {

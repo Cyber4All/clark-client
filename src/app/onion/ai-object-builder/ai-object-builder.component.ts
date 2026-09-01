@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf } from "@angular/common";
+import { NgClass } from "@angular/common";
 import { Component, ElementRef, ViewChild } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -34,7 +34,7 @@ interface UploadedFile {
     templateUrl: "./ai-object-builder.component.html",
     styleUrls: ["./ai-object-builder.component.scss"],
     standalone: true,
-    imports: [FormsModule, NgClass, NgFor, NgIf],
+    imports: [FormsModule, NgClass],
 })
 export class AiObjectBuilderComponent {
     @ViewChild("fileInput") fileInput?: ElementRef<HTMLInputElement>;
@@ -338,10 +338,6 @@ export class AiObjectBuilderComponent {
         }
 
         return this.getFileIconClass(node.name);
-    }
-
-    trackNodeById(_index: number, item: TreeNode | VisibleTreeNode): string {
-        return "node" in item ? item.node.id : item.id;
     }
 
     private toggleExpanded(node: TreeNode): void {

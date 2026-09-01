@@ -24,6 +24,8 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - [x] 2026-08-19T15:49Z: Ran formatter, TypeScript app compilation, lint, diff check, and production build for the AI builder changes. Focused Jest remains blocked by the existing `configSet.processWithEsbuild is not a function` setup error before tests execute.
 - [x] 2026-08-19T16:04Z: Added height-aware desktop styling so the builder card keeps the full 650px layout on roomy screens but compresses vertical spacing and organizer height on shorter browser windows.
 - [x] 2026-08-19T16:27Z: Tightened the viewport-fit styling further by reducing page/header spacing, dropzone height, selected-context spacing, prompt margin, and by making the selected-files box flex within the calculated organizer height.
+- [x] 2026-09-01T00:00Z: Addressed review feedback by replacing the AI Object Builder template's legacy `*ngIf` and `*ngFor` usage with Angular control flow syntax.
+- [x] 2026-09-01T00:00Z: Confirmed the current selected-file UI has no rename action and added spec coverage to keep rename unavailable.
 
 ## Surprises & Discoveries
 

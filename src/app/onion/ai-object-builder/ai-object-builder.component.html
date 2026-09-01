@@ -54,89 +54,98 @@
                     </label>
 
                     <nav class="ai-object-builder__folder-tree">
-                        <div
-                            *ngFor="
-                                let item of visibleTreeNodes;
-                                trackBy: trackNodeById
-                            "
-                            class="ai-object-builder__tree-row"
-                            [style.padding-left.px]="(item.level - 1) * 24">
-                            <button
-                                *ngIf="
-                                    item.node.type === 'folder' &&
-                                        hasChildren(item.node);
-                                    else treeSpacer
-                                "
-                                type="button"
-                                class="ai-object-builder__chevron"
-                                [attr.aria-label]="
-                                    (isExpanded(item.node)
-                                        ? 'Collapse '
-                                        : 'Expand ') + item.node.name
-                                "
-                                [attr.aria-expanded]="isExpanded(item.node)"
-                                (click)="onChevronClick(item.node, $event)">
-                                <i
-                                    [ngClass]="{
-                                        'fa-solid': true,
-                                        'fa-chevron-down': isExpanded(
-                                            item.node
-                                        ),
-                                        'fa-chevron-right': !isExpanded(
-                                            item.node
-                                        ),
-                                    }"
-                                    aria-hidden="true"></i>
-                            </button>
-                            <ng-template #treeSpacer>
-                                <span
-                                    class="ai-object-builder__chevron-spacer"></span>
-                            </ng-template>
+                        @for (item of visibleTreeNodes; track item.node.id) {
+                            <div
+                                class="ai-object-builder__tree-row"
+                                [style.padding-left.px]="(item.level - 1) * 24">
+                                @if (
+                                    item.node.type === "folder" &&
+                                    hasChildren(item.node)
+                                ) {
+                                    <button
+                                        type="button"
+                                        class="ai-object-builder__chevron"
+                                        [attr.aria-label]="
+                                            (isExpanded(item.node)
+                                                ? 'Collapse '
+                                                : 'Expand ') + item.node.name
+                                        "
+                                        [attr.aria-expanded]="
+                                            isExpanded(item.node)
+                                        "
+                                        (click)="
+                                            onChevronClick(item.node, $event)
+                                        ">
+                                        <i
+                                            [ngClass]="{
+                                                'fa-solid': true,
+                                                'fa-chevron-down': isExpanded(
+                                                    item.node
+                                                ),
+                                                'fa-chevron-right': !isExpanded(
+                                                    item.node
+                                                ),
+                                            }"
+                                            aria-hidden="true"></i>
+                                    </button>
+                                } @else {
+                                    <span
+                                        class="ai-object-builder__chevron-spacer"></span>
+                                }
 
-                            <input
-                                type="checkbox"
-                                [id]="'ai-object-builder-node-' + item.node.id"
-                                [attr.aria-label]="'Select ' + item.node.name"
-                                [checked]="isNodeChecked(item.node)"
-                                [indeterminate]="isNodeIndeterminate(item.node)"
-                                [attr.aria-checked]="
-                                    isNodeIndeterminate(item.node)
-                                        ? 'mixed'
-                                        : isNodeChecked(item.node)
-                                "
-                                (change)="
-                                    toggleNodeSelection(
-                                        item.node,
-                                        $any($event.target).checked
-                                    )
-                                " />
+                                <input
+                                    type="checkbox"
+                                    [id]="
+                                        'ai-object-builder-node-' + item.node.id
+                                    "
+                                    [attr.aria-label]="
+                                        'Select ' + item.node.name
+                                    "
+                                    [checked]="isNodeChecked(item.node)"
+                                    [indeterminate]="
+                                        isNodeIndeterminate(item.node)
+                                    "
+                                    [attr.aria-checked]="
+                                        isNodeIndeterminate(item.node)
+                                            ? 'mixed'
+                                            : isNodeChecked(item.node)
+                                    "
+                                    (change)="
+                                        toggleNodeSelection(
+                                            item.node,
+                                            $any($event.target).checked
+                                        )
+                                    " />
 
-                            <button
-                                *ngIf="
-                                    item.node.type === 'folder';
-                                    else fileTreeLabel
-                                "
-                                type="button"
-                                class="ai-object-builder__tree-label"
-                                [title]="item.node.name"
-                                (click)="onTreeNodeLabelClick(item.node)">
-                                <i
-                                    [class]="getNodeIconClass(item.node)"
-                                    aria-hidden="true"></i>
-                                <span>{{ item.node.name }}</span>
-                            </button>
-
-                            <ng-template #fileTreeLabel>
-                                <span
-                                    class="ai-object-builder__tree-label"
-                                    [title]="item.node.name">
-                                    <i
-                                        [class]="getNodeIconClass(item.node)"
-                                        aria-hidden="true"></i>
-                                    <span>{{ item.node.name }}</span>
-                                </span>
-                            </ng-template>
-                        </div>
+                                @if (item.node.type === "folder") {
+                                    <button
+                                        type="button"
+                                        class="ai-object-builder__tree-label"
+                                        [title]="item.node.name"
+                                        (click)="
+                                            onTreeNodeLabelClick(item.node)
+                                        ">
+                                        <i
+                                            [class]="
+                                                getNodeIconClass(item.node)
+                                            "
+                                            aria-hidden="true"></i>
+                                        <span>{{ item.node.name }}</span>
+                                    </button>
+                                } @else {
+                                    <span
+                                        class="ai-object-builder__tree-label"
+                                        [title]="item.node.name">
+                                        <i
+                                            [class]="
+                                                getNodeIconClass(item.node)
+                                            "
+                                            aria-hidden="true"></i>
+                                        <span>{{ item.node.name }}</span>
+                                    </span>
+                                }
+                            </div>
+                        }
                     </nav>
                 </aside>
 
@@ -225,69 +234,69 @@
                             tabindex="0"
                             role="region"
                             aria-label="Selected context files">
-                            <div
-                                *ngIf="
-                                    selectedFileCount === 0;
-                                    else selectedFileRows
-                                "
-                                class="ai-object-builder__empty-state">
-                                No files selected yet.
-                            </div>
-
-                            <ng-template #selectedFileRows>
-                                <div
-                                    *ngFor="
-                                        let file of selectedFiles;
-                                        trackBy: trackNodeById
-                                    "
-                                    class="ai-object-builder__selected-row">
-                                    <input
-                                        type="checkbox"
-                                        [id]="
-                                            'ai-object-builder-selected-' +
-                                            file.id
-                                        "
-                                        checked
-                                        (change)="
-                                            toggleNodeSelection(
-                                                file,
-                                                $any($event.target).checked
-                                            )
-                                        " />
-                                    <i
-                                        [class]="getNodeIconClass(file)"
-                                        aria-hidden="true"></i>
+                            @if (selectedFileCount === 0) {
+                                <div class="ai-object-builder__empty-state">
+                                    No files selected yet.
+                                </div>
+                            } @else {
+                                @for (file of selectedFiles; track file.id) {
                                     <div
-                                        class="ai-object-builder__selected-name">
-                                        <label
-                                            [for]="
+                                        class="ai-object-builder__selected-row">
+                                        <input
+                                            type="checkbox"
+                                            [id]="
                                                 'ai-object-builder-selected-' +
                                                 file.id
                                             "
-                                            [title]="file.name">
-                                            {{ file.name }}
-                                        </label>
-                                        <span [title]="getNodeParentPath(file)">
-                                            {{ getNodeParentPath(file) }}
-                                        </span>
-                                    </div>
-                                    <span>{{ getNodeTypeLabel(file) }}</span>
-                                    <span>{{ getNodeSizeLabel(file) }}</span>
-                                    <button
-                                        type="button"
-                                        class="ai-object-builder__remove"
-                                        [attr.aria-label]="
-                                            'Remove ' + file.name
-                                        "
-                                        (click)="
-                                            toggleNodeSelection(file, false)
-                                        ">
+                                            checked
+                                            (change)="
+                                                toggleNodeSelection(
+                                                    file,
+                                                    $any($event.target).checked
+                                                )
+                                            " />
                                         <i
-                                            class="fa-solid fa-xmark"
+                                            [class]="getNodeIconClass(file)"
                                             aria-hidden="true"></i>
-                                    </button>
-                                </div>
-                            </ng-template>
+                                        <div
+                                            class="ai-object-builder__selected-name">
+                                            <label
+                                                [for]="
+                                                    'ai-object-builder-selected-' +
+                                                    file.id
+                                                "
+                                                [title]="file.name">
+                                                {{ file.name }}
+                                            </label>
+                                            <span
+                                                [title]="
+                                                    getNodeParentPath(file)
+                                                ">
+                                                {{ getNodeParentPath(file) }}
+                                            </span>
+                                        </div>
+                                        <span>{{
+                                            getNodeTypeLabel(file)
+                                        }}</span>
+                                        <span>{{
+                                            getNodeSizeLabel(file)
+                                        }}</span>
+                                        <button
+                                            type="button"
+                                            class="ai-object-builder__remove"
+                                            [attr.aria-label]="
+                                                'Remove ' + file.name
+                                            "
+                                            (click)="
+                                                toggleNodeSelection(file, false)
+                                            ">
+                                            <i
+                                                class="fa-solid fa-xmark"
+                                                aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                }
+                            }
                         </div>
                     </section>
                 </section>
