@@ -26,6 +26,11 @@ describe("AiObjectBuilderComponent", () => {
             ".ai-object-builder__selected-list",
         ) as HTMLElement;
 
+    const folderTree = () =>
+        fixture.nativeElement.querySelector(
+            ".ai-object-builder__folder-tree",
+        ) as HTMLElement;
+
     const scss = () =>
         readFileSync(
             join(__dirname, "ai-object-builder.component.scss"),
@@ -245,7 +250,7 @@ describe("AiObjectBuilderComponent", () => {
         ]);
     });
 
-    it("should keep selected-files scrolling internal after more than six rows", () => {
+    it("should keep tree and selected-files scrolling internal", () => {
         component.addFiles(
             Array.from({ length: 7 }, (_value, index) =>
                 file(`file-${index}.pdf`),
@@ -255,7 +260,10 @@ describe("AiObjectBuilderComponent", () => {
 
         expect(selectedRows()).toHaveLength(7);
         expect(selectedList().getAttribute("tabindex")).toBe("0");
-        expect(scss()).toContain("max-height: 294px");
+        expect(folderTree()).toBeTruthy();
+        expect(scss()).toContain(".ai-object-builder__folder-tree");
+        expect(scss()).toContain("flex: 1");
+        expect(scss()).toContain("min-height: 0");
         expect(scss()).toContain("overflow-y: auto");
         expect(scss()).toContain("overflow-x: hidden");
     });

@@ -26,6 +26,7 @@ Add the dashboard entry point and route-owned page for the CLARK AI Object Build
 - [x] 2026-08-19T16:27Z: Tightened the viewport-fit styling further by reducing page/header spacing, dropzone height, selected-context spacing, prompt margin, and by making the selected-files box flex within the calculated organizer height.
 - [x] 2026-09-01T00:00Z: Addressed review feedback by replacing the AI Object Builder template's legacy `*ngIf` and `*ngFor` usage with Angular control flow syntax.
 - [x] 2026-09-01T00:00Z: Confirmed the current selected-file UI has no rename action and added spec coverage to keep rename unavailable.
+- [x] 2026-09-01T00:00Z: Adjusted the AI Object Builder layout so the page fits the viewport while the materials tree and selected-files list scroll internally.
 
 ## Surprises & Discoveries
 

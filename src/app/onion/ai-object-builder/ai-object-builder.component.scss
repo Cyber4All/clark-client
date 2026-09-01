@@ -1,12 +1,17 @@
 @import "_vars.scss";
 
 .ai-object-builder {
-    min-height: 100vh;
+    display: flex;
+    height: 100vh;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
     background: #f8fbff;
     color: $darker-grey;
 }
 
 .ai-object-builder__header {
+    flex: 0 0 auto;
     background: rgba(255, 255, 255, 0.78);
     padding: 26px 48px 18px;
 }
@@ -34,16 +39,24 @@
 }
 
 .ai-object-builder__main {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
     padding: 24px 48px 28px;
 }
 
 .ai-object-builder__content {
+    display: flex;
+    height: 100%;
+    min-height: 0;
+    flex-direction: column;
     max-width: 1280px;
     margin: 0 auto;
 }
 
 .ai-object-builder__title-row {
     display: flex;
+    flex: 0 0 auto;
     align-items: flex-start;
     gap: 18px;
     margin-bottom: 16px;
@@ -80,13 +93,18 @@
 
 .ai-object-builder__organizer {
     display: grid;
+    flex: 1;
     grid-template-columns: 320px minmax(0, 1fr);
-    height: clamp(500px, calc(100vh - 310px), 650px);
+    min-height: 0;
     overflow: hidden;
 }
 
 .ai-object-builder__sidebar {
+    display: flex;
     min-width: 0;
+    min-height: 0;
+    flex-direction: column;
+    overflow: hidden;
     border-right: 1px solid $light-grey;
     padding: 26px 22px;
 }
@@ -130,8 +148,29 @@
 
 .ai-object-builder__folder-tree {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 8px;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-color: #7893b3 #edf2f8;
+    scrollbar-width: thin;
+
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: #edf2f8;
+        border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border: 2px solid #edf2f8;
+        border-radius: 8px;
+        background: #7893b3;
+    }
 }
 
 .ai-object-builder__tree-row {
@@ -499,6 +538,7 @@ span.ai-object-builder__tree-label {
 
 .ai-object-builder__prompt {
     display: grid;
+    flex: 0 0 auto;
     grid-template-columns: 20px minmax(0, 1fr) auto;
     gap: 14px;
     align-items: center;
@@ -569,7 +609,7 @@ span.ai-object-builder__tree-label {
     }
 
     .ai-object-builder__organizer {
-        height: clamp(460px, calc(100vh - 280px), 650px);
+        min-height: 0;
     }
 
     .ai-object-builder__workspace {
