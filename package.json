@@ -14,6 +14,7 @@
         "test:unit": "jest --maxWorkers=2 --verbose --coverage uri-retriever featuredObjects",
         "lint": "npx ng lint clark",
         "lint:fix": "npx ng lint clark --fix",
+        "format": "prettier --write",
         "storybook": "start-storybook",
         "prepare": "husky install",
         "sentry:sourcemaps": "sentry-cli sourcemaps inject --org cyber4all-00 --project clark-client ./dist/browser && sentry-cli sourcemaps upload --org cyber4all-00 --project clark-client --release=$npm_package_version ./dist/browser"
