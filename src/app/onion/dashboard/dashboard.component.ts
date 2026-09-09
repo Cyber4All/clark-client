@@ -222,7 +222,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         filters?: any,
         text?: string,
     ): Promise<void> {
-        this.searchService
+        await this.searchService
             .getUsersLearningObjects(this.auth.username, {
                 ...filters,
                 text,
@@ -236,10 +236,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
                         this.sortLearningObjectsByDate(
                             response.learningObjects,
                         );
+                    this.checkQueryParams$.next();
                 },
             );
-
-        this.checkQueryParams$.next();
     }
     /**
      * Toggles between the draft tab and the released tab
