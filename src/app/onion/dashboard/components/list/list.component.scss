@@ -23,6 +23,19 @@
     margin: 0;
 }
 
+.dashboard-list__ai-builder {
+    color: $light-blue;
+
+    &:after {
+        border-color: $light-blue;
+    }
+
+    .svg-inline--fa {
+        margin-right: 10px;
+        margin-left: 0;
+    }
+}
+
 .dashboard-list__table {
     grid-template-columns: 32px 60px 1fr 180px 180px 50px;
     grid-gap: 0 20px;
