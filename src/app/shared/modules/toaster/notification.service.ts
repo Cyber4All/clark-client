@@ -22,16 +22,26 @@ export class ToastrOvenService {
         this.factoryResolver = factoryResolver;
     }
 
-    private notify(title: string, text: string, classes: string): void {
-        this.emitter.emit({ title: title, text: text, classes: classes });
+    private notify(
+        title: string,
+        text: string,
+        classes: string,
+        duration?: number,
+    ): void {
+        this.emitter.emit({
+            title: title,
+            text: text,
+            classes: classes,
+            duration: duration,
+        });
     }
 
     public success(title: string, text: string): void {
         this.notify(title, text, "success");
     }
 
-    public error(title: string, text: string): void {
-        this.notify(title, text, "error");
+    public error(title: string, text: string, duration?: number): void {
+        this.notify(title, text, "error", duration);
     }
 
     public alert(title: string, text: string): void {
@@ -89,4 +99,5 @@ export interface ToastrOven {
     text: string;
     classes: string;
     icon?: string;
+    duration?: number;
 }
