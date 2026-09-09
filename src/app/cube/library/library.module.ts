@@ -11,7 +11,7 @@ const routes: Routes = [
     {
         path: "",
         component: LibraryComponent,
-        data: { title: "Your Library" },
+        data: { title: "Download History" },
     },
 ];
 

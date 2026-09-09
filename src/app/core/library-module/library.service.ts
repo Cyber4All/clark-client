@@ -25,6 +25,24 @@ export interface AddToLibraryResult {
     alreadySaved: boolean;
 }
 
+export interface DownloadHistoryItem {
+    name: string;
+    downloadedAt: string;
+    downloadedBy: string;
+    type: string;
+    available: boolean;
+    resource: {
+        learningObjectId: string;
+        cuid: string;
+        version: number;
+    } | null;
+}
+
+export interface DownloadHistoryResponse {
+    items: DownloadHistoryItem[];
+    nextCursor?: string;
+}
+
 @Injectable({
     providedIn: "root",
 })
@@ -123,6 +141,35 @@ export class LibraryService {
                     lastPage: val.lastPage,
                 };
             });
+    }
+
+    async getDownloadHistory(opts: {
+        limit?: number;
+        cursor?: string;
+    }): Promise<DownloadHistoryResponse> {
+        this.updateUser();
+        if (!this.user) {
+            return { items: [] };
+        }
+
+        const query = new URLSearchParams({
+            limit: opts.limit ? opts.limit.toString() : "20",
+        });
+
+        if (opts.cursor) {
+            query.set("cursor", opts.cursor);
+        }
+
+        return await this.http
+            .get<DownloadHistoryResponse>(
+                LIBRARY_ROUTES.GET_DOWNLOAD_HISTORY(query),
+                {
+                    withCredentials: true,
+                    headers: this.headers,
+                },
+            )
+            .pipe(catchError((error) => this.handleError(error)))
+            .toPromise();
     }
 
     async addToLibrary(
