@@ -16,7 +16,7 @@ export interface PlaylistLearningObjectCard {
     name: string;
     description: string;
     objectCollection: string;
-    length: number;
+    length: string;
     levels: string[];
     version: number;
     status: string;

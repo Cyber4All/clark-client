@@ -1,10 +1,10 @@
-# SC-39971: Add playlists to user profiles
+# SC-39971: Add playlist discovery and profile navigation
 
 This ExecPlan is a living document maintained in accordance with `PLANS.md`.
 
 ## Purpose / Big Picture
 
-Add a second, responsive and keyboard-accessible tab to `/users/:username` so profile visitors can switch between Contributions and Playlists. Contributions remain the default for existing profile links, while `?tab=playlists` provides a directly navigable playlist view. Add a typed frontend Playlist API boundary with centralized builders for every backend playlist route, and use it to load the profile user's visible playlists.
+Add a second, responsive and keyboard-accessible tab to `/users/:username` so profile visitors can switch between Contributions and Playlists. Contributions remain the default for existing profile links, while `?tab=playlists` provides a directly navigable playlist view. Add public playlist discovery at `/playlists`, playlist details at `/playlists/:playlistId`, and navigation from both profile cards and the secondary Browse menu. Add a typed frontend Playlist API boundary with centralized builders for every backend playlist route and use it across these views.
 
 ## Progress
 
@@ -12,6 +12,11 @@ Add a second, responsive and keyboard-accessible tab to `/users/:username` so pr
 - [x] (2026-09-10) Added typed playlist routes, models, and service methods for CRUD and learning-object membership.
 - [x] (2026-09-10) Added the profile playlist presentation component and integrated accessible URL-backed tabs into the existing profile.
 - [x] (2026-09-10) Added focused service/profile tests and completed formatting, lint, focused TypeScript validation, and an Angular build; documented the repository-level Jest transformer blocker.
+- [x] (2026-09-10) Inspected the existing Cube routing, Browse card grid, secondary Browse menu, and profile playlist presentation before expanding the feature.
+- [x] (2026-09-10) Added public playlist browse and playlist-details routes and responsive views.
+- [x] (2026-09-10) Linked profile playlist cards and the secondary Browse menu to the new routes.
+- [x] (2026-09-10) Added focused service/view/card coverage and completed formatting, lint, focused TypeScript validation, and an Angular build; confirmed the existing Jest transformer blocker remains.
+- [x] (2026-09-10) Replaced static playlist-content summaries with the existing linked learning-object cards, resolving each hydrated CUID/version through `LearningObjectService` while preserving unavailable placeholders.
 
 ## Surprises & Discoveries
 
@@ -36,10 +41,21 @@ Add a second, responsive and keyboard-accessible tab to `/users/:username` so pr
 - Decision: Add a domain service and centralized route helper under `src/app/core/playlist-module`.
   Rationale: Components should not construct endpoint strings or call `HttpClient` directly, and all backend playlist routes need one discoverable client contract.
   Date/Author: 2026-09-10 / Codex
+- Decision: Use `/playlists` as the canonical client route and redirect `/playlits` to it.
+  Rationale: The requested URL included a misspelling, while the existing feature and backend consistently use `playlists`; the compatibility redirect satisfies direct navigation without preserving the typo in links.
+  Date/Author: 2026-09-10 / Codex
+- Decision: Use `/playlists/:playlistId` for shareable playlist details.
+  Rationale: It gives every profile and browse card a stable native link and cleanly separates the all-public index from hydrated single-playlist rendering.
+  Date/Author: 2026-09-10 / Codex
+- Decision: Resolve hydrated playlist entries through `LearningObjectService` before rendering the existing learning-object card component.
+  Rationale: The playlist API's compact card contract does not contain the author username required by the canonical learning-object detail URL. The established card component receives the full object, supplies the correct link, and keeps playlist rendering consistent with Browse.
+  Date/Author: 2026-09-10 / Codex
 
 ## Outcomes & Retrospective
 
-The existing profile URL remains intact and now defaults to a Contributions tab, while `?tab=playlists` provides a refresh-safe and shareable Playlists selection. Tabs use native navigation, ARIA associations and selected state, roving tab stops, visible focus, and arrow/Home/End navigation. The new profile playlist view follows the existing profile card treatment and handles loading, failure, empty, public, and owner-private data responsively.
+The existing profile URL remains intact and now defaults to a Contributions tab, while `?tab=playlists` provides a refresh-safe and shareable Playlists selection. Tabs use native navigation, ARIA associations and selected state, roving tab stops, visible focus, and arrow/Home/End navigation. Profile playlist cards now reuse the public browse card and link to a shareable detail page.
+
+`/playlists` loads the backend's unfiltered public collection and presents it in a responsive card grid matching the Browse page's visual language. `/playlists/:playlistId` renders playlist metadata and hydrated learning-object summaries, including a safe unavailable state for stale CUID references. `/playlits` redirects to the canonical spelling. The secondary Browse menu exposes Browse Playlists in the requested position.
 
 The new core Playlist API boundary covers every backend playlist route and sends credentials for authentication-aware visibility. Production code compiles in the Angular build, lint introduces no new warnings or errors, and both added specs compile. Executing Jest remains blocked by the repository's preset/transformer mismatch before test discovery; package changes were intentionally left out of this story.
 
@@ -53,7 +69,9 @@ The request flow will be URL → `UserProfileComponent` → `PlaylistService` �
 
 Create playlist types describing visibility, summaries, hydrated details, create/update inputs, and learning-object card data. Create route builders for `GET/POST /playlists`, `PATCH/DELETE /playlists/:playlistId`, and `PUT/DELETE /playlists/:playlistId/objects/:cuid`. Create an injectable service exposing typed Observable methods with `withCredentials` enabled.
 
-Create a standalone profile-playlists component that presents playlist summaries without assuming a playlist-details page exists. Update the profile component to observe the query parameter, load playlists whenever resolved profile data changes, and clean up subscriptions. Add a tablist whose links update the URL, expose selected state, support Enter through native link behavior, and support left/right arrow navigation. Preserve the existing contribution component and base URL behavior.
+Create a reusable playlist card and standalone public browse/details components under a lazy-loaded Cube playlist feature module. Register `/playlists` and `/playlists/:playlistId` in its feature routing module, plus a compatibility redirect from `/playlits` in the parent router. The index calls the existing unfiltered playlist service method so the backend returns all public playlists. The detail view calls the hydrated single-playlist endpoint and safely renders unavailable learning-object references. Link profile playlist cards to details and insert Browse Playlists between the existing Browse Curriculum and Browse Resources menu items.
+
+Keep the existing profile behavior: observe the query parameter, load playlists whenever resolved profile data changes, and clean up subscriptions. Keep the tablist URL-backed and keyboard accessible.
 
 Add service tests for route/query/method construction and profile tests for URL selection, resolved-user loading, and keyboard navigation. Validate TypeScript templates and styles through Angular lint/build and attempt focused Jest execution without expanding scope into test-infrastructure package changes.
 
@@ -75,6 +93,11 @@ From the `clark-client` root:
 - Playlist profile requests send `userId` as a query parameter with credentials.
 - Loading, request failure, empty results, public results, and owner-visible private results render safely.
 - Every backend playlist route has a centralized frontend route builder and typed service method.
+- `/playlists` displays all public playlists and each card navigates to `/playlists/:playlistId`.
+- `/playlits` redirects to the canonical public playlist page.
+- Playlist details render hydrated learning-object cards while stale/unavailable CUIDs do not break the page.
+- Profile playlist cards link to the same detail route.
+- The secondary Browse menu orders Browse Playlists between Browse Curriculum and Browse Resources.
 
 ## Idempotence and Recovery
 
@@ -85,8 +108,8 @@ All changes are additive except bounded edits to the profile component and its r
 - `npx prettier --write <changed files>`: passed.
 - `npx ng lint clark`: passed with 0 errors and the repository's existing 259 warnings; no changed-file warning was reported.
 - `npx ng build clark`: passed; one pre-existing CommonJS optimization warning was reported for the standard-guidelines service.
-- Focused `npx tsc` configuration containing only the two new specs: passed.
-- `npx jest --runInBand src/app/core/playlist-module/playlist.service.spec.ts src/app/cube/user-profile/user-profile.component.spec.ts`: blocked in global setup by `TypeError: configSet.processWithEsbuild is not a function`; neither suite was loaded.
+- Focused `npx tsc` configuration containing the playlist service, profile, browse, details, and card specs: passed.
+- Focused `npx jest --runInBand ...` across those five specs: blocked in global setup by `TypeError: configSet.processWithEsbuild is not a function`; none of the suites were loaded.
 - `git diff --check`: passed.
 
 ## Interfaces and Dependencies

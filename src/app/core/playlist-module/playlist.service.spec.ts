@@ -31,6 +31,17 @@ describe("PlaylistService", () => {
 
     afterEach(() => httpMock.verify());
 
+    it("gets all public playlists without a user filter", () => {
+        service.getPlaylists().subscribe((result) => {
+            expect(result).toEqual([playlist]);
+        });
+
+        const request = httpMock.expectOne(`${environment.apiURL}/playlists`);
+        expect(request.request.method).toBe("GET");
+        expect(request.request.withCredentials).toBe(true);
+        request.flush([playlist]);
+    });
+
     it("gets playlists for a profile user", () => {
         service.getPlaylists(playlist.userId).subscribe((result) => {
             expect(result).toEqual([playlist]);
