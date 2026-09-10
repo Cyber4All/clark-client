@@ -1,0 +1,119 @@
+@import "_vars.scss";
+
+.playlists {
+    max-width: 950px;
+    box-sizing: border-box;
+    margin: 30px auto;
+    padding: 40px;
+    border: 0.5px rgba(28, 112, 221, 0.1) solid;
+    border-radius: 8px;
+    background: $secondary-white-background;
+    box-shadow: 0 10px 20px -10px rgba(28, 112, 221, 0.1);
+}
+
+h1,
+h2,
+p {
+    margin-top: 0;
+}
+
+h1 {
+    color: #32363f;
+    margin-bottom: 24px;
+}
+
+.playlist-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.playlist-card {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid $profile-border;
+    border-radius: 8px;
+    background: white;
+
+    p {
+        color: $dark-grey;
+        overflow-wrap: anywhere;
+    }
+}
+
+.playlist-card__heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+
+    h2 {
+        overflow-wrap: anywhere;
+        color: #32363f;
+        font-size: $larger;
+    }
+}
+
+.visibility {
+    flex: 0 0 auto;
+    padding: 4px 8px;
+    border-radius: 12px;
+    color: $light-blue;
+    background: rgba(28, 112, 221, 0.1);
+    font-size: $small;
+    text-transform: capitalize;
+}
+
+.visibility--private {
+    color: $dark-grey;
+    background: rgba(50, 54, 63, 0.1);
+}
+
+.object-count {
+    color: $light-blue;
+    font-size: $small;
+}
+
+.status {
+    margin: 0;
+    padding: 32px;
+    border-radius: 8px;
+    background: white;
+    color: $dark-grey;
+    text-align: center;
+
+    .svg-inline--fa {
+        margin-right: 8px;
+        color: $light-blue;
+    }
+}
+
+.status--error {
+    color: $error-red;
+}
+
+@media (max-width: 1060px) {
+    .playlists {
+        margin: 30px;
+    }
+}
+
+@media (max-width: 750px) {
+    .playlist-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 450px) {
+    .playlists {
+        margin: 30px 5px;
+        padding: 24px 16px;
+    }
+
+    .playlist-card__heading {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,47 @@
+<section class="playlists" aria-labelledby="playlists-heading">
+    <h1 id="playlists-heading">{{ isUser ? "My Playlists" : "Playlists" }}</h1>
+
+    <div *ngIf="loading" class="status" role="status" aria-live="polite">
+        <i class="far fa-spinner-third fa-spin" aria-hidden="true"></i>
+        Loading playlists...
+    </div>
+
+    <p *ngIf="!loading && hasError" class="status status--error" role="alert">
+        We couldn't load these playlists. Please try again later.
+    </p>
+
+    <p *ngIf="!loading && !hasError && playlists.length === 0" class="status">
+        {{
+            isUser
+                ? "You don't have any playlists yet."
+                : "This user doesn't have any public playlists yet."
+        }}
+    </p>
+
+    <ul *ngIf="!loading && !hasError && playlists.length" class="playlist-grid">
+        <li
+            *ngFor="let playlist of playlists; trackBy: trackPlaylist"
+            class="playlist-card">
+            <div class="playlist-card__heading">
+                <h2>{{ playlist.name }}</h2>
+                <span
+                    *ngIf="isUser"
+                    class="visibility"
+                    [class.visibility--private]="
+                        playlist.visibility === 'private'
+                    ">
+                    {{ playlist.visibility }}
+                </span>
+            </div>
+            <p>{{ playlist.description }}</p>
+            <span class="object-count">
+                {{ playlist.learningObjectCuids.length }}
+                {{
+                    playlist.learningObjectCuids.length === 1
+                        ? "object"
+                        : "objects"
+                }}
+            </span>
+        </li>
+    </ul>
+</section>
