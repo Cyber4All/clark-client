@@ -22,26 +22,9 @@
         <li
             *ngFor="let playlist of playlists; trackBy: trackPlaylist"
             class="playlist-card">
-            <div class="playlist-card__heading">
-                <h2>{{ playlist.name }}</h2>
-                <span
-                    *ngIf="isUser"
-                    class="visibility"
-                    [class.visibility--private]="
-                        playlist.visibility === 'private'
-                    ">
-                    {{ playlist.visibility }}
-                </span>
-            </div>
-            <p>{{ playlist.description }}</p>
-            <span class="object-count">
-                {{ playlist.learningObjectCuids.length }}
-                {{
-                    playlist.learningObjectCuids.length === 1
-                        ? "object"
-                        : "objects"
-                }}
-            </span>
+            <clark-playlist-card
+                [playlist]="playlist"
+                [showVisibility]="isUser"></clark-playlist-card>
         </li>
     </ul>
 </section>

@@ -33,48 +33,10 @@ h1 {
 
 .playlist-card {
     min-width: 0;
-    padding: 22px;
-    border: 1px solid $profile-border;
-    border-radius: 8px;
-    background: white;
 
-    p {
-        color: $dark-grey;
-        overflow-wrap: anywhere;
+    clark-playlist-card {
+        height: 100%;
     }
-}
-
-.playlist-card__heading {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-
-    h2 {
-        overflow-wrap: anywhere;
-        color: #32363f;
-        font-size: $larger;
-    }
-}
-
-.visibility {
-    flex: 0 0 auto;
-    padding: 4px 8px;
-    border-radius: 12px;
-    color: $light-blue;
-    background: rgba(28, 112, 221, 0.1);
-    font-size: $small;
-    text-transform: capitalize;
-}
-
-.visibility--private {
-    color: $dark-grey;
-    background: rgba(50, 54, 63, 0.1);
-}
-
-.object-count {
-    color: $light-blue;
-    font-size: $small;
 }
 
 .status {
@@ -111,9 +73,5 @@ h1 {
     .playlists {
         margin: 30px 5px;
         padding: 24px 16px;
-    }
-
-    .playlist-card__heading {
-        flex-direction: column;
     }
 }
