@@ -1,78 +1,11 @@
 <ng-container *ngIf="!loading; else loadingTemplate">
     <clark-profile-header [user]="user" [isUser]="isUser">
     </clark-profile-header>
-
-    <nav class="profile-tabs" role="tablist" aria-label="Profile content">
-        <a
-            #contributionsTab
-            id="contributions-tab"
-            class="profile-tabs__item"
-            [class.profile-tabs__item--active]="activeTab === 'contributions'"
-            [routerLink]="['/users', user.username]"
-            [queryParams]="{}"
-            role="tab"
-            aria-controls="contributions-panel"
-            [attr.aria-selected]="activeTab === 'contributions'"
-            [attr.tabindex]="activeTab === 'contributions' ? 0 : -1"
-            (keydown.arrowright)="
-                selectAdjacentTab('playlists', $event, playlistsTab)
-            "
-            (keydown.arrowdown)="
-                selectAdjacentTab('playlists', $event, playlistsTab)
-            "
-            (keydown.end)="
-                selectAdjacentTab('playlists', $event, playlistsTab)
-            ">
-            Contributions
-        </a>
-        <a
-            #playlistsTab
-            id="playlists-tab"
-            class="profile-tabs__item"
-            [class.profile-tabs__item--active]="activeTab === 'playlists'"
-            [routerLink]="['/users', user.username]"
-            [queryParams]="{ tab: 'playlists' }"
-            role="tab"
-            aria-controls="playlists-panel"
-            [attr.aria-selected]="activeTab === 'playlists'"
-            [attr.tabindex]="activeTab === 'playlists' ? 0 : -1"
-            (keydown.arrowleft)="
-                selectAdjacentTab('contributions', $event, contributionsTab)
-            "
-            (keydown.arrowup)="
-                selectAdjacentTab('contributions', $event, contributionsTab)
-            "
-            (keydown.home)="
-                selectAdjacentTab('contributions', $event, contributionsTab)
-            ">
-            Playlists
-        </a>
-    </nav>
-
-    <div
-        id="contributions-panel"
-        role="tabpanel"
-        aria-labelledby="contributions-tab"
-        [hidden]="activeTab !== 'contributions'">
-        <clark-profile-learning-objects
-            class="learningObjects"
-            [isUser]="isUser"
-            [learningObjects]="allUserContributions">
-        </clark-profile-learning-objects>
-    </div>
-
-    <div
-        id="playlists-panel"
-        role="tabpanel"
-        aria-labelledby="playlists-tab"
-        [hidden]="activeTab !== 'playlists'">
-        <clark-profile-playlists
-            [isUser]="isUser"
-            [playlists]="playlists"
-            [loading]="playlistsLoading"
-            [hasError]="playlistsError">
-        </clark-profile-playlists>
-    </div>
+    <clark-profile-learning-objects
+        class="learningObjects"
+        [isUser]="isUser"
+        [learningObjects]="allUserContributions">
+    </clark-profile-learning-objects>
 </ng-container>
 
 <ng-template #loadingTemplate>

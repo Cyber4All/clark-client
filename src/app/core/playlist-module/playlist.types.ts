@@ -33,13 +33,4 @@ export interface PlaylistDetails extends Playlist {
 
 export interface GetPlaylistsQuery {
     playlistId?: string;
-    userId?: string;
 }
-
-export interface CreatePlaylistRequest {
-    name: string;
-    description: string;
-    visibility: PlaylistVisibility;
-}
-
-export type UpdatePlaylistRequest = Partial<CreatePlaylistRequest>;
