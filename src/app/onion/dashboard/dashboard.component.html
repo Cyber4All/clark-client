@@ -62,6 +62,17 @@
             </ng-template>
         </clark-carousel>
     </div>
+
+    <div
+        class="dashboard__feature-announcement"
+        *ngIf="showAgenticBuilderAnnouncement">
+        <clark-feature-highlight-card
+            [config]="agenticBuilderHighlight"
+            (primaryActionSelected)="startAgenticBuilder()"
+            (secondaryActionSelected)="hideAgenticBuilderAnnouncement()"
+            (dismissed)="dismissAgenticBuilderAnnouncement()">
+        </clark-feature-highlight-card>
+    </div>
 </div>
 
 <!--Loading Template-->
