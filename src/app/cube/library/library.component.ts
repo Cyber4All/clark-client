@@ -55,7 +55,12 @@ export class LibraryComponent implements OnInit {
                 cursor,
             });
 
-            const items = await this.withDisplayTypes(response.items);
+            // Download history is retained by the API even after a resource has
+            // been removed or the viewer loses access. Those records cannot be
+            // opened, so exclude them rather than displaying an unavailable row.
+            const items = await this.withDisplayTypes(
+                response.items.filter((item) => item.available),
+            );
 
             this.downloadHistoryItems = isLoadingMore
                 ? [...this.downloadHistoryItems, ...items]
@@ -119,12 +124,6 @@ export class LibraryComponent implements OnInit {
 
     getDisplayName(item: DownloadHistoryViewItem): string {
         return item.name || "Unavailable resource";
-    }
-
-    getUnavailableText(item: DownloadHistoryViewItem): string {
-        return item.available
-            ? ""
-            : "This resource is no longer available or you no longer have access.";
     }
 
     trackDownloadHistoryItem(

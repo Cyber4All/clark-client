@@ -1,6 +1,6 @@
 import { environment } from "@env/environment";
 
-export const LIBRARY_ROUTES = {
+export const DOWNLOAD_HISTORY_ROUTE = {
     /**
      * Request to get the authenticated user's download history
      * @method GET

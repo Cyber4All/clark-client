@@ -172,7 +172,7 @@ describe("LibraryComponent", () => {
         );
     });
 
-    it("shows unavailable resource state without an action", async () => {
+    it("does not render unavailable resources", async () => {
         libraryService.getDownloadHistory.mockResolvedValueOnce({
             items: [
                 {
@@ -186,10 +186,10 @@ describe("LibraryComponent", () => {
         await createComponent();
 
         expect(fixture.nativeElement.textContent).toContain(
-            "This resource is no longer available or you no longer have access.",
+            "No downloads in your history yet.",
         );
         expect(
-            fixture.debugElement.query(By.css(".library-item__title-button")),
+            fixture.debugElement.query(By.css(".download-history-table")),
         ).toBeNull();
     });
 

@@ -108,19 +108,10 @@
     padding: 8px 0;
 }
 
-.download-history-table__row--unavailable {
-    color: $medium-grey;
-}
-
 .download-history-table__resource {
     display: flex;
     flex-direction: column;
     gap: 4px;
-}
-
-.download-history-table__unavailable {
-    color: $medium-grey;
-    font-size: $small;
 }
 
 .download-history-state {
@@ -187,10 +178,6 @@
 .library-item__title-button:focus {
     color: $light-blue;
     text-decoration: underline;
-}
-
-.library-item__title--unavailable {
-    color: $medium-grey;
 }
 
 .empty-notification-container {

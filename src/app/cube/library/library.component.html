@@ -61,9 +61,6 @@
                             trackBy: trackDownloadHistoryItem
                         "
                         class="download-history-table__row"
-                        [class.download-history-table__row--unavailable]="
-                            !item.available
-                        "
                         role="row">
                         <div role="cell">
                             <span
@@ -78,22 +75,11 @@
                             class="download-history-table__resource"
                             role="cell">
                             <button
-                                *ngIf="canNavigate(item); else unavailableTitle"
+                                *ngIf="canNavigate(item)"
                                 class="library-item__title library-item__title-button"
                                 (activate)="goToItem($event, item)">
                                 {{ getDisplayName(item) }}
                             </button>
-                            <ng-template #unavailableTitle>
-                                <span
-                                    class="library-item__title library-item__title--unavailable">
-                                    {{ getDisplayName(item) }}
-                                </span>
-                            </ng-template>
-                            <span
-                                *ngIf="!item.available"
-                                class="download-history-table__unavailable">
-                                {{ getUnavailableText(item) }}
-                            </span>
                         </div>
 
                         <div role="cell">

@@ -10,7 +10,7 @@ import { catchError, timeout } from "rxjs/operators";
 import { LearningObject } from "../../../entity/learning-object/learning-object";
 import { ToastrOvenService } from "../../shared/modules/toaster/notification.service";
 import { AuthService } from "../auth-module/auth.service";
-import { LIBRARY_ROUTES } from "./library.routes";
+import { DOWNLOAD_HISTORY_ROUTE } from "./library.routes";
 import { environment } from "@env/environment";
 
 export interface LibraryItem {
@@ -104,10 +104,16 @@ export class LibraryService {
         });
 
         return await this.http
-            .get(LIBRARY_ROUTES.GET_USERS_LIBRARY(this.user.username, query), {
-                withCredentials: true,
-                headers: this.headers,
-            })
+            .get(
+                DOWNLOAD_HISTORY_ROUTE.GET_USERS_LIBRARY(
+                    this.user.username,
+                    query,
+                ),
+                {
+                    withCredentials: true,
+                    headers: this.headers,
+                },
+            )
             .pipe(catchError((error) => this.handleError(error)))
             .toPromise()
             .then((val: any) => {
@@ -162,7 +168,7 @@ export class LibraryService {
 
         return await this.http
             .get<DownloadHistoryResponse>(
-                LIBRARY_ROUTES.GET_DOWNLOAD_HISTORY(query),
+                DOWNLOAD_HISTORY_ROUTE.GET_DOWNLOAD_HISTORY(query),
                 {
                     withCredentials: true,
                     headers: this.headers,
@@ -182,7 +188,7 @@ export class LibraryService {
         }
         return await this.http
             .post(
-                LIBRARY_ROUTES.ADD_LEARNING_OBJECT_TO_LIBRARY(
+                DOWNLOAD_HISTORY_ROUTE.ADD_LEARNING_OBJECT_TO_LIBRARY(
                     this.user.username,
                 ),
                 {
@@ -228,7 +234,7 @@ export class LibraryService {
 
         return this.http
             .delete(
-                LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
+                DOWNLOAD_HISTORY_ROUTE.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
                     this.user.username,
                     libraryItemId,
                 ),
