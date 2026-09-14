@@ -91,7 +91,9 @@ export class ClarkComponent implements OnInit {
     hidingOutlines = true;
     learningObject: LearningObject;
 
-    downtime: Partial<Downtime> = {};
+    // Local development does not query the production downtime endpoint.
+    // Initialize the state so the root template can render immediately.
+    downtime: Partial<Downtime> = { isDown: false, message: "" };
 
     @HostListener("window:click", ["$event"])
     @HostListener("window:keyup", ["$event"])
