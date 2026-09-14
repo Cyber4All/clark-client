@@ -59,6 +59,7 @@ export class FileService {
         const extension = this.getFileExtension(filename);
 
         const typeExtensions: { [type: string]: string[] } = {
+            notebook: [".ipynb"],
             office: [
                 ".docx",
                 ".doc",
@@ -113,6 +114,13 @@ export class FileService {
             const encodedUrl = encodeURIComponent(url);
             const encodedFileName = encodeURIComponent(fileName);
             const previewUrl = `/preview/code?url=${encodedUrl}&language=${language}&filename=${encodedFileName}`;
+            window.open(previewUrl, "_blank", "noopener,noreferrer");
+        },
+        // Render Jupyter notebooks as static HTML in the shared preview shell
+        notebook: (url: string, fileName: string) => {
+            const encodedUrl = encodeURIComponent(url);
+            const encodedFileName = encodeURIComponent(fileName);
+            const previewUrl = `/preview/code?url=${encodedUrl}&type=notebook&filename=${encodedFileName}`;
             window.open(previewUrl, "_blank", "noopener,noreferrer");
         },
     };
@@ -187,8 +195,6 @@ export class FileService {
         const previewAction = FileService.PREVIEW_ACTIONS[fileType];
 
         if (previewAction) {
-            console.log("URL: ", url);
-            console.log("FileName: ", fileName);
             previewAction(url, fileName);
         }
     }
