@@ -89,7 +89,7 @@ export class LibraryComponent implements OnInit {
         }
     }
 
-    async goToItem(event: Event, item: DownloadHistoryViewItem) {
+    async goToItem(event: Event, item: DownloadHistoryItem) {
         event.stopPropagation();
 
         if (!this.canNavigate(item)) {
@@ -118,11 +118,11 @@ export class LibraryComponent implements OnInit {
         }
     }
 
-    canNavigate(item: DownloadHistoryViewItem): boolean {
+    canNavigate(item: DownloadHistoryItem): boolean {
         return Boolean(item.available && item.resource?.cuid);
     }
 
-    getDisplayName(item: DownloadHistoryViewItem): string {
+    getDisplayName(item: DownloadHistoryItem): string {
         return item.name || "Unavailable resource";
     }
 

@@ -6,6 +6,7 @@ import { TestBed } from "@angular/core/testing";
 import { environment } from "@env/environment";
 import { AuthService } from "../auth-module/auth.service";
 import { ToastrOvenService } from "../../shared/modules/toaster/notification.service";
+import { DOWNLOAD_HISTORY_ROUTE } from "./library.routes";
 import { LibraryService } from "./library.service";
 
 describe("LibraryService", () => {
@@ -62,5 +63,11 @@ describe("LibraryService", () => {
         httpRequest.flush(response);
 
         await expect(request).resolves.toEqual(response);
+    });
+
+    it("exposes no retired Library endpoint helpers", () => {
+        expect(Object.keys(DOWNLOAD_HISTORY_ROUTE)).toEqual([
+            "GET_DOWNLOAD_HISTORY",
+        ]);
     });
 });

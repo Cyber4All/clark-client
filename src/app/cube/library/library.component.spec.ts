@@ -121,6 +121,31 @@ describe("LibraryComponent", () => {
         );
     });
 
+    it("shows a loading state while download history is requested", async () => {
+        let resolveHistory!: (value: { items: DownloadHistoryItem[] }) => void;
+        libraryService.getDownloadHistory.mockReturnValueOnce(
+            new Promise((resolve) => {
+                resolveHistory = resolve;
+            }),
+        );
+
+        fixture = TestBed.createComponent(LibraryComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.textContent).toContain(
+            "Loading your download history...",
+        );
+
+        resolveHistory({ items: [] });
+        await fixture.whenStable();
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.textContent).toContain(
+            "No downloads in your history yet.",
+        );
+    });
+
     it("shows an error state with retry", async () => {
         libraryService.getDownloadHistory
             .mockRejectedValueOnce(new Error("failed"))
