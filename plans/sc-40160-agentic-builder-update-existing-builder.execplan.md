@@ -28,6 +28,7 @@ Update the existing Angular learning-object builder so authors see the revised `
 - [x] (2026-09-17) Applied the display-only untitled fallback to Onion dashboard learning-object cards and side-panel title bindings.
 - [x] (2026-09-17) Persisted a newly created draft's CUID/version in the builder URL and refreshed builder state after Agentic Builder completes.
 - [x] (2026-09-17) Disabled only the builder fields selected for Agentic Builder generation and added in-context loading indicators until generation and refresh complete.
+- [x] (2026-09-17) Resolved the CI-only Prettier/ESLint brace-style conflict by assigning brace formatting exclusively to Prettier.
 - [ ] Add/execute focused component assertions once the repository Jest transformer dependency drift is resolved.
 
 ## Surprises & Discoveries
@@ -46,6 +47,8 @@ Update the existing Angular learning-object builder so authors see the revised `
   Evidence: `src/app/core/learning-object-module/learning-object/learning-object.routes.ts` and Angular environment replacements.
 - Observation: The story explicitly excludes generation API/loading/failure work from this story.
   Evidence: Shortcut story 40160 description says those flows are tracked separately in the epic.
+- Observation: Prettier 3.8 wraps long class `implements` declarations with the opening brace on a new line, while ESLint's configured `brace-style: 1tbs` rejected that formatter-owned output in CI.
+  Evidence: `learning-object-builder.component.ts:127` was stable under `prettier --write` but failed ESLint's `brace-style` rule until that formatting-only rule was disabled.
 - Observation: The builder already checks names through an authenticated API endpoint, but that endpoint previously used a global search-index lookup.
   Evidence: `InfoPageComponent` calls `LearningObjectService.checkNameAvailability`, which calls `GET /learning-objects/name/check/:name`.
 
