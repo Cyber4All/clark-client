@@ -35,6 +35,10 @@ export const CALLBACKS = {
     },
 };
 
+export interface LearningObjectBuildRequest {
+    fields: Array<"name" | "description" | "learningOutcomes">;
+}
+
 @Injectable({
     providedIn: "root",
 })
@@ -306,6 +310,20 @@ export class LearningObjectService {
             });
     }
 
+    buildLearningObject(
+        learningObjectId: string,
+        request: LearningObjectBuildRequest,
+    ): Promise<unknown> {
+        return this.http
+            .post(
+                LEARNING_OBJECT_ROUTES.BUILD_LEARNING_OBJECT(learningObjectId),
+                request,
+                { headers: this.headers, withCredentials: true },
+            )
+            .pipe(catchError(this.handleError))
+            .toPromise();
+    }
+
     /**
      * Fetches Learning Object's Materials
      *
@@ -561,8 +579,14 @@ export class LearningObjectService {
      * @returns {Promise<boolean>} - true if name is available, false if duplicate exists
      * @memberof LearningObjectService
      */
-    async checkNameAvailability(name: string): Promise<boolean> {
-        const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(name);
+    async checkNameAvailability(
+        name: string,
+        learningObjectId?: string,
+    ): Promise<boolean> {
+        const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(
+            name,
+            learningObjectId,
+        );
         return this.http
             .get<{ validName: boolean }>(route, {
                 headers: this.headers,

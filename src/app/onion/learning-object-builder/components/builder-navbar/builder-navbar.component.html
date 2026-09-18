@@ -18,7 +18,7 @@
             *ngIf="revisedVersion && !adminMode"
             aria-live="assertive"
             class="revising-notification">
-            Currently Revising: {{ learningObject?.name }}
+            Currently Revising: {{ learningObject?.displayName }}
         </div>
         <div class="top__left" *ngIf="!adminMode">
             <a (activate)="triggerExitProcess()"
@@ -94,6 +94,16 @@
                         learningObject
                     "></clark-editor-action-panel>
             </ng-template>
+            <button
+                type="button"
+                class="agentic-builder-action"
+                aria-label="Open Agentic Builder"
+                tip="Open Agentic Builder"
+                tipPosition="bottom"
+                (activate)="toggleAgenticBuilder()">
+                <i class="fas fa-wand-magic-sparkles"></i>
+                Agentic Builder
+            </button>
         </div>
     </div>
     <div class="builder-navbar-wrapper__bottom">
@@ -102,13 +112,23 @@
             <ul>
                 <li>
                     <ng-container
+                        aria-label="Materials Link"
+                        [ngTemplateOutlet]="navItemTemplate"
+                        [ngTemplateOutletContext]="{
+                            disabled: false,
+                            link: 'materials',
+                            text: 'Materials',
+                        }"></ng-container>
+                </li>
+                <li>
+                    <ng-container
                         id="firstTab"
-                        aria-label="Basic Information Link"
+                        aria-label="Details Link"
                         [ngTemplateOutlet]="navItemTemplate"
                         [ngTemplateOutletContext]="{
                             disabled: false,
                             link: 'info',
-                            text: 'Basic Information',
+                            text: 'Details',
                         }"></ng-container>
                 </li>
                 <li>
@@ -116,19 +136,9 @@
                         aria-label="Learning Outcomes Link"
                         [ngTemplateOutlet]="navItemTemplate"
                         [ngTemplateOutletContext]="{
-                            disabled: !canRoute('outcomes'),
+                            disabled: false,
                             link: 'outcomes',
                             text: 'Learning Outcomes',
-                        }"></ng-container>
-                </li>
-                <li>
-                    <ng-container
-                        aria-label="Materials Link"
-                        [ngTemplateOutlet]="navItemTemplate"
-                        [ngTemplateOutletContext]="{
-                            disabled: !canRoute('materials'),
-                            link: 'materials',
-                            text: 'Materials',
                         }"></ng-container>
                 </li>
             </ul>
@@ -146,6 +156,64 @@
             </div>
         </div>
     </div>
+</div>
+
+<div
+    *ngIf="showAgenticBuilder"
+    class="agentic-builder-panel"
+    role="dialog"
+    aria-labelledby="agentic-builder-title">
+    <div class="agentic-builder-panel__header">
+        <h2 id="agentic-builder-title">Agentic Builder</h2>
+        <button
+            type="button"
+            aria-label="Close Agentic Builder"
+            (activate)="toggleAgenticBuilder()">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <p>Generate learning object content from your selected materials.</p>
+    <div class="agentic-builder-panel__fields">
+        <label>
+            <input
+                type="checkbox"
+                [checked]="selectedAgenticFields.name"
+                [disabled]="generatingAgenticBuilder"
+                (change)="setAgenticField('name', $event)" />
+            Name
+        </label>
+        <label>
+            <input
+                type="checkbox"
+                [checked]="selectedAgenticFields.description"
+                [disabled]="generatingAgenticBuilder"
+                (change)="setAgenticField('description', $event)" />
+            Description
+        </label>
+        <label>
+            <input
+                type="checkbox"
+                [checked]="selectedAgenticFields.learningOutcomes"
+                [disabled]="generatingAgenticBuilder"
+                (change)="setAgenticField('learningOutcomes', $event)" />
+            Learning Outcomes
+        </label>
+    </div>
+    <button
+        type="button"
+        class="button good"
+        [disabled]="generatingAgenticBuilder"
+        (activate)="generateAgenticBuilderContent()">
+        {{ generatingAgenticBuilder ? "Generating..." : "Generate" }}
+        <i
+            *ngIf="generatingAgenticBuilder"
+            class="far fa-spinner-third fa-spin"
+            aria-hidden="true"></i>
+        <i
+            *ngIf="!generatingAgenticBuilder"
+            class="fas fa-arrow-right"
+            aria-hidden="true"></i>
+    </button>
 </div>
 
 <clark-submit
@@ -167,15 +235,6 @@
         routerLinkActive="active"
         (activate)="triggerRouteClick(link)"
         >{{ text }}</a
-    >
-    <a
-        aria-label="Please name this learning object before adding outcomes or materials"
-        *ngIf="disabled"
-        class="disabled"
-        tip="Please name this learning object before adding outcomes or materials."
-        tipPosition="top"
-        (activate)="triggerBlockedRouteClick()"
-        ><i class="fas fa-lock"></i>{{ text }}</a
     >
 </ng-template>
 
