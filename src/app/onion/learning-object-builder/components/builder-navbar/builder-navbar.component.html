@@ -158,63 +158,9 @@
     </div>
 </div>
 
-<div
+<onion-agentic-builder-panel
     *ngIf="showAgenticBuilder"
-    class="agentic-builder-panel"
-    role="dialog"
-    aria-labelledby="agentic-builder-title">
-    <div class="agentic-builder-panel__header">
-        <h2 id="agentic-builder-title">Agentic Builder</h2>
-        <button
-            type="button"
-            aria-label="Close Agentic Builder"
-            (activate)="toggleAgenticBuilder()">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
-    <p>Generate learning object content from your selected materials.</p>
-    <div class="agentic-builder-panel__fields">
-        <label>
-            <input
-                type="checkbox"
-                [checked]="selectedAgenticFields.name"
-                [disabled]="generatingAgenticBuilder"
-                (change)="setAgenticField('name', $event)" />
-            Name
-        </label>
-        <label>
-            <input
-                type="checkbox"
-                [checked]="selectedAgenticFields.description"
-                [disabled]="generatingAgenticBuilder"
-                (change)="setAgenticField('description', $event)" />
-            Description
-        </label>
-        <label>
-            <input
-                type="checkbox"
-                [checked]="selectedAgenticFields.learningOutcomes"
-                [disabled]="generatingAgenticBuilder"
-                (change)="setAgenticField('learningOutcomes', $event)" />
-            Learning Outcomes
-        </label>
-    </div>
-    <button
-        type="button"
-        class="button good"
-        [disabled]="generatingAgenticBuilder"
-        (activate)="generateAgenticBuilderContent()">
-        {{ generatingAgenticBuilder ? "Generating..." : "Generate" }}
-        <i
-            *ngIf="generatingAgenticBuilder"
-            class="far fa-spinner-third fa-spin"
-            aria-hidden="true"></i>
-        <i
-            *ngIf="!generatingAgenticBuilder"
-            class="fas fa-arrow-right"
-            aria-hidden="true"></i>
-    </button>
-</div>
+    (closed)="showAgenticBuilder = false"></onion-agentic-builder-panel>
 
 <clark-submit
     *ngIf="showSubmission"

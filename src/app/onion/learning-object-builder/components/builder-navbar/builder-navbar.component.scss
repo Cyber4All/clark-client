@@ -112,43 +112,6 @@
     }
 }
 
-.agentic-builder-panel {
-    position: fixed;
-    top: 85px;
-    right: 25px;
-    width: 320px;
-    max-width: calc(100vw - 32px);
-    box-sizing: border-box;
-    padding: 20px;
-    background: white;
-    border: 1px solid $light-grey;
-    border-radius: 4px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.18);
-    z-index: 5;
-
-    &__header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        h2 {
-            margin: 0;
-        }
-        button {
-            border: 0;
-            background: transparent;
-            cursor: pointer;
-        }
-    }
-
-    &__fields {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        margin: 18px 0;
-    }
-}
-
 .builder-navbar-wrapper__bottom-left-menu {
     display: flex;
     flex-direction: row;

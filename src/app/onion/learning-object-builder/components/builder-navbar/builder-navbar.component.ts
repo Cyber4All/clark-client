@@ -1,5 +1,5 @@
 import { Component, OnDestroy, Input } from "@angular/core";
-import { AgenticBuilderField, BuilderStore } from "../../builder-store.service";
+import { BuilderStore } from "../../builder-store.service";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { LearningObjectValidator } from "../../validators/learning-object.validator";
 import { filter, takeUntil } from "rxjs/operators";
@@ -26,7 +26,7 @@ import { LearningObjectStatusIndicatorComponent } from "../../../shared/status-i
 import { EditorActionPanelComponent } from "../editor-action-panel/editor-action-panel.component";
 import { SubmitComponent } from "../../../shared/submit/submit.component";
 import { GenericCollectionLogoComponent } from "../../../../shared/components/generic-collection-logo/generic-collection-logo.component";
-import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
+import { AgenticBuilderPanelComponent } from "../agentic-builder-panel/agentic-builder-panel.component";
 
 @Component({
     selector: "onion-builder-navbar",
@@ -47,6 +47,7 @@ import { LearningObjectService } from "app/core/learning-object-module/learning-
         RouterLinkActive,
         RouterLink,
         GenericCollectionLogoComponent,
+        AgenticBuilderPanelComponent,
     ],
 })
 export class BuilderNavbarComponent implements OnDestroy {
@@ -57,12 +58,6 @@ export class BuilderNavbarComponent implements OnDestroy {
     showSubmission: boolean;
     showSubmissionOptions: boolean;
     showAgenticBuilder = false;
-    generatingAgenticBuilder = false;
-    selectedAgenticFields = {
-        name: true,
-        description: true,
-        learningOutcomes: true,
-    };
 
     learningObject: LearningObject;
     collection: Collection;
@@ -93,7 +88,6 @@ export class BuilderNavbarComponent implements OnDestroy {
         public store: BuilderStore,
         private bundlingService: BundlingService,
         public fileService: FileService,
-        private learningObjectService: LearningObjectService,
     ) {
         // subscribe to the serviceInteraction observable to display in the client when the application
         // is interacting with the service
@@ -159,54 +153,6 @@ export class BuilderNavbarComponent implements OnDestroy {
 
     toggleAgenticBuilder(): void {
         this.showAgenticBuilder = !this.showAgenticBuilder;
-    }
-
-    setAgenticField(
-        field: keyof typeof this.selectedAgenticFields,
-        event: Event,
-    ): void {
-        this.selectedAgenticFields[field] = (
-            event.target as HTMLInputElement
-        ).checked;
-    }
-
-    async generateAgenticBuilderContent(): Promise<void> {
-        const learningObject = this.store.learningObject;
-        const learningObjectId = learningObject?.id;
-        const fields = Object.entries(this.selectedAgenticFields)
-            .filter(([, selected]) => selected)
-            .map(([field]) => field) as AgenticBuilderField[];
-
-        if (!learningObjectId || !learningObject?.cuid || !fields.length) {
-            this.toasterService.warning(
-                "Select content to generate",
-                "Choose at least one field before generating.",
-            );
-            return;
-        }
-
-        this.generatingAgenticBuilder = true;
-        this.store.setAgenticGeneration(fields);
-        try {
-            await this.learningObjectService.buildLearningObject(
-                learningObjectId,
-                { fields },
-            );
-            await this.store.fetch(learningObject.cuid, learningObject.version);
-            this.toasterService.success(
-                "Generation complete",
-                "Your learning object has been updated.",
-            );
-            this.showAgenticBuilder = false;
-        } catch (_error) {
-            this.toasterService.error(
-                "Generation failed",
-                "We could not start Agentic Builder generation. Please try again.",
-            );
-        } finally {
-            this.generatingAgenticBuilder = false;
-            this.store.clearAgenticGeneration();
-        }
     }
 
     /**
