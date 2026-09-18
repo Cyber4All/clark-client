@@ -30,6 +30,7 @@ export class FileListItemComponent implements OnInit {
     @Output() clicked: EventEmitter<void> = new EventEmitter();
     @Output() menuClicked: EventEmitter<MouseEvent> = new EventEmitter();
     @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
+    @Output() contextClicked: EventEmitter<boolean> = new EventEmitter();
 
     icon = "";
     accessGroups: string[];
@@ -65,6 +66,11 @@ export class FileListItemComponent implements OnInit {
     handleToggle(event: boolean) {
         this.file.packageable = event;
         this.toggleClicked.emit(event);
+    }
+
+    handleContextToggle(event: boolean) {
+        this.file.context = event;
+        this.contextClicked.emit(event);
     }
 
     /**

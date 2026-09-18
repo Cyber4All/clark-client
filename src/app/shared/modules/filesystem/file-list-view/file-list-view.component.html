@@ -2,13 +2,25 @@
     <div class="wrapper">
         <div
             class="grid-row header"
-            [ngClass]="{ bundle: checkAccessGroups() }">
+            [ngClass]="{
+                bundle: checkAccessGroups(),
+                context: inBuilder,
+            }">
             <div>Name</div>
             <div>Size</div>
             <div>Action</div>
             <div class="toggle" *ngIf="checkAccessGroups()">
                 <p>Bundle</p>
                 <div class="icon" [tip]="toggleToolTip" [tipDisabled]="false">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+            </div>
+            <div class="toggle" *ngIf="inBuilder">
+                <p>Context</p>
+                <div
+                    class="icon"
+                    tip="Enabled files will be included in the Agentic Builder context."
+                    tipPosition="top">
                     <i class="fas fa-question-circle"></i>
                 </div>
             </div>
@@ -22,6 +34,7 @@
                 (clicked)="openFolder(item.name)"
                 (menuClicked)="handleMenuClicked($event, item)"
                 (toggleClicked)="handleToggleClicked($event, item)"
+                (contextClicked)="handleContextClicked($event, item)"
                 [inBuilder]="inBuilder"
                 [folder]="item"
                 [showOptionButton]="canManage"></clark-folder-list-item>
@@ -33,6 +46,7 @@
                 (clicked)="openFile(item)"
                 (menuClicked)="handleMenuClicked($event, item)"
                 (toggleClicked)="handleToggleClicked($event, item)"
+                (contextClicked)="handleContextClicked($event, item)"
                 [inBuilder]="inBuilder"
                 [file]="item"
                 [showOptionButton]="canManage"></clark-file-list-item>

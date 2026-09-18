@@ -1,6 +1,6 @@
 <div
     class="grid-row wrapper"
-    [ngClass]="{ bundle: checkAccessGroups() }"
+    [ngClass]="{ bundle: checkAccessGroups(), context: inBuilder }"
     role="link"
     tabindex="0">
     <div
@@ -50,6 +50,11 @@
         <clark-toggle-switch
             [state]="file.packageable"
             (toggled)="handleToggle($event)"></clark-toggle-switch>
+    </div>
+    <div class="toggleContext" *ngIf="inBuilder">
+        <clark-toggle-switch
+            [state]="file.context ?? false"
+            (toggled)="handleContextToggle($event)"></clark-toggle-switch>
     </div>
     <a
         tabindex="0"
