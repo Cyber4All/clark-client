@@ -45,13 +45,9 @@
         [disabled]="generating"
         (activate)="generate()">
         {{ generating ? "Generating..." : "Generate" }}
-        <i
-            *ngIf="generating"
-            class="far fa-spinner-third fa-spin"
-            aria-hidden="true"></i>
-        <i
-            *ngIf="!generating"
-            class="fas fa-arrow-right"
-            aria-hidden="true"></i>
+        <span
+            class="agentic-builder-panel__generate-icon"
+            [class.agentic-builder-panel__generate-icon--loading]="generating"
+            aria-hidden="true"></span>
     </button>
 </div>

@@ -1,4 +1,5 @@
 import { NgIf } from "@angular/common";
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, EventEmitter, Output } from "@angular/core";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
@@ -16,6 +17,7 @@ export class AgenticBuilderPanelComponent {
     @Output() closed = new EventEmitter<void>();
 
     generating = false;
+    errorMessage: string | null = null;
     selectedFields = {
         name: true,
         description: true,
@@ -39,6 +41,8 @@ export class AgenticBuilderPanelComponent {
     }
 
     async generate(): Promise<void> {
+        if (this.generating) return;
+
         const learningObject = this.store.learningObject;
         const learningObjectId = learningObject?.id;
         const fields = Object.entries(this.selectedFields)
@@ -54,6 +58,7 @@ export class AgenticBuilderPanelComponent {
         }
 
         this.generating = true;
+        this.errorMessage = null;
         this.store.setAgenticGeneration(fields);
 
         try {
@@ -67,14 +72,51 @@ export class AgenticBuilderPanelComponent {
                 "Your learning object has been updated.",
             );
             this.closed.emit();
-        } catch (_error) {
-            this.toasterService.error(
-                "Generation failed",
-                "We could not start Agentic Builder generation. Please try again.",
-            );
+        } catch (error) {
+            this.errorMessage = this.getErrorMessage(error);
+            this.toasterService.error("Generation failed", this.errorMessage);
         } finally {
             this.generating = false;
             this.store.clearAgenticGeneration();
         }
+    }
+
+    private getErrorMessage(error: unknown): string {
+        const fallback =
+            "We could not generate this learning object. Please try again.";
+        const response =
+            error instanceof HttpErrorResponse ? error.error : error;
+
+        return this.findMessage(response) ?? fallback;
+    }
+
+    private findMessage(value: unknown): string | undefined {
+        if (typeof value === "string") {
+            const message = value.trim();
+            if (!message) return undefined;
+
+            try {
+                return this.findMessage(JSON.parse(message)) ?? message;
+            } catch (_error) {
+                return message;
+            }
+        }
+
+        if (Array.isArray(value)) {
+            return value
+                .map((item) => this.findMessage(item))
+                .filter(Boolean)
+                .join(" ");
+        }
+
+        if (value && typeof value === "object") {
+            const response = value as Record<string, unknown>;
+            for (const property of ["message", "detail", "details", "error"]) {
+                const message = this.findMessage(response[property]);
+                if (message) return message;
+            }
+        }
+
+        return undefined;
     }
 }
