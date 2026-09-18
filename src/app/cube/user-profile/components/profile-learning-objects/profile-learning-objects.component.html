@@ -19,7 +19,8 @@
                         role="tab"
                         (click)="
                             activateMainTab('released');
-                            collectionsReleased.length && content(1, collectionsReleased[0].abvName);
+                            collectionsReleased.length &&
+                                content(1, collectionsReleased[0].abvName);
                             activateCollectionTab(0)
                         "
                         [ngClass]="{ active: tabMain === 1 }">
@@ -30,7 +31,8 @@
                         role="tab"
                         (click)="
                             activateMainTab('review');
-                            collectionsUnreleased.length && content(2, collectionsUnreleased[0].abvName);
+                            collectionsUnreleased.length &&
+                                content(2, collectionsUnreleased[0].abvName);
                             activateCollectionTab(0)
                         "
                         [ngClass]="{ active: tabMain === 2 }">

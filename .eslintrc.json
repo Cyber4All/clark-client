@@ -101,7 +101,7 @@
                 "@typescript-eslint/no-namespace": "off",
                 "@typescript-eslint/no-shadow": "off",
                 "arrow-body-style": "off",
-                "brace-style": ["error", "1tbs"],
+                "brace-style": "off",
                 "id-blacklist": "off",
                 "jsdoc/newline-after-description": "off",
                 "jsdoc/no-types": "off",

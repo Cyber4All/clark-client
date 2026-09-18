@@ -49,6 +49,8 @@ export class OutcomeComponent implements OnInit {
     totalOutcomes: number;
     @Input()
     active: boolean;
+    @Input()
+    disabled = false;
 
     noAnimation = true;
 
@@ -102,6 +104,8 @@ export class OutcomeComponent implements OnInit {
     }
 
     emitVerb(val) {
+        if (this.disabled) return;
+
         this.selectedVerb.emit(val);
         if (val === undefined) {
             // Update verb for typeahead
@@ -110,6 +114,8 @@ export class OutcomeComponent implements OnInit {
     }
 
     emitLevel(val) {
+        if (this.disabled) return;
+
         this.selectedLevel.emit(val);
         if (val === undefined) {
             // Update bloom for typeahead
@@ -118,14 +124,20 @@ export class OutcomeComponent implements OnInit {
     }
 
     emitText(val) {
+        if (this.disabled) return;
+
         this.textChanged.emit(val);
     }
 
     emitDeletion() {
+        if (this.disabled) return;
+
         this.deleted.emit();
     }
 
     removeMapping(standardOutcome: LearningOutcome) {
+        if (this.disabled) return;
+
         this.unmap.emit({ standardOutcome, value: false });
     }
 }
