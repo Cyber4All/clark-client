@@ -18,7 +18,8 @@ import { NgStyle, NgClass, NgIf } from "@angular/common";
     imports: [NgStyle, NgClass, NgIf],
 })
 export class ColumnWrapperComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild("columnWrapper") columnWrapper: ElementRef;
 
     @Input() columns = "lmr";
@@ -37,35 +38,37 @@ export class ColumnWrapperComponent
         } catch (error) {
             // FIXME this suppresses the error resulting in the lambda function for messages being disabled
         }
-
-        // calculate the height of the scroll wrapper
-        this.columnOffset = (
-            this.columnWrapper.nativeElement as HTMLElement
-        ).offsetTop;
-
-        this.columnHeight =
-            window.innerHeight -
-            this.columnOffset -
-            (this.messageBar
-                ? (
-                      document.querySelector(
-                          "clark-message .wrapper",
-                      ) as HTMLElement
-                  ).offsetHeight
-                : 0) +
-            30; // this +30 offsets the wrappers -30 offset
-
-        // set overflow of body to hidden to prevent parent scrolling
-        if (this.columnHeight >= 560) {
-            // this check prevents obsucring the outcomes sidebar
-            document.body.style["overflow-y"] = "hidden";
-            document.body.style["overflow-x"] = "auto";
-        }
     }
 
     ngAfterViewInit() {
         // TODO check for right column and adjust mobile threshold here
         // TODO collapse left panel on smaller screens
+
+        setTimeout(() => {
+            // calculate the height of the scroll wrapper
+            this.columnOffset = (
+                this.columnWrapper.nativeElement as HTMLElement
+            ).offsetTop;
+
+            this.columnHeight =
+                window.innerHeight -
+                this.columnOffset -
+                (this.messageBar
+                    ? ((
+                          document.querySelector(
+                              "clark-message .wrapper",
+                          ) as HTMLElement
+                      )?.offsetHeight ?? 0)
+                    : 0) +
+                30; // this +30 offsets the wrappers -30 offset
+
+            // set overflow of body to hidden to prevent parent scrolling
+            if (this.columnHeight >= 560) {
+                // this check prevents obsucring the outcomes sidebar
+                document.body.style["overflow-y"] = "hidden";
+                document.body.style["overflow-x"] = "auto";
+            }
+        });
     }
 
     get rightColumn(): boolean {

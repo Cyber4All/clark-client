@@ -74,7 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     activeIndex = 0;
     loading: boolean;
     releasedLearningObjects: LearningObject[];
-    workingLearningObjects: LearningObject[];
+    workingLearningObjects: LearningObject[] = [];
 
     action$: BehaviorSubject<number> = new BehaviorSubject(this.activeIndex);
 
@@ -192,24 +192,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
             text = filters;
         }
 
-        this.searchService
-            .getUsersLearningObjects(this.auth.username, {
+        const response = await this.searchService.getUsersLearningObjects(
+            this.auth.username,
+            {
                 draftsOnly: true,
                 limit: 1000,
                 text,
                 ...filters,
-            })
-            .then(
-                (response: {
-                    learningObjects: LearningObject[];
-                    total: number;
-                }) => {
-                    this.workingLearningObjects =
-                        this.sortLearningObjectsByDate(
-                            response.learningObjects,
-                        );
-                },
-            );
+            },
+        );
+        this.workingLearningObjects = this.sortLearningObjectsByDate(
+            (response as { learningObjects: LearningObject[]; total: number })
+                .learningObjects,
+        );
     }
 
     /**
@@ -222,22 +217,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
         filters?: any,
         text?: string,
     ): Promise<void> {
-        this.searchService
-            .getUsersLearningObjects(this.auth.username, {
+        const response = await this.searchService.getUsersLearningObjects(
+            this.auth.username,
+            {
                 ...filters,
                 text,
-            })
-            .then(
-                (response: {
-                    learningObjects: LearningObject[];
-                    total: number;
-                }) => {
-                    this.releasedLearningObjects =
-                        this.sortLearningObjectsByDate(
-                            response.learningObjects,
-                        );
-                },
-            );
+            },
+        );
+        this.releasedLearningObjects = this.sortLearningObjectsByDate(
+            (response as { learningObjects: LearningObject[]; total: number })
+                .learningObjects,
+        );
 
         this.checkQueryParams$.next();
     }
