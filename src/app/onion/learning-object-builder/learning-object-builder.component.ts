@@ -1,4 +1,4 @@
-import { takeUntil } from "rxjs/operators";
+import { filter, take, takeUntil } from "rxjs/operators";
 import {
     Component,
     OnInit,
@@ -123,7 +123,8 @@ export const builderTransitions = trigger("builderTransition", [
     ],
 })
 export class LearningObjectBuilderComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     // fires when the component is destroyed
     destroyed$: Subject<void> = new Subject();
 
@@ -203,7 +204,7 @@ export class LearningObjectBuilderComponent
                     });
                 } else {
                     // otherwise instruct store to initialize and store a blank learning object
-                    this.store.makeNew();
+                    this.createAndRouteToNewLearningObject();
                 }
             });
 
@@ -233,6 +234,35 @@ export class LearningObjectBuilderComponent
 
         // hides clark nav bar from builder
         this.nav.hide();
+    }
+
+    /**
+     * Creates the upload-first draft and replaces the transient builder route once
+     * the API assigns its CUID and version. This lets a refresh reopen the draft.
+     */
+    private createAndRouteToNewLearningObject(): void {
+        this.store.learningObjectEvent
+            .pipe(
+                filter((learningObject) =>
+                    Boolean(learningObject?.id && learningObject.cuid),
+                ),
+                take(1),
+                takeUntil(this.destroyed$),
+            )
+            .subscribe((learningObject) => {
+                this.setBuilderMode(learningObject);
+                this.router.navigate(
+                    [
+                        "/onion/learning-object-builder",
+                        learningObject.cuid,
+                        learningObject.version,
+                        "materials",
+                    ],
+                    { replaceUrl: true },
+                );
+            });
+
+        this.store.makeNew();
     }
 
     /**
@@ -352,9 +382,10 @@ export class LearningObjectBuilderComponent
      * @param object the Learning Object in question.
      */
     private isInReviewStage(object): boolean {
-        return [LearningObject.Status.WAITING, LearningObject.Status.REVIEW].includes(
-            object.status,
-        );
+        return [
+            LearningObject.Status.WAITING,
+            LearningObject.Status.REVIEW,
+        ].includes(object.status);
     }
 
     ngOnDestroy() {
