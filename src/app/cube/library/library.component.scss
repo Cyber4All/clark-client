@@ -65,55 +65,6 @@
     margin-top: 250px;
 }
 
-.library__cards-container__title {
-    color: $light-blue;
-    padding: 0 20px;
-    font-size: $larger;
-    margin-bottom: 30px;
-}
-
-.notifications-container {
-    position: relative;
-    height: 100%;
-}
-
-.notifications-container__cards {
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    padding: 0 50px;
-}
-
-.cards-container {
-    display: flex;
-    justify-content: flex-start;
-    margin-left: 40px;
-}
-
-.cards-container__card {
-    margin: 0 10px;
-    max-width: 300px;
-}
-
-.library__cards-container {
-    margin-bottom: 100px;
-    padding: 0 20px;
-}
-
-.cards-container__arrow-container {
-    font-size: 36px;
-    color: $medium-grey;
-    background-color: transparent;
-    border: none;
-    outline: none;
-}
-
-.cards-container__arrow-container:hover,
-:focus {
-    color: $light-blue;
-    cursor: pointer;
-}
-
 .library__content-container__saved-items {
     max-width: $max-width;
     margin: auto;
@@ -128,39 +79,105 @@
 .library-items__list-items {
     max-width: $max-width;
     min-height: 650px;
-    text-align: center;
 }
 
-.right {
-    position: absolute;
-    right: 0;
-    top: 35%;
+.download-history-table {
+    width: 100%;
 }
 
-.left {
-    position: absolute;
-    left: 0;
-    top: 35%;
+.download-history-table__header,
+.download-history-table__row {
+    display: grid;
+    grid-template-columns: 120px minmax(220px, 1fr) 220px;
+    align-items: center;
+    border-bottom: solid 1px $light-grey;
+    column-gap: 10px;
 }
 
-.delete-library-item-modal {
-    text-align: center;
-}
-
-.delete-library-item-modal__header {
-    color: $error-red;
-    font-size: $larger;
-}
-
-.delete-library-item-modal__warning {
+.download-history-table__header {
     color: $medium-grey;
-    font-size: $large;
+    font-size: $small;
+    font-weight: 600;
+    padding: 0 0 12px;
+    text-transform: uppercase;
 }
 
-.delete-library-item-modal__button {
-    background-color: $error-red;
+.download-history-table__row {
+    color: $darker-grey;
+    min-height: 64px;
+    padding: 8px 0;
+}
+
+.download-history-table__resource {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.download-history-state {
+    text-align: center;
+    margin: 80px 0;
+}
+
+.library-item__length {
+    border-radius: 5px;
     color: white;
-    margin-left: 10px;
+    padding: 5px;
+    max-width: 100px;
+    text-align: center;
+    font-size: 12px;
+    justify-self: start;
+    font-weight: 500;
+    display: inline-block;
+
+    &.nanomodule {
+        background: $nanomodule-color;
+    }
+
+    &.micromodule {
+        background: $micromodule-color;
+    }
+
+    &.module {
+        background: $module-color;
+    }
+
+    &.unit {
+        background: $unit-color;
+    }
+
+    &.course {
+        background: $course-color;
+    }
+
+    &.file,
+    &.bundle,
+    &.unavailable {
+        background: $medium-grey;
+    }
+}
+
+.library-item__title {
+    color: $darker-grey;
+    margin: 0;
+    margin-top: 5px;
+    justify-self: start;
+    font-weight: 500;
+    text-align: left;
+    padding-right: 10px;
+}
+
+.library-item__title-button {
+    border: none;
+    cursor: pointer;
+    background-color: transparent;
+    font-size: $normal;
+}
+
+.library-item__title-button:hover,
+.library-item__title-button:focus {
+    color: $light-blue;
+    text-decoration: underline;
 }
 
 .empty-notification-container {
@@ -182,30 +199,29 @@
     bottom: 0;
     padding-top: 20px;
     padding-bottom: 10px;
+    text-align: center;
     width: 100%;
 }
 
 @media only screen and (max-width: 830px) {
-    .library__cards-container__title,
     .library-items__title {
         font-size: $large;
     }
-}
 
-@media only screen and (max-width: 600px) {
-    .notifications-container__cards {
-        position: relative;
-        z-index: 1;
+    .download-history-table__header {
+        display: none;
     }
-    .cards-container__arrow-container {
-        position: absolute;
-        background-color: white;
-        color: white;
-        box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
-        width: 200px;
-        height: 130px;
-        border-radius: 5px;
-        top: 10px;
-        z-index: 0;
+
+    .download-history-table__row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px 12px;
+        padding: 14px 0;
+    }
+
+    .download-history-table__row > div:nth-child(1),
+    .download-history-table__row > div:nth-child(2),
+    .download-history-table__row > div:nth-child(3) {
+        grid-column: 1 / -1;
     }
 }

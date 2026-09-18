@@ -66,21 +66,13 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     @Output() taggingUpdated: EventEmitter<void> = new EventEmitter();
     @ViewChild("objectLinkElement") objectLinkElement: ElementRef;
     @ViewChild("objectAttributionElement") objectAttributionElement: ElementRef;
-    @ViewChild("savesRef") savesRef: ElementRef;
-
-    serviceOutageMessage =
-        "We're currently experiencing network issues that are affecting downloads and libraries. " +
-        "Both have been disabled while we work to resolve the issues. Please check back later.";
-
     private destroyed$ = new Subject<void>();
     hasDownloadAccess = false;
     hasReviewerAccess = false;
     downloading = false;
-    addingToLibrary = false;
     author: string;
     learningObjectName: string;
     collectionName = "";
-    saved = false;
     url: string;
     windowWidth: number;
     loggedin = false;
@@ -89,9 +81,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     userDropdown: boolean;
 
     contributorsList = [];
-    error = false;
     userIsAuthor = false;
-    private addToLibraryPending = false;
 
     public tips = TOOLTIP_TEXT;
 
@@ -125,15 +115,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
             this.auth.user !== null;
 
         this.url = this.buildLocation();
-        // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
-        await this.refreshLibraryStatus();
         this.getCollection();
-        this.libraryService.loaded
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe((val) => {
-                this.downloading = val;
-                this.changeDetectorRef.markForCheck();
-            });
         this.dropdowns.userDropdown
             .pipe(takeUntil(this.destroyed$))
             .subscribe((val) => {
@@ -149,119 +131,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         return this.learningObject.status !== LearningObject.Status.UNRELEASED;
     }
 
-    async addToLibrary(download?: boolean) {
-        this.error = false;
-
-        const canSaveToLibrary =
-            !!this.auth.user && !this.userIsAuthor && this.isReleased;
-        const alreadySaved = this.isSavedToLibrary();
-        const shouldAddToLibrary = canSaveToLibrary && !alreadySaved;
-
-        if (this.addToLibraryPending) {
-            return;
-        }
-
-        if (
-            download &&
-            (!this.auth.user || !this.hasDownloadAccess || this.downloading)
-        ) {
-            return;
-        }
-
-        if (canSaveToLibrary) {
-            this.saved = alreadySaved;
-        }
-
-        if (shouldAddToLibrary) {
-            this.addToLibraryPending = true;
-        }
-
-        if (!download) {
-            // we don't want the add to library button spinner on the 'download' action
-            this.addingToLibrary = shouldAddToLibrary;
-        }
-
-        let savedByThisAction = false;
-        let addError: any;
-        try {
-            if (shouldAddToLibrary) {
-                const result = await this.libraryService.addToLibrary(
-                    this.learningObject.cuid,
-                    this.learningObject.version,
-                );
-
-                this.saved = true;
-                savedByThisAction = true;
-                if (!result?.alreadySaved) {
-                    this.toaster.success(
-                        "Successfully Added!",
-                        "Learning Object added to your library",
-                    );
-                    this.animateSaves();
-                }
-            }
-
-            if (canSaveToLibrary) {
-                await this.tryRefreshLibraryStatus();
-                this.saved = this.saved || savedByThisAction;
-            }
-        } catch (err: any) {
-            addError = err;
-        } finally {
-            this.addToLibraryPending = false;
-            this.addingToLibrary = false;
-            this.changeDetectorRef.detectChanges();
-        }
-
-        if (addError) {
-            if (addError.status === 409) {
-                this.saved = true;
-            }
-
-            await this.tryRefreshLibraryStatus();
-
-            if (!this.saved) {
-                this.toaster.error(
-                    "Error!",
-                    "There was an error adding to your library",
-                );
-            }
-
-            this.changeDetectorRef.detectChanges();
-        }
-
-        if (download) {
-            this.download(this.learningObject.id);
-        }
-    }
-
-    private async tryRefreshLibraryStatus(): Promise<void> {
-        try {
-            await this.refreshLibraryStatus();
-        } catch {
-            // A failed refresh should not surface as an add-to-library failure.
-        }
-    }
-
-    private async refreshLibraryStatus(): Promise<void> {
-        await this.libraryService.getLibrary({
-            learningObjectCuid: this.learningObject.cuid,
-            version: this.learningObject.version,
-        });
-        this.saved = this.isSavedToLibrary();
-    }
-
-    private isSavedToLibrary(): boolean {
-        return (
-            this.saved ||
-            this.libraryService.has(
-                this.learningObject.id,
-                this.learningObject.cuid,
-                this.learningObject.version,
-            )
-        );
-    }
-
     /**
      * Triggers a bundling process for the learning object
      */
@@ -273,11 +142,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         await this.bundlingService.bundleLearningObject(this.learningObject.id);
     }
 
-    /**
-     * Download the revised copy of a learning object. This does not add the object to the users cart
-     *
-     * @param download boolean determines if download takes place
-     */
+    /** Download the revised copy of a learning object when the reviewer requests it. */
     downloadRevised(download?: boolean) {
         if (download) {
             this.download(this.learningObject.id);
@@ -290,11 +155,21 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
      * @param learningObjectId the unique mongo id of a learning object
      */
 
-    download(learningObjectId: string) {
+    async download(learningObjectId: string): Promise<void> {
+        if (!this.auth.user || !this.hasDownloadAccess || this.downloading) {
+            return;
+        }
+
+        this.downloading = true;
         this.toggleDownloadModal(true);
-        this.libraryService.downloadBundle(
-            BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId),
-        );
+        try {
+            await this.libraryService.downloadBundle(
+                BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId),
+            );
+        } finally {
+            this.downloading = false;
+            this.changeDetectorRef.markForCheck();
+        }
     }
 
     copyLink() {
@@ -395,10 +270,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         }, 600);
     }
 
-    removeFromLibrary() {
-        this.libraryService.removeFromLibrary(this.learningObject.id);
-    }
-
     private buildLocation(encoded?: boolean) {
         const u =
             window.location.protocol +
@@ -413,17 +284,6 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
             encodeURIComponent(this.learningObject.version);
 
         return encoded ? encodeURIComponent(u) : u;
-    }
-
-    animateSaves() {
-        const saves = this.learningObject.metrics.saves + 1;
-
-        this.renderer.addClass(this.savesRef.nativeElement, "animate");
-        this.learningObject.metrics.saves = saves;
-
-        setTimeout(() => {
-            this.renderer.removeClass(this.savesRef.nativeElement, "animate");
-        }, 1000);
     }
 
     get isMobile() {

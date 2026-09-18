@@ -5,24 +5,29 @@ import {
     HttpResponse,
 } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, of, throwError } from "rxjs";
+import { throwError } from "rxjs";
 import { catchError, timeout } from "rxjs/operators";
-import { LearningObject } from "../../../entity/learning-object/learning-object";
 import { ToastrOvenService } from "../../shared/modules/toaster/notification.service";
 import { AuthService } from "../auth-module/auth.service";
-import { LIBRARY_ROUTES } from "./library.routes";
+import { DOWNLOAD_HISTORY_ROUTE } from "./library.routes";
 import { environment } from "@env/environment";
 
-export interface LibraryItem {
-    _id: string;
-    savedBy: string;
-    savedOn: string;
-    learningObject: LearningObject;
+export interface DownloadHistoryItem {
+    name: string;
+    downloadedAt: string;
+    downloadedBy: string;
+    type: string;
+    available: boolean;
+    resource: {
+        learningObjectId: string;
+        cuid: string;
+        version: number;
+    } | null;
 }
 
-export interface AddToLibraryResult {
-    status: number;
-    alreadySaved: boolean;
+export interface DownloadHistoryResponse {
+    items: DownloadHistoryItem[];
+    nextCursor?: string;
 }
 
 @Injectable({
@@ -31,16 +36,6 @@ export interface AddToLibraryResult {
 export class LibraryService {
     private user;
     private headers = new HttpHeaders();
-    public libraryItems: Array<LibraryItem> = [];
-    private savedLearningObjectKeys = new Set<string>();
-
-    // Observable boolean to toggle download spinner in components
-    private _loading$ = new BehaviorSubject<boolean>(false);
-
-    // Public get for loading observable
-    get loaded() {
-        return this._loading$.asObservable();
-    }
 
     constructor(
         private http: HttpClient,
@@ -61,144 +56,33 @@ export class LibraryService {
         this.headers = new HttpHeaders();
     }
 
-    /**
-     *
-     * @param opts
-     * @returns
-     */
-    async getLibrary(opts: {
-        learningObjectCuid?: string;
-        version?: number;
-        page?: number;
+    async getDownloadHistory(opts: {
         limit?: number;
-    }): Promise<{ libraryItems: LibraryItem[]; lastPage: number }> {
-        // Resets the auth token in the headers
+        cursor?: string;
+    }): Promise<DownloadHistoryResponse> {
         this.updateUser();
         if (!this.user) {
-            return;
+            return { items: [] };
         }
 
         const query = new URLSearchParams({
-            page: opts.page ? opts.page.toString() : "1",
-            limit: opts.limit ? opts.limit.toString() : "10",
-            cuid: opts.learningObjectCuid ? opts.learningObjectCuid : "",
-            version: opts.version ? opts.version.toString() : "0",
+            limit: opts.limit ? opts.limit.toString() : "20",
         });
 
-        return await this.http
-            .get(LIBRARY_ROUTES.GET_USERS_LIBRARY(this.user.username, query), {
-                withCredentials: true,
-                headers: this.headers,
-            })
-            .pipe(catchError((error) => this.handleError(error)))
-            .toPromise()
-            .then((val: any) => {
-                // preserves carts from cartsdb
-                this.libraryItems = val.userLibraryItems.map((libraryItem) => {
-                    const learningObject = new LearningObject(
-                        libraryItem.learningObject,
-                    );
-                    if (!learningObject.id && libraryItem.learningObject?._id) {
-                        learningObject.id = libraryItem.learningObject._id;
-                    }
-
-                    const item = {
-                        _id: libraryItem._id,
-                        savedBy: libraryItem.savedBy,
-                        savedOn: libraryItem.savedOn,
-                        learningObject,
-                    };
-
-                    this.savedLearningObjectKeys.add(
-                        this.getLearningObjectKey(
-                            learningObject.cuid,
-                            learningObject.version,
-                        ),
-                    );
-
-                    return item;
-                });
-                return {
-                    libraryItems: this.libraryItems,
-                    lastPage: val.lastPage,
-                };
-            });
-    }
-
-    async addToLibrary(
-        cuid: string,
-        version: number,
-    ): Promise<AddToLibraryResult> {
-        this.updateUser();
-        if (!this.user) {
-            return;
+        if (opts.cursor) {
+            query.set("cursor", opts.cursor);
         }
+
         return await this.http
-            .post(
-                LIBRARY_ROUTES.ADD_LEARNING_OBJECT_TO_LIBRARY(
-                    this.user.username,
-                ),
+            .get<DownloadHistoryResponse>(
+                DOWNLOAD_HISTORY_ROUTE.GET_DOWNLOAD_HISTORY(query),
                 {
-                    cuid,
-                    version,
-                },
-                {
-                    headers: this.headers,
-                    observe: "response",
                     withCredentials: true,
+                    headers: this.headers,
                 },
             )
-            .pipe(
-                catchError((error) => {
-                    if (this.isAlreadySavedError(error)) {
-                        return of(new HttpResponse({ status: 409 }));
-                    }
-                    return throwError(error);
-                }),
-            )
-            .toPromise()
-            .then((response: HttpResponse<unknown>) => {
-                this.savedLearningObjectKeys.add(
-                    this.getLearningObjectKey(cuid, version),
-                );
-
-                return {
-                    status: response.status,
-                    alreadySaved: response.status === 409,
-                };
-            });
-    }
-
-    removeFromLibrary(libraryItemId: string): Promise<void> {
-        if (!this.user) {
-            return;
-        }
-        const removedItem = this.libraryItems.find(
-            (item) =>
-                item._id === libraryItemId ||
-                item.learningObject.id === libraryItemId,
-        );
-
-        return this.http
-            .delete(
-                LIBRARY_ROUTES.REMOVE_LEARNING_OBJECT_FROM_LIBRARY(
-                    this.user.username,
-                    libraryItemId,
-                ),
-                { headers: this.headers, withCredentials: true },
-            )
             .pipe(catchError((error) => this.handleError(error)))
-            .toPromise()
-            .then(() => {
-                if (removedItem) {
-                    this.savedLearningObjectKeys.delete(
-                        this.getLearningObjectKey(
-                            removedItem.learningObject.cuid,
-                            removedItem.learningObject.version,
-                        ),
-                    );
-                }
-            });
+            .toPromise();
     }
 
     /**
@@ -242,72 +126,7 @@ export class LibraryService {
             });
     }
 
-    /**
-     * Returns whether the learning object exists in the user's library
-     * This is done by checking the library items for the learningObjectId
-     *
-     * @param learningObjectId the learning object to check for in the library
-     * @returns whether the learning object exists in the library
-     */
-    has(learningObjectId: string, cuid?: string, version?: number): boolean {
-        if (
-            cuid &&
-            version != null &&
-            this.savedLearningObjectKeys.has(
-                this.getLearningObjectKey(cuid, version),
-            )
-        ) {
-            return true;
-        }
-
-        return (
-            this.libraryItems.filter((libraryItem: LibraryItem) => {
-                const learningObject = libraryItem.learningObject;
-
-                return (
-                    learningObject.id === learningObjectId ||
-                    (cuid &&
-                        version != null &&
-                        learningObject.cuid === cuid &&
-                        learningObject.version === version)
-                );
-            }).length > 0
-        );
-    }
-
-    private getLearningObjectKey(cuid: string, version: number): string {
-        return `${cuid}:${version}`;
-    }
-
-    private isAlreadySavedError(error: HttpErrorResponse): boolean {
-        if (error.status === 409) {
-            return true;
-        }
-
-        const errorBody = error.error;
-        const errorText = [
-            error.message,
-            typeof errorBody === "string" ? errorBody : undefined,
-            errorBody?.message,
-            errorBody?.error,
-        ]
-            .filter(Boolean)
-            .join(" ")
-            .toLowerCase();
-
-        return (
-            (errorText.includes("already") &&
-                (errorText.includes("library") ||
-                    errorText.includes("saved"))) ||
-            (errorText.includes("duplicate") &&
-                (errorText.includes("library") ||
-                    errorText.includes("learning")))
-        );
-    }
-
     private handleError(error: HttpErrorResponse) {
-        // Toggle off loading spinner *** needs to stay here in case error is thrown in http HEAD request ***
-        this._loading$.next(false);
         if (error.error instanceof ErrorEvent) {
             // Client-side or network returned error
             return throwError(error.error.message);
