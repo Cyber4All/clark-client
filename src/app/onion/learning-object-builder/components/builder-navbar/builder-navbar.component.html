@@ -97,12 +97,12 @@
             <button
                 type="button"
                 class="agentic-builder-action"
-                aria-label="Open Agentic Builder"
-                tip="Open Agentic Builder"
+                aria-label="Open Builder Helper"
+                tip="Open Builder Helper"
                 tipPosition="bottom"
                 (activate)="toggleAgenticBuilder()">
                 <i class="fas fa-wand-magic-sparkles"></i>
-                Agentic Builder
+                Builder Helper
             </button>
         </div>
     </div>
@@ -159,7 +159,7 @@
 </div>
 
 <onion-agentic-builder-panel
-    *ngIf="showAgenticBuilder"
+    [hidden]="!showAgenticBuilder"
     (closed)="showAgenticBuilder = false"></onion-agentic-builder-panel>
 
 <clark-submit

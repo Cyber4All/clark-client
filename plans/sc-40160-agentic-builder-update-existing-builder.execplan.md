@@ -30,6 +30,7 @@ Update the existing Angular learning-object builder so authors see the revised `
 - [x] (2026-09-17) Disabled only the builder fields selected for Agentic Builder generation and added in-context loading indicators until generation and refresh complete.
 - [x] (2026-09-17) Resolved the CI-only Prettier/ESLint brace-style conflict by assigning brace formatting exclusively to Prettier.
 - [x] (2026-09-18) Extracted the Agentic Builder panel, generation state, and request orchestration into a dedicated standalone component.
+- [x] (2026-09-18) Preserved Agentic Builder field selections when the panel is closed and reopened during the same builder session.
 - [ ] Add/execute focused component assertions once the repository Jest transformer dependency drift is resolved.
 
 ## Surprises & Discoveries
