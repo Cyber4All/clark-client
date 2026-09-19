@@ -23,7 +23,9 @@
                 class="child-box">
                 <div class="info">
                     <div class="top-row">
-                        <div class="child-title">{{ c.name }}</div>
+                        <div class="child-title" title="{{ c.name }}">
+                            {{ c.name }}
+                        </div>
                     </div>
                     <div class="bottom-row">
                         <div [ngClass]="c.length" class="child-length">
