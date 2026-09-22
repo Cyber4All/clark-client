@@ -1,6 +1,8 @@
 @import "_vars.scss";
 .pill {
-    background-color: $light-grey;
+    background-color: var(--theme-surface-subtle);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text);
     line-height: 2px;
     padding: 1px 5px 1px;
     border-radius: 10px;
@@ -11,8 +13,8 @@
     cursor: default;
 
     .icon {
-        background-color: $light-blue;
-        color: $light-grey;
+        background-color: var(--theme-action-primary);
+        color: var(--theme-action-on-primary);
         margin-top: 3px;
         margin-right: 5px;
         display: flex;

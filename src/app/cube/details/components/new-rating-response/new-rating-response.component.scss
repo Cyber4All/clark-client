@@ -4,10 +4,17 @@
     resize: none;
     appearance: none;
     outline: 0;
-    border: 1px solid $medium-grey;
+    background: var(--theme-surface);
+    color: var(--theme-text);
+    border: 1px solid var(--theme-border);
+    border-radius: 4px;
     padding: 10px;
     height: 150px;
     width: 100%;
     margin-top: 20px;
     margin-bottom: 10px;
+
+    &:focus {
+        border-color: var(--theme-focus);
+    }
 }

@@ -2,11 +2,11 @@
 
 .title {
     font-size: $large;
-    color: $darker-grey;
+    color: var(--theme-text-strong);
 }
 
 .mailto {
-    color: blue;
+    color: var(--theme-link);
     text-decoration: underline;
 }
 
@@ -26,7 +26,7 @@
     align-items: stretch;
 
     & > *:not(:last-child) {
-        border-bottom: 1px solid $light-grey;
+        border-bottom: 1px solid var(--theme-border);
         padding-bottom: 25px;
         margin-bottom: 15px;
     }
@@ -35,7 +35,7 @@
         padding: 10px 0;
 
         a {
-            color: $dark-grey;
+            color: var(--theme-text);
             text-decoration: none;
         }
 
@@ -63,11 +63,12 @@
                 display: flex;
                 flex-direction: column;
                 align-items: flex-start;
+                color: var(--theme-text-strong);
             }
         }
 
         .rating-date {
-            color: $dark-grey;
+            color: var(--theme-text-muted);
             opacity: 0.8;
             margin-top: 5px;
             margin-bottom: 10px;
@@ -75,6 +76,7 @@
 
         .rating-text {
             font-size: $normal;
+            color: var(--theme-text);
         }
     }
 
@@ -84,7 +86,7 @@
 
         & > * {
             cursor: pointer;
-            color: $dark-grey;
+            color: var(--theme-text-muted);
 
             &:not(:last-child) {
                 margin-right: 15px;
@@ -95,7 +97,7 @@
             }
 
             &.report {
-                color: $error-red;
+                color: var(--theme-status-error);
             }
 
             .svg-inline--fa {
@@ -107,7 +109,7 @@
 
 .no-ratings {
     text-align: left;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: $large;
 }
 
@@ -117,7 +119,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: $dark-overlay;
+    background: var(--theme-overlay);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -128,7 +130,9 @@
 
     .report-inner {
         transform: scale(0.9);
-        background: white;
+        background: var(--theme-surface-raised);
+        border: 1px solid var(--theme-border);
+        color: var(--theme-text);
         padding: 20px;
         transition-delay: 0s;
         transition: all 0.2s ease;
@@ -136,7 +140,7 @@
         max-width: 600px;
         min-height: 300px;
         width: 100%;
-        border-radius: 2px;
+        border-radius: 4px;
         position: relative;
 
         .closePopup {
@@ -144,9 +148,13 @@
             font-size: $large;
             right: 20px;
             top: 23px;
-            color: $blue-accent;
+            color: var(--theme-text-muted);
             cursor: pointer;
             z-index: 2;
+
+            &:hover {
+                color: var(--theme-text-strong);
+            }
         }
     }
 
