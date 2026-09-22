@@ -16,21 +16,20 @@
 
     <ng-container *ngIf="!loading && !hasError && playlist">
         <header class="playlist-header">
-            <div class="playlist-header__icon" aria-hidden="true">
-                <i class="fas fa-list"></i>
-            </div>
             <div>
                 <p class="eyebrow">Playlist</p>
                 <h1>{{ playlist.name }}</h1>
                 <p class="description">{{ playlist.description }}</p>
-                <span class="object-count">
-                    {{ learningObjects.length }}
-                    {{
-                        learningObjects.length === 1
-                            ? "learning object"
-                            : "learning objects"
-                    }}
-                </span>
+                <div class="playlist-header__metadata">
+                    <span class="object-count">
+                        {{ learningObjects.length }}
+                        {{
+                            learningObjects.length === 1
+                                ? "learning object"
+                                : "learning objects"
+                        }}
+                    </span>
+                </div>
             </div>
         </header>
 

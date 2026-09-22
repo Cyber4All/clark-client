@@ -7,10 +7,6 @@
         objectCount +
         (objectCount === 1 ? ' learning object' : ' learning objects')
     ">
-    <div class="playlist-card__image" aria-hidden="true">
-        <i class="fas fa-list"></i>
-    </div>
-
     <div class="playlist-card__content">
         <div class="playlist-card__labels">
             <span class="playlist-label">Playlist</span>
@@ -23,9 +19,22 @@
         </div>
         <h2>{{ playlist.name }}</h2>
         <p>{{ playlist.description }}</p>
-        <span class="object-count">
-            {{ objectCount }}
-            {{ objectCount === 1 ? "learning object" : "learning objects" }}
-        </span>
+        <div class="playlist-card__metadata">
+            <div class="playlist-card__author">
+                <span
+                    class="author-avatar"
+                    [ngStyle]="authorAvatarStyle"
+                    aria-hidden="true">
+                    <span *ngIf="!playlist.author?.avatarUrl">{{
+                        authorInitial
+                    }}</span>
+                </span>
+                <span class="author-name">{{ authorName }}</span>
+            </div>
+            <span class="object-count">
+                {{ objectCount }}
+                {{ objectCount === 1 ? "learning object" : "learning objects" }}
+            </span>
+        </div>
     </div>
 </a>
