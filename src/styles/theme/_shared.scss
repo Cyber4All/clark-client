@@ -106,3 +106,187 @@ select {
         opacity: 1;
     }
 }
+
+// ngx-simple-text-editor (st-editor) theme bridge
+st-editor,
+.st-editor-container {
+    display: block;
+    width: 100%;
+}
+
+st-editor .st-editor-container,
+.st-editor-container {
+    background-color: var(--theme-surface-raised);
+    color: var(--theme-text);
+    border: 1px solid var(--theme-border);
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+
+    .st-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px;
+        padding: 6px 8px;
+        background-color: var(--theme-surface-subtle);
+        border: 0;
+        border-bottom: 1px solid var(--theme-border);
+        border-radius: 0;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .st-toolbar-item {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        height: 32px;
+        padding: 0 9px;
+        margin: 0;
+        border: 0;
+        border-radius: 6px;
+        background-color: transparent;
+        color: var(--theme-text-muted);
+        cursor: pointer;
+        transition:
+            background 0.15s ease,
+            color 0.15s ease;
+
+        i {
+            font-size: 14px;
+            line-height: 1;
+            color: inherit;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: geometricPrecision;
+        }
+
+        &:hover {
+            background-color: var(--theme-surface-selected);
+            color: var(--theme-action-primary);
+        }
+
+        &:focus,
+        &:focus-visible {
+            outline: 2px solid var(--theme-focus);
+            outline-offset: 1px;
+        }
+    }
+
+    .st-button.active {
+        background-color: var(--theme-action-primary);
+        color: var(--theme-action-on-primary);
+
+        i {
+            color: var(--theme-action-on-primary);
+        }
+    }
+
+    .st-select {
+        background-color: var(--theme-surface-raised);
+        color: var(--theme-text);
+        border: 1px solid var(--theme-border);
+        border-radius: 4px;
+        padding: 4px 8px;
+
+        option {
+            background-color: var(--theme-surface-raised);
+            color: var(--theme-text);
+
+            &:checked {
+                background-color: var(--theme-action-primary);
+                color: var(--theme-action-on-primary);
+            }
+        }
+    }
+
+    .st-divider {
+        border-right: 1px solid var(--theme-border);
+        height: 24px;
+        margin: 0 4px;
+    }
+
+    .st-area {
+        min-height: 140px;
+        padding: 12px;
+        background-color: var(--theme-surface-raised);
+        color: var(--theme-text);
+        border: 0;
+        border-radius: 0;
+        font-size: 16px;
+        line-height: 1.5;
+        resize: vertical;
+        overflow: auto;
+
+        &:focus {
+            outline: 2px solid var(--theme-focus);
+            outline-offset: -2px;
+        }
+
+        &:empty:not(:focus):before {
+            color: var(--theme-text-disabled);
+        }
+    }
+
+    .st-input-window {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--theme-surface-raised);
+        color: var(--theme-text);
+        position: absolute;
+        padding: 10px;
+        top: 5px;
+        border: 1px solid var(--theme-border);
+        border-radius: 6px;
+        box-shadow: 0 4px 12px var(--theme-shadow);
+        z-index: 10;
+    }
+
+    .st-input-label {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--theme-text);
+        margin-bottom: 6px;
+    }
+
+    .st-input-input {
+        padding: 8px 12px;
+        background-color: var(--theme-surface);
+        color: var(--theme-text);
+        margin-right: -1px;
+        border: 1px solid var(--theme-border);
+        border-bottom-left-radius: 4px;
+        border-top-left-radius: 4px;
+
+        &:focus {
+            outline: 2px solid var(--theme-focus);
+            outline-offset: -1px;
+            border-color: var(--theme-focus);
+        }
+    }
+
+    .st-input-button {
+        border: 1px solid var(--theme-action-primary);
+        padding: 8px 14px;
+        background-color: var(--theme-action-primary);
+        color: var(--theme-action-on-primary);
+        border-radius: 0 4px 4px 0;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.15s ease;
+
+        &:hover {
+            background-color: var(--theme-action-primary-hover);
+        }
+
+        &:focus,
+        &:focus-visible {
+            outline: 2px solid var(--theme-focus);
+            outline-offset: 1px;
+        }
+    }
+}
