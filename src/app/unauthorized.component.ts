@@ -13,10 +13,7 @@ import { AuthService } from "./core/auth-module/auth.service";
 export class UnauthorizedComponent implements OnInit {
     statusCode: string;
     redirectUrl: string;
-    constructor(
-        private route: ActivatedRoute,
-        public auth: AuthService,
-    ) {}
+    constructor(private route: ActivatedRoute, public auth: AuthService) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe((params) => {

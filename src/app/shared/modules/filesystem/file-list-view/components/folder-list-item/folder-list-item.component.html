@@ -4,7 +4,7 @@
     attr.aria-labelledby="folder-name"
     (activate)="handleClick($event)"
     class="grid-row wrapper"
-    [ngClass]="{ bundle: checkAccessGroups(), context: inBuilder }">
+    [ngClass]="{ bundle: checkAccessGroups() }">
     <div
         class="text-contained inline-flex"
         id="folder-name"
@@ -25,14 +25,6 @@
             (click)="$event.stopPropagation()"
             (toggled)="
                 handleBundleToggle(folder, $event)
-            "></clark-toggle-switch>
-    </div>
-    <div class="toggleContext" *ngIf="inBuilder">
-        <clark-toggle-switch
-            [state]="getFolderContextStatus(folder)"
-            (click)="$event.stopPropagation()"
-            (toggled)="
-                handleContextToggle(folder, $event)
             "></clark-toggle-switch>
     </div>
     <a

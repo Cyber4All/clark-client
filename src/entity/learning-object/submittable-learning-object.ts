@@ -127,12 +127,7 @@ export namespace SubmittableLearningObject {
         }
     }
     export function validateDescription(description: string) {
-        const trimmedDescription = description?.trim();
-        if (
-            !trimmedDescription ||
-            trimmedDescription.length < 3 ||
-            trimmedDescription.length > 100
-        ) {
+        if (!description || !description.trim()) {
             throw new EntityError(
                 SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION,
                 "description",

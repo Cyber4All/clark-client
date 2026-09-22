@@ -40,10 +40,6 @@
         grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
     }
 
-    &.context:not(.bundle) {
-        grid-template-columns: 4fr 1fr 0.5fr 1fr 25px;
-    }
-
     &.header {
         color: $dark-grey;
         background: transparent;

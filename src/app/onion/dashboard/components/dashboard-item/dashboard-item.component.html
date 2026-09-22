@@ -43,7 +43,7 @@
             [ngClass]="[
                 actionPermissions('infoPanel') ? 'clickable' : 'notClickable',
             ]">
-            {{ learningObject?.displayName }}
+            {{ learningObject?.name }}
             <span
                 *ngIf="parents?.length"
                 [tip]="parents.join(', ')"

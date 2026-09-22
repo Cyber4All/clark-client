@@ -47,7 +47,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     passedId: string;
 
     saveable: boolean;
-    generatingLearningOutcomes = false;
 
     constructor(
         private toaster: ToastrOvenService,
@@ -58,12 +57,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.store.agenticGenerationState$
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe((state) => {
-                this.generatingLearningOutcomes = state.learningOutcomes;
-            });
-
         // listen for outcome events and update component stores
         this.store.learningObjectEvent
             .pipe(
@@ -138,8 +131,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     }
 
     mutateOutcome(id: string, params: any) {
-        if (this.generatingLearningOutcomes) return;
-
         this.store
             .execute(actions.MUTATE_OUTCOME, { id, params })
             .then((outcome: LearningOutcome) => {
@@ -149,8 +140,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     }
 
     newOutcome() {
-        if (this.generatingLearningOutcomes) return;
-
         this.store.execute(actions.CREATE_OUTCOME, {}).then((id) => {
             this.activeOutcome = id;
             this.validateNewOutcome();
@@ -158,8 +147,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
     }
 
     deleteOutcome(id: string) {
-        if (this.generatingLearningOutcomes) return;
-
         this.store
             .execute(actions.DELETE_OUTCOME, { id })
             .then(() => {
@@ -186,8 +173,6 @@ export class OutcomePageComponent implements OnInit, OnDestroy {
         standardOutcome: Guideline;
         value: boolean;
     }) {
-        if (this.generatingLearningOutcomes) return;
-
         this.store.execute(
             data.value
                 ? actions.MAP_STANDARD_OUTCOME

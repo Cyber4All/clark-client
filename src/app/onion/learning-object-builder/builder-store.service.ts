@@ -45,7 +45,6 @@ export enum BUILDER_ACTIONS {
     DELETE_FILES,
     CHANGE_STATUS,
     TOGGLE_BUNDLE,
-    TOGGLE_CONTEXT,
 }
 
 export enum BUILDER_ERRORS {
@@ -64,14 +63,6 @@ export enum BUILDER_ERRORS {
     DELETE_OUTCOME,
     ADD_FILE_META,
     SERVICE_FAILURE,
-}
-
-export type AgenticBuilderField = "name" | "description" | "learningOutcomes";
-
-export interface AgenticBuilderGenerationState {
-    name: boolean;
-    description: boolean;
-    learningOutcomes: boolean;
 }
 
 /**
@@ -150,14 +141,6 @@ export class BuilderStore {
 
     public serviceError$: Subject<BUILDER_ERRORS> = new Subject();
 
-    private agenticGenerationState: BehaviorSubject<AgenticBuilderGenerationState> =
-        new BehaviorSubject<AgenticBuilderGenerationState>({
-            name: false,
-            description: false,
-            learningOutcomes: false,
-        });
-    public agenticGenerationState$ = this.agenticGenerationState.asObservable();
-
     constructor(
         private auth: AuthService,
         // TODO: The last routes that need to be moved over from learningObjectService (the legacy one) is bundling related
@@ -201,18 +184,6 @@ export class BuilderStore {
      */
     get learningObject() {
         return this._learningObject;
-    }
-
-    setAgenticGeneration(fields: AgenticBuilderField[]): void {
-        this.agenticGenerationState.next({
-            name: fields.includes("name"),
-            description: fields.includes("description"),
-            learningOutcomes: fields.includes("learningOutcomes"),
-        });
-    }
-
-    clearAgenticGeneration(): void {
-        this.setAgenticGeneration([]);
     }
 
     /**
@@ -311,7 +282,7 @@ export class BuilderStore {
                 );
                 // set the title of page to the learning object name
                 this.titleService.setTitle(
-                    "CLARK | " + this.learningObject.displayName,
+                    "CLARK | " + this.learningObject.name,
                 );
                 return this.learningObject;
             })
@@ -396,10 +367,9 @@ export class BuilderStore {
      * @memberof BuilderStore
      */
     makeNew(): LearningObject {
-        this.titleService.setTitle("CLARK | Untitled Learning Object");
+        this.titleService.setTitle("CLARK | New Learning Object");
         this.learningObject = new LearningObject({ author: this.auth.user });
         this.outcomes = new Map();
-        this.createLearningObject(this.learningObject.toPlainObject());
         return this.learningObject;
     }
 
@@ -478,8 +448,6 @@ export class BuilderStore {
                 return await this.changeStatus(data.status, data.reason);
             case BUILDER_ACTIONS.TOGGLE_BUNDLE:
                 return await this.toggleBundle(data);
-            case BUILDER_ACTIONS.TOGGLE_CONTEXT:
-                return this.toggleContext(data);
             default:
                 console.error("Error! Invalid action taken!");
                 return;
@@ -534,40 +502,6 @@ export class BuilderStore {
                 event.state,
             );
         }
-    }
-
-    /** Saves Agentic Builder context state without changing Bundle state. */
-    private toggleContext(event: {
-        state: boolean;
-        item: DirectoryNode | LearningObject.Material.File;
-    }): void {
-        const files =
-            event.item instanceof DirectoryNode
-                ? this.getAllFolderFiles(event.item)
-                : [event.item];
-
-        files.forEach((file) => {
-            file.context = event.state;
-        });
-        this.learningObjectEvent.next(this.learningObject);
-        this.saveObject({
-            materials: { files: this.learningObject.materials.files },
-        });
-    }
-
-    private getAllFolderFiles(
-        folder: DirectoryNode,
-    ): LearningObject.Material.File[] {
-        return [
-            ...folder.getFiles(),
-            ...folder
-                .getFolders()
-                .reduce(
-                    (files, subFolder) =>
-                        files.concat(this.getAllFolderFiles(subFolder)),
-                    [] as LearningObject.Material.File[],
-                ),
-        ];
     }
 
     /**
@@ -1056,9 +990,7 @@ export class BuilderStore {
      * @memberof BuilderStore
      */
     private saveObject(data: any, delay?: boolean) {
-        this.titleService.setTitle(
-            "CLARK | " + this.learningObject.displayName,
-        );
+        this.titleService.setTitle("CLARK | " + this.learningObject.name);
         let value = this.objectCache$.getValue();
         this.touched = true;
         const canSave =
@@ -1117,7 +1049,6 @@ export class BuilderStore {
                     learningObject,
                     object,
                 );
-                this.learningObjectEvent.next(this.learningObject);
 
                 if (Object.keys(postCreateUpdates).length) {
                     this.updateLearningObject(postCreateUpdates);
@@ -1128,7 +1059,8 @@ export class BuilderStore {
             .catch((e) => {
                 this.serviceInteraction$.next(false);
                 if (e.status === 400) {
-                    const validationError = this.getServiceValidationError(e);
+                    const validationError =
+                        this.getServiceValidationError(e);
                     this.validator.errors.saveErrors.set(
                         validationError.property,
                         validationError.message,
@@ -1215,7 +1147,8 @@ export class BuilderStore {
             })
             .catch((e) => {
                 if (e.status === 400) {
-                    const validationError = this.getServiceValidationError(e);
+                    const validationError =
+                        this.getServiceValidationError(e);
                     this.validator.errors.saveErrors.set(
                         validationError.property,
                         validationError.message,

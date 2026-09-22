@@ -68,8 +68,6 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     descriptionTouched: boolean;
     descriptionDirty: boolean;
     nameTouched: boolean;
-    generatingName = false;
-    generatingDescription = false;
 
     destroyed$: Subject<void> = new Subject();
 
@@ -85,14 +83,6 @@ export class InfoPageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit() {
-        this.store.agenticGenerationState$
-            .pipe(takeUntil(this.destroyed$))
-            .subscribe((state) => {
-                this.generatingName = state.name;
-                this.generatingDescription = state.description;
-                this.cd.markForCheck();
-            });
-
         // listen for outcome events and update component stores
         this.store.learningObjectEvent
             .pipe(takeUntil(this.destroyed$))
@@ -172,10 +162,7 @@ export class InfoPageComponent implements OnInit, OnDestroy {
         }
 
         return from(
-            this.learningObjectService.checkNameAvailability(
-                trimmedName,
-                this.learningObject?.id,
-            ),
+            this.learningObjectService.checkNameAvailability(trimmedName),
         ).pipe(
             map((available) => {
                 if (!available) {

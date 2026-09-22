@@ -39,23 +39,6 @@
         }
     }
 
-    &.disabled {
-        cursor: wait;
-
-        .outcome-delete,
-        .level-select,
-        .outcome-text,
-        .outcome-mappings {
-            opacity: 0.7;
-        }
-
-        .outcome-delete,
-        .outcome-mappings .pill .svg-inline--fa,
-        .outcome-mappings .pill .icon {
-            cursor: not-allowed;
-        }
-    }
-
     .outcome-header {
         width: 100%;
         font-size: $normal;

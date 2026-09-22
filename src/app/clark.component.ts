@@ -163,18 +163,12 @@ export class ClarkComponent implements OnInit {
     ngOnInit(): void {
         if (environment.production) {
             this.utilityService.getDowntime().then((down) => {
-                this.downtime = {
-                    isDown: !!down?.isDown,
-                    message: down?.message || "",
-                };
+                this.downtime = { isDown: !!down?.isDown, message: down?.message || "" };
             });
             // Determine if the application is currently under maintenance
             setInterval(async () => {
                 this.utilityService.getDowntime().then((down) => {
-                    this.downtime = {
-                        isDown: !!down?.isDown,
-                        message: down?.message || "",
-                    };
+                    this.downtime = { isDown: !!down?.isDown, message: down?.message || "" };
                 });
             }, 300000); // 5 min interval
             // check to see if the current version is behind the latest verison

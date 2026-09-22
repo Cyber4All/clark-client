@@ -20,7 +20,6 @@ export class FolderListItemComponent implements OnInit {
     @Output() clicked: EventEmitter<void> = new EventEmitter();
     @Output() menuClicked: EventEmitter<MouseEvent> = new EventEmitter();
     @Output() toggleClicked: EventEmitter<boolean> = new EventEmitter();
-    @Output() contextClicked: EventEmitter<boolean> = new EventEmitter();
 
     timestampAge = "";
     accessGroups?: string[];
@@ -151,29 +150,6 @@ export class FolderListItemComponent implements OnInit {
         });
 
         this.toggleClicked.emit(event);
-    }
-
-    handleContextToggle(folder: DirectoryNode, event: boolean) {
-        this.toggleContextSubFiles(folder, event);
-        this.contextClicked.emit(event);
-    }
-
-    toggleContextSubFiles(folder: DirectoryNode, event: boolean) {
-        folder.getFiles().forEach((file) => (file.context = event));
-        folder
-            .getFolders()
-            .forEach((subFolder) =>
-                this.toggleContextSubFiles(subFolder, event),
-            );
-    }
-
-    getFolderContextStatus(folder: DirectoryNode): boolean {
-        return (
-            folder.getFiles().every((file) => file.context) &&
-            folder
-                .getFolders()
-                .every((subFolder) => this.getFolderContextStatus(subFolder))
-        );
     }
 
     /**

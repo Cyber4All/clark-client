@@ -12,14 +12,6 @@
                     >s</span
                 >
             </div>
-            <div
-                *ngIf="generatingLearningOutcomes"
-                class="generation-status"
-                role="status"
-                aria-live="polite">
-                <i class="far fa-spinner-third fa-spin" aria-hidden="true"></i>
-                Generating learning outcomes
-            </div>
         </div>
         <ng-container *ngIf="iterableOutcomes?.length; else noOutcomesTemplate">
             <clark-outcome
@@ -27,7 +19,6 @@
                 [outcome]="o"
                 [totalOutcomes]="iterableOutcomes.length"
                 [active]="activeOutcome === o.id"
-                [disabled]="generatingLearningOutcomes"
                 (textChanged)="mutateOutcome(o.id, { text: $event })"
                 (selectedVerb)="mutateOutcome(o.id, { verb: $event })"
                 (selectedLevel)="mutateOutcome(o.id, { bloom: $event })"
@@ -40,10 +31,7 @@
             <button
                 id="form"
                 class="button good"
-                [ngClass]="{
-                    disabled: !saveable || generatingLearningOutcomes,
-                }"
-                [disabled]="!saveable || generatingLearningOutcomes"
+                [ngClass]="{ disabled: !saveable }"
                 aria-label="Add New Outcome"
                 (activate)="newOutcome()">
                 Add Outcome<i class="fas fa-plus"></i>

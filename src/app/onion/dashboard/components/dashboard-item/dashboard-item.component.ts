@@ -171,8 +171,14 @@ export class DashboardItemComponent implements OnInit, OnChanges {
                 "unreleased",
                 this.learningObject.length !== "nanomodule",
             ],
-            manageMaterials: ["unreleased", this.verifiedEmail],
-            submit: ["unreleased", this.verifiedEmail],
+            manageMaterials: [
+                "unreleased",
+                this.verifiedEmail,
+            ],
+            submit: [
+                "unreleased",
+                this.verifiedEmail,
+            ],
             submitHierarchy: [
                 "unreleased",
                 this.parents.length === 0,

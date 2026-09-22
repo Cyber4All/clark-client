@@ -30,7 +30,6 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
     @Input() verb: string;
     @Input() bloom: string;
     @Input() text: string;
-    @Input() disabled = false;
 
     goodVerb: boolean;
 
@@ -119,8 +118,6 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
      * Show or hide the verb dropdown menu
      */
     toggleMenu(value, event?) {
-        if (this.disabled) return;
-
         if (event) {
             event.stopPropagation();
             // when the dropdown menu is clicked, the overflow value is set to visible (true)
@@ -135,8 +132,6 @@ export class OutcomeTypeaheadComponent implements OnInit, OnChanges, OnDestroy {
      * @param verb {string} verb to set
      */
     setVerb(verb: string) {
-        if (this.disabled) return;
-
         this.verb = verb;
         this.toggleMenu(false);
 
