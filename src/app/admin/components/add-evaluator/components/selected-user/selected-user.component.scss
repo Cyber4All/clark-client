@@ -7,8 +7,8 @@
     flex-direction: row;
     align-items: center;
 
-    background: white;
-    color: $dark-grey;
+    background: var(--theme-surface-raised);
+    color: var(--theme-text);
     font-size: $normal;
 
     .user-gravatar {
@@ -22,8 +22,8 @@
         height: 50px;
         border-radius: 50%;
 
-        box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.05);
-        color: white;
+        box-shadow: 0 1px 6px 2px var(--theme-shadow);
+        color: var(--theme-action-on-primary);
         font-size: $normal;
     }
 }
