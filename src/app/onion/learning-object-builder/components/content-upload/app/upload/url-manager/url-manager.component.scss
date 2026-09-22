@@ -5,7 +5,7 @@
     align-self: center;
     font-weight: 200;
     font-size: $largest;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     display: flex;
     flex-direction: column;
     justify-content: center;

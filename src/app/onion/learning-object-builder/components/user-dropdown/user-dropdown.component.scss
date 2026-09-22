@@ -17,9 +17,10 @@
     position: absolute;
     max-width: 500px;
     width: 100%;
-    background: white;
+    background: var(--theme-surface-raised);
+    border: 1px solid var(--theme-border);
     border-radius: 2px;
-    box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px 2px var(--theme-shadow);
     z-index: 3;
 
     virtual-scroller {
@@ -30,8 +31,8 @@
 
 .user-dropdown__list-item {
     height: 40px;
-    background: white;
-    color: $dark-grey;
+    background: var(--theme-surface-raised);
+    color: var(--theme-text);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -41,7 +42,7 @@
 
     &:hover,
     &:focus {
-        background: $light-grey;
+        background: var(--theme-surface-subtle);
 
         .user-dropdown__action {
             opacity: 1;
@@ -52,19 +53,20 @@
 
 .user-dropdown__action {
     border-radius: 3px;
-    color: white;
+    color: var(--theme-action-on-primary);
     height: 28px;
     width: 28px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: $light-blue-gradient;
+    background: var(--theme-action-primary);
     transform: scale(0.9);
     opacity: 0;
     transition: all 0.2s ease;
 
     &.user-dropdown__action--reversed {
-        background: $error-red;
+        background: var(--theme-status-error);
+        color: var(--theme-action-on-status);
     }
 
     &.user-dropdown__action--visible {
@@ -83,13 +85,13 @@
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    box-shadow: 0 1px 6px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 6px 2px var(--theme-shadow);
 }
 
 .user-dropdown__message {
     padding: 10px;
     text-align: center;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     width: 100%;
     box-sizing: border-box;
     display: block;

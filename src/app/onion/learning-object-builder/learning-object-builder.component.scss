@@ -7,9 +7,9 @@
     opacity: 0;
     padding: 8px 10px;
     text-align: left;
-    color: white;
+    color: var(--theme-action-on-primary);
     min-width: 200px;
-    background: $light-blue-gradient;
+    background: var(--theme-action-primary);
     border-radius: 4px;
     z-index: 2;
 
@@ -20,12 +20,13 @@
     }
 
     &.service-indicator--error {
-        background: $error-red;
+        background: var(--theme-status-error);
+        color: var(--theme-action-on-status);
     }
 }
 
 .popup-inner {
     .modal-title {
-        color: $light-blue !important;
+        color: var(--theme-link) !important;
     }
 }

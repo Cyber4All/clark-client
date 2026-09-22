@@ -17,7 +17,7 @@
 
 .title {
     font-size: $large;
-    color: $darker-grey;
+    color: var(--theme-text-strong);
     margin-bottom: 15px;
 }
 
@@ -35,8 +35,8 @@
 }
 
 .field-badge--optional {
-    background: $light-grey;
-    color: $dark-grey;
+    background: var(--theme-surface-subtle);
+    color: var(--theme-text-muted);
 }
 
 .status-options-wrapper {
@@ -47,7 +47,9 @@
     display: flex;
     flex-flow: row nowrap;
     margin-bottom: 15px;
-    box-shadow: 0 0 5px $light-grey;
+    box-shadow: 0 0 5px var(--theme-border);
+    background: var(--theme-surface-raised);
+    color: var(--theme-text);
     padding: 10px 24px;
     cursor: pointer;
     transition: box-shadow 0.2s ease;
@@ -58,7 +60,7 @@
 
     &:hover,
     &:focus {
-        box-shadow: 0 0 5px $light-blue;
+        box-shadow: 0 0 5px var(--theme-focus);
     }
 
     .status-item__text {

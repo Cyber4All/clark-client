@@ -1,7 +1,8 @@
 @import "_vars.scss";
 $wrapper-border-radius: 8px;
 .wrapper {
-    background: white;
+    background: var(--theme-surface-raised);
+    color: var(--theme-text);
     border-radius: $wrapper-border-radius;
     padding: 10px 0;
     display: flex;
@@ -21,7 +22,7 @@ $wrapper-border-radius: 8px;
     left: 0;
     width: 50%;
     height: 100%;
-    background: #f6f7fa80;
+    background: var(--theme-surface-selected);
     &.filled {
         border-top-right-radius: $wrapper-border-radius;
         border-bottom-right-radius: $wrapper-border-radius;
@@ -59,7 +60,7 @@ $wrapper-border-radius: 8px;
 }
 
 .upload-complete__check {
-    color: $success-green;
+    color: var(--theme-status-success);
     font-size: $normal;
 }
 
@@ -72,7 +73,7 @@ $wrapper-border-radius: 8px;
 .progress__progress-txt {
     font-weight: 600;
     font-size: $small;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
 }
 
 clark-progress {
