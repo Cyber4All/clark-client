@@ -15,7 +15,7 @@ export const METRIC_ROUTES = {
      */
     GET_LEARNING_OBJECT_METRICS(cuid?: string) {
         const url = `${environment.apiURL}/learning-objects/metrics`;
-        return cuid ? `${url}?cuid=${cuid}` : url;
+        return cuid ? `${url}?learningObjectcuid=${cuid}` : url;
     },
 
     /**
