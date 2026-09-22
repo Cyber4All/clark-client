@@ -1,6 +1,7 @@
 import { of, throwError } from "rxjs";
 import { PlaylistService } from "app/core/playlist-module/playlist.service";
 import { Playlist } from "app/core/playlist-module/playlist.types";
+import { UserService } from "app/core/user-module/user.service";
 import { PlaylistsComponent } from "./playlists.component";
 
 describe("PlaylistsComponent", () => {
@@ -17,8 +18,15 @@ describe("PlaylistsComponent", () => {
         const service = {
             getPlaylists: jest.fn().mockReturnValue(of([playlist])),
         };
+        const userService = {
+            getUser: jest.fn().mockResolvedValue({
+                name: "Playlist author",
+                username: "author",
+            }),
+        };
         const component = new PlaylistsComponent(
             service as unknown as PlaylistService,
+            userService as unknown as UserService,
         );
 
         component.ngOnInit();
@@ -27,6 +35,7 @@ describe("PlaylistsComponent", () => {
         expect(component.playlists).toEqual([playlist]);
         expect(component.loading).toBe(false);
         expect(component.hasError).toBe(false);
+        expect(userService.getUser).toHaveBeenCalledWith("user-id");
         component.ngOnDestroy();
     });
 
@@ -36,8 +45,10 @@ describe("PlaylistsComponent", () => {
                 .fn()
                 .mockReturnValue(throwError(() => new Error("failed"))),
         };
+        const userService = { getUser: jest.fn() };
         const component = new PlaylistsComponent(
             service as unknown as PlaylistService,
+            userService as unknown as UserService,
         );
 
         component.ngOnInit();

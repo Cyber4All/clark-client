@@ -40,7 +40,10 @@
             class="playlist-grid">
             <li *ngFor="let playlist of playlists; trackBy: trackPlaylist">
                 <clark-playlist-card
-                    [playlist]="playlist"></clark-playlist-card>
+                    [playlist]="playlist"
+                    [resolvedAuthorName]="
+                        authorNames[playlist.userId]
+                    "></clark-playlist-card>
             </li>
         </ul>
     </section>
