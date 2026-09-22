@@ -1,8 +1,8 @@
 @import "_vars.scss";
 .desktop-navbar {
     max-height: 92px;
-    background: white;
-    color: $dark-grey;
+    background: var(--theme-surface);
+    color: var(--theme-text);
     position: relative;
     z-index: 4;
 
@@ -39,7 +39,7 @@
                     padding-right: 15px;
                     position: relative;
                     margin-left: 10px;
-                    color: $homepage-gray;
+                    color: var(--theme-text-strong);
                 }
             }
         }
@@ -71,12 +71,12 @@
             .search-button {
                 button {
                     cursor: pointer;
-                    color: white;
+                    color: var(--theme-action-on-primary);
                     border-radius: 0px 6px 6px 0px;
                     border: none;
                     width: 50px;
                     height: 44px;
-                    background: $homepage-light-blue;
+                    background: var(--theme-action-primary);
                 }
             }
         }
@@ -90,9 +90,9 @@
 
             .contribute-button {
                 cursor: pointer;
-                color: $dark-grey;
-                background-color: $primary-white;
-                border: solid $secondary-white 1px;
+                color: var(--theme-text);
+                background-color: var(--theme-surface-subtle);
+                border: solid var(--theme-border) 1px;
                 height: 45px;
                 border-radius: 4px;
                 padding: 0 18px;
@@ -134,7 +134,7 @@
 
                 .login-button {
                     margin-right: 23px;
-                    color: $homepage-light-blue;
+                    color: var(--theme-link);
                     font-weight: 400;
                 }
             }
@@ -147,8 +147,8 @@
     position: relative;
     flex-direction: row;
     justify-content: space-between;
-    color: $dark-grey;
-    background-color: white;
+    color: var(--theme-text);
+    background-color: var(--theme-surface);
     overflow-wrap: normal;
     z-index: 4;
 
@@ -182,7 +182,7 @@
         flex-direction: row;
         padding: 20px;
         font-size: $larger;
-        color: $homepage-gray;
+        color: var(--theme-text-strong);
         .search {
             padding-right: 20px;
         }
@@ -192,7 +192,7 @@
 .mobile-search {
     width: 100%;
     position: fixed;
-    background-color: white;
+    background-color: var(--theme-surface);
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -204,7 +204,7 @@
 
     .close-icon {
         margin-bottom: 20px;
-        color: $homepage-gray;
+        color: var(--theme-text-strong);
     }
 }
 
@@ -213,7 +213,8 @@
     top: 0;
     bottom: 0;
     right: -330px;
-    background: white;
+    color: var(--theme-text);
+    background: var(--theme-surface);
     box-sizing: border-box;
     max-width: 80%;
     width: 330px;
@@ -263,9 +264,9 @@
             .contribute {
                 width: 86%;
                 margin: 0 7%;
-                color: $primary-white;
-                background: $homepage-light-blue;
-                box-shadow: 0px 6px 12px -6px $homepage-light-blue;
+                color: var(--theme-action-on-primary);
+                background: var(--theme-action-primary);
+                box-shadow: 0 6px 12px -6px var(--theme-shadow);
                 border-radius: 4px;
             }
         }
@@ -284,30 +285,30 @@
                 padding: 12px 18px;
 
                 .sign-in {
-                    color: $homepage-gray;
-                    border: 1px solid $secondary-white;
-                    background: $primary-white;
+                    color: var(--theme-text);
+                    border: 1px solid var(--theme-border);
+                    background: var(--theme-surface-subtle);
                     margin-right: 18px;
                     border-radius: 4px;
                 }
 
                 .register {
-                    color: $primary-white;
-                    background: $homepage-light-blue;
-                    box-shadow: 0px 6px 12px -6px $homepage-light-blue;
+                    color: var(--theme-action-on-primary);
+                    background: var(--theme-action-primary);
+                    box-shadow: 0 6px 12px -6px var(--theme-shadow);
                     border-radius: 4px;
                 }
             }
             .login-button,
             .register-button {
-                color: $homepage-light-blue;
+                color: var(--theme-link);
             }
         }
 
         hr {
             margin-top: 30px;
             border: none;
-            background: $secondary-white;
+            background: var(--theme-border);
             height: 1px;
             width: 100%;
         }
@@ -329,7 +330,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: $slideout-underlay;
+    background: var(--theme-overlay);
     opacity: 80%;
     backdrop-filter: blur(10px);
     z-index: 4;
@@ -351,7 +352,7 @@ li {
     cursor: pointer;
     list-style-type: none;
     padding: 5px 0;
-    color: $dark-grey;
+    color: var(--theme-text);
 
     &:not(:last-child) {
         margin-bottom: 10px;

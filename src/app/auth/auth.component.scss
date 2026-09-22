@@ -1,6 +1,7 @@
 @import "_vars.scss";
 .authentication-component {
-    background: white;
+    color: var(--theme-text);
+    background: var(--theme-canvas);
 
     :host {
         font-family: "Source Sans Pro", sans-serif;
@@ -17,7 +18,7 @@
         overflow-y: auto;
 
         h1 {
-            color: $light-blue;
+            color: var(--theme-link);
             font-weight: 400;
             text-align: center;
             margin-bottom: 50px;
@@ -29,16 +30,16 @@
             text-align: center;
 
             button {
-                border: 2px solid $light-blue;
+                border: 2px solid var(--theme-action-primary);
                 border-radius: 5px;
-                background-color: $light-blue;
-                color: white;
+                background-color: var(--theme-action-primary);
+                color: var(--theme-action-on-primary);
                 padding: 10px;
                 font-size: $normal;
 
                 &.white {
-                    background-color: white;
-                    color: $light-blue;
+                    background-color: var(--theme-surface-raised);
+                    color: var(--theme-link);
                 }
             }
 
@@ -48,7 +49,7 @@
         }
 
         h1 {
-            color: $light-blue;
+            color: var(--theme-link);
             font-weight: 600;
             text-align: center;
             margin-bottom: 50px;
@@ -57,7 +58,7 @@
 
         p {
             font-size: 20px;
-            color: $dark-grey;
+            color: var(--theme-text);
         }
 
         img {
@@ -70,17 +71,17 @@
             text-align: center;
 
             button {
-                border: 2px solid $light-blue;
+                border: 2px solid var(--theme-action-primary);
                 border-radius: 5px;
-                background-color: $light-blue;
-                color: white;
+                background-color: var(--theme-action-primary);
+                color: var(--theme-action-on-primary);
                 padding: 10px;
                 font-size: $normal;
                 cursor: pointer;
 
                 &.white {
-                    background-color: white;
-                    color: $light-blue;
+                    background-color: var(--theme-surface-raised);
+                    color: var(--theme-link);
                 }
 
                 &.bottom {
@@ -95,7 +96,7 @@
         }
 
         .content-box {
-            background: white;
+            background: var(--theme-surface-raised);
             border-radius: 2px;
             box-sizing: border-box;
             max-width: 520px;
@@ -116,8 +117,8 @@
             }
 
             .errBanner {
-                background: $error-red;
-                color: white;
+                background: var(--theme-status-error);
+                color: var(--theme-text-strong);
                 text-align: center;
                 position: absolute;
                 transition: all 0.2s ease;
@@ -131,7 +132,7 @@
 
             &.failed {
                 animation: validate-failure 0.4s linear;
-                border-top-color: $error-red;
+                border-top-color: var(--theme-status-error);
 
                 .errBanner {
                     top: 0px;

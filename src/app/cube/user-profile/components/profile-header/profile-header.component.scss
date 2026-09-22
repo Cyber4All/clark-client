@@ -13,9 +13,9 @@
     gap: 20px;
 
     .user-profile-header_wrapper {
-        background-color: $secondary-white-background;
+        background-color: var(--theme-surface-raised);
         border-radius: 8px;
-        border: 0.5px rgba(28, 112, 221, 0.1) solid;
+        border: 0.5px var(--theme-border) solid;
         box-shadow: 0 10px 20px -10px rgba(28, 112, 221, 0.1);
         display: flex;
         flex-direction: row;
@@ -31,7 +31,7 @@
             height: 100%;
             vertical-align: middle;
             border-radius: 50%;
-            border: 4px solid white;
+            border: 4px solid var(--theme-surface);
             box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
             background: url(/assets/images/user.jpg);
             background-size: cover;
@@ -47,14 +47,14 @@
             flex-direction: column;
             vertical-align: top;
             margin: 20px;
-            color: $dark-grey;
+            color: var(--theme-text);
             z-index: 2;
             flex-grow: 1;
 
             h1 {
                 line-height: 35px;
                 word-wrap: break-word;
-                color: $darker-grey;
+                color: var(--theme-text-strong);
                 margin-bottom: 10px;
             }
         }
@@ -62,12 +62,12 @@
         .edit {
             display: flex;
             flex-direction: row;
-            color: $light-grey;
-            background-color: $profile-drop-shadow;
+            color: var(--theme-action-on-primary);
+            background-color: var(--theme-action-secondary);
             font-size: $normal;
             padding: 5px 10px;
             border-radius: 4px;
-            box-shadow: 0px 6px 12px -6px $profile-drop-shadow;
+            box-shadow: 0px 6px 12px -6px var(--theme-shadow);
             font-size: $smaller;
             margin: 40px 20px 0 0;
             z-index: 2;
@@ -80,17 +80,17 @@
 
             &:hover {
                 cursor: pointer;
-                border-bottom: 1px solid $blue-accent;
+                background-color: var(--theme-action-secondary-hover);
             }
         }
     }
 
     .user-profile-bio_wrapper {
-        background-color: $secondary-white-background;
+        background-color: var(--theme-surface-raised);
         border-radius: 8px;
-        border: 0.5px rgba(28, 112, 221, 0.1) solid;
+        border: 0.5px var(--theme-border) solid;
         box-shadow: 0 10px 20px -10px rgba(28, 112, 221, 0.1);
-        color: $dark-grey;
+        color: var(--theme-text);
         display: flex;
         flex-direction: column;
         position: relative;
@@ -101,7 +101,7 @@
             padding: 5px 25px;
 
             h2 {
-                color: $darker-grey;
+                color: var(--theme-text-strong);
                 margin-bottom: 0;
             }
 

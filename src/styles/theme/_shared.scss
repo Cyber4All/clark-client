@@ -1,0 +1,108 @@
+// Global migration bridge for application shell, shared controls, and common
+// overlay surfaces. Feature-specific Sass remains intentionally local.
+body {
+    color: var(--theme-text);
+    background: var(--theme-canvas);
+}
+
+:where(a, a:visited) {
+    color: var(--theme-link);
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 3px solid var(--theme-focus);
+    outline-offset: 3px;
+}
+
+.button {
+    color: var(--theme-link);
+    background: var(--theme-surface-raised);
+
+    &.good {
+        color: var(--theme-action-on-primary);
+        background: var(--theme-action-primary);
+    }
+
+    &.neutral {
+        color: var(--theme-text);
+
+        &:after {
+            border-color: var(--theme-border-strong);
+        }
+    }
+
+    &.bad {
+        color: var(--theme-text-strong);
+        background: var(--theme-status-error);
+
+        &.inverted {
+            color: var(--theme-status-error);
+            background: transparent;
+        }
+
+        &.white {
+            color: var(--theme-status-error);
+            background: var(--theme-surface-raised);
+        }
+    }
+
+    &.green {
+        color: var(--theme-action-on-primary);
+        background: var(--theme-status-success);
+    }
+}
+
+.popup,
+.popup-inner,
+.modal-container,
+.cdk-overlay-pane .mat-mdc-menu-panel,
+.cdk-overlay-pane .mat-mdc-dialog-container,
+.cdk-overlay-pane .mat-mdc-select-panel,
+.cdk-overlay-pane .mat-mdc-autocomplete-panel {
+    color: var(--theme-text);
+    background: var(--theme-surface-raised);
+    border-color: var(--theme-border);
+}
+
+.popup-wrapper,
+.cdk-overlay-backdrop.cdk-overlay-backdrop-showing {
+    background: var(--theme-overlay);
+}
+
+.mat-mdc-card,
+.mat-mdc-table,
+.mat-mdc-paginator,
+.mat-expansion-panel,
+.mat-drawer-container,
+.mat-drawer {
+    color: var(--theme-text);
+    background-color: var(--theme-surface);
+}
+
+.mat-mdc-header-cell,
+.mat-mdc-cell,
+.mat-mdc-form-field,
+.mat-mdc-select-value,
+.mat-mdc-paginator,
+.mat-mdc-menu-item {
+    color: var(--theme-text);
+}
+
+.mat-mdc-text-field-wrapper,
+.mat-mdc-select-panel,
+.mat-datepicker-content {
+    background-color: var(--theme-surface-raised);
+}
+
+input,
+textarea,
+select {
+    color: var(--theme-text);
+    background-color: var(--theme-surface-raised);
+    border-color: var(--theme-border);
+
+    &::placeholder {
+        color: var(--theme-text-disabled);
+        opacity: 1;
+    }
+}

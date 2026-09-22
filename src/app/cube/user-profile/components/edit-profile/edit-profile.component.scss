@@ -11,16 +11,19 @@ textarea {
     padding: 12px;
     font-size: $normal;
     resize: none;
-    color: $blue-accent;
+    background: var(--theme-surface);
+    color: var(--theme-text);
 }
 
 form {
     margin: auto;
     max-width: 100%;
     max-height: 800px;
+    color: var(--theme-text);
 
     h1 {
         text-align: center;
+        color: var(--theme-text-strong);
     }
 
     .side-by-side {
@@ -44,7 +47,7 @@ form {
             height: 100%;
             vertical-align: middle;
             border-radius: 50%;
-            border: 4px solid white;
+            border: 4px solid var(--theme-surface);
             box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
             background: url(/assets/images/user.jpg);
             background-size: cover;
@@ -76,7 +79,7 @@ form {
 
         span {
             .sso {
-                color: $medium-grey;
+                color: var(--theme-text-muted);
             }
 
             padding: 5px;
@@ -88,8 +91,9 @@ form {
         display: flex;
         flex-direction: row-reverse;
         justify-content: space-between;
-        border: 1px solid $medium-grey;
+        border: 1px solid var(--theme-border-strong);
         border-radius: 1px;
+        background: var(--theme-surface);
 
         .svg-inline--fa {
             width: 15px;
@@ -97,14 +101,14 @@ form {
             flex-grow: 0;
             flex-shrink: 0;
             @include vert-center;
-            color: $placeholder;
+            color: var(--theme-text-muted);
             padding-left: 14px;
             box-sizing: content-box;
         }
 
         &.active {
             .svg-inline--fa {
-                color: $blue-accent;
+                color: var(--theme-action-primary);
             }
         }
     }
@@ -131,7 +135,7 @@ form {
     padding: 0;
     margin: 0;
     width: calc(100% - 40px);
-    background: white;
+    background: var(--theme-surface-raised);
     border-radius: 2px;
     box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.2);
     z-index: 3;
@@ -145,7 +149,7 @@ form {
             padding: 10px;
         }
         li:hover {
-            background-color: color-gray(6);
+            background-color: var(--theme-surface-selected);
         }
     }
 }

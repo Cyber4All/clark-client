@@ -1,7 +1,7 @@
 @import "_vars.scss";
 
 p {
-    color: $homepage-text;
+    color: var(--theme-text);
 }
 
 .wrapper {
@@ -12,7 +12,7 @@ p {
 
     .learning-object-info {
         padding-bottom: 60px;
-        border-bottom: 1px solid $secondary-white;
+        border-bottom: 1px solid var(--theme-border);
 
         h1 {
             margin-top: 0;
@@ -21,7 +21,8 @@ p {
 
     .featured-object {
         margin-top: 50px;
-        border: 1px solid $secondary-white;
+        border: 1px solid var(--theme-border);
+        background: var(--theme-surface-raised);
         box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.1);
         border-radius: 4px;
 
@@ -31,7 +32,7 @@ p {
             line-height: 2;
 
             .levels {
-                color: $homepage-light-blue;
+                color: var(--theme-action-primary);
                 margin-bottom: 0;
             }
 
@@ -40,13 +41,13 @@ p {
                 font-size: 1.5em;
 
                 a:not(:hover) {
-                    color: black;
+                    color: var(--theme-text-strong);
                 }
             }
 
             p.outcomeText {
                 margin: 24px 0 0;
-                color: black;
+                color: var(--theme-text);
             }
 
             ul {
@@ -59,9 +60,9 @@ p {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
-            background-color: $primary-white;
+            background-color: var(--theme-surface);
             padding: 30px 22px;
-            border-top: 1px solid $secondary-white;
+            border-top: 1px solid var(--theme-border);
 
             .contributor-card {
                 display: flex;
@@ -73,12 +74,12 @@ p {
     .learning-object-button {
         padding: 16px 27px;
         margin-top: 70px;
-        background-color: $homepage-light-blue;
-        color: white;
+        background-color: var(--theme-action-primary);
+        color: var(--theme-action-on-primary);
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        box-shadow: 0px 6px 12px -6px $homepage-light-blue;
+        box-shadow: 0px 6px 12px -6px var(--theme-shadow);
         width: fit-content;
 
         &:hover {

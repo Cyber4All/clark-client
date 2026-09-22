@@ -15,7 +15,7 @@
 }
 
 .dashboard-list__title {
-    color: $darker-grey;
+    color: var(--theme-text-strong);
     font-size: $larger;
     font-weight: 600;
     display: flex;
@@ -28,8 +28,8 @@
     grid-gap: 0 20px;
 
     .table__head {
-        background: $light-grey;
-        color: $dark-grey;
+        background: var(--theme-surface-subtle);
+        color: var(--theme-text);
         padding: 8px 20px;
         box-sizing: border-box;
         display: grid;
@@ -40,7 +40,7 @@
     }
 
     .table__items {
-        color: $dark-grey;
+        color: var(--theme-text);
         box-sizing: border-box;
         grid-template-columns: 32px 60px 1fr 180px 180px 50px;
         grid-gap: inherit;
@@ -63,7 +63,7 @@
         padding-top: 30px;
         padding-bottom: 30px;
 
-        color: $darker-grey;
+        color: var(--theme-text-strong);
         font-size: $normal;
 
         .top {
@@ -71,7 +71,7 @@
             justify-content: center;
             align-items: center;
             flex-direction: row;
-            color: $dark-grey;
+            color: var(--theme-text);
             font-size: $largest;
             margin-bottom: 10px;
 

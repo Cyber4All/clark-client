@@ -4,15 +4,15 @@
     display: flex;
     flex-direction: row;
     position: relative;
-    background-color: $primary-white;
+    background-color: var(--theme-surface-subtle);
     padding: 12px 0 12px 40px;
-    border: solid 1px $secondary-white;
+    border: solid 1px var(--theme-border);
     z-index: 4;
 
     .item {
         cursor: pointer;
         font-weight: 400;
-        color: $dark-grey;
+        color: var(--theme-text);
         padding: 0 45px;
 
         span {
@@ -20,7 +20,7 @@
         }
     }
     a:hover {
-        color: $dark-grey;
+        color: var(--theme-text-strong);
         text-decoration: none;
     }
 
@@ -31,8 +31,8 @@
 
 a {
     text-decoration: none;
-    color: $dark-grey;
+    color: var(--theme-text);
     &:hover {
-        color: white;
+        color: var(--theme-link-hover);
     }
 }

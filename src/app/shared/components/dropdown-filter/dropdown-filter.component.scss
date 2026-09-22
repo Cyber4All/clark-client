@@ -10,14 +10,14 @@
 }
 
 .dropdown-filter__trigger {
-    border: 1px solid $light-grey;
-    background: #fff;
+    border: 1px solid var(--theme-border);
+    background: var(--theme-surface);
     border-radius: 10px;
     height: 42px;
     padding: 0 12px;
     font-size: $normal;
     cursor: pointer;
-    color: $darker-grey;
+    color: var(--theme-text);
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -26,14 +26,14 @@
 }
 
 .dropdown-filter__trigger:hover:not(:disabled) {
-    border-color: $dark-grey;
-    background: $primary-white;
+    border-color: var(--theme-border-strong);
+    background: var(--theme-surface-subtle);
 }
 
 .dropdown-filter__trigger.active {
-    border-color: $blue-accent;
-    color: $blue-accent;
-    background: rgba(70, 144, 255, 0.05);
+    border-color: var(--theme-action-primary);
+    color: var(--theme-action-primary);
+    background: var(--theme-surface-selected);
 }
 
 .dropdown-filter__trigger:disabled {
@@ -51,8 +51,8 @@
     max-width: min(320px, 90vw);
     max-height: min(420px, calc(100vh - 120px));
     overflow-y: auto;
-    background: #fff;
-    border: 1px solid #d9e1ec;
+    background: var(--theme-surface-raised);
+    border: 1px solid var(--theme-border);
     border-radius: 10px;
     box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
     overflow-x: hidden;
@@ -70,7 +70,7 @@
     padding: 4px 8px;
     border-radius: 8px;
     font-size: $small;
-    color: $darker-grey;
+    color: var(--theme-text);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -79,7 +79,7 @@
 }
 
 .dropdown-filter__option:hover:not(:disabled) {
-    background: #f6f9ff;
+    background: var(--theme-surface-selected);
 }
 
 .dropdown-filter__option:disabled {
@@ -90,12 +90,12 @@
 .dropdown-filter__indicator {
     width: 14px;
     height: 14px;
-    border: 1px solid $medium-grey;
+    border: 1px solid var(--theme-border-strong);
     border-radius: 2px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: var(--theme-action-on-primary);
     flex-shrink: 0;
     background: transparent;
     transition: all 0.2s ease;
@@ -109,8 +109,8 @@
 }
 
 .dropdown-filter__indicator.checked {
-    background: $light-blue;
-    border-color: $light-blue;
+    background: var(--theme-action-primary);
+    border-color: var(--theme-action-primary);
 }
 
 .dropdown-filter__indicator.checked .fas {

@@ -12,9 +12,9 @@
     padding: 0 12px;
     max-width: 100%;
     box-sizing: border-box;
-    border: 1px solid $light-grey;
+    border: 1px solid var(--theme-border);
     border-radius: 8px;
-    background: #fff;
+    background: var(--theme-surface-raised);
 }
 
 .search-input--full-width {
@@ -23,8 +23,8 @@
 }
 
 .search-input:focus-within {
-    border-color: $blue-accent;
-    background: rgba(70, 144, 255, 0.03);
+    border-color: var(--theme-focus);
+    background: var(--theme-surface-selected);
 }
 
 .search-input--error {
@@ -37,7 +37,7 @@
 }
 
 .search-input__icon {
-    color: $light-blue;
+    color: var(--theme-link);
     margin-right: 2px;
 }
 
@@ -51,9 +51,9 @@
     width: 100%;
     background: transparent;
     font-size: $normal;
-    color: $darker-grey;
+    color: var(--theme-text);
 }
 
 .search-input input::placeholder {
-    color: $medium-grey;
+    color: var(--theme-text-disabled);
 }
