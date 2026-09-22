@@ -41,7 +41,8 @@
 
         .card {
             margin: 20px 0 0 15px;
-            background-color: var(--theme-surface-raised);
+            background-color: var(--theme-action-secondary);
+            color: var(--theme-action-on-secondary);
         }
 
         button:hover {

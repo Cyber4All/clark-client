@@ -122,6 +122,8 @@
         .modal-container {
             height: 90vh;
             width: 50vw;
+            background: var(--theme-surface-raised);
+            color: var(--theme-text);
         }
     }
 }

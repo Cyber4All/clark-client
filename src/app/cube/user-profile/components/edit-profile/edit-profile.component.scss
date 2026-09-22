@@ -1,5 +1,11 @@
 @import "_vars.scss";
 
+:host {
+    display: block;
+    background: var(--theme-surface-raised);
+    color: var(--theme-text);
+}
+
 textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -48,7 +54,7 @@ form {
             vertical-align: middle;
             border-radius: 50%;
             border: 4px solid var(--theme-surface);
-            box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 2px 6px 2px var(--theme-shadow);
             background: url(/assets/images/user.jpg);
             background-size: cover;
             background-position: center;
@@ -136,8 +142,9 @@ form {
     margin: 0;
     width: calc(100% - 40px);
     background: var(--theme-surface-raised);
+    border: 1px solid var(--theme-border);
     border-radius: 2px;
-    box-shadow: 0 2px 6px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px 2px var(--theme-shadow);
     z-index: 3;
     position: absolute;
 
