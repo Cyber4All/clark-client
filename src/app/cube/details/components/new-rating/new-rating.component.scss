@@ -1,12 +1,20 @@
 @import "_vars.scss";
 
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
 .new-rating {
+    min-width: 0;
     &.rated {
         .comment-wrapper {
             visibility: visible;
             opacity: 1;
             transform: scale(1);
-            max-height: 220px;
+            // Allow room for a wrapped toolbar and actions during the original reveal.
+            max-height: 500px;
             margin: 20px auto;
         }
     }
@@ -68,17 +76,82 @@
         flex-direction: column;
         justify-content: space-between;
 
-        textarea {
-            resize: none;
-            appearance: none;
-            outline: 0;
-            border: 1px solid $medium-grey;
-            padding: 10px;
-            height: 150px;
-            width: 350px;
+        .rating-editor {
+            display: block;
+            width: 100%;
+            min-width: 0;
 
-            &:focus {
-                border-color: $blue-accent;
+            .rating-format {
+                display: flex;
+                align-items: center;
+                flex: 0 0 auto;
+                margin-right: 4px;
+                select {
+                    width: 7em;
+                    min-width: 0;
+                    height: 34px;
+                    font: inherit;
+                    padding: 4px;
+                }
+            }
+
+            // Match the builder: the editor and its generated container fill the parent.
+            ::ng-deep st-editor,
+            ::ng-deep .st-editor-container {
+                display: block;
+                width: 100%;
+                max-width: 100%;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+
+            ::ng-deep .st-toolbar {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            // Leave room for the link control beside the full heading label.
+            ::ng-deep .st-toolbar-item {
+                padding-inline: 10px;
+            }
+
+            // Keep the review input inside its border while preserving long-token wrapping.
+            ::ng-deep .st-area {
+                box-sizing: border-box;
+                display: block;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0;
+                height: 150px !important;
+                min-height: 150px !important;
+                max-height: 150px !important;
+                overflow-wrap: anywhere !important;
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+                white-space: pre-wrap !important;
+                // Fill the line rather than moving a long token to a new one.
+                // This intentionally permits ordinary words to split at the edge too.
+                word-break: break-all !important;
+                word-wrap: break-word !important;
+                resize: none;
+            }
+
+            ::ng-deep .st-area * {
+                max-width: 100%;
+                white-space: pre-wrap !important;
+                overflow-wrap: anywhere !important;
+                word-break: break-all !important;
+                word-wrap: break-word !important;
+            }
+
+            ::ng-deep .st-area h1,
+            ::ng-deep .st-area h2,
+            ::ng-deep .st-area h3 {
+                line-height: 1.2;
+                margin: 0;
             }
         }
 
@@ -97,5 +170,11 @@
             margin-top: 20px;
             margin-bottom: 5px;
         }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .new-rating .comment-wrapper {
+        transition: none;
     }
 }

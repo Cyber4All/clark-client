@@ -26,15 +26,28 @@
         </div>
     </div>
     <div class="comment-wrapper">
-        <textarea
-            aria-label="comment"
-            placeholder="Why did you leave this rating?"
-            [(ngModel)]="rating.comment"
-            userscaleable></textarea>
+        <div class="rating-editor">
+            <div #headingControl class="rating-format">
+                <select
+                    aria-label="Text style"
+                    [ngModel]="selectedHeading"
+                    (ngModelChange)="applyHeading($event)">
+                    <option value="p">Paragraph</option>
+                    <option value="h1">Heading 1</option>
+                    <option value="h2">Heading 2</option>
+                    <option value="h3">Heading 3</option>
+                </select>
+            </div>
+            <!-- Keep this editor scoped to ratings so the builder's stable editor layout is untouched. -->
+            <st-editor
+                [ngModel]="rating.comment ?? ''"
+                (ngModelChange)="rating.comment = $event"
+                [config]="editorConfig"></st-editor>
+        </div>
         <div
             class="character-count"
-            [class.over-limit]="(rating.comment?.length || 0) > 512">
-            {{ rating.comment?.length || 0 }}/512
+            [class.over-limit]="commentLength > commentLimit">
+            {{ commentLength }}/{{ commentLimit }}
         </div>
         <div class="btn-group center">
             <button

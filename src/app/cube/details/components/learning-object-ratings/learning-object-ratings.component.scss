@@ -33,6 +33,7 @@
 
     .rating-list-element {
         padding: 10px 0;
+        min-width: 0;
 
         a {
             color: $dark-grey;
@@ -75,6 +76,33 @@
 
         .rating-text {
             font-size: $normal;
+            min-width: 0;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+
+            .rating-comment {
+                // The template truncates text; expanded HTML must never be height-clipped.
+                white-space: pre-wrap;
+
+                ::ng-deep h1,
+                ::ng-deep h2,
+                ::ng-deep h3,
+                ::ng-deep h4,
+                ::ng-deep h5,
+                ::ng-deep h6,
+                ::ng-deep p {
+                    margin-top: 0;
+                }
+            }
+
+            .read-more-button {
+                display: inline-block;
+                margin-top: 8px;
+                padding: 5px 10px;
+                font-size: $smaller;
+                line-height: 1.2;
+                text-transform: none;
+            }
         }
     }
 

@@ -1,9 +1,8 @@
 <div class="comment-wrapper">
-    <textarea
-        class="text-area"
-        aria-label="comment"
-        placeholder="Respond to this rating"
-        [(ngModel)]="response.comment"></textarea>
+    <clark-text-editor
+        [savedContent]="response.comment"
+        editorPlaceholder="Respond to this rating"
+        (textOutput)="response.comment = $event"></clark-text-editor>
     <div class="btn-group to-right">
         <button
             class="button good"

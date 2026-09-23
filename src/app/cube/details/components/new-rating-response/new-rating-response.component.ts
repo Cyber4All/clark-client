@@ -1,14 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { FormsModule } from "@angular/forms";
 import { NgClass } from "@angular/common";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
+import { TextEditorComponent } from "../../../../shared/components/text-editor/text-editor.component";
 
 @Component({
     selector: "clark-new-rating-response",
     templateUrl: "./new-rating-response.component.html",
     styleUrls: ["./new-rating-response.component.scss"],
     standalone: true,
-    imports: [FormsModule, NgClass, ActivateDirective],
+    imports: [NgClass, ActivateDirective, TextEditorComponent],
 })
 export class NewRatingResponseComponent implements OnInit {
     @Input() response: { comment: string; index: number };

@@ -172,8 +172,9 @@
     (closed)="closeAddRatingModal()">
     <div
         #popupInner
-        style="min-width: 300px; max-width: 100vw"
+        style="width: 442px; min-width: 0; max-width: calc(100vw - 32px)"
         class="popup-inner">
+        <!-- 442px includes the original 372px editor, 40px popup padding, and 30px rating margins. -->
         <div class="new-rating">
             <div class="title">Rate this Learning Object</div>
             <clark-new-rating
