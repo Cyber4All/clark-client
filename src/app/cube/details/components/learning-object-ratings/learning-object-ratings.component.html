@@ -37,7 +37,27 @@
                 {{ rating.date | date: "shortDate" }}
             </div>
             <div tabindex="0" class="rating-text">
-                {{ rating.comment }}
+                <div class="rating-comment">
+                    <!-- Plain-text previews avoid cutting HTML tags; expanded reviews retain formatting. -->
+                    <div
+                        *ngIf="
+                            showMore[i] ||
+                                commentLength(rating.comment) <= previewLimit;
+                            else preview
+                        "
+                        [innerHTML]="rating.comment"></div>
+                    <ng-template #preview
+                        >{{ commentPreview(rating.comment) }}…</ng-template
+                    >
+                </div>
+                <button
+                    *ngIf="commentLength(rating.comment) > previewLimit"
+                    type="button"
+                    class="button neutral read-more-button"
+                    (click)="toggleReadMore(i)"
+                    [attr.aria-expanded]="!!showMore[i]">
+                    Read {{ showMore[i] ? "Less" : "More" }}
+                </button>
             </div>
             <div *ngIf="auth.user?.emailVerified" class="options">
                 <ng-container *ngIf="isRatingAuthor(i); else notOwnerOptions">
@@ -102,7 +122,7 @@
                     {{ rating.response[0].date | date: "shortDate" }}
                 </div>
                 <div class="rating-text" tabindex="0">
-                    {{ rating.response[0].comment }}
+                    <div [innerHTML]="rating.response[0].comment"></div>
                 </div>
                 <div class="options">
                     <ng-container

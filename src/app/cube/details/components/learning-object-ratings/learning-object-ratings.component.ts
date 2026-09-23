@@ -1,3 +1,8 @@
+import {
+    RATING_PREVIEW_LIMIT,
+    ratingCommentLength,
+    ratingCommentPreview,
+} from "../rating-comment";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { User } from "@entity";
 import { AuthService } from "app/core/auth-module/auth.service";
@@ -55,6 +60,10 @@ export class LearningObjectRatingsComponent implements OnInit {
     reportIndex: number;
     showResponse = [];
     showEditResponse = [];
+    showMore: boolean[] = [];
+    readonly previewLimit = RATING_PREVIEW_LIMIT;
+    readonly commentLength = ratingCommentLength;
+    readonly commentPreview = ratingCommentPreview;
     deleteConfirmation: boolean;
     deleteResponseConfirmation: boolean;
     deleteRatingIndex: number;
@@ -143,6 +152,10 @@ export class LearningObjectRatingsComponent implements OnInit {
 
     isEditingResponse(index: number) {
         return this.showEditResponse.includes(index);
+    }
+
+    toggleReadMore(index: number) {
+        this.showMore[index] = !this.showMore[index];
     }
 
     cancelResponse(element: number) {
