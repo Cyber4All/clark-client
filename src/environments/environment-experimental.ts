@@ -8,6 +8,7 @@ export const environment = {
     environment: "experimental",
     experimental: true,
     apiURL: "http://localhost:3001",
+    notebookViewerURL: "https://nbviewer.org",
     s3Bucket: "neutrino-file-uploads",
     s3BucketRegion: "us-east-2",
     cognitoRegion: "us-east-1",
