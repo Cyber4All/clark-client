@@ -1,10 +1,11 @@
-import { EventEmitter, forwardRef, OnInit, AfterViewInit } from "@angular/core";
+import { EventEmitter, forwardRef, OnInit, AfterViewInit, Optional, Self } from "@angular/core";
 import { Output } from "@angular/core";
-import { ElementRef, Injector, NgZone } from "@angular/core";
+import { ElementRef, NgZone } from "@angular/core";
 import { Input } from "@angular/core";
 import { Directive } from "@angular/core";
 import {
     ControlValueAccessor,
+    NgControl,
     UntypedFormControl,
     Validators,
     NG_VALUE_ACCESSOR,
@@ -58,7 +59,7 @@ export class RecaptchaDirective
     constructor(
         private element: ElementRef,
         private ngZone: NgZone,
-        private injector: Injector,
+        @Self() @Optional() private ngControl: NgControl,
         private userService: UserService,
     ) {}
 
@@ -83,7 +84,7 @@ export class RecaptchaDirective
     }
 
     ngAfterViewInit() {
-        this.control = this.injector.get(UntypedFormControl);
+        this.control = this.ngControl?.control as UntypedFormControl;
         this.setValidators();
     }
 
@@ -101,6 +102,9 @@ export class RecaptchaDirective
      * Therefore, we need to call updateValueAndValidity to trigger the update
      */
     private setValidators() {
+        if (!this.control) {
+            return;
+        }
         this.control.setValidators(Validators.required);
         this.control.updateValueAndValidity();
     }
