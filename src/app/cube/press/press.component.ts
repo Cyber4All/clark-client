@@ -25,7 +25,7 @@ import { MediaItemComponent } from "./components/media-item/media-item.component
     ],
 })
 export class PressComponent implements OnInit {
-    mentions: Mention[];
+    mentions: Mention[] = [];
     s3 = new AWS.S3();
 
     constructor(private coverageService: PressCoverageService) {}
