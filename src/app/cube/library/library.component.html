@@ -49,8 +49,10 @@
                 class="library-items__list-items">
                 <div class="download-history-table" role="table">
                     <div class="download-history-table__header" role="row">
+                        <div role="columnheader">Length</div>
                         <div role="columnheader">Type</div>
-                        <div role="columnheader">Course</div>
+                        <div role="columnheader">Title</div>
+                        <div role="columnheader">File Name</div>
                         <div role="columnheader">Downloaded</div>
                     </div>
 
@@ -71,6 +73,17 @@
                             </span>
                         </div>
 
+                        <div class="download-history-table__type" role="cell">
+                            <i
+                                [attr.class]="
+                                    isBundle(item)
+                                        ? 'fas fa-layer-group download-history-table__type-icon'
+                                        : 'far fa-file download-history-table__type-icon'
+                                "
+                                aria-hidden="true"></i>
+                            <span>{{ getDownloadType(item) }}</span>
+                        </div>
+
                         <div
                             class="download-history-table__resource"
                             role="cell">
@@ -78,8 +91,40 @@
                                 *ngIf="canNavigate(item)"
                                 class="library-item__title library-item__title-button"
                                 (activate)="goToItem($event, item)">
-                                {{ getDisplayName(item) }}
+                                {{ getDisplayTitle(item) }}
                             </button>
+                        </div>
+
+                        <div role="cell">
+                            <button
+                                *ngIf="canDownloadFile(item); else fileName"
+                                type="button"
+                                class="library-item__title library-item__title-button download-history-file-name"
+                                [class.download-history-file-name--has-path]="
+                                    getFilePath(item)
+                                "
+                                (click)="downloadFile($event, item)"
+                                [attr.aria-label]="
+                                    'Download ' + getFileName(item)
+                                ">
+                                <span
+                                    class="download-history-file-name__short"
+                                    aria-hidden="true">
+                                    {{ getFileName(item) }}
+                                </span>
+                                <span
+                                    class="download-history-file-name__path"
+                                    aria-hidden="true">
+                                    {{ getFilePath(item) }}
+                                </span>
+                            </button>
+                            <ng-template #fileName>
+                                <span
+                                    *ngIf="getFileName(item); else noFileName">
+                                    {{ getFileName(item) }}
+                                </span>
+                            </ng-template>
+                            <ng-template #noFileName>—</ng-template>
                         </div>
 
                         <div role="cell">

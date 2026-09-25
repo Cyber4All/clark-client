@@ -11,12 +11,19 @@ import { ToastrOvenService } from "../../shared/modules/toaster/notification.ser
 import { AuthService } from "../auth-module/auth.service";
 import { DOWNLOAD_HISTORY_ROUTE } from "./library.routes";
 import { environment } from "@env/environment";
+import { FileService } from "app/core/learning-object-module/file/file.service";
+import { LearningObject } from "@entity";
+
+export type DownloadType = "file" | "bundle";
 
 export interface DownloadHistoryItem {
     name: string;
+    title?: string;
+    fileName?: string;
+    filePath?: string;
     downloadedAt: string;
     downloadedBy: string;
-    type: string;
+    type: DownloadType;
     available: boolean;
     resource: {
         learningObjectId: string;

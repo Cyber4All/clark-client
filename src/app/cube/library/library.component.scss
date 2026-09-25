@@ -88,7 +88,9 @@
 .download-history-table__header,
 .download-history-table__row {
     display: grid;
-    grid-template-columns: 120px minmax(220px, 1fr) 220px;
+    grid-template-columns:
+        120px 130px minmax(220px, 1.3fr) minmax(180px, 1fr)
+        220px;
     align-items: center;
     border-bottom: solid 1px $light-grey;
     column-gap: 10px;
@@ -112,6 +114,64 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+}
+
+.download-history-table__type {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.download-history-table__type-icon {
+    font-size: $large;
+}
+
+.download-history-file-name {
+    display: inline-block;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    max-width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.download-history-file-name__short,
+.download-history-file-name__path {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.download-history-file-name__path {
+    display: none;
+}
+
+.download-history-file-name--has-path:hover .download-history-file-name__short,
+.download-history-file-name--has-path:focus .download-history-file-name__short {
+    display: none;
+}
+
+.download-history-file-name--has-path:hover .download-history-file-name__path,
+.download-history-file-name--has-path:focus .download-history-file-name__path {
+    display: block;
+    margin: -6px -8px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    background-color: rgba($light-blue, 0.08);
+}
+
+.download-history-file-name:focus-visible {
+    outline: solid 2px rgba($light-blue, 0.35);
+    outline-offset: 2px;
 }
 
 .download-history-state {
@@ -221,7 +281,9 @@
 
     .download-history-table__row > div:nth-child(1),
     .download-history-table__row > div:nth-child(2),
-    .download-history-table__row > div:nth-child(3) {
+    .download-history-table__row > div:nth-child(3),
+    .download-history-table__row > div:nth-child(4),
+    .download-history-table__row > div:nth-child(5) {
         grid-column: 1 / -1;
     }
 }

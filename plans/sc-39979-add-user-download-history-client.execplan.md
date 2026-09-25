@@ -6,6 +6,16 @@ Replace the authenticated user's legacy Library page with a Download History pag
 
 ## Progress
 
+- [x] (2026-09-25) Identified missing materials-resource hydration before filename matching: basic learning-object requests do not load resourceUris.materials.
+- [x] (2026-09-25) Load materials through the existing resource service before matching; regression coverage added. App TypeScript, production build, formatting and diff checks pass. All 16 component tests pass with temporary CLI overrides for existing Jest configuration drift.
+
+- [x] (2026-09-21 14:00Z) Inspected the Download History row model and the existing authorized individual-file download flow.
+- [x] (2026-09-21 14:00Z) Made an available File row's filename invoke `FileService.handleFileDownload` only after resolving its current material by `fileName`.
+- [x] (2026-09-21 14:00Z) Added focused coverage for clickable and non-clickable filename states; client type check and production build pass. Focused Jest remains blocked by the existing transformer mismatch.
+- [x] (2026-09-18 16:00Z) Inspected the Download History component, table styles, tests, and API DTO before the approved table-only refinement.
+- [x] (2026-09-18 16:00Z) Added the approved LENGTH, TYPE, TITLE, FILE NAME, and DOWNLOADED columns without changing surrounding page layout.
+- [x] (2026-09-18 16:00Z) Added inline filename path expansion on hover/focus, preserving the FILE NAME cell and constraining long paths with ellipsis.
+- [x] (2026-09-18 16:00Z) Updated focused table tests for columns, Bundle/File icons, and filename-path derivation; app type-check and production build pass.
 - [x] (2026-09-16 18:11Z) Re-audited the client after the Library endpoint retirement: startup, service, action panel, routing, navbar, usage metrics, and legacy Library item dependencies.
 - [x] (2026-09-16 18:15Z) Removed retired Library/cart HTTP helpers, saved-item state, startup fetch, Library metrics request, and unused delete UI.
 - [x] (2026-09-16 18:15Z) Preserved the Download History endpoint and bundle-download flow, with action-panel access checks independent of history.
@@ -31,6 +41,14 @@ Replace the authenticated user's legacy Library page with a Download History pag
 
 ## Decision Log
 
+- Decision: Reuse `FileService.handleFileDownload` for Download History file links after matching the response `fileName` to the current learning object's material.
+  Rationale: The history response deliberately supplies display metadata rather than a file-download URL or material ID. The existing service calls CLARK's authorization-aware file endpoint with the resolved material ID, so it re-checks access at request time and does not use `filePath` as a URL.
+  Date/Author: 2026-09-21 / Codex
+
+- Decision: Derive the file label from the stored history name and resolve a fuller material path from the already-fetched learning object when one is available.
+  Rationale: The Download History API provides a stored `name` rather than separate filename/path fields. Reusing the existing learning-object request supplies the learning-object title and matching material `fullPath` without changing the API or adding a request solely for hover behavior.
+  Date/Author: 2026-09-18 / Codex
+
 - Decision: Stabilize in place by retaining the existing `LibraryService` file and injection token for Download History and bundle-download support, but remove all Library/cart state and endpoint methods.
   Rationale: Renaming the feature/service would create unnecessary broad churn; removing the retired runtime behavior and route helpers satisfies the API sunset without altering the supported bundle flow.
   Date/Author: 2026-09-16 / Codex
@@ -49,6 +67,8 @@ Replace the authenticated user's legacy Library page with a Download History pag
 
 ## Outcomes & Retrospective
 
+The Download History table now uses the approved five-column structure. Length continues to use the existing colored chips; API `type === "bundle"` renders the existing Font Awesome layers icon and `Bundle`, and every other history type renders the existing file icon and `File`. Bundle rows show an em dash in FILE NAME. File rows derive the compact label from the final segment of the stored history name and swap it in place for a matching material `fullPath` when available (otherwise the stored name) on hover or keyboard focus. The expanded value is clipped safely within its own cell and uses a subtle translucent background rather than any floating tooltip or icon.
+
 The client no longer requests any retired `/users/:username/library` endpoint. `LibraryService` now contains only Download History retrieval and the existing bundle-download implementation. `ClarkComponent` no longer initializes a saved Library, the details action panel downloads directly through the supported bundle flow without saving/removing/checking Library state, and the obsolete Library item/delete component has been removed. `UsageStatsService` no longer calls retired Library metrics.
 
 The existing Download History page remains at `/download-history`, with `/library` redirecting to it and both navbar variants labeled Download History. Unavailable records remain filtered from the history page as required by the preceding UI decision; focused tests cover that behavior alongside rendering, loading, empty, error/retry, pagination, and details navigation.
@@ -66,6 +86,8 @@ The client is an Angular 18 SPA with lazy-loaded NgModule routes. The current Li
 API access for the old Library page is in `src/app/core/library-module/library.service.ts` and `src/app/core/library-module/library.routes.ts`. The existing supported bundle download flow is `LibraryService.downloadBundle(BUNDLING_ROUTES.DOWNLOAD_BUNDLE(learningObjectId))`.
 
 ## Plan of Work
+
+September 25 correction: stabilize Download History locally by awaiting `fetchLearningObjectResources(learningObject, ["materials"])` for eligible file records before matching the material name. Preserve the existing template, styles, download helper, routing, and backend. Validate separately loaded materials, resource failures, and missing matches. No new API or state ownership is introduced.
 
 Reuse the existing Library module as the Download History page shell to minimize churn. Add a typed client request method for `GET /users/download-history`, then simplify `LibraryComponent` to load and render download-history rows with loading, empty, error, unavailable, and load-more states. Update navigation labels and route metadata.
 
@@ -93,6 +115,14 @@ Reuse the existing Library module as the Download History page shell to minimize
 All changes are additive or scoped replacements in the Library feature. If the route replacement causes navigation issues, revert the route redirect and keep `/library` loading the same module while preserving Download History text and data.
 
 ## Artifacts and Notes
+
+September 25 validation: the default Jest command fails with `configSet.processWithEsbuild is not a function`. The following command runs all 16 component tests successfully without editing shared test configuration (diagnostics disabled for this runtime run; application TypeScript checked separately):
+
+```sh
+npx jest src/app/cube/library/library.component.spec.ts --runInBand --no-cache --modulePaths '<rootDir>/src' --transform '{"^.+\\.(ts|js|mjs|html)$":["jest-preset-angular",{"tsconfig":{"target":"ES2016","experimentalDecorators":true,"emitDecoratorMetadata":true,"esModuleInterop":true},"stringifyContentPathRegex":"\\.html$","diagnostics":false}]}'
+```
+
+The active port 4201 server was confirmed to run from `client-main`, whereas this correction is in `clark-client`. Restart from the corrected checkout to validate in-browser. Authenticated browser download remains a manual check. Historical rows without file metadata cannot resolve an individual download. The production build passed after permitting access to Google Fonts for font inlining.
 
 Backend endpoint: `GET /users/download-history?limit=20&cursor=<optional>`.
 
