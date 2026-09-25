@@ -1,0 +1,199 @@
+@import "_vars.scss";
+
+:host {
+    display: block;
+}
+
+.feature-highlight-card {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #d8e0ea;
+    border-left: 5px solid $light-blue;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(22, 34, 51, 0.08);
+    box-sizing: border-box;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    padding: 20px;
+    position: relative;
+}
+
+.feature-highlight-card__content {
+    min-width: 0;
+}
+
+.feature-highlight-card__icon {
+    align-items: center;
+    background: #eaf3ff;
+    border-radius: 50%;
+    color: $light-blue;
+    display: inline-flex;
+    flex: 0 0 46px;
+    font-size: 20px;
+    height: 46px;
+    justify-content: center;
+    width: 46px;
+}
+
+.feature-highlight-card__title {
+    color: $darker-grey;
+    font-size: $large;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+}
+
+.feature-highlight-card__body {
+    color: $dark-grey;
+    font-size: $normal;
+    line-height: 1.45;
+    margin: 8px 0 0;
+}
+
+.feature-highlight-card__actions {
+    align-items: center;
+    display: flex;
+    flex-shrink: 0;
+    gap: 10px;
+}
+
+.feature-highlight-card__button,
+.feature-highlight-card__dismiss {
+    align-items: center;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    font: inherit;
+    justify-content: center;
+    min-height: 40px;
+    transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.feature-highlight-card__button {
+    border: 1px solid transparent;
+    font-weight: 700;
+    padding: 0 16px;
+    white-space: nowrap;
+}
+
+.feature-highlight-card__button--primary {
+    background: $light-blue;
+    color: #fff;
+}
+
+.feature-highlight-card__button--primary:hover,
+.feature-highlight-card__button--primary:focus {
+    background: darken($light-blue, 8%);
+}
+
+.feature-highlight-card__button--secondary {
+    background: #fff;
+    border-color: #b9c5d4;
+    color: $darker-grey;
+}
+
+.feature-highlight-card__button--secondary:hover,
+.feature-highlight-card__button--secondary:focus {
+    border-color: $light-blue;
+    color: $light-blue;
+}
+
+.feature-highlight-card__button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+.feature-highlight-card__dismiss {
+    background: transparent;
+    border: 0;
+    color: $medium-grey;
+    flex: 0 0 32px;
+    min-height: 32px;
+    padding: 0;
+}
+
+.feature-highlight-card__dismiss:hover,
+.feature-highlight-card__dismiss:focus {
+    color: $darker-grey;
+}
+
+.feature-highlight-card__button:focus-visible,
+.feature-highlight-card__dismiss:focus-visible {
+    outline: 2px solid $light-blue;
+    outline-offset: 2px;
+}
+
+.feature-highlight-card--floating {
+    align-items: start;
+    border-left: 1px solid #d8e0ea;
+    border-radius: 8px;
+    column-gap: 14px;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 18px 14px 16px 16px;
+    row-gap: 12px;
+    width: 100%;
+
+    .feature-highlight-card__content {
+        grid-column: 2;
+        padding-right: 28px;
+    }
+
+    .feature-highlight-card__title {
+        font-size: $normal;
+        line-height: 1.3;
+    }
+
+    .feature-highlight-card__body {
+        font-size: $small;
+        margin-top: 8px;
+    }
+
+    .feature-highlight-card__actions {
+        grid-column: 2;
+        justify-content: flex-end;
+        width: 100%;
+    }
+
+    .feature-highlight-card__button {
+        min-width: 96px;
+    }
+
+    .feature-highlight-card__dismiss {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+    }
+}
+
+@media (max-width: 720px) {
+    .feature-highlight-card:not(.feature-highlight-card--floating) {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 16px;
+        padding: 16px;
+    }
+
+    .feature-highlight-card:not(.feature-highlight-card--floating)
+        .feature-highlight-card__actions {
+        align-items: stretch;
+        flex-wrap: wrap;
+    }
+
+    .feature-highlight-card:not(.feature-highlight-card--floating)
+        .feature-highlight-card__button {
+        flex: 1 1 180px;
+        white-space: normal;
+    }
+
+    .feature-highlight-card:not(.feature-highlight-card--floating)
+        .feature-highlight-card__dismiss {
+        margin-left: auto;
+        order: -1;
+    }
+}
