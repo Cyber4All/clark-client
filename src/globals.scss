@@ -1,3 +1,6 @@
+@use "./styles/theme/tokens";
+@use "./styles/theme/shared";
+
 // font
 // @use '@angular/material' as mat;
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700&display=swap");
@@ -12,7 +15,7 @@
 
 body {
     font-family: "Source Sans Pro", sans-serif;
-    background: $wrapper-background !important;
+    background: var(--theme-canvas) !important;
     // height: 100vh;
     margin: 0;
     padding: 0;
@@ -28,7 +31,7 @@ body {
 
 a,
 a:visited {
-    color: $light-blue;
+    color: var(--theme-link);
     text-decoration: none;
 
     &:hover {

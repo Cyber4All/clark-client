@@ -28,6 +28,7 @@ import { FormsModule } from "@angular/forms";
 import { ChatbotModule } from "app/shared/modules/chatbot/chatbot.module";
 import { MarkdownModule } from "ngx-markdown";
 import { ClarkComponent } from "./app/clark.component";
+import { applyInitialTheme } from "./app/core/theme-module/theme-initializer";
 
 const {
     version: appVersion,
@@ -36,6 +37,9 @@ const {
 } = require("../package.json");
 const VERSION_STORE = `${appName} version`;
 const SENTRY_ENABLED_ENVIRONMENTS = ["staging", "production"];
+
+// Set the root token selector before Angular creates the application shell.
+applyInitialTheme();
 
 Sentry.init({
     dsn: "https://791057349c7a589e044c88bd5c9a2c19@o4511711309463552.ingest.us.sentry.io/4511711708381184",

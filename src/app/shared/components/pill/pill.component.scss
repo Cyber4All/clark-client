@@ -1,10 +1,10 @@
 @import "_vars.scss";
 
 .clark-pill {
-    background: white;
-    border: 1px solid $light-grey;
+    background: var(--theme-surface);
+    border: 1px solid var(--theme-border);
     border-radius: 999px;
-    color: $dark-grey;
+    color: var(--theme-text);
     cursor: pointer;
     font-size: $normal;
     font-weight: normal;
@@ -14,19 +14,19 @@
     user-select: none;
 
     &:hover:not(:disabled) {
-        background: $primary-white;
-        border-color: $dark-grey;
+        background: var(--theme-surface-subtle);
+        border-color: var(--theme-border-strong);
     }
 
     &.active {
-        background: rgba(28, 112, 221, 0.1);
-        border-color: $light-blue;
-        color: $light-blue;
+        background: var(--theme-surface-selected);
+        border-color: var(--theme-action-primary);
+        color: var(--theme-action-primary);
         font-weight: 600;
     }
 
     &:focus {
-        outline: 2px solid $light-blue;
+        outline: 2px solid var(--theme-focus);
         outline-offset: 2px;
     }
 

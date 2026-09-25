@@ -11,8 +11,9 @@
     position: relative;
     transition: all 0.2s ease;
     overflow: hidden;
-    background: white;
-    border-top: 1px solid $light-grey;
+    background: var(--theme-surface);
+    color: var(--theme-text);
+    border-top: 1px solid var(--theme-border);
     box-shadow: none;
     cursor: pointer;
 
@@ -22,14 +23,14 @@
         top: 0;
         bottom: 0;
         left: -6px;
-        background: $light-blue;
+        background: var(--theme-action-primary);
         width: 5px;
         transition: all 0.2s ease;
     }
 
     &.active {
-        background: #f8f9fd;
-        box-shadow: 0 0 16px 2px rgba(0, 0, 0, 0.15);
+        background: var(--theme-surface-subtle);
+        box-shadow: 0 0 16px 2px var(--theme-shadow);
         z-index: 2;
         cursor: default;
 
@@ -42,7 +43,7 @@
     .outcome-header {
         width: 100%;
         font-size: $normal;
-        color: $darker-grey;
+        color: var(--theme-text-strong);
         font-weight: 600;
         margin-bottom: 30px;
         display: flex;
@@ -65,7 +66,7 @@
 
     .outcome-delete {
         cursor: pointer;
-        color: $error-red;
+        color: var(--theme-status-error);
         padding: 3px;
         border-radius: 2px;
         display: flex;
@@ -88,17 +89,17 @@
         width: 100%;
 
         .level {
-            background: white;
+            background: var(--theme-surface-raised);
             padding: 25px 10px;
             border-radius: 5px;
-            box-shadow: 0 2px 12px 2px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 2px 12px 2px var(--theme-shadow);
             text-align: center;
             font-weight: 500;
             font-size: $small;
-            color: $dark-grey;
+            color: var(--theme-text);
             transition: all 0.2s ease;
             cursor: pointer;
-            border: 3px solid white;
+            border: 3px solid var(--theme-surface-raised);
             text-transform: capitalize;
 
             .svg-inline--fa,
@@ -108,12 +109,12 @@
 
             &:hover:not(.active) {
                 transform: scale(1.03);
-                color: $dark-grey;
+                color: var(--theme-text-strong);
             }
 
             &.active {
-                color: $light-blue;
-                border-color: $light-blue;
+                color: var(--theme-action-primary);
+                border-color: var(--theme-action-primary);
             }
         }
     }
@@ -129,15 +130,15 @@
     }
 
     .outcome-component__outcome-error {
-        color: $error-red;
+        color: var(--theme-status-error);
 
         &.outcome-error--warning {
-            color: orange;
+            color: var(--theme-status-warning);
         }
     }
 
     .outcome-component__no-save {
-        color: orange;
+        color: var(--theme-status-warning);
     }
 
     .outcome-mappings {
@@ -155,8 +156,8 @@
             flex-wrap: wrap;
 
             .pill {
-                color: $light-blue;
-                border: 1px solid $light-blue;
+                color: var(--theme-link);
+                border: 1px solid var(--theme-link);
                 padding: 3px 5px;
                 border-radius: 2px;
                 margin-right: 10px;

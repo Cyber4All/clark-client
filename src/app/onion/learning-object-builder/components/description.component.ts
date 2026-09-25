@@ -59,19 +59,19 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-editor-container {
-                border: 1px solid #d9e1ec;
+                border: 1px solid var(--theme-border);
                 border-radius: 8px;
                 overflow: hidden;
-                background: #fff;
+                background: var(--theme-surface-raised);
             }
 
             .description-wrapper ::ng-deep .st-toolbar {
                 border: 0;
-                border-bottom: 1px solid #d9e1ec;
+                border-bottom: 1px solid var(--theme-border);
                 border-radius: 0;
                 gap: 4px;
                 padding: 8px;
-                background: #f8fafc;
+                background: var(--theme-surface-subtle);
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item {
@@ -79,7 +79,7 @@ import { skip } from "rxjs/operators";
                 background: transparent;
                 border: 0;
                 border-radius: 6px;
-                color: #4a5568;
+                color: var(--theme-text-muted);
                 display: inline-flex;
                 height: 32px;
                 justify-content: center;
@@ -92,18 +92,18 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item:hover {
-                background: #e8f1ff;
-                color: #1c70dd;
+                background: var(--theme-surface-selected);
+                color: var(--theme-action-primary);
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item:focus {
-                outline: 2px solid #1c70dd;
+                outline: 2px solid var(--theme-focus);
                 outline-offset: 1px;
             }
 
             .description-wrapper ::ng-deep .st-button.active {
-                background: #1c70dd;
-                color: #fff;
+                background: var(--theme-action-primary);
+                color: var(--theme-action-on-primary);
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item i {
@@ -115,7 +115,7 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-divider {
-                border-right: 1px solid #d9e1ec;
+                border-right: 1px solid var(--theme-border);
                 height: 24px;
                 margin: 0 3px;
             }
@@ -123,7 +123,8 @@ import { skip } from "rxjs/operators";
             .description-wrapper ::ng-deep .st-area {
                 border: 0;
                 border-radius: 0;
-                color: #2d3748;
+                color: var(--theme-text);
+                background: transparent;
                 font-size: 16px;
                 line-height: 1.5;
                 min-height: 140px;
@@ -131,7 +132,7 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-area:focus {
-                outline: 2px solid rgba(28, 112, 221, 0.35);
+                outline: 2px solid var(--theme-focus);
                 outline-offset: -2px;
             }
         `,

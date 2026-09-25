@@ -1,7 +1,8 @@
 @import "_vars.scss";
 // Search CSS
 .input-container {
-    background-color: $light-grey;
+    background-color: var(--theme-surface-subtle);
+    border: 1px solid var(--theme-border);
     position: relative;
     padding: 8px 10px;
     border-radius: 5px;
@@ -11,13 +12,14 @@
         padding: 10px;
         margin-right: 5px;
         pointer-events: none;
+        color: var(--theme-text-muted);
     }
 
     .tag-dropdown__search-input {
         appearance: none;
         font-size: $small;
         border: none;
-        color: $medium-grey;
+        color: var(--theme-text);
         background-color: inherit;
         outline: 0;
         max-width: 550px;
@@ -26,7 +28,7 @@
         padding: 0px 15px;
 
         &:focus {
-            border-color: $light-blue;
+            border-color: var(--theme-focus);
         }
     }
 }
@@ -42,6 +44,7 @@
 
         label {
             font-size: $small;
+            color: var(--theme-text);
         }
     }
 
@@ -59,18 +62,18 @@
 
         button {
             padding: 5px 10px;
-            border: 1px solid $light-blue;
+            border: 1px solid var(--theme-action-primary);
             border-radius: 5px;
             cursor: pointer;
-            background-color: $primary-white;
+            background-color: var(--theme-surface);
             white-space: nowrap;
-            color: $light-blue;
+            color: var(--theme-action-primary);
         }
 
         button.selected {
-            background-color: $light-blue;
-            color: $primary-white;
-            border-color: $light-blue;
+            background-color: var(--theme-action-primary);
+            color: var(--theme-action-on-primary);
+            border-color: var(--theme-action-primary);
         }
     }
 }

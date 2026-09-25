@@ -163,12 +163,18 @@ export class ClarkComponent implements OnInit {
     ngOnInit(): void {
         if (environment.production) {
             this.utilityService.getDowntime().then((down) => {
-                this.downtime = { isDown: !!down?.isDown, message: down?.message || "" };
+                this.downtime = {
+                    isDown: !!down?.isDown,
+                    message: down?.message || "",
+                };
             });
             // Determine if the application is currently under maintenance
             setInterval(async () => {
                 this.utilityService.getDowntime().then((down) => {
-                    this.downtime = { isDown: !!down?.isDown, message: down?.message || "" };
+                    this.downtime = {
+                        isDown: !!down?.isDown,
+                        message: down?.message || "",
+                    };
                 });
             }, 300000); // 5 min interval
             // check to see if the current version is behind the latest verison
@@ -184,6 +190,7 @@ export class ClarkComponent implements OnInit {
         }
 
         this.setPageTitle();
+        this.manageCollectionThemeExclusion();
 
         if (this.cookies.check("ssoToken")) {
             this.authService.setSsoSession(this.cookies.get("ssoToken"));
@@ -260,6 +267,49 @@ export class ClarkComponent implements OnInit {
                         this.titleService.setTitle("CLARK | " + data);
                     }
                 });
+            });
+    }
+
+    /**
+     * Manages dataset.collectionPage attribute on document.body to exclude
+     * collection routes from receiving global theme overrides while allowing
+     * the root navbar to retain active theme switching.
+     */
+    manageCollectionThemeExclusion() {
+        const updateExclusionState = () => {
+            let isExcluded = false;
+            const activeRoutes: ActivatedRoute[] = this.activatedRoute.children;
+
+            activeRoutes.forEach((route: ActivatedRoute) => {
+                let activeRoute: ActivatedRoute = route;
+                while (activeRoute.firstChild) {
+                    if (activeRoute.snapshot.data?.excludeFromTheme) {
+                        isExcluded = true;
+                    }
+                    activeRoute = activeRoute.firstChild;
+                }
+                if (activeRoute.snapshot.data?.excludeFromTheme) {
+                    isExcluded = true;
+                }
+            });
+
+            if (
+                isExcluded ||
+                this.router.url.startsWith("/collections") ||
+                this.router.url.startsWith("/secinj")
+            ) {
+                document.body.dataset.collectionPage = "true";
+            } else {
+                delete document.body.dataset.collectionPage;
+            }
+        };
+
+        updateExclusionState();
+
+        this.router.events
+            .pipe(filter((event) => event instanceof NavigationEnd))
+            .subscribe(() => {
+                updateExclusionState();
             });
     }
 

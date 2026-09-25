@@ -3,7 +3,7 @@
 .tab-menu {
     display: grid;
     grid-template-columns: 100px 100px 100px;
-    color: $dark-grey;
+    color: var(--theme-text);
 }
 
 .tab-menu__label-container__label {
@@ -16,5 +16,5 @@
 }
 
 .label-container__selected-label {
-    color: $light-blue;
+    color: var(--theme-action-primary);
 }

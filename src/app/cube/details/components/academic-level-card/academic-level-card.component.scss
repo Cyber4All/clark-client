@@ -3,8 +3,10 @@
 .academic-level-card {
     border-radius: 5px;
     box-sizing: border-box;
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.1);
-    color: $dark-grey;
+    background-color: var(--theme-surface);
+    border: 1px solid var(--theme-border);
+    box-shadow: 0 4px 20px 0 var(--theme-shadow);
+    color: var(--theme-text);
     height: 350px;
     text-align: center;
     min-width: 275px;
@@ -16,7 +18,7 @@
 }
 
 .academic-level-card__title-container {
-    color: $darker-grey;
+    color: var(--theme-text-strong);
     font-size: 23px;
     font-weight: normal;
     margin-top: 50px;
@@ -35,7 +37,7 @@
 }
 
 .level-selected {
-    color: $light-blue;
+    color: var(--theme-action-primary);
 }
 
 ul {

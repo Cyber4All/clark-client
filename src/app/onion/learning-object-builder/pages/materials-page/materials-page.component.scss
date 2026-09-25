@@ -6,7 +6,7 @@
     padding-left: 20px;
 
     .icon {
-        color: $light-blue;
+        color: var(--theme-action-primary);
         font-size: $large;
         align-items: left;
         justify-content: left;
@@ -19,5 +19,6 @@
         margin: 0 30px 15px 10px;
         align-items: left;
         justify-content: left;
+        color: var(--theme-text-strong);
     }
 }

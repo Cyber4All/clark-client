@@ -2,6 +2,8 @@
 
 .content {
     padding: 0;
+    color: var(--theme-text);
+    background: var(--theme-canvas);
 
     .sub-content {
         margin-top: 0;
@@ -34,7 +36,7 @@
 
 a:not(.no-link) {
     text-decoration: underline;
-    color: $blue-accent;
+    color: var(--theme-link);
 }
 
 ::ng-deep clark-dashboard,

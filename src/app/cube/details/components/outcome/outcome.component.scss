@@ -1,7 +1,7 @@
 @import "_vars.scss";
 
 .outcome {
-    border-bottom: 2px solid $light-grey;
+    border-bottom: 1px solid var(--theme-border);
     padding-top: 10px;
     padding-bottom: 10px;
     cursor: pointer;
@@ -13,12 +13,12 @@
 }
 
 .text-container__mapped-to {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
 }
 
 .outcome__grid-container__icon-container {
     align-self: center;
-    color: $light-blue;
+    color: var(--theme-action-primary);
 }
 
 .outcome__grid-container__mapped-outcomes-count-container {
@@ -27,12 +27,12 @@
 }
 
 .mapped-outcomes-count-container__number {
-    color: $light-blue;
+    color: var(--theme-action-primary);
     text-align: center;
 }
 
 .mapped-outcomes-count-container__text {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     text-align: center;
 }
 
@@ -52,16 +52,16 @@
 }
 
 .mappings-display__list__item {
-    color: $light-blue;
+    color: var(--theme-action-primary);
     margin-top: 8px;
 }
 
 .list__item__header-text {
-    color: black;
+    color: var(--theme-text-strong);
 }
 
 .list__item__outcome-text {
-    color: $dark-grey;
+    color: var(--theme-text);
     font-size: 12px;
 }
 

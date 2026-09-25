@@ -106,7 +106,12 @@
                                     View Revisions
                                 </div>
                                 <clark-toggle-switch
-                                    style="color: orange"
+                                    style="
+                                        color: var(
+                                            --theme-action-primary,
+                                            #fea200
+                                        );
+                                    "
                                     [aria]="ariaLabel"
                                     (toggled)="
                                         viewReleased($event)
