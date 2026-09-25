@@ -11,7 +11,6 @@ import {
     ViewContainerRef,
 } from "@angular/core";
 import { AuthService } from "./core/auth-module/auth.service";
-import { LibraryService } from "./core/library-module/library.service";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { Title } from "@angular/platform-browser";
 import { filter } from "rxjs/operators";
@@ -109,7 +108,6 @@ export class ClarkComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private libraryService: LibraryService,
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private titleService: Title,
@@ -124,14 +122,9 @@ export class ClarkComponent implements OnInit {
         this.isSupportedBrowser = !/msie\s|trident\/|edge\//i.test(
             window.navigator.userAgent,
         );
-        !this.isSupportedBrowser
-            ? this.router.navigate(["/unsupported"])
-            : this.authService.isLoggedIn.subscribe((value: boolean) => {
-                  // Loads the user's library if they are logged in
-                  if (value) {
-                      this.libraryService.getLibrary({});
-                  }
-              });
+        if (!this.isSupportedBrowser) {
+            this.router.navigate(["/unsupported"]);
+        }
 
         this.router.events
             .pipe(

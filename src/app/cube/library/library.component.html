@@ -1,168 +1,147 @@
 <section class="library">
     <div class="library__splash">
         <div class="library__splash-container">
-            <h1 class="library__splash-container__title">Your Library</h1>
+            <h1 class="library__splash-container__title">Download History</h1>
         </div>
     </div>
 
     <div class="library__content-container">
-        <h2 class="library__cards-container__title">
-            {{ notificationCount }} Update<span *ngIf="notificationCount !== 1"
-                >s</span
-            >
-            to Items in Your Library
-        </h2>
+        <div class="library__content-container__saved-items">
+            <h2 class="library-items__title">Downloaded Items</h2>
 
-        <div
-            *ngIf="notifications?.length; else emptyNotificationsTemplate"
-            class="library__cards-container">
             <div
-                class="notifications-container"
-                hammertime
-                (swipeRight)="setNotifications(firstIndex + 1)"
-                (swipeLeft)="setNotifications(firstIndex - 1)">
-                <button
-                    *ngIf="firstIndex > 0"
-                    class="cards-container__arrow-container left"
-                    (activate)="setNotifications(firstIndex - 1)">
-                    <i aria-hidden="true" class="fal fa-arrow-circle-left"></i>
-                </button>
+                *ngIf="loading"
+                class="download-history-state"
+                role="status"
+                aria-live="polite">
+                Loading your download history...
+            </div>
 
-                <div
-                    [@slider]="lastIndex"
-                    class="notifications-container__cards">
+            <div
+                *ngIf="serviceError && !loading"
+                class="download-history-state"
+                role="alert">
+                <p class="empty-notification-container__message">
+                    Unable to load your download history.
+                </p>
+                <button class="button good" (activate)="retry()">
+                    Try Again
+                </button>
+            </div>
+
+            <div
+                *ngIf="
+                    !loading && !serviceError && !downloadHistoryItems?.length
+                "
+                class="empty-notification-container">
+                <i
+                    class="far fa-4x fa-download empty-notification-container__icon"
+                    aria-hidden="true"></i>
+                <p class="empty-notification-container__message">
+                    No downloads in your history yet.
+                </p>
+            </div>
+
+            <div
+                *ngIf="
+                    !loading && !serviceError && downloadHistoryItems?.length
+                "
+                class="library-items__list-items">
+                <div class="download-history-table" role="table">
+                    <div class="download-history-table__header" role="row">
+                        <div role="columnheader">Length</div>
+                        <div role="columnheader">Type</div>
+                        <div role="columnheader">Title</div>
+                        <div role="columnheader">File Name</div>
+                        <div role="columnheader">Downloaded</div>
+                    </div>
+
                     <div
-                        *ngFor="let notification of notifications"
-                        class="cards-container__card">
-                        <clark-notification-card
-                            [notification]="notification"
-                            (deleteButtonClicked)="
-                                deleteNotification(notification)
-                            "
-                            (changeLogButtonClicked)="
-                                openViewAllChangelogsModal(notification)
-                            "
-                            (detailsButtonClicked)="
-                                goToNotification(notification)
-                            ">
-                        </clark-notification-card>
+                        *ngFor="
+                            let item of downloadHistoryItems;
+                            let i = index;
+                            trackBy: trackDownloadHistoryItem
+                        "
+                        class="download-history-table__row"
+                        role="row">
+                        <div role="cell">
+                            <span
+                                [attr.class]="
+                                    'library-item__length ' + item.displayType
+                                ">
+                                {{ item.displayType | titlecase }}
+                            </span>
+                        </div>
+
+                        <div class="download-history-table__type" role="cell">
+                            <i
+                                [attr.class]="
+                                    isBundle(item)
+                                        ? 'fas fa-layer-group download-history-table__type-icon'
+                                        : 'far fa-file download-history-table__type-icon'
+                                "
+                                aria-hidden="true"></i>
+                            <span>{{ getDownloadType(item) }}</span>
+                        </div>
+
+                        <div
+                            class="download-history-table__resource"
+                            role="cell">
+                            <button
+                                *ngIf="canNavigate(item)"
+                                class="library-item__title library-item__title-button"
+                                (activate)="goToItem($event, item)">
+                                {{ getDisplayTitle(item) }}
+                            </button>
+                        </div>
+
+                        <div role="cell">
+                            <button
+                                *ngIf="canDownloadFile(item); else fileName"
+                                type="button"
+                                class="library-item__title library-item__title-button download-history-file-name"
+                                [class.download-history-file-name--has-path]="
+                                    getFilePath(item)
+                                "
+                                (click)="downloadFile($event, item)"
+                                [attr.aria-label]="
+                                    'Download ' + getFileName(item)
+                                ">
+                                <span
+                                    class="download-history-file-name__short"
+                                    aria-hidden="true">
+                                    {{ getFileName(item) }}
+                                </span>
+                                <span
+                                    class="download-history-file-name__path"
+                                    aria-hidden="true">
+                                    {{ getFilePath(item) }}
+                                </span>
+                            </button>
+                            <ng-template #fileName>
+                                <span
+                                    *ngIf="getFileName(item); else noFileName">
+                                    {{ getFileName(item) }}
+                                </span>
+                            </ng-template>
+                            <ng-template #noFileName>—</ng-template>
+                        </div>
+
+                        <div role="cell">
+                            {{ item.downloadedAt | date: "medium" }}
+                        </div>
                     </div>
                 </div>
 
-                <button
-                    *ngIf="
-                        lastIndex < localNotifications.length ||
-                        currentNotificationsPageNumber <
-                            lastNotificationsPageNumber
-                    "
-                    class="cards-container__arrow-container right"
-                    (activate)="setNotifications(firstIndex + 1)">
-                    <i aria-hidden="true" class="fal fa-arrow-circle-right"></i>
-                </button>
-            </div>
-        </div>
-
-        <div class="library__content-container__saved-items">
-            <h2 class="library-items__title" #savedList>Saved Items</h2>
-            <div
-                *ngIf="libraryItems?.length; else emptyLibraryTemplate"
-                class="library-items__list-items">
-                <div *ngFor="let libraryItem of libraryItems; let i = index">
-                    <clark-library-item
-                        [learningObject]="libraryItem.learningObject"
-                        [learningObjectAverageRating]="libraryItem.avgRating"
-                        (downloadButtonClicked)="
-                            downloadObject(
-                                $event,
-                                libraryItem.learningObject,
-                                i
-                            )
-                        "
-                        (deleteButtonClicked)="
-                            toggleDeleteLibraryItemModal(true);
-                            libraryItemIdToDelete = libraryItem._id
-                        "
-                        (titleClicked)="goToItem(libraryItem.learningObject)"
-                        [currIndex]="currentIndex"
-                        [myIndex]="i"></clark-library-item>
+                <div class="pagination-container" *ngIf="nextCursor">
+                    <button
+                        class="button neutral"
+                        [disabled]="loadingMore"
+                        (activate)="loadMore()">
+                        {{ loadingMore ? "Loading..." : "Load More" }}
+                    </button>
                 </div>
-            </div>
-            <div class="pagination-container">
-                <clark-pagination
-                    [lastPageNumber]="lastPageNumber"
-                    [currentPageNumber]="currentPageNumber"
-                    (newPageNumberClicked)="
-                        changeLibraryItemPage($event)
-                    "></clark-pagination>
             </div>
         </div>
     </div>
 </section>
-
-<ng-template #emptyNotificationsTemplate>
-    <div class="empty-notification-container">
-        <i
-            class="far fa-4x fa-thumbs-up empty-notification-container__icon"></i>
-        <p class="empty-notification-container__message">
-            All of your saved items are up-to-date!
-        </p>
-    </div>
-</ng-template>
-
-<ng-template #emptyLibraryTemplate>
-    <div class="empty-notification-container">
-        <p class="empty-notification-container__message">
-            No Learning Objects in your Library
-        </p>
-        <a [routerLink]="['/browse']">Browse Learning Objects</a>
-    </div>
-</ng-template>
-
-<clark-popup *ngIf="showDownloadModal" (closed)="toggleDownloadModal(false)">
-    <div style="max-width: 600px" #popupInner>
-        <clark-download-notice-popup
-            (close)="toggleDownloadModal(false)"></clark-download-notice-popup>
-    </div>
-</clark-popup>
-
-<clark-popup
-    [floating]="true"
-    *ngIf="openChangelogModal"
-    (closed)="closeChangelogsModal()">
-    <div
-        #popupInner
-        style="min-width: 500px; max-width: 650px"
-        class="popup-inner">
-        <clark-changelog-modal
-            [learningObject]="changelogLearningObject"
-            [changelogs]="changelogs ? changelogs[0] : undefined"
-            [loading]="loadingChangelogs"></clark-changelog-modal>
-    </div>
-</clark-popup>
-
-<clark-popup
-    *ngIf="showDeleteLibraryItemModal"
-    (closed)="toggleDeleteLibraryItemModal(false)">
-    <div style="max-width: 600px" #popupInner>
-        <div class="delete-library-item-modal">
-            <h3 class="delete-library-item-modal__header">Are you sure?</h3>
-            <p class="delete-library-item-modal__warning">
-                You're deleting an item from your Library!
-            </p>
-            <div>
-                <button
-                    aria-label="cancel saved item deletion"
-                    class="button neutral"
-                    (activate)="toggleDeleteLibraryItemModal(false)">
-                    Cancel
-                </button>
-                <button
-                    aria-label="delete saved item"
-                    class="delete-library-item-modal__button button"
-                    (activate)="removeItem()">
-                    Delete
-                </button>
-            </div>
-        </div>
-    </div>
-</clark-popup>
