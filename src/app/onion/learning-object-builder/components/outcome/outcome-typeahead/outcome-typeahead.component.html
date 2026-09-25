@@ -5,8 +5,7 @@
             *ngIf="verb"
             class="verb"
             [ngClass]="{ bad: !goodVerb }"
-            [attr.aria-disabled]="disabled"
-            (activate)="!disabled && goodVerb && toggleMenu(true, $event)">
+            (activate)="goodVerb && toggleMenu(true, $event)">
             {{ verb | titlecase }}
             <span *ngIf="goodVerb">
                 <i class="fas fa-angle-down"></i>
@@ -16,8 +15,6 @@
             [ngClass]="{ withVerb: verb, bad: verb && !goodVerb }"
             placeholder="Outcome text"
             type="text"
-            [disabled]="disabled"
-            [attr.aria-busy]="disabled"
             (input)="input$.next($event)"
             [value]="text" />
     </div>

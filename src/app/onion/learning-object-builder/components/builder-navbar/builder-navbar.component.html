@@ -18,7 +18,7 @@
             *ngIf="revisedVersion && !adminMode"
             aria-live="assertive"
             class="revising-notification">
-            Currently Revising: {{ learningObject?.displayName }}
+            Currently Revising: {{ learningObject?.name }}
         </div>
         <div class="top__left" *ngIf="!adminMode">
             <a (activate)="triggerExitProcess()"
@@ -35,9 +35,7 @@
                 *ngIf="
                     !['unreleased', 'rejected'].includes(
                         learningObject?.status
-                    ) &&
-                    learningObject?.collection &&
-                    collection
+                    ) && learningObject?.collection && collection
                 "
                 class="top__collection"
                 tip="This learning object has been submitted to the {{
@@ -96,16 +94,6 @@
                         learningObject
                     "></clark-editor-action-panel>
             </ng-template>
-            <button
-                type="button"
-                class="agentic-builder-action"
-                aria-label="Open Builder Helper"
-                tip="Open Builder Helper"
-                tipPosition="bottom"
-                (activate)="toggleAgenticBuilder()">
-                <i class="fas fa-wand-magic-sparkles"></i>
-                Builder Helper
-            </button>
         </div>
     </div>
     <div class="builder-navbar-wrapper__bottom">
@@ -114,23 +102,13 @@
             <ul>
                 <li>
                     <ng-container
-                        aria-label="Materials Link"
-                        [ngTemplateOutlet]="navItemTemplate"
-                        [ngTemplateOutletContext]="{
-                            disabled: false,
-                            link: 'materials',
-                            text: 'Materials',
-                        }"></ng-container>
-                </li>
-                <li>
-                    <ng-container
                         id="firstTab"
-                        aria-label="Details Link"
+                        aria-label="Basic Information Link"
                         [ngTemplateOutlet]="navItemTemplate"
                         [ngTemplateOutletContext]="{
                             disabled: false,
                             link: 'info',
-                            text: 'Details',
+                            text: 'Basic Information',
                         }"></ng-container>
                 </li>
                 <li>
@@ -138,9 +116,19 @@
                         aria-label="Learning Outcomes Link"
                         [ngTemplateOutlet]="navItemTemplate"
                         [ngTemplateOutletContext]="{
-                            disabled: false,
+                            disabled: !canRoute('outcomes'),
                             link: 'outcomes',
                             text: 'Learning Outcomes',
+                        }"></ng-container>
+                </li>
+                <li>
+                    <ng-container
+                        aria-label="Materials Link"
+                        [ngTemplateOutlet]="navItemTemplate"
+                        [ngTemplateOutletContext]="{
+                            disabled: !canRoute('materials'),
+                            link: 'materials',
+                            text: 'Materials',
                         }"></ng-container>
                 </li>
             </ul>
@@ -159,10 +147,6 @@
         </div>
     </div>
 </div>
-
-<onion-agentic-builder-panel
-    [hidden]="!showAgenticBuilder"
-    (closed)="showAgenticBuilder = false"></onion-agentic-builder-panel>
 
 <clark-submit
     *ngIf="showSubmission"
@@ -183,6 +167,15 @@
         routerLinkActive="active"
         (activate)="triggerRouteClick(link)"
         >{{ text }}</a
+    >
+    <a
+        aria-label="Please name this learning object before adding outcomes or materials"
+        *ngIf="disabled"
+        class="disabled"
+        tip="Please name this learning object before adding outcomes or materials."
+        tipPosition="top"
+        (activate)="triggerBlockedRouteClick()"
+        ><i class="fas fa-lock"></i>{{ text }}</a
     >
 </ng-template>
 

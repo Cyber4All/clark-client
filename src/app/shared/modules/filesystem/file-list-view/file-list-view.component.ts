@@ -60,11 +60,6 @@ export class FileListViewComponent implements OnInit, OnDestroy {
         state: boolean;
         item: DirectoryNode | LearningObject.Material.File;
     }> = new EventEmitter();
-    @Output()
-    emitContext: EventEmitter<{
-        state: boolean;
-        item: DirectoryNode | LearningObject.Material.File;
-    }> = new EventEmitter();
 
     private editableFile: LearningObject.Material.File | DirectoryNode;
 
@@ -174,13 +169,6 @@ export class FileListViewComponent implements OnInit, OnDestroy {
             state: state,
             item: item,
         });
-    }
-
-    handleContextClicked(
-        state: boolean,
-        item: DirectoryNode | LearningObject.Material.File,
-    ) {
-        this.emitContext.emit({ state, item });
     }
 
     returnToFileView() {

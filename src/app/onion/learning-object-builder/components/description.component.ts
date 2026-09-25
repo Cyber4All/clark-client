@@ -1,12 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-} from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -29,9 +21,7 @@ import { skip } from "rxjs/operators";
 @Component({
     selector: "onion-learning-object-description",
     template: `
-        <div
-            class="description-wrapper"
-            [class.description-wrapper--disabled]="disabled">
+        <div class="description-wrapper">
             <!-- <div id="description-label" class="label">How woud you describe this learning object?
     <span tip="The description is a high level overview of the Learning Object that can be returned in search results">
       <a href="http://about.clark.center/tutorial/#Descriptions" target="blank"><i class="fas fa-question-circle"></i></a>
@@ -144,19 +134,13 @@ import { skip } from "rxjs/operators";
                 outline: 2px solid rgba(28, 112, 221, 0.35);
                 outline-offset: -2px;
             }
-
-            .description-wrapper--disabled {
-                cursor: wait;
-                opacity: 0.7;
-            }
         `,
     ],
     standalone: true,
     imports: [NgxSimpleTextEditorModule, FormsModule, ReactiveFormsModule],
 })
-export class LearningObjectDescriptionComponent implements OnInit, OnChanges {
+export class LearningObjectDescriptionComponent implements OnInit {
     @Input() learningObject;
-    @Input() disabled = false;
 
     description = new UntypedFormControl("");
     config = {
@@ -179,12 +163,6 @@ export class LearningObjectDescriptionComponent implements OnInit, OnChanges {
     @Output() touched: EventEmitter<void> = new EventEmitter();
     @Output() textOutput: EventEmitter<string> = new EventEmitter();
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes.disabled) {
-            this.setDisabledState();
-        }
-    }
-
     ngOnInit() {
         // Watch for any updates to the description form.
         this.description.valueChanges
@@ -195,16 +173,6 @@ export class LearningObjectDescriptionComponent implements OnInit, OnChanges {
 
         if (this.learningObject.description) {
             this.description.patchValue(this.learningObject.description);
-        }
-
-        this.setDisabledState();
-    }
-
-    private setDisabledState(): void {
-        if (this.disabled) {
-            this.description.disable({ emitEvent: false });
-        } else {
-            this.description.enable({ emitEvent: false });
         }
     }
 }

@@ -35,10 +35,6 @@ export const CALLBACKS = {
     },
 };
 
-export interface LearningObjectBuildRequest {
-    fields: Array<"name" | "description" | "learningOutcomes">;
-}
-
 @Injectable({
     providedIn: "root",
 })
@@ -155,10 +151,7 @@ export class LearningObjectService {
                                         uris[key],
                                         CALLBACKS[key],
                                     ).subscribe((value) => {
-                                        responses.next({
-                                            requestKey: key,
-                                            value,
-                                        });
+                                        responses.next({ requestKey: key, value });
                                         if (
                                             ++completed === properties.length ||
                                             completed === uris.length
@@ -313,20 +306,6 @@ export class LearningObjectService {
                     (learningObject) => new LearningObject(learningObject),
                 );
             });
-    }
-
-    buildLearningObject(
-        learningObjectId: string,
-        request: LearningObjectBuildRequest,
-    ): Promise<unknown> {
-        return this.http
-            .post(
-                LEARNING_OBJECT_ROUTES.BUILD_LEARNING_OBJECT(learningObjectId),
-                request,
-                { headers: this.headers, withCredentials: true },
-            )
-            .pipe(catchError(this.handleError))
-            .toPromise();
     }
 
     /**
@@ -584,14 +563,8 @@ export class LearningObjectService {
      * @returns {Promise<boolean>} - true if name is available, false if duplicate exists
      * @memberof LearningObjectService
      */
-    async checkNameAvailability(
-        name: string,
-        learningObjectId?: string,
-    ): Promise<boolean> {
-        const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(
-            name,
-            learningObjectId,
-        );
+    async checkNameAvailability(name: string): Promise<boolean> {
+        const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(name);
         return this.http
             .get<{ validName: boolean }>(route, {
                 headers: this.headers,

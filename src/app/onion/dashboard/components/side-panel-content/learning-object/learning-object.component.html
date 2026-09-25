@@ -2,17 +2,16 @@
     <div class="learning-object__row">
         <div
             tabindex="0"
-            attr.aria-label="{{ learningObject.displayName }}"
-            [tip]="learningObject?.displayName"
+            attr.aria-label="{{ learningObject.name }}"
+            [tip]="learningObject?.name"
             [tipDisabled]="
-                !learningObject?.displayName ||
-                learningObject?.displayName.length <= 70
+                !learningObject?.name || learningObject?.name.length <= 70
             "
             tipPosition="bottom"
             class="learning-object__name">
             {{
-                (learningObject?.displayName | slice: 0 : 69) +
-                    (learningObject?.displayName.length > 70 ? "..." : "")
+                (learningObject?.name | slice: 0 : 69) +
+                    (learningObject?.name.length > 70 ? "..." : "")
             }}
         </div>
     </div>

@@ -28,7 +28,7 @@ const onion_routes: Routes = [
                 data: { state: "dashboard", title: "Your Dashboard" },
             },
             {
-                path: "learning-object-builder/:cuid/:version",
+                path: "learning-object-builder",
                 loadChildren: () =>
                     import("../onion/learning-object-builder/learning-object-builder.module").then(
                         (m) => m.LearningObjectBuilderModule,
@@ -36,12 +36,7 @@ const onion_routes: Routes = [
                 canActivate: [AuthGuard],
             },
             {
-                path: "learning-object-builder",
-                pathMatch: "full",
-                redirectTo: "learning-object-builder/materials",
-            },
-            {
-                path: "learning-object-builder",
+                path: "learning-object-builder/:cuid/:version",
                 loadChildren: () =>
                     import("../onion/learning-object-builder/learning-object-builder.module").then(
                         (m) => m.LearningObjectBuilderModule,

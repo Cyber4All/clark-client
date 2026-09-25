@@ -190,7 +190,9 @@ export class ScaffoldComponent implements OnInit {
         this.deleteIndex = index;
         this.childrenConfirmationMessage = `Remove '${
             this.children[index].name
-        }' as a child of '${this.learningObject.name}'?`;
+        }' as a child of '${
+            this.learningObject.name
+        }'?`;
 
         this.toggleConfirmationModal(true);
     }
