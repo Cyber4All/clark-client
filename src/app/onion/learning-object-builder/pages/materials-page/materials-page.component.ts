@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from "@angular/common";
+import { NgIf } from "@angular/common";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { LearningObject } from "@entity";
 import { DirectoryNode } from "app/shared/modules/filesystem/DirectoryNode";
@@ -9,7 +9,6 @@ import { BUILDER_ACTIONS, BuilderStore } from "../../builder-store.service";
 import { ColumnWrapperComponent } from "../../components/column-wrapper/column-wrapper.component";
 import { FileUploadMeta } from "../../components/content-upload/app/services/typings";
 import { UploadComponent } from "../../components/content-upload/app/upload/upload.component";
-import { MaterialNotesComponent } from "../../components/material-notes/material-notes.component";
 import { ScaffoldComponent } from "../../components/scaffold/scaffold.component";
 
 @Component({
@@ -23,8 +22,6 @@ import { ScaffoldComponent } from "../../components/scaffold/scaffold.component"
         ScaffoldComponent,
         UploadComponent,
         SkipLinkComponent,
-        NgFor,
-        MaterialNotesComponent,
     ],
 })
 export class MaterialsPageComponent implements OnInit, OnDestroy {
@@ -33,34 +30,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     learningObject$: Observable<LearningObject>;
     destroyed$: Subject<void> = new Subject();
     learningObject: LearningObject;
-    notes = [
-        {
-            title: "Videos",
-            content: `<p>Uploaded videos are transferred to CLARK's YouTube channel. If you host videos yourself, add them as URLs. We will contact you if video content needs updates.</p>`,
-        },
-        {
-            title: "Solution Files",
-            content: `<p>You may upload solution files. If solutions are included elsewhere in the learning object, note where reviewers can find them.</p>`,
-        },
-        {
-            title: "Malware",
-            content: `<p>Reviewers will label malware files and add a user-facing note. Upload malware samples in password-protected ZIP files and include the password in notes.</p>`,
-        },
-        {
-            title: "Large Files (1GB+)",
-            content: `<p>For files 1GB or larger, including VMs, logs, or applications, contact <a href="mailto:editors@secured.team">editors@secured.team</a> before submitting.</p>`,
-        },
-        {
-            title: "Third-Party Software",
-            content: `<p>If the object requires third-party software, include links to relevant FAQ or troubleshooting resources.</p>`,
-        },
-        {
-            title: "Semester Info",
-            content: `<p>Remove semester-specific details, such as due dates, before submitting. By submitting, you consent to CLARK removing semester details found during review. Contact info@secured.team if you do not want this removed.</p>`,
-        },
-    ];
-
-    constructor(private store: BuilderStore) { }
+    constructor(private store: BuilderStore) {}
 
     ngOnInit() {
         // Sets the learning object observable to continuously update the
@@ -180,6 +150,17 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
     }) {
         try {
             await this.store.execute(BUILDER_ACTIONS.TOGGLE_BUNDLE, event);
+        } catch (e) {
+            this.error$.next(e);
+        }
+    }
+
+    async handleContextToggled(event: {
+        state: boolean;
+        item: DirectoryNode | LearningObject.Material.File;
+    }) {
+        try {
+            await this.store.execute(BUILDER_ACTIONS.TOGGLE_CONTEXT, event);
         } catch (e) {
             this.error$.next(e);
         }

@@ -26,6 +26,7 @@ import { LearningObjectStatusIndicatorComponent } from "../../../shared/status-i
 import { EditorActionPanelComponent } from "../editor-action-panel/editor-action-panel.component";
 import { SubmitComponent } from "../../../shared/submit/submit.component";
 import { GenericCollectionLogoComponent } from "../../../../shared/components/generic-collection-logo/generic-collection-logo.component";
+import { AgenticBuilderPanelComponent } from "../agentic-builder-panel/agentic-builder-panel.component";
 
 @Component({
     selector: "onion-builder-navbar",
@@ -46,6 +47,7 @@ import { GenericCollectionLogoComponent } from "../../../../shared/components/ge
         RouterLinkActive,
         RouterLink,
         GenericCollectionLogoComponent,
+        AgenticBuilderPanelComponent,
     ],
 })
 export class BuilderNavbarComponent implements OnDestroy {
@@ -55,6 +57,7 @@ export class BuilderNavbarComponent implements OnDestroy {
 
     showSubmission: boolean;
     showSubmissionOptions: boolean;
+    showAgenticBuilder = false;
 
     learningObject: LearningObject;
     collection: Collection;
@@ -124,43 +127,6 @@ export class BuilderNavbarComponent implements OnDestroy {
     }
 
     /**
-     * Returns a boolean indicating whether a route should be shown in the navbar based on validation and email verification
-     *
-     * @param {'outcomes' | 'materials'} route
-     * @returns
-     * @memberof BuilderNavbarComponent
-     */
-    canRoute(route: string) {
-        let result: boolean;
-        const hasSavedLearningObject = !!this.learningObject?.id;
-
-        switch (route) {
-            case "outcomes":
-                result = hasSavedLearningObject;
-                break;
-            case "materials":
-                result = !!(
-                    this.auth.user?.emailVerified &&
-                    hasSavedLearningObject
-                );
-                break;
-        }
-
-        if (!this.initialRouteStates.has(route)) {
-            // set the initial route state, used for checking whether a route is "new" or not
-            this.initialRouteStates.set(route, result);
-        }
-
-        if (result) {
-            // as soon as a route becomes active, add it to the firstRouteChanges set.
-            // used for checking whether a route is "new" or not
-            this.firstRouteChanges.add(route);
-        }
-
-        return result;
-    }
-
-    /**
      * Returns whether the passed route is "new", aka was the route disabled due to validation but is now enabled and hasn't been navigated to
      *
      * @param {string} route
@@ -185,8 +151,8 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.routesClicked.add(route);
     }
 
-    triggerBlockedRouteClick(): void {
-        this.validator.showSaveErrors = true;
+    toggleAgenticBuilder(): void {
+        this.showAgenticBuilder = !this.showAgenticBuilder;
     }
 
     /**

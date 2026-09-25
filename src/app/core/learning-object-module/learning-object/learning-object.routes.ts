@@ -35,6 +35,10 @@ export const LEARNING_OBJECT_ROUTES = {
         return `${environment.apiURL}/learning-objects/${learningObjectId}/materials`;
     },
 
+    BUILD_LEARNING_OBJECT(learningObjectId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(learningObjectId)}/build`;
+    },
+
     /**
      * Get the revision of a learning object
      * @param username
@@ -84,8 +88,11 @@ export const LEARNING_OBJECT_ROUTES = {
      * @param name - The name to check
      * @returns Promise<boolean> - true if name is available, false if duplicate exists
      */
-    CHECK_NAME_AVAILABILITY(name: string) {
-        return `${environment.apiURL}/learning-objects/name/check/${encodeURIComponent(name)}`;
+    CHECK_NAME_AVAILABILITY(name: string, learningObjectId?: string) {
+        const query = learningObjectId
+            ? `?learningObjectId=${encodeURIComponent(learningObjectId)}`
+            : "";
+        return `${environment.apiURL}/learning-objects/name/check/${encodeURIComponent(name)}${query}`;
     },
 
     /**
