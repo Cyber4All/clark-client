@@ -1,0 +1,50 @@
+<main class="playlists-page">
+    <clark-skip-link
+        title="Skip directly to playlists"
+        skipLocation="playlist-results"></clark-skip-link>
+
+    <header class="page-header">
+        <div>
+            <p class="eyebrow">Discover</p>
+            <h1>Browse Playlists</h1>
+            <p class="intro">
+                Explore public collections of learning objects curated by the
+                CLARK community.
+            </p>
+        </div>
+        <span class="result-count" *ngIf="!loading && !hasError">
+            {{ playlists.length }}
+            {{ playlists.length === 1 ? "playlist" : "playlists" }}
+        </span>
+    </header>
+
+    <section id="playlist-results" tabindex="-1" aria-live="polite">
+        <div *ngIf="loading" class="status" role="status">
+            <i class="far fa-spinner-third fa-spin" aria-hidden="true"></i>
+            Loading playlists...
+        </div>
+
+        <p
+            *ngIf="!loading && hasError"
+            class="status status--error"
+            role="alert">
+            We couldn't load playlists. Please try again later.
+        </p>
+
+        <p *ngIf="!loading && !hasError && !playlists.length" class="status">
+            There are no public playlists yet.
+        </p>
+
+        <ul
+            *ngIf="!loading && !hasError && playlists.length"
+            class="playlist-grid">
+            <li *ngFor="let playlist of playlists; trackBy: trackPlaylist">
+                <clark-playlist-card
+                    [playlist]="playlist"
+                    [resolvedAuthorName]="
+                        authorNames[playlist.userId]
+                    "></clark-playlist-card>
+            </li>
+        </ul>
+    </section>
+</main>
