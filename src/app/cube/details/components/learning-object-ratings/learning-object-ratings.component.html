@@ -38,7 +38,7 @@
             </div>
             <div tabindex="0" class="rating-text">
                 <div class="rating-comment">
-                    <!-- Plain-text previews avoid cutting HTML tags; expanded reviews retain formatting. -->
+                    <!-- Angular sanitizes both bindings; the preview trims text nodes without cutting tags. -->
                     <div
                         *ngIf="
                             showMore[i] ||
@@ -46,9 +46,9 @@
                             else preview
                         "
                         [innerHTML]="rating.comment"></div>
-                    <ng-template #preview
-                        >{{ commentPreview(rating.comment) }}…</ng-template
-                    >
+                    <ng-template #preview>
+                        <div [innerHTML]="commentPreview(rating.comment)"></div>
+                    </ng-template>
                 </div>
                 <button
                     *ngIf="commentLength(rating.comment) > previewLimit"

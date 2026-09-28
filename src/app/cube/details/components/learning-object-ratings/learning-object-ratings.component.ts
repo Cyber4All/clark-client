@@ -1,7 +1,7 @@
 import {
     RATING_PREVIEW_LIMIT,
     ratingCommentLength,
-    ratingCommentPreview,
+    ratingCommentPreviewHtml,
 } from "../rating-comment";
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import { User } from "@entity";
@@ -60,10 +60,11 @@ export class LearningObjectRatingsComponent implements OnInit {
     reportIndex: number;
     showResponse = [];
     showEditResponse = [];
+    // Expansion state is per review index; it is intentionally local UI state.
     showMore: boolean[] = [];
     readonly previewLimit = RATING_PREVIEW_LIMIT;
     readonly commentLength = ratingCommentLength;
-    readonly commentPreview = ratingCommentPreview;
+    readonly commentPreview = ratingCommentPreviewHtml;
     deleteConfirmation: boolean;
     deleteResponseConfirmation: boolean;
     deleteRatingIndex: number;

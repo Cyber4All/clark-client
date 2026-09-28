@@ -26,24 +26,9 @@
         </div>
     </div>
     <div class="comment-wrapper">
-        <div class="rating-editor">
-            <div #headingControl class="rating-format">
-                <select
-                    aria-label="Text style"
-                    [ngModel]="selectedHeading"
-                    (ngModelChange)="applyHeading($event)">
-                    <option value="p">Paragraph</option>
-                    <option value="h1">Heading 1</option>
-                    <option value="h2">Heading 2</option>
-                    <option value="h3">Heading 3</option>
-                </select>
-            </div>
-            <!-- Keep this editor scoped to ratings so the builder's stable editor layout is untouched. -->
-            <st-editor
-                [ngModel]="rating.comment ?? ''"
-                (ngModelChange)="rating.comment = $event"
-                [config]="editorConfig"></st-editor>
-        </div>
+        <clark-rating-editor
+            [value]="rating.comment ?? ''"
+            (valueChange)="rating.comment = $event"></clark-rating-editor>
         <div
             class="character-count"
             [class.over-limit]="commentLength > commentLimit">

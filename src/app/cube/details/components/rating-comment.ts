@@ -62,3 +62,84 @@ export function ratingCommentPreview(html: string): string {
         .slice(0, RATING_PREVIEW_LIMIT)
         .join("");
 }
+
+/** Trim text nodes, not the HTML string, so preview headings and tags stay intact. */
+export function ratingCommentPreviewHtml(html: string): string {
+    const template = document.createElement("template");
+    template.innerHTML = html || "";
+    template.content
+        .querySelectorAll("script, style, template")
+        .forEach((node) => node.remove());
+    let remaining = RATING_PREVIEW_LIMIT;
+    // Keep this set aligned with ratingCommentText so previews and counters agree
+    // on which elements contribute a newline.
+    const blocks = new Set([
+        "P",
+        "DIV",
+        "LI",
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H5",
+        "H6",
+        "BLOCKQUOTE",
+    ]);
+
+    // Once the budget is exhausted, discard remaining siblings while preserving
+    // the already-open elements so the browser closes the preview's tags safely.
+    let truncated = false;
+    const trim = (parent: Node, closingBlocks = 0): void => {
+        for (const node of Array.from(parent.childNodes)) {
+            // Each open block will contribute a newline when counted. Only the
+            // final newline is stripped, so reserve the others before taking text.
+            const available = Math.max(
+                0,
+                remaining - Math.max(0, closingBlocks - 1),
+            );
+            if (truncated || available === 0) {
+                parent.removeChild(node);
+                truncated = true;
+                continue;
+            }
+            if (node.nodeType === Node.TEXT_NODE) {
+                const characters = Array.from(node.textContent || "");
+                node.textContent = characters.slice(0, available).join("");
+                remaining -= Math.min(characters.length, available);
+                truncated = characters.length > available;
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+                trim(node, closingBlocks + (blocks.has(node.nodeName) ? 1 : 0));
+                // Match the line-break accounting used by ratingCommentText.
+                if (node.nodeName === "BR" || blocks.has(node.nodeName)) {
+                    remaining = Math.max(0, remaining - 1);
+                }
+            }
+        }
+    };
+    trim(template.content);
+    if (ratingCommentLength(html) > RATING_PREVIEW_LIMIT) {
+        // Keep the marker in the final text's formatting, not after a block-level
+        // wrapper. Remove trailing breaks/empty blocks so it stays beside the text.
+        const walker = document.createTreeWalker(
+            template.content,
+            NodeFilter.SHOW_TEXT,
+        );
+        let lastText: Node | null = null;
+        while (walker.nextNode()) {
+            if (walker.currentNode.textContent?.trim())
+                lastText = walker.currentNode;
+        }
+        if (lastText) {
+            const tail = document.createRange();
+            tail.setStartAfter(lastText);
+            tail.setEnd(template.content, template.content.childNodes.length);
+            tail.deleteContents();
+            lastText.textContent = lastText.textContent.trimEnd() + "…";
+        } else {
+            template.content.append("…");
+        }
+    }
+    // Serialize through the DOM to keep literal '<' characters escaped. Callers
+    // must still use Angular's normal innerHTML binding, never bypass sanitization.
+    return template.innerHTML;
+}

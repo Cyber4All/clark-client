@@ -83,16 +83,6 @@
             .rating-comment {
                 // The template truncates text; expanded HTML must never be height-clipped.
                 white-space: pre-wrap;
-
-                ::ng-deep h1,
-                ::ng-deep h2,
-                ::ng-deep h3,
-                ::ng-deep h4,
-                ::ng-deep h5,
-                ::ng-deep h6,
-                ::ng-deep p {
-                    margin-top: 0;
-                }
             }
 
             .read-more-button {

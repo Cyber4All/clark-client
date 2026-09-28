@@ -1,6 +1,38 @@
 # Rating Comments Rich Text Editor
 
 ## Purpose / Big Picture
+
+### Angular maintainability follow-up — 2026-09-25
+
+Toolbar scope correction (2026-09-25): Removed the link input control from RatingEditorComponent at user request. The review editor now exposes style, bold, italic, underline, and list controls only. Builder and response editors are untouched. The Angular component test asserts the link control is absent.
+
+Raw-markup entry follow-up (2026-09-28): The review editor retains safe internal HTML for toolbar formatting, but rejects typed angle brackets and converts pasted HTML tags to plain text before native insertion. This prevents new review text from containing user-authored raw markup without changing existing stored reviews or the renderer's Angular sanitization.
+
+Validation (2026-09-28): Focused rating Jest suite passed 32 tests, including typed-markup and pasted-HTML cases. `npm run build` passed.
+
+Pre-commit review corrections (2026-09-25): Reserved pending closing-block boundaries before allocating preview text, keeping nested previews within 512 code points under the existing counter. Moved the ellipsis into the final nonblank text node and removed trailing breaks/empty blocks; the marker is display-only and is outside the 512-character content budget. The template no longer appends an ellipsis after a block wrapper. Added nested-block, exact-boundary and trailing-whitespace regression cases; short reviews remain unchanged. Checked 324 nesting/boundary combinations. Replies remain untouched. This supersedes the earlier truncation implementation notes.
+
+Preview formatting correction (2026-09-25): Collapsed reviews previously used plain text, losing headings until expanded. Added ratingCommentPreviewHtml to trim an inert DOM at the 512-code-point budget while preserving enclosing formatting tags and matching block/BR counting. Collapsed previews use Angular's normal sanitized innerHTML binding; no trust bypass. Tests cover heading/font-size retention, emoji boundaries, escaped literal markup and line breaks. All 23 review/editor/helper tests and the Angular build pass. This supersedes earlier plain-text preview notes; replies are unchanged.
+
+Scope correction (2026-09-25): User clarified this ticket is reviews only. Response-form changes and tests were restored to their pre-refactor versions. RatingEditorComponent is used only by reviews.
+
+Final housekeeping (2026-09-28): Restored the shared TextEditorComponent and removed its global wrapping rule because both belonged to the reverted response-editor path. Remaining code and tests are review-only.
+
+Documentation review (2026-09-28): Added focused comments for the Angular-owned toolbar state, intentionally empty third-party toolbar, accessibility attributes, selection synchronization, shared preview/counter block rules, per-review expansion state, and compact toolbar styling. Updated the stale link-control CSS comment after link removal. Comments describe non-obvious constraints and do not restate ordinary code.
+
+Visual follow-up (2026-09-25): The library's encapsulated .st-toolbar selector outranked the global hide rule, leaving an empty padded toolbar strip. Increased specificity using the editor container (no deep selector), and similarly scoped toolbar spacing and editable-area rules. Chrome now explicitly checks that the native toolbar is hidden, the custom toolbar and editable area have no gap, and resizing is disabled. Build and browser checks passed. Earlier browser assertions did not check the empty toolbar's visibility.
+
+Use a feature-local RatingEditorComponent for reviews. Its Angular template owns the heading select and the library's exported toolbar controls, eliminating DOM reparenting. Keep the existing library to satisfy builder reuse; its native editing commands are contained in this adapter rather than replacing the editor engine in this ticket. Keep component inputs/outputs typed, synchronize selection and formatting through the adapter, and use Angular lifecycle cleanup for document listeners. Preserve current visual sizing, inline heading behavior, keyboard shortcuts and sanitization.
+
+- [x] (2026-09-25) Extracted RatingEditorComponent with Angular-owned heading select and exported library toolbar controls, accessible textbox attributes and typed inputs/outputs. Removed toolbar DOM reparenting. HostListener lifecycle handles listener cleanup.
+- [x] (2026-09-25) Reviews use the feature-local editor, preserving reset and inline-format behavior. Responses remain unchanged.
+- [x] (2026-09-25) Added Angular TestBed editor tests. Focused editor and helper tests pass using `node_modules/.bin/jest --config jest.ratings.config.js --runInBand`. Angular build and isolated Chrome checks passed for mixed headings, toolbar alignment, native shortcuts/history, saved formatting and desktop/mobile wrapping.
+
+Testing drift: the root Jest config overrides the Angular transform with ts-jest, so this ticket uses a focused jest.ratings.config.js and setupZoneTestEnv setup without changing existing suites. Unit tests mock native editing APIs (jsdom lacks them); actual formatting/history was checked in Chrome. The Chrome harness remains a temporary diagnostic; committed component/helper tests are reproducible through the command above. Existing Sass deprecation and querystring CommonJS warnings remain outside scope.
+
+Discovery: the library's mutation observer reports external writes as changes. RatingEditorComponent filters unchanged input echoes and keeps its own ngModel value, avoiding DOM replacement that destroys native undo history. Regression tests cover external reset silence and identity preservation when a parent echoes user input. No backend updates or editor-engine migration were performed.
+
+No routing, API, environment, or builder migration. Backend validation remains separate. Preserve existing uncommitted deep-selector cleanup. Validation must distinguish component tests (mocked native commands) from actual Chrome editing checks.
 Replace the plain-text comment inputs used for learning-object ratings and rating responses with the existing builder rich-text editor. The editor will use formatting controls and heading sizes, omit undo/redo controls because keyboard shortcuts provide those actions, and preserve the existing submit/cancel and validation flows.
 
 ## Progress
@@ -101,6 +133,13 @@ Observed editable widths: desktop clientWidth/scrollWidth 648/648px; mobile 271/
 This supersedes earlier claims that CSS ch units represent exact character counts. Current wrapping follows the available bounded width; no automatic paragraph insertion or per-character line splitting is performed.
 
 ## Prospective typing styles — 2026-09-23
+
+### Remove deprecated deep selectors — 2026-09-23
+
+- [x] (2026-09-23) Moved rating editor internals, shared editor wrapping, and rendered review HTML rules to src/_rating-rich-text.scss with explicit component-host prefixes. Imported through existing globals.scss; preserved Angular emulated encapsulation for component-owned elements.
+- [x] (2026-09-23) No ::ng-deep remains in the three affected components. Chrome regression checks using the global partial passed for desktop/mobile wrapping, toolbar alignment, shortcuts and mixed formatting. Angular build and diff check passed.
+
+Scope is the ratings work, not a repository-wide styling migration. Global CSS is necessary for third-party editor DOM and innerHTML content that lack the parent component's generated attributes. All migrated rules must have a component host selector to prevent unrelated editor changes.
 
 Documentation follow-up (2026-09-23): Added targeted comments for native font-size mapping, dropdown input isolation, shortcut/model synchronization, empty-markup validation, submission-only serialization, service/client limits, preview block boundaries, reset handling, dialog width arithmetic and the intentional word-splitting tradeoff. Existing comments cover selection restoration, toolbar placement, sanitization and preview rendering. No functional behavior changes. PR description uses the user's Summary / Changes / Notes / Screenshots format and explicitly leaves the service-limit update outstanding.
 
