@@ -1,8 +1,15 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, NgZone, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { FileService } from "app/core/learning-object-module/file/file.service";
 import { NgIf } from "@angular/common";
 import { MarkdownComponent } from "ngx-markdown";
+import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
+import { environment } from "@env/environment";
+import { buildNotebookPreviewUrl } from "./notebook-preview-url";
+
+const NOTEBOOK_LOAD_TIMEOUT_MS = 15_000;
+const NOTEBOOK_UNAVAILABLE_MESSAGE =
+    "Notebook preview is temporarily unavailable. Download the notebook to view it locally, or try again later.";
 
 @Component({
     selector: "clark-code-preview",
@@ -11,7 +18,7 @@ import { MarkdownComponent } from "ngx-markdown";
     standalone: true,
     imports: [NgIf, MarkdownComponent],
 })
-export class CodePreviewComponent implements OnInit {
+export class CodePreviewComponent implements OnInit, OnDestroy {
     fileName = "";
     language = "";
     fileContent = "";
@@ -19,10 +26,17 @@ export class CodePreviewComponent implements OnInit {
     isLoading = true;
     hasError = false;
     errorMessage = "";
+    isNotebookPreview = false;
+    notebookViewerUrl: SafeResourceUrl | null = null;
+    notebookSourceUrl: string | null = null;
+
+    private notebookLoadTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
     constructor(
         private route: ActivatedRoute,
         private fileService: FileService,
+        private sanitizer: DomSanitizer,
+        private ngZone: NgZone,
     ) {}
 
     ngOnInit() {
@@ -30,21 +44,74 @@ export class CodePreviewComponent implements OnInit {
             const url = params["url"];
             this.language = params["language"] || "text";
             this.fileName = params["filename"] || "Unknown File";
+            this.isNotebookPreview = params["type"] === "notebook";
 
             if (url) {
-                this.loadFileContent(url);
+                if (this.isNotebookPreview) {
+                    this.loadNotebookPreview(url);
+                } else {
+                    this.loadFileContent(url);
+                }
             } else {
                 this.handleError("No file URL provided");
             }
         });
     }
 
+    ngOnDestroy(): void {
+        this.clearNotebookLoadTimeout();
+    }
+
+    /**
+     * Loads a static notebook rendering from the configured nbviewer instance.
+     */
+    private loadNotebookPreview(url: string): void {
+        this.clearNotebookLoadTimeout();
+        this.isLoading = true;
+        this.hasError = false;
+        this.errorMessage = "";
+        this.notebookViewerUrl = null;
+        this.notebookSourceUrl = null;
+
+        try {
+            const viewerUrl = buildNotebookPreviewUrl(
+                url,
+                environment.notebookViewerURL,
+            );
+            this.notebookSourceUrl = url;
+            this.notebookViewerUrl =
+                this.sanitizer.bypassSecurityTrustResourceUrl(viewerUrl);
+            this.startNotebookLoadTimeout();
+        } catch (error) {
+            this.handleError(this.formatError(error));
+        }
+    }
+
+    onNotebookLoaded(): void {
+        this.clearNotebookLoadTimeout();
+        this.isLoading = false;
+    }
+
+    onNotebookLoadError(): void {
+        this.handleError(NOTEBOOK_UNAVAILABLE_MESSAGE);
+    }
+
+    retryNotebookPreview(): void {
+        if (this.notebookSourceUrl) {
+            this.loadNotebookPreview(this.notebookSourceUrl);
+        }
+    }
+
     /**
      * Loads file content from the provided URL
      */
     private loadFileContent(url: string): void {
+        this.clearNotebookLoadTimeout();
+        this.notebookViewerUrl = null;
+        this.notebookSourceUrl = null;
         this.isLoading = true;
         this.hasError = false;
+        this.errorMessage = "";
 
         this.fileService
             .getLearningObjectFileContent(url)
@@ -72,9 +139,27 @@ export class CodePreviewComponent implements OnInit {
      * Handles general errors
      */
     private handleError(message: string): void {
+        this.clearNotebookLoadTimeout();
         this.hasError = true;
         this.errorMessage = message;
         this.isLoading = false;
+    }
+
+    private startNotebookLoadTimeout(): void {
+        this.ngZone.runOutsideAngular(() => {
+            this.notebookLoadTimeoutId = setTimeout(() => {
+                this.ngZone.run(() => {
+                    this.handleError(NOTEBOOK_UNAVAILABLE_MESSAGE);
+                });
+            }, NOTEBOOK_LOAD_TIMEOUT_MS);
+        });
+    }
+
+    private clearNotebookLoadTimeout(): void {
+        if (this.notebookLoadTimeoutId !== null) {
+            clearTimeout(this.notebookLoadTimeoutId);
+            this.notebookLoadTimeoutId = null;
+        }
     }
 
     private formatError(error: unknown): string {
