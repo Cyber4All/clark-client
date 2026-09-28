@@ -107,7 +107,7 @@ export class ScaffoldComponent implements OnInit {
         this.childrenConfirmation = false;
         this.ariaLabel = "Add and delete Children";
 
-        if (!this.learningObject.id) {
+        if (!this.learningObject?.id) {
             this.children = [];
             return;
         }
@@ -234,7 +234,7 @@ export class ScaffoldComponent implements OnInit {
      * Toggles the child modal
      */
     toggleAddChild(value: boolean = true) {
-        if (!this.learningObject.id) {
+        if (!this.learningObject?.id) {
             return;
         }
 

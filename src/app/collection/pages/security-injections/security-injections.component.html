@@ -3,9 +3,9 @@
         <clark-secinj-header
             [collectionAbv]="abvCollection"></clark-secinj-header>
         <div class="collection-container">
-            <div class="description-container" id="extra-margin">
+            <div class="description-container" id="extra-margin" *ngIf="collection">
                 <div class="heading">Description</div>
-                <p [innerHTML]="collection.description"></p>
+                <p [innerHTML]="collection?.description"></p>
             </div>
             <div class="matrix-container">
                 <div class="heading" id="centered-text">
@@ -563,9 +563,9 @@
         <clark-secinj-header
             [collectionAbv]="abvCollection"></clark-secinj-header>
         <div class="collection-container" id="centered">
-            <div class="description-container" id="extra-margin">
+            <div class="description-container" id="extra-margin" *ngIf="collection">
                 <div class="heading">Description</div>
-                <p [innerHTML]="collection.description"></p>
+                <p [innerHTML]="collection?.description"></p>
             </div>
             <div class="content-container">
                 <div class="heading" id="centered-text">

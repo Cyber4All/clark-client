@@ -32,7 +32,7 @@ export class UserVerifiedGuard implements CanActivate {
         if (c) {
             return this.auth.validateToken().then(
                 (val) => {
-                    if (this.auth.user.emailVerified) {
+                    if (this.auth.user?.emailVerified) {
                         return true;
                     }
                     this.router.navigate(["/onion/dashboard"]);

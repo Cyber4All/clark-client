@@ -122,7 +122,7 @@
                     {{ rating.response[0].date | date: "shortDate" }}
                 </div>
                 <div class="rating-text" tabindex="0">
-                    <div [innerHTML]="rating.response[0].comment"></div>
+                    {{ rating.response[0].comment }}
                 </div>
                 <div class="options">
                     <ng-container
