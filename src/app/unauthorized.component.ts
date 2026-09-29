@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { NgIf } from "@angular/common";
+import { AuthService } from "./core/auth-module/auth.service";
 
 @Component({
     selector: "clark-unauthorized",
@@ -12,7 +13,7 @@ import { NgIf } from "@angular/common";
 export class UnauthorizedComponent implements OnInit {
     statusCode: string;
     redirectUrl: string;
-    constructor(private route: ActivatedRoute) {}
+    constructor(private route: ActivatedRoute, public auth: AuthService) {}
 
     ngOnInit() {
         this.route.paramMap.subscribe((params) => {

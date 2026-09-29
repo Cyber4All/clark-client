@@ -303,7 +303,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         message = err;
                     }
-                    this.notificationService.error("Error!", message);
+                    this.notificationService.error(
+                        "Error!",
+                        message,
+                        // Have invalid file name toast persist long enough for the user to read which files are causing the upload issue
+                        message.includes("File name contains")
+                            ? 10_000
+                            : undefined,
+                    );
                 }
             });
     }
@@ -594,6 +601,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             } else if (e.message.includes("File name contains")) {
                 this.error$.next(e.message);
                 this.resetUploadStatuses();
+                return;
             } else {
                 this.error$.next(UPLOAD_ERRORS.SERVICE_ERROR);
             }

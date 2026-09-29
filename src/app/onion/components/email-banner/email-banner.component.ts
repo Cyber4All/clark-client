@@ -27,7 +27,7 @@ export class EmailBannerComponent implements OnInit {
         try {
             await this.auth.validateToken();
 
-            if (!this.auth.user.emailVerified) {
+            if (!this.auth.user?.emailVerified) {
                 await this.auth.sendEmailVerification().toPromise();
                 this.toasterService.success(
                     `Success!`,

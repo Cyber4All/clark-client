@@ -32,7 +32,7 @@ import { PopupComponent } from "../../../../shared/modules/popups/popup.componen
 })
 export class ListComponent {
     @Input() showOptions: boolean;
-    @Input() learningObjects: LearningObject[];
+    @Input() learningObjects: LearningObject[] = [];
     @Input() title: string;
 
     // Event emitters to relay actions to dashboard

@@ -17,6 +17,6 @@ export class SkipLinkComponent implements OnInit {
     ngOnInit() {}
 
     goToContent(value: string) {
-        document.getElementById(value).focus();
+        document.getElementById(value)?.focus();
     }
 }

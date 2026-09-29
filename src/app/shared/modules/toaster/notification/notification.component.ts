@@ -134,7 +134,7 @@ export class ToastrOvenComponent implements AfterViewChecked {
 
             // if close param true, start close timer
             if (close) {
-                this.close(el);
+                this.close(el, el.duration);
             }
 
             return setTimeout(() => {

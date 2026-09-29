@@ -12,7 +12,7 @@ import { SafeHtmlPipe } from "../safe-html.pipe";
 })
 export class MessageComponent implements OnInit {
     @Input() showBanner = false;
-    @Input() downtime: Downtime;
+    @Input() downtime: Partial<Downtime>;
 
     constructor() {}
 

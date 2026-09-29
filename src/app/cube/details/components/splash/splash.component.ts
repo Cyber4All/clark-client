@@ -88,7 +88,7 @@ export class SplashComponent implements OnInit, AfterViewInit {
         const tags = await this.tagsService.getTags();
         // Get the full tags to pass into the pills component
         this.fullTags = tags.filter((tag: Tag) => {
-            if (this.learningObject.tags.includes(tag._id)) {
+            if (this.learningObject.tags?.includes(tag._id)) {
                 return tag;
             }
         });

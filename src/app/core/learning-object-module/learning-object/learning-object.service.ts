@@ -142,26 +142,28 @@ export class LearningObjectService {
                             }
                         }
 
-                        const uris = Object.assign(entity.resourceUris);
-                        let completed = 0;
-                        Object.keys(uris).map((key) => {
-                            if (!properties || properties.includes(key)) {
-                                this.fetchUri(
-                                    uris[key],
-                                    CALLBACKS[key],
-                                ).subscribe((value) => {
-                                    responses.next({ requestKey: key, value });
-                                    if (
-                                        ++completed === properties.length ||
-                                        completed === uris.length
-                                    ) {
-                                        responses.complete();
-                                        end.next();
-                                        end.complete();
-                                    }
-                                });
-                            }
-                        });
+                        if (entity.resourceUris !== undefined) {
+                            const uris = Object.assign({}, entity.resourceUris);
+                            let completed = 0;
+                            Object.keys(uris).map((key) => {
+                                if (!properties || properties.includes(key)) {
+                                    this.fetchUri(
+                                        uris[key],
+                                        CALLBACKS[key],
+                                    ).subscribe((value) => {
+                                        responses.next({ requestKey: key, value });
+                                        if (
+                                            ++completed === properties.length ||
+                                            completed === uris.length
+                                        ) {
+                                            responses.complete();
+                                            end.next();
+                                            end.complete();
+                                        }
+                                    });
+                                }
+                            });
+                        }
 
                         responses.next(new LearningObject(entity));
                     }),

@@ -167,16 +167,18 @@
     *ngIf="showUnreleaseConfirm"
     (closed)="toggleUnreleaseConfirm(false)">
     <div class="modal-container center" #popupInner>
+        <h1>Contact Developers</h1>
         <p>
-            Are you sure you want to unrelease this learning object? This action
-            will change the status to Draft.
+            Learning objects can no longer be unreleased from the admin
+            dashboard. Contact developers with the following learning object
+            CUIDs:
         </p>
+        <ul class="cuid-list">
+            <li>{{ learningObject.cuid }}</li>
+        </ul>
         <div class="btn-group center">
-            <button (click)="closeUnreleaseModal(true)" class="button bad">
-                Yes
-            </button>
-            <button (click)="closeUnreleaseModal(false)" class="button good">
-                No
+            <button (click)="toggleUnreleaseConfirm(false)" class="button good">
+                Close
             </button>
         </div>
     </div>
