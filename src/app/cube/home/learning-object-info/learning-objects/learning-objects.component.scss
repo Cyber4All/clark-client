@@ -22,7 +22,7 @@ p {
     .featured-object {
         margin-top: 50px;
         border: 1px solid var(--theme-border);
-        background: var(--theme-surface-raised);
+        background: var(--theme-foreground-raised);
         box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.1);
         border-radius: 4px;
 
@@ -60,7 +60,7 @@ p {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
-            background-color: var(--theme-surface);
+            background-color: var(--theme-foreground);
             padding: 30px 22px;
             border-top: 1px solid var(--theme-border);
 

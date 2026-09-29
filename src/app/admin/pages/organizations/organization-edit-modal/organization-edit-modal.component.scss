@@ -19,7 +19,7 @@
 }
 
 .duplicate-error {
-    color: #f44336;
+    color: var(--theme-status-error);
     font-size: 0.875rem;
     margin: -8px 0 12px 4px;
 }
@@ -31,7 +31,7 @@
         margin: 0 0 8px 0;
         font-size: 0.9rem;
         font-weight: 700;
-        color: rgba(0, 0, 0, 0.72);
+        color: var(--theme-text);
     }
 
     .domain-list {
@@ -39,7 +39,7 @@
     }
 
     .no-domains {
-        color: rgba(0, 0, 0, 0.54);
+        color: var(--theme-text-muted);
         font-size: 0.875rem;
         margin: 8px 0;
         font-style: italic;
@@ -60,7 +60,7 @@
 .confirm-text {
     margin-bottom: 20px;
     font-size: 1rem;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--theme-text);
 }
 
 .certification-checkbox {

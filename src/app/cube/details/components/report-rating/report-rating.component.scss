@@ -38,7 +38,7 @@
             color: var(--theme-text);
 
             &:hover {
-                background: var(--theme-surface-subtle);
+                background: var(--theme-foreground-subtle);
             }
 
             .svg-inline--fa {
@@ -68,7 +68,7 @@
         box-sizing: border-box;
         border-radius: 4px;
         min-height: 100px;
-        background: var(--theme-surface);
+        background: var(--theme-foreground);
         color: var(--theme-text);
         border: 1px solid var(--theme-border);
         outline: 0;

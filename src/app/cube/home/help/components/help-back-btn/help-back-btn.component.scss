@@ -39,17 +39,17 @@
 
             &.orange {
                 color: var(--theme-action-primary);
-                background: var(--theme-surface-selected);
+                background: var(--theme-foreground-selected);
             }
 
             &.purple {
                 color: var(--theme-link);
-                background-color: var(--theme-surface-subtle);
+                background-color: var(--theme-foreground-subtle);
             }
 
             &.green {
                 color: var(--theme-status-success);
-                background: var(--theme-surface-subtle);
+                background: var(--theme-foreground-subtle);
             }
         }
 
@@ -63,7 +63,7 @@
         display: flex;
         border: 2px solid var(--theme-action-primary);
         color: var(--theme-action-primary);
-        background-color: var(--theme-surface-selected);
+        background-color: var(--theme-foreground-selected);
         padding: 10px 24px;
         margin-left: 25px;
         border-radius: 4px;

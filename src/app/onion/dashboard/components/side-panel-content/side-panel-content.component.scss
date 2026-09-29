@@ -8,7 +8,7 @@
 
 .side-panel__card {
     color: var(--theme-text);
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     border-radius: 6px;
     box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
     padding: 20px;
@@ -156,7 +156,7 @@
     height: auto;
     color: var(--theme-text);
     font-size: $large;
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     text-align: center;
     position: absolute;
     padding: 20px;

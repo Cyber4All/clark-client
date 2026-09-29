@@ -7,7 +7,7 @@
     justify-content: center;
     padding: 20px;
     border-radius: 6px;
-    background-color: var(--theme-surface);
+    background-color: var(--theme-foreground);
     border: solid 1px var(--theme-border);
     cursor: pointer;
     transition: all 0.25s ease;
@@ -34,7 +34,7 @@
         text-align: center;
         margin: auto;
         margin-bottom: 20px;
-        background: var(--theme-surface-subtle);
+        background: var(--theme-foreground-subtle);
         color: var(--theme-action-primary);
         width: 80px;
         height: 80px;

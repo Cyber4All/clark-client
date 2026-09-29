@@ -1,7 +1,7 @@
 @import "_vars.scss";
 
 .clark-pill {
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     border: 1px solid var(--theme-border);
     border-radius: 999px;
     color: var(--theme-text);
@@ -14,12 +14,12 @@
     user-select: none;
 
     &:hover:not(:disabled) {
-        background: var(--theme-surface-subtle);
+        background: var(--theme-foreground-subtle);
         border-color: var(--theme-border-strong);
     }
 
     &.active {
-        background: var(--theme-surface-selected);
+        background: var(--theme-foreground-selected);
         border-color: var(--theme-action-primary);
         color: var(--theme-action-primary);
         font-weight: 600;

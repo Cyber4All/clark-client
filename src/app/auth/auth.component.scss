@@ -1,7 +1,7 @@
 @import "_vars.scss";
 .authentication-component {
     color: var(--theme-text);
-    background: var(--theme-canvas);
+    background: var(--theme-background);
 
     :host {
         font-family: "Source Sans Pro", sans-serif;
@@ -38,7 +38,7 @@
                 font-size: $normal;
 
                 &.white {
-                    background-color: var(--theme-surface-raised);
+                    background-color: var(--theme-foreground-raised);
                     color: var(--theme-link);
                 }
             }
@@ -80,7 +80,7 @@
                 cursor: pointer;
 
                 &.white {
-                    background-color: var(--theme-surface-raised);
+                    background-color: var(--theme-foreground-raised);
                     color: var(--theme-link);
                 }
 
@@ -96,7 +96,7 @@
         }
 
         .content-box {
-            background: var(--theme-surface-raised);
+            background: var(--theme-foreground-raised);
             border-radius: 2px;
             box-sizing: border-box;
             max-width: 520px;

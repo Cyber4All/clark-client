@@ -1,7 +1,7 @@
 @import "_vars.scss";
 .desktop-navbar {
     max-height: 92px;
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     color: var(--theme-text);
     position: relative;
     z-index: 4;
@@ -91,7 +91,7 @@
             .contribute-button {
                 cursor: pointer;
                 color: var(--theme-text);
-                background-color: var(--theme-surface-subtle);
+                background-color: var(--theme-foreground-subtle);
                 border: solid var(--theme-border) 1px;
                 height: 45px;
                 border-radius: 4px;
@@ -148,7 +148,7 @@
     flex-direction: row;
     justify-content: space-between;
     color: var(--theme-text);
-    background-color: var(--theme-surface);
+    background-color: var(--theme-foreground);
     overflow-wrap: normal;
     z-index: 4;
 
@@ -192,7 +192,7 @@
 .mobile-search {
     width: 100%;
     position: fixed;
-    background-color: var(--theme-surface);
+    background-color: var(--theme-foreground);
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -214,7 +214,7 @@
     bottom: 0;
     right: -330px;
     color: var(--theme-text);
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     box-sizing: border-box;
     max-width: 80%;
     width: 330px;
@@ -287,7 +287,7 @@
                 .sign-in {
                     color: var(--theme-text);
                     border: 1px solid var(--theme-border);
-                    background: var(--theme-surface-subtle);
+                    background: var(--theme-foreground-subtle);
                     margin-right: 18px;
                     border-radius: 4px;
                 }

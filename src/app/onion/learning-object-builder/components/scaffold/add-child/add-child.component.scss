@@ -4,7 +4,7 @@
     max-width: 100%;
     min-height: 60px;
     display: block;
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     border-radius: 1px;
     overflow: hidden;
 }
@@ -18,7 +18,7 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
 
     .info {
         float: left;
@@ -93,7 +93,7 @@
 }
 .search-bar {
     border-radius: 2px;
-    background: var(--theme-surface-subtle);
+    background: var(--theme-foreground-subtle);
     border: 1px solid var(--theme-border);
     display: flex;
     flex-direction: row;

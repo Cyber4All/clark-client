@@ -1,7 +1,7 @@
 @import "_vars.scss";
 // Search CSS
 .input-container {
-    background-color: var(--theme-surface-subtle);
+    background-color: var(--theme-foreground-subtle);
     border: 1px solid var(--theme-border);
     position: relative;
     padding: 8px 10px;
@@ -65,7 +65,7 @@
             border: 1px solid var(--theme-action-primary);
             border-radius: 5px;
             cursor: pointer;
-            background-color: var(--theme-surface);
+            background-color: var(--theme-foreground);
             white-space: nowrap;
             color: var(--theme-action-primary);
         }

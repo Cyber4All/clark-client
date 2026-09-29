@@ -62,7 +62,7 @@ import { skip } from "rxjs/operators";
                 border: 1px solid var(--theme-border);
                 border-radius: 8px;
                 overflow: hidden;
-                background: var(--theme-surface-raised);
+                background: var(--theme-foreground-raised);
             }
 
             .description-wrapper ::ng-deep .st-toolbar {
@@ -71,7 +71,7 @@ import { skip } from "rxjs/operators";
                 border-radius: 0;
                 gap: 4px;
                 padding: 8px;
-                background: var(--theme-surface-subtle);
+                background: var(--theme-foreground-subtle);
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item {
@@ -92,7 +92,7 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item:hover {
-                background: var(--theme-surface-selected);
+                background: var(--theme-foreground-selected);
                 color: var(--theme-action-primary);
             }
 

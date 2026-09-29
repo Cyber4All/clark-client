@@ -10,11 +10,11 @@
     bottom: 0;
     overflow: auto;
     color: var(--theme-text);
-    background: var(--theme-canvas);
+    background: var(--theme-background);
 }
 
 .admin__sidebar {
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     padding: 20px 0;
     max-height: 100vh;
     border-right: 2px solid var(--theme-border);
@@ -30,7 +30,7 @@
     flex: 1;
     overflow-y: scroll;
     max-height: 100vh;
-    background: var(--theme-canvas);
+    background: var(--theme-background);
 
     &.admin__main-content--can-scroll {
         padding-bottom: 30px;
@@ -46,7 +46,7 @@
 
 .admin__meatball-button {
     color: var(--theme-text);
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     border: 1px solid var(--theme-border);
     box-shadow: 0 2px 8px var(--theme-shadow);
     border-radius: 12px;

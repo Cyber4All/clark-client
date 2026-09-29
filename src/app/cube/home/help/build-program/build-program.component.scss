@@ -13,7 +13,7 @@
         padding: 10px 24px;
         border: 1px solid var(--theme-border);
         border-radius: 4px;
-        background: var(--theme-surface);
+        background: var(--theme-foreground);
 
         &:hover {
             border: 1px solid var(--theme-action-primary);
@@ -22,7 +22,7 @@
 
         &:active {
             border: 1px solid var(--theme-action-primary);
-            background-color: var(--theme-surface-selected);
+            background-color: var(--theme-foreground-selected);
             opacity: 100%;
         }
     }
@@ -31,7 +31,7 @@
         margin-top: 50px;
         .input {
             cursor: text;
-            background-color: var(--theme-surface);
+            background-color: var(--theme-foreground);
             padding: 7px;
             margin-right: 12px;
             border: 2px solid var(--theme-border);
@@ -70,7 +70,7 @@
                 border: 1px solid var(--theme-border);
                 border-radius: 4px;
                 font-size: 14px;
-                background: var(--theme-surface-raised);
+                background: var(--theme-foreground-raised);
 
                 .guidelineDescription {
                     color: var(--theme-text-muted);
@@ -91,7 +91,7 @@
 
                 &:active {
                     border: 1px solid var(--theme-action-primary);
-                    background: var(--theme-surface-selected);
+                    background: var(--theme-foreground-selected);
                     border-radius: 4px;
                 }
             }
@@ -118,7 +118,7 @@
             }
 
             &.highlighted {
-                background: var(--theme-surface-selected);
+                background: var(--theme-foreground-selected);
             }
 
             &:disabled {

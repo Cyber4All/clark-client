@@ -65,7 +65,7 @@ body {
     flex-flow: column nowrap;
     align-content: flex-start;
     color: var(--theme-text);
-    background: var(--theme-canvas);
+    background: var(--theme-background);
 
     .outlet {
         margin-top: 0px;
@@ -83,7 +83,7 @@ body {
         right: 20px;
         flex-direction: column !important;
         color: var(--theme-text);
-        background: var(--theme-surface-raised);
+        background: var(--theme-foreground-raised);
         z-index: 2;
         opacity: 0;
         visibility: hidden;

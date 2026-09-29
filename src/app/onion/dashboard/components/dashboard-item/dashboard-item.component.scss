@@ -14,7 +14,7 @@
     }
 
     &:not(.disabled):hover {
-        background: var(--theme-surface-subtle);
+        background: var(--theme-foreground-subtle);
     }
 
     &.disabled {

@@ -11,7 +11,7 @@
 
     .list__wrapper {
         color: var(--theme-text);
-        background: var(--theme-surface-raised);
+        background: var(--theme-foreground-raised);
         border-radius: 4px;
         box-shadow: 0 4px 8px 1px rgba(0, 0, 0, 0.08);
     }
@@ -39,7 +39,7 @@
     }
 
     .tabs__item--active {
-        background: var(--theme-surface-raised);
+        background: var(--theme-foreground-raised);
         color: var(--theme-link);
     }
 }
@@ -54,7 +54,7 @@
 
     .loading-content {
         color: var(--theme-text);
-        background: var(--theme-surface-raised);
+        background: var(--theme-foreground-raised);
         font-size: $larger;
         text-align: center;
         padding: 20px;

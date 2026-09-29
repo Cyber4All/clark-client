@@ -1,7 +1,7 @@
 @import "_vars.scss";
 $wrapper-border-radius: 8px;
 .wrapper {
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     color: var(--theme-text);
     border-radius: $wrapper-border-radius;
     padding: 10px 0;
@@ -22,7 +22,7 @@ $wrapper-border-radius: 8px;
     left: 0;
     width: 50%;
     height: 100%;
-    background: var(--theme-surface-selected);
+    background: var(--theme-foreground-selected);
     &.filled {
         border-top-right-radius: $wrapper-border-radius;
         border-bottom-right-radius: $wrapper-border-radius;

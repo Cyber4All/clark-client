@@ -33,7 +33,7 @@
     max-width: 100%;
     min-height: 60px;
     display: block;
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     border-radius: 1px;
     overflow: hidden;
 }
@@ -47,7 +47,7 @@
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
 
     .info {
         float: left;
@@ -186,7 +186,7 @@
 .add-child {
     position: fixed;
     z-index: 20;
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     visibility: hidden;
     padding: 10px;
     border-radius: 4px;

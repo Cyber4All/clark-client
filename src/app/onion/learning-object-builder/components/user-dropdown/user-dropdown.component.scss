@@ -17,7 +17,7 @@
     position: absolute;
     max-width: 500px;
     width: 100%;
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     border: 1px solid var(--theme-border);
     border-radius: 2px;
     box-shadow: 0 2px 6px 2px var(--theme-shadow);
@@ -31,7 +31,7 @@
 
 .user-dropdown__list-item {
     height: 40px;
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     color: var(--theme-text);
     display: flex;
     flex-direction: row;
@@ -42,7 +42,7 @@
 
     &:hover,
     &:focus {
-        background: var(--theme-surface-subtle);
+        background: var(--theme-foreground-subtle);
 
         .user-dropdown__action {
             opacity: 1;

@@ -35,7 +35,7 @@
 }
 
 .field-badge--optional {
-    background: var(--theme-surface-subtle);
+    background: var(--theme-foreground-subtle);
     color: var(--theme-text-muted);
 }
 
@@ -48,7 +48,7 @@
     flex-flow: row nowrap;
     margin-bottom: 15px;
     box-shadow: 0 0 5px var(--theme-border);
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     color: var(--theme-text);
     padding: 10px 24px;
     cursor: pointer;

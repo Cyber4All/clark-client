@@ -2,7 +2,7 @@
 // overlay surfaces. Feature-specific Sass remains intentionally local.
 body {
     color: var(--theme-text);
-    background: var(--theme-canvas);
+    background: var(--theme-background);
 }
 
 :where(a, a:visited) {
@@ -16,7 +16,7 @@ body {
 
 .button {
     color: var(--theme-link);
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
 
     &.good {
         color: var(--theme-action-on-primary);
@@ -42,7 +42,7 @@ body {
 
         &.white {
             color: var(--theme-status-error);
-            background: var(--theme-surface-raised);
+            background: var(--theme-foreground-raised);
         }
     }
 
@@ -60,7 +60,7 @@ body {
 .cdk-overlay-pane .mat-mdc-select-panel,
 .cdk-overlay-pane .mat-mdc-autocomplete-panel {
     color: var(--theme-text);
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     border-color: var(--theme-border);
 }
 
@@ -76,7 +76,7 @@ body {
 .mat-drawer-container,
 .mat-drawer {
     color: var(--theme-text);
-    background-color: var(--theme-surface);
+    background-color: var(--theme-foreground);
 }
 
 .mat-mdc-header-cell,
@@ -91,14 +91,14 @@ body {
 .mat-mdc-text-field-wrapper,
 .mat-mdc-select-panel,
 .mat-datepicker-content {
-    background-color: var(--theme-surface-raised);
+    background-color: var(--theme-foreground-raised);
 }
 
 input,
 textarea,
 select {
     color: var(--theme-text);
-    background-color: var(--theme-surface-raised);
+    background-color: var(--theme-foreground-raised);
     border-color: var(--theme-border);
 
     &::placeholder {
@@ -116,7 +116,7 @@ st-editor,
 
 st-editor .st-editor-container,
 .st-editor-container {
-    background-color: var(--theme-surface-raised);
+    background-color: var(--theme-foreground-raised);
     color: var(--theme-text);
     border: 1px solid var(--theme-border);
     border-radius: 8px;
@@ -129,7 +129,7 @@ st-editor .st-editor-container,
         align-items: center;
         gap: 4px;
         padding: 6px 8px;
-        background-color: var(--theme-surface-subtle);
+        background-color: var(--theme-foreground-subtle);
         border: 0;
         border-bottom: 1px solid var(--theme-border);
         border-radius: 0;
@@ -166,7 +166,7 @@ st-editor .st-editor-container,
         }
 
         &:hover {
-            background-color: var(--theme-surface-selected);
+            background-color: var(--theme-foreground-selected);
             color: var(--theme-action-primary);
         }
 
@@ -187,14 +187,14 @@ st-editor .st-editor-container,
     }
 
     .st-select {
-        background-color: var(--theme-surface-raised);
+        background-color: var(--theme-foreground-raised);
         color: var(--theme-text);
         border: 1px solid var(--theme-border);
         border-radius: 4px;
         padding: 4px 8px;
 
         option {
-            background-color: var(--theme-surface-raised);
+            background-color: var(--theme-foreground-raised);
             color: var(--theme-text);
 
             &:checked {
@@ -213,7 +213,7 @@ st-editor .st-editor-container,
     .st-area {
         min-height: 140px;
         padding: 12px;
-        background-color: var(--theme-surface-raised);
+        background-color: var(--theme-foreground-raised);
         color: var(--theme-text);
         border: 0;
         border-radius: 0;
@@ -235,7 +235,7 @@ st-editor .st-editor-container,
     .st-input-window {
         display: flex;
         flex-direction: column;
-        background-color: var(--theme-surface-raised);
+        background-color: var(--theme-foreground-raised);
         color: var(--theme-text);
         position: absolute;
         padding: 10px;
@@ -255,7 +255,7 @@ st-editor .st-editor-container,
 
     .st-input-input {
         padding: 8px 12px;
-        background-color: var(--theme-surface);
+        background-color: var(--theme-foreground);
         color: var(--theme-text);
         margin-right: -1px;
         border: 1px solid var(--theme-border);

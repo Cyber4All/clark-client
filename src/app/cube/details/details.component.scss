@@ -2,12 +2,12 @@
 @import "./global-details";
 
 .details-background {
-    background-color: var(--theme-canvas);
+    background-color: var(--theme-background);
     min-height: 100vh;
 }
 
 .details {
-    background: var(--theme-canvas);
+    background: var(--theme-background);
     max-width: $max-width;
     margin: auto;
     padding-left: 20px;
@@ -134,7 +134,7 @@
 }
 
 .inner {
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     border: 1px solid var(--theme-border);
     border-radius: 4px;
     box-shadow: 0 0 12px 1px var(--theme-shadow);

@@ -3,11 +3,11 @@
 html {
     color-scheme: light;
 
-    --theme-canvas: #ffffff;
-    --theme-surface: #ffffff;
-    --theme-surface-subtle: #f7f9fe;
-    --theme-surface-raised: #ffffff;
-    --theme-surface-selected: #e9f0fe;
+    --theme-background: #ffffff;
+    --theme-foreground: #ffffff;
+    --theme-foreground-subtle: #f7f9fe;
+    --theme-foreground-raised: #ffffff;
+    --theme-foreground-selected: #e9f0fe;
     --theme-text: #32363f;
     --theme-text-strong: #32363f;
     --theme-text-muted: #535d69;
@@ -35,22 +35,22 @@ html {
 }
 
 html[data-theme="halloween"] {
-    color-scheme: dark;
+    color-scheme: light;
 
-    // Midnight Black foundation and readable neutral foregrounds.
-    --theme-canvas: #0d0d0d;
-    --theme-surface: #1c1820;
-    --theme-surface-subtle: #281f2d;
-    --theme-surface-raised: #34273b;
-    --theme-surface-selected: #4c0027;
-    --theme-text: #f7f3ef;
-    --theme-text-strong: #ffffff;
-    --theme-text-muted: #bdb5c2;
-    --theme-text-disabled: #948b99;
-    --theme-border: #766a7a;
-    --theme-border-strong: #bdb5c2;
+    // Preserve the light neutral foundation while applying Halloween accents.
+    --theme-background: #ffffff;
+    --theme-foreground: #ffffff;
+    --theme-foreground-subtle: #f7f9fe;
+    --theme-foreground-raised: #ffffff;
+    --theme-foreground-selected: #e9f0fe;
+    --theme-text: #32363f;
+    --theme-text-strong: #32363f;
+    --theme-text-muted: #535d69;
+    --theme-text-disabled: #757575;
+    --theme-border: #dfe3ea;
+    --theme-border-strong: #8c97a5;
 
-    // Pumpkin Orange actions intentionally use dark foreground text.
+    // Pumpkin Orange and Witch Purple remain the Halloween action accents.
     --theme-action-primary: #ff7518;
     --theme-action-primary-hover: #ff944d;
     --theme-action-primary-active: #e65f06;
@@ -58,19 +58,19 @@ html[data-theme="halloween"] {
     --theme-action-secondary: #6a0dad;
     --theme-action-secondary-hover: #8f3dcc;
     --theme-action-on-secondary: #ffffff;
-    --theme-link: #c77dff;
-    --theme-link-hover: #e0b6ff;
-    --theme-focus: #39ff14;
-    --theme-focus-offset: #0d0d0d;
-    --theme-overlay: rgba(13, 13, 13, 0.88);
-    --theme-shadow: rgba(0, 0, 0, 0.55);
+    --theme-link: #6a0dad;
+    --theme-link-hover: #4c0027;
+    --theme-focus: #0f7a17;
+    --theme-focus-offset: #ffffff;
+    --theme-overlay: rgba(8, 32, 63, 0.8);
+    --theme-shadow: rgba(0, 0, 0, 0.16);
 
-    // Keep status roles semantically distinct; seasonal green is focus-only.
-    --theme-status-success: #5bd478;
-    --theme-status-warning: #ffd166;
-    --theme-status-error: #ff6b6b;
-    --theme-status-info: #82b1ff;
-    --theme-action-on-status: #0d0d0d;
+    // Keep status roles accessible against the light Halloween foundation.
+    --theme-status-success: #208540;
+    --theme-status-warning: #946200;
+    --theme-status-error: #ca2e1f;
+    --theme-status-info: #1c70dd;
+    --theme-action-on-status: #ffffff;
 }
 
 // Scoped override: Exclude collection pages from seasonal/theme switching while
@@ -81,11 +81,11 @@ body.collection-page {
     color: #32363f !important;
 
     color-scheme: light;
-    --theme-canvas: #ffffff;
-    --theme-surface: #ffffff;
-    --theme-surface-subtle: #f7f9fe;
-    --theme-surface-raised: #ffffff;
-    --theme-surface-selected: #e9f0fe;
+    --theme-background: #ffffff;
+    --theme-foreground: #ffffff;
+    --theme-foreground-subtle: #f7f9fe;
+    --theme-foreground-raised: #ffffff;
+    --theme-foreground-selected: #e9f0fe;
     --theme-text: #32363f;
     --theme-text-strong: #32363f;
     --theme-text-muted: #535d69;

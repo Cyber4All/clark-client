@@ -34,7 +34,7 @@ $gutter: 46px;
 
 // ---------- Layout ----------
 .hierarchy {
-    background: var(--theme-surface-subtle);
+    background: var(--theme-foreground-subtle);
     padding: 28px 0;
     font-family:
         system-ui,
@@ -49,7 +49,7 @@ $gutter: 46px;
 .hierarchy__card {
     width: min(1080px, calc(100% - 32px));
     margin: 0 auto;
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     border: 1px solid var(--theme-border);
     border-radius: $radius-lg;
     box-shadow: $shadow;
@@ -132,7 +132,7 @@ $gutter: 46px;
     position: relative;
     margin-top: 14px;
 
-    background: var(--theme-surface-subtle);
+    background: var(--theme-foreground-subtle);
     border: 1px solid var(--theme-border);
     border-radius: $radius-lg;
 
@@ -197,7 +197,7 @@ $gutter: 46px;
     align-items: center;
     gap: 12px;
 
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     border: 1px solid var(--theme-border);
     border-radius: $radius-md;
 

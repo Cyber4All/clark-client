@@ -1,7 +1,7 @@
 @import "_vars.scss";
 
 .outcomes-list-item {
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     box-shadow: 0 1px 6px 2px var(--theme-shadow);
     overflow: hidden;
     border-radius: 3px;

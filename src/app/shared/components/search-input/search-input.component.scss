@@ -14,7 +14,7 @@
     box-sizing: border-box;
     border: 1px solid var(--theme-border);
     border-radius: 8px;
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
 }
 
 .search-input--full-width {
@@ -24,7 +24,7 @@
 
 .search-input:focus-within {
     border-color: var(--theme-focus);
-    background: var(--theme-surface-selected);
+    background: var(--theme-foreground-selected);
 }
 
 .search-input--error {

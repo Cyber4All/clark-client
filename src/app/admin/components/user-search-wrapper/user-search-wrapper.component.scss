@@ -8,7 +8,7 @@ $light-blue-gradient: linear-gradient(
 .reviewer-search__container {
     margin-top: 13px;
     padding: 10px;
-    background-color: var(--theme-surface-raised);
+    background-color: var(--theme-foreground-raised);
     border: 1px solid var(--theme-border);
     border-radius: 5px;
     box-shadow: 0 2px 6px 2px var(--theme-shadow);
@@ -42,7 +42,7 @@ $light-blue-gradient: linear-gradient(
 
 .user-dropdown__search {
     border: 1px solid var(--theme-border);
-    background: var(--theme-surface);
+    background: var(--theme-foreground);
     border-radius: 5px;
     padding: 5px;
     font-size: $normal;
@@ -78,7 +78,7 @@ $light-blue-gradient: linear-gradient(
     margin: 0;
     max-width: 500px;
     width: 100%;
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
 
     virtual-scroller {
         max-height: 300px;
@@ -88,7 +88,7 @@ $light-blue-gradient: linear-gradient(
 
 .user-dropdown__list-item {
     height: 40px;
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     color: var(--theme-text);
     display: flex;
     flex-direction: row;
@@ -99,7 +99,7 @@ $light-blue-gradient: linear-gradient(
     transition: background 0.2s ease;
 
     &:hover {
-        background: var(--theme-surface-subtle);
+        background: var(--theme-foreground-subtle);
 
         .user-dropdown__action {
             opacity: 1;

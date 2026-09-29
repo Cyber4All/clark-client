@@ -15,7 +15,7 @@ a {
 
 .learning-object {
     color: var(--theme-text);
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     border-radius: 6px;
     border: 1px solid var(--theme-border);
     display: flex;
@@ -32,7 +32,7 @@ a {
     transition: all 0.15s ease-in;
 
     .image {
-        background: var(--theme-surface-subtle);
+        background: var(--theme-foreground-subtle);
         min-width: 175px;
         flex: 0 0 175px;
         position: relative;
@@ -193,7 +193,7 @@ a {
         }
 
         .time {
-            background: var(--theme-surface-subtle);
+            background: var(--theme-foreground-subtle);
             padding: 2px 5px;
             border-radius: 3px;
             border: 1px solid var(--theme-border);
@@ -271,7 +271,7 @@ a {
             gap: 6px;
 
             .tag-pill {
-                background: var(--theme-surface-subtle);
+                background: var(--theme-foreground-subtle);
                 border: 1px solid var(--theme-border);
                 padding: 3px 8px;
                 border-radius: 12px;

@@ -1,7 +1,7 @@
 @import "_vars.scss";
 
 .helpCard {
-    background-color: var(--theme-surface-raised);
+    background-color: var(--theme-foreground-raised);
     border: 1px solid var(--theme-border);
     border-radius: 6px;
     text-align: center;
@@ -43,17 +43,17 @@
 
             &.orange {
                 color: var(--theme-action-primary);
-                background: var(--theme-surface-selected);
+                background: var(--theme-foreground-selected);
             }
 
             &.purple {
                 color: var(--theme-link);
-                background: var(--theme-surface-subtle);
+                background: var(--theme-foreground-subtle);
             }
 
             &.green {
                 color: var(--theme-status-success);
-                background: var(--theme-surface-subtle);
+                background: var(--theme-foreground-subtle);
             }
         }
 

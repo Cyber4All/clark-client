@@ -7,9 +7,9 @@
         content: "";
         background: linear-gradient(
             90deg,
-            var(--theme-canvas),
+            var(--theme-background),
             var(--theme-action-primary),
-            var(--theme-canvas)
+            var(--theme-background)
         );
         position: absolute;
         top: 0;
@@ -24,11 +24,11 @@
     &:after {
         content: "";
         background: repeating-linear-gradient(
-            var(--theme-canvas),
+            var(--theme-background),
             transparent,
             transparent,
             transparent,
-            var(--theme-canvas)
+            var(--theme-background)
         );
         position: absolute;
         top: 0;

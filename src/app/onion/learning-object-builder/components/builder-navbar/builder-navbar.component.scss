@@ -20,7 +20,7 @@
 }
 
 .builder-navbar-wrapper {
-    background: var(--theme-surface-raised);
+    background: var(--theme-foreground-raised);
     color: var(--theme-text);
     padding: 35px 25px 0;
     width: 100%;
@@ -91,7 +91,7 @@
             align-items: center;
 
             .button__cancel {
-                background: var(--theme-surface-raised);
+                background: var(--theme-foreground-raised);
                 color: var(--theme-status-error);
                 font-size: $smaller;
                 display: flex;

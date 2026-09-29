@@ -13,7 +13,7 @@
     gap: 20px;
 
     .user-profile-header_wrapper {
-        background-color: var(--theme-surface-raised);
+        background-color: var(--theme-foreground-raised);
         border-radius: 8px;
         border: 0.5px var(--theme-border) solid;
         box-shadow: 0 10px 20px -10px rgba(28, 112, 221, 0.1);
@@ -31,7 +31,7 @@
             height: 100%;
             vertical-align: middle;
             border-radius: 50%;
-            border: 4px solid var(--theme-surface);
+            border: 4px solid var(--theme-foreground);
             box-shadow: 0px 2px 6px 2px rgba(0, 0, 0, 0.2);
             background: url(/assets/images/user.jpg);
             background-size: cover;
@@ -86,7 +86,7 @@
     }
 
     .user-profile-bio_wrapper {
-        background-color: var(--theme-surface-raised);
+        background-color: var(--theme-foreground-raised);
         border-radius: 8px;
         border: 0.5px var(--theme-border) solid;
         box-shadow: 0 10px 20px -10px rgba(28, 112, 221, 0.1);
@@ -122,7 +122,7 @@
         .modal-container {
             height: 90vh;
             width: 50vw;
-            background: var(--theme-surface-raised);
+            background: var(--theme-foreground-raised);
             color: var(--theme-text);
         }
     }
