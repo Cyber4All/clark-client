@@ -2,6 +2,10 @@
 
 ## Purpose / Big Picture
 
+Read-more state correction (2026-09-30): Reset the ratings list's local expansion state whenever a refreshed ratings input arrives. New reviews can be inserted at index zero after submission, so retaining expansion by array index caused a long new review to inherit "Read Less" from the previous first review. Added a focused regression test; response editors remain outside scope.
+
+Validation (2026-09-30): All 33 focused rating tests and `npm run build` pass. The focused Jest config now maps the repository's existing TypeScript aliases required by the ratings-list component test.
+
 Merge scope correction (2026-09-28): Compared the complete feature branch against origin/main, rather than the previous feature commit. Restored the three response-form files and shared TextEditorComponent to origin/main and restored response display interpolation. Earlier cleanup claims used the wrong baseline. Finish the pending merge without rebasing, validate the combined tree, and push to main as requested.
 
 Merge validation (2026-09-28): All 32 focused rating tests and npm run build passed after the scope correction. Response files and shared editor have no diff against origin/main. Existing querystring CommonJS build warning remains.

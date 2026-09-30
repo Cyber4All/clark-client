@@ -3,7 +3,15 @@ import {
     ratingCommentLength,
     ratingCommentPreviewHtml,
 } from "../rating-comment";
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+    Component,
+    OnInit,
+    OnChanges,
+    SimpleChanges,
+    Input,
+    Output,
+    EventEmitter,
+} from "@angular/core";
 import { User } from "@entity";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { UserService } from "app/core/user-module/user.service";
@@ -33,7 +41,7 @@ import { PopupComponent } from "../../../../shared/modules/popups/popup.componen
         DatePipe,
     ],
 })
-export class LearningObjectRatingsComponent implements OnInit {
+export class LearningObjectRatingsComponent implements OnInit, OnChanges {
     @Input() ratings: {
         user: User;
         value: number;
@@ -76,6 +84,14 @@ export class LearningObjectRatingsComponent implements OnInit {
     ) {}
 
     ngOnInit() {}
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.ratings) {
+            // Reviews are refreshed after create/edit operations. Reset index-based
+            // expansion state so a newly inserted review cannot inherit "Read Less."
+            this.showMore = [];
+        }
+    }
 
     calculateAverageRating(): number {
         if (this.ratings.length > 0) {
