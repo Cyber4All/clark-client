@@ -21,6 +21,7 @@ Replace the homepage splash with the supplied CyberAware banner at the same desk
 - [x] (2026-09-30) Centered only `Text.svg` and the copy/button column; retained left-aligned copy and buttons inside that column.
 - [x] (2026-09-30) Corrected the text layer's horizontal offset to center its visible lettering, rather than its transparent 5184-wide canvas.
 - [x] (2026-09-30) Grouped `Text.svg`, the campaign copy, and both buttons in a single `campaign-content` wrapper while preserving their proportions and alignment.
+- [x] (2026-09-30) Removed the banner's redundant tag lookup and linked directly to browse using the supplied Cyber Awareness tag ID.
 
 ## Surprises & Discoveries
 
@@ -30,6 +31,8 @@ Replace the homepage splash with the supplied CyberAware banner at the same desk
   Evidence: `angular.json` and file listing.
 - Observation: The cutout SVGs retain the original 5184×2592 viewBox, with transparent space around each visible object.
   Evidence: XML inspection of `src/assets/images/cyber-awareness/*.svg`.
+- Observation: Angular compilation, lint, Sass, and a full build pass, but the previous click handler could silently fail when its extra tag request failed.
+  Evidence: `cyber-awareness-banner.component.ts` made a `getTag` request and the working template had removed the error message.
 
 ## Decision Log
 
@@ -66,18 +69,21 @@ Replace the homepage splash with the supplied CyberAware banner at the same desk
 - Decision: Move `Text.svg` into the same positioned content wrapper as the copy and buttons, keeping the decorations in their separate layer.
   Rationale: The campaign content now has one layout owner, while the established SVG size and visible center remain stable.
   Date/Author: 2026-09-30 / Codex
+- Decision: Use the supplied tag ID directly in the browse link and remove the prerequisite `getTag` request.
+  Rationale: Browse accepts tag IDs in its `tags` query parameter, so an extra request introduces a failure point without changing the destination.
+  Date/Author: 2026-09-30 / Codex
 
 ## Outcomes & Retrospective
 
-The Cyber Awareness banner replaces the old homepage splash reference. `ORG BGD CAB.svg` fills the banner, while the eight decorative cutout SVGs retain their original proportions and edge anchors. `Text.svg`, the campaign copy, and both buttons share a centered content wrapper. The copy and buttons remain left-aligned within that wrapper. The SVG lettering moves upward as the viewport grows past 950px to avoid the reported overlap. No tests were added, per user request. Angular template, Sass, SVG XML, and formatting checks passed. Visual review in a running browser and a full build remain unverified.
+The Cyber Awareness banner replaces the old homepage splash reference. `ORG BGD CAB.svg` fills the banner, while the eight decorative cutout SVGs retain their original proportions and edge anchors. `Text.svg`, the campaign copy, and both buttons share a centered content wrapper. The copy and buttons remain left-aligned within that wrapper. The SVG lettering moves upward as the viewport grows past 950px to avoid the reported overlap. The Cyber Awareness link now navigates directly with its tag ID. No tests were added, per user request. Angular template, Sass, SVG XML, lint, formatting, and a full build passed. Visual review in a running browser remains unverified.
 
 ## Context and Orientation
 
-`src/app/cube/home/home.component.html` previously rendered the existing `splash` component. `src/app/cube/browse/browse.component.ts` reads URL query parameters and `src/app/cube/browse/components/filter/filter.component.ts` displays tag selections. `src/app/core/learning-object-module/tags/tags.service.ts` retrieves tag metadata. The new component lives under `src/app/cube/home/` and uses the supplied layers in `src/assets/images/cyber-awareness/`.
+`src/app/cube/home/home.component.html` previously rendered the existing `splash` component. `src/app/cube/browse/browse.component.ts` reads URL query parameters and `src/app/cube/browse/components/filter/filter.component.ts` displays tag selections. The new component lives under `src/app/cube/home/` and uses the supplied layers in `src/assets/images/cyber-awareness/`.
 
 ## Plan of Work
 
-Create a standalone home component with a stretched background, proportional decorative layers, and the two buttons. Reuse the existing learning object count and Google event pattern. Resolve the Cyber Awareness tag through `TagsService` for the second button. Replace the splash reference in `HomeComponent` and `HomeModule`. Scope is local to homepage UI and navigation; routing, guards, shared UI, API boundaries, state ownership, types, and environment behavior do not change. Leave the original splash component files untouched.
+Create a standalone home component with a stretched background, proportional decorative layers, and the two buttons. Reuse the existing learning object count and Google event pattern. Link to the Cyber Awareness tag ID through the browse query parameter. Replace the splash reference in `HomeComponent` and `HomeModule`. Scope is local to homepage UI and navigation; routing, guards, shared UI, API boundaries, state ownership, types, and environment behavior do not change. Leave the original splash component files untouched.
 
 ## Concrete Steps
 
@@ -89,12 +95,12 @@ Homepage shows the supplied banner in place of the old splash and two visible br
 
 ## Idempotence and Recovery
 
-Component registration and validation are safe to rerun. If tag lookup fails, retain the current page and allow a retry. Do not alter or delete the supplied asset. Resume from checked progress above if interrupted.
+Component registration and validation are safe to rerun. The browse link no longer depends on a tag lookup. Do not alter or delete the supplied asset. Resume from checked progress above if interrupted.
 
 ## Artifacts and Notes
 
-`tsc --noEmit`, `ngc --noEmit`, `git diff --check`, Sass compilation, SVG XML validation, and Prettier checks passed on 2026-09-30. Sass reported deprecations from the existing `_vars.scss` import. No test file was created. The full Angular build was not run because `src/env.js` is absent and the build writes generated output. The supplied SVG layers remain untracked and are included in the handoff.
+`tsc --noEmit`, `ngc --noEmit`, lint, `git diff --check`, Sass compilation, SVG XML validation, Prettier checks, and `ng build clark` passed on 2026-09-30. Sass reported deprecations from the existing `_vars.scss` import. No test file was created. The supplied SVG layers are part of the working tree.
 
 ## Interfaces and Dependencies
 
-Affected: `HomeComponent`, new homepage banner component, `SearchService`, `TagsService`, `GoogleTagService`, Angular Router, and supplied SVG asset. No guard, interceptor, model, build, or external API contract changes.
+Affected: `HomeComponent`, new homepage banner component, `SearchService`, `GoogleTagService`, Angular Router, and supplied SVG assets. No guard, interceptor, model, build, or external API contract changes.

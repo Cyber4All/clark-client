@@ -127,15 +127,6 @@
     background-color: $card-primary;
 }
 
-.error {
-    position: relative;
-    margin: 12px 0 0;
-    padding: 6px 10px;
-    background-color: white;
-    color: #b00020;
-    text-align: center;
-}
-
 @media (max-width: 600px) {
     .campaign-content {
         padding: 20px;
