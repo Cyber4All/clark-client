@@ -1,0 +1,153 @@
+@import "_vars.scss";
+
+.banner {
+    position: relative;
+    box-sizing: border-box;
+    height: 535px;
+    overflow: hidden;
+    background: #ffbd59 center / 100% 100% no-repeat
+        url("/assets/images/cyber-awareness/ORG%20BGD%20CAB.svg");
+}
+
+.artwork {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.artwork-layer {
+    position: absolute;
+    display: block;
+    width: min(1070px, 100%);
+    height: auto;
+}
+
+.artwork-layer--red-circle-1,
+.artwork-layer--org-circle-1 {
+    top: 0;
+    left: 0;
+}
+
+.artwork-layer--red-circle-2,
+.artwork-layer--spider-web-1 {
+    bottom: 0;
+    left: 0;
+}
+
+.artwork-layer--org-circle-2,
+.artwork-layer--red-circle-3,
+.artwork-layer--spider-web-2 {
+    top: 0;
+    right: 0;
+}
+
+.artwork-layer--mummy {
+    right: 0;
+    bottom: 0;
+}
+
+.campaign-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    padding: 32px;
+}
+
+.campaign-title {
+    position: absolute;
+    top: clamp(-40px, calc(285px - 30vw), 0px);
+    left: 47%;
+    width: min(1070px, 100%);
+    height: auto;
+    // Visible lettering spans roughly x=180–3540 of the 5184-wide SVG canvas.
+    transform: translateX(-35.9%);
+    pointer-events: none;
+}
+
+.campaign-copy {
+    position: relative;
+    width: min(760px, 100%);
+    margin: 0 0 20px;
+    color: #002866;
+
+    h2 {
+        margin: 0 0 12px;
+        font-size: clamp(1.35rem, 2.1vw, 2rem);
+        line-height: 1.2;
+    }
+
+    p {
+        margin: 0;
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+}
+
+.actions {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: min(760px, 100%);
+    gap: 16px;
+}
+
+.browse-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 50px;
+    box-sizing: border-box;
+    padding: 12px 24px;
+    border: 0;
+    border-radius: 4px;
+    background-color: $homepage-light-blue;
+    box-shadow: 0 6px 12px -6px $homepage-light-blue;
+    color: white;
+    cursor: pointer;
+    font: inherit;
+    text-align: center;
+    text-decoration: none;
+}
+
+.browse-button:hover {
+    opacity: 0.8;
+}
+
+.browse-button:focus-visible {
+    outline: 3px solid white;
+    outline-offset: 3px;
+}
+
+.cyber-awareness {
+    background-color: $card-primary;
+}
+
+.error {
+    position: relative;
+    margin: 12px 0 0;
+    padding: 6px 10px;
+    background-color: white;
+    color: #b00020;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .campaign-content {
+        padding: 20px;
+    }
+
+    .campaign-copy {
+        width: 100%;
+        margin: 0 0 16px;
+    }
+
+    .actions {
+        flex-direction: column;
+        width: 100%;
+    }
+}
