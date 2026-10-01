@@ -42,6 +42,24 @@
         color: $light-blue;
     }
 }
+
+.dashboard__feature-announcement {
+    bottom: 24px;
+    max-width: calc(100vw - 32px);
+    position: fixed;
+    right: 24px;
+    width: 360px;
+    z-index: $notification-z;
+}
+
+@media (max-width: 600px) {
+    .dashboard__feature-announcement {
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        width: auto;
+    }
+}
 .loading-template {
     max-width: $max-width;
     padding: 20px;
