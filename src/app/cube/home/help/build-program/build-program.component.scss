@@ -11,18 +11,18 @@
     .framework {
         margin: 0 15px 15px 0;
         padding: 10px 24px;
-        border: 1px solid $secondary-white;
+        border: 1px solid var(--theme-border);
         border-radius: 4px;
-        background: $primary-white;
+        background: var(--theme-surface);
 
         &:hover {
-            border: 1px solid $homepage-light-blue;
+            border: 1px solid var(--theme-action-primary);
             opacity: 80%;
         }
 
         &:active {
-            border: 1px solid $homepage-light-blue;
-            background-color: $box-background;
+            border: 1px solid var(--theme-action-primary);
+            background-color: var(--theme-surface-selected);
             opacity: 100%;
         }
     }
@@ -31,15 +31,15 @@
         margin-top: 50px;
         .input {
             cursor: text;
-            background-color: white;
+            background-color: var(--theme-surface);
             padding: 7px;
             margin-right: 12px;
-            border: 2px solid $secondary-white;
+            border: 2px solid var(--theme-border);
             border-radius: 4px;
 
             svg {
                 padding: 0px 5px;
-                color: $medium-grey;
+                color: var(--theme-text-muted);
             }
 
             input {
@@ -48,7 +48,7 @@
             }
 
             &:hover {
-                border-color: $homepage-light-blue;
+                border-color: var(--theme-action-primary);
             }
         }
     }
@@ -67,13 +67,13 @@
                 position: relative;
                 text-align: left;
                 vertical-align: top;
-                border: 1px solid $secondary-white;
+                border: 1px solid var(--theme-border);
                 border-radius: 4px;
                 font-size: 14px;
-                background: $primary-white;
+                background: var(--theme-surface-raised);
 
                 .guidelineDescription {
-                    color: $homepage-gray;
+                    color: var(--theme-text-muted);
                     margin: 15px 15px 70px;
                 }
 
@@ -81,17 +81,17 @@
                     position: absolute;
                     bottom: 0;
                     left: 15px;
-                    color: $homepage-gray;
+                    color: var(--theme-text-muted);
                 }
 
                 &:hover {
-                    border: 1px solid $homepage-light-blue;
+                    border: 1px solid var(--theme-action-primary);
                     opacity: 80%;
                 }
 
                 &:active {
-                    border: 1px solid $homepage-light-blue;
-                    background: $box-background;
+                    border: 1px solid var(--theme-action-primary);
+                    background: var(--theme-surface-selected);
                     border-radius: 4px;
                 }
             }
@@ -102,7 +102,7 @@
         margin-top: 70px;
         button {
             border: none;
-            color: $homepage-light-blue;
+            color: var(--theme-action-primary);
             font-size: 15px;
             background: transparent;
             padding: 5px 10px;
@@ -118,11 +118,11 @@
             }
 
             &.highlighted {
-                background: $box-background;
+                background: var(--theme-surface-selected);
             }
 
             &:disabled {
-                color: $homepage-pagination;
+                color: var(--theme-text-disabled);
             }
         }
     }

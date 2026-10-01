@@ -7,8 +7,8 @@
     justify-content: center;
     padding: 20px;
     border-radius: 6px;
-    background-color: $primary-white;
-    border: solid 1px $secondary-white;
+    background-color: var(--theme-surface);
+    border: solid 1px var(--theme-border);
     cursor: pointer;
     transition: all 0.25s ease;
     appearance: none;
@@ -16,7 +16,7 @@
 
     &:hover:not(:active) {
         transform: scale(1.02);
-        box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 22px 0 var(--theme-shadow);
     }
 
     &:active {
@@ -34,8 +34,8 @@
         text-align: center;
         margin: auto;
         margin-bottom: 20px;
-        background: $wrapper-background;
-        color: $light-blue;
+        background: var(--theme-surface-subtle);
+        color: var(--theme-action-primary);
         width: 80px;
         height: 80px;
         border-radius: 50px;
@@ -48,7 +48,7 @@
 }
 
 .card__name {
-    color: $dark-grey;
+    color: var(--theme-text);
     text-transform: uppercase;
     letter-spacing: 2px;
     font-size: $normal;

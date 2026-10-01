@@ -10,7 +10,8 @@
     margin-right: auto;
 
     .list__wrapper {
-        background: white;
+        color: var(--theme-text);
+        background: var(--theme-surface-raised);
         border-radius: 4px;
         box-shadow: 0 4px 8px 1px rgba(0, 0, 0, 0.08);
     }
@@ -38,8 +39,8 @@
     }
 
     .tabs__item--active {
-        background: white;
-        color: $light-blue;
+        background: var(--theme-surface-raised);
+        color: var(--theme-link);
     }
 }
 .loading-template {
@@ -52,7 +53,8 @@
     margin-right: auto;
 
     .loading-content {
-        background: white;
+        color: var(--theme-text);
+        background: var(--theme-surface-raised);
         font-size: $larger;
         text-align: center;
         padding: 20px;

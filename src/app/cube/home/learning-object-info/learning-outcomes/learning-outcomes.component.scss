@@ -13,7 +13,7 @@
         flex-wrap: wrap;
         justify-content: left;
         gap: 50px;
-        color: $homepage-light-blue;
+        color: var(--theme-action-primary);
         padding: 50px 0 400px 0;
 
         .blooms-card {
@@ -22,8 +22,8 @@
             align-items: center;
             height: 190px;
             width: 265px;
-            background-color: $primary-white;
-            border: 1px solid $secondary-white;
+            background-color: var(--theme-surface-raised);
+            border: 1px solid var(--theme-border);
             border-radius: 8px;
             transform-style: preserve-3d;
             position: relative;
@@ -60,7 +60,7 @@
 
             &:hover,
             &:focus {
-                border: 1px solid $homepage-light-blue;
+                border: 1px solid var(--theme-action-primary);
                 cursor: pointer;
             }
         }

@@ -6,9 +6,10 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
+    color: var(--theme-text);
 
     .clear-search {
-        color: $blue-accent;
+        color: var(--theme-link);
         text-decoration: underline;
         cursor: pointer;
         font-size: $normal;
@@ -28,7 +29,7 @@
     .results-title {
         font-size: $normal;
         text-transform: uppercase;
-        color: $darker-grey;
+        color: var(--theme-text-strong);
         display: flex;
         align-items: center;
         gap: 10px;
@@ -58,8 +59,8 @@
     position: sticky;
     top: 0;
     z-index: 100;
-    background: white;
-    border-bottom: 1px solid $light-grey;
+    background: var(--theme-surface);
+    border-bottom: 1px solid var(--theme-border);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
     margin: 0 -20px;
     padding: 0 20px;
@@ -74,15 +75,15 @@
 
     .filter-btn,
     .sort-btn {
-        border: 1px solid $light-grey;
-        background: white;
+        border: 1px solid var(--theme-border);
+        background: var(--theme-surface-raised);
         border-radius: 6px;
         height: 42px;
         padding: 0 12px;
         box-sizing: border-box;
         font-size: $normal;
         cursor: pointer;
-        color: $darker-grey;
+        color: var(--theme-text);
         display: flex;
         align-items: center;
         gap: 6px;
@@ -95,14 +96,14 @@
         }
 
         &:hover {
-            border-color: $dark-grey;
-            background: $primary-white;
+            border-color: var(--theme-border-strong);
+            background: var(--theme-surface-subtle);
         }
 
         &.active {
-            border-color: $blue-accent;
-            color: $blue-accent;
-            background: rgba(70, 144, 255, 0.05);
+            border-color: var(--theme-action-primary);
+            color: var(--theme-link);
+            background: var(--theme-surface-selected);
         }
     }
 
@@ -126,7 +127,7 @@
         .clear-sort-btn {
             border: none;
             background: transparent;
-            color: $error-red;
+            color: var(--theme-status-error);
             font-size: $large;
             padding: 0;
             cursor: pointer;
@@ -137,7 +138,7 @@
         }
 
         .search-card-link {
-            color: $blue-accent;
+            color: var(--theme-link);
             text-decoration: underline;
             font-size: $normal;
             cursor: pointer;
@@ -156,8 +157,9 @@
     position: absolute;
     top: calc(100% + 4px);
     right: 0;
-    background: white;
-    border: 1px solid $light-grey;
+    color: var(--theme-text);
+    background: var(--theme-surface-raised);
+    border: 1px solid var(--theme-border);
     border-radius: 6px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     min-width: 180px;
@@ -171,19 +173,19 @@
 
         li {
             position: relative;
-            color: $dark-grey;
+            color: var(--theme-text);
             padding: 10px 15px;
             cursor: pointer;
             transition: all 0.15s ease;
             font-size: $normal;
 
             &:hover {
-                background: $primary-white;
+                background: var(--theme-surface-subtle);
             }
 
             &.selected {
-                color: $blue-accent;
-                background: rgba(70, 144, 255, 0.05);
+                color: var(--theme-link);
+                background: var(--theme-surface-selected);
                 font-weight: 500;
             }
         }
@@ -265,7 +267,8 @@
 }
 
 .filter-modal {
-    background: white;
+    color: var(--theme-text);
+    background: var(--theme-surface-raised);
     width: 100%;
     height: 100vh;
     max-width: 700px;
@@ -289,15 +292,15 @@
         justify-content: space-between;
         align-items: center;
         padding: 20px 24px;
-        border-bottom: 1px solid $light-grey;
+        border-bottom: 1px solid var(--theme-border);
         flex-shrink: 0;
-        background: white;
+        background: var(--theme-surface-raised);
         z-index: 10;
 
         .filter-modal-title {
             font-size: $large;
             font-weight: 600;
-            color: $darker-grey;
+            color: var(--theme-text-strong);
             margin: 0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -307,7 +310,7 @@
         .filter-modal-close {
             border: none;
             background: transparent;
-            color: $darker-grey;
+            color: var(--theme-text);
             font-size: 24px;
             cursor: pointer;
             padding: 4px;
@@ -318,12 +321,12 @@
             border-radius: 4px;
 
             &:hover {
-                color: $dark-grey;
-                background: rgba(0, 0, 0, 0.04);
+                color: var(--theme-text-strong);
+                background: var(--theme-surface-subtle);
             }
 
             &:focus {
-                outline: 2px solid $blue-accent;
+                outline: 2px solid var(--theme-focus);
                 outline-offset: 2px;
             }
         }
@@ -343,7 +346,7 @@
                 display: block;
                 margin-bottom: 12px;
                 padding-bottom: 12px;
-                border-bottom: 1px solid $light-grey;
+                border-bottom: 1px solid var(--theme-border);
 
                 &:last-child {
                     margin-bottom: 0;
@@ -367,7 +370,7 @@
 
                     p {
                         font-weight: 600;
-                        color: $darker-grey;
+                        color: var(--theme-text-strong);
                         font-size: $normal;
                         margin: 0;
                         flex: 1;
@@ -381,7 +384,7 @@
                         margin-left: 12px;
 
                         i {
-                            color: $dark-grey;
+                            color: var(--theme-text);
                             font-size: $smaller;
                         }
                     }
@@ -424,14 +427,14 @@
 
                 label {
                     font-size: $normal;
-                    color: $dark-grey;
+                    color: var(--theme-text);
                     margin: 0;
                     cursor: pointer;
                     line-height: 1.5;
                     font-weight: normal;
 
                     &:hover {
-                        color: $darker-grey;
+                        color: var(--theme-text-strong);
                     }
                 }
             }
@@ -443,8 +446,8 @@
         display: flex;
         gap: 12px;
         padding: 16px 24px;
-        border-top: 1px solid $light-grey;
-        background: white;
+        border-top: 1px solid var(--theme-border);
+        background: var(--theme-surface-raised);
         flex-shrink: 0;
         box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
     }
@@ -473,8 +476,8 @@
     }
 
     &.primary-btn {
-        background: $light-blue;
-        color: white;
+        background: var(--theme-action-primary);
+        color: var(--theme-action-on-primary);
         border-radius: 4px;
         padding: 11px 20px;
         font-size: $small;
@@ -484,7 +487,7 @@
 
         &:hover:not(:disabled) {
             opacity: 0.8;
-            background: $light-blue;
+            background: var(--theme-action-primary-hover);
         }
 
         &:active:not(:disabled) {
@@ -492,7 +495,7 @@
         }
 
         &:focus-visible {
-            outline: 2px solid $light-blue;
+            outline: 2px solid var(--theme-focus);
             outline-offset: 2px;
         }
 
@@ -503,9 +506,9 @@
     }
 
     &.secondary-btn {
-        background: white;
-        color: $dark-grey;
-        border: 1px solid $dark-grey;
+        background: var(--theme-surface-raised);
+        color: var(--theme-text);
+        border: 1px solid var(--theme-border-strong);
         border-radius: 4px;
         padding: 11px 20px;
         font-size: $small;
@@ -517,7 +520,7 @@
         }
 
         &:focus-visible {
-            outline: 2px solid $light-blue;
+            outline: 2px solid var(--theme-focus);
             outline-offset: 2px;
         }
 
@@ -535,7 +538,7 @@
 
     .no-results {
         text-align: center;
-        color: $dark-grey;
+        color: var(--theme-text);
         padding: 40px 20px;
     }
 }

@@ -9,8 +9,8 @@
     flex-direction: row;
 
     .scroll-button {
-        background-color: $primary-white;
-        border: 1px solid $secondary-white;
+        background-color: var(--theme-surface);
+        border: 1px solid var(--theme-border);
         border-radius: 4px;
 
         &:hover {
@@ -47,8 +47,8 @@
             right: 0;
             background-image: linear-gradient(
                 90deg,
-                rgba(255, 255, 255, 0),
-                white
+                transparent,
+                var(--theme-surface)
             );
         }
 
@@ -56,32 +56,33 @@
             left: 0;
             background-image: linear-gradient(
                 90deg,
-                white,
-                rgba(255, 255, 255, 0)
+                var(--theme-surface),
+                transparent
             );
         }
     }
 
     .topic-btn {
-        background-color: $primary-white;
-        border: 1px solid $secondary-white;
+        background-color: var(--theme-surface);
+        border: 1px solid var(--theme-border);
         border-radius: 4px;
         text-align: center;
         padding: 10px;
         white-space: nowrap;
 
         &.selected {
-            color: $homepage-light-blue;
-            border-color: $homepage-light-blue;
-            background-color: $box-background;
+            color: var(--theme-action-primary);
+            border-color: var(--theme-action-primary);
+            background-color: var(--theme-surface-selected);
         }
     }
 }
 
 select {
     appearance: none;
-    background-color: $primary-white;
-    border: 1px solid $secondary-white;
+    background-color: var(--theme-surface);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text);
     border-radius: 3px;
     padding: 10px;
     width: 100%;

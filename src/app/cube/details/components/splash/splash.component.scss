@@ -19,7 +19,7 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
             padding-right: 20px;
         }
         .collection {
-            color: $light-blue;
+            color: var(--theme-link);
             margin: 0;
 
             div {
@@ -36,13 +36,13 @@ $content-width: calc(#{$max-width} - #{$sidebar-width});
 
         .learning-object-name {
             font-size: $largest;
-            color: $darker-grey;
+            color: var(--theme-text-strong);
             width: 100%;
         }
 
         .updated {
             font-size: $normal;
-            color: $dark-grey;
+            color: var(--theme-text-muted);
         }
     }
 }

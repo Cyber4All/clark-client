@@ -35,11 +35,11 @@
                 position: relative;
                 left: -10px;
                 .fa-stack-2x {
-                    color: $box-background;
+                    color: var(--theme-surface-selected);
                 }
 
                 .fa-stack-1x {
-                    color: $homepage-light-blue;
+                    color: var(--theme-action-primary);
                 }
             }
         }
@@ -49,7 +49,7 @@
 p {
     font-weight: 400;
     font-size: 18px;
-    color: #454545;
+    color: var(--theme-text);
 }
 
 @media screen and (max-width: 950px) {

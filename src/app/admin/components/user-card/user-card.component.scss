@@ -1,20 +1,19 @@
 @import "_vars.scss";
 
 .card {
-    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 10px 2px var(--theme-shadow);
+    border: 1px solid var(--theme-border);
     max-width: 220px;
     min-width: 185px;
     border-radius: 5px;
     position: relative;
+    overflow: hidden;
 }
 
 .card__middle {
     position: absolute;
-    background: linear-gradient(
-        0deg,
-        darken($light-blue, 20),
-        rgba(red($light-blue), green($light-blue), blue($light-blue), 0.9)
-    );
+    background: var(--theme-action-primary);
+    color: var(--theme-action-on-primary);
     border-radius: 5px;
     padding: 20px;
     padding-top: 25px;
@@ -34,7 +33,8 @@
 }
 
 .card__body {
-    background-color: white;
+    background-color: var(--theme-surface-raised);
+    color: var(--theme-text);
     height: 100%;
     padding: 10px;
     border-radius: 0 0 5px 5px;
@@ -44,15 +44,16 @@
     font-size: $large;
     font-weight: 600;
     text-transform: capitalize;
+    color: var(--theme-text-strong);
 }
 
 .card__body__username {
-    color: $placeholder;
+    color: var(--theme-text-muted);
 }
 
 .card__middle__header {
     text-align: center;
-    color: white;
+    color: var(--theme-action-on-primary);
     font-size: $large;
     font-weight: 500;
     margin-bottom: 15px;
@@ -60,15 +61,19 @@
 }
 
 .card__middle__objects {
-    color: white;
+    color: var(--theme-action-on-primary);
     font-size: $normal;
     font-weight: 300;
     margin-bottom: 15px;
     cursor: pointer;
+
+    &:hover {
+        opacity: 0.85;
+    }
 }
 
 .card__middle__email {
-    color: white;
+    color: var(--theme-action-on-primary);
     font-size: $normal;
     font-weight: 300;
 }
@@ -79,4 +84,5 @@
 
 .card__body__organization {
     text-transform: capitalize;
+    color: var(--theme-text-muted);
 }

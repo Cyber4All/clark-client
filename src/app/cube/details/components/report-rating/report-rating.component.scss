@@ -3,7 +3,7 @@
 .title {
     font-size: $large;
     text-align: center;
-    color: $blue-accent;
+    color: var(--theme-text-strong);
     margin-bottom: 15px;
     position: relative;
 
@@ -13,6 +13,11 @@
         left: 0;
         font-size: $normal;
         cursor: pointer;
+        color: var(--theme-text-muted);
+
+        &:hover {
+            color: var(--theme-text-strong);
+        }
     }
 }
 
@@ -30,13 +35,15 @@
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
+            color: var(--theme-text);
 
             &:hover {
-                background: $light-grey;
+                background: var(--theme-surface-subtle);
             }
 
             .svg-inline--fa {
                 font-size: $small;
+                color: var(--theme-text-muted);
             }
         }
     }
@@ -44,12 +51,12 @@
 
 .comment {
     .comment-description {
-        color: $dark-grey;
+        color: var(--theme-text-muted);
         font-size: $normal;
 
         span {
             font-weight: bold;
-            color: $darker-grey;
+            color: var(--theme-text-strong);
         }
     }
 
@@ -57,16 +64,18 @@
         margin-top: 15px;
         width: 100%;
         appearance: none;
-        padding: 5px;
+        padding: 8px;
         box-sizing: border-box;
-        border-radius: 1px;
+        border-radius: 4px;
         min-height: 100px;
-        border: 1px solid $placeholder;
+        background: var(--theme-surface);
+        color: var(--theme-text);
+        border: 1px solid var(--theme-border);
         outline: 0;
         resize: none;
 
         &:focus {
-            border-color: $blue-accent;
+            border-color: var(--theme-focus);
         }
     }
 

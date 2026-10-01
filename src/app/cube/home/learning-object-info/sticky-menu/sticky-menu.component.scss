@@ -3,8 +3,8 @@
 .wrapper {
     width: 250px;
     height: fit-content;
-    background: white;
-    border: 1px solid $secondary-white;
+    background: var(--theme-surface-raised);
+    border: 1px solid var(--theme-border);
     box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.25);
     padding: 10px 15px 10px;
     margin: 20px 0;
@@ -24,21 +24,21 @@
         }
 
         &:hover {
-            background-color: $box-background;
-            color: $homepage-light-blue;
+            background-color: var(--theme-surface-selected);
+            color: var(--theme-action-primary);
             cursor: pointer;
             font-weight: 600;
         }
     }
 
     .choosen {
-        background-color: $box-background;
-        color: $homepage-light-blue;
+        background-color: var(--theme-surface-selected);
+        color: var(--theme-action-primary);
         font-weight: 600;
     }
 
     .greyout {
-        color: $text-greyout;
+        color: var(--theme-text-disabled);
         transition:
             background-color 500ms,
             color 500ms;
@@ -53,7 +53,7 @@
     .wrapper {
         width: 100%;
         padding: 0;
-        background: white;
+        background: var(--theme-surface);
         box-shadow: none;
         border: none;
         margin: 0;
@@ -78,16 +78,16 @@
             font-size: large;
             width: 100%;
             margin: 0;
-            background: $primary-white;
-            color: $homepage-text;
-            border-top: 1px solid $secondary-white;
-            border-bottom: 1px solid $secondary-white;
+            background: var(--theme-surface);
+            color: var(--theme-text);
+            border-top: 1px solid var(--theme-border);
+            border-bottom: 1px solid var(--theme-border);
             border-left: none;
             border-right: none;
 
             .dropdownButton {
                 font-size: large;
-                color: $homepage-text;
+                color: var(--theme-text);
                 border: none;
                 background: transparent;
 

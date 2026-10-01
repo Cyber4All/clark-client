@@ -1,19 +1,14 @@
 @import "_vars.scss";
 @import "../../../collection-globals.scss";
-:root {
-    --background-color: white;
-    --primary-text: black;
+:host {
+    display: inline-block;
+    --background-color: #ffffff;
+    --primary-text: #000000;
     --secondary-text: #32363f;
     --border: #672f90;
 }
 
-[data-theme="light"] {
-    --background-color: white;
-    --primary-text: black;
-    --secondary-text: #32363f;
-    --border: #672f90;
-}
-
+:host-context([data-theme="dark"]),
 [data-theme="dark"] {
     --background-color: #32363f;
     --primary-text: #ffffff;
@@ -29,6 +24,7 @@
     border-radius: 5px;
     margin: 10px;
     background-color: var(--background-color);
+    color: var(--secondary-text);
     display: flex;
     flex-direction: column;
     overflow: hidden;

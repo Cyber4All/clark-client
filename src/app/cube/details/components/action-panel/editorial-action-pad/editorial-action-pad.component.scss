@@ -28,7 +28,7 @@ p {
 
     .fa-exclamation-triangle {
         font-size: 60px;
-        color: $medium-grey;
+        color: var(--theme-status-warning, #fea200);
     }
 }
 
