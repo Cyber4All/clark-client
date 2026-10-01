@@ -73,6 +73,7 @@ export class FileService {
                 ".xls",
             ],
             pdf: [".pdf"],
+            image: [".png", ".jpg", ".jpeg", ".webp"],
         };
 
         // Check for source code files first
@@ -129,7 +130,8 @@ export class FileService {
      * Helper: returns true if filename can be previewed
      */
     static canPreview(filename: string): boolean {
-        return this.getFileType(filename).type in this.PREVIEW_ACTIONS;
+        const type = this.getFileType(filename).type;
+        return type === "image" || type in this.PREVIEW_ACTIONS;
     }
 
     /**
@@ -192,11 +194,66 @@ export class FileService {
         fileName: string,
     ): Promise<void> {
         const fileType = FileService.getFileType(fileName).type;
+
+        if (fileType === "image") {
+            return this.previewImage(url, fileName);
+        }
+
         const previewAction = FileService.PREVIEW_ACTIONS[fileType];
 
         if (previewAction) {
             previewAction(url, fileName);
         }
+    }
+
+    private previewImage(url: string, fileName: string): Promise<void> {
+        // Open the tab before the request so the browser treats it as a user action.
+        const previewWindow = window.open("about:blank", "_blank");
+        if (!previewWindow) {
+            return Promise.resolve();
+        }
+        previewWindow.opener = null;
+        previewWindow.document.title = fileName;
+
+        return new Promise<void>((resolve, reject) => {
+            this.http
+                .get(url, { withCredentials: true, responseType: "blob" })
+                .pipe(catchError(this.handleError))
+                .subscribe({
+                    next: (blob) => {
+                        const mimeTypes: Record<string, string> = {
+                            ".png": "image/png",
+                            ".jpg": "image/jpeg",
+                            ".jpeg": "image/jpeg",
+                            ".webp": "image/webp",
+                        };
+                        const mimeType =
+                            mimeTypes[FileService.getFileExtension(fileName)];
+                        const imageBlob =
+                            blob.type === mimeType
+                                ? blob
+                                : blob.slice(0, blob.size, mimeType);
+                        const blobUrl = URL.createObjectURL(imageBlob);
+                        if (previewWindow.closed) {
+                            URL.revokeObjectURL(blobUrl);
+                            resolve();
+                            return;
+                        }
+
+                        // Navigating to the image puts its blob URL in the address bar.
+                        previewWindow.location.replace(blobUrl);
+
+                        resolve();
+                    },
+                    error: (error) => {
+                        if (!previewWindow.closed) {
+                            previewWindow.document.body.textContent =
+                                "Unable to preview image.";
+                        }
+                        reject(error);
+                    },
+                });
+        });
     }
 
     async deleteLearningObjectFileMetadata(
