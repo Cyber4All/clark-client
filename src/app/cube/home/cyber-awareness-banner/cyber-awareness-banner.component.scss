@@ -68,7 +68,7 @@
     position: absolute;
     top: clamp(-40px, calc(285px - 30vw), 0px);
     left: 47%;
-    width: min(790px, 100%);
+    width: clamp(500px, 100%, 790px);
     height: auto;
     // Visible lettering spans roughly x=180–3540 of the 5184-wide SVG canvas.
     transform: translateX(-35.9%);
@@ -153,6 +153,13 @@
 
     .browse-button {
         flex: 0 0 auto;
+    }
+}
+
+@include at-most(615px) {
+    .campaign-title {
+        // Offsets the SVG's lower transparent canvas space on narrow screens.
+        top: clamp(0px, calc(153.75px - 25vw), 60px);
     }
 }
 
