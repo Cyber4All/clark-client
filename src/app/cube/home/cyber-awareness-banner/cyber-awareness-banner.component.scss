@@ -1,5 +1,11 @@
 @import "_vars.scss";
 
+@mixin at-most($width) {
+    @media (max-width: $width) {
+        @content;
+    }
+}
+
 .banner {
     position: relative;
     box-sizing: border-box;
@@ -55,13 +61,14 @@
     justify-content: flex-end;
     box-sizing: border-box;
     padding: 32px;
+    padding-bottom: clamp(16px, calc(62px - 3.75vw), 32px);
 }
 
 .campaign-title {
     position: absolute;
     top: clamp(-40px, calc(285px - 30vw), 0px);
     left: 47%;
-    width: min(1070px, 100%);
+    width: min(790px, 100%);
     height: auto;
     // Visible lettering spans roughly x=180–3540 of the 5184-wide SVG canvas.
     transform: translateX(-35.9%);
@@ -69,8 +76,11 @@
 }
 
 .campaign-copy {
+    width: min(760px, calc(50vw + 20px), 100%);
+}
+
+.campaign-copy {
     position: relative;
-    width: min(760px, 100%);
     margin: 0 0 20px;
     color: #002866;
 
@@ -91,7 +101,6 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
     width: min(760px, 100%);
     gap: 16px;
 }
@@ -100,9 +109,11 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex: 1 1 340px;
+    min-width: 0;
     min-height: 50px;
     box-sizing: border-box;
-    padding: 12px 24px;
+    padding: 12px 16px;
     border: 0;
     border-radius: 4px;
     background-color: $homepage-light-blue;
@@ -127,18 +138,36 @@
     background-color: $card-primary;
 }
 
-@media (max-width: 600px) {
+@media (min-width: 1258px) {
+    .campaign-title {
+        // Keeps the title-to-copy gap stable when the actions return to one row.
+        top: 26px;
+    }
+}
+
+@include at-most(1257px) {
+    .actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .browse-button {
+        flex: 0 0 auto;
+    }
+}
+
+@include at-most(611px) {
+    .campaign-copy {
+        width: 100%;
+    }
+}
+
+@include at-most(600px) {
     .campaign-content {
         padding: 20px;
     }
 
     .campaign-copy {
-        width: 100%;
         margin: 0 0 16px;
-    }
-
-    .actions {
-        flex-direction: column;
-        width: 100%;
     }
 }

@@ -22,6 +22,16 @@ Replace the homepage splash with the supplied CyberAware banner at the same desk
 - [x] (2026-09-30) Corrected the text layer's horizontal offset to center its visible lettering, rather than its transparent 5184-wide canvas.
 - [x] (2026-09-30) Grouped `Text.svg`, the campaign copy, and both buttons in a single `campaign-content` wrapper while preserving their proportions and alignment.
 - [x] (2026-09-30) Removed the banner's redundant tag lookup and linked directly to browse using the supplied Cyber Awareness tag ID.
+- [x] (2026-10-01) Narrowed the campaign copy responsively to keep it clear of the right-anchored mummy near 1298px and smaller desktop widths.
+- [x] (2026-10-01) Replaced the banner's 600px media query with a local SCSS breakpoint mixin; confirmed the compiled CSS is unchanged.
+- [x] (2026-10-01) Reduced `Text.svg` proportionally at intermediate viewport widths to preserve space above the campaign heading.
+- [x] (2026-10-01) Matched the action column to the campaign-copy width and centered full-width buttons at 601–700px.
+- [x] (2026-10-01) Shared the campaign-copy width with the action row at all widths and centered its buttons; kept both columns full-width from 601–611px to avoid extra heading wrapping.
+- [x] (2026-10-01) Scaled `Text.svg` down further through intermediate widths after the title collided with campaign copy at 800–1220px.
+- [x] (2026-10-01) Rendered the real banner HTML, compiled SCSS, and SVG assets in headless Chrome at 800px, 1000px, and 1220px; adjusted bottom padding so the visible gap above the heading stays near 30px and rechecked the 1220px result.
+- [x] (2026-10-01) Gave both action buttons the same responsive width and kept them centered in a single vertical column at every viewport width; no new browser instance was launched for this change.
+- [x] (2026-10-01) Reduced button side padding to 16px, kept equal button widths, and changed the action layout to one row above 825px while preserving the centered stack at 825px and below.
+- [x] (2026-10-01) Matched the action container to the campaign-copy width and replaced the fixed 825px switch with equal-width flex items that wrap into a vertical stack when the column cannot fit both.
 
 ## Surprises & Discoveries
 
@@ -72,10 +82,13 @@ Replace the homepage splash with the supplied CyberAware banner at the same desk
 - Decision: Use the supplied tag ID directly in the browse link and remove the prerequisite `getTag` request.
   Rationale: Browse accepts tag IDs in its `tags` query parameter, so an extra request introduces a failure point without changing the destination.
   Date/Author: 2026-09-30 / Codex
+- Decision: Reduce campaign copy width with `calc(50vw + 20px)` on narrower desktop widths, keeping its left edge aligned with the buttons.
+  Rationale: The mummy begins near x=958px at a 1298px banner width; the narrower copy ends before it while retaining enough width for readable lines.
+  Date/Author: 2026-10-01 / Codex
 
 ## Outcomes & Retrospective
 
-The Cyber Awareness banner replaces the old homepage splash reference. `ORG BGD CAB.svg` fills the banner, while the eight decorative cutout SVGs retain their original proportions and edge anchors. `Text.svg`, the campaign copy, and both buttons share a centered content wrapper. The copy and buttons remain left-aligned within that wrapper. The SVG lettering moves upward as the viewport grows past 950px to avoid the reported overlap. The Cyber Awareness link now navigates directly with its tag ID. No tests were added, per user request. Angular template, Sass, SVG XML, lint, formatting, and a full build passed. Visual review in a running browser remains unverified.
+The Cyber Awareness banner replaces the old homepage splash reference. `ORG BGD CAB.svg` fills the banner, while the eight decorative cutout SVGs retain their original proportions and edge anchors. `Text.svg`, the campaign copy, and both buttons share a centered content wrapper. The copy and buttons remain left-aligned within that wrapper, and the copy wraps in a narrower column to clear the mummy at desktop widths. The SVG lettering moves upward as the viewport grows past 950px to avoid the reported overlap. The Cyber Awareness link now navigates directly with its tag ID. No tests were added, per user request. Angular template, Sass, SVG XML, lint, formatting, and a full build passed. A local headless Chrome render of the component at 800px, 1000px, and 1220px confirmed the SVG and heading gap after the responsive padding adjustment; full-app visual review remains outstanding.
 
 ## Context and Orientation
 
