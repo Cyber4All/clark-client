@@ -187,7 +187,7 @@ export class FileManagementService {
         // for the S3 client to connect to the Minio server
         if (!environment.production) {
             AWS.config.credentials = new AWS.Credentials({
-                accessKeyId: "admin",
+                accessKeyId: "root",
                 // deepcode ignore HardcodedNonCryptoSecret: Mock password, not real
                 secretAccessKey: "password",
             });

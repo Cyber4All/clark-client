@@ -22,18 +22,12 @@ export class UsageStatsService {
     constructor(private http: HttpClient) {}
 
     async getLearningObjectStats(): Promise<LearningObjectStats> {
-        const [objects, library] = await Promise.all([
-            this.http
-                .get<
-                    Partial<LearningObjectStats> & BloomsDistribution
-                >(STATS_ROUTES.LEARNING_OBJECT_STATS)
-                .pipe(retry(3), catchError(this.handleError))
-                .toPromise(),
-            this.http
-                .get<{ metrics: any }>(STATS_ROUTES.LIBRARY_METRICS)
-                .pipe(retry(3), catchError(this.handleError))
-                .toPromise(),
-        ]);
+        const objects = await this.http
+            .get<
+                Partial<LearningObjectStats> & BloomsDistribution
+            >(STATS_ROUTES.LEARNING_OBJECT_STATS)
+            .pipe(retry(3), catchError(this.handleError))
+            .toPromise();
 
         // map service data to LearningObjectStats object
         objects.outcomes = {
@@ -43,7 +37,7 @@ export class UsageStatsService {
         };
 
         delete objects.blooms_distribution;
-        return { ...objects, ...library.metrics } as LearningObjectStats;
+        return objects as LearningObjectStats;
     }
     getUserStats(): Promise<UserStats> {
         return this.http
