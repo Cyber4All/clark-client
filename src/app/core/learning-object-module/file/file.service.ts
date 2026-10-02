@@ -10,6 +10,7 @@ import { Observable, Subject, throwError } from "rxjs";
 import { FileUploadMeta } from "app/onion/learning-object-builder/components/content-upload/app/services/typings";
 import { LearningObject } from "@entity";
 import { SOURCE_CODE_EXTENSIONS } from "./source.extensions";
+//import { UtilityService } from "src/app/core/utility-module/utility.service";
 
 @Injectable({
     providedIn: "root",
@@ -21,7 +22,11 @@ export class FileService {
     learningObject$: Observable<LearningObject> =
         new Observable<LearningObject>();
 
-    constructor(private http: HttpClient) {}
+    constructor(
+        private http: HttpClient /* public utilityService: UtilityService */,
+    ) {}
+
+    //public utilityService: UtilityService;
 
     /**
      * Helper: extracts the file extension from a filename (including the dot)
@@ -101,6 +106,7 @@ export class FileService {
         // Use Microsoft's viewer
         office: (url: string) => {
             const officeViewerUrl = `https://view.officeapps.live.com/op/view.aspx?src=${url}`;
+            //UtilityService.openExternalLink(officeViewerUrl);
             window.open(officeViewerUrl, "_blank", "noopener,noreferrer");
         },
         // Open a new tab

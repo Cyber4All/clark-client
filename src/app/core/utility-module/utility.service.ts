@@ -14,6 +14,15 @@ export class Downtime {
     ) {}
 }
 
+// putting this here now, will probably move it later
+// evaluate later if I need the export
+export interface ExternalLinkOptions {
+    bypassConfirmation?: boolean;
+    confirmationMessage?: string;
+    target?: "_blank" | "_self";
+    windowFeatures?: string;
+}
+
 @Injectable({
     providedIn: "root",
 })
@@ -130,15 +139,39 @@ export class UtilityService {
             });
     }
 
-    public openCard() {
+    // so the Microsoft viewer wants this to be static to use it
+    // look into how static will affect other things
+    // however, changing it to static broke other things so this will prob require some refactoring
+    // at first look, it seems like the static change won't break anything crazy, but I do need to figure out what stopped
+    // client from compiling when I made that change---that is something for later, i.e. not today
+    public openExternalLink(url: string, options?: ExternalLinkOptions) {
         // Ask the user if they are sure they want to leave
-        if (
-            confirm(
-                "You are now leaving CLARK. You will be redirected to the CAE Resource Directory.",
+        // not sure that this is doing what I would like it to
+        if (options?.bypassConfirmation) {
+            window.open(
+                url,
+                options?.target ?? "_blank",
+                "noopener,noreferrer",
+            );
+        } else if (
+            window.confirm(
+                options?.confirmationMessage ??
+                    "You are now leaving CLARK. You will be redirected to the external link.",
             )
         ) {
-            window.open("https://caeresource.clark.center", "_blank");
+            window.open(
+                url,
+                options?.target ?? "_blank",
+                "noopener,noreferrer",
+            );
         }
+        // if (
+        //     confirm(
+        //         "You are now leaving CLARK. You will be redirected to the CAE Resource Directory.",
+        //     )
+        // ) {
+        //     window.open("https://caeresource.clark.center", "_blank");
+        // }
     }
 
     private handleError(error: HttpErrorResponse | any) {

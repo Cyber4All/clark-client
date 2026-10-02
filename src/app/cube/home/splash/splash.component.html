@@ -29,7 +29,12 @@
             id="pageContent"
             class="card"
             [tip]="'You will be redirected to the CAE Resource Directory'"
-            (click)="utilityService.openCard()">
+            (click)="
+                utilityService.openExternalLink(
+                    'https://caeresource.clark.center'
+                )
+            ">
+            <!-- Placeholder URL -->
             BROWSE {{ resourceCount | number }}+ RESOURCES
         </button>
     </div>
