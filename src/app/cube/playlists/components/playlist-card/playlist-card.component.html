@@ -1,0 +1,40 @@
+<a
+    class="playlist-card"
+    [routerLink]="['/playlists', playlist._id]"
+    [attr.aria-label]="
+        playlist.name +
+        ', ' +
+        objectCount +
+        (objectCount === 1 ? ' learning object' : ' learning objects')
+    ">
+    <div class="playlist-card__content">
+        <div class="playlist-card__labels">
+            <span class="playlist-label">Playlist</span>
+            <span
+                *ngIf="showVisibility"
+                class="visibility"
+                [class.visibility--private]="playlist.visibility === 'private'">
+                {{ playlist.visibility }}
+            </span>
+        </div>
+        <h2>{{ playlist.name }}</h2>
+        <p>{{ playlist.description }}</p>
+        <div class="playlist-card__metadata">
+            <div class="playlist-card__author">
+                <span
+                    class="author-avatar"
+                    [ngStyle]="authorAvatarStyle"
+                    aria-hidden="true">
+                    <span *ngIf="!playlist.author?.avatarUrl">{{
+                        authorInitial
+                    }}</span>
+                </span>
+                <span class="author-name">{{ authorName }}</span>
+            </div>
+            <span class="object-count">
+                {{ objectCount }}
+                {{ objectCount === 1 ? "learning object" : "learning objects" }}
+            </span>
+        </div>
+    </div>
+</a>
