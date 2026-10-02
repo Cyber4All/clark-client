@@ -1,0 +1,32 @@
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
+.rating-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    padding: 5px;
+    border: 1px solid #bdbdbd;
+    border-radius: 5px 5px 0 0;
+    background: white;
+}
+
+select {
+    box-sizing: border-box;
+    width: 7em;
+    min-width: 0;
+    height: 34px;
+    margin-right: 4px;
+    font: inherit;
+    padding: 4px;
+}
+
+st-button:nth-of-type(3),
+st-button:last-of-type {
+    border-right: 1px solid #bdbdbd;
+    margin-right: 5px;
+}
