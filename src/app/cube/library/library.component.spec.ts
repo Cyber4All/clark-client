@@ -62,7 +62,12 @@ describe("LibraryComponent", () => {
         libraryService = {
             getDownloadHistory: jest.fn().mockResolvedValue({
                 items: [historyItem],
-                nextCursor: "cursor-2",
+                total: 1,
+                page: 1,
+                limit: 20,
+                totalPages: 1,
+                hasNextPage: false,
+                hasPreviousPage: false,
             }),
         };
         learningObjectService = {
@@ -134,6 +139,11 @@ describe("LibraryComponent", () => {
     it("renders download history rows", async () => {
         await createComponent();
 
+        expect(libraryService.getDownloadHistory).toHaveBeenCalledWith({
+            page: 1,
+            limit: 20,
+            availableOnly: true,
+        });
         expect(fixture.nativeElement.textContent).toContain("Download History");
         expect(fixture.nativeElement.textContent).toContain(
             "Introduction to Cyber Attacks and Defenses",
@@ -146,8 +156,36 @@ describe("LibraryComponent", () => {
 
         await createComponent();
 
+        expect(libraryService.getDownloadHistory).toHaveBeenCalledWith({
+            page: 1,
+            limit: 20,
+            availableOnly: true,
+        });
         expect(fixture.nativeElement.textContent).toContain(
             "No downloads in your history yet.",
+        );
+    });
+
+    it("renders only the available records returned by the backend", async () => {
+        libraryService.getDownloadHistory.mockResolvedValueOnce({
+            items: [historyItem],
+            total: 1,
+            page: 1,
+            limit: 20,
+            totalPages: 1,
+            hasNextPage: false,
+            hasPreviousPage: false,
+        });
+
+        await createComponent();
+
+        expect(
+            fixture.debugElement.queryAll(
+                By.css(".download-history-table__row"),
+            ),
+        ).toHaveLength(1);
+        expect(fixture.nativeElement.textContent).not.toContain(
+            "Unavailable download",
         );
     });
 
@@ -200,7 +238,7 @@ describe("LibraryComponent", () => {
         );
     });
 
-    it("loads more history with the next cursor", async () => {
+    it("loads and replaces history when navigating to another page", async () => {
         const nextItem = {
             ...historyItem,
             downloadedAt: "2025-07-10T21:04:27.612000Z",
@@ -210,48 +248,41 @@ describe("LibraryComponent", () => {
         libraryService.getDownloadHistory
             .mockResolvedValueOnce({
                 items: [historyItem],
-                nextCursor: "cursor-2",
+                total: 21,
+                page: 1,
+                limit: 20,
+                totalPages: 2,
+                hasNextPage: true,
+                hasPreviousPage: false,
             })
             .mockResolvedValueOnce({
                 items: [nextItem],
+                total: 21,
+                page: 2,
+                limit: 20,
+                totalPages: 2,
+                hasNextPage: false,
+                hasPreviousPage: true,
             });
 
         await createComponent();
-        fixture.ngZone!.run(() => component.loadMore());
+        fixture.ngZone!.run(() => component.onPageNumberChange(2));
         await fixture.whenStable();
         fixture.detectChanges();
 
         expect(libraryService.getDownloadHistory).toHaveBeenLastCalledWith({
+            page: 2,
             limit: 20,
-            cursor: "cursor-2",
+            availableOnly: true,
         });
+        expect(component.currentPage).toBe(2);
+        expect(component.totalPages).toBe(2);
+        expect(component.downloadHistoryItems.map((item) => item.name)).toEqual(
+            [nextItem.name],
+        );
         expect(fixture.nativeElement.textContent).toContain(
             "older-download.pdf",
         );
-    });
-
-    it("does not render unavailable resources", async () => {
-        libraryService.getDownloadHistory.mockResolvedValueOnce({
-            items: [
-                {
-                    ...historyItem,
-                    available: false,
-                    resource: null,
-                },
-            ],
-        });
-
-        await createComponent();
-
-        expect(fixture.nativeElement.textContent).toContain(
-            "No downloads in your history yet.",
-        );
-        expect(
-            fixture.debugElement.query(By.css(".download-history-table")),
-        ).toBeNull();
-        expect(
-            fixture.debugElement.query(By.css(".download-history-file-name")),
-        ).toBeNull();
     });
 
     it("navigates to the learning object details page for available rows", async () => {

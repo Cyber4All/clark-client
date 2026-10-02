@@ -133,13 +133,19 @@
                     </div>
                 </div>
 
-                <div class="pagination-container" *ngIf="nextCursor">
-                    <button
-                        class="button neutral"
-                        [disabled]="loadingMore"
-                        (activate)="loadMore()">
-                        {{ loadingMore ? "Loading..." : "Load More" }}
-                    </button>
+                <div class="pagination-container" *ngIf="totalPages > 1">
+                    <div
+                        *ngIf="loading"
+                        class="download-history-state"
+                        role="status">
+                        Loading page {{ currentPage }}...
+                    </div>
+                    <clark-pagination
+                        *ngIf="!loading"
+                        [lastPageNumber]="totalPages"
+                        [currentPageNumber]="currentPage"
+                        (newPageNumberClicked)="onPageNumberChange($event)">
+                    </clark-pagination>
                 </div>
             </div>
         </div>

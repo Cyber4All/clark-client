@@ -43,20 +43,26 @@ describe("LibraryService", () => {
         httpMock.verify();
     });
 
-    it("gets download history with limit and cursor", async () => {
+    it("gets download history with page and limit", async () => {
         const response = {
             items: [],
-            nextCursor: "next-cursor",
+            total: 125,
+            page: 2,
+            limit: 20,
+            totalPages: 7,
+            hasNextPage: true,
+            hasPreviousPage: true,
         };
         const request = service.getDownloadHistory({
+            page: 2,
             limit: 20,
-            cursor: "cursor-1",
+            availableOnly: true,
         });
 
         const httpRequest = httpMock.expectOne(
             (req) =>
                 req.urlWithParams ===
-                `${environment.apiURL}/users/download-history?limit=20&cursor=cursor-1`,
+                `${environment.apiURL}/users/download-history?page=2&limit=20&availableOnly=true`,
         );
         expect(httpRequest.request.method).toBe("GET");
         expect(httpRequest.request.withCredentials).toBe(true);

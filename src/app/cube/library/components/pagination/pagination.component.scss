@@ -5,15 +5,10 @@
     margin: 30px 0;
 }
 
-.library-items__pagination-container__button {
+.library-items__pagination-container__page-label {
     color: $medium-grey;
     font-size: $small;
-    margin: 0 10px;
-}
-
-.library-items__pagination-container__button:hover {
-    color: $light-blue;
-    cursor: pointer;
+    margin: 0 16px;
 }
 
 .library-items__pagination-container__arrow-button {
@@ -25,10 +20,10 @@
     margin: 0 10px;
 }
 
-.selected {
-    color: $light-blue;
-    font-size: $normal;
-    font-weight: 500;
+.library-items__pagination-container__arrow-button:disabled {
+    background-color: $medium-grey;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 button {

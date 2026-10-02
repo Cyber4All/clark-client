@@ -11,6 +11,7 @@ import { LearningObjectService } from "app/core/learning-object-module/learning-
 import { Router } from "@angular/router";
 import { FileService } from "app/core/learning-object-module/file/file.service";
 import { LearningObject } from "@entity";
+import { PaginationComponent } from "./components/pagination/pagination.component";
 
 type DownloadHistoryViewItem = DownloadHistoryItem & {
     displayType: string;
@@ -24,14 +25,21 @@ type DownloadHistoryViewItem = DownloadHistoryItem & {
     templateUrl: "./library.component.html",
     styleUrls: ["./library.component.scss"],
     standalone: true,
-    imports: [NgIf, NgFor, DatePipe, TitleCasePipe, ActivateDirective],
+    imports: [
+        NgIf,
+        NgFor,
+        DatePipe,
+        TitleCasePipe,
+        ActivateDirective,
+        PaginationComponent,
+    ],
 })
 export class LibraryComponent implements OnInit {
     downloadHistoryItems: DownloadHistoryViewItem[] = [];
     loading = false;
-    loadingMore = false;
     serviceError = false;
-    nextCursor?: string;
+    currentPage = 1;
+    totalPages = 1;
     readonly pageSize = 20;
 
     constructor(
@@ -48,30 +56,25 @@ export class LibraryComponent implements OnInit {
         await this.loadDownloadHistory();
     }
 
-    async loadDownloadHistory(cursor?: string) {
-        const isLoadingMore = Boolean(cursor);
-
+    async loadDownloadHistory(page = this.currentPage) {
         try {
             this.serviceError = false;
-            this.loading = !isLoadingMore;
-            this.loadingMore = isLoadingMore;
+            this.loading = true;
 
             const response = await this.libraryService.getDownloadHistory({
+                page,
                 limit: this.pageSize,
-                cursor,
+                availableOnly: true,
             });
 
             // Download history is retained by the API even after a resource has
-            // been removed or the viewer loses access. Those records cannot be
-            // opened, so exclude them rather than displaying an unavailable row.
-            const items = await this.withDisplayTypes(
-                response.items.filter((item) => item.available),
-            );
+            // been removed or the viewer loses access. Keep those records visible
+            // so the user can still see the original title and download date.
+            const items = await this.withDisplayTypes(response.items);
 
-            this.downloadHistoryItems = isLoadingMore
-                ? [...this.downloadHistoryItems, ...items]
-                : items;
-            this.nextCursor = response.nextCursor;
+            this.downloadHistoryItems = items;
+            this.currentPage = response.page || page;
+            this.totalPages = response.totalPages || 1;
         } catch (e) {
             console.log(e);
             this.toaster.error(
@@ -81,17 +84,16 @@ export class LibraryComponent implements OnInit {
             this.serviceError = true;
         } finally {
             this.loading = false;
-            this.loadingMore = false;
         }
     }
 
     retry() {
-        this.loadDownloadHistory();
+        this.loadDownloadHistory(this.currentPage);
     }
 
-    loadMore() {
-        if (this.nextCursor && !this.loadingMore) {
-            this.loadDownloadHistory(this.nextCursor);
+    onPageNumberChange(page: number) {
+        if (page !== this.currentPage && page >= 1 && page <= this.totalPages) {
+            this.loadDownloadHistory(page);
         }
     }
 

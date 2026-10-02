@@ -34,7 +34,12 @@ export interface DownloadHistoryItem {
 
 export interface DownloadHistoryResponse {
     items: DownloadHistoryItem[];
-    nextCursor?: string;
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
 }
 
 @Injectable({
@@ -64,20 +69,30 @@ export class LibraryService {
     }
 
     async getDownloadHistory(opts: {
+        page?: number;
         limit?: number;
-        cursor?: string;
+        availableOnly?: boolean;
     }): Promise<DownloadHistoryResponse> {
         this.updateUser();
         if (!this.user) {
-            return { items: [] };
+            return {
+                items: [],
+                total: 0,
+                page: opts.page || 1,
+                limit: opts.limit || 20,
+                totalPages: 0,
+                hasNextPage: false,
+                hasPreviousPage: false,
+            };
         }
 
         const query = new URLSearchParams({
+            page: opts.page ? opts.page.toString() : "1",
             limit: opts.limit ? opts.limit.toString() : "20",
         });
 
-        if (opts.cursor) {
-            query.set("cursor", opts.cursor);
+        if (opts.availableOnly !== undefined) {
+            query.set("availableOnly", opts.availableOnly.toString());
         }
 
         return await this.http
