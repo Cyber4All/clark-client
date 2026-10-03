@@ -22,7 +22,6 @@ import { SearchComponent } from "../search/search.component";
 import { ContextMenuComponent } from "../../shared/modules/contextmenu/context-menu/context-menu.component";
 import { ActivateDirective } from "../../shared/directives/activate.directive";
 import { SkipLinkComponent } from "../../shared/components/skip-link/skip-link.component";
-import { ThemeSelectorComponent } from "../theme-selector/theme-selector.component";
 
 @Component({
     selector: "clark-primary-navbar",
@@ -42,7 +41,6 @@ import { ThemeSelectorComponent } from "../theme-selector/theme-selector.compone
         SkipLinkComponent,
         NgTemplateOutlet,
         TitleCasePipe,
-        ThemeSelectorComponent,
     ],
 })
 export class PrimaryNavbarComponent implements OnInit {

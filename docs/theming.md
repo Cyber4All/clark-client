@@ -1,28 +1,24 @@
-# Runtime theming
+# Color schemes
 
-CLARK has a semantic runtime theme contract. The current themes are `default` and the optional `halloween` theme. The active selection is expressed on the root element:
+CLARK currently ships one application color scheme. Its semantic CSS custom properties are defined in `src/styles/theme/_tokens.scss` on `html`. Components use those properties so their colors can change without rewriting feature styles. There is currently no application-wide scheme selector or stored scheme preference.
 
-```html
-<html data-theme="halloween"></html>
-```
+Collection pages also have local `data-theme="dark"` styles for their own branding. Those are separate from an application-wide color scheme.
 
-The root selector is set synchronously before Angular bootstraps and is maintained by `ThemeService`. Do not set `data-theme` from individual feature components.
+## Use semantic colors in components
 
-## Consuming semantic tokens
+Choose a token for its purpose rather than copying a palette color:
 
-Tokens are defined in `src/styles/theme/_tokens.scss`. Use their semantic purpose, not a raw palette color:
-
-| Need                       | Token                                                                                             |
-| -------------------------- | ------------------------------------------------------------------------------------------------- |
-| Application background     | `--theme-background`                                                                                  |
-| Card, dialog, menu layer   | `--theme-foreground` / `--theme-foreground-raised`                                                      |
-| Primary and muted text     | `--theme-text` / `--theme-text-muted`                                                             |
-| Boundaries and inputs      | `--theme-border` / `--theme-border-strong`                                                        |
-| Primary action             | `--theme-action-primary` + `--theme-action-on-primary`                                            |
-| Secondary action           | `--theme-action-secondary`                                                                        |
-| Link                       | `--theme-link`                                                                                    |
-| Keyboard focus             | `--theme-focus`                                                                                   |
-| Semantic feedback          | `--theme-status-success`, `--theme-status-warning`, `--theme-status-error`, `--theme-status-info` |
+| Need | Token |
+| --- | --- |
+| Application background | `--theme-background` |
+| Card, dialog, menu layer | `--theme-foreground` / `--theme-foreground-raised` |
+| Primary and muted text | `--theme-text` / `--theme-text-muted` |
+| Boundaries and inputs | `--theme-border` / `--theme-border-strong` |
+| Primary action | `--theme-action-primary` + `--theme-action-on-primary` |
+| Secondary action | `--theme-action-secondary` + `--theme-action-on-secondary` |
+| Link | `--theme-link` |
+| Keyboard focus | `--theme-focus` |
+| Semantic feedback | `--theme-status-success`, `--theme-status-warning`, `--theme-status-error`, `--theme-status-info` |
 
 ```scss
 .example-card {
@@ -37,34 +33,25 @@ Tokens are defined in `src/styles/theme/_tokens.scss`. Use their semantic purpos
 }
 ```
 
-Do not add a Halloween-specific selector to a feature component, and do not add new hard-coded colors when a semantic token applies. Existing legacy Sass variables remain supported during incremental migration; migrate touched styles only.
+Keep feature styles on semantic tokens where practical. Existing legacy Sass variables can be migrated as their components are touched. Status must never be conveyed by color alone; retain labels, icons, validation messages, and visible selected states.
 
-## Palette and accessibility rules
+## Add an application color scheme
 
-Halloween retains the default light neutral background and foreground layers, so content remains readable without a dark-mode surface. Pumpkin Orange (`#FF7518`) remains the primary action color and pairs with dark foreground text. Witch Purple (`#6A0DAD`) is the accessible link and secondary-action accent; its darker hover state is Blood Red (`#4C0027`). A deep seasonal green (`#0F7A17`) is reserved for keyboard focus/highlights and does not redefine success.
+1. Add a named override block in `src/styles/theme/_tokens.scss`, scoped to the root element. Define every semantic token from the default `html` block, including text on action backgrounds, focus, border, overlay, and status colors. Also set `color-scheme` to match the native control appearance. For example:
 
-Status is never communicated by color alone. Preserve visible labels, icons, disabled attributes, validation messages, and selected-state affordances. Normal text must meet 4.5:1 contrast; large text and essential non-text UI need 3:1 where applicable.
+   ```scss
+   html[data-theme="new-scheme"] {
+       color-scheme: dark;
+       --theme-background: #171a20;
+       --theme-foreground: #242933;
+       // Define the rest of the semantic tokens from the html block here.
+   }
+   ```
 
-## Toggle availability and rollback
+2. Add a typed list of supported application schemes and a single service to select one. Set `document.documentElement.dataset.theme` from that service. Validate saved values against the list so removed or unknown schemes fall back to the default. If the choice persists, use one namespaced `localStorage` key and handle storage being unavailable.
+3. Apply the saved selection in `src/main.ts` before Angular bootstraps to avoid a flash of the default scheme. Mount an accessible scheme control in both desktop and mobile layouts of `src/app/components/primary-navbar/primary-navbar.component.html` if users should be able to switch schemes.
+4. If Angular Material needs different colors, define a Material theme with its supported Sass API and scope `mat.all-component-colors(...)` under the same `html[data-theme="new-scheme"]` selector in `src/mat-input.scss`. This also covers CDK overlays rooted under `html`. Avoid styling Material internals directly.
+5. Check the collection-specific override in `src/styles/theme/_tokens.scss`. Keep collection branding intentional while allowing shared navigation and controls to use the selected scheme.
+6. Test default and new schemes across authentication, Cube, collection, Onion/builder, and Admin views. Check focus indicators, contrast, forms, dialogs, menus, loading/error/empty states, and both navbar layouts. Normal text needs 4.5:1 contrast; large text and essential non-text UI need 3:1 where applicable.
 
-`src/app/core/theme-module/theme.config.ts` is the sole availability control. The Halloween toggle is available year-round when `halloweenEnabled` is true. Set it to `false` to hide the selector and resolve Halloween preferences to the default theme immediately. The stored preference remains intact, so re-enabling the control does not require users to clear storage.
-
-For rollout:
-
-1. Verify `halloweenEnabled` is true.
-2. Test default and Halloween themes on authentication, Cube, collection, Onion/builder, and Admin routes.
-3. Check keyboard focus, text contrast, overlays, dialogs, menus, forms, loading/error/empty states, and collection logos on dark background and foreground layers.
-4. If a release issue occurs, set `halloweenEnabled` to `false`, deploy, and verify existing users resolve to default without clearing local storage.
-
-## Angular Material and future Tailwind work
-
-Material's Halloween colors are emitted through its supported Sass theming API in `src/styles/theme/_material.scss`, scoped beneath the root selector so CDK overlays inherit the selected appearance. Do not introduce Material-internal selectors or new `::ng-deep` color overrides.
-
-A future Tailwind migration must consume this same token contract (for example `bg-[var(--theme-foreground)]` or theme-aware design tokens). It must not create a competing palette or persistence mechanism.
-
-## Legacy migration guardrails
-
-- Keep intentional collection-brand colors for logos and branded media; use semantic tokens for surrounding text and visual layers.
-- Migrate feature Sass only when that area is being touched or audited.
-- Retain stable layout, density, typography, and non-theme behavior.
-- Add both default and Halloween visual evidence when completing a themed feature-area story.
+Keep all application scheme state at the root rather than setting `data-theme` independently from feature components. Do not add raw palette colors to feature styles when a semantic token serves the same purpose. Future utility or Tailwind styles should consume this token contract rather than introduce another palette or persistence mechanism.

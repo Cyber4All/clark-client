@@ -161,7 +161,7 @@ export class ClarkComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        if (environment.production) {
+        if (true) {
             this.utilityService.getDowntime().then((down) => {
                 this.downtime = {
                     isDown: !!down?.isDown,

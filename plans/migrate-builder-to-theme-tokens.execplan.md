@@ -4,9 +4,9 @@ This ExecPlan is a living document and must be maintained in accordance with `PL
 
 ## Purpose / Big Picture
 
-The Learning Object Builder (`src/app/onion/learning-object-builder/`) and its child components (including `builder-navbar`, `column-wrapper`, `outcome`, `scaffold`, `standard-outcomes`, `user-dropdown`, `content-upload`, and builder subpages) currently use hard-coded colors and legacy Sass variables (such as `#ffffff`, `white`, `$light-blue`, `$light-grey`, `$dark-grey`, and `$darker-grey`). In dark themes such as Halloween (`html[data-theme="halloween"]`), these hard-coded styles cause bright white surfaces, unreadable low-contrast text, and disconnected styling.
+The Learning Object Builder (`src/app/onion/learning-object-builder/`) and its child components (including `builder-navbar`, `column-wrapper`, `outcome`, `scaffold`, `standard-outcomes`, `user-dropdown`, `content-upload`, and builder subpages) currently use hard-coded colors and legacy Sass variables (such as `#ffffff`, `white`, `$light-blue`, `$light-grey`, `$dark-grey`, and `$darker-grey`). In an alternate scheme, these hard-coded styles can cause bright surfaces, unreadable low-contrast text, and disconnected styling.
 
-After this change, the builder page and its child components will consume the runtime semantic CSS custom properties defined in `src/styles/theme/_tokens.scss` (`--theme-canvas`, `--theme-surface`, `--theme-surface-subtle`, `--theme-surface-raised`, `--theme-text`, `--theme-text-strong`, `--theme-text-muted`, `--theme-border`, `--theme-action-primary`, `--theme-action-on-primary`, `--theme-status-error`, `--theme-status-success`, `--theme-focus`, `--theme-shadow`, etc.). Both default (light) and Halloween (dark) themes will render seamlessly with high contrast and proper accessibility while preserving all existing layouts, interactions, animations, and builder functionality.
+After this change, the builder page and its child components will consume the semantic CSS custom properties defined in `src/styles/theme/_tokens.scss` (`--theme-canvas`, `--theme-surface`, `--theme-surface-subtle`, `--theme-surface-raised`, `--theme-text`, `--theme-text-strong`, `--theme-text-muted`, `--theme-border`, `--theme-action-primary`, `--theme-action-on-primary`, `--theme-status-error`, `--theme-status-success`, `--theme-focus`, `--theme-shadow`, etc.). The default appearance remains consistent, and future schemes can render with appropriate contrast while preserving layouts, interactions, animations, and builder functionality.
 
 ## Progress
 
@@ -52,7 +52,7 @@ After this change, the builder page and its child components will consume the ru
 
 ## Outcomes & Retrospective
 
-All hardcoded colors and legacy non-semantic Sass variables across the Learning Object Builder, its child components, and the Admin Dashboard Users view were replaced with semantic theme custom properties (`var(--theme-...)`). In the default light theme, the UI retains its exact visual styling. In the Halloween theme, cards, navigation bars, dropdowns, modal dialogs, and text inputs cleanly transition to dark surfaces with high-contrast text and theme-aware actions and focus indicators.
+All hardcoded colors and legacy non-semantic Sass variables across the Learning Object Builder, its child components, and the Admin Dashboard Users view were replaced with semantic theme custom properties (`var(--theme-...)`). The default appearance remains consistent, and cards, navigation bars, dropdowns, modal dialogs, and text inputs are prepared to consume future scheme values.
 
 ## Context and Orientation
 
@@ -100,7 +100,7 @@ From the repository root:
 
 - All hard-coded colors and legacy non-semantic color variables in the builder components are replaced with semantic CSS variables.
 - In default (light) theme, colors render identially to the design system (white surfaces, dark slate text, blue primary actions).
-- In Halloween (dark) theme, surfaces adapt to dark tones (`--theme-surface`, `--theme-surface-raised`), text adapts to high-contrast light neutrals (`--theme-text`, `--theme-text-strong`, `--theme-text-muted`), inputs and borders adapt to theme borders, and actions adapt to `--theme-action-primary` (Pumpkin Orange) or `--theme-link` (Light Purple).
+- When a future scheme is added, surfaces, text, inputs, borders, and actions should adapt through their semantic tokens with accessible contrast.
 - Build succeeds with zero compile errors.
 
 ## Idempotence and Recovery
@@ -115,9 +115,8 @@ All file edits are idempotent replacements. If any compilation issue occurs, rev
 
 - `src/styles/theme/_tokens.scss`: Contract for all theme variables.
 - `LearningObjectBuilderModule`: Affected Angular feature module.
-- `DropdownFilterComponent` & `CheckBoxComponent`: Fixed checkmark DOM presence (`*ngIf`) and CSS (`display: none`, `visibility: hidden`, `opacity: 0`, and `color: transparent`) when unchecked so no font/SVG outline or color trick is visible in Halloween or light themes.
+- `DropdownFilterComponent` & `CheckBoxComponent`: Fixed checkmark DOM presence (`*ngIf`) and CSS (`display: none`, `visibility: hidden`, `opacity: 0`, and `color: transparent`) when unchecked so no font/SVG outline or color trick is visible.
 - `XP Cyber` and `502 Project` Collections: Fixed collection page text inheritance and scoped variables (`body.collection-page`, `:host`, `.root_502`, `.card__wrapper`, `.curators`, `curator-card`, `header h1`, `philosophy p`) ensuring high-contrast dark text is used consistently on light backgrounds.
 - `502 Project Toggle`: Fixed slide-toggle internal label (`.mdc-label`, `label`) and icon bindings to explicitly track `var(--primary-text)` through `::ng-deep` and `--mdc-switch-label-text-color`, keeping "Switch to Light Mode" and "Switch to Dark Mode" perfectly contrasted during both 502 and global theme toggling.
-
 
 

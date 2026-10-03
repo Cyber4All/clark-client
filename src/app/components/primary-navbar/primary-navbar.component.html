@@ -13,7 +13,6 @@
                 </div>
             </div>
             <div class="right">
-                <clark-theme-selector></clark-theme-selector>
                 <button
                     class="contribute-button"
                     *ngIf="isLoggedIn"
@@ -186,7 +185,6 @@
         *ngIf="!isDesktop"
         [ngClass]="{ active: isMHamburger }">
         <div class="slideout-section">
-            <clark-theme-selector></clark-theme-selector>
             <div class="user" *ngIf="isLoggedIn">
                 <div class="info side-padding-20">
                     <div
@@ -319,8 +317,8 @@
 <!-- <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
                     <div #contextMenu class="context-popup">
                         <ul>
-                            <li 
-                            *ngFor="let l of academicLevels" 
+                            <li
+                            *ngFor="let l of academicLevels"
                             (click)="navService.setLevel(l)"
                             >{{ l | titlecase}}</li>
                         </ul>
