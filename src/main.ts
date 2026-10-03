@@ -6,6 +6,7 @@ import {
 } from "@angular/core";
 
 import { environment } from "@env/environment";
+import packageJson from "@package";
 
 import { TitleCasePipe } from "@angular/common";
 import {
@@ -30,10 +31,10 @@ import { MarkdownModule } from "ngx-markdown";
 import { ClarkComponent } from "./app/clark.component";
 
 const {
-    version: appVersion,
-    name: appName,
     displayName: appDisplayName,
-} = require("../package.json");
+    name: appName,
+    version: appVersion,
+} = packageJson;
 const VERSION_STORE = `${appName} version`;
 const SENTRY_ENABLED_ENVIRONMENTS = ["staging", "production"];
 
