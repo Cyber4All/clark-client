@@ -11,31 +11,60 @@
     .collections-dropdown {
         position: absolute;
         z-index: 20;
-        top: 195px;
-        padding: 0 0 40px 20px;
+        top: 140px;
+        padding: 0 20px 40px 20px;
         margin-left: 100px;
         margin-right: 20px;
-        background-color: white;
-        box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+        width: fit-content;
+        background-color: var(--theme-surface-raised);
+        border: 1px solid var(--theme-border);
+        box-shadow: 0 10px 30px 0 var(--theme-shadow);
         border-radius: 10px;
+        color: var(--theme-text);
+
+        @include respond-to(890px) {
+            margin-left: 30px;
+        }
+
+        @include respond-to(580px) {
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        h1 {
+            color: var(--theme-text-strong);
+        }
 
         .collection-grid {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            width: auto;
-            max-width: 1000px;
+            display: grid;
+            grid-template-columns: repeat(4, 225px);
             gap: 20px;
             max-height: 500px;
-            overflow: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
+
+            @include respond-to(1140px) {
+                grid-template-columns: repeat(3, 225px);
+            }
+
+            @include respond-to(890px) {
+                grid-template-columns: repeat(2, 225px);
+            }
+
+            @include respond-to(580px) {
+                grid-template-columns: repeat(1, 225px);
+            }
 
             .loading {
+                grid-column: 1 / -1;
                 height: 250px;
-                width: 500px;
+                width: 100%;
+                max-width: 500px;
 
                 .collections-loading {
                     text-align: center;
-                    color: $dark-grey;
+                    color: var(--theme-text-muted);
                     padding-top: 75px;
                     display: inline-flex;
                     justify-content: center;
@@ -47,7 +76,7 @@
 
                     .svg-inline--fa {
                         display: block;
-                        color: $light-blue;
+                        color: var(--theme-action-primary);
                         font-size: 30px;
                         margin-bottom: 10px;
                     }
@@ -63,7 +92,7 @@
                     .card__name {
                         height: 20px;
                         font-size: $small;
-                        color: black;
+                        color: var(--theme-text);
 
                         &.long {
                             font-size: x-small;

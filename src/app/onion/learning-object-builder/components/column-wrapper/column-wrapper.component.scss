@@ -24,9 +24,10 @@ $right-column: minmax(290px, 340px);
     }
 
     .content {
-        background: white;
+        background: var(--theme-surface);
+        color: var(--theme-text);
         border-radius: 4px;
-        box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 0 8px 1px var(--theme-shadow);
         box-sizing: border-box;
         padding: 0;
     }

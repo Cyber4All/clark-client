@@ -1,8 +1,8 @@
 @import "_vars.scss";
 
 .helpCard {
-    background-color: $primary-white;
-    border: 1px solid $secondary-white;
+    background-color: var(--theme-surface-raised);
+    border: 1px solid var(--theme-border);
     border-radius: 6px;
     text-align: center;
     padding: 35px 35px;
@@ -23,10 +23,11 @@
         h2 {
             padding: 0;
             margin: 0;
+            color: var(--theme-text-strong);
         }
 
         p {
-            color: $homepage-text;
+            color: var(--theme-text);
         }
 
         span {
@@ -41,23 +42,23 @@
             font-size: $larger;
 
             &.orange {
-                color: $homepage-orange;
-                background: $homepage-orange-background;
+                color: var(--theme-action-primary);
+                background: var(--theme-surface-selected);
             }
 
             &.purple {
-                color: $homepage-purple;
-                background: $homepage-purple-background;
+                color: var(--theme-link);
+                background: var(--theme-surface-subtle);
             }
 
             &.green {
-                color: $homepage-green;
-                background: $homepage-green-background;
+                color: var(--theme-status-success);
+                background: var(--theme-surface-subtle);
             }
         }
 
         .link {
-            color: $homepage-light-blue;
+            color: var(--theme-link);
         }
     }
 }

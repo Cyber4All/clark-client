@@ -16,7 +16,7 @@
     padding: 20px;
     box-sizing: border-box;
     position: absolute;
-    background: $light-blue-gradient;
+    background: var(--theme-action-primary);
     height: 96px;
 
     &:after {
@@ -32,13 +32,13 @@
     }
 
     .banner__title {
-        color: white;
+        color: var(--theme-action-on-primary);
         font-size: $larger;
         font-weight: bold;
     }
 
     .banner__sub {
-        color: white;
+        color: var(--theme-action-on-primary);
         opacity: 0.85;
         font-size: $normal;
     }
@@ -48,13 +48,13 @@
     margin-top: 80px;
 
     p {
-        color: $dark-grey;
+        color: var(--theme-text-muted);
         font-size: $large;
         margin: 5px 0 20px;
     }
 
     .center-content {
-        color: $dark-grey;
+        color: var(--theme-text);
 
         ul {
             font-size: $large;
@@ -67,7 +67,7 @@
 }
 
 .license-selection {
-    color: $dark-grey;
+    color: var(--theme-text);
     font-size: $large;
     max-width: 500px;
     text-align: left;
@@ -76,7 +76,8 @@
     flex-direction: row-reverse;
     padding: 10px;
     border-radius: 3px;
-    border: 1px solid $light-grey;
+    border: 1px solid var(--theme-border);
+    background: var(--theme-surface-subtle);
 
     .statement {
         margin-left: 15px;
@@ -90,8 +91,8 @@
 .submit__loading {
     position: absolute;
     z-index: 999999;
-    background: rgba(255, 255, 255, 0.8);
-    color: $light-blue;
+    background: var(--theme-overlay);
+    color: var(--theme-action-primary);
     display: flex;
     justify-content: center;
     align-items: center;

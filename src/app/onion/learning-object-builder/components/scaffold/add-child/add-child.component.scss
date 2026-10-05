@@ -4,21 +4,21 @@
     max-width: 100%;
     min-height: 60px;
     display: block;
-    background: white;
+    background: var(--theme-surface);
     border-radius: 1px;
     overflow: hidden;
 }
 
 .child-box {
     padding: 20px 10px;
-    border-bottom: solid 1px $light-grey;
-    color: $dark-grey;
+    border-bottom: solid 1px var(--theme-border);
+    color: var(--theme-text);
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    background: white;
+    background: var(--theme-surface);
 
     .info {
         float: left;
@@ -29,7 +29,7 @@
             width: 100%;
 
             .child-title {
-                color: $darker-grey;
+                color: var(--theme-text-strong);
                 text-align: left;
                 font-size: $normal;
                 text-overflow: ellipsis;
@@ -71,7 +71,7 @@
             }
 
             .child-last-updated {
-                color: $dark-grey;
+                color: var(--theme-text-muted);
                 font-size: $small;
                 padding-left: 20px;
             }
@@ -80,7 +80,7 @@
 
     .add {
         display: flex;
-        color: $light-blue;
+        color: var(--theme-action-primary);
         cursor: pointer;
         width: 20px;
         height: 20px;
@@ -93,7 +93,8 @@
 }
 .search-bar {
     border-radius: 2px;
-    background: $light-grey;
+    background: var(--theme-surface-subtle);
+    border: 1px solid var(--theme-border);
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -107,6 +108,7 @@
         width: 100%;
         padding: 6px 0;
         outline: 0;
+        color: var(--theme-text);
     }
     .search-button {
         background: transparent;
@@ -114,11 +116,11 @@
     }
     .svg-inline--fa,
     .icon {
-        color: $dark-grey;
+        color: var(--theme-text-muted);
     }
 }
 .no-children {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     text-align: center;
     padding: 30px;
     font-size: $normal;

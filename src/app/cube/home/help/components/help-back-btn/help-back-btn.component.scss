@@ -23,7 +23,7 @@
 
         p {
             margin-top: 5px;
-            color: $dark-grey;
+            color: var(--theme-text);
         }
 
         span {
@@ -38,32 +38,32 @@
             font-size: $larger;
 
             &.orange {
-                color: $homepage-orange;
-                background: $homepage-orange-background;
+                color: var(--theme-action-primary);
+                background: var(--theme-surface-selected);
             }
 
             &.purple {
-                color: $homepage-purple;
-                background-color: $homepage-purple-background;
+                color: var(--theme-link);
+                background-color: var(--theme-surface-subtle);
             }
 
             &.green {
-                color: $homepage-green;
-                background: $homepage-green-background;
+                color: var(--theme-status-success);
+                background: var(--theme-surface-subtle);
             }
         }
 
         .back-icon {
             font-size: $larger;
-            color: $dark-grey;
+            color: var(--theme-text);
         }
     }
 
     .framework-query {
         display: flex;
-        border: 2px solid $homepage-light-blue;
-        color: $homepage-light-blue;
-        background-color: $box-background;
+        border: 2px solid var(--theme-action-primary);
+        color: var(--theme-action-primary);
+        background-color: var(--theme-surface-selected);
         padding: 10px 24px;
         margin-left: 25px;
         border-radius: 4px;

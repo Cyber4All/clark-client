@@ -8,7 +8,8 @@ $flicker-duration: 14s;
     min-height: 100vh;
     padding: 20px;
     box-sizing: border-box;
-    background: white;
+    color: var(--theme-text);
+    background: var(--theme-canvas);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -60,7 +61,7 @@ $flicker-duration: 14s;
     flex-direction: row;
     justify-content: center;
     font-size: 125px;
-    color: $light-blue;
+    color: var(--theme-action-primary);
     position: fixed;
     opacity: 0.2;
     z-index: 1;
@@ -87,7 +88,7 @@ $flicker-duration: 14s;
 
 h1 {
     font-size: 70px;
-    color: $light-blue;
+    color: var(--theme-action-primary);
     text-align: center;
     position: relative;
 }
@@ -95,7 +96,7 @@ h1 {
 p {
     text-align: center;
     font-size: $largest;
-    color: $dark-grey;
+    color: var(--theme-text);
     margin-top: 20px;
     position: relative;
     z-index: 1;
@@ -105,7 +106,7 @@ p {
 span {
     position: relative;
     z-index: 1;
-    color: $dark-grey;
+    color: var(--theme-text);
     font-size: $large;
 }
 

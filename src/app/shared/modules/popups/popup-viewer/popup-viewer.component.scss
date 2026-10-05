@@ -6,7 +6,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: $dark-overlay;
+    background: var(--theme-overlay);
     z-index: 20;
     display: flex;
     justify-content: center;
@@ -25,10 +25,11 @@
         cursor: pointer;
         transform: scale(1);
         font-size: $normal;
-        color: $medium-grey;
+        color: var(--theme-text-muted);
 
         &:hover {
             transform: scale(1.1);
+            color: var(--theme-text-strong);
         }
     }
 
@@ -46,18 +47,20 @@
     padding: 20px;
     box-sizing: border-box;
     border-radius: 4px;
-    background: white;
-    box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.02);
+    background: var(--theme-surface-raised);
+    border: 1px solid var(--theme-border);
+    color: var(--theme-text);
+    box-shadow: 0 0 6px 2px var(--theme-shadow);
     min-width: 350px;
 
     .modal-title {
-        color: $light-blue;
+        color: var(--theme-action-primary);
         font-weight: bold;
         font-size: $larger;
         text-align: center;
 
         &.bad {
-            color: $error-red;
+            color: var(--theme-status-error);
         }
     }
 
@@ -65,5 +68,6 @@
         font-size: $normal;
         margin: 20px auto;
         text-align: center;
+        color: var(--theme-text);
     }
 }

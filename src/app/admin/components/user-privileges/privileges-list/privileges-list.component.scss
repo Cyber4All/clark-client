@@ -6,8 +6,8 @@
     }
 }
 .privilege__delete-confirm {
-    background: rgba(255, 255, 255, 0.95);
-    color: $dark-grey;
+    background: var(--theme-overlay);
+    color: var(--theme-text);
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
@@ -22,14 +22,14 @@
     pointer-events: auto;
 
     .micro-button {
-        color: white;
+        color: var(--theme-action-on-status);
         border-radius: 3px;
         padding: 6px 10px;
-        background: $error-red;
+        background: var(--theme-status-error);
         margin-left: 10px;
         cursor: pointer;
         transition: opacity 0.2s ease;
-        border: 1px solid $error-red;
+        border: 1px solid var(--theme-status-error);
         display: inline-block;
 
         &:hover {
@@ -38,8 +38,8 @@
 
         &:nth-child(2) {
             background: transparent;
-            color: $dark-grey;
-            border-color: $dark-grey;
+            color: var(--theme-text);
+            border-color: var(--theme-border-strong);
         }
     }
 
@@ -52,7 +52,8 @@
     border-radius: 3px;
     position: relative;
     overflow: hidden;
-    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 8px 0 var(--theme-shadow);
+    border: 1px solid var(--theme-border);
     transform-origin: center top;
 }
 
@@ -60,7 +61,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background: white;
+    background: var(--theme-surface-raised);
     padding: 10px;
     align-items: center;
     transition: filter 0.2s 0.2s ease;
@@ -76,15 +77,11 @@
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        color: $dark-grey;
+        color: var(--theme-text);
 
         .privilege__role {
-            background: linear-gradient(
-                45deg,
-                darken($light-blue, 10),
-                lighten($light-blue, 5)
-            );
-            color: white;
+            background: var(--theme-action-primary);
+            color: var(--theme-action-on-primary);
             padding: 3px 8px;
             border-radius: 2px;
             text-transform: uppercase;
@@ -100,7 +97,7 @@
     }
 
     .privilege__delete {
-        color: $error-red;
+        color: var(--theme-status-error);
         cursor: pointer;
         opacity: 0;
         transition: opacity 0.15s ease;

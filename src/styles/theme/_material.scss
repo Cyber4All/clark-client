@@ -1,0 +1,71 @@
+@use "@angular/material" as mat;
+
+$halloween-orange-palette: (
+    50: #fff3e8,
+    100: #ffdfc4,
+    200: #ffc89c,
+    300: #ffad6f,
+    400: #ff944d,
+    500: #ff7518,
+    600: #ef640e,
+    700: #d65106,
+    800: #b94102,
+    900: #8e2d00,
+    contrast: (
+        50: #0d0d0d,
+        100: #0d0d0d,
+        200: #0d0d0d,
+        300: #0d0d0d,
+        400: #0d0d0d,
+        500: #0d0d0d,
+        600: #0d0d0d,
+        700: #ffffff,
+        800: #ffffff,
+        900: #ffffff,
+    ),
+);
+
+$halloween-purple-palette: (
+    50: #f4e8ff,
+    100: #e4c6ff,
+    200: #d19fff,
+    300: #bb75f0,
+    400: #9848cc,
+    500: #6a0dad,
+    600: #5e079d,
+    700: #500087,
+    800: #42006f,
+    900: #2f004e,
+    contrast: (
+        50: #0d0d0d,
+        100: #0d0d0d,
+        200: #0d0d0d,
+        300: #0d0d0d,
+        400: #ffffff,
+        500: #ffffff,
+        600: #ffffff,
+        700: #ffffff,
+        800: #ffffff,
+        900: #ffffff,
+    ),
+);
+
+$halloween-primary: mat.m2-define-palette($halloween-orange-palette, 500);
+$halloween-accent: mat.m2-define-palette($halloween-purple-palette, 500);
+$halloween-warn: mat.m2-define-palette(mat.$m2-red-palette, 400);
+
+$halloween-material-theme: mat.m2-define-dark-theme(
+    (
+        color: (
+            primary: $halloween-primary,
+            accent: $halloween-accent,
+            warn: $halloween-warn,
+        ),
+    )
+);
+
+@mixin halloween-component-colors {
+    html[data-theme="halloween"] {
+        @include mat.all-component-colors($halloween-material-theme);
+    }
+}

@@ -9,13 +9,15 @@
     right: 0;
     bottom: 0;
     overflow: auto;
+    color: var(--theme-text);
+    background: var(--theme-canvas);
 }
 
 .admin__sidebar {
-    background: white;
+    background: var(--theme-surface);
     padding: 20px 0;
     max-height: 100vh;
-    border-right: 2px solid $light-grey;
+    border-right: 2px solid var(--theme-border);
     box-sizing: border-box;
 }
 
@@ -28,6 +30,7 @@
     flex: 1;
     overflow-y: scroll;
     max-height: 100vh;
+    background: var(--theme-canvas);
 
     &.admin__main-content--can-scroll {
         padding-bottom: 30px;
@@ -42,9 +45,10 @@
 }
 
 .admin__meatball-button {
-    background: white;
-    border: 1px solid $light-grey;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    color: var(--theme-text);
+    background: var(--theme-surface-raised);
+    border: 1px solid var(--theme-border);
+    box-shadow: 0 2px 8px var(--theme-shadow);
     border-radius: 12px;
     width: 44px;
     height: 44px;
@@ -63,8 +67,8 @@
 
 ::ng-deep .admin-nav-menu .mat-mdc-menu-panel {
     border-radius: 12px;
-    border: 1px solid #d9e1ec;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+    border: 1px solid var(--theme-border);
+    box-shadow: 0 8px 18px var(--theme-shadow);
 }
 
 @media (max-width: 1024px) {

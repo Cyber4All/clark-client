@@ -24,7 +24,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    background: white;
+    background: var(--theme-surface);
+    color: var(--theme-text);
     border-radius: 4px;
     padding: 10px;
     cursor: pointer;
@@ -47,7 +48,7 @@
     }
     & :hover {
         cursor: pointer;
-        background: $light-grey;
+        background: var(--theme-surface-subtle);
     }
 }
 .full-width {
@@ -78,7 +79,7 @@
     flex-direction: column;
 }
 .context-item.bad {
-    color: $error-red;
+    color: var(--theme-status-error);
 }
 
 .button.slim {
@@ -105,7 +106,7 @@
     }
 }
 .icon.light {
-    color: $medium-grey;
+    color: var(--theme-text-muted);
 }
 
 .help {
@@ -117,7 +118,7 @@
 
     .file-name {
         text-align: center;
-        color: $dark-grey;
+        color: var(--theme-text-muted);
         margin-top: 10px;
 
         .svg-inline--fa {
@@ -131,12 +132,14 @@
         padding: 10px;
         border-radius: 1px;
         box-sizing: border-box;
-        border: 1px solid $placeholder;
+        border: 1px solid var(--theme-border);
+        background: var(--theme-surface-raised);
+        color: var(--theme-text);
         font-size: $small;
         outline: 0;
 
         &:focus {
-            border-color: $light-blue;
+            border-color: var(--theme-focus);
         }
     }
 

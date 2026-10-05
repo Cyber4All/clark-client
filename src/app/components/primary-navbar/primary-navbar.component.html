@@ -13,6 +13,7 @@
                 </div>
             </div>
             <div class="right">
+                <clark-theme-selector></clark-theme-selector>
                 <button
                     class="contribute-button"
                     *ngIf="isLoggedIn"
@@ -185,6 +186,7 @@
         *ngIf="!isDesktop"
         [ngClass]="{ active: isMHamburger }">
         <div class="slideout-section">
+            <clark-theme-selector></clark-theme-selector>
             <div class="user" *ngIf="isLoggedIn">
                 <div class="info side-padding-20">
                     <div
@@ -215,9 +217,7 @@
                         <li
                             [routerLink]="['admin']"
                             *ngIf="auth.hasCuratorAccess()">
-                            {{
-                                auth.hasEditorAccess() ? "Admin" : "Curator"
-                            }}
+                            {{ auth.hasEditorAccess() ? "Admin" : "Curator" }}
                             Dashboard
                         </li>
                         <li (click)="auth.logout()">Sign Out</li>

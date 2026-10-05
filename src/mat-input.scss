@@ -1,4 +1,5 @@
 @use "@angular/material" as mat;
+@use "./styles/theme/material" as clark-theme;
 @use "vars" as *;
 @include mat.core();
 
@@ -42,6 +43,7 @@ $clark-theme: mat.m2-define-light-theme(
 );
 
 @include mat.all-component-themes($clark-theme);
+@include clark-theme.halloween-component-colors;
 
 // for the positioning of the mat input underlining in login forms
 .mdc-line-ripple::before,

@@ -8,7 +8,10 @@
     margin-top: 20px;
     padding-bottom: 20px;
     border-radius: 5px;
-    box-shadow: 0 4px 22px 0 rgba(0, 0, 0, 0.1);
+    background-color: var(--theme-surface);
+    border: 1px solid var(--theme-border);
+    box-shadow: 0 4px 22px 0 var(--theme-shadow);
+    color: var(--theme-text);
     padding: 0 45px 0 45px;
     max-height: 450px;
     min-height: 300px;
@@ -18,7 +21,7 @@
 .materials__file-browser-container__empty-message {
     padding: 20px;
     margin: 0;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
 
     & .icon {
         font-family: 1.2rem;
@@ -27,7 +30,7 @@
 
 .materials__help-link {
     padding-top: 10px;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: $small;
 }
 
@@ -39,8 +42,7 @@
     gap: 0 0.8rem;
     padding-left: 2rem;
     padding-right: 2rem;
-    color: white;
-    font-size: large;
-    background: $orange-gradient;
+    color: var(--theme-action-on-primary);
+    background: var(--theme-action-primary);
     font-size: 1rem;
 }

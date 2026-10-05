@@ -1,0 +1,16 @@
+<div class="theme-selector" *ngIf="theme.halloweenEnabled">
+    <input
+        id="halloween-theme"
+        class="theme-selector__input"
+        type="checkbox"
+        [checked]="(theme.activeTheme$ | async) === 'halloween'"
+        (change)="toggleHalloweenTheme($event)"
+        aria-describedby="halloween-theme-description" />
+    <label class="theme-selector__label" for="halloween-theme">
+        <span class="theme-selector__control" aria-hidden="true"></span>
+        <span>Halloween theme</span>
+    </label>
+    <span id="halloween-theme-description" class="theme-selector__description">
+        Use the optional dark color scheme.
+    </span>
+</div>

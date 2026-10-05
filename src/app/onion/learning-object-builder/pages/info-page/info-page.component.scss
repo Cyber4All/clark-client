@@ -3,7 +3,7 @@
 .title {
     font-size: $large;
     font-weight: 600;
-    color: $darker-grey;
+    color: var(--theme-text-strong);
     margin: 0 0 0 25px;
     padding-top: 20px;
 }
@@ -11,15 +11,16 @@
 // This is a line to separate the different areas in the basic information section
 hr {
     border: 0;
-    border-bottom: 1px solid $light-grey;
+    border-bottom: 1px solid var(--theme-border);
     margin: 0;
 }
 
 .name-field {
     border: 0;
-    border-bottom: 2px solid $light-blue;
+    border-bottom: 2px solid var(--theme-action-primary);
     box-sizing: border-box;
-    color: $dark-grey;
+    color: var(--theme-text);
+    background: transparent;
     display: block;
     font-size: $normal;
     max-width: 100%;
@@ -29,7 +30,7 @@ hr {
 }
 
 .name-field--error {
-    border-bottom-color: $error-red;
+    border-bottom-color: var(--theme-status-error);
 }
 
 .field-label {
@@ -41,14 +42,14 @@ hr {
 
 .required-asterisk {
     align-self: flex-start;
-    color: $error-red;
+    color: var(--theme-status-error);
     font-size: 8px;
     line-height: 1;
     margin-top: 4px;
 }
 
 .help-icon {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     cursor: help;
     display: inline-flex;
     font-size: $small;
@@ -71,7 +72,7 @@ hr {
 
     .svg-inline--fa,
     .icon {
-        color: $light-blue;
+        color: var(--theme-action-primary);
     }
 
     & > * {
@@ -85,7 +86,7 @@ hr {
 
 .attribution-preview {
     padding: 0 20px 10px;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: $small;
 
     &.bottom {
@@ -94,7 +95,7 @@ hr {
 }
 
 .attribution-preview__collection {
-    border-bottom: 1px dotted $dark-grey;
+    border-bottom: 1px dotted var(--theme-border-strong);
     cursor: help;
     font-style: italic;
 }

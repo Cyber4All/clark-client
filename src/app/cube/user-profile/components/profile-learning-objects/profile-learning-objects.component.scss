@@ -1,7 +1,7 @@
 @import "_vars.scss";
 
 h1 {
-    color: #32363f;
+    color: var(--theme-text-strong);
     display: flex;
     z-index: 2;
     margin-left: 20px;
@@ -12,13 +12,13 @@ p {
 }
 
 .content {
-    background-color: white;
+    background-color: var(--theme-surface);
     padding-bottom: 20px;
     border-radius: 0 0 8px 8px;
     margin-bottom: 10px;
-    border-bottom: 0.5px $profile-border solid;
-    border-left: 0.5px $profile-border solid;
-    border-right: 0.5px $profile-border solid;
+    border-bottom: 0.5px var(--theme-border) solid;
+    border-left: 0.5px var(--theme-border) solid;
+    border-right: 0.5px var(--theme-border) solid;
 }
 
 ::ng-deep .learning-object {
@@ -28,7 +28,7 @@ p {
 .contribution {
     display: flex;
     flex-direction: column;
-    background-color: $secondary-white-background;
+    background-color: var(--theme-surface-raised);
     padding: 20px;
     justify-content: center;
     max-width: 950px;
@@ -36,7 +36,7 @@ p {
     margin: auto;
     margin-bottom: 30px;
     margin-top: 30px;
-    border: 0.5px rgba(28, 112, 221, 0.1) solid;
+    border: 0.5px var(--theme-border) solid;
     box-shadow: 0 10px 20px -10px rgba(28, 112, 221, 0.1);
 }
 
@@ -55,7 +55,7 @@ p {
     & > * {
         padding: 12px 25px 14px;
         border-radius: 4px 4px 0 0;
-        color: black;
+        color: var(--theme-text);
         cursor: pointer;
         transition: all 0.2s ease;
         appearance: none;
@@ -67,8 +67,8 @@ p {
     }
 
     .active {
-        background: white;
-        color: $light-blue;
+        background: var(--theme-surface);
+        color: var(--theme-action-primary);
         border-radius: 4px 4px 0 0;
         cursor: pointer;
         transition: all 0.2s ease;
@@ -76,10 +76,10 @@ p {
         border: 0;
         font-size: $normal;
         margin: 0;
-        border-top: 0.5px $profile-border solid;
-        border-left: 0.5px $profile-border solid;
-        border-right: 0.5px $profile-border solid;
-        border-bottom: 0.5px white solid;
+        border-top: 0.5px var(--theme-border) solid;
+        border-left: 0.5px var(--theme-border) solid;
+        border-right: 0.5px var(--theme-border) solid;
+        border-bottom: 0.5px var(--theme-surface) solid;
         position: relative;
         top: 0.5px;
         text-align: center;
@@ -112,10 +112,10 @@ p {
         flex-direction: row;
         align-items: center;
         position: relative;
-        background-color: white;
-        border-bottom: 1px solid $profile-border;
+        background-color: var(--theme-surface);
+        border-bottom: 1px solid var(--theme-border);
         border-radius: 8px 8px 0 0;
-        border: 0.5px $profile-border solid;
+        border: 0.5px var(--theme-border) solid;
     }
 
     .tabItemSecContainer {
@@ -130,7 +130,7 @@ p {
             display: flex;
             padding: 20px 50px 14px;
             border-radius: 4px 4px 0 0;
-            color: black;
+            color: var(--theme-text);
             cursor: pointer;
             transition: all 0.2s ease;
             appearance: none;
@@ -144,7 +144,7 @@ p {
         .active {
             display: flex;
             border-radius: 4px 4px 0 0;
-            color: black;
+            color: var(--theme-text);
             cursor: pointer;
             transition: all 0.2s ease;
             appearance: none;
@@ -152,7 +152,7 @@ p {
             font-size: $normal;
             background: transparent;
             margin: 0;
-            border-bottom: 2px solid $light-blue;
+            border-bottom: 2px solid var(--theme-action-primary);
             text-align: center;
         }
     }
@@ -182,20 +182,20 @@ p {
         flex-direction: row;
         justify-content: center;
         position: relative;
-        background-color: white;
+        background-color: var(--theme-surface);
         border-radius: 8px 8px 0 0;
-        border: 0.5px $profile-border solid;
+        border: 0.5px var(--theme-border) solid;
         border-bottom: none;
     }
 
     .dropdownButton {
         display: flex;
-        background-color: white;
-        border: 1px $profile-drop-shadow solid;
+        background-color: var(--theme-surface);
+        border: 1px var(--theme-border-strong) solid;
         border-radius: 4px;
         margin: 15px 5px;
         margin-top: 20px;
-        color: $profile-drop-shadow;
+        color: var(--theme-text);
         padding: 12px 85px;
         font-size: 16px;
         cursor: pointer;
