@@ -329,10 +329,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             this.nextTemp();
         } catch (error) {
             const parsedErrorMessage = this.getErrorMessage(error);
-            if (
-                parsedErrorMessage &&
-                parsedErrorMessage !== "Internal Server Error"
-            ) {
+            if (parsedErrorMessage) {
                 this.errorMsg = parsedErrorMessage;
             }
             this.authValidation.showError();
@@ -693,6 +690,32 @@ export class RegisterComponent implements OnInit, OnDestroy {
                 errors?: Array<{ message?: string }>;
             };
 
+            if (typeof maybeError.error === "string") {
+                const message = this.parseErrorString(maybeError.error);
+                if (message.trim() !== "") {
+                    return message;
+                }
+            }
+
+            if (maybeError.error && typeof maybeError.error === "object") {
+                const message = this.getErrorMessage(maybeError.error);
+                if (message) {
+                    return message;
+                }
+            }
+
+            if (
+                Array.isArray(maybeError.errors) &&
+                maybeError.errors.length > 0
+            ) {
+                const firstMessage = maybeError.errors.find(
+                    (item) => item?.message,
+                )?.message;
+                if (firstMessage) {
+                    return firstMessage;
+                }
+            }
+
             if (
                 typeof maybeError.message === "string" &&
                 maybeError.message.trim() !== ""
@@ -710,26 +733,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
                     return firstMessage;
                 }
             }
-
-            if (
-                Array.isArray(maybeError.errors) &&
-                maybeError.errors.length > 0
-            ) {
-                const firstMessage = maybeError.errors.find(
-                    (item) => item?.message,
-                )?.message;
-                if (firstMessage) {
-                    return firstMessage;
-                }
-            }
-
-            if (typeof maybeError.error === "string") {
-                return this.parseErrorString(maybeError.error);
-            }
-
-            if (maybeError.error && typeof maybeError.error === "object") {
-                return this.getErrorMessage(maybeError.error);
-            }
         }
 
         return null;
@@ -738,7 +741,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private parseErrorString(error: string): string {
         try {
             const parsedError = JSON.parse(error) as { message?: string };
-            return parsedError.message || error;
+            return typeof parsedError?.message === "string" &&
+                parsedError.message.trim() !== ""
+                ? parsedError.message
+                : error;
         } catch {
             return error;
         }
