@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { PLAYLIST_ROUTES } from "./playlist.routes";
-import { Playlist, PlaylistDetails } from "./playlist.types";
+import { Playlist } from "./playlist.types";
 
 @Injectable({ providedIn: "root" })
 export class PlaylistService {
@@ -14,8 +14,8 @@ export class PlaylistService {
         });
     }
 
-    getPlaylist(playlistId: string): Observable<PlaylistDetails> {
-        return this.http.get<PlaylistDetails>(
+    getPlaylist(playlistId: string): Observable<Playlist> {
+        return this.http.get<Playlist>(
             PLAYLIST_ROUTES.GET_PLAYLISTS({ playlistId }),
             { withCredentials: true },
         );

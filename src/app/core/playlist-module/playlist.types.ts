@@ -21,26 +21,6 @@ export interface Playlist {
     updatedAt?: string;
 }
 
-export interface PlaylistLearningObjectCard {
-    cuid: string;
-    name: string;
-    description: string;
-    objectCollection: string;
-    length: string;
-    levels: string[];
-    version: number;
-    status: string;
-}
-
-export interface PlaylistLearningObject {
-    cuid: string;
-    object: PlaylistLearningObjectCard | null;
-}
-
-export interface PlaylistDetails extends Playlist {
-    learningObjects: PlaylistLearningObject[];
-}
-
 export interface GetPlaylistsQuery {
     playlistId?: string;
 }
