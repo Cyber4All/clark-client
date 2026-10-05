@@ -42,7 +42,7 @@ describe("PlaylistService", () => {
         request.flush([playlist]);
     });
 
-    it("gets one hydrated playlist", () => {
+    it("gets one raw playlist", () => {
         service.getPlaylist(playlist._id).subscribe();
 
         const request = httpMock.expectOne(
@@ -50,6 +50,6 @@ describe("PlaylistService", () => {
         );
         expect(request.request.method).toBe("GET");
         expect(request.request.withCredentials).toBe(true);
-        request.flush({ ...playlist, learningObjects: [] });
+        request.flush(playlist);
     });
 });

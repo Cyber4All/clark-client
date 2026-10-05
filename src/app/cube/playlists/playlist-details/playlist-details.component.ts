@@ -1,11 +1,10 @@
 import { NgFor, NgIf } from "@angular/common";
-import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute, RouterLink } from "@angular/router";
 import { LearningObject } from "@entity";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { PlaylistService } from "app/core/playlist-module/playlist.service";
-import { PlaylistDetails } from "app/core/playlist-module/playlist.types";
+import { Playlist } from "app/core/playlist-module/playlist.types";
 import { LearningObjectListingComponent } from "app/cube/shared/learning-object/learning-object.component";
 import { LearningObjectCardDirective } from "app/shared/directives/learning-object-card.directive";
 import { forkJoin, Observable, of, Subject } from "rxjs";
@@ -30,7 +29,7 @@ interface PlaylistLearningObjectView {
     ],
 })
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
-    playlist?: PlaylistDetails;
+    playlist?: Playlist;
     learningObjects: PlaylistLearningObjectView[] = [];
     loading = true;
     hasError = false;
@@ -79,36 +78,29 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     }
 
     private loadLearningObjects(
-        playlist: PlaylistDetails,
+        playlist: Playlist,
     ): Observable<PlaylistLearningObjectView[]> {
-        if (!playlist.learningObjects.length) {
+        if (!playlist.learningObjectCuids.length) {
             return of([]);
         }
 
         return forkJoin(
-            playlist.learningObjects.map((entry) => {
-                if (!entry.object) {
-                    return of({ cuid: entry.cuid, object: null });
-                }
-
+            playlist.learningObjectCuids.map((cuid) => {
                 return this.learningObjectService
                     .getLearningObjectObservable({
-                        cuidInfo: {
-                            cuid: entry.cuid,
-                            version: entry.object.version,
-                        },
+                        cuidInfo: { cuid },
+                        latestReleased: true,
                     })
                     .pipe(
                         map((object) => ({
-                            cuid: entry.cuid,
+                            cuid,
                             object:
-                                object instanceof HttpErrorResponse
-                                    ? null
-                                    : object,
+                                object instanceof LearningObject &&
+                                object.status === LearningObject.Status.RELEASED
+                                    ? object
+                                    : null,
                         })),
-                        catchError(() =>
-                            of({ cuid: entry.cuid, object: null }),
-                        ),
+                        catchError(() => of({ cuid, object: null })),
                     );
             }),
         );
