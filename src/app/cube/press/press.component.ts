@@ -25,15 +25,21 @@ import { MediaItemComponent } from "./components/media-item/media-item.component
     ],
 })
 export class PressComponent implements OnInit {
-    mentions: Mention[];
+    mentions: Mention[] = [];
     s3 = new AWS.S3();
 
     constructor(private coverageService: PressCoverageService) {}
 
     ngOnInit() {
-        this.coverageService.getMentions().then((mentions) => {
-            this.mentions = mentions;
-        });
+        this.coverageService
+            .getMentions()
+            .then((mentions) => {
+                this.mentions = mentions ?? [];
+            })
+            .catch((error) => {
+                console.error("Failed to load press mentions", error);
+                this.mentions = [];
+            });
     }
 
     downloadPressKit() {
