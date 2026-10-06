@@ -62,6 +62,7 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
                 if (e.status === 404) {
                     this.router.navigate(["not-found"]);
                 }
+                throw e;
             });
         this.key.next(this.collection.abvName);
 
