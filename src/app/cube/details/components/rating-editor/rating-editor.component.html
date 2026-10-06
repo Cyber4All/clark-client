@@ -1,0 +1,20 @@
+<div class="rating-toolbar" role="group" aria-label="Review formatting">
+    <select
+        aria-label="Text style"
+        [ngModel]="selectedHeading"
+        (ngModelChange)="applyHeading($event)">
+        <option value="p">Paragraph</option>
+        <option value="h1">Heading 1</option>
+        <option value="h2">Heading 2</option>
+        <option value="h3">Heading 3</option>
+    </select>
+    <st-button
+        *ngFor="let button of buttons"
+        [button]="button"
+        [state]="activeCommands[button.command]"
+        (command)="execute($event)"></st-button>
+</div>
+<st-editor
+    [(ngModel)]="editorContent"
+    (ngModelChange)="onValueChange($event)"
+    [config]="config"></st-editor>
