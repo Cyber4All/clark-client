@@ -27,7 +27,7 @@ export interface UploadQueueCompleteUpdate extends UploadUpdate {
 
 export interface UploadErrorUpdate extends UploadUpdate {
     type: "error";
-    data: FileUploadMeta;
+    data?: FileUploadMeta;
     error: Error;
 }
 
