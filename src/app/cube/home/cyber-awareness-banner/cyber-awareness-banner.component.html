@@ -1,0 +1,73 @@
+<section class="banner" aria-label="Cyber Awareness resources">
+    <div class="artwork" aria-hidden="true">
+        <img
+            class="artwork-layer artwork-layer--red-circle-1"
+            src="/assets/images/cyber-awareness/Red%20Circle%201%20CAB.svg"
+            alt="" />
+        <img
+            class="artwork-layer artwork-layer--org-circle-1"
+            src="/assets/images/cyber-awareness/Org%20Circle%201%20CAB.svg"
+            alt="" />
+        <img
+            class="artwork-layer artwork-layer--red-circle-2"
+            src="/assets/images/cyber-awareness/Red%20Circle%202%20CAB.svg"
+            alt="" />
+        <img
+            class="artwork-layer artwork-layer--org-circle-2"
+            src="/assets/images/cyber-awareness/ORG%20Circle%202%20CAB.svg"
+            alt="" />
+        <img
+            class="artwork-layer artwork-layer--red-circle-3"
+            src="/assets/images/cyber-awareness/Red%20Circle%203%20CAB.svg"
+            alt="" />
+        <img
+            class="artwork-layer artwork-layer--spider-web-1"
+            src="/assets/images/cyber-awareness/Spider%20Web%201%20CAB.svg"
+            alt="" />
+        <img
+            class="artwork-layer artwork-layer--spider-web-2"
+            src="/assets/images/cyber-awareness/Spider%20Web%202%20CAB.svg"
+            alt="" />
+        <img
+            class="artwork-layer artwork-layer--mummy"
+            src="/assets/images/cyber-awareness/Mummy%20CAB.svg"
+            alt="" />
+    </div>
+    <div class="campaign-content">
+        <img
+            class="campaign-title"
+            src="/assets/images/cyber-awareness/Text.svg"
+            alt=""
+            aria-hidden="true" />
+        <div class="campaign-copy">
+            <h2>
+                All October long, we're celebrating Cybersecurity Awareness
+                Month!
+            </h2>
+            <p>
+                Explore curriculum, activities, and resources designed to help
+                student build important cyber security skills.
+            </p>
+        </div>
+        <div class="actions">
+            <a
+                class="browse-button"
+                [routerLink]="'/browse'"
+                (click)="
+                    googleTagService.triggerGoogleTagEvent(
+                        'browse_learning_objects',
+                        'homepageRedirect',
+                        'splashBrowse'
+                    )
+                ">
+                BROWSE {{ numReleasedObjects | number }}+ LEARNING OBJECTS
+            </a>
+            <a
+                class="browse-button cyber-awareness"
+                [routerLink]="'/browse'"
+                [queryParams]="{ tags: cyberAwarenessTagId }">
+                BROWSE CYBER AWARENESS RESOURCES
+            </a>
+        </div>
+    </div>
+</section>
