@@ -51,6 +51,7 @@ export class LearningObjectService {
 
     getLearningObjectObservable(params: {
         cuidInfo: { cuid: string; version?: number };
+        latestReleased?: boolean;
     }): Observable<LearningObject | HttpErrorResponse> {
         const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT(
             params.cuidInfo.cuid,
@@ -62,9 +63,14 @@ export class LearningObjectService {
             map((response) => {
                 if (Array.isArray(response)) {
                     if (response.length > 1) {
-                        response = response.filter(
+                        const releasedObjects = response.filter(
                             (e) => e.status === LearningObject.Status.RELEASED,
-                        )[0];
+                        );
+                        response = params.latestReleased
+                            ? releasedObjects.sort(
+                                  (a, b) => (b.version ?? 0) - (a.version ?? 0),
+                              )[0]
+                            : releasedObjects[0];
                     } else {
                         response = response.pop();
                     }

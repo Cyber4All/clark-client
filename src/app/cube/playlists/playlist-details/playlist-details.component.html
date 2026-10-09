@@ -1,0 +1,72 @@
+<main class="playlist-details">
+    <a class="back-link" routerLink="/playlists">
+        <i class="far fa-chevron-left" aria-hidden="true"></i>
+        Browse Playlists
+    </a>
+
+    <div *ngIf="loading" class="status" role="status" aria-live="polite">
+        <i class="far fa-spinner-third fa-spin" aria-hidden="true"></i>
+        Loading playlist...
+    </div>
+
+    <div *ngIf="!loading && hasError" class="status status--error" role="alert">
+        <h1>Playlist unavailable</h1>
+        <p>This playlist could not be found or is not available to you.</p>
+    </div>
+
+    <ng-container *ngIf="!loading && !hasError && playlist">
+        <header class="playlist-header">
+            <div>
+                <p class="eyebrow">Playlist</p>
+                <h1>{{ playlist.name }}</h1>
+                <p class="description">{{ playlist.description }}</p>
+                <div class="playlist-header__metadata">
+                    <span class="object-count">
+                        {{ learningObjects.length }}
+                        {{
+                            learningObjects.length === 1
+                                ? "learning object"
+                                : "learning objects"
+                        }}
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section aria-labelledby="playlist-contents-heading">
+            <h2 id="playlist-contents-heading">Learning Objects</h2>
+
+            <p *ngIf="!learningObjects.length" class="status">
+                This playlist does not contain any learning objects yet.
+            </p>
+
+            <ul *ngIf="learningObjects.length" class="object-grid">
+                <li *ngFor="let entry of learningObjects">
+                    <clark-learning-object-component
+                        *ngIf="entry.object as object; else unavailableObject"
+                        [learningObject]="object"
+                        learningObjectCard></clark-learning-object-component>
+
+                    <ng-template #unavailableObject>
+                        <div class="unavailable-card">
+                            <div
+                                class="unavailable-card__icon"
+                                aria-hidden="true">
+                                <i class="far fa-exclamation-circle"></i>
+                            </div>
+                            <div class="unavailable-card__content">
+                                <span class="object-type">Unavailable</span>
+                                <h3>Learning object unavailable</h3>
+                                <p>
+                                    The learning object referenced by
+                                    <span class="cuid">{{ entry.cuid }}</span>
+                                    is missing or not currently available.
+                                </p>
+                            </div>
+                        </div>
+                    </ng-template>
+                </li>
+            </ul>
+        </section>
+    </ng-container>
+</main>
