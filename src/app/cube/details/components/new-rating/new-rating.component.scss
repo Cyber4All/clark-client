@@ -1,12 +1,20 @@
 @import "_vars.scss";
 
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
 .new-rating {
+    min-width: 0;
     &.rated {
         .comment-wrapper {
             visibility: visible;
             opacity: 1;
             transform: scale(1);
-            max-height: 220px;
+            // Allow room for a wrapped toolbar and actions during the original reveal.
+            max-height: 500px;
             margin: 20px auto;
         }
     }
@@ -68,20 +76,6 @@
         flex-direction: column;
         justify-content: space-between;
 
-        textarea {
-            resize: none;
-            appearance: none;
-            outline: 0;
-            border: 1px solid $medium-grey;
-            padding: 10px;
-            height: 150px;
-            width: 350px;
-
-            &:focus {
-                border-color: $blue-accent;
-            }
-        }
-
         .character-count {
             font-size: $small;
             text-align: right;
@@ -97,5 +91,11 @@
             margin-top: 20px;
             margin-bottom: 5px;
         }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .new-rating .comment-wrapper {
+        transition: none;
     }
 }
