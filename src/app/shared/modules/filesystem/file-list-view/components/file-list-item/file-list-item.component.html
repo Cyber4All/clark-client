@@ -9,6 +9,11 @@
         [ngClass]="{ 'hover-react': file.downloadURL }"
         tipPosition="top"
         id="file-name">
+        <i
+            *ngIf="hasLongPath"
+            class="fas fa-exclamation-triangle path-warning"
+            matTooltip="This long path may cause Windows extraction issues. Shorten folder or file names where possible."
+            aria-label="Warning: this path may cause Windows extraction issues"></i>
         <i [ngClass]="['fas', icon, 'icon']"></i>
         {{ file?.name }}
     </div>

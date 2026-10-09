@@ -10,6 +10,11 @@
     font-size: $large;
     margin-right: 5px;
 }
+
+.path-warning {
+    color: #f0a000;
+    margin-right: 8px;
+}
 .grid-row {
     display: grid;
     grid-template-columns: 4fr 1fr 0.5fr 25px;
