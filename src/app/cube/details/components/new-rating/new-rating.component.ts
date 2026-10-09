@@ -1,4 +1,10 @@
 import {
+    RATING_COMMENT_LIMIT,
+    ratingCommentLength,
+    ratingCommentText,
+    serializeRatingComment,
+} from "../rating-comment";
+import {
     Component,
     OnInit,
     Input,
@@ -10,14 +16,20 @@ import {
 import { NgClass, NgFor } from "@angular/common";
 import { TipDirective } from "../../../../shared/directives/tip.directive";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
-import { FormsModule } from "@angular/forms";
+import { RatingEditorComponent } from "../rating-editor/rating-editor.component";
 
 @Component({
     selector: "clark-new-rating",
     templateUrl: "./new-rating.component.html",
     styleUrls: ["./new-rating.component.scss"],
     standalone: true,
-    imports: [NgClass, NgFor, TipDirective, ActivateDirective, FormsModule],
+    imports: [
+        NgClass,
+        NgFor,
+        TipDirective,
+        ActivateDirective,
+        RatingEditorComponent,
+    ],
 })
 export class NewRatingComponent implements OnInit, OnChanges {
     @Input() count = 5;
@@ -30,7 +42,7 @@ export class NewRatingComponent implements OnInit, OnChanges {
         editing?: boolean;
     }> = new EventEmitter();
     @Output() cancelRating: EventEmitter<void> = new EventEmitter();
-    iterableCount: Array<any>;
+    iterableCount: number[];
 
     tips = ["Poor", "Needs Work", "Average", "Good", "Excellent"];
 
@@ -39,15 +51,25 @@ export class NewRatingComponent implements OnInit, OnChanges {
 
     oldRating: number;
 
-    constructor() {}
+    readonly commentLimit = RATING_COMMENT_LIMIT;
+
+    get commentLength(): number {
+        return ratingCommentLength(this.rating?.comment);
+    }
 
     get isSubmitDisabled(): boolean {
-        const comment = this.rating?.comment?.trim() || "";
-        return comment === "" || (this.rating?.comment?.length ?? 0) > 512;
+        // Empty editor markup is not a review; the limit counts decoded text, not HTML.
+        return (
+            !ratingCommentText(this.rating?.comment).trim() ||
+            this.commentLength > this.commentLimit
+        );
     }
 
     ngOnInit() {
-        this.iterableCount = Array(this.count).fill(0);
+        this.iterableCount = Array.from(
+            { length: this.count },
+            (_, index) => index,
+        );
     }
 
     ngOnChanges(changes: SimpleChanges) {
@@ -86,7 +108,15 @@ export class NewRatingComponent implements OnInit, OnChanges {
     }
 
     submitRating() {
-        this.setRating.emit({ ...this.rating, editing: this.editing });
+        if (this.isSubmitDisabled) {
+            return;
+        }
+        this.setRating.emit({
+            ...this.rating,
+            // Convert only on submission so normalizing markup cannot move the live caret.
+            comment: serializeRatingComment(this.rating.comment),
+            editing: this.editing,
+        });
     }
 
     cancel() {
