@@ -85,7 +85,7 @@ export class FileManagementService {
     private validateFileNames(files: FileInput[], cuid: string) {
         // A pattern matching bad charaters per AWS S3. (https://regex101.com/r/DFTn1M/1)
         // https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-keys.html
-        const badCharPattern = /[&$@=;\/\\:+,?{^}%`"[\]~#|]/;
+        const badCharPattern = /[&$@=;\/\\:+,?{^}%`"[\]~#|<>*]/;
 
         const invalidFilePaths = files
             .filter((file) => badCharPattern.test(file.name))
