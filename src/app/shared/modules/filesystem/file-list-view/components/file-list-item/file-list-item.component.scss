@@ -14,6 +14,9 @@
 .path-warning {
     color: #f0a000;
     margin-right: 8px;
+    display: inline-flex;
+    align-items: center;
+    cursor: help;
 }
 .grid-row {
     display: grid;

@@ -637,6 +637,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notificationService.warning(
             "Path length warning",
             `${longPaths.length} file path${longPaths.length === 1 ? " is" : "s are"} longer than 160 characters. ${WINDOWS_EXTRACTION_WARNING}`,
+            10_000,
         );
     }
 

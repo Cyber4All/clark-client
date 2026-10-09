@@ -1,7 +1,7 @@
 export const WINDOWS_EXTRACTION_PATH_LIMIT = 160;
 
 export const WINDOWS_EXTRACTION_WARNING =
-    "Long paths may cause Windows File Explorer to fail during extraction. Shorten folder or file names where possible, or use 7-Zip or another archive utility.";
+    "Long paths may cause Windows File Explorer to fail during extraction. We recommend shortening folder or file names where possible.";
 
 /**
  * Returns the upload-relative path used to identify a file in a learning
