@@ -95,7 +95,7 @@ export class FileManagementService {
 
         if (invalidFilePaths.length) {
             throw new Error(
-                `File name contains one or more invalid characters: & $ @ = ; / : + , ? \\ { ^ } % \` \] \" > [ ~ < # |.\nFiles with invalid names:\n${invalidFilePaths.map((path) => `- ${path}`).join("\n")}`,
+                `File name contains one or more invalid characters: & $ @ = ; / : + , ? \\ { ^ } % \` \] \" > [ ~ < # | *.\nFiles with invalid names:\n${invalidFilePaths.map((path) => `- ${path}`).join("\n")}`,
             );
         }
 
