@@ -881,6 +881,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.isDestroyed$.next();
-        this.isDestroyed$.unsubscribe();
+        this.isDestroyed$.complete();
     }
 }
