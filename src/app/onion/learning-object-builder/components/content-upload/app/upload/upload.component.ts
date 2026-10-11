@@ -747,7 +747,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private handleUploadError(update: UploadErrorUpdate) {
         if (update.error.name === UploadErrorReason.Credentials) {
             this.handleCredentialsError();
-        } else {
+        } else if (update.data?.fullPath) {
             const index = this.uploadQueueMap[update.data.fullPath];
             this.uploadQueue[index].success = false;
         }
