@@ -6,15 +6,9 @@
     aria-labelledby="agentic-builder-title"
     aria-modal="true">
     <header class="agentic-builder-panel__header">
-        <div>
-            <h2 id="agentic-builder-title">
-                {{ reviewing ? "Review suggestions" : "Generate with AI" }}
-            </h2>
-            <p *ngIf="reviewing">
-                Review the content generated from your materials. Choose which
-                suggestions to keep.
-            </p>
-        </div>
+        <h2 id="agentic-builder-title">
+            {{ reviewing ? "Review suggestions" : "Generate with AI" }}
+        </h2>
         <button
             type="button"
             class="agentic-builder-panel__close"
@@ -50,8 +44,7 @@
                     [showSelectedIcon]="true"
                     [emphasizeActive]="false"
                     ariaLabel="Name"
-                    (selected)="toggleField('name')">
-                </clark-pill>
+                    (selected)="toggleField('name')"></clark-pill>
                 <clark-pill
                     label="Description"
                     [active]="selectedFields.description"
@@ -59,8 +52,7 @@
                     [showSelectedIcon]="true"
                     [emphasizeActive]="false"
                     ariaLabel="Description"
-                    (selected)="toggleField('description')">
-                </clark-pill>
+                    (selected)="toggleField('description')"></clark-pill>
                 <clark-pill
                     label="Learning Outcomes"
                     [active]="selectedFields.learningOutcomes"
@@ -68,8 +60,7 @@
                     [showSelectedIcon]="true"
                     [emphasizeActive]="false"
                     ariaLabel="Learning Outcomes"
-                    (selected)="toggleField('learningOutcomes')">
-                </clark-pill>
+                    (selected)="toggleField('learningOutcomes')"></clark-pill>
             </div>
             <p
                 *ngIf="errorMessage"
@@ -91,225 +82,77 @@
         <div
             class="agentic-builder-panel__content agentic-builder-panel__review-content">
             <div class="review-progress" aria-live="polite">
-                <span
-                    >{{ reviewedCount }} of {{ suggestionCount }} suggestions
-                    reviewed</span
-                >
-                <span class="review-progress__accepted" *ngIf="acceptedCount"
-                    >{{ acceptedCount }} accepted</span
-                >
+                {{ suggestionCount }} suggestion{{
+                    suggestionCount === 1 ? "" : "s"
+                }}
+                remaining
             </div>
 
             <div *ngIf="!hasSuggestions" class="empty-state">
-                <p>No suggestions were generated from these materials.</p>
-                <button
-                    type="button"
-                    class="button neutral"
-                    [disabled]="generating"
-                    (activate)="resetReview(); generate()">
-                    Try again
-                </button>
+                <p><strong>All suggestions reviewed</strong></p>
+                <p>There are no remaining suggestions.</p>
             </div>
 
             <section *ngIf="hasNameSuggestion" class="suggestion-section">
-                <button
-                    type="button"
-                    class="suggestion-section__toggle"
-                    [attr.aria-expanded]="expandedSections.name"
-                    aria-controls="name-suggestions"
-                    (activate)="toggleSection('name')">
-                    <span class="suggestion-section__title"
-                        ><i class="fas fa-heading" aria-hidden="true"></i>
-                        Name</span
-                    >
-                    <span class="suggestion-section__summary"
-                        ><span
-                            *ngIf="fieldStatuses.name !== 'pending'"
-                            [ngClass]="'status status--' + fieldStatuses.name"
-                            >{{ fieldStatuses.name }}</span
-                        ><span class="suggestion-section__change-count"
-                            >1 change</span
-                        ><i
-                            class="fas"
-                            [ngClass]="
-                                expandedSections.name
-                                    ? 'fa-chevron-up'
-                                    : 'fa-chevron-down'
-                            "
-                            aria-hidden="true"></i
-                    ></span>
-                </button>
-                <div
-                    id="name-suggestions"
-                    class="suggestion-section__body"
-                    *ngIf="expandedSections.name">
-                    <div class="suggestion-value suggestion-value--diff">
-                        <onion-agentic-text-diff
-                            [current]="currentName"
-                            [suggested]="
-                                suggestions.name
-                            "></onion-agentic-text-diff>
-                    </div>
-                    <div class="suggestion-actions">
-                        <button
-                            type="button"
-                            class="button neutral"
-                            [disabled]="generating"
-                            [attr.aria-pressed]="
-                                fieldStatuses.name === 'rejected'
-                            "
-                            (activate)="setFieldStatus('name', 'rejected')">
-                            Reject</button
-                        ><button
-                            type="button"
-                            class="button good"
-                            [disabled]="generating"
-                            [attr.aria-pressed]="
-                                fieldStatuses.name === 'accepted'
-                            "
-                            (activate)="setFieldStatus('name', 'accepted')">
-                            Accept
-                        </button>
-                    </div>
+                <h3 class="suggestion-section__heading">Name</h3>
+                <div class="suggestion-content">{{ suggestions.name }}</div>
+                <div class="suggestion-actions">
+                    <button
+                        type="button"
+                        class="button neutral"
+                        [disabled]="generating"
+                        (activate)="rejectField('name')">
+                        Reject
+                    </button>
+                    <button
+                        type="button"
+                        class="button good"
+                        [disabled]="generating"
+                        (activate)="acceptField('name')">
+                        Accept
+                    </button>
                 </div>
             </section>
 
             <section
                 *ngIf="hasDescriptionSuggestion"
                 class="suggestion-section">
-                <button
-                    type="button"
-                    class="suggestion-section__toggle"
-                    [attr.aria-expanded]="expandedSections.description"
-                    aria-controls="description-suggestions"
-                    (activate)="toggleSection('description')">
-                    <span class="suggestion-section__title"
-                        ><i class="fas fa-align-left" aria-hidden="true"></i>
-                        Description</span
-                    >
-                    <span class="suggestion-section__summary"
-                        ><span
-                            *ngIf="fieldStatuses.description !== 'pending'"
-                            [ngClass]="
-                                'status status--' + fieldStatuses.description
-                            "
-                            >{{ fieldStatuses.description }}</span
-                        ><span class="suggestion-section__change-count"
-                            >Changes available</span
-                        ><i
-                            class="fas"
-                            [ngClass]="
-                                expandedSections.description
-                                    ? 'fa-chevron-up'
-                                    : 'fa-chevron-down'
-                            "
-                            aria-hidden="true"></i
-                    ></span>
-                </button>
-                <div
-                    id="description-suggestions"
-                    class="suggestion-section__body"
-                    *ngIf="expandedSections.description">
-                    <div class="suggestion-value suggestion-value--diff">
-                        <onion-agentic-text-diff
-                            [current]="currentDescription"
-                            [suggested]="
-                                suggestions.description
-                            "></onion-agentic-text-diff>
-                    </div>
-                    <div class="suggestion-actions">
-                        <button
-                            type="button"
-                            class="button neutral"
-                            [disabled]="generating"
-                            [attr.aria-pressed]="
-                                fieldStatuses.description === 'rejected'
-                            "
-                            (activate)="
-                                setFieldStatus('description', 'rejected')
-                            ">
-                            Reject</button
-                        ><button
-                            type="button"
-                            class="button good"
-                            [disabled]="generating"
-                            [attr.aria-pressed]="
-                                fieldStatuses.description === 'accepted'
-                            "
-                            (activate)="
-                                setFieldStatus('description', 'accepted')
-                            ">
-                            Accept
-                        </button>
-                    </div>
+                <h3 class="suggestion-section__heading">Description</h3>
+                <div class="suggestion-content suggestion-description">
+                    {{ suggestions.description }}
+                </div>
+                <div class="suggestion-actions">
+                    <button
+                        type="button"
+                        class="button neutral"
+                        [disabled]="generating"
+                        (activate)="rejectField('description')">
+                        Reject
+                    </button>
+                    <button
+                        type="button"
+                        class="button good"
+                        [disabled]="generating"
+                        (activate)="acceptField('description')">
+                        Accept
+                    </button>
                 </div>
             </section>
 
             <section
                 *ngIf="suggestions?.learningOutcomes?.length"
                 class="suggestion-section">
-                <div class="suggestion-section__toggle">
-                    <button
-                        type="button"
-                        class="suggestion-section__collapse-control"
-                        [attr.aria-expanded]="expandedSections.outcomes"
-                        aria-controls="outcome-suggestions"
-                        (activate)="toggleSection('outcomes')">
-                        <span class="suggestion-section__title">
-                            <i
-                                class="fas fa-graduation-cap"
-                                aria-hidden="true"></i>
-                            Learning Outcomes
-                        </span>
-                        <span class="suggestion-section__summary">
-                            <span
-                                >{{
-                                    suggestions.learningOutcomes.length
-                                }}
-                                new</span
-                            >
-                            <i
-                                class="fas"
-                                [ngClass]="
-                                    expandedSections.outcomes
-                                        ? 'fa-chevron-up'
-                                        : 'fa-chevron-down'
-                                "
-                                aria-hidden="true"></i>
-                        </span>
-                    </button>
-                    <button
-                        type="button"
-                        class="suggestion-section__accept-all"
-                        [disabled]="generating"
-                        (activate)="acceptAllOutcomes()">
-                        Accept all
-                    </button>
-                </div>
-                <div
-                    id="outcome-suggestions"
-                    class="suggestion-section__body"
-                    *ngIf="expandedSections.outcomes">
+                <h3 class="suggestion-section__heading">Learning Outcomes</h3>
+                <div class="outcome-list">
                     <article
                         *ngFor="
                             let outcome of suggestions.learningOutcomes;
                             let i = index
                         "
-                        class="outcome-card"
-                        [ngClass]="'outcome-card--' + outcomeStatuses[i]">
-                        <div class="outcome-card__heading">
-                            <span>Outcome {{ i + 1 }}</span>
-                            <span class="outcome-card__bloom">{{
-                                outcome.bloom
-                            }}</span>
-                            <span
-                                *ngIf="outcomeStatuses[i] !== 'pending'"
-                                [ngClass]="
-                                    'status status--' + outcomeStatuses[i]
-                                "
-                                >{{ outcomeStatuses[i] }}</span
-                            >
-                        </div>
+                        class="outcome-card">
+                        <span class="outcome-card__bloom">{{
+                            outcome.bloom
+                        }}</span>
                         <p>
                             <strong>{{ outcome.verb }}</strong>
                             {{ outcome.text }}
@@ -319,19 +162,14 @@
                                 type="button"
                                 class="button neutral"
                                 [disabled]="generating"
-                                [attr.aria-pressed]="
-                                    outcomeStatuses[i] === 'rejected'
-                                "
-                                (activate)="setOutcomeStatus(i, 'rejected')">
-                                Reject</button
-                            ><button
+                                (activate)="rejectOutcome(i)">
+                                Reject
+                            </button>
+                            <button
                                 type="button"
                                 class="button good"
                                 [disabled]="generating"
-                                [attr.aria-pressed]="
-                                    outcomeStatuses[i] === 'accepted'
-                                "
-                                (activate)="setOutcomeStatus(i, 'accepted')">
+                                (activate)="acceptOutcome(i)">
                                 Accept
                             </button>
                         </div>
@@ -345,18 +183,14 @@
                 class="button neutral"
                 [disabled]="generating"
                 (activate)="close()">
-                Cancel
+                Close
             </button>
             <button
                 type="button"
                 class="button good"
-                [disabled]="generating || !acceptedCount"
-                (activate)="applySelectedChanges()">
-                {{
-                    generating
-                        ? "Applying..."
-                        : "Apply accepted (" + acceptedCount + ")"
-                }}
+                [disabled]="generating || !hasSuggestions"
+                (activate)="acceptAll()">
+                Accept all
             </button>
         </footer>
     </ng-template>

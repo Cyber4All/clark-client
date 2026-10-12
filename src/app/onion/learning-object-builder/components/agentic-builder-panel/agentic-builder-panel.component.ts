@@ -1,16 +1,13 @@
-import { NgClass, NgFor, NgIf } from "@angular/common";
+import { NgFor, NgIf } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, EventEmitter, Output } from "@angular/core";
+import { Component, EventEmitter, HostListener, Output } from "@angular/core";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { PillComponent } from "../../../../shared/components/pill/pill.component";
 import { ClickOutsideModule } from "ng-click-outside";
-import { TextDiffComponent } from "./text-diff/text-diff.component";
 import { AgenticBuilderField, BuilderStore } from "../../builder-store.service";
 import type { AgenticBuilderSuggestions } from "app/core/learning-object-module/learning-object/learning-object.types";
-
-type AgenticSuggestionStatus = "pending" | "accepted" | "rejected";
 
 @Component({
     selector: "onion-agentic-builder-panel",
@@ -20,11 +17,9 @@ type AgenticSuggestionStatus = "pending" | "accepted" | "rejected";
     imports: [
         NgIf,
         NgFor,
-        NgClass,
         ActivateDirective,
         PillComponent,
         ClickOutsideModule,
-        TextDiffComponent,
     ],
 })
 export class AgenticBuilderPanelComponent {
@@ -34,16 +29,6 @@ export class AgenticBuilderPanelComponent {
     reviewing = false;
     errorMessage: string | null = null;
     suggestions: AgenticBuilderSuggestions | null = null;
-    fieldStatuses: Record<"name" | "description", AgenticSuggestionStatus> = {
-        name: "pending",
-        description: "pending",
-    };
-    outcomeStatuses: Record<number, AgenticSuggestionStatus> = {};
-    expandedSections: Record<"name" | "description" | "outcomes", boolean> = {
-        name: true,
-        description: true,
-        outcomes: true,
-    };
     selectedFields = {
         name: true,
         description: true,
@@ -65,14 +50,21 @@ export class AgenticBuilderPanelComponent {
     }
 
     close(): void {
-        if (!this.generating && this.canDiscardReview()) {
+        if (!this.generating) {
             this.resetReview();
             this.closed.emit();
         }
     }
 
     handleClickOutside(): void {
-        if (!this.reviewing && !this.generating) {
+        if (!this.generating) {
+            this.close();
+        }
+    }
+
+    @HostListener("document:keydown.escape")
+    handleEscape(): void {
+        if (!this.generating) {
             this.close();
         }
     }
@@ -105,20 +97,6 @@ export class AgenticBuilderPanelComponent {
                     { fields },
                 );
             this.suggestions = suggestions || {};
-            this.fieldStatuses = {
-                name: "pending",
-                description: "pending",
-            };
-            this.outcomeStatuses = Object.fromEntries(
-                (this.suggestions.learningOutcomes || []).map(
-                    (_outcome, index) => [index, "pending"],
-                ),
-            );
-            this.expandedSections = {
-                name: true,
-                description: !this.descriptionSuggestionIsLong,
-                outcomes: true,
-            };
             this.reviewing = true;
         } catch (error) {
             this.errorMessage = this.getErrorMessage(error);
@@ -129,34 +107,12 @@ export class AgenticBuilderPanelComponent {
         }
     }
 
-    get currentName(): string {
-        return this.store.learningObject?.name || "";
-    }
-
-    get currentDescription(): string {
-        return this.store.learningObject?.description || "";
-    }
-
-    get currentOutcomes() {
-        return this.store.currentOutcomes;
-    }
-
     get hasNameSuggestion(): boolean {
-        return (
-            this.suggestions?.name !== undefined &&
-            this.suggestions.name !== this.currentName
-        );
+        return this.suggestions?.name !== undefined;
     }
 
     get hasDescriptionSuggestion(): boolean {
-        return (
-            this.suggestions?.description !== undefined &&
-            this.suggestions.description !== this.currentDescription
-        );
-    }
-
-    get descriptionSuggestionIsLong(): boolean {
-        return (this.suggestions?.description?.length || 0) > 240;
+        return this.suggestions?.description !== undefined;
     }
 
     get suggestionCount(): number {
@@ -166,26 +122,6 @@ export class AgenticBuilderPanelComponent {
             (this.hasDescriptionSuggestion ? 1 : 0) +
             (this.suggestions.learningOutcomes?.length || 0)
         );
-    }
-
-    get reviewedCount(): number {
-        const fieldCount = Object.values(this.fieldStatuses).filter(
-            (status) => status !== "pending",
-        ).length;
-        const outcomeCount = Object.values(this.outcomeStatuses).filter(
-            (status) => status !== "pending",
-        ).length;
-        return fieldCount + outcomeCount;
-    }
-
-    get acceptedCount(): number {
-        const fieldCount = Object.values(this.fieldStatuses).filter(
-            (status) => status === "accepted",
-        ).length;
-        const outcomeCount = Object.values(this.outcomeStatuses).filter(
-            (status) => status === "accepted",
-        ).length;
-        return fieldCount + outcomeCount;
     }
 
     get hasSuggestions(): boolean {
@@ -200,63 +136,71 @@ export class AgenticBuilderPanelComponent {
         );
     }
 
-    toggleSection(section: "name" | "description" | "outcomes"): void {
-        this.expandedSections[section] = !this.expandedSections[section];
+    async acceptField(field: "name" | "description"): Promise<void> {
+        if (!this.suggestions || this.generating) return;
+        const value = this.suggestions[field];
+        if (value === undefined) return;
+
+        await this.applySuggestions({ [field]: value }, () => {
+            this.suggestions = {
+                ...this.suggestions,
+                [field]: undefined,
+            };
+        });
     }
 
-    setFieldStatus(
-        field: "name" | "description",
-        status: AgenticSuggestionStatus,
-    ): void {
-        this.fieldStatuses[field] = status;
+    rejectField(field: "name" | "description"): void {
+        if (!this.suggestions) return;
+        this.suggestions = { ...this.suggestions, [field]: undefined };
     }
 
-    setOutcomeStatus(index: number, status: "accepted" | "rejected"): void {
-        this.outcomeStatuses[index] = status;
-    }
+    async acceptOutcome(index: number): Promise<void> {
+        if (!this.suggestions || this.generating) return;
+        const outcome = this.suggestions.learningOutcomes?.[index];
+        if (!outcome) return;
 
-    acceptAllOutcomes(): void {
-        (this.suggestions?.learningOutcomes || []).forEach(
-            (_outcome, index) => {
-                this.outcomeStatuses[index] = "accepted";
-            },
+        await this.applySuggestions({ learningOutcomes: [outcome] }, () =>
+            this.removeOutcome(index),
         );
     }
 
-    async applySelectedChanges(): Promise<void> {
-        if (!this.suggestions || this.generating) return;
+    rejectOutcome(index: number): void {
+        this.removeOutcome(index);
+    }
 
+    async acceptAll(): Promise<void> {
+        if (!this.suggestions || this.generating) return;
+        await this.applySuggestions(this.suggestions, () => {
+            this.resetReview();
+            this.closed.emit();
+        });
+    }
+
+    private async applySuggestions(
+        suggestions: AgenticBuilderSuggestions,
+        onSuccess: () => void,
+    ): Promise<void> {
         this.generating = true;
         try {
             const acceptedFields = new Set<"name" | "description">();
-            if (this.fieldStatuses.name === "accepted") {
-                acceptedFields.add("name");
-            }
-            if (this.fieldStatuses.description === "accepted") {
+            if (suggestions.name !== undefined) acceptedFields.add("name");
+            if (suggestions.description !== undefined) {
                 acceptedFields.add("description");
             }
-
             const acceptedOutcomeIndexes = new Set(
-                Object.entries(this.outcomeStatuses)
-                    .filter(([, status]) => status === "accepted")
-                    .map(([index]) => Number(index)),
+                (suggestions.learningOutcomes || []).map(
+                    (_outcome, index) => index,
+                ),
             );
-
-            const acceptedCount = this.acceptedCount;
             await this.store.applyAgenticSuggestions(
-                this.suggestions,
+                suggestions,
                 acceptedFields,
                 acceptedOutcomeIndexes,
             );
-            this.toasterService.success(
-                "Suggestions applied",
-                `${acceptedCount} suggestion${acceptedCount === 1 ? "" : "s"} added to your learning object.`,
-            );
-            this.resetReview();
-            this.closed.emit();
+            onSuccess();
         } catch (error) {
             this.toasterService.error(
-                "Unable to apply suggestions",
+                "Unable to apply suggestion",
                 this.getErrorMessage(error),
             );
         } finally {
@@ -264,21 +208,19 @@ export class AgenticBuilderPanelComponent {
         }
     }
 
+    private removeOutcome(index: number): void {
+        if (!this.suggestions?.learningOutcomes) return;
+        this.suggestions = {
+            ...this.suggestions,
+            learningOutcomes: this.suggestions.learningOutcomes.filter(
+                (_outcome, outcomeIndex) => outcomeIndex !== index,
+            ),
+        };
+    }
+
     resetReview(): void {
         this.reviewing = false;
         this.suggestions = null;
-        this.outcomeStatuses = {};
-        this.fieldStatuses = { name: "pending", description: "pending" };
-    }
-
-    private canDiscardReview(): boolean {
-        return (
-            !this.reviewing ||
-            !this.reviewedCount ||
-            window.confirm(
-                "Discard your review decisions? No suggestions will be applied.",
-            )
-        );
     }
 
     private getErrorMessage(error: unknown): string {

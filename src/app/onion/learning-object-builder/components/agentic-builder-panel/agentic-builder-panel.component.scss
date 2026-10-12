@@ -6,8 +6,8 @@
     right: 25px;
     display: flex;
     flex-direction: column;
-    width: min(700px, 55vw);
-    max-width: min(800px, calc(100vw - 32px));
+    width: min(850px, 65vw);
+    max-width: min(900px, calc(100vw - 32px));
     max-height: calc(100vh - 105px);
     box-sizing: border-box;
     background: white;
@@ -230,6 +230,35 @@
     margin-bottom: 4px;
 }
 
+.current-toggle {
+    background: transparent;
+    border: 0;
+    color: $light-blue;
+    cursor: pointer;
+    font-size: $small;
+    padding: 0;
+    text-decoration: underline;
+
+    &:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 2px;
+    }
+}
+
+.current-value {
+    background: $secondary-white-background;
+    border-left: 3px solid $light-grey;
+    line-height: 1.45;
+    margin-top: 12px;
+    padding: 10px 12px;
+    word-break: break-word;
+}
+
+.suggestion-description,
+.current-value {
+    white-space: pre-line;
+}
+
 .suggestion-actions {
     display: flex;
     gap: 8px;
@@ -287,10 +316,14 @@
 
     &__bloom {
         color: $dark-grey;
+        display: inline-block;
         font-size: $small;
         font-weight: normal;
-        margin-left: auto;
-        margin-right: 10px;
+        margin: 0 0 8px;
+        padding: 3px 8px;
+        background: $secondary-white-background;
+        border: 1px solid $light-grey;
+        border-radius: 999px;
     }
 
     p {
@@ -318,6 +351,40 @@
     color: $dark-grey;
     padding: 18px 0;
     text-align: center;
+}
+
+.suggestion-section {
+    border: 0;
+    border-bottom: 1px solid $light-grey;
+    border-radius: 0;
+    margin: 0;
+    padding: 18px 0;
+}
+
+.suggestion-section__heading {
+    font-size: $large;
+    font-weight: 600;
+    margin: 0 0 12px;
+}
+
+.suggestion-content {
+    font-size: $normal;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.suggestion-content.suggestion-description {
+    white-space: pre-line;
+}
+
+.outcome-card__heading {
+    display: none;
+}
+
+.review-progress {
+    justify-content: flex-start;
+    margin-bottom: 0;
+    padding: 4px 0 12px;
 }
 
 @media (max-width: 600px) {

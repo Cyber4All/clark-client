@@ -16,9 +16,10 @@ Update the learning-object builder’s agentic generation flow for the new backe
 - [x] (2026-10-12) Refined the review drawer with responsive sizing, sticky header/footer, collapsible sections, explicit per-suggestion statuses, progress counts, and accepted-only footer actions.
 - [x] (2026-10-12) Ran repository lint and production build validation; both completed successfully with existing lint warnings and the repository's Node 25 warning.
 - [x] (2026-10-12) Investigated diff and Angular Material availability; selected the lightweight `diff` package and existing native collapsible pattern instead of adding a new drawer framework.
-- [x] (2026-10-12) Added reusable `TextDiffComponent` using `diffWordsWithSpace`, compact unchanged-context rendering, accessible added/removed labels, and full-comparison expansion.
-- [x] (2026-10-12) Simplified the 700px review drawer, field comparisons, and learning-outcome list while preserving state/application behavior.
-- [x] (2026-10-12) Added Accept all for learning outcomes and validated build, lint, formatting, and diff cleanliness.
+- [x] (2026-10-12) Evaluated the library-backed diff iteration and removed it per the updated content-first UX direction, including its direct dependencies and reusable component.
+- [x] (2026-10-12) Simplified the 850px review drawer to show generated field content with optional current-value disclosure and a lightweight outcome list.
+- [x] (2026-10-12) Added outside-click/Escape dismissal with the existing discard confirmation path and validated build, formatting, and diff cleanliness.
+- [x] (2026-10-12) Refactored review decisions to immediate application/removal, replaced staged footer actions with Close and Accept all, and removed collapsible/current-value UI.
 
 ## Surprises & Discoveries
 
@@ -39,13 +40,16 @@ Update the learning-object builder’s agentic generation flow for the new backe
 - Decision: Use explicit current/suggested blocks and per-item Accept/Reject controls instead of introducing a rich text diff dependency.
   Rationale: The response contains structured field values and outcomes; clear side-by-side/stacked values provide the needed diff without adding a new dependency.
   Date/Author: 2026-10-09 / Codex
-- Decision: Use the direct `diff` dependency for word-level segmentation and keep truncation/rendering in a small reusable Angular component.
-  Rationale: The request requires an established library and the repository had only an incidental transitive install; a direct dependency keeps the UI contract explicit without a heavyweight editor.
+- Decision: Prefer generated-content review with optional current-value disclosure over inline diff rendering.
+  Rationale: The latest UX direction prioritizes evaluating the AI suggestion directly and removes the cognitive/visual overhead of word-level comparisons.
+  Date/Author: 2026-10-12 / Codex
+- Decision: Apply accepted suggestions immediately through `BuilderStore.applyAgenticSuggestions` and remove them from local queue state.
+  Rationale: This matches the requested inline workflow while reusing the established persistence path for fields and appended outcomes.
   Date/Author: 2026-10-12 / Codex
 
 ## Outcomes & Retrospective
 
-The frontend now preserves the learning object until explicit apply, supports per-field and per-outcome review, and uses the existing builder save/validation paths. The review drawer is responsive and content-author focused, with explicit progress and accepted counts. Jest coverage remains a follow-up because the repository's current Jest transformer fails before executing tests.
+The frontend now preserves the learning object until explicit apply, supports per-field and per-outcome review, and uses the existing builder save/validation paths. The review drawer is responsive and content-author focused, with generated-content previews, optional current-value disclosure, compact outcome review, explicit progress, and accepted counts. Jest coverage remains a follow-up because the repository's current Jest transformer fails before executing tests.
 
 ## Context and Orientation
 
