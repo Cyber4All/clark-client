@@ -20,15 +20,7 @@
         <div #contextMenu>
             <ul>
                 <li [routerLink]="'/browse'">Browse Curriculum</li>
-                <li
-                    (click)="
-                        utilityService.openExternalLink(
-                            'https://caeresource.clark.center'
-                        )
-                    ">
-                    Browse Resources
-                </li>
-                <!-- Placeholder URL -->
+                <li (click)="utilityService.openCard()">Browse Resources</li>
             </ul>
         </div>
     </clark-context-menu>
