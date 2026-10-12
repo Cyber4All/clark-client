@@ -590,7 +590,11 @@ export class BuilderStore {
         }
     }
 
-    /** Saves Agentic Builder context state without changing Bundle state. */
+    /**
+     * Legacy context persistence retained for model compatibility.
+     * TODO: Re-enable a Context control only when the generation backend
+     * supports explicit source selection.
+     */
     private toggleContext(event: {
         state: boolean;
         item: DirectoryNode | LearningObject.Material.File;

@@ -155,17 +155,6 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
         }
     }
 
-    async handleContextToggled(event: {
-        state: boolean;
-        item: DirectoryNode | LearningObject.Material.File;
-    }) {
-        try {
-            await this.store.execute(BUILDER_ACTIONS.TOGGLE_CONTEXT, event);
-        } catch (e) {
-            this.error$.next(e);
-        }
-    }
-
     // Toggle function for exiting builder
     handleUploadComplete(val: string) {
         this.store.toggleUploadComplete(val);

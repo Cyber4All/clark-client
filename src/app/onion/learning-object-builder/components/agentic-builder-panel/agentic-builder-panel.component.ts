@@ -142,14 +142,6 @@ export class AgenticBuilderPanelComponent {
         event.stopPropagation();
     }
 
-    get contextMaterialCount(): number {
-        return (
-            this.store.learningObject?.materials?.files?.filter(
-                (file) => file.context,
-            ).length || 0
-        );
-    }
-
     async acceptField(field: "name" | "description"): Promise<void> {
         if (!this.suggestions || this.generating) return;
         const value = this.suggestions[field];

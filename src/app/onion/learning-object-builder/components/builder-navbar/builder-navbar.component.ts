@@ -155,6 +155,10 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.showAgenticBuilder = !this.showAgenticBuilder;
     }
 
+    get hasMaterials(): boolean {
+        return Boolean(this.learningObject?.materials?.files?.length);
+    }
+
     /**
      * Function used to handle actions on exit of learning-object builder
      * 1. Remove any outcomes that have null text

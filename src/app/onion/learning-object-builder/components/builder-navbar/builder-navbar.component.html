@@ -60,6 +60,26 @@
             <clark-lo-status-indicator
                 [status]="learningObject?.status"
                 [states]="states"></clark-lo-status-indicator>
+            <span
+                class="agentic-builder-action-wrapper"
+                [tip]="
+                    hasMaterials
+                        ? 'Generate suggestions from your learning object materials.'
+                        : 'Upload materials before generating details with AI.'
+                "
+                tipPosition="bottom">
+                <button
+                    type="button"
+                    class="agentic-builder-action"
+                    aria-label="Generate with AI"
+                    [attr.aria-disabled]="!hasMaterials"
+                    [disabled]="!hasMaterials"
+                    (click)="$event.stopPropagation()"
+                    (activate)="toggleAgenticBuilder()">
+                    <i class="fas fa-sparkles" aria-hidden="true"></i>
+                    Generate with AI
+                </button>
+            </span>
             <ng-container *ngIf="!adminMode; else adminModeTemplate">
                 <button
                     id="submit"
@@ -96,17 +116,6 @@
                         learningObject
                     "></clark-editor-action-panel>
             </ng-template>
-            <button
-                type="button"
-                class="agentic-builder-action"
-                aria-label="Generate with AI"
-                tip="Generate with AI"
-                tipPosition="bottom"
-                (click)="$event.stopPropagation()"
-                (activate)="toggleAgenticBuilder()">
-                <i class="fas fa-sparkles" aria-hidden="true"></i>
-                Generate with AI
-            </button>
         </div>
     </div>
     <div class="builder-navbar-wrapper__bottom">

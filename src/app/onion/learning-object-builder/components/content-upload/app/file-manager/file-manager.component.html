@@ -7,7 +7,6 @@
     (path)="emitPath($event)"
     canManage="true"
     (packageableToggled)="packageableToggled.emit($event)"
-    (contextToggled)="contextToggled.emit($event)"
     [inBuilder]="true"></clark-file-browser>
 
 <clark-context-menu
@@ -29,11 +28,6 @@
     [anchor]="menuAnchor"
     (close)="closeContextMenu()">
     <ul #contextMenu>
-        <li
-            *ngIf="!isDirectory(menuItem)"
-            (activate)="handleDownloadClick(menuItem)">
-            <i class="far fa-download"></i>Download
-        </li>
         <li (activate)="triggerDelete(menuItem)" class="bad">
             <i class="far fa-trash-alt"></i>Delete
         </li>

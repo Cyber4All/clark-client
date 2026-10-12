@@ -1,6 +1,6 @@
 <div
     class="grid-row wrapper"
-    [ngClass]="{ bundle: checkAccessGroups(), context: inBuilder }"
+    [ngClass]="{ bundle: checkAccessGroups() }"
     role="link"
     tabindex="0">
     <div
@@ -19,6 +19,7 @@
         <!-- Download Button -->
         <button
             mat-icon-button
+            aria-label="Download file"
             [matTooltip]="
                 isLoggedIn
                     ? file.downloadURL
@@ -34,6 +35,7 @@
         <!-- Preview Button -->
         <button
             mat-icon-button
+            aria-label="Preview file"
             [disabled]="!canPreview || !file.downloadURL || !isLoggedIn"
             [matTooltip]="
                 isLoggedIn
@@ -50,11 +52,6 @@
         <clark-toggle-switch
             [state]="file.packageable"
             (toggled)="handleToggle($event)"></clark-toggle-switch>
-    </div>
-    <div class="toggleContext" *ngIf="inBuilder">
-        <clark-toggle-switch
-            [state]="file.context ?? false"
-            (toggled)="handleContextToggle($event)"></clark-toggle-switch>
     </div>
     <a
         tabindex="0"
