@@ -6,7 +6,7 @@ import {
     HttpErrorResponse,
     HttpHeaders,
 } from "@angular/common/http";
-import { throwError } from "rxjs";
+import { Observable, throwError } from "rxjs";
 import { TAGS_ROUTES } from "./tags.routes";
 import { TagType } from "entity/tag/tag";
 import { GetTagByNameResponse } from "app/cube/shared/types/usage-stats";
@@ -73,6 +73,18 @@ export class TagsService {
         });
     }
 
+    createTag(tag: {
+        type: TagType;
+        name: string;
+        description?: string;
+    }): Observable<Tag> {
+        return this.http
+            .post<Tag>(TAGS_ROUTES.CREATE_TAG(), tag, {
+                withCredentials: true,
+            })
+            .pipe(catchError(this.handleError));
+    }
+
     /**
      *  This function updates the learning the object with the selected tags
      *
@@ -108,7 +120,7 @@ export class TagsService {
      *
      * @returns A list of type tags for the selection
      */
-    async getTypes(): Promise<{ [key: string]: boolean }[]> {
+    async getTypes(): Promise<{ name: string; value: TagType }[]> {
         return await new Promise((resolve, reject) => {
             this.http
                 .get<Tag[]>(TAGS_ROUTES.GET_ALL_TAG_TYPES())

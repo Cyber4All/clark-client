@@ -32,6 +32,10 @@ export class TaggingService {
         return this.selectedTags.value;
     }
 
+    get availableTags(): Tag[] {
+        return this.tags.value;
+    }
+
     /**
      * Initialize the available arrays (topics or tags).
      */
