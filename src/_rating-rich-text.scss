@@ -1,0 +1,73 @@
+// Third-party editor DOM and rendered review HTML do not carry the parent's
+// Angular style attributes. Keep these global rules scoped to explicit hosts.
+clark-rating-editor {
+    // Match the builder: the editor and its generated container fill the parent.
+    st-editor,
+    .st-editor-container {
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    st-editor .st-editor-container > .st-toolbar {
+        // Outrank the library's emulated-encapsulation selector so its empty
+        // toolbar does not leave a second border/padded strip below ours.
+        display: none;
+    }
+
+    // Compact library buttons keep the heading selector and all allowed controls
+    // on the same row at the review dialog's restored compact width.
+    .rating-toolbar .st-toolbar-item {
+        padding-inline: 10px;
+    }
+
+    // Keep the review input inside its border while preserving long-token wrapping.
+    .st-editor-container .st-area {
+        box-sizing: border-box;
+        display: block;
+        width: 100% !important;
+        max-width: 100% !important;
+        min-width: 0;
+        height: 180px !important;
+        min-height: 180px !important;
+        max-height: 180px !important;
+        overflow-wrap: anywhere !important;
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
+        white-space: pre-wrap !important;
+        // Fill the line rather than moving a long token to a new one.
+        // This intentionally permits ordinary words to split at the edge too.
+        word-break: break-all !important;
+        word-wrap: break-word !important;
+        resize: none;
+    }
+
+    .st-area * {
+        max-width: 100%;
+        white-space: pre-wrap !important;
+        overflow-wrap: anywhere !important;
+        word-break: break-all !important;
+        word-wrap: break-word !important;
+    }
+
+    .st-area h1,
+    .st-area h2,
+    .st-area h3 {
+        line-height: 1.2;
+        margin: 0;
+    }
+}
+
+clark-learning-object-ratings .rating-text .rating-comment {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+        margin-top: 0;
+    }
+}
