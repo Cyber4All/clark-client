@@ -17,6 +17,10 @@ import { SubmissionsService } from "app/core/learning-object-module/submissions/
 import { OutcomeService } from "app/core/learning-object-module/outcomes/outcome.service";
 import { FileService } from "app/core/learning-object-module/file/file.service";
 import { EditorialService } from "app/core/learning-object-module/editorial.service";
+import type {
+    AgenticBuilderSuggestions,
+    AgenticOutcomeSuggestion,
+} from "app/core/learning-object-module/learning-object/learning-object.types";
 
 /**
  * Defines a list of actions the builder can take
@@ -222,6 +226,56 @@ export class BuilderStore {
      */
     private get outcomes() {
         return this._outcomesMap;
+    }
+
+    get currentOutcomes(): Partial<LearningOutcome>[] {
+        return Array.from(this._outcomesMap.values());
+    }
+
+    async applyAgenticSuggestions(
+        suggestions: AgenticBuilderSuggestions,
+        acceptedFields: Set<"name" | "description">,
+        acceptedOutcomeIndexes: Set<number>,
+    ): Promise<void> {
+        const objectUpdates: Partial<LearningObject> = {};
+        if (acceptedFields.has("name") && suggestions.name !== undefined) {
+            objectUpdates.name = suggestions.name;
+        }
+        if (
+            acceptedFields.has("description") &&
+            suggestions.description !== undefined
+        ) {
+            objectUpdates.description = suggestions.description;
+        }
+
+        if (Object.keys(objectUpdates).length) {
+            await this.execute(BUILDER_ACTIONS.MUTATE_OBJECT, objectUpdates);
+        }
+
+        for (const index of acceptedOutcomeIndexes) {
+            const outcome = suggestions.learningOutcomes?.[index];
+            if (outcome) {
+                await this.applyAgenticOutcome(outcome);
+            }
+        }
+    }
+
+    private async applyAgenticOutcome(
+        suggestion: AgenticOutcomeSuggestion,
+    ): Promise<void> {
+        const id = await this.execute(BUILDER_ACTIONS.CREATE_OUTCOME);
+        await this.execute(BUILDER_ACTIONS.MUTATE_OUTCOME, {
+            id,
+            params: { bloom: suggestion.bloom },
+        });
+        await this.execute(BUILDER_ACTIONS.MUTATE_OUTCOME, {
+            id,
+            params: { verb: suggestion.verb },
+        });
+        await this.execute(BUILDER_ACTIONS.MUTATE_OUTCOME, {
+            id,
+            params: { text: suggestion.text },
+        });
     }
 
     /**

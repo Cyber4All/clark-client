@@ -103,12 +103,25 @@
     }
 
     .agentic-builder-action {
+        align-items: center;
         border: 0;
         background: transparent;
         color: $dark-grey;
         cursor: pointer;
+        display: inline-flex;
         font-size: $normal;
+        gap: 7px;
         padding: 8px;
+
+        i {
+            font-size: $normal;
+            line-height: 1;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $light-blue;
+            outline-offset: 2px;
+        }
     }
 }
 

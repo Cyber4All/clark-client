@@ -11,6 +11,8 @@ export class PillComponent {
     @Input() active = false;
     @Input() ariaLabel = "";
     @Input() disabled = false;
+    @Input() showSelectedIcon = false;
+    @Input() emphasizeActive = true;
 
     @Output() selected: EventEmitter<void> = new EventEmitter<void>();
 

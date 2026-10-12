@@ -17,6 +17,7 @@ import {
 } from "rxjs/operators";
 import { LEARNING_OBJECT_ROUTES } from "../learning-object/learning-object.routes";
 import { UserService } from "app/core/user-module/user.service";
+import type { AgenticBuilderSuggestions } from "./learning-object.types";
 
 export const CALLBACKS = {
     outcomes: (outcomes: any[]) => {
@@ -318,9 +319,9 @@ export class LearningObjectService {
     buildLearningObject(
         learningObjectId: string,
         request: LearningObjectBuildRequest,
-    ): Promise<unknown> {
+    ): Promise<AgenticBuilderSuggestions> {
         return this.http
-            .post(
+            .post<AgenticBuilderSuggestions>(
                 LEARNING_OBJECT_ROUTES.BUILD_LEARNING_OBJECT(learningObjectId),
                 request,
                 { headers: this.headers, withCredentials: true },

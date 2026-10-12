@@ -99,12 +99,13 @@
             <button
                 type="button"
                 class="agentic-builder-action"
-                aria-label="Open Builder Helper"
-                tip="Open Builder Helper"
+                aria-label="Generate with AI"
+                tip="Generate with AI"
                 tipPosition="bottom"
+                (click)="$event.stopPropagation()"
                 (activate)="toggleAgenticBuilder()">
-                <i class="fas fa-wand-magic-sparkles"></i>
-                Builder Helper
+                <i class="fas fa-sparkles" aria-hidden="true"></i>
+                Generate with AI
             </button>
         </div>
     </div>
