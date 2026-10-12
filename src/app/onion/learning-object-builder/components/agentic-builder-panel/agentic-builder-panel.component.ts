@@ -1,11 +1,15 @@
 import { NgFor, NgIf } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, EventEmitter, HostListener, Output } from "@angular/core";
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    Output,
+} from "@angular/core";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
-import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { PillComponent } from "../../../../shared/components/pill/pill.component";
-import { ClickOutsideModule } from "ng-click-outside";
 import { AgenticBuilderField, BuilderStore } from "../../builder-store.service";
 import type { AgenticBuilderSuggestions } from "app/core/learning-object-module/learning-object/learning-object.types";
 
@@ -14,18 +18,13 @@ import type { AgenticBuilderSuggestions } from "app/core/learning-object-module/
     templateUrl: "./agentic-builder-panel.component.html",
     styleUrls: ["./agentic-builder-panel.component.scss"],
     standalone: true,
-    imports: [
-        NgIf,
-        NgFor,
-        ActivateDirective,
-        PillComponent,
-        ClickOutsideModule,
-    ],
+    imports: [NgIf, NgFor, PillComponent],
 })
 export class AgenticBuilderPanelComponent {
     @Output() closed = new EventEmitter<void>();
 
     generating = false;
+    private reviewActionInProgress = false;
     reviewing = false;
     errorMessage: string | null = null;
     suggestions: AgenticBuilderSuggestions | null = null;
@@ -39,6 +38,7 @@ export class AgenticBuilderPanelComponent {
         private store: BuilderStore,
         private learningObjectService: LearningObjectService,
         private toasterService: ToastrOvenService,
+        private elementRef: ElementRef<HTMLElement>,
     ) {}
 
     toggleField(field: keyof typeof this.selectedFields): void {
@@ -50,21 +50,31 @@ export class AgenticBuilderPanelComponent {
     }
 
     close(): void {
-        if (!this.generating) {
+        if (!this.generating && !this.reviewActionInProgress) {
             this.resetReview();
             this.closed.emit();
         }
     }
 
-    handleClickOutside(): void {
-        if (!this.generating) {
+    @HostListener("document:click", ["$event"])
+    handleDocumentClick(event: MouseEvent): void {
+        const target = event.target;
+        const clickedInside =
+            target instanceof Node &&
+            this.elementRef.nativeElement.contains(target);
+
+        if (
+            !clickedInside &&
+            !this.generating &&
+            !this.reviewActionInProgress
+        ) {
             this.close();
         }
     }
 
     @HostListener("document:keydown.escape")
     handleEscape(): void {
-        if (!this.generating) {
+        if (!this.generating && !this.reviewActionInProgress) {
             this.close();
         }
     }
@@ -128,6 +138,10 @@ export class AgenticBuilderPanelComponent {
         return this.suggestionCount > 0;
     }
 
+    stopDismissal(event: Event): void {
+        event.stopPropagation();
+    }
+
     get contextMaterialCount(): number {
         return (
             this.store.learningObject?.materials?.files?.filter(
@@ -141,12 +155,9 @@ export class AgenticBuilderPanelComponent {
         const value = this.suggestions[field];
         if (value === undefined) return;
 
-        await this.applySuggestions({ [field]: value }, () => {
-            this.suggestions = {
-                ...this.suggestions,
-                [field]: undefined,
-            };
-        });
+        await this.applySuggestions({ [field]: value }, () =>
+            this.removeField(field),
+        );
     }
 
     rejectField(field: "name" | "description"): void {
@@ -170,10 +181,26 @@ export class AgenticBuilderPanelComponent {
 
     async acceptAll(): Promise<void> {
         if (!this.suggestions || this.generating) return;
-        await this.applySuggestions(this.suggestions, () => {
-            this.resetReview();
-            this.closed.emit();
-        });
+
+        for (const field of ["name", "description"] as const) {
+            if (this.suggestions?.[field] === undefined) continue;
+            const value = this.suggestions[field];
+            await this.applySuggestions({ [field]: value }, () =>
+                this.removeField(field),
+            );
+            if (this.suggestions?.[field] !== undefined) return;
+        }
+
+        while (this.suggestions?.learningOutcomes?.length) {
+            const outcome = this.suggestions.learningOutcomes[0];
+            await this.applySuggestions({ learningOutcomes: [outcome] }, () =>
+                this.removeOutcome(0),
+            );
+            if (this.suggestions?.learningOutcomes?.[0] === outcome) return;
+        }
+
+        this.resetReview();
+        this.closed.emit();
     }
 
     private async applySuggestions(
@@ -181,6 +208,7 @@ export class AgenticBuilderPanelComponent {
         onSuccess: () => void,
     ): Promise<void> {
         this.generating = true;
+        this.reviewActionInProgress = true;
         try {
             const acceptedFields = new Set<"name" | "description">();
             if (suggestions.name !== undefined) acceptedFields.add("name");
@@ -205,6 +233,7 @@ export class AgenticBuilderPanelComponent {
             );
         } finally {
             this.generating = false;
+            this.reviewActionInProgress = false;
         }
     }
 
@@ -216,6 +245,11 @@ export class AgenticBuilderPanelComponent {
                 (_outcome, outcomeIndex) => outcomeIndex !== index,
             ),
         };
+    }
+
+    private removeField(field: "name" | "description"): void {
+        if (!this.suggestions) return;
+        this.suggestions = { ...this.suggestions, [field]: undefined };
     }
 
     resetReview(): void {
