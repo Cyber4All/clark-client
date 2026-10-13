@@ -32,6 +32,12 @@ export const FILE_METADATA_ROUTES = {
             learningObjectId,
         )}/materials/files/${encodeURIComponent(fileId)}`;
     },
+
+    GET_FILE_PROCESSING_STATUS(learningObjectId: string, fileId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+            learningObjectId,
+        )}/materials/files/${encodeURIComponent(fileId)}/processing-status`;
+    },
 };
 
 export const FILE_MANAGER_ROUTES = {
