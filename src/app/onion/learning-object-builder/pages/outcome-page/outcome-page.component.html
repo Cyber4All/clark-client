@@ -1,4 +1,5 @@
-<clark-column-wrapper>
+<clark-column-wrapper
+    [columns]="learningObject?.length === 'nanomodule' ? 'm' : 'lm'">
     <div left>
         <clark-scaffold
             *ngIf="learningObject && learningObject.length !== 'nanomodule'"
