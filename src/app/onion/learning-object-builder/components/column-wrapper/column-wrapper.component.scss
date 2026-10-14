@@ -1,14 +1,13 @@
 $left-column: 280px;
-$middle-column: minmax(675px, 1fr);
+$middle-column: minmax(675px, 100vw);
 $right-column: minmax(290px, 340px);
 
 .columns {
     display: grid;
     grid-template-columns: $left-column $middle-column $right-column;
     grid-gap: 5px;
+    margin: 0 25px;
     position: fixed;
-    left: 25px;
-    right: 25px;
     top: 185px;
 
     &.no-left {
