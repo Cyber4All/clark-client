@@ -685,6 +685,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     private updateUploadProgress(update: UploadProgressUpdate) {
         const index = this.uploadQueueMap[update.data.fullPath];
+        if (index === undefined || !this.uploadQueue[index]) {
+            return;
+        }
         const lastTotalUploaded = this.uploadQueue[index].totalUploaded || 0;
         this.uploadQueue[index].totalUploaded = update.data.totalUploaded;
         this.totalUploaded += update.data.totalUploaded - lastTotalUploaded;
@@ -700,6 +703,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     private handleFileUploadComplete(update: UploadCompleteUpdate) {
         const index = this.uploadQueueMap[update.data.fullPath];
+        if (index === undefined || !this.uploadQueue[index]) {
+            return;
+        }
         this.uploadQueue[index].success = true;
         this.newFileMeta.push(update.data);
     }
@@ -749,7 +755,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             this.handleCredentialsError();
         } else {
             const index = this.uploadQueueMap[update.data.fullPath];
-            this.uploadQueue[index].success = false;
+            if (index !== undefined && this.uploadQueue[index]) {
+                this.uploadQueue[index].success = false;
+            }
         }
     }
 
