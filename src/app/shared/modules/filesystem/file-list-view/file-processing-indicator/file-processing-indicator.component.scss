@@ -1,0 +1,21 @@
+@import "_vars.scss";
+
+.processing-status {
+    align-items: center;
+    color: $dark-grey;
+    display: inline-flex;
+    font-size: $small;
+    gap: 6px;
+
+    .icon {
+        color: $light-blue;
+    }
+
+    &--parsed .icon {
+        color: $success-green;
+    }
+
+    &--failed .icon {
+        color: $error-red;
+    }
+}
