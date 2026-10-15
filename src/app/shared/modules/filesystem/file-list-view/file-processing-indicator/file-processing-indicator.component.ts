@@ -17,6 +17,7 @@ interface ParsingSummary {
     parsing: boolean;
     parsed: boolean;
     failed: boolean;
+    timedOut: boolean;
 }
 
 interface ParsingState {
@@ -26,6 +27,7 @@ interface ParsingState {
     parsing: boolean;
     failed: boolean;
     unavailable: boolean;
+    timedOut: boolean;
     queued: boolean;
 }
 
@@ -46,11 +48,11 @@ export class FileProcessingIndicatorComponent {
         const allFiles = this.getItemFiles();
         const files = allFiles.filter(isParseableFile);
         const parsedCount = files.filter(
-            (file) => statuses.get(file._id) === "ready",
+            (file) => statuses.get(file._id) === "success",
         ).length;
         const parsed = files.length > 0 && parsedCount === files.length;
         const failed = files.some(
-            (file) => statuses.get(file._id) === "failed",
+            (file) => statuses.get(file._id) === "failure",
         );
         const parsing = files.some(
             (file) => statuses.get(file._id) === "processing",
@@ -61,12 +63,17 @@ export class FileProcessingIndicatorComponent {
         const unavailable = files.some(
             (file) =>
                 ![
-                    "ready",
+                    "success",
                     "processing",
                     "queued",
                     "not_started",
-                    "failed",
+                    "failure",
+                    "cancelled",
+                    "partial_success",
                 ].includes(statuses.get(file._id)),
+        );
+        const timedOut = files.some(
+            (file) => statuses.get(file._id) === "partial_success",
         );
         const display = this.getStatusDisplay({
             hasFiles: allFiles.length > 0,
@@ -75,6 +82,7 @@ export class FileProcessingIndicatorComponent {
             parsing,
             failed,
             unavailable,
+            timedOut,
             queued,
         });
         if (folder && files.length) {
@@ -86,6 +94,7 @@ export class FileProcessingIndicatorComponent {
             parsing,
             parsed,
             failed: failed || unavailable,
+            timedOut,
         };
     }
 
@@ -105,6 +114,8 @@ export class FileProcessingIndicatorComponent {
                 label: "Status unavailable",
                 icon: "fa-exclamation-circle",
             };
+        if (state.timedOut)
+            return { label: "Partial success", icon: "fa-exclamation-circle" };
         if (state.queued) return { label: "Queued", icon: "fa-clock" };
         return { label: "Not started", icon: "fa-minus" };
     }

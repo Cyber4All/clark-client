@@ -38,6 +38,14 @@ export const FILE_METADATA_ROUTES = {
             learningObjectId,
         )}/materials/files/${encodeURIComponent(fileId)}/processing-status`;
     },
+
+    CANCEL_FILE_PROCESSING(learningObjectId: string, fileId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+            learningObjectId,
+        )}/materials/files/${encodeURIComponent(
+            fileId,
+        )}/processing-status/cancel`;
+    },
 };
 
 export const FILE_MANAGER_ROUTES = {

@@ -198,7 +198,7 @@ export class BuilderNavbarComponent implements OnDestroy {
         if (this.materialsReady) {
             return "Generate suggestions from your learning object materials.";
         }
-        return "Wait for supported materials to finish processing before generating with AI.";
+        return "At least one supported material must finish processing successfully or with partial success before generating with AI.";
     }
 
     private getInitialProcessingStatus(
@@ -250,39 +250,45 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.fileService.setFileProcessingStatuses(this.processingStatuses);
         this.materialsReady =
             fileIds.length > 0 &&
-            fileIds.every((id) => this.processingStatuses.get(id) === "ready");
-        if (!learningObjectId || !fileIds.length || this.materialsReady) return;
+            fileIds.some((id) =>
+                ["success", "partial_success"].includes(
+                    this.processingStatuses.get(id),
+                ),
+            );
+        if (!learningObjectId || !fileIds.length) return;
 
         this.processingPoll = timer(0, 5000)
             .pipe(
                 switchMap(() => {
                     const pendingIds = fileIds.filter(
-                        (id) => this.processingStatuses.get(id) !== "ready",
+                        (id) =>
+                            ![
+                                "success",
+                                "partial_success",
+                                "failure",
+                                "cancelled",
+                            ].includes(this.processingStatuses.get(id)),
                     );
-                    return pendingIds.length
-                        ? forkJoin(
-                              pendingIds.map((fileId) =>
-                                  this.fileService
-                                      .getFileProcessingStatus(
-                                          learningObjectId,
-                                          fileId,
-                                      )
-                                      .pipe(
-                                          map((response) => ({
-                                              fileId,
-                                              status:
-                                                  response?.processingStatus ||
-                                                  "unavailable",
-                                          })),
-                                          catchError(() =>
-                                              of({
-                                                  fileId,
-                                                  status: "unavailable",
-                                              }),
-                                          ),
-                                      ),
-                              ),
-                          )
+                    const statusRequests = pendingIds.map((fileId) =>
+                        this.fileService
+                            .getFileProcessingStatus(learningObjectId, fileId)
+                            .pipe(
+                                map((response) => ({
+                                    fileId,
+                                    status:
+                                        response?.processingStatus ||
+                                        "unavailable",
+                                })),
+                                catchError(() =>
+                                    of({
+                                        fileId,
+                                        status: "unavailable",
+                                    }),
+                                ),
+                            ),
+                    );
+                    return statusRequests.length
+                        ? forkJoin(statusRequests)
                         : of([]);
                 }),
                 tap((statuses) => {
@@ -292,11 +298,25 @@ export class BuilderNavbarComponent implements OnDestroy {
                     this.fileService.setFileProcessingStatuses(
                         this.processingStatuses,
                     );
-                    this.materialsReady = fileIds.every(
-                        (id) => this.processingStatuses.get(id) === "ready",
+                    this.materialsReady = fileIds.some((id) =>
+                        ["success", "partial_success"].includes(
+                            this.processingStatuses.get(id),
+                        ),
                     );
                 }),
-                takeWhile(() => !this.materialsReady, true),
+                takeWhile(
+                    () =>
+                        fileIds.some(
+                            (id) =>
+                                ![
+                                    "success",
+                                    "partial_success",
+                                    "failure",
+                                    "cancelled",
+                                ].includes(this.processingStatuses.get(id)),
+                        ),
+                    true,
+                ),
                 takeUntil(this.destroyed$),
             )
             .subscribe();

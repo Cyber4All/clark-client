@@ -45,6 +45,20 @@ export class FileService {
         );
     }
 
+    cancelFileProcessing(
+        learningObjectId: string,
+        fileId: string,
+    ): Observable<void> {
+        return this.http.post<void>(
+            FILE_METADATA_ROUTES.CANCEL_FILE_PROCESSING(
+                learningObjectId,
+                fileId,
+            ),
+            {},
+            { headers: this.headers, withCredentials: true },
+        );
+    }
+
     /**
      * Helper: extracts the file extension from a filename (including the dot)
      * @param filename - The filename to extract extension from
