@@ -65,9 +65,10 @@
                                 </li>
                                 <li
                                     tabindex="0"
-                                    [routerLink]="['library']"
+                                    [routerLink]="['/download-history']"
                                     (activate)="dropdowns.toggleUserDropdown()">
-                                    <i class="fas fa-books"></i>Library<span
+                                    <i class="fas fa-download"></i>Download
+                                    History<span
                                         *ngIf="
                                             notificationService
                                                 .userNotifications
@@ -211,13 +212,13 @@
                 <hr />
                 <div class="side-padding-20">
                     <ul class="menu-items">
-                        <li [routerLink]="['library']">Your Library</li>
+                        <li [routerLink]="['/download-history']">
+                            Download History
+                        </li>
                         <li
                             [routerLink]="['admin']"
                             *ngIf="auth.hasCuratorAccess()">
-                            {{
-                                auth.hasEditorAccess() ? "Admin" : "Curator"
-                            }}
+                            {{ auth.hasEditorAccess() ? "Admin" : "Curator" }}
                             Dashboard
                         </li>
                         <li (click)="auth.logout()">Sign Out</li>

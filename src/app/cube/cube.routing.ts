@@ -112,6 +112,11 @@ const cube_routes: Routes = [
             },
             {
                 path: "library",
+                redirectTo: "download-history",
+                pathMatch: "full",
+            },
+            {
+                path: "download-history",
                 loadChildren: () =>
                     import("../cube/library/library.module").then(
                         (l) => l.LibraryModule,
