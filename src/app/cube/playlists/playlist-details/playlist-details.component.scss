@@ -1,0 +1,200 @@
+@import "_vars.scss";
+
+.playlist-details {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 48px 28px 88px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 40px;
+    color: $light-blue;
+    font-size: 14px;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 4px;
+    }
+}
+
+.playlist-header {
+    margin-bottom: 56px;
+    padding: 0 0 36px;
+    border-bottom: 1px solid $light-grey;
+
+    h1 {
+        max-width: 900px;
+        margin: 0 0 14px;
+        overflow-wrap: anywhere;
+        color: $darker-grey;
+        font-size: 36px;
+        line-height: 1.15;
+    }
+}
+
+.eyebrow,
+.object-type {
+    color: $light-blue;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.eyebrow {
+    margin: 0 0 10px;
+}
+
+.description {
+    max-width: 720px;
+    margin: 0 0 18px;
+    color: $dark-grey;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.playlist-header__metadata {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.object-count,
+.object-version {
+    color: $dark-grey;
+    font-size: 13px;
+}
+
+section h2 {
+    margin: 0 0 22px;
+    color: $darker-grey;
+    font-size: 22px;
+}
+
+.object-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    li,
+    clark-learning-object-component {
+        height: 100%;
+        min-width: 0;
+    }
+}
+
+.unavailable-card {
+    display: flex;
+    height: 100%;
+    min-height: 350px;
+    flex-direction: column;
+    border: 1px solid $profile-border;
+    border-radius: 14px;
+    background: white;
+}
+
+.unavailable-card__icon {
+    display: flex;
+    min-height: 140px;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid $light-grey;
+    background: $secondary-white-background;
+    color: $medium-grey;
+    font-size: 32px;
+}
+
+.unavailable-card__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 20px;
+
+    h3 {
+        margin: 8px 0;
+        overflow-wrap: anywhere;
+        color: $darker-grey;
+        font-size: $normal;
+    }
+
+    p {
+        margin: 0 0 14px;
+        overflow-wrap: anywhere;
+        color: $dark-grey;
+        font-size: $small;
+        line-height: 1.5;
+    }
+}
+
+.cuid {
+    font-family: monospace;
+}
+
+.status {
+    padding: 50px 20px;
+    border: 1px solid $profile-border;
+    border-radius: 12px;
+    background: $secondary-white-background;
+    color: $dark-grey;
+    text-align: center;
+
+    i {
+        margin-right: 8px;
+        color: $light-blue;
+    }
+}
+
+.status--error {
+    color: $error-red;
+
+    h1 {
+        margin-top: 0;
+    }
+}
+
+@media (max-width: 1100px) {
+    .object-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 800px) {
+    .object-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .playlist-details {
+        padding: 32px 18px 60px;
+    }
+
+    .back-link {
+        margin-bottom: 32px;
+    }
+
+    .playlist-header {
+        margin-bottom: 44px;
+        padding-bottom: 28px;
+
+        h1 {
+            font-size: 30px;
+        }
+    }
+
+    .object-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}

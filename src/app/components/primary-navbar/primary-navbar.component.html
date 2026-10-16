@@ -8,7 +8,7 @@
                 </div>
             </a>
             <div class="mid-bar">
-                <div class="search-bar">
+                <div class="search-bar" *ngIf="!isPlaylistsRoute">
                     <clark-search></clark-search>
                 </div>
             </div>
@@ -215,9 +215,7 @@
                         <li
                             [routerLink]="['admin']"
                             *ngIf="auth.hasCuratorAccess()">
-                            {{
-                                auth.hasEditorAccess() ? "Admin" : "Curator"
-                            }}
+                            {{ auth.hasEditorAccess() ? "Admin" : "Curator" }}
                             Dashboard
                         </li>
                         <li (click)="auth.logout()">Sign Out</li>
@@ -287,7 +285,7 @@
 
 <div>
     <clark-skip-link
-        *ngIf="showNav"
+        *ngIf="showNav && !isPlaylistsRoute"
         title="Skip directly to site content"
         skipLocation="pageContent"></clark-skip-link>
     <clark-skip-link
