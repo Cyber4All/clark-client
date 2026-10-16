@@ -32,6 +32,39 @@ hr {
     border-bottom-color: $error-red;
 }
 
+.name-field:disabled {
+    background: $primary-white;
+    color: $dark-grey;
+    cursor: wait;
+    opacity: 0.7;
+}
+
+.generating-field {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.generating-field--stacked {
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.generating-field__status {
+    align-items: center;
+    color: $dark-grey;
+    display: inline-flex;
+    font-size: $small;
+    gap: 6px;
+    white-space: nowrap;
+
+    .svg-inline--fa,
+    .icon {
+        color: $light-blue;
+    }
+}
+
 .field-label {
     align-items: center;
     display: flex;

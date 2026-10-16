@@ -257,8 +257,9 @@ export class LearningObjectValidator {
     get(property: string): string {
         let error = this.errors.saveErrors.get(property);
 
-        // if we haven't found a save error, check the submit errors
-        if (!error) {
+        // Submission-only requirements, such as a learning object name, should
+        // not block or display errors while an author is saving a draft.
+        if (!error && this.submissionMode) {
             error = this.errors.submitErrors.get(property);
         }
 

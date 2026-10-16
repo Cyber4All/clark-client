@@ -38,6 +38,10 @@
         &.bad {
             border-bottom-color: $error-red;
         }
+
+        &:disabled {
+            cursor: wait;
+        }
     }
 
     .verb {

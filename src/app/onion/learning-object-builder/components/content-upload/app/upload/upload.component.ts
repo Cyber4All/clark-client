@@ -186,7 +186,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         state: boolean;
         item: DirectoryNode | LearningObject.Material.File;
     }> = new EventEmitter();
-
     notes$: Subject<string> = new Subject<string>();
 
     slide = 1;

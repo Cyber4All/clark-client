@@ -74,6 +74,10 @@ export class LearningObject {
         return this._name;
     }
 
+    get displayName(): string {
+        return this._name === "" ? "Untitled Learning Object" : this._name;
+    }
+
     set name(name: string) {
         if (this.isValidName(name)) {
             this._name = name.trim();
@@ -904,6 +908,7 @@ export namespace LearningObject {
             size?: number;
             description?: string;
             packageable?: boolean;
+            context?: boolean;
         }
         export interface Url {
             title: string;
