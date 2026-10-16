@@ -18,6 +18,7 @@
         "paths": {
             "app/*": ["app/*"],
             "@env/*": ["environments/*"],
+            "@package": ["../package.json"],
             "@entity": ["entity/index"],
             "core-js/es6/reflect": ["../node_modules/core-js/es/reflect"]
         },

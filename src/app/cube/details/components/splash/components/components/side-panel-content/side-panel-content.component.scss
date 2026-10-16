@@ -1,22 +1,22 @@
 @import "_vars.scss";
 
 .side-panel-content {
-    color: $dark-grey;
+    color: var(--theme-text);
 }
 
 .side-panel-content__header-container {
-    background: $light-blue-gradient;
+    background: var(--theme-action-primary);
     margin: -20px -20px 20px -20px;
     padding: 20px;
 }
 
 .side-panel-content__header-container__text {
-    color: white;
+    color: var(--theme-action-on-primary);
     margin: 0;
 }
 
 .side-panel-content__parents-container__header-text {
-    border-bottom: 1px solid $light-grey;
+    border-bottom: 1px solid var(--theme-border);
     padding-bottom: 10px;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .side-panel-content__children-container__header-text {
-    border-bottom: 1px solid $light-grey;
+    border-bottom: 1px solid var(--theme-border);
     padding-bottom: 10px;
 }
 
