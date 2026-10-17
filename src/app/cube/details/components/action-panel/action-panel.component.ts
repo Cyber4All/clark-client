@@ -73,6 +73,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
         "Both have been disabled while we work to resolve the issues. Please check back later.";
 
     private destroyed$ = new Subject<void>();
+    private isDestroyed = false;
     hasDownloadAccess = false;
     hasReviewerAccess = false;
     downloading = false;
@@ -125,9 +126,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
             this.auth.user !== null;
 
         this.url = this.buildLocation();
-        // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
-        await this.refreshLibraryStatus();
-        this.getCollection();
+        // Subscribe before awaiting so the subscriptions are registered while
+        // the component is still alive and torn down by destroyed$.
         this.libraryService.loaded
             .pipe(takeUntil(this.destroyed$))
             .subscribe((val) => {
@@ -139,6 +139,14 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
             .subscribe((val) => {
                 this.userDropdown = val;
             });
+        // FIXME: Fault where 'libraryService.libraryItems' is returned null when it is supposed to be initialized in clark.component
+        await this.refreshLibraryStatus();
+        // The component may have been destroyed (navigation or parent *ngIf)
+        // while the library request was in flight.
+        if (this.isDestroyed) {
+            return;
+        }
+        this.getCollection();
     }
 
     get isReleased(): boolean {
@@ -505,7 +513,8 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.isDestroyed = true;
         this.destroyed$.next();
-        this.destroyed$.unsubscribe();
+        this.destroyed$.complete();
     }
 }
