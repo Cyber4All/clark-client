@@ -962,6 +962,11 @@ export class BuilderStore {
      * Public function to remove empty outcomes from a learning object
      */
     public async removeEmptyOutcomes() {
+        // A new, unsaved learning object has no cuid yet. Requesting it would hit
+        // the learning object list endpoint (GET /learning-objects/) instead.
+        if (!this.learningObject?.cuid) {
+            return;
+        }
         // Get most up-to-date values for current learning object
         await this.fetch(this.learningObject.cuid, this.learningObject.version);
         // Retrieve outcomes of current learning object

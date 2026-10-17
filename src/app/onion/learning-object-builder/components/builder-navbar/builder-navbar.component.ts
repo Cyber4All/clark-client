@@ -225,9 +225,11 @@ export class BuilderNavbarComponent implements OnDestroy {
             this.store.upload !== "secondClickBack"
         ) {
             // If any data has be changed on the LO, then we need to rebundle
-            if (this.store.touched && this.learningObject) {
-                const lo = this.learningObject as any;
-                this.bundlingService.bundleLearningObject(lo._id);
+            // Unsaved learning objects have no id yet and cannot be bundled
+            if (this.store.touched && this.learningObject?.id) {
+                this.bundlingService.bundleLearningObject(
+                    this.learningObject.id,
+                );
             }
             if (leaveBuilder) {
                 this.router.navigate(["/onion/dashboard"]);

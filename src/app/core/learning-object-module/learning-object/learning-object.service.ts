@@ -142,7 +142,7 @@ export class LearningObjectService {
                             }
                         }
 
-                        if (entity.resourceUris !== undefined) {
+                        if (entity?.resourceUris) {
                             const uris = Object.assign({}, entity.resourceUris);
                             let completed = 0;
                             Object.keys(uris).map((key) => {
