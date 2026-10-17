@@ -172,12 +172,23 @@ export class LearningObjectListingComponent implements OnDestroy {
         this.setImageFromTopics();
         this.cd.markForCheck();
 
-        // Fetch ratings + total downloads + recent downloads (in parallel)
-        const [ratings, totalMetrics, recentDownloads] = await Promise.all([
-            this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
-            this.metricService.getLearningObjectMetrics(lo.cuid),
-            this.getRecentDownloads(lo.cuid, 30),
-        ]);
+        // Fetch ratings + total downloads + recent downloads (in parallel).
+        // Any of these requests may fail (e.g. 504 proxy error on the metrics
+        // endpoint). Catch the rejection here so the card still renders with
+        // safe defaults rather than producing an unhandled Promise rejection.
+        let ratings: Awaited<ReturnType<typeof this.ratingService.getLearningObjectRatings>> | null = null;
+        let totalMetrics: Awaited<ReturnType<typeof this.metricService.getLearningObjectMetrics>> | null = null;
+        let recentDownloads: number | null = null;
+        try {
+            [ratings, totalMetrics, recentDownloads] = await Promise.all([
+                this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
+                this.metricService.getLearningObjectMetrics(lo.cuid),
+                this.getRecentDownloads(lo.cuid, 30),
+            ]);
+        } catch {
+            // Network / proxy errors are non-fatal; fall through to render
+            // the card with the default values already set by resetViewModel().
+        }
         if (this.destroyed || token !== this.refreshToken) return;
 
         this.averageRating = ratings?.avgValue ?? 0;
