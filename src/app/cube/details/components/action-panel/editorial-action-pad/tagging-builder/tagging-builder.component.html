@@ -36,7 +36,70 @@
         </ng-container>
     </div>
     <div class="buttons">
+        <button
+            *ngIf="currentTab === 'tags'"
+            type="button"
+            class="button neutral create-tag-button"
+            (click)="showCreateTagModal = true">
+            <span class="create-tag-button__icon" aria-hidden="true">+</span>
+            Create Tag
+        </button>
         <div class="button neutral" (click)="cancel()">Cancel</div>
         <div class="button good" (click)="save()">Save</div>
     </div>
+</div>
+
+<!-- Keep this dialog inside the tagging popup. The shared popup moves content to
+     document.body and cannot safely be nested inside another shared popup. -->
+<div
+    *ngIf="showCreateTagModal"
+    class="create-tag-overlay"
+    role="presentation"
+    (click)="closeCreateTagModal()"
+    (keydown.escape)="$event.stopPropagation(); closeCreateTagModal()">
+    <form
+        #tagForm="ngForm"
+        class="create-tag-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="createTagTitle"
+        (click)="$event.stopPropagation()"
+        (ngSubmit)="stageTag()">
+        <button
+            type="button"
+            class="create-tag-modal__close"
+            aria-label="Close create tag dialog"
+            (click)="closeCreateTagModal()">
+            <i class="far fa-times" aria-hidden="true"></i>
+        </button>
+        <h2 id="createTagTitle">Create Tag</h2>
+        <label for="tagName">Name</label>
+        <input id="tagName" name="tagName" required [(ngModel)]="newTag.name" />
+        <label for="tagType">Type</label>
+        <select id="tagType" name="tagType" required [(ngModel)]="newTag.type">
+            <option value="" disabled>Select a type</option>
+            <option *ngFor="let type of tagTypes" [value]="type.value">
+                {{ type.name }}
+            </option>
+        </select>
+        <label for="tagDescription">Description</label>
+        <textarea
+            id="tagDescription"
+            name="tagDescription"
+            [(ngModel)]="newTag.description"></textarea>
+        <div class="buttons">
+            <button
+                type="button"
+                class="button neutral"
+                (click)="closeCreateTagModal()">
+                Cancel
+            </button>
+            <button
+                type="submit"
+                class="button good"
+                [disabled]="tagForm.invalid || !newTag.name.trim()">
+                Create
+            </button>
+        </div>
+    </form>
 </div>
