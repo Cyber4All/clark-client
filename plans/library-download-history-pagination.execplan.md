@@ -18,6 +18,7 @@ Update the Cube library download-history view to consume the page-based API resp
 - [x] (2026-10-02) Expanded library component coverage for initial/page-2 request flags, page replacement, backend-provided `totalPages`, available-only rows, and the empty state.
 - [x] (2026-10-02) Replaced the reused numbered paginator presentation with compact previous/next arrows and `Page X of Y`, preserving its public inputs/output.
 - [x] (2026-10-02) Added paginator boundary and adjacent-page tests; lint passed and Angular bundle compilation completed before remote font inlining failed.
+- [x] (2026-10-19) Restored complete-history rendering: removed `availableOnly` from the library request, added unavailable-item tooltips, and gated file links with `fileExists`.
 
 ## Surprises & Discoveries
 
@@ -33,13 +34,13 @@ Update the Cube library download-history view to consume the page-based API resp
 - Decision: Reuse the existing Cube library `PaginationComponent` without changing its public API.
   Rationale: It already emits page numbers and is used by other feature areas; changing it would expand the story and risk downstream consumers.
   Date/Author: 2026-09-30 / Codex
-- Decision: Request only available download records for the library view.
-  Rationale: The product requirement is to show up to 20 usable records per page; the backend now filters before calculating pagination metadata, avoiding short pages caused by unavailable history entries.
-  Date/Author: 2026-10-02 / Codex
+- Decision: Render every record returned by the download-history endpoint.
+  Rationale: The backend intentionally returns unavailable historical records so users can see their recorded names and understand why navigation/download actions are unavailable.
+  Date/Author: 2026-10-19 / Codex
 
 ## Outcomes & Retrospective
 
-Implemented page-based download-history pagination using backend-side availability filtering. The library requests 20 available records per page, replaces visible rows after navigation, and uses backend pagination metadata calculated from usable records. Jest execution remains blocked before test discovery by the repository’s `jest-preset-angular`/TypeScript tooling mismatch; lint and formatting pass, and Angular bundle compilation completes before the environment-dependent Google Fonts fetch fails.
+Implemented page-based download-history pagination with complete-history rendering. The library requests every record page with `limit: 20`, preserves unavailable items, displays their names with file/bundle-specific tooltips, and prevents file links when `fileExists` is false. Jest execution remains blocked before test discovery by the repository’s `jest-preset-angular`/TypeScript tooling mismatch; formatting and diff checks pass, and Angular bundle compilation completes before the environment-dependent Google Fonts fetch fails.
 
 ## Context and Orientation
 
@@ -59,7 +60,7 @@ This is a local feature change across the library component, its domain service/
 
 - Edit `src/app/core/library-module/library.service.ts` and its spec to type and send `page`/`limit`.
 - Edit `src/app/cube/library/library.component.ts`, `.html`, and tests to use page navigation.
-- Keep existing item rendering, enrichment, retry behavior, and file/object actions unchanged; request only available records.
+- Keep existing item rendering, enrichment, retry behavior, and file/object actions unchanged; add unavailable indicators and `fileExists`-aware file links.
 - Update this plan’s progress and outcomes after each implementation/validation milestone.
 
 ## Validation and Acceptance
@@ -68,7 +69,7 @@ This is a local feature change across the library component, its domain service/
 - Selecting page 2 requests `page=2&limit=20`, replaces the visible rows with page 2 records, and updates the selected page.
 - The paginator is hidden when the API reports one or fewer pages.
 - Loading and error states remain usable, and a failed page request does not silently retain stale page metadata.
-- Existing row actions and empty-state behavior remain covered.
+- Existing row actions, unavailable rows, file existence behavior, and empty-state behavior remain covered.
 - Run the library component and service Jest specs; run lint or a focused Angular build if practical.
 
 ## Idempotence and Recovery
@@ -77,7 +78,7 @@ The changes are additive and limited to the library feature. Re-running tests is
 
 ## Artifacts and Notes
 
-The supplied API example contains 125 total records, 20 records per page, and 7 pages. The backend now supports filtering unavailable records before pagination, and the frontend opts into that behavior for full pages of usable history records.
+The supplied API example contains 125 total records, 20 records per page, and 7 pages. The frontend now preserves all records returned by the backend, including unavailable files, bundles, deleted learning objects, and unreleased/on-hold objects.
 
 ## Interfaces and Dependencies
 

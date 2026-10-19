@@ -93,6 +93,23 @@
                                 (activate)="goToItem($event, item)">
                                 {{ getDisplayTitle(item) }}
                             </button>
+                            <span
+                                *ngIf="!canNavigate(item)"
+                                class="library-item__title download-history-unavailable-title">
+                                {{ getDisplayTitle(item) }}
+                            </span>
+                            <span
+                                *ngIf="!canNavigate(item)"
+                                class="download-history-unavailable-indicator"
+                                [tip]="getUnavailableTooltip(item)"
+                                tipPosition="right"
+                                tabindex="0"
+                                role="img"
+                                [attr.aria-label]="getUnavailableTooltip(item)">
+                                <i
+                                    class="fas fa-info-circle"
+                                    aria-hidden="true"></i>
+                            </span>
                         </div>
 
                         <div role="cell">

@@ -39,6 +39,7 @@ describe("LibraryComponent", () => {
         title: "Introduction to Cyber Attacks and Defenses",
         fileName: "attack-defense-lab.pdf",
         filePath: "Nanomodule 1 / Labs / attack-defense-lab.pdf",
+        fileExists: true,
         downloadedAt: "2025-07-11T21:04:27.612000Z",
         downloadedBy: "5dd599c7fa53ebc86eb8b5cf",
         type: "file",
@@ -142,7 +143,6 @@ describe("LibraryComponent", () => {
         expect(libraryService.getDownloadHistory).toHaveBeenCalledWith({
             page: 1,
             limit: 20,
-            availableOnly: true,
         });
         expect(fixture.nativeElement.textContent).toContain("Download History");
         expect(fixture.nativeElement.textContent).toContain(
@@ -159,17 +159,25 @@ describe("LibraryComponent", () => {
         expect(libraryService.getDownloadHistory).toHaveBeenCalledWith({
             page: 1,
             limit: 20,
-            availableOnly: true,
         });
         expect(fixture.nativeElement.textContent).toContain(
             "No downloads in your history yet.",
         );
     });
 
-    it("renders only the available records returned by the backend", async () => {
+    it("renders unavailable records with their name and tooltip", async () => {
+        const unavailableBundle: DownloadHistoryItem = {
+            name: "Deleted Learning Object Bundle",
+            title: "Deleted Learning Object Bundle",
+            downloadedAt: "2020-12-07T16:09:17.523000Z",
+            downloadedBy: "5dd599c7fa53ebc86eb8b5cf",
+            type: "bundle",
+            available: false,
+            resource: null,
+        };
         libraryService.getDownloadHistory.mockResolvedValueOnce({
-            items: [historyItem],
-            total: 1,
+            items: [historyItem, unavailableBundle],
+            total: 2,
             page: 1,
             limit: 20,
             totalPages: 1,
@@ -183,10 +191,22 @@ describe("LibraryComponent", () => {
             fixture.debugElement.queryAll(
                 By.css(".download-history-table__row"),
             ),
-        ).toHaveLength(1);
-        expect(fixture.nativeElement.textContent).not.toContain(
-            "Unavailable download",
+        ).toHaveLength(2);
+        expect(fixture.nativeElement.textContent).toContain(
+            unavailableBundle.name,
         );
+        const unavailableIndicator = fixture.debugElement.query(
+            By.css(".download-history-unavailable-indicator"),
+        );
+        expect(unavailableIndicator).not.toBeNull();
+        expect(
+            unavailableIndicator.nativeElement.getAttribute("aria-label"),
+        ).toBe("This learning object is unavailable for bundle downloads.");
+        expect(
+            fixture.debugElement.query(
+                By.css(".download-history-unavailable-title"),
+            ).nativeElement.tagName,
+        ).toBe("SPAN");
     });
 
     it("shows a loading state while download history is requested", async () => {
@@ -273,7 +293,6 @@ describe("LibraryComponent", () => {
         expect(libraryService.getDownloadHistory).toHaveBeenLastCalledWith({
             page: 2,
             limit: 20,
-            availableOnly: true,
         });
         expect(component.currentPage).toBe(2);
         expect(component.totalPages).toBe(2);
@@ -375,6 +394,22 @@ describe("LibraryComponent", () => {
         expect(
             JSON.stringify(fileService.handleFileDownload.mock.calls[0]),
         ).not.toContain(historyItem.filePath);
+    });
+
+    it("keeps a file link disabled when fileExists is false", async () => {
+        libraryService.getDownloadHistory.mockResolvedValueOnce({
+            items: [{ ...historyItem, fileExists: false }],
+        });
+
+        await createComponent();
+
+        expect(fixture.nativeElement.textContent).toContain(
+            historyItem.fileName,
+        );
+        expect(
+            fixture.debugElement.query(By.css(".download-history-file-name")),
+        ).toBeNull();
+        expect(fileService.handleFileDownload).not.toHaveBeenCalled();
     });
 
     it("shows an em dash for a File record without a fileName", async () => {

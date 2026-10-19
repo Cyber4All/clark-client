@@ -112,8 +112,23 @@
 
 .download-history-table__resource {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 4px;
+}
+
+.download-history-unavailable-title {
+    cursor: default;
+}
+
+.download-history-unavailable-indicator {
+    color: $medium-grey;
+    cursor: help;
+    line-height: 1;
+}
+
+.download-history-unavailable-indicator:focus-visible {
+    outline: solid 2px rgba($light-blue, 0.35);
+    outline-offset: 2px;
 }
 
 .download-history-table__type {

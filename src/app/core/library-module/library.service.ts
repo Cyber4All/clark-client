@@ -21,6 +21,7 @@ export interface DownloadHistoryItem {
     title?: string;
     fileName?: string;
     filePath?: string;
+    fileExists?: boolean;
     downloadedAt: string;
     downloadedBy: string;
     type: DownloadType;

@@ -12,6 +12,7 @@ import { Router } from "@angular/router";
 import { FileService } from "app/core/learning-object-module/file/file.service";
 import { LearningObject } from "@entity";
 import { PaginationComponent } from "./components/pagination/pagination.component";
+import { TipDirective } from "../../shared/directives/tip.directive";
 
 type DownloadHistoryViewItem = DownloadHistoryItem & {
     displayType: string;
@@ -32,6 +33,7 @@ type DownloadHistoryViewItem = DownloadHistoryItem & {
         TitleCasePipe,
         ActivateDirective,
         PaginationComponent,
+        TipDirective,
     ],
 })
 export class LibraryComponent implements OnInit {
@@ -64,12 +66,8 @@ export class LibraryComponent implements OnInit {
             const response = await this.libraryService.getDownloadHistory({
                 page,
                 limit: this.pageSize,
-                availableOnly: true,
             });
 
-            // Download history is retained by the API even after a resource has
-            // been removed or the viewer loses access. Keep those records visible
-            // so the user can still see the original title and download date.
             const items = await this.withDisplayTypes(response.items);
 
             this.downloadHistoryItems = items;
@@ -132,11 +130,17 @@ export class LibraryComponent implements OnInit {
 
     getDisplayTitle(item: DownloadHistoryViewItem): string {
         return (
-            item.displayTitle ||
             item.title ||
             item.name ||
+            item.displayTitle ||
             "Unavailable resource"
         );
+    }
+
+    getUnavailableTooltip(item: DownloadHistoryItem): string {
+        return this.isFile(item)
+            ? "This file is unavailable for file downloads."
+            : "This learning object is unavailable for bundle downloads.";
     }
 
     isBundle(item: DownloadHistoryItem): boolean {
@@ -165,6 +169,7 @@ export class LibraryComponent implements OnInit {
         return Boolean(
             this.isFile(item) &&
             item.available &&
+            item.fileExists !== false &&
             item.resource &&
             item.fileName &&
             item.learningObject &&
@@ -236,6 +241,7 @@ export class LibraryComponent implements OnInit {
             if (
                 this.isFile(item) &&
                 item.fileName &&
+                item.fileExists !== false &&
                 learningObject.resourceUris?.materials
             ) {
                 // Basic learning-object responses expose materials as a separate
