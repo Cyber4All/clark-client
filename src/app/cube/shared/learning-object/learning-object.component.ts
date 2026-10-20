@@ -172,13 +172,28 @@ export class LearningObjectListingComponent implements OnDestroy {
         this.setImageFromTopics();
         this.cd.markForCheck();
 
-        // Fetch ratings + total downloads + recent downloads (in parallel)
-        const [ratings, totalMetrics, recentDownloads] = await Promise.all([
-            this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
-            this.metricService.getLearningObjectMetrics(lo.cuid),
-            this.getRecentDownloads(lo.cuid, 30),
-        ]);
+        // Fetch ratings + total downloads + recent downloads (in parallel).
+        // Promise.allSettled ensures a single backend failure (e.g. 504 on the
+        // metrics endpoint) does not propagate as an unhandled rejection and
+        // crash the entire browse listing — each fetch fails independently.
+        const [ratingsResult, totalMetricsResult, recentDownloadsResult] =
+            await Promise.allSettled([
+                this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
+                this.metricService.getLearningObjectMetrics(lo.cuid),
+                this.getRecentDownloads(lo.cuid, 30),
+            ]);
         if (this.destroyed || token !== this.refreshToken) return;
+
+        const ratings =
+            ratingsResult.status === "fulfilled" ? ratingsResult.value : null;
+        const totalMetrics =
+            totalMetricsResult.status === "fulfilled"
+                ? totalMetricsResult.value
+                : null;
+        const recentDownloads =
+            recentDownloadsResult.status === "fulfilled"
+                ? recentDownloadsResult.value
+                : null;
 
         this.averageRating = ratings?.avgValue ?? 0;
         this.reviewsCount = ratings?.ratings?.length ?? 0;
