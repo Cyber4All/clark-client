@@ -176,11 +176,6 @@ export class UsageStatsComponent implements OnInit {
                 class: "review",
             },
             {
-                title: "Quality-Assured Collections",
-                value: this.usageStats.objects.collections.number,
-                class: "collections",
-            },
-            {
                 title: "Downloads",
                 value: this.usageStats.objects.downloads,
                 class: "downloads",
