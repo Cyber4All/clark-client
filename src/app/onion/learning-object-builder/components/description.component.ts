@@ -207,7 +207,7 @@ export class LearningObjectDescriptionComponent implements OnInit {
 
         // Watch for any updates to the description form.
         this.description.valueChanges.subscribe((description: string) => {
-            this.textOutput.emit(description || "");
+            this.textOutput.emit(description);
         });
     }
 
@@ -215,7 +215,7 @@ export class LearningObjectDescriptionComponent implements OnInit {
         const pastedHtml = event.clipboardData?.getData("text/html") || "";
         const normalizedHtml = normalizeDescriptionHeadings(pastedHtml);
 
-        if (!pastedHtml || normalizedHtml === pastedHtml) {
+        if (normalizedHtml === pastedHtml) {
             return;
         }
 

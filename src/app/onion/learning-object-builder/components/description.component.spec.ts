@@ -28,7 +28,6 @@ describe("LearningObjectDescriptionComponent", () => {
         const execCommand = jest.fn();
         component.editor = { execCommand } as unknown as EditorComponent;
         const paste = new Event("paste", {
-            bubbles: true,
             cancelable: true,
         }) as ClipboardEvent;
         Object.defineProperty(paste, "clipboardData", {
@@ -56,21 +55,18 @@ describe("LearningObjectDescriptionComponent", () => {
 
     it("prevents toolbar buttons from submitting the builder form", () => {
         const component = new LearningObjectDescriptionComponent();
-        const toolbar = document.createElement("div");
         const button = document.createElement("button");
-        const icon = document.createElement("i");
         const click = new MouseEvent("click", {
-            bubbles: true,
             cancelable: true,
         });
+        const toolbar = document.createElement("div");
         toolbar.classList.add("st-toolbar");
-        button.appendChild(icon);
         toolbar.appendChild(button);
-        toolbar.addEventListener("click", (event) =>
+        button.addEventListener("click", (event) =>
             component.preventToolbarSubmit(event as MouseEvent),
         );
 
-        icon.dispatchEvent(click);
+        button.dispatchEvent(click);
 
         expect(click.defaultPrevented).toBe(true);
     });
