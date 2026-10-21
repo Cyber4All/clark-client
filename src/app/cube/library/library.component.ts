@@ -165,23 +165,11 @@ export class LibraryComponent implements OnInit {
             : "";
     }
 
-    canDownloadFile(item: DownloadHistoryViewItem): boolean {
-        return Boolean(
-            this.isFile(item) &&
-            item.available &&
-            item.fileExists !== false &&
-            item.resource &&
-            item.fileName &&
-            item.learningObject &&
-            item.downloadFile,
-        );
-    }
-
     async downloadFile(event: Event, item: DownloadHistoryViewItem) {
         event.preventDefault();
         event.stopPropagation();
 
-        if (!this.canDownloadFile(item)) {
+        if (!this.isFile(item) || !item.available) {
             return;
         }
 

@@ -396,20 +396,21 @@ describe("LibraryComponent", () => {
         ).not.toContain(historyItem.filePath);
     });
 
-    it("keeps a file link disabled when fileExists is false", async () => {
+    it("allows an available file to download when fileExists is false", async () => {
         libraryService.getDownloadHistory.mockResolvedValueOnce({
             items: [{ ...historyItem, fileExists: false }],
         });
 
         await createComponent();
 
-        expect(fixture.nativeElement.textContent).toContain(
-            historyItem.fileName,
+        const fileButton = fixture.debugElement.query(
+            By.css(".download-history-file-name"),
         );
-        expect(
-            fixture.debugElement.query(By.css(".download-history-file-name")),
-        ).toBeNull();
-        expect(fileService.handleFileDownload).not.toHaveBeenCalled();
+        expect(fileButton).not.toBeNull();
+        fileButton.triggerEventHandler("click", new MouseEvent("click"));
+        await fixture.whenStable();
+
+        expect(fileService.handleFileDownload).toHaveBeenCalled();
     });
 
     it("shows an em dash for a File record without a fileName", async () => {
