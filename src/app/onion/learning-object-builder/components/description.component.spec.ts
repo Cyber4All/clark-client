@@ -2,6 +2,7 @@ import {
     LearningObjectDescriptionComponent,
     normalizeDescriptionHeadings,
 } from "./description.component";
+import { EditorComponent, ExecCommand } from "ngx-simple-text-editor";
 
 describe("LearningObjectDescriptionComponent", () => {
     it("converts pasted H1 content to a paragraph and preserves supported markup", () => {
@@ -22,19 +23,28 @@ describe("LearningObjectDescriptionComponent", () => {
         );
     });
 
-    it("updates the editor value and emits normalized content", () => {
+    it("inserts normalized pasted headings through the editor command history", () => {
         const component = new LearningObjectDescriptionComponent();
-        const emittedDescriptions: string[] = [];
-        component.learningObject = { description: "" };
-        component.textOutput.subscribe((description) =>
-            emittedDescriptions.push(description),
+        const execCommand = jest.fn();
+        component.editor = { execCommand } as unknown as EditorComponent;
+        const paste = new Event("paste", {
+            bubbles: true,
+            cancelable: true,
+        }) as ClipboardEvent;
+        Object.defineProperty(paste, "clipboardData", {
+            value: {
+                getData: (type: string) =>
+                    type === "text/html" ? "<h1>Heading</h1>" : "",
+            },
+        });
+
+        component.normalizePastedHeadings(paste);
+
+        expect(paste.defaultPrevented).toBe(true);
+        expect(execCommand).toHaveBeenCalledWith(
+            ExecCommand.insertHTML,
+            "<p>Heading</p>",
         );
-        component.ngOnInit();
-
-        component.description.setValue("<h1>Heading</h1>");
-
-        expect(component.description.value).toBe("<p>Heading</p>");
-        expect(emittedDescriptions).toEqual(["<p>Heading</p>"]);
     });
 
     it("leaves supported content unchanged", () => {

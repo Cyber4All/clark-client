@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from "@angular/core";
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -6,6 +13,8 @@ import {
 } from "@angular/forms";
 import {
     BOLD_BUTTON,
+    EditorComponent,
+    ExecCommand,
     ITALIC_BUTTON,
     LINK_INPUT,
     NgxSimpleTextEditorModule,
@@ -20,8 +29,13 @@ import {
 export function normalizeDescriptionHeadings(description: string): string {
     const container = document.createElement("div");
     container.innerHTML = description;
+    const headings = container.querySelectorAll("h1, h2");
 
-    container.querySelectorAll("h1, h2").forEach((heading) => {
+    if (!headings.length) {
+        return description;
+    }
+
+    headings.forEach((heading) => {
         const paragraph = document.createElement("p");
 
         while (heading.firstChild) {
@@ -47,6 +61,7 @@ export function normalizeDescriptionHeadings(description: string): string {
                 <st-editor
                     [formControl]="description"
                     [(ngModel)]="learningObject.description"
+                    (paste)="normalizePastedHeadings($event)"
                     [config]="config"></st-editor>
             </div>
         </div>
@@ -150,6 +165,10 @@ export function normalizeDescriptionHeadings(description: string): string {
                 outline: 2px solid rgba(28, 112, 221, 0.35);
                 outline-offset: -2px;
             }
+
+            .description-wrapper ::ng-deep .st-area p {
+                margin: 0;
+            }
         `,
     ],
     standalone: true,
@@ -157,6 +176,7 @@ export function normalizeDescriptionHeadings(description: string): string {
 })
 export class LearningObjectDescriptionComponent implements OnInit {
     @Input() learningObject;
+    @ViewChild(EditorComponent) editor: EditorComponent;
 
     description = new UntypedFormControl("");
     config = {
@@ -186,17 +206,19 @@ export class LearningObjectDescriptionComponent implements OnInit {
 
         // Watch for any updates to the description form.
         this.description.valueChanges.subscribe((description: string) => {
-            const normalizedDescription = normalizeDescriptionHeadings(
-                description || "",
-            );
-
-            if (normalizedDescription !== description) {
-                this.description.setValue(normalizedDescription, {
-                    emitEvent: false,
-                });
-            }
-
-            this.textOutput.emit(normalizedDescription);
+            this.textOutput.emit(description || "");
         });
+    }
+
+    normalizePastedHeadings(event: ClipboardEvent): void {
+        const pastedHtml = event.clipboardData?.getData("text/html") || "";
+        const normalizedHtml = normalizeDescriptionHeadings(pastedHtml);
+
+        if (!pastedHtml || normalizedHtml === pastedHtml) {
+            return;
+        }
+
+        event.preventDefault();
+        this.editor.execCommand(ExecCommand.insertHTML, normalizedHtml);
     }
 }
