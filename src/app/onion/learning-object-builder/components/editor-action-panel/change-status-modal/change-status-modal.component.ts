@@ -168,8 +168,6 @@ export class ChangeStatusModalComponent implements OnInit {
         if (this.builderStore.savedCorrectly) {
             await Promise.all([
                 this.builderStore
-                    // don't want this to run if there has been an error, so catch the error from updatelearning object in builder store service
-                    // check here to see if the save was successful. If it wasn't, don't update the status
                     .execute(BUILDER_ACTIONS.CHANGE_STATUS, {
                         status: this.selectedStatus,
                         reason: this.reason,
