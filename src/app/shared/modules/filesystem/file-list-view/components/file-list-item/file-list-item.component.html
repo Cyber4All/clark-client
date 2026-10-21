@@ -29,6 +29,7 @@
         <!-- Download Button -->
         <button
             mat-icon-button
+            aria-label="Download file"
             [matTooltip]="
                 isLoggedIn
                     ? file.downloadURL
@@ -44,6 +45,7 @@
         <!-- Preview Button -->
         <button
             mat-icon-button
+            aria-label="Preview file"
             [disabled]="!canPreview || !file.downloadURL || !isLoggedIn"
             [matTooltip]="
                 isLoggedIn

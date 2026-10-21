@@ -70,8 +70,7 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     file: LearningObject.Material.File;
     directoryListing = [];
 
-    toggleToolTip = `Selected items will be included in the bundle download.
-    Deselected items will be accessible through a download link in the PDF.`;
+    toggleToolTip = `Controls whether this file is included in the downloadable learning-object zip. Turn this off for very large files that should remain available separately.`;
     accessGroups: string[];
 
     constructor(

@@ -152,6 +152,10 @@ export class FolderListItemComponent implements OnInit {
         this.toggleClicked.emit(event);
     }
 
+    // TODO: Add rename and move actions for files and folders when the backend
+    // supports those operations. The current menu intentionally remains
+    // limited to download (files) and delete.
+
     /**
      * Checks if the current user is an admin or curator.
      * If true, allows the user to change the bundling status of a file/folder.

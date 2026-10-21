@@ -3,7 +3,8 @@ export const LEARNING_OBJECT_ERRORS = {
         "Name must be a defined string more than two characters and less than one hundred characters.",
     INVALID_CHARACTER_IN_NAME:
         'Learning object name cannot contain the following: / * : \\ \" < > ?',
-    INVALID_DESCRIPTION: "Description must be defined.",
+    INVALID_DESCRIPTION:
+        "Description must be a defined string more than two characters and less than one hundred characters.",
     INVALID_LENGTH(length: any) {
         if (!length) {
             return "Length must be defined.";
@@ -37,7 +38,8 @@ export const LEARNING_OBJECT_ERRORS = {
 };
 
 export const SUBMITTABLE_LEARNING_OBJECT_ERRORS = {
-    INVALID_DESCRIPTION: "Description must not be an empty string.",
+    INVALID_DESCRIPTION:
+        "Description must be a defined string more than two characters and less than one hundred characters.",
     INVALID_DESCRIPTION_BAD_HTML: "Description contains bad tags.",
     INVALID_NOTES_BAD_HTML: "Notes contain bad tags.",
     INVALID_OUTCOMES: "Outcomes must contain at least one valid outcome.",

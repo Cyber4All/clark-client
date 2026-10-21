@@ -29,7 +29,7 @@
     margin-bottom: 1.5rem;
 
     &.bundle {
-        grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
+        grid-template-columns: 4fr 1fr 0.65fr 1.35fr 25px;
     }
 }
 
@@ -110,30 +110,54 @@ input {
 .file-actions {
     display: flex;
     flex-direction: row;
-    gap: 3px;
+    gap: 4px;
     align-items: center;
 
     button {
-        // Icon sizing for mat-icon-button
+        align-items: center;
+        appearance: none;
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        color: $dark-grey;
+        cursor: pointer;
+        display: inline-flex;
+        height: 32px;
+        justify-content: center;
+        min-width: 32px;
+        padding: 0;
+        transition:
+            background-color 0.18s ease,
+            border-color 0.18s ease,
+            color 0.18s ease,
+            transform 0.18s ease;
+
         i {
-            font-size: 18px;
+            font-size: 15px;
         }
 
         // Hover state with theme blue
         &:hover:not([disabled]) {
-            background-color: $light-blue;
-            color: white;
-            transition: background-color 0.2s ease;
+            background-color: rgba($light-blue, 0.1);
+            border-color: rgba($light-blue, 0.35);
+            color: $light-blue;
+            transform: translateY(-1px);
+        }
 
-            i {
-                color: white;
-            }
+        &:focus-visible {
+            outline: 2px solid $light-blue;
+            outline-offset: 2px;
         }
 
         // Disabled state
         &[disabled] {
-            opacity: 0.5;
+            color: $medium-grey;
+            opacity: 0.65;
             cursor: not-allowed;
+        }
+
+        &:active:not([disabled]) {
+            transform: translateY(0);
         }
     }
 }

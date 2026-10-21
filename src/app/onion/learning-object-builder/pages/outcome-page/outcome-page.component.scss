@@ -12,10 +12,26 @@
 }
 
 .top {
+    align-items: center;
+    display: flex;
+    gap: 16px;
     padding: 20px;
     margin: 20px;
     .title {
         float: left;
+    }
+}
+
+.generation-status {
+    align-items: center;
+    color: $dark-grey;
+    display: inline-flex;
+    font-size: $small;
+    gap: 6px;
+
+    .svg-inline--fa,
+    .icon {
+        color: $light-blue;
     }
 }
 

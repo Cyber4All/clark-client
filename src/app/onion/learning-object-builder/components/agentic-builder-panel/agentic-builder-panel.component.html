@@ -1,0 +1,198 @@
+<div
+    class="agentic-builder-panel"
+    [class.agentic-builder-panel--entry]="!reviewing"
+    role="dialog"
+    aria-labelledby="agentic-builder-title"
+    aria-modal="true">
+    <header class="agentic-builder-panel__header">
+        <div>
+            <h2 id="agentic-builder-title">
+                {{ reviewing ? "Review suggestions" : "Generate with AI" }}
+            </h2>
+            <p *ngIf="reviewing" class="review-progress" aria-live="polite">
+                <strong>{{ suggestionCount }}</strong>
+                {{ suggestionCount === 1 ? "suggestion" : "suggestions" }}
+                remaining
+            </p>
+        </div>
+        <button
+            type="button"
+            class="agentic-builder-panel__close"
+            aria-label="Close review suggestions"
+            [disabled]="generating"
+            (click)="close()">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+    </header>
+
+    <ng-container *ngIf="!reviewing; else reviewTemplate">
+        <div
+            class="agentic-builder-panel__content agentic-builder-panel__entry-content">
+            <p class="agentic-builder-panel__question">
+                Choose what you want CLARK to draft.
+            </p>
+            <div
+                class="agentic-builder-panel__fields"
+                role="group"
+                aria-label="Content to generate">
+                <clark-pill
+                    label="Name"
+                    [active]="selectedFields.name"
+                    [disabled]="generating"
+                    [showSelectedIcon]="true"
+                    [emphasizeActive]="false"
+                    ariaLabel="Name"
+                    (selected)="toggleField('name')"></clark-pill>
+                <clark-pill
+                    label="Description"
+                    [active]="selectedFields.description"
+                    [disabled]="generating"
+                    [showSelectedIcon]="true"
+                    [emphasizeActive]="false"
+                    ariaLabel="Description"
+                    (selected)="toggleField('description')"></clark-pill>
+                <clark-pill
+                    label="Learning Outcomes"
+                    [active]="selectedFields.learningOutcomes"
+                    [disabled]="generating"
+                    [showSelectedIcon]="true"
+                    [emphasizeActive]="false"
+                    ariaLabel="Learning Outcomes"
+                    (selected)="toggleField('learningOutcomes')"></clark-pill>
+            </div>
+            <p
+                *ngIf="errorMessage"
+                class="agentic-builder-panel__error"
+                role="alert">
+                {{ errorMessage }}
+            </p>
+            <button
+                type="button"
+                class="button good"
+                [disabled]="generating || !hasSelectedFields"
+                (click)="generate()">
+                {{ generating ? "Generating..." : "Generate suggestions" }}
+            </button>
+        </div>
+    </ng-container>
+
+    <ng-template #reviewTemplate>
+        <div
+            class="agentic-builder-panel__content agentic-builder-panel__review-content">
+            <div *ngIf="!hasSuggestions" class="empty-state">
+                <p class="empty-state__title">All suggestions reviewed</p>
+                <p>Accepted changes are saved to your learning object.</p>
+            </div>
+
+            <section *ngIf="hasNameSuggestion" class="suggestion-section">
+                <h3 class="suggestion-section__heading">Name</h3>
+                <p class="suggestion-content">{{ suggestions.name }}</p>
+                <div class="suggestion-actions">
+                    <button
+                        type="button"
+                        class="button neutral"
+                        [disabled]="generating"
+                        (click)="stopDismissal($event); rejectField('name')">
+                        Reject
+                    </button>
+                    <button
+                        type="button"
+                        class="button good"
+                        [disabled]="generating"
+                        (click)="stopDismissal($event); acceptField('name')">
+                        Accept
+                    </button>
+                </div>
+            </section>
+
+            <section
+                *ngIf="hasDescriptionSuggestion"
+                class="suggestion-section">
+                <h3 class="suggestion-section__heading">Description</h3>
+                <p class="suggestion-content suggestion-description">
+                    {{ suggestions.description }}
+                </p>
+                <div class="suggestion-actions">
+                    <button
+                        type="button"
+                        class="button neutral"
+                        [disabled]="generating"
+                        (click)="
+                            stopDismissal($event); rejectField('description')
+                        ">
+                        Reject
+                    </button>
+                    <button
+                        type="button"
+                        class="button good"
+                        [disabled]="generating"
+                        (click)="
+                            stopDismissal($event); acceptField('description')
+                        ">
+                        Accept
+                    </button>
+                </div>
+            </section>
+
+            <section
+                *ngIf="suggestions?.learningOutcomes?.length"
+                class="suggestion-section suggestion-section--outcomes">
+                <h3 class="suggestion-section__heading">Learning Outcomes</h3>
+                <div class="outcome-list">
+                    <article
+                        *ngFor="
+                            let outcome of suggestions.learningOutcomes;
+                            let i = index
+                        "
+                        class="outcome-card">
+                        <div class="outcome-card__content">
+                            <span class="outcome-card__bloom">{{
+                                outcome.bloom
+                            }}</span>
+                            <p>
+                                <strong>{{ outcome.verb }}</strong>
+                                {{ outcome.text }}
+                            </p>
+                        </div>
+                        <div class="suggestion-actions">
+                            <button
+                                type="button"
+                                class="button neutral"
+                                [disabled]="generating"
+                                (click)="
+                                    stopDismissal($event); rejectOutcome(i)
+                                ">
+                                Reject
+                            </button>
+                            <button
+                                type="button"
+                                class="button good"
+                                [disabled]="generating"
+                                (click)="
+                                    stopDismissal($event); acceptOutcome(i)
+                                ">
+                                Accept
+                            </button>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </div>
+        <footer class="agentic-builder-panel__footer">
+            <button
+                type="button"
+                class="button neutral"
+                [disabled]="generating"
+                (click)="close()">
+                Close
+            </button>
+            <button
+                type="button"
+                class="button good"
+                [disabled]="generating || !hasSuggestions"
+                (click)="acceptAll()">
+                Accept all
+            </button>
+        </footer>
+    </ng-template>
+</div>
