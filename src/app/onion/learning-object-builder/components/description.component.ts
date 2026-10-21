@@ -61,6 +61,7 @@ export function normalizeDescriptionHeadings(description: string): string {
                 <st-editor
                     [formControl]="description"
                     [(ngModel)]="learningObject.description"
+                    (click)="preventToolbarSubmit($event)"
                     (paste)="normalizePastedHeadings($event)"
                     [config]="config"></st-editor>
             </div>
@@ -220,5 +221,13 @@ export class LearningObjectDescriptionComponent implements OnInit {
 
         event.preventDefault();
         this.editor.execCommand(ExecCommand.insertHTML, normalizedHtml);
+    }
+
+    preventToolbarSubmit(event: MouseEvent): void {
+        const target = event.target as HTMLElement;
+
+        if (target.closest(".st-toolbar button")) {
+            event.preventDefault();
+        }
     }
 }

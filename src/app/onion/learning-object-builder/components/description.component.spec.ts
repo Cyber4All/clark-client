@@ -53,4 +53,25 @@ describe("LearningObjectDescriptionComponent", () => {
 
         expect(normalizeDescriptionHeadings(description)).toBe(description);
     });
+
+    it("prevents toolbar buttons from submitting the builder form", () => {
+        const component = new LearningObjectDescriptionComponent();
+        const toolbar = document.createElement("div");
+        const button = document.createElement("button");
+        const icon = document.createElement("i");
+        const click = new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+        });
+        toolbar.classList.add("st-toolbar");
+        button.appendChild(icon);
+        toolbar.appendChild(button);
+        toolbar.addEventListener("click", (event) =>
+            component.preventToolbarSubmit(event as MouseEvent),
+        );
+
+        icon.dispatchEvent(click);
+
+        expect(click.defaultPrevented).toBe(true);
+    });
 });
