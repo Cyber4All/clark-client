@@ -114,9 +114,15 @@
 
                         <div role="cell">
                             <button
-                                *ngIf="canDownloadFile(item); else fileName"
+                                *ngIf="
+                                    isFile(item) && item.available;
+                                    else fileName
+                                "
                                 type="button"
                                 class="library-item__title library-item__title-button download-history-file-name"
+                                [tip]="getFilePath(item)"
+                                tipPosition="top"
+                                [tipWrap]="true"
                                 [class.download-history-file-name--has-path]="
                                     getFilePath(item)
                                 "
@@ -145,7 +151,7 @@
                         </div>
 
                         <div role="cell">
-                            {{ item.downloadedAt | date: "medium" }}
+                            {{ item.downloadedAt | date: "MMM d, y h:mm a" }}
                         </div>
                     </div>
                 </div>

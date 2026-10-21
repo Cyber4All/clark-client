@@ -25,6 +25,9 @@ export class TipDirective implements OnChanges, OnDestroy {
     // dictates the tip's style (dark = white text on dark background, light = dark text on light background)
     @Input() tipStyle: "light" | "dark" = "dark";
 
+    // allows long tooltip text, such as file paths, to wrap within the tooltip width
+    @Input() tipWrap = false;
+
     // the delay before a tip shows after the `mouseenter` event has fired in milliseconds
     @Input() tipDelay: number;
 
@@ -106,6 +109,8 @@ export class TipDirective implements OnChanges, OnDestroy {
           z-index: 9001;
           max-width: 300px;
           font-size: 14px;
+          white-space: ${this.tipWrap ? "normal" : "nowrap"};
+          overflow-wrap: ${this.tipWrap ? "anywhere" : "normal"};
         `;
                 // position the tooltip
                 this.positionTooltip(this.host.nativeElement as HTMLElement);
