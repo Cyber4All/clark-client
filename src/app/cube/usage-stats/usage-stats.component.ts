@@ -28,6 +28,24 @@ type LearningObjectStatsResponse = LearningObjectStats & {
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
 let CHART_HOVERED = false;
+
+export function getLastCompletedWeekRange(now = new Date()) {
+    const currentWeekStart = new Date(
+        Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate() - now.getUTCDay(),
+        ),
+    );
+    const previousWeekStart = new Date(currentWeekStart);
+    previousWeekStart.setUTCDate(previousWeekStart.getUTCDate() - 7);
+
+    return {
+        start: previousWeekStart.toISOString(),
+        end: currentWeekStart.toISOString(),
+    };
+}
+
 @Component({
     selector: "cube-usage-stats",
     templateUrl: "usage-stats.component.html",
@@ -115,7 +133,6 @@ export class UsageStatsComponent implements OnInit {
                 this.usageStats.objects.review = stats.review;
                 this.usageStats.objects.total = stats.total;
                 this.usageStats.objects.released = stats.released;
-                this.usageStats.objects.downloads = stats.downloads;
                 this.usageStats.objects.topDownloads = stats.topDownloads;
                 this.usageStats.objects.lengths = {
                     nanomodule: stats.lengths.nanomodule,
@@ -133,6 +150,14 @@ export class UsageStatsComponent implements OnInit {
                 this.buildCounterStats();
                 this.buildLengthDistributionChart();
                 this.buildTopDownloads();
+            });
+
+        const week = getLastCompletedWeekRange();
+        this.metricService
+            .getTotalDownloads(week.start, week.end)
+            .then((downloads) => {
+                this.usageStats.objects.downloads = downloads;
+                this.buildCounterStats();
             });
 
         this.outcomeService.getLearningOutcomeStats().then((stats) => {
@@ -176,7 +201,7 @@ export class UsageStatsComponent implements OnInit {
                 class: "review",
             },
             {
-                title: "Downloads",
+                title: "Weekly Downloads",
                 value: this.usageStats.objects.downloads,
                 class: "downloads",
             },
