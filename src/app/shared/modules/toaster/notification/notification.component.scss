@@ -101,6 +101,31 @@ $dark: #323232;
         }
     }
 
+    &.persistentError {
+        &:before {
+            background: gradient($red, lighten($red, 10), 0deg);
+        }
+
+        .icon {
+            background: $red;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            transform: scale(1);
+            font-size: $normal;
+            color: $medium-grey;
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+    }
+
     &.alert {
         &:before {
             background: gradient($blue, lighten($blue, 5), 0deg);
