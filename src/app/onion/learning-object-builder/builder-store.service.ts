@@ -451,10 +451,6 @@ export class BuilderStore {
                 return await this.removeFiles(data.fileIds);
             case BUILDER_ACTIONS.CHANGE_STATUS:
                 if (this.savedCorrectly) {
-                    console.log(
-                        "saved correctly, changing status to: ",
-                        data.status,
-                    );
                     return await this.changeStatus(data.status, data.reason);
                 } else {
                 }
