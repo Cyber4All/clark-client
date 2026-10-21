@@ -16,7 +16,23 @@ import {
     UNDO_BUTTON,
     UNORDERED_LIST_BUTTON,
 } from "ngx-simple-text-editor";
-import { skip } from "rxjs/operators";
+
+export function normalizeDescriptionHeadings(description: string): string {
+    const container = document.createElement("div");
+    container.innerHTML = description;
+
+    container.querySelectorAll("h1, h2").forEach((heading) => {
+        const paragraph = document.createElement("p");
+
+        while (heading.firstChild) {
+            paragraph.appendChild(heading.firstChild);
+        }
+
+        heading.replaceWith(paragraph);
+    });
+
+    return container.innerHTML;
+}
 
 @Component({
     selector: "onion-learning-object-description",
@@ -164,15 +180,23 @@ export class LearningObjectDescriptionComponent implements OnInit {
     @Output() textOutput: EventEmitter<string> = new EventEmitter();
 
     ngOnInit() {
-        // Watch for any updates to the description form.
-        this.description.valueChanges
-            .pipe(skip(1))
-            .subscribe((description: string) => {
-                this.textOutput.emit(description);
-            });
-
         if (this.learningObject.description) {
             this.description.patchValue(this.learningObject.description);
         }
+
+        // Watch for any updates to the description form.
+        this.description.valueChanges.subscribe((description: string) => {
+            const normalizedDescription = normalizeDescriptionHeadings(
+                description || "",
+            );
+
+            if (normalizedDescription !== description) {
+                this.description.setValue(normalizedDescription, {
+                    emitEvent: false,
+                });
+            }
+
+            this.textOutput.emit(normalizedDescription);
+        });
     }
 }
