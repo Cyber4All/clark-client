@@ -962,8 +962,18 @@ export class BuilderStore {
      * Public function to remove empty outcomes from a learning object
      */
     public async removeEmptyOutcomes() {
+        // The learning object may never have loaded (e.g. the initial fetch failed)
+        if (!this.learningObject?.cuid) {
+            return;
+        }
         // Get most up-to-date values for current learning object
-        await this.fetch(this.learningObject.cuid, this.learningObject.version);
+        const fetched = await this.fetch(
+            this.learningObject.cuid,
+            this.learningObject.version,
+        );
+        if (!fetched || !this.learningObject?.cuid) {
+            return;
+        }
         // Retrieve outcomes of current learning object
         const value = await this.uriRetriever
             .getLearningObject(
@@ -972,7 +982,7 @@ export class BuilderStore {
             )
             .toPromise();
         // Iterate through outcomes
-        value.outcomes.map((outcome) => {
+        value?.outcomes?.forEach((outcome) => {
             // If the outcome text is empty, remove outcome
             if (outcome.text === "" || outcome.text === null) {
                 this.deleteOutcome(outcome.id);
