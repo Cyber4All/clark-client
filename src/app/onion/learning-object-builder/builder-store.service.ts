@@ -1196,7 +1196,7 @@ export class BuilderStore {
         // Error messaging happens here because this method has meaningful error messages
         this.toaster.persistentError(
             "Error!",
-            message + "\nThese erroneous changes will not be saved.",
+            message + "\nThese changes will not be saved.",
         );
         return { property, message };
     }
