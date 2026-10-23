@@ -1,0 +1,418 @@
+@import "_vars.scss";
+
+// Look & feel mirrors the CLARK home-page hierarchy
+// (src/app/cube/home/learning-object-info/hierarchies), while keeping the
+// builder's interactive controls (drag handle, + menu, linked/read-only state).
+
+// ---------- Theme (from the home-page hierarchy) ----------
+$card-border: #e8e8e8;
+$panel-bg: #eef6fa;
+$panel-border: #dbe8ef;
+$line: #ddcfc4;
+$line-w: 2px;
+
+$course: #0b3a57;
+$micro: #4a6286;
+$nano: #a45b57;
+
+$text: #1f2a33;
+$node-gutter: 40px;
+
+:host {
+    display: block;
+}
+
+.hierarchy-node {
+    display: block;
+    color: $text;
+}
+
+.node-row {
+    display: flex;
+    // Wrap so the drop indicator (when shown) sits on its own line directly
+    // below the card rather than beside it.
+    flex-wrap: wrap;
+    align-items: stretch;
+    position: relative;
+    // Spacing is provided by the parent's flex gap (see .node-children) rather
+    // than vertical margins, so collapsing margins don't cause a height snap at
+    // the end of the expand/collapse animation.
+    margin: 0;
+    min-width: 0;
+}
+
+// Root's own row keeps a little breathing room below before its children.
+.hierarchy-node--root > .node-row {
+    margin-bottom: 12px;
+}
+
+// ---------- Connectors ----------
+// ASCII-file-tree style, drawn entirely on the per-child wrapper (.node-branch)
+// so the geometry does NOT depend on rows being a uniform height. This is the
+// standard folder-tree technique:
+//
+//   .node-branch::before  = vertical spine (│) down the wrapper's left edge
+//   .node-branch::after   = horizontal elbow (──) into the child card
+//   .node-branch--last     = last child: the spine is clipped to the elbow so
+//                            the corner reads as └ instead of ├
+//
+// The elbow is anchored a FIXED distance from the top of the wrapper
+// ($elbow-top). Because every child row starts at the same top offset, the
+// elbow always meets the card at a stable point regardless of how tall the
+// row's content is or how large a subtree hangs below it. The spine runs the
+// full height of the wrapper (100%), so for non-last children it naturally
+// continues past this child's whole subtree down to the next sibling.
+$child-gap: 12px; // .node-children flex gap
+$arm: 20px; // horizontal elbow length, measured left from the card's edge
+$elbow-top: 30px; // distance from a branch wrapper's top down to the elbow
+
+// The branch wrapper's left edge (x=0) sits at the child card's left edge,
+// because the indentation lives on the parent `.node-children` as padding-left.
+// All connectors are therefore drawn in NEGATIVE x — inside the parent's gutter,
+// to the LEFT of the card — so they never overlap the card content. The spine
+// sits $arm px left of the card; the elbow bridges that $arm gap.
+.node-branch {
+    position: relative;
+
+    // Vertical spine (│): starts at this wrapper's top edge and runs down
+    // through its full height PLUS the flex gap below it, so it reaches the
+    // next sibling's top edge with no break in the gap between siblings.
+    &::before {
+        content: "";
+        position: absolute;
+        left: calc(#{$arm} * -1);
+        top: 0;
+        height: calc(100% + #{$child-gap});
+        border-left: $line-w solid $line;
+        opacity: 0.85;
+    }
+
+    // Horizontal elbow (──): from the spine rightward to the card's left edge,
+    // anchored a fixed distance from the top of the row.
+    &::after {
+        content: "";
+        position: absolute;
+        left: calc(#{$arm} * -1);
+        top: $elbow-top;
+        width: $arm;
+        border-top: $line-w solid $line;
+        opacity: 0.85;
+    }
+
+    // First child: extend the spine up through the children box's padding-top
+    // so it joins the parent row directly above (no break under the parent).
+    // First child: also extend the spine UP by the children box's padding-top
+    // ($child-gap) so it joins the parent card directly above. It still runs
+    // down through its box + the gap to the next sibling, so the extra $child-gap
+    // is added on top of the base height.
+    &:first-child::before {
+        top: calc(#{$child-gap} * -1);
+        height: calc(100% + #{$child-gap} + #{$child-gap});
+    }
+
+    // Last child (└): the spine runs only from its top down to the elbow, then
+    // stops — forming the └ corner with no trailing line below.
+    &--last::before {
+        top: 0;
+        height: #{$elbow-top};
+    }
+
+    // First AND last (a lone child): spine runs from the parent down to just
+    // the elbow, forming a single └ with no trailing line.
+    &:first-child.node-branch--last::before {
+        top: calc(#{$child-gap} * -1);
+        height: calc(#{$child-gap} + #{$elbow-top});
+    }
+}
+
+.node-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    // Fill the row width; since .node-row wraps, the drop indicator takes its
+    // own line below the card.
+    flex: 1 1 100%;
+    padding: 14px 16px;
+    border: 1px solid #e7e7e7;
+    border-radius: 6px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+}
+
+// Root = the "course card" header look.
+.hierarchy-node--root > .node-row > .node-content {
+    background: #fff;
+    border-color: $card-border;
+    box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+    padding: 16px 18px;
+}
+
+// Branch nodes that have children get the light-blue panel treatment, like the
+// home-page micromodule cards.
+.hierarchy-node:not(.hierarchy-node--root) > .node-row > .node-content {
+    &.has-children {
+        background: $panel-bg;
+        border-color: $panel-border;
+    }
+}
+
+// Linked / read-only treatment: keep it visually distinct (dashed, muted).
+.hierarchy-node--linked > .node-row > .node-content {
+    background: $secondary-white-background;
+    border-style: dashed;
+}
+
+.toggle {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: $micro;
+
+    &--spacer {
+        cursor: default;
+    }
+
+    // Collapsed chevron points right; rotate 90deg to point down when expanded.
+    .toggle__chevron {
+        transition: transform 0.2s ease;
+    }
+
+    &--expanded .toggle__chevron {
+        transform: rotate(90deg);
+    }
+}
+
+.drag-handle {
+    cursor: grab;
+    color: $medium-grey;
+    display: inline-flex;
+    align-items: center;
+
+    &:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 2px;
+    }
+}
+
+// ---------- Badge (icon + length), home-page styling ----------
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    line-height: 1;
+    padding: 7px 12px;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+    white-space: nowrap;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset;
+
+    .badge__icon {
+        display: inline-grid;
+        place-items: center;
+        width: 18px;
+        height: 18px;
+        font-size: 14px;
+        opacity: 0.95;
+    }
+
+    &--course {
+        background: $course;
+    }
+
+    &--unit,
+    &--module,
+    &--micromodule {
+        background: $micro;
+    }
+
+    &--nanomodule {
+        background: $nano;
+    }
+}
+
+.node-name {
+    font-weight: 700;
+    font-size: 18px;
+    color: #2a2a2a;
+}
+
+.hierarchy-node--root .node-name {
+    font-size: 22px;
+}
+
+.current-badge {
+    font-size: $smaller;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(11, 58, 87, 0.1);
+    color: $course;
+}
+
+.node-row__spacer {
+    flex: 1;
+}
+
+.add-menu-wrapper {
+    position: relative;
+}
+
+.add-button {
+    border: none;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $light-blue;
+    color: #fff;
+}
+
+.add-menu {
+    position: absolute;
+    top: 36px;
+    right: 0;
+    z-index: 10;
+    min-width: 240px;
+    background: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
+    padding: 6px;
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        border: none;
+        background: transparent;
+        padding: 10px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        text-align: left;
+        color: $text;
+
+        &:hover {
+            background: $panel-bg;
+        }
+
+        i {
+            color: $light-blue;
+        }
+    }
+}
+
+.linked-label {
+    font-size: $smaller;
+    color: $medium-grey;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+// ---------- Children: indentation ----------
+.node-children {
+    position: relative;
+    // Use left PADDING (not margin) so the indentation and the connector lines
+    // live inside the box in positive coordinates. This keeps them from being
+    // clipped by overflow:hidden during the expand/collapse animation, and
+    // avoids an outside-margin snap at the end of the height tween.
+    padding-left: $node-gutter;
+    // Vertical rhythm via gap (no collapsing margins -> no height snap).
+    display: flex;
+    flex-direction: column;
+    gap: $child-gap;
+    padding-top: $child-gap;
+    // Connectors (spine + elbows) are drawn per .node-branch wrapper; see the
+    // Connectors section above. Each branch's spine extends half the gap above
+    // and below its box so stacked siblings' spines meet with no break.
+}
+
+// ---------- Drag-and-drop affordances ----------
+// The epic requires that during a drag, valid destinations are clearly
+// highlighted and invalid ones are not selectable/droppable. The tree hit-tests
+// the drag pointer and pushes down the hovered-target id; the hovered node (and
+// only it) computes a valid/invalid affordance and sets .drop-valid /
+// .drop-invalid on its row.
+
+// The node being dragged: fade its in-place copy so the drag preview reads
+// as the "live" one.
+.hierarchy-node.is-dragging > .node-row > .node-content {
+    opacity: 0.4;
+}
+
+// Valid destination: every valid target gets a soft outline as soon as the drag
+// starts, so the author can see all the places the node can go at once.
+.node-row.drop-valid > .node-content {
+    outline: 2px solid rgba(27, 156, 234, 0.45);
+    outline-offset: 2px;
+}
+
+// The valid target the pointer is actually over is emphasized: solid outline +
+// panel fill so it reads as the active drop destination.
+.node-row.is-hovered-target > .node-content {
+    outline: 2px solid $light-blue;
+    background: $panel-bg;
+}
+
+// Drop indicator: dashed "Move into <name>" row shown below EVERY valid target
+// as soon as a drag starts, so the author sees all destinations at once. Purely
+// visual (no drop list) — reflects `dropAffordance === 'valid'`. The indicator
+// under the hovered target is emphasized (see .is-hovered-target below).
+.drop-indicator {
+    flex-basis: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 8px 0 0 $node-gutter; // align with where children sit
+    padding: 10px 16px;
+    border: 2px dashed rgba(27, 156, 234, 0.55);
+    border-radius: 6px;
+    background: rgba(238, 246, 250, 0.6);
+    color: $course;
+    font-weight: 600;
+    font-size: $small;
+    opacity: 0.85;
+    pointer-events: none;
+}
+
+// The hovered valid target's indicator is solid/filled so it stands out as the
+// place the drop will actually land.
+.node-row.is-hovered-target > .drop-indicator {
+    border-style: solid;
+    border-color: $light-blue;
+    background: $panel-bg;
+    opacity: 1;
+    box-shadow: 0 4px 12px rgba(11, 58, 87, 0.15);
+}
+
+// Invalid destination (pointer over a node that can't accept the drop): dim and
+// show "not allowed" so it reads as non-droppable.
+.node-row.drop-invalid > .node-content {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+// The floating drag preview card.
+.node-content.cdk-drag-preview {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+    opacity: 0.95;
+}
+
+.node-content.cdk-drag-placeholder {
+    opacity: 0.25;
+}

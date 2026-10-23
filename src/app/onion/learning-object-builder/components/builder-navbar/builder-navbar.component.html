@@ -35,7 +35,9 @@
                 *ngIf="
                     !['unreleased', 'rejected'].includes(
                         learningObject?.status
-                    ) && learningObject?.collection && collection
+                    ) &&
+                    learningObject?.collection &&
+                    collection
                 "
                 class="top__collection"
                 tip="This learning object has been submitted to the {{
@@ -119,6 +121,7 @@
                             disabled: !canRoute('outcomes'),
                             link: 'outcomes',
                             text: 'Learning Outcomes',
+                            disabledTip: disabledTip('outcomes'),
                         }"></ng-container>
                 </li>
                 <li>
@@ -129,6 +132,18 @@
                             disabled: !canRoute('materials'),
                             link: 'materials',
                             text: 'Materials',
+                            disabledTip: disabledTip('materials'),
+                        }"></ng-container>
+                </li>
+                <li>
+                    <ng-container
+                        aria-label="Hierarchy Link"
+                        [ngTemplateOutlet]="navItemTemplate"
+                        [ngTemplateOutletContext]="{
+                            disabled: !canRoute('hierarchy'),
+                            link: 'hierarchy',
+                            text: 'Hierarchy',
+                            disabledTip: disabledTip('hierarchy'),
                         }"></ng-container>
                 </li>
             </ul>
@@ -159,7 +174,8 @@
     #navItemTemplate
     let-link="link"
     let-disabled="disabled"
-    let-text="text">
+    let-text="text"
+    let-disabledTip="disabledTip">
     <a
         *ngIf="!disabled"
         [ngClass]="{ new: isNewRoute(link) }"
@@ -169,10 +185,10 @@
         >{{ text }}</a
     >
     <a
-        aria-label="Please name this learning object before adding outcomes or materials"
+        [attr.aria-label]="disabledTip"
         *ngIf="disabled"
         class="disabled"
-        tip="Please name this learning object before adding outcomes or materials."
+        [tip]="disabledTip"
         tipPosition="top"
         (activate)="triggerBlockedRouteClick()"
         ><i class="fas fa-lock"></i>{{ text }}</a

@@ -1,9 +1,4 @@
-<clark-column-wrapper>
-    <div left>
-        <clark-scaffold
-            *ngIf="learningObject && learningObject.length !== 'nanomodule'"
-            [learningObject]="learningObject"></clark-scaffold>
-    </div>
+<clark-column-wrapper [columns]="'mr'">
     <div main>
         <!-- upload content here -->
         <app-upload
