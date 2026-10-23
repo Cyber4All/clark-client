@@ -98,6 +98,15 @@
                                 </li>
                                 <li
                                     tabindex="0"
+                                    [routerLink]="['playlists']"
+                                    [queryParams]="{
+                                        userId: auth.currentUserId,
+                                    }"
+                                    (activate)="dropdowns.toggleUserDropdown()">
+                                    <i class="fas fa-list"></i>My Playlist
+                                </li>
+                                <li
+                                    tabindex="0"
                                     [routerLink]="['auth', 'forgot-password']"
                                     (activate)="dropdowns.toggleUserDropdown()">
                                     <i class="far fa-unlock-alt"></i>Change
@@ -212,6 +221,16 @@
                 <div class="side-padding-20">
                     <ul class="menu-items">
                         <li [routerLink]="['library']">Your Library</li>
+                        <li
+                            [routerLink]="['playlists']"
+                            [queryParams]="{ userId: auth.currentUserId }">
+                            My Playlist
+                        </li>
+                        <li
+                            [routerLink]="['playlists']"
+                            [queryParams]="{ userId: auth.currentUserId }">
+                            My Playlist
+                        </li>
                         <li
                             [routerLink]="['admin']"
                             *ngIf="auth.hasCuratorAccess()">
