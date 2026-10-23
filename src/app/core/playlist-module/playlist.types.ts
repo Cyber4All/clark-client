@@ -1,4 +1,10 @@
-export type PlaylistVisibility = "public" | "private";
+export const PlaylistVisibility = {
+    PUBLIC: "public",
+    PRIVATE: "private",
+} as const;
+
+export type PlaylistVisibility =
+    (typeof PlaylistVisibility)[keyof typeof PlaylistVisibility];
 
 export interface PlaylistAuthor {
     _id?: string;
@@ -23,4 +29,14 @@ export interface Playlist {
 
 export interface GetPlaylistsQuery {
     playlistId?: string;
+    userId?: string;
 }
+
+export type PlaylistUpdate = Partial<
+    Pick<Playlist, "name" | "description" | "visibility">
+>;
+
+export type CreatePlaylist = Pick<
+    Playlist,
+    "name" | "description" | "visibility"
+>;
