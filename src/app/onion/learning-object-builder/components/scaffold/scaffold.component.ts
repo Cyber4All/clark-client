@@ -80,7 +80,7 @@ export class ScaffoldComponent implements OnInit {
     childrenConfirmation: boolean;
     isAddingChild: boolean;
     // boolean to indicate if edit is selected for the list
-    @Input() editContent: boolean;
+    @Input() editContent = true;
 
     @ViewChild("addChildButton") addChildButton: ElementRef;
     @ViewChild("teleporterPayload") teleporterPayload: ElementRef;

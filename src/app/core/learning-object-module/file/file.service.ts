@@ -6,7 +6,7 @@ import {
     HttpHeaders,
 } from "@angular/common/http";
 import { catchError, takeUntil } from "rxjs/operators";
-import { Observable, Subject, throwError } from "rxjs";
+import { BehaviorSubject, Observable, Subject, throwError } from "rxjs";
 import { FileUploadMeta } from "app/onion/learning-object-builder/components/content-upload/app/services/typings";
 import { LearningObject } from "@entity";
 import { SOURCE_CODE_EXTENSIONS } from "./source.extensions";
@@ -16,12 +16,48 @@ import { SOURCE_CODE_EXTENSIONS } from "./source.extensions";
 })
 export class FileService {
     private headers = new HttpHeaders();
+    private fileProcessingStatuses = new BehaviorSubject<
+        ReadonlyMap<string, string>
+    >(new Map());
+    readonly fileProcessingStatuses$ =
+        this.fileProcessingStatuses.asObservable();
 
     @Input()
     learningObject$: Observable<LearningObject> =
         new Observable<LearningObject>();
 
     constructor(private http: HttpClient) {}
+
+    setFileProcessingStatuses(statuses: ReadonlyMap<string, string>): void {
+        this.fileProcessingStatuses.next(new Map(statuses));
+    }
+
+    getFileProcessingStatus(
+        learningObjectId: string,
+        fileId: string,
+    ): Observable<{ processingStatus: string }> {
+        return this.http.get<{ processingStatus: string }>(
+            FILE_METADATA_ROUTES.GET_FILE_PROCESSING_STATUS(
+                learningObjectId,
+                fileId,
+            ),
+            { headers: this.headers, withCredentials: true },
+        );
+    }
+
+    cancelFileProcessing(
+        learningObjectId: string,
+        fileId: string,
+    ): Observable<void> {
+        return this.http.post<void>(
+            FILE_METADATA_ROUTES.CANCEL_FILE_PROCESSING(
+                learningObjectId,
+                fileId,
+            ),
+            {},
+            { headers: this.headers, withCredentials: true },
+        );
+    }
 
     /**
      * Helper: extracts the file extension from a filename (including the dot)

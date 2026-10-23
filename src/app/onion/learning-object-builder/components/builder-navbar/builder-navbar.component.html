@@ -62,18 +62,14 @@
                 [states]="states"></clark-lo-status-indicator>
             <span
                 class="agentic-builder-action-wrapper"
-                [tip]="
-                    hasMaterials
-                        ? 'Generate suggestions from your learning object materials.'
-                        : 'Upload materials before generating details with AI.'
-                "
+                [tip]="getGenerateWithAITooltip()"
                 tipPosition="bottom">
                 <button
                     type="button"
                     class="agentic-builder-action"
                     aria-label="Generate with AI"
-                    [attr.aria-disabled]="!hasMaterials"
-                    [disabled]="!hasMaterials"
+                    [attr.aria-disabled]="!canGenerateWithAI"
+                    [disabled]="!canGenerateWithAI"
                     (click)="$event.stopPropagation()"
                     (activate)="toggleAgenticBuilder()">
                     <i class="fas fa-sparkles" aria-hidden="true"></i>

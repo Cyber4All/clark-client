@@ -1,0 +1,27 @@
+<ng-container *ngIf="fileService.fileProcessingStatuses$ | async as statuses">
+    <span
+        *ngIf="getSummary(statuses) as summary"
+        class="processing-status"
+        [class.processing-status--parsed]="summary.parsed"
+        [class.processing-status--failed]="summary.failed"
+        role="status">
+        <span [ngSwitch]="summary.icon" aria-hidden="true">
+            <span *ngSwitchCase="'fa-check-circle'">
+                <i class="far fa-check-circle icon"></i>
+            </span>
+            <span *ngSwitchCase="'fa-spinner-third'">
+                <i class="far fa-spinner-third fa-spin icon"></i>
+            </span>
+            <span *ngSwitchCase="'fa-clock'">
+                <i class="far fa-clock icon"></i>
+            </span>
+            <span *ngSwitchCase="'fa-exclamation-circle'">
+                <i class="far fa-exclamation-circle icon"></i>
+            </span>
+            <span *ngSwitchDefault>
+                <i class="far fa-minus icon"></i>
+            </span>
+        </span>
+        {{ summary.label }}
+    </span>
+</ng-container>
