@@ -8,7 +8,7 @@
                 </div>
             </a>
             <div class="mid-bar">
-                <div class="search-bar">
+                <div class="search-bar" *ngIf="!isPlaylistsRoute">
                     <clark-search></clark-search>
                 </div>
             </div>
@@ -288,7 +288,7 @@
 
 <div>
     <clark-skip-link
-        *ngIf="showNav"
+        *ngIf="showNav && !isPlaylistsRoute"
         title="Skip directly to site content"
         skipLocation="pageContent"></clark-skip-link>
     <clark-skip-link
