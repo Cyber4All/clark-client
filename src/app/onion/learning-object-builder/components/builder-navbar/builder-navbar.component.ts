@@ -140,9 +140,16 @@ export class BuilderNavbarComponent implements OnDestroy {
                 break;
             case "materials":
                 result = !!(
-                    this.auth.user?.emailVerified &&
-                    hasSavedLearningObject
+                    this.auth.user?.emailVerified && hasSavedLearningObject
                 );
+                break;
+            case "hierarchy":
+                // Eligible once the object is saved and is not a nanomodule
+                // (nanomodules cannot have children).
+                result =
+                    hasSavedLearningObject &&
+                    this.learningObject?.length !==
+                        LearningObject.Length.NANOMODULE;
                 break;
         }
 

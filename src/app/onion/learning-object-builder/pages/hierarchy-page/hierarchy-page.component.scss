@@ -1,0 +1,48 @@
+@import "_vars.scss";
+
+:host {
+    display: block;
+}
+
+// The builder navbar is fixed at the top (~160px tall). Pin this tab's content
+// just below it and let it scroll independently, mirroring how the shared
+// column-wrapper positions the other tabs — but full width, since the Hierarchy
+// tab no longer has the left "Children" column.
+.hierarchy-page {
+    position: fixed;
+    top: 160px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    padding: 30px 25px 40px;
+    box-sizing: border-box;
+}
+
+// Center the content and cap its width (at the app-wide max) so the tree uses
+// most of the screen on wide displays while keeping small side margins.
+.hierarchy-page__inner {
+    max-width: $max-width;
+    margin: 0 auto;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.08);
+    padding: 10px 24px 24px;
+    box-sizing: border-box;
+}
+
+.hierarchy-header {
+    padding: 8px 0 6px;
+
+    &__title {
+        margin: 0;
+        font-size: $larger;
+        font-weight: 700;
+    }
+
+    &__subtitle {
+        margin: 6px 0 18px;
+        color: $medium-grey;
+        font-size: $small;
+    }
+}

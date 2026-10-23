@@ -35,7 +35,9 @@
                 *ngIf="
                     !['unreleased', 'rejected'].includes(
                         learningObject?.status
-                    ) && learningObject?.collection && collection
+                    ) &&
+                    learningObject?.collection &&
+                    collection
                 "
                 class="top__collection"
                 tip="This learning object has been submitted to the {{
@@ -129,6 +131,16 @@
                             disabled: !canRoute('materials'),
                             link: 'materials',
                             text: 'Materials',
+                        }"></ng-container>
+                </li>
+                <li>
+                    <ng-container
+                        aria-label="Hierarchy Link"
+                        [ngTemplateOutlet]="navItemTemplate"
+                        [ngTemplateOutletContext]="{
+                            disabled: !canRoute('hierarchy'),
+                            link: 'hierarchy',
+                            text: 'Hierarchy',
                         }"></ng-container>
                 </li>
             </ul>
