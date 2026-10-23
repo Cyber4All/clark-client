@@ -62,7 +62,11 @@ a {
         .framework-badge {
             position: absolute;
             top: 8px;
-            right: 8px;
+            right: var(--learning-object-badge-right, 8px);
+            max-width: var(--learning-object-badge-max-width, none);
+            transition: var(--learning-object-badge-transition, none);
+            box-sizing: border-box;
+            overflow-wrap: anywhere;
             padding: 4px 10px;
             border-radius: 4px;
             font-size: $smaller;
@@ -470,7 +474,7 @@ a {
                     font-size: 9px;
                     padding: 2px 6px;
                     top: 6px;
-                    right: 6px;
+                    right: var(--learning-object-badge-right, 6px);
                     gap: 3px;
 
                     &.dcwf-badge i {
