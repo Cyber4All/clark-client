@@ -11,7 +11,7 @@
 }
 
 h1 {
-    color: $darker-grey;
+    color: var(--theme-text-strong);
     font-size: $largest;
     font-weight: 600;
     margin: 0;
@@ -20,7 +20,7 @@ h1 {
 h2 {
     font-size: $larger;
     font-weight: 600;
-    color: $darker-grey;
+    color: var(--theme-text-strong);
     margin: 0;
 }
 

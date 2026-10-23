@@ -215,9 +215,7 @@
                         <li
                             [routerLink]="['admin']"
                             *ngIf="auth.hasCuratorAccess()">
-                            {{
-                                auth.hasEditorAccess() ? "Admin" : "Curator"
-                            }}
+                            {{ auth.hasEditorAccess() ? "Admin" : "Curator" }}
                             Dashboard
                         </li>
                         <li (click)="auth.logout()">Sign Out</li>
@@ -319,8 +317,8 @@
 <!-- <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
                     <div #contextMenu class="context-popup">
                         <ul>
-                            <li 
-                            *ngFor="let l of academicLevels" 
+                            <li
+                            *ngFor="let l of academicLevels"
                             (click)="navService.setLevel(l)"
                             >{{ l | titlecase}}</li>
                         </ul>
