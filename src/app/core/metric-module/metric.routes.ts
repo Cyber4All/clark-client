@@ -35,6 +35,15 @@ export const METRIC_ROUTES = {
         return `${environment.apiURL}/learning-objects/stats`;
     },
 
+    /**
+     * Gets the number of downloads in a date range.
+     * @param start - Inclusive ISO-8601 start timestamp
+     * @param end - Exclusive ISO-8601 end timestamp
+     */
+    GET_TOTAL_DOWNLOADS(start: string, end: string) {
+        return `${environment.apiURL}/reports/total-downloads?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`;
+    },
+
     GET_TAG_METRICS(tagId?: string) {
         return `${environment.apiURL}/tags/${tagId}/metrics`;
     },
