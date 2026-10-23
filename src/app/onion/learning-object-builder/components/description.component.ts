@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+} from "@angular/core";
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -6,6 +13,8 @@ import {
 } from "@angular/forms";
 import {
     BOLD_BUTTON,
+    EditorComponent,
+    ExecCommand,
     ITALIC_BUTTON,
     LINK_INPUT,
     NgxSimpleTextEditorModule,
@@ -16,7 +25,28 @@ import {
     UNDO_BUTTON,
     UNORDERED_LIST_BUTTON,
 } from "ngx-simple-text-editor";
-import { skip } from "rxjs/operators";
+
+export function normalizeDescriptionHeadings(description: string): string {
+    const container = document.createElement("div");
+    container.innerHTML = description;
+    const headings = container.querySelectorAll("h1, h2");
+
+    if (!headings.length) {
+        return description;
+    }
+
+    headings.forEach((heading) => {
+        const paragraph = document.createElement("p");
+
+        while (heading.firstChild) {
+            paragraph.appendChild(heading.firstChild);
+        }
+
+        heading.replaceWith(paragraph);
+    });
+
+    return container.innerHTML;
+}
 
 @Component({
     selector: "onion-learning-object-description",
@@ -31,6 +61,8 @@ import { skip } from "rxjs/operators";
                 <st-editor
                     [formControl]="description"
                     [(ngModel)]="learningObject.description"
+                    (click)="preventToolbarSubmit($event)"
+                    (paste)="normalizePastedHeadings($event)"
                     [config]="config"></st-editor>
             </div>
         </div>
@@ -134,6 +166,10 @@ import { skip } from "rxjs/operators";
                 outline: 2px solid rgba(28, 112, 221, 0.35);
                 outline-offset: -2px;
             }
+
+            .description-wrapper ::ng-deep .st-area p {
+                margin: 0;
+            }
         `,
     ],
     standalone: true,
@@ -141,6 +177,7 @@ import { skip } from "rxjs/operators";
 })
 export class LearningObjectDescriptionComponent implements OnInit {
     @Input() learningObject;
+    @ViewChild(EditorComponent) editor: EditorComponent;
 
     description = new UntypedFormControl("");
     config = {
@@ -164,15 +201,33 @@ export class LearningObjectDescriptionComponent implements OnInit {
     @Output() textOutput: EventEmitter<string> = new EventEmitter();
 
     ngOnInit() {
-        // Watch for any updates to the description form.
-        this.description.valueChanges
-            .pipe(skip(1))
-            .subscribe((description: string) => {
-                this.textOutput.emit(description);
-            });
-
         if (this.learningObject.description) {
             this.description.patchValue(this.learningObject.description);
+        }
+
+        // Watch for any updates to the description form.
+        this.description.valueChanges.subscribe((description: string) => {
+            this.textOutput.emit(description);
+        });
+    }
+
+    normalizePastedHeadings(event: ClipboardEvent): void {
+        const pastedHtml = event.clipboardData?.getData("text/html") || "";
+        const normalizedHtml = normalizeDescriptionHeadings(pastedHtml);
+
+        if (normalizedHtml === pastedHtml) {
+            return;
+        }
+
+        event.preventDefault();
+        this.editor.execCommand(ExecCommand.insertHTML, normalizedHtml);
+    }
+
+    preventToolbarSubmit(event: MouseEvent): void {
+        const target = event.target as HTMLElement;
+
+        if (target.closest(".st-toolbar button")) {
+            event.preventDefault();
         }
     }
 }
