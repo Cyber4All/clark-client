@@ -310,14 +310,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         message = err;
                     }
-                    this.notificationService.error(
-                        "Error!",
-                        message,
-                        // Have invalid file name toast persist long enough for the user to read which files are causing the upload issue
-                        message.includes("File name contains")
-                            ? 10_000
-                            : undefined,
-                    );
+                    if (message.includes("File name contains")) {
+                        this.notificationService.persistentError(
+                            "Error!",
+                            message,
+                        );
+                    } else {
+                        this.notificationService.error("Error!", message);
+                    }
                 }
             });
     }
