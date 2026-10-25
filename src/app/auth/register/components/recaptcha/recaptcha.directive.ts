@@ -5,6 +5,7 @@ import { Input } from "@angular/core";
 import { Directive } from "@angular/core";
 import {
     ControlValueAccessor,
+    NgControl,
     UntypedFormControl,
     Validators,
     NG_VALUE_ACCESSOR,
@@ -83,7 +84,8 @@ export class RecaptchaDirective
     }
 
     ngAfterViewInit() {
-        this.control = this.injector.get(UntypedFormControl);
+        const ngControl = this.injector.get(NgControl);
+        this.control = ngControl.control as UntypedFormControl;
         this.setValidators();
     }
 
