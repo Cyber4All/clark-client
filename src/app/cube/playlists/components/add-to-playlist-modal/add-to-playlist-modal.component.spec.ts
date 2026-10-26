@@ -53,7 +53,9 @@ describe("AddToPlaylistModalComponent", () => {
     });
 
     it("loads the current user's available playlists", () => {
-        expect(playlistService.getPlaylists).toHaveBeenCalledWith("user-id");
+        expect(playlistService.getPlaylists).toHaveBeenCalledWith({
+            userId: "user-id",
+        });
         expect(component.playlists).toEqual([playlist]);
     });
 

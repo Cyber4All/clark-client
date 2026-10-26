@@ -16,7 +16,7 @@ import {
 } from "@angular/forms";
 import { PlaylistService } from "app/core/playlist-module/playlist.service";
 import {
-    CreatePlaylistRequest,
+    CreatePlaylist,
     Playlist,
     PlaylistVisibility,
 } from "app/core/playlist-module/playlist.types";
@@ -68,7 +68,7 @@ export class AddToPlaylistModalComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.playlistService.getPlaylists(this.userId).subscribe({
+        this.playlistService.getPlaylists({ userId: this.userId }).subscribe({
             next: (playlists) => {
                 this.playlists = playlists.filter(
                     ({ learningObjectCuids }) =>
@@ -125,7 +125,7 @@ export class AddToPlaylistModalComponent implements OnInit {
             return;
         }
 
-        const request: CreatePlaylistRequest = {
+        const request: CreatePlaylist = {
             name: this.createForm.controls.name.value.trim(),
             description: this.createForm.controls.description.value.trim(),
             visibility: this.createForm.controls.visibility.value,
