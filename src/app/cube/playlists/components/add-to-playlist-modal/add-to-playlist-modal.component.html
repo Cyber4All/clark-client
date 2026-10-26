@@ -70,20 +70,15 @@
                 [autofocus]="creating"
                 formControlName="name"
                 [attr.aria-invalid]="
-                    createForm.controls.name.touched &&
-                    createForm.controls.name.invalid
+                    createAttempted && createForm.controls.name.invalid
                 "
                 [attr.aria-describedby]="
-                    createForm.controls.name.touched &&
-                    createForm.controls.name.invalid
+                    createAttempted && createForm.controls.name.invalid
                         ? 'playlist-name-error'
                         : null
                 " />
             <p
-                *ngIf="
-                    createForm.controls.name.touched &&
-                    createForm.controls.name.invalid
-                "
+                *ngIf="createAttempted && createForm.controls.name.invalid"
                 id="playlist-name-error"
                 class="validation-error"
                 role="alert">
@@ -96,19 +91,16 @@
                 rows="3"
                 formControlName="description"
                 [attr.aria-invalid]="
-                    createForm.controls.description.touched &&
-                    createForm.controls.description.invalid
+                    createAttempted && createForm.controls.description.invalid
                 "
                 [attr.aria-describedby]="
-                    createForm.controls.description.touched &&
-                    createForm.controls.description.invalid
+                    createAttempted && createForm.controls.description.invalid
                         ? 'playlist-description-error'
                         : null
                 "></textarea>
             <p
                 *ngIf="
-                    createForm.controls.description.touched &&
-                    createForm.controls.description.invalid
+                    createAttempted && createForm.controls.description.invalid
                 "
                 id="playlist-description-error"
                 class="validation-error"

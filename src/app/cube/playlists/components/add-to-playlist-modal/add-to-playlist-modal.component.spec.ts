@@ -76,6 +76,16 @@ describe("AddToPlaylistModalComponent", () => {
         expect(component.createForm.touched).toBe(false);
     });
 
+    it("returns to existing playlists without showing validation", () => {
+        component.showCreateForm();
+        component.createForm.controls.name.markAsTouched();
+
+        component.showPlaylistList();
+
+        expect(component.creating).toBe(false);
+        expect(component.createAttempted).toBe(false);
+    });
+
     it("shows the empty state", () => {
         component.playlists = [];
         fixture.detectChanges();

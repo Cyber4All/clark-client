@@ -44,6 +44,7 @@ export class AddToPlaylistModalComponent implements OnInit {
     saving = false;
     loadFailed = false;
     creating = false;
+    createAttempted = false;
     createdPlaylist?: Playlist;
 
     readonly createForm = new FormGroup({
@@ -96,6 +97,7 @@ export class AddToPlaylistModalComponent implements OnInit {
     }
 
     showPlaylistList(): void {
+        this.createAttempted = false;
         this.creating = false;
     }
 
@@ -116,7 +118,11 @@ export class AddToPlaylistModalComponent implements OnInit {
     }
 
     createAndAdd(): void {
-        if (this.createForm.invalid || this.saving) {
+        if (this.saving) {
+            return;
+        }
+        this.createAttempted = true;
+        if (this.createForm.invalid) {
             this.createForm.markAllAsTouched();
             return;
         }
