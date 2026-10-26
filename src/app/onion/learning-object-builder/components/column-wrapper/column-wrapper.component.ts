@@ -10,6 +10,7 @@ import {
 import { UtilityService } from "app/core/utility-module/utility.service";
 import { NgStyle, NgClass, NgIf } from "@angular/common";
 
+// prettier-ignore
 @Component({
     selector: "clark-column-wrapper",
     templateUrl: "./column-wrapper.component.html",
@@ -18,8 +19,7 @@ import { NgStyle, NgClass, NgIf } from "@angular/common";
     imports: [NgStyle, NgClass, NgIf],
 })
 export class ColumnWrapperComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
+    implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild("columnWrapper") columnWrapper: ElementRef;
 
     @Input() columns = "lmr";

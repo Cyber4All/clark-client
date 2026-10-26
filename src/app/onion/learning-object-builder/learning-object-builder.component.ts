@@ -88,6 +88,7 @@ export const builderTransitions = trigger("builderTransition", [
 ]);
 
 // This component sets its own page title within the builder store
+// prettier-ignore
 @Component({
     selector: "clark-learning-object-builder",
     templateUrl: "./learning-object-builder.component.html",
@@ -123,8 +124,7 @@ export const builderTransitions = trigger("builderTransition", [
     ],
 })
 export class LearningObjectBuilderComponent
-    implements OnInit, AfterViewInit, OnDestroy
-{
+    implements OnInit, AfterViewInit, OnDestroy {
     // fires when the component is destroyed
     destroyed$: Subject<void> = new Subject();
 
