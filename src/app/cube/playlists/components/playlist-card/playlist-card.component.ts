@@ -12,7 +12,6 @@ import { Playlist } from "app/core/playlist-module/playlist.types";
 })
 export class PlaylistCardComponent {
     @Input({ required: true }) playlist!: Playlist;
-    @Input() showVisibility = false;
     @Input() resolvedAuthorName?: string;
 
     get objectCount(): number {

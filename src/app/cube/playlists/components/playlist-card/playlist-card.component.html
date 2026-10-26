@@ -9,9 +9,7 @@
     ">
     <div class="playlist-card__content">
         <div class="playlist-card__labels">
-            <span class="playlist-label">Playlist</span>
             <span
-                *ngIf="showVisibility"
                 class="visibility"
                 [class.visibility--private]="playlist.visibility === 'private'">
                 {{ playlist.visibility }}

@@ -31,4 +31,18 @@ describe("PlaylistCardComponent", () => {
         expect(link.getAttribute("href")).toBe("/playlists/playlist-id");
         expect(link.getAttribute("aria-label")).toContain("1 learning object");
     });
+
+    it("uses the playlist pill for visibility", () => {
+        const pill = fixture.nativeElement.querySelector(".visibility");
+        expect(pill.textContent.trim()).toBe("public");
+
+        fixture.componentInstance.playlist = {
+            ...playlist,
+            visibility: "private",
+        };
+        fixture.detectChanges();
+
+        expect(pill.textContent.trim()).toBe("private");
+        expect(pill.classList).toContain("visibility--private");
+    });
 });
