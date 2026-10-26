@@ -49,11 +49,11 @@ export class MetricService {
     async getTotalDownloads(start: string, end: string): Promise<number> {
         const response = await this.http
             .get<{
-                downloads: number;
+                totalDownloads: number;
             }>(METRIC_ROUTES.GET_TOTAL_DOWNLOADS(start, end))
             .pipe(catchError(this.handleError))
             .toPromise();
-        return response.downloads;
+        return response.totalDownloads;
     }
 
     /**

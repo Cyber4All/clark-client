@@ -34,7 +34,7 @@ describe("MetricService", () => {
                 req.params.get("end") === end,
         );
         expect(request.request.method).toBe("GET");
-        request.flush({ downloads: 123 });
+        request.flush({ totalDownloads: 123 });
 
         await expect(result).resolves.toBe(123);
     });
