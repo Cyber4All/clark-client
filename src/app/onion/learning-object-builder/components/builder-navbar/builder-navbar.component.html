@@ -35,7 +35,9 @@
                 *ngIf="
                     !['unreleased', 'rejected'].includes(
                         learningObject?.status
-                    ) && learningObject?.collection && collection
+                    ) &&
+                    learningObject?.collection &&
+                    collection
                 "
                 class="top__collection"
                 tip="This learning object has been submitted to the {{

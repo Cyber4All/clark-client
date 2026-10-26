@@ -1,16 +1,52 @@
-<ng-container *ngIf="!loading; else loadingTemplate">
-    <clark-profile-header [user]="user" [isUser]="isUser">
-    </clark-profile-header>
-    <clark-profile-learning-objects
-        class="learningObjects"
-        [isUser]="isUser"
-        [learningObjects]="allUserContributions">
-    </clark-profile-learning-objects>
+<ng-container *ngIf="user">
+    <clark-profile-header
+        [user]="user"
+        [isUser]="isUser"></clark-profile-header>
+    <main class="profile-content" aria-label="Profile content">
+        <mat-tab-group [(selectedIndex)]="selectedTab" dynamicHeight>
+            <mat-tab label="Contributions">
+                <section
+                    class="tab-content"
+                    aria-label="Contributions"
+                    [attr.aria-busy]="contributionsLoading">
+                    <clark-profile-learning-objects
+                        [learningObjects]="allUserContributions"
+                        [loading]="contributionsLoading"
+                        [failed]="contributionsError"
+                        (retry)="loadContributions()">
+                    </clark-profile-learning-objects>
+                </section>
+            </mat-tab>
+            <mat-tab label="Public Playlists">
+                <section
+                    class="tab-content"
+                    aria-label="Public Playlists"
+                    [attr.aria-busy]="playlistsLoading">
+                    <p *ngIf="playlistsLoading" role="status">
+                        Loading public playlists...
+                    </p>
+                    <div *ngIf="playlistsError" role="alert">
+                        <p>Unable to load public playlists.</p>
+                        <button type="button" (click)="loadPlaylists()">
+                            Try again
+                        </button>
+                    </div>
+                    <ng-container *ngIf="!playlistsLoading && !playlistsError">
+                        <p *ngIf="!publicPlaylists.length">
+                            No public playlists yet.
+                        </p>
+                        <div class="playlist-grid">
+                            <article *ngFor="let playlist of publicPlaylists">
+                                <clark-playlist-card
+                                    [playlist]="playlist"
+                                    [resolvedAuthorName]="
+                                        user.name
+                                    "></clark-playlist-card>
+                            </article>
+                        </div>
+                    </ng-container>
+                </section>
+            </mat-tab>
+        </mat-tab-group>
+    </main>
 </ng-container>
-
-<ng-template #loadingTemplate>
-    <div class="details-loading">
-        <i class="far fa-spinner-third fa-spin"></i>
-        Loading User's Profile...
-    </div>
-</ng-template>

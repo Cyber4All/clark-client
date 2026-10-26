@@ -140,8 +140,7 @@ export class BuilderNavbarComponent implements OnDestroy {
                 break;
             case "materials":
                 result = !!(
-                    this.auth.user?.emailVerified &&
-                    hasSavedLearningObject
+                    this.auth.user?.emailVerified && hasSavedLearningObject
                 );
                 break;
         }

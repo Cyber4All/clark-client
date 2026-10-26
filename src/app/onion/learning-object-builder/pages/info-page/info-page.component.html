@@ -9,8 +9,7 @@
             *ngIf="learningObject; else loadingTemplate"
             class="content-wrapper">
             <form>
-                <clark-info-page-metadata
-                    [error]="getNameError()">
+                <clark-info-page-metadata [error]="getNameError()">
                     <div title class="field-label">
                         <i class="fa-solid fa-asterisk required-asterisk"></i>
                         {{ copy.NAME }}

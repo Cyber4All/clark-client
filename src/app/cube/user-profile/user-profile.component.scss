@@ -1,21 +1,42 @@
-@import "_vars.scss";
-
-.details-loading {
-    text-align: center;
-    color: $dark-grey;
-    padding-top: 200px;
-    display: inline-flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-    font-size: $large;
-
-    .svg-inline--fa {
-        display: block;
-        color: $light-blue;
-        font-size: 30px;
-        margin-bottom: 10px;
-    }
+.profile-content {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+.tab-content {
+    padding: 1.5rem 0;
+    min-height: 10rem;
+}
+.playlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap: 1.5rem;
+}
+article {
+    min-width: 0;
+}
+button {
+    margin-top: 0.75rem;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+}
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid #1c70dd;
+    outline-offset: 3px;
+}
+// The app's dark Material theme needs light-surface tab colors here.
+mat-tab-group {
+    --mat-tab-header-inactive-label-text-color: #444;
+    --mat-tab-header-inactive-hover-label-text-color: #333;
+    --mat-tab-header-inactive-focus-label-text-color: #1558aa;
+    --mat-tab-header-active-label-text-color: #1558aa;
+    --mat-tab-header-active-hover-label-text-color: #1558aa;
+    --mat-tab-header-active-focus-label-text-color: #0b3a72;
+    --mat-tab-header-active-ripple-color: #1558aa;
+    --mat-tab-header-inactive-ripple-color: #1558aa;
+    --mat-tab-header-active-focus-indicator-color: #1558aa;
+    --mat-tab-header-active-hover-indicator-color: #1558aa;
+    --mat-tab-header-pagination-icon-color: #333;
+    --mdc-tab-indicator-active-indicator-color: #1558aa;
 }

@@ -88,6 +88,7 @@ export const builderTransitions = trigger("builderTransition", [
 ]);
 
 // This component sets its own page title within the builder store
+// prettier-ignore
 @Component({
     selector: "clark-learning-object-builder",
     templateUrl: "./learning-object-builder.component.html",
@@ -179,15 +180,15 @@ export class LearningObjectBuilderComponent
                     this.store.isRevision = true;
                     this.store.fetch(cuid, version).then((learningObject) => {
                         if (!learningObject) {
- return; 
-}
+                            return;
+                        }
                         this.setBuilderMode(learningObject);
                     });
                 } else if (cuid) {
                     this.store.fetch(cuid, version).then((learningObject) => {
                         if (!learningObject) {
- return; 
-}
+                            return;
+                        }
                         if (
                             learningObject.status ===
                             LearningObject.Status.RELEASED
@@ -358,9 +359,10 @@ export class LearningObjectBuilderComponent
      * @param object the Learning Object in question.
      */
     private isInReviewStage(object): boolean {
-        return [LearningObject.Status.WAITING, LearningObject.Status.REVIEW].includes(
-            object.status,
-        );
+        return [
+            LearningObject.Status.WAITING,
+            LearningObject.Status.REVIEW,
+        ].includes(object.status);
     }
 
     ngOnDestroy() {

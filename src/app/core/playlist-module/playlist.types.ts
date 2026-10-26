@@ -23,4 +23,5 @@ export interface Playlist {
 
 export interface GetPlaylistsQuery {
     playlistId?: string;
+    userId?: string;
 }
