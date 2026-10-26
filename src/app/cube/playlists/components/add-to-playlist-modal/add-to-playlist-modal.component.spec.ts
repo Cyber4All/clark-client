@@ -73,6 +73,7 @@ describe("AddToPlaylistModalComponent", () => {
         fixture.nativeElement.querySelector("footer .neutral").click();
 
         expect(closed).toHaveBeenCalled();
+        expect(component.createForm.touched).toBe(false);
     });
 
     it("shows the empty state", () => {

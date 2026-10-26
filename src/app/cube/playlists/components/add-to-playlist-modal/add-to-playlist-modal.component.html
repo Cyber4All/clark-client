@@ -137,9 +137,12 @@
     </ng-template>
 
     <footer>
-        <button class="button neutral" (click)="closed.emit()">Cancel</button>
+        <button type="button" class="button neutral" (click)="closed.emit()">
+            Cancel
+        </button>
         <button
             *ngIf="!creating"
+            type="button"
             class="button good"
             [class.disabled]="!selectedPlaylistId || saving"
             [disabled]="!selectedPlaylistId || saving"
@@ -148,6 +151,7 @@
         </button>
         <button
             *ngIf="creating"
+            type="button"
             class="button good"
             [class.disabled]="saving"
             [disabled]="saving"
