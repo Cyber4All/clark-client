@@ -23,7 +23,16 @@
     word-break: break-all;
 }
 
-.copy-button {
+.header-actions,
+.error-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.copy-button,
+.download-button,
+.retry-button {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -35,6 +44,7 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    text-decoration: none;
 
     &:hover:not(:disabled) {
         background-color: #0056b3;
@@ -48,6 +58,10 @@
     i {
         font-size: 1rem;
     }
+}
+
+.error-actions {
+    margin-top: 1.5rem;
 }
 
 .loading-state,
@@ -94,6 +108,24 @@
     overflow: auto;
 }
 
+.notebook-content {
+    flex: 1;
+    display: flex;
+    min-height: 0;
+
+    iframe {
+        flex: 1;
+        width: 100%;
+        min-height: calc(100vh - 82px);
+        border: 0;
+    }
+
+    &--loading {
+        visibility: hidden;
+        position: absolute;
+    }
+}
+
 @media (max-width: 768px) {
     .code-preview-header {
         flex-direction: column;
@@ -105,9 +137,17 @@
         font-size: 1.25rem;
     }
 
-    .copy-button {
+    .header-actions,
+    .copy-button,
+    .download-button,
+    .retry-button {
         width: 100%;
         justify-content: center;
+    }
+
+    .header-actions,
+    .error-actions {
+        flex-direction: column;
     }
 
     .code-content {

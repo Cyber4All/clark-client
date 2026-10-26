@@ -140,8 +140,7 @@ export class BuilderNavbarComponent implements OnDestroy {
                 break;
             case "materials":
                 result = !!(
-                    this.auth.user.emailVerified &&
-                    hasSavedLearningObject
+                    this.auth.user?.emailVerified && hasSavedLearningObject
                 );
                 break;
         }
@@ -208,7 +207,7 @@ export class BuilderNavbarComponent implements OnDestroy {
         // It may not present when opening the builder for the first time for
         // a new learning object
         if (
-            this.learningObject.id &&
+            this.learningObject?.id &&
             this.learningObject.status !== "unreleased"
         ) {
             // This will also bundle the learning object after the README is updated
@@ -225,7 +224,7 @@ export class BuilderNavbarComponent implements OnDestroy {
             this.store.upload !== "secondClickBack"
         ) {
             // If any data has be changed on the LO, then we need to rebundle
-            if (this.store.touched) {
+            if (this.store.touched && this.learningObject) {
                 const lo = this.learningObject as any;
                 this.bundlingService.bundleLearningObject(lo._id);
             }

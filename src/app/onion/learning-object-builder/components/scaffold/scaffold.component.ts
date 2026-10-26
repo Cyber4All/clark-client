@@ -107,7 +107,7 @@ export class ScaffoldComponent implements OnInit {
         this.childrenConfirmation = false;
         this.ariaLabel = "Add and delete Children";
 
-        if (!this.learningObject.id) {
+        if (!this.learningObject?.id) {
             this.children = [];
             return;
         }
@@ -190,9 +190,7 @@ export class ScaffoldComponent implements OnInit {
         this.deleteIndex = index;
         this.childrenConfirmationMessage = `Remove '${
             this.children[index].name
-        }' as a child of '${
-            this.learningObject.name
-        }'?`;
+        }' as a child of '${this.learningObject.name}'?`;
 
         this.toggleConfirmationModal(true);
     }
@@ -234,7 +232,7 @@ export class ScaffoldComponent implements OnInit {
      * Toggles the child modal
      */
     toggleAddChild(value: boolean = true) {
-        if (!this.learningObject.id) {
+        if (!this.learningObject?.id) {
             return;
         }
 

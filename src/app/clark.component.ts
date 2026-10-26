@@ -11,7 +11,6 @@ import {
     ViewContainerRef,
 } from "@angular/core";
 import { AuthService } from "./core/auth-module/auth.service";
-import { LibraryService } from "./core/library-module/library.service";
 import { trigger, transition, style, animate } from "@angular/animations";
 import { Title } from "@angular/platform-browser";
 import { filter } from "rxjs/operators";
@@ -91,7 +90,9 @@ export class ClarkComponent implements OnInit {
     hidingOutlines = true;
     learningObject: LearningObject;
 
-    downtime: Downtime = new Downtime(false, "");
+    // Local development does not query the production downtime endpoint.
+    // Initialize the state so the root template can render immediately.
+    downtime: Partial<Downtime> = { isDown: false, message: "" };
 
     @HostListener("window:click", ["$event"])
     @HostListener("window:keyup", ["$event"])
@@ -107,7 +108,6 @@ export class ClarkComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private libraryService: LibraryService,
         private router: Router,
         private activatedRoute: ActivatedRoute,
         private titleService: Title,
@@ -122,14 +122,9 @@ export class ClarkComponent implements OnInit {
         this.isSupportedBrowser = !/msie\s|trident\/|edge\//i.test(
             window.navigator.userAgent,
         );
-        !this.isSupportedBrowser
-            ? this.router.navigate(["/unsupported"])
-            : this.authService.isLoggedIn.subscribe((value: boolean) => {
-                  // Loads the user's library if they are logged in
-                  if (value) {
-                      this.libraryService.getLibrary({});
-                  }
-              });
+        if (!this.isSupportedBrowser) {
+            this.router.navigate(["/unsupported"]);
+        }
 
         this.router.events
             .pipe(
@@ -161,12 +156,18 @@ export class ClarkComponent implements OnInit {
     ngOnInit(): void {
         if (environment.production) {
             this.utilityService.getDowntime().then((down) => {
-                this.downtime = down;
+                this.downtime = {
+                    isDown: !!down?.isDown,
+                    message: down?.message || "",
+                };
             });
             // Determine if the application is currently under maintenance
             setInterval(async () => {
                 this.utilityService.getDowntime().then((down) => {
-                    this.downtime = down;
+                    this.downtime = {
+                        isDown: !!down?.isDown,
+                        message: down?.message || "",
+                    };
                 });
             }, 300000); // 5 min interval
             // check to see if the current version is behind the latest verison

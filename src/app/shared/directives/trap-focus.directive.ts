@@ -18,6 +18,7 @@ export class TrapFocusDirective implements OnDestroy {
 
                     el.addEventListener("blur", (event) => {
                         if (
+                            !event.relatedTarget ||
                             !(
                                 event.relatedTarget as HTMLElement
                             ).classList.contains("focus--trapped")

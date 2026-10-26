@@ -3,6 +3,7 @@ export const environment = {
     environment: "production",
     experimental: false,
     apiURL: "https://api.clark.center",
+    notebookViewerURL: "https://nbviewer.org",
     s3Bucket: "clark-prod-file-uploads",
     s3BucketRegion: "us-east-1",
     cognitoRegion: "us-east-1",

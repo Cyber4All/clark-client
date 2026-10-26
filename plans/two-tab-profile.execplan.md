@@ -8,6 +8,8 @@ Show exactly Contributions (initially selected) and Public Playlists. Reuse the 
 
 ## Progress
 
+- [x] (2026-10-26 18:11Z) Resolved seven merge conflicts; six focused suites / 22 tests and Angular build passed. Preserved flat contributions, user-scoped public playlists, encoded metrics parameter and unrelated incoming work.
+
 - [x] (2026-10-26) Reviewed current diff and original profile retrieval in HEAD; confirmed new author search and Browse logic can be removed entirely.
 - [x] (2026-10-26) Restored SearchService, Browse and Query to HEAD and deleted the workaround-only search spec.
 - [x] (2026-10-26) Restored original metadata/released-object retrieval and partial-success behavior; kept the flat list and two accessible tabs.
@@ -94,3 +96,14 @@ module.exports = {
   moduleNameMapper: {...config.moduleNameMapper, '^app/(.*)$': root + '/src/app/$1'}
 };
 ```
+
+
+### Merge conflict resolution (2026-10-26)
+
+Compared index stages 2 and 3 for all seven unmerged files before resolving. Playlist files differ only in the existing feature's userId query support/public-only service method and regression test; keep those. The incoming profile-learning-objects code restores collection grouping, superseded by the requested flat presentation; keep the flat component/template and state inputs. Both metrics versions use learningObjectcuid; keep encoding from this branch. Preserve all unrelated incoming staged work (including rating, library and builder changes). Resolve and stage only the seven conflict paths plus this plan, then run profile/playlist/metrics tests and the Angular build. Do not commit or finish the merge automatically.
+
+- Decision: Retain stage 2 content for the seven conflicted files after comparing both versions.
+  Rationale: Stage 3 contains no additional feature behavior to combine in these files; it lacks the public profile additions and restores the superseded collection grouping. Metrics encoding preserves the incoming parameter fix as well as the existing regression coverage.
+  Date/Author: 2026-10-26 / Codex
+
+Merge validation: all 22 focused profile/playlist/metrics tests passed using the documented temporary Jest config. `npx ng build clark` passed with the existing querystring CommonJS warning. No source files beyond the seven conflicts were modified by this resolution. The merge remains uncommitted for user review.

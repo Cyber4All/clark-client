@@ -171,14 +171,8 @@ export class DashboardItemComponent implements OnInit, OnChanges {
                 "unreleased",
                 this.learningObject.length !== "nanomodule",
             ],
-            manageMaterials: [
-                "unreleased",
-                this.verifiedEmail,
-            ],
-            submit: [
-                "unreleased",
-                this.verifiedEmail,
-            ],
+            manageMaterials: ["unreleased", this.verifiedEmail],
+            submit: ["unreleased", this.verifiedEmail],
             submitHierarchy: [
                 "unreleased",
                 this.parents.length === 0,
@@ -216,7 +210,7 @@ export class DashboardItemComponent implements OnInit, OnChanges {
      * @return {boolean} true if logged-in user has verified their email, false otherwise
      */
     get verifiedEmail(): boolean {
-        return this.auth.user.emailVerified;
+        return this.auth.user?.emailVerified ?? false;
     }
 
     get statusLabel(): string {

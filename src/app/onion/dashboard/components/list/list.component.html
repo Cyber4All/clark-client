@@ -92,7 +92,7 @@
     <div
         role="table"
         class="dashboard-list__table"
-        *ngIf="learningObjects.length > 0; else noLearningObjects">
+        *ngIf="learningObjects?.length > 0; else noLearningObjects">
         <div role="row" class="table__head">
             <clark-checkbox
                 [disabled]="!showOptions"
@@ -131,7 +131,7 @@
 
 <ng-template #noLearningObjects>
     <div class="dashboard-list__table empty">
-        <div *ngIf="learningObjects.length === 0">
+        <div *ngIf="learningObjects?.length === 0">
             <div class="top">
                 <i class="fal fa-box-open"></i>
                 <div class="top-message">Nothing here!</div>

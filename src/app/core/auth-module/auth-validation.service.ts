@@ -26,8 +26,8 @@ export class AuthValidationService {
             case "username":
                 return new UntypedFormControl("", [
                     Validators.required,
-                    Validators.minLength(2),
-                    Validators.maxLength(30),
+                    Validators.minLength(3),
+                    Validators.maxLength(20),
                 ]);
             case "email":
                 return new UntypedFormControl("", [
@@ -72,10 +72,10 @@ export class AuthValidationService {
             if (control.hasValidator(this.minLengthValidator)) {
                 return "Minimum Length 8 characters"; //min length for password
             }
-            return "Minimum Length 2 characters"; //min length for username
-        } else if (control.hasError("maxLength")) {
+            return "Minimum Length 3 characters"; //min length for username
+        } else if (control.hasError("maxlength")) {
             //max length for username
-            return "Maximum Length 30 characters";
+            return "Maximum Length 20 characters";
         } else if (control.hasError("pattern")) {
             //pattern error for password
             return this.getPwordRegexErrMsg(control.value);

@@ -49,8 +49,8 @@ export class MaterialsComponent implements OnInit, OnChanges {
     // to the behavior subjects. Angular output
     // events are not emitted here.
     emit(): void {
-        const files = this.materials.files;
-        const folderMeta = this.materials.folderDescriptions;
+        const files = this.materials?.files ?? [];
+        const folderMeta = this.materials?.folderDescriptions ?? [];
         this.files$.next(files);
         this.folderMeta$.next(folderMeta);
     }
@@ -59,8 +59,8 @@ export class MaterialsComponent implements OnInit, OnChanges {
         this.emit();
         // If the learning object doesn't have files or folders scroll to the URLs
         if (
-            this.materials.files.length === 0 &&
-            this.materials.folderDescriptions === undefined
+            !this.materials?.files?.length &&
+            this.materials?.folderDescriptions === undefined
         ) {
             this.previousSelection = this.currentSelection;
             this.currentSelection = "URLs";

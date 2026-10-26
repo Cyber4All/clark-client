@@ -11,16 +11,7 @@
             class="btn-group vertical"
             [ngClass]="{ 'review-pending': !isReleased }">
             <ng-container
-                *ngIf="disableLibraryButtons; else libraryButtonsTemplate">
-                <div
-                    [tip]="serviceOutageMessage"
-                    class="library-buttons-disabled">
-                    <ng-container
-                        *ngTemplateOutlet="
-                            libraryButtonsTemplate
-                        "></ng-container>
-                </div>
-            </ng-container>
+                *ngTemplateOutlet="downloadButtonsTemplate"></ng-container>
             <clark-editorial-action-pad
                 *ngIf="userCanRevise"
                 [userIsAuthor]="userIsAuthor"
@@ -33,8 +24,8 @@
         </div>
         <ng-container *ngIf="!auth.user">
             <div tabindex="0" class="action-message" id="login-msg">
-                Please <a [routerLink]="['/auth/login']">log in</a> to add this
-                Learning Object to your library.
+                Please <a [routerLink]="['/auth/login']">log in</a> to download
+                this Learning Object.
             </div>
         </ng-container>
         <ng-container *ngIf="auth.user && !auth.user?.emailVerified">
@@ -147,22 +138,18 @@
     </div>
 </clark-popup>
 
-<ng-template #libraryButtonsTemplate>
+<ng-template #downloadButtonsTemplate>
     <button
         *ngIf="!auth?.hasEditorAccess()"
         [tip]="tips.DOWNLOAD_NOW"
         tipPosition="top"
         [tipDisabled]="hasDownloadAccess || !loggedin"
         [ngClass]="{
-            disabled:
-                !auth.user ||
-                !hasDownloadAccess ||
-                downloading ||
-                disableLibraryButtons,
+            disabled: !auth.user || !hasDownloadAccess || downloading,
         }"
         class="button good"
         id="download-button"
-        (activate)="addToLibrary(true)"
+        (activate)="download(learningObject.id)"
         attr.aria-label="{{
             hasDownloadAccess
                 ? 'Clickable Download Now button'
@@ -184,11 +171,7 @@
             tipPosition="top"
             [tipDisabled]="hasDownloadAccess || !loggedin"
             [ngClass]="{
-                disabled:
-                    !auth.user ||
-                    !hasDownloadAccess ||
-                    downloading ||
-                    disableLibraryButtons,
+                disabled: !auth.user || !hasDownloadAccess || downloading,
                 hide: !hasReviewerAccess,
             }">
             <span *ngIf="hasDownloadAccess"
@@ -216,7 +199,7 @@
                     tabindex="0"
                     class="button-option"
                     id="download-button"
-                    (activate)="addToLibrary(true)"
+                    (activate)="download(learningObject.id)"
                     attr.aria-label="{{
                         hasDownloadAccess
                             ? 'Clickable Download Now button'

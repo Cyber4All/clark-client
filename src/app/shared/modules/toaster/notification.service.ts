@@ -52,8 +52,8 @@ export class ToastrOvenService {
         this.notify(title, text, "");
     }
 
-    public warning(title: string, text: string) {
-        this.notify(title, text, "warning");
+    public warning(title: string, text: string, duration?: number) {
+        this.notify(title, text, "warning", duration);
     }
 
     public setPosition(pos: { x: string; y: string }) {

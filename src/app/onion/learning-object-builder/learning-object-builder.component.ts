@@ -123,7 +123,8 @@ export const builderTransitions = trigger("builderTransition", [
     ],
 })
 export class LearningObjectBuilderComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     // fires when the component is destroyed
     destroyed$: Subject<void> = new Subject();
 
@@ -178,10 +179,16 @@ export class LearningObjectBuilderComponent
                     this.isRevision = true;
                     this.store.isRevision = true;
                     this.store.fetch(cuid, version).then((learningObject) => {
+                        if (!learningObject) {
+                            return;
+                        }
                         this.setBuilderMode(learningObject);
                     });
                 } else if (cuid) {
                     this.store.fetch(cuid, version).then((learningObject) => {
+                        if (!learningObject) {
+                            return;
+                        }
                         if (
                             learningObject.status ===
                             LearningObject.Status.RELEASED
@@ -352,9 +359,10 @@ export class LearningObjectBuilderComponent
      * @param object the Learning Object in question.
      */
     private isInReviewStage(object): boolean {
-        return [LearningObject.Status.WAITING, LearningObject.Status.REVIEW].includes(
-            object.status,
-        );
+        return [
+            LearningObject.Status.WAITING,
+            LearningObject.Status.REVIEW,
+        ].includes(object.status);
     }
 
     ngOnDestroy() {
