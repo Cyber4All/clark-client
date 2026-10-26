@@ -1,111 +1,71 @@
-# SC-39969: Add the learning-object details playlist action
+# SC-39969: Add learning objects to playlists
+
+This ExecPlan is maintained according to `PLANS.md`.
 
 ## Purpose / Big Picture
 
-Add an “Add to Playlist” action to the learning-object details action panel. It must sit below the existing download controls and above editorial actions such as “Create a Revision,” open a playlist picker containing the signed-in user's available playlists, and save the learning object to the selected playlist through the established playlist API contract. The UI reuses CLARK's popup, button, notification, and activation conventions.
+Authenticated users can add the learning object on its details page to an existing playlist or create a public/private playlist and add it in the same modal.
 
 ## Progress
 
-- [x] (2026-10-23 14:15Z) Reviewed repository guidance, Angular version, the details action panel, editorial actions, playlist service, and shared button conventions.
-- [x] (2026-10-23 14:28Z) Added the accessible playlist action and reusable output event in the requested action-stack position.
-- [x] (2026-10-23 14:32Z) Confirmed Prettier compliance, a clean `git diff --check`, and a successful Angular build.
-- [x] (2026-10-23 14:43Z) Refined the action icon to the supplied list-plus reference.
-- [x] (2026-10-23 14:48Z) Matched the playlist action's bottom spacing to the existing 15px vertical button rhythm.
-- [x] (2026-10-23 15:05Z) Restored the established user-filter and add-object playlist service operations.
-- [x] (2026-10-23 15:12Z) Added and wired the reusable playlist-picker modal.
-- [x] (2026-10-23 15:18Z) Added focused service and modal coverage; Jest is blocked before discovery by the existing transformer mismatch.
-- [x] (2026-10-23 15:25Z) Confirmed Prettier compliance and a successful Angular build.
-- [x] (2026-10-23 15:30Z) Ran repository lint successfully with 260 pre-existing warnings and no errors.
-- [x] (2026-10-23 15:45Z) Positioned the playlist icon independently so the action label remains optically centered.
-- [x] (2026-10-23 15:49Z) Shifted the playlist icon 5px farther left for additional breathing room.
-- [x] (2026-10-23 15:58Z) Marked the modal for change detection after asynchronous playlist loading so results render without search-field interaction.
-- [x] (2026-10-23 16:05Z) Removed modal search and now render the signed-in user's available playlists directly.
-- [x] (2026-10-26 14:20Z) Made playlist selection toggleable and traced failed saves to missing nested PUT/DELETE proxy routes in CLARK Gateway.
-- [x] (2026-10-26 14:42Z) Audited feature scope, removed redundant activation/icon code, and made save-error rendering reliable beneath the OnPush parent.
-- [x] (2026-10-26 15:25Z) Added inline playlist creation with accessible validation and private/public visibility.
-- [x] (2026-10-26 15:32Z) Chained playlist creation and CUID addition as one retry-safe modal flow.
-- [x] (2026-10-26 15:40Z) Added interaction coverage for cancellation, validation, duplicate, empty, success, and API-failure states; formatting, focused lint, and the Angular build pass.
+- [x] (2026-10-23 14:15Z) Reviewed the details action panel, playlist API client, shared popup, and button conventions.
+- [x] (2026-10-26 15:40Z) Implemented existing-playlist selection, inline creation, validation, success, empty, duplicate, and error states.
+- [x] (2026-10-26 14:35Z) Reduced the implementation and plan to ticket-specific behavior and validated the result.
 
 ## Surprises & Discoveries
 
-- Observation: The application has no `clark-button` component; reusable buttons use the global `.button` variants and the shared `(activate)` directive.
-- Observation: The current base removed playlist mutations, but commit `10cd8f0fe` contains the established backend contract for `PUT /playlists/:playlistId/objects/:cuid` and `GET /playlists?userId=...`.
-- Observation: Focused Jest execution fails in `jest-preset-angular` setup with `configSet.processWithEsbuild is not a function`, matching the pre-existing test-tooling drift documented by the base playlist plans.
-- Observation: `tsconfig.spec.json` reports TS18003 because its configured include glob finds no inputs, so it cannot provide a fallback spec compilation path.
-- Observation: Repository lint completes with no errors and 260 existing warnings in unrelated files.
-- Observation: The modal is rendered beneath the OnPush details action panel, so its asynchronous playlist response required an explicit check; focusing and blurring search had previously supplied that check indirectly.
-- Observation: `clark-service` implements and tests `PUT /playlists/:playlistId/objects/:cuid`. The initially missing gateway proxy was added upstream in CLARK Gateway commit `f065df3` and is not part of this client change.
+- Observation: The gateway must include commit `f065df3` for the playlist-object PUT proxy.
+- Observation: Focused Jest fails before discovery because the repository's `jest-preset-angular` transformer versions are incompatible.
 
 ## Decision Log
 
-- Decision: Add the control directly to `ActionPanelComponent` between the reusable download template and `EditorialActionPadComponent`.
-  Rationale: This is the only location that guarantees the requested ordering for both ordinary users and editors without duplicating the action in multiple components.
-  Date/Author: 2026-10-23 / Codex
+- Decision: Keep state in one standalone modal and API operations in `PlaylistService`.
+  Rationale: This keeps the action panel thin and the workflow reusable without adding global state or routes.
+  Date/Author: 2026-10-26 / Codex
 
-- Decision: Reuse `.button.neutral` and `ActivateDirective` rather than introduce a new shared component.
-  Rationale: These are the established CLARK primitives in the surrounding UI and require the fewest lines while preserving keyboard activation behavior.
-  Date/Author: 2026-10-23 / Codex
-
-- Decision: Compose the icon from Font Awesome's existing list and plus glyphs.
-  Rationale: Font Awesome Free does not provide a single list-plus glyph, and composing the two installed glyphs matches the reference without adding an image asset or dependency.
-  Date/Author: 2026-10-23 / Codex
-
-- Decision: Restore only `getPlaylists(userId)` and `addLearningObject()` from the earlier playlist client contract.
-  Rationale: The modal needs only the signed-in user's playlists and one mutation; restoring create, rename, delete, and remove operations would expand this story unnecessarily.
-  Date/Author: 2026-10-23 / Codex
-
-- Decision: Own loading, selection, and saving inside a standalone `AddToPlaylistModalComponent`.
-  Rationale: The details action panel remains a thin opener, while the domain interaction can be reused from other learning-object surfaces. Search was removed because the intended modal should directly show the user's current playlists.
-  Date/Author: 2026-10-23 / Codex
-
-- Decision: Keep inline creation in the existing picker and reuse the same add-object operation after POST creation.
-  Rationale: One modal preserves context and creates a coherent flow without adding route or global state. Retaining the created playlist in component state makes an add failure retryable without creating duplicate playlists.
+- Decision: Treat HTTP 409 as successful already-added behavior.
+  Rationale: Duplicate additions must not appear as failures or create duplicate entries.
   Date/Author: 2026-10-26 / Codex
 
 ## Outcomes & Retrospective
 
-The details action panel renders a full-width “Add to Playlist” control immediately after downloads and before any revision/editorial actions. The reusable modal loads the signed-in user's playlists, excludes playlists already containing the object, and supports either selecting an existing playlist or creating a named, described, public/private playlist before adding the object. Duplicate-add responses are successful already-added outcomes, and a failed add after creation can be retried without creating another playlist. The Angular build, formatting, and focused lint checks pass. Focused tests cover the required interactions but cannot execute because of the repository's existing Jest transformer mismatch.
+The details action opens an accessible picker for the current user's playlists. Users can select, unselect, create, add, cancel, retry failures, and return from creation without premature validation. Broader playlist browsing and Jest configuration remain out of scope.
 
 ## Context and Orientation
 
-`src/app/cube/details/components/action-panel/action-panel.component.html` renders the download controls through `libraryButtonsTemplate`, then renders `clark-editorial-action-pad`, whose first eligible action is “Create a Revision.” The action panel's SCSS already makes `.button` elements full-width and spaces them consistently. `src/app/core/playlist-module` owns playlist reads and the focused add-object mutation.
-
-This is a cross-feature UI/service change between details and playlists. It does not alter routing, guards, interceptors, environment configuration, or build configuration. Modal state remains local and short-lived; no new application store is introduced.
+`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient UI/form state and calls the typed methods in `src/app/core/playlist-module/playlist.service.ts`. This work does not change routing, guards, interceptors, shared UI contracts, environments, or build configuration.
 
 ## Plan of Work
 
-Keep the semantic action button after the download template and before the editorial action pad. Open a standalone playlist modal in the existing `clark-popup`, load the signed-in user's playlists, provide radio selection, and use the established PUT route to save. Emit close/added events so the modal remains reusable.
+Place the action below downloads and above editorial controls, use the shared popup and button styles, load the authenticated user's playlists, and support either an existing-playlist PUT or a create-then-add POST/PUT flow.
 
 ## Concrete Steps
 
-1. Edit `src/app/cube/details/components/action-panel/action-panel.component.html` at the action-stack boundary.
-2. Add the reusable modal under the playlist feature and restore the required typed list, create, and add-object service operations.
-3. Add focused service and modal tests.
-4. Run focused Jest, formatting, and `npm run build`; inspect generated-file drift.
+From the repository root:
+
+    node_modules/.bin/prettier --check <touched files>
+    node_modules/.bin/eslint <touched Angular files>
+    node_modules/.bin/jest src/app/cube/playlists/components/add-to-playlist-modal/add-to-playlist-modal.component.spec.ts --runInBand
+    npm run build
 
 ## Validation and Acceptance
 
-- On a learning-object details page, “Add to Playlist” appears below Download and above Create a Revision/Edit/Tag actions.
-- The action matches the width and spacing of adjacent CLARK buttons.
-- The control has a semantic button element and an accessible label.
-- Clicking the control opens the shared CLARK popup and lists only the signed-in user's playlists that do not already contain the object.
-- Selection enables submission, and submission calls the encoded add-object route.
-- Inline creation validates a nonblank name and description, captures public/private visibility, creates the playlist, and then adds the current CUID.
-- Duplicate-add errors are treated as successful already-added outcomes.
-- Successful saves show confirmation and close the modal; failures leave it open and allow retry.
-- The Angular build completes without template or TypeScript errors.
-
-Validation completed with `npx prettier --check` on the touched source and plan files, `git diff --check`, and `npm run build`. The build succeeded with only the repository's pre-existing `querystring` CommonJS optimization warning.
+- The authenticated-user action appears in the requested details-page position.
+- Current-user playlists show name and object count and can be selected or unselected.
+- Existing and newly created playlists receive the current CUID.
+- Creation requires nonblank name/description and public/private visibility.
+- Loading, empty, validation, success, duplicate, and API-error behavior is covered.
+- Cancel, close, and back navigation do not trigger validation.
+- Build, formatting, lint, and diff checks pass; focused Jest remains blocked by the existing transformer mismatch.
 
 ## Idempotence and Recovery
 
-The changes are additive and safe to reapply after checking for the modal component and `add-to-playlist-button` id. If validation changes generated `src/commit-hash.ts`, inspect it separately and do not mix unrelated generated drift into the story.
+Build and static checks are safe to repeat. A failed add leaves the modal retryable; a playlist created during that attempt is reused instead of recreated.
 
 ## Artifacts and Notes
 
-- Visual reference: `Screenshot 2026-10-23 at 10.04.20 AM.png`, supplied by the user.
-- Existing action surface: `src/app/cube/details/components/action-panel/action-panel.component.html`.
+PR #2350 remains temporarily based on `feature/sc-40132/create-browse-playlists-dashboard`; no rebase is required.
 
 ## Interfaces and Dependencies
 
-The implementation uses the existing global button CSS contract, Font Awesome icons, `clark-popup`, `ToastrOvenService`, reactive forms, `AutofocusDirective`, and the existing standalone `ActivateDirective` in `ActionPanelComponent`. It extends the typed `PlaylistService` with the established user-filtered GET, create POST, and add-object PUT operations. It adds no package, route, environment, or build dependency.
+Uses `PlaylistService`, `Playlist` types, reactive forms, `clark-popup`, existing global button styles, Font Awesome, `AutofocusDirective`, and `ToastrOvenService`. No package or configuration dependency is added.

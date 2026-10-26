@@ -113,8 +113,7 @@ describe("AddToPlaylistModalComponent", () => {
 
         component.createAndAdd();
 
-        expect(component.createForm.controls.name.touched).toBe(true);
-        expect(component.createForm.controls.description.touched).toBe(true);
+        expect(component.createAttempted).toBe(true);
         expect(playlistService.createPlaylist).not.toHaveBeenCalled();
     });
 

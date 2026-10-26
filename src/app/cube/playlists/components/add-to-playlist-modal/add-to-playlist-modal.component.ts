@@ -58,7 +58,6 @@ export class AddToPlaylistModalComponent implements OnInit {
         }),
         visibility: new FormControl<PlaylistVisibility>("private", {
             nonNullable: true,
-            validators: Validators.required,
         }),
     });
 
@@ -123,7 +122,6 @@ export class AddToPlaylistModalComponent implements OnInit {
         }
         this.createAttempted = true;
         if (this.createForm.invalid) {
-            this.createForm.markAllAsTouched();
             return;
         }
 
