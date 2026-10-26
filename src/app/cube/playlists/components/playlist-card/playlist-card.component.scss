@@ -84,8 +84,8 @@
     color: $light-blue;
 }
 .visibility--private {
-    background: rgba($blue-accent, 0.14);
-    color: $blue-accent;
+    background: darken($light-blue, 18%);
+    color: white;
 }
 
 .playlist-card__metadata {
