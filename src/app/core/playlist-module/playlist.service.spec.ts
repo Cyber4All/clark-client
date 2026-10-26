@@ -42,6 +42,16 @@ describe("PlaylistService", () => {
         request.flush([playlist]);
     });
 
+    it("gets playlists for one user", () => {
+        service.getPlaylists(playlist.userId).subscribe();
+
+        const request = httpMock.expectOne(
+            `${environment.apiURL}/playlists?userId=user%2Fid`,
+        );
+        expect(request.request.method).toBe("GET");
+        request.flush([playlist]);
+    });
+
     it("gets one raw playlist", () => {
         service.getPlaylist(playlist._id).subscribe();
 
@@ -50,6 +60,17 @@ describe("PlaylistService", () => {
         );
         expect(request.request.method).toBe("GET");
         expect(request.request.withCredentials).toBe(true);
+        request.flush(playlist);
+    });
+
+    it("adds a learning object to a playlist", () => {
+        service.addLearningObject(playlist._id, "object/cuid").subscribe();
+
+        const request = httpMock.expectOne(
+            `${environment.apiURL}/playlists/playlist%2Fid/objects/object%2Fcuid`,
+        );
+        expect(request.request.method).toBe("PUT");
+        expect(request.request.body).toEqual({});
         request.flush(playlist);
     });
 });
