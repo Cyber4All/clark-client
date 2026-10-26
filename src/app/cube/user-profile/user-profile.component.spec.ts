@@ -22,7 +22,7 @@ import { ProfileLearningObjectsComponent } from "./components/profile-learning-o
 import { LearningObjectListingComponent } from "../shared/learning-object/learning-object.component";
 
 @Component({ selector: "clark-profile-header", standalone: true, template: "" })
-class HeaderStub {
+class HeaderStubComponent {
     @Input() user: unknown;
     @Input() isUser: boolean;
 }
@@ -31,7 +31,7 @@ class HeaderStub {
     standalone: true,
     template: "{{ learningObject.name }}",
 })
-class ObjectStub {
+class ObjectStubComponent {
     @Input() learningObject: LearningObject;
 }
 
@@ -108,11 +108,11 @@ describe("Two-tab profile", () => {
         })
             .overrideComponent(UserProfileComponent, {
                 remove: { imports: [ProfileHeaderComponent] },
-                add: { imports: [HeaderStub] },
+                add: { imports: [HeaderStubComponent] },
             })
             .overrideComponent(ProfileLearningObjectsComponent, {
                 remove: { imports: [LearningObjectListingComponent] },
-                add: { imports: [ObjectStub] },
+                add: { imports: [ObjectStubComponent] },
             })
             .compileComponents();
         fixture = TestBed.createComponent(UserProfileComponent);
