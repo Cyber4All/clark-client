@@ -9,6 +9,9 @@ export const PLAYLIST_ROUTES = {
         if (query.playlistId) {
             params.set("playlistId", query.playlistId);
         }
+        if (query.userId) {
+            params.set("userId", query.userId);
+        }
         const queryString = params.toString();
         return queryString ? `${playlistsPath}?${queryString}` : playlistsPath;
     },
