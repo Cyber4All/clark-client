@@ -22,6 +22,9 @@ Add an “Add to Playlist” action to the learning-object details action panel.
 - [x] (2026-10-23 16:05Z) Removed modal search and now render the signed-in user's available playlists directly.
 - [x] (2026-10-26 14:20Z) Made playlist selection toggleable and traced failed saves to missing nested PUT/DELETE proxy routes in CLARK Gateway.
 - [x] (2026-10-26 14:42Z) Audited feature scope, removed redundant activation/icon code, and made save-error rendering reliable beneath the OnPush parent.
+- [x] (2026-10-26 15:25Z) Added inline playlist creation with accessible validation and private/public visibility.
+- [x] (2026-10-26 15:32Z) Chained playlist creation and CUID addition as one retry-safe modal flow.
+- [x] (2026-10-26 15:40Z) Added interaction coverage for cancellation, validation, duplicate, empty, success, and API-failure states; formatting, focused lint, and the Angular build pass.
 
 ## Surprises & Discoveries
 
@@ -55,9 +58,13 @@ Add an “Add to Playlist” action to the learning-object details action panel.
   Rationale: The details action panel remains a thin opener, while the domain interaction can be reused from other learning-object surfaces. Search was removed because the intended modal should directly show the user's current playlists.
   Date/Author: 2026-10-23 / Codex
 
+- Decision: Keep inline creation in the existing picker and reuse the same add-object operation after POST creation.
+  Rationale: One modal preserves context and creates a coherent flow without adding route or global state. Retaining the created playlist in component state makes an add failure retryable without creating duplicate playlists.
+  Date/Author: 2026-10-26 / Codex
+
 ## Outcomes & Retrospective
 
-The details action panel renders a full-width “Add to Playlist” control immediately after downloads and before any revision/editorial actions. The control opens a reusable modal that loads the signed-in user's playlists, excludes playlists already containing the object, and adds the object to the selected playlist. The Angular build and formatting checks pass. Focused tests were added but cannot execute because of the repository's existing Jest transformer mismatch.
+The details action panel renders a full-width “Add to Playlist” control immediately after downloads and before any revision/editorial actions. The reusable modal loads the signed-in user's playlists, excludes playlists already containing the object, and supports either selecting an existing playlist or creating a named, described, public/private playlist before adding the object. Duplicate-add responses are successful already-added outcomes, and a failed add after creation can be retried without creating another playlist. The Angular build, formatting, and focused lint checks pass. Focused tests cover the required interactions but cannot execute because of the repository's existing Jest transformer mismatch.
 
 ## Context and Orientation
 
@@ -72,7 +79,7 @@ Keep the semantic action button after the download template and before the edito
 ## Concrete Steps
 
 1. Edit `src/app/cube/details/components/action-panel/action-panel.component.html` at the action-stack boundary.
-2. Add the reusable modal under the playlist feature and restore the two required typed service operations.
+2. Add the reusable modal under the playlist feature and restore the required typed list, create, and add-object service operations.
 3. Add focused service and modal tests.
 4. Run focused Jest, formatting, and `npm run build`; inspect generated-file drift.
 
@@ -83,6 +90,8 @@ Keep the semantic action button after the download template and before the edito
 - The control has a semantic button element and an accessible label.
 - Clicking the control opens the shared CLARK popup and lists only the signed-in user's playlists that do not already contain the object.
 - Selection enables submission, and submission calls the encoded add-object route.
+- Inline creation validates a nonblank name and description, captures public/private visibility, creates the playlist, and then adds the current CUID.
+- Duplicate-add errors are treated as successful already-added outcomes.
 - Successful saves show confirmation and close the modal; failures leave it open and allow retry.
 - The Angular build completes without template or TypeScript errors.
 
@@ -99,4 +108,4 @@ The changes are additive and safe to reapply after checking for the modal compon
 
 ## Interfaces and Dependencies
 
-The implementation uses the existing global button CSS contract, Font Awesome icons, `clark-popup`, `ToastrOvenService`, and the existing standalone `ActivateDirective` in `ActionPanelComponent`. It extends the typed `PlaylistService` with the established user-filtered GET and add-object PUT operations. It adds no package, route, environment, or build dependency.
+The implementation uses the existing global button CSS contract, Font Awesome icons, `clark-popup`, `ToastrOvenService`, reactive forms, `AutofocusDirective`, and the existing standalone `ActivateDirective` in `ActionPanelComponent`. It extends the typed `PlaylistService` with the established user-filtered GET, create POST, and add-object PUT operations. It adds no package, route, environment, or build dependency.

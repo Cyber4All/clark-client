@@ -26,9 +26,14 @@
     display: flex;
     align-items: center;
     gap: 14px;
+    width: 100%;
     padding: 12px 14px;
     border: 1px solid $light-grey;
     border-radius: 4px;
+    background: white;
+    color: inherit;
+    font: inherit;
+    text-align: left;
     cursor: pointer;
 
     &.selected {
@@ -36,10 +41,9 @@
         background: rgba($light-blue, 0.08);
     }
 
-    input {
-        width: 20px;
-        height: 20px;
-        accent-color: $light-blue;
+    &:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 2px;
     }
 
     > .svg-inline--fa {
@@ -47,6 +51,18 @@
         color: $light-blue;
         font-size: $larger;
     }
+}
+
+.selection-control {
+    width: 18px;
+    height: 18px;
+    border: 2px solid $medium-grey;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.playlist-option.selected .selection-control {
+    border: 6px solid $light-blue;
 }
 
 .playlist-copy {
@@ -67,6 +83,66 @@
 .playlist-status {
     padding: 35px 0;
     text-align: center;
+}
+
+.create-playlist,
+.back-button {
+    margin-top: 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $light-blue;
+    font: inherit;
+    cursor: pointer;
+
+    .svg-inline--fa {
+        margin-right: 6px;
+    }
+}
+
+.create-form {
+    display: grid;
+    margin-top: 20px;
+
+    .back-button {
+        justify-self: start;
+        margin: 0 0 20px;
+    }
+
+    > label,
+    legend {
+        margin-bottom: 6px;
+        color: $darker-grey;
+        font-weight: bold;
+    }
+
+    > input,
+    textarea {
+        margin-bottom: 16px;
+        padding: 10px;
+        border: 1px solid $light-grey;
+        border-radius: 4px;
+        font: inherit;
+    }
+
+    fieldset {
+        display: flex;
+        gap: 24px;
+        padding: 0;
+        border: 0;
+
+        label {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+    }
+}
+
+.validation-error {
+    margin: -10px 0 16px !important;
+    color: $error-red;
+    font-size: $small;
 }
 
 footer {

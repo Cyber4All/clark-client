@@ -63,6 +63,21 @@ describe("PlaylistService", () => {
         request.flush(playlist);
     });
 
+    it("creates a playlist", () => {
+        const body = {
+            name: playlist.name,
+            description: playlist.description,
+            visibility: playlist.visibility,
+        };
+        service.createPlaylist(body).subscribe();
+
+        const request = httpMock.expectOne(`${environment.apiURL}/playlists`);
+        expect(request.request.method).toBe("POST");
+        expect(request.request.body).toEqual(body);
+        expect(request.request.withCredentials).toBe(true);
+        request.flush(playlist);
+    });
+
     it("adds a learning object to a playlist", () => {
         service.addLearningObject(playlist._id, "object/cuid").subscribe();
 
