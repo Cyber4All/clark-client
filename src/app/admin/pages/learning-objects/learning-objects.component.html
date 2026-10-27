@@ -27,8 +27,76 @@
                             [value]="allSelected"
                             (action)="selectAll()"></clark-checkbox>
                         <div>Status</div>
-                        <div>Name</div>
-                        <div>Author</div>
+                        <div>
+                            Name
+                            <button
+                                class="sort"
+                                aria-label="Sort by learning object name"
+                                (activate)="sortBy(OrderBy.Name)">
+                                <span
+                                    *ngIf="
+                                        query.orderBy !== OrderBy.Name ||
+                                        !query.sortType
+                                    ">
+                                    <i
+                                        style="font-size: 18px"
+                                        class="far fa-sort"></i>
+                                </span>
+                                <span
+                                    *ngIf="
+                                        query.orderBy === OrderBy.Name &&
+                                        query.sortType?.toString() === '1'
+                                    ">
+                                    <i
+                                        style="font-size: 18px"
+                                        class="far fa-sort-up"></i>
+                                </span>
+                                <span
+                                    *ngIf="
+                                        query.orderBy === OrderBy.Name &&
+                                        query.sortType?.toString() === '-1'
+                                    ">
+                                    <i
+                                        style="font-size: 18px"
+                                        class="far fa-sort-down"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div>
+                            Author
+                            <button
+                                class="sort"
+                                aria-label="Sort by author"
+                                (activate)="sortBy(OrderBy.Author)">
+                                <span
+                                    *ngIf="
+                                        query.orderBy !== OrderBy.Author ||
+                                        !query.sortType
+                                    ">
+                                    <i
+                                        style="font-size: 18px"
+                                        class="far fa-sort"></i>
+                                </span>
+                                <span
+                                    *ngIf="
+                                        query.orderBy === OrderBy.Author &&
+                                        query.sortType?.toString() === '1'
+                                    ">
+                                    <i
+                                        style="font-size: 18px"
+                                        class="far fa-sort-up"></i>
+                                </span>
+                                <span
+                                    *ngIf="
+                                        query.orderBy === OrderBy.Author &&
+                                        query.sortType?.toString() === '-1'
+                                    ">
+                                    <i
+                                        style="font-size: 18px"
+                                        class="far fa-sort-down"></i>
+                                </span>
+                            </button>
+                        </div>
                         <div>Length</div>
                         <div>
                             Date
