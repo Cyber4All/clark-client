@@ -1,16 +1,10 @@
-<clark-column-wrapper>
-    <div left>
-        <clark-scaffold
-            *ngIf="learningObject && learningObject.length !== 'nanomodule'"
-            [learningObject]="learningObject"></clark-scaffold>
-    </div>
+<clark-column-wrapper [columns]="'m'">
     <div main>
         <div
             *ngIf="learningObject; else loadingTemplate"
             class="content-wrapper">
             <form>
-                <clark-info-page-metadata
-                    [error]="getNameError()">
+                <clark-info-page-metadata [error]="getNameError()">
                     <div title class="field-label">
                         <i class="fa-solid fa-asterisk required-asterisk"></i>
                         {{ copy.NAME }}

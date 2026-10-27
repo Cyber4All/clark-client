@@ -1,0 +1,37 @@
+<!--
+    The WHOLE tree is a SINGLE cdkDropList (sorting disabled). Every node card
+    inside it is a cdkDrag (see clark-hierarchy-node); because cdkDrag finds its
+    drop list by walking up the injector, the cards register with this one list
+    regardless of how deeply they are nested. On drop, the tree component
+    hit-tests the drop pointer against the rendered node rows to decide the
+    target, then appends the dragged node as that node's child. There is no
+    cdkDropListGroup and there are no per-node drop lists.
+-->
+<div
+    class="hierarchy-tree"
+    cdkDropList
+    cdkDropListSortingDisabled
+    [class.is-dragging]="!!draggingNode"
+    (cdkDropListDropped)="onTreeDrop($event)"
+    role="tree"
+    aria-label="Learning object hierarchy">
+    <ng-container *ngIf="tree$ | async as tree">
+        <clark-hierarchy-node
+            *ngFor="let node of tree; trackBy: trackById"
+            [node]="node"
+            [depth]="0"
+            [isRoot]="true"
+            [canDropPredicate]="canDrop"
+            [canMovePredicate]="canMove"
+            [draggingNode]="draggingNode"
+            [hoveredTargetId]="hoveredTargetId"
+            (toggleExpanded)="onToggleExpanded($event)"
+            (addChild)="onAddChild($event)"
+            (dragActive)="onDragActive($event)"
+            (dragMoved)="onDragMoved($event)"></clark-hierarchy-node>
+    </ng-container>
+</div>
+<p class="hierarchy-tree__hint">
+    <i class="far fa-info-circle"></i>
+    Linked objects keep their original name and length.
+</p>

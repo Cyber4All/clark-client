@@ -140,9 +140,16 @@ export class BuilderNavbarComponent implements OnDestroy {
                 break;
             case "materials":
                 result = !!(
-                    this.auth.user?.emailVerified &&
-                    hasSavedLearningObject
+                    this.auth.user?.emailVerified && hasSavedLearningObject
                 );
+                break;
+            case "hierarchy":
+                // Eligible once the object is saved and is not a nanomodule
+                // (nanomodules cannot have children).
+                result =
+                    hasSavedLearningObject &&
+                    this.learningObject?.length !==
+                        LearningObject.Length.NANOMODULE;
                 break;
         }
 
@@ -187,6 +194,31 @@ export class BuilderNavbarComponent implements OnDestroy {
 
     triggerBlockedRouteClick(): void {
         this.validator.showSaveErrors = true;
+    }
+
+    /**
+     * The tooltip/aria message explaining WHY a locked tab is disabled. The
+     * reason differs per tab, so a single generic message (which only made
+     * sense for Outcomes/Materials) is wrong for Hierarchy — e.g. a nanomodule
+     * can never have children, which has nothing to do with naming the object.
+     *
+     * @param route the nav item's route key
+     * @returns a human-readable reason the tab is locked
+     */
+    disabledTip(route: string): string {
+        if (route === "hierarchy") {
+            // Hierarchy is gated on (a) the object being saved and (b) it not
+            // being a nanomodule. Distinguish the two so the message makes sense.
+            if (
+                this.learningObject?.length === LearningObject.Length.NANOMODULE
+            ) {
+                return "Nanomodules can't have children, so they don't have a hierarchy.";
+            }
+
+            return "Please name this learning object before building its hierarchy.";
+        }
+
+        return "Please name this learning object before adding outcomes or materials.";
     }
 
     /**

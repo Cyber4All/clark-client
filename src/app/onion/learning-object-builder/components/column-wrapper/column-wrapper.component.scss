@@ -11,16 +11,42 @@ $right-column: minmax(290px, 340px);
     top: 160px;
 
     &.no-left {
-        grid-template-columns: $middle-column $right-column;
+        // Two-column layout (wide main + narrow right).
+        //
+        // The template ALWAYS renders three scroll-wrappers (left, main, right)
+        // in the DOM; only their inner .column is conditionally shown. So the
+        // grid must keep three tracks that line up with those three wrappers.
+        // To drop the left column we collapse its track to 0 (and hide the now-
+        // empty left wrapper so its gap/padding doesn't show) rather than
+        // removing a track, which would misalign the remaining wrappers.
+        //
+        // The .columns element is position:fixed with no explicit width (the
+        // 3-column layout only spans the page via its 100vw middle track), so
+        // we anchor it across the viewport with left/right (honoring the 25px
+        // side margins) and let the main track fill with 1fr. Scoped to no-left
+        // so the 3-column (lmr) layout is unaffected.
+        left: 25px;
+        right: 25px;
+        margin: 0;
+        // Keep three tracks to match the three always-present scroll-wrappers
+        // (left/main/right). Collapse the left track to 0 rather than hiding the
+        // left wrapper with display:none — hiding it removes it from grid flow,
+        // which shifts main and right each one track to the left (main lands in
+        // the 0px track). Leaving the empty wrapper in place preserves the
+        // positional track mapping.
+        grid-template-columns: 0 minmax(675px, 1fr) $right-column;
+    }
+
+    &.no-left.no-right {
+        // Single full-width column. Keep three tracks for the three always-
+        // present scroll-wrappers (left/main/right); collapse both the left and
+        // right tracks to 0 so the main wrapper stays in the middle track and
+        // fills the row. (Inherits left/right/margin anchoring from &.no-left.)
+        grid-template-columns: 0 minmax(675px, 1fr) 0 !important;
     }
 
     &.no-right {
         grid-template-columns: $left-column $middle-column;
-    }
-
-    // scss-lint:disable MergeableSelector
-    &.no-left.no-right {
-        grid-template-columns: $middle-column !important;
     }
 
     .content {

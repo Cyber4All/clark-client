@@ -1,0 +1,157 @@
+<!--
+    A node row + its (optional) nested children.
+    The row carries `data-node-id` so the tree container can hit-test the drop
+    pointer against it and resolve this node as a drop target. The card itself
+    is a cdkDrag that registers with the single tree-level cdkDropList.
+-->
+<div
+    class="hierarchy-node"
+    [class.hierarchy-node--root]="isRoot"
+    [class.hierarchy-node--linked]="!node.editable"
+    [class.is-dragging]="isBeingDragged">
+    <div
+        class="node-row"
+        [attr.data-node-id]="node.id"
+        [class.drop-valid]="dropAffordance === 'valid'"
+        [class.drop-invalid]="dropAffordance === 'invalid'"
+        [class.is-hovered-target]="isHoveredTarget && isValidDropTarget">
+        <!-- Draggable card. Only movable nodes (editable or a linked root) can
+             be picked up. It registers with the single tree-level cdkDropList
+             via the injector; dropping it ONTO another node's row re-parents it
+             there (handled by the tree container's hit-test on drop). -->
+        <div
+            class="node-content"
+            [class.has-children]="hasChildren"
+            cdkDrag
+            [cdkDragData]="node"
+            [cdkDragDisabled]="!canMove"
+            (cdkDragStarted)="onDragStarted($event)"
+            (cdkDragMoved)="onDragMoved($event)"
+            (cdkDragEnded)="onDragEnded()">
+            <!-- Expand/collapse chevron (only when there are children) -->
+            <button
+                *ngIf="hasChildren"
+                type="button"
+                class="toggle"
+                [class.toggle--expanded]="isExpanded"
+                [attr.aria-label]="
+                    (isExpanded ? 'Collapse ' : 'Expand ') + node.name
+                "
+                [attr.aria-expanded]="isExpanded"
+                (click)="onToggle()">
+                <i class="far fa-chevron-right toggle__chevron"></i>
+            </button>
+            <span *ngIf="!hasChildren" class="toggle toggle--spacer"></span>
+
+            <!-- Drag handle for movable nodes (editable nodes and linked roots).
+                 A linked root shows the handle even though it is not editable,
+                 because it can be relocated as a whole unit. -->
+            <span
+                *ngIf="canMove"
+                class="drag-handle"
+                cdkDragHandle
+                tabindex="0"
+                attr.aria-label="Move {{ node.name }}">
+                <i class="fas fa-grip-vertical"></i>
+            </span>
+
+            <!-- Length badge (icon + name), matching the home-page hierarchy -->
+            <span class="badge" [ngClass]="'badge--' + node.length">
+                <span class="badge__icon" aria-hidden="true">
+                    <i [ngClass]="badgeIcon"></i>
+                </span>
+                {{ node.length | titlecase }}
+            </span>
+
+            <!-- Name -->
+            <span class="node-name">{{ node.name }}</span>
+
+            <!-- Root badge -->
+            <span *ngIf="isRoot" class="current-badge"
+                >Current learning object</span
+            >
+
+            <span class="node-row__spacer"></span>
+
+            <!-- Editable nodes: + action with a (currently inert) add menu -->
+            <ng-container *ngIf="node.editable">
+                <div class="add-menu-wrapper">
+                    <button
+                        type="button"
+                        class="add-button"
+                        attr.aria-label="Add a child to {{ node.name }}"
+                        [attr.aria-expanded]="menuOpen"
+                        (click)="toggleMenu()">
+                        <i class="far fa-plus"></i>
+                    </button>
+                    <div *ngIf="menuOpen" class="add-menu" role="menu">
+                        <button
+                            type="button"
+                            class="add-menu__item"
+                            role="menuitem"
+                            (click)="onAddChild('create-new')">
+                            <i class="far fa-plus-square"></i> Create new child
+                        </button>
+                        <button
+                            type="button"
+                            class="add-menu__item"
+                            role="menuitem"
+                            (click)="onAddChild('add-existing')">
+                            <i class="far fa-link"></i> Add existing learning
+                            object
+                        </button>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- Linked/read-only nodes: "Linked" label (no add; no overflow menu) -->
+            <ng-container *ngIf="!node.editable">
+                <span class="linked-label">
+                    <i class="far fa-link"></i> Linked
+                </span>
+            </ng-container>
+        </div>
+
+        <!-- Drop indicator: a purely visual dashed row shown BELOW the card
+             while this node is the hovered, valid drop target during a drag.
+             It is NOT a drop list (the single tree-level cdkDropList owns all
+             drop handling); it only reflects `dropAffordance === 'valid'`. -->
+        <div
+            *ngIf="dropAffordance === 'valid'"
+            class="drop-indicator"
+            aria-hidden="true">
+            <i class="far fa-arrow-down"></i> Move into {{ node.name }}
+        </div>
+    </div>
+
+    <!-- Children (recurse), animated on expand/collapse.
+         Each child is wrapped in a .node-branch that draws its own connector:
+         a vertical line (│) down its left edge and a horizontal elbow (──) into
+         the child card. The LAST child gets .node-branch--last, which clips the
+         vertical line at the elbow to form the └ corner; earlier children keep
+         the full-height line to form ├ and continue the spine to the next
+         sibling. The elbow is anchored a fixed distance from the top of the
+         row, so the lines are correct regardless of each row's height. -->
+    <div *ngIf="hasChildren && isExpanded" class="node-children" @branchExpand>
+        <div
+            class="node-branch"
+            [class.node-branch--last]="last"
+            *ngFor="
+                let child of node.children;
+                let last = last;
+                trackBy: trackById
+            ">
+            <clark-hierarchy-node
+                [node]="child"
+                [depth]="depth + 1"
+                [canDropPredicate]="canDropPredicate"
+                [canMovePredicate]="canMovePredicate"
+                [draggingNode]="draggingNode"
+                [hoveredTargetId]="hoveredTargetId"
+                (toggleExpanded)="bubbleToggle($event)"
+                (addChild)="bubbleAddChild($event)"
+                (dragActive)="bubbleDragActive($event)"
+                (dragMoved)="bubbleDragMoved($event)"></clark-hierarchy-node>
+        </div>
+    </div>
+</div>
