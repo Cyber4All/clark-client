@@ -63,17 +63,19 @@
             <span
                 class="agentic-builder-action-wrapper"
                 [tip]="
-                    hasMaterials
-                        ? 'Generate suggestions from your learning object materials.'
-                        : 'Upload materials before generating details with AI.'
+                    hasSupportedMaterials
+                        ? canGenerateWithAi
+                            ? 'Generate suggestions from your learning object materials.'
+                            : 'AI generation requires a supported material to finish processing successfully.'
+                        : 'Upload a DOCX, HTML, MD, PDF, PPTX, TXT, or XLSX file before generating details with AI.'
                 "
                 tipPosition="bottom">
                 <button
                     type="button"
                     class="agentic-builder-action"
                     aria-label="Generate with AI"
-                    [attr.aria-disabled]="!hasMaterials"
-                    [disabled]="!hasMaterials"
+                    [attr.aria-disabled]="!canGenerateWithAi"
+                    [disabled]="!canGenerateWithAi"
                     (click)="$event.stopPropagation()"
                     (activate)="toggleAgenticBuilder()">
                     <i class="fas fa-sparkles" aria-hidden="true"></i>
@@ -161,7 +163,13 @@
                     >Saving changes . . .
                 </span>
                 <span
-                    *ngIf="!isSaving"
+                    *ngIf="saveFailed"
+                    class="builder-navbar-wrapper__saving-indicator builder-navbar-wrapper__saving-indicator--error"
+                    role="status"
+                    >Save failed. Retry your change.
+                </span>
+                <span
+                    *ngIf="!isSaving && !saveFailed"
                     class="builder-navbar-wrapper__saving-indicator"
                     >All changes saved</span
                 >

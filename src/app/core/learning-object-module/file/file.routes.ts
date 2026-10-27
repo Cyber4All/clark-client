@@ -3,6 +3,12 @@ import { environment } from "../../../../environments/environment";
 export type MaterialsFilter = "released" | "unreleased";
 
 export const FILE_METADATA_ROUTES = {
+    GET_FILE_PROCESSING_STATUS(learningObjectId: string, fileId: string) {
+        return `${environment.apiURL}/learning-objects/${encodeURIComponent(
+            learningObjectId,
+        )}/materials/files/${encodeURIComponent(fileId)}/processing-status`;
+    },
+
     GET_LEARNING_OBJECT_FILE_METADATA(learningObjectId: string) {
         return `${environment.apiURL}/learning-objects/${encodeURIComponent(
             learningObjectId,

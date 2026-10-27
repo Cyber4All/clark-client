@@ -238,6 +238,10 @@
     font-size: $normal;
     text-decoration: underline;
     padding-top: 1px;
+
+    &--error {
+        color: $error-red;
+    }
 }
 
 .whole_changelog_wrapper {

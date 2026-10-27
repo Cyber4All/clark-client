@@ -52,12 +52,14 @@ import { AgenticBuilderPanelComponent } from "../agentic-builder-panel/agentic-b
 })
 export class BuilderNavbarComponent implements OnDestroy {
     isSaving: boolean;
+    saveFailed = false;
     editing: boolean;
     submissionError: boolean;
 
     showSubmission: boolean;
     showSubmissionOptions: boolean;
     showAgenticBuilder = false;
+    hasReadyAiMaterials = false;
 
     learningObject: LearningObject;
     collection: Collection;
@@ -94,11 +96,8 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.store.serviceInteraction$
             .pipe(takeUntil(this.destroyed$))
             .subscribe((params) => {
-                if (params) {
-                    this.isSaving = true;
-                } else {
-                    this.isSaving = false;
-                }
+                this.isSaving = params === true;
+                this.saveFailed = params === null;
             });
 
         this.store.learningObjectEvent
@@ -108,7 +107,17 @@ export class BuilderNavbarComponent implements OnDestroy {
             )
             .subscribe((val) => {
                 this.learningObject = val;
+                if (!this.hasSupportedMaterials)
+                    this.showAgenticBuilder = false;
                 this.getCollection();
+            });
+
+        this.fileService
+            .watchAiMaterialReadiness(this.store.learningObjectEvent)
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((ready) => {
+                this.hasReadyAiMaterials = ready;
+                if (!ready) this.showAgenticBuilder = false;
             });
 
         // check to see if we're editing a learning object or creating a new one by checking for an id in the url
@@ -152,11 +161,21 @@ export class BuilderNavbarComponent implements OnDestroy {
     }
 
     toggleAgenticBuilder(): void {
+        if (!this.canGenerateWithAi) return;
         this.showAgenticBuilder = !this.showAgenticBuilder;
     }
 
-    get hasMaterials(): boolean {
-        return Boolean(this.learningObject?.materials?.files?.length);
+    get canGenerateWithAi(): boolean {
+        return this.hasSupportedMaterials && this.hasReadyAiMaterials;
+    }
+
+    /** Whether uploaded materials include a file supported by the AI extraction pipeline. */
+    get hasSupportedMaterials(): boolean {
+        return (
+            this.learningObject?.materials?.files?.some((file) =>
+                FileService.supportsAiExtraction(file.extension),
+            ) ?? false
+        );
     }
 
     /**

@@ -5,11 +5,33 @@ import {
     HttpErrorResponse,
     HttpHeaders,
 } from "@angular/common/http";
-import { catchError, takeUntil } from "rxjs/operators";
-import { Observable, Subject, throwError } from "rxjs";
+import {
+    catchError,
+    distinctUntilChanged,
+    exhaustMap,
+    map,
+    startWith,
+    switchMap,
+    takeUntil,
+    takeWhile,
+    timeout,
+} from "rxjs/operators";
+import { forkJoin, Observable, of, Subject, throwError, timer } from "rxjs";
 import { FileUploadMeta } from "app/onion/learning-object-builder/components/content-upload/app/services/typings";
 import { LearningObject } from "@entity";
 import { SOURCE_CODE_EXTENSIONS } from "./source.extensions";
+import type { FileProcessingStatusResponse } from "./file-processing-status.types";
+
+// Matches DOCLING_SUPPORTED_EXTENSIONS in clark-service's Docling driver.
+const AI_MATERIAL_EXTENSIONS = new Set([
+    "docx",
+    "html",
+    "md",
+    "pdf",
+    "pptx",
+    "txt",
+    "xlsx",
+]);
 
 @Injectable({
     providedIn: "root",
@@ -22,6 +44,107 @@ export class FileService {
         new Observable<LearningObject>();
 
     constructor(private http: HttpClient) {}
+
+    static supportsAiExtraction(extension: string | undefined): boolean {
+        return AI_MATERIAL_EXTENSIONS.has(extension?.toLowerCase() ?? "");
+    }
+
+    /** Gets the processing status for the file's current storage revision. */
+    getFileProcessingStatus(
+        learningObjectId: string,
+        fileId: string,
+    ): Observable<FileProcessingStatusResponse> {
+        return this.http.get<FileProcessingStatusResponse>(
+            FILE_METADATA_ROUTES.GET_FILE_PROCESSING_STATUS(
+                learningObjectId,
+                fileId,
+            ),
+            { headers: this.headers, withCredentials: true },
+        );
+    }
+
+    /**
+     * Polls supported materials until one is processed. Changing files or revisions
+     * cancels old checks and resets readiness; unsubscribing stops all polling.
+     */
+    watchAiMaterialReadiness(
+        learningObjects: Observable<LearningObject | undefined>,
+    ): Observable<boolean> {
+        return learningObjects.pipe(
+            map((learningObject) => ({
+                learningObjectId: learningObject?.id,
+                files: (learningObject?.materials?.files ?? [])
+                    .filter(
+                        (file) =>
+                            file._id &&
+                            FileService.supportsAiExtraction(file.extension),
+                    )
+                    .map((file) => ({
+                        id: file._id,
+                        revision: file.storageRevision,
+                        date: file.date,
+                        extension: file.extension.toLowerCase(),
+                    }))
+                    .sort((left, right) => left.id.localeCompare(right.id)),
+            })),
+            distinctUntilChanged(
+                (previous, current) =>
+                    JSON.stringify(previous) === JSON.stringify(current),
+            ),
+            switchMap(({ learningObjectId, files }) => {
+                if (!learningObjectId || !files.length) return of(false);
+                const unavailableFiles = new Set<string>();
+                return timer(0, 5000).pipe(
+                    exhaustMap(() =>
+                        forkJoin(
+                            files.map((file) => {
+                                if (unavailableFiles.has(file.id))
+                                    return of(null);
+                                return this.getFileProcessingStatus(
+                                    learningObjectId,
+                                    file.id,
+                                ).pipe(
+                                    timeout(15000),
+                                    catchError((error: unknown) => {
+                                        if (
+                                            error instanceof
+                                                HttpErrorResponse &&
+                                            error.status >= 400 &&
+                                            error.status < 500 &&
+                                            error.status !== 408 &&
+                                            error.status !== 429
+                                        ) {
+                                            unavailableFiles.add(file.id);
+                                        }
+                                        return of(null);
+                                    }),
+                                );
+                            }),
+                        ),
+                    ),
+                    map((statuses) =>
+                        statuses.some(
+                            (status, index) =>
+                                status?.fileId === files[index].id &&
+                                (files[index].revision === undefined ||
+                                    status.storageRevision ===
+                                        files[index].revision) &&
+                                (status.processingStatus === "success" ||
+                                    status.processingStatus ===
+                                        "partial_success"),
+                        ),
+                    ),
+                    takeWhile(
+                        (ready) =>
+                            !ready && unavailableFiles.size < files.length,
+                        true,
+                    ),
+                    startWith(false),
+                );
+            }),
+            distinctUntilChanged(),
+        );
+    }
 
     /**
      * Helper: extracts the file extension from a filename (including the dot)
