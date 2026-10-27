@@ -34,6 +34,7 @@ import { NgIf, NgClass } from "@angular/common";
 import { BuilderNavbarComponent } from "./components/builder-navbar/builder-navbar.component";
 import { PopupComponent } from "../../shared/modules/popups/popup.component";
 import { ActivateDirective } from "../../shared/directives/activate.directive";
+import { AgenticBuilderSessionStorageService } from "./components/agentic-builder-panel/agentic-builder-session-storage.service";
 
 export const builderTransitions = trigger("builderTransition", [
     transition("* => *", [
@@ -155,6 +156,7 @@ export class LearningObjectBuilderComponent
         private authService: AuthService,
         private history: HistoryService,
         private cdRef: ChangeDetectorRef,
+        private agenticBuilderSessionStorage: AgenticBuilderSessionStorageService,
     ) {}
     ngAfterViewInit(): void {
         this.routeState =
@@ -395,6 +397,8 @@ export class LearningObjectBuilderComponent
     }
 
     ngOnDestroy() {
+        // Clear AI suggestions after leaving the builder
+        this.agenticBuilderSessionStorage.clearActive();
         // clear subscriptions before component is destroyed
         this.destroyed$.next();
         this.destroyed$.unsubscribe();
