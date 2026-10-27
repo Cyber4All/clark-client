@@ -38,6 +38,11 @@ const AI_MATERIAL_EXTENSIONS = new Set([
 })
 export class FileService {
     private headers = new HttpHeaders();
+    private fileProcessingStatuses = new BehaviorSubject<
+        ReadonlyMap<string, string>
+    >(new Map());
+    readonly fileProcessingStatuses$ =
+        this.fileProcessingStatuses.asObservable();
 
     @Input()
     learningObject$: Observable<LearningObject> =

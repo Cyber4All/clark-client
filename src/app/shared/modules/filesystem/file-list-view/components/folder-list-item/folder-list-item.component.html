@@ -4,7 +4,7 @@
     attr.aria-labelledby="folder-name"
     (activate)="handleClick($event)"
     class="grid-row wrapper"
-    [ngClass]="{ bundle: checkAccessGroups() }">
+    [ngClass]="{ bundle: checkAccessGroups(), parsing: inBuilder }">
     <div
         class="text-contained inline-flex"
         id="folder-name"
@@ -19,6 +19,9 @@
         {{ timestampAge }}
     </div>
     <div class="empty"></div>
+    <clark-file-processing-indicator
+        *ngIf="inBuilder"
+        [item]="folder"></clark-file-processing-indicator>
     <div class="toggleBundle" *ngIf="checkAccessGroups()">
         <clark-toggle-switch
             [state]="getFolderBundleStatus(folder)"

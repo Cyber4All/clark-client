@@ -5,13 +5,20 @@ import { AuthService } from "app/core/auth-module/auth.service";
 import { NgClass, NgIf } from "@angular/common";
 import { ActivateDirective } from "../../../../../directives/activate.directive";
 import { ToggleSwitchComponent } from "../../../../../components/toggle-switch/toggle-switch.component";
+import { FileProcessingIndicatorComponent } from "../../file-processing-indicator/file-processing-indicator.component";
 
 @Component({
     selector: "clark-folder-list-item",
     templateUrl: "folder-list-item.component.html",
     styleUrls: ["folder-list-item.component.scss"],
     standalone: true,
-    imports: [NgClass, ActivateDirective, NgIf, ToggleSwitchComponent],
+    imports: [
+        NgClass,
+        ActivateDirective,
+        NgIf,
+        ToggleSwitchComponent,
+        FileProcessingIndicatorComponent,
+    ],
 })
 export class FolderListItemComponent implements OnInit {
     @Input() folder: DirectoryNode;

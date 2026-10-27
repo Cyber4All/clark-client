@@ -146,6 +146,9 @@ export class BuilderStore {
     public learningObjectEvent: BehaviorSubject<LearningObject> =
         new BehaviorSubject(undefined);
 
+    // File IDs whose processing status must be checked again after a bundle change.
+    public materialProcessingChanged$ = new Subject<string[]>();
+
     // fired when this service needs to propagate changes to the learning object down to children components
     public outcomeEvent: BehaviorSubject<
         Map<string, Partial<LearningOutcome>>
@@ -661,23 +664,20 @@ export class BuilderStore {
      *              - item: the file/folder to save
      */
     async toggleBundle(event: { state: boolean; item: any }) {
+        let fileIDs: string[];
         if (event.item instanceof DirectoryNode) {
             // event.item is a Folder
-            const fileIDs = this.getAllFolderFileIDs(event.item);
-            await this.fileService.toggleBundle(
-                this.learningObject.id,
-                fileIDs,
-                event.state,
-            );
+            fileIDs = this.getAllFolderFileIDs(event.item);
         } else {
             // event.item is a File
-            const fileID = [event.item._id];
-            await this.fileService.toggleBundle(
-                this.learningObject.id,
-                fileID,
-                event.state,
-            );
+            fileIDs = [event.item._id];
         }
+        await this.fileService.toggleBundle(
+            this.learningObject.id,
+            fileIDs,
+            event.state,
+        );
+        this.materialProcessingChanged$.next(fileIDs);
     }
 
     /**
