@@ -17,6 +17,7 @@ import { SubmissionsService } from "app/core/learning-object-module/submissions/
 import { OutcomeService } from "app/core/learning-object-module/outcomes/outcome.service";
 import { FileService } from "app/core/learning-object-module/file/file.service";
 import { EditorialService } from "app/core/learning-object-module/editorial.service";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
 import type {
     AgenticBuilderSuggestions,
     AgenticOutcomeSuggestion,

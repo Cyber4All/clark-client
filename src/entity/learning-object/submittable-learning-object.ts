@@ -131,7 +131,7 @@ export namespace SubmittableLearningObject {
         if (
             !trimmedDescription ||
             trimmedDescription.length < 3 ||
-            trimmedDescription.length > 100
+            trimmedDescription.length > 1500
         ) {
             throw new EntityError(
                 SUBMITTABLE_LEARNING_OBJECT_ERRORS.INVALID_DESCRIPTION,
