@@ -16,7 +16,15 @@ import {
     takeWhile,
     timeout,
 } from "rxjs/operators";
-import { forkJoin, Observable, of, Subject, throwError, timer } from "rxjs";
+import {
+    BehaviorSubject,
+    forkJoin,
+    Observable,
+    of,
+    Subject,
+    throwError,
+    timer,
+} from "rxjs";
 import { FileUploadMeta } from "app/onion/learning-object-builder/components/content-upload/app/services/typings";
 import { LearningObject } from "@entity";
 import { SOURCE_CODE_EXTENSIONS } from "./source.extensions";
@@ -49,6 +57,11 @@ export class FileService {
         new Observable<LearningObject>();
 
     constructor(private http: HttpClient) {}
+
+    /** Publishes a snapshot so later caller mutations cannot change emitted statuses. */
+    setFileProcessingStatuses(statuses: ReadonlyMap<string, string>): void {
+        this.fileProcessingStatuses.next(new Map(statuses));
+    }
 
     static supportsAiExtraction(extension: string | undefined): boolean {
         return AI_MATERIAL_EXTENSIONS.has(extension?.toLowerCase() ?? "");

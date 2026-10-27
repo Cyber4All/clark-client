@@ -204,7 +204,7 @@ export class BuilderNavbarComponent implements OnDestroy {
     }
 
     getGenerateWithAITooltip(): string {
-        if (!this.hasMaterials) {
+        if (!this.learningObject?.materials?.files?.length) {
             return "Upload materials before generating details with AI.";
         }
         if (!this.hasParseableMaterials) {
