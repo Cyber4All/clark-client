@@ -59,6 +59,10 @@ export class PrimaryNavbarComponent implements OnInit {
     redirectUrl: string;
     // levelsDropdown: boolean;
 
+    get isPlaylistsRoute(): boolean {
+        return this.router.url.split(/[?#]/)[0] === "/playlists";
+    }
+
     @HostListener("window:resize", ["$event"])
     resizeWindow() {
         this.isDesktop = window.innerWidth >= this.resizeThreshold;

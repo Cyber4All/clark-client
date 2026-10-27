@@ -59,6 +59,11 @@ import { UrlManagerComponent } from "./url-manager/url-manager.component";
 import { FileUploadStatusComponent } from "./file-upload-status/file-upload-status.component";
 import { TeleporterComponent } from "../../../../../../shared/modules/teleporter/teleporter.component";
 import { PopupComponent } from "../../../../../../shared/modules/popups/popup.component";
+import {
+    getFilePath,
+    hasLongWindowsExtractionPathForFile,
+    WINDOWS_EXTRACTION_WARNING,
+} from "../../../../../../shared/modules/filesystem/path-length";
 
 export interface FileInput extends File {
     fullPath?: string;
@@ -231,6 +236,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
     private newFileMeta: FileUploadMeta[] = [];
 
     private credentialRefreshAttempted = false;
+    private warnedLongPaths = new Set<string>();
 
     constructor(
         private notificationService: ToastrOvenService,
@@ -269,6 +275,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     // Set the material information
                     this.folderMeta$.next(object.materials.folderDescriptions);
                     this.files$.next(object.materials.files);
+                    this.warnForLongPaths(object.materials.files);
 
                     // Check if the learning object has a solution file
                     this.solutionUpload = false;
@@ -302,14 +309,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         message = err;
                     }
-                    this.notificationService.error(
-                        "Error!",
-                        message,
-                        // Have invalid file name toast persist long enough for the user to read which files are causing the upload issue
-                        message.includes("File name contains")
-                            ? 10_000
-                            : undefined,
-                    );
+                    if (message.includes("File name contains")) {
+                        this.notificationService.persistentError(
+                            "Error!",
+                            message,
+                        );
+                    } else {
+                        this.notificationService.error("Error!", message);
+                    }
                 }
             });
     }
@@ -581,6 +588,7 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
      */
     private async handleUpload(files: FileInput[]) {
         this.uploadComplete.emit("false");
+        this.warnForLongPaths(files);
         this.enqueueFiles(files);
         try {
             const learningObject = await this.learningObject$
@@ -606,6 +614,30 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             throw e;
         }
+    }
+
+    private warnForLongPaths(
+        files: Array<{
+            fullPath?: string;
+            webkitRelativePath?: string;
+            name?: string;
+        }>,
+    ): void {
+        const longPaths = files
+            .filter(hasLongWindowsExtractionPathForFile)
+            .map(getFilePath)
+            .filter((path) => !this.warnedLongPaths.has(path));
+
+        if (!longPaths.length) {
+            return;
+        }
+
+        longPaths.forEach((path) => this.warnedLongPaths.add(path));
+        this.notificationService.warning(
+            "Path length warning",
+            `${longPaths.length} file path${longPaths.length === 1 ? " is" : "s are"} longer than 160 characters. ${WINDOWS_EXTRACTION_WARNING}`,
+            10_000,
+        );
     }
 
     /**

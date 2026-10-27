@@ -9,6 +9,7 @@ import { MatTooltip } from "@angular/material/tooltip";
 import { ToggleSwitchComponent } from "../../../../../components/toggle-switch/toggle-switch.component";
 import { FileSizePipe } from "../../file-size.pipe";
 import { FileProcessingIndicatorComponent } from "../../file-processing-indicator/file-processing-indicator.component";
+import { hasLongWindowsExtractionPathForFile } from "../../../path-length";
 
 @Component({
     selector: "clark-file-list-item",
@@ -103,6 +104,10 @@ export class FileListItemComponent implements OnInit {
 
     get canPreview(): boolean {
         return this.file && FileService.canPreview(this.file.name);
+    }
+
+    get hasLongPath(): boolean {
+        return hasLongWindowsExtractionPathForFile(this.file || {});
     }
 
     async onDownload() {

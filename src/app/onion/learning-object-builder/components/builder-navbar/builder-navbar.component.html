@@ -90,7 +90,8 @@
                     [ngClass]="{
                         good: !submissionError,
                         bad: validator.submissionMode && submissionError,
-                        disabled: !auth.user?.emailVerified,
+                        disabled:
+                            !auth.user?.emailVerified || !store.savedCorrectly,
                     }"
                     (activate)="auth.user?.emailVerified && triggerSubmit()">
                     <div

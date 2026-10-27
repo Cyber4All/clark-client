@@ -44,6 +44,10 @@ export class ToastrOvenService {
         this.notify(title, text, "error", duration);
     }
 
+    public persistentError(title: string, text: string): void {
+        this.notify(title, text, "persistentError");
+    }
+
     public alert(title: string, text: string): void {
         this.notify(title, text, "alert");
     }
@@ -52,8 +56,8 @@ export class ToastrOvenService {
         this.notify(title, text, "");
     }
 
-    public warning(title: string, text: string) {
-        this.notify(title, text, "warning");
+    public warning(title: string, text: string, duration?: number) {
+        this.notify(title, text, "warning", duration);
     }
 
     public setPosition(pos: { x: string; y: string }) {

@@ -57,6 +57,19 @@ const cube_routes: Routes = [
                 data: { title: "Browse Learning Objects" },
             },
             {
+                path: "playlists",
+                loadChildren: () =>
+                    import("./playlists/playlists.module").then(
+                        (m) => m.PlaylistsModule,
+                    ),
+                data: { title: "Browse Playlists" },
+            },
+            {
+                path: "playlits",
+                redirectTo: "playlists",
+                pathMatch: "full",
+            },
+            {
                 path: "press",
                 component: PressComponent,
                 data: { title: "Press and Media" },
@@ -112,6 +125,11 @@ const cube_routes: Routes = [
             },
             {
                 path: "library",
+                redirectTo: "download-history",
+                pathMatch: "full",
+            },
+            {
+                path: "download-history",
                 loadChildren: () =>
                     import("../cube/library/library.module").then(
                         (l) => l.LibraryModule,
