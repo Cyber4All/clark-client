@@ -1,17 +1,16 @@
 import {
     Component,
+    DestroyRef,
     EventEmitter,
     Input,
     OnChanges,
     OnInit,
     Output,
     SimpleChanges,
+    inject,
 } from "@angular/core";
-import {
-    FormsModule,
-    ReactiveFormsModule,
-    UntypedFormControl,
-} from "@angular/forms";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { ReactiveFormsModule, UntypedFormControl } from "@angular/forms";
 import {
     BOLD_BUTTON,
     ITALIC_BUTTON,
@@ -24,7 +23,6 @@ import {
     UNDO_BUTTON,
     UNORDERED_LIST_BUTTON,
 } from "ngx-simple-text-editor";
-import { skip } from "rxjs/operators";
 
 @Component({
     selector: "onion-learning-object-description",
@@ -40,7 +38,6 @@ import { skip } from "rxjs/operators";
             <div class="goals list">
                 <st-editor
                     [formControl]="description"
-                    [(ngModel)]="learningObject.description"
                     [config]="config"></st-editor>
             </div>
         </div>
@@ -152,11 +149,14 @@ import { skip } from "rxjs/operators";
         `,
     ],
     standalone: true,
-    imports: [NgxSimpleTextEditorModule, FormsModule, ReactiveFormsModule],
+    imports: [NgxSimpleTextEditorModule, ReactiveFormsModule],
 })
 export class LearningObjectDescriptionComponent implements OnInit, OnChanges {
     @Input() learningObject;
     @Input() disabled = false;
+
+    private readonly destroyRef = inject(DestroyRef);
+    private lastDescription = "";
 
     description = new UntypedFormControl("");
     config = {
@@ -180,24 +180,37 @@ export class LearningObjectDescriptionComponent implements OnInit, OnChanges {
     @Output() textOutput: EventEmitter<string> = new EventEmitter();
 
     ngOnChanges(changes: SimpleChanges): void {
+        if (changes.learningObject) {
+            this.syncDescription();
+        }
         if (changes.disabled) {
             this.setDisabledState();
         }
     }
 
     ngOnInit() {
-        // Watch for any updates to the description form.
+        this.syncDescription();
+        // The editor also emits on DOM attribute changes, including disabling it.
         this.description.valueChanges
-            .pipe(skip(1))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((description: string) => {
-                this.textOutput.emit(description);
+                const value = description ?? "";
+                if (this.disabled || value === this.lastDescription) return;
+                this.lastDescription = value;
+                this.textOutput.emit(value);
             });
 
-        if (this.learningObject.description) {
-            this.description.patchValue(this.learningObject.description);
-        }
-
         this.setDisabledState();
+    }
+
+    /** Synchronizes saved or accepted text without treating it as a user edit. */
+    private syncDescription(): void {
+        this.lastDescription = this.learningObject?.description ?? "";
+        if (this.description.value !== this.lastDescription) {
+            this.description.setValue(this.lastDescription, {
+                emitEvent: false,
+            });
+        }
     }
 
     private setDisabledState(): void {
