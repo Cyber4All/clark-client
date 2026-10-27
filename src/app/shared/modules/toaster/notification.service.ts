@@ -44,6 +44,10 @@ export class ToastrOvenService {
         this.notify(title, text, "error", duration);
     }
 
+    public persistentError(title: string, text: string): void {
+        this.notify(title, text, "persistentError");
+    }
+
     public alert(title: string, text: string): void {
         this.notify(title, text, "alert");
     }
