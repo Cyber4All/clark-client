@@ -71,7 +71,6 @@ export class FileBrowserComponent implements OnInit, OnDestroy {
         state: boolean;
         item: DirectoryNode | LearningObject.Material.File;
     }> = new EventEmitter();
-
     @Input() filesystem$: BehaviorSubject<DirectoryTree> = new BehaviorSubject(
         new DirectoryTree(),
     );

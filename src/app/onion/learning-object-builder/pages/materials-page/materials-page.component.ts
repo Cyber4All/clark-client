@@ -59,8 +59,7 @@ export class MaterialsPageComponent implements OnInit, OnDestroy {
             content: `<p>Remove semester-specific details, such as due dates, before submitting. By submitting, you consent to CLARK removing semester details found during review. Contact info@secured.team if you do not want this removed.</p>`,
         },
     ];
-
-    constructor(private store: BuilderStore) { }
+    constructor(private store: BuilderStore) {}
 
     ngOnInit() {
         // Sets the learning object observable to continuously update the

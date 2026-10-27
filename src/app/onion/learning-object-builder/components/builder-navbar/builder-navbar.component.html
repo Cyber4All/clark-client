@@ -18,7 +18,7 @@
             *ngIf="revisedVersion && !adminMode"
             aria-live="assertive"
             class="revising-notification">
-            Currently Revising: {{ learningObject?.name }}
+            Currently Revising: {{ learningObject?.displayName }}
         </div>
         <div class="top__left" *ngIf="!adminMode">
             <a (activate)="triggerExitProcess()"
@@ -60,6 +60,28 @@
             <clark-lo-status-indicator
                 [status]="learningObject?.status"
                 [states]="states"></clark-lo-status-indicator>
+            <span
+                class="agentic-builder-action-wrapper"
+                [tip]="
+                    hasSupportedMaterials
+                        ? canGenerateWithAi
+                            ? 'Generate suggestions from your learning object materials.'
+                            : 'AI generation requires a supported material to finish processing successfully.'
+                        : 'Upload a DOCX, HTML, MD, PDF, PPTX, TXT, or XLSX file before generating details with AI.'
+                "
+                tipPosition="bottom">
+                <button
+                    type="button"
+                    class="agentic-builder-action"
+                    aria-label="Generate with AI"
+                    [attr.aria-disabled]="!canGenerateWithAi"
+                    [disabled]="!canGenerateWithAi"
+                    (click)="$event.stopPropagation()"
+                    (activate)="toggleAgenticBuilder()">
+                    <i class="fas fa-sparkles" aria-hidden="true"></i>
+                    Generate with AI
+                </button>
+            </span>
             <ng-container *ngIf="!adminMode; else adminModeTemplate">
                 <button
                     id="submit"
@@ -105,13 +127,23 @@
             <ul>
                 <li>
                     <ng-container
+                        aria-label="Materials Link"
+                        [ngTemplateOutlet]="navItemTemplate"
+                        [ngTemplateOutletContext]="{
+                            disabled: false,
+                            link: 'materials',
+                            text: 'Materials',
+                        }"></ng-container>
+                </li>
+                <li>
+                    <ng-container
                         id="firstTab"
-                        aria-label="Basic Information Link"
+                        aria-label="Details Link"
                         [ngTemplateOutlet]="navItemTemplate"
                         [ngTemplateOutletContext]="{
                             disabled: false,
                             link: 'info',
-                            text: 'Basic Information',
+                            text: 'Details',
                         }"></ng-container>
                 </li>
                 <li>
@@ -119,19 +151,9 @@
                         aria-label="Learning Outcomes Link"
                         [ngTemplateOutlet]="navItemTemplate"
                         [ngTemplateOutletContext]="{
-                            disabled: !canRoute('outcomes'),
+                            disabled: false,
                             link: 'outcomes',
                             text: 'Learning Outcomes',
-                        }"></ng-container>
-                </li>
-                <li>
-                    <ng-container
-                        aria-label="Materials Link"
-                        [ngTemplateOutlet]="navItemTemplate"
-                        [ngTemplateOutletContext]="{
-                            disabled: !canRoute('materials'),
-                            link: 'materials',
-                            text: 'Materials',
                         }"></ng-container>
                 </li>
             </ul>
@@ -142,7 +164,13 @@
                     >Saving changes . . .
                 </span>
                 <span
-                    *ngIf="!isSaving"
+                    *ngIf="saveFailed"
+                    class="builder-navbar-wrapper__saving-indicator builder-navbar-wrapper__saving-indicator--error"
+                    role="status"
+                    >Save failed. Retry your change.
+                </span>
+                <span
+                    *ngIf="!isSaving && !saveFailed"
                     class="builder-navbar-wrapper__saving-indicator"
                     >All changes saved</span
                 >
@@ -150,6 +178,10 @@
         </div>
     </div>
 </div>
+
+<onion-agentic-builder-panel
+    [hidden]="!showAgenticBuilder"
+    (closed)="showAgenticBuilder = false"></onion-agentic-builder-panel>
 
 <clark-submit
     *ngIf="showSubmission"
@@ -170,15 +202,6 @@
         routerLinkActive="active"
         (activate)="triggerRouteClick(link)"
         >{{ text }}</a
-    >
-    <a
-        aria-label="Please name this learning object before adding outcomes or materials"
-        *ngIf="disabled"
-        class="disabled"
-        tip="Please name this learning object before adding outcomes or materials."
-        tipPosition="top"
-        (activate)="triggerBlockedRouteClick()"
-        ><i class="fas fa-lock"></i>{{ text }}</a
     >
 </ng-template>
 

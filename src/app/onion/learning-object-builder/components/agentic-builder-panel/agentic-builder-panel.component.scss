@@ -1,0 +1,339 @@
+@import "_vars.scss";
+
+.agentic-builder-panel {
+    position: fixed;
+    top: 85px;
+    right: 25px;
+    display: flex;
+    flex-direction: column;
+    width: min(720px, calc(100vw - 32px));
+    max-height: calc(100vh - 105px);
+    box-sizing: border-box;
+    background: white;
+    border: 1px solid $light-grey;
+    border-radius: 8px;
+    box-shadow: 0 14px 36px rgba(31, 45, 61, 0.16);
+    z-index: 5;
+
+    button:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 3px;
+    }
+
+    &--entry {
+        width: min(390px, calc(100vw - 32px));
+    }
+
+    &__header {
+        align-items: flex-start;
+        display: flex;
+        flex: 0 0 auto;
+        justify-content: space-between;
+        padding: 24px 26px 18px;
+
+        h2 {
+            color: $darker-grey;
+            font-size: 21px;
+            line-height: 1.2;
+            margin: 0;
+        }
+    }
+
+    &__content {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        padding: 0 26px 24px;
+
+        & > p {
+            color: $dark-grey;
+            line-height: 1.45;
+            margin: 12px 0 18px;
+        }
+    }
+
+    &__question {
+        font-weight: 600;
+        margin-bottom: 12px !important;
+    }
+
+    &__fields {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 0 0 18px;
+    }
+
+    &__error {
+        color: $error-red !important;
+        font-size: $small;
+    }
+
+    &__footer {
+        align-items: center;
+        background: white;
+        border-top: 1px solid $light-grey;
+        display: flex;
+        flex: 0 0 auto;
+        gap: 10px;
+        justify-content: flex-end;
+        padding: 14px 26px;
+
+        .button {
+            align-items: center;
+            box-sizing: border-box;
+            display: inline-flex;
+            height: 44px;
+            justify-content: center;
+            line-height: 1;
+            margin: 0;
+            padding: 0 20px;
+        }
+    }
+}
+
+.review-progress {
+    color: $medium-grey;
+    font-size: $small;
+    line-height: 1.35;
+    margin: 7px 0 0;
+}
+
+.suggestion-section {
+    border-bottom: 1px solid $light-grey;
+    margin: 0;
+    padding: 18px 0 22px;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    &__heading {
+        color: $darker-grey;
+        font-size: $normal;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    &__topbar {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+        margin-bottom: 12px;
+
+        .button {
+            flex: 0 0 auto;
+            margin: 0;
+            min-width: 105px;
+            padding: 7px 13px;
+        }
+    }
+
+    &--outcomes {
+        padding-bottom: 4px;
+    }
+}
+
+.section-error {
+    color: $error-red;
+    font-size: $small;
+    margin: 0 0 10px;
+}
+
+.section-empty {
+    color: $medium-grey;
+    font-size: $small;
+    margin: 10px 0;
+}
+
+.name-suggestion {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    min-height: 42px;
+    padding: 4px 0;
+
+    &__text {
+        color: $darker-grey;
+        flex: 1 1 auto;
+        line-height: 1.45;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+}
+
+.suggestion-check {
+    align-items: center;
+    background: $success-green;
+    border: 0;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 34px;
+    height: 34px;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    width: 34px;
+
+    &:hover:not(:disabled) {
+        filter: brightness(0.94);
+    }
+
+    &:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 3px;
+    }
+
+    &:disabled {
+        cursor: default;
+    }
+
+    &--applied {
+        background: $medium-grey;
+    }
+
+    &--reject {
+        background: $error-red;
+    }
+}
+
+.applied-badge {
+    color: $light-blue;
+    flex: 0 0 auto;
+    font-size: $smaller;
+    font-weight: 600;
+}
+
+.batch-navigation,
+.carousel-navigation {
+    align-items: center;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 12px 0;
+
+    span {
+        color: $dark-grey;
+        font-size: $small;
+        min-width: 58px;
+        text-align: center;
+    }
+
+    .button {
+        margin: 0;
+        min-width: 82px;
+        padding: 7px 11px;
+    }
+}
+
+.description-carousel {
+    &__viewport {
+        background: rgba($light-grey, 0.28);
+        border: 1px solid $light-grey;
+        border-radius: 6px;
+        box-sizing: border-box;
+        height: clamp(180px, 28vh, 260px);
+        overflow-y: auto;
+        padding: 14px 16px;
+
+        &:focus-visible {
+            outline: 2px solid $light-blue;
+            outline-offset: 2px;
+        }
+
+        p {
+            color: $darker-grey;
+            font-size: $normal;
+            line-height: 1.55;
+            margin: 0;
+            overflow-wrap: anywhere;
+            white-space: pre-line;
+        }
+    }
+}
+
+.suggestion-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 15px;
+}
+
+.outcome-list {
+    margin: 0;
+}
+
+.outcome-card {
+    border-bottom: 1px solid rgba($light-grey, 0.8);
+    padding: 16px 0 18px;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    &__bloom {
+        color: $medium-grey;
+        display: block;
+        font-size: $smaller;
+        line-height: 1.3;
+        margin-bottom: 8px;
+        text-transform: capitalize;
+    }
+
+    p {
+        color: $darker-grey;
+        font-size: $normal;
+        line-height: 1.52;
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    strong {
+        font-weight: 700;
+    }
+}
+
+.visually-hidden {
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .agentic-builder-panel,
+    .agentic-builder-panel * {
+        transition: none !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .agentic-builder-panel {
+        border-radius: 0;
+        inset: 0;
+        max-height: none;
+        width: 100vw;
+    }
+
+    .agentic-builder-panel__header {
+        padding: 18px 20px 14px;
+    }
+
+    .agentic-builder-panel__content {
+        padding: 0 20px 20px;
+    }
+
+    .agentic-builder-panel__footer {
+        padding: 12px 20px;
+    }
+
+    .suggestion-section__topbar .button {
+        min-width: auto;
+    }
+}

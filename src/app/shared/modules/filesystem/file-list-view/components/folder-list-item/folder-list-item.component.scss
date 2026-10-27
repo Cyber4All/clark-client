@@ -30,7 +30,17 @@
     margin-bottom: 1.5rem;
 
     &.bundle {
-        grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
+        grid-template-columns: 4fr 1fr 0.65fr 1.35fr 25px;
+    }
+
+    &.parsing {
+        grid-template-columns: 4fr 1fr 0.5fr minmax(140px, 1.25fr) 25px;
+
+        &.bundle {
+            grid-template-columns:
+                4fr 1fr 0.65fr minmax(140px, 1.25fr)
+                1.35fr 25px;
+        }
     }
 }
 

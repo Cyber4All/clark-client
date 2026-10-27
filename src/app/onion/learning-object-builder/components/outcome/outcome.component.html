@@ -2,7 +2,8 @@
     [@outcome]="noAnimation ? 'off' : active ? 'open' : 'closed'"
     (@outcome.done)="noAnimation = false"
     class="outcome-component"
-    [ngClass]="{ active: active }"
+    [ngClass]="{ active: active, disabled: disabled }"
+    [attr.aria-busy]="disabled"
     [ngStyle]="{ overflow: hiddenOverflow ? 'hidden' : 'visible' }">
     <div class="outcome-header">
         <div class="outcome-header__left">
@@ -17,7 +18,8 @@
                 *ngIf="!!active"
                 class="outcome-delete"
                 aria-label="Delete outcome"
-                (activate)="showDeleteConfirm = true"
+                [attr.aria-disabled]="disabled"
+                (activate)="!disabled && (showDeleteConfirm = true)"
                 tip="Delete outcome"
                 tipPosition="bottom">
                 <i class="far fa-trash-alt"></i>
@@ -28,6 +30,7 @@
         <button
             *ngFor="let l of outcomeLevels"
             class="level"
+            [disabled]="disabled"
             [ngClass]="{
                 active: outcome?.bloom.toLowerCase() === l.toLowerCase(),
             }"
@@ -54,6 +57,7 @@
             [verb]="outcome?.verb"
             [bloom]="outcome?.bloom"
             [text]="outcome?.text"
+            [disabled]="disabled"
             (selectedVerb)="emitVerb($event)"
             (selectedCategory)="emitLevel($event)"
             (enteredText)="emitText($event)"

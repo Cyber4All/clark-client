@@ -2,8 +2,16 @@ import { Component, OnDestroy, Input } from "@angular/core";
 import { BuilderStore } from "../../builder-store.service";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { LearningObjectValidator } from "../../validators/learning-object.validator";
-import { filter, takeUntil } from "rxjs/operators";
-import { Subject } from "rxjs";
+import {
+    catchError,
+    filter,
+    map,
+    switchMap,
+    takeUntil,
+    takeWhile,
+    tap,
+} from "rxjs/operators";
+import { forkJoin, of, Subject, Subscription, timer } from "rxjs";
 import {
     Router,
     ActivatedRoute,
@@ -18,6 +26,7 @@ import {
 import { LearningObject } from "@entity";
 import { BundlingService } from "app/core/learning-object-module/bundling/bundling.service";
 import { FileService } from "app/core/learning-object-module/file/file.service";
+import { isParseableFile } from "app/core/learning-object-module/file/file-processing";
 import { SkipLinkComponent } from "../../../../shared/components/skip-link/skip-link.component";
 import { NgStyle, NgIf, NgClass, NgTemplateOutlet } from "@angular/common";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
@@ -26,6 +35,7 @@ import { LearningObjectStatusIndicatorComponent } from "../../../shared/status-i
 import { EditorActionPanelComponent } from "../editor-action-panel/editor-action-panel.component";
 import { SubmitComponent } from "../../../shared/submit/submit.component";
 import { GenericCollectionLogoComponent } from "../../../../shared/components/generic-collection-logo/generic-collection-logo.component";
+import { AgenticBuilderPanelComponent } from "../agentic-builder-panel/agentic-builder-panel.component";
 
 @Component({
     selector: "onion-builder-navbar",
@@ -46,17 +56,26 @@ import { GenericCollectionLogoComponent } from "../../../../shared/components/ge
         RouterLinkActive,
         RouterLink,
         GenericCollectionLogoComponent,
+        AgenticBuilderPanelComponent,
     ],
 })
 export class BuilderNavbarComponent implements OnDestroy {
     isSaving: boolean;
+    saveFailed = false;
     editing: boolean;
     submissionError: boolean;
 
     showSubmission: boolean;
     showSubmissionOptions: boolean;
+    showAgenticBuilder = false;
+    hasReadyAiMaterials = false;
 
     learningObject: LearningObject;
+    materialsReady = false;
+    private processingFilesKey = "";
+    private processingLearningObjectId?: string;
+    private processingStatuses = new Map<string, string>();
+    private processingPoll?: Subscription;
     collection: Collection;
     statusDescription: string;
     // FIXME: This will need to set based on the data coming back once the service is in place
@@ -91,11 +110,8 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.store.serviceInteraction$
             .pipe(takeUntil(this.destroyed$))
             .subscribe((params) => {
-                if (params) {
-                    this.isSaving = true;
-                } else {
-                    this.isSaving = false;
-                }
+                this.isSaving = params === true;
+                this.saveFailed = params === null;
             });
 
         this.store.learningObjectEvent
@@ -105,7 +121,18 @@ export class BuilderNavbarComponent implements OnDestroy {
             )
             .subscribe((val) => {
                 this.learningObject = val;
+                if (!this.hasSupportedMaterials)
+                    this.showAgenticBuilder = false;
                 this.getCollection();
+                this.watchMaterialProcessing();
+            });
+
+        this.fileService
+            .watchAiMaterialReadiness(this.store.learningObjectEvent)
+            .pipe(takeUntil(this.destroyed$))
+            .subscribe((ready) => {
+                this.hasReadyAiMaterials = ready;
+                if (!ready) this.showAgenticBuilder = false;
             });
 
         // check to see if we're editing a learning object or creating a new one by checking for an id in the url
@@ -121,43 +148,6 @@ export class BuilderNavbarComponent implements OnDestroy {
      */
     toggleSubmissionOptionsMenu(value?: boolean) {
         this.showSubmissionOptions = value;
-    }
-
-    /**
-     * Returns a boolean indicating whether a route should be shown in the navbar based on validation and email verification
-     *
-     * @param {'outcomes' | 'materials'} route
-     * @returns
-     * @memberof BuilderNavbarComponent
-     */
-    canRoute(route: string) {
-        let result: boolean;
-        const hasSavedLearningObject = !!this.learningObject?.id;
-
-        switch (route) {
-            case "outcomes":
-                result = hasSavedLearningObject;
-                break;
-            case "materials":
-                result = !!(
-                    this.auth.user?.emailVerified &&
-                    hasSavedLearningObject
-                );
-                break;
-        }
-
-        if (!this.initialRouteStates.has(route)) {
-            // set the initial route state, used for checking whether a route is "new" or not
-            this.initialRouteStates.set(route, result);
-        }
-
-        if (result) {
-            // as soon as a route becomes active, add it to the firstRouteChanges set.
-            // used for checking whether a route is "new" or not
-            this.firstRouteChanges.add(route);
-        }
-
-        return result;
     }
 
     /**
@@ -185,8 +175,166 @@ export class BuilderNavbarComponent implements OnDestroy {
         this.routesClicked.add(route);
     }
 
-    triggerBlockedRouteClick(): void {
-        this.validator.showSaveErrors = true;
+    toggleAgenticBuilder(): void {
+        if (!this.canGenerateWithAi) return;
+        this.showAgenticBuilder = !this.showAgenticBuilder;
+    }
+
+    get canGenerateWithAi(): boolean {
+        return this.hasSupportedMaterials && this.hasReadyAiMaterials;
+    }
+
+    /** Whether uploaded materials include a file supported by the AI extraction pipeline. */
+    get hasSupportedMaterials(): boolean {
+        return (
+            this.learningObject?.materials?.files?.some((file) =>
+                FileService.supportsAiExtraction(file.extension),
+            ) ?? false
+        );
+    }
+
+    get canGenerateWithAI(): boolean {
+        return this.materialsReady;
+    }
+
+    get hasParseableMaterials(): boolean {
+        return Boolean(
+            this.learningObject?.materials?.files?.some(isParseableFile),
+        );
+    }
+
+    getGenerateWithAITooltip(): string {
+        if (!this.learningObject?.materials?.files?.length) {
+            return "Upload materials before generating details with AI.";
+        }
+        if (!this.hasParseableMaterials) {
+            return "Upload a supported material before generating with AI.";
+        }
+        if (this.materialsReady) {
+            return "Generate suggestions from your learning object materials.";
+        }
+        return "At least one supported material must finish processing successfully or with partial success before generating with AI.";
+    }
+
+    private getInitialProcessingStatus(
+        file: LearningObject.Material.File,
+        invalidatedFileIds: string[],
+    ): string {
+        if (!isParseableFile(file)) return "unsupported";
+        const previous = this.processingStatuses.get(file._id);
+        if (
+            invalidatedFileIds.includes(file._id) ||
+            previous === "unsupported"
+        ) {
+            return "queued";
+        }
+        return previous || "queued";
+    }
+
+    private watchMaterialProcessing(invalidatedFileIds: string[] = []): void {
+        const learningObjectId = this.learningObject?.id;
+        const files = (this.learningObject?.materials?.files || []).filter(
+            (file) => file._id,
+        );
+        const fileIds = files.filter(isParseableFile).map((file) => file._id);
+        const unsupportedIds = files
+            .filter((file) => !isParseableFile(file))
+            .map((file) => file._id);
+        const key = JSON.stringify([
+            learningObjectId,
+            [...fileIds].sort(),
+            [...unsupportedIds].sort(),
+        ]);
+        const changedIds = invalidatedFileIds.filter((id) =>
+            fileIds.includes(id),
+        );
+        if (key === this.processingFilesKey && !changedIds.length) return;
+
+        this.processingPoll?.unsubscribe();
+        if (learningObjectId !== this.processingLearningObjectId) {
+            this.processingStatuses.clear();
+        }
+        this.processingLearningObjectId = learningObjectId;
+        this.processingFilesKey = key;
+        this.processingStatuses = new Map(
+            files.map((file) => [
+                file._id,
+                this.getInitialProcessingStatus(file, changedIds),
+            ]),
+        );
+        this.fileService.setFileProcessingStatuses(this.processingStatuses);
+        this.materialsReady =
+            fileIds.length > 0 &&
+            fileIds.some((id) =>
+                ["success", "partial_success"].includes(
+                    this.processingStatuses.get(id),
+                ),
+            );
+        if (!learningObjectId || !fileIds.length) return;
+
+        this.processingPoll = timer(0, 5000)
+            .pipe(
+                switchMap(() => {
+                    const pendingIds = fileIds.filter(
+                        (id) =>
+                            ![
+                                "success",
+                                "partial_success",
+                                "failure",
+                                "cancelled",
+                            ].includes(this.processingStatuses.get(id)),
+                    );
+                    const statusRequests = pendingIds.map((fileId) =>
+                        this.fileService
+                            .getFileProcessingStatus(learningObjectId, fileId)
+                            .pipe(
+                                map((response) => ({
+                                    fileId,
+                                    status:
+                                        response?.processingStatus ||
+                                        "unavailable",
+                                })),
+                                catchError(() =>
+                                    of({
+                                        fileId,
+                                        status: "unavailable",
+                                    }),
+                                ),
+                            ),
+                    );
+                    return statusRequests.length
+                        ? forkJoin(statusRequests)
+                        : of([]);
+                }),
+                tap((statuses) => {
+                    statuses.forEach(({ fileId, status }) => {
+                        this.processingStatuses.set(fileId, status);
+                    });
+                    this.fileService.setFileProcessingStatuses(
+                        this.processingStatuses,
+                    );
+                    this.materialsReady = fileIds.some((id) =>
+                        ["success", "partial_success"].includes(
+                            this.processingStatuses.get(id),
+                        ),
+                    );
+                }),
+                takeWhile(
+                    () =>
+                        fileIds.some(
+                            (id) =>
+                                ![
+                                    "success",
+                                    "partial_success",
+                                    "failure",
+                                    "cancelled",
+                                ].includes(this.processingStatuses.get(id)),
+                        ),
+                    true,
+                ),
+                takeUntil(this.destroyed$),
+            )
+            .subscribe();
     }
 
     /**
@@ -380,6 +528,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
+        this.processingPoll?.unsubscribe();
+        this.fileService.setFileProcessingStatuses(new Map());
         this.destroyed$.next();
         this.destroyed$.unsubscribe();
     }

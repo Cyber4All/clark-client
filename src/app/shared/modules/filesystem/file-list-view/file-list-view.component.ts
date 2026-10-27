@@ -14,6 +14,7 @@ import { DescriptionUpdate } from "../file-browser/file-browser.component";
 import { LearningObject } from "@entity";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { FileService } from "app/core/learning-object-module/file/file.service";
+import { FILE_PARSING_TOOLTIP } from "app/core/learning-object-module/file/file-processing";
 import { NgIf, NgClass, NgFor } from "@angular/common";
 import { TipDirective } from "../../../directives/tip.directive";
 import { FolderListItemComponent } from "./components/folder-list-item/folder-list-item.component";
@@ -70,8 +71,8 @@ export class FileListViewComponent implements OnInit, OnDestroy {
     file: LearningObject.Material.File;
     directoryListing = [];
 
-    toggleToolTip = `Selected items will be included in the bundle download.
-    Deselected items will be accessible through a download link in the PDF.`;
+    toggleToolTip = `Controls whether this file is included in the downloadable learning-object zip. Turn this off for very large files that should remain available separately.`;
+    readonly parsingToolTip = FILE_PARSING_TOOLTIP;
     accessGroups: string[];
 
     constructor(

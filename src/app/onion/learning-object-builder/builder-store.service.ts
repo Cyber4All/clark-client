@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { LearningObject, LearningOutcome, User, Guideline } from "@entity";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { Subject, BehaviorSubject } from "rxjs";
-import { debounceTime, takeUntil } from "rxjs/operators";
+import { debounceTime, filter, take, takeUntil } from "rxjs/operators";
 import { taxonomy } from "@cyber4all/clark-taxonomy";
 import { LearningObjectService as NewLearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { LearningObjectService as RefactoredLearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
@@ -18,6 +18,10 @@ import { OutcomeService } from "app/core/learning-object-module/outcomes/outcome
 import { FileService } from "app/core/learning-object-module/file/file.service";
 import { EditorialService } from "app/core/learning-object-module/editorial.service";
 import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
+import type {
+    AgenticBuilderSuggestions,
+    AgenticOutcomeSuggestion,
+} from "app/core/learning-object-module/learning-object/learning-object.types";
 
 /**
  * Defines a list of actions the builder can take
@@ -46,6 +50,7 @@ export enum BUILDER_ACTIONS {
     DELETE_FILES,
     CHANGE_STATUS,
     TOGGLE_BUNDLE,
+    TOGGLE_CONTEXT,
 }
 
 export enum BUILDER_ERRORS {
@@ -66,6 +71,14 @@ export enum BUILDER_ERRORS {
     SERVICE_FAILURE,
 }
 
+export type AgenticBuilderField = "name" | "description" | "learningOutcomes";
+
+export interface AgenticBuilderGenerationState {
+    name: boolean;
+    description: boolean;
+    learningOutcomes: boolean;
+}
+
 /**
  * A central storage repository for communication between learning object builder components.
  * Maintains a stateful, single-source store for all possible actions as well as handlers for accepting those actions.
@@ -82,6 +95,9 @@ export class BuilderStore {
 
     // keep track of outcomes that exist locally haven't been saved to service yet
     private newOutcomes: Map<string, any> = new Map();
+
+    // Prevent repeated debounced saves from creating the same new outcome twice.
+    private creatingOutcomes: Map<string, Promise<void>> = new Map();
 
     // manages a cache of object data that needs to be saved (debounced)
     private objectCache$: BehaviorSubject<any> = new BehaviorSubject(undefined);
@@ -134,16 +150,27 @@ export class BuilderStore {
     public learningObjectEvent: BehaviorSubject<LearningObject> =
         new BehaviorSubject(undefined);
 
+    // File IDs whose processing status must be checked again after a bundle change.
+    public materialProcessingChanged$ = new Subject<string[]>();
+
     // fired when this service needs to propagate changes to the learning object down to children components
     public outcomeEvent: BehaviorSubject<
         Map<string, Partial<LearningOutcome>>
     > = new BehaviorSubject(undefined);
 
     // true when there is a save operation in progress or while there are changes that are cached but not yet saved
-    public serviceInteraction$: BehaviorSubject<boolean> =
-        new BehaviorSubject<boolean>(false);
+    public serviceInteraction$: BehaviorSubject<boolean | null> =
+        new BehaviorSubject<boolean | null>(false);
 
     public serviceError$: Subject<BUILDER_ERRORS> = new Subject();
+
+    private agenticGenerationState: BehaviorSubject<AgenticBuilderGenerationState> =
+        new BehaviorSubject<AgenticBuilderGenerationState>({
+            name: false,
+            description: false,
+            learningOutcomes: false,
+        });
+    public agenticGenerationState$ = this.agenticGenerationState.asObservable();
 
     constructor(
         private auth: AuthService,
@@ -191,6 +218,18 @@ export class BuilderStore {
         return this._learningObject;
     }
 
+    setAgenticGeneration(fields: AgenticBuilderField[]): void {
+        this.agenticGenerationState.next({
+            name: fields.includes("name"),
+            description: fields.includes("description"),
+            learningOutcomes: fields.includes("learningOutcomes"),
+        });
+    }
+
+    clearAgenticGeneration(): void {
+        this.setAgenticGeneration([]);
+    }
+
     /**
      * Retrieve stored outcomes
      *
@@ -198,6 +237,143 @@ export class BuilderStore {
      */
     private get outcomes() {
         return this._outcomesMap;
+    }
+
+    get currentOutcomes(): Partial<LearningOutcome>[] {
+        return Array.from(this._outcomesMap.values());
+    }
+
+    async applyAgenticSuggestions(
+        suggestions: AgenticBuilderSuggestions,
+        acceptedFields: Set<"name" | "description">,
+        acceptedOutcomeIndexes: Set<number>,
+    ): Promise<void> {
+        const objectUpdates: Partial<LearningObject> = {};
+        if (acceptedFields.has("name") && suggestions.name !== undefined) {
+            objectUpdates.name = suggestions.name;
+        }
+        if (
+            acceptedFields.has("description") &&
+            suggestions.description !== undefined
+        ) {
+            objectUpdates.description = suggestions.description;
+        }
+
+        if (Object.keys(objectUpdates).length) {
+            await this.applyAgenticObjectUpdates(objectUpdates);
+        }
+
+        for (const index of acceptedOutcomeIndexes) {
+            const outcome = suggestions.learningOutcomes?.[index];
+            if (outcome) {
+                await this.applyAgenticOutcome(outcome);
+            }
+        }
+    }
+
+    private async applyAgenticOutcome(
+        suggestion: AgenticOutcomeSuggestion,
+    ): Promise<void> {
+        await this.waitForCurrentServiceInteraction();
+        this.serviceInteraction$.next(true);
+        const id = await this.execute(BUILDER_ACTIONS.CREATE_OUTCOME);
+        const outcome = this.outcomes.get(id) as Partial<LearningOutcome> & {
+            serviceId?: string;
+        };
+        outcome.bloom = suggestion.bloom;
+        outcome.verb = suggestion.verb;
+        outcome.text = suggestion.text;
+        this.outcomes.set(id, outcome);
+        this.outcomeEvent.next(this.outcomes);
+        this.validator.validateLearningObject(
+            this.learningObject,
+            this.outcomes,
+        );
+
+        this.touched = true;
+        try {
+            await this.trackOutcomeCreation({
+                id,
+                bloom: outcome.bloom,
+                verb: outcome.verb,
+                text: outcome.text,
+                mappings: outcome.mappings,
+            });
+
+            if (!isMongoObjectId(outcome.serviceId)) {
+                throw new Error(
+                    "The outcome create response did not include a valid database ID.",
+                );
+            }
+        } catch (error) {
+            this.outcomes.delete(id);
+            this.newOutcomes.delete(id);
+            this.outcomeEvent.next(this.outcomes);
+            this.validator.validateLearningObject(
+                this.learningObject,
+                this.outcomes,
+            );
+            this.handleServiceError(
+                error as HttpErrorResponse,
+                BUILDER_ERRORS.INCOMPLETE_OUTCOME,
+            );
+            throw error;
+        }
+    }
+
+    private async applyAgenticObjectUpdates(
+        updates: Partial<LearningObject>,
+    ): Promise<void> {
+        await this.waitForCurrentServiceInteraction();
+        this.serviceInteraction$.next(true);
+        await this.execute(BUILDER_ACTIONS.MUTATE_OBJECT, updates);
+
+        const currentObject = this.learningObject.toPlainObject() as Record<
+            string,
+            unknown
+        >;
+        for (const [key, value] of Object.entries(updates)) {
+            if (currentObject[key] !== value) {
+                this.objectCache$.next(undefined);
+                this.serviceInteraction$.next(false);
+                throw new Error(`The suggested ${key} could not be applied.`);
+            }
+        }
+        if (!this.validator.saveable) {
+            this.objectCache$.next(undefined);
+            this.serviceInteraction$.next(null);
+            throw new Error(
+                "The learning object is not ready to save this change.",
+            );
+        }
+
+        const queuedUpdates = this.objectCache$.getValue();
+        const payload = Object.assign({}, queuedUpdates || {}, updates);
+        this.objectCache$.next(undefined);
+        try {
+            await this.refactoredLearningObjectService.save(
+                this.learningObject.id,
+                payload,
+            );
+            this.serviceInteraction$.next(false);
+        } catch (error) {
+            this.handleServiceError(
+                error as HttpErrorResponse,
+                BUILDER_ERRORS.UPDATE_OBJECT,
+            );
+            throw error;
+        }
+    }
+
+    private async waitForCurrentServiceInteraction(): Promise<void> {
+        if (this.serviceInteraction$.getValue() === true) {
+            await this.serviceInteraction$
+                .pipe(
+                    filter((value) => value !== true),
+                    take(1),
+                )
+                .toPromise();
+        }
     }
 
     /**
@@ -287,7 +463,7 @@ export class BuilderStore {
                 );
                 // set the title of page to the learning object name
                 this.titleService.setTitle(
-                    "CLARK | " + this.learningObject.name,
+                    "CLARK | " + this.learningObject.displayName,
                 );
                 return this.learningObject;
             })
@@ -372,9 +548,10 @@ export class BuilderStore {
      * @memberof BuilderStore
      */
     makeNew(): LearningObject {
-        this.titleService.setTitle("CLARK | New Learning Object");
+        this.titleService.setTitle("CLARK | Untitled Learning Object");
         this.learningObject = new LearningObject({ author: this.auth.user });
         this.outcomes = new Map();
+        this.createLearningObject(this.learningObject.toPlainObject());
         return this.learningObject;
     }
 
@@ -456,6 +633,8 @@ export class BuilderStore {
                 }
             case BUILDER_ACTIONS.TOGGLE_BUNDLE:
                 return await this.toggleBundle(data);
+            case BUILDER_ACTIONS.TOGGLE_CONTEXT:
+                return this.toggleContext(data);
             default:
                 console.error("Error! Invalid action taken!");
                 return;
@@ -493,23 +672,58 @@ export class BuilderStore {
      *              - item: the file/folder to save
      */
     async toggleBundle(event: { state: boolean; item: any }) {
+        let fileIDs: string[];
         if (event.item instanceof DirectoryNode) {
             // event.item is a Folder
-            const fileIDs = this.getAllFolderFileIDs(event.item);
-            await this.fileService.toggleBundle(
-                this.learningObject.id,
-                fileIDs,
-                event.state,
-            );
+            fileIDs = this.getAllFolderFileIDs(event.item);
         } else {
             // event.item is a File
-            const fileID = [event.item._id];
-            await this.fileService.toggleBundle(
-                this.learningObject.id,
-                fileID,
-                event.state,
-            );
+            fileIDs = [event.item._id];
         }
+        await this.fileService.toggleBundle(
+            this.learningObject.id,
+            fileIDs,
+            event.state,
+        );
+        this.materialProcessingChanged$.next(fileIDs);
+    }
+
+    /**
+     * Legacy context persistence retained for model compatibility.
+     * TODO: Re-enable a Context control only when the generation backend
+     * supports explicit source selection.
+     */
+    private toggleContext(event: {
+        state: boolean;
+        item: DirectoryNode | LearningObject.Material.File;
+    }): void {
+        const files =
+            event.item instanceof DirectoryNode
+                ? this.getAllFolderFiles(event.item)
+                : [event.item];
+
+        files.forEach((file) => {
+            file.context = event.state;
+        });
+        this.learningObjectEvent.next(this.learningObject);
+        this.saveObject({
+            materials: { files: this.learningObject.materials.files },
+        });
+    }
+
+    private getAllFolderFiles(
+        folder: DirectoryNode,
+    ): LearningObject.Material.File[] {
+        return [
+            ...folder.getFiles(),
+            ...folder
+                .getFolders()
+                .reduce(
+                    (files, subFolder) =>
+                        files.concat(this.getAllFolderFiles(subFolder)),
+                    [] as LearningObject.Material.File[],
+                ),
+        ];
     }
 
     /**
@@ -998,7 +1212,9 @@ export class BuilderStore {
      * @memberof BuilderStore
      */
     private saveObject(data: any, delay?: boolean) {
-        this.titleService.setTitle("CLARK | " + this.learningObject.name);
+        this.titleService.setTitle(
+            "CLARK | " + this.learningObject.displayName,
+        );
         let value = this.objectCache$.getValue();
         this.touched = true;
         const canSave =
@@ -1057,6 +1273,7 @@ export class BuilderStore {
                     learningObject,
                     object,
                 );
+                this.learningObjectEvent.next(this.learningObject);
 
                 if (Object.keys(postCreateUpdates).length) {
                     this.updateLearningObject(postCreateUpdates);
@@ -1221,7 +1438,7 @@ export class BuilderStore {
     private saveOutcome(data: any, delay?: boolean) {
         this.touched = true;
         // retrieve current cached Map from storage and get the current cached value for given id
-        const cache = this.objectCache$.getValue();
+        const cache = this.outcomeCache$.getValue();
         const newValue = cache ? Object.assign(cache, data) : data;
         // make verb full lowercase before sending in request for taxonomy comparison
         newValue.verb = newValue.verb?.toLowerCase();
@@ -1243,8 +1460,11 @@ export class BuilderStore {
             this.outcomeCache$.next(undefined);
 
             if (this.newOutcomes.get(newValue.id)) {
-                // this is a new outcome that hasn't been saved, create it
-                this.createLearningOutcome(newValue);
+                // Edits made while the POST is pending stay in the local map
+                // and are flushed after the create response supplies its ID.
+                if (!this.creatingOutcomes.has(newValue.id)) {
+                    this.trackOutcomeCreation(newValue);
+                }
             } else {
                 // this is an existing outcome, modify it
                 this.updateLearningOutcome(newValue);
@@ -1256,6 +1476,19 @@ export class BuilderStore {
         }
     }
 
+    private trackOutcomeCreation(
+        outcome: Partial<LearningOutcome> & { id: string },
+    ): Promise<void> {
+        const existingRequest = this.creatingOutcomes.get(outcome.id);
+        if (existingRequest) return existingRequest;
+
+        const createRequest = this.createLearningOutcome(outcome).finally(() =>
+            this.creatingOutcomes.delete(outcome.id),
+        );
+        this.creatingOutcomes.set(outcome.id, createRequest);
+        return createRequest;
+    }
+
     /**
      * Handles service interaction for creating a LearningOutcome
      *
@@ -1263,7 +1496,9 @@ export class BuilderStore {
      * @param {LearningOutcome} newOutcome
      * @memberof BuilderStore
      */
-    private createLearningOutcome(newOutcome: LearningOutcome) {
+    private async createLearningOutcome(
+        newOutcome: Partial<LearningOutcome>,
+    ): Promise<void> {
         // TODO: If the learning object id does not exist yet (i.e Basic Info not
         // filled out yet) then don't try and create the learning outcome yet.
         // This is a bug if the user refreshes once on the learning outcome tab
@@ -1275,33 +1510,73 @@ export class BuilderStore {
             return;
         }
 
+        const localId = newOutcome.id;
+        const submittedOutcome = {
+            bloom: newOutcome.bloom,
+            verb: newOutcome.verb,
+            text: newOutcome.text,
+            mappings: [...(newOutcome.mappings || [])],
+        };
+
         // Now that we know we're actually making a trip to the db let's set this true
         this.serviceInteraction$.next(true);
 
-        this.outcomeService
-            .addLearningOutcome(this.learningObject.id, newOutcome)
-            .then((response: { id: string }) => {
-                this.serviceInteraction$.next(false);
+        let serviceId: string;
+        try {
+            const response = await this.outcomeService.addLearningOutcome(
+                this.learningObject.id,
+                newOutcome as LearningOutcome,
+            );
+            serviceId = response?.id || response?._id;
+            if (!isMongoObjectId(serviceId)) {
+                throw new Error(
+                    "The outcome create response did not include a valid database ID.",
+                );
+            }
+        } catch (_error) {
+            this.serviceInteraction$.next(null);
+            this.serviceError$.next(BUILDER_ERRORS.INCOMPLETE_OUTCOME);
+            return;
+        }
 
-                // delete the id from the newOutcomes map so that the next time it's modified, we know to save it instead of creating it
-                this.newOutcomes.delete(newOutcome.id);
+        const outcome = this.outcomes.get(localId) as
+            | (Partial<LearningOutcome> & { serviceId?: string })
+            | undefined;
+        if (!outcome) {
+            this.newOutcomes.delete(localId);
+            this.serviceInteraction$.next(false);
+            return;
+        }
 
-                // retrieve the outcome from the map keyed by it's temp ID, and then delete that entry;
-                const outcome: Partial<LearningOutcome> & {
-                    serviceId?: string;
-                } = this.outcomes.get(newOutcome.id);
+        // Keep the UUID as the local editor key; use serviceId for API calls.
+        outcome.serviceId = serviceId;
+        this.newOutcomes.delete(localId);
+        this.outcomes.set(localId, outcome);
+        this.outcomeEvent.next(this.outcomes);
+        this.serviceInteraction$.next(false);
 
-                // store the temporary id in the outcome so that the page component know's which outcome to keep focused
-                outcome.serviceId = response.id;
-
-                // re-enter outcome into map
-                this.outcomes.set(newOutcome.id, outcome);
-                this.outcomeEvent.next(this.outcomes);
-            })
-            .catch((e) => {
-                this.serviceInteraction$.next(null);
-                this.serviceError$.next(BUILDER_ERRORS.INCOMPLETE_OUTCOME);
-            });
+        // Mutations during the POST update the local map. Flush those
+        // latest values only after the persisted ID is available.
+        const pendingChanges: Record<string, unknown> = {};
+        for (const field of ["bloom", "verb", "text", "mappings"] as const) {
+            if (
+                JSON.stringify(outcome[field]) !==
+                JSON.stringify(submittedOutcome[field])
+            ) {
+                pendingChanges[field] = outcome[field];
+            }
+        }
+        if (Object.keys(pendingChanges).length) {
+            try {
+                await this.updateLearningOutcome({
+                    id: localId,
+                    serviceId,
+                    ...pendingChanges,
+                });
+            } catch (_error) {
+                // updateLearningOutcome records the existing builder error state.
+            }
+        }
     }
 
     /**
@@ -1311,29 +1586,35 @@ export class BuilderStore {
      * @param {Partial<LearningOutcome>} outcome
      * @memberof BuilderStore
      */
-    private updateLearningOutcome(outcome: Partial<LearningOutcome>) {
+    private async updateLearningOutcome(
+        outcome: Partial<LearningOutcome> & { serviceId?: string },
+    ): Promise<void> {
         // deep copy the value to modify it before sending it to the service
         const updateValue: Partial<LearningOutcome> & {
             serviceId?: string;
-        } = Object.assign(outcome);
-        // if this item has a serviceId property, it was created during this session and thus it's ID property was generated here
-        // and doesn't correspond with it's id in the database. Replace the id property with the serviceId property before sending
-        if (updateValue.serviceId) {
-            updateValue.id = updateValue.serviceId;
-        }
+        } = { ...outcome };
+        // An editor UUID is only a local map key. Resolve the database ID
+        // from the saved outcome when an edit does not include serviceId.
+        const storedOutcome = outcome.id
+            ? this.outcomes.get(outcome.id)
+            : undefined;
+        updateValue.id =
+            outcome.serviceId || storedOutcome?.serviceId || outcome.id;
 
         // delete any lingering serviceId properties before sending to service
         delete updateValue.serviceId;
         this.serviceInteraction$.next(true);
-        this.outcomeService
-            .saveOutcome(updateValue as any)
-            .then(() => {
-                this.serviceInteraction$.next(false);
-            })
-            .catch((e) => {
-                this.serviceInteraction$.next(null);
-                this.handleServiceError(e, BUILDER_ERRORS.UPDATE_OUTCOME);
-            });
+        try {
+            await this.outcomeService.saveOutcome(updateValue as any);
+            this.serviceInteraction$.next(false);
+        } catch (e) {
+            this.serviceInteraction$.next(null);
+            this.handleServiceError(
+                e as HttpErrorResponse,
+                BUILDER_ERRORS.UPDATE_OUTCOME,
+            );
+            throw e;
+        }
     }
 
     /**
@@ -1371,4 +1652,8 @@ function checkIfUUID(str) {
         /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
 
     return regexExp.test(str);
+}
+
+function isMongoObjectId(value: unknown): value is string {
+    return typeof value === "string" && /^[a-f\d]{24}$/i.test(value);
 }

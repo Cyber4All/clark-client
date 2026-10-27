@@ -51,15 +51,20 @@ export class OutcomeService {
      * @memberof LearningObjectService
      */
     saveOutcome(outcome: { id: string; [key: string]: any }): Promise<any> {
-        const outcomeId = outcome.id;
-        delete outcome.id;
+        const { id: outcomeId, ...changes } = outcome;
+        if (!isMongoObjectId(outcomeId)) {
+            return Promise.reject(
+                new Error(
+                    "A persisted MongoDB outcome ID is required to update a learning outcome.",
+                ),
+            );
+        }
 
         return this.http
-            .patch(
-                OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId),
-                { ...outcome },
-                { headers: this.headers, withCredentials: true },
-            )
+            .patch(OUTCOME_ROUTES.UPDATE_OUTCOME(outcomeId), changes, {
+                headers: this.headers,
+                withCredentials: true,
+            })
             .pipe(catchError(this.handleError))
             .toPromise();
     }
@@ -103,4 +108,8 @@ export class OutcomeService {
             return throwError(error);
         }
     }
+}
+
+function isMongoObjectId(value: unknown): value is string {
+    return typeof value === "string" && /^[a-f\d]{24}$/i.test(value);
 }

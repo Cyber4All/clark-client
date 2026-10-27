@@ -2,8 +2,14 @@
     type="button"
     class="clark-pill"
     [class.active]="active"
+    [class.active-emphasis]="active && emphasizeActive"
     [disabled]="disabled"
     [attr.aria-label]="ariaLabel || label"
+    [attr.aria-pressed]="active"
     (click)="handleClick()">
+    <i
+        *ngIf="showSelectedIcon && active"
+        class="fas fa-check"
+        aria-hidden="true"></i>
     {{ label }}
 </button>

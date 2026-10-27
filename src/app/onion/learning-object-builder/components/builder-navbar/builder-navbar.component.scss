@@ -101,6 +101,54 @@
             }
         }
     }
+
+    .agentic-builder-action {
+        align-items: center;
+        background: white;
+        border: 1px solid rgba($light-blue, 0.65);
+        border-radius: 4px;
+        color: $light-blue;
+        cursor: pointer;
+        display: inline-flex;
+        font-size: $normal;
+        font-weight: 600;
+        gap: 7px;
+        padding: 9px 12px;
+        transition:
+            background-color 0.18s ease,
+            border-color 0.18s ease,
+            transform 0.18s ease;
+
+        i {
+            font-size: $normal;
+            line-height: 1;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $light-blue;
+            outline-offset: 2px;
+        }
+
+        &:hover {
+            background: rgba($light-blue, 0.08);
+            border-color: $light-blue;
+        }
+
+        &:active {
+            transform: translateY(1px);
+        }
+
+        &:disabled {
+            background: white;
+            border-color: $light-grey;
+            color: $medium-grey;
+            cursor: not-allowed;
+        }
+    }
+
+    .agentic-builder-action-wrapper {
+        display: inline-flex;
+    }
 }
 
 .builder-navbar-wrapper__bottom-left-menu {
@@ -190,6 +238,10 @@
     font-size: $normal;
     text-decoration: underline;
     padding-top: 1px;
+
+    &--error {
+        color: $error-red;
+    }
 }
 
 .whole_changelog_wrapper {

@@ -37,13 +37,29 @@
     border-bottom: 1px solid $light-grey;
 
     &.bundle {
-        grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
+        grid-template-columns: 4fr 1fr 0.65fr 1.35fr 25px;
+    }
+
+    &.parsing {
+        grid-template-columns: 4fr 1fr 0.5fr minmax(140px, 1.25fr) 25px;
+
+        &.bundle {
+            grid-template-columns:
+                4fr 1fr 0.65fr minmax(140px, 1.25fr)
+                1.35fr 25px;
+        }
     }
 
     &.header {
         color: $dark-grey;
         background: transparent;
         padding-bottom: 12px;
+    }
+
+    .parsing-heading {
+        display: flex;
+        align-items: center;
+        gap: 5px;
     }
 
     .toggle {

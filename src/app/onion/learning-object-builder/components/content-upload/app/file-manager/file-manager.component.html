@@ -28,11 +28,6 @@
     [anchor]="menuAnchor"
     (close)="closeContextMenu()">
     <ul #contextMenu>
-        <li
-            *ngIf="!isDirectory(menuItem)"
-            (activate)="handleDownloadClick(menuItem)">
-            <i class="far fa-download"></i>Download
-        </li>
         <li (activate)="triggerDelete(menuItem)" class="bad">
             <i class="far fa-trash-alt"></i>Delete
         </li>

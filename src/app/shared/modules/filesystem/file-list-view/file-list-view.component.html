@@ -2,12 +2,25 @@
     <div class="wrapper">
         <div
             class="grid-row header"
-            [ngClass]="{ bundle: checkAccessGroups() }">
+            [ngClass]="{
+                bundle: checkAccessGroups(),
+                parsing: inBuilder,
+            }">
             <div>Name</div>
             <div>Size</div>
             <div>Action</div>
+            <div *ngIf="inBuilder" class="parsing-heading">
+                Parsing
+                <span
+                    class="icon"
+                    tabindex="0"
+                    [tip]="parsingToolTip"
+                    aria-label="Supported file extensions for parsing">
+                    <i class="fas fa-question-circle" aria-hidden="true"></i>
+                </span>
+            </div>
             <div class="toggle" *ngIf="checkAccessGroups()">
-                <p>Bundle</p>
+                <p>Include in download</p>
                 <div class="icon" [tip]="toggleToolTip" [tipDisabled]="false">
                     <i class="fas fa-question-circle"></i>
                 </div>
