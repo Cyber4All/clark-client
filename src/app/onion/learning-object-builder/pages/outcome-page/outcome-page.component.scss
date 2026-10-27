@@ -2,12 +2,12 @@
 
 .main {
     padding-bottom: 80px;
-    border-top: 1px solid $light-grey;
+    border-top: 1px solid var(--theme-border);
     border-width: thin;
 }
 .title {
     font-size: $large;
-    color: $darker-grey;
+    color: var(--theme-text-strong);
     font-weight: 600;
 }
 
@@ -34,32 +34,32 @@
     padding-bottom: 30px;
 
     .no-outcomes__title {
-        color: $darker-grey;
+        color: var(--theme-text-strong);
         font-size: $larger;
     }
 
     .no-outcomes__description {
         font-size: $normal;
-        color: $dark-grey;
+        color: var(--theme-text-muted);
         max-width: 500px;
         margin: auto;
         margin-top: 5px;
     }
 
     .no-outcomes__error {
-        color: $error-red;
+        color: var(--theme-status-error);
         margin-top: 20px;
     }
 
     .svg-inline--fa,
     .icon {
-        color: $light-blue;
+        color: var(--theme-action-primary);
         font-size: $largest;
         margin-bottom: 5px;
     }
 
     .no-outcomes__help {
-        color: $dark-grey;
+        color: var(--theme-text-muted);
         cursor: help;
         font-size: $normal;
         margin-bottom: 0;

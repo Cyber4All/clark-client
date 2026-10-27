@@ -320,8 +320,8 @@
 <!-- <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
                     <div #contextMenu class="context-popup">
                         <ul>
-                            <li 
-                            *ngFor="let l of academicLevels" 
+                            <li
+                            *ngFor="let l of academicLevels"
                             (click)="navService.setLevel(l)"
                             >{{ l | titlecase}}</li>
                         </ul>

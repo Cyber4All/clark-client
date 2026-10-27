@@ -1,15 +1,25 @@
 @import "../../collection-globals.scss";
 
-:root {
-    --background-color: white;
-    --primary-text: black;
-    --secondary-text: $dark-grey;
+:host {
+    display: block;
+    color: var(--primary-text, #000000);
 }
 
-[data-theme="dark"] {
-    --background-color: #32363f;
-    --primary-text: #ffffff;
-    --secondary-text: #ffffff;
+.root_502 {
+    --background-color: #ffffff;
+    --primary-text: #000000;
+    --secondary-text: #32363f;
+    --border: #672f90;
+
+    background-color: var(--background-color);
+    color: var(--primary-text);
+
+    &[data-theme="dark"] {
+        --background-color: #32363f;
+        --primary-text: #ffffff;
+        --secondary-text: #ffffff;
+        --border: #f7ec2f;
+    }
 }
 
 .theme-switch-wrapper {
@@ -19,22 +29,34 @@
     padding: 25px 50px 0 50px;
 
     .toggle {
+        --mdc-switch-label-text-color: var(--primary-text);
         color: var(--primary-text);
+
+        ::ng-deep {
+            .mdc-label,
+            .mat-slide-toggle-content,
+            label {
+                color: var(--primary-text) !important;
+            }
+
+            .mdc-switch.mdc-switch--checked .mdc-switch__track,
+            &.mat-checked .mat-slide-toggle-bar {
+                background-color: $blue_502;
+            }
+
+            .mdc-switch.mdc-switch--checked .mdc-switch__handle::after,
+            &.mat-checked .mat-slide-toggle-thumb {
+                background-color: $blue_502;
+                border: $dark-grey solid;
+                border-width: 1px;
+            }
+        }
     }
 
     .icon {
         color: var(--primary-text);
         margin-left: 10px;
     }
-}
-::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-    background-color: $blue_502;
-}
-
-::ng-deep .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
-    background-color: $blue_502;
-    border: $dark-grey solid;
-    border-width: 1px;
 }
 
 @media (max-width: 1270px) {

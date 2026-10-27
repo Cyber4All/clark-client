@@ -30,7 +30,7 @@
             justify-content: space-between;
             font-size: 30px;
             width: 200px;
-            color: $blue-accent;
+            color: var(--theme-border-strong, var(--theme-border));
             z-index: 1;
             position: relative;
 
@@ -60,7 +60,7 @@
         }
 
         &.active .stars {
-            color: $light-blue;
+            color: var(--theme-action-primary);
         }
     }
 
@@ -76,15 +76,32 @@
         flex-direction: column;
         justify-content: space-between;
 
+        textarea {
+            resize: none;
+            appearance: none;
+            outline: 0;
+            background: var(--theme-foreground);
+            color: var(--theme-text);
+            border: 1px solid var(--theme-border);
+            border-radius: 4px;
+            padding: 10px;
+            height: 150px;
+            width: 350px;
+
+            &:focus {
+                border-color: var(--theme-focus);
+            }
+        }
+
         .character-count {
             font-size: $small;
             text-align: right;
             margin-bottom: 10px;
-            color: $medium-grey;
+            color: var(--theme-text-muted);
         }
 
         .over-limit {
-            color: $error-red;
+            color: var(--theme-status-error);
         }
 
         .btn-group {
