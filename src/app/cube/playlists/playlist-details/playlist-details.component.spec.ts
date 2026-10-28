@@ -4,7 +4,7 @@ import { BehaviorSubject, of, throwError } from "rxjs";
 import { PlaylistService } from "app/core/playlist-module/playlist.service";
 import { Playlist } from "app/core/playlist-module/playlist.types";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
-import { AuthService } from "app/core/auth-module/auth.service";
+import { AuthService, AuthUser } from "app/core/auth-module/auth.service";
 import { SearchService } from "app/core/learning-object-module/search/search.service";
 import { PlaylistDetailsComponent } from "./playlist-details.component";
 
@@ -45,7 +45,7 @@ describe("PlaylistDetailsComponent", () => {
             service as unknown as PlaylistService,
             learningObjectService as unknown as LearningObjectService,
             {} as SearchService,
-            { currentUserId: "user-id" } as AuthService,
+            { user: new AuthUser({ _id: "user-id" }) } as AuthService,
         );
 
         component.ngOnInit();
@@ -88,7 +88,7 @@ describe("PlaylistDetailsComponent", () => {
             service as unknown as PlaylistService,
             learningObjectService as unknown as LearningObjectService,
             {} as SearchService,
-            { currentUserId: "user-id" } as AuthService,
+            { user: new AuthUser({ _id: "user-id" }) } as AuthService,
         );
 
         component.ngOnInit();
@@ -115,7 +115,7 @@ describe("PlaylistDetailsComponent", () => {
             service as unknown as PlaylistService,
             learningObjectService as unknown as LearningObjectService,
             {} as SearchService,
-            { currentUserId: "user-id" } as AuthService,
+            { user: new AuthUser({ _id: "user-id" }) } as AuthService,
         );
 
         component.ngOnInit();
@@ -140,7 +140,7 @@ describe("PlaylistDetailsComponent", () => {
             service as unknown as PlaylistService,
             {} as LearningObjectService,
             {} as SearchService,
-            { currentUserId: "user-id" } as AuthService,
+            { user: new AuthUser({ _id: "user-id" }) } as AuthService,
         );
 
         component.ngOnInit();
@@ -162,7 +162,7 @@ describe("PlaylistDetailsComponent", () => {
                 playlistService as unknown as PlaylistService,
                 {} as LearningObjectService,
                 searchService as unknown as SearchService,
-                { currentUserId: "user-id" } as AuthService,
+                { user: new AuthUser({ _id: "user-id" }) } as AuthService,
             );
             component.playlist = { ...playlist, learningObjectCuids: [] };
             component.searchText = "security";

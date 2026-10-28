@@ -2,7 +2,7 @@
     <a
         class="back-link"
         routerLink="/playlists"
-        [queryParams]="isOwner ? { userId: auth.currentUserId } : {}">
+        [queryParams]="isOwner ? { userId: auth.user?.userId } : {}">
         <i class="far fa-chevron-left" aria-hidden="true"></i>
         Browse Playlists
     </a>

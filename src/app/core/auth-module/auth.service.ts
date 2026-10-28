@@ -239,13 +239,6 @@ export class AuthService {
         return this.user ? this.user.name : undefined;
     }
 
-    get currentUserId(): string | undefined {
-        const user = this.user as unknown as
-            | { userId?: string; _id?: string }
-            | undefined;
-        return user?.userId || user?._id;
-    }
-
     /**
      * Return the currently logged-in user's first name
      *

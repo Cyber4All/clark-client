@@ -116,7 +116,8 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
 
     get isOwnLibrary(): boolean {
         return (
-            !!this.auth.currentUserId && this.userId === this.auth.currentUserId
+            Boolean(this.auth.user?.userId) &&
+            this.userId === this.auth.user?.userId
         );
     }
 

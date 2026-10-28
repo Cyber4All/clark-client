@@ -1,7 +1,7 @@
 import { convertToParamMap, ActivatedRoute, Router } from "@angular/router";
 import { MatDialog } from "@angular/material/dialog";
 import { of, Subject, throwError } from "rxjs";
-import { AuthService } from "app/core/auth-module/auth.service";
+import { AuthService, AuthUser } from "app/core/auth-module/auth.service";
 import { PlaylistService } from "app/core/playlist-module/playlist.service";
 import { Playlist } from "app/core/playlist-module/playlist.types";
 import { UserService } from "app/core/user-module/user.service";
@@ -35,7 +35,7 @@ describe("PlaylistsComponent", () => {
             service as unknown as PlaylistService,
             userService as unknown as UserService,
             { queryParamMap: of(convertToParamMap(query)) } as ActivatedRoute,
-            { currentUserId: "user-id" } as AuthService,
+            { user: new AuthUser({ _id: "user-id" }) } as AuthService,
             router as unknown as Router,
             dialog as unknown as MatDialog,
         );

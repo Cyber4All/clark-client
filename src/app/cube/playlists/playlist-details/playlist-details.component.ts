@@ -26,7 +26,7 @@ import {
     takeUntil,
 } from "rxjs/operators";
 
-interface PlaylistLearningObjectView {
+interface PlaylistLearningObject {
     cuid: string;
     object: LearningObject | null;
 }
@@ -49,7 +49,7 @@ interface PlaylistLearningObjectView {
 })
 export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     playlist?: Playlist;
-    learningObjects: PlaylistLearningObjectView[] = [];
+    learningObjects: PlaylistLearningObject[] = [];
     loading = true;
     hasError = false;
     errorMessage = "";
@@ -65,7 +65,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     searchLoading = false;
     searchError = false;
     searchHasMore = false;
-    addingCuid = "";
+    cuidToBeAdded = "";
     private searchPage = 1;
     private readonly searchPageSize = 4;
     private readonly searchChanges = new Subject<string>();
@@ -127,7 +127,8 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
 
     get isOwner(): boolean {
         return (
-            !!this.playlist && this.playlist.userId === this.auth.currentUserId
+            Boolean(this.playlist) &&
+            this.playlist?.userId === this.auth.user?.userId
         );
     }
 
@@ -280,8 +281,8 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     void this.router.navigate(["/playlists"], {
-                        queryParams: this.auth.currentUserId
-                            ? { userId: this.auth.currentUserId }
+                        queryParams: this.auth.user?.userId
+                            ? { userId: this.auth.user?.userId }
                             : {},
                     });
                 },
@@ -294,26 +295,31 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
             });
     }
 
-    addLearningObject(object: LearningObject): void {
-        if (!this.isOwner || !object.cuid || this.addingCuid) {
+    addLearningObject(learningObject: LearningObject): void {
+        if (
+            !this.playlist ||
+            !this.isOwner ||
+            !learningObject.cuid ||
+            this.cuidToBeAdded
+        ) {
             return;
         }
-        this.addingCuid = object.cuid;
+        this.cuidToBeAdded = learningObject.cuid;
         this.errorMessage = "";
         this.playlistService
-            .addLearningObject(this.playlist._id, object.cuid)
+            .addLearningObject(this.playlist._id, learningObject.cuid)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (playlist) => {
                     this.playlist = playlist;
                     this.learningObjects = [
                         ...this.learningObjects,
-                        { cuid: object.cuid, object },
+                        { cuid: learningObject.cuid, object: learningObject },
                     ];
                     this.searchResults = this.searchResults.filter(
-                        (candidate) => candidate.cuid !== object.cuid,
+                        (candidate) => candidate.cuid !== learningObject.cuid,
                     );
-                    this.addingCuid = "";
+                    this.cuidToBeAdded = "";
                     if (
                         !this.searchResults.length &&
                         this.searchHasMore &&
@@ -325,13 +331,13 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
                 error: () => {
                     this.errorMessage =
                         "We couldn't add this learning object. Please try again.";
-                    this.addingCuid = "";
+                    this.cuidToBeAdded = "";
                 },
             });
     }
 
-    removeLearningObject(entry: PlaylistLearningObjectView): void {
-        if (!this.isOwner || !entry.cuid) {
+    removeLearningObject(entry: PlaylistLearningObject): void {
+        if (!this.playlist || !this.isOwner || !entry) {
             return;
         }
         this.errorMessage = "";
@@ -354,7 +360,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
 
     private loadLearningObjects(
         playlist: Playlist,
-    ): Observable<PlaylistLearningObjectView[]> {
+    ): Observable<PlaylistLearningObject[]> {
         if (!playlist.learningObjectCuids.length) {
             return of([]);
         }
