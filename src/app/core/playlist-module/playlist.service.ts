@@ -21,26 +21,28 @@ export class PlaylistService {
     }
 
     getBrowsePlaylists(userId?: string): Observable<Playlist[]> {
-        if (!userId) {
-            return this.getPlaylists();
-        }
+        const playlists$ = userId
+            ? forkJoin([
+                  this.getPlaylists(),
+                  this.getPlaylists({ userId }),
+              ]).pipe(
+                  map(([publicPlaylists, userPlaylists]) => [
+                      ...new Map(
+                          [...publicPlaylists, ...userPlaylists]
+                              .filter(
+                                  (playlist) =>
+                                      playlist.visibility === "public" ||
+                                      playlist.userId === userId,
+                              )
+                              .map((playlist) => [playlist._id, playlist]),
+                      ).values(),
+                  ]),
+              )
+            : this.getPlaylists();
 
-        return forkJoin([
-            this.getPlaylists(),
-            this.getPlaylists({ userId }),
-        ]).pipe(
-            map(([publicPlaylists, userPlaylists]) =>
-                [
-                    ...new Map(
-                        [...publicPlaylists, ...userPlaylists]
-                            .filter(
-                                (playlist) =>
-                                    playlist.visibility === "public" ||
-                                    playlist.userId === userId,
-                            )
-                            .map((playlist) => [playlist._id, playlist]),
-                    ).values(),
-                ].sort(
+        return playlists$.pipe(
+            map((playlists) =>
+                [...playlists].sort(
                     (a, b) =>
                         (Date.parse(b.createdAt || "") || 0) -
                         (Date.parse(a.createdAt || "") || 0),

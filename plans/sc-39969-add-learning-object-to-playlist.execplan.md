@@ -17,6 +17,7 @@ Authenticated users can add the learning object on its details page to an existi
 - [x] (2026-10-26 15:35Z) Aligned modal types and playlist queries with the merged owner-management service contract.
 - [x] (2026-10-28 14:48Z) Merged public playlists with the signed-in author's playlists on Browse Playlists without exposing another author's private playlists.
 - [x] (2026-10-28 14:49Z) Added focused coverage; lint and the Angular build pass, while Jest remains blocked before discovery by the existing transformer mismatch.
+- [x] (2026-10-28 15:00Z) Applied created-date descending ordering to both authenticated and public-only Browse Playlists results.
 
 ## Surprises & Discoveries
 

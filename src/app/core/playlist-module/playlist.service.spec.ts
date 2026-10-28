@@ -77,6 +77,27 @@ describe("PlaylistService", () => {
             .flush([privatePlaylist]);
     });
 
+    it("orders public browse playlists by newest creation date", () => {
+        const newest = {
+            ...playlist,
+            _id: "newest-id",
+            createdAt: "2026-10-28T12:00:00.000Z",
+        };
+        const oldest = {
+            ...playlist,
+            _id: "oldest-id",
+            createdAt: "2026-10-27T12:00:00.000Z",
+        };
+
+        service
+            .getBrowsePlaylists()
+            .subscribe((result) => expect(result).toEqual([newest, oldest]));
+
+        httpMock
+            .expectOne(`${environment.apiURL}/playlists`)
+            .flush([oldest, newest]);
+    });
+
     it("gets one raw playlist", () => {
         service.getPlaylist(playlist._id).subscribe();
 
