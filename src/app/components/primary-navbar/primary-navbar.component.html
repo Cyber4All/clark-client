@@ -101,7 +101,7 @@
                                     tabindex="0"
                                     [routerLink]="['playlists']"
                                     [queryParams]="{
-                                        userId: auth.currentUserId,
+                                        userId: auth.user?.userId,
                                     }"
                                     (activate)="dropdowns.toggleUserDropdown()">
                                     <i class="fas fa-list"></i>My Playlist
@@ -226,12 +226,7 @@
                         </li>
                         <li
                             [routerLink]="['playlists']"
-                            [queryParams]="{ userId: auth.currentUserId }">
-                            My Playlist
-                        </li>
-                        <li
-                            [routerLink]="['playlists']"
-                            [queryParams]="{ userId: auth.currentUserId }">
+                            [queryParams]="{ userId: auth.user?.userId }">
                             My Playlist
                         </li>
                         <li
