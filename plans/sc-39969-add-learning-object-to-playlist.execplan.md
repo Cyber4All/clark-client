@@ -4,7 +4,7 @@ This ExecPlan is maintained according to `PLANS.md`.
 
 ## Purpose / Big Picture
 
-Authenticated users can add the learning object on its details page to an existing playlist or create a public/private playlist and add it in the same modal. Public browsing and the merged owner-library view label playlist visibility consistently.
+Authenticated users can add the learning object on its details page to an existing playlist or create a public/private playlist and add it in the same modal. Browse Playlists includes public playlists plus the signed-in author's private playlists, while private playlists remain hidden from everyone else.
 
 ## Progress
 
@@ -15,6 +15,8 @@ Authenticated users can add the learning object on its details page to an existi
 - [x] (2026-10-26 15:15Z) Labeled playlist detail headers as public or private.
 - [x] (2026-10-26 15:20Z) Completed existing-playlist selection, inline creation, validation, success, empty, duplicate, and error states.
 - [x] (2026-10-26 15:35Z) Aligned modal types and playlist queries with the merged owner-management service contract.
+- [x] (2026-10-28 14:48Z) Merged public playlists with the signed-in author's playlists on Browse Playlists without exposing another author's private playlists.
+- [x] (2026-10-28 14:49Z) Added focused coverage; lint and the Angular build pass, while Jest remains blocked before discovery by the existing transformer mismatch.
 
 ## Surprises & Discoveries
 
@@ -31,17 +33,17 @@ Authenticated users can add the learning object on its details page to an existi
   Rationale: Duplicate additions must not appear as failures or create duplicate entries.
   Date/Author: 2026-10-26 / Codex
 
-- Decision: Use the merged owner-library query for private playlists and keep unfiltered browse public-only.
-  Rationale: The API and owner-management UI already enforce the visibility boundary, avoiding duplicate authorization and collection-composition logic in this ticket.
-  Date/Author: 2026-10-26 / Codex
+- Decision: Compose public and current-user playlist requests in `PlaylistService` for Browse Playlists.
+  Rationale: The existing API contracts separate public browsing from owner playlists; central service composition is reusable and lets the client explicitly exclude private playlists not owned by the signed-in user.
+  Date/Author: 2026-10-28 / Codex
 
 ## Outcomes & Retrospective
 
-The details action opens an accessible picker for the current user's playlists. Users can select, unselect, create, add, cancel, retry failures, and return from creation without premature validation. Public browse and owner-library cards identify visibility, and private playlists remain author-only. Jest configuration remains out of scope.
+The details action opens an accessible picker for the current user's playlists. Users can select, unselect, create, add, cancel, retry failures, and return from creation without premature validation. Public browse and owner-library cards identify visibility. `PlaylistService` now composes and deduplicates the public and current-user collections so signed-in authors see their own private playlists in Browse Playlists while private records belonging to other users are filtered out. The Angular build and focused lint pass; Jest configuration remains out of scope.
 
 ## Context and Orientation
 
-`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient UI/form state and calls the typed methods in `src/app/core/playlist-module/playlist.service.ts`. The merged `PlaylistsComponent` uses a `userId` query for the owner library; `PlaylistCardComponent` displays visibility. This work does not change routing, guards, interceptors, environments, or build configuration.
+`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient UI/form state and calls the typed methods in `src/app/core/playlist-module/playlist.service.ts`. `PlaylistsComponent` uses a `userId` query for an explicit owner library and a service-composed public-plus-current-user collection for Browse Playlists; `PlaylistCardComponent` displays visibility. This work does not change routing, guards, interceptors, environments, or build configuration.
 
 ## Plan of Work
 
@@ -64,7 +66,7 @@ From the repository root:
 - Creation requires nonblank name/description and public/private visibility.
 - Loading, empty, validation, success, duplicate, and API-error behavior is covered.
 - Cancel, close, and back navigation do not trigger validation.
-- Public-browse and owner-library cards show PUBLIC or gray PRIVATE; private playlists appear only in their signed-in author's library.
+- Public-browse and owner-library cards show PUBLIC or gray PRIVATE; private playlists appear in Browse Playlists and the owner library only for their signed-in author.
 - Browse Playlists orders cards by `createdAt` descending, with missing dates last.
 - Playlist details identify the loaded playlist as PUBLIC PLAYLIST or PRIVATE PLAYLIST.
 - Build, formatting, lint, and diff checks pass; focused Jest remains blocked by the existing transformer mismatch.
@@ -75,7 +77,7 @@ Build and static checks are safe to repeat. A failed add leaves the modal retrya
 
 ## Artifacts and Notes
 
-PR #2350 remains temporarily based on `feature/sc-40132/create-browse-playlists-dashboard`; no rebase is required.
+PR #2350 is based on `feature/sc-39968/add-owner-playlist-management-to-the-user`; no rebase is required.
 
 ## Interfaces and Dependencies
 

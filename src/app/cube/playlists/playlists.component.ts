@@ -89,9 +89,13 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
                     this.userId = params.get("userId") || "";
                     this.loading = true;
                     this.hasError = false;
-                    return this.playlistService.getPlaylists(
-                        this.userId ? { userId: this.userId } : {},
-                    );
+                    return this.userId
+                        ? this.playlistService.getPlaylists({
+                              userId: this.userId,
+                          })
+                        : this.playlistService.getBrowsePlaylists(
+                              this.auth.currentUserId,
+                          );
                 }),
                 takeUntil(this.destroy$),
             )
