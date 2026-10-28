@@ -262,9 +262,31 @@ describe("Two-tab profile", () => {
         response.next([]);
         fixture.detectChanges();
         expect(fixture.nativeElement.textContent).toContain(
-            "No public playlists yet.",
+            "No playlists available",
         );
     }));
+
+    it.each([undefined, ""])(
+        "shows an empty state without retry when the user ID is %s",
+        fakeAsync((userId) => {
+            render();
+            playlists.getPublicPlaylists.mockClear();
+            data.next({ user: { ...viewedUser, _id: userId } });
+            render();
+            openPlaylists();
+
+            expect(playlists.getPublicPlaylists).not.toHaveBeenCalled();
+            expect(component.publicPlaylists).toEqual([]);
+            expect(component.playlistsLoading).toBe(false);
+            expect(component.playlistsError).toBe(false);
+            const section = fixture.nativeElement.querySelector(
+                'section[aria-label="Public Playlists"]',
+            );
+            expect(section.textContent).toContain("no playlists available");
+            expect(section.querySelector('[role="alert"]')).toBeNull();
+            expect(section.querySelector("button")).toBeNull();
+        }),
+    );
 
     it("defines independent errors and retries", fakeAsync(() => {
         collections.getUserSubmittedCollections.mockRejectedValue(
@@ -293,7 +315,7 @@ describe("Two-tab profile", () => {
         fixture.nativeElement.querySelector("[role=alert] button").click();
         render();
         expect(fixture.nativeElement.textContent).toContain(
-            "No public playlists yet.",
+            "No playlists available",
         );
     }));
 

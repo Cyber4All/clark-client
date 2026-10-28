@@ -111,7 +111,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.playlistsError = false;
         const userId = this.user.userId;
         if (!userId) {
-            this.playlistsError = true;
+            this.publicPlaylists = [];
             this.playlistsLoading = false;
             return;
         }
