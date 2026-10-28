@@ -163,63 +163,39 @@ export class ChangeStatusModalComponent implements OnInit {
      * Update the status of the learning object to the selected value
      */
     async updateStatus() {
+        if (this.serviceInteraction) {
+            return;
+        }
         this.serviceInteraction = true;
-        let unableToUpdate = false;
-        if (this.builderStore.savedCorrectly) {
-            await Promise.all([
-                this.builderStore
-                    .execute(BUILDER_ACTIONS.CHANGE_STATUS, {
-                        status: this.selectedStatus,
-                        reason: this.reason,
-                    })
-                    .catch((error) => {
-                        // Set a variable to track update state and throw up a error toaster.
-                        unableToUpdate = true;
-                        if (error.status === 400) {
-                            this.toaster.error("Error!", error.error.message);
-                        } else {
-                            this.toaster.error(
-                                "Error!",
-                                "There was an error trying to update the status of this learning object. Please try again later!",
-                            );
-                        }
-                        return;
-                    }),
-            ])
-                .then(() => {
-                    // If we can't update the status, just close the modal after showing an error.
-                    if (unableToUpdate) {
-                        this.closeModal();
-                        this.serviceInteraction = false;
-                        return;
-                    }
+        try {
+            await this.builderStore.execute(BUILDER_ACTIONS.CHANGE_STATUS, {
+                status: this.selectedStatus,
+                reason: this.reason,
+            });
 
-                    // Create a changelog.
-                    this.changelog ? this.createChangelog() : undefined;
+            if (this.changelog) {
+                this.createChangelog();
+            }
 
-                    // If the object released, move to map and tag, else update the valid status moves
-                    this.learningObject.status = this
-                        .selectedStatus as LearningObject.Status;
-                    if (
-                        this.selectedStatus === LearningObject.Status.RELEASED
-                    ) {
-                        this.moveToAdminDashboard();
-                    } else if (
-                        this.learningObject.status ===
-                        LearningObject.Status.REJECTED
-                    ) {
-                        this.moveToAdminDashboard();
-                    } else {
-                        this.setValidStatusMoves();
-                    }
-
-                    // Then close the modal
-                    this.closeModal();
-                    this.serviceInteraction = false;
-                })
-                .catch((error) => {
-                    this.serviceInteraction = false;
-                });
+            this.learningObject.status = this
+                .selectedStatus as LearningObject.Status;
+            if (
+                this.selectedStatus === LearningObject.Status.RELEASED ||
+                this.selectedStatus === LearningObject.Status.REJECTED
+            ) {
+                this.moveToAdminDashboard();
+            } else {
+                this.setValidStatusMoves();
+            }
+            this.closeModal();
+        } catch (error) {
+            const message =
+                error?.error?.message ??
+                error?.message ??
+                "There was an error trying to update the status of this learning object. Please try again later!";
+            this.toaster.error("Error!", message);
+        } finally {
+            this.serviceInteraction = false;
         }
     }
 

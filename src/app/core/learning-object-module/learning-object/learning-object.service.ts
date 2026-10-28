@@ -374,8 +374,8 @@ export class LearningObjectService {
 
     /**
      * Releases an entire hierarchy from the admin dashboard, should
-     * only be called for root objects, but can be used for subtrees
-     * according to Hierarchy Service docs.
+     * only be called for root objects, but can also be used for subtrees.
+     * The gateway forwards this PATCH to clark-service.
      *
      * @param id id of the root learning object of a hierarchy
      * @returns A promise
@@ -394,20 +394,29 @@ export class LearningObjectService {
 
     /**
      * Submits an entire hierarchy from the user dashboard, should
-     * only be called for root objects, but can be used for subtrees
-     * according to Hierarchy Service docs.
+     * only be called for root objects, but can also be used for subtrees.
+     * The gateway forwards this PATCH to clark-service.
      *
      * @param id id of the root learning object of a hierarchy
      * @param collection the collection the objects will belong to
+     * @param selectedAuthorizations changes authorized by the submitting author
+     * @param submissionReason optional notes for reviewers
      * @returns A promise
      */
-    async submitHierarchy(id: string, collection: string): Promise<any> {
+    async submitHierarchy(
+        id: string,
+        collection: string,
+        selectedAuthorizations: string[],
+        submissionReason?: string,
+    ): Promise<any> {
         return await this.http
             .patch(
                 LEARNING_OBJECT_ROUTES.UPDATE_LEARNING_OBJECT_STATUS(id),
                 {
                     status: LearningObject.Status.WAITING,
-                    collection: collection,
+                    collection,
+                    selectedAuthorizations,
+                    submissionReason,
                 },
                 { withCredentials: true, responseType: "json" },
             )

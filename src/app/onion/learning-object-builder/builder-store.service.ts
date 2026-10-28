@@ -113,7 +113,7 @@ export class BuilderStore {
     // false until a save operation is attempted, true after that
     public touched: boolean;
 
-    // false until a save operation is successful, true after that
+    // True after persisted data loads or an edit saves successfully.
     public savedCorrectly = false;
 
     /**
@@ -418,6 +418,7 @@ export class BuilderStore {
         username?: string,
     ): Promise<LearningObject> {
         this.touched = true;
+        this.savedCorrectly = false;
 
         // don't ask, don't tell
         // but if anything breaks, this might be a culprit
@@ -465,6 +466,7 @@ export class BuilderStore {
                 this.titleService.setTitle(
                     "CLARK | " + this.learningObject.displayName,
                 );
+                this.savedCorrectly = true;
                 return this.learningObject;
             })
             .catch((e) => {
@@ -627,10 +629,22 @@ export class BuilderStore {
             case BUILDER_ACTIONS.DELETE_FILES:
                 return await this.removeFiles(data.fileIds);
             case BUILDER_ACTIONS.CHANGE_STATUS:
-                if (this.savedCorrectly) {
-                    return await this.changeStatus(data.status, data.reason);
-                } else {
+                if (!this.savedCorrectly || !this.validator.saveable) {
+                    throw new Error(
+                        "Please resolve save errors before changing the learning object's status.",
+                    );
                 }
+                if (
+                    this.serviceInteraction$.getValue() !== false ||
+                    this.objectCache$.getValue() !== undefined ||
+                    this.outcomeCache$.getValue() !== undefined ||
+                    this.creatingOutcomes.size > 0
+                ) {
+                    throw new Error(
+                        "Please wait for all changes to finish saving before changing status.",
+                    );
+                }
+                return await this.changeStatus(data.status, data.reason);
             case BUILDER_ACTIONS.TOGGLE_BUNDLE:
                 return await this.toggleBundle(data);
             case BUILDER_ACTIONS.TOGGLE_CONTEXT:
