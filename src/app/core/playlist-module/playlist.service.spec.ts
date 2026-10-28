@@ -43,7 +43,7 @@ describe("PlaylistService", () => {
     });
 
     it("gets playlists for one user", () => {
-        service.getPlaylists(playlist.userId).subscribe();
+        service.getPlaylists({ userId: playlist.userId }).subscribe();
 
         const request = httpMock.expectOne(
             `${environment.apiURL}/playlists?userId=user%2Fid`,
