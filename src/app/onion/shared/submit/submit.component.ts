@@ -247,7 +247,12 @@ export class SubmitComponent implements OnInit {
             this.loading.push(true);
             if (this.isHierarchySubmission) {
                 this.learningObjectService
-                    .submitHierarchy(this.learningObject.id, this.collection)
+                    .submitHierarchy(
+                        this.learningObject.id,
+                        this.collection,
+                        this.selectedAuthorizations,
+                        this.submissionReason,
+                    )
                     .then(() => {
                         this.closeModal(true);
                         this.loading.pop();
