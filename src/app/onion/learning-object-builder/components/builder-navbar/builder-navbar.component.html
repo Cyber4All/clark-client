@@ -62,24 +62,19 @@
                 [states]="states"></clark-lo-status-indicator>
             <span
                 class="agentic-builder-action-wrapper"
-                [tip]="
-                    hasSupportedMaterials
-                        ? canGenerateWithAi
-                            ? 'Generate suggestions from your learning object materials.'
-                            : 'AI generation requires a supported material to finish processing successfully.'
-                        : 'Upload a DOCX, HTML, MD, PDF, PPTX, TXT, or XLSX file before generating details with AI.'
-                "
-                tipPosition="bottom">
+                [tip]="getBuildWithAITooltip()"
+                tipPosition="bottom"
+                [tipWrap]="true">
                 <button
                     type="button"
                     class="agentic-builder-action"
-                    aria-label="Generate with AI"
+                    aria-label="Build with AI"
                     [attr.aria-disabled]="!canGenerateWithAi"
                     [disabled]="!canGenerateWithAi"
                     (click)="$event.stopPropagation()"
                     (activate)="toggleAgenticBuilder()">
                     <i class="fas fa-sparkles" aria-hidden="true"></i>
-                    Generate with AI
+                    Build with AI
                 </button>
             </span>
             <ng-container *ngIf="!adminMode; else adminModeTemplate">
@@ -181,6 +176,8 @@
 
 <onion-agentic-builder-panel
     [hidden]="!showAgenticBuilder"
+    [top]="agenticPanelTop"
+    [right]="agenticPanelRight"
     (closed)="showAgenticBuilder = false"></onion-agentic-builder-panel>
 
 <clark-submit

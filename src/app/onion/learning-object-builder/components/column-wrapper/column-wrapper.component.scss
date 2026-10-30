@@ -15,12 +15,20 @@ $right-column: minmax(290px, 340px);
     }
 
     &.no-right {
-        grid-template-columns: $left-column $middle-column;
+        grid-template-columns:
+            $left-column
+            minmax(675px, min(900px, calc(100vw - 330px)))
+            minmax(0, 1fr);
+        width: calc(100vw - 50px);
     }
 
     // scss-lint:disable MergeableSelector
     &.no-left.no-right {
-        grid-template-columns: $middle-column !important;
+        grid-template-columns: minmax(0, calc(66.6667vw + 40px)) !important;
+        left: 50%;
+        margin: 0;
+        transform: translateX(-50%);
+        width: calc(66.6667vw + 40px);
     }
 
     .content {
@@ -36,7 +44,7 @@ $right-column: minmax(290px, 340px);
         background: transparent;
 
         &.main-column {
-            margin-top: 30px;
+            margin-top: 32px;
         }
 
         &.left-column {
