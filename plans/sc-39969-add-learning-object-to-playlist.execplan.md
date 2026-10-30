@@ -4,7 +4,7 @@ This ExecPlan is maintained according to `PLANS.md`.
 
 ## Purpose / Big Picture
 
-Authenticated users can add the learning object on its details page to an existing playlist or create a public/private playlist and add it in the same modal. Browse Playlists includes public playlists plus the signed-in author's private playlists, while private playlists remain hidden from everyone else.
+Authenticated users can add the learning object on its details page to an existing playlist or create a public/private playlist and add it in the same modal. Browse Playlists remains a public-only collection, while private playlists are available through the author's library.
 
 ## Progress
 
@@ -17,9 +17,10 @@ Authenticated users can add the learning object on its details page to an existi
 - [x] (2026-10-26 15:15Z) Labeled playlist detail headers as public or private.
 - [x] (2026-10-26 15:20Z) Completed existing-playlist selection, inline creation, validation, success, empty, duplicate, and error states.
 - [x] (2026-10-26 15:35Z) Aligned modal types and playlist queries with the merged owner-management service contract.
-- [x] (2026-10-28 14:48Z) Merged public playlists with the signed-in author's playlists on Browse Playlists without exposing another author's private playlists.
+- [x] (2026-10-28 14:48Z) Temporarily merged public and author playlists in Browse; this behavior was removed on 2026-10-30 after the collection boundary was clarified.
 - [x] (2026-10-28 14:49Z) Added focused coverage; lint and the Angular build pass, while Jest remains blocked before discovery by the existing transformer mismatch.
-- [x] (2026-10-28 15:00Z) Applied created-date descending ordering to both authenticated and public-only Browse Playlists results.
+- [x] (2026-10-28 15:00Z) Applied created-date descending ordering to Browse Playlists results.
+- [x] (2026-10-30) Removed the public-plus-owner request composition so Browse Playlists uses one public request while retaining created-date descending order.
 
 ## Surprises & Discoveries
 
@@ -40,19 +41,19 @@ Authenticated users can add the learning object on its details page to an existi
   Rationale: Duplicate additions must not appear as failures or create duplicate entries.
   Date/Author: 2026-10-26 / Codex
 
-- Decision: Compose public and current-user playlist requests in `PlaylistService` for Browse Playlists.
-  Rationale: The existing API contracts separate public browsing from owner playlists; central service composition is reusable and lets the client explicitly exclude private playlists not owned by the signed-in user.
-  Date/Author: 2026-10-28 / Codex
+- Decision: Keep Browse Playlists public-only and use the user-filtered request only for owner libraries.
+  Rationale: This preserves the API's collection boundaries and removes a second request, client-side merging, deduplication, and ownership filtering from Browse.
+  Date/Author: 2026-10-30 / Codex
 
 ## Outcomes & Retrospective
 
 The branch now descends directly from the cleaned SC-39968 tip (`f39c9c84c`). Fifteen feature commits were replayed; four obsolete formatting/intermediate commits and inherited dashboard/owner commits were omitted. Existing owner-management fixes remain intact. The rebase compatibility change uses `auth.user?.userId` in browse composition. Angular compilation and focused lint passed; Jest remains blocked at setup by the known transformer mismatch.
 
-The details action opens an accessible picker for the current user's playlists. Users can select, unselect, create, add, cancel, retry failures, and return from creation without premature validation. Public browse and owner-library cards identify visibility. `PlaylistService` now composes and deduplicates the public and current-user collections so signed-in authors see their own private playlists in Browse Playlists while private records belonging to other users are filtered out. The Angular build and focused lint pass; Jest configuration remains out of scope.
+The details action opens an accessible picker for the current user's playlists. Users can select, unselect, create, add, cancel, retry failures, and return from creation without premature validation. Browse Playlists uses one public request and sorts it newest first; owner libraries continue to use the user-filtered request and display private playlists. Jest configuration remains out of scope.
 
 ## Context and Orientation
 
-`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient UI/form state and calls the typed methods in `src/app/core/playlist-module/playlist.service.ts`. `PlaylistsComponent` uses a `userId` query for an explicit owner library and a service-composed public-plus-current-user collection for Browse Playlists; `PlaylistCardComponent` displays visibility. This work does not change routing, guards, interceptors, environments, or build configuration.
+`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient UI/form state and calls the typed methods in `src/app/core/playlist-module/playlist.service.ts`. `PlaylistsComponent` uses a `userId` query for an explicit owner library and one unfiltered request for public Browse Playlists; `PlaylistCardComponent` displays visibility. This work does not change routing, guards, interceptors, environments, or build configuration.
 
 ## Plan of Work
 
@@ -75,7 +76,7 @@ From the repository root:
 - Creation requires nonblank name/description and public/private visibility.
 - Loading, empty, validation, success, duplicate, and API-error behavior is covered.
 - Cancel, close, and back navigation do not trigger validation.
-- Public-browse and owner-library cards show PUBLIC or gray PRIVATE; private playlists appear in Browse Playlists and the owner library only for their signed-in author.
+- Public Browse cards show PUBLIC; owner-library cards show PUBLIC or gray PRIVATE, with private playlists available only through the author's library.
 - Browse Playlists orders cards by `createdAt` descending, with missing dates last.
 - Playlist details identify the loaded playlist as PUBLIC PLAYLIST or PRIVATE PLAYLIST.
 - Build, formatting, lint, and diff checks pass; focused Jest remains blocked by the existing transformer mismatch.

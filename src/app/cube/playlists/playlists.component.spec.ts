@@ -46,7 +46,7 @@ describe("PlaylistsComponent", () => {
     it("loads the public playlist collection without offering creation", () => {
         const { component, service, userService } = setup();
         component.ngOnInit();
-        expect(service.getBrowsePlaylists).toHaveBeenCalledWith("user-id");
+        expect(service.getBrowsePlaylists).toHaveBeenCalledWith();
         expect(component.playlists).toEqual([playlist]);
         expect(component.loading).toBe(false);
         expect(component.hasError).toBe(false);

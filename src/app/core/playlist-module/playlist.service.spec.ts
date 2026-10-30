@@ -52,31 +52,6 @@ describe("PlaylistService", () => {
         request.flush([playlist]);
     });
 
-    it("merges public and author-owned private playlists for browse", () => {
-        const privatePlaylist: Playlist = {
-            ...playlist,
-            _id: "private-id",
-            visibility: "private",
-            createdAt: "2026-10-28T12:00:00.000Z",
-        };
-        const anotherPrivatePlaylist: Playlist = {
-            ...privatePlaylist,
-            _id: "another-private-id",
-            userId: "another-user",
-        };
-
-        service.getBrowsePlaylists(playlist.userId).subscribe((result) => {
-            expect(result).toEqual([privatePlaylist, playlist]);
-        });
-
-        httpMock
-            .expectOne(`${environment.apiURL}/playlists`)
-            .flush([playlist, anotherPrivatePlaylist]);
-        httpMock
-            .expectOne(`${environment.apiURL}/playlists?userId=user%2Fid`)
-            .flush([privatePlaylist]);
-    });
-
     it("orders public browse playlists by newest creation date", () => {
         const newest = {
             ...playlist,

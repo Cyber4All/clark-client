@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { forkJoin, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { PLAYLIST_ROUTES } from "./playlist.routes";
 import {
@@ -20,27 +20,8 @@ export class PlaylistService {
         });
     }
 
-    getBrowsePlaylists(userId?: string): Observable<Playlist[]> {
-        const playlists$ = userId
-            ? forkJoin([
-                  this.getPlaylists(),
-                  this.getPlaylists({ userId }),
-              ]).pipe(
-                  map(([publicPlaylists, userPlaylists]) => [
-                      ...new Map(
-                          [...publicPlaylists, ...userPlaylists]
-                              .filter(
-                                  (playlist) =>
-                                      playlist.visibility === "public" ||
-                                      playlist.userId === userId,
-                              )
-                              .map((playlist) => [playlist._id, playlist]),
-                      ).values(),
-                  ]),
-              )
-            : this.getPlaylists();
-
-        return playlists$.pipe(
+    getBrowsePlaylists(): Observable<Playlist[]> {
+        return this.getPlaylists().pipe(
             map((playlists) =>
                 [...playlists].sort(
                     (a, b) =>
