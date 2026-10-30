@@ -2,9 +2,9 @@
     <a
         class="back-link"
         routerLink="/playlists"
-        [queryParams]="isOwner ? { userId: auth.user?.userId } : {}">
+        [queryParams]="returnUserId ? { userId: returnUserId } : {}">
         <i class="far fa-chevron-left" aria-hidden="true"></i>
-        Browse Playlists
+        {{ returnUserId ? "My Playlists" : "Browse Playlists" }}
     </a>
 
     <div *ngIf="loading" class="status" role="status" aria-live="polite">

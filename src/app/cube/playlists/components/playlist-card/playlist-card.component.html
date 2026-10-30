@@ -1,6 +1,7 @@
 <a
     class="playlist-card"
     [routerLink]="['/playlists', playlist._id]"
+    [queryParams]="returnUserId ? { returnUserId: returnUserId } : {}"
     [attr.aria-label]="
         playlist.name +
         ', ' +

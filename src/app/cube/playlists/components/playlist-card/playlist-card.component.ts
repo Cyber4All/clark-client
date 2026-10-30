@@ -13,6 +13,7 @@ import { Playlist } from "app/core/playlist-module/playlist.types";
 export class PlaylistCardComponent {
     @Input({ required: true }) playlist!: Playlist;
     @Input() resolvedAuthorName?: string;
+    @Input() returnUserId = "";
 
     get objectCount(): number {
         return this.playlist.learningObjectCuids?.length ?? 0;

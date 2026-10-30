@@ -21,6 +21,7 @@ Authenticated users can add the learning object on its details page to an existi
 - [x] (2026-10-28 14:49Z) Added focused coverage; lint and the Angular build pass, while Jest remains blocked before discovery by the existing transformer mismatch.
 - [x] (2026-10-28 15:00Z) Applied created-date descending ordering to Browse Playlists results.
 - [x] (2026-10-30) Removed the public-plus-owner request composition so Browse Playlists uses one public request while retaining created-date descending order.
+- [x] (2026-10-30) Preserved Browse versus My Playlists URL context when opening, leaving, or deleting from playlist details; focused lint and the Angular build pass.
 
 ## Surprises & Discoveries
 
@@ -45,6 +46,10 @@ Authenticated users can add the learning object on its details page to an existi
   Rationale: This preserves the API's collection boundaries and removes a second request, client-side merging, deduplication, and ownership filtering from Browse.
   Date/Author: 2026-10-30 / Codex
 
+- Decision: Carry an optional owner-library return ID in the playlist-details URL instead of inferring origin from ownership or using browser history.
+  Rationale: URL state survives refresh and direct navigation, while ownership cannot distinguish an author's public playlist opened from Browse from the same playlist opened from My Playlists.
+  Date/Author: 2026-10-30 / Codex
+
 ## Outcomes & Retrospective
 
 The branch now descends directly from the cleaned SC-39968 tip (`f39c9c84c`). Fifteen feature commits were replayed; four obsolete formatting/intermediate commits and inherited dashboard/owner commits were omitted. Existing owner-management fixes remain intact. The rebase compatibility change uses `auth.user?.userId` in browse composition. Angular compilation and focused lint passed; Jest remains blocked at setup by the known transformer mismatch.
@@ -53,7 +58,7 @@ The details action opens an accessible picker for the current user's playlists. 
 
 ## Context and Orientation
 
-`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient UI/form state and calls the typed methods in `src/app/core/playlist-module/playlist.service.ts`. `PlaylistsComponent` uses a `userId` query for an explicit owner library and one unfiltered request for public Browse Playlists; `PlaylistCardComponent` displays visibility. This work does not change routing, guards, interceptors, environments, or build configuration.
+`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient UI/form state and calls the typed methods in `src/app/core/playlist-module/playlist.service.ts`. `PlaylistsComponent` uses a `userId` query for an explicit owner library and one unfiltered request for public Browse Playlists. `PlaylistCardComponent` displays visibility and carries optional owner-library return context into playlist details. This work does not change the route table, guards, interceptors, environments, or build configuration.
 
 ## Plan of Work
 
@@ -79,6 +84,7 @@ From the repository root:
 - Public Browse cards show PUBLIC; owner-library cards show PUBLIC or gray PRIVATE, with private playlists available only through the author's library.
 - Browse Playlists orders cards by `createdAt` descending, with missing dates last.
 - Playlist details identify the loaded playlist as PUBLIC PLAYLIST or PRIVATE PLAYLIST.
+- Playlist details return to the collection they were opened from; direct links default to Browse Playlists.
 - Build, formatting, lint, and diff checks pass; focused Jest remains blocked by the existing transformer mismatch.
 
 ## Idempotence and Recovery

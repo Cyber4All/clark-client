@@ -32,6 +32,16 @@ describe("PlaylistCardComponent", () => {
         expect(link.getAttribute("aria-label")).toContain("1 learning object");
     });
 
+    it("preserves owner-library URL context", () => {
+        fixture.componentInstance.returnUserId = "user-id";
+        fixture.detectChanges();
+
+        const link = fixture.nativeElement.querySelector("a");
+        expect(link.getAttribute("href")).toBe(
+            "/playlists/playlist-id?returnUserId=user-id",
+        );
+    });
+
     it("uses the playlist pill for visibility", () => {
         const pill = fixture.nativeElement.querySelector(".visibility");
         expect(pill.textContent.trim()).toBe("public");
