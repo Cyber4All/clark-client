@@ -58,6 +58,7 @@
             <li *ngFor="let playlist of playlists; trackBy: trackPlaylist">
                 <clark-playlist-card
                     [playlist]="playlist"
+                    [returnUserId]="userId"
                     [resolvedAuthorName]="
                         authorNames[playlist.userId]
                     "></clark-playlist-card>

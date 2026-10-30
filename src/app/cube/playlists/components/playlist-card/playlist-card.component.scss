@@ -70,7 +70,6 @@
     gap: 8px;
 }
 
-.playlist-label,
 .visibility {
     padding: 3px 8px;
     border-radius: 12px;
@@ -80,10 +79,6 @@
     text-transform: uppercase;
 }
 
-.playlist-label {
-    background: $box-background;
-    color: $homepage-light-blue;
-}
 .visibility {
     background: rgba(28, 112, 221, 0.1);
     color: $light-blue;

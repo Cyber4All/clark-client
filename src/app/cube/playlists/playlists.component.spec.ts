@@ -20,6 +20,7 @@ describe("PlaylistsComponent", () => {
     function setup(query: Record<string, string> = {}) {
         const service = {
             getPlaylists: jest.fn().mockReturnValue(of([playlist])),
+            getBrowsePlaylists: jest.fn().mockReturnValue(of([playlist])),
             createPlaylist: jest.fn().mockReturnValue(of(playlist)),
         };
         const userService = {
@@ -45,7 +46,7 @@ describe("PlaylistsComponent", () => {
     it("loads the public playlist collection without offering creation", () => {
         const { component, service, userService } = setup();
         component.ngOnInit();
-        expect(service.getPlaylists).toHaveBeenCalledWith({});
+        expect(service.getBrowsePlaylists).toHaveBeenCalledWith();
         expect(component.playlists).toEqual([playlist]);
         expect(component.loading).toBe(false);
         expect(component.hasError).toBe(false);

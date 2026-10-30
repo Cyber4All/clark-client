@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import { PLAYLIST_ROUTES } from "./playlist.routes";
 import {
     CreatePlaylist,
@@ -17,6 +18,18 @@ export class PlaylistService {
         return this.http.get<Playlist[]>(PLAYLIST_ROUTES.GET_PLAYLISTS(query), {
             withCredentials: true,
         });
+    }
+
+    getBrowsePlaylists(): Observable<Playlist[]> {
+        return this.getPlaylists().pipe(
+            map((playlists) =>
+                [...playlists].sort(
+                    (a, b) =>
+                        (Date.parse(b.createdAt || "") || 0) -
+                        (Date.parse(a.createdAt || "") || 0),
+                ),
+            ),
+        );
     }
 
     getPlaylist(playlistId: string): Observable<Playlist> {

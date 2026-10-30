@@ -21,6 +21,33 @@ describe("PlaylistDetailsComponent", () => {
         visibility: "public",
     };
 
+    it("uses URL state to return to the source owner library", () => {
+        const component = new PlaylistDetailsComponent(
+            {
+                snapshot: {
+                    queryParamMap: convertToParamMap({
+                        returnUserId: "user-id",
+                    }),
+                },
+                paramMap: params.asObservable(),
+            } as any,
+            {} as Router,
+            { getPlaylist: jest.fn().mockReturnValue(of(playlist)) } as any,
+            {
+                getLearningObjectObservable: jest
+                    .fn()
+                    .mockReturnValue(of(null)),
+            } as any,
+            {} as SearchService,
+            { user: new AuthUser({ _id: "user-id" }) } as AuthService,
+        );
+
+        component.ngOnInit();
+
+        expect(component.returnUserId).toBe("user-id");
+        component.ngOnDestroy();
+    });
+
     it("loads CUIDs from the route playlist and preserves their order", () => {
         const availableObject = new LearningObject({
             cuid: "available-cuid",

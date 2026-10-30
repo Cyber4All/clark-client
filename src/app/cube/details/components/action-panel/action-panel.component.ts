@@ -33,6 +33,7 @@ import { ReviewerPanelComponent } from "../reviewer-panel/reviewer-panel.compone
 import { PopupComponent } from "../../../../shared/modules/popups/popup.component";
 import { DownloadNoticePopupComponent } from "../../../../shared/modules/popup-templates/download-notice-popup/download-notice-popup.component";
 import { ContextMenuComponent } from "../../../../shared/modules/contextmenu/context-menu/context-menu.component";
+import { AddToPlaylistModalComponent } from "../../../playlists/components/add-to-playlist-modal/add-to-playlist-modal.component";
 
 @Component({
     selector: "cube-details-action-panel",
@@ -52,6 +53,7 @@ import { ContextMenuComponent } from "../../../../shared/modules/contextmenu/con
         PopupComponent,
         DownloadNoticePopupComponent,
         ContextMenuComponent,
+        AddToPlaylistModalComponent,
     ],
 })
 export class ActionPanelComponent implements OnInit, OnDestroy {
@@ -77,6 +79,7 @@ export class ActionPanelComponent implements OnInit, OnDestroy {
     windowWidth: number;
     loggedin = false;
     showDownloadModal = false;
+    showPlaylistModal = false;
     userCanRevise = false;
     userDropdown: boolean;
 

@@ -42,6 +42,37 @@ describe("PlaylistService", () => {
         request.flush([playlist]);
     });
 
+    it("gets playlists for one user", () => {
+        service.getPlaylists({ userId: playlist.userId }).subscribe();
+
+        const request = httpMock.expectOne(
+            `${environment.apiURL}/playlists?userId=user%2Fid`,
+        );
+        expect(request.request.method).toBe("GET");
+        request.flush([playlist]);
+    });
+
+    it("orders public browse playlists by newest creation date", () => {
+        const newest = {
+            ...playlist,
+            _id: "newest-id",
+            createdAt: "2026-10-28T12:00:00.000Z",
+        };
+        const oldest = {
+            ...playlist,
+            _id: "oldest-id",
+            createdAt: "2026-10-27T12:00:00.000Z",
+        };
+
+        service
+            .getBrowsePlaylists()
+            .subscribe((result) => expect(result).toEqual([newest, oldest]));
+
+        httpMock
+            .expectOne(`${environment.apiURL}/playlists`)
+            .flush([oldest, newest]);
+    });
+
     it("gets one raw playlist", () => {
         service.getPlaylist(playlist._id).subscribe();
 
@@ -50,6 +81,32 @@ describe("PlaylistService", () => {
         );
         expect(request.request.method).toBe("GET");
         expect(request.request.withCredentials).toBe(true);
+        request.flush(playlist);
+    });
+
+    it("creates a playlist", () => {
+        const body = {
+            name: playlist.name,
+            description: playlist.description,
+            visibility: playlist.visibility,
+        };
+        service.createPlaylist(body).subscribe();
+
+        const request = httpMock.expectOne(`${environment.apiURL}/playlists`);
+        expect(request.request.method).toBe("POST");
+        expect(request.request.body).toEqual(body);
+        expect(request.request.withCredentials).toBe(true);
+        request.flush(playlist);
+    });
+
+    it("adds a learning object to a playlist", () => {
+        service.addLearningObject(playlist._id, "object/cuid").subscribe();
+
+        const request = httpMock.expectOne(
+            `${environment.apiURL}/playlists/playlist%2Fid/objects/object%2Fcuid`,
+        );
+        expect(request.request.method).toBe("PUT");
+        expect(request.request.body).toEqual({});
         request.flush(playlist);
     });
 });
