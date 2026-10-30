@@ -30,6 +30,20 @@ import { LearningObject } from "@entity";
 import { SOURCE_CODE_EXTENSIONS } from "./source.extensions";
 import type { FileProcessingStatusResponse } from "./file-processing-status.types";
 
+interface AddedFileMetadataResponse {
+    id: string;
+    name: string;
+    fileType: string;
+    extension: string;
+    date: string;
+    fullPath?: string;
+    size: number;
+    description?: string;
+    packageable?: boolean;
+    storageRevision?: number;
+    downloadURL?: string;
+}
+
 // Matches DOCLING_SUPPORTED_EXTENSIONS in clark-service's Docling driver.
 const AI_MATERIAL_EXTENSIONS = new Set([
     "docx",
@@ -462,7 +476,7 @@ export class FileService {
      * @param {string} authorUsername [The Learning Object's author's username]
      * @param {string} objectId [The Id of the Learning Object]
      * @param {FileUploadMeta[]} files [List of file meta to be added]
-     * @returns {Promise<string[]>}
+     * @returns {Promise<LearningObject.Material.File[]>}
      * @memberof LearningObjectService
      */
     addFileMeta({
@@ -471,34 +485,36 @@ export class FileService {
     }: {
         objectId: string;
         files: FileUploadMeta[];
-    }): Promise<string[]> {
+    }): Promise<LearningObject.Material.File[]> {
         const route =
             FILE_METADATA_ROUTES.ADD_LEARNING_OBJECT_FILE_METADATA(objectId);
         const MAX_PER_REQUEST = 100;
-        const responses$: Promise<string[]>[] = [];
+        const responses$: Promise<LearningObject.Material.File[]>[] = [];
         const completed$: Subject<boolean> = new Subject<boolean>();
         const sendNextBatch$: Subject<void> = new Subject<void>();
 
-        const response = new Promise<string[]>((resolve, reject) => {
-            sendNextBatch$.pipe(takeUntil(completed$)).subscribe(() => {
-                const batch = files.splice(0, MAX_PER_REQUEST);
-                if (batch.length) {
-                    this.handleFileMetaBatch(
-                        route,
-                        batch,
-                        responses$,
-                        sendNextBatch$,
-                    );
-                } else {
-                    this.handleFileMetaRequestQueueCompletion(
-                        completed$,
-                        responses$,
-                    )
-                        .then(resolve)
-                        .catch(reject);
-                }
-            });
-        });
+        const response = new Promise<LearningObject.Material.File[]>(
+            (resolve, reject) => {
+                sendNextBatch$.pipe(takeUntil(completed$)).subscribe(() => {
+                    const batch = files.splice(0, MAX_PER_REQUEST);
+                    if (batch.length) {
+                        this.handleFileMetaBatch(
+                            route,
+                            batch,
+                            responses$,
+                            sendNextBatch$,
+                        );
+                    } else {
+                        this.handleFileMetaRequestQueueCompletion(
+                            completed$,
+                            responses$,
+                        )
+                            .then(resolve)
+                            .catch(reject);
+                    }
+                });
+            },
+        );
         sendNextBatch$.next();
         return response;
     }
@@ -532,18 +548,18 @@ export class FileService {
      * @private
      * @param {string} route [Route to make request to]
      * @param {FileUploadMeta[]} batch [Batch of file meta to be added]
-     * @param {Promise<string[]>[]} responses$ [List of response promises to append to]
+     * @param {Promise<LearningObject.Material.File[]>[]} responses$ [List of response promises to append to]
      * @param {Subject<void>} sendNextBatch$ [Observable used to signal that the next batch should be sent]
      * @memberof LearningObjectService
      */
     private handleFileMetaBatch(
         route: string,
         batch: FileUploadMeta[],
-        responses$: Promise<string[]>[],
+        responses$: Promise<LearningObject.Material.File[]>[],
         sendNextBatch$: Subject<void>,
     ) {
-        const response$ = this.http
-            .post(
+        const response$: Promise<LearningObject.Material.File[]> = this.http
+            .post<AddedFileMetadataResponse[]>(
                 route,
                 { fileMeta: batch },
                 {
@@ -553,7 +569,12 @@ export class FileService {
             )
             .pipe(catchError(this.handleError))
             .toPromise()
-            .then((res: { fileMetaId: string[] }) => res.fileMetaId);
+            .then((files) =>
+                files.map(({ id, ...file }) => ({
+                    ...file,
+                    _id: id,
+                })),
+            );
         responses$.push(response$);
         sendNextBatch$.next();
     }
@@ -563,19 +584,18 @@ export class FileService {
      *
      * @private
      * @param {Subject<boolean>} completed$ [Observable used to signal that all batches have been completed]
-     * @param {Promise<string[]>[]} responses$ [List of response promises to resolve]
+     * @param {Promise<LearningObject.Material.File[]>[]} responses$ [List of response promises to resolve]
      * @returns
      * @memberof LearningObjectService
      */
     private async handleFileMetaRequestQueueCompletion(
         completed$: Subject<boolean>,
-        responses$: Promise<string[]>[],
-    ): Promise<string[]> {
+        responses$: Promise<LearningObject.Material.File[]>[],
+    ): Promise<LearningObject.Material.File[]> {
         completed$.next(true);
         completed$.unsubscribe();
-        const fileIdsArrays = await Promise.all(responses$);
-        const fileIds = flattenDeep(fileIdsArrays);
-        return fileIds;
+        const fileArrays = await Promise.all(responses$);
+        return flattenDeep(fileArrays) as LearningObject.Material.File[];
     }
 
     /**

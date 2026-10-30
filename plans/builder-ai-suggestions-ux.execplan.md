@@ -117,3 +117,12 @@ Progress:
 - [x] Increase the centered Materials content card to two-thirds of the viewport for visual comparison.
 
 - [x] Constrain the Name grid track, reserve a right inset for the meatball menu, and keep its track aligned across the file-list header and rows.
+
+## Follow-up: folder upload refresh (2026-10-30)
+
+- [x] Preserve the upload metadata array when the file service batches requests.
+- [x] After metadata registration, publish uploaded metadata directly to the Materials list so the file browser updates without refetching the Materials endpoint.
+- [x] Match the metadata POST's actual `File[]` response contract, translating its `id` field to the client's `_id` field before publishing.
+- [x] Hide folder last-updated timestamps in the builder's Size column; keep timestamps in the regular file browser.
+- [x] Allow targeted AI object-field updates to reach the API even if unrelated learning-object validation errors exist; validate and publish the updated object after save.
+- [x] Review whitespace and inspect the final diff; tests/build remain unrequested.

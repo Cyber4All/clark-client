@@ -13,11 +13,13 @@
         {{ folder?.getName() }}
     </div>
     <div
+        *ngIf="!inBuilder"
         class="text-contained timestamp"
         id="folder-updated"
         attr.aria-label="Last updated {{ timestampAge }}">
         {{ timestampAge }}
     </div>
+    <div *ngIf="inBuilder" class="text-contained filesize"></div>
     <div class="empty"></div>
     <clark-file-processing-indicator
         *ngIf="inBuilder"

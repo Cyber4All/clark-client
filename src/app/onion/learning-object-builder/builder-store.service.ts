@@ -326,27 +326,6 @@ export class BuilderStore {
     ): Promise<void> {
         await this.waitForCurrentServiceInteraction();
         this.serviceInteraction$.next(true);
-        await this.execute(BUILDER_ACTIONS.MUTATE_OBJECT, updates);
-
-        const currentObject = this.learningObject.toPlainObject() as Record<
-            string,
-            unknown
-        >;
-        for (const [key, value] of Object.entries(updates)) {
-            if (currentObject[key] !== value) {
-                this.objectCache$.next(undefined);
-                this.serviceInteraction$.next(false);
-                throw new Error(`The suggested ${key} could not be applied.`);
-            }
-        }
-        if (!this.validator.saveable) {
-            this.objectCache$.next(undefined);
-            this.serviceInteraction$.next(null);
-            throw new Error(
-                "The learning object is not ready to save this change.",
-            );
-        }
-
         const queuedUpdates = this.objectCache$.getValue();
         const payload = Object.assign({}, queuedUpdates || {}, updates);
         this.objectCache$.next(undefined);
@@ -355,13 +334,24 @@ export class BuilderStore {
                 this.learningObject.id,
                 payload,
             );
-            this.serviceInteraction$.next(false);
+
+            const updatedObject = Object.assign(
+                this.learningObject.toPlainObject(),
+                payload,
+            );
+            this.learningObject = new LearningObject(updatedObject);
+            this.validator.validateLearningObject(
+                this.learningObject,
+                this.outcomes,
+            );
         } catch (error) {
             this.handleServiceError(
                 error as HttpErrorResponse,
                 BUILDER_ERRORS.UPDATE_OBJECT,
             );
             throw error;
+        } finally {
+            this.serviceInteraction$.next(false);
         }
     }
 
@@ -970,18 +960,37 @@ export class BuilderStore {
      */
     private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
         this.serviceInteraction$.next(true);
-        await this.fileService
-            .addFileMeta({
-                files,
+        try {
+            const addedFiles = await this.fileService.addFileMeta({
+                // FileService batches by removing items from the input array.
+                // Keep the upload event's metadata intact for any other listeners.
+                files: [...files],
                 objectId: this.learningObject.id,
-            })
-            .then(() => {
-                return this.fetchMaterials();
-            })
-            .catch((e) => {
-                this.handleServiceError(e, BUILDER_ERRORS.ADD_FILE_META);
             });
-        this.serviceInteraction$.next(false);
+            this.addFilesToMaterials(addedFiles);
+        } catch (e) {
+            this.handleServiceError(e, BUILDER_ERRORS.ADD_FILE_META);
+        } finally {
+            this.serviceInteraction$.next(false);
+        }
+    }
+
+    private addFilesToMaterials(
+        uploadedFiles: LearningObject.Material.File[],
+    ): void {
+        const existingFiles = this.learningObject.materials?.files ?? [];
+        const existingIds = new Set(existingFiles.map((file) => file._id));
+        const filesToAdd = uploadedFiles.filter(
+            (file) => !existingIds.has(file._id),
+        );
+
+        if (filesToAdd.length) {
+            this.learningObject.materials.files = [
+                ...existingFiles,
+                ...filesToAdd,
+            ];
+            this.learningObjectEvent.next(this.learningObject);
+        }
     }
 
     /**
