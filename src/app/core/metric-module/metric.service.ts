@@ -42,6 +42,21 @@ export class MetricService {
     }
 
     /**
+     * Gets downloads for a completed date range.
+     * @param start - Inclusive ISO-8601 start timestamp
+     * @param end - Exclusive ISO-8601 end timestamp
+     */
+    async getTotalDownloads(start: string, end: string): Promise<number> {
+        const response = await this.http
+            .get<{
+                totalDownloads: number;
+            }>(METRIC_ROUTES.GET_TOTAL_DOWNLOADS(start, end))
+            .pipe(catchError(this.handleError))
+            .toPromise();
+        return response.totalDownloads;
+    }
+
+    /**
      * Gets metrics for one learning object or all released learning objects
      * @param cuid - The cuid of the learning object to get metrics for
      * @returns metrics for one learning object or all released learning objects
