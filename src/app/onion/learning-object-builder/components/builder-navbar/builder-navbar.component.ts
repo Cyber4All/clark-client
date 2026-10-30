@@ -1,7 +1,22 @@
-import { Component, OnDestroy, Input } from "@angular/core";
-import { BuilderStore } from "../../builder-store.service";
+import { NgClass, NgIf, NgStyle, NgTemplateOutlet } from "@angular/common";
+import { Component, Input, OnDestroy } from "@angular/core";
+import {
+    ActivatedRoute,
+    Router,
+    RouterLink,
+    RouterLinkActive,
+} from "@angular/router";
+import { LearningObject } from "@entity";
 import { AuthService } from "app/core/auth-module/auth.service";
-import { LearningObjectValidator } from "../../validators/learning-object.validator";
+import {
+    Collection,
+    CollectionService,
+} from "app/core/collection-module/collections.service";
+import { BundlingService } from "app/core/learning-object-module/bundling/bundling.service";
+import { isParseableFile } from "app/core/learning-object-module/file/file-processing";
+import { FileService } from "app/core/learning-object-module/file/file.service";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
+import { forkJoin, of, Subject, Subscription, timer } from "rxjs";
 import {
     catchError,
     filter,
@@ -11,31 +26,16 @@ import {
     takeWhile,
     tap,
 } from "rxjs/operators";
-import { forkJoin, of, Subject, Subscription, timer } from "rxjs";
-import {
-    Router,
-    ActivatedRoute,
-    RouterLinkActive,
-    RouterLink,
-} from "@angular/router";
-import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
-import {
-    CollectionService,
-    Collection,
-} from "app/core/collection-module/collections.service";
-import { LearningObject } from "@entity";
-import { BundlingService } from "app/core/learning-object-module/bundling/bundling.service";
-import { FileService } from "app/core/learning-object-module/file/file.service";
-import { isParseableFile } from "app/core/learning-object-module/file/file-processing";
+import { GenericCollectionLogoComponent } from "../../../../shared/components/generic-collection-logo/generic-collection-logo.component";
 import { SkipLinkComponent } from "../../../../shared/components/skip-link/skip-link.component";
-import { NgStyle, NgIf, NgClass, NgTemplateOutlet } from "@angular/common";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { TipDirective } from "../../../../shared/directives/tip.directive";
 import { LearningObjectStatusIndicatorComponent } from "../../../shared/status-indicator/status-indicator.component";
-import { EditorActionPanelComponent } from "../editor-action-panel/editor-action-panel.component";
 import { SubmitComponent } from "../../../shared/submit/submit.component";
-import { GenericCollectionLogoComponent } from "../../../../shared/components/generic-collection-logo/generic-collection-logo.component";
+import { BuilderStore } from "../../builder-store.service";
+import { LearningObjectValidator } from "../../validators/learning-object.validator";
 import { AgenticBuilderPanelComponent } from "../agentic-builder-panel/agentic-builder-panel.component";
+import { EditorActionPanelComponent } from "../editor-action-panel/editor-action-panel.component";
 
 @Component({
     selector: "onion-builder-navbar",
@@ -68,6 +68,8 @@ export class BuilderNavbarComponent implements OnDestroy {
     showSubmission: boolean;
     showSubmissionOptions: boolean;
     showAgenticBuilder = false;
+    agenticPanelTop = 85;
+    agenticPanelRight = 25;
     hasReadyAiMaterials = false;
 
     learningObject: LearningObject;
@@ -178,6 +180,19 @@ export class BuilderNavbarComponent implements OnDestroy {
     toggleAgenticBuilder(): void {
         if (!this.canGenerateWithAi) return;
         this.showAgenticBuilder = !this.showAgenticBuilder;
+        if (this.showAgenticBuilder) {
+            const trigger = document.querySelector<HTMLElement>(
+                ".agentic-builder-action",
+            );
+            if (trigger) {
+                const bounds = trigger.getBoundingClientRect();
+                this.agenticPanelTop = bounds.bottom + 8;
+                this.agenticPanelRight = Math.max(
+                    16,
+                    window.innerWidth - bounds.right,
+                );
+            }
+        }
     }
 
     get canGenerateWithAi(): boolean {
@@ -203,17 +218,14 @@ export class BuilderNavbarComponent implements OnDestroy {
         );
     }
 
-    getGenerateWithAITooltip(): string {
-        if (!this.learningObject?.materials?.files?.length) {
-            return "Upload materials before generating details with AI.";
+    getBuildWithAITooltip(): string {
+        if (!this.hasSupportedMaterials) {
+            return "Add a supported file to draft suggestions.";
         }
-        if (!this.hasParseableMaterials) {
-            return "Upload a supported material before generating with AI.";
+        if (this.canGenerateWithAi) {
+            return "Build a name, description, and learning outcomes from parsed materials.";
         }
-        if (this.materialsReady) {
-            return "Generate suggestions from your learning object materials.";
-        }
-        return "At least one supported material must finish processing successfully or with partial success before generating with AI.";
+        return "Wait for a supported file to finish parsing before building drafts.";
     }
 
     private getInitialProcessingStatus(

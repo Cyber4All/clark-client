@@ -273,8 +273,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.learningObject = object;
 
                     // Set the material information
-                    this.folderMeta$.next(object.materials.folderDescriptions);
                     this.files$.next(object.materials.files);
+                    this.folderMeta$.next(object.materials.folderDescriptions);
                     this.warnForLongPaths(object.materials.files);
 
                     // Check if the learning object has a solution file

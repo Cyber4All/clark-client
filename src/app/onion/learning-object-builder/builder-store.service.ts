@@ -479,19 +479,20 @@ export class BuilderStore {
      * @returns void
      * @memberof BuilderStore
      */
-    fetchMaterials(): void {
-        this.newLearningObjectService
-            .getLearningObjectMaterials(this.learningObject.id)
-            .then((materials) => {
-                this.learningObject.materials = materials;
-                this.learningObjectEvent.next(this.learningObject);
-            })
-            .catch((e) => {
-                this.handleServiceError(
-                    e,
-                    BUILDER_ERRORS.FETCH_OBJECT_MATERIALS,
+    async fetchMaterials(): Promise<void> {
+        try {
+            const materials =
+                await this.newLearningObjectService.getLearningObjectMaterials(
+                    this.learningObject.id,
                 );
-            });
+            this.learningObject.materials = materials;
+            this.learningObjectEvent.next(this.learningObject);
+        } catch (error) {
+            this.handleServiceError(
+                error,
+                BUILDER_ERRORS.FETCH_OBJECT_MATERIALS,
+            );
+        }
     }
 
     /**
@@ -975,7 +976,7 @@ export class BuilderStore {
                 objectId: this.learningObject.id,
             })
             .then(() => {
-                this.fetchMaterials();
+                return this.fetchMaterials();
             })
             .catch((e) => {
                 this.handleServiceError(e, BUILDER_ERRORS.ADD_FILE_META);
