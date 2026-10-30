@@ -45,6 +45,8 @@ import { PaginationComponent } from "../../components/pagination/pagination.comp
 })
 export class LearningObjectsComponent
     implements OnInit, OnDestroy, AfterViewInit {
+    OrderBy = OrderBy;
+
     @ViewChild("list") listElement: ElementRef<HTMLElement>;
     @ViewChild("headers") headersElement: ElementRef<HTMLElement>;
 
@@ -316,6 +318,30 @@ export class LearningObjectsComponent
                 sortType: SortType.Descending,
             };
         }
+        this.learningObjects = [];
+        this.allResultsReceived = false;
+
+        this.getLearningObjects();
+    }
+
+    /**
+     * Sorts the list by learning object name or author.
+     *
+     * Selecting a new field starts in descending order, matching the existing
+     * Date sort behavior. Selecting the active field toggles its direction.
+     */
+    sortBy(orderBy: OrderBy.Name | OrderBy.Author) {
+        const isActiveSort = this.query.orderBy === orderBy;
+        const sortType =
+            isActiveSort && this.query.sortType?.toString() === "-1"
+                ? SortType.Ascending
+                : SortType.Descending;
+
+        this.query = {
+            ...this.query,
+            orderBy,
+            sortType,
+        };
         this.learningObjects = [];
         this.allResultsReceived = false;
 
