@@ -26,6 +26,7 @@ import {
 } from "@angular/common";
 import { TipDirective } from "../../../shared/directives/tip.directive";
 import { RatingStarsComponent } from "../../../shared/components/rating-stars/rating-stars.component";
+import * as Sentry from "@sentry/angular";
 
 @Component({
     selector: "clark-learning-object-component",
@@ -172,13 +173,31 @@ export class LearningObjectListingComponent implements OnDestroy {
         this.setImageFromTopics();
         this.cd.markForCheck();
 
-        // Fetch ratings + total downloads + recent downloads (in parallel)
-        const [ratings, totalMetrics, recentDownloads] = await Promise.all([
-            this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
-            this.metricService.getLearningObjectMetrics(lo.cuid),
-            this.getRecentDownloads(lo.cuid, 30),
-        ]);
+        // Fetch ratings + total downloads + recent downloads (in parallel).
+        // Each request settles independently so one failing endpoint (e.g. a
+        // 504 from the metrics proxy) does not break the whole card.
+        const [ratingsResult, totalMetricsResult, recentDownloadsResult] =
+            await Promise.allSettled([
+                this.ratingService.getLearningObjectRatings(
+                    lo.cuid,
+                    lo.version,
+                ),
+                this.metricService.getLearningObjectMetrics(lo.cuid),
+                this.getRecentDownloads(lo.cuid, 30),
+            ]);
         if (this.destroyed || token !== this.refreshToken) return;
+
+        const ratings = this.unwrapSettled(ratingsResult, "ratings", lo);
+        const totalMetrics = this.unwrapSettled(
+            totalMetricsResult,
+            "total-downloads",
+            lo,
+        );
+        const recentDownloads = this.unwrapSettled(
+            recentDownloadsResult,
+            "recent-downloads",
+            lo,
+        );
 
         this.averageRating = ratings?.avgValue ?? 0;
         this.reviewsCount = ratings?.ratings?.length ?? 0;
@@ -279,6 +298,43 @@ export class LearningObjectListingComponent implements OnDestroy {
                     ?.toLowerCase()
                     .includes("dod cyber workforce"),
         );
+    }
+
+    /**
+     * Returns the fulfilled value of a settled promise, or undefined when it
+     * was rejected. Rejections are reported to Sentry with the learning object
+     * context so failures stay visible without crashing the card.
+     */
+    private unwrapSettled<T>(
+        result: PromiseSettledResult<T>,
+        request: string,
+        lo: LearningObject,
+    ): T | undefined {
+        if (result.status === "fulfilled") {
+            return result.value;
+        }
+
+        const reason = result.reason;
+        const error =
+            reason instanceof Error
+                ? reason
+                : new Error(
+                      `Failed to load learning object ${request}: ${
+                          reason?.message ?? JSON.stringify(reason)
+                      }`,
+                  );
+        Sentry.captureException(error, {
+            tags: {
+                feature: "learning-object-card",
+                request,
+            },
+            extra: {
+                cuid: lo.cuid,
+                version: lo.version,
+                reason,
+            },
+        });
+        return undefined;
     }
 
     private async getRecentDownloads(
