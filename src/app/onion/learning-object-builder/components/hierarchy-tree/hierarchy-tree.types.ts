@@ -56,3 +56,57 @@ export interface HierarchyNode {
 
 /** Discriminates the two actions offered by a node's `+` contextual menu. */
 export type AddChildAction = "create-new" | "add-existing";
+
+/**
+ * Stable identifier for an Action_Menu item on a Node_Row.
+ *
+ * Each action has a unique id so additional actions (e.g. the future
+ * "add-child" Add Child Object action) can be added to the same menu structure
+ * without identifier collision. `"move"` is the only working action this phase.
+ */
+export type NodeActionId = "move" | "add-child";
+
+/** A single rendered Action_Menu item for a node row. */
+export interface NodeAction {
+    /** Unique action identifier within the node's Action_Menu. */
+    id: NodeActionId;
+
+    /** Visible, human-readable label, e.g. "Move Object". */
+    label: string;
+
+    /** FontAwesome classes for the item icon, matching the tree's icon style. */
+    icon: string;
+
+    /**
+     * Whether the item is disabled/non-selectable. "Move Object" is disabled
+     * when `canMove` is false — a root, a linked-subtree descendant, or when
+     * eligibility is undetermined.
+     */
+    disabled: boolean;
+}
+
+/**
+ * A single valid destination parent for a pending non-drag move, surfaced by
+ * the Move_Destination_Picker. Computed read-only from the current tree using
+ * the same predicates the drag path uses, so the picker never offers a
+ * destination the move engine would reject.
+ */
+export interface MoveDestination {
+    /** Destination parent node id (passed to `moveNode` as targetId). */
+    id: string;
+
+    /** Destination parent display name (for the picker list; may be ""). */
+    name: string;
+
+    /** Destination parent length, for badge/icon parity with the tree. */
+    length: LearningObject.Length;
+
+    /**
+     * Current child count of the destination parent. Equals the append index
+     * (index === childCount means "append as last child").
+     */
+    childCount: number;
+
+    /** True when this destination is the node's current parent (reorder). */
+    isCurrentParent: boolean;
+}

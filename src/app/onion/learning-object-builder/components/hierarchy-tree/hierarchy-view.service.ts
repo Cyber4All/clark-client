@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { LearningObject } from "@entity";
-import { HierarchyNode } from "./hierarchy-tree.types";
+import { HierarchyNode, MoveDestination } from "./hierarchy-tree.types";
 import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
 
 /**
@@ -155,28 +155,70 @@ export class HierarchyViewService {
         return true;
     }
 
+    /**
+     * Enumerate every parent the node with `nodeId` may legally move under,
+     * read-only, from the current tree. This is the precise set of
+     * destinations the Move Destination Picker offers so it can never present
+     * a parent that `moveNode` would reject.
+     *
+     * Returns `[]` when the node is missing or not movable (`canMove` is
+     * false) — a root, a linked-subtree descendant, or an unknown id.
+     *
+     * A candidate parent is included when it is the node's CURRENT parent
+     * (a reorder, which `moveNode` permits via its `sameParent` branch) OR
+     * `canDrop(node, candidate)` is true (a re-parent). This mirrors exactly
+     * the split between `moveNode` and `canDrop`: `canDrop` rejects the node's
+     * own current parent because it is a re-parent check, while `moveNode`
+     * compensates to allow reordering. Self and descendants are excluded
+     * inherently by `canDrop`, and the current parent is never the node or one
+     * of its descendants.
+     *
+     * `childCount` is the candidate's current `children.length` and is the
+     * append index (index === childCount means "append as last child"). When
+     * the candidate is the node's current parent, childCount counts the node's
+     * current siblings INCLUDING the node, matching how `moveNode` clamps
+     * against the target's children after removal.
+     *
+     * Delegates entirely to `canMove`/`canDrop`/`parentIdOf`; it introduces no
+     * new move rule of its own.
+     */
+    validDestinations(nodeId: string): MoveDestination[] {
+        const tree = this.treeSubject.value;
+        const node = findNode(tree, nodeId);
+        if (!node || !this.canMove(nodeId)) {
+            return [];
+        }
+
+        const currentParentId = this.parentIdOf(nodeId);
+        const out: MoveDestination[] = [];
+        walk(tree, (candidate) => {
+            const sameParent = candidate.id === currentParentId;
+            const eligible = sameParent || this.canDrop(node, candidate);
+            if (!eligible) {
+                return;
+            }
+            out.push({
+                id: candidate.id,
+                name: candidate.name,
+                length: candidate.length,
+                childCount: candidate.children.length,
+                isCurrentParent: sameParent,
+            });
+        });
+
+        return out;
+    }
+
     /** The id of the direct parent of `nodeId`, or undefined if it is a root. */
     parentIdOf(nodeId: string): string | undefined {
         return parentIdOf(this.treeSubject.value, nodeId);
     }
 }
 
-/**
- * Mock hierarchy for exercising the Builder Hierarchy tree (sc-40233).
- *
- * This is a deliberately rich seed so the UI and drag-and-drop rules are easy
- * to test manually: a Course root with a mix of Unit and Micromodule children,
- * several levels of depth (Course > Unit > Module > Micromodule > Nanomodule),
- * multiple siblings per level, and a few linked/read-only nodes (one leaf and
- * one whole subtree) to verify the read-only treatment and whole-unit moves.
- *
- * Length rule reminder (child must be strictly SHORTER than parent):
- *   Nanomodule < Micromodule < Module < Unit < Course
- */
+/** A compact demo covering nested moves, alternate parents, and linked objects. */
 function buildMockHierarchy(): HierarchyNode[] {
     const { COURSE, UNIT, MODULE, MICROMODULE, NANOMODULE } =
         LearningObject.Length;
-
     return [
         {
             id: "root",
@@ -185,7 +227,6 @@ function buildMockHierarchy(): HierarchyNode[] {
             editable: true,
             expanded: true,
             children: [
-                // ----- Unit branch: deep, fully editable -----
                 {
                     id: "unit-foundations",
                     name: "Foundations Unit",
@@ -205,102 +246,24 @@ function buildMockHierarchy(): HierarchyNode[] {
                                     name: "CIA Triad",
                                     length: MICROMODULE,
                                     editable: true,
-                                    expanded: true,
-                                    children: [
-                                        {
-                                            id: "nano-confidentiality",
-                                            name: "Confidentiality",
-                                            length: NANOMODULE,
-                                            editable: true,
-                                            children: [],
-                                        },
-                                        {
-                                            id: "nano-integrity",
-                                            name: "Integrity",
-                                            length: NANOMODULE,
-                                            editable: true,
-                                            children: [],
-                                        },
-                                        {
-                                            id: "nano-availability",
-                                            name: "Availability",
-                                            length: NANOMODULE,
-                                            editable: true,
-                                            children: [],
-                                        },
-                                    ],
-                                },
-                                {
-                                    id: "micro-threat-models",
-                                    name: "Threat Models",
-                                    length: MICROMODULE,
-                                    editable: true,
-                                    children: [],
-                                },
-                            ],
-                        },
-                        {
-                            id: "mod-cryptography",
-                            name: "Cryptography",
-                            length: MODULE,
-                            editable: true,
-                            expanded: true,
-                            children: [
-                                {
-                                    id: "micro-symmetric",
-                                    name: "Symmetric Encryption",
-                                    length: MICROMODULE,
-                                    editable: true,
-                                    children: [],
-                                },
-                                {
-                                    id: "micro-asymmetric",
-                                    name: "Asymmetric Encryption",
-                                    length: MICROMODULE,
-                                    editable: true,
                                     children: [],
                                 },
                             ],
                         },
                     ],
                 },
-
-                // ----- Micromodule branch: editable parent, linked leaf -----
                 {
                     id: "network-security",
                     name: "Network Security",
                     length: MICROMODULE,
                     editable: true,
-                    expanded: true,
-                    children: [
-                        {
-                            id: "nano-firewalls",
-                            name: "Firewalls & ACLs",
-                            length: NANOMODULE,
-                            editable: true,
-                            children: [],
-                        },
-                        {
-                            id: "network-security-lab",
-                            name: "Network Security Lab",
-                            length: NANOMODULE,
-                            // Linked/read-only: released content from another author.
-                            editable: false,
-                            children: [],
-                        },
-                    ],
+                    children: [],
                 },
-
-                // ----- Linked SUBTREE: the root is movable (not editable);
-                //        its descendants are fully immutable and move with it. -----
                 {
                     id: "incident-response",
                     name: "Incident Response (Linked)",
                     length: MODULE,
-                    // Read-only (cannot edit name/length/children) ...
                     editable: false,
-                    // ... but this is the linked root the author linked in, so it
-                    // can be MOVED as a whole unit into any valid parent.
                     linkedRoot: true,
                     expanded: true,
                     children: [
@@ -309,27 +272,10 @@ function buildMockHierarchy(): HierarchyNode[] {
                             name: "Detection & Triage",
                             length: MICROMODULE,
                             editable: false,
-                            children: [
-                                {
-                                    id: "nano-siem",
-                                    name: "SIEM Basics",
-                                    length: NANOMODULE,
-                                    editable: false,
-                                    children: [],
-                                },
-                            ],
-                        },
-                        {
-                            id: "micro-recovery",
-                            name: "Containment & Recovery",
-                            length: MICROMODULE,
-                            editable: false,
                             children: [],
                         },
                     ],
                 },
-
-                // ----- A top-level Nanomodule child (leaf) -----
                 {
                     id: "nano-glossary",
                     name: "Security Glossary",
@@ -370,6 +316,14 @@ function findNode(
     }
 
     return undefined;
+}
+
+/** Visit every node in the forest in pre-order (parent before its children). */
+function walk(nodes: HierarchyNode[], fn: (node: HierarchyNode) => void): void {
+    for (const node of nodes) {
+        fn(node);
+        walk(node.children, fn);
+    }
 }
 
 /** Whether `id` is `node` itself or appears anywhere in its subtree. */

@@ -1,11 +1,16 @@
 import { AsyncPipe, NgFor, NgIf } from "@angular/common";
 import {
+    ChangeDetectorRef,
     Component,
+    ComponentRef,
     ElementRef,
     Input,
+    NgZone,
     OnChanges,
+    OnDestroy,
     OnInit,
     SimpleChanges,
+    ViewContainerRef,
 } from "@angular/core";
 import {
     CdkDrag,
@@ -13,11 +18,21 @@ import {
     CdkDragMove,
     CdkDropList,
 } from "@angular/cdk/drag-drop";
-import { Observable } from "rxjs";
+import {
+    FocusMonitor,
+    InputModalityDetector,
+    LiveAnnouncer,
+} from "@angular/cdk/a11y";
+import { ToastrOvenService } from "../../../../shared/modules/toaster/notification.service";
+import { Overlay, OverlayRef } from "@angular/cdk/overlay";
+import { ComponentPortal } from "@angular/cdk/portal";
+import { ESCAPE } from "@angular/cdk/keycodes";
+import { Observable, Subscription } from "rxjs";
 import { LearningObject } from "@entity";
 import { HierarchyNodeComponent } from "./hierarchy-node/hierarchy-node.component";
+import { HierarchyMovePickerComponent } from "./hierarchy-move-picker/hierarchy-move-picker.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
-import { AddChildAction, HierarchyNode } from "./hierarchy-tree.types";
+import { HierarchyNode, NodeActionId } from "./hierarchy-tree.types";
 
 /**
  * Container for the Builder Hierarchy tree (sc-40233).
@@ -50,7 +65,7 @@ import { AddChildAction, HierarchyNode } from "./hierarchy-tree.types";
         HierarchyNodeComponent,
     ],
 })
-export class HierarchyTreeComponent implements OnInit, OnChanges {
+export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
     /**
      * The current (root) learning object. In sc-40233 it is used only to label
      * the root; the tree body is mock data. Later stories derive the real tree
@@ -63,6 +78,14 @@ export class HierarchyTreeComponent implements OnInit, OnChanges {
     constructor(
         private viewService: HierarchyViewService,
         private host: ElementRef<HTMLElement>,
+        private overlay: Overlay,
+        private vcr: ViewContainerRef,
+        private zone: NgZone,
+        private changeDetector: ChangeDetectorRef,
+        private notifications: ToastrOvenService,
+        private liveAnnouncer: LiveAnnouncer,
+        private focusMonitor: FocusMonitor,
+        private inputModality: InputModalityDetector,
     ) {}
 
     ngOnInit(): void {
@@ -183,7 +206,9 @@ export class HierarchyTreeComponent implements OnInit, OnChanges {
         // Dropping ONTO a node appends the dragged node to that node's children,
         // nesting it UNDER the target (not inserted beside it). Omit the index
         // so the view service appends.
-        this.viewService.moveNode(dragged.id, targetId);
+        if (this.viewService.moveNode(dragged.id, targetId)) {
+            this.notifyMove(dragged.id, targetId);
+        }
     }
 
     /**
@@ -212,9 +237,230 @@ export class HierarchyTreeComponent implements OnInit, OnChanges {
         return null;
     }
 
-    onAddChild(_event: { action: AddChildAction; parentId: string }): void {
-        // Intentionally inert in sc-40233. The add affordance is shown per the
-        // mock; the create-new-child flow is sc-40236 and link-existing is sc-40237.
+    // --- Action Menu / Move Picker ---
+
+    /** The live Move Picker overlay, or null when the picker is closed. */
+    private moveOverlayRef: OverlayRef | null = null;
+
+    /**
+     * The attached Move Picker component instance (and its change detector),
+     * kept so {@link applyMove} can surface an inline error in the open picker
+     * on a failed move. Null while the picker is closed.
+     */
+    private movePickerRef: ComponentRef<HierarchyMovePickerComponent> | null =
+        null;
+
+    /** Subscriptions tied to the open picker overlay; torn down on close. */
+    private moveSubscriptions: Subscription[] = [];
+
+    /** Stable identity survives destruction of a row when it is reparented. */
+    private moveOriginNodeId: string | null = null;
+    private pendingMoveTimer: ReturnType<typeof setTimeout> | null = null;
+    private destroyed = false;
+
+    ngOnDestroy(): void {
+        this.destroyed = true;
+        if (this.pendingMoveTimer !== null) {
+            clearTimeout(this.pendingMoveTimer);
+            this.pendingMoveTimer = null;
+        }
+        this.closeMovePicker(false);
+    }
+
+    /** Let MatMenu finish its click handling before attaching the picker. */
+    onMenuAction(payload: { actionId: NodeActionId; nodeId: string }): void {
+        if (payload.actionId !== "move" || this.destroyed) {
+            return;
+        }
+        if (this.pendingMoveTimer !== null) {
+            clearTimeout(this.pendingMoveTimer);
+        }
+        this.pendingMoveTimer = this.zone.run(() =>
+            setTimeout(() => {
+                this.pendingMoveTimer = null;
+                if (!this.destroyed) {
+                    this.openMovePicker(payload.nodeId);
+                }
+            }, 0),
+        );
+    }
+
+    /**
+     * The Action Menu kebab button for a given node row, used to restore focus
+     * after the picker closes. Returns null if the row is not in the DOM.
+     */
+    private triggerButtonFor(nodeId: string): HTMLElement | null {
+        const parentId = this.viewService.parentIdOf(nodeId);
+        const rows = this.host.nativeElement.querySelectorAll<HTMLElement>(
+            ".node-row[data-node-id]",
+        );
+        // Leave animations can temporarily keep the old row in the DOM. Match
+        // the current parent as well as the ID to focus only the live location.
+        const row = Array.from(rows).find((candidate) => {
+            if (candidate.getAttribute("data-node-id") !== nodeId) {
+                return false;
+            }
+            const parentComponent = candidate
+                .closest("clark-hierarchy-node")
+                ?.parentElement?.closest("clark-hierarchy-node");
+            const renderedParentId = parentComponent
+                ?.querySelector(".node-row")
+                ?.getAttribute("data-node-id");
+            return renderedParentId === parentId;
+        });
+        return row?.querySelector<HTMLElement>(".action-menu-button") ?? null;
+    }
+
+    /** Preserve keyboard focus without leaving Material's programmatic focus layer behind. */
+    private restoreNodeFocus(nodeId: string): void {
+        const button = this.triggerButtonFor(nodeId);
+        if (button) {
+            this.focusMonitor.focusVia(
+                button,
+                this.inputModality.mostRecentModality ?? "keyboard",
+            );
+        }
+    }
+
+    /**
+     * Open the Move Destination Picker for `nodeId` in a CDK Overlay.
+     *
+     * Re-checks `canMove` through the service as defense in depth (the menu
+     * item is already disabled for non-movable nodes) and no-ops when
+     * the node cannot move. Computes valid destinations through the service,
+     * records the originating trigger for focus restoration, and
+     * attaches a focus-trapped, backdropped overlay wired so backdrop click and
+     * Escape both cancel.
+     */
+    private openMovePicker(nodeId: string): void {
+        if (!this.viewService.canMove(nodeId)) {
+            return;
+        }
+
+        const node = findInTree(this.viewService.tree, nodeId);
+        const destinations = this.viewService.validDestinations(nodeId);
+
+        // Tear down any previously open picker before opening a new one.
+        this.closeMovePicker(false);
+        this.moveOriginNodeId = nodeId;
+
+        const overlayRef = this.overlay.create({
+            hasBackdrop: true,
+            disposeOnNavigation: true,
+            scrollStrategy: this.overlay.scrollStrategies.block(),
+            positionStrategy: this.overlay
+                .position()
+                .global()
+                .centerHorizontally()
+                .centerVertically(),
+        });
+        this.moveOverlayRef = overlayRef;
+
+        const portal = new ComponentPortal(
+            HierarchyMovePickerComponent,
+            this.vcr,
+        );
+        const pickerRef = overlayRef.attach(portal);
+        this.movePickerRef = pickerRef;
+        pickerRef.setInput("movingNodeName", node?.name ?? "");
+        pickerRef.setInput("movingNodeId", nodeId);
+        pickerRef.setInput("hierarchy", this.viewService.tree);
+        pickerRef.setInput("destinations", destinations);
+        pickerRef.changeDetectorRef.detectChanges();
+
+        this.moveSubscriptions.push(
+            pickerRef.instance.confirm.subscribe((event) =>
+                this.applyMove(nodeId, event.targetId),
+            ),
+            pickerRef.instance.cancel.subscribe(() => this.closeMovePicker()),
+            overlayRef.backdropClick().subscribe(() => this.closeMovePicker()),
+            overlayRef.detachments().subscribe(() => this.closeMovePicker()),
+            overlayRef.keydownEvents().subscribe((keyEvent) => {
+                if (keyEvent.keyCode === ESCAPE) {
+                    keyEvent.preventDefault();
+                    this.closeMovePicker();
+                }
+            }),
+        );
+    }
+
+    /** Inline error surfaced in the open picker when a move cannot be applied. */
+    private static readonly MOVE_FAILED_MESSAGE =
+        "That move could not be completed.";
+
+    /**
+     * Apply the author's confirmed move through the single source of truth.
+     *
+     * On success (`moveNode` returns true) the updated `tree$` already reflects
+     * the new parent/position; we close the picker, which restores focus to the
+     * originating Action Menu button.
+     *
+     * On failure (`moveNode` returns false) the hierarchy is left unchanged; we
+     * keep the picker OPEN and surface an inline error on the attached picker so
+     * the author can retry or cancel. Confirmed moves append as the last child.
+     */
+    private applyMove(nodeId: string, targetId: string): void {
+        const applied = this.viewService.moveNode(nodeId, targetId);
+        if (applied) {
+            this.closeMovePicker(false);
+            // A different parent creates a new row instance. Render first so
+            // focus is restored to its live trigger, not the removed button.
+            // A destination can live under a collapsed ancestor. Reveal the
+            // moved row so keyboard users can continue from its new location.
+            let parentId = this.viewService.parentIdOf(nodeId);
+            while (parentId) {
+                const parent = findInTree(this.viewService.tree, parentId);
+                if (parent && !parent.expanded) {
+                    this.viewService.toggleExpanded(parentId);
+                }
+                parentId = this.viewService.parentIdOf(parentId);
+            }
+            this.changeDetector.detectChanges();
+            this.restoreNodeFocus(nodeId);
+            this.notifyMove(nodeId, targetId);
+
+            return;
+        }
+
+        // Rejected move: hierarchy untouched, picker stays open with an error.
+        if (this.movePickerRef) {
+            this.movePickerRef.instance.errorMessage =
+                HierarchyTreeComponent.MOVE_FAILED_MESSAGE;
+            this.movePickerRef.changeDetectorRef.detectChanges();
+        }
+    }
+
+    /** Both interaction paths report success only after the move engine accepts it. */
+    private notifyMove(nodeId: string, targetId: string): void {
+        const name =
+            findInTree(this.viewService.tree, nodeId)?.name?.trim() ||
+            "Unnamed object";
+        const parentName =
+            findInTree(this.viewService.tree, targetId)?.name?.trim() ||
+            "Unnamed object";
+        const message = `“${name}” moved into “${parentName}”.`;
+        this.notifications.success("Object moved", message);
+        void this.liveAnnouncer.announce(message, "polite");
+    }
+
+    /**
+     * Single close path for the picker: dispose the overlay, tear down its
+     * subscriptions, clear transient state, and restore focus to the Action
+     * Menu button that opened it.
+     */
+    private closeMovePicker(restoreFocus = true): void {
+        const originNodeId = this.moveOriginNodeId;
+        this.moveOriginNodeId = null;
+        this.moveSubscriptions.forEach((sub) => sub.unsubscribe());
+        this.moveSubscriptions = [];
+        if (this.moveOverlayRef) {
+            this.moveOverlayRef.dispose();
+            this.moveOverlayRef = null;
+        }
+        this.movePickerRef = null;
+        if (restoreFocus && !this.destroyed && originNodeId) {
+            this.restoreNodeFocus(originNodeId);
+        }
     }
 
     trackById(_index: number, node: HierarchyNode): string {

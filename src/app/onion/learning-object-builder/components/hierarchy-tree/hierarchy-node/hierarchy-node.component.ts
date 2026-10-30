@@ -14,8 +14,14 @@ import {
     transition,
     trigger,
 } from "@angular/animations";
+import { MatIconButton } from "@angular/material/button";
+import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
 import { LearningObject } from "@entity";
-import { HierarchyNode, AddChildAction } from "../hierarchy-tree.types";
+import {
+    HierarchyNode,
+    NodeAction,
+    NodeActionId,
+} from "../hierarchy-tree.types";
 
 /**
  * Expand/collapse animation for a branch's children.
@@ -73,7 +79,18 @@ const LENGTH_BADGE_ICON: Record<LearningObject.Length, string> = {
     styleUrls: ["./hierarchy-node.component.scss"],
     standalone: true,
     animations: [branchExpand],
-    imports: [NgIf, NgFor, NgClass, TitleCasePipe, CdkDrag, CdkDragHandle],
+    imports: [
+        NgIf,
+        NgFor,
+        NgClass,
+        TitleCasePipe,
+        CdkDrag,
+        CdkDragHandle,
+        MatIconButton,
+        MatMenu,
+        MatMenuItem,
+        MatMenuTrigger,
+    ],
 })
 export class HierarchyNodeComponent {
     /** The node this component renders. */
@@ -105,10 +122,10 @@ export class HierarchyNodeComponent {
     /** Emitted when the user toggles this node's expand/collapse chevron. */
     @Output() toggleExpanded = new EventEmitter<string>();
 
-    /** Emitted when the user picks an action from a node's `+` menu (inert in sc-40233). */
-    @Output() addChild = new EventEmitter<{
-        action: AddChildAction;
-        parentId: string;
+    /** Emitted when the author selects an item from this node's Action Menu. */
+    @Output() menuAction = new EventEmitter<{
+        actionId: NodeActionId;
+        nodeId: string;
     }>();
 
     /** Emitted with the dragged node when a drag starts (null when it ends). */
@@ -132,8 +149,7 @@ export class HierarchyNodeComponent {
      */
     @Input() hoveredTargetId: string | null = null;
 
-    /** The `+` menu open state for this node (local UI only). */
-    menuOpen = false;
+    menuOpened: boolean = false;
 
     /** FontAwesome classes for this node's length badge icon (home-page style). */
     get badgeIcon(): string {
@@ -165,6 +181,31 @@ export class HierarchyNodeComponent {
      */
     get canMove(): boolean {
         return !this.isRoot && this.canMovePredicate(this.node.id);
+    }
+
+    /**
+     * Keep Move Object visible, enabling it only when this node can move.
+     * Add Child Object is reserved in the action type but is not rendered yet.
+     */
+    get menuActions(): NodeAction[] {
+        return [
+            {
+                id: "move",
+                label: "Move Object",
+                icon: "far fa-arrows-alt",
+                disabled: !this.canMove,
+            },
+        ];
+    }
+
+    /** Keep menu buttons attached across change detection during a click. */
+    trackByActionId(_index: number, action: NodeAction): NodeActionId {
+        return action.id;
+    }
+
+    /** Accessible name for this node's Action Menu trigger. */
+    get actionMenuLabel(): string {
+        return `Actions for ${this.node.name}`;
     }
 
     /**
@@ -228,13 +269,9 @@ export class HierarchyNodeComponent {
         this.toggleExpanded.emit(this.node.id);
     }
 
-    toggleMenu(open?: boolean): void {
-        this.menuOpen = open ?? !this.menuOpen;
-    }
-
-    onAddChild(action: AddChildAction): void {
-        this.menuOpen = false;
-        this.addChild.emit({ action, parentId: this.node.id });
+    /** Emit the selected Action Menu intent upward for this node. */
+    onMenuAction(actionId: NodeActionId): void {
+        this.menuAction.emit({ actionId, nodeId: this.node.id });
     }
 
     /** Re-emit child events so they bubble to the tree container. */
@@ -242,11 +279,12 @@ export class HierarchyNodeComponent {
         this.toggleExpanded.emit(id);
     }
 
-    bubbleAddChild(payload: {
-        action: AddChildAction;
-        parentId: string;
+    /** Re-emit a nested node's Action Menu intent up to the tree container. */
+    bubbleMenuAction(payload: {
+        actionId: NodeActionId;
+        nodeId: string;
     }): void {
-        this.addChild.emit(payload);
+        this.menuAction.emit(payload);
     }
 
     bubbleDragActive(node: HierarchyNode | null): void {

@@ -422,3 +422,73 @@ a:visited {
     color: black !important;
     font-size: 14px !important;
 }
+
+// ---------- Builder hierarchy Action Menu ----------
+// The node-row kebab opens a MatMenu that renders into the CDK overlay, so its
+// panel is styled here (global) rather than in the component's encapsulated
+// SCSS. Keep the look consistent with the hierarchy card palette and give each
+// item a stable icon gutter so the label never jumps.
+.hierarchy-action-menu.mat-mdc-menu-panel {
+    min-width: 220px;
+    max-width: 320px;
+    border-radius: 8px;
+
+    .mat-mdc-menu-content {
+        padding: 6px;
+    }
+
+    .mat-mdc-menu-item {
+        min-height: 42px;
+        border-radius: 6px;
+        padding: 0 12px;
+
+        // The projected icon/label content must NOT be a pointer target. This
+        // app runs FontAwesome in SVG-with-JS mode, which swaps each <i> for an
+        // <svg> via a MutationObserver. If that swap happens between mousedown
+        // and mouseup on the item's content, the browser cancels the `click`
+        // (down and up must land on the same node) — so the menu item's click
+        // handler never runs and "nothing happens". Making the content
+        // pointer-transparent forces the stable <button> itself to be the
+        // target, so the click always fires regardless of icon re-rendering.
+        .mat-mdc-menu-item-text,
+        .hierarchy-action-menu__icon,
+        .hierarchy-action-menu__label,
+        .svg-inline--fa {
+            pointer-events: none;
+        }
+
+        // MDC wraps the projected content in this span; lay the icon + label out
+        // as a row with a fixed icon gutter.
+        .mat-mdc-menu-item-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hierarchy-action-menu__icon {
+            width: 18px;
+            flex: 0 0 18px;
+            font-size: 15px;
+            text-align: center;
+            color: $light-blue;
+        }
+
+        .hierarchy-action-menu__label {
+            font-size: $normal;
+            color: $dark-grey;
+        }
+
+        &:not([disabled]):hover {
+            background: #eef6fa;
+        }
+
+        &[disabled] {
+            opacity: 0.55;
+
+            .hierarchy-action-menu__icon,
+            .hierarchy-action-menu__label {
+                color: $medium-grey;
+            }
+        }
+    }
+}

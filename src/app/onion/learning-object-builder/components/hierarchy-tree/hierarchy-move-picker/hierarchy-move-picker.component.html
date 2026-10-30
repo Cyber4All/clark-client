@@ -1,0 +1,146 @@
+<section
+    class="hierarchy-move-picker"
+    role="dialog"
+    aria-modal="true"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    [attr.aria-label]="'Move ' + displayName">
+    <header class="hierarchy-move-picker__header">
+        <div>
+            <p class="hierarchy-move-picker__eyebrow">Move object</p>
+            <h2 class="hierarchy-move-picker__heading" id="move-picker-title">
+                {{ displayName }}
+            </h2>
+        </div>
+        <button
+            type="button"
+            class="hierarchy-move-picker__close"
+            aria-label="Cancel move"
+            (click)="onCancel()">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
+    </header>
+
+    <div class="hierarchy-move-picker__body">
+        <div class="hierarchy-move-picker__tree-heading">
+            <p id="move-picker-prompt">Choose a destination</p>
+            <span>Current hierarchy</span>
+        </div>
+        <ul
+            *ngIf="hierarchyRows.length"
+            class="hierarchy-move-picker__list"
+            cdkListbox
+            [attr.cdkFocusInitial]="hasDestinations ? '' : null"
+            aria-labelledby="move-picker-prompt"
+            (cdkListboxValueChange)="
+                $event.value[0] && selectDestination($event.value[0])
+            ">
+            <li
+                *ngFor="let destination of hierarchyRows; trackBy: trackById"
+                class="hierarchy-move-picker__option"
+                [class.is-available]="destination.selectable"
+                [class.is-selected]="destination.id === selectedTargetId"
+                [class.is-moving]="destination.isMoving"
+                [style.--depth]="destination.depth"
+                [attr.data-destination-id]="destination.id"
+                [attr.aria-label]="destinationLabel(destination)"
+                [title]="destination.path.join(' / ')"
+                [cdkOption]="destination.id"
+                [cdkOptionDisabled]="!destination.selectable"
+                [cdkOptionTypeaheadLabel]="destination.name || unnamedLabel">
+                <span
+                    *ngFor="
+                        let continues of destination.ancestorLines;
+                        let level = index
+                    "
+                    class="hierarchy-move-picker__guide"
+                    [class.continues]="continues"
+                    [style.--level]="level"
+                    aria-hidden="true"></span>
+                <span
+                    *ngIf="destination.depth"
+                    class="hierarchy-move-picker__branch"
+                    [class.is-last]="destination.isLast"
+                    aria-hidden="true"></span>
+                <i
+                    class="hierarchy-move-picker__node-icon far"
+                    [ngClass]="
+                        destination.hasChildren
+                            ? 'fa-folder-open'
+                            : 'fa-file-alt'
+                    "
+                    aria-hidden="true"></i>
+                <span class="hierarchy-move-picker__identity">
+                    <span class="hierarchy-move-picker__option-name">{{
+                        destination.name || unnamedLabel
+                    }}</span>
+                    <span class="hierarchy-move-picker__meta">
+                        <span
+                            class="hierarchy-move-picker__option-badge"
+                            [ngClass]="
+                                'hierarchy-move-picker__option-badge--' +
+                                destination.length
+                            "
+                            >{{ destination.length | titlecase }}</span
+                        >
+                        <span
+                            *ngIf="destination.selectable"
+                            class="hierarchy-move-picker__availability">
+                            {{
+                                destination.id === selectedTargetId
+                                    ? "Selected"
+                                    : "Can move here"
+                            }}
+                        </span>
+                    </span>
+                </span>
+                <span
+                    *ngIf="destination.isMoving"
+                    class="hierarchy-move-picker__moving-label"
+                    >Moving</span
+                >
+                <span
+                    *ngIf="destination.isCurrentParent"
+                    class="hierarchy-move-picker__option-hint"
+                    >Current parent</span
+                >
+                <span
+                    *ngIf="!destination.editable && !destination.isMoving"
+                    class="hierarchy-move-picker__option-hint"
+                    ><i class="fas fa-link" aria-hidden="true"></i> Linked</span
+                >
+                <i
+                    class="fas fa-check hierarchy-move-picker__option-check"
+                    aria-hidden="true"></i>
+            </li>
+        </ul>
+        <p
+            *ngIf="!hasDestinations"
+            class="hierarchy-move-picker__empty"
+            role="status">
+            There's nowhere valid to move
+            <strong>{{ displayName }}</strong> right now.
+        </p>
+    </div>
+
+    <p *ngIf="errorMessage" class="hierarchy-move-picker__error" role="alert">
+        {{ errorMessage }}
+    </p>
+    <footer class="hierarchy-move-picker__actions">
+        <button
+            type="button"
+            class="hierarchy-move-picker__button hierarchy-move-picker__button--ghost"
+            [attr.cdkFocusInitial]="!hasDestinations ? '' : null"
+            (click)="onCancel()">
+            Cancel
+        </button>
+        <button
+            *ngIf="hasDestinations"
+            type="button"
+            class="hierarchy-move-picker__button hierarchy-move-picker__button--primary"
+            [disabled]="!canConfirm"
+            (click)="onConfirm()">
+            Move here
+        </button>
+    </footer>
+</section>

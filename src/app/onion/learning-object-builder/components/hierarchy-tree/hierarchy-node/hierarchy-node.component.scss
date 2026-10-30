@@ -262,54 +262,56 @@ $elbow-top: 30px; // distance from a branch wrapper's top down to the elbow
     flex: 1;
 }
 
-.add-menu-wrapper {
-    position: relative;
-}
+// ---------- Action Menu trigger ----------
+// Single kebab-style trigger rendered on EVERY row (root, editable, linked).
+// Opens the MatMenu of `menuActions`. Sizing mirrors the other inline controls
+// (.toggle / .drag-handle); focus-visible reuses the same ring as .drag-handle
+// so keyboard focus is clearly visible.
+//
+// `mat-icon-button` is built to center a 24px <mat-icon>; we render a
+// FontAwesome <i> instead, so Material's centering rules don't apply. Force the
+// button's content box to flex-center the glyph and neutralise the inherited
+// 40px line-height that otherwise pushes the icon off-centre.
+.action-menu-button {
+    &.mat-mdc-icon-button {
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        line-height: 32px;
+        color: $micro;
 
-.add-button {
-    border: none;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: $light-blue;
-    color: #fff;
-}
-
-.add-menu {
-    position: absolute;
-    top: 36px;
-    right: 0;
-    z-index: 10;
-    min-width: 240px;
-    background: #fff;
-    border: 1px solid #e7e7e7;
-    border-radius: 8px;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
-    padding: 6px;
-
-    &__item {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 10px;
-        width: 100%;
-        border: none;
-        background: transparent;
-        padding: 10px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-        text-align: left;
-        color: $text;
+        justify-content: center;
 
-        &:hover {
-            background: $panel-bg;
+        // The MDC button renders a .mat-mdc-button-touch-target + an inner
+        // content wrapper; make the wrapper center our glyph too.
+        .mat-mdc-button-touch-target {
+            width: 32px;
+            height: 32px;
         }
 
-        i {
-            color: $light-blue;
+        // The glyph must not be a pointer target: FontAwesome's SVG-with-JS
+        // mode swaps the <i> for an <svg> via a MutationObserver, and a swap
+        // between mousedown and mouseup would cancel the click. Keeping the
+        // glyph pointer-transparent makes the button itself the stable target.
+        i,
+        .svg-inline--fa {
+            pointer-events: none;
+            display: block;
+            width: 100%;
+            font-size: 16px;
+            line-height: 1;
+            text-align: center;
+        }
+
+        &:hover {
+            color: $course;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $light-blue;
+            outline-offset: 2px;
         }
     }
 }

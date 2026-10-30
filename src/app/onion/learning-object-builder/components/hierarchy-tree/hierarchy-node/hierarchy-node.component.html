@@ -24,7 +24,7 @@
             [class.has-children]="hasChildren"
             cdkDrag
             [cdkDragData]="node"
-            [cdkDragDisabled]="!canMove"
+            [cdkDragDisabled]="!canMove || menuOpened"
             (cdkDragStarted)="onDragStarted($event)"
             (cdkDragMoved)="onDragMoved($event)"
             (cdkDragEnded)="onDragEnded()">
@@ -73,43 +73,54 @@
 
             <span class="node-row__spacer"></span>
 
-            <!-- Editable nodes: + action with a (currently inert) add menu -->
-            <ng-container *ngIf="node.editable">
-                <div class="add-menu-wrapper">
-                    <button
-                        type="button"
-                        class="add-button"
-                        attr.aria-label="Add a child to {{ node.name }}"
-                        [attr.aria-expanded]="menuOpen"
-                        (click)="toggleMenu()">
-                        <i class="far fa-plus"></i>
-                    </button>
-                    <div *ngIf="menuOpen" class="add-menu" role="menu">
-                        <button
-                            type="button"
-                            class="add-menu__item"
-                            role="menuitem"
-                            (click)="onAddChild('create-new')">
-                            <i class="far fa-plus-square"></i> Create new child
-                        </button>
-                        <button
-                            type="button"
-                            class="add-menu__item"
-                            role="menuitem"
-                            (click)="onAddChild('add-existing')">
-                            <i class="far fa-link"></i> Add existing learning
-                            object
-                        </button>
-                    </div>
-                </div>
-            </ng-container>
-
-            <!-- Linked/read-only nodes: "Linked" label (no add; no overflow menu) -->
+            <!-- Linked/read-only nodes: "Linked" label -->
             <ng-container *ngIf="!node.editable">
                 <span class="linked-label">
                     <i class="far fa-link"></i> Linked
                 </span>
             </ng-container>
+
+            <!-- Single kebab-style Action Menu trigger, rendered on EVERY row
+                 (root, editable, and linked nodes alike). Replaces the old `+`
+                 affordance. Its accessible name and the aria-haspopup/
+                 aria-expanded state are provided by MatMenuTrigger.
+
+                 The trigger lives inside a cdkDrag card, so we stop the
+                 pointer/mouse down from reaching the drag directive — otherwise
+                 CDK claims the gesture as a drag and the click never opens the
+                 menu. The click itself still reaches MatMenuTrigger. -->
+            <button
+                type="button"
+                mat-icon-button
+                class="action-menu-button"
+                [matMenuTriggerFor]="actionMenu"
+                [attr.aria-label]="actionMenuLabel"
+                (pointerdown)="$event.stopPropagation()"
+                (mousedown)="$event.stopPropagation()"
+                (touchstart)="$event.stopPropagation()"
+                (menuOpened)="menuOpened = true"
+                (menuClosed)="menuOpened = false">
+                <i class="far fa-ellipsis-v" aria-hidden="true"></i>
+            </button>
+            <mat-menu
+                #actionMenu="matMenu"
+                class="hierarchy-action-menu"
+                xPosition="before">
+                <button
+                    *ngFor="let action of menuActions; trackBy: trackByActionId"
+                    mat-menu-item
+                    [disabled]="action.disabled"
+                    [attr.data-action-id]="action.id"
+                    (click)="onMenuAction(action.id)">
+                    <i
+                        class="hierarchy-action-menu__icon"
+                        [ngClass]="action.icon"
+                        aria-hidden="true"></i>
+                    <span class="hierarchy-action-menu__label">{{
+                        action.label
+                    }}</span>
+                </button>
+            </mat-menu>
         </div>
 
         <!-- Drop indicator: a purely visual dashed row shown BELOW the card
@@ -149,7 +160,7 @@
                 [draggingNode]="draggingNode"
                 [hoveredTargetId]="hoveredTargetId"
                 (toggleExpanded)="bubbleToggle($event)"
-                (addChild)="bubbleAddChild($event)"
+                (menuAction)="bubbleMenuAction($event)"
                 (dragActive)="bubbleDragActive($event)"
                 (dragMoved)="bubbleDragMoved($event)"></clark-hierarchy-node>
         </div>
