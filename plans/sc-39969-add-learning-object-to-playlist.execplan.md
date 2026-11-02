@@ -13,6 +13,7 @@ Authenticated users can add a learning object from its details page to an existi
 - [x] (2026-10-28) Aligned with the owner-management service contract, added visibility labels, and ordered Browse newest first.
 - [x] (2026-10-30) Kept Browse public-only with one request and preserved Browse/My Playlists return URL state.
 - [x] (2026-10-30) Formatting, focused lint, Angular build, and diff checks pass; focused Jest remains blocked before discovery by the existing transformer mismatch.
+- [x] (2026-11-02) Cleared retained retry state when starting a fresh create flow so a new submission cannot reuse an earlier playlist.
 
 ## Surprises & Discoveries
 

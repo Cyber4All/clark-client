@@ -91,6 +91,7 @@ export class AddToPlaylistModalComponent implements OnInit {
     }
 
     showCreateForm(): void {
+        this.createdPlaylist = undefined;
         this.selectedPlaylistId = "";
         this.creating = true;
     }

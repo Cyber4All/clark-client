@@ -190,4 +190,38 @@ describe("AddToPlaylistModalComponent", () => {
         expect(playlistService.createPlaylist).toHaveBeenCalledTimes(1);
         expect(playlistService.addLearningObject).toHaveBeenCalledTimes(2);
     });
+
+    it("creates a new playlist after leaving a failed create flow", () => {
+        const nextPlaylist = { ...playlist, _id: "next-playlist-id" };
+        playlistService.createPlaylist
+            .mockReturnValueOnce(of(playlist))
+            .mockReturnValueOnce(of(nextPlaylist));
+        playlistService.addLearningObject
+            .mockReturnValueOnce(
+                throwError(() => new HttpErrorResponse({ status: 500 })),
+            )
+            .mockReturnValueOnce(of(nextPlaylist));
+        component.showCreateForm();
+        component.createForm.setValue({
+            name: playlist.name,
+            description: playlist.description,
+            visibility: playlist.visibility,
+        });
+        component.createAndAdd();
+
+        component.showPlaylistList();
+        component.showCreateForm();
+        component.createForm.setValue({
+            name: "Next playlist",
+            description: "A different playlist",
+            visibility: "public",
+        });
+        component.createAndAdd();
+
+        expect(playlistService.createPlaylist).toHaveBeenCalledTimes(2);
+        expect(playlistService.addLearningObject).toHaveBeenLastCalledWith(
+            nextPlaylist._id,
+            "object-cuid",
+        );
+    });
 });
