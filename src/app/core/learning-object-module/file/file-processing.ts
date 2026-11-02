@@ -10,7 +10,7 @@ export const PARSEABLE_FILE_EXTENSIONS = [
     "xlsx",
 ] as const;
 
-export const FILE_PARSING_TOOLTIP = `Only these file extensions support parsing for AI: ${PARSEABLE_FILE_EXTENSIONS.map((extension) => `.${extension}`).join(", ")}.`;
+export const FILE_PARSING_TOOLTIP = `Parsed content can be used to Build with AI. Supported extensions: ${PARSEABLE_FILE_EXTENSIONS.map((extension) => `.${extension}`).join(", ")}.`;
 
 export function isParseableFile(file: LearningObject.Material.File): boolean {
     const extension = (

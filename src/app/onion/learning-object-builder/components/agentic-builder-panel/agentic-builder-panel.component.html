@@ -1,18 +1,25 @@
 <div
     class="agentic-builder-panel"
     [class.agentic-builder-panel--entry]="!reviewing"
+    [class.agentic-builder-panel--review]="reviewing"
+    [style.top.px]="reviewing ? 0 : top"
+    [style.right.px]="reviewing ? 0 : right"
     role="dialog"
     aria-labelledby="agentic-builder-title"
-    aria-modal="true">
+    aria-modal="false">
     <header class="agentic-builder-panel__header">
         <div>
             <h2 id="agentic-builder-title">
-                {{ reviewing ? "Review suggestions" : "Generate with AI" }}
+                {{ reviewing ? "Review Suggestions" : "Build with AI" }}
             </h2>
-            <p *ngIf="reviewing" class="review-progress">
-                Compare the options and apply only the ones you choose.
-            </p>
         </div>
+        <button
+            type="button"
+            class="agentic-builder-panel__close"
+            aria-label="Close AI suggestions"
+            (click)="close()">
+            <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
     </header>
 
     <ng-container *ngIf="!reviewing; else reviewTemplate">
@@ -24,7 +31,7 @@
             <div
                 class="agentic-builder-panel__fields"
                 role="group"
-                aria-label="Content to generate">
+                aria-label="Content to build">
                 <clark-pill
                     label="Name"
                     [active]="selectedFields.name"
@@ -79,24 +86,29 @@
                     <h3 class="suggestion-section__heading">Name</h3>
                     <button
                         type="button"
-                        class="button neutral"
+                        class="generate-icon"
                         [attr.aria-label]="
                             nameSuggestion
-                                ? 'Regenerate name suggestion'
-                                : 'Generate name suggestion'
+                                ? 'Suggest another name'
+                                : 'Suggest a name'
                         "
                         [disabled]="loading.name"
+                        [tip]="
+                            loading.name
+                                ? 'Preparing name suggestion'
+                                : nameSuggestion
+                                  ? 'Suggest another name'
+                                  : 'Suggest a name'
+                        "
+                        tipPosition="left"
+                        [tipWrap]="true"
                         (click)="
                             stopDismissal($event);
                             generateMoreSuggestions('name')
                         ">
-                        {{
-                            loading.name
-                                ? "Generating..."
-                                : nameSuggestion
-                                  ? "Regenerate"
-                                  : "Generate"
-                        }}
+                        <i
+                            class="fa-solid fa-arrows-rotate"
+                            aria-hidden="true"></i>
                     </button>
                 </div>
                 <p
@@ -106,7 +118,7 @@
                     {{ sectionErrors.name }}
                 </p>
                 <p *ngIf="!nameSuggestion" class="section-empty">
-                    No name suggestion yet. Generate one whenever you’re ready.
+                    No name suggestion yet. Suggest one when you’re ready.
                 </p>
                 <div *ngIf="nameSuggestion" class="name-suggestion">
                     <span class="name-suggestion__text">{{
@@ -119,7 +131,6 @@
                         type="button"
                         class="suggestion-check suggestion-check--reject"
                         [disabled]="applying || loading.name"
-                        tip="Reject suggestion"
                         aria-label="Reject name suggestion"
                         (click)="stopDismissal($event); rejectName()">
                         <i class="fas fa-times" aria-hidden="true"></i>
@@ -129,7 +140,6 @@
                         class="suggestion-check"
                         [class.suggestion-check--applied]="appliedName"
                         [disabled]="applying || loading.name || appliedName"
-                        tip="Accept suggestion"
                         [attr.aria-label]="
                             appliedName ? 'Name applied' : 'Accept suggestion'
                         "
@@ -144,24 +154,29 @@
                     <h3 class="suggestion-section__heading">Description</h3>
                     <button
                         type="button"
-                        class="button neutral"
+                        class="generate-icon"
                         [attr.aria-label]="
                             descriptionOptions.length
-                                ? 'Generate more description suggestions'
-                                : 'Generate description suggestions'
+                                ? 'Suggest another description'
+                                : 'Suggest a description'
                         "
                         [disabled]="loading.description"
+                        [tip]="
+                            loading.description
+                                ? 'Preparing description suggestion'
+                                : descriptionOptions.length
+                                  ? 'Suggest another description'
+                                  : 'Suggest a description'
+                        "
+                        tipPosition="left"
+                        [tipWrap]="true"
                         (click)="
                             stopDismissal($event);
                             generateMoreSuggestions('description')
                         ">
-                        {{
-                            loading.description
-                                ? "Generating..."
-                                : descriptionOptions.length
-                                  ? "Generate more"
-                                  : "Generate"
-                        }}
+                        <i
+                            class="fa-solid fa-arrows-rotate"
+                            aria-hidden="true"></i>
                     </button>
                 </div>
                 <p
@@ -170,9 +185,12 @@
                     role="alert">
                     {{ sectionErrors.description }}
                 </p>
+                <p *ngIf="descriptionOptions.length > 1" class="section-hint">
+                    Choose one description; use the arrows to compare options.
+                </p>
                 <p *ngIf="!descriptionOptions.length" class="section-empty">
-                    No description suggestions yet. Generate them whenever
-                    you’re ready.
+                    No description suggestions yet. Suggest one whenever you’re
+                    ready.
                 </p>
                 <div
                     *ngIf="currentDescription !== null"
@@ -184,72 +202,74 @@
                         <p>{{ currentDescription }}</p>
                     </div>
                     <div class="carousel-navigation">
-                        <button
-                            type="button"
-                            class="button neutral"
-                            aria-label="Previous description suggestion"
-                            [disabled]="descriptionIndex === 0"
-                            (click)="previousDescription()">
-                            Previous
-                        </button>
-                        <span aria-live="polite">
-                            {{ descriptionIndex + 1 }} of
-                            {{ descriptionOptions.length }}
-                            <span
-                                *ngIf="
+                        <div class="carousel-navigation__controls">
+                            <button
+                                type="button"
+                                class="button neutral"
+                                aria-label="Previous description suggestion"
+                                [disabled]="descriptionIndex === 0"
+                                (click)="previousDescription()">
+                                Previous
+                            </button>
+                            <span aria-live="polite">
+                                {{ descriptionIndex + 1 }} of
+                                {{ descriptionOptions.length }}
+                                <span
+                                    *ngIf="
+                                        appliedDescriptionIndex ===
+                                        descriptionIndex
+                                    "
+                                    class="applied-badge"
+                                    >Applied</span
+                                >
+                            </span>
+                            <button
+                                type="button"
+                                class="button neutral"
+                                aria-label="Next description suggestion"
+                                [disabled]="
+                                    descriptionIndex >=
+                                    descriptionOptions.length - 1
+                                "
+                                (click)="nextDescription()">
+                                Next
+                            </button>
+                        </div>
+                        <div class="suggestion-actions">
+                            <button
+                                type="button"
+                                class="suggestion-check suggestion-check--reject"
+                                [disabled]="applying || loading.description"
+                                aria-label="Reject description suggestion"
+                                (click)="
+                                    stopDismissal($event);
+                                    rejectCurrentDescription()
+                                ">
+                                <i class="fas fa-times" aria-hidden="true"></i>
+                            </button>
+                            <button
+                                type="button"
+                                class="suggestion-check"
+                                [class.suggestion-check--applied]="
                                     appliedDescriptionIndex === descriptionIndex
                                 "
-                                class="applied-badge"
-                                >Applied</span
-                            >
-                        </span>
-                        <button
-                            type="button"
-                            class="button neutral"
-                            aria-label="Next description suggestion"
-                            [disabled]="
-                                descriptionIndex >=
-                                descriptionOptions.length - 1
-                            "
-                            (click)="nextDescription()">
-                            Next
-                        </button>
-                    </div>
-                    <div class="suggestion-actions">
-                        <button
-                            type="button"
-                            class="suggestion-check suggestion-check--reject"
-                            [disabled]="applying || loading.description"
-                            tip="Reject suggestion"
-                            aria-label="Reject description suggestion"
-                            (click)="
-                                stopDismissal($event);
-                                rejectCurrentDescription()
-                            ">
-                            <i class="fas fa-times" aria-hidden="true"></i>
-                        </button>
-                        <button
-                            type="button"
-                            class="suggestion-check"
-                            [class.suggestion-check--applied]="
-                                appliedDescriptionIndex === descriptionIndex
-                            "
-                            [disabled]="
-                                applying ||
-                                loading.description ||
-                                appliedDescriptionIndex === descriptionIndex
-                            "
-                            tip="Accept suggestion"
-                            [attr.aria-label]="
-                                appliedDescriptionIndex === descriptionIndex
-                                    ? 'Description applied'
-                                    : 'Accept suggestion'
-                            "
-                            (click)="
-                                stopDismissal($event); useCurrentDescription()
-                            ">
-                            <i class="fas fa-check" aria-hidden="true"></i>
-                        </button>
+                                [disabled]="
+                                    applying ||
+                                    loading.description ||
+                                    appliedDescriptionIndex === descriptionIndex
+                                "
+                                [attr.aria-label]="
+                                    appliedDescriptionIndex === descriptionIndex
+                                        ? 'Description applied'
+                                        : 'Accept suggestion'
+                                "
+                                (click)="
+                                    stopDismissal($event);
+                                    useCurrentDescription()
+                                ">
+                                <i class="fas fa-check" aria-hidden="true"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -261,24 +281,29 @@
                     </h3>
                     <button
                         type="button"
-                        class="button neutral"
+                        class="generate-icon"
                         [attr.aria-label]="
                             hasGeneratedOutcomes
-                                ? 'Generate more learning outcome suggestions'
-                                : 'Generate learning outcome suggestions'
+                                ? 'Suggest more learning outcomes'
+                                : 'Suggest learning outcomes'
                         "
                         [disabled]="loading.learningOutcomes"
+                        [tip]="
+                            loading.learningOutcomes
+                                ? 'Preparing learning outcome suggestions'
+                                : hasGeneratedOutcomes
+                                  ? 'Suggest more learning outcomes'
+                                  : 'Suggest learning outcomes'
+                        "
+                        tipPosition="left"
+                        [tipWrap]="true"
                         (click)="
                             stopDismissal($event);
                             generateMoreSuggestions('learningOutcomes')
                         ">
-                        {{
-                            loading.learningOutcomes
-                                ? "Generating..."
-                                : hasGeneratedOutcomes
-                                  ? "Generate more"
-                                  : "Generate"
-                        }}
+                        <i
+                            class="fa-solid fa-arrows-rotate"
+                            aria-hidden="true"></i>
                     </button>
                 </div>
                 <p
@@ -291,7 +316,7 @@
                     {{
                         hasGeneratedOutcomes
                             ? "All learning outcome suggestions have been reviewed."
-                            : "No learning outcome suggestions yet. Generate them whenever you’re ready."
+                            : "No learning outcome suggestions yet. Suggest some whenever you’re ready."
                     }}
                 </p>
                 <div class="outcome-list">
@@ -306,8 +331,10 @@
                                 outcome.bloom
                             }}</span>
                             <p>
-                                <strong>{{ outcome.verb }}</strong>
-                                {{ outcome.text }}
+                                <strong>{{
+                                    capitalizeFirst(outcome.verb)
+                                }}</strong>
+                                {{ capitalizeFirst(outcome.text) }}
                             </p>
                         </div>
                         <div class="suggestion-actions">
@@ -315,7 +342,6 @@
                                 type="button"
                                 class="suggestion-check suggestion-check--reject"
                                 [disabled]="applying"
-                                tip="Reject suggestion"
                                 [attr.aria-label]="
                                     'Reject learning outcome suggestion ' +
                                     (i + 1)
@@ -329,7 +355,6 @@
                                 type="button"
                                 class="suggestion-check"
                                 [disabled]="applying"
-                                tip="Accept suggestion"
                                 [attr.aria-label]="
                                     'Accept learning outcome suggestion ' +
                                     (i + 1)
@@ -346,21 +371,14 @@
         </div>
     </ng-template>
 
-    <footer class="agentic-builder-panel__footer">
+    <footer *ngIf="!reviewing" class="agentic-builder-panel__footer">
         <button
             *ngIf="!reviewing"
             type="button"
             class="button good"
             [disabled]="anyLoading || !hasSelectedFields || applying"
             (click)="stopDismissal($event); generateSelected()">
-            {{ anyLoading ? "Generating..." : "Generate suggestions" }}
-        </button>
-        <button
-            type="button"
-            class="button good"
-            [disabled]="applying"
-            (click)="close()">
-            Close
+            {{ anyLoading ? "Building suggestions..." : "Build suggestions" }}
         </button>
     </footer>
 </div>

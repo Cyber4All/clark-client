@@ -90,6 +90,7 @@ export class FileManagerComponent implements OnInit, OnDestroy {
                 // Upon creating a new learning object there will be no files
                 // so we don't want to throw an error with 'addFiles'
                 if (files) {
+                    this.directoryTree = new DirectoryTree();
                     this.directoryTree.addFiles(files);
                     this.directoryTree$.next(this.directoryTree);
                 }

@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from "@angular/common";
+import { NgClass, NgFor, NgIf } from "@angular/common";
 import { HttpErrorResponse } from "@angular/common/http";
 import {
     Component,
@@ -6,6 +6,7 @@ import {
     ElementRef,
     EventEmitter,
     HostListener,
+    Input,
     Output,
     inject,
 } from "@angular/core";
@@ -32,10 +33,12 @@ type ReviewField = "name" | "description";
     templateUrl: "./agentic-builder-panel.component.html",
     styleUrls: ["./agentic-builder-panel.component.scss"],
     standalone: true,
-    imports: [NgIf, NgFor, PillComponent, TipDirective],
+    imports: [NgIf, NgFor, NgClass, PillComponent, TipDirective],
 })
 export class AgenticBuilderPanelComponent {
     @Output() closed = new EventEmitter<void>();
+    @Input() top = 85;
+    @Input() right = 25;
 
     private readonly destroyRef = inject(DestroyRef);
     applying = false;
@@ -217,13 +220,40 @@ export class AgenticBuilderPanelComponent {
     private async generateSuggestedName(
         learningObjectId: string,
     ): Promise<void> {
-        const response = await this.learningObjectService.buildLearningObject(
-            learningObjectId,
-            { fields: ["name"] },
-        );
-        const suggestion = this.normalizeSuggestedName(response?.name);
+        const maxNameGenerationAttempts = 3;
+        const previousSuggestion = this.nameSuggestion;
+        let suggestion: string | null = null;
+        let matchedCurrentName = false;
+        // Give the model 3 attempts in generating a different learning object name
+        for (let attempt = 0; attempt < maxNameGenerationAttempts; attempt++) {
+            const response =
+                await this.learningObjectService.buildLearningObject(
+                    learningObjectId,
+                    { fields: ["name"] },
+                );
+            const candidate = this.normalizeSuggestedName(response?.name);
+            if (candidate === this.store.learningObject?.name) {
+                matchedCurrentName = true;
+            }
+            if (
+                candidate &&
+                candidate !== previousSuggestion &&
+                candidate !== this.store.learningObject?.name
+            ) {
+                suggestion = candidate;
+                break;
+            }
+        }
         if (!suggestion) {
-            throw new Error("The generated title was empty or invalid.");
+            // Let the user know it generated the same name
+            if (matchedCurrentName) {
+                this.sectionErrors.name =
+                    "I can only come up with the same name at this time :)";
+                return;
+            }
+            throw new Error(
+                "A different title could not be generated. Try again or edit the name yourself.",
+            );
         }
         this.nameSuggestion = suggestion;
         this.appliedName = false;
@@ -271,7 +301,7 @@ export class AgenticBuilderPanelComponent {
         if (validOptions.length) this.hasGeneratedSuggestions = true;
         if (failed) {
             this.sectionErrors.description =
-                "Some descriptions were invalid or could not be generated. Generate more to retry.";
+                "Some descriptions were invalid or could not be generated. Build suggestions again to retry.";
         }
     }
 
@@ -288,7 +318,7 @@ export class AgenticBuilderPanelComponent {
             const generated = response?.learningOutcomes;
             if (!Array.isArray(generated)) {
                 this.sectionErrors.learningOutcomes =
-                    "Learning outcomes could not be generated. Generate more to retry.";
+                    "Learning outcomes could not be generated. Build suggestions again to retry.";
                 return;
             }
 
@@ -305,11 +335,11 @@ export class AgenticBuilderPanelComponent {
             }
             if (validOptions.length !== generated.length) {
                 this.sectionErrors.learningOutcomes =
-                    "Some learning outcomes were invalid. Generate more to retry.";
+                    "Some learning outcomes were invalid. Build suggestions again to retry.";
             }
         } catch (_error) {
             this.sectionErrors.learningOutcomes =
-                "Learning outcomes could not be generated. Generate more to retry.";
+                "Learning outcomes could not be generated. Build suggestions again to retry.";
         }
     }
 
@@ -340,8 +370,9 @@ export class AgenticBuilderPanelComponent {
             new Set(["name"]),
             new Set(),
             () => {
-                this.appliedName = true;
-                this.appliedNameValue = name;
+                this.nameSuggestion = null;
+                this.appliedName = false;
+                this.appliedNameValue = null;
             },
         );
     }
@@ -357,8 +388,15 @@ export class AgenticBuilderPanelComponent {
             new Set(["description"]),
             new Set(),
             () => {
-                this.appliedDescriptionIndex = index;
-                this.appliedDescriptionValue = description;
+                this.descriptionOptions = this.descriptionOptions.filter(
+                    (_option, optionIndex) => optionIndex !== index,
+                );
+                this.descriptionIndex = Math.min(
+                    index,
+                    Math.max(0, this.descriptionOptions.length - 1),
+                );
+                this.appliedDescriptionIndex = null;
+                this.appliedDescriptionValue = null;
             },
         );
     }
@@ -370,6 +408,11 @@ export class AgenticBuilderPanelComponent {
         this.appliedName = false;
         this.appliedNameValue = null;
         this.persistSession();
+    }
+
+    /** Uppercases the first character of generated outcome copy for display. */
+    capitalizeFirst(value: string): string {
+        return value ? value[0].toLocaleUpperCase() + value.slice(1) : value;
     }
 
     /** Dismisses the selected description and keeps remaining review indices aligned. */
@@ -441,7 +484,7 @@ export class AgenticBuilderPanelComponent {
             onSuccess();
         } catch (error) {
             this.toasterService.error(
-                "Unable to apply suggestion",
+                "Unable to apply draft",
                 this.getErrorMessage(error),
             );
         } finally {
@@ -471,20 +514,20 @@ export class AgenticBuilderPanelComponent {
             this.nameSuggestion = this.normalizeSuggestedName(
                 saved.nameSuggestion,
             );
-            this.appliedName =
+            const restoredNameWasApplied =
                 saved.appliedName &&
                 this.nameSuggestion !== null &&
                 this.nameSuggestion === learningObject.name;
-            this.appliedNameValue = this.appliedName
-                ? this.nameSuggestion
-                : null;
+            if (restoredNameWasApplied) this.nameSuggestion = null;
+            this.appliedName = false;
+            this.appliedNameValue = null;
             this.descriptionOptions = [...saved.descriptionOptions];
             this.descriptionIndex = Math.min(
                 Math.max(0, saved.descriptionIndex),
                 Math.max(0, this.descriptionOptions.length - 1),
             );
             const savedAppliedDescriptionIndex = saved.appliedDescriptionIndex;
-            this.appliedDescriptionIndex =
+            const restoredDescriptionWasApplied =
                 savedAppliedDescriptionIndex !== null &&
                 savedAppliedDescriptionIndex >= 0 &&
                 savedAppliedDescriptionIndex < this.descriptionOptions.length &&
@@ -492,10 +535,18 @@ export class AgenticBuilderPanelComponent {
                     learningObject.description
                     ? savedAppliedDescriptionIndex
                     : null;
-            this.appliedDescriptionValue =
-                this.appliedDescriptionIndex === null
-                    ? null
-                    : this.descriptionOptions[this.appliedDescriptionIndex];
+            if (restoredDescriptionWasApplied !== null) {
+                this.descriptionOptions.splice(
+                    restoredDescriptionWasApplied,
+                    1,
+                );
+            }
+            this.descriptionIndex = Math.min(
+                this.descriptionIndex,
+                Math.max(0, this.descriptionOptions.length - 1),
+            );
+            this.appliedDescriptionIndex = null;
+            this.appliedDescriptionValue = null;
             this.outcomeSuggestions = [...saved.outcomeSuggestions];
             this.hasGeneratedOutcomes =
                 saved.hasGeneratedOutcomes ||
