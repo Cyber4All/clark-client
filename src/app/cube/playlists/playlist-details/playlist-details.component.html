@@ -1,5 +1,8 @@
 <main class="playlist-details">
-    <a class="back-link" routerLink="/playlists">
+    <a
+        class="back-link"
+        routerLink="/playlists"
+        [queryParams]="isOwner ? { userId: auth.user?.userId } : {}">
         <i class="far fa-chevron-left" aria-hidden="true"></i>
         Browse Playlists
     </a>
@@ -16,22 +19,170 @@
 
     <ng-container *ngIf="!loading && !hasError && playlist">
         <header class="playlist-header">
-            <div>
-                <p class="eyebrow">Playlist</p>
-                <h1>{{ playlist.name }}</h1>
-                <p class="description">{{ playlist.description }}</p>
-                <div class="playlist-header__metadata">
-                    <span class="object-count">
-                        {{ learningObjects.length }}
-                        {{
-                            learningObjects.length === 1
-                                ? "learning object"
-                                : "learning objects"
-                        }}
-                    </span>
+            <div class="playlist-title-row">
+                <div class="field-display">
+                    <h1
+                        [textContent]="playlist.name"
+                        [attr.contenteditable]="
+                            isOwner &&
+                            editingMetadata &&
+                            !savingFields.has('name')
+                                ? 'plaintext-only'
+                                : null
+                        "
+                        [class.editable]="isOwner && editingMetadata"
+                        aria-label="Playlist title"
+                        (blur)="saveMetadataField('name', $event)"></h1>
+                    <button
+                        *ngIf="isOwner"
+                        type="button"
+                        class="edit-icon-button"
+                        [attr.aria-label]="
+                            editingMetadata
+                                ? 'Finish editing playlist'
+                                : 'Edit playlist title and description'
+                        "
+                        [attr.aria-pressed]="editingMetadata"
+                        tip="Edit playlist"
+                        [tipDisabled]="editingMetadata"
+                        tipPosition="bottom"
+                        (click)="editingMetadata = !editingMetadata">
+                        <i class="far fa-pencil" aria-hidden="true"></i>
+                    </button>
                 </div>
+                <button
+                    *ngIf="isOwner"
+                    type="button"
+                    class="danger-button playlist-delete-button"
+                    (click)="confirmDelete = true">
+                    Delete playlist
+                </button>
+            </div>
+            <p
+                class="description"
+                [textContent]="playlist.description || ''"
+                [attr.contenteditable]="
+                    isOwner &&
+                    editingMetadata &&
+                    !savingFields.has('description')
+                        ? 'plaintext-only'
+                        : null
+                "
+                [class.editable]="isOwner && editingMetadata"
+                aria-label="Playlist description"
+                (blur)="saveMetadataField('description', $event)"></p>
+            <div *ngIf="isOwner" class="owner-actions">
+                <mat-slide-toggle
+                    [checked]="draftVisibility === visibilityOptions.PUBLIC"
+                    [disabled]="saving"
+                    (change)="
+                        saveVisibility(
+                            $event.checked
+                                ? visibilityOptions.PUBLIC
+                                : visibilityOptions.PRIVATE
+                        )
+                    "
+                    aria-label="Public playlist">
+                    {{
+                        draftVisibility === visibilityOptions.PUBLIC
+                            ? "Public"
+                            : "Private"
+                    }}
+                </mat-slide-toggle>
             </div>
         </header>
+
+        <p *ngIf="errorMessage" class="action-error" role="alert">
+            {{ errorMessage }}
+        </p>
+
+        <section
+            *ngIf="isOwner"
+            class="search-section"
+            aria-labelledby="add-learning-objects-heading">
+            <h2 id="add-learning-objects-heading">Add learning objects</h2>
+            <form class="search-form" (ngSubmit)="search(searchText)">
+                <input
+                    id="playlist-object-search"
+                    name="playlistObjectSearch"
+                    type="search"
+                    placeholder="Search learning objects"
+                    [ngModel]="searchText"
+                    (ngModelChange)="onSearchChange($event)" />
+                <button
+                    type="submit"
+                    [disabled]="searchLoading || searchText.trim().length < 3">
+                    Search
+                </button>
+            </form>
+            <p
+                *ngIf="
+                    searchText.trim().length > 0 && searchText.trim().length < 3
+                "
+                class="search-hint">
+                Enter at least 3 characters to search.
+            </p>
+            <p
+                *ngIf="searchLoading"
+                class="search-loading"
+                role="status"
+                aria-live="polite">
+                <i class="far fa-spinner-third fa-spin" aria-hidden="true"></i>
+                Searching…
+            </p>
+            <p *ngIf="searchError" class="action-error" role="alert">
+                Search failed.
+                <button type="button" (click)="search()">Try again</button>
+            </p>
+            <p
+                *ngIf="
+                    !searchLoading &&
+                    searchText.trim().length >= 3 &&
+                    !searchError &&
+                    !searchResults.length
+                "
+                class="search-hint">
+                No released learning objects found.
+            </p>
+            <ul
+                *ngIf="searchResults.length"
+                class="candidate-list card-list-actions">
+                <li
+                    *ngFor="let object of searchResults"
+                    [class.adding]="addingCuid === object.cuid">
+                    <clark-learning-object-component
+                        [learningObject]="object"
+                        learningObjectCard></clark-learning-object-component>
+                    <button
+                        type="button"
+                        class="card-action-button add-button"
+                        [disabled]="!!addingCuid"
+                        [attr.aria-label]="
+                            'Add ' + object.name + ' to playlist'
+                        "
+                        [attr.aria-busy]="addingCuid === object.cuid"
+                        tip="Add to playlist"
+                        tipPosition="bottom"
+                        (click)="addLearningObject(object)">
+                        <i
+                            class="far"
+                            [class.fa-plus]="addingCuid !== object.cuid"
+                            [class.fa-spinner-third]="
+                                addingCuid === object.cuid
+                            "
+                            [class.fa-spin]="addingCuid === object.cuid"
+                            aria-hidden="true"></i>
+                    </button>
+                </li>
+            </ul>
+            <button
+                *ngIf="searchHasMore"
+                type="button"
+                [disabled]="searchLoading"
+                (click)="search(searchText, true)">
+                Load more results
+            </button>
+        </section>
 
         <section aria-labelledby="playlist-contents-heading">
             <h2 id="playlist-contents-heading">Learning Objects</h2>
@@ -40,7 +191,10 @@
                 This playlist does not contain any learning objects yet.
             </p>
 
-            <ul *ngIf="learningObjects.length" class="object-grid">
+            <ul
+                *ngIf="learningObjects.length"
+                class="object-grid"
+                [class.card-list-actions]="isOwner">
                 <li *ngFor="let entry of learningObjects">
                     <clark-learning-object-component
                         *ngIf="entry.object as object; else unavailableObject"
@@ -65,8 +219,53 @@
                             </div>
                         </div>
                     </ng-template>
+                    <button
+                        *ngIf="isOwner"
+                        type="button"
+                        class="card-action-button remove-button"
+                        [attr.aria-label]="
+                            'Remove ' +
+                            (entry.object?.name || entry.cuid) +
+                            ' from playlist'
+                        "
+                        tip="Remove from playlist"
+                        tipPosition="bottom"
+                        (click)="removeLearningObject(entry)">
+                        <i class="far fa-trash-alt" aria-hidden="true"></i>
+                    </button>
                 </li>
             </ul>
         </section>
     </ng-container>
+
+    <div
+        *ngIf="confirmDelete"
+        class="confirm-overlay"
+        role="presentation"
+        (click)="confirmDelete = false">
+        <section
+            class="confirm-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-playlist-title"
+            (click)="$event.stopPropagation()">
+            <h2 id="delete-playlist-title">Delete playlist?</h2>
+            <p>
+                This will delete “{{ playlist?.name }}”. <br />
+                Are you sure you want to delete this playlist?
+            </p>
+            <div class="confirm-dialog__actions">
+                <button type="button" (click)="confirmDelete = false">
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    class="danger-button"
+                    [disabled]="deleting"
+                    (click)="deletePlaylist()">
+                    {{ deleting ? "Deleting…" : "Delete playlist" }}
+                </button>
+            </div>
+        </section>
+    </div>
 </main>

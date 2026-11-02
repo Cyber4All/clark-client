@@ -26,13 +26,36 @@
 }
 
 .playlist-header {
+    display: grid;
+    justify-items: start;
+    gap: 18px;
     margin-bottom: 56px;
     padding: 0 0 36px;
     border-bottom: 1px solid $light-grey;
+}
+
+.playlist-title-row {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.playlist-delete-button {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.field-display {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    gap: 12px;
 
     h1 {
-        max-width: 900px;
-        margin: 0 0 14px;
+        min-width: 0;
+        margin: 0;
         overflow-wrap: anywhere;
         color: $darker-grey;
         font-size: 36px;
@@ -40,31 +63,263 @@
     }
 }
 
-.eyebrow,
-.object-type {
-    color: $light-blue;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.eyebrow {
-    margin: 0 0 10px;
-}
-
 .description {
-    max-width: 720px;
-    margin: 0 0 18px;
+    max-width: 900px;
+    margin: 0;
     color: $dark-grey;
     font-size: 16px;
     line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    min-height: 1.6em;
 }
 
-.playlist-header__metadata {
+.playlist-details .edit-icon-button {
+    display: inline-grid;
+    width: 34px;
+    min-width: 34px;
+    min-height: 34px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid $profile-border;
+    border-radius: 50%;
+    background: white;
+    color: $light-blue;
+
+    &:hover {
+        background: $secondary-white-background;
+    }
+
+    &[aria-pressed="true"] {
+        border-color: $light-blue;
+        background: $light-blue;
+        color: white;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 2px;
+    }
+}
+
+.owner-actions,
+.confirm-dialog__actions {
     display: flex;
     align-items: center;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search-form input {
+    min-height: 40px;
+    padding: 8px 10px;
+    border: 1px solid $light-grey;
+    border-radius: 5px;
+    font: inherit;
+}
+
+.playlist-details button {
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 5px;
+    background: $light-blue;
+    color: white;
+    cursor: pointer;
+    font: inherit;
+}
+
+.playlist-details button:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}
+
+.playlist-details .danger-button {
+    background: #a12622;
+}
+
+.playlist-details .card-action-button {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 1;
+    display: grid;
+    width: 38px;
+    min-height: 38px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid $profile-border;
+    border-radius: 50%;
+    box-shadow: 0 1px 4px rgba(50, 54, 63, 0.2);
+
+    &:focus-visible {
+        outline: 3px solid rgba(28, 112, 221, 0.4);
+        outline-offset: 2px;
+    }
+}
+
+.playlist-details .add-button {
+    background: $light-blue;
+
+    &:hover:not(:disabled) {
+        background: darken($light-blue, 8%);
+    }
+}
+
+.playlist-details .remove-button {
+    background: #a12622;
+
+    &:hover:not(:disabled) {
+        background: darken(#a12622, 8%);
+    }
+}
+
+.search-section {
+    margin: 0 0 56px;
+    padding: 24px;
+    border: 1px solid $profile-border;
+    border-radius: 12px;
+    background: $secondary-white-background;
+}
+
+.search-section h2 {
+    margin-top: 0;
+}
+
+.search-form {
+    display: flex;
+    max-width: 720px;
+    gap: 10px;
+}
+
+.search-form input {
+    flex: 1;
+    min-width: 0;
+}
+
+.search-hint {
+    color: $dark-grey;
+}
+
+.search-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: $dark-grey;
+
+    i {
+        color: $light-blue;
+    }
+}
+
+.action-error {
+    margin: 16px 0;
+    color: $error-red;
+}
+
+.candidate-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr));
+    gap: 24px;
+    margin: 18px 0;
+    padding: 0;
+    list-style: none;
+
+    li,
+    clark-learning-object-component {
+        height: 100%;
+        min-width: 0;
+    }
+
+    li {
+        position: relative;
+        animation: candidate-enter 220ms ease-out both;
+    }
+}
+
+@keyframes candidate-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card-list-actions {
+    --learning-object-badge-right: 62px;
+    --learning-object-badge-max-width: calc(100% - 70px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .card-list-actions li {
+        --learning-object-badge-right: 8px;
+        --learning-object-badge-transition: right 0.2s ease;
+    }
+
+    .card-list-actions li:hover,
+    .card-list-actions li:focus-within,
+    .card-list-actions li.adding {
+        --learning-object-badge-right: 62px;
+    }
+
+    .card-list-actions li .card-action-button {
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.05s ease;
+    }
+
+    .card-list-actions li:hover .card-action-button,
+    .card-list-actions li:focus-within .card-action-button,
+    .card-list-actions li .card-action-button[aria-busy="true"] {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .candidate-list li {
+        animation: none;
+    }
+
+    .card-list-actions li {
+        --learning-object-badge-transition: none;
+    }
+
+    .card-list-actions li .card-action-button {
+        transition: none;
+    }
+}
+
+.confirm-overlay {
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+    background: #0008;
+}
+
+.confirm-dialog {
+    width: min(100%, 440px);
+    padding: 24px;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0 8px 32px #0003;
+}
+
+.confirm-dialog h2 {
+    margin-top: 0;
+}
+
+.confirm-dialog__actions {
+    justify-content: flex-end;
+    margin-top: 24px;
 }
 
 .object-count,
@@ -91,6 +346,10 @@ section h2 {
     clark-learning-object-component {
         height: 100%;
         min-width: 0;
+    }
+
+    li {
+        position: relative;
     }
 }
 
@@ -184,6 +443,11 @@ section h2 {
         margin-bottom: 32px;
     }
 
+    .playlist-title-row {
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
     .playlist-header {
         margin-bottom: 44px;
         padding-bottom: 28px;
@@ -196,5 +460,23 @@ section h2 {
     .object-grid {
         grid-template-columns: 1fr;
         gap: 16px;
+    }
+
+    .search-section {
+        padding: 18px;
+    }
+
+    .search-form {
+        flex-direction: column;
+    }
+}
+
+.field-display h1.editable,
+.description.editable {
+    cursor: text;
+    outline: none;
+
+    &:focus {
+        box-shadow: inset 0 -2px $light-blue;
     }
 }
