@@ -14,6 +14,7 @@ Authenticated users can add a learning object from its details page to an existi
 - [x] (2026-10-30) Kept Browse public-only with one request and preserved Browse/My Playlists return URL state.
 - [x] (2026-10-30) Formatting, focused lint, Angular build, and diff checks pass; focused Jest remains blocked before discovery by the existing transformer mismatch.
 - [x] (2026-11-02) Cleared retained retry state when starting a fresh create flow so a new submission cannot reuse an earlier playlist.
+- [x] (2026-11-02) Merged the owner-management work from `main` locally and resolved playlist navigation and ordering conflicts without rebasing.
 
 ## Surprises & Discoveries
 
@@ -73,7 +74,7 @@ Validation commands are safe to repeat. Failed adds remain retryable, and a play
 
 ## Artifacts and Notes
 
-PR #2350 is based on `feature/sc-39968/add-owner-playlist-management-to-the-user` until that dependency merges.
+The owner-management dependency is merged into `main`; PR #2350 can target `main` directly.
 
 ## Interfaces and Dependencies
 
