@@ -30,6 +30,9 @@ Authenticated users can add a learning object from its details page to an existi
 - Decision: Keep Browse public-only and owner libraries user-filtered.
   Rationale: One public request avoids client-side merging, deduplication, and ownership filtering.
   Date/Author: 2026-10-30 / Codex
+- Decision: Keep Browse creation-date ordering in `PlaylistsComponent`.
+  Rationale: Ordering is page presentation behavior; `PlaylistService` should expose the API response without view-specific transformation.
+  Date/Author: 2026-10-30 / Codex
 - Decision: Carry optional owner-library return context in the details URL.
   Rationale: URL state survives refresh and distinguishes origin without relying on ownership or browser history.
   Date/Author: 2026-10-30 / Codex
@@ -40,7 +43,7 @@ The details action opens an accessible playlist picker. Users can select or unse
 
 ## Context and Orientation
 
-`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient form/selection state and calls `PlaylistService`. `PlaylistsComponent` loads public Browse or a `userId` owner library. `PlaylistCardComponent` carries optional return context into playlist details. No route-table, guard, interceptor, environment, or build configuration changes are required.
+`ActionPanelComponent` opens `AddToPlaylistModalComponent`. The modal owns transient form/selection state and calls `PlaylistService`. `PlaylistsComponent` loads public Browse or a `userId` owner library and owns Browse ordering. `PlaylistCardComponent` carries optional return context into playlist details. No route-table, guard, interceptor, environment, or build configuration changes are required.
 
 ## Plan of Work
 

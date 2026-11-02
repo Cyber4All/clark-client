@@ -20,7 +20,6 @@ describe("PlaylistsComponent", () => {
     function setup(query: Record<string, string> = {}) {
         const service = {
             getPlaylists: jest.fn().mockReturnValue(of([playlist])),
-            getBrowsePlaylists: jest.fn().mockReturnValue(of([playlist])),
             createPlaylist: jest.fn().mockReturnValue(of(playlist)),
         };
         const userService = {
@@ -46,12 +45,32 @@ describe("PlaylistsComponent", () => {
     it("loads the public playlist collection without offering creation", () => {
         const { component, service, userService } = setup();
         component.ngOnInit();
-        expect(service.getBrowsePlaylists).toHaveBeenCalledWith();
+        expect(service.getPlaylists).toHaveBeenCalledWith({});
         expect(component.playlists).toEqual([playlist]);
         expect(component.loading).toBe(false);
         expect(component.hasError).toBe(false);
         expect(component.isOwnLibrary).toBe(false);
         expect(userService.getUser).toHaveBeenCalledWith("user-id");
+        component.ngOnDestroy();
+    });
+
+    it("orders public playlists by newest creation date", () => {
+        const { component, service } = setup();
+        const newest = {
+            ...playlist,
+            _id: "newest-id",
+            createdAt: "2026-10-28T12:00:00.000Z",
+        };
+        const oldest = {
+            ...playlist,
+            _id: "oldest-id",
+            createdAt: "2026-10-27T12:00:00.000Z",
+        };
+        service.getPlaylists.mockReturnValue(of([oldest, newest]));
+
+        component.ngOnInit();
+
+        expect(component.playlists).toEqual([newest, oldest]);
         component.ngOnDestroy();
     });
 
