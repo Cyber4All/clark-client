@@ -123,6 +123,20 @@ describe("AgenticBuilderPanelComponent", () => {
         expect(store.applyAgenticSuggestions).not.toHaveBeenCalled();
     });
 
+    it("reports when the generated name matches the current name", async () => {
+        learningObjectService.buildLearningObject.mockResolvedValue({
+            name: "Current name",
+        });
+
+        await component.generateMoreSuggestions("name");
+
+        expect(component.nameSuggestion).toBeNull();
+        expect(component.sectionErrors.name).toBe(
+            "I can only come up with the same name. Try editing the name yourself.",
+        );
+        expect(component.loading.name).toBe(false);
+    });
+
     it("normalizes a cached title when restoring suggestions", async () => {
         await component.generateMoreSuggestions("name");
         const key = "clark.agentic-builder.suggestions.cuid-1";

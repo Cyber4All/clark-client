@@ -220,15 +220,21 @@ export class AgenticBuilderPanelComponent {
     private async generateSuggestedName(
         learningObjectId: string,
     ): Promise<void> {
+        const maxNameGenerationAttempts = 3;
         const previousSuggestion = this.nameSuggestion;
         let suggestion: string | null = null;
-        for (let attempt = 0; attempt < 3; attempt++) {
+        let matchedCurrentName = false;
+        // Give the model 3 attempts in generating a different learning object name
+        for (let attempt = 0; attempt < maxNameGenerationAttempts; attempt++) {
             const response =
                 await this.learningObjectService.buildLearningObject(
                     learningObjectId,
                     { fields: ["name"] },
                 );
             const candidate = this.normalizeSuggestedName(response?.name);
+            if (candidate === this.store.learningObject?.name) {
+                matchedCurrentName = true;
+            }
             if (
                 candidate &&
                 candidate !== previousSuggestion &&
@@ -239,6 +245,12 @@ export class AgenticBuilderPanelComponent {
             }
         }
         if (!suggestion) {
+            // Let the user know it generated the same name
+            if (matchedCurrentName) {
+                this.sectionErrors.name =
+                    "I can only come up with the same name at this time :)";
+                return;
+            }
             throw new Error(
                 "A different title could not be generated. Try again or edit the name yourself.",
             );
