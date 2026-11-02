@@ -13,7 +13,7 @@
             <ng-container
                 *ngTemplateOutlet="downloadButtonsTemplate"></ng-container>
             <button
-                *ngIf="auth.user"
+                *ngIf="auth.user && isReleased"
                 class="button neutral"
                 id="add-to-playlist-button"
                 (activate)="showPlaylistModal = true">

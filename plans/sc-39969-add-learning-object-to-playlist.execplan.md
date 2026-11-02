@@ -58,7 +58,7 @@ Reuse the shared popup/button patterns, load the authenticated user's playlists,
 
 ## Validation and Acceptance
 
-- The authenticated action appears below downloads and above editorial controls.
+- The action appears below downloads and above editorial controls only for authenticated users viewing released objects.
 - Existing and newly created playlists receive the current CUID.
 - Creation validates nonblank name/description and public/private visibility.
 - Selection, cancellation, loading, empty, success, duplicate, and API-error states are covered.
