@@ -68,13 +68,13 @@
                 <button
                     type="button"
                     class="agentic-builder-action"
-                    aria-label="Build with AI"
+                    aria-label="Build with AI (beta)"
                     [attr.aria-disabled]="!canGenerateWithAi"
                     [disabled]="!canGenerateWithAi"
                     (click)="$event.stopPropagation()"
                     (activate)="toggleAgenticBuilder()">
                     <i class="fas fa-sparkles" aria-hidden="true"></i>
-                    Build with AI
+                    Build with AI (beta)
                 </button>
             </span>
             <ng-container *ngIf="!adminMode; else adminModeTemplate">
