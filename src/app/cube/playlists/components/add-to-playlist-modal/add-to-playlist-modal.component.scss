@@ -97,8 +97,7 @@
     text-align: center;
 }
 
-.create-playlist,
-.back-button {
+.create-playlist {
     margin-top: 20px;
     padding: 0;
     border: 0;
@@ -116,60 +115,6 @@
     margin-left: 14px;
 }
 
-.create-form {
-    display: grid;
-    margin-top: 20px;
-
-    .back-button {
-        justify-self: start;
-        margin: 0 0 20px;
-    }
-
-    > label,
-    legend {
-        margin-bottom: 6px;
-        color: $darker-grey;
-        font-weight: bold;
-    }
-
-    > input,
-    textarea {
-        margin-bottom: 16px;
-        padding: 10px;
-        border: 1px solid $light-grey;
-        border-radius: 4px;
-        font: inherit;
-    }
-
-    fieldset {
-        display: flex;
-        gap: 24px;
-        padding: 0;
-        border: 0;
-
-        label {
-            display: flex;
-            gap: 6px;
-            align-items: center;
-        }
-    }
-}
-
-.validation-error {
-    margin: -10px 0 16px !important;
-    color: $error-red;
-    font-size: $small;
-}
-
-footer {
-    display: flex;
-    justify-content: flex-end;
+.playlist-actions {
     gap: 12px;
-    margin: 25px -20px -20px;
-    padding: 20px;
-    border-top: 1px solid $light-grey;
-
-    .button {
-        min-width: 140px;
-    }
 }
