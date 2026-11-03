@@ -116,8 +116,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
                         this.showDone = true;
                     },
                     (error) => {
-                        const parsedError = JSON.parse(error);
-                        this.errorMessage = parsedError.message;
+                        this.errorMessage = this.getErrorMessage(error);
                         this.authValidationService.showError();
                     },
                 );
@@ -145,10 +144,41 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
                 }
             })
             .catch((err) => {
-                const parsedError = JSON.parse(err);
-                this.errorMessage = parsedError.message;
+                this.errorMessage = this.getErrorMessage(err);
                 this.authValidationService.showError();
             });
+    }
+
+    /**
+     * Extracts a user-facing message from an auth request error.
+     * Errors may arrive as a JSON string (text responses), an object with a
+     * `message` property, or a non-JSON value such as a ProgressEvent when the
+     * request fails at the network level.
+     */
+    private getErrorMessage(err: unknown): string {
+        const fallback = "Something went wrong. Please try again later.";
+
+        if (typeof err === "string") {
+            try {
+                const parsed = JSON.parse(err);
+                if (parsed && typeof parsed.message === "string") {
+                    return parsed.message;
+                }
+            } catch {
+                // Not JSON; use the raw string below
+            }
+            return err || fallback;
+        }
+
+        if (
+            err &&
+            typeof err === "object" &&
+            typeof (err as { message?: unknown }).message === "string"
+        ) {
+            return (err as { message: string }).message;
+        }
+
+        return fallback;
     }
 
     ngOnDestroy(): void {
