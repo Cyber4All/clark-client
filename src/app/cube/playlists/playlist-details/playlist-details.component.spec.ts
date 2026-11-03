@@ -45,6 +45,7 @@ describe("PlaylistDetailsComponent", () => {
             } as any,
             {} as SearchService,
             { user: new AuthUser({ _id: "user-id" }) } as AuthService,
+            { open: jest.fn() } as unknown as MatDialog,
         );
 
         component.ngOnInit();
