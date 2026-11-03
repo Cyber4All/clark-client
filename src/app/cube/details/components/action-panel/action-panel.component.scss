@@ -219,3 +219,23 @@
 .hide {
     display: none;
 }
+
+.playlist-icon {
+    display: inline-flex;
+    align-items: flex-end;
+    position: absolute;
+    left: calc(50% - 90px);
+
+    .svg-inline--fa {
+        margin-left: 0;
+    }
+
+    .fa-plus {
+        font-size: 0.7em;
+        margin-left: 1px;
+    }
+}
+
+#add-to-playlist-button {
+    margin-bottom: 15px;
+}

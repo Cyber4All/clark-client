@@ -54,6 +54,26 @@ describe("PlaylistsComponent", () => {
         component.ngOnDestroy();
     });
 
+    it("orders public playlists by newest creation date", () => {
+        const { component, service } = setup();
+        const newest = {
+            ...playlist,
+            _id: "newest-id",
+            createdAt: "2026-10-28T12:00:00.000Z",
+        };
+        const oldest = {
+            ...playlist,
+            _id: "oldest-id",
+            createdAt: "2026-10-27T12:00:00.000Z",
+        };
+        service.getPlaylists.mockReturnValue(of([oldest, newest]));
+
+        component.ngOnInit();
+
+        expect(component.playlists).toEqual([newest, oldest]);
+        component.ngOnDestroy();
+    });
+
     it("shows an error state when playlists cannot be loaded", () => {
         const { component, service } = setup();
         service.getPlaylists.mockReturnValue(

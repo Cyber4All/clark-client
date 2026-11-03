@@ -97,9 +97,15 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (playlists) => {
-                    this.playlists = playlists;
+                    this.playlists = this.userId
+                        ? playlists
+                        : [...playlists].sort(
+                              (a, b) =>
+                                  (Date.parse(b.createdAt || "") || 0) -
+                                  (Date.parse(a.createdAt || "") || 0),
+                          );
                     this.loading = false;
-                    void this.loadAuthorNames(playlists);
+                    void this.loadAuthorNames(this.playlists);
                 },
                 error: () => {
                     this.hasError = true;

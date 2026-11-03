@@ -66,6 +66,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     searchError = false;
     searchHasMore = false;
     cuidToBeAdded = "";
+    returnUserId = "";
     private searchPage = 1;
     private readonly searchPageSize = 4;
     private readonly searchChanges = new Subject<string>();
@@ -82,6 +83,8 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        this.returnUserId =
+            this.route.snapshot?.queryParamMap.get("returnUserId") || "";
         this.route.paramMap
             .pipe(
                 takeUntil(this.destroy$),
@@ -281,8 +284,8 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: () => {
                     void this.router.navigate(["/playlists"], {
-                        queryParams: this.auth.user?.userId
-                            ? { userId: this.auth.user?.userId }
+                        queryParams: this.returnUserId
+                            ? { userId: this.returnUserId }
                             : {},
                     });
                 },

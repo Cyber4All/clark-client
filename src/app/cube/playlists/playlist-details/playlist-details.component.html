@@ -1,10 +1,13 @@
 <main class="playlist-details">
+    <!-- returnUserId is used to preserve the user's playlist context when navigating back from a playlist. -->
+    <!-- If a user opens one of their playlists in the "My Playlist" page, then link to go back goes to "My Playlists" -->
+    <!-- If a user opens a playlist through the "Browse Playlists" page, then the link becomes "Browse Playlists"  -->
     <a
         class="back-link"
         routerLink="/playlists"
-        [queryParams]="isOwner ? { userId: auth.user?.userId } : {}">
+        [queryParams]="returnUserId ? { userId: returnUserId } : {}">
         <i class="far fa-chevron-left" aria-hidden="true"></i>
-        Browse Playlists
+        {{ returnUserId ? "My Playlists" : "Browse Playlists" }}
     </a>
 
     <div *ngIf="loading" class="status" role="status" aria-live="polite">
