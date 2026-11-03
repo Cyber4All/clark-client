@@ -71,7 +71,7 @@ export class FileManagementService {
                 this.startUploads(files, bucketPath, uploadUpdate$);
             })
             .catch((e) => {
-                uploadUpdate$.next({ type: "error", data: e });
+                uploadUpdate$.next({ type: "error", error: e } as UploadErrorUpdate);
             });
         return uploadUpdate$;
     }
