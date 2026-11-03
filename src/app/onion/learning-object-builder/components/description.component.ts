@@ -50,7 +50,7 @@ import {
             }
 
             textarea.full-width {
-                max-width: 800px;
+                max-width: none;
                 width: 100%;
             }
 

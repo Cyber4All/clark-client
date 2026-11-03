@@ -14,11 +14,7 @@ import { NgFor, NgStyle, NgIf } from "@angular/common";
                 <div *ngIf="el.classes.includes('success')">
                     <i class="far fa-check"></i>
                 </div>
-                <div
-                    *ngIf="
-                        el.classes.includes('error') ||
-                        el.classes.includes('persistentError')
-                    ">
+                <div *ngIf="el.classes.includes('error')">
                     <i class="far fa-times"></i>
                 </div>
                 <div *ngIf="el.classes.includes('warning')">
@@ -34,15 +30,6 @@ import { NgFor, NgStyle, NgIf } from "@angular/common";
             <div class="note-content">
                 <div *ngIf="el.title" class="title">{{ el.title }}</div>
                 <div class="text">{{ el.text }}</div>
-            </div>
-            <div *ngIf="el.classes.includes('persistentError')">
-                <div
-                    class="popup-close"
-                    (click)="dismiss(el)"
-                    type="button"
-                    aria-label="Close Error Notification">
-                    <i class="far fa-times"></i>
-                </div>
             </div>
         </div>
     `,
@@ -146,7 +133,7 @@ export class ToastrOvenComponent implements AfterViewChecked {
             el.style.opacity = "1";
 
             // if close param true, start close timer
-            if (close && !el.classes.includes("persistentError")) {
+            if (close) {
                 this.close(el, el.duration);
             }
 
@@ -164,18 +151,6 @@ export class ToastrOvenComponent implements AfterViewChecked {
             el.dead = true;
             this.closed++;
 
-            const gap =
-                this.el.nativeElement.children[el.index].offsetHeight +
-                this.spaceBetween;
-            const position = this.service.position.y;
-            for (let i = 0; i < el.index; i++) {
-                const notification = this.toRender[i];
-                if (!notification.dead) {
-                    notification.style[position] =
-                        parseInt(notification.style[position], 10) - gap + "px";
-                }
-            }
-
             clearTimeout(this.cleanupTimer);
 
             this.cleanupTimer = setTimeout(() => {
@@ -186,10 +161,6 @@ export class ToastrOvenComponent implements AfterViewChecked {
                 }
             }, 200); // hide animation time defined in css
         }, duration);
-    }
-
-    dismiss(el: ToastrOvenElement): void {
-        this.close(el, 0);
     }
 }
 

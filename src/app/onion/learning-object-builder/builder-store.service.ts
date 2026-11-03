@@ -17,7 +17,6 @@ import { SubmissionsService } from "app/core/learning-object-module/submissions/
 import { OutcomeService } from "app/core/learning-object-module/outcomes/outcome.service";
 import { FileService } from "app/core/learning-object-module/file/file.service";
 import { EditorialService } from "app/core/learning-object-module/editorial.service";
-import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
 import type {
     AgenticBuilderSuggestions,
     AgenticOutcomeSuggestion,
@@ -113,9 +112,6 @@ export class BuilderStore {
     // false until a save operation is attempted, true after that
     public touched: boolean;
 
-    // false until a save operation is successful, true after that
-    public savedCorrectly = false;
-
     /**
      * Public variable used in the file upload process to fire the bundling
      * process correctly and prevent users from exiting the builder prematurely
@@ -185,7 +181,6 @@ export class BuilderStore {
         private outcomeService: OutcomeService,
         private editorialService: EditorialService,
         private fileService: FileService,
-        private toaster: ToastrOvenService,
     ) {
         // subscribe to our objectCache$ observable and initiate calls to save object after a debounce
         this.objectCache$
@@ -326,27 +321,6 @@ export class BuilderStore {
     ): Promise<void> {
         await this.waitForCurrentServiceInteraction();
         this.serviceInteraction$.next(true);
-        await this.execute(BUILDER_ACTIONS.MUTATE_OBJECT, updates);
-
-        const currentObject = this.learningObject.toPlainObject() as Record<
-            string,
-            unknown
-        >;
-        for (const [key, value] of Object.entries(updates)) {
-            if (currentObject[key] !== value) {
-                this.objectCache$.next(undefined);
-                this.serviceInteraction$.next(false);
-                throw new Error(`The suggested ${key} could not be applied.`);
-            }
-        }
-        if (!this.validator.saveable) {
-            this.objectCache$.next(undefined);
-            this.serviceInteraction$.next(null);
-            throw new Error(
-                "The learning object is not ready to save this change.",
-            );
-        }
-
         const queuedUpdates = this.objectCache$.getValue();
         const payload = Object.assign({}, queuedUpdates || {}, updates);
         this.objectCache$.next(undefined);
@@ -355,13 +329,24 @@ export class BuilderStore {
                 this.learningObject.id,
                 payload,
             );
-            this.serviceInteraction$.next(false);
+
+            const updatedObject = Object.assign(
+                this.learningObject.toPlainObject(),
+                payload,
+            );
+            this.learningObject = new LearningObject(updatedObject);
+            this.validator.validateLearningObject(
+                this.learningObject,
+                this.outcomes,
+            );
         } catch (error) {
             this.handleServiceError(
                 error as HttpErrorResponse,
                 BUILDER_ERRORS.UPDATE_OBJECT,
             );
             throw error;
+        } finally {
+            this.serviceInteraction$.next(false);
         }
     }
 
@@ -479,19 +464,20 @@ export class BuilderStore {
      * @returns void
      * @memberof BuilderStore
      */
-    fetchMaterials(): void {
-        this.newLearningObjectService
-            .getLearningObjectMaterials(this.learningObject.id)
-            .then((materials) => {
-                this.learningObject.materials = materials;
-                this.learningObjectEvent.next(this.learningObject);
-            })
-            .catch((e) => {
-                this.handleServiceError(
-                    e,
-                    BUILDER_ERRORS.FETCH_OBJECT_MATERIALS,
+    async fetchMaterials(): Promise<void> {
+        try {
+            const materials =
+                await this.newLearningObjectService.getLearningObjectMaterials(
+                    this.learningObject.id,
                 );
-            });
+            this.learningObject.materials = materials;
+            this.learningObjectEvent.next(this.learningObject);
+        } catch (error) {
+            this.handleServiceError(
+                error,
+                BUILDER_ERRORS.FETCH_OBJECT_MATERIALS,
+            );
+        }
     }
 
     /**
@@ -627,10 +613,7 @@ export class BuilderStore {
             case BUILDER_ACTIONS.DELETE_FILES:
                 return await this.removeFiles(data.fileIds);
             case BUILDER_ACTIONS.CHANGE_STATUS:
-                if (this.savedCorrectly) {
-                    return await this.changeStatus(data.status, data.reason);
-                } else {
-                }
+                return await this.changeStatus(data.status, data.reason);
             case BUILDER_ACTIONS.TOGGLE_BUNDLE:
                 return await this.toggleBundle(data);
             case BUILDER_ACTIONS.TOGGLE_CONTEXT:
@@ -969,18 +952,37 @@ export class BuilderStore {
      */
     private async addFileMeta(files: FileUploadMeta[]): Promise<any> {
         this.serviceInteraction$.next(true);
-        await this.fileService
-            .addFileMeta({
-                files,
+        try {
+            const addedFiles = await this.fileService.addFileMeta({
+                // FileService batches by removing items from the input array.
+                // Keep the upload event's metadata intact for any other listeners.
+                files: [...files],
                 objectId: this.learningObject.id,
-            })
-            .then(() => {
-                this.fetchMaterials();
-            })
-            .catch((e) => {
-                this.handleServiceError(e, BUILDER_ERRORS.ADD_FILE_META);
             });
-        this.serviceInteraction$.next(false);
+            this.addFilesToMaterials(addedFiles);
+        } catch (e) {
+            this.handleServiceError(e, BUILDER_ERRORS.ADD_FILE_META);
+        } finally {
+            this.serviceInteraction$.next(false);
+        }
+    }
+
+    private addFilesToMaterials(
+        uploadedFiles: LearningObject.Material.File[],
+    ): void {
+        const existingFiles = this.learningObject.materials?.files ?? [];
+        const existingIds = new Set(existingFiles.map((file) => file._id));
+        const filesToAdd = uploadedFiles.filter(
+            (file) => !existingIds.has(file._id),
+        );
+
+        if (filesToAdd.length) {
+            this.learningObject.materials.files = [
+                ...existingFiles,
+                ...filesToAdd,
+            ];
+            this.learningObjectEvent.next(this.learningObject);
+        }
     }
 
     /**
@@ -1368,10 +1370,8 @@ export class BuilderStore {
             .save(this.learningObject.id, object)
             .then(() => {
                 this.serviceInteraction$.next(false);
-                this.savedCorrectly = true;
             })
             .catch((e) => {
-                this.savedCorrectly = false;
                 if (e.status === 400) {
                     const validationError = this.getServiceValidationError(e);
                     this.validator.errors.saveErrors.set(
@@ -1410,11 +1410,7 @@ export class BuilderStore {
             : firstMessage?.message || firstMessage || "Unable to save";
         const property =
             firstMessage?.property || this.inferErrorProperty(message);
-        // Error messaging happens here because this method has meaningful error messages
-        this.toaster.persistentError(
-            "Error!",
-            message + "\nThese changes will not be saved.",
-        );
+
         return { property, message };
     }
 

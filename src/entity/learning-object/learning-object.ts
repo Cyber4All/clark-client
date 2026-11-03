@@ -349,7 +349,7 @@ export class LearningObject {
             urls: [],
             notes: "",
             folderDescriptions: [],
-            pdf: { name: "", url: "" },
+            pdf: "",
         };
         this._children = [];
         this._contributors = [];
@@ -893,7 +893,7 @@ export namespace LearningObject {
         urls: LearningObject.Material.Url[];
         notes: string;
         folderDescriptions: LearningObject.Material.FolderDescription[];
-        pdf: LearningObject.Material.PDF;
+        pdf: string;
     }
 
     export namespace Material {
@@ -919,10 +919,6 @@ export namespace LearningObject {
         export interface FolderDescription {
             path: string;
             description: string;
-        }
-        export interface PDF {
-            name: string;
-            url: string;
         }
     }
 }

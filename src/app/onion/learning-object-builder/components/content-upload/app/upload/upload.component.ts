@@ -273,8 +273,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.learningObject = object;
 
                     // Set the material information
-                    this.folderMeta$.next(object.materials.folderDescriptions);
                     this.files$.next(object.materials.files);
+                    this.folderMeta$.next(object.materials.folderDescriptions);
                     this.warnForLongPaths(object.materials.files);
 
                     // Check if the learning object has a solution file
@@ -309,14 +309,14 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         message = err;
                     }
-                    if (message.includes("File name contains")) {
-                        this.notificationService.persistentError(
-                            "Error!",
-                            message,
-                        );
-                    } else {
-                        this.notificationService.error("Error!", message);
-                    }
+                    this.notificationService.error(
+                        "Error!",
+                        message,
+                        // Have invalid file name toast persist long enough for the user to read which files are causing the upload issue
+                        message.includes("File name contains")
+                            ? 10_000
+                            : undefined,
+                    );
                 }
             });
     }
@@ -621,9 +621,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             fullPath?: string;
             webkitRelativePath?: string;
             name?: string;
-        }>,
+        }> = [],
     ): void {
-        const longPaths = files
+        const longPaths = (files ?? [])
             .filter(hasLongWindowsExtractionPathForFile)
             .map(getFilePath)
             .filter((path) => !this.warnedLongPaths.has(path));
