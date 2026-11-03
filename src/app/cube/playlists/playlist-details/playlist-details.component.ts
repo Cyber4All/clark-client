@@ -1,7 +1,19 @@
 import { NgFor, NgIf } from "@angular/common";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import {
+    Component,
+    OnDestroy,
+    OnInit,
+    TemplateRef,
+    ViewChild,
+} from "@angular/core";
+import {
+    MatDialog,
+    MatDialogModule,
+    MatDialogRef,
+} from "@angular/material/dialog";
 import { FormsModule } from "@angular/forms";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { AuthService } from "app/core/auth-module/auth.service";
 import { LearningObject } from "@entity";
@@ -16,6 +28,10 @@ import {
 import { LearningObjectListingComponent } from "app/cube/shared/learning-object/learning-object.component";
 import { LearningObjectCardDirective } from "app/shared/directives/learning-object-card.directive";
 import { TipDirective } from "app/shared/directives/tip.directive";
+import {
+    createPlaylistMetadataForm,
+    PlaylistMetadataFormComponent,
+} from "../components/playlist-metadata-form/playlist-metadata-form.component";
 import { forkJoin, Observable, of, Subject } from "rxjs";
 import {
     catchError,
@@ -40,7 +56,10 @@ interface PlaylistLearningObject {
         NgFor,
         NgIf,
         FormsModule,
+        MatDialogModule,
+        PlaylistMetadataFormComponent,
         MatSlideToggle,
+        MatTooltipModule,
         RouterLink,
         LearningObjectListingComponent,
         LearningObjectCardDirective,
@@ -53,8 +72,11 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     loading = true;
     hasError = false;
     errorMessage = "";
-    editingMetadata = false;
-    readonly savingFields = new Set<"name" | "description">();
+    readonly editForm = createPlaylistMetadataForm();
+    savingMetadata = false;
+    editError = "";
+    @ViewChild("editPlaylistDialog") editPlaylistDialog!: TemplateRef<unknown>;
+    private editDialogRef?: MatDialogRef<unknown>;
     draftVisibility: PlaylistVisibility = "private";
     readonly visibilityOptions = PlaylistVisibility;
     saving = false;
@@ -79,6 +101,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
         private readonly learningObjectService: LearningObjectService,
         private readonly searchService: SearchService,
         public readonly auth: AuthService,
+        private readonly dialog: MatDialog,
     ) {}
 
     ngOnInit(): void {
@@ -121,6 +144,7 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.editDialogRef?.close();
         this.destroy$.next();
         this.destroy$.complete();
     }
@@ -225,37 +249,69 @@ export class PlaylistDetailsComponent implements OnInit, OnDestroy {
             });
     }
 
-    saveMetadataField(field: "name" | "description", event: Event): void {
-        if (!this.isOwner || !this.playlist || this.savingFields.has(field)) {
+    openEditPlaylist(): void {
+        if (!this.isOwner || !this.playlist || this.savingMetadata) {
             return;
         }
-        const element = event.target as HTMLElement;
-        const value = (element.textContent || "").trim();
-        if (value === (this.playlist[field] || "").trim()) {
+        this.editForm.reset({
+            name: this.playlist.name,
+            description: this.playlist.description || "",
+        });
+        this.editError = "";
+        this.editDialogRef = this.dialog.open(this.editPlaylistDialog, {
+            width: "420px",
+            maxWidth: "calc(100vw - 36px)",
+            ariaLabelledBy: "playlist-metadata-title",
+        });
+    }
+
+    cancelEditPlaylist(): void {
+        if (!this.savingMetadata) {
+            this.editDialogRef?.close();
+        }
+    }
+
+    saveMetadata(): void {
+        if (
+            !this.isOwner ||
+            !this.playlist ||
+            this.savingMetadata ||
+            this.editForm.invalid
+        ) {
             return;
         }
-        const maxLength = field === "name" ? 100 : 500;
-        if (!value || value.length > maxLength) {
-            this.errorMessage = `Playlist ${field === "name" ? "title" : "description"} must contain 1–${maxLength} characters.`;
-            return;
+        const { name, description } = this.editForm.getRawValue();
+        this.savingMetadata = true;
+        this.editError = "";
+        this.editForm.disable();
+        if (this.editDialogRef) {
+            this.editDialogRef.disableClose = true;
         }
-        this.errorMessage = "";
-        this.savingFields.add(field);
         this.playlistService
-            .updatePlaylist(this.playlist._id, { [field]: value })
+            .updatePlaylist(this.playlist._id, {
+                name: name.trim(),
+                description: description.trim(),
+            })
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (playlist) => {
                     this.playlist = {
                         ...this.playlist,
-                        [field]: playlist[field],
+                        name: playlist.name,
+                        description: playlist.description,
                     };
-                    this.savingFields.delete(field);
+                    this.savingMetadata = false;
+                    this.editForm.enable();
+                    this.editDialogRef?.close();
                 },
                 error: () => {
-                    this.errorMessage =
-                        "We couldn't save your changes. Edit the field and leave it to try again.";
-                    this.savingFields.delete(field);
+                    this.editError =
+                        "We couldn't save your changes. Please try again.";
+                    this.savingMetadata = false;
+                    this.editForm.enable();
+                    if (this.editDialogRef) {
+                        this.editDialogRef.disableClose = false;
+                    }
                 },
             });
     }

@@ -30,8 +30,7 @@
     gap: 16px;
 }
 
-.primary-button,
-.cancel-button {
+.primary-button {
     min-height: 40px;
     padding: 8px 14px;
     border: 0;
@@ -58,34 +57,6 @@
     i {
         margin-right: 6px;
     }
-}
-
-.cancel-button {
-    background: $secondary-white-background;
-    color: $dark-grey;
-}
-
-.create-playlist-content {
-    display: grid;
-    gap: 10px;
-
-    input,
-    textarea {
-        box-sizing: border-box;
-        width: 100%;
-        padding: 10px;
-        border: 1px solid $profile-border;
-        border-radius: 5px;
-        font: inherit;
-    }
-
-    textarea {
-        resize: vertical;
-    }
-}
-
-.create-error {
-    color: $error-red;
 }
 
 .eyebrow {
