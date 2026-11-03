@@ -42,6 +42,24 @@ describe("PlaylistService", () => {
         request.flush([playlist]);
     });
 
+    it("creates a playlist without a description", () => {
+        const input = { name: "Title only", visibility: "private" as const };
+        const created: Playlist = {
+            _id: "new-playlist",
+            userId: "user/id",
+            learningObjectCuids: [],
+            ...input,
+        };
+        service.createPlaylist(input).subscribe((result) => {
+            expect(result).toEqual(created);
+        });
+        const request = httpMock.expectOne(`${environment.apiURL}/playlists`);
+        expect(request.request.method).toBe("POST");
+        expect(request.request.body).toEqual(input);
+        expect(request.request.withCredentials).toBe(true);
+        request.flush(created);
+    });
+
     it("gets one raw playlist", () => {
         service.getPlaylist(playlist._id).subscribe();
 

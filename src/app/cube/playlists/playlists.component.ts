@@ -60,11 +60,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
         }),
         description: new FormControl("", {
             nonNullable: true,
-            validators: [
-                Validators.required,
-                Validators.pattern(/\S/),
-                Validators.maxLength(500),
-            ],
+            validators: [Validators.maxLength(500)],
         }),
     });
     @ViewChild("createPlaylistDialog")

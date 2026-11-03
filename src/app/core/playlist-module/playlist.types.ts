@@ -20,7 +20,7 @@ export interface Playlist {
     userId: string;
     learningObjectCuids: string[];
     name: string;
-    description: string;
+    description?: string;
     visibility: PlaylistVisibility;
     author?: PlaylistAuthor;
     createdAt?: string;

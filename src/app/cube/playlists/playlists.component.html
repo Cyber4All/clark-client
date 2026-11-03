@@ -77,13 +77,12 @@
                 formControlName="name"
                 maxlength="100"
                 required />
-            <label for="new-playlist-description">Description</label>
+            <label for="new-playlist-description">Description (optional)</label>
             <textarea
                 id="new-playlist-description"
                 formControlName="description"
                 maxlength="500"
-                rows="3"
-                required></textarea>
+                rows="3"></textarea>
             <p *ngIf="createError" class="create-error" role="alert">
                 {{ createError }}
             </p>
