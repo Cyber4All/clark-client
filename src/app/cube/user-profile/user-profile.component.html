@@ -32,8 +32,10 @@
                         </button>
                     </div>
                     <ng-container *ngIf="!playlistsLoading && !playlistsError">
-                        <p *ngIf="!publicPlaylists.length">
-                            no playlists available
+                        <p
+                            *ngIf="!publicPlaylists.length"
+                            class="empty-playlists">
+                            No playlists available.
                         </p>
                         <div class="playlist-grid">
                             <article *ngFor="let playlist of publicPlaylists">

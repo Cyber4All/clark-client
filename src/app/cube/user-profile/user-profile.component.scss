@@ -12,6 +12,10 @@
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 1.5rem;
 }
+.empty-playlists {
+    margin: 2rem 0;
+    text-align: center;
+}
 article {
     min-width: 0;
 }
