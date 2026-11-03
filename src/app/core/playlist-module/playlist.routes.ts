@@ -15,4 +15,22 @@ export const PLAYLIST_ROUTES = {
         const queryString = params.toString();
         return queryString ? `${playlistsPath}?${queryString}` : playlistsPath;
     },
+    CREATE_PLAYLIST(): string {
+        return playlistsPath;
+    },
+    UPDATE_PLAYLIST(playlistId: string): string {
+        return `${playlistsPath}/${encodeURIComponent(playlistId)}`;
+    },
+    DELETE_PLAYLIST(playlistId: string): string {
+        return `${playlistsPath}/${encodeURIComponent(playlistId)}`;
+    },
+    ADD_LEARNING_OBJECT_TO_PLAYLIST(playlistId: string, cuid: string): string {
+        return `${playlistsPath}/${encodeURIComponent(playlistId)}/objects/${encodeURIComponent(cuid)}`;
+    },
+    REMOVE_LEARNING_OBJECT_FROM_PLAYLIST(
+        playlistId: string,
+        cuid: string,
+    ): string {
+        return `${playlistsPath}/${encodeURIComponent(playlistId)}/objects/${encodeURIComponent(cuid)}`;
+    },
 };

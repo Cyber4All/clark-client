@@ -17,6 +17,7 @@ import {
 } from "rxjs/operators";
 import { LEARNING_OBJECT_ROUTES } from "../learning-object/learning-object.routes";
 import { UserService } from "app/core/user-module/user.service";
+import type { AgenticBuilderSuggestions } from "./learning-object.types";
 
 export const CALLBACKS = {
     outcomes: (outcomes: any[]) => {
@@ -34,6 +35,10 @@ export const CALLBACKS = {
         return response.map((r) => new LearningObject(r));
     },
 };
+
+export interface LearningObjectBuildRequest {
+    fields: Array<"name" | "description" | "learningOutcomes">;
+}
 
 @Injectable({
     providedIn: "root",
@@ -317,6 +322,20 @@ export class LearningObjectService {
             });
     }
 
+    buildLearningObject(
+        learningObjectId: string,
+        request: LearningObjectBuildRequest,
+    ): Promise<AgenticBuilderSuggestions> {
+        return this.http
+            .post<AgenticBuilderSuggestions>(
+                LEARNING_OBJECT_ROUTES.BUILD_LEARNING_OBJECT(learningObjectId),
+                request,
+                { headers: this.headers, withCredentials: true },
+            )
+            .pipe(catchError(this.handleError))
+            .toPromise();
+    }
+
     /**
      * Fetches Learning Object's Materials
      *
@@ -572,8 +591,14 @@ export class LearningObjectService {
      * @returns {Promise<boolean>} - true if name is available, false if duplicate exists
      * @memberof LearningObjectService
      */
-    async checkNameAvailability(name: string): Promise<boolean> {
-        const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(name);
+    async checkNameAvailability(
+        name: string,
+        learningObjectId?: string,
+    ): Promise<boolean> {
+        const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(
+            name,
+            learningObjectId,
+        );
         return this.http
             .get<{ validName: boolean }>(route, {
                 headers: this.headers,

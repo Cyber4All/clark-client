@@ -5,9 +5,10 @@
         [ngStyle]="{ top: columnOffset + 'px' }"
         [ngClass]="{
             'no-right': !rightColumn,
-            'no-left': !leftColumn
+            'no-left': !leftColumn,
         }">
         <div
+            *ngIf="leftColumn"
             class="scroll-wrapper scroll-wrapper--left"
             [ngStyle]="{ height: columnHeight + 'px' }">
             <div *ngIf="showColumn('l')" class="left-column column">
@@ -24,6 +25,7 @@
             </div>
         </div>
         <div
+            *ngIf="rightColumn"
             class="scroll-wrapper scroll-wrapper--right"
             [ngStyle]="{ height: columnHeight + 'px' }">
             <div *ngIf="showColumn('r')" class="right-column column">
