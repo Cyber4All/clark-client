@@ -1,8 +1,6 @@
 import {
     Injectable,
     EventEmitter,
-    Inject,
-    ComponentFactoryResolver,
     ViewContainerRef,
 } from "@angular/core";
 import { CrustComponent } from "./crust/crust.component";
@@ -15,12 +13,9 @@ export class ToastrOvenService {
     private _positionSet = false;
     public emitter = new EventEmitter<ToastrOven>();
 
-    private factoryResolver: ComponentFactoryResolver;
     private rootViewContainer: ViewContainerRef;
 
-    constructor(@Inject(ComponentFactoryResolver) factoryResolver) {
-        this.factoryResolver = factoryResolver;
-    }
+    constructor() {}
 
     private notify(
         title: string,
@@ -82,11 +77,7 @@ export class ToastrOvenService {
 
     public init(viewContainerRef: ViewContainerRef) {
         this.rootViewContainer = viewContainerRef;
-
-        const factory =
-            this.factoryResolver.resolveComponentFactory(CrustComponent);
-        const component = factory.create(this.rootViewContainer.injector);
-        this.rootViewContainer.insert(component.hostView);
+        this.rootViewContainer.createComponent(CrustComponent);
     }
 
     get position(): { x: string; y: string } {
