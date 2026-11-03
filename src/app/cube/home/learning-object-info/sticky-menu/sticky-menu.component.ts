@@ -93,7 +93,7 @@ export class StickyMenuComponent implements OnInit {
     async changeSelection(choice: LEARNING_OBJECT_INFO_STATES) {
         const el = document.getElementById(choice);
         setTimeout(() => {
-            el.scrollIntoView({ behavior: "smooth" });
+            el?.scrollIntoView({ behavior: "smooth" });
         });
     }
 
