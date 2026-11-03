@@ -70,10 +70,7 @@ export class AddToPlaylistModalComponent implements OnInit {
     ngOnInit(): void {
         this.playlistService.getPlaylists({ userId: this.userId }).subscribe({
             next: (playlists) => {
-                this.playlists = playlists.filter(
-                    ({ learningObjectCuids }) =>
-                        !learningObjectCuids.includes(this.learningObjectCuid),
-                );
+                this.playlists = playlists;
                 this.loading = false;
                 this.changeDetectorRef.markForCheck();
             },

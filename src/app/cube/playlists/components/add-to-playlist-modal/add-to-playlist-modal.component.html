@@ -16,6 +16,12 @@
                 type="button"
                 class="playlist-option"
                 *ngFor="let playlist of playlists"
+                [disabled]="
+                    playlist.learningObjectCuids.includes(learningObjectCuid)
+                "
+                [class.already-added]="
+                    playlist.learningObjectCuids.includes(learningObjectCuid)
+                "
                 [class.selected]="selectedPlaylistId === playlist._id"
                 [attr.aria-pressed]="selectedPlaylistId === playlist._id"
                 (click)="togglePlaylist(playlist._id)">
@@ -23,10 +29,23 @@
                 <span class="playlist-copy">
                     <strong>{{ playlist.name }}</strong>
                     <span>
-                        {{ playlist.learningObjectCuids.length }} learning
-                        object{{
-                            playlist.learningObjectCuids.length === 1 ? "" : "s"
-                        }}
+                        <ng-container
+                            *ngIf="
+                                playlist.learningObjectCuids.includes(
+                                    learningObjectCuid
+                                );
+                                else playlistCount
+                            ">
+                            Current learning object is already in this playlist.
+                        </ng-container>
+                        <ng-template #playlistCount>
+                            {{ playlist.learningObjectCuids.length }} learning
+                            object{{
+                                playlist.learningObjectCuids.length === 1
+                                    ? ""
+                                    : "s"
+                            }}
+                        </ng-template>
                     </span>
                 </span>
                 <i class="far fa-layer-group" aria-hidden="true"></i>
@@ -40,7 +59,7 @@
         <p
             class="playlist-status"
             *ngIf="!loading && !loadFailed && !playlists.length">
-            You don't have any available playlists yet.
+            You don't have any playlists yet.
         </p>
 
         <button

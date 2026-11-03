@@ -93,7 +93,7 @@ describe("AddToPlaylistModalComponent", () => {
         fixture.detectChanges();
 
         expect(fixture.nativeElement.textContent).toContain(
-            "You don't have any available playlists yet.",
+            "You don't have any playlists yet.",
         );
     });
 

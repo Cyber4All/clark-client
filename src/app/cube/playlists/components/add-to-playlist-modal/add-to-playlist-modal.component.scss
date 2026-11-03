@@ -41,6 +41,18 @@
         background: rgba($light-blue, 0.08);
     }
 
+    &.already-added {
+        border-color: $light-grey;
+        background: $light-grey;
+        color: $medium-grey;
+        cursor: not-allowed;
+        opacity: 0.8;
+
+        .playlist-copy strong {
+            color: $medium-grey;
+        }
+    }
+
     &:focus-visible {
         outline: 2px solid $light-blue;
         outline-offset: 2px;
