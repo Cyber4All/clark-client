@@ -42,6 +42,22 @@ describe("PlaylistService", () => {
         request.flush([playlist]);
     });
 
+    it("requests the viewed user's playlists and exposes only public entries", () => {
+        service
+            .getPublicPlaylists("user/id")
+            .subscribe((result) => expect(result).toEqual([playlist]));
+        const request = httpMock.expectOne(
+            `${environment.apiURL}/playlists?userId=user%2Fid`,
+        );
+        expect(request.request.method).toBe("GET");
+        expect(request.request.withCredentials).toBe(true);
+        request.flush([
+            playlist,
+            { ...playlist, _id: "private", visibility: "private" },
+            { ...playlist, _id: "other", userId: "other" },
+        ]);
+    });
+
     it("gets one raw playlist", () => {
         service.getPlaylist(playlist._id).subscribe();
 

@@ -10,6 +10,7 @@ import {
 import { UtilityService } from "app/core/utility-module/utility.service";
 import { NgStyle, NgClass, NgIf } from "@angular/common";
 
+// prettier-ignore
 @Component({
     selector: "clark-column-wrapper",
     templateUrl: "./column-wrapper.component.html",
