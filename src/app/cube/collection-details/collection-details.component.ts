@@ -63,6 +63,7 @@ export class CollectionDetailsComponent implements OnInit, OnDestroy {
                     this.router.navigate(["not-found"]);
                 }
             });
+        if (!this.collection) return;
         this.key.next(this.collection.abvName);
 
         this.pictureLocation =
