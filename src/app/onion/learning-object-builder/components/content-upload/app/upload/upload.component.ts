@@ -621,9 +621,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             fullPath?: string;
             webkitRelativePath?: string;
             name?: string;
-        }>,
+        }> = [],
     ): void {
-        const longPaths = files
+        const longPaths = (files ?? [])
             .filter(hasLongWindowsExtractionPathForFile)
             .map(getFilePath)
             .filter((path) => !this.warnedLongPaths.has(path));
