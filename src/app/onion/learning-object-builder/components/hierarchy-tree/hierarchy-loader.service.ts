@@ -1,9 +1,16 @@
 import { Injectable, OnDestroy } from "@angular/core";
-import { BehaviorSubject, forkJoin, Observable, of, Subscription } from "rxjs";
+import {
+    BehaviorSubject,
+    forkJoin,
+    from,
+    Observable,
+    of,
+    Subscription,
+} from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { LearningObject } from "@entity";
 import { AuthService } from "../../../../core/auth-module/auth.service";
-import { HierarchyService } from "../../../../core/learning-object-module/hierarchy/hierarchy.service";
+import { LearningObjectService } from "../../../../core/learning-object-module/learning-object/learning-object.service";
 import { toHierarchyNode } from "./hierarchy-node.mapper";
 import { LENGTH_ORDER, canHaveChildren } from "./hierarchy-length.util";
 import { HierarchyViewService } from "./hierarchy-view.service";
@@ -17,7 +24,8 @@ import {
  * Loads the author's real hierarchy into {@link HierarchyViewService} (sc-40640).
  *
  * The gateway has no "whole tree" route, so the tree is assembled from the
- * existing `GET /learning-objects/:id/children` route (direct children only):
+ * existing `LearningObjectService.getLearningObjectChildren` (direct children
+ * only, `GET /learning-objects/:id/children`):
  * one request per non-leaf node, fanned out one level at a time. Safeguards:
  *   - nanomodules are never queried (they cannot have children);
  *   - an id already placed in the tree is skipped, which breaks cycles;
@@ -42,7 +50,7 @@ export class HierarchyLoaderService implements OnDestroy {
     private loadSubscription?: Subscription;
 
     constructor(
-        private hierarchyService: HierarchyService,
+        private learningObjectService: LearningObjectService,
         private viewService: HierarchyViewService,
         private authService: AuthService,
     ) {}
@@ -110,7 +118,9 @@ export class HierarchyLoaderService implements OnDestroy {
             return of([]);
         }
 
-        return this.hierarchyService.getChildren(parentId).pipe(
+        return from(
+            this.learningObjectService.getLearningObjectChildren(parentId),
+        ).pipe(
             switchMap((payloads) => {
                 const fresh = (payloads ?? []).filter((payload) => {
                     if (!payload?.id || visited.has(payload.id)) {

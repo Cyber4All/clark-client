@@ -9,6 +9,13 @@ import { HierarchyLoadStatus } from "./hierarchy-tree.types";
 import { HierarchyTreeComponent } from "./hierarchy-tree.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
 
+// The real service imports via the bare "app/..." path, which this repo's Jest
+// config cannot resolve. Only the DI token is needed here.
+jest.mock(
+    "../../../../core/learning-object-module/learning-object/learning-object.service",
+    () => ({ LearningObjectService: class LearningObjectService {} }),
+);
+
 describe("HierarchyTreeComponent load states", () => {
     let fixture: ComponentFixture<HierarchyTreeComponent>;
     let status$: BehaviorSubject<HierarchyLoadStatus>;

@@ -1,4 +1,4 @@
-import { HierarchyChildPayload } from "../../../../core/learning-object-module/hierarchy/hierarchy.types";
+import { LearningObject } from "@entity";
 import { HierarchyNode, HierarchyViewer } from "./hierarchy-tree.types";
 
 /**
@@ -7,7 +7,7 @@ import { HierarchyNode, HierarchyViewer } from "./hierarchy-tree.types";
  * hierarchy permissions are unchanged (sc-40640).
  */
 export function canViewerEdit(
-    payload: HierarchyChildPayload,
+    payload: LearningObject,
     viewer: HierarchyViewer,
 ): boolean {
     if (viewer.isAdminOrEditor) {
@@ -31,7 +31,7 @@ export function canViewerEdit(
  * fully immutable (`insideReadOnly`), so it is never marked as a linked root.
  */
 export function toHierarchyNode(
-    payload: HierarchyChildPayload,
+    payload: LearningObject,
     viewer: HierarchyViewer,
     insideReadOnly = false,
 ): HierarchyNode {

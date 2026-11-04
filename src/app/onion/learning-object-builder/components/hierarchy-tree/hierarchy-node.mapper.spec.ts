@@ -1,19 +1,17 @@
 import { LearningObject } from "@entity";
-import { HierarchyChildPayload } from "../../../../core/learning-object-module/hierarchy/hierarchy.types";
 import { canViewerEdit, toHierarchyNode } from "./hierarchy-node.mapper";
 import { HierarchyViewer } from "./hierarchy-tree.types";
 
-const payload = (
-    overrides: Partial<HierarchyChildPayload> = {},
-): HierarchyChildPayload => ({
-    id: "c1",
-    name: "Child",
-    length: LearningObject.Length.MODULE,
-    status: LearningObject.Status.UNRELEASED,
-    author: { username: "alice" },
-    contributors: [{ username: "bob" }],
-    ...overrides,
-});
+const payload = (overrides: Record<string, unknown> = {}): LearningObject =>
+    ({
+        id: "c1",
+        name: "Child",
+        length: LearningObject.Length.MODULE,
+        status: LearningObject.Status.UNRELEASED,
+        author: { username: "alice" },
+        contributors: [{ username: "bob" }],
+        ...overrides,
+    }) as unknown as LearningObject;
 
 const viewer = (overrides: Partial<HierarchyViewer> = {}): HierarchyViewer => ({
     username: "carol",

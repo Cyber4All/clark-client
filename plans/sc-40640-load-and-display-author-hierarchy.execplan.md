@@ -20,7 +20,7 @@ Success is observable by opening a Builder for an object that has children (for 
 - [x] (2026-11-04T00:00Z) Read `PLANS.md`, `AGENTS.md`, the Shortcut story, and the SC-40233 ExecPlan.
 - [x] (2026-11-04T00:00Z) Traced gateway and clark-service routes for hierarchy reads (see Context and Orientation).
 - [x] (2026-11-04T00:00Z) Created this plan. Branch `feature/sc-40640/load-and-display-the-author-s-hierarchy-in-the` is already checked out.
-- [x] (2026-11-04T21:40Z) Added `GET_CHILDREN` route, `HierarchyChildPayload` type, and Observable `HierarchyService.getChildren()`.
+- [x] (2026-11-04T21:40Z) Added `GET_CHILDREN` route, `HierarchyChildPayload` type, and Observable `HierarchyService.getChildren()`. SUPERSEDED in PR review (2026-11-04T23:20Z): all three removed in favor of the existing `LearningObjectService.getLearningObjectChildren` (route `LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_CHILDREN`) and the `LearningObject` entity.
 - [x] (2026-11-04T21:40Z) Added `hierarchy-node.mapper.ts` (payload to `HierarchyNode`, editable rule).
 - [x] (2026-11-04T21:42Z) Added page-scoped `HierarchyLoaderService` (load, retry, status, cycle/depth guards). Removed `seedMockData` and the mock tree from `HierarchyViewService`; the mock moved to `hierarchy-test-data.ts` as a test fixture.
 - [x] (2026-11-04T21:45Z) Tree component and template now render loading, error (Retry), empty, and ready states; removed the mock root-rename hack.
@@ -45,12 +45,18 @@ Success is observable by opening a Builder for an object that has children (for 
 
 - Observation: The cube details page shows children as a flat, one-level list. It reads `object.resourceUris.children` (the same `/children` route) via `LearningObjectService.fetchLearningObjectResources`, then filters client-side to RELEASED/REVIEW/WAITING (marked FIXME). It has no deeper tree to reuse, and its status filter must not be copied because authors need drafts.
   Evidence: `src/app/cube/details/details.component.ts` `fetchReleasedLearningObject`; `learning-object.service.ts` `fetchLearningObjectResources`.
+- Observation: `learning-object.service.ts` imports `app/core/user-module/user.service` (bare path). Jest cannot resolve it, so specs that load it must `jest.mock` the module.
+  Evidence: "Cannot find module 'app/core/user-module/user.service'" in the loader and tree specs.
 - Observation: The repo's rxjs has no `firstValueFrom`.
   Evidence: TS2305 when first writing the loader spec.
 - Observation: Many sibling builder specs (contributor-pill, outcome, scaffold, etc.) already fail `should create`; unrelated to this story.
   Evidence: `npx jest src/app/onion/learning-object-builder` output.
 
 ## Decision Log
+
+- Decision: Reuse `LearningObjectService.getLearningObjectChildren` (existing route constant, existing `LearningObject` entity) instead of adding `HierarchyService.getChildren`, a new route, and a payload type. Supersedes the first two decisions below about `HierarchyService`.
+  Rationale: PR review. The route and service already exist; duplicating them drifts the API layer. Trade-off: the existing method is Promise-based (`toPromise()` inside), so the loader wraps it with `from(...)`. Converting it to an Observable is a separate, wider change.
+  Date/Author: 2026-11-04 / Kiro
 
 - Decision: Read the hierarchy with the existing `GET /learning-objects/:id/children` route and assemble the tree client-side by walking children recursively.
   Rationale: The story says to use existing gateway routes and preserve the API contract. No tree-shaped route exists. The move picker and `validDestinations` need the whole tree in memory, so lazy per-expand loading would break them.

@@ -14,10 +14,16 @@ import { CdkDragDrop } from "@angular/cdk/drag-drop";
 import { HierarchyTreeComponent } from "./hierarchy-tree.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
 import { HierarchyLoaderService } from "./hierarchy-loader.service";
-import { buildMockHierarchyFixture } from "./hierarchy-test-data";
 import { LearningObject } from "@entity";
 import { of } from "rxjs";
 import { HierarchyNode } from "./hierarchy-tree.types";
+
+// The real service imports via the bare "app/..." path, which this repo's Jest
+// config cannot resolve. Only the DI token is needed here.
+jest.mock(
+    "../../../../core/learning-object-module/learning-object/learning-object.service",
+    () => ({ LearningObjectService: class LearningObjectService {} }),
+);
 
 /**
  * Integration tests for `HierarchyTreeComponent`
@@ -214,7 +220,7 @@ describe("HierarchyTreeComponent (integration)", () => {
                     provide: HierarchyLoaderService,
                     useFactory: (view: HierarchyViewService) => ({
                         status$: of("ready"),
-                        load: () => view.setTree(buildMockHierarchyFixture()),
+                        load: () => view.setTree(buildSpecTree()),
                         retry: jest.fn(),
                     }),
                     deps: [HierarchyViewService],
@@ -666,7 +672,7 @@ describe("HierarchyTreeComponent (integration)", () => {
             const pickerTree = JSON.stringify(viewService.tree);
 
             // Reset and apply the equivalent drag-path move (same args).
-            viewService.setTree(buildMockHierarchyFixture());
+            viewService.setTree(buildSpecTree());
             viewService.moveNode("nano-glossary", "network-security");
             const dragTree = JSON.stringify(viewService.tree);
 
@@ -691,4 +697,77 @@ function findNode(
     }
 
     return undefined;
+}
+
+/** Small local tree used to drive the move flows: nested moves, alternate parents, and a linked root. */
+function buildSpecTree(): HierarchyNode[] {
+    const { COURSE, UNIT, MODULE, MICROMODULE, NANOMODULE } =
+        LearningObject.Length;
+    return [
+        {
+            id: "root",
+            name: "Intro to Cybersecurity",
+            length: COURSE,
+            editable: true,
+            expanded: true,
+            children: [
+                {
+                    id: "unit-foundations",
+                    name: "Foundations Unit",
+                    length: UNIT,
+                    editable: true,
+                    expanded: true,
+                    children: [
+                        {
+                            id: "mod-core-concepts",
+                            name: "Core Concepts",
+                            length: MODULE,
+                            editable: true,
+                            expanded: true,
+                            children: [
+                                {
+                                    id: "micro-cia-triad",
+                                    name: "CIA Triad",
+                                    length: MICROMODULE,
+                                    editable: true,
+                                    children: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    id: "network-security",
+                    name: "Network Security",
+                    length: MICROMODULE,
+                    editable: true,
+                    children: [],
+                },
+                {
+                    id: "incident-response",
+                    name: "Incident Response (Linked)",
+                    length: MODULE,
+                    editable: false,
+                    linkedRoot: true,
+                    expanded: true,
+                    children: [
+                        {
+                            id: "micro-detection",
+                            name: "Detection & Triage",
+                            length: MICROMODULE,
+                            editable: false,
+                            children: [],
+                        },
+                    ],
+                },
+                {
+                    id: "nano-glossary",
+                    name: "Security Glossary",
+                    length: NANOMODULE,
+                    editable: true,
+                    children: [],
+                },
+            ],
+        },
+    ];
 }
