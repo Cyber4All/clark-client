@@ -19,14 +19,17 @@ Success is observable by opening a Builder for an object that has children (for 
 
 - [x] (2026-11-04T00:00Z) Read `PLANS.md`, `AGENTS.md`, the Shortcut story, and the SC-40233 ExecPlan.
 - [x] (2026-11-04T00:00Z) Traced gateway and clark-service routes for hierarchy reads (see Context and Orientation).
-- [x] (2026-11-04T00:00Z) Created this plan. Branch `feature/sc-40640/load-and-display-the-author-s-hierarchy-in-the` is already checked out.
-- [x] (2026-11-04T21:40Z) Added `GET_CHILDREN` route, `HierarchyChildPayload` type, and Observable `HierarchyService.getChildren()`. SUPERSEDED in PR review (2026-11-04T23:20Z): all three removed in favor of the existing `LearningObjectService.getLearningObjectChildren` (route `LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_CHILDREN`) and the `LearningObject` entity.
-- [x] (2026-11-04T21:40Z) Added `hierarchy-node.mapper.ts` (payload to `HierarchyNode`, editable rule).
-- [x] (2026-11-04T21:42Z) Added page-scoped `HierarchyLoaderService` (load, retry, status, cycle/depth guards). Removed `seedMockData` and the mock tree from `HierarchyViewService`; the mock moved to `hierarchy-test-data.ts` as a test fixture.
-- [x] (2026-11-04T21:45Z) Tree component and template now render loading, error (Retry), empty, and ready states; removed the mock root-rename hack.
-- [x] (2026-11-04T21:50Z) Specs: new mapper, `HierarchyService`, loader, and tree-state specs; updated the tree integration spec to use a stubbed loader. All hierarchy specs pass (jest).
-- [x] (2026-11-04T21:54Z) `tsc --noEmit`: 28 errors, all pre-existing, none in hierarchy files. `ng build clark` exits 0 under Node 22.19.
-- [ ] Verify in the browser with Playwright (desktop + phone) against a running gateway/clark-service with a logged-in author. Not done: no dev server or gateway was running in this session.
+- [x] (2026-11-04T00:00Z) Created this plan. Branch `feature/sc-40640/load-and-display-the-author-s-hierarchy-in-the` is stacked on the sc-40233 branch.
+- [x] (2026-11-04T21:40Z) Added `hierarchy-node.mapper.ts` (`LearningObject` to `HierarchyNode`, editable rule).
+- [x] (2026-11-04T21:42Z) Added page-scoped `HierarchyLoaderService` (load, retry, `status$`, depth guard). Removed `seedMockData` and the mock tree from `HierarchyViewService`.
+- [x] (2026-11-04T21:45Z) Tree component and template render loading, error (Retry), empty, and ready states; removed the mock root-rename hack.
+- [x] (2026-11-04T21:50Z) Specs for the mapper, loader, and tab states; updated the tree integration spec to use a stubbed loader.
+- [x] (2026-11-04T22:10Z) Browser check at desktop width (Playwright, gateway API mocked, faked auth cookie): ready (with a linked child), loading, error + Retry recovery, and empty states.
+- [x] (2026-11-04T23:20Z) PR review round 1: dropped the duplicate `GET_CHILDREN` route, `HierarchyService.getChildren()`, and the `HierarchyChildPayload` type. The loader uses the existing `LearningObjectService.getLearningObjectChildren` and the `LearningObject` entity. The mock tree is no longer in shared test data (`hierarchy-test-data.ts` is back to its sc-40233 content; the tree integration spec keeps a small local tree).
+- [x] (2026-11-04T23:55Z) PR review round 2, shared children: per-branch ancestor tracking replaces the global visited set; every occurrence has a unique `HierarchyNode.id` (path key) plus `learningObjectId`; `canDrop` rejects a parent that already holds the same learning object; one memoized `/children` request per distinct learning object per load. Audit of `id` assumptions (view service, node, tree, move picker) needed no further code changes because every consumer already treats `id` as occurrence identity. Regression tests added and mutation-checked (reintroducing the global set fails 4 of them).
+- [x] (2026-11-04T23:55Z) Browser check of a shared child (gateway mocked, unit1's response delayed so it resolves last): the module renders under both units, expands independently, the Move picker marks the other unit unavailable, and moving one occurrence leaves the other in place.
+- [x] (2026-11-04T23:50Z) Final validation: 116 tests in 16 hierarchy-tree suites pass; `tsc --noEmit` shows 28 pre-existing errors, none in hierarchy files; `ng build clark` succeeds (Node 22.19).
+- [ ] Phone-width check, pointer drag-and-drop of a shared-child occurrence, and a run against the real gateway and clark-service.
 
 ## Surprises & Discoveries
 
@@ -112,7 +115,11 @@ Success is observable by opening a Builder for an object that has children (for 
 
 ## Outcomes & Retrospective
 
-Implemented and unit tested; browser verification pending (see Progress). Known limits: one failed `/children` request fails the whole load (no partial tree); every non-nanomodule node costs one request; the editable rule is the author/contributor/admin assumption confirmed on 2026-11-04, and reviewers are treated as not editable until a per-object reviewer signal exists. SC-40641 should replace the editable rule with an explicit link field.
+The Hierarchy tab loads the author's real hierarchy from the existing children route through `LearningObjectService.getLearningObjectChildren`, and renders loading, error (Retry), empty, and ready states. A learning object with several parents appears under each parent, and each appearance expands, moves, and receives drops on its own.
+
+Known limits: one failed `/children` request fails the whole load (no partial tree); cost is one request per distinct non-nanomodule learning object; moves are local only (persistence is SC-40642, SC-40236, SC-40237); the editable rule (author, contributor, or admin/editor; reviewers not editable) is an interim assumption until SC-40641 adds an explicit link field; `HierarchyNode.learningObjectId` is optional in the type, so a later story that persists moves should make it required. Not yet verified: phone width, pointer drag-and-drop of a shared-child occurrence, and a run against the real gateway and clark-service.
+
+Lessons: this repo's Jest cannot resolve the bare `app/...` imports in `learning-object.service.ts`, so specs that load it must `jest.mock` it. Several earlier plan edits silently missed their search strings; verify plan edits by re-reading the file.
 
 ## Context and Orientation
 
