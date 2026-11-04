@@ -25,14 +25,26 @@ import {
  *
  * The gateway has no "whole tree" route, so the tree is assembled from the
  * existing `LearningObjectService.getLearningObjectChildren` (direct children
- * only, `GET /learning-objects/:id/children`):
- * one request per non-leaf node, fanned out one level at a time. Safeguards:
+ * only, `GET /learning-objects/:id/children`), fanned out one level at a time.
+ *
+ * A learning object can have several parents, so the same learning object may
+ * legitimately appear under more than one parent. Safeguards therefore work
+ * per branch, never across the whole tree:
+ *   - cycles: a child whose learning object id is already on the path from the
+ *     root to its parent (an ancestor) is skipped;
+ *   - a child repeated inside ONE parent's response is kept once;
  *   - nanomodules are never queried (they cannot have children);
- *   - an id already placed in the tree is skipped, which breaks cycles;
  *   - depth is capped at the number of lengths.
+ * Each appearance gets its own unique node `id` (its path from the root) and
+ * carries the real `learningObjectId`. Results do not depend on the order in
+ * which requests resolve.
+ *
+ * Requests are memoized per learning object id for the duration of one load,
+ * so a child shared by N parents costs one request. A new load starts a fresh
+ * cache, so {@link retry} always refetches.
  *
  * A failed request anywhere fails the whole load (status `error`) so the tab
- * never shows a silently partial hierarchy. {@link retry} re-runs the load.
+ * never shows a silently partial hierarchy.
  *
  * Page-scoped, like {@link HierarchyViewService}.
  */
@@ -65,19 +77,33 @@ export class HierarchyLoaderService implements OnDestroy {
             username: this.authService.username,
             isAdminOrEditor: this.authService.isAdminOrEditor(),
         };
-        const visited = new Set<string>([root.id]);
+        // One request per learning object for this load (shared children).
+        const requests = new Map<string, Promise<LearningObject[]>>();
+        const fetchChildren = (id: string): Promise<LearningObject[]> => {
+            let request = requests.get(id);
+            if (!request) {
+                request =
+                    this.learningObjectService.getLearningObjectChildren(id);
+                requests.set(id, request);
+            }
 
-        this.loadSubscription = this.fetchChildren$(
-            root.id,
-            root.length,
-            false,
+            return request;
+        };
+
+        this.loadSubscription = this.fetchChildren$({
+            parentId: root.id,
+            parentKey: root.id,
+            parentLength: root.length,
+            parentReadOnly: false,
+            ancestors: new Set<string>([root.id]),
+            depth: 0,
             viewer,
-            visited,
-            0,
-        ).subscribe({
+            fetchChildren,
+        }).subscribe({
             next: (children) => {
                 const rootNode: HierarchyNode = {
                     id: root.id,
+                    learningObjectId: root.id,
                     name: root.name,
                     length: root.length,
                     editable: true,
@@ -106,50 +132,63 @@ export class HierarchyLoaderService implements OnDestroy {
         this.statusSubject.complete();
     }
 
-    private fetchChildren$(
-        parentId: string,
-        parentLength: LearningObject.Length,
-        parentReadOnly: boolean,
-        viewer: HierarchyViewer,
-        visited: Set<string>,
-        depth: number,
-    ): Observable<HierarchyNode[]> {
-        if (!canHaveChildren(parentLength) || depth >= LENGTH_ORDER.length) {
+    private fetchChildren$(ctx: {
+        /** Learning object id of the parent (used for the request). */
+        parentId: string;
+        /** Occurrence key of the parent (prefix for child keys). */
+        parentKey: string;
+        parentLength: LearningObject.Length;
+        parentReadOnly: boolean;
+        /** Learning object ids on the path from the root through the parent. */
+        ancestors: ReadonlySet<string>;
+        depth: number;
+        viewer: HierarchyViewer;
+        fetchChildren: (id: string) => Promise<LearningObject[]>;
+    }): Observable<HierarchyNode[]> {
+        if (
+            !canHaveChildren(ctx.parentLength) ||
+            ctx.depth >= LENGTH_ORDER.length
+        ) {
             return of([]);
         }
 
-        return from(
-            this.learningObjectService.getLearningObjectChildren(parentId),
-        ).pipe(
+        return from(ctx.fetchChildren(ctx.parentId)).pipe(
             switchMap((payloads) => {
-                const fresh = (payloads ?? []).filter((payload) => {
-                    if (!payload?.id || visited.has(payload.id)) {
+                const seenInParent = new Set<string>();
+                const children = (payloads ?? []).filter((payload) => {
+                    if (
+                        !payload?.id ||
+                        ctx.ancestors.has(payload.id) ||
+                        seenInParent.has(payload.id)
+                    ) {
                         return false;
                     }
-                    visited.add(payload.id);
+                    seenInParent.add(payload.id);
 
                     return true;
                 });
-                if (!fresh.length) {
+                if (!children.length) {
                     return of([] as HierarchyNode[]);
                 }
 
                 return forkJoin(
-                    fresh.map((payload) => {
+                    children.map((payload) => {
                         const node = toHierarchyNode(
                             payload,
-                            viewer,
-                            parentReadOnly,
+                            ctx.viewer,
+                            ctx.parentReadOnly,
+                            `${ctx.parentKey}/${payload.id}`,
                         );
 
-                        return this.fetchChildren$(
-                            node.id,
-                            node.length,
-                            !node.editable,
-                            viewer,
-                            visited,
-                            depth + 1,
-                        ).pipe(map((children) => ({ ...node, children })));
+                        return this.fetchChildren$({
+                            ...ctx,
+                            parentId: payload.id,
+                            parentKey: node.id,
+                            parentLength: node.length,
+                            parentReadOnly: !node.editable,
+                            ancestors: new Set([...ctx.ancestors, payload.id]),
+                            depth: ctx.depth + 1,
+                        }).pipe(map((kids) => ({ ...node, children: kids })));
                     }),
                 );
             }),

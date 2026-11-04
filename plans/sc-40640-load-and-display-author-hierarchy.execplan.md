@@ -13,7 +13,7 @@ Today the Builder Hierarchy tab renders a hard-coded mock tree. After this chang
 - loading, empty (no children), and error (with retry) states;
 - no mock service, mock fixtures, or seeded local state left in production code.
 
-Success is observable by opening a Builder for an object that has children (for example one created through the legacy admin Hierarchy Builder), clicking Hierarchy, and seeing the real tree. Opening an object without children shows the empty state. Taking the API offline shows the error state with a Retry button.
+Success is observable by opening a Builder for an object that has children (for example one created through the legacy admin Hierarchy Builder), clicking Hierarchy, and seeing the real tree. Opening an object without children shows the empty state. A learning object that has more than one parent appears under each of its parents, and each appearance expands, moves, and receives drops independently. Taking the API offline shows the error state with a Retry button.
 
 ## Progress
 
@@ -47,12 +47,32 @@ Success is observable by opening a Builder for an object that has children (for 
   Evidence: `src/app/cube/details/details.component.ts` `fetchReleasedLearningObject`; `learning-object.service.ts` `fetchLearningObjectResources`.
 - Observation: `learning-object.service.ts` imports `app/core/user-module/user.service` (bare path). Jest cannot resolve it, so specs that load it must `jest.mock` the module.
   Evidence: "Cannot find module 'app/core/user-module/user.service'" in the loader and tree specs.
+- Observation (PR review round 2): the first loader used ONE `visited` Set for the whole load. A learning object reachable through two parents was kept only under whichever parent's response was processed first, so the result depended on request timing and silently dropped a valid parent-child relationship. The backend stores `children` as a list of ids per parent, so the same child id can appear under many parents.
+  Evidence: `hierarchy-loader.service.ts` `fetchChildren$` (before this change) added every placed id to a shared `visited` set. clark-service `getLearningObjectChildren` reads `learningObject.children` per parent with no uniqueness across parents.
+- Observation (PR review round 2): the whole tree UI treats `HierarchyNode.id` as the identity of one rendered occurrence, not of a learning object. Audit result: `HierarchyViewService` (`findNode`, `removeNode`, `parentIdOf`, `toggleExpanded`, `moveNode`, `validDestinations`, `isInsideLinkedSubtree`), `hierarchy-node` (`data-node-id`, `trackById`, `toggleExpanded`/`menuAction` emits, drag affordance via `draggingNode?.id` and `hoveredTargetId`), `hierarchy-tree` (DOM hit-testing on `.node-row[data-node-id]`, focus restoration), and `hierarchy-move-picker` (destination ids, `trackById`). With duplicate ids these would toggle, move, highlight, and hit-test every occurrence at once or the wrong one.
+  Evidence: grep of `.id`, `data-node-id`, `nodeId`, `targetId`, `trackBy` across `components/hierarchy-tree/**`.
 - Observation: The repo's rxjs has no `firstValueFrom`.
   Evidence: TS2305 when first writing the loader spec.
 - Observation: Many sibling builder specs (contributor-pill, outcome, scaffold, etc.) already fail `should create`; unrelated to this story.
   Evidence: `npx jest src/app/onion/learning-object-builder` output.
 
 ## Decision Log
+
+- Decision (PR review round 2): Track cycles per branch, not globally. While descending, pass the set of learning object ids on the path from the root to the parent (ancestors). A child whose learning object id is in that set is skipped (cycle). A learning object that is not an ancestor is kept under every parent that lists it. Within one parent's response, a duplicated child id is kept once (a parent cannot contain the same child twice).
+  Rationale: Preserves every valid parent-child relationship and makes the result independent of request resolution order, while still stopping real cycles. The depth cap stays as a second guard.
+  Date/Author: 2026-11-04 / Kiro
+
+- Decision (PR review round 2): Make `HierarchyNode.id` the unique key of one tree OCCURRENCE (the path of learning object ids from the root, joined with `/`, assigned at load and never recomputed on moves), and add `learningObjectId` for the real learning object. The root keeps its learning object id as `id`.
+  Rationale: Every consumer already keys on `node.id` as occurrence identity (see Surprises), so unique occurrence keys fix toggle, drag/drop, hit-testing, focus, and move targeting with no changes to those components. A path key is deterministic (independent of request order) and unique because siblings are deduplicated and branches differ by path. The alternative, switching every consumer to a new key field, touches about 10 files for the same result. `learningObjectId` is optional in the type so existing fixtures stay valid; it is always set for loaded data and is what later persistence stories (SC-40642, SC-40236, SC-40237) must send to the API.
+  Date/Author: 2026-11-04 / Kiro
+
+- Decision (PR review round 2): `HierarchyViewService.canDrop` also rejects a target that already has a child with the same learning object id (compared via `learningObjectId ?? id`), unless the move is a reorder within the same parent.
+  Rationale: With shared children, moving one occurrence under a parent that already contains that learning object would create a duplicate child entry, which the backend list cannot represent meaningfully. `validDestinations` reuses `canDrop`, so the picker never offers such a parent.
+  Date/Author: 2026-11-04 / Kiro
+
+- Decision (PR review round 2): Memoize `getLearningObjectChildren` per learning object id within one load (a `Map` of Promises created per `load`), so a shared child that appears under N parents costs one request, not N.
+  Rationale: Keeps request count proportional to distinct learning objects. The cache is per load, so Retry and reload always fetch fresh data.
+  Date/Author: 2026-11-04 / Kiro
 
 - Decision: Reuse `LearningObjectService.getLearningObjectChildren` (existing route constant, existing `LearningObject` entity) instead of adding `HierarchyService.getChildren`, a new route, and a payload type. Supersedes the first two decisions below about `HierarchyService`.
   Rationale: PR review. The route and service already exist; duplicating them drifts the API layer. Trade-off: the existing method is Promise-based (`toPromise()` inside), so the loader wraps it with `from(...)`. Converting it to an Observable is a separate, wider change.
@@ -66,8 +86,8 @@ Success is observable by opening a Builder for an object that has children (for 
   Rationale: One domain service per API area, typed Observable returns, URL construction in the routes helper, no new `toPromise()` (AGENTS.md). Leaves the legacy `addHierarchyObject` untouched.
   Date/Author: 2026-11-04 / Kiro
 
-- Decision: Walk levels breadth-first with `expand`/`forkJoin`-style fan-out per level, skip leaves by length (nanomodules have no children) and by an already-visited ID set, and cap depth at the number of lengths (5).
-  Rationale: Bounds request count, avoids cycles from bad data, and keeps load time proportional to depth rather than node count.
+- Decision: Walk levels with `forkJoin` fan-out per level, skip leaves by length (nanomodules have no children), and cap depth at the number of lengths (5). SUPERSEDED in part (2026-11-04, PR review round 2): the cycle guard is per branch (ancestor ids), not a global already-visited set; see the round 2 decisions above.
+  Rationale: Bounds request count and keeps load time proportional to depth rather than node count.
   Date/Author: 2026-11-04 / Kiro
 
 - Decision: Classify a child as editable when the current user is its author or a contributor, or is an admin/editor. Otherwise mark it `editable: false, linkedRoot: true`. Descendants of a read-only root stay immutable through the existing `isInsideLinkedSubtree` rule.
@@ -109,26 +129,27 @@ Current flow (before this story):
 Target flow:
 
 1. Page passes the `LearningObject` as before.
-2. Tree component asks the view service to `load(learningObject)`.
-3. View service calls `HierarchyService.getChildren(id)` level by level, maps each payload with the new mapper, and publishes `tree$` and `status$`.
+2. Tree component asks `HierarchyLoaderService` to `load(learningObject)`.
+3. `HierarchyLoaderService` calls `LearningObjectService.getLearningObjectChildren(id)` level by level (one memoized request per distinct learning object), maps each `LearningObject` with the mapper, publishes the tree through `HierarchyViewService.setTree`, and exposes `status$`.
 4. Template renders loading, error (Retry), empty (root only, zero children), or the tree.
 
 API contract (verified in local repos under `~/secured/development-environment`):
 
-- Client: `GET ${environment.apiURL}/learning-objects/{id}/children` with credentials.
+- Client: the existing `LearningObjectService.getLearningObjectChildren(id)` (route constant `LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT_CHILDREN`), which issues `GET ${environment.apiURL}/learning-objects/{id}/children` with credentials and returns `LearningObject[]` entities.
 - Gateway: `clark-gateway/src/modules/clark/learning-object-module/learning-objects.routes.ts`, proxied to clark-service.
 - clark-service: `getLearningObjectChildren` returns `FullLearningObject[]` for direct children. 404 when the parent is missing, 403 when the token lacks read access. Fields used by the mapper: `id`, `name`, `length`, `author.username`, `contributors[].username`, `status`, `children` (resource URI object, not IDs, so child presence is discovered by fetching).
 
-Affected files:
+Affected files (final implementation):
 
-- `src/app/core/learning-object-module/hierarchy/hierarchy.routes.ts` (add `GET_CHILDREN`)
-- `src/app/core/learning-object-module/hierarchy/hierarchy.service.ts` (add `getChildren`)
-- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-tree.types.ts` (add `HierarchyLoadStatus`, API payload type)
-- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-node.mapper.ts` (new)
-- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-view.service.ts` (add `load`, `status$`; remove mock)
-- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-tree.component.{ts,html,scss}` (states; remove seeding)
-- `src/app/onion/learning-object-builder/pages/hierarchy-page/hierarchy-page.component.ts` (only if inputs change)
-- Specs: `hierarchy-tree.component.spec.ts`, `hierarchy-view.service.spec.ts`, new specs for the mapper and `HierarchyService`.
+- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-loader.service.ts` (new; page-scoped; builds the tree, per-branch cycle guard, per-load request memoization, `status$`, `retry()`)
+- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-node.mapper.ts` (new; `LearningObject` to `HierarchyNode`, editable rule, occurrence key)
+- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-tree.types.ts` (adds `HierarchyLoadStatus`, `HierarchyViewer`, and `HierarchyNode.learningObjectId`)
+- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-view.service.ts` (mock removed; `canDrop` duplicate-child rule)
+- `src/app/onion/learning-object-builder/components/hierarchy-tree/hierarchy-tree.component.{ts,html,scss}` (loading, error, empty, ready states)
+- `src/app/onion/learning-object-builder/pages/hierarchy-page/hierarchy-page.component.ts` (provides the loader)
+- Specs: `hierarchy-loader.service.spec.ts`, `hierarchy-node.mapper.spec.ts`, `hierarchy-tree.states.spec.ts`, `hierarchy-view.service.spec.ts`, `hierarchy-tree.component.spec.ts`.
+
+NOT changed (an earlier draft of this plan added them, then PR review removed them): `src/app/core/learning-object-module/hierarchy/hierarchy.routes.ts`, `hierarchy.service.ts` (no `getChildren`, no `GET_CHILDREN`), and no `HierarchyChildPayload` type. The mapper and loader use the existing `LearningObject` entity.
 
 Legacy and drift to name:
 
@@ -138,15 +159,16 @@ Legacy and drift to name:
 
 ## Plan of Work
 
-1. Service layer: add `GET_CHILDREN(learningObjectId)` to `hierarchy.routes.ts`. Add `getChildren(learningObjectId: string): Observable<HierarchyChildPayload[]>` to `HierarchyService` using `HttpClient.get` with `withCredentials: true`. No error swallowing; callers handle errors.
-2. Mapper: `toHierarchyNode(payload, currentUser)` builds a `HierarchyNode` with `editable` per the Decision Log, `children: []`, `expanded: false`. Pure function, unit tested.
-3. View service: add `load(root: LearningObject)` that sets `status$` to `loading`, builds the root node, fetches children by level with cycle and depth guards, then publishes the tree and `ready`. On failure publish `error` and keep the previous tree empty. Add `retry()` that re-runs the last load. Use `switchMap`-style cancellation so a second `load` cancels the first, and tie the stream to the service lifetime (page scoped, `ngOnDestroy` completes it).
-4. Remove `seedMockData` and `buildMockHierarchy` from the view service and the `LearningObject.Length` destructuring they needed.
-5. Tree component: call `load` in `ngOnInit`/`ngOnChanges` when the learning object has an `id`. Drop `applyRootName`. Template: `status$ | async` switch for loading (skeleton rows with `aria-busy`), error (message + Retry button, `role="alert"`), empty (message under the root banner), ready (existing tree). Keep the footer hint.
-6. Tests: update the one `seedMockData` test; add specs for the mapper, `HierarchyService.getChildren`, and `HierarchyViewService.load` (success, empty, error, cycle guard, cancel on reload).
-7. Visual verification with the Playwright loop.
+Final implementation (after PR review rounds 1 and 2):
 
-Out of scope: persistence of moves (SC-40642), create-child (SC-40236), link-existing (SC-40237), linking read-only children (SC-40641), new gateway routes, backend changes, keyboard-navigation work, converting the `LearningObjectService` to Observables.
+1. Reuse the existing `LearningObjectService.getLearningObjectChildren` (Promise-based; wrapped with `from()` in the loader). No new route, service method, or API type.
+2. `hierarchy-node.mapper.ts`: `toHierarchyNode(learningObject, viewer, insideReadOnly, key)` builds a `HierarchyNode` with `id` = occurrence key, `learningObjectId` = the learning object id, and `editable` per the Decision Log (author, contributor, or admin/editor; otherwise a linked read-only root; everything under a read-only node is immutable).
+3. `HierarchyLoaderService.load(root)`: sets `loading`; builds the tree level by level; for each parent passes the ancestor id set and the parent's occurrence key; skips nanomodules, children whose id is an ancestor (cycle), duplicate ids within one parent's response, and anything deeper than five levels; memoizes one children request per learning object id for this load; publishes the tree through `HierarchyViewService.setTree` and sets `ready`, `empty`, or `error`. A newer `load` supersedes an older one. `retry()` re-runs the last load.
+4. `HierarchyViewService.canDrop` rejects a target that already holds the same learning object (except same-parent reorder).
+5. Tree component and template render the four states.
+6. Tests and browser verification (see Validation).
+
+Out of scope: persistence of moves (SC-40642), create-child (SC-40236), link-existing (SC-40237), explicit linking (SC-40641), new gateway routes, backend changes, converting `LearningObjectService` to Observables, keyboard-navigation work.
 
 ## Concrete Steps
 
@@ -167,23 +189,18 @@ Expect exit 0. Then run the app (`npm start`, run by the user) and verify in the
 
 ## Validation and Acceptance
 
-Automated:
+Automated (Jest; `npx jest --runInBand src/app/onion/learning-object-builder/components/hierarchy-tree`):
 
-- `HierarchyService.getChildren` issues `GET {apiURL}/learning-objects/{id}/children` with credentials and returns the typed payload.
-- Mapper: author, contributor, and admin map to editable; others map to `editable: false, linkedRoot: true`.
-- View service `load`: success builds a nested tree; empty parent yields root with no children and `ready`; failure yields `error` and `retry()` recovers; a repeated ID does not recurse; a second `load` cancels the first; nanomodules are not queried.
-- Component: loading, error (Retry), empty, and ready states render.
-- No `seedMockData` or `buildMockHierarchy` in non-spec source (`grep` returns nothing).
+- Mapper: author, contributor, and admin map to editable; others map to `editable: false, linkedRoot: true`; descendants of a read-only node are immutable; `id` is the occurrence key and `learningObjectId` is the learning object id.
+- Loader: success builds a nested tree; empty parent yields `empty`; failure yields `error` and `retry()` recovers; a nanomodule is never queried; a stale response from a superseded load is ignored.
+- Loader, shared children (regression for PR review round 2): two units that both contain the same module render that module under BOTH units, whichever unit's request resolves first; each occurrence has a distinct `id` and the same `learningObjectId`; the shared module's children request is made once; a child repeated within one parent's response appears once; a cycle (a descendant that lists an ancestor) is cut at the repeat while the rest of the tree loads.
+- View service, occurrence targeting: toggling one occurrence expands only that occurrence; `moveNode` moves only the occurrence it names and leaves the other occurrence in place; `validDestinations` and `canDrop` exclude a parent that already contains the same learning object.
+- Component: loading, error (Retry), empty, and ready states render; `data-node-id` values are unique when a learning object appears under two parents.
+- No `seedMockData` or mock tree in non-spec source.
 
-Manual (Playwright, desktop 1440 and phone 390 widths):
+Manual (Playwright; gateway mocked): ready, loading, error + Retry, and empty states (done at desktop width in round 1); a shared child shown under two parents, expanded and collapsed independently, and moved from one parent only (round 2).
 
-- Object with a multi-level hierarchy shows the real nested tree, with expand/collapse working.
-- Object with a child the user does not own shows the linked/read-only treatment, with no drag handle.
-- Object without children shows the empty state.
-- Blocking `/children` requests shows the error state; Retry loads the tree.
-- No console errors; network shows one `/children` request per non-leaf node.
-
-Access: no route, guard, or interceptor changes. Hierarchy tab gating from SC-40233 is unchanged. A 403 from the API shows the error state.
+Access: no route, guard, or interceptor changes. A 403 from the API shows the error state.
 
 ## Idempotence and Recovery
 
@@ -196,9 +213,10 @@ All steps are additive until the mock removal in step 4. If the work stops halfw
 
 ## Interfaces and Dependencies
 
-- Services: `HierarchyService` (core, root-provided), `HierarchyViewService` (page-scoped), `AuthService` (current username / admin check).
-- Types: `HierarchyNode`, new `HierarchyChildPayload`, `HierarchyLoadStatus`; `LearningObject` entity for the root.
+- Services: `LearningObjectService.getLearningObjectChildren` (existing, root-provided, Promise-based), `AuthService` (username, `isAdminOrEditor()`), `HierarchyLoaderService` and `HierarchyViewService` (page-scoped).
+- Types: `HierarchyNode` (now with `learningObjectId`), `HierarchyLoadStatus`, `HierarchyViewer`; the `LearningObject` entity. No new API payload type.
 - API: existing gateway `GET /learning-objects/:learningObjectId/children`; no contract change.
+- Test tooling note: `learning-object.service.ts` imports via a bare `app/...` path that Jest cannot resolve, so specs that load it `jest.mock` the module.
 - No new npm dependencies, no environment changes.
 
 ## Open Questions

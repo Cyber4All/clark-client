@@ -26,6 +26,9 @@ export function canViewerEdit(
 /**
  * Map one API child into the tree view-model (without its children).
  *
+ * `key` is the unique occurrence key for this appearance in the tree (see
+ * {@link HierarchyNode.id}); it defaults to the learning object id.
+ *
  * A child the viewer cannot edit becomes a linked/read-only ROOT
  * (`editable: false, linkedRoot: true`). Anything under a read-only node is
  * fully immutable (`insideReadOnly`), so it is never marked as a linked root.
@@ -34,10 +37,12 @@ export function toHierarchyNode(
     payload: LearningObject,
     viewer: HierarchyViewer,
     insideReadOnly = false,
+    key: string = payload.id,
 ): HierarchyNode {
     if (insideReadOnly) {
         return {
-            id: payload.id,
+            id: key,
+            learningObjectId: payload.id,
             name: payload.name,
             length: payload.length,
             editable: false,
@@ -47,7 +52,8 @@ export function toHierarchyNode(
     const editable = canViewerEdit(payload, viewer);
 
     return {
-        id: payload.id,
+        id: key,
+        learningObjectId: payload.id,
         name: payload.name,
         length: payload.length,
         editable,

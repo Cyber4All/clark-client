@@ -104,4 +104,99 @@ describe("HierarchyTreeComponent load states", () => {
 
         expect(el().querySelector(".hierarchy-state__empty")).toBeNull();
     });
+
+    describe("a learning object shown under two parents", () => {
+        const shared = (parentKey: string) => ({
+            id: `${parentKey}/m1`,
+            learningObjectId: "m1",
+            name: "Shared Module",
+            length: LearningObject.Length.MODULE,
+            editable: true,
+            children: [
+                {
+                    id: `${parentKey}/m1/micro1`,
+                    learningObjectId: "micro1",
+                    name: "Micro",
+                    length: LearningObject.Length.MICROMODULE,
+                    editable: true,
+                    children: [],
+                },
+            ],
+        });
+        const unit = (id: string) => ({
+            id: `root/${id}`,
+            learningObjectId: id,
+            name: id,
+            length: LearningObject.Length.UNIT,
+            editable: true,
+            expanded: true,
+            children: [shared(`root/${id}`)],
+        });
+
+        beforeEach(() => {
+            view.setTree([
+                {
+                    id: "root",
+                    learningObjectId: "root",
+                    name: "Root",
+                    length: LearningObject.Length.COURSE,
+                    editable: true,
+                    expanded: true,
+                    children: [unit("u1"), unit("u2")],
+                },
+            ]);
+            status$.next("ready");
+            fixture.detectChanges();
+        });
+
+        const rowIds = (): string[] =>
+            Array.from(el().querySelectorAll(".node-row[data-node-id]")).map(
+                (row) => row.getAttribute("data-node-id")!,
+            );
+
+        it("renders one row per occurrence with a unique data-node-id", () => {
+            const ids = rowIds();
+
+            expect(ids).toEqual(
+                expect.arrayContaining(["root/u1/m1", "root/u2/m1"]),
+            );
+            expect(new Set(ids).size).toBe(ids.length);
+        });
+
+        it("expands and collapses only the occurrence whose toggle was used", () => {
+            const toggleFor = (id: string) =>
+                el().querySelector<HTMLButtonElement>(
+                    `.node-row[data-node-id="${id}"] .toggle`,
+                )!;
+            const microRows = () =>
+                rowIds().filter((id) => id.endsWith("/micro1"));
+
+            // Each shared module is collapsed; its child is not rendered.
+            expect(microRows()).toEqual([]);
+
+            toggleFor("root/u1/m1").click();
+            fixture.detectChanges();
+            expect(microRows()).toEqual(["root/u1/m1/micro1"]);
+            expect(toggleFor("root/u2/m1").getAttribute("aria-expanded")).toBe(
+                "false",
+            );
+
+            // Collapsing is asserted on state, not row absence: collapsed rows
+            // can linger in the DOM for a leave animation.
+            toggleFor("root/u1/m1").click();
+            fixture.detectChanges();
+            expect(toggleFor("root/u1/m1").getAttribute("aria-expanded")).toBe(
+                "false",
+            );
+            expect(toggleFor("root/u2/m1").getAttribute("aria-expanded")).toBe(
+                "false",
+            );
+            const shared = (id: string) =>
+                view.tree[0].children
+                    .flatMap((u) => u.children)
+                    .find((n) => n.id === id)!;
+            expect(shared("root/u1/m1").expanded).toBe(false);
+            expect(shared("root/u2/m1").expanded).toBeFalsy();
+        });
+    });
 });

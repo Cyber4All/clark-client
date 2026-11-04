@@ -51,7 +51,9 @@ export class HierarchyViewService {
      *     linked/read-only subtree);
      *   - the target length must be able to have children;
      *   - the dragged node's length must be strictly shorter than the target;
-     *   - a node cannot be dropped into itself or its own descendants.
+     *   - a node cannot be dropped into itself or its own descendants;
+     *   - the target must not already contain the same learning object (a
+     *     shared child may appear under many parents, but only once under each).
      */
     canDrop(node: HierarchyNode, target: HierarchyNode): boolean {
         if (!target.editable) {
@@ -61,6 +63,17 @@ export class HierarchyViewService {
             return false;
         }
         if (node.id === target.id || isDescendant(node, target.id)) {
+            return false;
+        }
+        // A parent cannot hold the same learning object twice. A shared child
+        // may already be under `target` as a different occurrence; moving
+        // another occurrence there would create a duplicate child entry.
+        if (
+            target.children.some(
+                (child) =>
+                    child.id !== node.id && sameLearningObject(child, node),
+            )
+        ) {
             return false;
         }
 
@@ -206,6 +219,11 @@ export class HierarchyViewService {
     parentIdOf(nodeId: string): string | undefined {
         return parentIdOf(this.treeSubject.value, nodeId);
     }
+}
+
+/** Whether two nodes are occurrences of the same learning object. */
+function sameLearningObject(a: HierarchyNode, b: HierarchyNode): boolean {
+    return (a.learningObjectId ?? a.id) === (b.learningObjectId ?? b.id);
 }
 
 /** Immutably map over every node in the forest, preserving structure. */

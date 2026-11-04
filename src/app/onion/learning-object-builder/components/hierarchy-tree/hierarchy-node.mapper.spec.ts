@@ -56,6 +56,7 @@ describe("hierarchy-node.mapper", () => {
                 toHierarchyNode(payload(), viewer({ username: "alice" })),
             ).toEqual({
                 id: "c1",
+                learningObjectId: "c1",
                 name: "Child",
                 length: LearningObject.Length.MODULE,
                 editable: true,
@@ -77,6 +78,28 @@ describe("hierarchy-node.mapper", () => {
             );
             expect(node.editable).toBe(false);
             expect(node.linkedRoot).toBeUndefined();
+        });
+
+        it("uses the occurrence key as id and keeps the learning object id", () => {
+            const node = toHierarchyNode(
+                payload(),
+                viewer({ username: "alice" }),
+                false,
+                "root/u1/c1",
+            );
+            expect(node.id).toBe("root/u1/c1");
+            expect(node.learningObjectId).toBe("c1");
+        });
+
+        it("applies the occurrence key to read-only descendants too", () => {
+            const node = toHierarchyNode(
+                payload(),
+                viewer({ username: "alice" }),
+                true,
+                "root/u9/c1",
+            );
+            expect(node.id).toBe("root/u9/c1");
+            expect(node.learningObjectId).toBe("c1");
         });
     });
 });
