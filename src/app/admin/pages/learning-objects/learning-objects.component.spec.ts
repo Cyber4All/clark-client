@@ -49,4 +49,29 @@ describe("LearningObjectsComponent", () => {
     it("should create", () => {
         expect(component).toBeTruthy();
     });
+
+    it("should not throw when the headers element is not rendered", () => {
+        jest.useFakeTimers();
+        try {
+            component.learningObjects = [];
+            component.headersElement = undefined;
+            component.ngAfterViewInit();
+            expect(() => jest.advanceTimersByTime(2000)).not.toThrow();
+            expect(component.listViewHeightOffset).toBeUndefined();
+        } finally {
+            jest.useRealTimers();
+        }
+    });
+
+    it("should clear the pending measurement timer on destroy", () => {
+        jest.useFakeTimers();
+        try {
+            component.ngAfterViewInit();
+            component.ngOnDestroy();
+            component.listElement = undefined;
+            expect(() => jest.advanceTimersByTime(2000)).not.toThrow();
+        } finally {
+            jest.useRealTimers();
+        }
+    });
 });
