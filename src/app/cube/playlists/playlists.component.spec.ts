@@ -124,12 +124,31 @@ describe("PlaylistsComponent", () => {
         component.ngOnDestroy();
     });
 
-    it("does not submit a blank description", () => {
+    it.each(["", "   "])(
+        "creates a playlist with a blank description (%p)",
+        (description) => {
+            const { component, service } = setup({ userId: "user-id" });
+            component.ngOnInit();
+            component.createForm.setValue({
+                name: "New playlist",
+                description,
+            });
+            component.createPlaylist();
+            expect(service.createPlaylist).toHaveBeenCalledWith({
+                name: "New playlist",
+                description: "",
+                visibility: "private",
+            });
+            component.ngOnDestroy();
+        },
+    );
+
+    it("does not submit a description longer than 500 characters", () => {
         const { component, service } = setup({ userId: "user-id" });
         component.ngOnInit();
         component.createForm.setValue({
             name: "New playlist",
-            description: "   ",
+            description: "a".repeat(501),
         });
         component.createPlaylist();
         expect(service.createPlaylist).not.toHaveBeenCalled();

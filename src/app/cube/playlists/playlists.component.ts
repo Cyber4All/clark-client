@@ -8,12 +8,6 @@ import {
 } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
-    FormControl,
-    FormGroup,
-    ReactiveFormsModule,
-    Validators,
-} from "@angular/forms";
-import {
     MatDialog,
     MatDialogModule,
     MatDialogRef,
@@ -26,6 +20,10 @@ import { SkipLinkComponent } from "app/shared/components/skip-link/skip-link.com
 import { Subject } from "rxjs";
 import { switchMap, takeUntil } from "rxjs/operators";
 import { PlaylistCardComponent } from "./components/playlist-card/playlist-card.component";
+import {
+    createPlaylistMetadataForm,
+    PlaylistMetadataFormComponent,
+} from "./components/playlist-metadata-form/playlist-metadata-form.component";
 
 @Component({
     selector: "clark-playlists",
@@ -35,7 +33,7 @@ import { PlaylistCardComponent } from "./components/playlist-card/playlist-card.
     imports: [
         NgFor,
         NgIf,
-        ReactiveFormsModule,
+        PlaylistMetadataFormComponent,
         MatDialogModule,
         PlaylistCardComponent,
         SkipLinkComponent,
@@ -49,24 +47,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
     userId = "";
     creating = false;
     createError = "";
-    readonly createForm = new FormGroup({
-        name: new FormControl("", {
-            nonNullable: true,
-            validators: [
-                Validators.required,
-                Validators.pattern(/\S/),
-                Validators.maxLength(100),
-            ],
-        }),
-        description: new FormControl("", {
-            nonNullable: true,
-            validators: [
-                Validators.required,
-                Validators.pattern(/\S/),
-                Validators.maxLength(500),
-            ],
-        }),
-    });
+    readonly createForm = createPlaylistMetadataForm();
     @ViewChild("createPlaylistDialog")
     createPlaylistDialog!: TemplateRef<unknown>;
     private createDialogRef?: MatDialogRef<unknown>;
@@ -136,7 +117,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
         this.createDialogRef = this.dialog.open(this.createPlaylistDialog, {
             width: "420px",
             maxWidth: "calc(100vw - 36px)",
-            ariaLabelledBy: "create-playlist-title",
+            ariaLabelledBy: "playlist-metadata-title",
         });
     }
 

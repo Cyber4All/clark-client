@@ -24,32 +24,16 @@
         <header class="playlist-header">
             <div class="playlist-title-row">
                 <div class="field-display">
-                    <h1
-                        [textContent]="playlist.name"
-                        [attr.contenteditable]="
-                            isOwner &&
-                            editingMetadata &&
-                            !savingFields.has('name')
-                                ? 'plaintext-only'
-                                : null
-                        "
-                        [class.editable]="isOwner && editingMetadata"
-                        aria-label="Playlist title"
-                        (blur)="saveMetadataField('name', $event)"></h1>
+                    <h1 [textContent]="playlist.name"></h1>
                     <button
                         *ngIf="isOwner"
                         type="button"
                         class="edit-icon-button"
-                        [attr.aria-label]="
-                            editingMetadata
-                                ? 'Finish editing playlist'
-                                : 'Edit playlist title and description'
-                        "
-                        [attr.aria-pressed]="editingMetadata"
-                        tip="Edit playlist"
-                        [tipDisabled]="editingMetadata"
-                        tipPosition="bottom"
-                        (click)="editingMetadata = !editingMetadata">
+                        aria-label="Edit playlist title and description"
+                        matTooltip="Edit playlist"
+                        matTooltipPosition="below"
+                        #editTooltip="matTooltip"
+                        (click)="editTooltip.hide(0); openEditPlaylist()">
                         <i class="far fa-pencil" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -64,16 +48,7 @@
             <p
                 class="description"
                 [textContent]="playlist.description || ''"
-                [attr.contenteditable]="
-                    isOwner &&
-                    editingMetadata &&
-                    !savingFields.has('description')
-                        ? 'plaintext-only'
-                        : null
-                "
-                [class.editable]="isOwner && editingMetadata"
-                aria-label="Playlist description"
-                (blur)="saveMetadataField('description', $event)"></p>
+                aria-label="Playlist description"></p>
             <div *ngIf="isOwner" class="owner-actions">
                 <mat-slide-toggle
                     [checked]="draftVisibility === visibilityOptions.PUBLIC"
@@ -272,3 +247,13 @@
         </section>
     </div>
 </main>
+
+<ng-template #editPlaylistDialog>
+    <clark-playlist-metadata-form
+        [form]="editForm"
+        [editing]="true"
+        [saving]="savingMetadata"
+        [error]="editError"
+        (submitted)="saveMetadata()"
+        (cancelled)="cancelEditPlaylist()"></clark-playlist-metadata-form>
+</ng-template>

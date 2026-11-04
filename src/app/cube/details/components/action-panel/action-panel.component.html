@@ -16,7 +16,7 @@
                 *ngIf="auth.user && isReleased"
                 class="button neutral"
                 id="add-to-playlist-button"
-                (activate)="showPlaylistModal = true">
+                (activate)="openPlaylistDialog()">
                 <span class="playlist-icon" aria-hidden="true">
                     <i class="far fa-list-ul"></i><i class="fas fa-plus"></i>
                 </span>
@@ -148,15 +148,14 @@
     </div>
 </clark-popup>
 
-<clark-popup *ngIf="showPlaylistModal" (closed)="showPlaylistModal = false">
-    <div #popupInner style="width: 600px; max-width: calc(100vw - 40px)">
-        <clark-add-to-playlist-modal
-            [learningObjectCuid]="learningObject.cuid"
-            [userId]="auth.user.userId"
-            (added)="showPlaylistModal = false"
-            (closed)="showPlaylistModal = false"></clark-add-to-playlist-modal>
-    </div>
-</clark-popup>
+<ng-template #playlistDialog>
+    <clark-add-to-playlist-modal
+        [learningObjectCuid]="learningObject.cuid"
+        [userId]="auth.user.userId"
+        (savingChange)="setPlaylistSaving($event)"
+        (added)="closePlaylistDialog()"
+        (closed)="closePlaylistDialog()"></clark-add-to-playlist-modal>
+</ng-template>
 
 <ng-template #downloadButtonsTemplate>
     <button

@@ -3,7 +3,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { PlaylistService } from "app/core/playlist-module/playlist.service";
 import { Playlist } from "app/core/playlist-module/playlist.types";
 import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
-import { of, throwError } from "rxjs";
+import { of, Subject, throwError } from "rxjs";
 import { AddToPlaylistModalComponent } from "./add-to-playlist-modal.component";
 
 describe("AddToPlaylistModalComponent", () => {
@@ -69,10 +69,9 @@ describe("AddToPlaylistModalComponent", () => {
 
     it("emits cancellation", () => {
         const closed = jest.spyOn(component.closed, "emit");
-        component.showCreateForm();
-        fixture.detectChanges();
-
-        fixture.nativeElement.querySelector("footer .neutral").click();
+        fixture.nativeElement
+            .querySelector(".playlist-actions .neutral")
+            .click();
 
         expect(closed).toHaveBeenCalled();
         expect(component.createForm.touched).toBe(false);
@@ -85,7 +84,7 @@ describe("AddToPlaylistModalComponent", () => {
         component.showPlaylistList();
 
         expect(component.creating).toBe(false);
-        expect(component.createAttempted).toBe(false);
+        expect(component.createError).toBe("");
     });
 
     it("shows the empty state", () => {
@@ -115,8 +114,93 @@ describe("AddToPlaylistModalComponent", () => {
 
         component.createAndAdd();
 
-        expect(component.createAttempted).toBe(true);
+        expect(component.createForm.invalid).toBe(true);
         expect(playlistService.createPlaylist).not.toHaveBeenCalled();
+    });
+
+    it("renders the shared creation form with an optional description", () => {
+        component.showCreateForm();
+        fixture.detectChanges();
+        expect(
+            fixture.nativeElement.querySelector("clark-playlist-metadata-form"),
+        ).toBeTruthy();
+        expect(fixture.nativeElement.textContent).toContain(
+            "Description (optional)",
+        );
+        expect(
+            fixture.nativeElement.querySelector('button[type="submit"]')
+                .textContent,
+        ).toContain("Create playlist");
+        component.createForm.controls.name.setValue("  Title only  ");
+        fixture.detectChanges();
+        fixture.nativeElement.querySelector('button[type="submit"]').click();
+        expect(playlistService.createPlaylist).toHaveBeenCalledWith({
+            name: "Title only",
+            description: "",
+            visibility: "private",
+        });
+        expect(playlistService.addLearningObject).toHaveBeenCalledWith(
+            playlist._id,
+            "object-cuid",
+        );
+    });
+
+    it("returns to the chooser when cancelling shared creation without sending a request", () => {
+        component.showCreateForm();
+        fixture.detectChanges();
+        fixture.nativeElement.querySelector(".cancel-button").click();
+        fixture.detectChanges();
+        expect(component.creating).toBe(false);
+        expect(fixture.nativeElement.textContent).toContain(
+            "Select a playlist",
+        );
+        expect(playlistService.createPlaylist).not.toHaveBeenCalled();
+    });
+
+    it.each([
+        { name: " ", description: "" },
+        { name: "a".repeat(101), description: "" },
+        { name: "Title", description: "a".repeat(501) },
+    ])("uses shared validation for invalid metadata %p", (fields) => {
+        component.showCreateForm();
+        component.createForm.setValue(fields);
+        component.createAndAdd();
+        expect(playlistService.createPlaylist).not.toHaveBeenCalled();
+    });
+
+    it("keeps the form and dialog locked until creation and adding finish", () => {
+        const pending = new Subject<Playlist>();
+        playlistService.addLearningObject.mockReturnValue(pending);
+        const saving = jest.spyOn(component.savingChange, "emit");
+        component.showCreateForm();
+        component.createForm.controls.name.setValue("Title only");
+        component.createAndAdd();
+        component.createAndAdd();
+        component.showPlaylistList();
+        expect(component.creating).toBe(true);
+        expect(component.saving).toBe(true);
+        expect(component.createForm.disabled).toBe(true);
+        expect(playlistService.createPlaylist).toHaveBeenCalledTimes(1);
+        expect(saving).toHaveBeenLastCalledWith(true);
+        pending.next(playlist);
+        expect(component.saving).toBe(false);
+        expect(saving).toHaveBeenLastCalledWith(false);
+    });
+
+    it("leaves a failed creation editable with an inline error", () => {
+        playlistService.createPlaylist.mockReturnValue(
+            throwError(new HttpErrorResponse({ status: 500 })),
+        );
+        component.showCreateForm();
+        component.createForm.controls.name.setValue("Title only");
+        component.createAndAdd();
+        fixture.detectChanges();
+        expect(component.createForm.enabled).toBe(true);
+        expect(component.createForm.controls.name.value).toBe("Title only");
+        expect(
+            fixture.nativeElement.querySelector('[role="alert"]').textContent,
+        ).toContain("couldn't create");
+        expect(playlistService.addLearningObject).not.toHaveBeenCalled();
     });
 
     it("creates a playlist and adds the learning object in one flow", () => {
@@ -125,7 +209,6 @@ describe("AddToPlaylistModalComponent", () => {
         component.createForm.setValue({
             name: "New playlist",
             description: "A useful playlist",
-            visibility: "public",
         });
 
         component.createAndAdd();
@@ -133,7 +216,7 @@ describe("AddToPlaylistModalComponent", () => {
         expect(playlistService.createPlaylist).toHaveBeenCalledWith({
             name: "New playlist",
             description: "A useful playlist",
-            visibility: "public",
+            visibility: "private",
         });
         expect(playlistService.addLearningObject).toHaveBeenCalledWith(
             playlist._id,
@@ -145,7 +228,7 @@ describe("AddToPlaylistModalComponent", () => {
     it("treats a duplicate response as an already-added success", () => {
         const added = jest.spyOn(component.added, "emit");
         playlistService.addLearningObject.mockReturnValue(
-            throwError(() => new HttpErrorResponse({ status: 409 })),
+            throwError(new HttpErrorResponse({ status: 409 })),
         );
         component.selectedPlaylistId = playlist._id;
 
@@ -161,7 +244,7 @@ describe("AddToPlaylistModalComponent", () => {
 
     it("keeps the modal retryable after an API failure", () => {
         playlistService.addLearningObject.mockReturnValue(
-            throwError(() => new HttpErrorResponse({ status: 500 })),
+            throwError(new HttpErrorResponse({ status: 500 })),
         );
         component.selectedPlaylistId = playlist._id;
 
@@ -174,14 +257,13 @@ describe("AddToPlaylistModalComponent", () => {
     it("retries adding to a newly created playlist without recreating it", () => {
         playlistService.addLearningObject
             .mockReturnValueOnce(
-                throwError(() => new HttpErrorResponse({ status: 500 })),
+                throwError(new HttpErrorResponse({ status: 500 })),
             )
             .mockReturnValueOnce(of(playlist));
         component.showCreateForm();
         component.createForm.setValue({
             name: playlist.name,
             description: playlist.description,
-            visibility: playlist.visibility,
         });
 
         component.createAndAdd();
@@ -198,14 +280,13 @@ describe("AddToPlaylistModalComponent", () => {
             .mockReturnValueOnce(of(nextPlaylist));
         playlistService.addLearningObject
             .mockReturnValueOnce(
-                throwError(() => new HttpErrorResponse({ status: 500 })),
+                throwError(new HttpErrorResponse({ status: 500 })),
             )
             .mockReturnValueOnce(of(nextPlaylist));
         component.showCreateForm();
         component.createForm.setValue({
             name: playlist.name,
             description: playlist.description,
-            visibility: playlist.visibility,
         });
         component.createAndAdd();
 
@@ -214,7 +295,6 @@ describe("AddToPlaylistModalComponent", () => {
         component.createForm.setValue({
             name: "Next playlist",
             description: "A different playlist",
-            visibility: "public",
         });
         component.createAndAdd();
 

@@ -90,12 +90,6 @@
         background: $secondary-white-background;
     }
 
-    &[aria-pressed="true"] {
-        border-color: $light-blue;
-        background: $light-blue;
-        color: white;
-    }
-
     &:focus-visible {
         outline: 2px solid $light-blue;
         outline-offset: 2px;
@@ -468,15 +462,5 @@ section h2 {
 
     .search-form {
         flex-direction: column;
-    }
-}
-
-.field-display h1.editable,
-.description.editable {
-    cursor: text;
-    outline: none;
-
-    &:focus {
-        box-shadow: inset 0 -2px $light-blue;
     }
 }

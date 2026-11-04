@@ -68,41 +68,10 @@
 </main>
 
 <ng-template #createPlaylistDialog>
-    <h2 mat-dialog-title id="create-playlist-title">Add playlist</h2>
-    <form [formGroup]="createForm" (ngSubmit)="createPlaylist()">
-        <mat-dialog-content class="create-playlist-content">
-            <label for="new-playlist-title">Title</label>
-            <input
-                id="new-playlist-title"
-                type="text"
-                formControlName="name"
-                maxlength="100"
-                required />
-            <label for="new-playlist-description">Description</label>
-            <textarea
-                id="new-playlist-description"
-                formControlName="description"
-                maxlength="500"
-                rows="3"
-                required></textarea>
-            <p *ngIf="createError" class="create-error" role="alert">
-                {{ createError }}
-            </p>
-        </mat-dialog-content>
-        <mat-dialog-actions align="end">
-            <button
-                type="button"
-                class="cancel-button"
-                [disabled]="creating"
-                (click)="cancelCreatePlaylist()">
-                Cancel
-            </button>
-            <button
-                type="submit"
-                class="primary-button"
-                [disabled]="creating || createForm.invalid">
-                {{ creating ? "Creating…" : "Create playlist" }}
-            </button>
-        </mat-dialog-actions>
-    </form>
+    <clark-playlist-metadata-form
+        [form]="createForm"
+        [saving]="creating"
+        [error]="createError"
+        (submitted)="createPlaylist()"
+        (cancelled)="cancelCreatePlaylist()"></clark-playlist-metadata-form>
 </ng-template>
