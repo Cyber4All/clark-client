@@ -77,6 +77,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     activeCollection: string;
 
     listViewHeightOffset: number;
+    private listViewHeightTimeout: ReturnType<typeof setTimeout>;
     // Query for retrieve
     query: Query = {
         collection: "",
@@ -95,11 +96,17 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     ) {}
 
     async ngOnInit() {
-        setTimeout(() => {
+        this.listViewHeightTimeout = setTimeout(() => {
+            // These elements may not be rendered (or the component may be
+            // destroyed) by the time this timer fires.
+            const list = this.listElement?.nativeElement;
+            const headers = this.headersElement?.nativeElement;
+            if (!list || !headers) {
+                return;
+            }
             this.listViewHeightOffset =
-                this.listElement.nativeElement.getBoundingClientRect().top +
-                this.headersElement.nativeElement.getBoundingClientRect()
-                    .height;
+                list.getBoundingClientRect().top +
+                headers.getBoundingClientRect().height;
         });
 
         this.featureService.featuredObjects.subscribe((objects) => {
@@ -244,6 +251,7 @@ export class FeaturedComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        clearTimeout(this.listViewHeightTimeout);
         this.destroyed$.next();
         this.destroyed$.unsubscribe();
     }

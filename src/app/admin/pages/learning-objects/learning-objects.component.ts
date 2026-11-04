@@ -59,6 +59,7 @@ export class LearningObjectsComponent
     selectedStatus: string;
 
     listViewHeightOffset: number;
+    private listViewHeightTimeout: ReturnType<typeof setTimeout>;
 
     _query: Query = {
         currPage: 1,
@@ -194,7 +195,7 @@ export class LearningObjectsComponent
     }
 
     changePage(pageNum) {
-        this.listElement.nativeElement.scrollIntoView({
+        this.listElement?.nativeElement?.scrollIntoView({
             behavior: "smooth",
             block: "start",
         });
@@ -470,15 +471,22 @@ export class LearningObjectsComponent
     }
 
     ngAfterViewInit(): void {
-        setTimeout(() => {
+        this.listViewHeightTimeout = setTimeout(() => {
+            // The headers element is only rendered once learning objects have
+            // loaded (*ngIf), so it may not exist when this timer fires.
+            const list = this.listElement?.nativeElement;
+            const headers = this.headersElement?.nativeElement;
+            if (!list || !headers) {
+                return;
+            }
             this.listViewHeightOffset =
-                this.listElement.nativeElement.getBoundingClientRect().top +
-                this.headersElement.nativeElement.getBoundingClientRect()
-                    .height;
+                list.getBoundingClientRect().top +
+                headers.getBoundingClientRect().height;
         }, 2000);
     }
 
     ngOnDestroy() {
+        clearTimeout(this.listViewHeightTimeout);
         this.componentDestroyed$.next();
         this.componentDestroyed$.unsubscribe();
     }
