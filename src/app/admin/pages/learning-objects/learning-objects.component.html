@@ -40,7 +40,7 @@
                                 ">
                                 <i
                                     style="font-size: 18px"
-                                    class="far fa-sort"></i>
+                                    class="fas fa-arrow-down"></i>
                             </span>
                             <span
                                 *ngIf="
@@ -49,7 +49,7 @@
                                 ">
                                 <i
                                     style="font-size: 18px"
-                                    class="far fa-sort-up"></i>
+                                    class="fas fa-arrow-up"></i>
                             </span>
                             <span
                                 *ngIf="
@@ -58,7 +58,7 @@
                                 ">
                                 <i
                                     style="font-size: 18px"
-                                    class="far fa-sort-down"></i>
+                                    class="fas fa-arrow-down"></i>
                             </span>
                         </button>
                         <button
@@ -74,7 +74,7 @@
                                 ">
                                 <i
                                     style="font-size: 18px"
-                                    class="far fa-sort"></i>
+                                    class="fas fa-arrow-down"></i>
                             </span>
                             <span
                                 *ngIf="
@@ -83,7 +83,7 @@
                                 ">
                                 <i
                                     style="font-size: 18px"
-                                    class="far fa-sort-up"></i>
+                                    class="fas fa-arrow-up"></i>
                             </span>
                             <span
                                 *ngIf="
@@ -92,17 +92,22 @@
                                 ">
                                 <i
                                     style="font-size: 18px"
-                                    class="far fa-sort-down"></i>
+                                    class="fas fa-arrow-down"></i>
                             </span>
                         </button>
                         <div>Length</div>
                         <div>
                             Date
                             <button class="sort" (activate)="sortByDate()">
-                                <span *ngIf="!_query.sortType; else sortArrows">
+                                <span
+                                    *ngIf="
+                                        _query.orderBy !== OrderBy.Date ||
+                                            !_query.sortType;
+                                        else sortArrows
+                                    ">
                                     <i
                                         style="font-size: 18px"
-                                        class="far fa-sort"></i>
+                                        class="fas fa-arrow-down"></i>
                                 </span>
                             </button>
                         </div>
@@ -151,10 +156,10 @@
 
 <ng-template #sortArrows>
     <span *ngIf="_query.sortType.toString() === '1'">
-        <i style="font-size: 18px" class="far fa-sort-up"></i>
+        <i style="font-size: 18px" class="fas fa-arrow-up"></i>
     </span>
     <span *ngIf="_query.sortType.toString() === '-1'">
-        <i style="font-size: 18px" class="far fa-sort-down"></i>
+        <i style="font-size: 18px" class="fas fa-arrow-down"></i>
     </span>
 </ng-template>
 

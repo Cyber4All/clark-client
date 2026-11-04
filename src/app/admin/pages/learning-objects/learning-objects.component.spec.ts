@@ -120,4 +120,60 @@ describe("LearningObjectsComponent", () => {
             expect(router.url).toContain("sortType=1");
         },
     );
+
+    it.each([OrderBy.Name, OrderBy.Author])(
+        "switches from %s sorting to date sorting",
+        (orderBy) => {
+            component.query = {
+                orderBy,
+                sortType: SortType.Ascending,
+                text: "search text",
+                collection: "collection-abv",
+                currPage: 3,
+            };
+
+            component.sortByDate();
+            const request = httpMock.expectOne(
+                (req) =>
+                    req.url === `${environment.apiURL}/learning-objects` &&
+                    req.params.get("orderBy") === "date" &&
+                    req.params.get("sortType") === "-1" &&
+                    req.params.get("text") === "search text" &&
+                    req.params.get("collection") === "collection-abv" &&
+                    req.params.get("currPage") === "3",
+            );
+
+            expect(component.query.orderBy).toBe(OrderBy.Date);
+            expect(component.query.sortType).toBe(SortType.Descending);
+            request.flush({ objects: [], total: 0 });
+        },
+    );
+
+    it("toggles date sorting in both directions", () => {
+        component.query = {
+            orderBy: OrderBy.Date,
+            sortType: SortType.Descending,
+            currPage: 2,
+        };
+
+        component.sortByDate();
+        let request = httpMock.expectOne(
+            (req) =>
+                req.url === `${environment.apiURL}/learning-objects` &&
+                req.params.get("orderBy") === "date" &&
+                req.params.get("sortType") === "1",
+        );
+        expect(component.query.sortType).toBe(SortType.Ascending);
+        request.flush({ objects: [], total: 0 });
+
+        component.sortByDate();
+        request = httpMock.expectOne(
+            (req) =>
+                req.url === `${environment.apiURL}/learning-objects` &&
+                req.params.get("orderBy") === "date" &&
+                req.params.get("sortType") === "-1",
+        );
+        expect(component.query.sortType).toBe(SortType.Descending);
+        request.flush({ objects: [], total: 0 });
+    });
 });

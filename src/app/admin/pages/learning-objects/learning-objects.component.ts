@@ -44,7 +44,8 @@ import { PaginationComponent } from "../../components/pagination/pagination.comp
     ],
 })
 export class LearningObjectsComponent
-    implements OnInit, OnDestroy, AfterViewInit {
+    implements OnInit, OnDestroy, AfterViewInit
+{
     OrderBy = OrderBy;
 
     @ViewChild("list") listElement: ElementRef<HTMLElement>;
@@ -302,22 +303,17 @@ export class LearningObjectsComponent
      * @param direction the direction of the sort (ASC or DESC)
      */
     sortByDate() {
-        if (!this.query.sortType) {
-            this.query = {
-                sortType: SortType.Descending,
-                orderBy: OrderBy.Date,
-            };
-        } else if (this.query.sortType.toString() === "-1") {
-            this.query = {
-                ...this.query,
-                sortType: SortType.Ascending,
-            };
-        } else if (this.query.sortType.toString() === "1") {
-            this.query = {
-                ...this.query,
-                sortType: SortType.Descending,
-            };
-        }
+        const isActiveSort = this.query.orderBy === OrderBy.Date;
+        const sortType =
+            isActiveSort && this.query.sortType?.toString() === "-1"
+                ? SortType.Ascending
+                : SortType.Descending;
+
+        this.query = {
+            ...this.query,
+            orderBy: OrderBy.Date,
+            sortType,
+        };
         this.learningObjects = [];
         this.allResultsReceived = false;
 
