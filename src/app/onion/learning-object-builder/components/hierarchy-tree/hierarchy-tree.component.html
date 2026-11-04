@@ -7,31 +7,69 @@
     target, then appends the dragged node as that node's child. There is no
     cdkDropListGroup and there are no per-node drop lists.
 -->
-<div
-    class="hierarchy-tree"
-    cdkDropList
-    cdkDropListSortingDisabled
-    [class.is-dragging]="!!draggingNode"
-    (cdkDropListDropped)="onTreeDrop($event)"
-    role="tree"
-    aria-label="Learning object hierarchy">
-    <ng-container *ngIf="tree$ | async as tree">
-        <clark-hierarchy-node
-            *ngFor="let node of tree; trackBy: trackById"
-            [node]="node"
-            [depth]="0"
-            [isRoot]="true"
-            [canDropPredicate]="canDrop"
-            [canMovePredicate]="canMove"
-            [draggingNode]="draggingNode"
-            [hoveredTargetId]="hoveredTargetId"
-            (toggleExpanded)="onToggleExpanded($event)"
-            (menuAction)="onMenuAction($event)"
-            (dragActive)="onDragActive($event)"
-            (dragMoved)="onDragMoved($event)"></clark-hierarchy-node>
+<ng-container *ngIf="status$ | async as status">
+    <div
+        *ngIf="status === 'loading'"
+        class="hierarchy-state hierarchy-state--loading"
+        role="status"
+        aria-live="polite"
+        aria-busy="true">
+        <span class="hierarchy-skeleton hierarchy-skeleton--root"></span>
+        <span class="hierarchy-skeleton"></span>
+        <span class="hierarchy-skeleton hierarchy-skeleton--indented"></span>
+        <span class="hierarchy-skeleton"></span>
+        <span class="sr-only">Loading hierarchy…</span>
+    </div>
+
+    <div
+        *ngIf="status === 'error'"
+        class="hierarchy-state hierarchy-state--error"
+        role="alert">
+        <p class="hierarchy-state__message">
+            We couldn't load this hierarchy. Check your connection and try
+            again.
+        </p>
+        <button
+            type="button"
+            class="hierarchy-state__retry"
+            (click)="onRetry()">
+            Retry
+        </button>
+    </div>
+
+    <ng-container *ngIf="status === 'ready' || status === 'empty'">
+        <div
+            class="hierarchy-tree"
+            cdkDropList
+            cdkDropListSortingDisabled
+            [class.is-dragging]="!!draggingNode"
+            (cdkDropListDropped)="onTreeDrop($event)"
+            role="tree"
+            aria-label="Learning object hierarchy">
+            <ng-container *ngIf="tree$ | async as tree">
+                <clark-hierarchy-node
+                    *ngFor="let node of tree; trackBy: trackById"
+                    [node]="node"
+                    [depth]="0"
+                    [isRoot]="true"
+                    [canDropPredicate]="canDrop"
+                    [canMovePredicate]="canMove"
+                    [draggingNode]="draggingNode"
+                    [hoveredTargetId]="hoveredTargetId"
+                    (toggleExpanded)="onToggleExpanded($event)"
+                    (menuAction)="onMenuAction($event)"
+                    (dragActive)="onDragActive($event)"
+                    (dragMoved)="onDragMoved($event)"></clark-hierarchy-node>
+            </ng-container>
+        </div>
+
+        <p *ngIf="status === 'empty'" class="hierarchy-state__empty">
+            This learning object has no children yet.
+        </p>
+
+        <p class="hierarchy-tree__hint">
+            <i class="far fa-info-circle"></i>
+            Linked objects keep their original name and length.
+        </p>
     </ng-container>
-</div>
-<p class="hierarchy-tree__hint">
-    <i class="far fa-info-circle"></i>
-    Linked objects keep their original name and length.
-</p>
+</ng-container>

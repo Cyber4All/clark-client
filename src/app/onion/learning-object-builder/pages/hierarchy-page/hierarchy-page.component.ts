@@ -4,6 +4,7 @@ import { Subject } from "rxjs";
 import { filter, takeUntil } from "rxjs/operators";
 import { BuilderStore } from "../../builder-store.service";
 import { HierarchyTreeComponent } from "../../components/hierarchy-tree/hierarchy-tree.component";
+import { HierarchyLoaderService } from "../../components/hierarchy-tree/hierarchy-loader.service";
 import { HierarchyViewService } from "../../components/hierarchy-tree/hierarchy-view.service";
 
 /**
@@ -12,7 +13,8 @@ import { HierarchyViewService } from "../../components/hierarchy-tree/hierarchy-
  * Unlike the sibling builder pages, this tab no longer renders the legacy
  * "Children" scaffold in the left column; the hierarchy tree replaces it. The
  * column wrapper renders only the main column so the tree spans the full page
- * width. The tree is driven by mock/local data via {@link HierarchyViewService}.
+ * width. The tree is loaded from the API by {@link HierarchyLoaderService}
+ * (sc-40640) and held by {@link HierarchyViewService}.
  *
  * The view service is provided at the page level so its lifetime matches the
  * tab, consistent with how builder state is scoped in this feature.
@@ -22,7 +24,7 @@ import { HierarchyViewService } from "../../components/hierarchy-tree/hierarchy-
     templateUrl: "./hierarchy-page.component.html",
     styleUrls: ["./hierarchy-page.component.scss"],
     standalone: true,
-    providers: [HierarchyViewService],
+    providers: [HierarchyViewService, HierarchyLoaderService],
     imports: [HierarchyTreeComponent],
 })
 export class HierarchyPageComponent implements OnInit, OnDestroy {

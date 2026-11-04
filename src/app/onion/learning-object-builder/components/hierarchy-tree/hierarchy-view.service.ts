@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { LearningObject } from "@entity";
 import { HierarchyNode, MoveDestination } from "./hierarchy-tree.types";
 import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
 
@@ -9,12 +8,11 @@ import { canHaveChildren, isValidChildLength } from "./hierarchy-length.util";
  *
  * This service holds the hierarchy as a presentation view-model in a
  * BehaviorSubject, mirroring the repo's custom-RxJS store pattern (see
- * `BuilderStore`). For this story it is seeded with MOCK/LOCAL data only and
- * performs NO API calls: it is the component + interaction shell.
- *
- * Later stories replace the seed + persistence seam with real data:
- *   - sc-40236 wires create-new-child and reorder/re-parent persistence
- *   - sc-40237 wires link-existing
+ * `BuilderStore`). It performs NO API calls: `HierarchyLoaderService`
+ * (sc-40640) fetches the real hierarchy and publishes it through `setTree`.
+ * Moves are still local-only; persistence is wired in later stories:
+ *   - sc-40236 create-new-child and reorder/re-parent persistence
+ *   - sc-40237 link-existing
  *
  * It is NOT provided in root; the Hierarchy page provides it so its lifetime
  * matches the tab, consistent with how builder state is scoped.
@@ -30,11 +28,6 @@ export class HierarchyViewService {
     /** Synchronous snapshot of the current tree. */
     get tree(): HierarchyNode[] {
         return this.treeSubject.value;
-    }
-
-    /** Seed the tree with mock data. Replaced by real data wiring in later stories. */
-    seedMockData(): void {
-        this.treeSubject.next(buildMockHierarchy());
     }
 
     /** Replace the whole tree (used by tests and, later, real data loads). */
@@ -213,79 +206,6 @@ export class HierarchyViewService {
     parentIdOf(nodeId: string): string | undefined {
         return parentIdOf(this.treeSubject.value, nodeId);
     }
-}
-
-/** A compact demo covering nested moves, alternate parents, and linked objects. */
-function buildMockHierarchy(): HierarchyNode[] {
-    const { COURSE, UNIT, MODULE, MICROMODULE, NANOMODULE } =
-        LearningObject.Length;
-    return [
-        {
-            id: "root",
-            name: "Intro to Cybersecurity",
-            length: COURSE,
-            editable: true,
-            expanded: true,
-            children: [
-                {
-                    id: "unit-foundations",
-                    name: "Foundations Unit",
-                    length: UNIT,
-                    editable: true,
-                    expanded: true,
-                    children: [
-                        {
-                            id: "mod-core-concepts",
-                            name: "Core Concepts",
-                            length: MODULE,
-                            editable: true,
-                            expanded: true,
-                            children: [
-                                {
-                                    id: "micro-cia-triad",
-                                    name: "CIA Triad",
-                                    length: MICROMODULE,
-                                    editable: true,
-                                    children: [],
-                                },
-                            ],
-                        },
-                    ],
-                },
-                {
-                    id: "network-security",
-                    name: "Network Security",
-                    length: MICROMODULE,
-                    editable: true,
-                    children: [],
-                },
-                {
-                    id: "incident-response",
-                    name: "Incident Response (Linked)",
-                    length: MODULE,
-                    editable: false,
-                    linkedRoot: true,
-                    expanded: true,
-                    children: [
-                        {
-                            id: "micro-detection",
-                            name: "Detection & Triage",
-                            length: MICROMODULE,
-                            editable: false,
-                            children: [],
-                        },
-                    ],
-                },
-                {
-                    id: "nano-glossary",
-                    name: "Security Glossary",
-                    length: NANOMODULE,
-                    editable: true,
-                    children: [],
-                },
-            ],
-        },
-    ];
 }
 
 /** Immutably map over every node in the forest, preserving structure. */

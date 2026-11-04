@@ -170,3 +170,76 @@ export function buildHierarchyTestFixture(): HierarchyNode[] {
         },
     ];
 }
+
+/** A compact demo covering nested moves, alternate parents, and linked objects. */
+export function buildMockHierarchyFixture(): HierarchyNode[] {
+    const { COURSE, UNIT, MODULE, MICROMODULE, NANOMODULE } =
+        LearningObject.Length;
+    return [
+        {
+            id: "root",
+            name: "Intro to Cybersecurity",
+            length: COURSE,
+            editable: true,
+            expanded: true,
+            children: [
+                {
+                    id: "unit-foundations",
+                    name: "Foundations Unit",
+                    length: UNIT,
+                    editable: true,
+                    expanded: true,
+                    children: [
+                        {
+                            id: "mod-core-concepts",
+                            name: "Core Concepts",
+                            length: MODULE,
+                            editable: true,
+                            expanded: true,
+                            children: [
+                                {
+                                    id: "micro-cia-triad",
+                                    name: "CIA Triad",
+                                    length: MICROMODULE,
+                                    editable: true,
+                                    children: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    id: "network-security",
+                    name: "Network Security",
+                    length: MICROMODULE,
+                    editable: true,
+                    children: [],
+                },
+                {
+                    id: "incident-response",
+                    name: "Incident Response (Linked)",
+                    length: MODULE,
+                    editable: false,
+                    linkedRoot: true,
+                    expanded: true,
+                    children: [
+                        {
+                            id: "micro-detection",
+                            name: "Detection & Triage",
+                            length: MICROMODULE,
+                            editable: false,
+                            children: [],
+                        },
+                    ],
+                },
+                {
+                    id: "nano-glossary",
+                    name: "Security Glossary",
+                    length: NANOMODULE,
+                    editable: true,
+                    children: [],
+                },
+            ],
+        },
+    ];
+}

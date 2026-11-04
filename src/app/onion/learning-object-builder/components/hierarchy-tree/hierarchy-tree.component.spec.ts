@@ -13,6 +13,10 @@ import { CdkDragDrop } from "@angular/cdk/drag-drop";
 
 import { HierarchyTreeComponent } from "./hierarchy-tree.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
+import { HierarchyLoaderService } from "./hierarchy-loader.service";
+import { buildMockHierarchyFixture } from "./hierarchy-test-data";
+import { LearningObject } from "@entity";
+import { of } from "rxjs";
 import { HierarchyNode } from "./hierarchy-tree.types";
 
 /**
@@ -20,7 +24,7 @@ import { HierarchyNode } from "./hierarchy-tree.types";
  *
  * These exercise the fully wired coordinator: the real component renders
  * recursive `clark-hierarchy-node` rows (each with a kebab Action Menu), the
- * real `HierarchyViewService` (seeded with mock data on init) provides the
+ * real `HierarchyViewService` (populated by a stubbed loader on init) provides the
  * move rules, and the real `HierarchyMovePickerComponent` is attached into a
  * CDK Overlay. We drive the flow through the component's public surface
  * (clicking the rendered menu item / overlay controls) and assert against the
@@ -203,6 +207,18 @@ describe("HierarchyTreeComponent (integration)", () => {
             imports: [HierarchyTreeComponent, NoopAnimationsModule],
             providers: [
                 HierarchyViewService,
+                {
+                    // Loading is covered by hierarchy-loader.service.spec.ts;
+                    // here the loader publishes a fixed tree so the move
+                    // flows can be exercised.
+                    provide: HierarchyLoaderService,
+                    useFactory: (view: HierarchyViewService) => ({
+                        status$: of("ready"),
+                        load: () => view.setTree(buildMockHierarchyFixture()),
+                        retry: jest.fn(),
+                    }),
+                    deps: [HierarchyViewService],
+                },
                 { provide: ToastrOvenService, useValue: notifications },
                 { provide: LiveAnnouncer, useValue: liveAnnouncer },
             ],
@@ -213,7 +229,11 @@ describe("HierarchyTreeComponent (integration)", () => {
         fixture = TestBed.createComponent(HierarchyTreeComponent);
         component = fixture.componentInstance;
         viewService = TestBed.inject(HierarchyViewService);
-        fixture.detectChanges(); // ngOnInit seeds the mock tree
+        component.learningObject = {
+            id: "root",
+            name: "Root",
+        } as LearningObject;
+        fixture.detectChanges(); // ngOnInit loads the (stubbed) tree
     });
 
     afterEach(fakeAsync(() => {
@@ -222,7 +242,7 @@ describe("HierarchyTreeComponent (integration)", () => {
         flush();
     }));
 
-    it("seeds the mock tree and renders node rows", () => {
+    it("loads the tree and renders node rows", () => {
         expect(viewService.tree.length).toBeGreaterThan(0);
         expect(
             fixture.nativeElement.querySelector(
@@ -646,7 +666,7 @@ describe("HierarchyTreeComponent (integration)", () => {
             const pickerTree = JSON.stringify(viewService.tree);
 
             // Reset and apply the equivalent drag-path move (same args).
-            viewService.seedMockData();
+            viewService.setTree(buildMockHierarchyFixture());
             viewService.moveNode("nano-glossary", "network-security");
             const dragTree = JSON.stringify(viewService.tree);
 

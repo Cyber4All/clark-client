@@ -110,3 +110,19 @@ export interface MoveDestination {
     /** True when this destination is the node's current parent (reorder). */
     isCurrentParent: boolean;
 }
+
+/**
+ * Load state of the Hierarchy tab.
+ *
+ *  - `loading`: the hierarchy request is in flight
+ *  - `ready`:   the hierarchy loaded and the root has at least one child
+ *  - `empty`:   the hierarchy loaded and the root has no children
+ *  - `error`:   a request failed; the author can retry
+ */
+export type HierarchyLoadStatus = "loading" | "ready" | "empty" | "error";
+
+/** The signed-in user facts that decide whether a child is editable. */
+export interface HierarchyViewer {
+    username?: string;
+    isAdminOrEditor: boolean;
+}
