@@ -10,6 +10,7 @@ import {
 import { UtilityService } from "app/core/utility-module/utility.service";
 import { NgStyle, NgClass, NgIf } from "@angular/common";
 
+// prettier-ignore
 @Component({
     selector: "clark-column-wrapper",
     templateUrl: "./column-wrapper.component.html",
@@ -18,7 +19,8 @@ import { NgStyle, NgClass, NgIf } from "@angular/common";
     imports: [NgStyle, NgClass, NgIf],
 })
 export class ColumnWrapperComponent
-    implements OnInit, AfterViewInit, OnDestroy {
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild("columnWrapper") columnWrapper: ElementRef;
 
     @Input() columns = "lmr";
@@ -53,9 +55,11 @@ export class ColumnWrapperComponent
                 window.innerHeight -
                 this.columnOffset -
                 (this.messageBar
-                    ? (document.querySelector(
-                          "clark-message .wrapper",
-                      ) as HTMLElement)?.offsetHeight ?? 0
+                    ? ((
+                          document.querySelector(
+                              "clark-message .wrapper",
+                          ) as HTMLElement
+                      )?.offsetHeight ?? 0)
                     : 0) +
                 30; // this +30 offsets the wrappers -30 offset
 

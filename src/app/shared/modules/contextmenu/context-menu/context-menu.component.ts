@@ -146,7 +146,8 @@ export class ContextMenuComponent implements AfterViewInit, OnDestroy {
                             if (
                                 !event.relatedTarget ||
                                 (event.relatedTarget as HTMLElement)
-                                    .parentElement !== firstElement.parentElement
+                                    .parentElement !==
+                                    firstElement.parentElement
                             ) {
                                 this.close.emit();
                             }

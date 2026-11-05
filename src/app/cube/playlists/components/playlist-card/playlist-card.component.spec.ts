@@ -1,0 +1,58 @@
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { RouterTestingModule } from "@angular/router/testing";
+import { Playlist } from "app/core/playlist-module/playlist.types";
+import { PlaylistCardComponent } from "./playlist-card.component";
+
+describe("PlaylistCardComponent", () => {
+    let fixture: ComponentFixture<PlaylistCardComponent>;
+
+    const playlist: Playlist = {
+        _id: "playlist-id",
+        userId: "user-id",
+        learningObjectCuids: ["object-cuid"],
+        name: "Public playlist",
+        description: "A public playlist",
+        visibility: "public",
+    };
+
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [PlaylistCardComponent, RouterTestingModule],
+        }).compileComponents();
+
+        fixture = TestBed.createComponent(PlaylistCardComponent);
+        fixture.componentInstance.playlist = playlist;
+        fixture.detectChanges();
+    });
+
+    it("links to the playlist detail page", () => {
+        const link = fixture.nativeElement.querySelector("a");
+
+        expect(link.getAttribute("href")).toBe("/playlists/playlist-id");
+        expect(link.getAttribute("aria-label")).toContain("1 learning object");
+    });
+
+    it("preserves owner-library URL context", () => {
+        fixture.componentInstance.returnUserId = "user-id";
+        fixture.detectChanges();
+
+        const link = fixture.nativeElement.querySelector("a");
+        expect(link.getAttribute("href")).toBe(
+            "/playlists/playlist-id?returnUserId=user-id",
+        );
+    });
+
+    it("uses the playlist pill for visibility", () => {
+        const pill = fixture.nativeElement.querySelector(".visibility");
+        expect(pill.textContent.trim()).toBe("public");
+
+        fixture.componentInstance.playlist = {
+            ...playlist,
+            visibility: "private",
+        };
+        fixture.detectChanges();
+
+        expect(pill.textContent.trim()).toBe("private");
+        expect(pill.classList).toContain("visibility--private");
+    });
+});

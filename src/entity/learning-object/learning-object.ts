@@ -74,6 +74,10 @@ export class LearningObject {
         return this._name;
     }
 
+    get displayName(): string {
+        return this._name === "" ? "Untitled Learning Object" : this._name;
+    }
+
     set name(name: string) {
         if (this.isValidName(name)) {
             this._name = name.trim();
@@ -345,7 +349,7 @@ export class LearningObject {
             urls: [],
             notes: "",
             folderDescriptions: [],
-            pdf: { name: "", url: "" },
+            pdf: "",
         };
         this._children = [];
         this._contributors = [];
@@ -889,12 +893,13 @@ export namespace LearningObject {
         urls: LearningObject.Material.Url[];
         notes: string;
         folderDescriptions: LearningObject.Material.FolderDescription[];
-        pdf: LearningObject.Material.PDF;
+        pdf: string;
     }
 
     export namespace Material {
         export interface File {
             _id: string;
+            storageRevision?: number;
             name: string;
             fileType: string;
             extension: string;
@@ -904,6 +909,7 @@ export namespace LearningObject {
             size?: number;
             description?: string;
             packageable?: boolean;
+            context?: boolean;
         }
         export interface Url {
             title: string;
@@ -913,10 +919,6 @@ export namespace LearningObject {
         export interface FolderDescription {
             path: string;
             description: string;
-        }
-        export interface PDF {
-            name: string;
-            url: string;
         }
     }
 }

@@ -1,0 +1,259 @@
+<main class="playlist-details">
+    <!-- returnUserId is used to preserve the user's playlist context when navigating back from a playlist. -->
+    <!-- If a user opens one of their playlists in the "My Playlist" page, then link to go back goes to "My Playlists" -->
+    <!-- If a user opens a playlist through the "Browse Playlists" page, then the link becomes "Browse Playlists"  -->
+    <a
+        class="back-link"
+        routerLink="/playlists"
+        [queryParams]="returnUserId ? { userId: returnUserId } : {}">
+        <i class="far fa-chevron-left" aria-hidden="true"></i>
+        {{ returnUserId ? "My Playlists" : "Browse Playlists" }}
+    </a>
+
+    <div *ngIf="loading" class="status" role="status" aria-live="polite">
+        <i class="far fa-spinner-third fa-spin" aria-hidden="true"></i>
+        Loading playlist...
+    </div>
+
+    <div *ngIf="!loading && hasError" class="status status--error" role="alert">
+        <h1>Playlist unavailable</h1>
+        <p>This playlist could not be found or is not available to you.</p>
+    </div>
+
+    <ng-container *ngIf="!loading && !hasError && playlist">
+        <header class="playlist-header">
+            <div class="playlist-title-row">
+                <div class="field-display">
+                    <h1 [textContent]="playlist.name"></h1>
+                    <button
+                        *ngIf="isOwner"
+                        type="button"
+                        class="edit-icon-button"
+                        aria-label="Edit playlist title and description"
+                        matTooltip="Edit playlist"
+                        matTooltipPosition="below"
+                        #editTooltip="matTooltip"
+                        (click)="editTooltip.hide(0); openEditPlaylist()">
+                        <i class="far fa-pencil" aria-hidden="true"></i>
+                    </button>
+                </div>
+                <button
+                    *ngIf="isOwner"
+                    type="button"
+                    class="danger-button playlist-delete-button"
+                    (click)="confirmDelete = true">
+                    Delete playlist
+                </button>
+            </div>
+            <p
+                class="description"
+                [textContent]="playlist.description || ''"
+                aria-label="Playlist description"></p>
+            <div *ngIf="isOwner" class="owner-actions">
+                <mat-slide-toggle
+                    [checked]="draftVisibility === visibilityOptions.PUBLIC"
+                    [disabled]="saving"
+                    (change)="
+                        saveVisibility(
+                            $event.checked
+                                ? visibilityOptions.PUBLIC
+                                : visibilityOptions.PRIVATE
+                        )
+                    "
+                    aria-label="Public playlist">
+                    {{
+                        draftVisibility === visibilityOptions.PUBLIC
+                            ? "Public"
+                            : "Private"
+                    }}
+                </mat-slide-toggle>
+            </div>
+        </header>
+
+        <p *ngIf="errorMessage" class="action-error" role="alert">
+            {{ errorMessage }}
+        </p>
+
+        <section
+            *ngIf="isOwner"
+            class="search-section"
+            aria-labelledby="add-learning-objects-heading">
+            <h2 id="add-learning-objects-heading">Add learning objects</h2>
+            <form class="search-form" (ngSubmit)="search(searchText)">
+                <input
+                    id="playlist-object-search"
+                    name="playlistObjectSearch"
+                    type="search"
+                    placeholder="Search learning objects"
+                    [ngModel]="searchText"
+                    (ngModelChange)="onSearchChange($event)" />
+                <button
+                    type="submit"
+                    [disabled]="searchLoading || searchText.trim().length < 3">
+                    Search
+                </button>
+            </form>
+            <p
+                *ngIf="
+                    searchText.trim().length > 0 && searchText.trim().length < 3
+                "
+                class="search-hint">
+                Enter at least 3 characters to search.
+            </p>
+            <p
+                *ngIf="searchLoading"
+                class="search-loading"
+                role="status"
+                aria-live="polite">
+                <i class="far fa-spinner-third fa-spin" aria-hidden="true"></i>
+                Searching…
+            </p>
+            <p *ngIf="searchError" class="action-error" role="alert">
+                Search failed.
+                <button type="button" (click)="search()">Try again</button>
+            </p>
+            <p
+                *ngIf="
+                    !searchLoading &&
+                    searchText.trim().length >= 3 &&
+                    !searchError &&
+                    !searchResults.length
+                "
+                class="search-hint">
+                No released learning objects found.
+            </p>
+            <ul
+                *ngIf="searchResults.length"
+                class="candidate-list card-list-actions">
+                <li
+                    *ngFor="let object of searchResults"
+                    [class.adding]="addingCuid === object.cuid">
+                    <clark-learning-object-component
+                        [learningObject]="object"
+                        learningObjectCard></clark-learning-object-component>
+                    <button
+                        type="button"
+                        class="card-action-button add-button"
+                        [disabled]="!!addingCuid"
+                        [attr.aria-label]="
+                            'Add ' + object.name + ' to playlist'
+                        "
+                        [attr.aria-busy]="addingCuid === object.cuid"
+                        tip="Add to playlist"
+                        tipPosition="bottom"
+                        (click)="addLearningObject(object)">
+                        <i
+                            class="far"
+                            [class.fa-plus]="addingCuid !== object.cuid"
+                            [class.fa-spinner-third]="
+                                addingCuid === object.cuid
+                            "
+                            [class.fa-spin]="addingCuid === object.cuid"
+                            aria-hidden="true"></i>
+                    </button>
+                </li>
+            </ul>
+            <button
+                *ngIf="searchHasMore"
+                type="button"
+                [disabled]="searchLoading"
+                (click)="search(searchText, true)">
+                Load more results
+            </button>
+        </section>
+
+        <section aria-labelledby="playlist-contents-heading">
+            <h2 id="playlist-contents-heading">Learning Objects</h2>
+
+            <p *ngIf="!learningObjects.length" class="status">
+                This playlist does not contain any learning objects yet.
+            </p>
+
+            <ul
+                *ngIf="learningObjects.length"
+                class="object-grid"
+                [class.card-list-actions]="isOwner">
+                <li *ngFor="let entry of learningObjects">
+                    <clark-learning-object-component
+                        *ngIf="entry.object as object; else unavailableObject"
+                        [learningObject]="object"
+                        learningObjectCard></clark-learning-object-component>
+
+                    <ng-template #unavailableObject>
+                        <div class="unavailable-card">
+                            <div
+                                class="unavailable-card__icon"
+                                aria-hidden="true">
+                                <i class="far fa-exclamation-circle"></i>
+                            </div>
+                            <div class="unavailable-card__content">
+                                <span class="object-type">Unavailable</span>
+                                <h3>Learning object unavailable</h3>
+                                <p>
+                                    The learning object referenced by
+                                    <span class="cuid">{{ entry.cuid }}</span>
+                                    is missing or not currently available.
+                                </p>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <button
+                        *ngIf="isOwner"
+                        type="button"
+                        class="card-action-button remove-button"
+                        [attr.aria-label]="
+                            'Remove ' +
+                            (entry.object?.name || entry.cuid) +
+                            ' from playlist'
+                        "
+                        tip="Remove from playlist"
+                        tipPosition="bottom"
+                        (click)="removeLearningObject(entry)">
+                        <i class="far fa-trash-alt" aria-hidden="true"></i>
+                    </button>
+                </li>
+            </ul>
+        </section>
+    </ng-container>
+
+    <div
+        *ngIf="confirmDelete"
+        class="confirm-overlay"
+        role="presentation"
+        (click)="confirmDelete = false">
+        <section
+            class="confirm-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-playlist-title"
+            (click)="$event.stopPropagation()">
+            <h2 id="delete-playlist-title">Delete playlist?</h2>
+            <p>
+                This will delete “{{ playlist?.name }}”. <br />
+                Are you sure you want to delete this playlist?
+            </p>
+            <div class="confirm-dialog__actions">
+                <button type="button" (click)="confirmDelete = false">
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    class="danger-button"
+                    [disabled]="deleting"
+                    (click)="deletePlaylist()">
+                    {{ deleting ? "Deleting…" : "Delete playlist" }}
+                </button>
+            </div>
+        </section>
+    </div>
+</main>
+
+<ng-template #editPlaylistDialog>
+    <clark-playlist-metadata-form
+        [form]="editForm"
+        [editing]="true"
+        [saving]="savingMetadata"
+        [error]="editError"
+        (submitted)="saveMetadata()"
+        (cancelled)="cancelEditPlaylist()"></clark-playlist-metadata-form>
+</ng-template>
