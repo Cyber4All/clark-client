@@ -28,11 +28,11 @@
         animation: agentic-drawer-in 220ms ease-out both;
         border-radius: 8px 0 0 8px;
         bottom: 0;
-        height: 100vh;
-        height: 100dvh;
+        height: calc(100vh - var(--downtime-banner-offset, 0px));
+        height: calc(100dvh - var(--downtime-banner-offset, 0px));
         max-height: none;
         right: 0;
-        top: 0;
+        top: var(--downtime-banner-offset, 0px);
         width: min(760px, 100vw);
     }
 
@@ -426,7 +426,7 @@
 @media (max-width: 600px) {
     .agentic-builder-panel {
         border-radius: 0;
-        inset: 0 !important;
+        inset: var(--downtime-banner-offset, 0px) 0 0 !important;
         max-height: none;
         width: 100vw;
     }

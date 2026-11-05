@@ -8,7 +8,7 @@ $right-column: minmax(290px, 340px);
     grid-gap: 5px;
     margin: 0 25px;
     position: fixed;
-    top: 185px;
+    top: calc(185px + var(--downtime-banner-offset, 0px));
 
     &.no-left {
         grid-template-columns: $middle-column $right-column;
@@ -57,6 +57,9 @@ $right-column: minmax(290px, 340px);
     }
 
     .scroll-wrapper {
+        // Leave room for the 185px column top and the -30px scroll offset.
+        height: calc(100vh - 155px - var(--downtime-banner-offset, 0px));
+        height: calc(100dvh - 155px - var(--downtime-banner-offset, 0px));
         overflow: auto;
         transform: translateY(-30px);
         padding: 0 20px;
