@@ -26,7 +26,7 @@ export class TagsComponent implements OnInit, OnDestroy {
     selectedTags: Tag[];
     query: string;
 
-    types: { [key: string]: boolean }[] = [];
+    types: { name: string; value: string }[] = [];
     selectedTypes: { [key: string]: boolean } = {};
 
     private destroy$ = new Subject<void>();

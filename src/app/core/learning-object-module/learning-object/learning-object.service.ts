@@ -17,6 +17,7 @@ import {
 } from "rxjs/operators";
 import { LEARNING_OBJECT_ROUTES } from "../learning-object/learning-object.routes";
 import { UserService } from "app/core/user-module/user.service";
+import type { AgenticBuilderSuggestions } from "./learning-object.types";
 
 export const CALLBACKS = {
     outcomes: (outcomes: any[]) => {
@@ -35,6 +36,10 @@ export const CALLBACKS = {
     },
 };
 
+export interface LearningObjectBuildRequest {
+    fields: Array<"name" | "description" | "learningOutcomes">;
+}
+
 @Injectable({
     providedIn: "root",
 })
@@ -51,6 +56,7 @@ export class LearningObjectService {
 
     getLearningObjectObservable(params: {
         cuidInfo: { cuid: string; version?: number };
+        latestReleased?: boolean;
     }): Observable<LearningObject | HttpErrorResponse> {
         const route = LEARNING_OBJECT_ROUTES.GET_LEARNING_OBJECT(
             params.cuidInfo.cuid,
@@ -62,9 +68,14 @@ export class LearningObjectService {
             map((response) => {
                 if (Array.isArray(response)) {
                     if (response.length > 1) {
-                        response = response.filter(
+                        const releasedObjects = response.filter(
                             (e) => e.status === LearningObject.Status.RELEASED,
-                        )[0];
+                        );
+                        response = params.latestReleased
+                            ? releasedObjects.sort(
+                                  (a, b) => (b.version ?? 0) - (a.version ?? 0),
+                              )[0]
+                            : releasedObjects[0];
                     } else {
                         response = response.pop();
                     }
@@ -151,7 +162,10 @@ export class LearningObjectService {
                                         uris[key],
                                         CALLBACKS[key],
                                     ).subscribe((value) => {
-                                        responses.next({ requestKey: key, value });
+                                        responses.next({
+                                            requestKey: key,
+                                            value,
+                                        });
                                         if (
                                             ++completed === properties.length ||
                                             completed === uris.length
@@ -306,6 +320,20 @@ export class LearningObjectService {
                     (learningObject) => new LearningObject(learningObject),
                 );
             });
+    }
+
+    buildLearningObject(
+        learningObjectId: string,
+        request: LearningObjectBuildRequest,
+    ): Promise<AgenticBuilderSuggestions> {
+        return this.http
+            .post<AgenticBuilderSuggestions>(
+                LEARNING_OBJECT_ROUTES.BUILD_LEARNING_OBJECT(learningObjectId),
+                request,
+                { headers: this.headers, withCredentials: true },
+            )
+            .pipe(catchError(this.handleError))
+            .toPromise();
     }
 
     /**
@@ -563,8 +591,14 @@ export class LearningObjectService {
      * @returns {Promise<boolean>} - true if name is available, false if duplicate exists
      * @memberof LearningObjectService
      */
-    async checkNameAvailability(name: string): Promise<boolean> {
-        const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(name);
+    async checkNameAvailability(
+        name: string,
+        learningObjectId?: string,
+    ): Promise<boolean> {
+        const route = LEARNING_OBJECT_ROUTES.CHECK_NAME_AVAILABILITY(
+            name,
+            learningObjectId,
+        );
         return this.http
             .get<{ validName: boolean }>(route, {
                 headers: this.headers,

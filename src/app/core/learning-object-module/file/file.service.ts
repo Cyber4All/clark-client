@@ -5,23 +5,178 @@ import {
     HttpErrorResponse,
     HttpHeaders,
 } from "@angular/common/http";
-import { catchError, takeUntil } from "rxjs/operators";
-import { Observable, Subject, throwError } from "rxjs";
+import {
+    catchError,
+    distinctUntilChanged,
+    exhaustMap,
+    map,
+    startWith,
+    switchMap,
+    takeUntil,
+    takeWhile,
+    timeout,
+} from "rxjs/operators";
+import {
+    BehaviorSubject,
+    forkJoin,
+    Observable,
+    of,
+    Subject,
+    throwError,
+    timer,
+} from "rxjs";
 import { FileUploadMeta } from "app/onion/learning-object-builder/components/content-upload/app/services/typings";
 import { LearningObject } from "@entity";
 import { SOURCE_CODE_EXTENSIONS } from "./source.extensions";
+import type { FileProcessingStatusResponse } from "./file-processing-status.types";
+
+interface AddedFileMetadataResponse {
+    id: string;
+    name: string;
+    fileType: string;
+    extension: string;
+    date: string;
+    fullPath?: string;
+    size: number;
+    description?: string;
+    packageable?: boolean;
+    storageRevision?: number;
+    downloadURL?: string;
+}
+
+// Matches DOCLING_SUPPORTED_EXTENSIONS in clark-service's Docling driver.
+const AI_MATERIAL_EXTENSIONS = new Set([
+    "docx",
+    "html",
+    "md",
+    "pdf",
+    "pptx",
+    "txt",
+    "xlsx",
+]);
 
 @Injectable({
     providedIn: "root",
 })
 export class FileService {
     private headers = new HttpHeaders();
+    private fileProcessingStatuses = new BehaviorSubject<
+        ReadonlyMap<string, string>
+    >(new Map());
+    readonly fileProcessingStatuses$ =
+        this.fileProcessingStatuses.asObservable();
 
     @Input()
     learningObject$: Observable<LearningObject> =
         new Observable<LearningObject>();
 
     constructor(private http: HttpClient) {}
+
+    /** Publishes a snapshot so later caller mutations cannot change emitted statuses. */
+    setFileProcessingStatuses(statuses: ReadonlyMap<string, string>): void {
+        this.fileProcessingStatuses.next(new Map(statuses));
+    }
+
+    static supportsAiExtraction(extension: string | undefined): boolean {
+        return AI_MATERIAL_EXTENSIONS.has(extension?.toLowerCase() ?? "");
+    }
+
+    /** Gets the processing status for the file's current storage revision. */
+    getFileProcessingStatus(
+        learningObjectId: string,
+        fileId: string,
+    ): Observable<FileProcessingStatusResponse> {
+        return this.http.get<FileProcessingStatusResponse>(
+            FILE_METADATA_ROUTES.GET_FILE_PROCESSING_STATUS(
+                learningObjectId,
+                fileId,
+            ),
+            { headers: this.headers, withCredentials: true },
+        );
+    }
+
+    /**
+     * Polls supported materials until one is processed. Changing files or revisions
+     * cancels old checks and resets readiness; unsubscribing stops all polling.
+     */
+    watchAiMaterialReadiness(
+        learningObjects: Observable<LearningObject | undefined>,
+    ): Observable<boolean> {
+        return learningObjects.pipe(
+            map((learningObject) => ({
+                learningObjectId: learningObject?.id,
+                files: (learningObject?.materials?.files ?? [])
+                    .filter(
+                        (file) =>
+                            file._id &&
+                            FileService.supportsAiExtraction(file.extension),
+                    )
+                    .map((file) => ({
+                        id: file._id,
+                        revision: file.storageRevision,
+                        date: file.date,
+                        extension: file.extension.toLowerCase(),
+                    }))
+                    .sort((left, right) => left.id.localeCompare(right.id)),
+            })),
+            distinctUntilChanged(
+                (previous, current) =>
+                    JSON.stringify(previous) === JSON.stringify(current),
+            ),
+            switchMap(({ learningObjectId, files }) => {
+                if (!learningObjectId || !files.length) return of(false);
+                const unavailableFiles = new Set<string>();
+                return timer(0, 5000).pipe(
+                    exhaustMap(() =>
+                        forkJoin(
+                            files.map((file) => {
+                                if (unavailableFiles.has(file.id))
+                                    return of(null);
+                                return this.getFileProcessingStatus(
+                                    learningObjectId,
+                                    file.id,
+                                ).pipe(
+                                    timeout(15000),
+                                    catchError((error: unknown) => {
+                                        if (
+                                            error instanceof
+                                                HttpErrorResponse &&
+                                            error.status >= 400 &&
+                                            error.status < 500 &&
+                                            error.status !== 408 &&
+                                            error.status !== 429
+                                        ) {
+                                            unavailableFiles.add(file.id);
+                                        }
+                                        return of(null);
+                                    }),
+                                );
+                            }),
+                        ),
+                    ),
+                    map((statuses) =>
+                        statuses.some(
+                            (status, index) =>
+                                status?.fileId === files[index].id &&
+                                (files[index].revision === undefined ||
+                                    status.storageRevision ===
+                                        files[index].revision) &&
+                                (status.processingStatus === "success" ||
+                                    status.processingStatus ===
+                                        "partial_success"),
+                        ),
+                    ),
+                    takeWhile(
+                        (ready) =>
+                            !ready && unavailableFiles.size < files.length,
+                        true,
+                    ),
+                    startWith(false),
+                );
+            }),
+            distinctUntilChanged(),
+        );
+    }
 
     /**
      * Helper: extracts the file extension from a filename (including the dot)
@@ -73,6 +228,7 @@ export class FileService {
                 ".xls",
             ],
             pdf: [".pdf"],
+            image: [".png", ".jpg", ".jpeg", ".webp"],
         };
 
         // Check for source code files first
@@ -129,7 +285,8 @@ export class FileService {
      * Helper: returns true if filename can be previewed
      */
     static canPreview(filename: string): boolean {
-        return this.getFileType(filename).type in this.PREVIEW_ACTIONS;
+        const type = this.getFileType(filename).type;
+        return type === "image" || type in this.PREVIEW_ACTIONS;
     }
 
     /**
@@ -192,11 +349,66 @@ export class FileService {
         fileName: string,
     ): Promise<void> {
         const fileType = FileService.getFileType(fileName).type;
+
+        if (fileType === "image") {
+            return this.previewImage(url, fileName);
+        }
+
         const previewAction = FileService.PREVIEW_ACTIONS[fileType];
 
         if (previewAction) {
             previewAction(url, fileName);
         }
+    }
+
+    private previewImage(url: string, fileName: string): Promise<void> {
+        // Open the tab before the request so the browser treats it as a user action.
+        const previewWindow = window.open("about:blank", "_blank");
+        if (!previewWindow) {
+            return Promise.resolve();
+        }
+        previewWindow.opener = null;
+        previewWindow.document.title = fileName;
+
+        return new Promise<void>((resolve, reject) => {
+            this.http
+                .get(url, { withCredentials: true, responseType: "blob" })
+                .pipe(catchError(this.handleError))
+                .subscribe({
+                    next: (blob) => {
+                        const mimeTypes: Record<string, string> = {
+                            ".png": "image/png",
+                            ".jpg": "image/jpeg",
+                            ".jpeg": "image/jpeg",
+                            ".webp": "image/webp",
+                        };
+                        const mimeType =
+                            mimeTypes[FileService.getFileExtension(fileName)];
+                        const imageBlob =
+                            blob.type === mimeType
+                                ? blob
+                                : blob.slice(0, blob.size, mimeType);
+                        const blobUrl = URL.createObjectURL(imageBlob);
+                        if (previewWindow.closed) {
+                            URL.revokeObjectURL(blobUrl);
+                            resolve();
+                            return;
+                        }
+
+                        // Navigating to the image puts its blob URL in the address bar.
+                        previewWindow.location.replace(blobUrl);
+
+                        resolve();
+                    },
+                    error: (error) => {
+                        if (!previewWindow.closed) {
+                            previewWindow.document.body.textContent =
+                                "Unable to preview image.";
+                        }
+                        reject(error);
+                    },
+                });
+        });
     }
 
     async deleteLearningObjectFileMetadata(
@@ -264,7 +476,7 @@ export class FileService {
      * @param {string} authorUsername [The Learning Object's author's username]
      * @param {string} objectId [The Id of the Learning Object]
      * @param {FileUploadMeta[]} files [List of file meta to be added]
-     * @returns {Promise<string[]>}
+     * @returns {Promise<LearningObject.Material.File[]>}
      * @memberof LearningObjectService
      */
     addFileMeta({
@@ -273,34 +485,36 @@ export class FileService {
     }: {
         objectId: string;
         files: FileUploadMeta[];
-    }): Promise<string[]> {
+    }): Promise<LearningObject.Material.File[]> {
         const route =
             FILE_METADATA_ROUTES.ADD_LEARNING_OBJECT_FILE_METADATA(objectId);
         const MAX_PER_REQUEST = 100;
-        const responses$: Promise<string[]>[] = [];
+        const responses$: Promise<LearningObject.Material.File[]>[] = [];
         const completed$: Subject<boolean> = new Subject<boolean>();
         const sendNextBatch$: Subject<void> = new Subject<void>();
 
-        const response = new Promise<string[]>((resolve, reject) => {
-            sendNextBatch$.pipe(takeUntil(completed$)).subscribe(() => {
-                const batch = files.splice(0, MAX_PER_REQUEST);
-                if (batch.length) {
-                    this.handleFileMetaBatch(
-                        route,
-                        batch,
-                        responses$,
-                        sendNextBatch$,
-                    );
-                } else {
-                    this.handleFileMetaRequestQueueCompletion(
-                        completed$,
-                        responses$,
-                    )
-                        .then(resolve)
-                        .catch(reject);
-                }
-            });
-        });
+        const response = new Promise<LearningObject.Material.File[]>(
+            (resolve, reject) => {
+                sendNextBatch$.pipe(takeUntil(completed$)).subscribe(() => {
+                    const batch = files.splice(0, MAX_PER_REQUEST);
+                    if (batch.length) {
+                        this.handleFileMetaBatch(
+                            route,
+                            batch,
+                            responses$,
+                            sendNextBatch$,
+                        );
+                    } else {
+                        this.handleFileMetaRequestQueueCompletion(
+                            completed$,
+                            responses$,
+                        )
+                            .then(resolve)
+                            .catch(reject);
+                    }
+                });
+            },
+        );
         sendNextBatch$.next();
         return response;
     }
@@ -334,18 +548,18 @@ export class FileService {
      * @private
      * @param {string} route [Route to make request to]
      * @param {FileUploadMeta[]} batch [Batch of file meta to be added]
-     * @param {Promise<string[]>[]} responses$ [List of response promises to append to]
+     * @param {Promise<LearningObject.Material.File[]>[]} responses$ [List of response promises to append to]
      * @param {Subject<void>} sendNextBatch$ [Observable used to signal that the next batch should be sent]
      * @memberof LearningObjectService
      */
     private handleFileMetaBatch(
         route: string,
         batch: FileUploadMeta[],
-        responses$: Promise<string[]>[],
+        responses$: Promise<LearningObject.Material.File[]>[],
         sendNextBatch$: Subject<void>,
     ) {
-        const response$ = this.http
-            .post(
+        const response$: Promise<LearningObject.Material.File[]> = this.http
+            .post<AddedFileMetadataResponse[]>(
                 route,
                 { fileMeta: batch },
                 {
@@ -355,7 +569,12 @@ export class FileService {
             )
             .pipe(catchError(this.handleError))
             .toPromise()
-            .then((res: { fileMetaId: string[] }) => res.fileMetaId);
+            .then((files) =>
+                files.map(({ id, ...file }) => ({
+                    ...file,
+                    _id: id,
+                })),
+            );
         responses$.push(response$);
         sendNextBatch$.next();
     }
@@ -365,19 +584,18 @@ export class FileService {
      *
      * @private
      * @param {Subject<boolean>} completed$ [Observable used to signal that all batches have been completed]
-     * @param {Promise<string[]>[]} responses$ [List of response promises to resolve]
+     * @param {Promise<LearningObject.Material.File[]>[]} responses$ [List of response promises to resolve]
      * @returns
      * @memberof LearningObjectService
      */
     private async handleFileMetaRequestQueueCompletion(
         completed$: Subject<boolean>,
-        responses$: Promise<string[]>[],
-    ): Promise<string[]> {
+        responses$: Promise<LearningObject.Material.File[]>[],
+    ): Promise<LearningObject.Material.File[]> {
         completed$.next(true);
         completed$.unsubscribe();
-        const fileIdsArrays = await Promise.all(responses$);
-        const fileIds = flattenDeep(fileIdsArrays);
-        return fileIds;
+        const fileArrays = await Promise.all(responses$);
+        return flattenDeep(fileArrays) as LearningObject.Material.File[];
     }
 
     /**

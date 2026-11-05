@@ -37,7 +37,19 @@
     border-bottom: 1px solid $light-grey;
 
     &.bundle {
-        grid-template-columns: 4fr 2fr 2fr 1fr 1fr 25px;
+        grid-template-columns: 4fr 1fr 0.65fr 1.35fr 25px;
+    }
+
+    &.parsing {
+        grid-template-columns: 4fr 1fr 0.5fr minmax(140px, 1.25fr) 25px;
+
+        &.bundle {
+            box-sizing: border-box;
+            padding-right: 16px;
+            grid-template-columns:
+                minmax(0, 3fr) 1fr 0.65fr minmax(140px, 1.25fr)
+                minmax(140px, 0.8fr) 32px;
+        }
     }
 
     &.header {
@@ -46,10 +58,20 @@
         padding-bottom: 12px;
     }
 
+    .parsing-heading {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
     .toggle {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        p {
+            white-space: nowrap;
+        }
 
         .icon {
             margin-left: 5px;

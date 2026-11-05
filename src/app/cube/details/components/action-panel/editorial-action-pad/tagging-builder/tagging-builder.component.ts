@@ -8,16 +8,25 @@ import {
     OnInit,
     Output,
 } from "@angular/core";
-import { LearningObject, LearningOutcome } from "@entity";
+import { LearningObject, LearningOutcome, Tag } from "@entity";
+import { TagType } from "entity/tag/tag";
 import { TaggingService } from "../services/tagging.service";
 import { TopicsService } from "app/core/learning-object-module/topics/topics.service";
 import { TagsService } from "app/core/learning-object-module/tags/tags.service";
 import { AlignmentService } from "../services/alignment.service";
 import { BundlingService } from "../../../../../../core/learning-object-module/bundling/bundling.service";
-import { NgStyle, NgIf } from "@angular/common";
+import { NgStyle, NgIf, NgFor } from "@angular/common";
+import { FormsModule } from "@angular/forms";
 import { TopicsComponent } from "../components/topics/topics.component";
 import { TagsComponent } from "../components/tags/tags.component";
 import { GuidelinesComponent } from "../components/guidelines/guidelines.component";
+import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
+
+interface CreateTagRequest {
+    type: TagType;
+    name: string;
+    description?: string;
+}
 
 @Component({
     selector: "clark-tagging-builder",
@@ -27,6 +36,8 @@ import { GuidelinesComponent } from "../components/guidelines/guidelines.compone
     imports: [
         NgStyle,
         NgIf,
+        NgFor,
+        FormsModule,
         TopicsComponent,
         TagsComponent,
         GuidelinesComponent,
@@ -43,6 +54,14 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     underlineWidth = "300px";
 
     loading = false;
+    showCreateTagModal = false;
+    tagTypes: { name: string; value: TagType }[] = [];
+    newTag: { name: string; type: TagType | ""; description: string } = {
+        name: "",
+        type: "",
+        description: "",
+    };
+    private pendingTags = new Map<string, CreateTagRequest>();
 
     constructor(
         private elRef: ElementRef,
@@ -52,6 +71,7 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
         private tagsService: TagsService,
         private alignmentService: AlignmentService,
         private bundlingService: BundlingService,
+        private toaster: ToastrOvenService,
     ) {}
 
     async ngOnInit() {
@@ -74,8 +94,12 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
             this.taggingService.setSelectedArray("topics", matchingTopics);
         }
 
-        const tags = await this.tagsService.getTags();
+        const [tags, tagTypes] = await Promise.all([
+            this.tagsService.getTags(),
+            this.tagsService.getTypes(),
+        ]);
         this.taggingService.setSourceArray("tags", tags);
+        this.tagTypes = tagTypes;
 
         if (this.learningObject.tags && this.learningObject.tags.length) {
             const matchingTags = tags.filter((tag) => {
@@ -132,6 +156,16 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
     }
 
     async save() {
+        try {
+            await this.persistPendingTags();
+        } catch (_) {
+            this.toaster.error(
+                "Tag creation failed",
+                "The new tag could not be saved. Please try again.",
+            );
+            return;
+        }
+
         // Clean the selected arrays into string arrays for the PUT request
         const tagIds = this.taggingService.finalTags.map((tag) => {
             return tag._id;
@@ -167,5 +201,75 @@ export class TaggingBuilderComponent implements OnInit, AfterViewInit {
 
     cancel() {
         this.close.emit();
+    }
+
+    stageTag(): void {
+        const name = this.newTag.name.trim();
+        if (!name || !this.newTag.type) return;
+
+        const request: CreateTagRequest = {
+            name,
+            type: this.newTag.type as TagType,
+            description: this.newTag.description.trim() || undefined,
+        };
+        const temporaryId = `pending-tag-${Date.now()}-${this.pendingTags.size}`;
+        const pendingTag: Tag = {
+            _id: temporaryId,
+            type: [request.type],
+            name: request.name,
+            description: request.description,
+        };
+
+        // Keep the tag local until the outer Save button confirms the tagging changes.
+        this.pendingTags.set(temporaryId, request);
+        this.taggingService.setSourceArray("tags", [
+            ...this.taggingService.availableTags,
+            pendingTag,
+        ]);
+        this.closeCreateTagModal();
+        this.toaster.success(
+            "Tag added",
+            `${pendingTag.name} will be created when you save.`,
+        );
+    }
+
+    private async persistPendingTags(): Promise<void> {
+        if (this.pendingTags.size === 0) return;
+
+        const pendingEntries = Array.from(this.pendingTags.entries());
+        const createdTags = await Promise.all(
+            pendingEntries.map(([, request]) =>
+                this.tagsService.createTag(request).toPromise(),
+            ),
+        );
+        const createdByTemporaryId = new Map(
+            pendingEntries.map(([temporaryId], index) => [
+                temporaryId,
+                createdTags[index],
+            ]),
+        );
+
+        // Replace temporary tags before saving selected IDs to the learning object.
+        this.taggingService.setSourceArray(
+            "tags",
+            this.taggingService.availableTags.map(
+                (tag) => createdByTemporaryId.get(tag._id) ?? tag,
+            ),
+        );
+        this.taggingService.setSelectedArray(
+            "tags",
+            this.taggingService.finalTags.map(
+                (tag) => createdByTemporaryId.get(tag._id) ?? tag,
+            ),
+        );
+        this.pendingTags.clear();
+    }
+
+    closeCreateTagModal(): void {
+        this.showCreateTagModal = false;
+        this.newTag = { name: "", type: "", description: "" };
+        // This component is projected through the tagging popup's dynamically attached view.
+        // Refresh it directly so asynchronous request callbacks remove the dialog immediately.
+        this.cdr.detectChanges();
     }
 }
