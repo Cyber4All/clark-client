@@ -164,21 +164,47 @@ export class LearningObjectListingComponent implements OnDestroy {
         this.isDCWFAligned = this.checkDCWFAlignment(lo);
 
         // Resolve topic/tag names using pre-fetched mappings
-        await this.resolveTopicNames(lo);
-        await this.resolveTagNames(lo);
+        try {
+            await this.resolveTopicNames(lo);
+        } catch (e) {
+            console.warn(`Failed to resolve topics for ${lo.cuid}:`, e);
+        }
+        try {
+            await this.resolveTagNames(lo);
+        } catch (e) {
+            console.warn(`Failed to resolve tags for ${lo.cuid}:`, e);
+        }
         if (this.destroyed || token !== this.refreshToken) return;
 
         // Image depends on topics
         this.setImageFromTopics();
         this.cd.markForCheck();
 
-        // Fetch ratings + total downloads + recent downloads (in parallel)
-        const [ratings, totalMetrics, recentDownloads] = await Promise.all([
-            this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
-            this.metricService.getLearningObjectMetrics(lo.cuid),
-            this.getRecentDownloads(lo.cuid, 30),
-        ]);
+        // Fetch ratings + total downloads + recent downloads (in parallel).
+        // allSettled so a single failed request (e.g. a 504 from the API
+        // proxy) degrades to a 0 value instead of an unhandled rejection.
+        const [ratingsResult, totalMetricsResult, recentDownloadsResult] =
+            await Promise.allSettled([
+                this.ratingService.getLearningObjectRatings(
+                    lo.cuid,
+                    lo.version,
+                ),
+                this.metricService.getLearningObjectMetrics(lo.cuid),
+                this.getRecentDownloads(lo.cuid, 30),
+            ]);
         if (this.destroyed || token !== this.refreshToken) return;
+
+        const ratings = this.settledValue(ratingsResult, "ratings", lo.cuid);
+        const totalMetrics = this.settledValue(
+            totalMetricsResult,
+            "metrics",
+            lo.cuid,
+        );
+        const recentDownloads = this.settledValue(
+            recentDownloadsResult,
+            "recent downloads",
+            lo.cuid,
+        );
 
         this.averageRating = ratings?.avgValue ?? 0;
         this.reviewsCount = ratings?.ratings?.length ?? 0;
@@ -279,6 +305,18 @@ export class LearningObjectListingComponent implements OnDestroy {
                     ?.toLowerCase()
                     .includes("dod cyber workforce"),
         );
+    }
+
+    private settledValue<T>(
+        result: PromiseSettledResult<T>,
+        label: string,
+        cuid: string,
+    ): T | undefined {
+        if (result.status === "fulfilled") {
+            return result.value;
+        }
+        console.warn(`Failed to fetch ${label} for ${cuid}:`, result.reason);
+        return undefined;
     }
 
     private async getRecentDownloads(
