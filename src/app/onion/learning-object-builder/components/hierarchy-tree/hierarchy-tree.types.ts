@@ -13,8 +13,28 @@ import { LearningObject } from "@entity";
  * the shape here is the seam they attach to.
  */
 export interface HierarchyNode {
-    /** Stable id for tracking/trackBy. For mock data this is a local id. */
+    /**
+     * Unique key of this OCCURRENCE in the tree, used for tracking, expand
+     * state, drag/drop hit-testing, focus, and every move.
+     *
+     * A learning object can have several parents, so the same learning object
+     * can appear more than once. Each appearance has its own `id`. For loaded
+     * data this is the path of learning object ids from the root (for example
+     * `root/unit-1/module-7`), assigned once at load and never recomputed when
+     * a node is moved. The root's `id` is its learning object id.
+     *
+     * Do NOT send this to the API; use {@link learningObjectId}.
+     */
     id: string;
+
+    /**
+     * The id of the learning object this node represents. Equal for every
+     * occurrence of a shared child. Always set for loaded data; optional only
+     * so small local trees (tests) can omit it, in which case {@link id}
+     * stands in (`learningObjectId ?? id`). Persistence stories must use this
+     * field when calling the API.
+     */
+    learningObjectId?: string;
 
     /** Display name of the learning object. */
     name: string;
@@ -109,4 +129,20 @@ export interface MoveDestination {
 
     /** True when this destination is the node's current parent (reorder). */
     isCurrentParent: boolean;
+}
+
+/**
+ * Load state of the Hierarchy tab.
+ *
+ *  - `loading`: the hierarchy request is in flight
+ *  - `ready`:   the hierarchy loaded and the root has at least one child
+ *  - `empty`:   the hierarchy loaded and the root has no children
+ *  - `error`:   a request failed; the author can retry
+ */
+export type HierarchyLoadStatus = "loading" | "ready" | "empty" | "error";
+
+/** The signed-in user facts that decide whether a child is editable. */
+export interface HierarchyViewer {
+    username?: string;
+    isAdminOrEditor: boolean;
 }
