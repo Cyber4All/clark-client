@@ -9,21 +9,22 @@ Make the Learning Object Builder's Materials/Details/Learning Outcomes navigatio
 ## Progress
 
 - [x] (2026-11-06) Inspected the nested Onion/Builder route animations and description editor layout.
-- [ ] Investigate and fix the builder tab bar's double animation; the first transition adjustment did not resolve the recorded behavior.
+- [x] (2026-11-06) Reproduced the double navbar instance and fixed the transient no-ID builder route rendering a second navbar.
+- [x] (2026-11-06) Repeated browser navigation; navbar count stayed at zero on the transient route and one after the canonical route loaded.
 - [x] (2026-11-06) Stretched the description editor host across the stacked field width.
 - [x] (2026-11-06) Reviewed the description fix and documented validation limits.
 
 ## Surprises & Discoveries
 
-- Observation: Onion's builder entry transition fades the entering route and then explicitly starts `builderTransition`, which also animates the entering navbar opacity and vertical position.
-  Evidence: `src/app/onion/onion.component.ts` and `src/app/onion/learning-object-builder/learning-object-builder.component.ts`.
+- Observation: The navbar host is briefly duplicated because creating a new draft navigates from the no-ID builder route to a CUID/version route, which recreates the builder.
+  Evidence: Browser sampling counted two `.builder-navbar-wrapper` nodes 45ms after clicking New and one at approximately 1.1 seconds; `createAndRouteToNewLearningObject()` navigates from the transient route after creation.
 - Observation: The stacked description field sets `align-items: flex-start`, so the custom editor host does not stretch; only descendants inside that host have `width: 100%`.
   Evidence: `src/app/onion/learning-object-builder/pages/info-page/info-page.component.scss` and the element context supplied by the user.
 
 ## Decision Log
 
-- Decision: Preserve the builder's child transitions and dashboard leave transition, but remove the parent route fade from the entering builder.
-  Rationale: The builder transition already owns its navbar and page-column entrance; having both parent and child animate opacity makes the tab bar appear to enter twice.
+- Decision: Render the builder navbar only after a new draft has its canonical CUID/version route.
+  Rationale: The recording and runtime sample point to duplicate component instances during the route replacement, not a second opacity effect on one navbar.
   Date/Author: 2026-11-06 / Codex
 - Decision: Set the editor component host to stretch to the stacked field width.
   Rationale: The current inner editor width rule cannot make the flex item host wider than its shrink-wrapped intrinsic size.
@@ -31,7 +32,7 @@ Make the Learning Object Builder's Materials/Details/Learning Outcomes navigatio
 
 ## Outcomes & Retrospective
 
-The description component host now stretches across its stacked field. The first parent/child animation adjustment did not resolve the double animation and remains under investigation.
+The description component host now stretches across its stacked field. Runtime sampling found two `.builder-navbar-wrapper` nodes 45ms after New was clicked and one node at approximately 1.1 seconds. The no-ID route creates a draft and then navigates to the CUID/version route, recreating the builder; the navbar now renders only on the canonical route. The earlier parent-fade adjustment was reverted.
 
 ## Context and Orientation
 
@@ -39,20 +40,20 @@ The dashboard button routes into the lazy-loaded Learning Object Builder under `
 
 ## Plan of Work
 
-Keep the description component host full width in the info page styles. Continue investigating the tab-bar animation from the supplied recording and reproduce it in the shared browser before changing the transition sequence again. The attempted parent-fade removal is not considered a completed fix and should remain uncommitted until proven or replaced.
+Keep the description component host full width in the info page styles. The transient new-object builder route should not render the builder navbar; the canonical CUID/version route renders and animates it once. Preserve the existing Onion parent fade and builder child transition definitions.
 
 ## Concrete Steps
 
 From the repository root:
 
-1. Update `src/app/onion/onion.component.ts` to delegate builder entry to `builderTransition` without also fading the whole entering builder.
+1. Update the builder component and template so the navbar renders only on the canonical CUID/version route.
 2. Update `src/app/onion/learning-object-builder/pages/info-page/info-page.component.scss` to stretch the description component host.
-3. Reproduce and inspect the recorded builder navigation animation.
+3. Reproduce the dashboard-to-new-object navigation and sample navbar instance count.
 4. Review the diff for limited, local changes.
 
 ## Validation and Acceptance
 
-Acceptance: the description editor host takes the full width of the stacked field. The animation remains open until the recorded behavior is reproduced and its source is corrected. The user has asked to test the animation, so perform focused browser reproduction; do not add or run automated tests/builds unless separately needed and authorized.
+Acceptance: the description editor host takes the full width of the stacked field, and exactly one builder navbar is rendered during the final CUID/version route. The user asked to test the animation; focused browser reproduction and runtime DOM sampling are appropriate. Do not add or run automated tests/builds unless separately needed and authorized.
 
 ## Idempotence and Recovery
 
@@ -60,8 +61,8 @@ These are isolated style/animation edits and are safe to repeat. Revert only the
 
 ## Artifacts and Notes
 
-The supplied browser context shows the editor host at approximately 347px despite a full-width inner style. The supplied screen recording must be reviewed to identify the remaining animation behavior.
+The supplied browser context showed the editor host at approximately 347px despite a full-width inner style. The recording and browser sampling showed the navbar host duplication follows draft creation's transient-to-persistent route change.
 
 ## Interfaces and Dependencies
 
-Affected files: `src/app/onion/onion.component.ts` and `src/app/onion/learning-object-builder/pages/info-page/info-page.component.scss`. The code uses Angular animations and existing component CSS; no public inputs/outputs or third-party dependencies change.
+Affected files: `src/app/onion/learning-object-builder/learning-object-builder.component.ts`, its template, and the info-page styles. The code uses the existing Angular route parameters and animations; no public inputs/outputs or third-party dependencies change.
