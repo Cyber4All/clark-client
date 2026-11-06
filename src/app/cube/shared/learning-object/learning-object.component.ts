@@ -26,6 +26,7 @@ import {
 } from "@angular/common";
 import { TipDirective } from "../../../shared/directives/tip.directive";
 import { RatingStarsComponent } from "../../../shared/components/rating-stars/rating-stars.component";
+import * as Sentry from "@sentry/angular";
 
 @Component({
     selector: "clark-learning-object-component",
@@ -60,7 +61,13 @@ export class LearningObjectListingComponent implements OnDestroy {
     @Input()
     set learningObject(value: LearningObject) {
         this._learningObject = value;
-        void this.refresh();
+        this.refresh().catch((error) => {
+            // Unexpected failure while refreshing card data: keep reporting it,
+            // but as a handled error with the offending learning object attached.
+            Sentry.captureException(error, {
+                tags: { learningObjectCuid: value?.cuid },
+            });
+        });
     }
     get learningObject(): LearningObject {
         return this._learningObject!;
@@ -174,8 +181,21 @@ export class LearningObjectListingComponent implements OnDestroy {
 
         // Fetch ratings + total downloads + recent downloads (in parallel)
         const [ratings, totalMetrics, recentDownloads] = await Promise.all([
-            this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
-            this.metricService.getLearningObjectMetrics(lo.cuid),
+            this.safeFetch(
+                "ratings",
+                lo.cuid,
+                this.ratingService.getLearningObjectRatings(
+                    lo.cuid,
+                    lo.version,
+                ),
+                null,
+            ),
+            this.safeFetch(
+                "total-downloads",
+                lo.cuid,
+                this.metricService.getLearningObjectMetrics(lo.cuid),
+                null,
+            ),
             this.getRecentDownloads(lo.cuid, 30),
         ]);
         if (this.destroyed || token !== this.refreshToken) return;
@@ -289,13 +309,48 @@ export class LearningObjectListingComponent implements OnDestroy {
         const start = new Date(end);
         start.setDate(end.getDate() - days);
 
-        const recentMetrics = await this.metricService.getLearningObjectMetrics(
+        const recentMetrics = await this.safeFetch(
+            "recent-downloads",
             cuid,
-            start.toISOString(),
-            end.toISOString(),
+            this.metricService.getLearningObjectMetrics(
+                cuid,
+                start.toISOString(),
+                end.toISOString(),
+            ),
+            null,
         );
 
         return recentMetrics?.downloads ?? 0;
+    }
+
+    /**
+     * Resolves a card stat request, falling back to a default value when the
+     * request fails (e.g. a 504 from the metrics endpoint) so a single failing
+     * stat does not break the whole card or surface as an unhandled rejection.
+     * The failure is still recorded as a warning and a Sentry breadcrumb.
+     */
+    private async safeFetch<T, F>(
+        label: string,
+        cuid: string,
+        request: Promise<T>,
+        fallback: F,
+    ): Promise<T | F> {
+        try {
+            return await request;
+        } catch (error) {
+            const status = (error as { status?: number })?.status;
+            console.warn(
+                `Failed to load ${label} for learning object ${cuid}`,
+                error,
+            );
+            Sentry.addBreadcrumb({
+                category: "learning-object-card",
+                level: "warning",
+                message: `Failed to load ${label} for learning object`,
+                data: { cuid, status },
+            });
+            return fallback;
+        }
     }
 
     // resolving topic names from topics service using the topic ids in the learning object
