@@ -61,3 +61,7 @@ devenv.local.yaml
 
 # Sentry Config File
 .sentryclirc
+
+# AI Slop
+.kiro/**
+.playwright-mcp/**

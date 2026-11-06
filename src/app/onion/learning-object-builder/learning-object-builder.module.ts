@@ -19,6 +19,7 @@ import { BuilderNavbarComponent } from "./components/builder-navbar/builder-navb
 import { InfoPageComponent } from "./pages/info-page/info-page.component";
 import { OutcomePageComponent } from "./pages/outcome-page/outcome-page.component";
 import { MaterialsPageComponent } from "./pages/materials-page/materials-page.component";
+import { HierarchyPageComponent } from "./pages/hierarchy-page/hierarchy-page.component";
 import { MetadataComponent } from "./pages/info-page/metadata/metadata.component";
 import { ColumnWrapperComponent } from "./components/column-wrapper/column-wrapper.component";
 import { StandardOutcomesComponent } from "./components/standard-outcomes/standard-outcomes.component";
@@ -62,6 +63,7 @@ import { VirtualScrollerModule } from "@iharbeck/ngx-virtual-scroller";
         InfoPageComponent,
         OutcomePageComponent,
         MaterialsPageComponent,
+        HierarchyPageComponent,
         ColumnWrapperComponent,
         StandardOutcomesComponent,
         OutcomesListItemComponent,

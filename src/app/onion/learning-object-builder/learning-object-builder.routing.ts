@@ -4,6 +4,7 @@ import { Routes, RouterModule } from "@angular/router";
 import { InfoPageComponent } from "./pages/info-page/info-page.component";
 import { OutcomePageComponent } from "./pages/outcome-page/outcome-page.component";
 import { MaterialsPageComponent } from "./pages/materials-page/materials-page.component";
+import { HierarchyPageComponent } from "./pages/hierarchy-page/hierarchy-page.component";
 import { LearningObjectBuilderComponent } from "./learning-object-builder.component";
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -32,6 +33,11 @@ const builder_routes: Routes = [
                 path: "materials",
                 component: MaterialsPageComponent,
                 data: { state: "materials" },
+            },
+            {
+                path: "hierarchy",
+                component: HierarchyPageComponent,
+                data: { state: "hierarchy" },
             },
         ],
     },

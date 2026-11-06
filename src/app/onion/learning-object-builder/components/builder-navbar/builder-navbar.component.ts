@@ -172,6 +172,14 @@ export class BuilderNavbarComponent implements OnDestroy {
                     this.auth.user?.emailVerified && hasSavedLearningObject
                 );
                 break;
+            case "hierarchy":
+                // Eligible once the object is saved and is not a nanomodule
+                // (nanomodules cannot have children).
+                result =
+                    hasSavedLearningObject &&
+                    this.learningObject?.length !==
+                        LearningObject.Length.NANOMODULE;
+                break;
         }
 
         if (!this.initialRouteStates.has(route)) {
@@ -383,6 +391,23 @@ export class BuilderNavbarComponent implements OnDestroy {
                 takeUntil(this.destroyed$),
             )
             .subscribe();
+    }
+
+    /**
+     * The tooltip/aria message explaining WHY the Hierarchy tab is locked.
+     * Outcomes and Materials are never locked (unnamed objects can add both
+     * while in draft), so only Hierarchy has a disabled reason.
+     *
+     * @returns a human-readable reason the Hierarchy tab is locked
+     */
+    disabledTip(): string {
+        // Hierarchy is gated on (a) the object being saved and (b) it not
+        // being a nanomodule. Distinguish the two so the message makes sense.
+        if (this.learningObject?.length === LearningObject.Length.NANOMODULE) {
+            return "Nanomodules can't have children, so they don't have a hierarchy.";
+        }
+
+        return "Please name this learning object before building its hierarchy.";
     }
 
     /**

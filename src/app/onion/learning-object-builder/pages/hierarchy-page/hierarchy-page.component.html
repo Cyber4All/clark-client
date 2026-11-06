@@ -1,0 +1,18 @@
+<!--
+    The Hierarchy tab spans the full page width (no left "Children" scaffold).
+    The builder shell positions tab content with fixed positioning below the
+    fixed navbar; this page provides its own fixed, scrollable region and
+    centers the tree within a comfortable max width.
+-->
+<div class="hierarchy-page">
+    <div class="hierarchy-page__inner">
+        <div class="hierarchy-header">
+            <h2 class="hierarchy-header__title">Hierarchy</h2>
+            <p class="hierarchy-header__subtitle">
+                Add and organize child learning objects.
+            </p>
+        </div>
+        <clark-hierarchy-tree
+            [learningObject]="learningObject"></clark-hierarchy-tree>
+    </div>
+</div>
