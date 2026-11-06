@@ -49,6 +49,12 @@ hr {
 .generating-field--stacked {
     align-items: flex-start;
     flex-direction: column;
+
+    > onion-learning-object-description {
+        align-self: stretch;
+        box-sizing: border-box;
+        width: 100%;
+    }
 }
 
 .generating-field__status {
