@@ -27,6 +27,10 @@ body {
     }
 }
 
+body:has(clark-message .wrapper.warning) {
+    --downtime-banner-offset: 40px;
+}
+
 a,
 a:visited {
     color: $light-blue;
@@ -71,6 +75,7 @@ a:visited {
         .icon {
             margin-left: 0;
         }
+
         margin: 0px 5px 10px;
     }
 
@@ -412,6 +417,7 @@ a:visited {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(1080deg);
     }

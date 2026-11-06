@@ -27,32 +27,40 @@
                 </span>
             </div>
         </div>
-        <div
-            class="name"
-            role="button"
-            activate
-            [routerLink]="['./']"
-            [queryParams]="
-                learningObject.status === 'released'
-                    ? {
-                          activeLearningObject: learningObject.cuid,
-                          version: learningObject.version,
-                      }
-                    : {}
-            "
-            [ngClass]="[
-                actionPermissions('infoPanel') ? 'clickable' : 'notClickable',
-            ]">
-            {{ learningObject?.displayName }}
+        <div class="name">
             <span
-                *ngIf="parents?.length"
-                [tip]="parents.join(', ')"
-                tipPosition="top"
+                class="learning-object-name"
+                activate
+                [routerLink]="['./']"
+                [queryParams]="
+                    learningObject.status === 'released'
+                        ? {
+                              activeLearningObject: learningObject.cuid,
+                              version: learningObject.version,
+                          }
+                        : {}
+                "
+                [ngClass]="[
+                    actionPermissions('infoPanel')
+                        ? 'clickable'
+                        : 'notClickable',
+                ]">
+                {{ learningObject?.displayName }}
+            </span>
+            <button
+                *ngIf="parents.length"
+                type="button"
                 class="hierarchy-parents"
-                >{{ parents.length }} parent{{
-                    parents.length !== 1 ? "s" : ""
-                }}</span
-            >
+                aria-haspopup="dialog"
+                [attr.aria-label]="
+                    'Show ' +
+                    parents.length +
+                    ' parent learning object' +
+                    (parents.length !== 1 ? 's' : '')
+                "
+                (click)="showParents = true">
+                {{ parents.length }} parent{{ parents.length !== 1 ? "s" : "" }}
+            </button>
             <span
                 *ngIf="children?.length"
                 [tip]="children.join(', ')"
@@ -189,3 +197,23 @@
         </div>
     </div>
 </div>
+
+<clark-popup *ngIf="showParents" (closed)="showParents = false">
+    <div #popupInner class="parent-list-popup">
+        <h2>Parent Learning Objects</h2>
+        <ul>
+            <li *ngFor="let parent of parents">
+                <a
+                    [routerLink]="[
+                        '/onion/learning-object-builder',
+                        parent.cuid,
+                        parent.version,
+                    ]"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    {{ parent.displayName }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</clark-popup>
