@@ -26,6 +26,7 @@ import {
 } from "@angular/common";
 import { TipDirective } from "../../../shared/directives/tip.directive";
 import { RatingStarsComponent } from "../../../shared/components/rating-stars/rating-stars.component";
+import * as Sentry from "@sentry/angular";
 
 @Component({
     selector: "clark-learning-object-component",
@@ -173,10 +174,31 @@ export class LearningObjectListingComponent implements OnDestroy {
         this.cd.markForCheck();
 
         // Fetch ratings + total downloads + recent downloads (in parallel)
+        // Each request is handled independently so a single failure (e.g. a
+        // gateway 504 on the metrics endpoint) does not break the whole card.
         const [ratings, totalMetrics, recentDownloads] = await Promise.all([
-            this.ratingService.getLearningObjectRatings(lo.cuid, lo.version),
-            this.metricService.getLearningObjectMetrics(lo.cuid),
-            this.getRecentDownloads(lo.cuid, 30),
+            this.safeFetch(
+                () =>
+                    this.ratingService.getLearningObjectRatings(
+                        lo.cuid,
+                        lo.version,
+                    ),
+                null,
+                "ratings",
+                lo.cuid,
+            ),
+            this.safeFetch(
+                () => this.metricService.getLearningObjectMetrics(lo.cuid),
+                null,
+                "total-metrics",
+                lo.cuid,
+            ),
+            this.safeFetch(
+                () => this.getRecentDownloads(lo.cuid, 30),
+                0,
+                "recent-downloads",
+                lo.cuid,
+            ),
         ]);
         if (this.destroyed || token !== this.refreshToken) return;
 
@@ -279,6 +301,36 @@ export class LearningObjectListingComponent implements OnDestroy {
                     ?.toLowerCase()
                     .includes("dod cyber workforce"),
         );
+    }
+
+    /**
+     * Runs a request, reporting any failure to Sentry as a handled warning
+     * and resolving with the provided fallback instead of rejecting.
+     */
+    private async safeFetch<T, F>(
+        request: () => Promise<T>,
+        fallback: F,
+        label: string,
+        cuid: string,
+    ): Promise<T | F> {
+        try {
+            return await request();
+        } catch (err) {
+            const error =
+                err instanceof Error
+                    ? err
+                    : new Error(
+                          typeof err === "string"
+                              ? err
+                              : ((err as any)?.message ?? JSON.stringify(err)),
+                      );
+            Sentry.captureException(error, {
+                level: "warning",
+                tags: { feature: "learning-object-card", request: label },
+                extra: { cuid, originalError: err },
+            });
+            return fallback;
+        }
     }
 
     private async getRecentDownloads(
