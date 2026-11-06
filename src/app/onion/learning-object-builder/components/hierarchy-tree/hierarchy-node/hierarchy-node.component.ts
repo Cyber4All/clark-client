@@ -17,6 +17,7 @@ import {
 import { MatIconButton } from "@angular/material/button";
 import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
 import { LearningObject } from "@entity";
+import { TipDirective } from "../../../../../shared/directives/tip.directive";
 import {
     HierarchyNode,
     NodeAction,
@@ -90,6 +91,7 @@ const LENGTH_BADGE_ICON: Record<LearningObject.Length, string> = {
         MatMenu,
         MatMenuItem,
         MatMenuTrigger,
+        TipDirective,
     ],
 })
 export class HierarchyNodeComponent {
@@ -101,6 +103,11 @@ export class HierarchyNodeComponent {
 
     /** True for the root learning object, which renders as a distinct banner row. */
     @Input() isRoot = false;
+    /**
+     * True when an ancestor of this node is a linked root. Such nodes come in
+     * with the linked object, so they are labeled "Inherited" instead of "Linked".
+     */
+    @Input() insideLinkedSubtree = false;
 
     /**
      * Predicate deciding whether `dragged` may be dropped onto `target`.
@@ -156,6 +163,20 @@ export class HierarchyNodeComponent {
         return LENGTH_BADGE_ICON[this.node?.length] ?? "fa-regular fa-file-alt";
     }
 
+    /** True only for descendants of a linked root. */
+    get isInherited(): boolean {
+        return this.insideLinkedSubtree;
+    }
+    /** Label for read-only nodes: "Inherited" beneath a linked root, else "Linked". */
+    get linkedLabel(): string {
+        return this.isInherited ? "Inherited" : "Linked";
+    }
+    /** Tooltip explaining the read-only label. */
+    get linkedTooltip(): string {
+        return this.isInherited
+            ? "This object is inherited and belongs to another author. Inherited objects cannot be edited."
+            : "This object is linked and belongs to another author. Linked objects cannot be edited.";
+    }
     get hasChildren(): boolean {
         return !!this.node?.children?.length;
     }
@@ -211,7 +232,7 @@ export class HierarchyNodeComponent {
     /**
      * Whether this node is a valid destination for the in-flight drag,
      * regardless of where the pointer currently is. True as soon as a node is
-     * picked up, so every place it can go shows its "Move into" indicator at
+     * picked up, so every place it can go shows its "Move under" indicator at
      * once. False when there is no drag, this is the dragged node itself, or
      * this node can't accept it.
      */

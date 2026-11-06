@@ -157,12 +157,6 @@ $elbow-top: 30px; // distance from a branch wrapper's top down to the elbow
     }
 }
 
-// Linked / read-only treatment: keep it visually distinct (dashed, muted).
-.hierarchy-node--linked > .node-row > .node-content {
-    background: $secondary-white-background;
-    border-style: dashed;
-}
-
 .toggle {
     border: none;
     background: transparent;
@@ -322,6 +316,45 @@ $elbow-top: 30px; // distance from a branch wrapper's top down to the elbow
     display: inline-flex;
     align-items: center;
     gap: 6px;
+    cursor: help;
+    border-radius: 3px;
+    &:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 2px;
+    }
+}
+
+// Linked roots keep the normal module treatment because they can move.
+// Only inherited descendants and other read-only nodes receive grayscale.
+// Scope to this card so descendants keep their own state.
+.hierarchy-node.hierarchy-node--muted > .node-row > .node-content,
+.hierarchy-node.hierarchy-node--muted > .node-row > .node-content.has-children {
+    background: #f1f2f4;
+    border-color: #d5d8dd;
+    box-shadow: none;
+
+    .node-name {
+        color: #626975;
+        font-weight: 500;
+    }
+
+    .badge {
+        background: #e0e3e7;
+        color: #555e6b;
+        box-shadow: none;
+    }
+
+    .toggle,
+    .drag-handle,
+    .action-menu-button {
+        color: #626975;
+    }
+}
+
+// Keep provenance labels readable on both normal and muted rows.
+.hierarchy-node--linked > .node-row > .node-content .linked-label {
+    color: #555e6b;
+    font-weight: 500;
 }
 
 // ---------- Children: indentation ----------
@@ -369,7 +402,7 @@ $elbow-top: 30px; // distance from a branch wrapper's top down to the elbow
     background: $panel-bg;
 }
 
-// Drop indicator: dashed "Move into <name>" row shown below EVERY valid target
+// Drop indicator: dashed "Move under <name>" row shown below EVERY valid target
 // as soon as a drag starts, so the author sees all destinations at once. Purely
 // visual (no drop list) — reflects `dropAffordance === 'valid'`. The indicator
 // under the hovered target is emphasized (see .is-hovered-target below).

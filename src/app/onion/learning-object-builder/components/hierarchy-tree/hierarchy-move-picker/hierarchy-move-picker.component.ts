@@ -2,6 +2,7 @@ import { NgClass, NgFor, NgIf, TitleCasePipe } from "@angular/common";
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { A11yModule } from "@angular/cdk/a11y";
 import { CdkListbox, CdkOption } from "@angular/cdk/listbox";
+import { MatTooltipModule } from "@angular/material/tooltip";
 import { HierarchyNode, MoveDestination } from "../hierarchy-tree.types";
 
 /** A visual row; selection eligibility is supplied by the view service. */
@@ -14,10 +15,14 @@ interface MoveHierarchyRow {
     isLast: boolean;
     hasChildren: boolean;
     editable: boolean;
+    /** True for descendants of a linked root, excluding the linked root itself. */
+    inherited: boolean;
     isMoving: boolean;
     movesWithSource: boolean;
     selectable: boolean;
     isCurrentParent: boolean;
+    /** Why the row cannot be picked; null for available rows. */
+    reason: string | null;
     path: string[];
 }
 
@@ -48,6 +53,7 @@ interface MoveHierarchyRow {
         A11yModule,
         CdkListbox,
         CdkOption,
+        MatTooltipModule,
     ],
 })
 export class HierarchyMovePickerComponent {
@@ -63,6 +69,16 @@ export class HierarchyMovePickerComponent {
     /** The full hierarchy provides context, including unavailable destinations. */
     @Input() hierarchy: HierarchyNode[] = [];
     @Input() movingNodeId = "";
+    /**
+     * Why each unavailable row cannot take the moved node, keyed by node id.
+     * Supplied by the view service; the picker only displays it.
+     */
+    @Input() unavailableReasons: Record<string, string> = {};
+
+    /** Number of rows the author can pick, shown beside the prompt. */
+    get availableCount(): number {
+        return this.hierarchyRows.filter((row) => row.selectable).length;
+    }
 
     get hierarchyRows(): MoveHierarchyRow[] {
         const destinations = new Map(this.destinations.map((d) => [d.id, d]));
@@ -81,6 +97,7 @@ export class HierarchyMovePickerComponent {
             path: string[],
             lines: boolean[],
             movingAncestor: boolean,
+            linkedAncestor: boolean,
         ): void => {
             nodes.forEach((node, index) => {
                 const isLast = index === nodes.length - 1;
@@ -96,10 +113,20 @@ export class HierarchyMovePickerComponent {
                     isLast,
                     hasChildren: node.children.length > 0,
                     editable: node.editable,
+                    inherited: linkedAncestor,
                     isMoving,
                     movesWithSource: movingAncestor,
                     selectable: !!destination && !isMoving && !movingAncestor,
                     isCurrentParent: !!destination?.isCurrentParent,
+                    reason: isMoving
+                        ? "An object cannot be moved into itself."
+                        : movingAncestor
+                          ? (this.unavailableReasons[node.id] ??
+                            "Moves with this object")
+                          : destination
+                            ? null
+                            : (this.unavailableReasons[node.id] ??
+                              "This object cannot accept the moving object."),
                     path: nextPath,
                 });
                 visit(
@@ -107,10 +134,11 @@ export class HierarchyMovePickerComponent {
                     nextPath,
                     [...lines, !isLast],
                     movingAncestor || isMoving,
+                    linkedAncestor || !!node.linkedRoot,
                 );
             });
         };
-        visit(roots, [], [], false);
+        visit(roots, [], [], false, false);
         return rows;
     }
 
@@ -118,13 +146,11 @@ export class HierarchyMovePickerComponent {
         const context = row.path.slice(0, -1).join(" / ");
         const status = row.isMoving
             ? "Moving object"
-            : row.movesWithSource
-              ? "Moves with this object"
-              : row.isCurrentParent
-                ? "Current parent"
-                : !row.selectable
-                  ? "Unavailable destination"
-                  : "";
+            : row.isCurrentParent
+              ? "Current parent"
+              : !row.selectable
+                ? `Unavailable: ${row.reason}`
+                : "Available destination";
         return [row.name || this.unnamedLabel, row.length, context, status]
             .filter(Boolean)
             .join(", ");

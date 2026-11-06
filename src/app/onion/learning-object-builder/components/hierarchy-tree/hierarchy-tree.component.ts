@@ -366,6 +366,10 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         pickerRef.setInput("movingNodeId", nodeId);
         pickerRef.setInput("hierarchy", this.viewService.tree);
         pickerRef.setInput("destinations", destinations);
+        pickerRef.setInput(
+            "unavailableReasons",
+            this.viewService.unavailableReasons(nodeId),
+        );
         pickerRef.changeDetectorRef.detectChanges();
 
         this.moveSubscriptions.push(
@@ -438,7 +442,7 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
         const parentName =
             findInTree(this.viewService.tree, targetId)?.name?.trim() ||
             "Unnamed object";
-        const message = `“${name}” moved into “${parentName}”.`;
+        const message = `“${name}” moved under “${parentName}”.`;
         this.notifications.success("Object moved", message);
         void this.liveAnnouncer.announce(message, "polite");
     }

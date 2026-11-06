@@ -247,4 +247,81 @@ describe("HierarchyViewService (example-based)", () => {
             expect(ids).toEqual(["micro-threat-models", "micro-cia-triad"]);
         });
     });
+
+    describe("unavailableReasons", () => {
+        // micro-cia-triad is a MICROMODULE under mod-core-concepts.
+        const reasons = (): Record<string, string> =>
+            service.unavailableReasons("micro-cia-triad");
+
+        it("gives no reason for valid destinations, the current parent, or the node itself", () => {
+            const r = reasons();
+            for (const d of service.validDestinations("micro-cia-triad")) {
+                expect(r[d.id]).toBeUndefined();
+            }
+            expect(r["mod-core-concepts"]).toBeUndefined();
+            expect(r["micro-cia-triad"]).toBeUndefined();
+        });
+
+        it("explains each blocked parent by the first rule it breaks", () => {
+            const r = reasons();
+            // Its own descendants travel with it.
+            expect(r["nano-confidentiality"]).toBe("Moves with CIA Triad");
+            // A sibling micromodule is not longer than a micromodule.
+            expect(r["micro-threat-models"]).toBe(
+                "Must be longer than a micromodule",
+            );
+            // A nanomodule can never have children.
+            expect(r["nano-glossary"]).toBe(
+                "Nanomodules can't hold other objects",
+            );
+            // Read-only wins even when the length would fit (a module).
+            expect(r["incident-response"]).toBe(
+                "This object is linked and read-only. Objects cannot be moved into linked objects.",
+            );
+        });
+
+        it("explains inherited destinations and inherited descendants traveling with a linked root", () => {
+            const inheritedReason =
+                "This object is inherited and read-only. Objects cannot be moved into inherited objects.";
+            expect(
+                service.unavailableReasons("micro-cia-triad")[
+                    "micro-detection"
+                ],
+            ).toBe(inheritedReason);
+            expect(
+                service.unavailableReasons("incident-response")[
+                    "micro-detection"
+                ],
+            ).toBe(inheritedReason);
+        });
+
+        it("covers every node that is not offered as a destination", () => {
+            const offered = new Set(
+                service.validDestinations("micro-cia-triad").map((d) => d.id),
+            );
+            const all: string[] = [];
+            const stack = [...service.tree];
+            while (stack.length) {
+                const n = stack.pop()!;
+                all.push(n.id);
+                stack.push(...n.children);
+            }
+            const blocked = all.filter(
+                (id) => id !== "micro-cia-triad" && !offered.has(id),
+            );
+            expect(Object.keys(reasons()).sort()).toEqual(blocked.sort());
+        });
+
+        it("explains descendants when the root has no valid destinations", () => {
+            expect(service.validDestinations("root")).toEqual([]);
+            expect(service.unavailableReasons("root")["unit-foundations"]).toBe(
+                "Moves with Intro to Cybersecurity",
+            );
+        });
+
+        it("returns {} for a node that cannot move", () => {
+            expect(service.unavailableReasons("missing")).toEqual({});
+            expect(service.unavailableReasons("micro-detection")).toEqual({});
+        });
+    });
 });

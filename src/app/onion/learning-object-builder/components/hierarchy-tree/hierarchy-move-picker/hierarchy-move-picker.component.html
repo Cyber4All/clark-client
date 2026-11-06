@@ -24,12 +24,14 @@
     <div class="hierarchy-move-picker__body">
         <div class="hierarchy-move-picker__tree-heading">
             <p id="move-picker-prompt">Choose a destination</p>
-            <span>Current hierarchy</span>
+            <span *ngIf="hasDestinations">{{ availableCount }} available</span>
         </div>
         <ul
             *ngIf="hierarchyRows.length"
             class="hierarchy-move-picker__list"
             cdkListbox
+            [cdkListboxNavigatesDisabledOptions]="true"
+            [cdkListboxValue]="selectedTargetId ? [selectedTargetId] : []"
             [attr.cdkFocusInitial]="hasDestinations ? '' : null"
             aria-labelledby="move-picker-prompt"
             (cdkListboxValueChange)="
@@ -44,7 +46,6 @@
                 [style.--depth]="destination.depth"
                 [attr.data-destination-id]="destination.id"
                 [attr.aria-label]="destinationLabel(destination)"
-                [title]="destination.path.join(' / ')"
                 [cdkOption]="destination.id"
                 [cdkOptionDisabled]="!destination.selectable"
                 [cdkOptionTypeaheadLabel]="destination.name || unnamedLabel">
@@ -75,23 +76,24 @@
                         destination.name || unnamedLabel
                     }}</span>
                     <span class="hierarchy-move-picker__meta">
+                        <span class="hierarchy-move-picker__option-badge">{{
+                            destination.length | titlecase
+                        }}</span>
                         <span
-                            class="hierarchy-move-picker__option-badge"
-                            [ngClass]="
-                                'hierarchy-move-picker__option-badge--' +
-                                destination.length
-                            "
-                            >{{ destination.length | titlecase }}</span
+                            *ngIf="destination.isCurrentParent"
+                            class="hierarchy-move-picker__option-hint"
+                            >Current parent</span
                         >
                         <span
-                            *ngIf="destination.selectable"
-                            class="hierarchy-move-picker__availability">
+                            *ngIf="
+                                !destination.editable && !destination.isMoving
+                            "
+                            class="hierarchy-move-picker__option-hint"
+                            ><i class="fas fa-link" aria-hidden="true"></i>
                             {{
-                                destination.id === selectedTargetId
-                                    ? "Selected"
-                                    : "Can move here"
-                            }}
-                        </span>
+                                destination.inherited ? "Inherited" : "Linked"
+                            }}</span
+                        >
                     </span>
                 </span>
                 <span
@@ -100,18 +102,30 @@
                     >Moving</span
                 >
                 <span
-                    *ngIf="destination.isCurrentParent"
-                    class="hierarchy-move-picker__option-hint"
-                    >Current parent</span
-                >
+                    *ngIf="
+                        destination.selectable &&
+                        destination.id !== selectedTargetId
+                    "
+                    class="hierarchy-move-picker__destination-arrow"
+                    aria-hidden="true">
+                    <i class="fas fa-arrow-right"></i>
+                </span>
                 <span
-                    *ngIf="!destination.editable && !destination.isMoving"
-                    class="hierarchy-move-picker__option-hint"
-                    ><i class="fas fa-link" aria-hidden="true"></i> Linked</span
-                >
-                <i
-                    class="fas fa-check hierarchy-move-picker__option-check"
-                    aria-hidden="true"></i>
+                    *ngIf="destination.id === selectedTargetId"
+                    class="hierarchy-move-picker__availability">
+                    <i class="fas fa-check" aria-hidden="true"></i>
+                    Selected
+                </span>
+                <span
+                    *ngIf="!destination.selectable && !destination.isMoving"
+                    class="hierarchy-move-picker__availability is-blocked"
+                    tabindex="0"
+                    [matTooltip]="destination.reason || ''"
+                    matTooltipPosition="above"
+                    [attr.aria-label]="'Unavailable: ' + destination.reason">
+                    <i class="fas fa-ban" aria-hidden="true"></i>
+                    Unavailable
+                </span>
             </li>
         </ul>
         <p

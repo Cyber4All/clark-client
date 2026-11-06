@@ -209,6 +209,50 @@ export class HierarchyViewService {
         return out;
     }
 
+    /**
+     * For every node that is NOT a valid destination for `nodeId`, a short
+     * sentence saying why, keyed by node id. The picker shows it on the row so
+     * the author knows why a parent is unavailable instead of only seeing it
+     * dimmed.
+     *
+     * The node itself is omitted (the picker marks it "Moving"), as are the
+     * valid destinations. Read-only reasons identify linked/inherited provenance;
+     * other reasons explain the first remaining move restriction. Returns `{}` when the node
+     * is missing or cannot move.
+     */
+    unavailableReasons(nodeId: string): Record<string, string> {
+        const tree = this.treeSubject.value;
+        const node = findNode(tree, nodeId);
+        if (!node || !this.canMove(nodeId)) {
+            return {};
+        }
+        const currentParentId = this.parentIdOf(nodeId);
+        const nodeName = node.name?.trim() || "this object";
+        const reasons: Record<string, string> = {};
+        walk(tree, (candidate) => {
+            if (
+                candidate.id === nodeId ||
+                candidate.id === currentParentId ||
+                this.canDrop(node, candidate)
+            ) {
+                return;
+            }
+            if (!candidate.editable) {
+                const provenance = isInsideLinkedSubtree(tree, candidate.id)
+                    ? "inherited"
+                    : "linked";
+                reasons[candidate.id] =
+                    `This object is ${provenance} and read-only. Objects cannot be moved into ${provenance} objects.`;
+            } else if (isDescendant(node, candidate.id)) {
+                reasons[candidate.id] = `Moves with ${nodeName}`;
+            } else if (!canHaveChildren(candidate.length)) {
+                reasons[candidate.id] = "Nanomodules can't hold other objects";
+            } else {
+                reasons[candidate.id] = `Must be longer than a ${node.length}`;
+            }
+        });
+        return reasons;
+    }
     /** The id of the direct parent of `nodeId`, or undefined if it is a root. */
     parentIdOf(nodeId: string): string | undefined {
         return parentIdOf(this.treeSubject.value, nodeId);

@@ -1,3 +1,7 @@
+import { FocusMonitor } from "@angular/cdk/a11y";
+import { OverlayContainer } from "@angular/cdk/overlay";
+import { MatTooltip } from "@angular/material/tooltip";
+import { NoopAnimationsModule } from "@angular/platform-browser/animations";
 import {
     ComponentFixture,
     fakeAsync,
@@ -43,6 +47,11 @@ describe("HierarchyMovePickerComponent", () => {
             .mockReturnValue([{}] as unknown as DOMRectList);
     });
 
+    afterEach(() => {
+        fixture.destroy();
+        TestBed.inject(OverlayContainer).ngOnDestroy();
+    });
+
     afterAll(() => {
         rectsSpy.mockRestore();
         Object.defineProperty(window, "getComputedStyle", {
@@ -78,7 +87,7 @@ describe("HierarchyMovePickerComponent", () => {
 
     beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
-            imports: [HierarchyMovePickerComponent],
+            imports: [HierarchyMovePickerComponent, NoopAnimationsModule],
         }).compileComponents();
     }));
 
@@ -212,6 +221,7 @@ describe("HierarchyMovePickerComponent", () => {
             fixture.nativeElement.querySelector('[aria-selected="true"]')
                 .textContent,
         ).toContain("Foundations");
+        flush();
     }));
 
     it("shows no destination summary or position control after selecting a parent", () => {
@@ -224,7 +234,7 @@ describe("HierarchyMovePickerComponent", () => {
             ),
         ).toBeNull();
         expect(fixture.nativeElement.querySelector("select")).toBeNull();
-        expect(fixture.nativeElement.textContent).not.toContain("Move into");
+        expect(fixture.nativeElement.textContent).not.toContain("Move under");
     });
 
     describe("hierarchy context", () => {
@@ -330,27 +340,232 @@ describe("HierarchyMovePickerComponent", () => {
                     row.getAttribute("data-destination-id"),
                 ),
             ).toEqual(["course-root", "unit-foundations", "module-core"]);
-            available.forEach((row) =>
+            available.forEach((row) => {
+                expect(row.getAttribute("aria-disabled")).not.toBe("true");
+                expect(row.textContent).not.toContain("Can move here");
+                const arrow = row.querySelector(
+                    ".hierarchy-move-picker__destination-arrow",
+                );
+                expect(arrow).toBeTruthy();
+                expect(arrow?.querySelector(".fa-arrow-right")).toBeTruthy();
+                expect(arrow?.querySelector(".fa-arrow-turn-down")).toBeNull();
+                expect(arrow?.getAttribute("aria-hidden")).toBe("true");
                 expect(
-                    row.querySelector(".hierarchy-move-picker__availability")!
-                        .textContent,
-                ).toContain("Can move here"),
-            );
+                    row.querySelector(".hierarchy-move-picker__availability"),
+                ).toBeNull();
+            });
             const unavailable = fixture.nativeElement.querySelectorAll(
                 '[aria-disabled="true"]',
             ) as NodeListOf<HTMLElement>;
-            unavailable.forEach((row) =>
+            unavailable.forEach((row) => {
+                expect(row.classList).not.toContain("is-available");
                 expect(
-                    row.querySelector(".hierarchy-move-picker__availability"),
-                ).toBeNull(),
-            );
+                    row.querySelector(
+                        ".hierarchy-move-picker__destination-arrow",
+                    ),
+                ).toBeNull();
+                expect(row.textContent).toContain(
+                    row.dataset.destinationId === "moving"
+                        ? "Moving"
+                        : "Unavailable",
+                );
+            });
+            expect(
+                fixture.nativeElement.querySelector(
+                    '.hierarchy-move-picker__radio, input[type="radio"], [role="radio"]',
+                ),
+            ).toBeNull();
             available[1].click();
+            fixture.detectChanges();
+            expect(available[1].classList).toContain("is-selected");
+            expect(available[1].textContent).toContain("Selected");
+            expect(available[1].querySelector(".fa-check")).toBeTruthy();
+            expect(
+                available[1].querySelector(
+                    ".hierarchy-move-picker__destination-arrow",
+                ),
+            ).toBeNull();
+            available[0].click();
             fixture.detectChanges();
             expect(
                 available[1].querySelector(
-                    ".hierarchy-move-picker__availability",
-                )!.textContent,
-            ).toContain("Selected");
+                    ".hierarchy-move-picker__destination-arrow",
+                ),
+            ).toBeTruthy();
+            available[1].click();
+            fixture.detectChanges();
+            expect(available[1].getAttribute("aria-selected")).toBe("true");
+            expect(available[0].classList).not.toContain("is-selected");
+        });
+
+        it("removes a FontAwesome-replaced SVG arrow when its destination is selected", () => {
+            renderHierarchy();
+            const row = fixture.nativeElement.querySelector(
+                '[data-destination-id="unit-foundations"]',
+            ) as HTMLElement;
+            const icon = row.querySelector(
+                ".hierarchy-move-picker__destination-arrow .fa-arrow-right",
+            )!;
+            const svg = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "svg",
+            );
+            svg.setAttribute("data-icon", "arrow-right");
+            svg.setAttribute("class", "svg-inline--fa fa-arrow-right");
+            icon.replaceWith(svg);
+
+            row.click();
+            fixture.detectChanges();
+
+            expect(row.getAttribute("aria-selected")).toBe("true");
+            expect(row.querySelector('[data-icon="arrow-right"]')).toBeNull();
+            expect(
+                row.querySelector(".hierarchy-move-picker__destination-arrow"),
+            ).toBeNull();
+            expect(row.textContent).toContain("Selected");
+            expect(row.querySelector(".fa-check")).toBeTruthy();
+        });
+
+        it("states how many destinations are available", () => {
+            renderHierarchy();
+            // Count actual destinations, including when the moving row is absent.
+            expect(
+                fixture.nativeElement.querySelector(
+                    ".hierarchy-move-picker__tree-heading span",
+                ).textContent,
+            ).toContain("3 available");
+        });
+
+        it("shows blocked reasons on hover and keyboard focus", fakeAsync(() => {
+            component.unavailableReasons = {
+                linked: "This object is linked and read-only. Objects cannot be moved into linked objects.",
+            };
+            renderHierarchy();
+            flush();
+            const row = fixture.debugElement.query(
+                By.css('[data-destination-id="linked"]'),
+            );
+            const trigger = row.query(By.css(".is-blocked"));
+            const tooltip = trigger.injector.get(MatTooltip);
+            expect(row.providerTokens).not.toContain(MatTooltip);
+            expect(tooltip.message).toBe(
+                "This object is linked and read-only. Objects cannot be moved into linked objects.",
+            );
+            expect(row.nativeElement.getAttribute("aria-label")).toContain(
+                "Unavailable: This object is linked and read-only. Objects cannot be moved into linked objects.",
+            );
+            row.nativeElement.dispatchEvent(new MouseEvent("mouseenter"));
+            fixture.detectChanges();
+            flush();
+            expect(
+                TestBed.inject(OverlayContainer)
+                    .getContainerElement()
+                    .querySelector(".mat-mdc-tooltip-surface"),
+            ).toBeNull();
+            trigger.nativeElement.dispatchEvent(new MouseEvent("mouseenter"));
+            fixture.detectChanges();
+            flush();
+            expect(
+                TestBed.inject(OverlayContainer)
+                    .getContainerElement()
+                    .querySelector(".mat-mdc-tooltip-surface")?.textContent,
+            ).toContain(
+                "This object is linked and read-only. Objects cannot be moved into linked objects.",
+            );
+            trigger.nativeElement.dispatchEvent(new MouseEvent("mouseleave"));
+            flush();
+            TestBed.inject(FocusMonitor).focusVia(
+                trigger.nativeElement,
+                "keyboard",
+            );
+            fixture.detectChanges();
+            flush();
+            expect(
+                TestBed.inject(OverlayContainer)
+                    .getContainerElement()
+                    .querySelector(".mat-mdc-tooltip-surface")?.textContent,
+            ).toContain(
+                "This object is linked and read-only. Objects cannot be moved into linked objects.",
+            );
+            row.nativeElement.click();
+            expect(component.selectedTargetId).toBeNull();
+            tooltip.hide(0);
+            flush();
+        }));
+
+        it("only attaches reason tooltips to unavailable status labels", () => {
+            renderHierarchy();
+            const triggers = fixture.debugElement.queryAll(
+                By.directive(MatTooltip),
+            );
+            expect(triggers.length).toBe(2);
+            triggers.forEach((trigger) => {
+                expect(trigger.nativeElement.classList).toContain("is-blocked");
+                expect(trigger.nativeElement.textContent).toContain(
+                    "Unavailable",
+                );
+                expect(trigger.nativeElement.getAttribute("tabindex")).toBe(
+                    "0",
+                );
+            });
+            expect(triggers[0].injector.get(MatTooltip).message).toBe(
+                "Moves with this object",
+            );
+        });
+
+        it("labels a linked root Linked and its descendants Inherited", () => {
+            component.hierarchy = [
+                {
+                    ...hierarchy[0],
+                    children: [
+                        {
+                            id: "linked",
+                            name: "Incident Response",
+                            length: LearningObject.Length.MODULE,
+                            editable: false,
+                            linkedRoot: true,
+                            children: [
+                                {
+                                    id: "inherited",
+                                    name: "Detection",
+                                    length: LearningObject.Length.MICROMODULE,
+                                    editable: false,
+                                    children: [],
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ];
+            component.movingNodeId = "moving";
+            component.unavailableReasons = {
+                linked: "This object is linked and read-only. Objects cannot be moved into linked objects.",
+                inherited:
+                    "This object is inherited and read-only. Objects cannot be moved into inherited objects.",
+            };
+            render();
+            for (const id of ["linked", "inherited"]) {
+                const row = fixture.debugElement.query(
+                    By.css(`[data-destination-id="${id}"]`),
+                );
+                expect(
+                    row.query(By.css(".is-blocked")).injector.get(MatTooltip)
+                        .message,
+                ).toBe(component.unavailableReasons[id]);
+                expect(row.nativeElement.getAttribute("aria-label")).toContain(
+                    component.unavailableReasons[id],
+                );
+            }
+            const hints = (id: string): string =>
+                (
+                    fixture.nativeElement.querySelector(
+                        `[data-destination-id="${id}"]`,
+                    ) as HTMLElement
+                ).textContent!;
+            expect(hints("linked")).toContain("Linked");
+            expect(hints("linked")).not.toContain("Inherited");
+            expect(hints("inherited")).toContain("Inherited");
+            expect(hints("inherited")).not.toContain("Linked");
         });
 
         it("announces ancestry in the selected hierarchy row", () => {
@@ -376,7 +591,7 @@ describe("HierarchyMovePickerComponent", () => {
             expect(component.selectedTargetId).toBe("course-root");
         });
 
-        it("keyboard selection skips the moving subtree and linked context", fakeAsync(() => {
+        it("keyboard focus reaches blocked destinations without selecting them", fakeAsync(() => {
             renderHierarchy();
             flush();
             const list = fixture.nativeElement.querySelector(
@@ -397,7 +612,12 @@ describe("HierarchyMovePickerComponent", () => {
                 }),
             );
             fixture.detectChanges();
-            expect(component.selectedTargetId).toBe("module-core");
+            expect(component.selectedTargetId).toBeNull();
+            expect(
+                document.activeElement?.getAttribute("data-destination-id"),
+            ).toBe("linked");
+            expect(component.canConfirm).toBe(false);
+            flush();
         }));
     });
 

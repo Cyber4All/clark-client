@@ -310,4 +310,119 @@ describe("HierarchyNodeComponent", () => {
             expect(host.emitted).toEqual([]);
         });
     });
+
+    describe("read-only labels", () => {
+        /** Text of each rendered read-only label, in document order. */
+        function labels(): string[] {
+            return fixture.debugElement
+                .queryAll(By.css(".linked-label"))
+                .map((el) => (el.nativeElement as HTMLElement).textContent!);
+        }
+
+        it("renders no read-only label on an editable node", () => {
+            render();
+            expect(labels()).toEqual([]);
+        });
+
+        it("labels the linked root Linked and its descendants Inherited", () => {
+            host.node = makeNode({
+                id: "incident-response",
+                name: "Incident Response",
+                editable: false,
+                linkedRoot: true,
+                expanded: true,
+                children: [
+                    makeNode({
+                        id: "micro-detection",
+                        name: "Detection",
+                        editable: false,
+                    }),
+                ],
+            });
+            render();
+
+            const [root, child] = labels();
+            expect(root).toContain("Linked · Read only");
+            expect(root).not.toContain("Inherited");
+            expect(root).toContain(
+                "This object is linked and belongs to another author. Linked objects cannot be edited.",
+            );
+            expect(child).toContain("Inherited · Read only");
+            expect(child).toContain(
+                "This object is inherited and belongs to another author. Inherited objects cannot be edited.",
+            );
+        });
+
+        it("keeps a standalone read-only node labeled Linked", () => {
+            host.node = makeNode({ editable: false });
+            render();
+            expect(labels()[0]).toContain("Linked · Read only");
+            expect(labels()[0]).not.toContain("Inherited");
+        });
+
+        it("keeps the linked root unmuted and inherited children muted while preserving permissions", () => {
+            host.node = makeNode({
+                id: "linked-parent",
+                editable: false,
+                linkedRoot: true,
+                expanded: true,
+                children: [
+                    makeNode({ id: "inherited-child", editable: false }),
+                ],
+            });
+            host.canMovePredicate = (id) => id === "linked-parent";
+            render();
+
+            const rows = fixture.debugElement.queryAll(
+                By.css(".hierarchy-node--linked"),
+            );
+            expect(rows.length).toBe(2);
+            rows.forEach((row) => {
+                const card = row.query(By.css(".node-content"));
+                expect(
+                    card.query(By.css(".linked-label .fa-lock")),
+                ).toBeTruthy();
+                expect(
+                    card.query(By.css(".linked-label")).nativeElement
+                        .textContent,
+                ).toContain("Read only");
+                expect(card.nativeElement.textContent).toContain(
+                    "cannot be edited.",
+                );
+            });
+            const nodes = fixture.debugElement.queryAll(
+                By.directive(HierarchyNodeComponent),
+            );
+            const rootRow = nodes[0].query(By.css(".hierarchy-node"));
+            const childRow = nodes[1].query(By.css(".hierarchy-node"));
+            expect(rootRow.nativeElement.classList).not.toContain(
+                "hierarchy-node--muted",
+            );
+            expect(childRow.nativeElement.classList).toContain(
+                "hierarchy-node--muted",
+            );
+            expect(nodes[0].componentInstance.isExpanded).toBe(true);
+            expect(nodes[0].componentInstance.canMove).toBe(true);
+            expect(nodes[1].componentInstance.canMove).toBe(false);
+            expect(nodes[1].query(By.css(".drag-handle"))).toBeNull();
+            openMenu();
+            expect(overlayMenuItems()[0].disabled).toBe(false);
+
+            const toggle = nodes[0].query(By.css(".toggle"));
+            const toggled = jest.spyOn(
+                nodes[0].componentInstance.toggleExpanded,
+                "emit",
+            );
+            toggle.nativeElement.click();
+            expect(toggled).toHaveBeenCalledWith("linked-parent");
+        });
+
+        it("makes the label focusable so keyboard users can reach the tooltip", () => {
+            host.node = makeNode({ editable: false });
+            render();
+            const label = fixture.debugElement.query(By.css(".linked-label"))
+                .nativeElement as HTMLElement;
+            expect(label.getAttribute("tabindex")).toBe("0");
+        });
+    });
 });

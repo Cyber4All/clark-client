@@ -475,10 +475,10 @@ describe("HierarchyTreeComponent (integration)", () => {
             expect(pickerElement()).toBeNull();
             expect(notifications.success).toHaveBeenCalledWith(
                 "Object moved",
-                "“Foundations Unit” moved into “Intro to Cybersecurity”.",
+                "“Foundations Unit” moved under “Intro to Cybersecurity”.",
             );
             expect(liveAnnouncer.announce).toHaveBeenCalledWith(
-                "“Foundations Unit” moved into “Intro to Cybersecurity”.",
+                "“Foundations Unit” moved under “Intro to Cybersecurity”.",
                 "polite",
             );
         }));
@@ -634,7 +634,7 @@ describe("HierarchyTreeComponent (integration)", () => {
                 if (applied) {
                     expect(notifications.success).toHaveBeenCalledWith(
                         "Object moved",
-                        "“Security Glossary” moved into “Network Security”.",
+                        "“Security Glossary” moved under “Network Security”.",
                     );
                 }
             },

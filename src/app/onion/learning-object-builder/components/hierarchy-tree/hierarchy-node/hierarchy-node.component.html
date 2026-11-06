@@ -8,6 +8,9 @@
     class="hierarchy-node"
     [class.hierarchy-node--root]="isRoot"
     [class.hierarchy-node--linked]="!node.editable"
+    [class.hierarchy-node--muted]="
+        !node.editable && (!node.linkedRoot || isInherited)
+    "
     [class.is-dragging]="isBeingDragged">
     <div
         class="node-row"
@@ -73,12 +76,20 @@
 
             <span class="node-row__spacer"></span>
 
-            <!-- Linked/read-only nodes: "Linked" label -->
-            <ng-container *ngIf="!node.editable">
-                <span class="linked-label">
-                    <i class="far fa-link"></i> Linked
-                </span>
-            </ng-container>
+            <!-- Read-only nodes keep their provenance and an explicit edit
+                 restriction. The explanation lives in the tooltip, and a
+                 visually hidden copy gives screen readers the same text. -->
+            <span
+                *ngIf="!node.editable"
+                class="linked-label"
+                tabindex="0"
+                [tip]="linkedTooltip"
+                tipPosition="top"
+                [tipWrap]="true">
+                <i class="fas fa-lock" aria-hidden="true"></i>
+                {{ linkedLabel }} · Read only
+                <span class="cdk-visually-hidden">. {{ linkedTooltip }}</span>
+            </span>
 
             <!-- Single kebab-style Action Menu trigger, rendered on EVERY row
                  (root, editable, and linked nodes alike). Replaces the old `+`
@@ -131,7 +142,7 @@
             *ngIf="dropAffordance === 'valid'"
             class="drop-indicator"
             aria-hidden="true">
-            <i class="far fa-arrow-down"></i> Move into {{ node.name }}
+            <i class="far fa-arrow-down"></i> Move under {{ node.name }}
         </div>
     </div>
 
@@ -155,6 +166,7 @@
             <clark-hierarchy-node
                 [node]="child"
                 [depth]="depth + 1"
+                [insideLinkedSubtree]="insideLinkedSubtree || !!node.linkedRoot"
                 [canDropPredicate]="canDropPredicate"
                 [canMovePredicate]="canMovePredicate"
                 [draggingNode]="draggingNode"
