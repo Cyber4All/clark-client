@@ -1,7 +1,7 @@
 <div class="learning-object-builder-wrapper" [@builderTransition]="routeState">
-    <!-- The ngIf directive on onion-builder-navbar forces the :enter event to fire for router animations and should NOT be removed -->
+    <!-- The transient new-object route is replaced by its CUID/version route after creation. Render the navbar only on that canonical route so it does not enter twice. -->
     <onion-builder-navbar
-        *ngIf="true"
+        *ngIf="!isNewObjectRoute"
         [adminMode]="adminMode"></onion-builder-navbar>
     <router-outlet #o="outlet"></router-outlet>
 </div>

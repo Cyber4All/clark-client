@@ -141,6 +141,9 @@ export class LearningObjectBuilderComponent
 
     showServiceFailureModal = false;
 
+    /** The initial draft route has no persistent CUID/version URL yet. */
+    isNewObjectRoute: boolean;
+
     historySnapshot: HistorySnapshot;
 
     public routeState: string;
@@ -158,7 +161,9 @@ export class LearningObjectBuilderComponent
         private history: HistoryService,
         private cdRef: ChangeDetectorRef,
         private agenticBuilderSessionStorage: AgenticBuilderSessionStorageService,
-    ) {}
+    ) {
+        this.isNewObjectRoute = !this.route.snapshot.paramMap.get("cuid");
+    }
     ngAfterViewInit(): void {
         this.routeState =
             this.route.snapshot.firstChild?.data?.["state"] ?? "default";
