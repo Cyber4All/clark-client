@@ -48,6 +48,14 @@
         .sort:hover {
             color: $light-blue;
         }
+
+        .sort-header {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 0;
+            text-align: left;
+        }
     }
 
     clark-learning-object-list-item {
