@@ -5,17 +5,13 @@ import {
     UsageStats,
     UserMetrics,
 } from "../shared/types/usage-stats";
-import {
-    CounterStat,
-    CounterBlockComponent,
-} from "./counter-block/counter-block.component";
 import { PieChart } from "./types";
 import { LearningObject } from "../../../entity/learning-object/learning-object";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { MetricService } from "../../core/metric-module/metric.service";
 import { UtilityService } from "../../core/utility-module/utility.service";
 import { OutcomeService } from "app/core/learning-object-module/outcomes/outcome.service";
-import { NgFor } from "@angular/common";
+import { DecimalPipe, NgClass, NgFor, NgIf } from "@angular/common";
 import { DistributionChartComponent } from "./distribution-chart/distribution-chart.component";
 import { TopDownloadsComponent } from "./top-downloads/top-downloads.component";
 
@@ -25,17 +21,43 @@ type LearningObjectStatsResponse = LearningObjectStats & {
     };
 };
 
+interface CounterStat {
+    title: string;
+    value: number;
+    class?: string;
+}
+
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
 let CHART_HOVERED = false;
+
+export function getLastCompletedWeekRange(now = new Date()) {
+    const currentWeekStart = new Date(
+        Date.UTC(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate() - now.getUTCDay(),
+        ),
+    );
+    const previousWeekStart = new Date(currentWeekStart);
+    previousWeekStart.setUTCDate(previousWeekStart.getUTCDate() - 7);
+
+    return {
+        start: previousWeekStart.toISOString(),
+        end: currentWeekStart.toISOString(),
+    };
+}
+
 @Component({
     selector: "cube-usage-stats",
     templateUrl: "usage-stats.component.html",
     styleUrls: ["usage-stats.component.scss"],
     standalone: true,
     imports: [
+        DecimalPipe,
+        NgClass,
         NgFor,
-        CounterBlockComponent,
+        NgIf,
         DistributionChartComponent,
         TopDownloadsComponent,
     ],
@@ -114,7 +136,6 @@ export class UsageStatsComponent implements OnInit {
                 this.usageStats.objects.review = stats.review;
                 this.usageStats.objects.total = stats.total;
                 this.usageStats.objects.released = stats.released;
-                this.usageStats.objects.downloads = stats.downloads;
                 this.usageStats.objects.topDownloads = stats.topDownloads;
                 this.usageStats.objects.lengths = {
                     nanomodule: stats.lengths.nanomodule,
@@ -132,6 +153,14 @@ export class UsageStatsComponent implements OnInit {
                 this.buildCounterStats();
                 this.buildLengthDistributionChart();
                 this.buildTopDownloads();
+            });
+
+        const week = getLastCompletedWeekRange();
+        this.metricService
+            .getTotalDownloads(week.start, week.end)
+            .then((downloads) => {
+                this.usageStats.objects.downloads = downloads;
+                this.buildCounterStats();
             });
 
         this.outcomeService.getLearningOutcomeStats().then((stats) => {
@@ -175,12 +204,7 @@ export class UsageStatsComponent implements OnInit {
                 class: "review",
             },
             {
-                title: "Quality-Assured Collections",
-                value: this.usageStats.objects.collections.number,
-                class: "collections",
-            },
-            {
-                title: "Downloads",
+                title: "Weekly Downloads",
                 value: this.usageStats.objects.downloads,
                 class: "downloads",
             },
