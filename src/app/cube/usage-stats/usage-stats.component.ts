@@ -81,8 +81,7 @@ export class UsageStatsComponent implements OnInit {
     organizationBreakdownChart: PieChart;
 
     outcomeDistributionChart: PieChart;
-    outcomeLearnMoreLink =
-        "https://cft.vanderbilt.edu/guides-sub-pages/blooms-taxonomy";
+    outcomeLearnMoreLink = "/assets/Blooms-Taxonomy.pdf";
 
     lengthDistributionChart: PieChart;
 
