@@ -1,0 +1,120 @@
+@import "_vars.scss";
+
+.playlist-modal {
+    color: $dark-grey;
+
+    h2 {
+        margin: 0 0 8px;
+        color: $darker-grey;
+        font-size: $largest;
+    }
+
+    p {
+        margin: 0;
+    }
+}
+
+.playlist-options {
+    display: grid;
+    gap: 10px;
+    margin-top: 25px;
+    max-height: 330px;
+    overflow-y: auto;
+}
+
+.playlist-option {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid $light-grey;
+    border-radius: 4px;
+    background: white;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &.selected {
+        border-color: $light-blue;
+        background: rgba($light-blue, 0.08);
+    }
+
+    &.already-added {
+        border-color: $light-grey;
+        background: $light-grey;
+        color: $medium-grey;
+        cursor: not-allowed;
+        opacity: 0.8;
+
+        .playlist-copy strong {
+            color: $medium-grey;
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid $light-blue;
+        outline-offset: 2px;
+    }
+
+    > .svg-inline--fa {
+        margin-left: auto;
+        color: $light-blue;
+        font-size: $larger;
+    }
+}
+
+.selection-control {
+    width: 18px;
+    height: 18px;
+    border: 2px solid $medium-grey;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+
+.playlist-option.selected .selection-control {
+    border: 6px solid $light-blue;
+}
+
+.playlist-copy {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    strong {
+        color: $darker-grey;
+    }
+
+    span {
+        margin-top: 3px;
+        font-size: $small;
+    }
+}
+
+.playlist-status {
+    padding: 35px 0;
+    text-align: center;
+}
+
+.create-playlist {
+    margin-top: 20px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $light-blue;
+    font: inherit;
+    cursor: pointer;
+
+    .svg-inline--fa {
+        margin-right: 6px;
+    }
+}
+
+.create-playlist {
+    margin-left: 14px;
+}
+
+.playlist-actions {
+    gap: 12px;
+}

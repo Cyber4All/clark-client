@@ -86,12 +86,12 @@ export class AddChildComponent implements OnInit, OnDestroy {
             })
             .then(
                 (response: {
-                    learningObjects: LearningObject[];
+                    learningObjects?: LearningObject[];
                     total: number;
                 }) => {
                     const indx = this.lengths.indexOf(this.child.length);
                     const childrenLengths = this.lengths.slice(0, indx);
-                    return response.learningObjects.filter(
+                    return (response?.learningObjects ?? []).filter(
                         (child: LearningObject) => {
                             return (
                                 !this.currentChildren.includes(child.id) &&
@@ -108,12 +108,12 @@ export class AddChildComponent implements OnInit, OnDestroy {
             })
             .then(
                 (response: {
-                    learningObjects: LearningObject[];
+                    learningObjects?: LearningObject[];
                     total: number;
                 }) => {
                     const indx = this.lengths.indexOf(this.child.length);
                     const childrenLengths = this.lengths.slice(0, indx);
-                    return response.learningObjects.filter(
+                    return (response?.learningObjects ?? []).filter(
                         (child: LearningObject) => {
                             return (
                                 !this.currentChildren.includes(child.id) &&

@@ -9,22 +9,35 @@
             *ngIf="learningObject; else loadingTemplate"
             class="content-wrapper">
             <form>
-                <clark-info-page-metadata
-                    [error]="getNameError()">
+                <clark-info-page-metadata [error]="getNameError()">
                     <div title class="field-label">
                         <i class="fa-solid fa-asterisk required-asterisk"></i>
                         {{ copy.NAME }}
                     </div>
                     <div data>
-                        <input
-                            #nameInput
-                            class="name-field"
-                            [class.name-field--error]="getNameError()"
-                            name="name"
-                            type="text"
-                            placeholder="Learning Object Name"
-                            [value]="learningObject.name"
-                            (input)="onNameInput(nameInput.value)" />
+                        <div class="generating-field">
+                            <input
+                                #nameInput
+                                class="name-field"
+                                [class.name-field--error]="getNameError()"
+                                name="name"
+                                type="text"
+                                placeholder="Learning Object Name"
+                                [value]="learningObject.name"
+                                [disabled]="generatingName"
+                                [attr.aria-busy]="generatingName"
+                                (input)="onNameInput(nameInput.value)" />
+                            <span
+                                *ngIf="generatingName"
+                                class="generating-field__status"
+                                role="status"
+                                aria-live="polite">
+                                <i
+                                    class="far fa-spinner-third fa-spin"
+                                    aria-hidden="true"></i>
+                                Generating name
+                            </span>
+                        </div>
                     </div>
                 </clark-info-page-metadata>
                 <hr />
@@ -66,11 +79,7 @@
                 </clark-info-page-metadata>
                 <div class="attribution-preview bottom">
                     <b>Attribution preview: </b>
-                    <i>{{
-                        learningObject.name
-                            ? learningObject.name
-                            : "Learning Object Name"
-                    }}</i>
+                    <i>{{ learningObject.displayName }}</i>
                     by <i>{{ getContributorAttribution() }}</i
                     >,
                     <span
@@ -134,14 +143,31 @@
                         {{ copy.QUESTION }}
                     </div>
                     <div data attr.aria-label="{{ copy.QUESTION }}">
-                        <onion-learning-object-description
-                            [learningObject]="learningObject"
-                            (textOutput)="
-                                mutateLearningObject({ description: $event })
-                            "
-                            (touched)="
-                                descriptionTouched = true; cd.detectChanges()
-                            "></onion-learning-object-description>
+                        <div class="generating-field generating-field--stacked">
+                            <onion-learning-object-description
+                                [learningObject]="learningObject"
+                                [disabled]="generatingDescription"
+                                [attr.aria-busy]="generatingDescription"
+                                (textOutput)="
+                                    mutateLearningObject({
+                                        description: $event,
+                                    })
+                                "
+                                (touched)="
+                                    descriptionTouched = true;
+                                    cd.detectChanges()
+                                "></onion-learning-object-description>
+                            <span
+                                *ngIf="generatingDescription"
+                                class="generating-field__status"
+                                role="status"
+                                aria-live="polite">
+                                <i
+                                    class="far fa-spinner-third fa-spin"
+                                    aria-hidden="true"></i>
+                                Generating description
+                            </span>
+                        </div>
                     </div>
                 </clark-info-page-metadata>
             </form>

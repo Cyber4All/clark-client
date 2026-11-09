@@ -192,15 +192,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
             text = filters;
         }
 
-        const response = await this.searchService
-            .getUsersLearningObjects(this.auth.username, {
+        const response = await this.searchService.getUsersLearningObjects(
+            this.auth.username,
+            {
                 draftsOnly: true,
                 limit: 1000,
                 text,
                 ...filters,
-            });
+            },
+        );
         this.workingLearningObjects = this.sortLearningObjectsByDate(
-            (response as { learningObjects: LearningObject[]; total: number }).learningObjects,
+            (response as { learningObjects: LearningObject[]; total: number })
+                .learningObjects,
         );
     }
 
@@ -214,13 +217,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
         filters?: any,
         text?: string,
     ): Promise<void> {
-        const response = await this.searchService
-            .getUsersLearningObjects(this.auth.username, {
+        const response = await this.searchService.getUsersLearningObjects(
+            this.auth.username,
+            {
                 ...filters,
                 text,
-            });
+            },
+        );
         this.releasedLearningObjects = this.sortLearningObjectsByDate(
-            (response as { learningObjects: LearningObject[]; total: number }).learningObjects,
+            (response as { learningObjects: LearningObject[]; total: number })
+                .learningObjects,
         );
 
         this.checkQueryParams$.next();

@@ -22,7 +22,6 @@ import {
     Collection,
 } from "app/core/collection-module/collections.service";
 import { ToastrOvenService } from "app/shared/modules/toaster/notification.service";
-import { UtilityService } from "app/core/utility-module/utility.service";
 import { NgIf, NgClass } from "@angular/common";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { MatIconButton } from "@angular/material/button";
@@ -59,7 +58,6 @@ export class AdminComponent implements OnInit, OnDestroy {
 
     collectionsLoaded: boolean;
 
-    topAdjustment: number;
     isTabletView = false;
 
     constructor(
@@ -69,26 +67,12 @@ export class AdminComponent implements OnInit, OnDestroy {
         public authService: AuthService,
         private collectionService: CollectionService,
         public toaster: ToastrOvenService,
-        private utilityServicce: UtilityService,
     ) {}
 
-    async ngOnInit() {
+    ngOnInit() {
         this.updateViewportMode();
         // hide CLARK navbar
         this.navbarService.hide();
-
-        try {
-            if (!!(await this.utilityServicce.getDowntime()).message) {
-                // the message banner is down, adjust UI to account for it
-                setTimeout(() => {
-                    this.topAdjustment = document
-                        .querySelector("clark-message .wrapper")
-                        .getBoundingClientRect().height;
-                });
-            }
-        } catch (err) {
-            console.error(err);
-        }
 
         // set the can scroll value to determine whether or not we add 30px of padding to the bottom of the content wrapper
         const canScroll = this.route.snapshot.firstChild.data.canScroll;

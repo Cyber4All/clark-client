@@ -4,7 +4,7 @@
     display: grid;
     grid-template-columns: minmax(150px, 225px) 1fr;
     position: fixed;
-    top: 0;
+    top: var(--downtime-banner-offset, 0px);
     left: 0;
     right: 0;
     bottom: 0;
@@ -14,7 +14,7 @@
 .admin__sidebar {
     background: white;
     padding: 20px 0;
-    max-height: 100vh;
+    max-height: calc(100vh - var(--downtime-banner-offset, 0px));
     border-right: 2px solid $light-grey;
     box-sizing: border-box;
 }
@@ -27,7 +27,7 @@
     box-sizing: border-box;
     flex: 1;
     overflow-y: scroll;
-    max-height: 100vh;
+    max-height: calc(100vh - var(--downtime-banner-offset, 0px));
 
     &.admin__main-content--can-scroll {
         padding-bottom: 30px;
@@ -36,7 +36,7 @@
 
 .admin__meatball {
     position: fixed;
-    top: 18px;
+    top: calc(18px + var(--downtime-banner-offset, 0px));
     right: 18px;
     z-index: 20;
 }
