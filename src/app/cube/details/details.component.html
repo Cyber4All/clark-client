@@ -19,6 +19,9 @@
                         [learningObject]="learningObject"
                         [averageRating]="averageRatingValue"
                         [reviewsCount]="ratings?.length"
+                        [loggedIn]="loggedin"
+                        [canRate]="loggedin && !isOwnObject"
+                        (selectedRating)="openAddRatingModal($event)"
                         [link]="link">
                     </clark-details-splash>
                 </section>
