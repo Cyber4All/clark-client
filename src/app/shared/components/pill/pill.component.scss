@@ -13,15 +13,24 @@
     transition: all 0.15s ease;
     user-select: none;
 
+    i {
+        font-size: $smaller;
+        margin-right: 6px;
+    }
+
     &:hover:not(:disabled) {
         background: var(--theme-foreground-subtle);
         border-color: var(--theme-border-strong);
     }
 
     &.active {
-        background: var(--theme-foreground-selected);
-        border-color: var(--theme-action-primary);
-        color: var(--theme-action-primary);
+        background: rgba(28, 112, 221, 0.1);
+        border-color: $light-blue;
+        color: $light-blue;
+        font-weight: normal;
+    }
+
+    &.active-emphasis {
         font-weight: 600;
     }
 

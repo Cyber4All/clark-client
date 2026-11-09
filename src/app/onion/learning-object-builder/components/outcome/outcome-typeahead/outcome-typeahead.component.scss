@@ -38,6 +38,10 @@
         &.bad {
             border-bottom-color: var(--theme-status-error);
         }
+
+        &:disabled {
+            cursor: wait;
+        }
     }
 
     .verb {

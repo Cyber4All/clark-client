@@ -16,7 +16,8 @@ import {
             [tip]="states?.get(status)?.tip"
             [tipDisabled]="!states?.get(status)?.tip"
             [attr.aria-label]="'Learning Object Status: ' + statusLabel"
-            tipPosition="bottom">
+            tipPosition="bottom"
+            [tipWrap]="true">
             <span><i class="fas" [ngClass]="statusIcon"></i></span>
         </div>
     `,

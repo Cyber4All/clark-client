@@ -1,0 +1,46 @@
+<h2 mat-dialog-title id="playlist-metadata-title">
+    {{ editing ? "Edit playlist" : "Add playlist" }}
+</h2>
+<form [formGroup]="form" (ngSubmit)="submitted.emit()">
+    <mat-dialog-content class="playlist-metadata-content">
+        <label for="playlist-metadata-name">Title</label>
+        <input
+            id="playlist-metadata-name"
+            type="text"
+            formControlName="name"
+            maxlength="100"
+            required />
+        <label for="playlist-metadata-description"
+            >Description (optional)</label
+        >
+        <textarea
+            id="playlist-metadata-description"
+            formControlName="description"
+            maxlength="500"
+            rows="3"></textarea>
+        <p *ngIf="error" class="form-error" role="alert">{{ error }}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end" class="playlist-metadata-actions">
+        <button
+            type="button"
+            class="cancel-button"
+            [disabled]="saving"
+            (click)="cancelled.emit()">
+            Cancel
+        </button>
+        <button
+            type="submit"
+            class="primary-button"
+            [disabled]="saving || form.invalid">
+            {{
+                saving
+                    ? editing
+                        ? "Saving…"
+                        : "Creating…"
+                    : editing
+                      ? "Save"
+                      : "Create playlist"
+            }}
+        </button>
+    </mat-dialog-actions>
+</form>

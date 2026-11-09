@@ -37,9 +37,42 @@
             font-style: bold;
         }
 
-        &.clickable {
+        .learning-object-name.clickable {
             cursor: pointer;
         }
+
+        .hierarchy-parents {
+            background: none;
+            border: 0;
+            cursor: pointer;
+            font-family: inherit;
+            padding: 0;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+.parent-list-popup {
+    width: min(480px, calc(100vw - 32px));
+
+    h2 {
+        color: $darker-grey;
+        font-size: $large;
+        margin: 0 35px 18px 0;
+    }
+
+    ul {
+        margin: 0;
+        max-height: 50vh;
+        overflow-y: auto;
+        padding-left: 20px;
+    }
+
+    li + li {
+        margin-top: 10px;
     }
 }
 
