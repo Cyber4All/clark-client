@@ -37,7 +37,27 @@
                 {{ rating.date | date: "shortDate" }}
             </div>
             <div tabindex="0" class="rating-text">
-                {{ rating.comment }}
+                <div class="rating-comment">
+                    <!-- Angular sanitizes both bindings; the preview trims text nodes without cutting tags. -->
+                    <div
+                        *ngIf="
+                            showMore[i] ||
+                                commentLength(rating.comment) <= previewLimit;
+                            else preview
+                        "
+                        [innerHTML]="rating.comment"></div>
+                    <ng-template #preview>
+                        <div [innerHTML]="commentPreview(rating.comment)"></div>
+                    </ng-template>
+                </div>
+                <button
+                    *ngIf="commentLength(rating.comment) > previewLimit"
+                    type="button"
+                    class="button neutral read-more-button"
+                    (click)="toggleReadMore(i)"
+                    [attr.aria-expanded]="!!showMore[i]">
+                    Read {{ showMore[i] ? "Less" : "More" }}
+                </button>
             </div>
             <div *ngIf="auth.user?.emailVerified" class="options">
                 <ng-container *ngIf="isRatingAuthor(i); else notOwnerOptions">

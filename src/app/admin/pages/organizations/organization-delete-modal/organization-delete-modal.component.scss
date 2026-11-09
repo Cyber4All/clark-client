@@ -8,12 +8,12 @@
 .confirmation-text {
     margin: 20px 0;
     font-size: 1rem;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--theme-text);
 }
 
 .certification-checkbox {
-  display: inline-block;
-  margin-bottom: 4px;
+    display: inline-block;
+    margin-bottom: 4px;
 }
 
 .btn-group {

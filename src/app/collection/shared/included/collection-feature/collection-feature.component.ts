@@ -48,7 +48,7 @@ export class CollectionFeatureComponent implements OnInit, OnChanges {
 
     setColorScheme() {
         const header = document.getElementById("header");
-        header!.style.color = this.primaryColor;
+        if (header) header.style.color = this.primaryColor;
     }
 
     navigateToBrowse() {

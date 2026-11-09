@@ -26,15 +26,13 @@
         </div>
     </div>
     <div class="comment-wrapper">
-        <textarea
-            aria-label="comment"
-            placeholder="Why did you leave this rating?"
-            [(ngModel)]="rating.comment"
-            userscaleable></textarea>
+        <clark-rating-editor
+            [value]="rating.comment ?? ''"
+            (valueChange)="rating.comment = $event"></clark-rating-editor>
         <div
             class="character-count"
-            [class.over-limit]="(rating.comment?.length || 0) > 512">
-            {{ rating.comment?.length || 0 }}/512
+            [class.over-limit]="commentLength > commentLimit">
+            {{ commentLength }}/{{ commentLimit }}
         </div>
         <div class="btn-group center">
             <button

@@ -39,8 +39,10 @@ export class SubscriptionAgreementService {
         const banner = localStorage.getItem("showSubscriptionBanner");
         if (banner == null) {
             this.setShowSubscriptionBanner(false);
+            return;
         } else if (banner && this.isMobile) {
             this.setShowSubscriptionBanner(false);
+            return;
         }
         this.showSubscriptionBanner = !(banner !== null && banner === "false");
     }

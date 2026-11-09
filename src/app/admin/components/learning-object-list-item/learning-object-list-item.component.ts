@@ -167,7 +167,7 @@ export class LearningObjectListItemComponent implements OnChanges {
      * @return {boolean} true if logged in user has verified their email, false otherwise
      */
     get verifiedEmail(): boolean {
-        return this.auth.user.emailVerified;
+        return this.auth.user?.emailVerified ?? false;
     }
 
     get statusLabel(): string {

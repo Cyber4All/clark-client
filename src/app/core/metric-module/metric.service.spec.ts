@@ -6,36 +6,51 @@ import { TestBed } from "@angular/core/testing";
 import { environment } from "@env/environment";
 import { MetricService } from "./metric.service";
 
-describe("MetricService", () => {
+describe("MetricService learning object downloads", () => {
     let service: MetricService;
-    let httpMock: HttpTestingController;
+    let http: HttpTestingController;
 
     beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
-            providers: [MetricService],
-        });
-
+        TestBed.configureTestingModule({ imports: [HttpClientTestingModule] });
         service = TestBed.inject(MetricService);
-        httpMock = TestBed.inject(HttpTestingController);
+        http = TestBed.inject(HttpTestingController);
     });
 
-    afterEach(() => httpMock.verify());
+    afterEach(() => http.verify());
 
-    it("requests total downloads for an inclusive/exclusive date range", async () => {
-        const start = "2026-10-11T00:00:00.000Z";
-        const end = "2026-10-18T00:00:00.000Z";
-        const result = service.getTotalDownloads(start, end);
+    it("scopes each card's metrics using the API's learningObjectcuid parameter", async () => {
+        const first = service.getLearningObjectMetrics("object-a");
+        const second = service.getLearningObjectMetrics("object-b");
 
-        const request = httpMock.expectOne(
-            (req) =>
-                req.url === `${environment.apiURL}/reports/total-downloads` &&
-                req.params.get("start") === start &&
-                req.params.get("end") === end,
-        );
-        expect(request.request.method).toBe("GET");
-        request.flush({ totalDownloads: 123 });
+        http.expectOne(
+            `${environment.apiURL}/learning-objects/metrics?learningObjectcuid=object-a`,
+        ).flush({ downloads: 12, saves: 0 });
+        http.expectOne(
+            `${environment.apiURL}/learning-objects/metrics?learningObjectcuid=object-b`,
+        ).flush({ downloads: 37, saves: 0 });
 
-        await expect(result).resolves.toBe(123);
+        expect((await first).downloads).toBe(12);
+        expect((await second).downloads).toBe(37);
+    });
+
+    it("keeps recent download metrics scoped to the same object and date range", async () => {
+        const start = "2026-09-21T00:00:00.000Z";
+        const end = "2026-10-21T00:00:00.000Z";
+        const result = service.getLearningObjectMetrics("object/a", start, end);
+
+        http.expectOne(
+            `${environment.apiURL}/learning-objects/metrics?learningObjectcuid=object%2Fa&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`,
+        ).flush({ downloads: 3, saves: 0 });
+
+        expect((await result).downloads).toBe(3);
+    });
+
+    it("preserves aggregate metrics when no object is requested", async () => {
+        const result = service.getLearningObjectMetrics();
+        http.expectOne(`${environment.apiURL}/learning-objects/metrics`).flush({
+            downloads: 98000,
+            saves: 0,
+        });
+        expect((await result).downloads).toBe(98000);
     });
 });

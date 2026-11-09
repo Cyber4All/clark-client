@@ -38,7 +38,7 @@ const extensions = {
     ".mp4.avi.flv.wmv.mov": "video",
     ".mp3.wav.pcm.aiff.acc.ogg.wma.flac.alac": "audio",
     ".zip.rar.tar.gzip.bzip2.lzip.7z.apk.jar.deb.rpm.msi": "archive",
-    ".js.ts.java.jsp.class.cmd.py.pl.pm.c.h.hpp.hdl.html.css.scss.xml.sh":
+    ".js.ts.java.jsp.class.cmd.py.pl.pm.c.h.hpp.hdl.html.css.scss.xml.sh.ipynb":
         "code",
 };
 

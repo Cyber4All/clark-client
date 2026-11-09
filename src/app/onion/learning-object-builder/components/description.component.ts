@@ -1,9 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import {
-    FormsModule,
-    ReactiveFormsModule,
-    UntypedFormControl,
-} from "@angular/forms";
+    Component,
+    DestroyRef,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+    inject,
+} from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { ReactiveFormsModule, UntypedFormControl } from "@angular/forms";
 import {
     BOLD_BUTTON,
     ITALIC_BUTTON,
@@ -16,12 +23,13 @@ import {
     UNDO_BUTTON,
     UNORDERED_LIST_BUTTON,
 } from "ngx-simple-text-editor";
-import { skip } from "rxjs/operators";
 
 @Component({
     selector: "onion-learning-object-description",
     template: `
-        <div class="description-wrapper">
+        <div
+            class="description-wrapper"
+            [class.description-wrapper--disabled]="disabled">
             <!-- <div id="description-label" class="label">How woud you describe this learning object?
     <span tip="The description is a high level overview of the Learning Object that can be returned in search results">
       <a href="http://about.clark.center/tutorial/#Descriptions" target="blank"><i class="fas fa-question-circle"></i></a>
@@ -30,7 +38,6 @@ import { skip } from "rxjs/operators";
             <div class="goals list">
                 <st-editor
                     [formControl]="description"
-                    [(ngModel)]="learningObject.description"
                     [config]="config"></st-editor>
             </div>
         </div>
@@ -43,7 +50,7 @@ import { skip } from "rxjs/operators";
             }
 
             textarea.full-width {
-                max-width: 800px;
+                max-width: none;
                 width: 100%;
             }
 
@@ -59,19 +66,19 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-editor-container {
-                border: 1px solid #d9e1ec;
+                border: 1px solid var(--theme-border);
                 border-radius: 8px;
                 overflow: hidden;
-                background: #fff;
+                background: var(--theme-foreground-raised);
             }
 
             .description-wrapper ::ng-deep .st-toolbar {
                 border: 0;
-                border-bottom: 1px solid #d9e1ec;
+                border-bottom: 1px solid var(--theme-border);
                 border-radius: 0;
                 gap: 4px;
                 padding: 8px;
-                background: #f8fafc;
+                background: var(--theme-foreground-subtle);
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item {
@@ -79,7 +86,7 @@ import { skip } from "rxjs/operators";
                 background: transparent;
                 border: 0;
                 border-radius: 6px;
-                color: #4a5568;
+                color: var(--theme-text-muted);
                 display: inline-flex;
                 height: 32px;
                 justify-content: center;
@@ -92,18 +99,18 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item:hover {
-                background: #e8f1ff;
-                color: #1c70dd;
+                background: var(--theme-foreground-selected);
+                color: var(--theme-action-primary);
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item:focus {
-                outline: 2px solid #1c70dd;
+                outline: 2px solid var(--theme-focus);
                 outline-offset: 1px;
             }
 
             .description-wrapper ::ng-deep .st-button.active {
-                background: #1c70dd;
-                color: #fff;
+                background: var(--theme-action-primary);
+                color: var(--theme-action-on-primary);
             }
 
             .description-wrapper ::ng-deep .st-toolbar-item i {
@@ -115,7 +122,7 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-divider {
-                border-right: 1px solid #d9e1ec;
+                border-right: 1px solid var(--theme-border);
                 height: 24px;
                 margin: 0 3px;
             }
@@ -123,7 +130,8 @@ import { skip } from "rxjs/operators";
             .description-wrapper ::ng-deep .st-area {
                 border: 0;
                 border-radius: 0;
-                color: #2d3748;
+                color: var(--theme-text);
+                background: transparent;
                 font-size: 16px;
                 line-height: 1.5;
                 min-height: 140px;
@@ -131,16 +139,25 @@ import { skip } from "rxjs/operators";
             }
 
             .description-wrapper ::ng-deep .st-area:focus {
-                outline: 2px solid rgba(28, 112, 221, 0.35);
+                outline: 2px solid var(--theme-focus);
                 outline-offset: -2px;
+            }
+
+            .description-wrapper--disabled {
+                cursor: wait;
+                opacity: 0.7;
             }
         `,
     ],
     standalone: true,
-    imports: [NgxSimpleTextEditorModule, FormsModule, ReactiveFormsModule],
+    imports: [NgxSimpleTextEditorModule, ReactiveFormsModule],
 })
-export class LearningObjectDescriptionComponent implements OnInit {
+export class LearningObjectDescriptionComponent implements OnInit, OnChanges {
     @Input() learningObject;
+    @Input() disabled = false;
+
+    private readonly destroyRef = inject(DestroyRef);
+    private lastDescription = "";
 
     description = new UntypedFormControl("");
     config = {
@@ -163,16 +180,45 @@ export class LearningObjectDescriptionComponent implements OnInit {
     @Output() touched: EventEmitter<void> = new EventEmitter();
     @Output() textOutput: EventEmitter<string> = new EventEmitter();
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.learningObject) {
+            this.syncDescription();
+        }
+        if (changes.disabled) {
+            this.setDisabledState();
+        }
+    }
+
     ngOnInit() {
-        // Watch for any updates to the description form.
+        this.syncDescription();
+        // The editor also emits on DOM attribute changes, including disabling it.
         this.description.valueChanges
-            .pipe(skip(1))
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((description: string) => {
-                this.textOutput.emit(description);
+                const value = description ?? "";
+                if (this.disabled || value === this.lastDescription) return;
+                this.lastDescription = value;
+                this.textOutput.emit(value);
             });
 
-        if (this.learningObject.description) {
-            this.description.patchValue(this.learningObject.description);
+        this.setDisabledState();
+    }
+
+    /** Synchronizes saved or accepted text without treating it as a user edit. */
+    private syncDescription(): void {
+        this.lastDescription = this.learningObject?.description ?? "";
+        if (this.description.value !== this.lastDescription) {
+            this.description.setValue(this.lastDescription, {
+                emitEvent: false,
+            });
+        }
+    }
+
+    private setDisabledState(): void {
+        if (this.disabled) {
+            this.description.disable({ emitEvent: false });
+        } else {
+            this.description.enable({ emitEvent: false });
         }
     }
 }

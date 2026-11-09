@@ -1,27 +1,77 @@
 <div class="code-preview-container">
     <header class="code-preview-header">
         <h1 class="file-name" [textContent]="fileName"></h1>
-        <button
-            class="copy-button"
-            (click)="copyToClipboard()"
-            [disabled]="isLoading || hasError"
-            title="Copy to clipboard">
-            <i class="fas fa-copy"></i>
-            <span>Copy</span>
-        </button>
+        <div class="header-actions">
+            <button
+                *ngIf="!isNotebookPreview"
+                class="copy-button"
+                (click)="copyToClipboard()"
+                [disabled]="isLoading || hasError"
+                title="Copy to clipboard">
+                <i class="fas fa-copy"></i>
+                <span>Copy</span>
+            </button>
+            <a
+                *ngIf="isNotebookPreview && notebookSourceUrl && !hasError"
+                class="download-button"
+                [href]="notebookSourceUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                download>
+                <i class="fas fa-download"></i>
+                <span>Download notebook</span>
+            </a>
+        </div>
     </header>
 
     <div class="loading-state" *ngIf="isLoading">
         <i class="fas fa-spinner fa-spin"></i>
-        <p>Loading file content...</p>
+        <p>
+            {{
+                isNotebookPreview
+                    ? "Loading notebook preview..."
+                    : "Loading file content..."
+            }}
+        </p>
     </div>
 
     <div class="error-state" *ngIf="hasError">
         <i class="fas fa-exclamation-triangle"></i>
         <p [textContent]="errorMessage"></p>
+        <div
+            class="error-actions"
+            *ngIf="isNotebookPreview && notebookSourceUrl">
+            <button class="retry-button" (click)="retryNotebookPreview()">
+                Try again
+            </button>
+            <a
+                class="download-button"
+                [href]="notebookSourceUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                download>
+                <i class="fas fa-download"></i>
+                <span>Download notebook</span>
+            </a>
+        </div>
     </div>
 
-    <div class="code-content" *ngIf="!isLoading && !hasError">
+    <div
+        class="notebook-content"
+        [class.notebook-content--loading]="isLoading"
+        *ngIf="isNotebookPreview && notebookViewerUrl && !hasError">
+        <iframe
+            [src]="notebookViewerUrl"
+            [title]="'Notebook preview for ' + fileName"
+            sandbox="allow-downloads allow-popups allow-same-origin allow-scripts"
+            referrerpolicy="no-referrer"
+            (load)="onNotebookLoaded()"
+            (error)="onNotebookLoadError()"></iframe>
+    </div>
+
+    <div
+        class="code-content"
+        *ngIf="!isNotebookPreview && !isLoading && !hasError">
         <markdown
             [data]="markdownContent"
             ngPreserveWhitespaces

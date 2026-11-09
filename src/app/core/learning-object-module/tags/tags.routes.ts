@@ -18,6 +18,9 @@ export const TAGS_ROUTES = {
     GET_ALL_TAGS(query?: any) {
         return `${environment.apiURL}/tags?${querystring.stringify(query)}`;
     },
+    CREATE_TAG() {
+        return `${environment.apiURL}/tags`;
+    },
     /**
      * Request to update tags  for a learning object
      * @method PATCH

@@ -2,7 +2,7 @@ import { animate, style, transition, trigger } from "@angular/animations";
 import { Component, HostListener, OnInit } from "@angular/core";
 import { Blog } from "app/components/blogs/types/blog";
 import { BlogsComponentService } from "app/core/utility-module/blogs-component.service";
-import { SplashComponent } from "./splash/splash.component";
+import { CyberAwarenessBannerComponent } from "./cyber-awareness-banner/cyber-awareness-banner.component";
 import { HelpComponent } from "./help/help.component";
 import { MissionComponent } from "./mission/mission.component";
 import { LearningObjectInfoComponent } from "./learning-object-info/learning-object-info.component";
@@ -38,7 +38,7 @@ import { LearningObjectInfoComponent } from "./learning-object-info/learning-obj
     ],
     standalone: true,
     imports: [
-        SplashComponent,
+        CyberAwarenessBannerComponent,
         HelpComponent,
         MissionComponent,
         LearningObjectInfoComponent,

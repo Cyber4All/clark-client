@@ -2,7 +2,7 @@
 
 .checkbox {
     background: transparent;
-    border: 1px solid $medium-grey;
+    border: 1px solid var(--theme-border-strong, $medium-grey);
     position: relative;
     cursor: pointer;
     width: 14px;
@@ -15,6 +15,10 @@
     margin: auto;
     padding: 0;
 
+    &:hover:not(.disabled) {
+        border-color: var(--theme-action-primary, $light-blue);
+    }
+
     &:before {
         content: "";
         position: absolute;
@@ -24,7 +28,7 @@
         left: 0;
         opacity: 0;
         transform: scale(0);
-        background: $light-blue;
+        background: var(--theme-action-primary, $light-blue);
         border-radius: 2px;
     }
 
@@ -35,32 +39,50 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: $light-blue;
+        background: var(--theme-action-primary, $light-blue);
         opacity: 0;
         transform: scale(0);
         visibility: hidden;
         transition: inherit;
     }
 
-    .svg-inline--fa {
+    .checkbox-check-wrapper,
+    i,
+    i.fas,
+    .fa-check,
+    .svg-inline--fa,
+    svg {
         font-size: 10px;
-        color: white;
+        color: transparent;
         position: relative;
         z-index: 1;
         transform: scale(0.5);
         visibility: hidden;
         opacity: 0;
+        display: none;
         transition: inherit;
     }
 
     &.active {
-        border-color: $light-blue;
+        border-color: var(--theme-action-primary, $light-blue);
 
-        &:after,
-        .svg-inline--fa {
+        &:after {
             transform: scale(1);
             opacity: 1;
             visibility: visible;
+        }
+
+        .checkbox-check-wrapper,
+        i,
+        i.fas,
+        .fa-check,
+        .svg-inline--fa,
+        svg {
+            display: inline-flex;
+            transform: scale(1);
+            opacity: 1;
+            visibility: visible;
+            color: var(--theme-action-on-primary, white);
         }
 
         &.animating {
@@ -71,7 +93,7 @@
     }
 
     &.disabled {
-        border-color: $light-grey;
+        border-color: var(--theme-border, $light-grey);
         cursor: default;
     }
 }

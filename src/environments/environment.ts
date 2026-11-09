@@ -3,11 +3,12 @@ export const environment = {
     environment: "development",
     experimental: false,
     apiURL: "http://localhost:3000",
+    notebookViewerURL: "https://nbviewer.org",
     s3Bucket: "clark-dev-file-uploads",
     s3BucketRegion: "us-east-1",
     cognitoRegion: "us-east-1",
     cognitoIdentityPoolId: "",
     cognitoAdminIdentityPoolId: "",
-    downtimeUrl: "",
+    downtimeUrl: "http://localhost:3005",
     publicKey: "cxtp_pbDbZsDUdNr5Wu3GWX6emisZyfKkV9",
 };
