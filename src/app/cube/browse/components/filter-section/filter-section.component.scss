@@ -13,13 +13,13 @@
         margin: 0;
         flex: 0 0 auto;
         font-weight: 600;
-        color: $darker-grey;
+        color: var(--theme-text-strong, $darker-grey);
         font-size: $normal;
 
         .filter-count {
             display: inline;
             font-weight: 400;
-            color: $dark-grey;
+            color: var(--theme-text-muted, $dark-grey);
             font-size: $normal;
             margin-left: 0;
         }
@@ -33,7 +33,7 @@
         margin-left: 12px;
 
         i {
-            color: $dark-grey;
+            color: var(--theme-text-muted, $dark-grey);
             font-size: $smaller;
         }
     }
@@ -41,7 +41,7 @@
     &.clickable {
         &:hover {
             p {
-                color: $darker-grey;
+                color: var(--theme-text-strong, $darker-grey);
             }
         }
     }
@@ -84,7 +84,7 @@
             .label {
                 font-size: $normal;
                 line-height: 1.5;
-                color: $dark-grey;
+                color: var(--theme-text, $dark-grey);
                 font-weight: normal;
                 align-self: center;
             }

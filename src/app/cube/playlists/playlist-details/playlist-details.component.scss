@@ -11,7 +11,7 @@
     align-items: center;
     gap: 8px;
     margin-bottom: 40px;
-    color: $light-blue;
+    color: var(--theme-link);
     font-size: 14px;
     text-decoration: none;
 
@@ -20,7 +20,7 @@
     }
 
     &:focus-visible {
-        outline: 2px solid $light-blue;
+        outline: 2px solid var(--theme-focus);
         outline-offset: 4px;
     }
 }
@@ -31,7 +31,7 @@
     gap: 18px;
     margin-bottom: 56px;
     padding: 0 0 36px;
-    border-bottom: 1px solid $light-grey;
+    border-bottom: 1px solid var(--theme-border);
 }
 
 .playlist-title-row {
@@ -57,7 +57,7 @@
         min-width: 0;
         margin: 0;
         overflow-wrap: anywhere;
-        color: $darker-grey;
+        color: var(--theme-text-strong);
         font-size: 36px;
         line-height: 1.15;
     }
@@ -66,7 +66,7 @@
 .description {
     max-width: 900px;
     margin: 0;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: 16px;
     line-height: 1.6;
     white-space: pre-wrap;
@@ -81,17 +81,17 @@
     min-height: 34px;
     padding: 0;
     place-items: center;
-    border: 1px solid $profile-border;
+    border: 1px solid var(--theme-border);
     border-radius: 50%;
-    background: white;
-    color: $light-blue;
+    background: var(--theme-foreground-raised);
+    color: var(--theme-link);
 
     &:hover {
-        background: $secondary-white-background;
+        background: var(--theme-foreground-subtle);
     }
 
     &:focus-visible {
-        outline: 2px solid $light-blue;
+        outline: 2px solid var(--theme-focus);
         outline-offset: 2px;
     }
 }
@@ -107,7 +107,7 @@
 .search-form input {
     min-height: 40px;
     padding: 8px 10px;
-    border: 1px solid $light-grey;
+    border: 1px solid var(--theme-border);
     border-radius: 5px;
     font: inherit;
 }
@@ -117,8 +117,8 @@
     padding: 8px 12px;
     border: 0;
     border-radius: 5px;
-    background: $light-blue;
-    color: white;
+    background: var(--theme-action-primary);
+    color: var(--theme-action-on-primary);
     cursor: pointer;
     font: inherit;
 }
@@ -129,7 +129,7 @@
 }
 
 .playlist-details .danger-button {
-    background: #a12622;
+    background: var(--theme-status-error);
 }
 
 .playlist-details .card-action-button {
@@ -142,38 +142,42 @@
     min-height: 38px;
     padding: 0;
     place-items: center;
-    border: 1px solid $profile-border;
+    border: 1px solid var(--theme-border);
     border-radius: 50%;
-    box-shadow: 0 1px 4px rgba(50, 54, 63, 0.2);
+    box-shadow: 0 1px 4px var(--theme-shadow);
 
     &:focus-visible {
-        outline: 3px solid rgba(28, 112, 221, 0.4);
+        outline: 3px solid var(--theme-focus);
         outline-offset: 2px;
     }
 }
 
 .playlist-details .add-button {
-    background: $light-blue;
+    background: var(--theme-action-primary);
 
     &:hover:not(:disabled) {
-        background: darken($light-blue, 8%);
+        background: var(--theme-action-primary-hover);
     }
 }
 
 .playlist-details .remove-button {
-    background: #a12622;
+    background: var(--theme-status-error);
 
     &:hover:not(:disabled) {
-        background: darken(#a12622, 8%);
+        background: color-mix(
+            in srgb,
+            var(--theme-status-error) 88%,
+            var(--theme-text-strong)
+        );
     }
 }
 
 .search-section {
     margin: 0 0 56px;
     padding: 24px;
-    border: 1px solid $profile-border;
+    border: 1px solid var(--theme-border);
     border-radius: 12px;
-    background: $secondary-white-background;
+    background: var(--theme-foreground-subtle);
 }
 
 .search-section h2 {
@@ -192,7 +196,7 @@
 }
 
 .search-hint {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
 }
 
 .search-loading {
@@ -200,16 +204,16 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
-    color: $dark-grey;
+    color: var(--theme-text-muted);
 
     i {
-        color: $light-blue;
+        color: var(--theme-status-info);
     }
 }
 
 .action-error {
     margin: 16px 0;
-    color: $error-red;
+    color: var(--theme-status-error);
 }
 
 .candidate-list {
@@ -296,15 +300,15 @@
     display: grid;
     place-items: center;
     padding: 20px;
-    background: #0008;
+    background: var(--theme-overlay);
 }
 
 .confirm-dialog {
     width: min(100%, 440px);
     padding: 24px;
     border-radius: 8px;
-    background: white;
-    box-shadow: 0 8px 32px #0003;
+    background: var(--theme-foreground-raised);
+    box-shadow: 0 8px 32px var(--theme-shadow);
 }
 
 .confirm-dialog h2 {
@@ -318,13 +322,13 @@
 
 .object-count,
 .object-version {
-    color: $dark-grey;
+    color: var(--theme-text-muted);
     font-size: 13px;
 }
 
 section h2 {
     margin: 0 0 22px;
-    color: $darker-grey;
+    color: var(--theme-text-strong);
     font-size: 22px;
 }
 
@@ -352,9 +356,9 @@ section h2 {
     height: 100%;
     min-height: 350px;
     flex-direction: column;
-    border: 1px solid $profile-border;
+    border: 1px solid var(--theme-border);
     border-radius: 14px;
-    background: white;
+    background: var(--theme-foreground-raised);
 }
 
 .unavailable-card__icon {
@@ -362,9 +366,9 @@ section h2 {
     min-height: 140px;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid $light-grey;
-    background: $secondary-white-background;
-    color: $medium-grey;
+    border-bottom: 1px solid var(--theme-border);
+    background: var(--theme-foreground-subtle);
+    color: var(--theme-border-strong);
     font-size: 32px;
 }
 
@@ -377,14 +381,14 @@ section h2 {
     h3 {
         margin: 8px 0;
         overflow-wrap: anywhere;
-        color: $darker-grey;
+        color: var(--theme-text-strong);
         font-size: $normal;
     }
 
     p {
         margin: 0 0 14px;
         overflow-wrap: anywhere;
-        color: $dark-grey;
+        color: var(--theme-text-muted);
         font-size: $small;
         line-height: 1.5;
     }
@@ -396,20 +400,20 @@ section h2 {
 
 .status {
     padding: 50px 20px;
-    border: 1px solid $profile-border;
+    border: 1px solid var(--theme-border);
     border-radius: 12px;
-    background: $secondary-white-background;
-    color: $dark-grey;
+    background: var(--theme-foreground-subtle);
+    color: var(--theme-text-muted);
     text-align: center;
 
     i {
         margin-right: 8px;
-        color: $light-blue;
+        color: var(--theme-status-info);
     }
 }
 
 .status--error {
-    color: $error-red;
+    color: var(--theme-status-error);
 
     h1 {
         margin-top: 0;

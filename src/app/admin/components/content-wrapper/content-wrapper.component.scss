@@ -2,7 +2,7 @@
 
 .page-title {
     font-size: $larger;
-    color: $dark-grey;
+    color: var(--theme-text-strong);
     display: flex;
     flex-direction: column;
     justify-content: center;

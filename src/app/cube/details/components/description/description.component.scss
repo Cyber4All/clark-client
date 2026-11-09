@@ -1,7 +1,7 @@
 @import "_vars.scss";
 
 p {
-    color: $dark-grey;
+    color: var(--theme-text);
 
     &.description {
         display: inline-block;
