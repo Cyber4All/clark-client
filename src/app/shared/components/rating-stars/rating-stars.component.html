@@ -1,15 +1,21 @@
 <div
     class="rating-stars {{ color ? color : '' }}"
     [ngStyle]="styles"
-    [tip]="rating + ' out of ' + count"
-    [tipDisabled]="!reviewsCount"
+    [tip]="roundedReview + ' out of ' + count"
+    [tipDisabled]="!reviewsCount || interactive"
     tipPosition="top">
     <div
-        class="stars"
+        class="stars-wrapper"
+        [class.active]="activeHover > -1"
+        (mouseleave)="reset()"
         tabindex="0"
-        attr.aria-label="Rating: {{ rating }} out of 5 stars">
+        attr.aria-label="Rating: {{ roundedReview }} out of {{ count }} stars">
         <div class="empty-stars">
-            <div class="empty-star" *ngFor="let item of iterableCount">
+            <div
+                class="empty-star"
+                *ngFor="let item of iterableCount; let i = index"
+                (mouseover)="setHover(i)"
+                (activate)="selectRating(i + 1)">
                 <i class="fal fa-star"></i>
             </div>
         </div>

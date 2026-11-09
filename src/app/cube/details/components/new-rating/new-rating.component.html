@@ -1,30 +1,15 @@
 <div
     class="new-rating"
     [ngClass]="{ rated: rating.value && activePanel === 1 }">
-    <div
-        class="stars-wrapper"
-        [ngClass]="{ active: activeHover > -1 }"
-        (mouseleave)="reset()">
-        <div class="empty-stars stars">
-            <div
-                class="star"
-                *ngFor="let item of iterableCount; let i = index"
-                [tip]="tips[i]"
-                tipPosition="bottom">
-                <div (mouseover)="setHover(i)" (activate)="rate(i + 1)">
-                    <i class="fal fa-star"></i>
-                </div>
-            </div>
-        </div>
-        <div class="full-stars stars">
-            <div
-                *ngFor="let item of iterableCount; let i = index"
-                class="star"
-                [ngClass]="{ show: starShouldShow(i) }">
-                <i class="fas fa-star"></i>
-            </div>
-        </div>
-    </div>
+    <clark-rating-stars
+        [count]="count"
+        [rating]="rating.value"
+        [interactive]="true"
+        [loggedIn]="true"
+        [size]="30"
+        color="blue"
+        (selectedRating)="rate($event)">
+    </clark-rating-stars>
     <div class="comment-wrapper">
         <clark-rating-editor
             [value]="rating.comment ?? ''"

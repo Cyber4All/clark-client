@@ -9,8 +9,13 @@
     align-items: center;
     font-size: $normal;
 
-    .stars {
+    .stars-wrapper {
         position: relative;
+        width: var(--rating-stars-width, auto);
+
+        &.active {
+            color: var(--rating-stars-hover-color, #{$gold});
+        }
     }
 
     .empty-stars,
@@ -26,17 +31,14 @@
 
     .full-stars {
         position: absolute;
+        // Keep the row at its full width while its parent clips the rating.
+        width: var(--rating-stars-width, max-content);
         top: 0;
         left: 0;
-
-        &:after {
-            content: "";
-            display: block;
-            position: relative;
-        }
     }
 
     .full-stars-mask {
+        pointer-events: none;
         position: absolute;
         overflow: hidden;
         top: 0;
@@ -54,7 +56,7 @@
     }
 
     &.blue {
-        color: $blue-accent;
+        color: var(--rating-stars-color, #{$blue-accent});
     }
 
     &.gold {
