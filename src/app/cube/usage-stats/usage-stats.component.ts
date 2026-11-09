@@ -5,17 +5,13 @@ import {
     UsageStats,
     UserMetrics,
 } from "../shared/types/usage-stats";
-import {
-    CounterStat,
-    CounterBlockComponent,
-} from "./counter-block/counter-block.component";
 import { PieChart } from "./types";
 import { LearningObject } from "../../../entity/learning-object/learning-object";
 import { LearningObjectService } from "app/core/learning-object-module/learning-object/learning-object.service";
 import { MetricService } from "../../core/metric-module/metric.service";
 import { UtilityService } from "../../core/utility-module/utility.service";
 import { OutcomeService } from "app/core/learning-object-module/outcomes/outcome.service";
-import { NgFor } from "@angular/common";
+import { DecimalPipe, NgClass, NgFor, NgIf } from "@angular/common";
 import { DistributionChartComponent } from "./distribution-chart/distribution-chart.component";
 import { TopDownloadsComponent } from "./top-downloads/top-downloads.component";
 
@@ -24,6 +20,12 @@ type LearningObjectStatsResponse = LearningObjectStats & {
         peerReview?: number;
     };
 };
+
+interface CounterStat {
+    title: string;
+    value: number;
+    class?: string;
+}
 
 // This variable is used to decided whether or not percentages should be rendered.
 // If CHART_HOVERED, tooltips are visible and we do not want to render percentages over tooltips
@@ -52,8 +54,10 @@ export function getLastCompletedWeekRange(now = new Date()) {
     styleUrls: ["usage-stats.component.scss"],
     standalone: true,
     imports: [
+        DecimalPipe,
+        NgClass,
         NgFor,
-        CounterBlockComponent,
+        NgIf,
         DistributionChartComponent,
         TopDownloadsComponent,
     ],

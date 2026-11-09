@@ -5,7 +5,6 @@ import { NgChartsModule } from "ng2-charts";
 import { DistributionChartComponent } from "./distribution-chart/distribution-chart.component";
 import { UsageStatsRoutingModule } from "./usage-stats.router";
 import { HeatMapComponent } from "./heat-map/heat-map.component";
-import { CounterBlockComponent } from "./counter-block/counter-block.component";
 import { TopDownloadsComponent } from "./top-downloads/top-downloads.component";
 
 @NgModule({
@@ -16,7 +15,6 @@ import { TopDownloadsComponent } from "./top-downloads/top-downloads.component";
         UsageStatsComponent,
         DistributionChartComponent,
         HeatMapComponent,
-        CounterBlockComponent,
         TopDownloadsComponent,
     ],
     exports: [
