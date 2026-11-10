@@ -32,15 +32,22 @@ import { LearningObject } from "@entity";
 import { HierarchyNodeComponent } from "./hierarchy-node/hierarchy-node.component";
 import { HierarchyMovePickerComponent } from "./hierarchy-move-picker/hierarchy-move-picker.component";
 import { HierarchyViewService } from "./hierarchy-view.service";
-import { HierarchyNode, NodeActionId } from "./hierarchy-tree.types";
+import { HierarchyLoaderService } from "./hierarchy-loader.service";
+import {
+    HierarchyLoadStatus,
+    HierarchyNode,
+    NodeActionId,
+} from "./hierarchy-tree.types";
 
 /**
  * Container for the Builder Hierarchy tree (sc-40233).
  *
  * Renders the effective hierarchy as a folder/tree with expand/collapse,
  * linked/read-only treatment, and drag-and-drop with invalid-drop gating.
- * For this story the data is mock/local, produced by {@link HierarchyViewService};
- * the `+` menu actions are surfaced but inert (wired in sc-40236 / sc-40237).
+ * The hierarchy is loaded from the API by {@link HierarchyLoaderService}
+ * (sc-40640) and held by {@link HierarchyViewService}; this component renders
+ * the loading, error, empty and ready states. The `+` menu actions are
+ * surfaced but inert (wired in sc-40236 / sc-40237).
  *
  * Drag-and-drop model (rebuilt in sc-40233): the WHOLE tree is a single
  * `cdkDropList` (`cdkDropListSortingDisabled`) rather than a group of per-node
@@ -66,17 +73,15 @@ import { HierarchyNode, NodeActionId } from "./hierarchy-tree.types";
     ],
 })
 export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
-    /**
-     * The current (root) learning object. In sc-40233 it is used only to label
-     * the root; the tree body is mock data. Later stories derive the real tree
-     * from this object's composed children.
-     */
+    /** The current (root) learning object whose hierarchy is loaded. */
     @Input() learningObject?: LearningObject;
 
     tree$: Observable<HierarchyNode[]>;
+    status$: Observable<HierarchyLoadStatus>;
 
     constructor(
         private viewService: HierarchyViewService,
+        private loader: HierarchyLoaderService,
         private host: ElementRef<HTMLElement>,
         private overlay: Overlay,
         private vcr: ViewContainerRef,
@@ -90,20 +95,31 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         this.tree$ = this.viewService.tree$;
-        this.viewService.seedMockData();
-        // Apply any learning object name that arrived before the tree was seeded.
-        if (this.learningObject?.name) {
-            this.applyRootName(this.learningObject.name);
-        }
+        this.status$ = this.loader.status$;
+        this.loadHierarchy();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        // When a real learning object arrives, reflect its name on the mock root
-        // so the tab reads coherently. Full real-data wiring is a later story.
-        // Skipped before ngOnInit has seeded the tree (applyRootName no-ops on an
-        // empty tree); ngOnInit re-applies the name after seeding.
-        if (changes["learningObject"] && this.learningObject?.name) {
-            this.applyRootName(this.learningObject.name);
+        // Before ngOnInit the first load is started there; afterwards a new
+        // learning object (different id) reloads the hierarchy.
+        const change = changes["learningObject"];
+        if (
+            change &&
+            !change.firstChange &&
+            change.currentValue?.id !== change.previousValue?.id
+        ) {
+            this.loadHierarchy();
+        }
+    }
+
+    /** Retry after a failed load. */
+    onRetry(): void {
+        this.loader.retry();
+    }
+
+    private loadHierarchy(): void {
+        if (this.learningObject?.id) {
+            this.loader.load(this.learningObject);
         }
     }
 
@@ -469,15 +485,6 @@ export class HierarchyTreeComponent implements OnInit, OnChanges, OnDestroy {
 
     trackById(_index: number, node: HierarchyNode): string {
         return node.id;
-    }
-
-    private applyRootName(name: string): void {
-        const current = this.viewService.tree;
-        if (!current.length) {
-            return;
-        }
-        const [root, ...rest] = current;
-        this.viewService.setTree([{ ...root, name }, ...rest]);
     }
 }
 
