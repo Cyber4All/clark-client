@@ -36,6 +36,39 @@
                         (click)="editTooltip.hide(0); openEditPlaylist()">
                         <i class="far fa-pencil" aria-hidden="true"></i>
                     </button>
+                    <ng-container
+                        *ngIf="
+                            playlist.visibility === visibilityOptions.PUBLIC;
+                            else privateShareButton
+                        ">
+                        <button
+                            type="button"
+                            class="share-icon-button"
+                            aria-label="Share playlist"
+                            matTooltip="Share playlist"
+                            matTooltipPosition="below"
+                            #shareTooltip="matTooltip"
+                            (click)="shareTooltip.hide(0); sharePlaylist()">
+                            <i class="fas fa-share-alt" aria-hidden="true"></i>
+                        </button>
+                    </ng-container>
+                    <ng-template #privateShareButton>
+                        <span
+                            class="share-icon-tooltip"
+                            tabindex="0"
+                            matTooltip="Make this playlist public to enable sharing."
+                            matTooltipPosition="below">
+                            <button
+                                type="button"
+                                class="share-icon-button"
+                                aria-label="Make this playlist public to enable sharing"
+                                disabled>
+                                <i
+                                    class="fas fa-share-alt"
+                                    aria-hidden="true"></i>
+                            </button>
+                        </span>
+                    </ng-template>
                 </div>
                 <button
                     *ngIf="isOwner"
@@ -49,6 +82,13 @@
                 class="description"
                 [textContent]="playlist.description || ''"
                 aria-label="Playlist description"></p>
+            <p
+                *ngIf="shareStatus"
+                class="share-status"
+                role="status"
+                aria-live="polite">
+                {{ shareStatus }}
+            </p>
             <div *ngIf="isOwner" class="owner-actions">
                 <mat-slide-toggle
                     [checked]="draftVisibility === visibilityOptions.PUBLIC"
