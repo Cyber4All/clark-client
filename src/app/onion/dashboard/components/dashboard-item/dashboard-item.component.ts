@@ -17,6 +17,7 @@ import { LearningObjectService } from "app/core/learning-object-module/learning-
 import { UriRetrieverService } from "app/core/learning-object-module/uri-retriever.service";
 import {
     NgIf,
+    NgFor,
     NgClass,
     NgTemplateOutlet,
     TitleCasePipe,
@@ -27,6 +28,7 @@ import { TipDirective } from "../../../../shared/directives/tip.directive";
 import { ActivateDirective } from "../../../../shared/directives/activate.directive";
 import { RouterLink } from "@angular/router";
 import { ContextMenuComponent } from "../../../../shared/modules/contextmenu/context-menu/context-menu.component";
+import { PopupComponent } from "../../../../shared/modules/popups/popup.component";
 import {
     getLearningObjectStatusIcon,
     getLearningObjectStatusLabel,
@@ -40,6 +42,7 @@ import {
     standalone: true,
     imports: [
         NgIf,
+        NgFor,
         NgClass,
         CheckBoxComponent,
         TipDirective,
@@ -47,6 +50,7 @@ import {
         RouterLink,
         NgTemplateOutlet,
         ContextMenuComponent,
+        PopupComponent,
         TitleCasePipe,
         DatePipe,
     ],
@@ -111,7 +115,8 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     showStatus = true;
 
     // parents
-    parents: string[] = [];
+    parents: LearningObject[] = [];
+    showParents = false;
     children: string[] = [];
     hasChildren = false;
 
@@ -124,7 +129,10 @@ export class DashboardItemComponent implements OnInit, OnChanges {
     ) {}
 
     async ngOnInit() {
-        this.parents = await this.parentNames();
+        this.parents =
+            await this.learningObjectService.getLearningObjectParents(
+                this.learningObject.id,
+            );
         this.children = await this.objectChildrenNames();
         this.hasChildren =
             (
@@ -171,14 +179,8 @@ export class DashboardItemComponent implements OnInit, OnChanges {
                 "unreleased",
                 this.learningObject.length !== "nanomodule",
             ],
-            manageMaterials: [
-                "unreleased",
-                this.verifiedEmail,
-            ],
-            submit: [
-                "unreleased",
-                this.verifiedEmail,
-            ],
+            manageMaterials: ["unreleased", this.verifiedEmail],
+            submit: ["unreleased", this.verifiedEmail],
             submitHierarchy: [
                 "unreleased",
                 this.parents.length === 0,
@@ -251,7 +253,9 @@ export class DashboardItemComponent implements OnInit, OnChanges {
             .toPromise()
             .then((children: LearningObject[]) => {
                 children.forEach((child) => {
-                    result.push(child.name);
+                    result.push(
+                        child.name?.trim() || "Untitled Learning Object",
+                    );
                 });
                 return result;
             })
@@ -265,18 +269,5 @@ export class DashboardItemComponent implements OnInit, OnChanges {
         if (!this.meatballOpen) {
             this.viewSidePanel.emit();
         }
-    }
-
-    /**
-     * Returns the learning objects parent names in an array of strings
-     */
-    async parentNames() {
-        return (
-            await this.learningObjectService.getLearningObjectParents(
-                this.learningObject.id,
-            )
-        ).map((parent: LearningObject) => {
-            return parent.name;
-        });
     }
 }

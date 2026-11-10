@@ -42,6 +42,24 @@ describe("PlaylistService", () => {
         request.flush([playlist]);
     });
 
+    it("creates a playlist without a description", () => {
+        const input = { name: "Title only", visibility: "private" as const };
+        const created: Playlist = {
+            _id: "new-playlist",
+            userId: "user/id",
+            learningObjectCuids: [],
+            ...input,
+        };
+        service.createPlaylist(input).subscribe((result) => {
+            expect(result).toEqual(created);
+        });
+        const request = httpMock.expectOne(`${environment.apiURL}/playlists`);
+        expect(request.request.method).toBe("POST");
+        expect(request.request.body).toEqual(input);
+        expect(request.request.withCredentials).toBe(true);
+        request.flush(created);
+    });
+
     it("gets one raw playlist", () => {
         service.getPlaylist(playlist._id).subscribe();
 
@@ -50,6 +68,32 @@ describe("PlaylistService", () => {
         );
         expect(request.request.method).toBe("GET");
         expect(request.request.withCredentials).toBe(true);
+        request.flush(playlist);
+    });
+
+    it("creates a playlist", () => {
+        const body = {
+            name: playlist.name,
+            description: playlist.description,
+            visibility: playlist.visibility,
+        };
+        service.createPlaylist(body).subscribe();
+
+        const request = httpMock.expectOne(`${environment.apiURL}/playlists`);
+        expect(request.request.method).toBe("POST");
+        expect(request.request.body).toEqual(body);
+        expect(request.request.withCredentials).toBe(true);
+        request.flush(playlist);
+    });
+
+    it("adds a learning object to a playlist", () => {
+        service.addLearningObject(playlist._id, "object/cuid").subscribe();
+
+        const request = httpMock.expectOne(
+            `${environment.apiURL}/playlists/playlist%2Fid/objects/object%2Fcuid`,
+        );
+        expect(request.request.method).toBe("PUT");
+        expect(request.request.body).toEqual({});
         request.flush(playlist);
     });
 });

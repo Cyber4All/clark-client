@@ -191,7 +191,6 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
         state: boolean;
         item: DirectoryNode | LearningObject.Material.File;
     }> = new EventEmitter();
-
     notes$: Subject<string> = new Subject<string>();
 
     slide = 1;
@@ -274,8 +273,8 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.learningObject = object;
 
                     // Set the material information
-                    this.folderMeta$.next(object.materials.folderDescriptions);
                     this.files$.next(object.materials.files);
+                    this.folderMeta$.next(object.materials.folderDescriptions);
                     this.warnForLongPaths(object.materials.files);
 
                     // Check if the learning object has a solution file
@@ -622,9 +621,9 @@ export class UploadComponent implements OnInit, AfterViewInit, OnDestroy {
             fullPath?: string;
             webkitRelativePath?: string;
             name?: string;
-        }>,
+        }> = [],
     ): void {
-        const longPaths = files
+        const longPaths = (files ?? [])
             .filter(hasLongWindowsExtractionPathForFile)
             .map(getFilePath)
             .filter((path) => !this.warnedLongPaths.has(path));

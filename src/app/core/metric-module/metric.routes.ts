@@ -15,7 +15,9 @@ export const METRIC_ROUTES = {
      */
     GET_LEARNING_OBJECT_METRICS(cuid?: string) {
         const url = `${environment.apiURL}/learning-objects/metrics`;
-        return cuid ? `${url}?learningObjectcuid=${cuid}` : url;
+        return cuid
+            ? `${url}?learningObjectcuid=${encodeURIComponent(cuid)}`
+            : url;
     },
 
     /**
@@ -33,6 +35,15 @@ export const METRIC_ROUTES = {
      */
     GET_LEARNING_OBJECT_STATS() {
         return `${environment.apiURL}/learning-objects/stats`;
+    },
+
+    /**
+     * Gets the number of downloads in a date range.
+     * @param start - Inclusive ISO-8601 start timestamp
+     * @param end - Exclusive ISO-8601 end timestamp
+     */
+    GET_TOTAL_DOWNLOADS(start: string, end: string) {
+        return `${environment.apiURL}/reports/total-downloads?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`;
     },
 
     GET_TAG_METRICS(tagId?: string) {

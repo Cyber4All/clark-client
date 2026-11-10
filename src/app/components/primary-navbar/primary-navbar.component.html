@@ -99,6 +99,15 @@
                                 </li>
                                 <li
                                     tabindex="0"
+                                    [routerLink]="['playlists']"
+                                    [queryParams]="{
+                                        userId: auth.user?.userId,
+                                    }"
+                                    (activate)="dropdowns.toggleUserDropdown()">
+                                    <i class="fas fa-list"></i>My Playlist
+                                </li>
+                                <li
+                                    tabindex="0"
                                     [routerLink]="['auth', 'forgot-password']"
                                     (activate)="dropdowns.toggleUserDropdown()">
                                     <i class="far fa-unlock-alt"></i>Change
@@ -216,6 +225,11 @@
                             Download History
                         </li>
                         <li
+                            [routerLink]="['playlists']"
+                            [queryParams]="{ userId: auth.user?.userId }">
+                            My Playlist
+                        </li>
+                        <li
                             [routerLink]="['admin']"
                             *ngIf="auth.hasCuratorAccess()">
                             {{ auth.hasEditorAccess() ? "Admin" : "Curator" }}
@@ -320,8 +334,8 @@
 <!-- <clark-context-menu *ngIf="levelsDropdown" [anchor]="academicLevelsAnchor" (close)="dropdowns.closeAll()">
                     <div #contextMenu class="context-popup">
                         <ul>
-                            <li 
-                            *ngFor="let l of academicLevels" 
+                            <li
+                            *ngFor="let l of academicLevels"
                             (click)="navService.setLevel(l)"
                             >{{ l | titlecase}}</li>
                         </ul>
