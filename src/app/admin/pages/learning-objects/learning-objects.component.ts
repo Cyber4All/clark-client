@@ -6,7 +6,6 @@ import {
     ElementRef,
     Input,
     ChangeDetectorRef,
-    AfterViewInit,
 } from "@angular/core";
 import { OrderBy, Query, SortType } from "../../../interfaces/query";
 import { LearningObject } from "../../../../entity";
@@ -43,13 +42,10 @@ import { PaginationComponent } from "../../components/pagination/pagination.comp
         PaginationComponent,
     ],
 })
-export class LearningObjectsComponent
-    implements OnInit, OnDestroy, AfterViewInit
-{
+export class LearningObjectsComponent implements OnInit, OnDestroy {
     OrderBy = OrderBy;
 
     @ViewChild("list") listElement: ElementRef<HTMLElement>;
-    @ViewChild("headers") headersElement: ElementRef<HTMLElement>;
 
     learningObjects: LearningObject[] = [];
     searchBarPlaceholder = "Learning Objects";
@@ -60,8 +56,6 @@ export class LearningObjectsComponent
 
     adminStatusList = Object.keys(LearningObject.Status);
     selectedStatus: string;
-
-    listViewHeightOffset: number;
 
     _query: Query = {
         currPage: 1,
@@ -489,15 +483,6 @@ export class LearningObjectsComponent
         ) {
             this.allSelected = false;
         }
-    }
-
-    ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.listViewHeightOffset =
-                this.listElement.nativeElement.getBoundingClientRect().top +
-                this.headersElement.nativeElement.getBoundingClientRect()
-                    .height;
-        }, 2000);
     }
 
     ngOnDestroy() {
