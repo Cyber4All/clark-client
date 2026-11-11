@@ -7,6 +7,12 @@ module.exports = {
         "@entity(.*)": "<rootDir>/src/entity/$1",
     },
     transform: {
-        "^.+\\.(ts|js|html)$": "ts-jest",
+        "^.+\\.(ts|js|mjs|html|svg)$": [
+            "jest-preset-angular",
+            {
+                tsconfig: "<rootDir>/tsconfig.json",
+                stringifyContentPathRegex: "\\.(html|svg)$",
+            },
+        ],
     },
 };
